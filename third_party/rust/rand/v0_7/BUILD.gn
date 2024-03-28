@@ -1,6 +1,11 @@
-# Copyright 2023 The Chromium Authors
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
 
 import("//build/rust/cargo_crate.gni")
 
@@ -8,60 +13,47 @@ cargo_crate("lib") {
   crate_name = "rand"
   epoch = "0.7"
   crate_type = "rlib"
-  crate_root = "crate/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/rand/v0_7/crate/benches/generators.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/benches/misc.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/benches/seq.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/benches/weighted.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/examples/monte-carlo.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/examples/monty-hall.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/bernoulli.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/binomial.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/cauchy.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/dirichlet.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/exponential.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/float.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/gamma.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/integer.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/mod.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/normal.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/other.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/pareto.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/poisson.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/triangular.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/uniform.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/unit_circle.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/unit_sphere.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/utils.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/weibull.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/weighted/alias_method.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/weighted/mod.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/distributions/ziggurat_tables.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/lib.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/prelude.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/rngs/adapter/mod.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/rngs/adapter/read.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/rngs/adapter/reseeding.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/rngs/entropy.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/rngs/mock.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/rngs/mod.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/rngs/small.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/rngs/std.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/rngs/thread.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/seq/index.rs",
-    "//brave/third_party/rust/rand/v0_7/crate/src/seq/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/bernoulli.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/binomial.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/cauchy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/dirichlet.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/exponential.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/float.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/gamma.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/integer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/normal.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/other.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/pareto.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/poisson.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/triangular.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/uniform.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/unit_circle.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/unit_sphere.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/weibull.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/weighted/alias_method.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/weighted/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/distributions/ziggurat_tables.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/prelude.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/rngs/adapter/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/rngs/adapter/read.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/rngs/adapter/reseeding.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/rngs/entropy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/rngs/mock.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/rngs/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/rngs/small.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/rngs/std.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/rngs/thread.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/seq/index.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-0.7.3/src/seq/mod.rs",
   ]
-  inputs = [
-    "//brave/third_party/rust/rand/v0_7/crate/.github/ISSUE_TEMPLATE/compile-issue.md",
-    "//brave/third_party/rust/rand/v0_7/crate/.github/ISSUE_TEMPLATE/feature_request.md",
-    "//brave/third_party/rust/rand/v0_7/crate/.github/ISSUE_TEMPLATE/other.md",
-    "//brave/third_party/rust/rand/v0_7/crate/CHANGELOG.md",
-    "//brave/third_party/rust/rand/v0_7/crate/README.md",
-    "//brave/third_party/rust/rand/v0_7/crate/SECURITY.md",
-  ]
+  inputs = []
 
-  # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2018"
   cargo_pkg_version = "0.7.3"
@@ -73,6 +65,8 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/getrandom/v0_1:lib",
     "//brave/third_party/rust/rand_chacha/v0_2:lib",
@@ -80,10 +74,10 @@ cargo_crate("lib") {
     "//brave/third_party/rust/rand_pcg/v0_2:lib",
   ]
   if (!is_win) {
-    deps += [ "//third_party/rust/libc/v0_2:lib" ]
+    deps += [ "//brave/third_party/rust/libc/v0_2:lib" ]
   }
   aliased_deps = {
-    getrandom_package = "//brave/third_party/rust/getrandom/v0_1:lib__rlib"
+    getrandom_package = "//brave/third_party/rust/getrandom/v0_1:lib"
   }
   features = [
     "alloc",

@@ -14,9 +14,9 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_news/api/publisher.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "url/gurl.h"
 
 namespace brave_news {
@@ -109,37 +109,13 @@ std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
   return result;
 }
 
-void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,
+void ParseDirectPublisherList(const std::vector<DirectFeed>& direct_feeds,
                               std::vector<mojom::PublisherPtr>* publishers) {
-  for (const auto&& [key, value] : direct_feeds_pref_dict) {
-    const base::Value::Dict* root = value.GetIfDict();
-    if (!root) {
-      // Handle unknown value type
-      LOG(ERROR) << "Found unknown dictionary pref value for"
-                    "Brave News direct feeds at the pref path: "
-                 << key;
-      // TODO(petemill): delete item from pref dict?
-      continue;
-    }
-    VLOG(1) << "Found direct feed in prefs: " << key;
-
-    GURL feed_source(*root->FindString(prefs::kBraveNewsDirectFeedsKeySource));
-    if (!feed_source.is_valid()) {
-      // This is worth error logging because we shouldn't
-      // get in to this state due to validation at the
-      // point of adding the item to prefs.
-      LOG(ERROR) << "Found invalid feed url for Brave News "
-                    "direct feeds pref at the path "
-                 << prefs::kBraveNewsDirectFeeds << " > "
-                 << prefs::kBraveNewsDirectFeedsKeySource;
-      // TODO(petemill): delete item from pref dict?
-      continue;
-    }
+  for (const auto& feed : direct_feeds) {
     auto publisher = mojom::Publisher::New();
-    publisher->feed_source = feed_source;
-    publisher->publisher_id = key;
-    publisher->publisher_name =
-        *root->FindString(prefs::kBraveNewsDirectFeedsKeyTitle);
+    publisher->feed_source = feed.url;
+    publisher->publisher_id = feed.id;
+    publisher->publisher_name = feed.title;
     publisher->type = mojom::PublisherType::DIRECT_SOURCE;
     // This is always true for direct feeds, reserved property for
     // "combined source" feeds, and perhaps marking a direct feed

@@ -4,22 +4,33 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/commander/commander_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/dom_distiller/core/dom_distiller_features.h"
+#include "components/grit/brave_components_strings.h"
 
 namespace {
 constexpr int kPasteMacResourceId = IDS_PASTE_MAC;
 constexpr int kMuteSiteResourceId = IDS_MUTE_SITE_MAC;
 constexpr int kCloseOtherTabsResourceId = IDS_TAB_CXMENU_CLOSEOTHERTABS;
+constexpr int kReopenCloseTabsMacResourceId = IDS_REOPEN_CLOSED_TABS_MAC;
+constexpr int kHelpMacResourceId = IDS_HELP_MAC;
 }  // namespace
 
-#define BRAVE_BUILD_FILE_MENU                       \
-  Item(IDS_NEW_OFFTHERECORD_WINDOW_TOR)             \
-      .command_id(IDC_NEW_OFFTHERECORD_WINDOW_TOR),
+// Insert "New Private Window with Tor" in "File" menu
+#undef IDS_REOPEN_CLOSED_TABS_MAC
+#define IDS_REOPEN_CLOSED_TABS_MAC                  \
+  IDS_NEW_OFFTHERECORD_WINDOW_TOR)                  \
+      .command_id(IDC_NEW_OFFTHERECORD_WINDOW_TOR), \
+  Item(kReopenCloseTabsMacResourceId
 
-#define BRAVE_BUILD_HELP_MENU                         \
-  Item(IDS_REPORT_BROKEN_SITE_MAC)                    \
-      .command_id(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER),
+// Insert "Report Broken Site" in "Help" menu
+#undef IDS_HELP_MAC
+#define IDS_HELP_MAC                                    \
+  IDS_REPORT_BROKEN_SITE_MAC)                           \
+        .command_id(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER), \
+  Item(kHelpMacResourceId
 
 #undef IDS_PASTE_MAC
 #define IDS_PASTE_MAC IDS_COPY_CLEAN_LINK) \
@@ -37,12 +48,21 @@ IDS_MUTE_TAB_MAC).command_id(IDC_TOGGLE_TAB_MUTE), \
 IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS).command_id(IDC_CLOSE_DUPLICATE_TABS), \
               Item(kCloseOtherTabsResourceId
 
+// Insert Commander item right after "Reader mode" aka "Distill page"
+#define IsDomDistillerEnabled() IsDomDistillerEnabled()),                \
+    Item(IDS_IDC_COMMANDER).command_id(IDC_COMMANDER)                    \
+                           .remove_if(is_pwa || !commander::IsEnabled()
+
 #include "src/chrome/browser/ui/cocoa/main_menu_builder.mm"
+
+#undef IsDomDistillerEnabled
 #undef IDS_MUTE_SITE_MAC
 #define IDS_MUTE_SITE_MAC kMuteSiteResourceId
 #undef IDS_PASTE_MAC
 #define IDS_PASTE_MAC kPasteMacResourceId
 #undef IDS_TAB_CXMENU_CLOSEOTHERTABS
 #define IDS_TAB_CXMENU_CLOSEOTHERTABS kCloseOtherTabsResourceId
-#undef BRAVE_BUILD_HELP_MENU
-#undef BRAVE_BUILD_FILE_MENU
+#undef IDS_HELP_MAC
+#define IDS_HELP_MAC kHelpMacResourceId
+#undef IDS_REOPEN_CLOSED_TABS_MAC
+#define IDS_REOPEN_CLOSED_TABS_MAC kReopenCloseTabsMacResourceId

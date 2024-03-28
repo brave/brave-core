@@ -1105,7 +1105,7 @@ public class BrowserViewController: UIViewController {
           $0.body = Strings.DefaultBrowserCallout.notificationBody
         }
 
-        let timeToShow = AppConstants.buildChannel.isPublic ? 2.hours : 2.minutes
+        let timeToShow = AppConstants.isOfficialBuild ? 2.hours : 2.minutes
         let timeTrigger = UNTimeIntervalNotificationTrigger(
           timeInterval: timeToShow,
           repeats: false
@@ -3560,7 +3560,7 @@ extension BrowserViewController: PreferencesObserver {
       PrivacyReportsManager.scheduleProcessingBlockedRequests(
         isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
       )
-      PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
+      PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
     case Preferences.PrivacyReports.captureVPNAlerts.key:
       PrivacyReportsManager.scheduleVPNAlertsTask()
     case Preferences.Wallet.defaultEthWallet.key:
@@ -3869,6 +3869,7 @@ extension BrowserViewController {
     let chatController = UIHostingController(
       rootView: AIChatView(
         model: model,
+        speechRecognizer: speechRecognizer,
         openURL: openAIChatURL
       )
     )

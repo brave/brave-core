@@ -26,15 +26,6 @@ class BraveExtensionProviderTest : public extensions::ExtensionFunctionalTest {
 
 namespace extensions {
 
-IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, WhitelistedExtension) {
-  base::FilePath test_data_dir;
-  GetTestDataDir(&test_data_dir);
-  const extensions::Extension* extension = InstallExtension(
-      test_data_dir.AppendASCII("adblock-data").AppendASCII("adblock-default"),
-      1);
-  ASSERT_TRUE(extension);
-}
-
 // Load an extension page with an ad image, and make sure it is NOT blocked.
 // It would otherwise be blocked though if it wasn't an extension.
 IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,

@@ -52,15 +52,9 @@ export function defaultState (): Rewards.State {
       adsMaxEarningsLastMonth: 0
     },
     adsHistory: [],
-    promotions: [],
     excludedList: [],
     externalWalletProviderList: [],
     balance: optional<number>(),
-    monthlyReport: {
-      month: -1,
-      year: -1
-    },
-    monthlyReportIds: [],
     currentCountryCode: '',
     parameters: {
       autoContributeChoice: 0,

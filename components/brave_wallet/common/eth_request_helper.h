@@ -46,7 +46,7 @@ bool ParseEthGetEncryptionPublicKeyParams(const std::string& json,
 bool ParseEthDecryptParams(const std::string& json,
                            std::string* untrusted_encrypted_data_json,
                            std::string* address);
-bool ParseEthDecryptData(const std::string& json,
+bool ParseEthDecryptData(const base::Value& obj,
                          std::string* version,
                          std::vector<uint8_t>* nonce,
                          std::vector<uint8_t>* ephemeral_public_key,

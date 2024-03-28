@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "crypto/sha2.h"
 
@@ -31,7 +31,7 @@ using wallet_provider::ConnectExternalWallet;
 
 namespace bitflyer {
 
-ConnectBitFlyerWallet::ConnectBitFlyerWallet(RewardsEngineImpl& engine)
+ConnectBitFlyerWallet::ConnectBitFlyerWallet(RewardsEngine& engine)
     : ConnectExternalWallet(engine), bitflyer_server_(engine) {}
 
 ConnectBitFlyerWallet::~ConnectBitFlyerWallet() = default;

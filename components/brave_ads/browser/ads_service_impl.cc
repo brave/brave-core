@@ -294,7 +294,7 @@ void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() const {
   RegisterResourceComponentsForCountryCode(country_code);
 }
 
-bool AdsServiceImpl::UserHasOptedInToBraveRewards() const {
+bool AdsServiceImpl::UserHasJoinedBraveRewards() const {
   return profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
@@ -342,9 +342,8 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
   return ShouldAlwaysRunService() || UserHasOptedInToBraveNewsAds() ||
-         (UserHasOptedInToBraveRewards() &&
-          (UserHasOptedInToNotificationAds() ||
-           UserHasOptedInToNewTabPageAds()));
+         (UserHasJoinedBraveRewards() && (UserHasOptedInToNotificationAds() ||
+                                          UserHasOptedInToNewTabPageAds()));
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
@@ -685,8 +684,6 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
                           prefs::kMaximumNotificationAdsPerHour));
   auto notification_ad_position_callback = base::BindRepeating(
       &AdsServiceImpl::OnNotificationAdPositionChanged, base::Unretained(this));
-  pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateX,
-                             notification_ad_position_callback);
   pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateY,
                              notification_ad_position_callback);
 }
@@ -1371,10 +1368,11 @@ void AdsServiceImpl::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
 
 void AdsServiceImpl::NotifyTabDidChange(const int32_t tab_id,
                                         const std::vector<GURL>& redirect_chain,
+                                        const bool is_error_page,
                                         const bool is_visible) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
-    bat_ads_client_notifier_remote_->NotifyTabDidChange(tab_id, redirect_chain,
-                                                        is_visible);
+    bat_ads_client_notifier_remote_->NotifyTabDidChange(
+        tab_id, redirect_chain, is_error_page, is_visible);
   }
 }
 

@@ -38,6 +38,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_utils.h"
 #endif
 
@@ -138,6 +139,11 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   profile_prefs->ClearPref(kBinanceRefreshToken);
   profile_prefs->ClearPref(kNewTabPageShowBinance);
   profile_prefs->ClearPref(kBraveSuggestedSiteSuggestionsEnabled);
+#endif
+
+  // Added 03/2024
+#if BUILDFLAG(ENABLE_TOR)
+  profile_prefs->ClearPref(tor::prefs::kAutoOnionRedirect);
 #endif
 
 #if defined(TOOLKIT_VIEWS)

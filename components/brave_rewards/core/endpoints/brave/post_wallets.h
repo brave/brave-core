@@ -31,7 +31,7 @@
 // clang-format on
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -46,11 +46,10 @@ struct ResultFor<PostWallets> {
 class PostWallets final : public RequestBuilder,
                           public ResponseHandler<PostWallets> {
  public:
-  static Result ProcessResponse(RewardsEngineImpl& engine,
+  static Result ProcessResponse(RewardsEngine& engine,
                                 const mojom::UrlResponse&);
 
-  PostWallets(RewardsEngineImpl& engine,
-              std::optional<std::string>&& geo_country);
+  PostWallets(RewardsEngine& engine, std::optional<std::string>&& geo_country);
   ~PostWallets() override;
 
  private:

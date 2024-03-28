@@ -17,7 +17,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2627788872035182013">Click the Brave menu</translation>
 <translation id="8541922081612557424">About Brave</translation>
 <translation id="1203500561924088507">Thanks for installing. You must restart your browser before using <ph name="BUNDLE_NAME"/>.</translation>
-<translation id="4658574652223735641">Memory Saver Made Brave Faster</translation>
 <translation id="8799570501820813406">While this tab was inactive, memory was freed up to keep Brave fast. You can choose to always exclude this site from being inactive.</translation>
 <translation id="8767381092474532098">Brave blocked this download because the file is dangerous</translation>
 <translation id="4798342026247191171">Set up your new Brave profile</translation>
@@ -107,6 +106,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8755404239607088219">Brave can't check your passwords. Try again later.</translation>
 <translation id="8880183781256147665">Adding to Brave ...</translation>
 <translation id="3038232873781883849">Waiting to install…</translation>
+<translation id="4503085212612536713">Other Brave profiles</translation>
 <translation id="7918740962659365265">Help make Brave better by sending crash reports and <ph name="UMA_LINK"/> to Brave</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{1 USB device was being accessed by one or more Brave extensions}=1{1 USB device is being accessed by one or more Brave extensions}other{# USB devices are being accessed by one or more Brave extensions}}</translation>
 <translation id="5320085753638900910">Your browsing history affects the ads that you see and the interests as estimated below. To protect your privacy, Brave auto-deletes your interests on a rolling basis each month. Interests can refresh unless you remove them.</translation>
@@ -216,6 +216,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8586264863973514035">To apply your changes, relaunch Brave</translation>
 <translation id="300369155175407115">When trials are on and if Brave has randomly placed you in an active trial, your browsing history affects the ads that you see and the interests as estimated below. To protect your privacy, Brave deletes your interests on a rolling basis each month.</translation>
 <translation id="7573068992266397941">Brave found some safety recommendations for your review</translation>
+<translation id="8174413867995118050">Other Brave profiles</translation>
 <translation id="7708394612738038097">You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords and other settings will become permanently tied to <ph name="USER_NAME"/>. You will be able to delete this data via the Brave sync chains Dashboard, but you will not be able to associate this data with another account. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Extra code: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">Learn why Brave blocks some files</translation>
@@ -311,12 +312,12 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="9210457680074341078">If you also save your bookmarks in your Brave sync chain, you can track product prices in Brave and get notified when the price drops</translation>
 <translation id="6676384891291319759">Access the Internet</translation>
 <translation id="1363996462118479832">Chrome OS could not sync your data due to an error signing in.</translation>
+<translation id="5324448127277983819">Brave gives you more control over the ads that you see and limits what sites can learn about you when they show you personalised ads</translation>
 <translation id="1257247502847251159">Brave needs microphone permission for this site</translation>
 <translation id="6712881677154121168">Download error: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Your profile can not be used because it is from a newer version of Brave.
 
 Some features may be unavailable. Please specify a different profile directory or use a newer version of Brave.</translation>
-<translation id="7870748924073900361">Memory saver made Brave faster</translation>
 <translation id="6666624454809779082">Brave is already installed for all users on your computer.</translation>
 <translation id="5360050006043219962">To access your Brave stuff across all your devices, sign in, then turn on sync.</translation>
 <translation id="3136039682492230890">Brave recommends scanning this file because it may be dangerous.</translation>
@@ -369,7 +370,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="2827121003398607864">Brave just got better</translation>
 <translation id="7649070708921625228">Help</translation>
 <translation id="7631741717293858595">You can learn more about these features in Brave settings.</translation>
-<translation id="8678991866891573053">Brave is exploring new features that allow sites to deliver the same browsing experience using less of your data</translation>
 <translation id="3343095737966473035">Brave isn't your default browser</translation>
 <translation id="5477319665405831211">Sync and personalise Brave across your devices</translation>
 <translation id="2339273275658335597">Brave update</translation>
@@ -469,6 +469,7 @@ Permissions you've already given to websites and apps may apply to this account.
 <translation id="8274659559228306809">{COUNT,plural, =0{A new update for Brave is available and will be applied as soon as you relaunch.}=1{A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}other{A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Your administrator asks that you relaunch Brave to apply this update}=1{Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}other{Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Your administrator requires that you relaunch Brave to apply an update}=1{Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}other{Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}</translation>
+<translation id="4104709166890675229">Make it harder for profiles with access to your Internet traffic to see which sites you visit. Brave uses a secure connection to look up a site's IP address in the DNS (Domain Name System).</translation>
 <translation id="2176087127109773485">You can manage your signed-in Brave sync chains. Your Brave sync chains are used for Brave browser, Play Store, Gmail and more. If you want to add an account for someone else, like a family member, add a new profile to your <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">When you type in the address bar or search box, Brave sends what you type to your default search engine to get better suggestions. This is off in Private.</translation>
 <translation id="3739288578188828252">When you type in the address bar or search box, Brave sends what you type to Google Drive to get item suggestions. This is off in Private.</translation>

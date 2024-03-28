@@ -17,11 +17,11 @@
 
 namespace brave_rewards::internal {
 
-class RewardsEngineImpl;
+class RewardsEngine;
 
 class LegacyBatState {
  public:
-  explicit LegacyBatState(RewardsEngineImpl& engine);
+  explicit LegacyBatState(RewardsEngine& engine);
   ~LegacyBatState();
 
   void Load(ResultCallback callback);
@@ -49,7 +49,7 @@ class LegacyBatState {
               mojom::Result result,
               const std::string& data);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   ClientProperties state_;
 };
 

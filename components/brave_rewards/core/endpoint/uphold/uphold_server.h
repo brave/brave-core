@@ -14,13 +14,13 @@
 #include "brave/components/brave_rewards/core/endpoint/uphold/post_cards/post_cards.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 
 class UpholdServer {
  public:
-  explicit UpholdServer(RewardsEngineImpl& engine);
+  explicit UpholdServer(RewardsEngine& engine);
   ~UpholdServer();
 
   const uphold::GetCapabilities& get_capabilities() const {

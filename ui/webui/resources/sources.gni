@@ -5,6 +5,14 @@
 
 import("//ui/webui/resources/include_polymer.gni")
 
+# These cr_elements will be replaced by a custom override, conforming to the
+# same interface. It's intended to allow us to provide a compatibility layer
+# for Nala components.
+brave_override_cr_elements = [
+  "cr_toggle",
+  "cr_button",
+]
+
 # Extra GRDPs to give //ui/webui/resources:build_grd
 # (which generates //ui/webui/resources/webui_generated_resources.grd)
 

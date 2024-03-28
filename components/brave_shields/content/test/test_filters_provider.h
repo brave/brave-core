@@ -11,19 +11,14 @@
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_shields/content/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
-
-using brave_component_updater::DATFileDataBuffer;
 
 namespace brave_shields {
 
-class TestFiltersProvider : public AdBlockFiltersProvider,
-                            public AdBlockResourceProvider {
+class TestFiltersProvider : public AdBlockFiltersProvider {
  public:
-  TestFiltersProvider(const std::string& rules, const std::string& resources);
+  explicit TestFiltersProvider(const std::string& rules);
   TestFiltersProvider(const std::string& rules,
-                      const std::string& resources,
                       bool engine_is_default,
                       uint8_t permission_mask = 0,
                       bool is_initialized = true);
@@ -33,9 +28,6 @@ class TestFiltersProvider : public AdBlockFiltersProvider,
       base::OnceCallback<void(
           base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
 
-  void LoadResources(
-      base::OnceCallback<void(const std::string& resources_json)> cb) override;
-
   void Initialize();
   bool IsInitialized() const override;
 
@@ -43,7 +35,6 @@ class TestFiltersProvider : public AdBlockFiltersProvider,
 
  private:
   std::string rules_;
-  std::string resources_;
   uint8_t permission_mask_;
   bool is_initialized_;
 };

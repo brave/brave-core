@@ -63,29 +63,13 @@ using ConnectExternalWalletCallback =
 using FetchBalanceCallback = base::OnceCallback<void(mojom::BalancePtr)>;
 using GetExternalWalletCallback =
     base::OnceCallback<void(mojom::ExternalWalletPtr)>;
-using ClaimPromotionCallback = base::OnceCallback<void(const mojom::Result,
-                                                       const std::string&,
-                                                       const std::string&,
-                                                       const std::string&)>;
-using AttestPromotionCallback =
-    base::OnceCallback<void(const mojom::Result result,
-                            mojom::PromotionPtr promotion)>;
 
 using GetBalanceReportCallback =
     base::OnceCallback<void(const mojom::Result,
                             mojom::BalanceReportInfoPtr report)>;
 
-using GetMonthlyReportCallback =
-    base::OnceCallback<void(mojom::MonthlyReportInfoPtr report)>;
-
-using GetAllMonthlyReportIdsCallback =
-    base::OnceCallback<void(const std::vector<std::string>&)>;
-
 using GetAllContributionsCallback = base::OnceCallback<void(
     std::vector<mojom::ContributionInfoPtr> contributions)>;
-
-using GetAllPromotionsCallback =
-    base::OnceCallback<void(std::vector<mojom::PromotionPtr> list)>;
 
 using GetRewardsParametersCallback =
     base::OnceCallback<void(mojom::RewardsParametersPtr)>;
@@ -162,22 +146,6 @@ class RewardsService : public KeyedService {
 
   virtual void GetExcludedList(GetPublisherInfoListCallback callback) = 0;
 
-  using FetchPromotionsCallback =
-      base::OnceCallback<void(std::vector<mojom::PromotionPtr>)>;
-
-  virtual void FetchPromotions(FetchPromotionsCallback callback) = 0;
-
-  // Used by desktop
-  virtual void ClaimPromotion(
-      const std::string& promotion_id,
-      ClaimPromotionCallback callback) = 0;
-  // Used by Android
-  virtual void ClaimPromotion(
-      const std::string& promotion_id,
-      AttestPromotionCallback callback) = 0;
-  virtual void AttestPromotion(const std::string& promotion_id,
-                               const std::string& solution,
-                               AttestPromotionCallback callback) = 0;
   virtual void RestorePublishers() = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
@@ -307,19 +275,8 @@ class RewardsService : public KeyedService {
                                      const std::string& query,
                                      ConnectExternalWalletCallback) = 0;
 
-  virtual void GetMonthlyReport(
-      const uint32_t month,
-      const uint32_t year,
-      GetMonthlyReportCallback callback) = 0;
-
-  virtual void GetAllMonthlyReportIds(
-      GetAllMonthlyReportIdsCallback callback) = 0;
-
   virtual void GetAllContributions(
       GetAllContributionsCallback callback) = 0;
-
-  virtual void GetAllPromotions(
-      GetAllPromotionsCallback callback) = 0;
 
   virtual void WriteDiagnosticLog(const std::string& file,
                                   const int line,

@@ -8,7 +8,6 @@
 #include <optional>
 
 #include "base/json/values_util.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 

@@ -343,7 +343,7 @@ import XCTest
 
   /// Test `update()` will fetch all visible user assets from all networks and display them sorted by their balance.
   func testUpdate() async {
-    Preferences.Wallet.showTestNetworks.value = false
+    Preferences.Wallet.showTestNetworks.value = true
     let store = setupStore()
 
     // MARK: Default update() Test
@@ -456,6 +456,23 @@ import XCTest
         XCTAssertEqual(balance, self.totalBalance)
       }
       .store(in: &cancellables)
+    // test that `update()` will assign new value to `balanceDifference` publisher
+    let balanceDifferenceExpectation = expectation(description: "update-balanceDifference")
+    store.$balanceDifference
+      .dropFirst()
+      .first()
+      .sink { balanceDifference in
+        defer { balanceDifferenceExpectation.fulfill() }
+        XCTAssertEqual(
+          balanceDifference,
+          .init(
+            priceDifference: "+$53.69",
+            percentageChange: "+1.55%",
+            isBalanceUp: true
+          )
+        )
+      }
+      .store(in: &cancellables)
     // test that `update()` will update `isLoadingBalances` publisher
     let isLoadingBalancesExpectation = expectation(description: "update-isLoadingBalances")
     store.$isLoadingBalances
@@ -471,10 +488,47 @@ import XCTest
     isLocked = false
     store.update()
     await fulfillment(
-      of: [assetGroupsExpectation, balanceExpectation, isLoadingBalancesExpectation],
+      of: [
+        assetGroupsExpectation, balanceExpectation,
+        balanceDifferenceExpectation, isLoadingBalancesExpectation,
+      ],
       timeout: 1
     )
     cancellables.removeAll()
+    let balanceDifferenceExpectationNan = expectation(description: "update-balanceDifferenceNan")
+    store.$balanceDifference
+      .dropFirst()
+      .first()
+      .sink { balanceDifference in
+        defer { balanceDifferenceExpectationNan.fulfill() }
+        XCTAssertEqual(
+          balanceDifference,
+          .init(
+            priceDifference: "$0.00",
+            percentageChange: "0.00%",
+            isBalanceUp: false
+          )
+        )
+      }
+      .store(in: &cancellables)
+    store.saveFilters(
+      .init(
+        groupBy: store.filters.groupBy,
+        sortOrder: store.filters.sortOrder,
+        isHidingSmallBalances: store.filters.isHidingSmallBalances,
+        isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
+        isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
+        accounts: store.filters.accounts,
+        networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {
+          // de-select all networks with balance
+          .init(isSelected: $0.chainId == goerliNetwork.chainId, model: $0)
+        }
+      )
+    )
+    await fulfillment(
+      of: [balanceDifferenceExpectationNan],
+      timeout: 1
+    )
   }
 
   /// Test `assetGroups` will be sorted to from smallest to highest fiat value when `sortOrder` filter is `valueAsc`.

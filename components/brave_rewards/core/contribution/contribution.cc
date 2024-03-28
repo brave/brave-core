@@ -25,7 +25,7 @@
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
@@ -109,7 +109,7 @@ Contribution::ContributionRequest& Contribution::ContributionRequest::operator=(
 
 Contribution::ContributionRequest::~ContributionRequest() = default;
 
-Contribution::Contribution(RewardsEngineImpl& engine)
+Contribution::Contribution(RewardsEngine& engine)
     : engine_(engine),
       unblinded_(engine),
       sku_(engine),
@@ -551,14 +551,9 @@ void Contribution::OnEntrySaved(const std::string& contribution_id,
 
   const std::string& queue_id = queue->id;
 
-  if (wallet_type == constant::kWalletUnBlinded) {
-    StartUnblinded(
-        {mojom::CredsBatchType::PROMOTION}, contribution_id,
-        base::BindOnce(&Contribution::Result, weak_factory_.GetWeakPtr(),
-                       queue_id, contribution_id));
-  } else if (wallet_type == constant::kWalletUphold ||
-             wallet_type == constant::kWalletBitflyer ||
-             wallet_type == constant::kWalletGemini) {
+  if (wallet_type == constant::kWalletUphold ||
+      wallet_type == constant::kWalletBitflyer ||
+      wallet_type == constant::kWalletGemini) {
     external_wallet_.Process(
         contribution_id,
         base::BindOnce(&Contribution::Result, weak_factory_.GetWeakPtr(),
@@ -651,11 +646,6 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
   if (wallet_type == constant::kWalletGemini) {
     engine_->gemini()->TransferFunds(transaction.amount, destination,
                                      contribution_id, std::move(callback));
-    return;
-  }
-
-  if (wallet_type == constant::kWalletUnBlinded) {
-    sku_.Merchant(transaction, std::move(callback));
     return;
   }
 
@@ -852,9 +842,7 @@ void Contribution::Retry(mojom::ContributionInfoPtr contribution,
 
   switch (contribution->processor) {
     case mojom::ContributionProcessor::BRAVE_TOKENS: {
-      RetryUnblindedContribution({mojom::CredsBatchType::PROMOTION},
-                                 std::move(result_callback),
-                                 std::move(contribution));
+      Result("", contribution->contribution_id, mojom::Result::FAILED);
       return;
     }
     case mojom::ContributionProcessor::UPHOLD:

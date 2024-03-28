@@ -47,6 +47,11 @@ if (include_polymer) {
         "br_elements/br_toolbar/br_toolbar_search_field.ts",
       ]
 
+      # All the cr_overrides we add should be included in the build.
+      foreach(cr_override, brave_override_cr_elements) {
+        web_component_files += [ "cr_elements/$cr_override/$cr_override.ts" ]
+      }
+
       non_web_component_files = [ "polymer_overriding.ts" ]
     }
 
@@ -54,8 +59,6 @@ if (include_polymer) {
       css_files = [
         "br_elements/br_shared_style.css",
         "br_elements/br_shared_vars.css",
-        "overrides/cr_button_override.css",
-        "overrides/cr_toggle_override.css",
         "page_specific/settings/br_settings_shared.css",
       ]
     }
@@ -152,10 +155,14 @@ leo_icons = [
   "autoplay-off.svg",
   "autoplay-on.svg",
   "backward.svg",
+  "bar-chart.svg",
+  "bing-color.svg",
   "bluetooth-off.svg",
   "bluetooth.svg",
   "brave-icon-release-color.svg",
+  "brave-icon-search-color.svg",
   "browser-extensions.svg",
+  "browser-ntp-widget.svg",
   "carat-down.svg",
   "carat-left.svg",
   "carat-right.svg",
@@ -164,6 +171,7 @@ leo_icons = [
   "check-normal.svg",
   "checkbox-checked.svg",
   "checkbox-unchecked.svg",
+  "clock.svg",
   "close.svg",
   "cloud-download.svg",
   "cloud-off.svg",
@@ -175,6 +183,7 @@ leo_icons = [
   "cookie.svg",
   "content-big.svg",
   "copy-off.svg",
+  "copy-plain-text.svg",
   "copy.svg",
   "cpu-chip-off.svg",
   "cpu-chip.svg",
@@ -186,6 +195,7 @@ leo_icons = [
   "discover.svg",
   "download-off.svg",
   "download.svg",
+  "duckduckgo-color.svg",
   "edit-box.svg",
   "edit-pencil.svg",
   "erase.svg",
@@ -205,6 +215,7 @@ leo_icons = [
   "font-size.svg",
   "forward-15.svg",
   "fullscreen-on.svg",
+  "google-color.svg",
   "graph.svg",
   "grid04.svg",
   "hamburger-menu.svg",
@@ -350,6 +361,7 @@ leo_icons = [
   "warning-triangle-outline.svg",
   "web3.svg",
   "widget-generic.svg",
+  "window-content.svg",
   "window-tab-close.svg",
   "window-tab-new.svg",
   "window.svg",
@@ -370,6 +382,7 @@ if (enable_brave_vpn_panel) {
     "country-jp.svg",
     "country-mx.svg",
     "country-nl.svg",
+    "country-se.svg",
     "country-sg.svg",
     "country-us.svg",
   ]

@@ -8,6 +8,7 @@
 
 namespace brave_ads {
 
+inline constexpr char kNewTabPageAdTypeKey[] = "type";
 inline constexpr char kNewTabPageAdPlacementIdKey[] = "placement_id";
 inline constexpr char kNewTabPageAdCreativeInstanceIdKey[] =
     "creative_instance_id";

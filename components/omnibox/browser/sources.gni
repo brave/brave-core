@@ -15,8 +15,6 @@ brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_history_url_provider.h",
   "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.cc",
   "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.h",
-  "//brave/components/omnibox/browser/brave_omnibox_client.cc",
-  "//brave/components/omnibox/browser/brave_omnibox_client.h",
   "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
   "//brave/components/omnibox/browser/brave_omnibox_prefs.h",
   "//brave/components/omnibox/browser/brave_search_provider.cc",

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
 
 #include <string>
+#include <utility>
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
@@ -67,6 +68,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
                 ],
                 "countryCode": "US",
                 "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                "foo": "bar",
                 "platform": "windows",
                 "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
                 "segment": "untargeted",
@@ -76,9 +78,11 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
               })",
           {GetBrowserVersionNumber()}, nullptr));
 
+  auto user_data = base::Value::Dict().Set("foo", "bar");
+
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, std::move(user_data), callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -127,7 +131,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -161,7 +165,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -173,10 +177,19 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/false);
 
+  UserDataInfo expected_user_data;
+  expected_user_data.fixed = base::test::ParseJsonDict(
+      R"(
+          {
+            "foo": "bar"
+          })");
+
+  auto user_data = base::Value::Dict().Set("foo", "bar");
+
   // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(UserDataInfo{}));
-  BuildConfirmationUserData(transaction, callback.Get());
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
+  BuildConfirmationUserData(transaction, std::move(user_data), callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -206,7 +219,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(expected_user_data));
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -234,7 +247,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 }  // namespace brave_ads

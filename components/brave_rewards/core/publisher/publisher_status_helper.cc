@@ -15,7 +15,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
@@ -29,7 +29,7 @@ struct PublisherStatusData {
 using PublisherStatusMap = std::map<std::string, PublisherStatusData>;
 
 struct RefreshTaskInfo {
-  RefreshTaskInfo(RewardsEngineImpl& engine,
+  RefreshTaskInfo(RewardsEngine& engine,
                   PublisherStatusMap&& status_map,
                   base::OnceCallback<void(PublisherStatusMap)> callback)
       : engine(engine.GetWeakPtr()),
@@ -37,7 +37,7 @@ struct RefreshTaskInfo {
         current(map.begin()),
         callback(std::move(callback)) {}
 
-  base::WeakPtr<RewardsEngineImpl> engine;
+  base::WeakPtr<RewardsEngine> engine;
   PublisherStatusMap map;
   PublisherStatusMap::iterator current;
   base::OnceCallback<void(PublisherStatusMap)> callback;
@@ -95,7 +95,7 @@ void RefreshNext(std::unique_ptr<RefreshTaskInfo> task_info) {
 }
 
 void RefreshPublisherStatusMap(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     PublisherStatusMap&& status_map,
     base::OnceCallback<void(PublisherStatusMap)> callback) {
   RefreshNext(std::make_unique<RefreshTaskInfo>(engine, std::move(status_map),
@@ -106,7 +106,7 @@ void RefreshPublisherStatusMap(
 
 namespace publisher {
 
-void RefreshPublisherStatus(RewardsEngineImpl& engine,
+void RefreshPublisherStatus(RewardsEngine& engine,
                             std::vector<mojom::PublisherInfoPtr>&& info_list,
                             RefreshPublisherStatusCallback callback) {
   PublisherStatusMap map;

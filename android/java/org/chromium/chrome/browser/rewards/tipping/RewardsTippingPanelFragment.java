@@ -198,7 +198,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     }
 
     @Override
-    public void OnGetExternalWallet(String externalWallet) {
+    public void onGetExternalWallet(String externalWallet) {
         int walletStatus = WalletStatus.NOT_CONNECTED;
 
         if (!TextUtils.isEmpty(externalWallet)) {

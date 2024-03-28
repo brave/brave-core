@@ -119,7 +119,7 @@ export function TransactionStatus(props: Props) {
       token,
       transactionNetwork
     })
-  }, [tx, transactionNetwork, combinedTokensList])
+  }, [tx, combinedTokensList, networkAsset, txAccount, transactionNetwork])
 
   // methods
   const viewTransactionDetail = React.useCallback(() => {
@@ -128,7 +128,8 @@ export function TransactionStatus(props: Props) {
     }
     dispatch(WalletPanelActions.setSelectedTransactionId(tx.id))
     dispatch(WalletPanelActions.navigateTo('transactionDetails'))
-  }, [tx?.id])
+  }, [dispatch, tx?.id])
+
   const onClose = () =>
     dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
   const completePrimaryCTAText =
@@ -182,8 +183,9 @@ export function TransactionStatus(props: Props) {
       providerError && `${errorCode}: ${providerError.message}`
     const customDescription =
       errorCode ===
-        BraveWallet.ZCashProviderError.kMultipleTransactionsNotSupported ?
-        providerError.message : undefined
+      BraveWallet.ZCashProviderError.kMultipleTransactionsNotSupported
+        ? providerError.message
+        : undefined
 
     return (
       <TransactionFailed

@@ -26,34 +26,27 @@ constexpr char kReminderNotificationAdTargetUrl[] =
 namespace {
 
 base::Value::Dict BuildClickedSameAdMultipleTimesReminder() {
-  base::Value::Dict dict;
-
-  dict.Set(kNotificationAdPlacementIdKey, kReminderNotificationAdPlacementId);
-  dict.Set(
-      kNotificationAdTitleKey,
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_TITLE));
-  dict.Set(kNotificationAdBodyKey,
+  return base::Value::Dict()
+      .Set(kNotificationAdPlacementIdKey, kReminderNotificationAdPlacementId)
+      .Set(kNotificationAdTitleKey,
            brave_l10n::GetLocalizedResourceUTF16String(
-               IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_BODY));
-  dict.Set(kNotificationAdTargetUrlKey, kReminderNotificationAdTargetUrl);
-
-  return dict;
+               IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_TITLE))
+      .Set(kNotificationAdBodyKey,
+           brave_l10n::GetLocalizedResourceUTF16String(
+               IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_BODY))
+      .Set(kNotificationAdTargetUrlKey, kReminderNotificationAdTargetUrl);
 }
 
 base::Value::Dict BuildExternalWalletConnectedReminder() {
-  base::Value::Dict dict;
-
-  dict.Set(kNotificationAdPlacementIdKey, kReminderNotificationAdPlacementId);
-  dict.Set(kNotificationAdTitleKey,
+  return base::Value::Dict()
+      .Set(kNotificationAdPlacementIdKey, kReminderNotificationAdPlacementId)
+      .Set(kNotificationAdTitleKey,
            brave_l10n::GetLocalizedResourceUTF16String(
-               IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE));
-  dict.Set(kNotificationAdBodyKey,
+               IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE))
+      .Set(kNotificationAdBodyKey,
            brave_l10n::GetLocalizedResourceUTF16String(
-               IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_BODY));
-  dict.Set(kNotificationAdTargetUrlKey, kReminderNotificationAdTargetUrl);
-
-  return dict;
+               IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_BODY))
+      .Set(kNotificationAdTargetUrlKey, kReminderNotificationAdTargetUrl);
 }
 
 }  // namespace

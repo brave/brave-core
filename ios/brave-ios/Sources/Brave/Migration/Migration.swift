@@ -35,6 +35,9 @@ public class Migration {
       Preferences.Playlist.firstLoadAutoPlay.value = true
     }
 
+    migrateDeAmpPreferences()
+    migrateDebouncePreferences()
+
     // Adding Observer to enable sync types
     NotificationCenter.default.addObserver(
       self,
@@ -42,6 +45,24 @@ public class Migration {
       name: BraveServiceStateObserver.coreServiceLoadedNotification,
       object: nil
     )
+  }
+
+  private func migrateDeAmpPreferences() {
+    guard let isDeAmpEnabled = Preferences.Shields.autoRedirectAMPPagesDeprecated.value else {
+      return
+    }
+    braveCore.deAmpPrefs.isDeAmpEnabled = isDeAmpEnabled
+    Preferences.Shields.autoRedirectAMPPagesDeprecated.value = nil
+  }
+
+  private func migrateDebouncePreferences() {
+    guard let isDebounceEnabled = Preferences.Shields.autoRedirectTrackingURLsDeprecated.value
+    else {
+      return
+    }
+    let debounceService = DebounceServiceFactory.get(privateMode: false)
+    debounceService?.isEnabled = isDebounceEnabled
+    Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
   }
 
   @objc private func enableUserSelectedTypesForSync() {

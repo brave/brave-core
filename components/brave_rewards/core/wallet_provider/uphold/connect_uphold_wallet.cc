@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/notifications/notification_keys.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 
 namespace brave_rewards::internal {
@@ -28,7 +28,7 @@ using wallet_provider::ConnectExternalWallet;
 
 namespace uphold {
 
-ConnectUpholdWallet::ConnectUpholdWallet(RewardsEngineImpl& engine)
+ConnectUpholdWallet::ConnectUpholdWallet(RewardsEngine& engine)
     : ConnectExternalWallet(engine), card_(engine), server_(engine) {}
 
 ConnectUpholdWallet::~ConnectUpholdWallet() = default;

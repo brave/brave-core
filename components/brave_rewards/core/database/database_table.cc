@@ -4,12 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
 
-DatabaseTable::DatabaseTable(RewardsEngineImpl& engine) : engine_(engine) {}
+DatabaseTable::DatabaseTable(RewardsEngine& engine) : engine_(engine) {}
 
 DatabaseTable::~DatabaseTable() = default;
 

@@ -134,11 +134,8 @@ class AdBlockService {
 
   base::SequencedTaskRunner* GetTaskRunner();
 
-  void UseSourceProvidersForTest(AdBlockFiltersProvider* source_provider,
-                                 AdBlockResourceProvider* resource_provider);
-  void UseCustomSourceProvidersForTest(
-      AdBlockFiltersProvider* source_provider,
-      AdBlockResourceProvider* resource_provider);
+  void UseSourceProviderForTest(AdBlockFiltersProvider* source_provider);
+  void UseCustomSourceProviderForTest(AdBlockFiltersProvider* source_provider);
 
  private:
   friend class ::AdBlockServiceTest;

@@ -25,7 +25,7 @@ mojom::UrlResponsePtr CreateShutdownResponse(const mojom::UrlRequest& request) {
 
 }  // namespace
 
-URLLoader::URLLoader(RewardsEngineImpl& engine) : RewardsEngineHelper(engine) {}
+URLLoader::URLLoader(RewardsEngine& engine) : RewardsEngineHelper(engine) {}
 
 URLLoader::~URLLoader() = default;
 

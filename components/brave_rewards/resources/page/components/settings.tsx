@@ -9,7 +9,7 @@ import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { LayoutContext } from '../lib/layout_context'
-import { isExternalWalletProviderAllowed, isSelfCustodyProvider } from '../../shared/lib/external_wallet'
+import { isSelfCustodyProvider } from '../../shared/lib/external_wallet'
 
 import PageWallet from './pageWallet'
 
@@ -20,7 +20,6 @@ import { TipsPanel } from './tips_panel'
 import { MonthlyTipsPanel } from './monthly_tips_panel'
 import { SettingsOptInForm } from '../../shared/components/onboarding'
 import { ProviderRedirectModal } from './provider_redirect_modal'
-import { GrantList } from './grant_list'
 import { SidebarPromotionPanel } from './sidebar_promotion_panel'
 import { UnsupportedRegionNotice } from './unsupported_region_notice'
 import { BatIcon } from '../../shared/components/icons/bat_icon'
@@ -139,7 +138,6 @@ export function Settings () {
     actions.getIsAutoContributeSupported()
     actions.getAutoContributeProperties()
     actions.getBalance()
-    actions.fetchPromotions()
     actions.getExternalWallet()
     actions.getOnboardingStatus()
 
@@ -159,19 +157,6 @@ export function Settings () {
     actions.getContributeList()
     actions.getReconcileStamp()
   }, [rewardsData.enabledContribute])
-
-  const canConnectAccount = () => {
-    const {
-      currentCountryCode,
-      externalWalletProviderList,
-      parameters
-    } = rewardsData
-
-    return externalWalletProviderList.some((provider) => {
-      const regionInfo = parameters.walletProviderRegions[provider] || null
-      return isExternalWalletProviderAllowed(currentCountryCode, regionInfo)
-    })
-  }
 
   const shouldShowAutoContribute = () => {
     if (rewardsData.userType === 'unconnected') {
@@ -239,12 +224,7 @@ export function Settings () {
 
     return (
       <style.vbatNotice>
-        <VBATNotice
-          vbatDeadline={vbatDeadline}
-          canConnectAccount={canConnectAccount()}
-          declaredCountry={rewardsData.currentCountryCode}
-          onConnectAccount={onConnect}
-        />
+        <VBATNotice vbatDeadline={vbatDeadline} onConnectAccount={onConnect} />
       </style.vbatNotice>
     )
   }
@@ -303,8 +283,7 @@ export function Settings () {
           }
         </style.main>
         <style.sidebar>
-          {rewardsData.userType !== 'unconnected' && <GrantList />}
-          <PageWallet layout={layoutKind} />
+          <PageWallet />
           <SidebarPromotionPanel />
         </style.sidebar>
       </style.content>

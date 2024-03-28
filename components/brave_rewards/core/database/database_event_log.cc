@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_event_log.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -23,7 +23,7 @@ const char kTableName[] = "event_log";
 
 }  // namespace
 
-DatabaseEventLog::DatabaseEventLog(RewardsEngineImpl& engine)
+DatabaseEventLog::DatabaseEventLog(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseEventLog::~DatabaseEventLog() = default;

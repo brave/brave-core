@@ -455,34 +455,38 @@ extension BrowserViewController: TopToolbarDelegate {
         weak var spinner: SpinnerView?
         let controller = UIHostingController(
           rootView: AdvancedShieldsSettingsView(
-            profile: self.profile,
-            tabManager: self.tabManager,
-            feedDataSource: self.feedDataSource,
-            historyAPI: self.braveCore.historyAPI,
-            p3aUtilities: self.braveCore.p3aUtils,
-            clearDataCallback: { [weak self] isLoading, isHistoryCleared in
-              guard let view = self?.navigationController?.view, view.window != nil else {
-                assertionFailure()
-                return
-              }
+            settings: AdvancedShieldsSettings(
+              profile: self.profile,
+              tabManager: self.tabManager,
+              feedDataSource: self.feedDataSource,
+              historyAPI: self.braveCore.historyAPI,
+              p3aUtilities: self.braveCore.p3aUtils,
+              deAmpPrefs: self.braveCore.deAmpPrefs,
+              debounceService: DebounceServiceFactory.get(privateMode: false),
+              clearDataCallback: { [weak self] isLoading, isHistoryCleared in
+                guard let view = self?.navigationController?.view, view.window != nil else {
+                  assertionFailure()
+                  return
+                }
 
-              if isLoading, spinner == nil {
-                let newSpinner = SpinnerView()
-                newSpinner.present(on: view)
-                spinner = newSpinner
-              } else {
-                spinner?.dismiss()
-                spinner = nil
-              }
+                if isLoading, spinner == nil {
+                  let newSpinner = SpinnerView()
+                  newSpinner.present(on: view)
+                  spinner = newSpinner
+                } else {
+                  spinner?.dismiss()
+                  spinner = nil
+                }
 
-              if isHistoryCleared {
-                // Donate Clear Browser History for suggestions
-                let clearBrowserHistoryActivity = ActivityShortcutManager.shared
-                  .createShortcutActivity(type: .clearBrowsingHistory)
-                self?.userActivity = clearBrowserHistoryActivity
-                clearBrowserHistoryActivity.becomeCurrent()
+                if isHistoryCleared {
+                  // Donate Clear Browser History for suggestions
+                  let clearBrowserHistoryActivity = ActivityShortcutManager.shared
+                    .createShortcutActivity(type: .clearBrowsingHistory)
+                  self?.userActivity = clearBrowserHistoryActivity
+                  clearBrowserHistoryActivity.becomeCurrent()
+                }
               }
-            }
+            )
           )
         )
 

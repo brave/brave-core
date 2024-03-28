@@ -20,12 +20,15 @@
 #include <utility>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/debug/stack_trace.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
+#include "base/values.h"
 #include "brave/components/brave_page_graph/common/features.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute_delete.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute_set.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/binding/edge_binding.h"
@@ -46,10 +49,6 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/node/edge_node_delete.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/node/edge_node_insert.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/node/edge_node_remove.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_complete.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_error.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_start.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/storage/edge_storage_bucket.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/storage/edge_storage_clear.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/storage/edge_storage_delete.h"
@@ -148,9 +147,6 @@ using brave_page_graph::EdgeJSResult;
 using brave_page_graph::EdgeNodeCreate;
 using brave_page_graph::EdgeNodeInsert;
 using brave_page_graph::EdgeNodeRemove;
-using brave_page_graph::EdgeRequestComplete;
-using brave_page_graph::EdgeRequestError;
-using brave_page_graph::EdgeRequestStart;
 using brave_page_graph::EdgeResourceBlock;
 using brave_page_graph::EdgeShield;
 using brave_page_graph::EdgeStorageBucket;
@@ -189,7 +185,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.3.0";
+constexpr char kPageGraphVersion[] = "0.5.0";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -231,12 +227,25 @@ class V8PageGraphDelegate : public v8::page_graph::PageGraphDelegate {
                      const std::vector<std::string>& args,
                      const std::string* result) override {
     if (auto* page_graph = GetPageGraphFromIsolate(isolate)) {
-      Vector<String> arguments;
-      arguments.reserve(base::checked_cast<wtf_size_t>(args.size()));
+      blink::PageGraphValues arguments;
+      arguments.reserve(args.size());
+      auto to_safe_base_value = [](const std::string& arg) {
+        if (!base::IsStringUTF8AllowingNoncharacters(arg)) {
+          return base::Value(
+              base::StrCat({"__pg_base64_encoded__", base::Base64Encode(arg)}));
+        }
+        return base::Value(arg);
+      };
       base::ranges::for_each(
-          args, [&arguments](const auto& arg) { arguments.emplace_back(arg); });
-      page_graph->RegisterV8JSBuiltinCall(isolate, builtin_name,
-                                          std::move(arguments), result);
+          args, [&arguments, &to_safe_base_value](const auto& arg) {
+            arguments.Append(to_safe_base_value(arg));
+          });
+      std::optional<blink::PageGraphValue> result_value;
+      if (result) {
+        result_value = to_safe_base_value(*result);
+      }
+      page_graph->RegisterV8JSBuiltinCall(isolate, builtin_name, arguments,
+                                          result_value);
     }
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
@@ -305,6 +314,7 @@ PageGraph::PageGraph(LocalFrame& local_frame)
     : Supplement<LocalFrame>(local_frame),
       frame_id_(blink::IdentifiersFactory::FrameId(&local_frame)),
       script_tracker_(this),
+      request_tracker_(this),
       start_(base::TimeTicks::Now()) {
   blink::Page* page = local_frame.GetPage();
   if (!page) {
@@ -451,7 +461,7 @@ void PageGraph::WillSendRequest(
     blink::RenderBlockingBehavior render_blocking_behavior,
     base::TimeTicks timestamp) {
   if (request.GetRedirectInfo()) {
-    LOG(INFO) << "Skip request redirect";
+    RegisterRequestRedirect(request, redirect_response);
     return;
   }
 
@@ -740,44 +750,49 @@ void PageGraph::RegisterPageGraphBindingEvent(
 void PageGraph::RegisterPageGraphWebAPICallWithResult(
     blink::ExecutionContext* execution_context,
     const char* name,
-    const blink::PageGraphBlinkReceiverData& receiver_data,
-    blink::PageGraphBlinkArgs args,
+    const blink::PageGraphObject& receiver_data,
+    const blink::PageGraphValues& args,
     const blink::ExceptionState* exception_state,
-    const std::optional<String>& result) {
+    const std::optional<blink::PageGraphValue>& result) {
   const std::string_view name_piece(name);
   if (base::StartsWith(name_piece, "Document.")) {
     if (name_piece == "Document.cookie.get") {
-      RegisterStorageRead(execution_context, receiver_data.at("cookie_url"),
+      RegisterStorageRead(execution_context,
+                          String(*receiver_data.FindString("cookie_url")),
                           *result, brave_page_graph::StorageLocation::kCookie);
       return;
     } else if (name_piece == "Document.cookie.set") {
-      String value = args[0];
+      String value(args[0].GetString());
       Vector<String> cookie_structure;
       value.Split("=", cookie_structure);
       String cookie_key = *(cookie_structure.begin());
       String cookie_value =
           value.Substring(cookie_key.length() + 1, value.length());
-      RegisterStorageWrite(execution_context, cookie_key, cookie_value,
+      RegisterStorageWrite(execution_context, cookie_key,
+                           base::Value(cookie_value.Utf8()),
                            brave_page_graph::StorageLocation::kCookie);
       return;
     }
   } else if (base::StartsWith(name_piece, "Storage.")) {
-    const String& storage_type = receiver_data.at("storage_type");
+    String storage_type(*receiver_data.FindString("storage_type"));
     DCHECK(storage_type == "localStorage" || storage_type == "sessionStorage");
     const auto storage = storage_type == "localStorage"
                              ? StorageLocation::kLocalStorage
                              : StorageLocation::kSessionStorage;
     if (name_piece == "Storage.getItem") {
       DCHECK(result);
-      RegisterStorageRead(execution_context, args[0], *result, storage);
+      RegisterStorageRead(execution_context, String(args[0].GetString()),
+                          *result, storage);
       return;
     }
     if (name_piece == "Storage.setItem") {
-      RegisterStorageWrite(execution_context, args[0], args[1], storage);
+      RegisterStorageWrite(execution_context, String(args[0].GetString()),
+                           args[1], storage);
       return;
     }
     if (name_piece == "Storage.removeItem") {
-      RegisterStorageDelete(execution_context, args[0], storage);
+      RegisterStorageDelete(execution_context, String(args[0].GetString()),
+                            storage);
       return;
     }
     if (name_piece == "Storage.clear") {
@@ -785,7 +800,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
       return;
     }
   }
-  RegisterWebAPICall(execution_context, name, std::move(args));
+  RegisterWebAPICall(execution_context, name, args);
   if (result)
     RegisterWebAPIResult(execution_context, name, *result);
 }
@@ -841,11 +856,21 @@ void PageGraph::RegisterPageGraphJavaScriptUrl(blink::Document* document,
 }
 
 void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
-  constexpr const blink::mojom::ConsoleMessageSource kValidSources[] = {
-      blink::mojom::ConsoleMessageSource::kJavaScript,
-      blink::mojom::ConsoleMessageSource::kConsoleApi,
-  };
-  if (!base::Contains(kValidSources, console_message->GetSource())) {
+  blink::ExecutionContext* const execution_context =
+      [&]() -> blink::ExecutionContext* {
+    blink::LocalFrame* frame = console_message->Frame();
+    blink::Document* document = frame ? frame->GetDocument() : nullptr;
+    if (!document) {
+      frame = GetSupplementable();
+      document = frame->GetDocument();
+      if (!document) {
+        return nullptr;
+      }
+    }
+    return document->GetExecutionContext();
+  }();
+
+  if (!execution_context) {
     return;
   }
 
@@ -866,15 +891,9 @@ void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
   loc.Set("script_id", console_message->Location()->ScriptId());
   dict.Set("location", std::move(loc));
 
-  std::string output;
-  JSONStringValueSerializer serializer{&output};
-  CHECK(serializer.Serialize(dict));
-
-  blink::LocalFrame* frame = console_message->Frame();
-  if (!frame)
-    frame = GetSupplementable();
-  RegisterWebAPICall(frame->GetDocument()->GetExecutionContext(), "console.log",
-                     {String::FromUTF8(output)});
+  base::Value::List args;
+  args.Append(std::move(dict));
+  RegisterWebAPICall(execution_context, "ConsoleMessageAdded", std::move(args));
 }
 
 void PageGraph::RegisterV8ScriptCompilationFromEval(
@@ -895,16 +914,16 @@ void PageGraph::RegisterV8ScriptCompilationFromEval(
       script_data);
 }
 
-void PageGraph::RegisterV8JSBuiltinCall(v8::Isolate* isolate,
-                                        const char* builtin_name,
-                                        blink::PageGraphBlinkArgs args,
-                                        const std::string* result) {
+void PageGraph::RegisterV8JSBuiltinCall(
+    v8::Isolate* isolate,
+    const char* builtin_name,
+    const blink::PageGraphValues& args,
+    const std::optional<blink::PageGraphValue>& result) {
   blink::ExecutionContext* execution_context =
       blink::ToExecutionContext(isolate->GetCurrentContext());
-  RegisterJSBuiltInCall(execution_context, builtin_name, std::move(args));
+  RegisterJSBuiltInCall(execution_context, builtin_name, args);
   if (result) {
-    RegisterJSBuiltInResponse(execution_context, builtin_name,
-                              String::FromUTF8(*result));
+    RegisterJSBuiltInResponse(execution_context, builtin_name, *result);
   }
 }
 
@@ -1421,44 +1440,6 @@ void PageGraph::DoRegisterRequestStart(const InspectorId request_id,
   scoped_refptr<const TrackedRequestRecord> request_record =
       request_tracker_.RegisterRequestStart(request_id, requesting_node,
                                             requested_node, resource_type);
-
-  PossiblyWriteRequestsIntoGraph(std::move(request_record));
-}
-
-void PageGraph::PossiblyWriteRequestsIntoGraph(
-    scoped_refptr<const TrackedRequestRecord> record) {
-  const TrackedRequest* const request = record->request.get();
-
-  // Don't record anything into the graph if we've already recorded
-  // this batch of requests (first condition) or if this batch of requests
-  // hasn't finished yet (e.g. we don't have both a request and a response)
-  // (second condition).
-  if (!record->is_first_reply || !request->IsComplete()) {
-    VLOG(1) << "Not (yet) writing request id: " << request->GetRequestId();
-    return;
-  }
-
-  NodeResource* const resource = request->GetResource();
-  const bool was_error = request->GetIsError();
-  const String& resource_type = request->GetResourceType();
-  const InspectorId request_id = request->GetRequestId();
-
-  if (was_error) {
-    // Handling the case when the requests returned with errors.
-    for (GraphNode* requester : request->GetRequesters()) {
-      AddEdge<EdgeRequestStart>(requester, resource, request_id, resource_type);
-      AddEdge<EdgeRequestError>(resource, requester, request_id,
-                                request->GetResponseMetadata());
-    }
-  } else {
-    for (GraphNode* requester : request->GetRequesters()) {
-      AddEdge<EdgeRequestStart>(requester, resource, request_id, resource_type);
-      AddEdge<EdgeRequestComplete>(
-          resource, requester, request_id, resource_type,
-          request->GetResponseMetadata(), request->GetResponseBodyHash());
-    }
-    return;
-  }
 }
 
 void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
@@ -1556,14 +1537,21 @@ void PageGraph::RegisterRequestStartForDocument(blink::Document* document,
       request_id, frame_id, normalized_url, is_main_frame, timestamp);
 }
 
+void PageGraph::RegisterRequestRedirect(
+    const ResourceRequest& request,
+    const ResourceResponse& redirect_response) {
+  NodeResource* const requested_node = GetResourceNodeForUrl(request.Url());
+
+  request_tracker_.RegisterRequestRedirect(request.InspectorId(), request.Url(),
+                                           redirect_response, requested_node);
+}
+
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
                                         int64_t encoded_data_length) {
   VLOG(1) << "RegisterRequestComplete) request id: " << request_id;
 
   scoped_refptr<const TrackedRequestRecord> request_record =
       request_tracker_.RegisterRequestComplete(request_id, encoded_data_length);
-
-  PossiblyWriteRequestsIntoGraph(std::move(request_record));
 }
 
 void PageGraph::RegisterRequestCompleteForDocument(
@@ -1582,8 +1570,6 @@ void PageGraph::RegisterRequestError(const InspectorId request_id) {
 
   scoped_refptr<const TrackedRequestRecord> request_record =
       request_tracker_.RegisterRequestError(request_id);
-
-  PossiblyWriteRequestsIntoGraph(std::move(request_record));
 }
 
 void PageGraph::RegisterResourceBlockAd(const blink::WebURL& url,
@@ -1698,7 +1684,7 @@ void PageGraph::RegisterScriptCompilationFromAttr(
 // Functions for handling storage read, write, and deletion
 void PageGraph::RegisterStorageRead(blink::ExecutionContext* execution_context,
                                     const String& key,
-                                    const String& value,
+                                    const blink::PageGraphValue& value,
                                     const StorageLocation location) {
   VLOG(1) << "RegisterStorageRead) key: " << key << ", value: " << value
           << ", location: " << StorageLocationToString(location);
@@ -1728,7 +1714,7 @@ void PageGraph::RegisterStorageRead(blink::ExecutionContext* execution_context,
 
 void PageGraph::RegisterStorageWrite(blink::ExecutionContext* execution_context,
                                      const String& key,
-                                     const String& value,
+                                     const blink::PageGraphValue& value,
                                      const StorageLocation location) {
   VLOG(1) << "RegisterStorageWrite) key: " << key << ", value: " << value
           << ", location: " << StorageLocationToString(location);
@@ -1807,19 +1793,10 @@ void PageGraph::RegisterStorageClear(blink::ExecutionContext* execution_context,
 
 void PageGraph::RegisterWebAPICall(blink::ExecutionContext* execution_context,
                                    const MethodName& method,
-                                   blink::PageGraphBlinkArgs arguments) {
+                                   const blink::PageGraphValues& arguments) {
   if (VLOG_IS_ON(2)) {
-    std::stringstream buffer;
-    buffer << "{";
-    for (wtf_size_t i = 0; i < arguments.size(); ++i) {
-      if (i != 0) {
-        buffer << ", ";
-      }
-      buffer << arguments.at(i);
-    }
-    buffer << "}";
     VLOG(2) << "RegisterWebAPICall) method: " << method
-            << ", arguments: " << buffer.str();
+            << ", arguments: " << arguments;
   }
 
   ScriptPosition script_position;
@@ -1837,7 +1814,7 @@ void PageGraph::RegisterWebAPICall(blink::ExecutionContext* execution_context,
 
 void PageGraph::RegisterWebAPIResult(blink::ExecutionContext* execution_context,
                                      const MethodName& method,
-                                     const String& result) {
+                                     const blink::PageGraphValue& result) {
   VLOG(2) << "RegisterWebAPIResult) method: " << method
           << ", result: " << result;
 
@@ -1856,19 +1833,10 @@ void PageGraph::RegisterWebAPIResult(blink::ExecutionContext* execution_context,
 void PageGraph::RegisterJSBuiltInCall(
     blink::ExecutionContext* execution_context,
     const char* builtin_name,
-    blink::PageGraphBlinkArgs arguments) {
+    const blink::PageGraphValues& arguments) {
   if (VLOG_IS_ON(2)) {
-    std::stringstream buffer;
-    buffer << "{";
-    for (wtf_size_t i = 0; i < arguments.size(); ++i) {
-      if (i != 0) {
-        buffer << ", ";
-      }
-      buffer << arguments.at(i);
-    }
-    buffer << "}";
     VLOG(2) << "RegisterJSBuiltInCall) built in: " << builtin_name
-            << ", arguments: " << buffer.str();
+            << ", arguments: " << arguments;
   }
 
   ScriptPosition script_position;
@@ -1881,13 +1849,13 @@ void PageGraph::RegisterJSBuiltInCall(
 
   NodeJSBuiltin* js_builtin_node = GetJSBuiltinNode(builtin_name);
   AddEdge<EdgeJSCall>(static_cast<NodeScript*>(acting_node), js_builtin_node,
-                      std::move(arguments), script_position);
+                      arguments, script_position);
 }
 
 void PageGraph::RegisterJSBuiltInResponse(
     blink::ExecutionContext* execution_context,
     const char* builtin_name,
-    const String& result) {
+    const blink::PageGraphValue& result) {
   VLOG(2) << "RegisterJSBuiltInResponse) built in: " << builtin_name
           << ", result: " << result;
 

@@ -275,6 +275,9 @@ extension BrowserViewController: WKNavigationDelegate {
       return (.cancel, preferences)
     }
 
+    let signpostID = ContentBlockerManager.signpost.makeSignpostID()
+    let state = ContentBlockerManager.signpost.beginInterval("decidePolicyFor", id: signpostID)
+
     // before loading any ad-block scripts
     // await the preparation of the ad-block services
     await LaunchHelper.shared.prepareAdBlockServices(
@@ -309,6 +312,11 @@ extension BrowserViewController: WKNavigationDelegate {
           )
         }
 
+        ContentBlockerManager.signpost.endInterval(
+          "decidePolicyFor",
+          state,
+          "Redirected navigation"
+        )
         return (.cancel, preferences)
       } else {
         tab?.isInternalRedirect = false
@@ -319,7 +327,7 @@ extension BrowserViewController: WKNavigationDelegate {
         tab?.setScripts(scripts: [
           // Add de-amp script
           // The user script manager will take care to not reload scripts if this value doesn't change
-          .deAmp: Preferences.Shields.autoRedirectAMPPages.value,
+          .deAmp: braveCore.deAmpPrefs.isDeAmpEnabled,
 
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
@@ -346,7 +354,10 @@ extension BrowserViewController: WKNavigationDelegate {
           isForMainFrame: targetFrame.isMainFrame
         )
         let scriptTypes =
-          await tab?.currentPageData?.makeUserScriptTypes(domain: domainForMainFrame) ?? []
+          await tab?.currentPageData?.makeUserScriptTypes(
+            domain: domainForMainFrame,
+            isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
+          ) ?? []
         tab?.setCustomUserScript(scripts: scriptTypes)
       }
     }
@@ -364,6 +375,7 @@ extension BrowserViewController: WKNavigationDelegate {
         var modifiedRequest = URLRequest(url: requestURL)
         modifiedRequest.setValue("1", forHTTPHeaderField: "X-Brave-Ads-Enabled")
         tab?.loadRequest(modifiedRequest)
+        ContentBlockerManager.signpost.endInterval("decidePolicyFor", state, "Redirected to search")
         return (.cancel, preferences)
       }
 
@@ -434,6 +446,11 @@ extension BrowserViewController: WKNavigationDelegate {
           if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
             let request = PrivilegedRequest(url: url) as URLRequest
             tab?.loadRequest(request)
+            ContentBlockerManager.signpost.endInterval(
+              "decidePolicyFor",
+              state,
+              "Blocked navigation"
+            )
             return (.cancel, preferences)
           }
         }
@@ -510,6 +527,7 @@ extension BrowserViewController: WKNavigationDelegate {
         self.shouldDownloadNavigationResponse = true
       }
 
+      ContentBlockerManager.signpost.endInterval("decidePolicyFor", state)
       return (.allow, preferences)
     }
 
@@ -590,7 +608,11 @@ extension BrowserViewController: WKNavigationDelegate {
         isForMainFrame: navigationResponse.isForMainFrame
       ) == true
     {
-      let scriptTypes = await tab?.currentPageData?.makeUserScriptTypes(domain: domain) ?? []
+      let scriptTypes =
+        await tab?.currentPageData?.makeUserScriptTypes(
+          domain: domain,
+          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
+        ) ?? []
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
 
@@ -974,10 +996,6 @@ extension BrowserViewController: WKNavigationDelegate {
     // original web page in the tab instead of replacing it with an error page.
     var error = error as NSError
     if error.domain == "WebKitErrorDomain" && error.code == 102 {
-      if tab === tabManager.selectedTab {
-        updateToolbarCurrentURL(tab.url?.displayURL)
-        updateWebViewPageZoom(tab: tab)
-      }
       return
     }
 
@@ -998,7 +1016,10 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+      ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
 
+      // Submitting same erroneous URL using toolbar will cause progress bar get stuck
+      // Reseting the progress bar in case there is an error is necessary
       if tab == self.tabManager.selectedTab {
         self.topToolbar.hideProgressBar()
       }
@@ -1654,23 +1675,12 @@ extension BrowserViewController: WKUIDelegate {
     // Lets get the redirect chain.
     // Then we simply get all elements up until the user allows us to redirect
     // (i.e. appropriate settings are enabled for that redirect rule)
-    if Preferences.Shields.autoRedirectTrackingURLs.value,
+    if let debounceService = DebounceServiceFactory.get(privateMode: tab.isPrivate),
+      debounceService.isEnabled,
       let currentURL = tab.webView?.url,
       currentURL.baseDomain != requestURL.baseDomain
     {
-      let redirectChain = DebouncingService.shared
-        .redirectChain(for: requestURL)
-        .contiguousUntil { _, rule in
-          return rule.preferences.allSatisfy { pref in
-            switch pref {
-            case .deAmpEnabled:
-              return Preferences.Shields.autoRedirectAMPPages.value
-            }
-          }
-        }
-
-      // Once we check the redirect chain only need the last (final) url from our redirect chain
-      if let redirectURL = redirectChain.last?.url {
+      if let redirectURL = debounceService.debounce(requestURL) {
         // For now we only allow the `Referer`. The browser will add other headers during navigation.
         var modifiedRequest = URLRequest(url: redirectURL)
 

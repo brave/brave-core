@@ -18,11 +18,11 @@
 
 namespace brave_rewards::internal {
 
-class RewardsEngineImpl;
+class RewardsEngine;
 
 class YouTube {
  public:
-  explicit YouTube(RewardsEngineImpl& engine);
+  explicit YouTube(RewardsEngine& engine);
 
   ~YouTube();
 
@@ -146,7 +146,7 @@ class YouTube {
                           const std::string& media_key,
                           mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   base::WeakPtrFactory<YouTube> weak_factory_{this};
 
   // For testing purposes

@@ -18,13 +18,13 @@
 #include "brave/components/brave_rewards/core/sku/sku_transaction.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace sku {
 
 class SKUCommon {
  public:
-  explicit SKUCommon(RewardsEngineImpl& engine);
+  explicit SKUCommon(RewardsEngine& engine);
   ~SKUCommon();
 
   void CreateOrder(const std::vector<mojom::SKUOrderItem>& items,
@@ -48,7 +48,7 @@ class SKUCommon {
       base::expected<mojom::SKUTransactionPtr, database::GetSKUTransactionError>
           result);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   SKUOrder order_;
   SKUTransaction transaction_;
   base::WeakPtrFactory<SKUCommon> weak_factory_{this};

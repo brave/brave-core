@@ -64,13 +64,6 @@ struct RewardsInternalsSharable: Equatable {
     generator: RewardsInternalsLogsGenerator()
   )
 
-  static let promotions = RewardsInternalsSharable(
-    id: "promotions",
-    title: Strings.RewardsInternals.promotionsTitle,
-    description: Strings.RewardsInternals.sharablePromotionsDescription,
-    generator: RewardsInternalsPromotionsGenerator()
-  )
-
   static let contributions = RewardsInternalsSharable(
     id: "contributions",
     title: Strings.RewardsInternals.contributionsTitle,
@@ -98,7 +91,6 @@ struct RewardsInternalsSharable: Equatable {
   /// A set of sharables for QA
   static let qa: [RewardsInternalsSharable] = [
     .basic,
-    .promotions,
     .contributions,
     .database,
   ]

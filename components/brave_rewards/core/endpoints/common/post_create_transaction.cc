@@ -9,7 +9,7 @@
 
 namespace brave_rewards::internal::endpoints {
 PostCreateTransaction::PostCreateTransaction(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     std::string&& token,
     std::string&& address,
     mojom::ExternalTransactionPtr transaction)

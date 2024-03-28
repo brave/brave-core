@@ -118,7 +118,7 @@ export const ImportAccountModal = () => {
   const onClickClose = React.useCallback(() => {
     setHasImportError(false)
     history.push(WalletRoutes.Accounts)
-  }, [])
+  }, [history])
 
   const handleAccountNameChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -233,14 +233,15 @@ export const ImportAccountModal = () => {
     }
   }, [
     importOption,
-    selectedAccountType,
+    file,
+    selectedAccountType?.coin,
+    importAccount,
     accountName,
     privateKey,
-    file,
-    password,
     filecoinNetwork,
-    importAccount,
-    importAccountFromJson
+    history,
+    importAccountFromJson,
+    password
   ])
 
   const handleKeyDown = React.useCallback(
@@ -261,7 +262,7 @@ export const ImportAccountModal = () => {
         )
       )
     },
-    []
+    [history]
   )
 
   // computed

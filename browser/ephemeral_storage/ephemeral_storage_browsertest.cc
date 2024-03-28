@@ -651,18 +651,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", before_timeout.iframe_1.local_storage);
   EXPECT_EQ("a.com value", before_timeout.iframe_2.local_storage);
 
-  if (base::FeatureList::IsEnabled(
-          net::features::kThirdPartyStoragePartitioning)) {
-    // Session storage data is stored in a tab until its closed.
-    EXPECT_EQ("a.com value", before_timeout.main_frame.session_storage);
-    EXPECT_EQ("a.com value", before_timeout.iframe_1.session_storage);
-    EXPECT_EQ("a.com value", before_timeout.iframe_2.session_storage);
-  } else {
-    // keepalive does not apply to session storage
-    EXPECT_EQ("a.com value", before_timeout.main_frame.session_storage);
-    EXPECT_EQ(nullptr, before_timeout.iframe_1.session_storage);
-    EXPECT_EQ(nullptr, before_timeout.iframe_2.session_storage);
-  }
+  // Session storage data is stored in a tab until its closed.
+  EXPECT_EQ("a.com value", before_timeout.main_frame.session_storage);
+  EXPECT_EQ("a.com value", before_timeout.iframe_1.session_storage);
+  EXPECT_EQ("a.com value", before_timeout.iframe_2.session_storage);
 
   EXPECT_EQ("name=acom_simple; from=a.com", before_timeout.main_frame.cookies);
   EXPECT_EQ("name=bcom_simple; from=a.com", before_timeout.iframe_1.cookies);
@@ -1110,17 +1102,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // Values in a.com (main) -> b.com -> a.com frame.
   ValuesFromFrame cross_site_acom_values =
       GetValuesFromFrame(third_party_nested_bcom_nested_acom);
-  if (base::FeatureList::IsEnabled(
-          net::features::kThirdPartyStoragePartitioning)) {
-    // a.com -> b.com -> a.com is considered third-party. Storage should be
-    // partitioned from the main frame.
-    EXPECT_EQ(nullptr, cross_site_acom_values.local_storage);
-    EXPECT_EQ(nullptr, cross_site_acom_values.session_storage);
-  } else {
-    // a.com -> b.com -> a.com is NOT considered third-party.
-    EXPECT_EQ("first-party-a.com", cross_site_acom_values.local_storage);
-    EXPECT_EQ("first-party-a.com", cross_site_acom_values.session_storage);
-  }
+  // a.com -> b.com -> a.com is considered third-party. Storage should be
+  // partitioned from the main frame.
+  EXPECT_EQ(nullptr, cross_site_acom_values.local_storage);
+  EXPECT_EQ(nullptr, cross_site_acom_values.session_storage);
   // Cookies are not partitioned via kThirdPartyStoragePartitioning feature.
   EXPECT_EQ("name=first-party-a.com", cross_site_acom_values.cookies);
 

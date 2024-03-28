@@ -131,6 +131,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BOOKMARKS" desc="The label for settings checkbox controlling whether or not bookmarks show up in autocomplete">
     Bookmarks
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_COMMANDER" desc="The label for settings checkbox controlling whether or not commander suggestions show up in autocomplete">
+    Quick commands
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_LEO" desc="The label for settings checkbox en/disabling autcomplete provider with Leo assistant">
     Leo AI Assistant
   </message>
@@ -459,7 +462,7 @@
     Allow Facebook logins and embedded posts
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_TWITTER_EMBEDDED_TWEETS_LABEL" desc="Label for a switch control which allows Twitter embedded tweets">
-    Allow Twitter embedded tweets
+    Allow X (previously Twitter) embedded tweets
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_LINKEDIN_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows LinkedIn embedded posts">
     Allow LinkedIn embedded posts
@@ -467,6 +470,9 @@
 
 
   <!-- Settings / Privacy and security -->
+  <message name="IDS_SETTINGS_BRAVE_BLOCK_COOKIES_LINK_ROW_LABEL" desc="This text is the label of a page. Here, it serves as a button that opens the new page.">
+    Block cookies
+  </message>
   <!-- WebRTC Policy Setting -->
   <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
     WebRTC IP handling policy
@@ -515,6 +521,10 @@
       Never
     </message>
   </if>
+  <!-- Data collection -->
+  <message name="IDS_BRAVE_DATA_COLLECTION_SETTINGS_SECTION" desc="Open Data collection settings section">
+    Data collection
+  </message>
 
   <!-- Settings / Privacy and security / Clear Browsing Data dialog -->
   <message name="IDS_SETTINGS_BRAVE_ON_EXIT" desc="Clear Browsing Data dialog On exit tab label">
@@ -1011,12 +1021,6 @@
   <message name="IDS_SETTINGS_TOR_CANCEL_DIALOG_BUTTON" desc="Text fragment for enabling tor component">
     Cancel
   </message>
-  <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_TITLE" desc="Text fragment for onion site component">
-    Automatically redirect .onion sites
-  </message>
-  <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
-    In Tor windows, Brave will automatically switch to the .onion version of a website when available.
-  </message>
   <message name="IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_TITLE" desc="">
     Only resolve .onion addresses in Tor windows
   </message>
@@ -1489,6 +1493,9 @@ Leo. This action cannot be undone.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL" desc="Label for selecting default model">
     Default model for new conversations
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_MANAGE_URL" desc="Label for managing accounts url">
+    Manage premium subscription
   </message>
 
   <!-- Settings / Playlist -->

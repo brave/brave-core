@@ -36,6 +36,8 @@ source_set("ui") {
 
   public_deps = []
   sources = [
+    "brave_ui_features.cc",
+    "brave_ui_features.h",
     "webui/brave_adblock_internals_ui.cc",
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
@@ -479,6 +481,8 @@ source_set("ui") {
         "views/frame/brave_browser_frame_view_win.cc",
         "views/frame/brave_browser_frame_view_win.h",
       ]
+
+      deps += [ "//chrome/browser:titlebar_config" ]
     }
 
     if (is_linux) {
@@ -737,14 +741,7 @@ source_set("ui") {
     deps += [ "//brave/components/brave_wayback_machine" ]
 
     if (toolkit_views) {
-      sources += [
-        "views/wayback_machine_dialog_view.cc",
-        "views/wayback_machine_dialog_view.h",
-        "views/wayback_machine_fetch_button.cc",
-        "views/wayback_machine_fetch_button.h",
-        "views/wayback_machine_throbber.cc",
-        "views/wayback_machine_throbber.h",
-      ]
+      deps += [ "//brave/browser/ui/views/infobars:brave_wayback_machine" ]
     }
   }
 

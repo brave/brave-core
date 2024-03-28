@@ -58,7 +58,7 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   // methods
   const closeModal = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
-  }, [])
+  }, [history])
 
   // render
   return (

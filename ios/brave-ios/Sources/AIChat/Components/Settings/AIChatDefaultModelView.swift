@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveUI
+import Preferences
 import SwiftUI
 
 struct AIChatDefaultModelView: View {
@@ -21,9 +22,9 @@ struct AIChatDefaultModelView: View {
   var premiumStatus: String {
     switch aiModel.premiumStatus {
     case .active, .activeDisconnected:
-      return Strings.AIChat.unlimitedModelStatusTitle
+      return Strings.AIChat.unlimitedModelStatusTitle.uppercased()
     default:
-      return Strings.AIChat.limitedModelStatusTitle
+      return Strings.AIChat.limitedModelStatusTitle.uppercased()
     }
   }
 
@@ -36,7 +37,7 @@ struct AIChatDefaultModelView: View {
               if model.access == .premium, aiModel.shouldShowPremiumPrompt {
                 isPresentingPaywallPremium = true
               } else {
-                aiModel.changeModel(modelKey: model.key)
+                aiModel.defaultAIModelKey = model.key
                 dismiss()
               }
             },
@@ -53,7 +54,7 @@ struct AIChatDefaultModelView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 // If the model is selected show check
-                if model.key == aiModel.currentModel.key {
+                if model.key == aiModel.defaultAIModelKey {
                   Image(braveSystemName: "leo.check.normal")
                     .foregroundStyle(Color(braveSystemName: .textInteractive))
                     .padding(.horizontal, 4.0)
@@ -75,16 +76,19 @@ struct AIChatDefaultModelView: View {
                   }
                 }
               }
+              .contentShape(Rectangle())
             }
           )
+          .buttonStyle(.plain)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       } header: {
-        Text(Strings.AIChat.defaultModelChatSectionTitle)
+        Text(Strings.AIChat.defaultModelChatSectionTitle.uppercased())
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
+    .navigationTitle(Strings.AIChat.defaultModelViewTitle)
     .sheet(isPresented: $isPresentingPaywallPremium) {
       AIChatPaywallView(
         premiumUpgrageSuccessful: { _ in
@@ -93,6 +97,5 @@ struct AIChatDefaultModelView: View {
           }
         })
     }
-    .navigationTitle(Strings.AIChat.defaultModelViewTitle)
   }
 }

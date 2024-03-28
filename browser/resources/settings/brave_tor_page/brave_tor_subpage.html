@@ -38,9 +38,6 @@
   learn-more-url="https://support.brave.com/hc/en-us/articles/360018121491-What-is-a-Private-Window-with-Tor-Connectivity-"
   on-settings-boolean-control-change="onTorEnabledChange_">
 </settings-toggle-button>
-<settings-toggle-button id="autoOnionLocation" pref="{{prefs.tor.auto_onion_location}}" class="cr-row" label="$i18n{autoOnionLocationLabel}"
-  sub-label="$i18n{autoOnionLocationDesc}" disabled="[[!torEnabledPref_.value]]">
-</settings-toggle-button>
 <settings-toggle-button id="onionOnlyInTorWindows" pref="{{prefs.tor.onion_only_in_tor_windows}}" class="cr-row" label="$i18n{onionOnlyInTorWindowsLabel}"
   sub-label="$i18n{onionOnlyInTorWindowsDesc}">
 </settings-toggle-button>

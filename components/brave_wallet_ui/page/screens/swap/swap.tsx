@@ -20,9 +20,6 @@ import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 import { getLocale } from '$web-common/locale'
 
 // Components
-import {
-  StandardButton //
-} from './components/buttons/standard-button/standard-button'
 import { FromAsset } from '../composer_ui/from_asset/from_asset'
 import { ToAsset } from '../composer_ui/to_asset/to_asset'
 import { SelectTokenModal } from '../composer_ui/select_token_modal/select_token_modal'
@@ -36,7 +33,8 @@ import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/w
 import { DefaultPanelHeader } from '../../../components/desktop/card-headers/default-panel-header'
 
 // Styled Components
-import { Row } from '../../../components/shared/style'
+import { LeoSquaredButton } from '../../../components/shared/style'
+import { ReviewButtonRow } from '../composer_ui/shared_composer.style'
 
 export const Swap = () => {
   // Hooks
@@ -198,19 +196,18 @@ export const Swap = () => {
             */}
             </>
           )}
-          <Row
+          <ReviewButtonRow
             width='100%'
             padding='16px 16px 0px 16px'
           >
-            <StandardButton
+            <LeoSquaredButton
               onClick={onSubmit}
-              buttonType='primary'
-              buttonWidth='full'
-              disabled={isSubmitButtonDisabled}
+              size='large'
+              isDisabled={isSubmitButtonDisabled}
             >
               {submitButtonText}
-            </StandardButton>
-          </Row>
+            </LeoSquaredButton>
+          </ReviewButtonRow>
         </ToAsset>
         {showSwapSettings && (
           <AdvancedSettingsModal

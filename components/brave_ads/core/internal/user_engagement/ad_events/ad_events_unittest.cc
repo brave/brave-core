@@ -122,7 +122,7 @@ TEST_F(BraveAdsAdEventsTest, DoNotPurgeExpiredAdEventsOnTheCuspOfExpiry) {
       BuildAdEvent(ad, ConfirmationType::kServed, /*created_at=*/Now());
 
   base::MockCallback<AdEventCallback> record_ad_event_callback;
-  EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(1);
+  EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true));
   RecordAdEvent(ad_event, record_ad_event_callback.Get());
 
   // Move the clock forward to just before the ad events expire.

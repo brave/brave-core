@@ -14,8 +14,7 @@
 #include "brave/components/brave_page_graph/common/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-namespace v8 {
-namespace page_graph {
+namespace v8::page_graph {
 
 struct V8_EXPORT ExecutingScript {
   int script_id = 0;
@@ -43,8 +42,11 @@ V8_EXPORT std::vector<ExecutingScript> GetAllExecutingScripts(Isolate*);
 V8_EXPORT void SetPageGraphDelegate(Isolate*,
                                     PageGraphDelegate* page_graph_delegate);
 
-}  // namespace page_graph
-}  // namespace v8
+// Serializes v8::Value using Inspector Protocol internals.
+V8_EXPORT Local<Value> SerializeValue(Local<Context> context,
+                                      Local<Value> value);
+
+}  // namespace v8::page_graph
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
 #endif  // BRAVE_V8_INCLUDE_V8_ISOLATE_PAGE_GRAPH_UTILS_H_

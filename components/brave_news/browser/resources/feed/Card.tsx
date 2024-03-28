@@ -103,14 +103,15 @@ interface BraveNewsLinkProps extends SecureLinkProps {
   feedDepth?: number
 }
 
-export function BraveNewsLink(props: BraveNewsLinkProps) {
+export function BraveNewsLink({ feedDepth, ...rest }: BraveNewsLinkProps) {
+  const props = { feeddepth: feedDepth, ...rest }
   const { openArticlesInNewTab, reportVisit } = useBraveNews()
   return <SecureLink
     {...props}
     onClick={e => {
       e.stopPropagation()
-      if (props.feedDepth !== undefined) {
-        reportVisit(props.feedDepth);
+      if (feedDepth !== undefined) {
+        reportVisit(feedDepth);
       }
     }}
     target={openArticlesInNewTab ? '_blank' : undefined}

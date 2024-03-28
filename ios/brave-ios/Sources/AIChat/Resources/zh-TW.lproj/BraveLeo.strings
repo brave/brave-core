@@ -1,0 +1,291 @@
+/* The title for button that submits feedback */
+"aichat.addFeedbackActionTitle" = "新增意見回饋";
+
+/* The title for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteTitle" = "在網址列顯示自動完成建議";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "新對話的預設模式";
+
+/* The title for the header for adjusting leo ai settings */
+"aichat.advancedSettingsHeaderTitle" = "Leo 是採用 AI 技術的智慧助理，內建於瀏覽器中。";
+
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "將您的 App Store 購買項目連結至 Brave 帳戶，以便在其他裝置上使用 Leo。";
+
+/* The title for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "將購買交易連結至您的 Brave 帳戶";
+
+/* The title for the label showing the date which subscription expires */
+"aichat.advancedSettingsSubscriptionExpiresTitle" = "到期日";
+
+/* The title for the header for subscription details */
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "訂閱";
+
+/* The title for the label showing status if the subscription */
+"aichat.advancedSettingsSubscriptionStatusTitle" = "狀態";
+
+/* The subtitle for the error showing there is an erro from Appstore */
+"aichat.appStoreErrorSubTitle" = "無法連線至 App Store，請稍後再試。";
+
+/* The title for the error showing there is an erro from Appstore */
+"aichat.appStoreErrorTitle" = "App Store 錯誤";
+
+/* The title of the search bar suggestion when prompting to Ask Leo */
+"aichat.askLeoSearchSuggestionTitle" = "詢問 Leo";
+
+/* The subtitle for intro view which triggers just chat */
+"aichat.chatIntroJustTalkSubTitle" = "您可以問我任何事！我們可以討論任何您想要的主題。我總是在學習和改進，以為您提供更好的答案。";
+
+/* The title for intro view which triggers just chat */
+"aichat.chatIntroJustTalkTitle" = "只想聊天嗎？";
+
+/* The subtitle for intro view */
+"aichat.chatIntroSubTitle" = "內建於 Brave，由人工智慧驅動的智能助理。";
+
+/* The title for intro view */
+"aichat.chatIntroTitle" = "您好，我是 Leo！";
+
+/* The subtitle for intro view which triggers website help for article */
+"aichat.chatIntroWebsiteHelpSubtitleArticleSummarize" = "我可以幫助您總結文章、擴充網站內容等。";
+
+/* The subtitle for intro view which triggers website help for summary */
+"aichat.chatIntroWebsiteHelpSubtitlePageSummarize" = "我可以幫助您總結文章、擴充網站內容等。不確定該從哪裡開始嗎？試試這個：";
+
+/* The title for intro view which triggers website help */
+"aichat.chatIntroWebsiteHelpTitle" = "需要網站相關協助嗎？";
+
+/* The title for the chat section in the menu */
+"aichat.chatMenuSectionTitle" = "聊天";
+
+/* The title shown on limit reached error view, which is suggesting user to change default model */
+"aichat.contextLimitErrorTitle" = "此對話時間太長，無法繼續。\n您或許能使用其他模型，讓 Leo 能在較長的對話中維持準確程度。";
+
+/* The title for view which user type feedback */
+"aichat.feedbackInputViewTitle" = "在此處提供意見反應";
+
+/* The title for view which listsfeedback option list */
+"aichat.feedbackOptionsViewTitle" = "您的意見反應是關於什麼內容？";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "回答沒有幫助";
+
+/* The title for not working feedback option */
+"aichat.feedbackOptionTitleNotWorking" = "發生錯誤";
+
+/* The title for other feedback option */
+"aichat.feedbackOptionTitleOther" = "其他";
+
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+"aichat.feedbackPremiumAdTitle" = "Leo Premium 提供更豐富的語言模型，能提供您更細膩準確的回答。[深入瞭解](https://brave.com/) - [關閉](braveai://dismiss)";
+
+/* The title for the button that submits feedback */
+"aichat.feedbackSubmitActionTitle" = "提交";
+
+/* The title for feedback view when it fails to submit feedback */
+"aichat.feedbackSubmittedErrorTitle" = "發生錯誤，請再試一次。";
+
+/* The title for feedback view when it is submitted */
+"aichat.feedbackSubmittedTitle" = "已成功傳送意見反應";
+
+/* The title for feedback view when response is sucessfull but disliked */
+"aichat.feedbackSuccessAnswerDisLikedTitle" = "已不喜歡回答";
+
+/* The title for feedback view when response is sucessfull also liked */
+"aichat.feedbackSuccessAnswerLikedTitle" = "已表達喜歡此回答";
+
+/* The title for view which user type feedback */
+"aichat.feedbackViewMainTitle" = "提供 Brave 人工智慧意見反應";
+
+/* The button title for opening paywall screen */
+"aichat.goPremiumButtonTitle" = "訂閱 Premium";
+
+/* Description about answers are changing with page context */
+"aichat.infoAboutPageContext" = "根據頁面内容產生回答";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeInstantMessageDescription" = "您好，我是Leo。我由 Brave 代理並由 Claude Instant 提供，Claude Instant 是 Anthropic 建立的模型，用於為會話和文字處理任務提供技術支援。";
+
+/* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeInstantModelDescription" = "由 Anthropic 建置的 Claude Instant";
+
+/* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
+"aichat.introMessageGenericMessageDescription" = "您好，我是 Leo。我是 Brave 的 AI 助理，由 %@ 提供技術支援。歡迎詢問我任何問題，我會盡力回答。";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "您好，我是Leo。我是 Brave 的完全託管人工智慧助理。我由 Llama 13B──由 Meta 建立的模型提供，具有高效能且適用於許多使用案例。";
+
+/* The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator */
+"aichat.introMessageLlamaModelDescription" = "由 Meta 建置的 Llama 2 13b";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageMixtralMessageDescription" = "您好，我是 Leo。我是完全託管於 Brave 的 AI 助理，由 Mixtral 8x7B 提供技術支援，這是 Mistral AI 建立的模型，可用於處理進階工作。";
+
+/* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
+"aichat.introMessageMixtralModelDescription" = "由 Mistral AI 建置的 Mixtral";
+
+/* The title for intro message */
+"aichat.introMessageTitle" = "聊天";
+
+/* The title of the advanced settings view */
+"aichat.leoNavigationTitle" = "Leo";
+
+/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "切換到開以詢問此頁面。其內容將與您的訊息一起傳送給 Brave Leo。";
+
+/* The accessibility text to read out loud when the user taps on the info icon on the page context view */
+"aichat.leoPageContextInfoIconAccessibilityTitle" = "頁面內容資訊";
+
+/* The title to display when the duration of the subscription is unknown */
+"aichat.leoSubscriptionUnknownDateTitle" = "不適用";
+
+/* The button title for managing subscriptions */
+"aichat.manageSubscriptionsButtonTitle" = "管理訂閱";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertDescription" = "請在 iOS 系統設定中賦予麥克風存取權限，允許 Brave 使用匿名語音輸入。";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertTitle" = "需要麥克風存取權限";
+
+/* Title showing monthly subscription */
+"aichat.monthlySubscriptionTitle" = "按月訂閱";
+
+/* The title for view that shows network - connection error and suggesting to try again */
+"aichat.networkErrorViewTitle" = "連線至 Leo 時發生網路問題，請檢查連線狀態並再試一次。";
+
+/* The title for button that starts a new chat */
+"aichat.newChatActionTitle" = "開始新聊天";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"aichat.paywallMonthlyPriceDividend" = "月";
+
+/* Title indicating monthly subscription */
+"aichat.paywallMontlySubscriptionTitle" = "每月";
+
+/* The title for dismiss button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellDismissAction" = "晚點再說";
+
+/* The title for button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellPrimaryAction" = "升級";
+
+/* The title for premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellTitle" = "使用 Premium 充分發揮 Leo 的功效：";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionTitle" = "立即升級";
+
+/* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
+"aichat.paywallPurchaseDeepNote" = "所有訂閱方案都會自動續訂，不過您可以在續訂前隨時取消訂閱。";
+
+/* The error description when in app purcahse is erroneous. */
+"aichat.paywallPurchaseErrorDescription" = "無法完成購買。請再試一次，或到 Apple 帳戶查看付款詳細資訊後重試。";
+
+/* The title for dismiss button when rate limit is shown after sending a message */
+"aichat.paywallRateLimitDismissActionTitle" = "繼續使用基本模型";
+
+/* The subtitle for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitSubTitle" = "訂閱 Premium 即可提高回應率，或者也能稍後再試。";
+
+/* The title for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitTitle" = "已達到回應率上限";
+
+/* The subtitle accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicSubTitle" = "獲得更準確的答案，展開更細膩的對話。";
+
+/* The title accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicTitle" = "避免離題";
+
+/* The subtitle chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicSubTitle" = "提高回應率上限，拉長對話。";
+
+/* The title chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicTitle" = "延長聊天時間";
+
+/* The subtitle creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicSubTitle" = "使用更適合執行創意工作和生產內容的模型。";
+
+/* The title creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicTitle" = "盡情揮灑創意";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "搶先使用具備不同技能的強大模型";
+
+/* The title model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicTitle" = "探索不同 AI 模型";
+
+/* The title for paywall view */
+"aichat.paywallViewTitle" = "Leo Premium";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"aichat.paywallYearlyPriceDividend" = "年";
+
+/* The description indicating yearly subscription that show how much user is saving percentage */
+"aichat.paywallYearlySubscriptionDescription" = "最多可享 25% 折扣";
+
+/* Title indicating yearly subscription */
+"aichat.paywallYearlySubscriptionTitle" = "一年";
+
+/* Title shown next to Leo in navigation bar when user has premium subcription */
+"aichat.premiumNavigationBarBadgeTitle" = "高级";
+
+/* Title showing premium subscription - not determined monthly por yearly */
+"aichat.premiumSubscriptionTitle" = "Premium 訂閱";
+
+/* The text for placeholder on textfield for entering questions for AI */
+"aichat.promptPlaceHolderDescription" = "在此處輸入提示";
+
+/* The title for error when rating a response is not success */
+"aichat.rateAnswerActionErrorText" = "為回答評分時發生錯誤";
+
+/* The title for the button where it triggers reset leo data */
+"aichat.resetLeoDataActionTitle" = "重設並清除 Leo 資料";
+
+/* The description for the error whre leo data reset */
+"aichat.resetLeoDataErrorDescription" = "確定要重設並清除 Brave 資料嗎？";
+
+/* The title for the error whre leo data reset */
+"aichat.resetLeoDataErrorTitle" = "重設 Leo 資料";
+
+/* The title for copying response to clipboard action */
+"aichat.responseContextMenuCopyTitle" = "複製";
+
+/* The title for disliking response to clipboard action */
+"aichat.responseContextMenuDislikeAnswerTitle" = "不喜歡此回答";
+
+/* The title for liking response to clipboard action */
+"aichat.responseContextMenuLikeAnswerTitle" = "喜歡此回答";
+
+/* The title for regenerating response action from context menu */
+"aichat.responseContextMenuRegenerateTitle" = "重新產生";
+
+/* The button title for restoring ai-app purchse for Leo. */
+"aichat.restorePaywallButtonTitle" = "還原";
+
+/* The title for button for re-try */
+"aichat.retryActionTitle" = "重試";
+
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Brave 不會儲存或分享您的語音搜尋。";
+
+/* The title for the button to generate suggestions */
+"aichat.suggestionsGenerationButtonTitle" = "建議問題…";
+
+/* The title for button that start summarizing page */
+"aichat.summarizePageActionTitle" = "總結此頁面";
+
+/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+"aichat.termsConditionsApproveActionTitle" = "我瞭解";
+
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leo 是私人 AI 智慧助理，可提升您的網際網路使用體驗。您可以免費使用 Leo，但存取權限會受到限制。Brave Leo Premium 提供更多模型、提高上限，訂閱者還能搶先使用新功能。目前所有使用者的預設模型為 Mixtral 8x7B。如需瞭解詳細資訊，請參閱 **[Brave wiki](%1$@)**\n\n根據預設，當您向 Leo 提問，系統可能會傳送並使用您正在瀏覽的網頁內容，或將您在頁面上醒目標示的任何文字傳送給 Brave Leo，以便系統為您提供回應。我們無法保證回應的準確度，且其中可能含有不準確、誤導或錯誤的資訊。Leo 會使用 Brave Search 來改善回應品質。請勿送出敏感資料或私人資訊，並請審慎使用任何有關健康、財務、個人安全或類似主題的回答。您可以隨時前往「設定」調整 Leo 的選項。如要調整，請依序前往「設定」和「Leo」。\n\nLeo 不會收集識別碼，例如可連結到您所在位置的 IP 位址等。我們不會使用資料來訓練 AI 模型，除了 Anthropic 會保留資料 30 天後再刪除之外，AI 模型不會保留任何個人資料。如需瞭解詳細資訊，請參閱 **[隱私權政策](%2$@)**";
+
+/* The title terms and conditions for AI chat usage */
+"aichat.termsConditionsTitle" = "與 Brave Leo 對話時保障隱私";
+
+/* The accessibility description when pressing the microphone button to access voice entry. */
+"aichat.voiceInputButtonTitle" = "語音輸入";
+
+/* Title showing yearly subscription - annual */
+"aichat.yearlySubscriptionTitle" = "年度訂閱";
+

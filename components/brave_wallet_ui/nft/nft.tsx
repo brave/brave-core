@@ -94,7 +94,7 @@ const App = () => {
     // add event listener for postMessage from wallet ui
     window.addEventListener('message', onMessageEventListener)
     return () => window.removeEventListener('message', onMessageEventListener)
-  }, [])
+  }, [onMessageEventListener])
 
   return (
     <BrowserRouter>

@@ -7,40 +7,28 @@ import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
 import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_captcha_view'
-import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
 import { VBATNoticeModal } from './vbat_notice_modal'
-import { TosUpdateModal } from './tos_update_modal'
 import { shouldShowVBATNotice } from '../../shared/components/vbat_notice'
 
 export function PanelOverlays() {
   const host = React.useContext(HostContext)
 
   const [options, setOptions] = React.useState(host.state.options)
-  const [grantCaptchaInfo, setGrantCaptchaInfo] =
-    React.useState(host.state.grantCaptchaInfo)
   const [adaptiveCaptchaInfo, setAdaptiveCaptchaInfo] =
     React.useState(host.state.adaptiveCaptchaInfo)
   const [notifications, setNotifications] =
     React.useState(host.state.notifications)
   const [userType, setUserType] = React.useState(host.state.userType)
-  const [tosUpdateRequired, setTosUpdateRequired] =
-    React.useState(host.state.isTermsOfServiceUpdateRequired)
   const [notificationsHidden, setNotificationsHidden] = React.useState(false)
   const [hideVBATNotice, setHideVBATNotice] = React.useState(false)
 
   useHostListener(host, (state) => {
     setOptions(state.options)
-    setGrantCaptchaInfo(state.grantCaptchaInfo)
     setNotifications(state.notifications)
     setAdaptiveCaptchaInfo(state.adaptiveCaptchaInfo)
     setUserType(state.userType)
-    setTosUpdateRequired(state.isTermsOfServiceUpdateRequired)
   })
-
-  if (tosUpdateRequired) {
-    return <TosUpdateModal />
-  }
 
   if (adaptiveCaptchaInfo) {
     const onContactSupport = () => {
@@ -58,16 +46,6 @@ export function PanelOverlays() {
         onClose={onClose}
         onCaptchaResult={host.handleAdaptiveCaptchaResult}
         onContactSupport={onContactSupport}
-      />
-    )
-  }
-
-  if (grantCaptchaInfo) {
-    return (
-      <GrantCaptchaModal
-        grantCaptchaInfo={grantCaptchaInfo}
-        onSolve={host.solveGrantCaptcha}
-        onClose={host.clearGrantCaptcha}
       />
     )
   }

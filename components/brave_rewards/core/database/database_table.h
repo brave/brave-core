@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace database {
 
@@ -42,11 +42,11 @@ using ContributionPublisherPairListCallback =
 
 class DatabaseTable {
  public:
-  explicit DatabaseTable(RewardsEngineImpl& engine);
+  explicit DatabaseTable(RewardsEngine& engine);
   virtual ~DatabaseTable();
 
  protected:
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace database

@@ -12,13 +12,13 @@
 #include "brave/components/brave_rewards/core/buildflags.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/bitflyer_transfer.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/connect_bitflyer_wallet.h"
 
 namespace brave_rewards::internal::bitflyer {
 
-Bitflyer::Bitflyer(RewardsEngineImpl& engine)
+Bitflyer::Bitflyer(RewardsEngine& engine)
     : WalletProvider(engine), server_(engine) {
   connect_wallet_ = std::make_unique<ConnectBitFlyerWallet>(engine);
   transfer_ = std::make_unique<BitFlyerTransfer>(engine);

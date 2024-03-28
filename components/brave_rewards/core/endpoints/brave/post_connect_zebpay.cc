@@ -9,11 +9,11 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal::endpoints {
 
-PostConnectZebPay::PostConnectZebPay(RewardsEngineImpl& engine,
+PostConnectZebPay::PostConnectZebPay(RewardsEngine& engine,
                                      std::string&& linking_info)
     : PostConnect(engine), linking_info_(std::move(linking_info)) {}
 

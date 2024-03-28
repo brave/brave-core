@@ -20,6 +20,8 @@ namespace base {
 class FilePath;
 }
 
+class AdBlockServiceTest;
+
 namespace brave_shields {
 
 class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
@@ -36,6 +38,8 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
       base::OnceCallback<void(const std::string& resources_json)>) override;
 
  private:
+  friend class ::AdBlockServiceTest;
+
   void OnComponentReady(const base::FilePath&);
 
   base::FilePath component_path_;

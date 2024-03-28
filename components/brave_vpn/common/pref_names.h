@@ -37,6 +37,12 @@ inline constexpr char kBraveVPNWireguardFallbackDialog[] =
 inline constexpr char kBraveVPNWireguardEnabled[] =
     "brave.brave_vpn.wireguard_enabled";
 #endif
+
+#if BUILDFLAG(IS_MAC)
+inline constexpr char kBraveVPNOnDemandEnabled[] =
+    "brave.brave_vpn.on_demand_enabled";
+#endif
+
 inline constexpr char kBraveVPNWireguardProfileCredentials[] =
     "brave.brave_vpn.wireguard.profile_credentials";
 inline constexpr char kBraveVPNEnvironment[] = "brave.brave_vpn.env";

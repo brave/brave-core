@@ -3,5 +3,7 @@ URL: https://crates.io/crates/selectors
 Description: CSS Selectors matching for Rust
 Version: 0.22.0
 Security Critical: yes
-License: MPL 2.0
+Shipped: yes
+License: Mozilla Public License 2.0
+License File:
 Revision: 7fea21d888f111f9e4c0f2dd2a5550a097dfcf4b

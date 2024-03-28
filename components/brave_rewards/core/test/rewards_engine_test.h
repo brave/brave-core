@@ -14,7 +14,7 @@
 
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -37,8 +37,8 @@ class RewardsEngineTest : public testing::Test {
   // Returns the |TestRewardsEngineClient| instance for this test.
   TestRewardsEngineClient& engine_client() { return client_; }
 
-  // Returns the |RewardsEngineImpl| instance for this test.
-  RewardsEngineImpl& engine() { return engine_; }
+  // Returns the |RewardsEngine| instance for this test.
+  RewardsEngine& engine() { return engine_; }
 
   // Adds a mock network response for the specified URL and HTTP method.
   void AddNetworkResultForTesting(const std::string& url,
@@ -68,7 +68,7 @@ class RewardsEngineTest : public testing::Test {
   TestRewardsEngineClient client_;
   mojo::AssociatedReceiver<mojom::RewardsEngineClient> client_receiver_{
       &client_};
-  RewardsEngineImpl engine_;
+  RewardsEngine engine_;
 };
 
 }  // namespace brave_rewards::internal

@@ -1,0 +1,212 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# This file defines all third-party Rust dependencies approved for use
+# in Chromium.
+#
+# Crates which do not satisfy the rule-of-2 or which are testonly must be
+# marked as such in gnrt_config.toml.
+
+[package]
+name = "chromium"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+
+[dependencies]
+speedreader-ffi = "0.1"
+skus-cxx = "0.1"
+json-cxx = "1"
+filecoin-cxx = "1"
+brave-news-cxx = "1"
+brave-wallet-cxx = "1"
+adblock-cxx = { version = "1" }
+constellation-cxx = "0.1"
+challenge-bypass-ristretto-cxx = "1"
+cxx = "=1.0.116"
+
+[patch.crates-io.futures-retry_v0_5]
+path = "../futures_retry/v0_5/crate"
+package = "futures-retry"
+
+[patch.crates-io.speedreader-ffi_v0_1]
+path = "../../../components/speedreader/rust/ffi"
+package = "speedreader-ffi"
+
+[patch.crates-io.speedreader_v1]
+path = "../../../components/speedreader/rust/lib"
+package = "speedreader"
+
+[patch.crates-io.readability_v0_1]
+path = "../../../components/speedreader/rust/lib/src/readability"
+package = "readability"
+
+[patch.crates-io.skus-cxx_v0_1]
+path = "../../../components/skus/browser/rs/cxx"
+package = "skus-cxx"
+
+[patch.crates-io.skus_v1]
+path = "../../../components/skus/browser/rs/lib"
+package = "skus"
+
+[patch.crates-io.json-cxx_v1]
+path = "../../../components/json/rs"
+package = "json-cxx"
+
+[patch.crates-io.filecoin-cxx_v1]
+path = "../../../components/filecoin/rs"
+package = "filecoin-cxx"
+
+[patch.crates-io.brave-news-cxx_v1]
+path = "../../../components/brave_news/rust"
+package = "brave-news-cxx"
+
+[patch.crates-io.brave-wallet-cxx_v1]
+path = "../../../components/brave_wallet/rust"
+package = "brave-wallet-cxx"
+
+[patch.crates-io.adblock-cxx_v1]
+path = "../../../components/brave_shields/adblock/rs"
+package = "adblock-cxx"
+
+[patch.crates-io.constellation-cxx_v0_1]
+path = "../../../components/p3a/constellation/rs/cxx"
+package = "constellation-cxx"
+
+[patch.crates-io.challenge-bypass-ristretto-cxx_v1]
+path = "../../../components/challenge_bypass_ristretto/rust/cxx"
+package = "challenge-bypass-ristretto-cxx"
+
+[patch.crates-io.aho_corasick_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.2"
+package = "aho-corasick"
+
+[patch.crates-io.anyhow_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/anyhow-1.0.79"
+package = "anyhow"
+
+[patch.crates-io.autocfg_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/autocfg-1.1.0"
+package = "autocfg"
+
+[patch.crates-io.base64_v0_13]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-0.13.1"
+package = "base64"
+
+[patch.crates-io.cfg-if_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cfg-if-1.0.0"
+package = "cfg-if"
+
+[patch.crates-io.cxx_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxx-1.0.116"
+package = "cxx"
+
+[patch.crates-io.cxxbridge-flags_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-flags-1.0.116"
+package = "cxxbridge-flags"
+
+[patch.crates-io.cxxbridge-macro_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-macro-1.0.116"
+package = "cxxbridge-macro"
+
+[patch.crates-io.getrandom_v0_2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/getrandom-0.2.12"
+package = "getrandom"
+
+[patch.crates-io.itoa_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/itoa-1.0.10"
+package = "itoa"
+
+[patch.crates-io.lazy_static_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/lazy_static-1.4.0"
+package = "lazy_static"
+
+[patch.crates-io.libc_v0_2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/libc-0.2.153"
+package = "libc"
+
+[patch.crates-io.log_v0_4]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/log-0.4.20"
+package = "log"
+
+[patch.crates-io.memchr_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/memchr-2.7.1"
+package = "memchr"
+
+[patch.crates-io.ppv_lite86_v0_2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/ppv-lite86-0.2.17"
+package = "ppv-lite86"
+
+[patch.crates-io.proc_macro2_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-1.0.78"
+package = "proc-macro2"
+
+[patch.crates-io.quote_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/quote-1.0.35"
+package = "quote"
+
+[patch.crates-io.rand_chacha_v0_3]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/rand_chacha-0.3.1"
+package = "rand_chacha"
+
+[patch.crates-io.rand_core_v0_6]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/rand_core-0.6.4"
+package = "rand_core"
+
+[patch.crates-io.rand_v0_8]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/rand-0.8.5"
+package = "rand"
+
+[patch.crates-io.regex_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-1.10.3"
+package = "regex"
+
+[patch.crates-io.regex_automata_v0_4]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-automata-0.4.5"
+package = "regex-automata"
+
+[patch.crates-io.regex_syntax_v0_8]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-syntax-0.8.2"
+package = "regex-syntax"
+
+[patch.crates-io.rustc_version_v0_4]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/rustc_version-0.4.0"
+package = "rustc_version"
+
+[patch.crates-io.ryu_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/ryu-1.0.16"
+package = "ryu"
+
+[patch.crates-io.semver_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/semver-1.0.21"
+package = "semver"
+
+[patch.crates-io.serde_derive_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_derive-1.0.196"
+package = "serde_derive"
+
+[patch.crates-io.serde_json_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_json-1.0.113"
+package = "serde_json"
+
+[patch.crates-io.serde_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde-1.0.196"
+package = "serde"
+
+[patch.crates-io.syn_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-1.0.109"
+package = "syn"
+
+[patch.crates-io.syn_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-2.0.48"
+package = "syn"
+
+[patch.crates-io.unicode-ident_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/unicode-ident-1.0.12"
+package = "unicode-ident"
+
+[patch.crates-io.winapi_v0_3]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/winapi-0.3.9"
+package = "winapi"

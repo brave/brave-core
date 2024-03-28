@@ -11,6 +11,7 @@ import { BraveWallet, WalletRoutes } from '../../../../../constants/types'
 
 // hooks
 import { useNftPin } from '../../../../../common/hooks/nft-pin'
+import { useLocalStorage } from '../../../../../common/hooks/use_local_storage'
 
 // selectors
 import {
@@ -38,7 +39,8 @@ import {
 import { getBalance } from '../../../../../utils/balance-utils'
 import {
   AccountsGroupByOption,
-  NetworksGroupByOption
+  NetworksGroupByOption,
+  NoneGroupByOption
 } from '../../../../../options/group-assets-by-options'
 import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
 import { getAssetIdKey } from '../../../../../utils/asset-utils'
@@ -103,12 +105,15 @@ export const Nfts = (props: Props) => {
 
   const { braveWalletP3A } = useApiProxy()
 
+  // local-storage
+  const [selectedGroupAssetsByItem] = useLocalStorage<string>(
+    LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY,
+    NoneGroupByOption.id
+  )
+
   // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
-  )
-  const selectedGroupAssetsByItem = useSafeWalletSelector(
-    WalletSelectors.selectedGroupAssetsByItem
   )
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted
@@ -170,7 +175,7 @@ export const Nfts = (props: Props) => {
       // reset nft metadata
       dispatch(WalletPageActions.updateNFTMetadata(undefined))
     },
-    [dispatch]
+    [dispatch, history]
   )
 
   const onClickIpfsButton = React.useCallback(() => {
@@ -198,7 +203,7 @@ export const Nfts = (props: Props) => {
 
   const onRefresh = React.useCallback(() => {
     dispatch(WalletActions.refreshNetworksAndTokens({}))
-  }, [])
+  }, [dispatch])
 
   const onSelectOption = React.useCallback(
     (selectedOption: NftDropdownOption) => {
@@ -207,7 +212,7 @@ export const Nfts = (props: Props) => {
         search: `?tab=${selectedOption.id}`
       })
     },
-    []
+    [history]
   )
 
   const searchNfts = React.useCallback(
@@ -233,7 +238,7 @@ export const Nfts = (props: Props) => {
 
   React.useEffect(() => {
     braveWalletP3A.recordNFTGalleryView(nftList.length)
-  }, [nftList])
+  }, [braveWalletP3A, nftList])
 
   // memos
   const { userNonSpamNfts, userMarkedSpamNfts } = React.useMemo(() => {
@@ -254,7 +259,7 @@ export const Nfts = (props: Props) => {
       }
     }
     return results
-  }, [userTokensRegistry, nftList])
+  }, [nftList])
 
   const [hiddenNftsIds, userNonSpamNftIds] = React.useMemo(() => {
     if (!userTokensRegistry) {
@@ -406,7 +411,12 @@ export const Nfts = (props: Props) => {
         )}
       </React.Fragment>
     ))
-  }, [accounts, getFilteredNftsByAccount, onSelectAsset])
+  }, [
+    accounts,
+    assetAutoDiscoveryCompleted,
+    getFilteredNftsByAccount,
+    renderGridViewItem
+  ])
 
   const listUiByNetworks = React.useMemo(() => {
     return networks?.map((network) => (
@@ -426,7 +436,12 @@ export const Nfts = (props: Props) => {
         )}
       </React.Fragment>
     ))
-  }, [getAssetsByNetwork, networks])
+  }, [
+    assetAutoDiscoveryCompleted,
+    getAssetsByNetwork,
+    networks,
+    renderGridViewItem
+  ])
 
   const listUi = React.useMemo(() => {
     return selectedGroupAssetsByItem === NetworksGroupByOption.id ? (
@@ -440,16 +455,18 @@ export const Nfts = (props: Props) => {
       </NftGrid>
     )
   }, [
-    listUiByAccounts,
-    listUiByNetworks,
     selectedGroupAssetsByItem,
-    renderedList
+    listUiByNetworks,
+    listUiByAccounts,
+    renderedList,
+    renderGridViewItem,
+    assetAutoDiscoveryCompleted
   ])
 
   // effects
   React.useEffect(() => {
     dispatch(WalletActions.refreshNetworksAndTokens({}))
-  }, [assetAutoDiscoveryCompleted])
+  }, [assetAutoDiscoveryCompleted, dispatch])
 
   return (
     <ContentWrapper

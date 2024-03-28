@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_REWARDS_REWARDS_PANEL_COORDINATOR_H_
 #define BRAVE_BROWSER_UI_BRAVE_REWARDS_REWARDS_PANEL_COORDINATOR_H_
 
-#include <string>
-
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
@@ -36,9 +34,6 @@ class RewardsPanelCoordinator
 
   // Opens the Rewards panel with setup view.
   bool ShowRewardsSetup();
-
-  // Displays a grant captcha for the specified grant in the Rewards panel.
-  bool ShowGrantCaptcha(const std::string& grant_id);
 
   // Opens the Rewards panel in order to display the currently scheduled
   // adaptive captcha for the user.

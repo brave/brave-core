@@ -42,6 +42,7 @@
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
@@ -58,6 +59,7 @@
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -364,6 +366,7 @@ class SolRpcCallHandler {
     fail_with_timeout_ = fail_with_timeout;
   }
   void Disable(bool disabled = true) { disabled_ = disabled; }
+  void Enable() { disabled_ = false; }
 
   std::optional<SolanaAddress> AddressFromParams(
       const base::Value::Dict& dict) {
@@ -387,6 +390,14 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
                         const SolanaAddress& owner,
                         std::vector<uint8_t> data)
       : account_address_(account_address), owner_(owner), data_(data) {}
+
+  void Reset(const SolanaAddress& account_address,
+             const SolanaAddress& owner,
+             std::vector<uint8_t> data) {
+    account_address_ = account_address;
+    owner_ = owner;
+    data_ = std::move(data);
+  }
 
   bool CallSupported(const base::Value::Dict& dict) override {
     if (disabled_) {
@@ -425,7 +436,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     return result;
   }
 
-  static std::vector<uint8_t> MakeSolRecordPayloadData(
+  static std::vector<uint8_t> MakeSolRecordV1PayloadData(
       const SolanaAddress& sol_record_payload_address,
       const SolanaAddress& sol_record_address,
       const std::vector<uint8_t>& signer_key) {
@@ -447,9 +458,105 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     return result;
   }
 
-  static std::vector<uint8_t> MakeTextRecordPayloadData(
+  static std::vector<uint8_t> MakeTextRecordV1PayloadData(
       const std::string& text) {
     return std::vector<uint8_t>(text.begin(), text.end());
+  }
+
+  template <class T>
+  static void PushAsLE(std::vector<uint8_t>& to, T value) {
+    to.resize(to.size() + sizeof(T));
+    auto* insert_to = &to[to.size() - sizeof(T)];
+
+#if defined(ARCH_CPU_LITTLE_ENDIAN)
+    T in_le = value;
+#else
+    T in_le = ByteSwap(value);
+#endif
+
+    (*reinterpret_cast<T*>(insert_to)) = in_le;
+  }
+
+  static std::vector<uint8_t> MakeTextRecordV2PayloadData(
+      SnsRecordV2ValidationType staleness_validation_type,
+      const std::optional<SolanaAddress>& solana_validation_id,
+      const std::string& content) {
+    std::vector<uint8_t> result;
+    result.reserve(300);
+
+    // Staleness validation type.
+    PushAsLE(result, uint16_t(staleness_validation_type));
+    // ROA validation type. (only kNone for test records supported)
+    PushAsLE(result, uint16_t(SnsRecordV2ValidationType::kNone));
+    // content length.
+    PushAsLE(result, uint32_t(content.size()));
+
+    // staleness id.
+    if (staleness_validation_type == SnsRecordV2ValidationType::kSolana) {
+      CHECK(solana_validation_id);
+      result.insert(result.end(), solana_validation_id->bytes().begin(),
+                    solana_validation_id->bytes().end());
+    } else if (staleness_validation_type ==
+               SnsRecordV2ValidationType::kEthereum) {
+      result.resize(result.size() + kEthAddressLength);
+    } else if (staleness_validation_type ==
+               SnsRecordV2ValidationType::kSolanaUnverified) {
+      result.resize(result.size() + kSolanaPubkeySize);
+    }
+
+    // content
+    auto content_span = base::as_byte_span(content);
+    result.insert(result.end(), content_span.begin(), content_span.end());
+
+    return result;
+  }
+
+  static std::vector<uint8_t> MakeSolRecordV2PayloadData(
+      SnsRecordV2ValidationType staleness_validation_type,
+      const std::optional<SolanaAddress>& solana_validation_id,
+      SnsRecordV2ValidationType roa_validation_type,
+      const std::optional<SolanaAddress>& solana_roa_id,
+      const SolanaAddress& content) {
+    std::vector<uint8_t> result;
+    result.reserve(300);
+
+    // Staleness validation type.
+    PushAsLE(result, uint16_t(staleness_validation_type));
+    // ROA validation type.
+    PushAsLE(result, uint16_t(roa_validation_type));
+    // content length.
+    PushAsLE(result, uint32_t(content.bytes().size()));
+
+    // staleness id.
+    if (staleness_validation_type == SnsRecordV2ValidationType::kSolana) {
+      CHECK(solana_validation_id);
+      result.insert(result.end(), solana_validation_id->bytes().begin(),
+                    solana_validation_id->bytes().end());
+    } else if (staleness_validation_type ==
+               SnsRecordV2ValidationType::kEthereum) {
+      result.resize(result.size() + kEthAddressLength);
+    } else if (staleness_validation_type ==
+               SnsRecordV2ValidationType::kSolanaUnverified) {
+      result.resize(result.size() + kSolanaPubkeySize);
+    }
+
+    // roa id.
+    if (roa_validation_type == SnsRecordV2ValidationType::kSolana) {
+      CHECK(solana_roa_id);
+      result.insert(result.end(), solana_roa_id->bytes().begin(),
+                    solana_roa_id->bytes().end());
+    } else if (roa_validation_type == SnsRecordV2ValidationType::kEthereum) {
+      result.resize(result.size() + kEthAddressLength);
+    } else if (roa_validation_type ==
+               SnsRecordV2ValidationType::kSolanaUnverified) {
+      result.resize(result.size() + kSolanaPubkeySize);
+    }
+
+    // content
+    auto content_span = base::as_byte_span(content.bytes());
+    result.insert(result.end(), content_span.begin(), content_span.end());
+
+    return result;
   }
 
   std::optional<std::string> HandleCall(
@@ -1715,6 +1822,12 @@ class JsonRpcServiceUnitTest : public testing::Test {
           loop.Quit();
         }));
     loop.Run();
+  }
+
+  template <class T>
+  void WaitAndVerify(base::MockCallback<T>* callback) {
+    task_environment_.RunUntilIdle();
+    testing::Mock::VerifyAndClearExpectations(callback);
   }
 
  protected:
@@ -3079,8 +3192,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
   SetPolygonTimeoutResponse();
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
                                                      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback,
               Run("", mojom::ProviderError::kInternalError,
@@ -3089,8 +3201,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
   SetPolygonTimeoutResponse();
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
                                                      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback,
               Run("", mojom::ProviderError::kParsingError,
@@ -3099,8 +3210,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
   SetPolygonRawResponse("Not a json");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
                                                      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback,
               Run("", mojom::ProviderError::kLimitExceeded, "Error!"));
@@ -3108,8 +3218,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
   SetPolygonRawResponse(MakeJsonRpcErrorResponse(-32005, "Error!"));
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
                                                      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 }
 
 TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonResult) {
@@ -3119,16 +3228,14 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonResult) {
   SetPolygonResponse("javajobs.crypto", k0x3a2f3fAddr);
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "javajobs.crypto", MakeToken(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback, Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
   SetEthResponse("javajobs.crypto", k0x8aaD44Addr);
   SetPolygonResponse("javajobs.crypto", k0x3a2f3fAddr);
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "javajobs.crypto", MakeToken(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback, Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
   SetEthResponse("javajobs.crypto", "");
@@ -3228,8 +3335,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
                                              "crypto.ETH.address", "ethaddr1");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "test.crypto", token.Clone(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   // crypto.USDT.address is preferred over default.
   EXPECT_CALL(callback, Run("ethaddr2", mojom::ProviderError::kSuccess, ""));
@@ -3237,8 +3343,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
                                              "crypto.USDT.address", "ethaddr2");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "test.crypto", token.Clone(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   // crypto.USDT.version.BEP20.address is the most preferred.
   EXPECT_CALL(callback, Run("ethaddr3", mojom::ProviderError::kSuccess, ""));
@@ -3246,8 +3351,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
       "test.crypto", "crypto.USDT.version.BEP20.address", "ethaddr3");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "test.crypto", token.Clone(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   // Address on Polygon network takes precedence over anything on ETH mainnet.
   EXPECT_CALL(callback, Run("polyaddr", mojom::ProviderError::kSuccess, ""));
@@ -3255,8 +3359,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
                                          "polyaddr");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "test.crypto", token.Clone(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 }
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
@@ -3268,8 +3371,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   SetPolygonTimeoutResponse();
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback,
               Run(std::optional<GURL>(), mojom::ProviderError::kInternalError,
@@ -3278,8 +3380,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   SetPolygonTimeoutResponse();
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback,
               Run(std::optional<GURL>(), mojom::ProviderError::kParsingError,
@@ -3288,8 +3389,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   SetPolygonRawResponse("Not a json");
   json_rpc_service_->UnstoppableDomainsResolveDns("brad.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback, Run(std::optional<GURL>(),
                             mojom::ProviderError::kLimitExceeded, "Error!"));
@@ -3297,8 +3397,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   SetPolygonRawResponse(MakeJsonRpcErrorResponse(-32005, "Error!"));
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 }
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
@@ -3309,8 +3408,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
   SetPolygonRawResponse(DnsBraveResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback, Run(std::optional<GURL>("https://brave.com"),
                             mojom::ProviderError::kSuccess, ""));
@@ -3318,8 +3416,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
   SetPolygonRawResponse(DnsBraveResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback, Run(std::optional<GURL>("https://brave.com"),
                             mojom::ProviderError::kSuccess, ""));
@@ -3327,7 +3424,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
   SetPolygonRawResponse(DnsBraveResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
+  WaitAndVerify(&callback);
 }
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
@@ -3338,8 +3435,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
   SetPolygonRawResponse(DnsEmptyResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback, Run(std::optional<GURL>("https://brave.com"),
                             mojom::ProviderError::kSuccess, ""));
@@ -3348,8 +3444,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
       MakeJsonRpcStringArrayResponse({"", "", "", "", "", "invalid url"}));
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 }
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
@@ -3361,8 +3456,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
   SetPolygonRawResponse(DnsEmptyResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   EXPECT_CALL(callback,
               Run(std::optional<GURL>(), mojom::ProviderError::kSuccess, ""));
@@ -3371,8 +3465,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
   SetPolygonRawResponse(DnsEmptyResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 }
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_InvalidDomain) {
@@ -5856,6 +5949,13 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
     ED25519_keypair_from_seed(domain_owner_public_key_.data(),
                               domain_owner_private_key_.data(), seed);
 
+    InitHandlers();
+
+    url_loader_factory_.SetInterceptor(base::BindRepeating(
+        &SnsJsonRpcServiceUnitTest::HandleRequest, base::Unretained(this)));
+  }
+
+  void InitHandlers() {
     json_rpc_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL));
 
@@ -5873,27 +5973,52 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
         GetDomainKeyAddress(), SolanaAddress::ZeroAddress(),
         GetAccountInfoHandler::MakeNameRegistryStateData(DomainOwnerAddress()));
 
-    sol_record_address_handler_ = std::make_unique<GetAccountInfoHandler>(
-        GetRecordKeyAddress("SOL"), SolanaAddress::ZeroAddress(),
+    sol_record_v1_address_handler_ = std::make_unique<GetAccountInfoHandler>(
+        GetRecordV1KeyAddress(kSnsSolRecord), SolanaAddress::ZeroAddress(),
         GetAccountInfoHandler::MakeNameRegistryStateData(
             DomainOwnerAddress(),
-            GetAccountInfoHandler::MakeSolRecordPayloadData(
-                SolRecordAddress(), GetRecordKeyAddress("SOL"),
+            GetAccountInfoHandler::MakeSolRecordV1PayloadData(
+                SolRecordAddressV1(), GetRecordV1KeyAddress("SOL"),
                 domain_owner_private_key_)));
 
-    url_record_address_handler_ = std::make_unique<GetAccountInfoHandler>(
-        GetRecordKeyAddress("url"), SolanaAddress::ZeroAddress(),
+    url_record_v1_address_handler_ = std::make_unique<GetAccountInfoHandler>(
+        GetRecordV1KeyAddress(kSnsUrlRecord), SolanaAddress::ZeroAddress(),
         GetAccountInfoHandler::MakeNameRegistryStateData(
             DomainOwnerAddress(),
-            GetAccountInfoHandler::MakeTextRecordPayloadData(
-                url_value().spec())));
+            GetAccountInfoHandler::MakeTextRecordV1PayloadData(
+                UrlValueV1().spec())));
 
-    ipfs_record_address_handler_ = std::make_unique<GetAccountInfoHandler>(
-        GetRecordKeyAddress("IPFS"), SolanaAddress::ZeroAddress(),
+    ipfs_record_v1_address_handler_ = std::make_unique<GetAccountInfoHandler>(
+        GetRecordV1KeyAddress(kSnsIpfsRecord), SolanaAddress::ZeroAddress(),
         GetAccountInfoHandler::MakeNameRegistryStateData(
             DomainOwnerAddress(),
-            GetAccountInfoHandler::MakeTextRecordPayloadData(
-                ipfs_value().spec())));
+            GetAccountInfoHandler::MakeTextRecordV1PayloadData(
+                IpfsValueV1().spec())));
+
+    sol_record_v2_address_handler_ = std::make_unique<GetAccountInfoHandler>(
+        GetRecordV2KeyAddress(kSnsSolRecord), SolanaAddress::ZeroAddress(),
+        GetAccountInfoHandler::MakeNameRegistryStateData(
+            DomainOwnerAddress(),
+            GetAccountInfoHandler::MakeSolRecordV2PayloadData(
+                SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
+                SnsRecordV2ValidationType::kSolana, SolRecordAddressV2(),
+                SolRecordAddressV2())));
+
+    url_record_v2_address_handler_ = std::make_unique<GetAccountInfoHandler>(
+        GetRecordV2KeyAddress(kSnsUrlRecord), SolanaAddress::ZeroAddress(),
+        GetAccountInfoHandler::MakeNameRegistryStateData(
+            DomainOwnerAddress(),
+            GetAccountInfoHandler::MakeTextRecordV2PayloadData(
+                SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
+                UrlValueV2().spec())));
+
+    ipfs_record_v2_address_handler_ = std::make_unique<GetAccountInfoHandler>(
+        GetRecordV2KeyAddress(kSnsIpfsRecord), SolanaAddress::ZeroAddress(),
+        GetAccountInfoHandler::MakeNameRegistryStateData(
+            DomainOwnerAddress(),
+            GetAccountInfoHandler::MakeTextRecordV2PayloadData(
+                SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
+                IpfsValueV2().spec())));
 
     default_handler_ = std::make_unique<GetAccountInfoHandler>();
 
@@ -5904,26 +6029,34 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
 
     json_rpc_endpoint_handler_->AddSolRpcCallHandler(
         domain_address_handler_.get());
-    json_rpc_endpoint_handler_->AddSolRpcCallHandler(
-        sol_record_address_handler_.get());
 
     json_rpc_endpoint_handler_->AddSolRpcCallHandler(
-        url_record_address_handler_.get());
+        sol_record_v1_address_handler_.get());
     json_rpc_endpoint_handler_->AddSolRpcCallHandler(
-        ipfs_record_address_handler_.get());
+        url_record_v1_address_handler_.get());
+    json_rpc_endpoint_handler_->AddSolRpcCallHandler(
+        ipfs_record_v1_address_handler_.get());
+
+    json_rpc_endpoint_handler_->AddSolRpcCallHandler(
+        sol_record_v2_address_handler_.get());
+    json_rpc_endpoint_handler_->AddSolRpcCallHandler(
+        url_record_v2_address_handler_.get());
+    json_rpc_endpoint_handler_->AddSolRpcCallHandler(
+        ipfs_record_v2_address_handler_.get());
 
     json_rpc_endpoint_handler_->AddSolRpcCallHandler(default_handler_.get());
-
-    url_loader_factory_.SetInterceptor(base::BindRepeating(
-        &SnsJsonRpcServiceUnitTest::HandleRequest, base::Unretained(this)));
   }
 
   SolanaAddress GetDomainKeyAddress() const {
-    return *GetDomainKey(sns_host(), false);
+    return *GetDomainKey(sns_host());
   }
 
-  SolanaAddress GetRecordKeyAddress(const std::string& record) const {
-    return *GetDomainKey(record + "." + sns_host(), true);
+  SolanaAddress GetRecordV1KeyAddress(const std::string& record) const {
+    return *GetRecordKey(sns_host(), record, SnsRecordsVersion::kRecordsV1);
+  }
+
+  SolanaAddress GetRecordV2KeyAddress(const std::string& record) const {
+    return *GetRecordKey(sns_host(), record, SnsRecordsVersion::kRecordsV2);
   }
 
   SolanaAddress GetMintAddress() const {
@@ -5944,18 +6077,35 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
     return *SolanaAddress::FromBytes(domain_owner_public_key_);
   }
 
-  SolanaAddress SolRecordAddress() const {
+  SolanaAddress SolRecordAddressV1() const {
     return *SolanaAddress::FromBase58(
-        "RecPwner11111111111111111111111111111111111");
+        "Rec1Pwner1111111111111111111111111111111111");
   }
 
-  GURL url_value() const { return GURL("https://brave.com"); }
-  GURL ipfs_value() const {
+  SolanaAddress SolRecordAddressV2() const {
+    return *SolanaAddress::FromBase58(
+        "Rec2Pwner1111111111111111111111111111111111");
+  }
+
+  GURL UrlValueV1() const { return GURL("https://v1.brave.com"); }
+  GURL IpfsValueV1() const {
     return GURL(
-        "ipfs://bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
+        "ipfs://v1fybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
+  }
+
+  GURL UrlValueV2() const { return GURL("https://v2.brave.com"); }
+  GURL IpfsValueV2() const {
+    return GURL(
+        "ipfs://v2fybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
   }
 
   std::string sns_host() const { return "sub.test.sol"; }
+
+  void DisableV2Handlers() {
+    sol_record_v2_address_handler_->Disable();
+    url_record_v2_address_handler_->Disable();
+    ipfs_record_v2_address_handler_->Disable();
+  }
 
  protected:
   void HandleRequest(const network::ResourceRequest& request) {
@@ -5977,9 +6127,12 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
   std::unique_ptr<GetAccountInfoHandler> mint_address_handler_;
   std::unique_ptr<GetProgramAccountsHandler> get_program_accounts_handler_;
   std::unique_ptr<GetAccountInfoHandler> domain_address_handler_;
-  std::unique_ptr<GetAccountInfoHandler> sol_record_address_handler_;
-  std::unique_ptr<GetAccountInfoHandler> url_record_address_handler_;
-  std::unique_ptr<GetAccountInfoHandler> ipfs_record_address_handler_;
+  std::unique_ptr<GetAccountInfoHandler> sol_record_v1_address_handler_;
+  std::unique_ptr<GetAccountInfoHandler> url_record_v1_address_handler_;
+  std::unique_ptr<GetAccountInfoHandler> ipfs_record_v1_address_handler_;
+  std::unique_ptr<GetAccountInfoHandler> sol_record_v2_address_handler_;
+  std::unique_ptr<GetAccountInfoHandler> url_record_v2_address_handler_;
+  std::unique_ptr<GetAccountInfoHandler> ipfs_record_v2_address_handler_;
   std::unique_ptr<GetAccountInfoHandler> default_handler_;
 
   std::unique_ptr<JsonRpcEndpointHandler> json_rpc_endpoint_handler_;
@@ -5991,8 +6144,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
   EXPECT_CALL(callback, Run(NftOwnerAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   // HTTP error while checking nft mint. Fail resolution.
   mint_address_handler_->FailWithTimeout();
@@ -6000,8 +6152,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
               Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
   mint_address_handler_->FailWithTimeout(false);
 
   // HTTP error while checking nft owner. Fail resolution.
@@ -6010,30 +6161,28 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
               Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
   get_program_accounts_handler_->FailWithTimeout(false);
 
   // Domain detokenized. Fallback to domain/SOL owner.
   mint_address_handler_->data() = GetAccountInfoHandler::MakeMintData(0);
-  EXPECT_CALL(callback, Run(SolRecordAddress().ToBase58(),
+  EXPECT_CALL(callback, Run(SolRecordAddressV2().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
+  DisableV2Handlers();  // Legacy v1 records test.
   mint_address_handler_->Disable();
-  sol_record_address_handler_->Disable();
+  sol_record_v1_address_handler_->Disable();
 
   // No nft, no SOL record. Return domain owner address.
   base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
   EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   // HTTP error for domain key account. Fail resolution.
   domain_address_handler_->FailWithTimeout();
@@ -6041,8 +6190,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
               Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
   domain_address_handler_->FailWithTimeout(false);
 
   // No domain key account. Fail resolution.
@@ -6051,102 +6199,473 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
               Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-
-  domain_address_handler_->Disable(false);
+  WaitAndVerify(&callback);
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
+  DisableV2Handlers();  // Legacy v1 records test.
   mint_address_handler_->Disable();
 
   // No nft, has sol record. Return address from SOL record.
   base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
-  EXPECT_CALL(callback, Run(SolRecordAddress().ToBase58(),
+  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   // Bad signature. Fallback to owner address.
-  sol_record_address_handler_->data()[170] ^= 123;
+  sol_record_v1_address_handler_->data()[170] ^= 123;
   EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-  sol_record_address_handler_->data()[170] ^= 123;
+  WaitAndVerify(&callback);
+  sol_record_v1_address_handler_->data()[170] ^= 123;
 
   // HTTP error for SOL record key account. Fail resolution.
-  sol_record_address_handler_->FailWithTimeout();
+  sol_record_v1_address_handler_->FailWithTimeout();
   EXPECT_CALL(callback,
               Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-  sol_record_address_handler_->FailWithTimeout(false);
+  WaitAndVerify(&callback);
+  sol_record_v1_address_handler_->FailWithTimeout(false);
 
   // No SOL record account. Fallback to owner address.
-  sol_record_address_handler_->Disable();
+  sol_record_v1_address_handler_->Disable();
   EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
+}
+
+TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record) {
+  mint_address_handler_->Disable();
+
+  // No nft, has sol v2 record. Return address from SOLv2 record.
+  base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
+  EXPECT_CALL(callback, Run(SolRecordAddressV2().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // Disable v2 record - fallback to v1.
+  sol_record_v2_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // No SOL v1 record account. Fallback to owner address.
+  sol_record_v1_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+}
+
+TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_StalenessCheck) {
+  mint_address_handler_->Disable();
+
+  // Return address from SOLv2 record by default.
+  base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
+  EXPECT_CALL(callback, Run(SolRecordAddressV2().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kNone staleness - fallback to next record
+  sol_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsSolRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeSolRecordV2PayloadData(
+              SnsRecordV2ValidationType::kNone, std::nullopt,
+              SnsRecordV2ValidationType::kSolana, SolRecordAddressV2(),
+              SolRecordAddressV2())));
+  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kEthereum staleness - fallback to next record
+  sol_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsSolRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeSolRecordV2PayloadData(
+              SnsRecordV2ValidationType::kEthereum, std::nullopt,
+              SnsRecordV2ValidationType::kSolana, SolRecordAddressV2(),
+              SolRecordAddressV2())));
+  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kSolanaUnverified staleness - fallback to next record
+  sol_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsSolRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeSolRecordV2PayloadData(
+              SnsRecordV2ValidationType::kSolanaUnverified, std::nullopt,
+              SnsRecordV2ValidationType::kSolana, SolRecordAddressV2(),
+              SolRecordAddressV2())));
+  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kSolana staleness with invalid stalenss id - fallback to next record
+  sol_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsSolRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeSolRecordV2PayloadData(
+              SnsRecordV2ValidationType::kSolana, SolanaAddress::ZeroAddress(),
+              SnsRecordV2ValidationType::kSolana, SolRecordAddressV2(),
+              SolRecordAddressV2())));
+  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+}
+
+TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_RoaCheck) {
+  mint_address_handler_->Disable();
+
+  // Return address from SOLv2 record by default.
+  base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
+  EXPECT_CALL(callback, Run(SolRecordAddressV2().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kNone roa - fallback to next record
+  sol_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsSolRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeSolRecordV2PayloadData(
+              SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
+              SnsRecordV2ValidationType::kNone, std::nullopt,
+              SolRecordAddressV2())));
+  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kEthereum roa - fallback to next record
+  sol_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsSolRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeSolRecordV2PayloadData(
+              SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
+              SnsRecordV2ValidationType::kEthereum, std::nullopt,
+              SolRecordAddressV2())));
+  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kSolanaUnverified roa - fallback to next record
+  sol_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsSolRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeSolRecordV2PayloadData(
+              SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
+              SnsRecordV2ValidationType::kSolanaUnverified, std::nullopt,
+              SolRecordAddressV2())));
+  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kSolana roa with invalid roa id - fallback to next record
+  sol_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsSolRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeSolRecordV2PayloadData(
+              SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
+              SnsRecordV2ValidationType::kSolana, SolanaAddress::ZeroAddress(),
+              SolRecordAddressV2())));
+  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_UrlValue) {
+  DisableV2Handlers();  // Legacy v1 records test.
+
   base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(url_value()),
+  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   // HTTP error for url record account. Fail resolution.
-  url_record_address_handler_->FailWithTimeout();
+  url_record_v1_address_handler_->FailWithTimeout();
   EXPECT_CALL(
       callback,
       Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-  url_record_address_handler_->FailWithTimeout(false);
+  WaitAndVerify(&callback);
+  url_record_v1_address_handler_->FailWithTimeout(false);
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
-  url_record_address_handler_->Disable();
+  DisableV2Handlers();  // Legacy v1 records test.
+
+  url_record_v1_address_handler_->Disable();
 
   // No url record. Will return ipfs record.
   base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(ipfs_value()),
+  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV1()),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
 
   // HTTP error for ipfs record account. Fail resolution.
-  ipfs_record_address_handler_->FailWithTimeout();
+  ipfs_record_v1_address_handler_->FailWithTimeout();
   EXPECT_CALL(
       callback,
       Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-  ipfs_record_address_handler_->FailWithTimeout(false);
+  WaitAndVerify(&callback);
+  ipfs_record_v1_address_handler_->FailWithTimeout(false);
 
   // No ipfs record account. Fail resolution.
-  ipfs_record_address_handler_->Disable();
+  ipfs_record_v1_address_handler_->Disable();
   EXPECT_CALL(
       callback,
       Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  WaitAndVerify(&callback);
+}
+
+TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records) {
+  base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
+
+  // Test with nft disabled as domain owner is used as staleness id by default
+  // in tests.
+  mint_address_handler_->Disable();
+
+  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV2()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  url_record_v2_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  ipfs_record_v2_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  url_record_v1_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV1()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  ipfs_record_v1_address_handler_->Disable();
+  EXPECT_CALL(
+      callback,
+      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  InitHandlers();
+  mint_address_handler_->Enable();
+
+  // Falls back to V1 url record as current owner is an nft owner, but record's
+  // staleness id is set to domain owner.
+  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // Falls back to V1 url record as current owner is an nft owner, but record's
+  // staleness id is set to domain owner.
+  url_record_v2_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  ipfs_record_v2_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  url_record_v1_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV1()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  ipfs_record_v1_address_handler_->Disable();
+  EXPECT_CALL(
+      callback,
+      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  InitHandlers();
+  mint_address_handler_->Enable();
+  // setup handlers to use nft owner as staleness id.
+  url_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsUrlRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeTextRecordV2PayloadData(
+              SnsRecordV2ValidationType::kSolana, NftOwnerAddress(),
+              UrlValueV2().spec())));
+  ipfs_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsIpfsRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeTextRecordV2PayloadData(
+              SnsRecordV2ValidationType::kSolana, NftOwnerAddress(),
+              IpfsValueV2().spec())));
+
+  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV2()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  url_record_v2_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  ipfs_record_v2_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  url_record_v1_address_handler_->Disable();
+  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV1()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  ipfs_record_v1_address_handler_->Disable();
+  EXPECT_CALL(
+      callback,
+      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+}
+
+TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_StalenessCheck) {
+  base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
+  // Test with nft disabled as domain owner is used as staleness id by default
+  // in tests.
+  mint_address_handler_->Disable();
+
+  // V2 url record by default.
+  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV2()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kNone staleness - fallback to next record
+  url_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsUrlRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeTextRecordV2PayloadData(
+              SnsRecordV2ValidationType::kNone, std::nullopt,
+              UrlValueV2().spec())));
+
+  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kEthereum staleness - fallback to next record
+  url_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsUrlRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeTextRecordV2PayloadData(
+              SnsRecordV2ValidationType::kEthereum, std::nullopt,
+              UrlValueV2().spec())));
+
+  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kSolanaUnverified staleness - fallback to next record
+  url_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsUrlRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeTextRecordV2PayloadData(
+              SnsRecordV2ValidationType::kSolanaUnverified, std::nullopt,
+              UrlValueV2().spec())));
+
+  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // kSolana staleness, but address doesn't match owner - fallback to next
+  // record
+  url_record_v2_address_handler_->Reset(
+      GetRecordV2KeyAddress(kSnsUrlRecord), SolanaAddress::ZeroAddress(),
+      GetAccountInfoHandler::MakeNameRegistryStateData(
+          DomainOwnerAddress(),
+          GetAccountInfoHandler::MakeTextRecordV2PayloadData(
+              SnsRecordV2ValidationType::kSolana, SolanaAddress::ZeroAddress(),
+              UrlValueV2().spec())));
+
+  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+}
+
+TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_NetworkError) {
+  base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
+  // Test with nft disabled as domain owner is used as staleness id by default
+  // in tests.
+  mint_address_handler_->Disable();
+
+  // V2 url record by default.
+  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV2()),
+                            mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
+
+  // Network error fails whole resolve process.
+  url_record_v2_address_handler_->FailWithTimeout(true);
+
+  EXPECT_CALL(
+      callback,
+      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  WaitAndVerify(&callback);
 }
 
 TEST_F(JsonRpcServiceUnitTest, EthGetLogs) {

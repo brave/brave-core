@@ -45,7 +45,7 @@ std::string UsernameFromAddress(const std::string& address) {
 
 }  // namespace
 
-SolanaWalletProvider::SolanaWalletProvider(RewardsEngineImpl& engine)
+SolanaWalletProvider::SolanaWalletProvider(RewardsEngine& engine)
     : RewardsEngineHelper(engine), WalletProvider(engine) {}
 
 SolanaWalletProvider::~SolanaWalletProvider() = default;
@@ -78,7 +78,7 @@ void SolanaWalletProvider::FetchBalance(
 
 void SolanaWalletProvider::BeginLogin(
     BeginExternalWalletLoginCallback callback) {
-  post_challenges_.Request(
+  Get<endpoints::PostChallenges>().Request(
       base::BindOnce(&SolanaWalletProvider::OnPostChallengesResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }

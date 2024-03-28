@@ -7,13 +7,13 @@
 
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
 namespace brave_rewards::internal {
 namespace sku {
 
-SKUCommon::SKUCommon(RewardsEngineImpl& engine)
+SKUCommon::SKUCommon(RewardsEngine& engine)
     : engine_(engine), order_(engine), transaction_(engine) {}
 
 SKUCommon::~SKUCommon() = default;

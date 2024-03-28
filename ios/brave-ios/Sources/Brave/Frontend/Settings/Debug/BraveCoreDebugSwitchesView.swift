@@ -17,6 +17,8 @@ extension BraveCoreSwitchKey {
       return "Component Updater"
     case .syncURL:
       return "Sync URL"
+    case .variationsURL:
+      return "Variations URL"
     case .p3aDoNotRandomizeUploadInterval:
       return "Don't Randomize Upload Interval"
     case .p3aIgnoreServerErrors:
@@ -33,6 +35,8 @@ extension BraveCoreSwitchKey {
       return "Enable Features"
     case .p3aWalletCountTestNetworks:
       return "Brave Wallet Count Test Networks"
+    case .useDevGoUpdater:
+      return "Use staging CRX components"
     default:
       return ""
     }
@@ -42,7 +46,8 @@ extension BraveCoreSwitchKey {
     switch self {
     case .p3aDoNotRandomizeUploadInterval,
       .p3aIgnoreServerErrors,
-      .p3aWalletCountTestNetworks:
+      .p3aWalletCountTestNetworks,
+      .useDevGoUpdater:
       return true
     default:
       return false
@@ -253,6 +258,13 @@ struct BraveCoreDebugSwitchesView: View {
           } label: {
             SwitchContainer(.syncURL)
           }
+          // Variations URL
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .variationsURL)
+              .keyboardType(.URL)
+          } label: {
+            SwitchContainer(.variationsURL)
+          }
           NavigationLink {
             BasicStringInputView(
               coreSwitch: .componentUpdater,
@@ -279,6 +291,7 @@ struct BraveCoreDebugSwitchesView: View {
           } label: {
             SwitchContainer(.enableFeatures)
           }
+          SwitchContainer(.useDevGoUpdater)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }

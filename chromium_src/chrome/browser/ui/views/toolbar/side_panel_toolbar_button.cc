@@ -59,6 +59,8 @@ class SidePanelMenuModel : public ui::SimpleMenuModel,
 
 SidePanelToolbarButton::SidePanelToolbarButton(Browser* browser)
     : SidePanelToolbarButton_ChromiumImpl(browser) {
+  // Upstream sets null as they don't use context menu for this.
+  set_context_menu_controller(this);
   auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
 
   SetMenuModel(std::make_unique<SidePanelMenuModel>(prefs));

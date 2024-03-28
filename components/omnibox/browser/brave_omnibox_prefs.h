@@ -33,6 +33,11 @@ inline constexpr char kHistorySuggestionsEnabled[] =
 inline constexpr char kBookmarkSuggestionsEnabled[] =
     "brave.omnibox.bookmark_suggestions_enabled";
 
+// Determines whether commander suggestions show up in normal omnibox results.
+// This doesn't affect commander suggestions triggered by the prefix.
+inline constexpr char kCommanderSuggestionsEnabled[] =
+    "brave.omnibox.commander_suggestions_enabled";
+
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace omnibox

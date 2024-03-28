@@ -13,7 +13,6 @@ declare namespace RewardsExtension {
     notifications: Record<string, Notification>
     publishers: Record<string, Publisher>
     balanceReport: BalanceReport
-    promotions?: Promotion[]
     pendingContributionTotal: number
     parameters: RewardsParameters
     recurringTips: Record<string, number>[]
@@ -55,47 +54,6 @@ declare namespace RewardsExtension {
     status?: PublisherStatus
   }
 
-  export type CaptchaStatus = 'start' | 'wrongPosition' | 'generalError' | 'finished' | null
-
-  export enum PromotionTypes {
-    UGP = 0,
-    ADS = 1
-  }
-
-  export enum PromotionStatus {
-    ACTIVE = 0,
-    ATTESTED = 1,
-    FINISHED = 4,
-    OVER = 5
-  }
-
-  export interface Promotion {
-    promotionId: string
-    amount: number
-    createdAt: number
-    claimableUntil: number
-    expiresAt: number
-    status: PromotionStatus
-    type: PromotionTypes
-    captchaStatus: CaptchaStatus
-    captchaImage?: string
-    captchaId?: string
-    hint?: string
-    finishTitle?: string
-    finishText?: string
-    finishTokenTitle?: string
-  }
-
-  export interface PromotionResponse {
-    result: number
-    promotions: Promotion[]
-  }
-
-  export interface PromotionFinish {
-    result: Result,
-    promotion: Promotion
-  }
-
   export const enum Result {
     OK = 0,
     FAILED = 1,
@@ -109,14 +67,6 @@ declare namespace RewardsExtension {
     REGISTRATION_VERIFICATION_FAILED = 10,
     BAD_REGISTRATION_RESPONSE = 11,
     WALLET_CORRUPT = 17
-  }
-
-  export interface Captcha {
-    result: number
-    promotionId: string
-    captchaImage: string
-    captchaId: string
-    hint: string
   }
 
   export type ProviderPayoutStatus = 'off' | 'processing' | 'complete'
@@ -135,7 +85,6 @@ declare namespace RewardsExtension {
     ads: number
     contribute: number
     monthly: number
-    grant: number
     tips: number
   }
 

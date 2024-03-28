@@ -123,6 +123,8 @@ std::string RequestStatusToString(const RequestStatus status) {
       return "started";
     case kRequestStatusComplete:
       return "complete";
+    case kRequestStatusRedirect:
+      return "redirect";
     case kRequestStatusError:
       return "error";
     case kRequestStatusBlocked:

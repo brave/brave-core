@@ -67,7 +67,7 @@ export const TokenIconsStack = (props: Props) => {
       return firstThreeWidth + additionalWidth
     }
     return firstThreeWidth
-  }, [firstThreeTokens, tokens, additionalTokensLength])
+  }, [firstThreeTokens, tokens])
 
   return (
     <StackContainer width={`${calculatedContainerWidth}px`}>

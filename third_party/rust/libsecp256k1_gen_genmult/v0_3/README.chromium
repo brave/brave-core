@@ -2,6 +2,8 @@ Name: libsecp256k1-gen-genmult
 URL: https://crates.io/crates/libsecp256k1-gen-genmult
 Description: Generator function of const for libsecp256k1.
 Version: 0.3.0
-Security Critical: no
+Security Critical: yes
+Shipped: yes
 License: Apache 2.0
+License File:
 Revision: 34293f502aeedaefc312993278c5402b221f7f7e

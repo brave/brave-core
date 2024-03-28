@@ -128,7 +128,7 @@ export const DAppConnectionMain = (props: Props) => {
     if (dappAccount) {
       setSelectedAccount(dappAccount.accountId)
     }
-  }, [selectedAccount, accounts])
+  }, [selectedAccount, accounts, setSelectedAccount])
 
   return (
     <>

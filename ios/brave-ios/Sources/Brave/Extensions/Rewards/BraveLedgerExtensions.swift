@@ -136,57 +136,6 @@ extension BraveRewardsAPI {
     }
   }
 
-  @MainActor public func claimPromotion(_ promotion: BraveCore.BraveRewards.Promotion) async -> Bool
-  {
-    guard let paymentId = await fetchPaymentId() else {
-      return false
-    }
-    let deviceCheck = DeviceCheckClient()
-    if !DeviceCheckClient.isDeviceEnrolled() {
-      let didEnroll: Bool = await withCheckedContinuation { c in
-        setupDeviceCheckEnrollment(deviceCheck) {
-          c.resume(returning: DeviceCheckClient.isDeviceEnrolled())
-        }
-      }
-      if !didEnroll {
-        Logger.module.error(
-          "Cannot solve adaptive captcha as user is not enrolled with the attestation server"
-        )
-        return false
-      }
-    }
-    guard let attestation = try? deviceCheck.generateAttestation(paymentId: paymentId) else {
-      return false
-    }
-    return await withCheckedContinuation { c in
-      self.claimPromotion(promotion.id, publicKey: attestation.publicKeyHash) { result, nonce in
-        if result != .ok {
-          c.resume(returning: false)
-          return
-        }
-        do {
-          let verification = try deviceCheck.generateAttestationVerification(nonce: nonce)
-          let solution = PromotionSolution()
-          solution.nonce = nonce
-          solution.signature = verification.signature
-          solution.blob = try verification.attestationBlob.bsonData().base64EncodedString()
-
-          self.attestPromotion(promotion.id, solution: solution) { result, promotion in
-            if result == .ok {
-              self.updatePendingAndFinishedPromotions {
-                c.resume(returning: true)
-              }
-            } else {
-              c.resume(returning: false)
-            }
-          }
-        } catch {
-          c.resume(returning: false)
-        }
-      }
-    }
-  }
-
   func solveAdaptiveCaptcha(paymentId: String, captchaId: String) async throws {
     let deviceCheck = DeviceCheckClient()
     if !DeviceCheckClient.isDeviceEnrolled() {

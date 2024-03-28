@@ -68,7 +68,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
     )
 
     let filterListInfo = CachedAdBlockEngine.FilterListInfo(
-      source: .adBlock,
+      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo", uuid: "default"),
       localFileURL: Bundle.module.url(
         forResource: "iodkpdagapdfkphljnddpjlldadblomo",
         withExtension: "txt"
@@ -81,7 +81,6 @@ final class CachedAdBlockEngineTests: XCTestCase {
       engine: engine!,
       filterListInfo: filterListInfo,
       resourcesInfo: resourcesInfo,
-      serialQueue: DispatchQueue(label: "test"),
       isAlwaysAggressive: false
     )
 
@@ -98,7 +97,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
 
   func testCompilationofResources() throws {
     let textFilterListInfo = CachedAdBlockEngine.FilterListInfo(
-      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo"),
+      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo", uuid: "default"),
       localFileURL: Bundle.module.url(
         forResource: "iodkpdagapdfkphljnddpjlldadblomo",
         withExtension: "txt"
@@ -137,18 +136,20 @@ final class CachedAdBlockEngineTests: XCTestCase {
             frameURL: url,
             isMainFrame: true,
             domain: domain,
+            isDeAmpEnabled: false,
             index: 0
           )
 
           // We should have no scripts injected
           XCTAssertEqual(sameDomainTypes.count, 0)
 
-          if engine.filterListInfo == textFilterListInfo {
+          if await engine.filterListInfo == textFilterListInfo {
             // This engine file contains some scriplet rules so we can test this part is working
             let crossDomainTypes = try await engine.makeEngineScriptTypes(
               frameURL: URL(string: "https://reddit.com")!,
               isMainFrame: true,
               domain: domain,
+              isDeAmpEnabled: false,
               index: 0
             )
             // We should have 1 engine script injected
@@ -194,7 +195,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
       let uuid = UUID().uuidString
 
       let filterListInfo = CachedAdBlockEngine.FilterListInfo(
-        source: .filterList(componentId: uuid),
+        source: .filterListURL(uuid: uuid),
         localFileURL: sampleFilterListURL,
         version: "bundled",
         fileType: .text

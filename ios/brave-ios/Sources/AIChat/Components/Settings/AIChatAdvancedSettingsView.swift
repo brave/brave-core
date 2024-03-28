@@ -57,8 +57,8 @@ public struct AIChatAdvancedSettingsView: View {
       .navigationViewStyle(.stack)
       .onAppear {
         Task { @MainActor in
-          await model.refreshPremiumStatusOrderCredentials()
-          await viewModel.fetchOrder()
+          await model.refreshPremiumStatus()
+          await viewModel.fetchCredentialSummary()
         }
       }
     } else {
@@ -67,14 +67,18 @@ public struct AIChatAdvancedSettingsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
           Task { @MainActor in
-            await model.refreshPremiumStatusOrderCredentials()
-            await viewModel.fetchOrder()
+            await model.refreshPremiumStatus()
+            await viewModel.fetchCredentialSummary()
           }
         }
     }
   }
 
   private var subscriptionMenuTitle: String {
+    if model.premiumStatus != .active && model.premiumStatus != .activeDisconnected {
+      return Strings.AIChat.goPremiumButtonTitle
+    }
+
     // Display the info from the AppStore
     if let state = viewModel.inAppPurchaseSubscriptionState {
       switch state {
@@ -179,7 +183,8 @@ public struct AIChatAdvancedSettingsView: View {
         } label: {
           LabelView(
             title: Strings.AIChat.advancedSettingsDefaultModelTitle,
-            subtitle: model.currentModel.displayName
+            subtitle: model.models.first(where: { $0.key == model.defaultAIModelKey })?.displayName
+              ?? model.currentModel.displayName
           )
         }.listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
@@ -188,28 +193,34 @@ public struct AIChatAdvancedSettingsView: View {
       }
 
       Section {
-        if viewModel.canDisplaySubscriptionStatus {
+        if viewModel.canDisplaySubscriptionStatus
+          && (model.premiumStatus == .active || model.premiumStatus == .activeDisconnected)
+        {
           if viewModel.isSubscriptionStatusLoading {
             AIChatAdvancedSettingsLabelDetailView(
               title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
               detail: subscriptionStatusTitle
             )
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
             AIChatAdvancedSettingsLabelDetailView(
               title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
               detail: expirationDateTitle
             )
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           } else {
             // Subscription information is loading
             AIChatAdvancedSettingsLabelDetailView(
               title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
               detail: nil
             )
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
             AIChatAdvancedSettingsLabelDetailView(
               title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
               detail: nil
             )
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
 
           // Check subscription is activated with in-app purchase
@@ -223,8 +234,11 @@ public struct AIChatAdvancedSettingsView: View {
                   title: Strings.AIChat.advancedSettingsLinkPurchaseActionTitle,
                   subtitle: Strings.AIChat.advancedSettingsLinkPurchaseActionSubTitle
                 )
+                .contentShape(Rectangle())
               }
             )
+            .buttonStyle(.plain)
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
             if viewModel.isDevReceiptLinkingAvailable {
               Button(
@@ -235,8 +249,11 @@ public struct AIChatAdvancedSettingsView: View {
                   LabelView(
                     title: "[Staging] Link receipt"
                   )
+                  .contentShape(Rectangle())
                 }
               )
+              .buttonStyle(.plain)
+              .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
               Button(
                 action: {
@@ -246,8 +263,11 @@ public struct AIChatAdvancedSettingsView: View {
                   LabelView(
                     title: "[Dev] Link receipt"
                   )
+                  .contentShape(Rectangle())
                 }
               )
+              .buttonStyle(.plain)
+              .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
 
             Button(
@@ -263,8 +283,11 @@ public struct AIChatAdvancedSettingsView: View {
               },
               label: {
                 premiumActionView
+                  .contentShape(Rectangle())
               }
             )
+            .buttonStyle(.plain)
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         } else {
           Button(
@@ -277,57 +300,67 @@ public struct AIChatAdvancedSettingsView: View {
             },
             label: {
               premiumActionView
+                .contentShape(Rectangle())
             }
           )
+          .buttonStyle(.plain)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          .sheet(isPresented: $isPaywallPresented) {
+            AIChatPaywallView(
+              premiumUpgrageSuccessful: { _ in
+                Task { @MainActor in
+                  await model.refreshPremiumStatus()
+                  await viewModel.fetchCredentialSummary()
+                }
+              })
+          }
+          .alert(isPresented: $appStoreConnectionErrorPresented) {
+            Alert(
+              title: Text(Strings.AIChat.appStoreErrorTitle),
+              message: Text(Strings.AIChat.appStoreErrorSubTitle),
+              dismissButton: .default(Text(Strings.OKString))
+            )
+          }
         }
       } header: {
-        Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle)
+        Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle.uppercased())
       }
-      .sheet(isPresented: $isPaywallPresented) {
-        AIChatPaywallView()
-      }
-      .alert(isPresented: $appStoreConnectionErrorPresented) {
-        Alert(
-          title: Text(Strings.AIChat.appStoreErrorTitle),
-          message: Text(Strings.AIChat.appStoreErrorSubTitle),
-          dismissButton: .default(Text(Strings.OKString))
-        )
-      }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       Section {
         Button(
           action: {
-            resetAndClearAlertErrorPresented.toggle()
+            resetAndClearAlertErrorPresented = true
           },
           label: {
             Text(Strings.AIChat.resetLeoDataActionTitle)
               .foregroundColor(Color(.braveBlurpleTint))
+              .frame(maxWidth: .infinity)
+              .contentShape(Rectangle())
           }
         )
-        .frame(maxWidth: .infinity)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .buttonStyle(.plain)
-      }
-      .alert(isPresented: $resetAndClearAlertErrorPresented) {
-        Alert(
-          title: Text(Strings.AIChat.resetLeoDataErrorTitle),
-          message: Text(Strings.AIChat.resetLeoDataErrorDescription),
-          primaryButton: .destructive(Text(Strings.AIChat.resetLeoDataAlertButtonTitle)) {
-            model.clearAndResetData()
-          },
-          secondaryButton: .cancel()
-        )
+        .alert(isPresented: $resetAndClearAlertErrorPresented) {
+          Alert(
+            title: Text(Strings.AIChat.resetLeoDataErrorTitle),
+            message: Text(Strings.AIChat.resetLeoDataErrorDescription),
+            primaryButton: .destructive(Text(Strings.AIChat.resetLeoDataAlertButtonTitle)) {
+              model.clearAndResetData()
+            },
+            secondaryButton: .cancel()
+          )
+        }
       }
     }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .listBackgroundColor(Color(.braveGroupedBackground))
     .listStyle(.insetGrouped)
   }
 
   var premiumActionView: some View {
     HStack {
       LabelView(title: subscriptionMenuTitle)
-      Spacer()
+        .frame(maxWidth: .infinity, alignment: .leading)
+
       Image(braveSystemName: "leo.launch")
         .foregroundStyle(Color(braveSystemName: .iconDefault))
     }

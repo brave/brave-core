@@ -125,7 +125,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   }
 
   // All account info that has the same coin type as this asset's
-  var allAccountsForTokenCoin: [BraveWallet.AccountInfo] = []
+  var allAccountsForToken: [BraveWallet.AccountInfo] = []
+  private var depositableTokens: [BraveWallet.BlockchainToken] = []
 
   init(
     assetRatioService: BraveWalletAssetRatioService,
@@ -201,6 +202,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     updateTask = Task { @MainActor in
       self.isLoadingPrice = true
       self.isLoadingChart = true
+      let allAccounts = await keyringService.allAccounts()
 
       switch assetDetailType {
       case .blockchainToken(let token):
@@ -214,10 +216,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.isSwapSupported = await swapService.isSwapSupported(chainId: token.chainId)
 
         // fetch accounts
-        self.allAccountsForTokenCoin = await keyringService.allAccounts().accounts.filter {
-          $0.coin == token.coin
-        }
-        var updatedAccounts = allAccountsForTokenCoin.map {
+        self.allAccountsForToken = allAccounts.accounts.accountsFor(network: network)
+        var updatedAccounts = allAccountsForToken.map {
           AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
         }
 
@@ -262,7 +262,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         )
         let allTransactions = await txService.allTransactions(
           networksForCoin: [network.coin: [network]],
-          for: allAccountsForTokenCoin
+          for: allAccountsForToken
         )
 
         let ethTransactions = allTransactions.filter { $0.coin == .eth }
@@ -278,7 +278,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
           network: network,
-          accountInfos: allAccountsForTokenCoin,
+          accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetPricesCache,
@@ -297,7 +297,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
           network: network,
-          accountInfos: allAccountsForTokenCoin,
+          accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetPricesCache,
@@ -313,7 +313,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
           network: network,
-          accountInfos: allAccountsForTokenCoin,
+          accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetPricesCache,
@@ -344,10 +344,32 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           for: coinMarket.symbol
         )
 
+        let allNetworks = await rpcService.allNetworksForSupportedCoins()
+        let allUserAssets = assetManager.getAllUserAssetsInNetworkAssets(
+          networks: allNetworks,
+          includingUserDeleted: false
+        )
+        let allUserTokens = allUserAssets.flatMap(\.tokens)
+        let allBlockchainTokens = await blockchainRegistry.allTokens(in: allNetworks)
+          .flatMap(\.tokens)
+        self.depositableTokens = allUserTokens + allBlockchainTokens
+
+        // fetch accounts if this coinMarket is depositable
+        if let depositableToken = convertCoinMarketToDepositableToken(symbol: coinMarket.symbol) {
+          let depositableTokenKeyringId = BraveWallet.KeyringId.keyringId(
+            for: depositableToken.coin,
+            on: depositableToken.chainId
+          )
+          self.allAccountsForToken = allAccounts.accounts.filter {
+            $0.keyringId == depositableTokenKeyringId
+          }
+        } else {
+          self.allAccountsForToken = []
+        }
+
         // below is all not supported from Market tab
         self.isSendSupported = false
         self.isSwapSupported = false
-        self.allAccountsForTokenCoin = []
         self.nonZeroBalanceAccounts = []
         self.transactionSections = []
       }
@@ -368,6 +390,13 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     let buyTokens = allBuyTokensAllOptions.flatMap { $0.value }
     return buyTokens.first(where: { $0.symbol.caseInsensitiveCompare(symbol) == .orderedSame })
       != nil
+  }
+
+  func convertCoinMarketToDepositableToken(symbol: String) -> BraveWallet.BlockchainToken? {
+    let token = depositableTokens.first {
+      $0.symbol.caseInsensitiveCompare(symbol) == .orderedSame
+    }
+    return token
   }
 
   // Return given token's asset prices, btc ratio and price history

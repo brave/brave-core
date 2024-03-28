@@ -59,7 +59,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace payment {
@@ -69,7 +69,7 @@ using PostOrderCallback = base::OnceCallback<void(const mojom::Result result,
 
 class PostOrder {
  public:
-  explicit PostOrder(RewardsEngineImpl& engine);
+  explicit PostOrder(RewardsEngine& engine);
   ~PostOrder();
 
   void Request(const std::vector<mojom::SKUOrderItem>& items,
@@ -90,7 +90,7 @@ class PostOrder {
                  PostOrderCallback callback,
                  mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace payment

@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/logging/event_log_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
@@ -26,7 +26,7 @@ using wallet::GetWalletIf;
 
 namespace wallet_provider {
 
-ConnectExternalWallet::ConnectExternalWallet(RewardsEngineImpl& engine)
+ConnectExternalWallet::ConnectExternalWallet(RewardsEngine& engine)
     : engine_(engine) {}
 
 ConnectExternalWallet::~ConnectExternalWallet() = default;

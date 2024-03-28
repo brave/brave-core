@@ -1,6 +1,11 @@
-# Copyright 2023 The Chromium Authors
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
 
 import("//build/rust/cargo_crate.gni")
 
@@ -8,33 +13,32 @@ cargo_crate("lib") {
   crate_name = "feed_rs"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/feed_rs/v1/crate/src/lib.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/model.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/atom/mod.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/atom/tests.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/fuzz.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/itunes.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/json/mod.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/json/tests.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/mediarss.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/mod.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss0/mod.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss0/tests.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss1/mod.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss1/tests.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss2/mod.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/rss2/tests.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/parser/util.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/util/mod.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/util/test.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/xml/mod.rs",
-    "//brave/third_party/rust/feed_rs/v1/crate/src/xml/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/model.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/atom/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/atom/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/fuzz.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/itunes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/json/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/json/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/mediarss.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss0/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss0/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss1/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss1/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss2/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss2/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/util/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/util/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/xml/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/xml/tests.rs",
   ]
-  inputs = [ "//brave/third_party/rust/feed_rs/v1/crate/README.md" ]
+  inputs = []
 
-  # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2021"
   cargo_pkg_version = "1.3.0"
@@ -46,16 +50,18 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/chrono/v0_4:lib",
+    "//brave/third_party/rust/lazy_static/v1:lib",
     "//brave/third_party/rust/mime/v0_3:lib",
     "//brave/third_party/rust/quick_xml/v0_27:lib",
+    "//brave/third_party/rust/regex/v1:lib",
+    "//brave/third_party/rust/serde/v1:lib",
+    "//brave/third_party/rust/serde_json/v1:lib",
     "//brave/third_party/rust/siphasher/v0_3:lib",
     "//brave/third_party/rust/url/v2:lib",
     "//brave/third_party/rust/uuid/v1:lib",
-    "//third_party/rust/lazy_static/v1:lib",
-    "//third_party/rust/regex/v1:lib",
-    "//third_party/rust/serde/v1:lib",
-    "//third_party/rust/serde_json/v1:lib",
   ]
 }

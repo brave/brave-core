@@ -26,7 +26,7 @@
 // Response body: -
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -41,10 +41,10 @@ struct ResultFor<PatchWallets> {
 class PatchWallets final : public RequestBuilder,
                            public ResponseHandler<PatchWallets> {
  public:
-  static Result ProcessResponse(RewardsEngineImpl& engine,
+  static Result ProcessResponse(RewardsEngine& engine,
                                 const mojom::UrlResponse&);
 
-  PatchWallets(RewardsEngineImpl& engine, std::string&& geo_country);
+  PatchWallets(RewardsEngine& engine, std::string&& geo_country);
   ~PatchWallets() override;
 
  private:

@@ -67,19 +67,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
 
   void OnExternalWalletDisconnected() override;
 
-  void OnUnblindedTokensReady(
-      brave_rewards::RewardsService* rewards_service) override;
-
-  void OnFetchPromotions(
-      RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result,
-      const std::vector<brave_rewards::mojom::PromotionPtr>& list) override;
-
-  void OnPromotionFinished(
-      RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result,
-      brave_rewards::mojom::PromotionPtr promotion) override;
-
   void OnCompleteReset(const bool success) override;
 
   void OnPanelPublisherInfo(RewardsService* rewards_service,

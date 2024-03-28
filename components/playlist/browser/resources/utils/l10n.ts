@@ -20,7 +20,7 @@ export type Message =
   | 'bravePlaylistEmptyFolderMessage'
   | 'bravePlaylistA11YCreatePlaylistFolder'
   | 'bravePlaylistA11YOpenPlaylistSettings'
-  | 'bravePlaylistA11YOpenPlaylistSettings'
+  | 'bravePlaylistA11YClosePanel'
   | 'bravePlaylistA11YPlay'
   | 'bravePlaylistA11YPause'
   | 'bravePlaylistA11YNext'

@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/bitflyer_server.h"
 
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {
 
-BitflyerServer::BitflyerServer(RewardsEngineImpl& engine)
+BitflyerServer::BitflyerServer(RewardsEngine& engine)
     : get_balance_(engine), post_oauth_(engine) {}
 
 BitflyerServer::~BitflyerServer() = default;

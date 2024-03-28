@@ -14,13 +14,13 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
-#include "brave/components/ai_chat/core/browser/models.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 
 namespace {
 
@@ -61,7 +61,11 @@ bool HideLeoAssistantIconIfNot(sidebar::SidebarService* sidebar_service) {
 
 namespace settings {
 
-BraveLeoAssistantHandler::BraveLeoAssistantHandler() = default;
+BraveLeoAssistantHandler::BraveLeoAssistantHandler(
+    std::unique_ptr<ai_chat::AIChatSettingsHelper> settings_helper) {
+  settings_helper_ = std::move(settings_helper);
+}
+
 BraveLeoAssistantHandler::~BraveLeoAssistantHandler() = default;
 
 void BraveLeoAssistantHandler::RegisterMessages() {
@@ -78,10 +82,6 @@ void BraveLeoAssistantHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "resetLeoData",
       base::BindRepeating(&BraveLeoAssistantHandler::HandleResetLeoData,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "getModels",
-      base::BindRepeating(&BraveLeoAssistantHandler::HandleGetModels,
                           base::Unretained(this)));
 }
 
@@ -152,24 +152,11 @@ void BraveLeoAssistantHandler::HandleResetLeoData(
   AllowJavascript();
 }
 
-void BraveLeoAssistantHandler::HandleGetModels(const base::Value::List& args) {
-  auto& models = ai_chat::GetAllModels();
-  base::Value::List models_list;
-  for (auto& model : models) {
-    base::Value::Dict dict;
-    dict.Set("key", model.key);
-    dict.Set("name", model.name);
-    dict.Set("display_name", model.display_name);
-    dict.Set("display_maker", model.display_maker);
-    dict.Set("engine_type", static_cast<int>(model.engine_type));
-    dict.Set("category", static_cast<int>(model.category));
-    dict.Set("is_premium",
-             model.access == ai_chat::mojom::ModelAccess::PREMIUM);
-    models_list.Append(std::move(dict));
-  }
-
-  AllowJavascript();
-  ResolveJavascriptCallback(args[0], models_list);
+void BraveLeoAssistantHandler::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
+        pending_receiver) {
+  DCHECK(settings_helper_);
+  settings_helper_->BindInterface(std::move(pending_receiver));
 }
 
 }  // namespace settings

@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.65.72",
+  "version": "1.66.42",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "eslint": "eslint ./components",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
-    "web-ui-gen-tsconfig": "node components/webpack/gen-tsconfig",
+    "web-ui-gen-tsconfig": "node build/commands/scripts/genTsConfig",
     "web-ui": "webpack --config components/webpack/webpack.config.js",
     "build-storybook": "npm run build -- --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
     "storybook": "storybook dev",
@@ -66,7 +66,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "123.0.6312.29",
+        "tag": "123.0.6312.86",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -81,7 +81,7 @@
     "@storybook/react-webpack5": "7.5.3",
     "@testing-library/react-hooks": "7.0.2",
     "@types/array-move": "2.0.0",
-    "@types/async": "^3.2.20",
+    "@types/async": "3.2.20",
     "@types/chrome": "0.0.241",
     "@types/enzyme": "3.10.13",
     "@types/enzyme-adapter-react-16": "1.0.6",
@@ -117,11 +117,12 @@
     "eslint-plugin-licenses": "1.0.2",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "6.1.1",
+    "eslint-plugin-react-hooks": "4.6.0",
     "ethereum-blockies": "github:brave/blockies#0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b",
     "ethereumjs-util": "7.0.9",
     "file-loader": "6.2.0",
-    "follow-redirects": "1.15.4",
     "font-awesome": "4.7.0",
+    "fork-ts-checker-webpack-plugin": "9.0.2",
     "fs-extra": "8.1.0",
     "https-browserify": "1.0.0",
     "identity-obj-proxy": "3.0.0",
@@ -164,7 +165,7 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.4",
-    "@brave/leo": "github:brave/leo#3cd383209064c3971316d046427b1ce708fe8579",
+    "@brave/leo": "github:brave/leo#adbd7ca81aa7df671c7b16b7d111bef097d22fb9",
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#b667e73c79d1d5b4490eb2fa8925f0293b24c2f7",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@brave/wallet-standard-brave": "0.0.12",

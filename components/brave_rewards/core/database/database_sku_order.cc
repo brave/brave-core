@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_sku_order.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -20,7 +20,7 @@ const char kTableName[] = "sku_order";
 
 }  // namespace
 
-DatabaseSKUOrder::DatabaseSKUOrder(RewardsEngineImpl& engine)
+DatabaseSKUOrder::DatabaseSKUOrder(RewardsEngine& engine)
     : DatabaseTable(engine), items_(engine) {}
 
 DatabaseSKUOrder::~DatabaseSKUOrder() = default;

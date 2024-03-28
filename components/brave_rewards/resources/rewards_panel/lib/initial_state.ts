@@ -23,7 +23,6 @@ export function getInitialState (): HostState {
       vbatDeadline: undefined,
       vbatExpired: false
     },
-    grantCaptchaInfo: null,
     adaptiveCaptchaInfo: null,
     exchangeInfo: {
       currency: 'USD',

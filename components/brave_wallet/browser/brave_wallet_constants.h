@@ -228,6 +228,13 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ORDINALS_WARNING_MESSAGE},
     {"braveWalletUserUnderstandsLabel",
      IDS_BRAVE_WALLET_USER_UNDERSTANDS_LABEL},
+    {"braveWalletChooseRecipient", IDS_BRAVE_WALLET_CHOOSE_RECIPIENT},
+    {"braveWalletMyAddresses", IDS_BRAVE_WALLET_MY_ADDRESSES},
+    {"braveWalletAddressOrDomainPlaceholder",
+     IDS_BRAVE_WALLET_ADDRESS_OR_DOMAIN_PLACEHOLDER},
+    {"braveWalletSendTo", IDS_BRAVE_WALLET_SEND_TO},
+    {"braveWalletInvalidDomainExtension",
+     IDS_BRAVE_WALLET_INVALID_DOMAIN_EXTENSION},
     {"braveWalletSlippageToleranceWarning",
      IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_WARNING},
     {"braveWalletSlippageToleranceExplanation",
@@ -751,8 +758,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletZeroBalanceError", IDS_BRAVE_WALLET_ZERO_BALANCE_ERROR},
     {"braveWalletAddressRequiredError",
      IDS_BRAVE_WALLET_ADDRESS_REQUIRED_ERROR},
-    {"braveWalletInvalidRecipientAddress",
-     IDS_BRAVE_WALLET_INVALID_RECIPIENT_ADDRESS},
     {"braveWalletInvalidZcashUnifiedRecipientAddress",
      IDS_BRAVE_WALLET_INVALID_ZCASH_UNIFIED_RECIPIENT_ADDRESS},
     {"braveWalletChecksumModalTitle", IDS_BRAVE_WALLET_CHECKSUM_MODAL_TITLE},
@@ -1211,6 +1216,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAddAssetNftTabTitle",
      IDS_BRAVE_WALLET_ADD_ASSET_NFT_TAB_TITLE},
     {"braveWalletNftFetchingError", IDS_BRAVE_WALLET_NFT_FETCHING_ERROR},
+    {"braveWalletEditToken", IDS_BRAVE_WALLET_EDIT_TOKEN},
     {"braveWalletFEVMAddressTranslationTitle",
      IDS_BRAVE_WALLET_FEVM_ADDRESS_TRANSLATION_TITLE},
     {"braveWalletFEVMAddressTranslationDescription",
@@ -1422,7 +1428,7 @@ inline constexpr char kZeroExNativeAssetContractAddress[] =
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
 // Jupiter swap constants
-inline constexpr char kJupiterBaseAPIURL[] = "https://quote-api.jup.ag";
+inline constexpr char kJupiterBaseAPIURL[] = "https://jupiter.wallet.brave.com";
 inline constexpr double kSolanaBuyTokenFeePercentage = 0.85;
 inline constexpr char kJupiterReferralKey[] =
     "7yke2kxg6ewNsun61qBkdsLdxuXcUiB8CMB47Zv39Aoy";
@@ -1439,7 +1445,7 @@ inline constexpr char kBlowfishAPIVersionHeader[] = "X-Api-Version";
 inline constexpr char kBlowfishAPIVersion[] = "2023-06-05";
 
 // LiFi constants
-inline constexpr char kLiFiBaseAPIURL[] = "https://li.quest";
+inline constexpr char kLiFiBaseAPIURL[] = "https://lifi.wallet.brave.com";
 inline constexpr char kLiFiIntegratorID[] = "brave";
 inline constexpr char kLiFiNativeAssetContractAddress[] =
     "0x0000000000000000000000000000000000000000";

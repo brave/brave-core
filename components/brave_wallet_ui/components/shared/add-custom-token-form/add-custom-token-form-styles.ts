@@ -142,6 +142,10 @@ export const Input = styled.input`
   padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
   ::placeholder {
     font-family: Poppins;
     font-style: normal;

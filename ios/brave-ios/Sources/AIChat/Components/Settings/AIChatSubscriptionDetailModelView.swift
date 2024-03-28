@@ -52,7 +52,7 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   }
 
   @MainActor
-  func fetchOrder() async {
+  func fetchCredentialSummary() async {
     self.isLoading = true
 
     if storeSDK.leoSubscriptionStatus != nil {
@@ -61,7 +61,7 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
     }
 
     do {
-      let credentialSummary = try await BraveSkusSDK().credentialsSummary(for: .leo)
+      let credentialSummary = try await BraveSkusSDK.shared.credentialsSummary(for: .leo)
       self.credentialSummary = credentialSummary
     } catch {
       Logger.module.error("Error Fetching Skus Credential Summary: \(error)")
@@ -134,7 +134,7 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   }
 
   var inAppPurchaseSubscriptionEnviroment: BraveStoreEnvironment {
-    storeSDK.enviroment
+    storeSDK.environment
   }
 
   var inAppPurchaseProductsLoaded: Bool {
@@ -164,6 +164,6 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   }
 
   var isDevReceiptLinkingAvailable: Bool {
-    storeSDK.enviroment != .production
+    storeSDK.environment != .production
   }
 }

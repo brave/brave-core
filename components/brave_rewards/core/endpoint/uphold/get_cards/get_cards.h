@@ -74,7 +74,7 @@
 // ]
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint::uphold {
 
@@ -83,7 +83,7 @@ using GetCardsCallback =
 
 class GetCards {
  public:
-  explicit GetCards(RewardsEngineImpl& engine);
+  explicit GetCards(RewardsEngine& engine);
   ~GetCards();
 
   void Request(const std::string& token, GetCardsCallback) const;
@@ -97,7 +97,7 @@ class GetCards {
 
   void OnRequest(GetCardsCallback, mojom::UrlResponsePtr) const;
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace endpoint::uphold

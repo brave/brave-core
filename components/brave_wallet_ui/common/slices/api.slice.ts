@@ -46,6 +46,7 @@ import { fiatCurrencyEndpoints } from './endpoints/fiat_currency.endpoints'
 import { sitePermissionEndpoints } from './endpoints/site_permissions.endpoints'
 import { transactionEndpoints } from './endpoints/transaction.endpoints'
 import { swapEndpoints } from './endpoints/swap.endpoints'
+import { encryptionEndpoints } from './endpoints/encryption.endpoints'
 
 export function createWalletApi() {
   // base to add endpoints to
@@ -148,6 +149,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: sitePermissionEndpoints })
       // Brave Swap endpoints
       .injectEndpoints({ endpoints: swapEndpoints })
+      // Encryption endpoints
+      .injectEndpoints({ endpoints: encryptionEndpoints })
   )
 }
 
@@ -159,6 +162,8 @@ export const {
   reducer: walletApiReducer,
   reducerPath: walletApiReducerPath,
   // hooks
+  useAcknowledgePendingAddChainRequestMutation,
+  useAcknowledgeSwitchChainRequestMutation,
   useAddAccountMutation,
   useAddUserTokenMutation,
   useApproveERC20AllowanceMutation,
@@ -180,7 +185,6 @@ export const {
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetActiveOriginConnectedAccountIdsQuery,
-  useGetIsPrivateWindowQuery,
   useGetAddressByteCodeQuery,
   useGetAddressFromNameServiceUrlQuery,
   useGetAllKnownNetworksQuery,
@@ -203,6 +207,7 @@ export const {
   useGetIPFSUrlFromGatewayLikeUrlQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
   useGetIsMetaMaskInstalledQuery,
+  useGetIsPrivateWindowQuery,
   useGetIsTxSimulationOptInStatusQuery,
   useGetIsWalletBackedUpQuery,
   useGetLocalIpfsNodeStatusQuery,
@@ -214,6 +219,10 @@ export const {
   useGetOffRampAssetsQuery,
   useGetOnRampAssetsQuery,
   useGetOnRampFiatCurrenciesQuery,
+  useGetPendingAddChainRequestQuery,
+  useGetPendingDecryptRequestQuery,
+  useGetPendingGetEncryptionPublicKeyRequestQuery,
+  useGetPendingSwitchChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery,
   useGetPriceHistoryQuery,
   useGetPricesHistoryQuery,
@@ -276,6 +285,8 @@ export const {
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
+  useProcessPendingDecryptRequestMutation,
+  useProcessPendingGetEncryptionPublicKeyRequestMutation,
   useRefreshNetworkInfoMutation,
   useRejectTransactionsMutation,
   useRemoveAccountMutation,

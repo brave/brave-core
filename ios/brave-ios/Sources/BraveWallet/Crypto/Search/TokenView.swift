@@ -21,6 +21,10 @@ struct TokenView<ImageView: View>: View {
     self.image = image
   }
 
+  private var accessibilityLabel: String {
+    "\(token.name), \(token.symbol), \(network.chainName)"
+  }
+
   var body: some View {
     HStack(spacing: 8) {
       image()
@@ -32,8 +36,11 @@ struct TokenView<ImageView: View>: View {
           .foregroundColor(Color(.secondaryBraveLabel))
       }
       .font(.footnote)
+      Spacer()
     }
-    .padding(.vertical, 8)
+    .padding(.vertical, 6)
+    .accessibilityElement()
+    .accessibilityLabel(accessibilityLabel)
   }
 }
 

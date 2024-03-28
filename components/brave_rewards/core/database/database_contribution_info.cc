@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -22,28 +22,9 @@ namespace {
 const char kTableName[] = "contribution_info";
 const char kChildTableName[] = "contribution_info_publishers";
 
-mojom::ReportType ConvertRewardsTypeToReportType(
-    const mojom::RewardsType type) {
-  switch (type) {
-    case mojom::RewardsType::AUTO_CONTRIBUTE: {
-      return mojom::ReportType::AUTO_CONTRIBUTION;
-    }
-    case mojom::RewardsType::ONE_TIME_TIP: {
-      return mojom::ReportType::TIP;
-    }
-    case mojom::RewardsType::RECURRING_TIP: {
-      return mojom::ReportType::TIP_RECURRING;
-    }
-    default: {
-      NOTREACHED();
-      return mojom::ReportType::TIP;
-    }
-  }
-}
-
 }  // namespace
 
-DatabaseContributionInfo::DatabaseContributionInfo(RewardsEngineImpl& engine)
+DatabaseContributionInfo::DatabaseContributionInfo(RewardsEngine& engine)
     : DatabaseTable(engine), publishers_(engine) {}
 
 DatabaseContributionInfo::~DatabaseContributionInfo() = default;
@@ -290,115 +271,6 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
   }
 
   std::move(callback).Run(std::move(list));
-}
-
-void DatabaseContributionInfo::GetContributionReport(
-    const mojom::ActivityMonth month,
-    const int year,
-    GetContributionReportCallback callback) {
-  if (year == 0) {
-    engine_->Log(FROM_HERE) << "Year is 0";
-    std::move(callback).Run({});
-    return;
-  }
-
-  auto transaction = mojom::DBTransaction::New();
-
-  const std::string query = base::StringPrintf(
-      "SELECT ci.contribution_id, ci.amount, ci.type, ci.created_at, "
-      "ci.processor FROM %s as ci "
-      "WHERE strftime('%%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
-      "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ? AND step = ?",
-      kTableName);
-
-  auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
-  command->command = query;
-
-  const std::string formatted_month =
-      base::StringPrintf("%02d", base::to_underlying(month));
-
-  BindString(command.get(), 0, formatted_month);
-  BindString(command.get(), 1, std::to_string(year));
-  BindInt(command.get(), 2,
-          static_cast<int>(mojom::ContributionStep::STEP_COMPLETED));
-
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE};
-
-  transaction->commands.push_back(std::move(command));
-
-  engine_->client()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&DatabaseContributionInfo::OnGetContributionReport,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void DatabaseContributionInfo::OnGetContributionReport(
-    GetContributionReportCallback callback,
-    mojom::DBCommandResponsePtr response) {
-  if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    engine_->LogError(FROM_HERE) << "Response is not ok";
-    std::move(callback).Run({});
-    return;
-  }
-
-  std::vector<mojom::ContributionInfoPtr> list;
-  std::vector<std::string> contribution_ids;
-  for (auto const& record : response->result->get_records()) {
-    auto info = mojom::ContributionInfo::New();
-    auto* record_pointer = record.get();
-
-    info->contribution_id = GetStringColumn(record_pointer, 0);
-    info->amount = GetDoubleColumn(record_pointer, 1);
-    info->type =
-        static_cast<mojom::RewardsType>(GetInt64Column(record_pointer, 2));
-    info->created_at = GetInt64Column(record_pointer, 3);
-    info->processor = static_cast<mojom::ContributionProcessor>(
-        GetIntColumn(record_pointer, 4));
-
-    contribution_ids.push_back(info->contribution_id);
-    list.push_back(std::move(info));
-  }
-
-  publishers_.GetContributionPublisherPairList(
-      contribution_ids,
-      base::BindOnce(
-          &DatabaseContributionInfo::OnGetContributionReportPublishers,
-          weak_factory_.GetWeakPtr(), std::move(list), std::move(callback)));
-}
-
-void DatabaseContributionInfo::OnGetContributionReportPublishers(
-    std::vector<mojom::ContributionInfoPtr> contributions,
-    GetContributionReportCallback callback,
-    std::vector<ContributionPublisherInfoPair> publisher_pair_list) {
-  std::vector<mojom::ContributionReportInfoPtr> report_list;
-  for (const auto& contribution : contributions) {
-    auto report = mojom::ContributionReportInfo::New();
-    report->contribution_id = contribution->contribution_id;
-    report->amount = contribution->amount;
-    report->type = ConvertRewardsTypeToReportType(contribution->type);
-    report->processor = contribution->processor;
-    report->created_at = contribution->created_at;
-
-    report_list.push_back(std::move(report));
-  }
-
-  for (auto& report : report_list) {
-    for (auto& item : publisher_pair_list) {
-      if (item.first != report->contribution_id) {
-        continue;
-      }
-
-      report->publishers.push_back(std::move(item.second));
-    }
-  }
-
-  std::move(callback).Run(std::move(report_list));
 }
 
 void DatabaseContributionInfo::GetNotCompletedRecords(

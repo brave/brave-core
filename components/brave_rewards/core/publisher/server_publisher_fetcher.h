@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace publisher {
 
@@ -25,7 +25,7 @@ namespace publisher {
 // whether a server publisher info record is expired
 class ServerPublisherFetcher {
  public:
-  explicit ServerPublisherFetcher(RewardsEngineImpl& engine);
+  explicit ServerPublisherFetcher(RewardsEngine& engine);
 
   ServerPublisherFetcher(const ServerPublisherFetcher&) = delete;
   ServerPublisherFetcher& operator=(const ServerPublisherFetcher&) = delete;
@@ -60,7 +60,7 @@ class ServerPublisherFetcher {
   void RunCallbacks(const std::string& publisher_key,
                     mojom::ServerPublisherInfoPtr server_info);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   std::map<std::string, FetchCallbackVector> callback_map_;
   endpoint::PrivateCDNServer private_cdn_server_;
   base::WeakPtrFactory<ServerPublisherFetcher> weak_factory_{this};

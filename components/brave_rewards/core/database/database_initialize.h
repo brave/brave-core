@@ -11,13 +11,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace database {
 
 class DatabaseInitialize {
  public:
-  explicit DatabaseInitialize(RewardsEngineImpl& engine);
+  explicit DatabaseInitialize(RewardsEngine& engine);
   ~DatabaseInitialize();
 
   void Start(ResultCallback callback);
@@ -26,7 +26,7 @@ class DatabaseInitialize {
   void OnInitialize(ResultCallback callback,
                     mojom::DBCommandResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   DatabaseMigration migration_;
 };
 

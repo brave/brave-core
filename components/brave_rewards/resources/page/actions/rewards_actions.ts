@@ -49,28 +49,6 @@ export const onAutoContributeProperties = (properties: any) => action(types.ON_A
   properties
 })
 
-export const fetchPromotions = () => action(types.FETCH_PROMOTIONS)
-
-export const onPromotions = (properties: Rewards.PromotionResponse) => action(types.ON_PROMOTIONS, {
-  properties
-})
-
-export const claimPromotion = (promotionId: string) => action(types.CLAIM_PROMOTION, {
-  promotionId
-})
-
-export const onPromotionClaimStarted = (promotionId: string) => action(types.ON_PROMOTION_CLAIM_STARTED, {
-  promotionId
-})
-
-export const onPromotionFinish = (properties: Rewards.PromotionFinish) => action(types.ON_PROMOTION_FINISH, {
-  properties
-})
-
-export const deletePromotion = (promotionId: string) => action(types.DELETE_PROMOTION, {
-  promotionId
-})
-
 export const onModalResetClose = () => action(types.ON_MODAL_RESET_CLOSE)
 
 export const onModalResetOpen = () => action(types.ON_MODAL_RESET_OPEN)
@@ -266,23 +244,7 @@ export const onConnectExternalWallet = (result: mojom.ConnectExternalWalletResul
 
 export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
 
-export const getMonthlyReport = (month?: number, year?: number) => action(types.GET_MONTHLY_REPORT, {
-  month,
-  year
-})
-
-export const onMonthlyReport = (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport }) => action(types.ON_MONTHLY_REPORT, {
-  result: properties.result,
-  month: properties.month,
-  year: properties.year,
-  report: properties.report
-})
-
 export const onReconcileStampReset = () => action(types.ON_RECONCILE_STAMP_RESET)
-
-export const getMonthlyReportIds = () => action(types.GET_MONTHLY_REPORT_IDS)
-
-export const onMonthlyReportIds = (ids: string[]) => action(types.ON_MONTHLY_REPORT_IDS, ids)
 
 export const dismissPromoPrompt = (promo: string) => action(types.DISMISS_PROMO_PROMPT, {
   promo

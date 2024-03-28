@@ -5,8 +5,13 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/requests/tracked_request.h"
 
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_complete.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_error.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_redirect.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_start.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/graph_node.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_resource.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/wtf/text/base64.h"
@@ -16,16 +21,22 @@ namespace brave_page_graph {
 TrackedRequest::~TrackedRequest() = default;
 
 // Constructor for when we see the outgoing request first.
-TrackedRequest::TrackedRequest(const InspectorId request_id,
+TrackedRequest::TrackedRequest(PageGraphContext* page_graph_context,
+                               const InspectorId request_id,
                                GraphNode* requester,
                                NodeResource* resource,
                                const String& resource_type)
-    : request_id_(request_id),
-      resource_type_(resource_type),
-      resource_(resource) {
-  CHECK(requester != nullptr);
-  CHECK(resource != nullptr);
+    : page_graph_context_(page_graph_context),
+      request_id_(request_id),
+      resource_type_(resource_type) {
+  DCHECK(page_graph_context_);
+  DCHECK(requester);
+  DCHECK(resource);
   requesters_.push_back(requester);
+  resource_ = resource;
+
+  page_graph_context_->AddEdge<EdgeRequestStart>(requester, resource,
+                                                 request_id, resource_type);
 }
 
 bool TrackedRequest::IsComplete() const {
@@ -33,8 +44,7 @@ bool TrackedRequest::IsComplete() const {
     return true;
   }
 
-  if (requesters_.size() == 0 || resource_ == nullptr ||
-      request_status_ == RequestStatus::kUnknown) {
+  if (requesters_.empty() || !resource_ || !request_status_) {
     return false;
   }
 
@@ -84,22 +94,44 @@ void TrackedRequest::AddRequest(GraphNode* requester,
   requesters_.push_back(requester);
 }
 
+void TrackedRequest::AddRequestRedirect(
+    const blink::KURL& url,
+    const blink::ResourceResponse& redirect_response,
+    NodeResource* resource) {
+  ResponseMetadata metadata;
+  metadata.ProcessResourceResponse(redirect_response);
+  page_graph_context_->AddEdge<EdgeRequestRedirect>(resource_, resource,
+                                                    request_id_, metadata);
+
+  requesters_.push_back(resource_);
+  resource_ = resource;
+}
+
 void TrackedRequest::SetIsError() {
   // Check that we haven't tried to set error information after we've
   // already set information about a successful response.
-  CHECK(request_status_ == RequestStatus::kUnknown ||
-        request_status_ == RequestStatus::kError);
+  CHECK(!request_status_ || request_status_ == RequestStatus::kError);
+  const bool status_was_empty = !request_status_;
   request_status_ = RequestStatus::kError;
   FinishResponseBodyHash();
+  if (status_was_empty) {
+    page_graph_context_->AddEdge<EdgeRequestError>(
+        resource_, requesters_.front(), request_id_, GetResponseMetadata());
+  }
 }
 
 void TrackedRequest::SetCompleted() {
   // Check that we haven't tried to set "successful response" information
   // after we've already set information about an error.
-  CHECK(request_status_ == RequestStatus::kUnknown ||
-        request_status_ == RequestStatus::kSuccess);
+  CHECK(!request_status_ || request_status_ == RequestStatus::kSuccess);
+  const bool status_was_empty = !request_status_;
   request_status_ = RequestStatus::kSuccess;
   FinishResponseBodyHash();
+  if (status_was_empty) {
+    page_graph_context_->AddEdge<EdgeRequestComplete>(
+        resource_, requesters_.front(), request_id_, resource_type_,
+        GetResponseMetadata(), GetResponseBodyHash());
+  }
 }
 
 ResponseMetadata& TrackedRequest::GetResponseMetadata() {

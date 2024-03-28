@@ -12,13 +12,13 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::uphold {
 
-PostCards::PostCards(RewardsEngineImpl& engine) : engine_(engine) {}
+PostCards::PostCards(RewardsEngine& engine) : engine_(engine) {}
 
 PostCards::~PostCards() = default;
 

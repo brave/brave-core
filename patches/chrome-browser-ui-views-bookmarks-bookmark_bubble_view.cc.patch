@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-index 6c809c86fbac23a26151b19b03159627320a294e..a4b907f598832a782fba10629f19fd2fc4a77ba4 100644
+index 20c89001be4040b2691d4cfcade27120b7481543..4062268657297eef0122a40f3c8726d220349417 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-@@ -378,6 +378,7 @@ void BookmarkBubbleView::ShowBubble(
+@@ -373,6 +373,7 @@ void BookmarkBubbleView::ShowBubble(
                                         bookmark_node);
  
    bool show_simplified_flow = !already_bookmarked;
@@ -10,7 +10,7 @@ index 6c809c86fbac23a26151b19b03159627320a294e..a4b907f598832a782fba10629f19fd2f
  
    auto bubble_delegate_unique = std::make_unique<BookmarkBubbleDelegate>(
        std::move(delegate), browser, url, show_simplified_flow);
-@@ -509,6 +510,7 @@ void BookmarkBubbleView::ShowBubble(
+@@ -504,6 +505,7 @@ void BookmarkBubbleView::ShowBubble(
    auto bubble = std::make_unique<views::BubbleDialogModelHost>(
        std::move(dialog_model), anchor_view, views::BubbleBorder::TOP_RIGHT);
    bookmark_bubble_ = bubble.get();

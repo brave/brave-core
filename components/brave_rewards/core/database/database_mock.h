@@ -18,7 +18,7 @@ namespace database {
 
 class MockDatabase : public Database {
  public:
-  explicit MockDatabase(RewardsEngineImpl& engine);
+  explicit MockDatabase(RewardsEngine& engine);
 
   ~MockDatabase() override;
 
@@ -29,11 +29,6 @@ class MockDatabase : public Database {
   MOCK_METHOD2(GetSpendableUnblindedTokensByBatchTypes,
                void(const std::vector<mojom::CredsBatchType>& batch_types,
                     GetUnblindedTokenListCallback callback));
-
-  MOCK_METHOD2(SavePromotion,
-               void(mojom::PromotionPtr info, ResultCallback callback));
-
-  MOCK_METHOD1(GetAllPromotions, void(GetAllPromotionsCallback callback));
 };
 
 }  // namespace database

@@ -128,14 +128,6 @@ class RewardsInternalsDebugViewController: TableViewController {
       .init(
         rows: [
           Row(
-            text: Strings.RewardsInternals.promotionsTitle,
-            selection: { [unowned self] in
-              let controller = RewardsInternalsPromotionListController(rewardsAPI: self.rewardsAPI)
-              self.navigationController?.pushViewController(controller, animated: true)
-            },
-            accessory: .disclosureIndicator
-          ),
-          Row(
             text: Strings.RewardsInternals.contributionsTitle,
             selection: { [unowned self] in
               let controller = RewardsInternalsContributionListController(

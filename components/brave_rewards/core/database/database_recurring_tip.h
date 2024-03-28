@@ -19,7 +19,7 @@ namespace database {
 
 class DatabaseRecurringTip : public DatabaseTable {
  public:
-  explicit DatabaseRecurringTip(RewardsEngineImpl& engine);
+  explicit DatabaseRecurringTip(RewardsEngine& engine);
   ~DatabaseRecurringTip() override;
 
   // DEPRECATED

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "rewards.mojom.objc.h"
 
-@class RewardsObserver, PromotionSolution, RewardsNotification;
+@class RewardsObserver, RewardsNotification;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -144,32 +144,6 @@ OBJC_EXPORT
 
 - (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId
     NS_SWIFT_NAME(removeRecurringTip(publisherId:));
-
-#pragma mark - Promotions
-
-@property(nonatomic, readonly)
-    NSArray<BraveRewardsPromotion*>* pendingPromotions;
-
-@property(nonatomic, readonly)
-    NSArray<BraveRewardsPromotion*>* finishedPromotions;
-
-/// Updates `pendingPromotions` and `finishedPromotions` based on the database
-- (void)updatePendingAndFinishedPromotions:(nullable void (^)())completion;
-
-- (void)fetchPromotions:
-    (nullable void (^)(NSArray<BraveRewardsPromotion*>* grants))completion;
-
-- (void)claimPromotion:(NSString*)promotionId
-             publicKey:(NSString*)deviceCheckPublicKey
-            completion:(void (^)(BraveRewardsResult result,
-                                 NSString* _Nonnull nonce))completion;
-
-- (void)attestPromotion:(NSString*)promotionId
-               solution:(PromotionSolution*)solution
-             completion:
-                 (nullable void (^)(BraveRewardsResult result,
-                                    BraveRewardsPromotion* _Nullable promotion))
-                     completion;
 
 #pragma mark - Misc
 

@@ -30,13 +30,6 @@ export const onContributions = (contributions: RewardsInternals.ContributionInfo
     contributions
   })
 
-export const getPromotions = () => action(types.GET_PROMOTIONS)
-
-export const onPromotions = (promotions: RewardsInternals.Promotion[]) =>
-  action(types.ON_PROMOTIONS, {
-    promotions
-  })
-
 export const getPartialLog = () => action(types.GET_PARTIAL_LOG)
 
 export const onGetPartialLog = (log: string) =>

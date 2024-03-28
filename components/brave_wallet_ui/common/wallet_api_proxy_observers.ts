@@ -49,7 +49,13 @@ export function makeJsonRpcServiceObserver(store: Store) {
         store.dispatch(walletApi.endpoints.invalidateSelectedChain.initiate())
       },
       onAddEthereumChainRequestCompleted: function (chainId, error) {
-        // TODO: Handle this event.
+        // update add/switch chain requests query data
+        store.dispatch(
+          walletApi.util.invalidateTags([
+            'PendingAddChainRequests',
+            'PendingSwitchChainRequests'
+          ])
+        )
       },
       onIsEip1559Changed: function (chainId, isEip1559) {
         store.dispatch(

@@ -58,19 +58,22 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     BraveWallet.BitcoinBalance | undefined
   >()
 
-  React.useEffect(() => {
-    fetchBalance()
-  }, [])
-
-  const fetchBalance = async () => {
+  // methods
+  const fetchBalance = React.useCallback(async () => {
     setLoading(true)
     const result = await getAPIProxy().bitcoinWalletService.getBalance(
       props.accountId
     )
     setBalance(result.balance || undefined)
     setLoading(false)
-  }
+  }, [props.accountId])
 
+  // effects
+  React.useEffect(() => {
+    fetchBalance()
+  }, [fetchBalance])
+
+  // render
   return (
     <BalanceSection>
       <h2>getBalance</h2>
@@ -117,17 +120,13 @@ const GetBitcoinAccountInfoSection: React.FC<
     BraveWallet.BitcoinAccountInfo | undefined
   >()
 
-  React.useEffect(() => {
-    fetchBitcoinAccountInfo()
-  }, [])
-
-  const fetchBitcoinAccountInfo = async () => {
+  const fetchBitcoinAccountInfo = React.useCallback(async () => {
     setLoading(true)
     const result =
       await getAPIProxy().bitcoinWalletService.getBitcoinAccountInfo(accountId)
     setBitcoinAccountInfo(result.accountInfo || undefined)
     setLoading(false)
-  }
+  }, [accountId])
 
   const keyId = (keyId: BraveWallet.BitcoinKeyId | undefined) => {
     if (!keyId) {
@@ -141,6 +140,12 @@ const GetBitcoinAccountInfoSection: React.FC<
     fetchBitcoinAccountInfo()
   }
 
+  // effects
+  React.useEffect(() => {
+    fetchBitcoinAccountInfo()
+  }, [fetchBitcoinAccountInfo])
+
+  // render
   return (
     <BitcoinAccountInfoSection>
       <h2>getBitcoinAccountInfo</h2>

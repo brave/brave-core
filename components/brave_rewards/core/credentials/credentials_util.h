@@ -22,7 +22,7 @@ using challenge_bypass_ristretto::Token;
 
 namespace brave_rewards::internal {
 
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace credential {
 
@@ -45,7 +45,7 @@ std::vector<std::string> UnBlindCredsMock(const mojom::CredsBatch& creds);
 std::string ConvertRewardTypeToString(const mojom::RewardsType type);
 
 base::Value::List GenerateCredentials(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     const std::vector<mojom::UnblindedToken>& token_list,
     const std::string& body);
 

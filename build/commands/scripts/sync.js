@@ -20,6 +20,7 @@ program
   .option('--target_android_base <target_android_base>', 'target Android OS level for apk or aab (classic, modern, mono)')
   .option('--init', 'initialize all dependencies')
   .option('--force', 'force reset all projects to origin/ref')
+  .option('--fetch_all', 'fetch all tags and branch heads')
   .option('--sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
   .option('--ignore_chromium', 'do not update chromium version even if it is stale [deprecated, use --sync_chromium=false]')
   .option('-D, --delete_unused_deps', 'delete from the working copy any dependencies that have been removed since the last sync')
@@ -86,10 +87,7 @@ async function RunCommand() {
   }
 
   Log.progressScope('gclient sync', () => {
-    const syncWithForce = program.init || program.force
-
-    const didSyncChromium = syncUtil.syncChromium(
-      syncWithForce, program.sync_chromium, program.delete_unused_deps)
+    const didSyncChromium = syncUtil.syncChromium(program)
     if (!didSyncChromium || program.delete_unused_deps) {
       // If no Chromium sync was done, run sync inside `brave` to sync Brave DEPS.
       syncBrave(program)

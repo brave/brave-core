@@ -31,6 +31,7 @@
 #include "brave/components/commander/browser/commander_item_model.h"
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/commander/common/features.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -175,12 +176,24 @@ void CommanderService::UpdateTextFromCurrentBrowserOmnibox() {
 
 void CommanderService::UpdateText(const std::u16string& text, bool force) {
   auto* browser = chrome::FindLastActiveWithProfile(profile_);
-  if (!base::StartsWith(text, kCommandPrefix)) {
+  if (!browser) {
     return;
   }
 
-  std::u16string trimmed_text(base::TrimWhitespace(
-      text.substr(kCommandPrefix.size()), base::TRIM_LEADING));
+  auto has_prefix = base::StartsWith(text, kCommandPrefix);
+  if (!has_prefix && !browser->profile()->GetPrefs()->GetBoolean(
+                         omnibox::kCommanderSuggestionsEnabled)) {
+    return;
+  }
+
+  if (text.empty()) {
+    return;
+  }
+
+  std::u16string trimmed_text(
+      has_prefix ? base::TrimWhitespace(text.substr(kCommandPrefix.size()),
+                                        base::TRIM_LEADING)
+                 : text);
 
   // If nothing has changed (and we aren't forcing things), don't update the
   // commands.

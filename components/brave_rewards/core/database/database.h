@@ -25,8 +25,6 @@
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/database/database_initialize.h"
 #include "brave/components/brave_rewards/core/database/database_media_publisher_info.h"
-#include "brave/components/brave_rewards/core/database/database_multi_tables.h"
-#include "brave/components/brave_rewards/core/database/database_promotion.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
 #include "brave/components/brave_rewards/core/database/database_recurring_tip.h"
@@ -38,13 +36,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace database {
 
 class Database {
  public:
-  explicit Database(RewardsEngineImpl& engine);
+  explicit Database(RewardsEngine& engine);
   virtual ~Database();
 
   void Initialize(ResultCallback callback);
@@ -105,10 +103,6 @@ class Database {
   void GetOneTimeTips(const mojom::ActivityMonth month,
                       const int year,
                       GetOneTimeTipsCallback callback);
-
-  void GetContributionReport(const mojom::ActivityMonth month,
-                             const int year,
-                             GetContributionReportCallback callback);
 
   void GetNotCompletedContributions(ContributionInfoListCallback callback);
 
@@ -195,44 +189,6 @@ class Database {
 
   void GetMediaPublisherInfo(const std::string& media_key,
                              PublisherInfoCallback callback);
-
-  /**
-   * MULTI TABLE
-   * for queries that are not limited to one table
-   */
-  void GetTransactionReport(const mojom::ActivityMonth month,
-                            const int year,
-                            GetTransactionReportCallback callback);
-
-  /**
-   * PROMOTION
-   */
-  virtual void SavePromotion(mojom::PromotionPtr info, ResultCallback callback);
-
-  void GetPromotion(const std::string& id, GetPromotionCallback callback);
-
-  virtual void GetAllPromotions(GetAllPromotionsCallback callback);
-
-  void SavePromotionClaimId(const std::string& promotion_id,
-                            const std::string& claim_id,
-                            ResultCallback callback);
-
-  void UpdatePromotionStatus(const std::string& promotion_id,
-                             mojom::PromotionStatus status,
-                             ResultCallback callback);
-
-  void UpdatePromotionsStatus(const std::vector<std::string>& promotion_ids,
-                              mojom::PromotionStatus status,
-                              ResultCallback callback);
-
-  void PromotionCredentialCompleted(const std::string& promotion_id,
-                                    ResultCallback callback);
-
-  void GetPromotionList(const std::vector<std::string>& ids,
-                        GetPromotionListCallback callback);
-
-  void UpdatePromotionsBlankPublicKey(const std::vector<std::string>& ids,
-                                      ResultCallback callback);
 
   /**
    * PUBLISHER INFO
@@ -350,7 +306,7 @@ class Database {
       GetUnblindedTokenListCallback callback);
 
  private:
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   DatabaseInitialize initialize_;
   DatabaseActivityInfo activity_info_;
   DatabaseBalanceReport balance_report_;
@@ -359,9 +315,7 @@ class Database {
   DatabaseCredsBatch creds_batch_;
   DatabaseEventLog event_log_;
   DatabaseExternalTransactions external_transactions_;
-  DatabasePromotion promotion_;
   DatabaseMediaPublisherInfo media_publisher_info_;
-  DatabaseMultiTables multi_tables_;
   DatabasePublisherInfo publisher_info_;
   DatabasePublisherPrefixList publisher_prefix_list_;
   DatabaseRecurringTip recurring_tip_;

@@ -10,7 +10,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "brave/components/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/challenge_bypass_ristretto/signed_token.h"
@@ -188,7 +188,7 @@ std::string ConvertRewardTypeToString(const mojom::RewardsType type) {
 }
 
 base::Value::List GenerateCredentials(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     const std::vector<mojom::UnblindedToken>& token_list,
     const std::string& body) {
   base::Value::List credentials;

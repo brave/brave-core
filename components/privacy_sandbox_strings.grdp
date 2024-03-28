@@ -210,7 +210,7 @@
   <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_DESCRIPTION_EMPTY_TEXT_HEADING" desc="A description that appear beneath the 'Blocked topics' title. The ad topics setting could be on but no topics appears in the list. This is part of the text that explains why.">
     No blocked topics
   </message>
-  <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCK_TOPIC" desc="A button associated with each of the user's topics. If the user clicks 'Block', that topic will get moved to the 'Topics you blocked' page.">
+  <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCK_TOPIC" desc="A button associated with each of the user's topics. If the user clicks 'Block', that topic will get moved to the 'Topics you blocked' page." formatter_data="android_java">
     Block
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCK_TOPIC_A11Y_LABEL" desc="A button label read by screen readers that indicates which topic will get blocked. The full 'pool of topics' is published at https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">
@@ -1116,7 +1116,7 @@
     Social Networks
   </message>
   <message name="IDS_PRIVACY_SANDBOX_TOPICS_TAXONOMY_V1_TOPIC_ID_254" desc="Taxonomy Member. Meaning: [Umbrella category that encompasses social groups and social issues based on personal identity, cultural traditions, family, faith and personal beliefs; &quot;special interest&quot; groups and communities; communities based on age, gender, ethnicity, religion, political affiliation or lifestyle choice; the scientific study of profiles and social groups in the &quot;social sciences&quot;.] Existing Ref: http://tc-message/message/FatCatTaxonomy_Verticals4/5098251294806643822">
-    Profiles &amp; Society
+    People &amp; Society
   </message>
   <message name="IDS_PRIVACY_SANDBOX_TOPICS_TAXONOMY_V1_TOPIC_ID_255" desc="Taxonomy Member. Meaning: [interpersonal relationships, including family, friendship and romance] Existing Ref: http://tc-message/message/FatCatTaxonomy_Verticals4/1748891129952062597">
     Family &amp; Relationships

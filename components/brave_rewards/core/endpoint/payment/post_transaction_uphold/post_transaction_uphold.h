@@ -43,7 +43,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace payment {
@@ -53,7 +53,7 @@ using PostTransactionUpholdCallback =
 
 class PostTransactionUphold {
  public:
-  explicit PostTransactionUphold(RewardsEngineImpl& engine);
+  explicit PostTransactionUphold(RewardsEngine& engine);
   ~PostTransactionUphold();
 
   void Request(const mojom::SKUTransaction& transaction,
@@ -69,7 +69,7 @@ class PostTransactionUphold {
   void OnRequest(PostTransactionUpholdCallback callback,
                  mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace payment

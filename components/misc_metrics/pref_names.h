@@ -19,6 +19,12 @@ inline constexpr char kMiscMetricsPagesLoadedCount[] =
     "brave.core_metrics.pages_loaded";
 inline constexpr char kMiscMetricsPagesReloadedCount[] =
     "brave.core_metrics.pages_reloaded";
+inline constexpr char kMiscMetricsHTTPAllowedLoadCount[] =
+    "brave.misc_metrics.http_allowed_pages_loaded";
+inline constexpr char kMiscMetricsFailedHTTPSUpgradeCount[] =
+    "brave.misc_metrics.failed_https_upgrades";
+inline constexpr char kMiscMetricsFailedHTTPSUpgradeMetricAddedTime[] =
+    "brave.misc_metrics.failed_https_upgrade_metric_added_time";
 inline constexpr char kMiscMetricsPrivacyHubViews[] =
     "brave.misc_metrics.privacy_hub_views";
 inline constexpr char kMiscMetricsOpenTabsStorage[] =
@@ -53,6 +59,9 @@ inline constexpr char kMiscMetricsNewTabLocationBarEntriesStorage[] =
     "brave.misc_metrics.new_tab_location_bar_entries_storage";
 inline constexpr char kMiscMetricsTotalLocationBarEntriesStorage[] =
     "brave.misc_metrics.total_location_bar_entries_storage";
+
+inline constexpr char kMiscMetricsDayZeroAtInstall[] =
+    "brave.misc_metrics.day_zero_at_install";
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_

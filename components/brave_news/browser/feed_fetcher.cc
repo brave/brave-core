@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
-#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/location.h"
@@ -23,7 +22,7 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/channels_controller.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
@@ -106,33 +105,35 @@ std::tuple<FeedItems, ETags> FeedFetcher::CombineFeedSourceResults(
 
 FeedFetcher::FeedFetcher(
     PublishersController& publishers_controller,
-    ChannelsController& channels_controller,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : publishers_controller_(publishers_controller),
-      channels_controller_(channels_controller),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       direct_feed_fetcher_(url_loader_factory) {}
 
 FeedFetcher::~FeedFetcher() = default;
 
-void FeedFetcher::FetchFeed(FetchFeedCallback callback) {
+void FeedFetcher::FetchFeed(const BraveNewsSubscriptions& subscriptions,
+                            FetchFeedCallback callback) {
   VLOG(1) << __FUNCTION__;
 
   publishers_controller_->GetOrFetchPublishers(
-      base::BindOnce(&FeedFetcher::OnFetchFeedFetchedPublishers,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      subscriptions, base::BindOnce(&FeedFetcher::OnFetchFeedFetchedPublishers,
+                                    weak_ptr_factory_.GetWeakPtr(),
+                                    subscriptions, std::move(callback)));
 }
 
-void FeedFetcher::OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
-                                               Publishers publishers) {
+void FeedFetcher::OnFetchFeedFetchedPublishers(
+    const BraveNewsSubscriptions& subscriptions,
+    FetchFeedCallback callback,
+    Publishers publishers) {
   if (publishers.empty()) {
     LOG(ERROR) << "Brave News Publisher list was empty";
     std::move(callback).Run({}, {});
     return;
   }
 
-  auto locales = GetMinimalLocalesSet(channels_controller_->GetChannelLocales(),
-                                      publishers);
+  auto locales =
+      GetMinimalLocalesSet(subscriptions.GetChannelLocales(), publishers);
   std::vector<mojom::PublisherPtr> direct_publishers;
   for (const auto& [_, publisher] : publishers) {
     if (publisher->type != mojom::PublisherType::DIRECT_SOURCE) {
@@ -235,21 +236,25 @@ void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void FeedFetcher::IsUpdateAvailable(ETags etags,
+void FeedFetcher::IsUpdateAvailable(const BraveNewsSubscriptions& subscriptions,
+                                    ETags etags,
                                     UpdateAvailableCallback callback) {
   VLOG(1) << __FUNCTION__;
 
-  publishers_controller_->GetOrFetchPublishers(base::BindOnce(
-      &FeedFetcher::OnIsUpdateAvailableFetchedPublishers,
-      weak_ptr_factory_.GetWeakPtr(), std::move(etags), std::move(callback)));
+  publishers_controller_->GetOrFetchPublishers(
+      subscriptions,
+      base::BindOnce(&FeedFetcher::OnIsUpdateAvailableFetchedPublishers,
+                     weak_ptr_factory_.GetWeakPtr(), subscriptions,
+                     std::move(etags), std::move(callback)));
 }
 
 void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
+    const BraveNewsSubscriptions& subscriptions,
     ETags etags,
     UpdateAvailableCallback callback,
     Publishers publishers) {
-  auto locales = GetMinimalLocalesSet(channels_controller_->GetChannelLocales(),
-                                      publishers);
+  auto locales =
+      GetMinimalLocalesSet(subscriptions.GetChannelLocales(), publishers);
   VLOG(1) << __FUNCTION__ << " - going to fetch feed items for "
           << locales.size() << " locales.";
   auto check_completed_callback = base::BarrierCallback<bool>(

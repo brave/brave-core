@@ -50,9 +50,7 @@ void Conversions::RemoveObserver(ConversionsObserver* observer) {
 
 void Conversions::MaybeConvert(const std::vector<GURL>& redirect_chain,
                                const std::string& html) {
-  if (redirect_chain.empty()) {
-    return;
-  }
+  CHECK(!redirect_chain.empty());
 
   BLOG(1, "Checking for conversions");
 

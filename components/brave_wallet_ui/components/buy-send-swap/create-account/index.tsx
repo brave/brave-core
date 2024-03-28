@@ -84,7 +84,9 @@ export const CreateAccountTab = ({
   }, [
     isWalletLocked,
     showUnlock,
-    accountNetwork,
+    addAccount,
+    accountNetwork.coin,
+    accountNetwork.chainId,
     suggestedAccountName,
     onCreated
   ])

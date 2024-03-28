@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <vector>
@@ -225,11 +226,13 @@ class AdsService : public KeyedService {
   // Invoked when a browser tab is updated with the specified `redirect_chain`
   // containing a list of redirect URLs that occurred on the way to the current
   // page. The current page is the last one in the list (so even when there's no
-  // redirect, there should be one entry in the list). `is_visible` should be
-  // set to `true` if `tab_id` refers to the currently visible tab otherwise
-  // should be set to `false`.
+  // redirect, there should be one entry in the list). `is_error_page` should be
+  // set to `true` if an error occurred otherwise should be set to `false`.
+  // `is_visible` should be set to `true` if `tab_id` refers to the currently
+  // visible tab otherwise should be set to `false`.
   virtual void NotifyTabDidChange(int32_t tab_id,
                                   const std::vector<GURL>& redirect_chain,
+                                  bool is_error_page,
                                   bool is_visible) = 0;
 
   // Invoked when a browser tab with the specified `tab_id` is closed.

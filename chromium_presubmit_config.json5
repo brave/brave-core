@@ -94,7 +94,6 @@
       "components/permissions/permission_lifetime_utils\\.cc",
       "components/tor/tor_launcher_factory\\.cc",
       "components/webcompat_reporter/browser/webcompat_report_uploader\\.cc",
-      "ios/browser/api/brave_rewards/promotion_solution\\.mm",
     ],
     "CheckUniquePtrOnUpload": [
       "components/brave_sync/qr_code_data\\.cc",
@@ -147,6 +146,7 @@
     ],
     // A temporary fix to silence a failing presubmit check on file renames.
     "CheckStableMojomChanges": [
+      "components/brave_rewards/common/mojom/rewards_engine\\.mojom",
       "components/services/bat_ads/public/interfaces/bat_ads\\.mojom",
     ],
     "CheckWebDevStyle": [

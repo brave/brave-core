@@ -51,17 +51,6 @@ const char kAdBlockFilterListCatalogComponentBase64PublicKey[] =
     "1H8y9SR970LqsUMozu3ioSHtFh/IVgq7Nqy4TljaKsTE+3AdtjiOyHpW9ZaOkA7j"
     "2QIDAQAB";
 
-const char kAdBlockDefaultComponentName[] = "Brave Ad Block Updater";
-const char kAdBlockDefaultComponentId[] = "iodkpdagapdfkphljnddpjlldadblomo";
-const char kAdBlockDefaultComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsD/B/MGdz0gh7WkcFARn"
-    "ZTBX9KAw2fuGeogijoI+fET38IK0L+P/trCT2NshqhRNmrDpLzV2+Dmes6PvkA+O"
-    "dQkUV6VbChJG+baTfr3Oo5PdE0WxmP9Xh8XD7p85DQrk0jJilKuElxpK7Yq0JhcT"
-    "Sc3XNHeTwBVqCnHwWZZ+XysYQfjuDQ0MgQpS/s7U04OZ63NIPe/iCQm32stvS/pE"
-    "ya7KdBZXgRBQ59U6M1n1Ikkp3vfECShbBld6VrrmNrl59yKWlEPepJ9oqUc2Wf2M"
-    "q+SDNXROG554RnU4BnDJaNETTkDTZ0Pn+rmLmp1qY5Si0yGsfHkrv3FS3vdxVozO"
-    "PQIDAQAB";
-
 class AdBlockComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
@@ -172,22 +161,6 @@ void OnRegistered(const std::string& component_id) {
 
 }  // namespace
 
-void RegisterAdBlockDefaultComponent(
-    component_updater::ComponentUpdateService* cus,
-    OnComponentReadyCallback callback) {
-  // In test, |cus| could be nullptr.
-  if (!cus) {
-    return;
-  }
-
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<AdBlockComponentInstallerPolicy>(
-          kAdBlockDefaultComponentBase64PublicKey, kAdBlockDefaultComponentId,
-          kAdBlockDefaultComponentName, callback));
-  installer->Register(
-      cus, base::BindOnce(&OnRegistered, kAdBlockDefaultComponentId));
-}
-
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback) {
@@ -210,12 +183,6 @@ void CheckAdBlockComponentsUpdate() {
   runner->PostDelayedTask(FROM_HERE, base::BindOnce([]() {
                             BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
                                 kAdBlockResourceComponentId);
-                          }),
-                          base::Seconds(base::RandInt(0, 10)));
-
-  runner->PostDelayedTask(FROM_HERE, base::BindOnce([]() {
-                            BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
-                                kAdBlockDefaultComponentId);
                           }),
                           base::Seconds(base::RandInt(0, 10)));
 }

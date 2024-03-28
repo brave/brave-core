@@ -122,11 +122,11 @@ public class WebcompatReporter {
   }
 
   private static var baseHost: String {
-    if AppConstants.buildChannel == .debug {
-      return "laptop-updates.bravesoftware.com"
-    } else {
+    // TODO: Handle via brave-stats-updater-server switch and get URL from brave_stats_updater_url
+    if AppConstants.isOfficialBuild {
       return "laptop-updates.brave.com"
     }
+    return "laptop-updates.bravesoftware.com"
   }
 
   private static let version = "1"

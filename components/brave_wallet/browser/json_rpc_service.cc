@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <optional>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -1535,9 +1534,9 @@ void JsonRpcService::SnsGetSolAddr(const std::string& domain,
                                       base::Unretained(this));
 
   sns_get_sol_addr_tasks_.AddTask(
-      std::make_unique<SnsResolverTask>(std::move(done_callback),
-                                        api_request_helper_.get(), domain,
-                                        GetSnsRpcUrl(), true),
+      std::make_unique<SnsResolverTask>(
+          std::move(done_callback), api_request_helper_.get(), domain,
+          GetSnsRpcUrl(), SnsResolverTask::TaskType::kResolveWalletAddress),
       std::move(callback));
 }
 
@@ -1588,9 +1587,9 @@ void JsonRpcService::SnsResolveHost(const std::string& domain,
                                       base::Unretained(this));
 
   sns_resolve_host_tasks_.AddTask(
-      std::make_unique<SnsResolverTask>(std::move(done_callback),
-                                        api_request_helper_.get(), domain,
-                                        GetSnsRpcUrl(), false),
+      std::make_unique<SnsResolverTask>(
+          std::move(done_callback), api_request_helper_.get(), domain,
+          GetSnsRpcUrl(), SnsResolverTask::TaskType::kResolveUrl),
       std::move(callback));
 }
 
@@ -2439,7 +2438,7 @@ void JsonRpcService::NotifySwitchChainRequestProcessed(
   pending_switch_chain_requests_.erase(request_id);
 
   if (approved) {
-    // We already check chain id validiy in
+    // We already check chain id validity in
     // JsonRpcService::AddSwitchEthereumChainRequest so this should always
     // be successful unless chain id differs or we add more check other than
     // chain id

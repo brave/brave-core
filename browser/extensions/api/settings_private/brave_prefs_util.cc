@@ -152,6 +152,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[omnibox::kBookmarkSuggestionsEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[omnibox::kCommanderSuggestionsEnabled] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kAskEnableWidvine] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageSuperReferralThemesOption] =
       settings_api::PrefType::kNumber;
@@ -297,8 +299,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[omnibox::kPreventUrlElisionsInOmnibox] =
       settings_api::PrefType::kBoolean;
 #if BUILDFLAG(ENABLE_TOR)
-  (*s_brave_allowlist)[tor::prefs::kAutoOnionRedirect] =
-      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[tor::prefs::kOnionOnlyInTorWindows] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[tor::prefs::kBridgesConfig] =

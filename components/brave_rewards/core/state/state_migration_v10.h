@@ -12,13 +12,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace state {
 
 class StateMigrationV10 {
  public:
-  explicit StateMigrationV10(RewardsEngineImpl& engine);
+  explicit StateMigrationV10(RewardsEngine& engine);
   ~StateMigrationV10();
 
   void Migrate(ResultCallback callback);
@@ -27,7 +27,7 @@ class StateMigrationV10 {
   void OnGetWallet(ResultCallback callback,
                    endpoints::GetWallet::Result&& result);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   base::WeakPtrFactory<StateMigrationV10> weak_factory_{this};
 };
 

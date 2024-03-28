@@ -36,6 +36,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_federated/features.h"
@@ -152,10 +153,13 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
 #endif
@@ -175,7 +179,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/onion_location_navigation_throttle_delegate.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
@@ -236,6 +239,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "components/omnibox/browser/omnibox.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -534,6 +538,11 @@ BraveContentBrowserClient::CreateBrowserMainParts(bool is_integration_test) {
   return main_parts;
 }
 
+bool BraveContentBrowserClient::AreIsolatedWebAppsEnabled(
+    content::BrowserContext* browser_context) {
+  return false;
+}
+
 void BraveContentBrowserClient::BrowserURLHandlerCreated(
     content::BrowserURLHandler* handler) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -594,6 +603,19 @@ void BraveContentBrowserClient::
           &render_frame_host));
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // AI Chat page content extraction renderer -> browser interface
+  associated_registry.AddInterface<ai_chat::mojom::PageContentExtractorHost>(
+      base::BindRepeating(
+          [](content::RenderFrameHost* render_frame_host,
+             mojo::PendingAssociatedReceiver<
+                 ai_chat::mojom::PageContentExtractorHost> receiver) {
+            ai_chat::AIChatTabHelper::BindPageContentExtractorHost(
+                render_frame_host, std::move(receiver));
+          },
+          &render_frame_host));
+#endif
+
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
                                                            associated_registry);
@@ -627,6 +649,15 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   }
 
 #if !BUILDFLAG(IS_ANDROID)
+  auto ntp_registration =
+      registry.ForWebUI<BraveNewTabUI>()
+          .Add<brave_new_tab_page::mojom::PageHandlerFactory>()
+          .Add<brave_news::mojom::BraveNewsController>();
+
+  if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
+    ntp_registration.Add<omnibox::mojom::PageHandler>();
+  }
+
   if (base::FeatureList::IsEnabled(
           brave_news::features::kBraveNewsFeedUpdate)) {
     registry.ForWebUI<BraveNewsInternalsUI>()
@@ -814,8 +845,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
   if (ai_chat::IsAIChatEnabled(prefs) &&
       brave::IsRegularProfile(render_frame_host->GetBrowserContext())) {
+    // WebUI -> Browser interface
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
+#if !BUILDFLAG(IS_ANDROID)
+    content::RegisterWebUIControllerInterfaceBinder<
+        ai_chat::mojom::AIChatSettingsHelper, BraveSettingsUI>(map);
+#endif
   }
 #if BUILDFLAG(IS_ANDROID)
   if (ai_chat::IsAIChatEnabled(prefs)) {
@@ -825,20 +861,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 #endif
 
-// Brave News
-#if !BUILDFLAG(IS_ANDROID)
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
   content::RegisterWebUIControllerInterfaceBinder<
       speedreader::mojom::ToolbarFactory, SpeedreaderToolbarUI>(map);
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_new_tab_page::mojom::PageHandlerFactory, BraveNewTabUI>(map);
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -894,6 +919,10 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
       session_token =
           g_brave_browser_process->brave_farbling_service()->session_token(
               profile && !profile->IsOffTheRecord());
+
+      if (command_line->HasSwitch(switches::kEnableIsolatedWebAppsInRenderer)) {
+        command_line->RemoveSwitch(switches::kEnableIsolatedWebAppsInRenderer);
+      }
     }
     command_line->AppendSwitchASCII("brave_session_token",
                                     base::NumberToString(session_token));
@@ -1172,14 +1201,10 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   if (tor_navigation_throttle) {
     throttles.push_back(std::move(tor_navigation_throttle));
   }
-  std::unique_ptr<tor::OnionLocationNavigationThrottleDelegate>
-      onion_location_navigation_throttle_delegate =
-          std::make_unique<tor::OnionLocationNavigationThrottleDelegate>();
   std::unique_ptr<content::NavigationThrottle>
       onion_location_navigation_throttle =
           tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
               handle, TorProfileServiceFactory::IsTorDisabled(context),
-              std::move(onion_location_navigation_throttle_delegate),
               context->IsTor());
   if (onion_location_navigation_throttle) {
     throttles.push_back(std::move(onion_location_navigation_throttle));

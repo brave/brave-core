@@ -16,6 +16,9 @@ public struct AIChatView: View {
   @ObservedObject
   var model: AIChatViewModel
 
+  @ObservedObject
+  var speechRecognizer: SpeechRecognizer
+
   @Environment(\.dismiss)
   private var dismiss
 
@@ -23,7 +26,7 @@ public struct AIChatView: View {
   private var lastMessageId
 
   @State
-  private var customFeedbackIndex: Int?
+  private var customFeedbackInfo: AIChatFeedbackModelToast?
 
   @State
   private var isPremiumPaywallPresented = false
@@ -37,10 +40,18 @@ public struct AIChatView: View {
   @ObservedObject
   private var hasSeenIntro = Preferences.AIChat.hasSeenIntro
 
+  @ObservedObject
+  private var shouldShowFeedbackPremiumAd = Preferences.AIChat.showPremiumFeedbackAd
+
   var openURL: ((URL) -> Void)
 
-  public init(model: AIChatViewModel, openURL: @escaping (URL) -> Void) {
+  public init(
+    model: AIChatViewModel,
+    speechRecognizer: SpeechRecognizer,
+    openURL: @escaping (URL) -> Void
+  ) {
     self.model = model
+    self.speechRecognizer = speechRecognizer
     self.openURL = openURL
   }
 
@@ -129,7 +140,7 @@ public struct AIChatView: View {
                             responseContextMenuItems(for: index, turn: turn)
                           }
 
-                        if let feedbackIndex = customFeedbackIndex, feedbackIndex == index {
+                        if let feedbackInfo = customFeedbackInfo, feedbackInfo.turnId == index {
                           feedbackView
                         }
                       }
@@ -190,7 +201,7 @@ public struct AIChatView: View {
                 .onChange(of: model.conversationHistory) { _ in
                   scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
                 }
-                .onChange(of: customFeedbackIndex) { _ in
+                .onChange(of: customFeedbackInfo) { _ in
                   hideKeyboard()
                   withAnimation {
                     scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
@@ -233,7 +244,7 @@ public struct AIChatView: View {
       }
 
       if model.isAgreementAccepted || (!hasSeenIntro.value && !model.isAgreementAccepted) {
-        AIChatPromptInputView { prompt in
+        AIChatPromptInputView(speechRecognizer: speechRecognizer) { prompt in
           hasSeenIntro.value = true
           model.submitQuery(prompt)
           hideKeyboard()
@@ -262,7 +273,7 @@ public struct AIChatView: View {
     }
     .onAppear {
       Task { @MainActor in
-        await model.refreshPremiumStatusOrderCredentials()
+        await model.refreshPremiumStatus()
       }
 
       if let query = model.querySubmited {
@@ -313,7 +324,7 @@ public struct AIChatView: View {
               }
             } else {
               // The purchase was through the Brave Account Website
-              if BraveStoreSDK.shared.enviroment != .production {
+              if BraveStoreSDK.shared.environment != .production {
                 openURL(.brave.braveLeoManageSubscriptionStaging)
               } else {
                 openURL(.brave.braveLeoManageSubscriptionProd)
@@ -339,7 +350,11 @@ public struct AIChatView: View {
       title: Strings.AIChat.responseContextMenuRegenerateTitle,
       icon: Image(braveSystemName: "leo.refresh"),
       onSelected: {
-        model.retryLastRequest()
+        if turnIndex == model.conversationHistory.count - 1 {
+          model.retryLastRequest()
+        } else if let query = model.conversationHistory[safe: turnIndex - 1]?.text {
+          model.submitQuery(query)
+        }
       }
     )
 
@@ -372,11 +387,11 @@ public struct AIChatView: View {
       onSelected: {
         Task { @MainActor in
           let ratingId = await model.rateConversation(isLiked: false, turnId: UInt(turnIndex))
-          if ratingId != nil {
+          if let ratingId = ratingId {
             feedbackToast = .success(
               isLiked: false,
               onAddFeedback: {
-                customFeedbackIndex = turnIndex
+                customFeedbackInfo = AIChatFeedbackModelToast(turnId: turnIndex, ratingId: ratingId)
               }
             )
           } else {
@@ -404,11 +419,15 @@ public struct AIChatView: View {
           isPremiumPaywallPresented = true
         },
         dismissAction: {
-          if let basicModel = model.models.first(where: { $0.access == .basic }) {
-            model.changeModel(modelKey: basicModel.key)
-            model.retryLastRequest()
-          } else {
-            Logger.module.error("No basic models available")
+          Task { @MainActor in
+            await model.refreshPremiumStatus()
+
+            if let basicModel = model.models.first(where: { $0.access == .basic }) {
+              model.changeModel(modelKey: basicModel.key)
+              model.retryLastRequest()
+            } else {
+              Logger.module.error("No basic models available")
+            }
           }
         }
       )
@@ -425,8 +444,11 @@ public struct AIChatView: View {
 
   private var feedbackView: some View {
     AIChatFeedbackView(
+      speechRecognizer: speechRecognizer,
+      premiumStatus: model.premiumStatus,
+      shouldShowPremiumAd: shouldShowFeedbackPremiumAd.value,
       onSubmit: { category, feedback in
-        guard let feedbackIndex = customFeedbackIndex else {
+        guard let feedbackInfo = customFeedbackInfo else {
           feedbackToast = .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
           return
         }
@@ -435,18 +457,18 @@ public struct AIChatView: View {
           let success = await model.submitFeedback(
             category: category,
             feedback: feedback,
-            ratingId: "\(feedbackIndex)"
+            ratingId: feedbackInfo.ratingId
           )
 
           feedbackToast =
             success
-            ? .success(isLiked: true) : .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
+            ? .submitted : .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
         }
 
-        customFeedbackIndex = nil
+        customFeedbackInfo = nil
       },
       onCancel: {
-        customFeedbackIndex = nil
+        customFeedbackInfo = nil
         feedbackToast = .none
       }
     )
@@ -455,7 +477,7 @@ public struct AIChatView: View {
       \.openURL,
       OpenURLAction { url in
         if url.host == "dismiss" {
-          //TODO: Dismiss feedback learn-more prompt
+          shouldShowFeedbackPremiumAd.value = false
         } else {
           openURL(url)
           dismiss()
@@ -519,6 +541,9 @@ struct AIChatView_Preview: PreviewProvider {
             .background(Color(braveSystemName: .containerBackground))
 
             AIChatFeedbackView(
+              speechRecognizer: SpeechRecognizer(),
+              premiumStatus: .inactive,
+              shouldShowPremiumAd: true,
               onSubmit: {
                 print("Submitted Feedback: \($0) -- \($1)")
               },
@@ -552,7 +577,7 @@ struct AIChatView_Preview: PreviewProvider {
       )
       .padding()
 
-      AIChatPromptInputView {
+      AIChatPromptInputView(speechRecognizer: SpeechRecognizer()) {
         print("Prompt Submitted: \($0)")
       }
     }

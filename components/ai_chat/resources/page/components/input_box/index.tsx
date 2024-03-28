@@ -42,6 +42,11 @@ function InputBox () {
     submitInputTextToAPI()
   }
 
+  const handleMic = (e: CustomEvent<any>) => {
+    e.preventDefault()
+    getPageHandlerInstance().pageHandler.handleVoiceRecognition()
+  }
+
   const onUserPressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       if (!e.repeat) {
@@ -55,7 +60,7 @@ function InputBox () {
   return (
     <form className={styles.form}>
       <div
-        className={styles.growWrap}
+        className={(context.isMobile ? styles.growWrapMobile : styles.growWrap)}
         data-replicated-value={inputText}
       >
         <textarea
@@ -77,6 +82,13 @@ function InputBox () {
         </div>
       )}
       <div className={styles.actions}>
+        {context.isMobile && <Button
+          kind="plain-faint"
+          onClick={handleMic}
+          disabled={context.shouldDisableUserInput}
+          >
+          <Icon name='microphone' />
+        </Button>}
         <Button
           kind="plain-faint"
           onClick={handleSubmit}

@@ -14,6 +14,8 @@ transpile_web_ui("brave_new_tab_ui") {
   deps = [
     ":mojom_js",
     "//brave/components/brave_news/common:mojom_js",
+    "//components/omnibox/browser:mojo_bindings",
+    "//components/omnibox/browser:mojo_bindings_js",
   ]
   resource_name = "brave_new_tab"
 }

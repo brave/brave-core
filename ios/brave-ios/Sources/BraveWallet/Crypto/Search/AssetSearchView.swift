@@ -18,7 +18,6 @@ struct AssetSearchView: View {
 
   @State private var allAssets: [AssetViewModel] = []
   @State private var allNFTMetadata: [String: NFTMetadata] = [:]
-  @State private var query = ""
   @State private var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = []
   @State private var isPresentingNetworkFilter = false
   @State private var selectedToken: BraveWallet.BlockchainToken?
@@ -35,23 +34,17 @@ struct AssetSearchView: View {
     self.userAssetsStore = userAssetsStore
   }
 
-  private var filteredTokens: [AssetViewModel] {
+  private var filteredTokensByNetworks: [AssetViewModel] {
     let filterByNetwork = !networkFilters.allSatisfy(\.isSelected)
-    let filterByQuery = !query.isEmpty
-    if !filterByNetwork && !filterByQuery {
+    if !filterByNetwork {
       return allAssets
     }
     let selectedNetworks = networkFilters.filter(\.isSelected)
-    let normalizedQuery = query.lowercased()
     return allAssets.filter { asset in
       if filterByNetwork,
         !selectedNetworks.contains(where: { asset.network.chainId == $0.model.chainId })
       {
         return false
-      }
-      if filterByQuery {
-        return asset.token.symbol.lowercased().contains(normalizedQuery)
-          || asset.token.name.lowercased().contains(normalizedQuery)
       }
       return true
     }
@@ -85,54 +78,46 @@ struct AssetSearchView: View {
 
   var body: some View {
     NavigationView {
-      List {
-        Section(
-          header: WalletListHeaderView(
-            title: Text(Strings.Wallet.assetsTitle)
-          )
-        ) {
-          Group {
-            if filteredTokens.isEmpty {
-              Text(Strings.Wallet.assetSearchEmpty)
-                .font(.footnote)
-                .foregroundColor(Color(.secondaryBraveLabel))
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
+      TokenList(
+        tokens: filteredTokensByNetworks
+      ) { query, viewModel in
+        viewModel.token.symbol.localizedCaseInsensitiveContains(query)
+          || viewModel.token.name.localizedCaseInsensitiveContains(query)
+      } header: {
+        TokenListHeaderView(title: Strings.Wallet.assetsTitle)
+      } emptyStateView: {
+        Text(Strings.Wallet.assetSearchEmpty)
+          .font(.footnote)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .multilineTextAlignment(.center)
+          .frame(maxWidth: .infinity)
+      } content: { viewModel in
+        Button {
+          selectedToken = viewModel.token
+        } label: {
+          SearchAssetView(
+            title: title(for: viewModel.token),
+            symbol: viewModel.token.symbol,
+            networkName: viewModel.network.chainName
+          ) {
+            if viewModel.token.isErc721 || viewModel.token.isNft {
+              NFTIconView(
+                token: viewModel.token,
+                network: viewModel.network,
+                url: allNFTMetadata[viewModel.token.id]?.imageURL,
+                shouldShowNetworkIcon: true,
+                isLoadingMetadata: isLoadingMetadata
+              )
             } else {
-              ForEach(filteredTokens) { assetViewModel in
-                Button {
-                  selectedToken = assetViewModel.token
-                } label: {
-                  SearchAssetView(
-                    title: title(for: assetViewModel.token),
-                    symbol: assetViewModel.token.symbol,
-                    networkName: assetViewModel.network.chainName
-                  ) {
-                    if assetViewModel.token.isErc721 || assetViewModel.token.isNft {
-                      NFTIconView(
-                        token: assetViewModel.token,
-                        network: assetViewModel.network,
-                        url: allNFTMetadata[assetViewModel.token.id]?.imageURL,
-                        shouldShowNetworkIcon: true,
-                        isLoadingMetadata: isLoadingMetadata
-                      )
-                    } else {
-                      AssetIconView(
-                        token: assetViewModel.token,
-                        network: assetViewModel.network,
-                        shouldShowNetworkIcon: true
-                      )
-                    }
-                  }
-                }
-              }
+              AssetIconView(
+                token: viewModel.token,
+                network: viewModel.network,
+                shouldShowNetworkIcon: true
+              )
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
-      .listStyle(.insetGrouped)
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .background(
         NavigationLink(
           isActive: Binding(
@@ -149,7 +134,7 @@ struct AssetSearchView: View {
                     nftMetadata: allNFTMetadata[selectedToken.id],
                     owner: nil
                   ),
-                  buySendSwapDestination: .constant(nil)
+                  walletActionDestination: .constant(nil)
                 ) { metadata in
                   allNFTMetadata[selectedToken.id] = metadata
                 }
@@ -191,11 +176,6 @@ struct AssetSearchView: View {
           Spacer()
         }
       }
-      .animation(nil, value: query)
-      .searchable(
-        text: $query,
-        placement: .navigationBarDrawer(displayMode: .always)
-      )
     }
     .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {
@@ -269,7 +249,6 @@ struct SearchAssetView<ImageView: View>: View {
         .font(.body.weight(.semibold))
         .foregroundColor(Color(.separator))
     }
-    .frame(maxWidth: .infinity)
     .padding(.vertical, 6)
     .accessibilityElement()
     .accessibilityLabel("\(title), \(symbol), \(networkName)")

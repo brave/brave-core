@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/ios/rules.gni")
+import("//ios/build/chrome_build.gni")
 import("//ios/build/config.gni")
 import("//ios/public/provider/chrome/browser/build_config.gni")
 
@@ -78,6 +79,7 @@ source_set("app") {
     "//ios/chrome/app/startup:startup_basic",
     "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/browser_state/model",
+    "//ios/chrome/browser/credential_provider/model:buildflags",
     "//ios/chrome/browser/flags:system_flags",
     "//ios/chrome/browser/history/model",
     "//ios/chrome/browser/main/model",
@@ -100,6 +102,10 @@ source_set("app") {
     # Use the provider API controlled by args.gn.
     ios_provider_target,
   ]
+
+  if (ios_enable_credential_provider_extension) {
+    deps += [ "//ios/chrome/browser/credential_provider/model" ]
+  }
 
   deps += [
     "//ios/third_party/material_components_ios:material_components_ios+link",

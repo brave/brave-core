@@ -4,10 +4,21 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import Icon from '@brave/leo/react/icon'
+import * as leo from '@brave/leo/tokens/css'
 
 // Shared Styles
-import { Icon } from '../../shared.styles'
-import { WalletButton } from '../../../../../components/shared/style'
+import { WalletButton, Row } from '../../../../../components/shared/style'
+
+export const Wrapper = styled(Row)<{ type?: 'error' | 'warning' | 'info' }>`
+  background-color: ${(p) =>
+    p.type === 'error'
+      ? leo.color.systemfeedback.errorBackground
+      : p.type === 'warning'
+      ? leo.color.systemfeedback.warningBackground
+      : leo.color.systemfeedback.infoBackground};
+  border-radius: 8px;
+`
 
 export const LearnMoreLink = styled.a`
   font-family: 'Poppins';
@@ -43,9 +54,10 @@ export const HowToSolveButton = styled(WalletButton)`
 `
 
 export const ErrorIcon = styled(Icon)<{ type: 'error' | 'warning' }>`
-  background-color: ${(p) =>
+  --leo-icon-size: 20px;
+  color: ${(p) =>
     p.type === 'error'
-      ? p.theme.color.errorBorder
-      : p.theme.color.warningBorder};
-  margin-right: 10px;
+      ? leo.color.systemfeedback.errorIcon
+      : leo.color.systemfeedback.warningIcon};
+  margin-right: 16px;
 `

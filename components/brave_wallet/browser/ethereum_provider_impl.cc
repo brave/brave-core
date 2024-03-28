@@ -18,6 +18,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
@@ -598,7 +599,7 @@ void EthereumProviderImpl::Decrypt(
     return;
   }
 
-  data_decoder::JsonSanitizer::Sanitize(
+  api_request_helper::SanitizeAndParseJson(
       untrusted_encrypted_data_json,
       base::BindOnce(&EthereumProviderImpl::ContinueDecryptWithSanitizedJson,
                      weak_factory_.GetWeakPtr(), std::move(callback),
@@ -610,7 +611,7 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
     base::Value id,
     const mojom::AccountIdPtr& account_id,
     const url::Origin& origin,
-    data_decoder::JsonSanitizer::Result result) {
+    base::expected<base::Value, std::string> result) {
   if (!result.has_value()) {
     SendErrorOnRequest(mojom::ProviderError::kInvalidParams,
                        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),

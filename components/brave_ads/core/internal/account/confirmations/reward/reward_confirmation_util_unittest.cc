@@ -118,7 +118,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
     EXPECT_EQ(expected_confirmation, confirmation);
   });
 
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,

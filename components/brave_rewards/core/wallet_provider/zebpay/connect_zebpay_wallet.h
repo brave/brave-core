@@ -13,13 +13,13 @@
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace zebpay {
 
 class ConnectZebPayWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectZebPayWallet(RewardsEngineImpl& engine);
+  explicit ConnectZebPayWallet(RewardsEngine& engine);
 
   ~ConnectZebPayWallet() override;
 

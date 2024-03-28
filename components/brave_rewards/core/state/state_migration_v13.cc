@@ -10,13 +10,12 @@
 
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace brave_rewards::internal::state {
 
-StateMigrationV13::StateMigrationV13(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+StateMigrationV13::StateMigrationV13(RewardsEngine& engine) : engine_(engine) {}
 
 StateMigrationV13::~StateMigrationV13() = default;
 

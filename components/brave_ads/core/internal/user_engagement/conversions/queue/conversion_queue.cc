@@ -75,8 +75,8 @@ void ConversionQueue::ProcessQueueItemAfterDelay(
   const base::Time process_at = timer_.Start(
       FROM_HERE,
       CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item),
-      base::BindOnce(&ConversionQueue::ProcessQueueItem, base::Unretained(this),
-                     conversion_queue_item));
+      base::BindOnce(&ConversionQueue::ProcessQueueItem,
+                     weak_factory_.GetWeakPtr(), conversion_queue_item));
 
   NotifyWillProcessConversionQueue(conversion_queue_item.conversion,
                                    process_at);

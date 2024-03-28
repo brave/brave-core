@@ -10,11 +10,13 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/json/json_writer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -51,7 +53,7 @@ std::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("nft_metadata_fetcher", R"(
       semantics {
-        sender: "NFT Metata Fetcher"
+        sender: "NFT Metadata Fetcher"
         description:
           "This service is used to fetch NFT metadata "
           "on behalf of the user interacting with the native Brave wallet."
@@ -197,7 +199,7 @@ void NftMetadataFetcher::FetchMetadata(
     }
 
     // Sanitize JSON
-    data_decoder::JsonSanitizer::Sanitize(
+    api_request_helper::SanitizeAndParseJson(
         std::move(metadata_json),
         base::BindOnce(&NftMetadataFetcher::OnSanitizeTokenMetadata,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -225,7 +227,7 @@ void NftMetadataFetcher::FetchMetadata(
 
 void NftMetadataFetcher::OnSanitizeTokenMetadata(
     GetTokenMetadataIntermediateCallback callback,
-    data_decoder::JsonSanitizer::Result result) {
+    api_request_helper::ValueOrError result) {
   if (!result.has_value()) {
     VLOG(1) << "Data URI JSON validation error:" << result.error();
     std::move(callback).Run(
@@ -234,7 +236,10 @@ void NftMetadataFetcher::OnSanitizeTokenMetadata(
     return;
   }
 
-  std::move(callback).Run(*result, 0, "");  // 0 is kSuccess
+  // TODO(apaymyshev): parse metadata in wallet's backend
+  std::string json;
+  base::JSONWriter::Write(std::move(result).value(), &json);
+  std::move(callback).Run(std::move(json), 0, "");  // 0 is kSuccess
 }
 
 void NftMetadataFetcher::OnGetTokenMetadataPayload(
@@ -354,7 +359,7 @@ std::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
            /* Skip next 32 bytes for `metadata.update_authority` */ 32 +
            /* Skip next 32 bytes for `metadata.mint` */ 32;
 
-  // Skip next field, metdata.data.name, a string
+  // Skip next field, metadata.data.name, a string
   // whose length is represented by a leading 32 bit integer
   auto length = DecodeUint32(data, offset);
   if (!length) {
@@ -362,7 +367,7 @@ std::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
   }
   offset += static_cast<size_t>(*length);
 
-  // Skip next field, `metdata.data.symbol`, a string
+  // Skip next field, `metadata.data.symbol`, a string
   // whose length is represented by a leading 32 bit integer
   length = DecodeUint32(data, offset);
   if (!length) {
@@ -376,7 +381,7 @@ std::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
     return std::nullopt;
   }
 
-  // Prevent out of bounds access in case length value incorrent
+  // Prevent out of bounds access in case length value is incorrect
   if (data.size() <= offset + *length) {
     return std::nullopt;
   }

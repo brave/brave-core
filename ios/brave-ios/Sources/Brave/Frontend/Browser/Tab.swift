@@ -444,7 +444,6 @@ class Tab: NSObject {
         .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
         .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
         .nightMode: Preferences.General.nightModeEnabled.value,
-        .deAmp: Preferences.Shields.autoRedirectAMPPages.value,
         .playlistMediaSource: Preferences.Playlist.webMediaSourceCompatibility.value,
       ]
 

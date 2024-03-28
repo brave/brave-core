@@ -7,11 +7,11 @@
 
 #include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/endpoints/brave/get_parameters_utils.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -20,7 +20,7 @@ using Result = GetParameters::Result;
 
 namespace {
 
-Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
+Result ParseBody(RewardsEngine& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
@@ -95,13 +95,14 @@ Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
     }
   }
 
-  const auto* custodian_regions = dict.FindDict("custodianRegions");
+  const auto* custodian_regions = dict.Find("custodianRegions");
   if (!custodian_regions) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto wallet_provider_regions = GetWalletProviderRegions(*custodian_regions);
+  auto wallet_provider_regions =
+      GetParameters::ValueToWalletProviderRegions(*custodian_regions);
   if (!wallet_provider_regions) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
@@ -132,7 +133,7 @@ Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
 }  // namespace
 
 // static
-Result GetParameters::ProcessResponse(RewardsEngineImpl& engine,
+Result GetParameters::ProcessResponse(RewardsEngine& engine,
                                       const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
@@ -147,8 +148,7 @@ Result GetParameters::ProcessResponse(RewardsEngineImpl& engine,
   }
 }
 
-GetParameters::GetParameters(RewardsEngineImpl& engine)
-    : RequestBuilder(engine) {}
+GetParameters::GetParameters(RewardsEngine& engine) : RequestBuilder(engine) {}
 
 GetParameters::~GetParameters() = default;
 
@@ -161,6 +161,38 @@ std::optional<std::string> GetParameters::Url() const {
 
 mojom::UrlMethod GetParameters::Method() const {
   return mojom::UrlMethod::GET;
+}
+
+std::optional<GetParameters::ProviderRegionsMap>
+GetParameters::ValueToWalletProviderRegions(const base::Value& value) {
+  auto* dict = value.GetIfDict();
+  if (!dict) {
+    return std::nullopt;
+  }
+
+  auto get_list = [](const std::string& name, const base::Value::Dict& dict) {
+    std::vector<std::string> countries;
+    if (auto* list = dict.FindList(name)) {
+      for (auto& country : *list) {
+        if (country.is_string()) {
+          countries.emplace_back(country.GetString());
+        }
+      }
+    }
+    return countries;
+  };
+
+  base::flat_map<std::string, mojom::RegionsPtr> regions_map;
+
+  for (auto [wallet_provider, regions_value] : *dict) {
+    if (auto* regions = regions_value.GetIfDict()) {
+      regions_map.emplace(wallet_provider,
+                          mojom::Regions::New(get_list("allow", *regions),
+                                              get_list("block", *regions)));
+    }
+  }
+
+  return regions_map;
 }
 
 }  // namespace brave_rewards::internal::endpoints

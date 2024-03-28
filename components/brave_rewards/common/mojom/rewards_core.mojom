@@ -39,7 +39,6 @@ struct UnblindedToken {
 
 enum CredsBatchType {
   NONE = 0,
-  PROMOTION = 1,
   SKU = 2
 };
 
@@ -251,14 +250,6 @@ enum PostWalletsError {
   kInvalidPublicKey,                    // HTTP 401
   kWalletGenerationDisabled,            // HTTP 403
   kWalletAlreadyExists,                 // HTTP 409
-  kUnexpectedError,                     // HTTP 500
-  kUnexpectedStatusCode,                // HTTP xxx
-  kFailedToParseBody
-};
-
-enum PostChallengesError {
-  kFailedToCreateRequest,
-  kInvalidRequest,                      // HTTP 400
   kUnexpectedError,                     // HTTP 500
   kUnexpectedStatusCode,                // HTTP xxx
   kFailedToParseBody

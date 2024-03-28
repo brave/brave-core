@@ -12,16 +12,16 @@ cargo_crate("lib") {
   # Only for usage from third-party crates. Add the crate to
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/adler-1.0.2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/adler/v1/crate/benches/bench.rs",
-    "//brave/third_party/rust/adler/v1/crate/src/algo.rs",
-    "//brave/third_party/rust/adler/v1/crate/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adler-1.0.2/benches/bench.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adler-1.0.2/src/algo.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adler-1.0.2/src/lib.rs",
   ]
   inputs = [
-    "//brave/third_party/rust/adler/v1/crate/CHANGELOG.md",
-    "//brave/third_party/rust/adler/v1/crate/README.md",
-    "//brave/third_party/rust/adler/v1/crate/RELEASE_PROCESS.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adler-1.0.2/CHANGELOG.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adler-1.0.2/README.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adler-1.0.2/RELEASE_PROCESS.md",
   ]
 
   # Unit tests skipped. Generate with --with-tests to include them.

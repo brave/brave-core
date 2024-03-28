@@ -8,13 +8,14 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/timer/wall_clock_timer.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 
 class PrefRegistrySimple;
 class PrefService;
 
-namespace brave_news {
-namespace p3a {
+namespace brave_news::p3a {
 
 enum class ActionType { kCardView, kCardVisit, kSidebarFilterUsage };
 
@@ -47,10 +48,10 @@ inline constexpr char kIsEnabledHistogramName[] = "Brave.Today.IsEnabled";
 inline constexpr char kUsageMonthlyHistogramName[] = "Brave.Today.UsageMonthly";
 inline constexpr char kUsageDailyHistogramName[] = "Brave.Today.UsageDaily";
 
-class NewsMetrics {
+class NewsMetrics : public BraveNewsPrefManager::PrefObserver {
  public:
-  explicit NewsMetrics(PrefService* prefs);
-  ~NewsMetrics();
+  NewsMetrics(PrefService* prefs, BraveNewsPrefManager& pref_manager);
+  ~NewsMetrics() override;
 
   NewsMetrics(const NewsMetrics&) = delete;
   NewsMetrics& operator=(const NewsMetrics&) = delete;
@@ -63,18 +64,23 @@ class NewsMetrics {
   void RecordAtSessionStart();
 
   void RecordWeeklyDisplayAdsViewedCount(bool is_add);
-  void RecordWeeklyAddedDirectFeedsCount(int change);
-  void RecordDirectFeedsTotal();
 
   void RecordTotalActionCount(ActionType action, uint64_t count_delta);
   void RecordVisitCardDepth(uint32_t new_visit_card_depth);
-  void RecordFeatureEnabledChange();
 
-  void RecordTotalSubscribedCount(SubscribeType subscribe_type,
-                                  std::optional<size_t> total);
+  // BraveNewsPrefManager::PrefObserver:
+  void OnConfigChanged() override;
+  void OnPublishersChanged() override;
+  void OnChannelsChanged() override;
 
  private:
-  bool IsNewsEnabled();
+  // These are managed internally, by observing prefs.
+  void RecordFeatureEnabledChange();
+  void RecordTotalSubscribedCount(SubscribeType subscribe_type,
+                                  std::optional<size_t> total);
+  void RecordDirectFeedsTotal();
+  void RecordWeeklyAddedDirectFeedsCount(int change);
+
   uint64_t AddToWeeklyStorageAndGetSum(const char* pref_name, int change);
   bool IsMonthlyActiveUser();
   void RecordLastUsageTime();
@@ -82,11 +88,18 @@ class NewsMetrics {
   void RecordWeeklySessionCount(bool is_add);
 
   raw_ptr<PrefService> prefs_;
+  raw_ref<BraveNewsPrefManager> pref_manager_;
+  bool was_enabled_ = false;
+  uint32_t direct_feed_count_ = 0;
+
   base::WallClockTimer report_timer_;
   base::flat_map<SubscribeType, size_t> subscription_counts_;
+
+  base::ScopedObservation<BraveNewsPrefManager,
+                          BraveNewsPrefManager::PrefObserver>
+      observation_{this};
 };
 
-}  // namespace p3a
-}  // namespace brave_news
+}  // namespace brave_news::p3a
 
 #endif  // BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_BRAVE_NEWS_P3A_H_

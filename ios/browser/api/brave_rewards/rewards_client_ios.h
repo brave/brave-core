@@ -105,7 +105,6 @@ class RewardsClientIOS : public brave_rewards::mojom::RewardsEngineClient {
   void IsAutoContributeSupportedForClient(
       IsAutoContributeSupportedForClientCallback callback) override;
   void GetClientInfo(GetClientInfoCallback callback) override;
-  void UnblindedTokensReady() override;
   void ReconcileStampReset() override;
   void RunDBTransaction(brave_rewards::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;

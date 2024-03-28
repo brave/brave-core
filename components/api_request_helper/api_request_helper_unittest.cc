@@ -204,8 +204,7 @@ TEST_F(ApiRequestHelperUnitTest, URLLoaderHandlerParsing) {
   base::RunLoop run_loop;
   SendMessageSSE("data: [DONE]",
                  base::BindRepeating(
-                     [](base::RunLoop* run_loop,
-                        data_decoder::DataDecoder::ValueOrError result) {
+                     [](base::RunLoop* run_loop, ValueOrError result) {
                        EXPECT_EQ("data: [DONE]", result->GetString());
                        run_loop->Quit();
                      },
@@ -218,8 +217,7 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   SendMessageSSEJSON(
       "data: {\"completion\": \" Hello there!\", \"stop\": null}",
       base::BindRepeating(
-          [](base::RunLoop* run_loop,
-             data_decoder::DataDecoder::ValueOrError result) {
+          [](base::RunLoop* run_loop, ValueOrError result) {
             const std::string* completion =
                 result->GetDict().FindString("completion");
             EXPECT_EQ(" Hello there!", *completion);
@@ -232,8 +230,7 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   SendMessageSSEJSON(
       "data: {\"completion\": \" Hello there! How are you?\", \"stop\": null}",
       base::BindRepeating(
-          [](base::RunLoop* run_loop,
-             data_decoder::DataDecoder::ValueOrError result) {
+          [](base::RunLoop* run_loop, ValueOrError result) {
             const std::string* completion =
                 result->GetDict().FindString("completion");
             EXPECT_EQ(" Hello there! How are you?", *completion);
@@ -246,17 +243,12 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   // "[DONE]".
   SendMessageSSEJSON(
       "data: [DONE]",
-      base::BindRepeating([](data_decoder::DataDecoder::ValueOrError result) {
-        ADD_FAILURE();
-      }));
+      base::BindRepeating([](ValueOrError result) { ADD_FAILURE(); }));
   task_environment_.RunUntilIdle();
 
   // Testing with no JSON and an empty string
   SendMessageSSEJSON(
-      "",
-      base::BindRepeating([](data_decoder::DataDecoder::ValueOrError result) {
-        ADD_FAILURE();
-      }));
+      "", base::BindRepeating([](ValueOrError result) { ADD_FAILURE(); }));
   task_environment_.RunUntilIdle();
 }
 

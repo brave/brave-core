@@ -9,12 +9,7 @@ import {
   makeInitialFilteredOutNetworkKeys
 } from './local-storage-utils'
 import { networkEntityAdapter } from '../common/slices/entities/network.entity'
-import { AllNetworksOptionDefault } from '../options/network-filter-options'
-
-const mockSolanaOption = {
-  chainId: '0x65',
-  coin: 501
-}
+import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
 const mockInitialFilteredOutNetworkKeys = [
   networkEntityAdapter
@@ -98,29 +93,34 @@ const mockInitialFilteredOutNetworkKeys = [
 ]
 
 describe('Test parseJSONFromLocalStorage', () => {
-  const key = 'PORTFOLIO_NETWORK_FILTER_OPTION'
-  const mockValue = JSON.stringify(mockSolanaOption)
+  const key = 'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS'
+  const initialNetworkKeys = makeInitialFilteredOutNetworkKeys()
+  const mockValue = JSON.stringify(initialNetworkKeys)
   let mockLocalStorageGet = jest.fn()
   Object.defineProperty(window, 'localStorage', {
     value: {
       getItem: mockLocalStorageGet
     }
   })
-  it('getItem should return a value and parse correctly to return mockSolanaOption.', () => {
+  it('getItem be called and the value should be correctly parsed', () => {
     mockLocalStorageGet.mockReturnValue(mockValue)
-    expect(parseJSONFromLocalStorage(key, AllNetworksOptionDefault)).toEqual(
-      mockSolanaOption
+    expect(parseJSONFromLocalStorage(key, mockValue)).toEqual(
+      initialNetworkKeys
     )
-    expect(window.localStorage.getItem).toHaveBeenCalledWith(key)
+    expect(window.localStorage.getItem).toHaveBeenCalledWith(
+      LOCAL_STORAGE_KEYS[key]
+    )
     expect(jest.isMockFunction(window.localStorage.getItem)).toBe(true)
     expect(mockLocalStorageGet.mock.results[0].value).toBe(mockValue)
   })
-  it('getItem should return null, then parse should fail and return the fallback AllNetworksOptionDefault.', () => {
+  it('getItem should return null, fallback should be returned', () => {
     mockLocalStorageGet.mockReturnValue(null)
-    expect(parseJSONFromLocalStorage(key, AllNetworksOptionDefault)).toEqual(
-      AllNetworksOptionDefault
+    expect(parseJSONFromLocalStorage(key, initialNetworkKeys)).toEqual(
+      initialNetworkKeys
     )
-    expect(window.localStorage.getItem).toHaveBeenCalledWith(key)
+    expect(window.localStorage.getItem).toHaveBeenCalledWith(
+      LOCAL_STORAGE_KEYS[key]
+    )
     expect(jest.isMockFunction(window.localStorage.getItem)).toBe(true)
     expect(mockLocalStorageGet.mock.results[0].value).toBe(null)
   })

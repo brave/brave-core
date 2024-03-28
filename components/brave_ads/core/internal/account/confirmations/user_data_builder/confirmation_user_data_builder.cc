@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/dynamic/confirmation_dynamic_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/fixed/confirmation_fixed_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
@@ -17,30 +16,37 @@ namespace brave_ads {
 
 namespace {
 
-void BuildFixedUserDataCallback(base::Value::Dict dynamic_user_data,
+void BuildFixedUserDataCallback(base::Value::Dict user_data,
+                                base::Value::Dict dynamic_user_data,
                                 BuildConfirmationUserDataCallback callback,
                                 base::Value::Dict fixed_user_data) {
-  UserDataInfo user_data;
-  user_data.dynamic = std::move(dynamic_user_data);
-  user_data.fixed = std::move(fixed_user_data);
+  UserDataInfo confirmation_user_data;
 
-  std::move(callback).Run(user_data);
+  confirmation_user_data.dynamic = std::move(dynamic_user_data);
+  confirmation_user_data.fixed = std::move(fixed_user_data);
+  confirmation_user_data.fixed.Merge(std::move(user_data));
+
+  std::move(callback).Run(confirmation_user_data);
 }
 
 void BuildDynamicUserDataCallback(const TransactionInfo& transaction,
+                                  base::Value::Dict user_data,
                                   BuildConfirmationUserDataCallback callback,
                                   base::Value::Dict dynamic_user_data) {
-  BuildFixedUserData(transaction, base::BindOnce(&BuildFixedUserDataCallback,
-                                                 std::move(dynamic_user_data),
-                                                 std::move(callback)));
+  BuildFixedUserData(
+      transaction,
+      base::BindOnce(&BuildFixedUserDataCallback, std::move(user_data),
+                     std::move(dynamic_user_data), std::move(callback)));
 }
 
 }  // namespace
 
 void BuildConfirmationUserData(const TransactionInfo& transaction,
+                               base::Value::Dict user_data,
                                BuildConfirmationUserDataCallback callback) {
   BuildDynamicUserData(base::BindOnce(&BuildDynamicUserDataCallback,
-                                      transaction, std::move(callback)));
+                                      transaction, std::move(user_data),
+                                      std::move(callback)));
 }
 
 }  // namespace brave_ads

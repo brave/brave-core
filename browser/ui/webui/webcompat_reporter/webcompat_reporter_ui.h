@@ -6,15 +6,57 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_UI_H_
 
+#include <memory>
 #include <string>
+#include <vector>
 
+#include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "content/public/browser/web_ui_message_handler.h"
 
 namespace content {
+class RenderWidgetHostView;
 class WebUI;
 }
 
 namespace webcompat_reporter {
+
+class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
+ public:
+  explicit WebcompatReporterDOMHandler(Profile* profile);
+  WebcompatReporterDOMHandler(const WebcompatReporterDOMHandler&) = delete;
+  WebcompatReporterDOMHandler& operator=(const WebcompatReporterDOMHandler&) =
+      delete;
+  ~WebcompatReporterDOMHandler() override;
+
+  // WebUIMessageHandler implementation.
+  void RegisterMessages() override;
+
+ private:
+  void InitAdditionalParameters(Profile* profile);
+
+  void HandleCaptureScreenshot(const base::Value::List& args);
+  void HandleCapturedScreenshotBitmap(SkBitmap bitmap, base::Value callback_id);
+  void HandleEncodedScreenshotPNG(
+      base::Value callback_id,
+      std::optional<std::vector<unsigned char>> encoded_png);
+
+  void HandleGetCapturedScreenshot(const base::Value::List& args);
+  void HandleClearScreenshot(const base::Value::List& args);
+
+  void HandleSubmitReport(const base::Value::List& args);
+
+  raw_ptr<content::RenderWidgetHostView> render_widget_host_view_;
+  scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
+  std::unique_ptr<webcompat_reporter::WebcompatReportUploader> uploader_;
+
+  Report pending_report_;
+
+  base::WeakPtrFactory<WebcompatReporterDOMHandler> weak_ptr_factory_{this};
+};
 
 class WebcompatReporterUI : public ConstrainedWebDialogUI {
  public:

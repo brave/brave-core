@@ -24,7 +24,7 @@
 // https://github.com/brave/brave-core/blob/master/components/brave_rewards/core/publisher/protos/channel_response.proto
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace private_cdn {
@@ -35,7 +35,7 @@ using GetPublisherCallback =
 
 class GetPublisher {
  public:
-  explicit GetPublisher(RewardsEngineImpl& engine);
+  explicit GetPublisher(RewardsEngine& engine);
   ~GetPublisher();
 
   void Request(const std::string& publisher_key,
@@ -55,7 +55,7 @@ class GetPublisher {
                  GetPublisherCallback callback,
                  mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace private_cdn

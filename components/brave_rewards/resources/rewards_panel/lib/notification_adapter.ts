@@ -8,30 +8,13 @@ import {
   Notification,
   AutoContributeCompletedNotification,
   MonthlyContributionFailedNotification,
-  GrantAvailableNotification,
   ExternalWalletDisconnectedNotification,
   UpholdBATNotAllowedNotification,
   UpholdInsufficientCapabilitiesNotification
 } from '../../shared/components/notifications'
 
-function parseGrantId (id: string) {
-  const parts = id.split('_')
-  return (parts.length > 1 && parts.pop()) || ''
-}
-
-function parseGrantDetails (args: string[]) {
-  return {
-    amount: parseFloat(args[0]) || 0,
-    createdAt: parseFloat(args[1]) || null,
-    claimableUntil: parseFloat(args[2]) || null,
-    expiresAt: null
-  }
-}
-
 enum ExtensionNotificationType {
   AUTO_CONTRIBUTE = 1,
-  GRANT = 2,
-  GRANT_ADS = 3,
   TIPS_PROCESSED = 8,
   GENERAL = 12
 }
@@ -68,26 +51,6 @@ export function mapNotification (
           })
       }
       break
-    case ExtensionNotificationType.GRANT:
-      return create<GrantAvailableNotification>({
-        ...baseProps,
-        type: 'grant-available',
-        grantInfo: {
-          type: 'ugp',
-          id: parseGrantId(obj.id),
-          ...parseGrantDetails(obj.args)
-        }
-      })
-    case ExtensionNotificationType.GRANT_ADS:
-      return create<GrantAvailableNotification>({
-        ...baseProps,
-        type: 'grant-available',
-        grantInfo: {
-          type: 'ads',
-          id: parseGrantId(obj.id),
-          ...parseGrantDetails(obj.args)
-        }
-      })
     case ExtensionNotificationType.TIPS_PROCESSED:
       return {
         ...baseProps,

@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Magsimulang gamitin ang Mga Reward</translation>
 <translation id="8220484609979012449">\n\nMaaari ka pa ring magpadala ng mga crypto na kontribusyon sa creator na ito sa pamamagitan ng paggamit ng iyong Web3 wallet.</translation>
 <translation id="6385969012847057348">Hindi makakatanggap ang creator na ito ng mga kontribusyon mula sa <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Hindi pa naka-set up ang creator na ito para tumanggap ng mga Web3 o crypto na kontribusyon.</translation>
 <translation id="6268134562674951939">Wala kang sapat na token</translation>
 <translation id="4529874892536380156">Gawin itong buwanang nauulit na kontribusyon. Maaari kang magkansela anumang oras.</translation>
 <translation id="5562948772940025260">Maaari ka lang magpadala ng hanggang <ph name="AMOUNT"/> (na) BAT gamit ang iyong balanse ng Mga Reward ng Brave.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Gamit ang kasalukuyang naka-sync na device, buksan ang Mga Setting ng Brave at mag-navigate sa Mga Setting &gt; I-sync. Piliin ang "Magdagdag ng Bagong Device" at i-scan ang QR Code na ipinapakita sa screen.</translation>
 <translation id="5241263629636958324">Nakopya sa Clipboard</translation>
 <translation id="5817918615728894473">Ipares</translation>
-<translation id="7090325819305486658">Mga Kagustuhan sa Data</translation>
+<translation id="3429575397891106447">I-sync ang Mga Opsyon</translation>
 <translation id="1680065323266179640">I-delete ang Sync account</translation>
 <translation id="3792563952903751704">Kapag nag-delete ka ng account, matatanggal ang naka-encrypt mong data mula sa mga server ng Brave at madi-disable ang Sync sa lahat ng nakakonekta mong device. Gayunpaman, hindi nito ide-delete ang data na lokal na naka-store sa mga device na iyon.
   Ang pag-delete na ito ay permanente at hindi na mare-recover ang data. Kung gusto mong magsimulang muli gamit ang Sync, kailangan mong gumawa ng bagong account at idagdag nang isa-isa ang bawat telepono o tablet.</translation>
@@ -595,14 +596,18 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="1483493594462132177">Ipadala</translation>
 <translation id="538450413584738399">Pagpalitin</translation>
 <translation id="1366855498335432549">Deposit</translation>
-<translation id="1420318137760245955">Welcome sa bagong Brave Wallet</translation>
-<translation id="8339846196588658366">Mag-store ng crypto at i-track ang performance ng portfolio. Iyon na ang lahat para sa pribadong browser ng Brave.</translation>
-<translation id="4472575034687746823">Magsimula</translation>
+<translation id="4556086616242530072">Browser native.\nSelf-custody.\nAnd multi-chain.</translation>
+<translation id="7909462264772842773">Kontrolin ang crypto at mga NFT mo. Sinusuportahan ng Brave Wallet ang Ethereum, mga EVM chain, Solana, Filecoin, at marami pa.</translation>
+<translation id="165255193061631296">Kailangan ba ng bagong wallet?</translation>
+<translation id="3485737865439729577">Magsimula gamit ang Brave Wallet sa loob ng ilang minuto</translation>
 <translation id="2759836790106646094">I-back up ang iyong wallet ngayon!</translation>
 <translation id="1078873179929044999">Sa susunod na hakbang makakakita ka ng 12 salitang parirala sa pag-recover, na pwede mong gamitin para i-recover ang iyong mga pangunahing account sa cryptocurrency. Itago ito sa ligtas na lugar. Ang iyong parirala sa pag-recover ang nag-iisang paraan para maibalik ang access sa account kung sakaling may nakalimutang password, nawala o nanakaw na device, o gusto mong magpalit ng wallet.</translation>
 <translation id="2359808026110333948">Magpatuloy</translation>
 <translation id="5488357322146334497">Mensahe</translation>
 <translation id="1904000155026201268">Nauunawaan ko na kung mawala ko ang aking mga salita para sa pag-recover, hindi ko maa-access ang aking crypto wallet.</translation>
+<translation id="5333225216561354793">Kinakailangan naming kilalanin mo ang mga item sa ibaba</translation>
+<translation id="1645800479814134195">Nauunawaan kong isa itong sarling pag-iingat na wallet, at na ako lang ang responsable para sa anumang nauugnay na pondo, asset, o account, at para sa pagsagawa ng naaangkop na pagkilos para i-secure, protektahan at i-back up ang aking wallet. Nauunawaan kong hindi magagawa ng Brave na i-access ng Brave ang aking wallet o i-reverse ang mga transaksyon sa ngalan ko, at na ang aking parirala sa pag-recover ang TANGING paraan para makakuha ulit ng access kapag nawalan ng password, nanakawan ng device, o nangyari ang katulad na sitwasyon.</translation>
+<translation id="4565891212173086999">Nabasa at sumasang-ayon ako sa <ph name="CLICK_START"/>Mga Tuntunin ng Paggamit<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Ang iyong parirala sa pag-recover</translation>
 <translation id="5077747669435508720">Isulat o kopyahin ang mga salitang ito sa mismong pagkakaayos na ipinapakita sa ibaba, at itago ang mga ito sa ligtas na lugar. Ang iyong parirala sa pag-recover ang nag-iisang paraan para maibalik ang access sa account sakaling may nakalimutang password, nawala o nanakaw na device, o gusto mong magpalit ng wallet.</translation>
 <translation id="2708402071160162126">BABALA: Huwag kailanman ibahagi ang iyong parirala sa pag-recover. Pwedeng kunin at hindi na ibalik pa ng sinumang mayroon ng pariralang ito ang iyong mga asset.</translation>
@@ -647,6 +652,9 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="3747079125031086337">Piliin ang mga salita sa iyong parirala sa pag-recover sa tamang pagkakaayos ng mga ito.</translation>
 <translation id="6518133107902771759">I-verify</translation>
 <translation id="3157931365184549694">Ipanumbalik</translation>
+<translation id="5844138175312846408">Mayroon na bang wallet?</translation>
+<translation id="2502258949541727762">Bago tayo magsimula</translation>
+<translation id="5981303441790732480">I-import ang umiiral na wallet mo</translation>
 <translation id="9111102763498581341">I-unlock</translation>
 <translation id="6657585470893396449">Password</translation>
 <translation id="5619264711680220002">I-unlock ang biometric</translation>
@@ -665,7 +673,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="5483736362376139517">1 Taon</translation>
 <translation id="6979737339423435258">Lahat ng oras</translation>
 <translation id="6284218950354553099">Awtomatikong ipadala sa Brave ang ping ng araw-araw na paggamit</translation>
-<translation id="5288333155754958121">Nagbibigay-daan sa Brave ang anonymous na pribadong ping na ito na matantiya ang mga aktibong user.</translation>
+<translation id="2181060149810222381">Ang pribadong ping na ito ang nagbibigay ng kakayahan sa Brave na tantiyahin ang mga aktibong user.</translation>
 <translation id="3819257035322786455">Backup</translation>
 <translation id="4608713693379664295">Mga Pangunahing Crypto Account</translation>
 <translation id="4003821417160006384">Mga Pangalawang Account</translation>
@@ -1212,5 +1220,11 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6637015365469044269">Mag-upgrade ngayon</translation>
 <translation id="614530507403667291">Default na model para sa mga bagong pag-uusap</translation>
 <translation id="4071849832011229600">Default na model</translation>
+<translation id="4185473179105062442">Direktang makatanggap ng BAT sa isang crypto address na may sariling pag-iingat</translation>
+<translation id="5802986777701714573">Nagdagdag kami ng bagong paraan para matanggap mo ang iyong mga buwanang reward na BAT. Magkonekta ng account mula sa isa sa aming mga partner o gamitin ang bagong opsyong sariling pag-iingat para magsimulang kumita ngayon.</translation>
 <translation id="7557539689487606886">Mag-Premium</translation>
+<translation id="5538904824395606812">Gamitin ang kasalukuyang tagapagkaloob ng serbisyo mo o Quad9</translation>
+<translation id="6393423486818299209">Gamitin ang kasalukuyang tagapagkaloob ng serbisyo mo o Wikimedia DNS</translation>
+<translation id="3401384982562827787">Gamiting ang kasalukuyang tagapagkaloob ng serbisyo mo o Cloudflare</translation>
+<translation id="8812367543786936496">Kung insecure ang kasalukuyang tagapagkaloob ng serbisyo mo, gumagamit ang Brave ng secure na alternatibong tagapagkaloob ng DNS</translation>
 </translationbundle>

@@ -190,7 +190,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               sellAmount: new Amount(''),
               buyAmountWei: new Amount('')
             }
-      }, [txNetwork, combinedTokensList, transaction, txToken])
+      }, [transaction, networkAsset, combinedTokensList, txToken])
 
     const [normalizedTransferredValue, transferredValueWei] =
       React.useMemo(() => {

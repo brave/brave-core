@@ -1,0 +1,16 @@
+error[E0277]: the trait bound `Result<wasm_bindgen::JsValue, wasm_bindgen::JsValue>: FromWasmAbi` is not satisfied
+ --> ui-tests/missing-catch.rs:6:9
+  |
+6 |     pub fn foo() -> Result<JsValue, JsValue>;
+  |            ^^^ the trait `FromWasmAbi` is not implemented for `Result<wasm_bindgen::JsValue, wasm_bindgen::JsValue>`
+  |
+  = help: the following other types implement trait `FromWasmAbi`:
+            *const T
+            *mut T
+            Box<[T]>
+            Clamped<T>
+            Option<T>
+            Option<f32>
+            Option<f64>
+            Option<i32>
+          and $N others

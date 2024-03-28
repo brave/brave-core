@@ -9,7 +9,7 @@ import Data
 import Foundation
 import Preferences
 
-public class AssetStore: ObservableObject, Equatable, WalletObserverStore {
+public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserverStore {
   @Published var token: BraveWallet.BlockchainToken
   @Published var isVisible: Bool {
     didSet {
@@ -25,6 +25,7 @@ public class AssetStore: ObservableObject, Equatable, WalletObserverStore {
     }
   }
   var network: BraveWallet.NetworkInfo
+  public var id: String { token.id }
 
   private let rpcService: BraveWalletJsonRpcService
   private let ipfsApi: IpfsAPI

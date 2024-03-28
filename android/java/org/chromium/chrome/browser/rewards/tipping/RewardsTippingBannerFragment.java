@@ -165,7 +165,7 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
     }
 
     @Override
-    public void OnGetExternalWallet(String externalWallet) {
+    public void onGetExternalWallet(String externalWallet) {
         if (!TextUtils.isEmpty(externalWallet)) {
             try {
                 BraveRewardsExternalWallet braveRewardsExternalWallet =

@@ -196,7 +196,7 @@ export const HardwareWalletAccountsList = ({
 
     // set network dropdown default value
     setSelectedNetworkId(networksRegistry.idsByCoinType[coin][0])
-  }, [networksRegistry, coin])
+  }, [networksRegistry, coin, selectedNetworkId])
 
   // render
   return (

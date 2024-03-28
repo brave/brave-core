@@ -69,7 +69,8 @@ export const mockAddChainRequest = {
   networkInfo: mockNetwork
 }
 
-export const mockGetEncryptionPublicKeyRequest = {
+export const mockGetEncryptionPublicKeyRequest: //
+BraveWallet.GetEncryptionPublicKeyRequest = {
   requestId: '',
   originInfo: mockOriginInfo,
   accountId: mockEthAccount.accountId

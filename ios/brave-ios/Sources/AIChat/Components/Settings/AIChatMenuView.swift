@@ -128,7 +128,7 @@ struct AIChatMenuView: View {
 
       AIChatMenuHeaderView(
         icon: "leo.message.bubble-comments",
-        title: Strings.AIChat.chatMenuSectionTitle
+        title: Strings.AIChat.chatMenuSectionTitle.uppercased()
       )
 
       Color(braveSystemName: .dividerSubtle)
@@ -149,8 +149,8 @@ struct AIChatMenuView: View {
               if model.access == .basicAndPremium {
                 Text(
                   premiumStatus == .active || premiumStatus == .activeDisconnected
-                    ? Strings.AIChat.unlimitedModelStatusTitle
-                    : Strings.AIChat.limitedModelStatusTitle
+                    ? Strings.AIChat.unlimitedModelStatusTitle.uppercased()
+                    : Strings.AIChat.limitedModelStatusTitle.uppercased()
                 )
                 .font(.caption2)
                 .foregroundStyle(Color(braveSystemName: .blue50))
@@ -185,21 +185,17 @@ struct AIChatMenuView: View {
 
       // Check if leo in-app purchase is activated before or not
       if let state = BraveStoreSDK.shared.leoSubscriptionStatus?.state {
-        // There is prior in-app purchase
-        switch state {
-        case .subscribed, .inGracePeriod, .inBillingRetryPeriod:
-          menuActionItems(for: .managePremium)
-        case .expired, .revoked:
-          if premiumStatus != .active && premiumStatus != .activeDisconnected {
-            menuActionItems(for: .goPremium)
-          } else {
+        if premiumStatus != .active && premiumStatus != .activeDisconnected {
+          menuActionItems(for: .goPremium)
+        } else {
+          // There is prior in-app purchase
+          switch state {
+          case .subscribed, .inGracePeriod, .inBillingRetryPeriod:
             menuActionItems(for: .managePremium)
-          }
-        default:
-          if premiumStatus != .active && premiumStatus != .activeDisconnected {
+          case .expired, .revoked:
             menuActionItems(for: .goPremium)
-          } else {
-            menuActionItems(for: .managePremium)
+          default:
+            menuActionItems(for: .goPremium)
           }
         }
       } else {

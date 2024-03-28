@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/constants/brave_paths.h"
@@ -40,7 +39,6 @@ class RewardsNotificationBrowserTest
   RewardsNotificationBrowserTest() {
     contribution_ =
         std::make_unique<test_util::RewardsBrowserTestContribution>();
-    promotion_ = std::make_unique<test_util::RewardsBrowserTestPromotion>();
     response_ = std::make_unique<test_util::RewardsBrowserTestResponse>();
   }
 
@@ -75,7 +73,6 @@ class RewardsNotificationBrowserTest
     rewards_service_->SetEngineEnvForTesting();
 
     // Other
-    promotion_->Initialize(browser(), rewards_service_);
     contribution_->Initialize(browser(), rewards_service_);
     rewards_notification_service_ = rewards_service_->GetNotificationService();
     rewards_notification_service_->AddObserver(this);
@@ -177,7 +174,6 @@ class RewardsNotificationBrowserTest
   raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<test_util::RewardsBrowserTestContribution> contribution_;
-  std::unique_ptr<test_util::RewardsBrowserTestPromotion> promotion_;
   std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
   std::unique_ptr<test_util::RewardsBrowserTestContextHelper> context_helper_;
 
@@ -190,74 +186,5 @@ class RewardsNotificationBrowserTest
   bool delete_notification_ = false;
   std::unique_ptr<base::RunLoop> wait_for_delete_notification_loop_;
 };
-
-IN_PROC_BROWSER_TEST_F(
-    RewardsNotificationBrowserTest,
-    AddGrantNotification) {
-  RewardsNotificationService::RewardsNotificationArgs args;
-  args.push_back("foo");
-  args.push_back("bar");
-
-  rewards_notification_service_->AddNotification(
-      RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
-      "rewards_notification_grant");
-  WaitForAddNotificationCallback();
-
-  EXPECT_EQ(last_added_notification_.args_.size(), 2ul);
-  EXPECT_STREQ(last_added_notification_.args_.at(0).c_str(), "foo");
-  EXPECT_STREQ(last_added_notification_.args_.at(1).c_str(), "bar");
-
-  EXPECT_STREQ(
-      last_added_notification_.id_.c_str(),
-      "rewards_notification_grant");
-  EXPECT_NE(last_added_notification_.timestamp_, 0ul);
-}
-
-IN_PROC_BROWSER_TEST_F(
-    RewardsNotificationBrowserTest,
-    AddGrantNotificationAndDeleteIt) {
-  RewardsNotificationService::RewardsNotificationArgs args;
-  args.push_back("foo");
-  args.push_back("bar");
-
-  rewards_notification_service_->AddNotification(
-      RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
-      "rewards_notification_grant");
-  WaitForAddNotificationCallback();
-
-  EXPECT_STREQ(
-      last_added_notification_.id_.c_str(),
-      "rewards_notification_grant");
-
-  rewards_notification_service_->DeleteNotification(
-      last_added_notification_.id_);
-  WaitForDeleteNotificationCallback();
-  EXPECT_STREQ(
-      last_deleted_notification_.id_.c_str(),
-      "rewards_notification_grant");
-  EXPECT_NE(last_deleted_notification_.timestamp_,  0ul);
-}
-
-IN_PROC_BROWSER_TEST_F(
-    RewardsNotificationBrowserTest,
-    AddGrantNotificationAndFakeItAndDeleteIt) {
-  RewardsNotificationService::RewardsNotificationArgs args;
-  args.push_back("foo");
-  args.push_back("bar");
-
-  rewards_notification_service_->AddNotification(
-      RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
-      "rewards_notification_grant");
-  WaitForAddNotificationCallback();
-
-  EXPECT_STREQ(
-      last_added_notification_.id_.c_str(),
-      "rewards_notification_grant");
-
-  rewards_notification_service_->DeleteNotification("not_valid");
-  WaitForDeleteNotificationCallback();
-  EXPECT_TRUE(last_deleted_notification_.type_ ==
-              RewardsNotificationService::REWARDS_NOTIFICATION_INVALID);
-}
 
 }  // namespace brave_rewards

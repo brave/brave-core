@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Ouvrir";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Récompenses";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Récompenses Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields et Confidentialité";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Protections et confidentialité";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Publicités et autres contenus suspects bloqués";
@@ -496,7 +502,8 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Copiez les informations de l'application dans le presse-papiers.";
 
-/* Copy app info to clipboard action sheet action. */
+/* Copy app info to clipboard action sheet action.
+   View all version info action sheet action. */
 "copyAppSizeInfoToClipboard" = "Copiez les informations sur la taille de l'application dans le presse-papiers.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -942,6 +949,9 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "En savoir plus";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "L'identifiant enregistré sera supprimé définitivement.";
@@ -1407,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Ouvrir le site Web";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo est un assistant intelligent exécuté par l'IA, directement intégré à votre navigateur";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "Les meilleurs articles du jour dans un fil d'actualité privé";
@@ -3370,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "Actualités Brave";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "Actualités";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "Suivez les sujets qui vous intéressent";
 
@@ -3573,9 +3589,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave n'enregistre pas et ne partage pas vos recherches vocales.";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "Recherche vocale";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "activer";

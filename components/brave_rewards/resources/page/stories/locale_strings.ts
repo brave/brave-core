@@ -24,10 +24,7 @@ export const localeStrings = {
   connectWalletSelfCustodyTerms: '$1Terms of Use$2 and $3Privacy Policy$4.',
   connectWalletSelfCustodyError: 'Something went wrong. Please try again',
   connectWalletLoginText: 'Log in or sign up',
-  rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
-  rewardsGrantDaysRemaining: 'You have $1 left to claim',
   rewardsLearnMore: 'Learn more',
-  rewardsTokenGrantTitle: 'A token grant is available!',
   newBadgeText: 'NEW',
 
   braveRewards: 'Brave Rewards',
@@ -96,7 +93,6 @@ export const localeStrings = {
   rewardsBrowserNeedsUpdateToSeeAds: 'Your browser needs to be updated to continue seeing ads.',
   adsNotSupportedRegion: 'Sorry! Ads are not yet available in your region.',
   connectAccountText: '$1Ready to start earning?$2 Connect or create an account with one of our partners.',
-  connectAccountNoProviders: 'To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there\'s no custodian available in your region, so earning isn\'t available at this time. However, you\'ll still be automatically supporting creators by using Rewards.',
   learnMore: 'Learn more',
   newTabAdCountLabel: 'New tab page ads',
   notificationAdCountLabel: 'Notification ads',
@@ -116,8 +112,6 @@ export const localeStrings = {
 
   rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
   rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
-  rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',
-  rewardsVBATNoticeText2: 'On $1, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region ($2) to withdraw your earnings. Until then, you can still contribute to your favorite creators.',
   rewardsConnectAccount: 'Connect account',
 
   rewardsPaymentCompleted: 'The payout for $1 rewards has completed.',

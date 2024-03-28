@@ -19,14 +19,15 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
   }
 
   /// If we should attempt to unlock via biometrics (Face ID / Touch ID)
-  var isBiometricsUnlockEnabled: Bool {
-    keychain.isPasswordStoredInKeychain(key: KeyringStore.passwordKeychainKey)
-      && isBiometricsAvailable
-  }
+  @Published var isBiometricsUnlockEnabled: Bool = false
 
   /// If the device has biometrics available
   var isBiometricsAvailable: Bool {
     LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+  }
+
+  private var isPasswordStoredInKeychain: Bool {
+    keychain.isPasswordStoredInKeychain(key: KeyringStore.passwordKeychainKey)
   }
 
   /// The current default base currency code
@@ -102,7 +103,6 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     self.txService = txService
     self.ipfsApi = ipfsApi
     self.keychain = keychain
-
     self.setupObservers()
   }
 
@@ -143,6 +143,7 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
       self.udResolveMethod = await rpcService.unstoppableDomainsResolveMethod()
 
       self.isNFTDiscoveryEnabled = await walletService.nftDiscoveryEnabled()
+      self.isBiometricsUnlockEnabled = isPasswordStoredInKeychain && isBiometricsAvailable
     }
   }
 
@@ -192,6 +193,10 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
 
   func closeManageSiteConnectionStore() {
     manageSiteConnectionsStore = nil
+  }
+
+  func updateBiometricsToggle() {
+    self.isBiometricsUnlockEnabled = isPasswordStoredInKeychain && isBiometricsAvailable
   }
 }
 

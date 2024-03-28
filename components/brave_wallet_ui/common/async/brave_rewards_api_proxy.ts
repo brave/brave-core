@@ -104,9 +104,6 @@ export class BraveRewardsProxy {
   onRewardsWalletCreated =
     chrome.braveRewards.onRewardsWalletCreated.addListener
 
-  onUnblindedTokensReady =
-    chrome.braveRewards.onUnblindedTokensReady.addListener
-
   openRewardsPanel = chrome.braveRewards.openRewardsPanel
   showRewardsSetup = chrome.braveRewards.showRewardsSetup
 

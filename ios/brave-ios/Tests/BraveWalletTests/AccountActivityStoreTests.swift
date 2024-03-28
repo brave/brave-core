@@ -214,6 +214,8 @@ class AccountActivityStoreTests: XCTestCase {
             BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
             .mockERC721NFTToken.copy(asVisibleAsset: true),
             .mockUSDCToken.copy(asVisibleAsset: true),
+            // To verify brave/brave-browser#36806
+            .previewDaiToken.copy(asVisibleAsset: false),
           ],
           sortOrder: 0
         ),
@@ -274,6 +276,12 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[2].network, BraveWallet.NetworkInfo.mockGoerli)
         XCTAssertEqual(lastUpdatedAssets[2].totalBalance, 0)
         XCTAssertEqual(lastUpdatedAssets[2].price, self.mockAssetPrices[safe: 0]?.price ?? "")
+
+        // Verify brave/brave-browser#36806
+        let daiTokenVisible = lastUpdatedAssets.contains(where: {
+          $0.id == BraveWallet.BlockchainToken.previewDaiToken.id
+        })
+        XCTAssertFalse(daiTokenVisible)
       }
       .store(in: &cancellables)
 

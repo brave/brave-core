@@ -81,14 +81,7 @@ export const TokenListItem = (props: Props) => {
     return balance && spotPrice
       ? new Amount(balance).divideByDecimals(token.decimals).times(spotPrice)
       : Amount.empty()
-  }, [
-    spotPrice,
-    balance,
-    token.symbol,
-    token.decimals,
-    token.contractAddress,
-    token.chainId
-  ])
+  }, [spotPrice, balance, token.decimals])
 
   const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
 

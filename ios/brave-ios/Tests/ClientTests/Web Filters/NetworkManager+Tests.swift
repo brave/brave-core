@@ -41,11 +41,6 @@ extension NetworkManager {
   static func mockData(for resource: BraveS3Resource) async throws -> Data {
     try await Task<Data, Error>.detached(priority: .background) {
       switch resource {
-      case .debounceRules:
-        let bundle = Bundle.module
-        let resourceURL = bundle.url(forResource: "debouncing", withExtension: "json")
-        let data = try Data(contentsOf: resourceURL!)
-        return data
       case .adBlockRules:
         let bundle = Bundle.module
         let resourceURL = bundle.url(

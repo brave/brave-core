@@ -16,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
 
 class PrefService;
 
@@ -79,7 +78,7 @@ class NftMetadataFetcher {
                               const std::string& error_message)>;
   void FetchMetadata(GURL url, GetTokenMetadataIntermediateCallback callback);
   void OnSanitizeTokenMetadata(GetTokenMetadataIntermediateCallback callback,
-                               data_decoder::JsonSanitizer::Result result);
+                               api_request_helper::ValueOrError result);
   void OnGetTokenMetadataPayload(GetTokenMetadataIntermediateCallback callback,
                                  APIRequestResult api_request_result);
   void OnGetSolanaAccountInfoTokenMetadata(

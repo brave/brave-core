@@ -16,7 +16,7 @@ namespace database {
 
 class DatabaseContributionInfoPublishers : public DatabaseTable {
  public:
-  explicit DatabaseContributionInfoPublishers(RewardsEngineImpl& engine);
+  explicit DatabaseContributionInfoPublishers(RewardsEngine& engine);
   ~DatabaseContributionInfoPublishers() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,

@@ -159,7 +159,7 @@ export const AccountListItem = ({
         name: account.name
       })
     )
-  }, [account])
+  }, [account, dispatch])
 
   const onShowAccountsModal = React.useCallback(
     (modalType: AccountModalTypes) => {
@@ -314,7 +314,7 @@ export const AccountListItem = ({
       <Row justifyContent='space-between'>
         <NameAndIcon>
           <CreateAccountIcon
-            size='big'
+            size='huge'
             account={account}
             marginRight={16}
             externalProvider={externalProvider}

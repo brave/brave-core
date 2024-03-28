@@ -381,16 +381,19 @@ function AssetSelection() {
 
   const renderToken = React.useCallback<
     RenderTokenFunc<BraveWallet.BlockchainToken>
-  >(({ item: asset }) => {
-    const assetId = getAssetIdKey(asset)
-    return (
-      <BuyAssetOptionItem
-        key={assetId}
-        token={asset}
-        onClick={() => history.push(makeDepositFundsRoute(assetId))}
-      />
-    )
-  }, [])
+  >(
+    ({ item: asset }) => {
+      const assetId = getAssetIdKey(asset)
+      return (
+        <BuyAssetOptionItem
+          key={assetId}
+          token={asset}
+          onClick={() => history.push(makeDepositFundsRoute(assetId))}
+        />
+      )
+    },
+    [history]
+  )
 
   // effects
   React.useEffect(() => {
@@ -596,7 +599,7 @@ function DepositAccount() {
   React.useEffect(() => {
     // force selected account option state
     setSelectedAccount(accountsForSelectedAssetCoinType[0])
-  }, [accountsForSelectedAssetCoinType[0]])
+  }, [accountsForSelectedAssetCoinType])
 
   // render
   if (!selectedDepositAssetId) {

@@ -17,7 +17,7 @@ import dummyBrandedWallpaper from './brandedWallpaper'
 
 const addonsChannel = addons.getChannel()
 
-function generateTopSites (topSites: typeof defaultTopSitesData) {
+function generateTopSites(topSites: typeof defaultTopSitesData) {
   const staticTopSites = []
   for (const [index, topSite] of topSites.entries()) {
     staticTopSites.push({
@@ -33,14 +33,14 @@ function generateTopSites (topSites: typeof defaultTopSitesData) {
   return staticTopSites
 }
 
-function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWallpaper | undefined {
+function shouldShowBrandedWallpaperData(shouldShow: boolean): NewTab.BrandedWallpaper | undefined {
   if (!shouldShow) {
     return undefined
   }
   return dummyBrandedWallpaper
 }
 
-function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
+function getWidgetStackOrder(firstWidget: string): NewTab.StackWidget[] {
   switch (firstWidget) {
     case 'braveTalk':
       return ['rewards', 'braveTalk']
@@ -95,6 +95,7 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     braveRewardsSupported: boolean('Brave Rewards supported?', true),
     showRewards: boolean('Show rewards?', true),
     showBraveTalk: boolean('Show Brave Talk?', true),
+    showSearchBox: boolean('Show search box', true),
     braveTalkSupported: boolean('Brave Talk supported?', true),
     hideAllWidgets: boolean('Hide all widgets?', false),
     isBraveNewsOptedIn: boolean('Brave News opted-in?', false),

@@ -44,6 +44,8 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/toolbar/side_panel_toolbar_button.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -91,6 +93,12 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
   SidebarController* controller() const {
     return brave_browser()->sidebar_controller();
+  }
+
+  SidePanelToolbarButton* GetSidePanelToolbarButton() const {
+    BrowserView* browser_view =
+        BrowserView::GetBrowserViewForBrowser(browser());
+    return browser_view->toolbar_button_provider()->GetSidePanelButton();
   }
 
   views::View* GetVerticalTabsContainer() const {
@@ -272,6 +280,8 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
+  EXPECT_TRUE(!!GetSidePanelToolbarButton()->context_menu_controller());
+
   // Initially, active index is not set.
   EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 

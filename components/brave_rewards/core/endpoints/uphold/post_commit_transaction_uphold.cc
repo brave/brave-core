@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -21,7 +21,7 @@ using Result = PostCommitTransactionUphold::Result;
 
 namespace {
 
-Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
+Result ParseBody(RewardsEngine& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
@@ -49,7 +49,7 @@ Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
 
 // static
 Result PostCommitTransactionUphold::ProcessResponse(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     const mojom::UrlResponse& response) {
   if (URLLoader::IsSuccessCode(response.status_code)) {
     return ParseBody(engine, response.body);

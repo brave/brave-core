@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.brave_leo;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
-import org.chromium.ai_chat.mojom.AiChatAndroidHelper;
+import org.chromium.ai_chat.mojom.AiChatSettingsHelper;
 import org.chromium.ai_chat.mojom.ModelWithSubtitle;
 import org.chromium.ai_chat.mojom.PremiumStatus;
 import org.chromium.content_public.browser.BrowserContextHandle;
@@ -20,13 +20,13 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 /**
- * Helper to interact with native AIChatMojomHelperAndroid. Check ai_chat_mojom_helper_android.h,
- * ai_chat_mojom_helper_android.cc for native parts
+ * Helper to interact with native AIChatSettingsHelper. Check ai_chat_settings_helper.{h|cc}, for
+ * native parts
  */
 @JNINamespace("ai_chat")
 public class BraveLeoMojomHelper implements ConnectionErrorHandler {
     private long mNativeAIChatCMHelperAndroid;
-    AiChatAndroidHelper mAIChatAndroidHelper;
+    AiChatSettingsHelper mAIChatAndroidHelper;
 
     private static final Object sLock = new Object();
     private static BraveLeoMojomHelper sInstance;
@@ -47,7 +47,7 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
                         .getInterfaceToAndroidHelper(mNativeAIChatCMHelperAndroid);
         MessagePipeHandle handle =
                 CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
-        mAIChatAndroidHelper = AiChatAndroidHelper.MANAGER.attachProxy(handle, 0);
+        mAIChatAndroidHelper = AiChatSettingsHelper.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) mAIChatAndroidHelper).getProxyHandler();
         handler.setErrorHandler(this);
     }
@@ -65,7 +65,7 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
         }
     }
 
-    public void getPremiumStatus(AiChatAndroidHelper.GetPremiumStatus_Response callback) {
+    public void getPremiumStatus(AiChatSettingsHelper.GetPremiumStatus_Response callback) {
         if (mAIChatAndroidHelper == null) {
             callback.call(PremiumStatus.INACTIVE, null);
             return;
@@ -73,7 +73,7 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
         mAIChatAndroidHelper.getPremiumStatus(callback);
     }
 
-    public void createOrderId(AiChatAndroidHelper.CreateOrderId_Response callback) {
+    public void createOrderId(AiChatSettingsHelper.CreateOrderId_Response callback) {
         if (mAIChatAndroidHelper == null) {
             callback.call("");
             return;
@@ -82,7 +82,7 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
     }
 
     public void fetchOrderCredentials(
-            String orderId, AiChatAndroidHelper.FetchOrderCredentials_Response callback) {
+            String orderId, AiChatSettingsHelper.FetchOrderCredentials_Response callback) {
         if (mAIChatAndroidHelper == null) {
             callback.call("{}");
             return;
@@ -90,7 +90,7 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
         mAIChatAndroidHelper.fetchOrderCredentials(orderId, callback);
     }
 
-    public void refreshOrder(String orderId, AiChatAndroidHelper.RefreshOrder_Response callback) {
+    public void refreshOrder(String orderId, AiChatSettingsHelper.RefreshOrder_Response callback) {
         if (mAIChatAndroidHelper == null) {
             callback.call("{}");
             return;
@@ -98,7 +98,7 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
         mAIChatAndroidHelper.refreshOrder(orderId, callback);
     }
 
-    public void getModels(AiChatAndroidHelper.GetModelsWithSubtitles_Response callback) {
+    public void getModels(AiChatSettingsHelper.GetModelsWithSubtitles_Response callback) {
         if (mAIChatAndroidHelper == null) {
             callback.call(new ModelWithSubtitle[0]);
             return;
@@ -115,8 +115,8 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
     public interface Natives {
         long init(BrowserContextHandle browserContextHandle);
 
-        void destroy(long nativeAIChatMojomHelperAndroid);
+        void destroy(long nativeAIChatSettingsHelper);
 
-        long getInterfaceToAndroidHelper(long nativeAIChatMojomHelperAndroid);
+        long getInterfaceToAndroidHelper(long nativeAIChatSettingsHelper);
     }
 }

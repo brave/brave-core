@@ -1,7 +1,8 @@
 [package]
 name = "adblock-cxx"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
+license = "MPL-2.0"
 
 [dependencies]
 adblock = { version = "0.8.8", default-features = false, features = ["full-regex-handling", "regex-debug-info", "css-validation"] }

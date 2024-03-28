@@ -12,6 +12,8 @@ static_library("browser") {
     "brave_news_controller.h",
     "brave_news_p3a.cc",
     "brave_news_p3a.h",
+    "brave_news_pref_manager.cc",
+    "brave_news_pref_manager.h",
     "channel_migrator.cc",
     "channel_migrator.h",
     "channels_controller.cc",

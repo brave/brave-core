@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Start using Rewards</translation>
 <translation id="8220484609979012449">\n\nYou can still send crypto contributions to this creator by using your Web3 wallet.</translation>
 <translation id="6385969012847057348">This creator is unable to receive contributions from <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">This creator isn't set up to receive Web3 or crypto contributions yet.</translation>
 <translation id="6268134562674951939">You don't have enough tokens</translation>
 <translation id="4529874892536380156">Make this a monthly recurring contribution. You can cancel it at any time.</translation>
 <translation id="5562948772940025260">You can only send up to <ph name="AMOUNT"/> BATs using your Brave Rewards balance.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Using existing synced device, open Brave Settings and navigate to Settings &gt; Sync. Choose "Add New Device" and scan the QR Code displayed on the screen.</translation>
 <translation id="5241263629636958324">Copied to Clipboard</translation>
 <translation id="5817918615728894473">Pair</translation>
-<translation id="7090325819305486658">Data Preferences</translation>
+<translation id="3429575397891106447">Sync options</translation>
 <translation id="1680065323266179640">Delete Sync account</translation>
 <translation id="3792563952903751704">Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices. It will not however delete the data that is stored locally on those devices.
   This deletion is permanent and there is no way to recover the data. Should you decide to start using Sync again, you will need to create a new account and re-add each device one by one.</translation>
@@ -595,14 +596,18 @@ Are you sure you want to do this?</translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Deposit</translation>
-<translation id="1420318137760245955">Welcome to the new Brave Wallet</translation>
-<translation id="8339846196588658366">Hold crypto assets in your custody and track portfolio performance. All right from the Brave privacy browser.</translation>
-<translation id="4472575034687746823">Get started</translation>
+<translation id="4556086616242530072">Browser native.\nSelf-custody.\nAnd multi-chain.</translation>
+<translation id="7909462264772842773">Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana, Filecoin and more.</translation>
+<translation id="165255193061631296">Need a new wallet?</translation>
+<translation id="3485737865439729577">Get started with Brave Wallet within minutes</translation>
 <translation id="2759836790106646094">Back up your wallet now!</translation>
 <translation id="1078873179929044999">In the next step, you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</translation>
 <translation id="2359808026110333948">Continue</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="1904000155026201268">I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.</translation>
+<translation id="5333225216561354793">We require that you acknowledge the items below</translation>
+<translation id="1645800479814134195">I understand this is a self-custody wallet and that I alone am responsible for any associated funds, assets or accounts, and for taking appropriate action to secure, protect and back up my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device or similar circumstance.</translation>
+<translation id="4565891212173086999">I have read and agree to the <ph name="CLICK_START"/>Terms of Use<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Your recovery phrase</translation>
 <translation id="5077747669435508720">Write down or copy these words in the exact order shown below and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of a forgotten password, lost or stolen device, or if you want to switch wallets.</translation>
 <translation id="2708402071160162126">WARNING: never share your recovery phrase. Anyone with this phrase can take your assets forever.</translation>
@@ -647,6 +652,9 @@ Are you sure you want to do this?</translation>
 <translation id="3747079125031086337">Select the words in your recovery phrase in their correct order.</translation>
 <translation id="6518133107902771759">Verify</translation>
 <translation id="3157931365184549694">Restore</translation>
+<translation id="5844138175312846408">Already have a wallet?</translation>
+<translation id="2502258949541727762">Before we begin</translation>
+<translation id="5981303441790732480">Import your existing wallet</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">Password</translation>
 <translation id="5619264711680220002">Biometric unlock</translation>
@@ -665,7 +673,7 @@ Are you sure you want to do this?</translation>
 <translation id="5483736362376139517">1 year</translation>
 <translation id="6979737339423435258">All time</translation>
 <translation id="6284218950354553099">Automatically send daily usage ping to Brave</translation>
-<translation id="5288333155754958121">This anonymous, private ping lets Brave estimate active users.</translation>
+<translation id="2181060149810222381">This private ping lets Brave estimate active users.</translation>
 <translation id="3819257035322786455">Backup</translation>
 <translation id="4608713693379664295">Primary Crypto Accounts</translation>
 <translation id="4003821417160006384">Secondary Accounts</translation>
@@ -1212,5 +1220,11 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6637015365469044269">Upgrade now</translation>
 <translation id="614530507403667291">Default model for new conversations</translation>
 <translation id="4071849832011229600">Default model</translation>
+<translation id="4185473179105062442">Receive BATs directly to a self-custody crypto address</translation>
+<translation id="5802986777701714573">We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.</translation>
 <translation id="7557539689487606886">Go Premium</translation>
+<translation id="5538904824395606812">Use your current service provider or Quad9</translation>
+<translation id="6393423486818299209">Use your current service provider or Wikimedia DNS</translation>
+<translation id="3401384982562827787">Use your current service provider or Cloudflare</translation>
+<translation id="8812367543786936496">If your current service provider is insecure, Brave uses a secure alternative DNS provider</translation>
 </translationbundle>

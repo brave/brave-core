@@ -39,6 +39,7 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
@@ -53,6 +54,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -76,7 +78,6 @@
 #include "net/cookies/canonical_cookie.h"
 #include "net/cookies/cookie_util.h"
 #include "net/http/http_status_code.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -250,6 +251,15 @@ std::vector<std::string> GetISOCountries() {
   return countries;
 }
 
+mojom::RewardsParametersPtr RewardsParametersFromPrefs(PrefService& prefs) {
+  auto params = internal::RewardsParametersProvider::DictToParameters(
+      prefs.GetDict(prefs::kParameters));
+  if (params) {
+    return params;
+  }
+  return mojom::RewardsParameters::New();
+}
+
 template <typename Callback, typename... Args>
 void DeferCallback(base::Location location, Callback callback, Args&&... args) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
@@ -331,8 +341,6 @@ RewardsServiceImpl::~RewardsServiceImpl() {
     greaselion_service_->RemoveObserver(this);
   }
 #endif
-
-  StopNotificationTimers();
 }
 
 void RewardsServiceImpl::ConnectionClosed() {
@@ -523,7 +531,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
 
         // Set the user's current ToS version.
         prefs->SetInteger(prefs::kTosVersion,
-                          prefs->GetInteger(prefs::kParametersTosVersion));
+                          RewardsParametersFromPrefs(*prefs)->tos_version);
 
         // Fetch the user's balance before turning on AC. We don't want to
         // automatically turn on AC if for some reason the user has a current
@@ -586,7 +594,7 @@ void RewardsServiceImpl::GetUserType(
       version = base::Version({1});
     }
 
-    if (!prefs->GetBoolean(prefs::kParametersVBatExpired) &&
+    if (!RewardsParametersFromPrefs(*prefs)->vbat_expired &&
         version.CompareTo(base::Version({2, 5})) < 0) {
       std::move(callback).Run(UserType::kLegacyUnconnected);
       return;
@@ -604,7 +612,7 @@ bool RewardsServiceImpl::IsTermsOfServiceUpdateRequired() {
   if (!prefs->GetBoolean(prefs::kEnabled)) {
     return false;
   }
-  int params_version = prefs->GetInteger(prefs::kParametersTosVersion);
+  int params_version = RewardsParametersFromPrefs(*prefs)->tos_version;
   int user_version = prefs->GetInteger(prefs::kTosVersion);
   return user_version < params_version;
 }
@@ -612,7 +620,7 @@ bool RewardsServiceImpl::IsTermsOfServiceUpdateRequired() {
 void RewardsServiceImpl::AcceptTermsOfServiceUpdate() {
   if (IsTermsOfServiceUpdateRequired()) {
     auto* prefs = profile_->GetPrefs();
-    int params_version = prefs->GetInteger(prefs::kParametersTosVersion);
+    int params_version = RewardsParametersFromPrefs(*prefs)->tos_version;
     prefs->SetInteger(prefs::kTosVersion, params_version);
     for (auto& observer : observers_) {
       observer.OnTermsOfServiceUpdateAccepted();
@@ -847,10 +855,6 @@ void RewardsServiceImpl::Shutdown() {
 }
 
 void RewardsServiceImpl::OnEngineInitialized(mojom::Result result) {
-  if (result == mojom::Result::OK) {
-    StartNotificationTimers();
-  }
-
   if (!ready_->is_signaled()) {
     ready_->Signal();
   }
@@ -1075,16 +1079,19 @@ void RewardsServiceImpl::OnURLLoaderComplete(
             [](std::unique_ptr<std::string> response_body,
                LoadURLCallback callback, mojom::UrlResponsePtr response,
                scoped_refptr<base::SequencedTaskRunner> post_response_runner) {
-              data_decoder::JsonSanitizer::Sanitize(
+              api_request_helper::SanitizeAndParseJson(
                   *response_body,
                   base::BindOnce(
                       [](LoadURLCallback callback,
                          mojom::UrlResponsePtr response,
                          const scoped_refptr<base::SequencedTaskRunner>&
                              post_response_runner,
-                         data_decoder::JsonSanitizer::Result result) {
+                         api_request_helper::ValueOrError result) {
                         if (result.has_value()) {
-                          response->body = std::move(result).value();
+                          std::string json;
+                          base::JSONWriter::Write(std::move(result).value(),
+                                                  &json);
+                          response->body = std::move(json);
                         } else {
                           response->body = {};
                           VLOG(0) << "Response sanitization error: "
@@ -1165,152 +1172,6 @@ void RewardsServiceImpl::OnGetRewardsParameters(
   std::move(callback).Run(std::move(parameters));
 }
 
-void RewardsServiceImpl::FetchPromotions(FetchPromotionsCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         std::vector<mojom::PromotionPtr>());
-  }
-
-  auto on_fetch = [](base::WeakPtr<RewardsServiceImpl> self,
-                     FetchPromotionsCallback callback, mojom::Result result,
-                     std::vector<mojom::PromotionPtr> promotions) {
-    if (self) {
-      for (auto& observer : self->observers_) {
-        observer.OnFetchPromotions(self.get(), result, promotions);
-      }
-    }
-
-    std::move(callback).Run(std::move(promotions));
-  };
-
-  engine_->FetchPromotions(
-      base::BindOnce(on_fetch, AsWeakPtr(), std::move(callback)));
-}
-
-void ParseCaptchaResponse(
-    const std::string& response,
-    std::string* image,
-    std::string* id,
-    std::string* hint) {
-  std::optional<base::Value> value = base::JSONReader::Read(response);
-  if (!value || !value->is_dict()) {
-    return;
-  }
-
-  const auto& dict = value->GetDict();
-  const auto* captcha_image = dict.FindString("captchaImage");
-  const auto* captcha_hint = dict.FindString("hint");
-  const auto* captcha_id = dict.FindString("captchaId");
-  if (!captcha_image || !captcha_hint || !captcha_id) {
-    return;
-  }
-
-  *image = *captcha_image;
-  *hint = *captcha_hint;
-  *id = *captcha_id;
-}
-
-void RewardsServiceImpl::OnClaimPromotion(ClaimPromotionCallback callback,
-                                          const mojom::Result result,
-                                          const std::string& response) {
-  std::string image;
-  std::string hint;
-  std::string id;
-
-  if (result != mojom::Result::OK) {
-    std::move(callback).Run(result, image, hint, id);
-    return;
-  }
-
-  ParseCaptchaResponse(response, &image, &id, &hint);
-
-  if (image.empty() || hint.empty() || id.empty()) {
-    std::move(callback).Run(result, "", "", "");
-    return;
-  }
-
-  std::move(callback).Run(result, image, hint, id);
-}
-
-void RewardsServiceImpl::AttestationAndroid(const std::string& promotion_id,
-                                            AttestPromotionCallback callback,
-                                            const mojom::Result result,
-                                            const std::string& nonce) {
-  if (result != mojom::Result::OK) {
-    std::move(callback).Run(result, nullptr);
-    return;
-  }
-
-  if (nonce.empty()) {
-    std::move(callback).Run(mojom::Result::FAILED, nullptr);
-    return;
-  }
-
-#if BUILDFLAG(IS_ANDROID)
-  auto attest_callback =
-      base::BindOnce(&RewardsServiceImpl::OnAttestationAndroid, AsWeakPtr(),
-                     promotion_id, std::move(callback), nonce);
-  safetynet_check_runner_.performSafetynetCheck(nonce,
-                                                std::move(attest_callback));
-#endif
-}
-
-void RewardsServiceImpl::OnAttestationAndroid(
-    const std::string& promotion_id,
-    AttestPromotionCallback callback,
-    const std::string& nonce,
-    const bool token_received,
-    const std::string& token,
-    const bool attestation_passed) {
-  if (!Connected() || !token_received) {
-    std::move(callback).Run(mojom::Result::FAILED, nullptr);
-    return;
-  }
-
-  base::Value::Dict solution;
-  solution.Set("nonce", nonce);
-  solution.Set("token", token);
-
-  std::string json;
-  base::JSONWriter::Write(solution, &json);
-
-  engine_->AttestPromotion(
-      promotion_id, json,
-      base::BindOnce(&RewardsServiceImpl::OnAttestPromotion, AsWeakPtr(),
-                     std::move(callback)));
-}
-
-void RewardsServiceImpl::ClaimPromotion(
-    const std::string& promotion_id,
-    ClaimPromotionCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), mojom::Result::FAILED,
-                         "", "", "");
-  }
-
-  auto claim_callback = base::BindOnce(&RewardsServiceImpl::OnClaimPromotion,
-      AsWeakPtr(),
-      std::move(callback));
-
-  engine_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
-}
-
-void RewardsServiceImpl::ClaimPromotion(
-    const std::string& promotion_id,
-    AttestPromotionCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), mojom::Result::FAILED,
-                         nullptr);
-  }
-
-  auto claim_callback = base::BindOnce(&RewardsServiceImpl::AttestationAndroid,
-      AsWeakPtr(),
-      promotion_id,
-      std::move(callback));
-
-  engine_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
-}
-
 std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     const {
   std::vector<std::string> providers;
@@ -1342,36 +1203,6 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
   }
 
   return providers;
-}
-
-void RewardsServiceImpl::AttestPromotion(
-    const std::string& promotion_id,
-    const std::string& solution,
-    AttestPromotionCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), mojom::Result::FAILED,
-                         nullptr);
-  }
-
-  engine_->AttestPromotion(
-      promotion_id, solution,
-      base::BindOnce(&RewardsServiceImpl::OnAttestPromotion, AsWeakPtr(),
-                     std::move(callback)));
-}
-
-void RewardsServiceImpl::OnAttestPromotion(AttestPromotionCallback callback,
-                                           const mojom::Result result,
-                                           mojom::PromotionPtr promotion) {
-  if (result != mojom::Result::OK) {
-    std::move(callback).Run(result, nullptr);
-    return;
-  }
-
-  for (auto& observer : observers_) {
-    observer.OnPromotionFinished(this, result, promotion->Clone());
-  }
-
-  std::move(callback).Run(result, std::move(promotion));
 }
 
 void RewardsServiceImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
@@ -1993,41 +1824,6 @@ RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
   return notification_service_.get();
 }
 
-void RewardsServiceImpl::StartNotificationTimers() {
-  // Startup timer, begins after 30-second delay.
-  PrefService* pref_service = profile_->GetPrefs();
-  notification_startup_timer_ = std::make_unique<base::OneShotTimer>();
-  notification_startup_timer_->Start(
-      FROM_HERE,
-      pref_service->GetTimeDelta(
-        prefs::kNotificationStartupDelay),
-      this,
-      &RewardsServiceImpl::OnNotificationTimerFired);
-  DCHECK(notification_startup_timer_->IsRunning());
-
-  // Periodic timer, runs once per day by default.
-  base::TimeDelta periodic_timer_interval =
-      pref_service->GetTimeDelta(prefs::kNotificationTimerInterval);
-  notification_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
-  notification_periodic_timer_->Start(
-      FROM_HERE, periodic_timer_interval, this,
-      &RewardsServiceImpl::OnNotificationTimerFired);
-  DCHECK(notification_periodic_timer_->IsRunning());
-}
-
-void RewardsServiceImpl::StopNotificationTimers() {
-  notification_startup_timer_.reset();
-  notification_periodic_timer_.reset();
-}
-
-void RewardsServiceImpl::OnNotificationTimerFired() {
-  if (!Connected()) {
-    return;
-  }
-
-  FetchPromotions(base::DoNothing());
-}
-
 void RewardsServiceImpl::MaybeShowNotificationTipsPaid() {
   GetAutoContributeEnabled(base::BindOnce(
       &RewardsServiceImpl::ShowNotificationTipsPaid,
@@ -2550,33 +2346,6 @@ void RewardsServiceImpl::GetClientInfo(GetClientInfoCallback callback) {
 #endif
 }
 
-void RewardsServiceImpl::UnblindedTokensReady() {
-  for (auto& observer : observers_) {
-    observer.OnUnblindedTokensReady(this);
-  }
-}
-
-void RewardsServiceImpl::GetMonthlyReport(
-    const uint32_t month,
-    const uint32_t year,
-    GetMonthlyReportCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), nullptr);
-  }
-
-  engine_->GetMonthlyReport(
-      static_cast<mojom::ActivityMonth>(month), year,
-      base::BindOnce(&RewardsServiceImpl::OnGetMonthlyReport, AsWeakPtr(),
-                     std::move(callback)));
-}
-
-void RewardsServiceImpl::OnGetMonthlyReport(
-    GetMonthlyReportCallback callback,
-    const mojom::Result result,
-    mojom::MonthlyReportInfoPtr report) {
-  std::move(callback).Run(std::move(report));
-}
-
 void RewardsServiceImpl::ReconcileStampReset() {
   for (auto& observer : observers_) {
     observer.ReconcileStampReset();
@@ -2604,16 +2373,6 @@ void RewardsServiceImpl::ForTestingSetTestResponseCallback(
   test_response_callback_ = callback;
 }
 
-void RewardsServiceImpl::GetAllMonthlyReportIds(
-      GetAllMonthlyReportIdsCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         std::vector<std::string>());
-  }
-
-  engine_->GetAllMonthlyReportIds(std::move(callback));
-}
-
 void RewardsServiceImpl::GetAllContributions(
     GetAllContributionsCallback callback) {
   if (!Connected()) {
@@ -2624,30 +2383,6 @@ void RewardsServiceImpl::GetAllContributions(
   engine_->GetAllContributions(std::move(callback));
 }
 
-void RewardsServiceImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         std::vector<mojom::PromotionPtr>());
-  }
-
-  engine_->GetAllPromotions(
-      base::BindOnce(&RewardsServiceImpl::OnGetAllPromotions, AsWeakPtr(),
-                     std::move(callback)));
-}
-
-void RewardsServiceImpl::OnGetAllPromotions(
-    GetAllPromotionsCallback callback,
-    base::flat_map<std::string, mojom::PromotionPtr> promotions) {
-  std::vector<mojom::PromotionPtr> list;
-  for (const auto& promotion : promotions) {
-    if (!promotion.second) {
-      continue;
-    }
-    list.push_back(promotion.second->Clone());
-  }
-  std::move(callback).Run(std::move(list));
-}
-
 void RewardsServiceImpl::ClearAllNotifications() {
   notification_service_->DeleteAllNotifications(false);
 }
@@ -2655,7 +2390,6 @@ void RewardsServiceImpl::ClearAllNotifications() {
 void RewardsServiceImpl::CompleteReset(SuccessCallback callback) {
   resetting_rewards_ = true;
 
-  StopNotificationTimers();
   notification_service_->DeleteAllNotifications(true);
 
   auto stop_callback =

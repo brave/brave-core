@@ -1052,9 +1052,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="A message about auto-contribute">
         Auto-Contribute
       </message>
-      <message name="IDS_BRAVE_UI_CLAIM" desc="A claim grant button text">
-        Claim Rewards
-      </message>
       <message name="IDS_BALANCE" desc="Title text for `Your Balance` section in Brave rewards panel">
         Balance
       </message>
@@ -1063,18 +1060,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_CONTR_ERROR" desc="A notification about contribution processing problem">
         There was a problem processing your contribution.
-      </message>
-      <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="A notification about free token grant">
-        A token grant is available!
-      </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_TITLE" desc="Brave Ads notification title">
-        Your <ph name="MONTH_VALUE">%1$s<ex>October</ex></ph> Ads Rewards are here!
-      </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_TEXT" desc='Brave Ads notification text'>
-        <ph name="MONTH_VALUE">%1$s<ex>October</ex></ph> Rewards: <ph name="TOKEN">%2$s<ex>token</ex></ph> BAT
-      </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_SUB_TEXT" desc='Brave Ads notification sub text'>
-        You have <ph name="TOKEN">%1$s<ex>89</ex></ph> days left to claim
       </message>
       <message name="IDS_BRAVE_UI_ON_YOUTUBE" desc="A suffix to YouTube channel creator">
         on YouTube
@@ -2015,9 +2000,6 @@ Are you sure you want to do this?
     <message name="IDS_WALLET_COPY" desc="Brave Wallet onboarding bottom menu text">
       Copy
     </message>
-    <message name="IDS_SECURE_YOUR_CRYPTO" desc="Brave Wallet onboarding text">
-      Secure your crypto with a password
-    </message>
     <message name="IDS_ENTER_PASSWORD" desc="Brave wallet password hint text">
       Enter Password
     </message>
@@ -2031,13 +2013,10 @@ Are you sure you want to do this?
       Verified password did not match
     </message>
     <message name="IDS_CREATING_WALLET_ONBOARDING_TEXT" desc="Text displayed along with a spinner during Brave Wallet creation or restoring.">
-      Creating Wallet...
+      Creating your wallet…
     </message>
-    <message name="IDS_YOUR_WALLET_IS_RESTORING_PAGE_TITLE" desc="Text for a spinner page title during Brave Wallet restoring. It is not displayed anywhere" translateable="false">
-      Your wallet is restoring...
-    </message>
-    <message name="IDS_YOUR_WALLET_IS_CREATING_PAGE_TITLE" desc="Text for a spinner page title during Brave Wallet creating. It is not displayed anywhere" translateable="false">
-      Your wallet is being created...
+    <message name="IDS_CREATING_WALLET_SUBTITLE_TEXT" desc="Text displayed along with a spinner during Brave Wallet creation or restoring.">
+      It may take a few seconds…
     </message>
     <message name="IDS_NEW_ACCOUNT_PREFIX" desc="Brave Wallet new account default name prefix">
       <ph name="ACCOUNT_NAME">%1$s<ex>Ethereum</ex></ph> Account <ph name="ACCOUNT_NUMBER">%2$s<ex>2</ex></ph>
@@ -2104,6 +2083,36 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BEFORE_WE_BEGIN" desc="Brave Wallet term of use screen title">
       Before we begin
+    </message>
+    <message name="IDS_CREATE_PASSWORD" desc="Brave Wallet password creation description">
+      Create a password
+    </message>
+    <message name="IDS_CREATE_PASSWORD_SUBTITLE" desc="Brave Wallet password creation screen subtitle">
+      You'll use this password to access your wallet.
+    </message>
+    <message name="IDS_WALLET_PASSWORD" desc="Wallet password creation screen title">
+      Enter new password
+    </message>
+    <message name="IDS_WALLET_RETYPE_PASSWORD" desc="Wallet password creation screen subtitle">
+      Re-enter password
+    </message>
+    <message name="IDS_WALLET_PASSWORD_MINIMUM_LENGTH" desc="Wallet password minimum lenght">
+      Password must be at least 8 characters.
+    </message>
+    <message name="IDS_WALLET_PASSWORD_DOES_NOT_MATCH" desc="Wallet password not matching error">
+      Password doesn’t match.
+    </message>
+    <message name="IDS_WALLET_PASSWORD_STRONG" desc="Wallet password lenght strong strength">
+      Strong
+    </message>
+    <message name="IDS_WALLET_PASSWORD_WEAK" desc="Wallet password length weak strength">
+      Weak
+    </message>
+    <message name="IDS_WALLET_PASSWORD_MEDIUM" desc="Wallet password length medium strength">
+      Medium
+    </message>
+    <message name="IDS_WALLET_PASSWORD_MATCH" desc="Wallet password match message">
+      Match!
     </message>
     <message name="IDS_ALREADY_HAVE_A_WALLET_DESCRIPTION" desc="Brave Wallet onboarding restore description">
       Import your existing wallet
@@ -3547,7 +3556,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Leo confirm button text.">
       Confirm
-    </message>  
+    </message>
     <message name="IDS_LINK_SUBSCRIPTION_TITLE_LEO" desc="Brave Leo link subscription settings title text">
       Link purchase to your Brave account
     </message>
@@ -3813,7 +3822,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       If your current service provider is insecure, Brave uses a secure alternative DNS provider
     </message>
     <!-- End of Secure DNS Settings -->
-
     <!-- Autofill Service strings -->
     <message name="IDS_CITY" desc="Autofill field for city">
       city
@@ -3891,6 +3899,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       zip
     </message>
     <!-- End of Autofill Service strings -->
+    <message name="IDS_I_AGREE_ACTION" desc="CTA text for tos rewards panel">
+      I agree
+    </message>
+    <message name="IDS_REWARDS_TOS_TITLE" desc="Terms of service text for rewards panel">
+      Updated Terms of Service
+    </message>
+    <message name="IDS_REWARDS_TOS_UPDATE_TEXT" desc="Terms of service text for rewards panel">
+    We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you prefer not to agree, you have the option to <ph name="RESET_START">&lt;reset&gt;</ph>reset<ph name="RESET_END">&lt;/reset&gt;</ph> Brave Rewards, and this will disable the feature.
+    </message>
+    <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="Terms of service text for rewards panel">
+      See <ph name="TOS_START">&lt;tos&gt;</ph>Brave Rewards Terms of Service<ph name="TOS_END">&lt;/tos&gt;</ph>
+    </message>
   </messages>
   </release>
 </grit>

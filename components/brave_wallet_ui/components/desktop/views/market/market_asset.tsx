@@ -8,13 +8,16 @@ import { useDispatch } from 'react-redux'
 import { Redirect, useHistory, useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
-// types
+// types  & constants
 import {
   BraveWallet,
   WalletRoutes,
   TokenPriceHistory,
   LineChartIframeData
 } from '../../../../constants/types'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../common/constants/local-storage-keys'
 
 // Utils
 import { getPriceIdForToken } from '../../../../utils/api-utils'
@@ -39,9 +42,6 @@ import {
 // actions
 import { WalletPageActions } from '../../../../page/actions'
 
-// selectors
-import { WalletSelectors } from '../../../../common/selectors'
-
 // Components
 import {
   LineChartControls //
@@ -60,9 +60,6 @@ import {
   useIsBuySupported //
 } from '../../../../common/hooks/use-multi-chain-buy-assets'
 import {
-  useSafeWalletSelector //
-} from '../../../../common/hooks/use-safe-selector'
-import {
   useGetNetworkQuery,
   useGetPriceHistoryQuery,
   useGetDefaultFiatCurrencyQuery,
@@ -77,6 +74,9 @@ import {
 import {
   useScopedBalanceUpdater //
 } from '../../../../common/hooks/use-scoped-balance-updater'
+import {
+  useSyncedLocalStorage //
+} from '../../../../common/hooks/use_local_storage'
 
 // Styled Components
 import { Row, Column, LeoSquaredButton } from '../../../shared/style'
@@ -105,11 +105,14 @@ export const MarketAsset = () => {
   }>()
   const coingeckoIdLower = coingeckoId?.toLowerCase()
 
+  // local-storage
+  const [hidePortfolioBalances] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
+    false
+  )
+
   // redux
   const dispatch = useDispatch()
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
-  )
 
   // Queries
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
@@ -160,7 +163,7 @@ export const MarketAsset = () => {
     token.symbol = selectedCoinMarket.symbol.toUpperCase()
     token.logo = selectedCoinMarket.image
     return { selectedAssetFromParams: token, foundTokens }
-  }, [selectedCoinMarket, combinedTokensList, selectedTimeline])
+  }, [selectedCoinMarket, combinedTokensList])
 
   const isRewardsToken = getIsRewardsToken(selectedAssetFromParams)
 
@@ -274,7 +277,7 @@ export const MarketAsset = () => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
     dispatch(WalletPageActions.updateNftMetadataError(undefined))
     history.push(WalletRoutes.Market)
-  }, [])
+  }, [dispatch, history])
 
   const onCloseTokenDetailsModal = React.useCallback(
     () => setShowTokenDetailsModal(false),
@@ -295,7 +298,7 @@ export const MarketAsset = () => {
     setShowHideTokenModal(false)
     setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
-  }, [selectedAssetFromParams, updateUserAssetVisible])
+  }, [history, selectedAssetFromParams, updateUserAssetVisible])
 
   const onSelectBuy = React.useCallback(() => {
     if (foundTokens.length === 1) {
@@ -323,7 +326,7 @@ export const MarketAsset = () => {
         })
       )
     }
-  }, [foundTokens, selectedAssetFromParams])
+  }, [foundTokens, history, selectedAssetFromParams])
 
   const onSelectDeposit = React.useCallback(() => {
     if (foundTokens.length === 1) {
@@ -351,7 +354,7 @@ export const MarketAsset = () => {
         })
       )
     }
-  }, [foundTokens, selectedAssetFromParams])
+  }, [foundTokens, history, selectedAssetFromParams])
 
   // token list & market data needs to load before we can find an asset to
   // select from the url params

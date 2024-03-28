@@ -60,7 +60,7 @@ export const NftMultimedia = (props: Props) => {
         mimeType={mimeType}
       />
     )
-  }, [mediaUrl, mediaType])
+  }, [mediaType, mediaUrl, mimeType])
 
   return <MultiMediaWrapper>{renderMedia()}</MultiMediaWrapper>
 }

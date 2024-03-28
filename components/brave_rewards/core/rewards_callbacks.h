@@ -19,12 +19,8 @@
 
 namespace brave_rewards::internal {
 
-using AttestPromotionCallback = mojom::RewardsEngine::AttestPromotionCallback;
-
 using BeginExternalWalletLoginCallback =
     mojom::RewardsEngine::BeginExternalWalletLoginCallback;
-
-using ClaimPromotionCallback = mojom::RewardsEngine::ClaimPromotionCallback;
 
 using ConnectExternalWalletCallback =
     mojom::RewardsEngine::ConnectExternalWalletCallback;
@@ -33,8 +29,6 @@ using CreateRewardsWalletCallback =
     mojom::RewardsEngine::CreateRewardsWalletCallback;
 
 using FetchBalanceCallback = mojom::RewardsEngine::FetchBalanceCallback;
-
-using FetchPromotionsCallback = mojom::RewardsEngine::FetchPromotionsCallback;
 
 using GetExternalWalletCallback =
     mojom::RewardsEngine::GetExternalWalletCallback;
@@ -60,26 +54,14 @@ using ContributionInfoListCallback =
 using GetActivityInfoListCallback =
     base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
 
-using GetAllMonthlyReportIdsCallback =
-    mojom::RewardsEngine::GetAllMonthlyReportIdsCallback;
-
-using GetAllPromotionsCallback =
-    base::OnceCallback<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
-
 using GetBalanceReportListCallback = base::OnceCallback<void(
     std::vector<mojom::BalanceReportInfoPtr>)>;  // TODO(sszaloki): unused?
-
-using GetContributionReportCallback =
-    base::OnceCallback<void(std::vector<mojom::ContributionReportInfoPtr>)>;
 
 using GetEventLogsCallback =
     base::OnceCallback<void(std::vector<mojom::EventLogPtr>)>;
 
 using GetExcludedListCallback =
     base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
-
-using GetMonthlyReportCallback =
-    base::OnceCallback<void(mojom::Result, mojom::MonthlyReportInfoPtr)>;
 
 using GetOneTimeTipsCallback =
     base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
@@ -95,9 +77,6 @@ using GetPublisherPanelInfoCallback =
 
 using GetRecurringTipsCallback =
     base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
-
-using GetTransactionReportCallback =
-    base::OnceCallback<void(std::vector<mojom::TransactionReportInfoPtr>)>;
 
 using PublisherInfoCallback =
     base::OnceCallback<void(mojom::Result, mojom::PublisherInfoPtr)>;

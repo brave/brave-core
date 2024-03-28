@@ -69,6 +69,8 @@ class ConversationDriver {
   ConversationDriver& operator=(const ConversationDriver&) = delete;
 
   void ChangeModel(const std::string& model_key);
+  std::string GetDefaultModel();
+  void SetDefaultModel(const std::string& model_key);
   const mojom::Model& GetCurrentModel();
   std::vector<mojom::ModelPtr> GetModels();
   const std::vector<mojom::ConversationTurn>& GetConversationHistory();
@@ -143,6 +145,15 @@ class ConversationDriver {
                               std::string_view invalidation_token) = 0;
 
   virtual void OnFaviconImageDataChanged();
+
+  // Implementer should call this when the content is updated in a way that
+  // will not be detected by the on-demand techniques used by GetPageContent.
+  // For example for sites where GetPageContent does not read the live DOM but
+  // reads static JS from HTML that doesn't change for same-page navigation and
+  // we need to intercept new JS data from subresource loads.
+  void OnPageContentUpdated(std::string content,
+                            bool is_video,
+                            std::string invalidation_token);
 
   // To be called when a page navigation is detected and a new conversation
   // is expected.

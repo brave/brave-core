@@ -18,6 +18,9 @@ import {
 
 // constants
 import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../common/constants/local-storage-keys'
 
 // Utils
 import Amount from '../../../../utils/amount'
@@ -48,9 +51,6 @@ import {
 // actions
 import { WalletPageActions } from '../../../../page/actions'
 
-// selectors
-import { WalletSelectors } from '../../../../common/selectors'
-
 // Components
 import {
   LineChartControls //
@@ -61,6 +61,9 @@ import {
 import {
   BridgeToAuroraModal //
 } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
+import {
+  EditTokenModal //
+} from '../../popup-modals/edit_token_modal/edit_token_modal'
 
 // Hooks
 import {
@@ -69,9 +72,6 @@ import {
 import {
   useIsBuySupported //
 } from '../../../../common/hooks/use-multi-chain-buy-assets'
-import {
-  useSafeWalletSelector //
-} from '../../../../common/hooks/use-safe-selector'
 import {
   useGetNetworkQuery,
   useGetTransactionsQuery,
@@ -86,6 +86,9 @@ import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s //
 } from '../../../../common/slices/constants'
+import {
+  useSyncedLocalStorage //
+} from '../../../../common/hooks/use_local_storage'
 
 // Styled Components
 import { StyledWrapper, ButtonRow } from './style'
@@ -120,6 +123,8 @@ export const PortfolioFungibleAsset = () => {
   const [selectedTimeline, setSelectedTimeline] = React.useState<number>(
     getStoredPortfolioTimeframe
   )
+  const [showEditTokenModal, setShowEditTokenModal] =
+    React.useState<boolean>(false)
 
   // routing
   const history = useHistory()
@@ -130,8 +135,11 @@ export const PortfolioFungibleAsset = () => {
 
   // redux
   const dispatch = useDispatch()
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
+
+  // Local-Storage
+  const [hidePortfolioBalances] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
+    false
   )
 
   // Queries
@@ -339,7 +347,7 @@ export const PortfolioFungibleAsset = () => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
     dispatch(WalletPageActions.updateNftMetadataError(undefined))
     history.push(WalletRoutes.PortfolioAssets)
-  }, [])
+  }, [dispatch, history])
 
   const onOpenRainbowAppClick = React.useCallback(() => {
     chrome.tabs.create({ url: rainbowbridgeLink }, () => {
@@ -390,13 +398,20 @@ export const PortfolioFungibleAsset = () => {
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
-  }, [selectedAssetFromParams, showTokenDetailsModal, updateUserAssetVisible])
+  }, [
+    dispatch,
+    history,
+    selectedAssetFromParams,
+    showHideTokenModel,
+    showTokenDetailsModal,
+    updateUserAssetVisible
+  ])
 
   const onSelectBuy = React.useCallback(() => {
     if (selectedAssetFromParams) {
       history.push(makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams)))
     }
-  }, [selectedAssetFromParams])
+  }, [history, selectedAssetFromParams])
 
   const onSelectDeposit = React.useCallback(() => {
     if (selectedAssetFromParams) {
@@ -404,7 +419,7 @@ export const PortfolioFungibleAsset = () => {
         makeDepositFundsRoute(getAssetIdKey(selectedAssetFromParams))
       )
     }
-  }, [selectedAssetFromParams])
+  }, [history, selectedAssetFromParams])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(
@@ -446,6 +461,11 @@ export const PortfolioFungibleAsset = () => {
           onBack={goBack}
           onClickTokenDetails={() => setShowTokenDetailsModal(true)}
           onClickHideToken={() => setShowHideTokenModal(true)}
+          onClickEditToken={
+            selectedAssetFromParams?.contractAddress !== ''
+              ? () => setShowEditTokenModal(true)
+              : undefined
+          }
         />
       }
     >
@@ -526,6 +546,13 @@ export const PortfolioFungibleAsset = () => {
               onHideAsset={onHideAsset}
             />
           )}
+
+        {showEditTokenModal && selectedAssetFromParams && (
+          <EditTokenModal
+            onClose={() => setShowEditTokenModal(false)}
+            token={selectedAssetFromParams}
+          />
+        )}
 
         <Column
           padding='0px 24px 24px 24px'

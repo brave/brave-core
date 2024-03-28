@@ -221,7 +221,10 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
     []
   )
 
-  const toggleShowAddCustomToken = () => setShowAddCustomToken((prev) => !prev)
+  const toggleShowAddCustomToken = React.useCallback(
+    () => setShowAddCustomToken((prev) => !prev),
+    []
+  )
 
   const onClickSuggestAdd = React.useCallback(() => {
     setTokenContractAddress(searchValue)

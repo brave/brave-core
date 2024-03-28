@@ -204,7 +204,6 @@ function AssetSelection({ isAndroid }: Props) {
   )
 
   const { data: options } = useGetOnRampAssetsQuery()
-  const allBuyAssetOptions = options?.allAssetOptions || []
 
   // refs
   const listRef = React.useRef<List<BraveWallet.BlockchainToken[]>>(null)
@@ -231,24 +230,24 @@ function AssetSelection({ isAndroid }: Props) {
           />
         )
       },
-      [selectedCurrency]
+      [history, selectedCurrency]
     )
 
   // memos & computed
   const assetsForFilteredNetwork = React.useMemo(() => {
-    if (!allBuyAssetOptions) {
+    if (!options?.allAssetOptions) {
       return []
     }
 
     const assets =
       selectedNetworkFilter.chainId === AllNetworksOption.chainId
-        ? allBuyAssetOptions
-        : allBuyAssetOptions.filter(
+        ? options.allAssetOptions
+        : options.allAssetOptions.filter(
             ({ chainId }) => selectedNetworkFilter.chainId === chainId
           )
 
     return assets
-  }, [selectedNetworkFilter.chainId, allBuyAssetOptions])
+  }, [selectedNetworkFilter.chainId, options?.allAssetOptions])
 
   const assetListSearchResults = React.useMemo(() => {
     if (searchValue === '') {
@@ -265,7 +264,7 @@ function AssetSelection({ isAndroid }: Props) {
 
   const assetsUI = React.useMemo(
     () =>
-      allBuyAssetOptions?.length ? (
+      options?.allAssetOptions?.length ? (
         <VirtualizedTokensList
           listRef={listRef}
           getItemKey={getItemKey}
@@ -284,7 +283,7 @@ function AssetSelection({ isAndroid }: Props) {
           />
         </Column>
       ),
-    [assetListSearchResults, renderToken, isPanel]
+    [options?.allAssetOptions, assetListSearchResults, renderToken, isPanel]
   )
 
   const networksFilterOptions: BraveWallet.NetworkInfo[] = React.useMemo(() => {
@@ -645,7 +644,6 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
       selectedAsset,
       assetNetwork,
       getBuyUrl,
-      params,
       currencyCode,
       generatedAddress
     ]

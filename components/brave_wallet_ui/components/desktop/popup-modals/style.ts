@@ -4,7 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-import CloseIcon from '../../../assets/svg-icons/close.svg'
+import Icon from '@brave/leo/react/icon'
+
+// Shared Styles
 import { WalletButton, Column, Row } from '../../shared/style'
 import { layoutPanelWidth } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
@@ -79,18 +81,31 @@ export const Title = styled.span`
   margin-right: 16px;
 `
 
-export const CloseButton = styled(WalletButton)`
+export const HeaderButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  width: 20px;
-  height: 20px;
-  background-color: ${(p) => p.theme.color.interactive07};
-  -webkit-mask-image: url(${CloseIcon});
-  mask-image: url(${CloseIcon});
+  width: 24px;
+  height: 24px;
+  background-color: none;
+  background: none;
   outline: none;
   border: none;
+`
+
+export const CloseIcon = styled(Icon).attrs({
+  name: 'close'
+})`
+  --leo-icon-size: 24px;
+  color: ${leo.color.icon.default};
+`
+
+export const BackIcon = styled(Icon).attrs({
+  name: 'arrow-left'
+})`
+  --leo-icon-size: 24px;
+  color: ${leo.color.icon.default};
 `
 
 export const Divider = styled.div`

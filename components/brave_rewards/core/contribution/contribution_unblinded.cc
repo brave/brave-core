@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave_base/random.h"
 
 namespace brave_rewards::internal::contribution {
@@ -90,10 +90,8 @@ void GetStatisticalVotingWinners(
 
 }  // namespace
 
-Unblinded::Unblinded(RewardsEngineImpl& engine)
-    : engine_(engine),
-      credentials_promotion_(engine),
-      credentials_sku_(engine) {}
+Unblinded::Unblinded(RewardsEngine& engine)
+    : engine_(engine), credentials_sku_(engine) {}
 
 Unblinded::~Unblinded() = default;
 
@@ -432,9 +430,6 @@ void Unblinded::OnProcessTokens(
       credentials_sku_.RedeemTokens(redeem, std::move(redeem_callback));
       return;
     }
-
-    credentials_promotion_.RedeemTokens(redeem, std::move(redeem_callback));
-    return;
   }
 
   // we processed all publishers

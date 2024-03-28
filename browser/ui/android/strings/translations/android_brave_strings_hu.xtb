@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Rewards használatának indítása</translation>
 <translation id="8220484609979012449">\n\nA Web3-pénztárcája használatával továbbra is küldhet kripto-hozzájárulásokat ennek az alkotónak.</translation>
 <translation id="6385969012847057348">Ez az alkotó nem tud hozzájárulásokat fogadni a(z) <ph name="CUSTODIAN"/> letétkezelőtől.</translation>
+<translation id="735733310778086206">Az alkotó még nem állította be a Web3 vagy crypto-hozzájárulások fogadását.</translation>
 <translation id="6268134562674951939">Nem rendelkezik elegendő tokennel</translation>
 <translation id="4529874892536380156">Az összeg beállítása ismétlődő havi hozzájárulásként. Ezt bármikor megszüntetheti.</translation>
 <translation id="5562948772940025260">Brave jutalmak-egyenlege használatával legfeljebb <ph name="AMOUNT"/> BAT-tokent küldhet.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Már szinkronizált készüléket használva nyisd meg a Brave beállításait, és navigálj a Beállítások és szinkronizálásra. Válaszd az „Új készülék hozzáadása” pontot, és olvasd be a képernyőn megjelenő QR-kódot.</translation>
 <translation id="5241263629636958324">Vágólapra másolva</translation>
 <translation id="5817918615728894473">Párosítás</translation>
-<translation id="7090325819305486658">Adatbeállítások</translation>
+<translation id="3429575397891106447">Szinkronizálási beállítások</translation>
 <translation id="1680065323266179640">Szinkronizálási fiók törlése</translation>
 <translation id="3792563952903751704">Ha törli a fiókját, azzal eltávolítja a Brave szerverein található titkosított adatait, és letiltja a Szinkronizálást az összes csatlakoztatott eszközén. Az ezeken az eszközökön helyileg tárolt adatokat azonban ezúton nem törli.
   Ez a törlés végleges, és az adatok nem állíthatók vissza semmilyen módon. Ha a jövőben ismét szeretné használni a Szinkronizálást, új fiókot kell létrehoznia, és egyenként kell újra hozzáadnia az összes eszközt.</translation>
@@ -595,14 +596,18 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1483493594462132177">Küldés</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Befizetés</translation>
-<translation id="1420318137760245955">Üdvözli az új Brave pénztárca</translation>
-<translation id="8339846196588658366">Tartson magánál letétben kriptoeszközöket és kövesse nyomon a portfóliók teljesítményét – mindezt egyenesen a Brave adatvédelmi böngészőből.</translation>
-<translation id="4472575034687746823">Kezdő lépések</translation>
+<translation id="4556086616242530072">Böngészőnatív.\nÖnálló letétkezelés.\nTöbbláncos.</translation>
+<translation id="7909462264772842773">Kezelje kriptóit és NFT-it. A Brave pénztárca támogatja az Ethereumot, EVM láncok, Solana, Filecoin és még több használatát.</translation>
+<translation id="165255193061631296">Új pénztárcára van szüksége?</translation>
+<translation id="3485737865439729577">Kezdje el a Brave pénztárca használatát perceken belül</translation>
 <translation id="2759836790106646094">Készíts biztonsági mentést pénztárcádról most!</translation>
 <translation id="1078873179929044999">A következő lépésben egy 12 szavas helyreállítási kifejezést fog látni, amelyet arra használhat, hogy helyreállítsa az elsődleges kriptoszámláit. Mentse el biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a fiókjaihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.</translation>
 <translation id="2359808026110333948">Folytatás</translation>
 <translation id="5488357322146334497">Üzenet</translation>
 <translation id="1904000155026201268">Megértettem, hogy ha elvesztem a helyreállítási kifejezést, akkor nem fogok tudni hozzáférni a kriptopénztárcámhoz.</translation>
+<translation id="5333225216561354793">Szükségünk van rá, hogy elfogadja a lenti elemeket</translation>
+<translation id="1645800479814134195">Tudomásul veszem, hogy ez egy önálló letétkezelésű pénztárca, és egyedül én vagyok felelős a kapcsolódó pénzösszegekért, eszközökért vagy számlákért, valamint a pénztárcám biztonsága, védelme és biztonsági mentése érdekében szükséges intézkedések megtételéért. Tudomásul veszem, hogy a Brave nem férhet hozzá a pénztárcámhoz, és nem fordíthatja vissza a tranzakciókat a nevemben, továbbá, hogy a helyreállítási kifejezésem az EGYETLEN módja annak, hogy visszaszerezzem a hozzáférést elvesztett jelszó, ellopott eszköz vagy hasonló körülmény esetén.</translation>
+<translation id="4565891212173086999">Elolvastam és elfogadom a <ph name="CLICK_START"/>Használati feltételeket<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Helyreállítási kifejezés</translation>
 <translation id="5077747669435508720">Írja fel vagy másolja ki ezeket a szavakat a lent ábrázolt megfelelő sorrendben, és mentse el őket biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a számláihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.</translation>
 <translation id="2708402071160162126">FIGYELMEZTETÉS: Senkivel ne ossza meg a helyreállítási kifejezését! Ennek a kifejezésnek a birtokában bárki örökre elveheti az eszközeit.</translation>
@@ -647,6 +652,9 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="3747079125031086337">Válassza ki a helyreállítási kifejezés szavait a megfelelő sorrendben.</translation>
 <translation id="6518133107902771759">Ellenőrzés</translation>
 <translation id="3157931365184549694">Visszaállítás</translation>
+<translation id="5844138175312846408">Már rendelkezik pénztárcával?</translation>
+<translation id="2502258949541727762">Mielőtt belevágunk</translation>
+<translation id="5981303441790732480">Meglévő pénztárca importálása</translation>
 <translation id="9111102763498581341">Feloldás</translation>
 <translation id="6657585470893396449">Jelszó</translation>
 <translation id="5619264711680220002">Biometrikus feloldás</translation>
@@ -665,7 +673,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="5483736362376139517">1 év</translation>
 <translation id="6979737339423435258">Mindenkori</translation>
 <translation id="6284218950354553099">Napi használatról szóló jelzések automatikus küldése a Brave-be</translation>
-<translation id="5288333155754958121">Ez az anonimizált, privát jelzés lehetővé teszi a Brave számára, hogy megbecsülje az aktív felhasználók számát.</translation>
+<translation id="2181060149810222381">Ez a privát értesítés lehetővé teszi a Brave számára, hogy megbecsülje az aktív felhasználók számát.</translation>
 <translation id="3819257035322786455">Biztonsági mentés</translation>
 <translation id="4608713693379664295">Elsődleges kriptoszámlák</translation>
 <translation id="4003821417160006384">Másodlagos számlák</translation>
@@ -1212,5 +1220,11 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="6637015365469044269">Fejlesztés most</translation>
 <translation id="614530507403667291">Alapértelmezett modell az új beszélgetésekhez</translation>
 <translation id="4071849832011229600">Alapértelmezett modell</translation>
+<translation id="4185473179105062442">Kapjon BAT-ot közvetlenül az önfelügyeletes crypto-címére</translation>
+<translation id="5802986777701714573">Hozzáadtunk egy új módszert arra, hogy megkapja havi BAT-jutalmait. Kössön össze az egyik partnerünknél meglévő fiókjával vagy használja az új önfelügyeletes lehetőséget és kezdjen el pénz keresni most!</translation>
 <translation id="7557539689487606886">Váltás Premiumra</translation>
+<translation id="5538904824395606812">A jelenlegi szolgáltató vagy a Quad9 használata</translation>
+<translation id="6393423486818299209">A jelenlegi szolgáltató vagy a Wikimedia DNS használata</translation>
+<translation id="3401384982562827787">A jelenlegi szolgáltató vagy a Cloudflare használata</translation>
+<translation id="8812367543786936496">Ha jelenlegi szolgáltatója nem biztonságos, a Brave biztonságos, alternatív DNS-szolgáltatót használ</translation>
 </translationbundle>

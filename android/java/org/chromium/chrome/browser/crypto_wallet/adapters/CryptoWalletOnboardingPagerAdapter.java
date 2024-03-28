@@ -5,62 +5,57 @@
 
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import android.annotation.SuppressLint;
 
-import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapter {
-    private final List<NavigationItem> mNavigationItems = new ArrayList<>();
+public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
+    @NonNull private final List<BaseWalletNextPageFragment> mNavigationItems = new ArrayList<>();
 
-    public void setNavigationItems(@NonNull final List<NavigationItem> navigationItems) {
+    public CryptoWalletOnboardingPagerAdapter(@NonNull final FragmentActivity fragmentActivity) {
+        super(fragmentActivity);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setNavigationItems(
+            @NonNull final List<BaseWalletNextPageFragment> navigationFragments) {
         mNavigationItems.clear();
-        mNavigationItems.addAll(navigationItems);
+        mNavigationItems.addAll(navigationFragments);
+        notifyDataSetChanged();
     }
 
     /**
      * Replaces all navigation items starting from a given index.
      *
-     * @param navigationItems Navigation items to add.
+     * @param navigationFragments Navigation fragments to add.
      * @param index Index pointing to the first item that will be replaced.
      */
+    @SuppressLint("NotifyDataSetChanged")
     public void replaceWithNavigationItems(
-            @NonNull final List<NavigationItem> navigationItems, final int index) {
+            @NonNull final List<BaseWalletNextPageFragment> navigationFragments, final int index) {
         // Clear the list from the index (included).
         mNavigationItems.subList(index, mNavigationItems.size()).clear();
         // Append new navigation items to the list.
-        mNavigationItems.addAll(navigationItems);
-    }
-
-    public CryptoWalletOnboardingPagerAdapter(FragmentManager fm) {
-        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-    }
-
-    @Override
-    public int getItemPosition(@NonNull Object object) {
-        return POSITION_NONE;
+        mNavigationItems.addAll(navigationFragments);
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public Fragment getItem(int position) {
-        return mNavigationItems.get(position).getFragment();
+    public Fragment createFragment(int position) {
+        return mNavigationItems.get(position);
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return mNavigationItems.size();
-    }
-
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mNavigationItems.get(position).getTitle();
     }
 }

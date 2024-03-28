@@ -38,34 +38,17 @@ using brave::BlockScreenFingerprinting;
 using brave::FarbleInteger;
 using brave::FarbleKey;
 
-void LocalDOMWindow::SetEphemeralStorageOrigin(
-    const SecurityOrigin* ephemeral_storage_origin) {
-  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage) &&
-      base::FeatureList::IsEnabled(
-          net::features::kThirdPartyStoragePartitioning)) {
-    return;
+const SecurityOrigin* GetEphemeralStorageOrigin(LocalDOMWindow* window) {
+  auto* frame = window->GetFrame();
+  if (!frame) {
+    return nullptr;
   }
-  DCHECK(ephemeral_storage_origin);
-  ephemeral_storage_key_ =
-      BlinkStorageKey::CreateFirstParty(ephemeral_storage_origin);
-}
 
-const SecurityOrigin* LocalDOMWindow::GetEphemeralStorageOrigin() const {
-  return ephemeral_storage_key_
-             ? ephemeral_storage_key_->GetSecurityOrigin().get()
-             : nullptr;
-}
+  if (auto* settings_client = frame->GetContentSettingsClient()) {
+    return settings_client->GetEphemeralStorageOriginSync().Get();
+  }
 
-const BlinkStorageKey& LocalDOMWindow::GetEphemeralStorageKeyOrStorageKey()
-    const {
-  return ephemeral_storage_key_ ? *ephemeral_storage_key_ : storage_key_;
-}
-
-const SecurityOrigin*
-LocalDOMWindow::GetEphemeralStorageOriginOrSecurityOrigin() const {
-  return ephemeral_storage_key_
-             ? ephemeral_storage_key_->GetSecurityOrigin().get()
-             : GetSecurityOrigin();
+  return nullptr;
 }
 
 int LocalDOMWindow::outerWidth() const {

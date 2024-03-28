@@ -9,7 +9,7 @@ import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
-import { color, font, radius, spacing } from '@brave/leo/tokens/css'
+import { color, font, radius, spacing, icon, elevation } from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
 
 import PlaylistInfo from './playlistInfo'
@@ -47,7 +47,7 @@ const GradientIcon = styled(Icon)`
     #a78aff 99.51%
   );
   ${iconSize}
-  margin-right: calc(-1 * (${spacing.xl} - ${spacing.m}));
+  margin-right: calc(-1 * (${spacing.l} - ${spacing.m}));
 `
 
 const ColoredIcon = styled(Icon)<{ color: string }>`
@@ -57,7 +57,6 @@ const ColoredIcon = styled(Icon)<{ color: string }>`
 
 const ProductNameContainer = styled.div`
   flex-grow: 1;
-  padding: 4px;
   font: ${font.heading.h4};
 `
 
@@ -73,7 +72,7 @@ const HeaderContainer = styled.div`
   background-color: ${color.container.background};
   height: 100%;
   padding: 0 ${spacing.xl};
-  gap: ${spacing.xl};
+  gap: ${spacing.l};
 `
 
 const StyledPlaylistInfo = styled(PlaylistInfo)`
@@ -82,6 +81,12 @@ const StyledPlaylistInfo = styled(PlaylistInfo)`
 
 const StyledButton = styled(LeoButton)`
   flex: 0 0 auto;
+`
+
+const StyledSeparator = styled.div`
+  width: ${elevation.xxs};
+  background-color: ${color.divider.subtle};
+  height: ${icon.m};
 `
 
 const StyledInput = styled.input`
@@ -302,6 +307,22 @@ function SettingButton() {
   )
 }
 
+function CloseButton() {
+  return (
+    <StyledButton
+      size='large'
+      kind='plain'
+      title={getLocalizedString('bravePlaylistA11YClosePanel')}
+      onClick={() => getPlaylistAPI().closePanel()}
+    >
+      <ColoredIcon
+        name='close'
+        color={color.icon.default}
+      />
+    </StyledButton>
+  )
+}
+
 function PlaylistsCatalogHeader() {
   return (
     <>
@@ -311,6 +332,8 @@ function PlaylistsCatalogHeader() {
       </ProductNameContainer>
       <NewPlaylistButton />
       <SettingButton />
+      <StyledSeparator />
+      <CloseButton />
     </>
   )
 }

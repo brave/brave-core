@@ -55,16 +55,6 @@ class RewardsNotificationServiceImpl
   bool Exists(RewardsNotificationID id) const override;
 
  private:
-  bool IsAds(const mojom::PromotionType promotion_type);
-  std::string GetPromotionIdPrefix(const mojom::PromotionType promotion_type);
-
-  // RewardsServiceObserver impl
-  void OnFetchPromotions(RewardsService* rewards_service,
-                         const mojom::Result result,
-                         const std::vector<mojom::PromotionPtr>& list) override;
-  void OnPromotionFinished(RewardsService* rewards_service,
-                           const mojom::Result result,
-                           mojom::PromotionPtr promotion) override;
   void OnReconcileComplete(
       RewardsService* rewards_service,
       const mojom::Result result,

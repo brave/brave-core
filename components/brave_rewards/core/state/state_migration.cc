@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 
@@ -18,7 +18,7 @@ const int kCurrentVersionNumber = 14;
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigration::StateMigration(RewardsEngineImpl& engine)
+StateMigration::StateMigration(RewardsEngine& engine)
     : engine_(engine),
       v1_(engine),
       v2_(engine),

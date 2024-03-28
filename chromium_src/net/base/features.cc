@@ -86,7 +86,7 @@ constexpr base::FeatureParam<DohFallbackEndpointType>
 // website is closed.
 BASE_FEATURE(kBraveForgetFirstPartyStorage,
              "BraveForgetFirstPartyStorage",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<int>
     kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds = {

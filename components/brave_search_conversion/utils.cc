@@ -56,14 +56,16 @@ bool IsNTPPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
   DCHECK(prefs);
   DCHECK(service);
 
-  if (prefs->GetBoolean(prefs::kDismissed))
+  if (prefs->GetBoolean(prefs::kDismissed)) {
     return false;
+  }
 
   // Don't need to prompt for conversion if user uses brave as a default
   // provider.
   auto* template_url = service->GetDefaultSearchProvider();
-  if (!template_url)
+  if (!template_url) {
     return false;
+  }
 
   const auto id = template_url->prepopulate_id();
   if (id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE ||
@@ -79,8 +81,9 @@ ConversionType GetConversionType(PrefService* prefs,
   DCHECK(prefs);
   DCHECK(service);
 
-  if (prefs->GetBoolean(prefs::kDismissed))
+  if (prefs->GetBoolean(prefs::kDismissed)) {
     return ConversionType::kNone;
+  }
 
   // Don't need to ask conversion if user uses brave as a default provider.
   auto id = service->GetDefaultSearchProvider()->data().prepopulate_id;
@@ -114,6 +117,7 @@ ConversionType GetConversionType(PrefService* prefs,
 
 void RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kDismissed, false);
+  registry->RegisterBooleanPref(prefs::kShowNTPSearchBox, true);
   registry->RegisterTimePref(prefs::kMaybeLaterClickedTime, base::Time());
 }
 

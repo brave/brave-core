@@ -15,11 +15,12 @@ namespace brave_rewards::internal {
 // Responsible for performing all necessary Rewards engine initialization,
 // including database migrations, preference migrations, and startup of
 // background tasks.
-class InitializationManager : public RewardsEngineHelper {
+class InitializationManager : public RewardsEngineHelper,
+                              public WithHelperKey<InitializationManager> {
  public:
   enum class State { kUninitialized, kInitializing, kReady, kShuttingDown };
 
-  explicit InitializationManager(RewardsEngineImpl& engine);
+  explicit InitializationManager(RewardsEngine& engine);
   ~InitializationManager() override;
 
   using InitializeCallback = base::OnceCallback<void(bool)>;

@@ -144,8 +144,11 @@ public struct Web3SettingsView: View {
     .background(
       Color.clear
         .sheet(isPresented: $isShowingBiometricsPasswordEntry) {
-          if let keyringStore {
-            BiometricsPasscodeEntryView(keyringStore: keyringStore)
+          if let keyringStore, let settingsStore {
+            BiometricsPasscodeEntryView(
+              keyringStore: keyringStore,
+              settingsStore: settingsStore
+            )
           }
         }
     )
@@ -334,6 +337,7 @@ private struct WalletSettingsView: View {
       self.isShowingBiometricsPasswordEntry = true
     } else {
       keyringStore.resetKeychainStoredPassword()
+      settingsStore.updateBiometricsToggle()
     }
   }
 }

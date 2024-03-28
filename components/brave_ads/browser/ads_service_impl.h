@@ -107,7 +107,7 @@ class AdsServiceImpl : public AdsService,
 
   void Migrate();
 
-  bool UserHasOptedInToBraveRewards() const;
+  bool UserHasJoinedBraveRewards() const;
   bool UserHasOptedInToBraveNewsAds() const;
   bool UserHasOptedInToNewTabPageAds() const;
   bool UserHasOptedInToNotificationAds() const;
@@ -283,6 +283,7 @@ class AdsServiceImpl : public AdsService,
   void NotifyTabDidStopPlayingMedia(int32_t tab_id) override;
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
+                          bool is_error_page,
                           bool is_visible) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
 

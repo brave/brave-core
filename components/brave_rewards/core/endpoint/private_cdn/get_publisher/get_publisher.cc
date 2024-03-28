@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
 
@@ -149,7 +149,7 @@ bool DecompressMessage(std::string_view payload, std::string* output) {
 namespace endpoint {
 namespace private_cdn {
 
-GetPublisher::GetPublisher(RewardsEngineImpl& engine) : engine_(engine) {}
+GetPublisher::GetPublisher(RewardsEngine& engine) : engine_(engine) {}
 
 GetPublisher::~GetPublisher() = default;
 

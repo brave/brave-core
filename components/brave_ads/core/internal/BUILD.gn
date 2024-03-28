@@ -287,6 +287,8 @@ static_library("internal") {
     "ad_units/search_result_ad/search_result_ad_feature.cc",
     "ad_units/search_result_ad/search_result_ad_handler.cc",
     "ad_units/search_result_ad/search_result_ad_handler.h",
+    "ad_units/user_data/page_land_user_data.cc",
+    "ad_units/user_data/page_land_user_data.h",
     "ads.cc",
     "ads_constants.cc",
     "ads_feature.cc",
@@ -1252,10 +1254,13 @@ static_library("internal") {
     "user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h",
     "user_engagement/reactions/reactions.cc",
     "user_engagement/reactions/reactions.h",
+    "user_engagement/site_visit/page_land/page_land_info.h",
     "user_engagement/site_visit/site_visit.cc",
     "user_engagement/site_visit/site_visit.h",
     "user_engagement/site_visit/site_visit_feature.cc",
     "user_engagement/site_visit/site_visit_observer.h",
+    "user_engagement/site_visit/site_visit_util.cc",
+    "user_engagement/site_visit/site_visit_util.h",
   ]
 
   if (is_android) {

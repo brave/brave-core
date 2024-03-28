@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Rewards kullanmaya başlayın</translation>
 <translation id="8220484609979012449">\n\nWeb3 cüzdanınızı kullanarak bu oluşturucuya kripto ile katkıda bulunabilirsiniz.</translation>
 <translation id="6385969012847057348">Bu oluşturucu <ph name="CUSTODIAN"/> katkılarını alamıyor.</translation>
+<translation id="735733310778086206">Bu oluşturucu henüz Web3 veya kripto katkılarını almak için gereken ayarlamaları yapmamış.</translation>
 <translation id="6268134562674951939">Yeterli tokene sahip değilsiniz</translation>
 <translation id="4529874892536380156">Bunu aylık tekrarlayan bir katkı olarak ayarlayın. İstediğiniz zaman iptal edebilirsiniz.</translation>
 <translation id="5562948772940025260">Brave Ödülleri bakiyenizi kullanarak en fazla <ph name="AMOUNT"/> BAT gönderebilirsiniz.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Mevcut eşitlenmiş cihazı kullnarak, Brave Ayarlarını açın ve Eşitleme &gt; Ayarlarına gidin. "Yeni Cihaz Ekle"yi seçin ve ekranda gösterilen QR Kodunu tarayın.</translation>
 <translation id="5241263629636958324">Panoya kopyalandı</translation>
 <translation id="5817918615728894473">Eşle</translation>
-<translation id="7090325819305486658">Veri Tercihleri</translation>
+<translation id="3429575397891106447">Senkronizasyon Seçenekleri</translation>
 <translation id="1680065323266179640">Senkronizasyon hesabını sil</translation>
 <translation id="3792563952903751704">Hesabınızı silmek, şifrelenmiş verilerinizi Brave sunucularından kaldırır ve bağlı tüm cihazlarınızda Senkronizasyonu devre dışı bırakır. Ancak bu işlem, bu cihazlarda yerel olarak depolanan verileri silmez.
   Silme işlemi kalıcıdır ve verileri kurtarmanın hiçbir yolu yoktur. Senkronizasyonu tekrar kullanmaya karar verirseniz, yeni bir hesap oluşturmanız ve tüm cihazları tek tek yeniden eklemeniz gerekecektir.</translation>
@@ -596,14 +597,18 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1483493594462132177">Gönder</translation>
 <translation id="538450413584738399">Takas</translation>
 <translation id="1366855498335432549">Para Yatır</translation>
-<translation id="1420318137760245955">Yeni Brave Cüzdan'a hoş geldiniz</translation>
-<translation id="8339846196588658366">Kripto varlıklarınızı himayenizde tutun ve portföy performansınızı izleyin. Hepsi doğrudan Brave gizlilik tarayıcısı üzerinden.</translation>
-<translation id="4472575034687746823">Başlayın</translation>
+<translation id="4556086616242530072">Tarayıcıya özgü.\nKendi kendini koruyan.\nVe çok zincirli.</translation>
+<translation id="7909462264772842773">Kripto ve NFT'lerinizin kontrolünü elinize alın. Brave Cüzdanı Ethereum, EVM zincirleri, Solana, Filecoin ve daha fazlasını destekler.</translation>
+<translation id="165255193061631296">Yeni bir cüzdana mı ihtiyacınız var?</translation>
+<translation id="3485737865439729577">Brave Cüzdanı'nı kullanmaya dakikalar içinde başlayın</translation>
 <translation id="2759836790106646094">Cüzdanınızı hemen yedekleyin!</translation>
 <translation id="1078873179929044999">Bir sonraki adımda, ana kripto hesaplarınızı kurtarmak için kullanabileceğiniz 12 kelimelik bir kurtarma tümcesi göreceksiniz. Bu tümceyi güvenli bir yerde saklayın. Kurtarma tümceniz; şifreyi unutmanız, cihazınızın kaybolması veya çalınması ya da cüzdanınızı değiştirmek istemeniz halinde hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
 <translation id="2359808026110333948">Devam et</translation>
 <translation id="5488357322146334497">Mesaj</translation>
 <translation id="1904000155026201268">Kurtarma ifademi kaybedersem kripto cüzdanıma erişemeyeceğimi anlıyorum.</translation>
+<translation id="5333225216561354793">Aşağıdaki öğeleri kabul etmeniz gerekmektedir</translation>
+<translation id="1645800479814134195">Bunun bir kendi kendini koruma cüzdanı olduğunu ve ilişkili fonlardan, varlıklardan veya hesaplardan ve cüzdanımı güvence altına almak, korumak ve yedeklemek için uygun önlemleri almaktan yalnızca benim sorumlu olduğumu anlıyorum. Brave cüzdanıma erişemeyeceğini veya benim adıma işlemleri tersine çeviremeyeceğini ve kurtarma cümlemin kayıp bir parola, çalıntı cihaz veya benzeri bir durum durumunda yeniden erişim kazanmanın TEK yolu olduğunu anlıyorum.</translation>
+<translation id="4565891212173086999"><ph name="CLICK_START"/>Kullanım Koşulları<ph name="CLICK_END"/>nı okudum ve kabul ediyorum.</translation>
 <translation id="3933122286596948824">Kurtarma ifadeniz</translation>
 <translation id="5077747669435508720">Bu sözcükleri aşağıda gösterilenle aynı sırada bir yere yazın veya kopyalayın ve güvenli bir yerde saklayın. Kurtarma cümleniz şifreyi unutmanız, cihazınızın kaybolması/çalınması veya cüzdanınızı değiştirmek istemeniz durumlarında hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
 <translation id="2708402071160162126">UYARI: Kurtarma cümlenizi asla paylaşmayın. Bu cümleyi bilen herkes varlıklarınızı sonsuza dek sizden alabilir.</translation>
@@ -648,6 +653,9 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="3747079125031086337">Kurtarma cümlenizdeki kelimeleri doğru sırada seçin.</translation>
 <translation id="6518133107902771759">Doğrula</translation>
 <translation id="3157931365184549694">Geri yükle</translation>
+<translation id="5844138175312846408">Zaten bir cüzdanınız var mı?</translation>
+<translation id="2502258949541727762">Başlamadan önce</translation>
+<translation id="5981303441790732480">Mevcut cüzdanınızı içe aktarın</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">Şifre</translation>
 <translation id="5619264711680220002">Biyometrik kilit açma</translation>
@@ -666,7 +674,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="5483736362376139517">1 Yıl</translation>
 <translation id="6979737339423435258">Tüm zamanlar</translation>
 <translation id="6284218950354553099">Günlük kullanım ping'ini Brave'e otomatik olarak gönder</translation>
-<translation id="5288333155754958121">Bu anonim ve gizli ping, Brave'in aktif kullanıcıları tahmin etmesine olanak tanır.</translation>
+<translation id="2181060149810222381">Bu özel ping, Brave'in aktif kullanıcıları tahmin etmesine olanak tanır.</translation>
 <translation id="3819257035322786455">Yedekle</translation>
 <translation id="4608713693379664295">Birincil Kripto Hesapları</translation>
 <translation id="4003821417160006384">İkincil Hesaplar</translation>
@@ -1213,5 +1221,11 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6637015365469044269">Şimdi yükselt</translation>
 <translation id="614530507403667291">Yeni konuşmalar için varsayılan model</translation>
 <translation id="4071849832011229600">Varsayılan model</translation>
+<translation id="4185473179105062442">Öz korumalı bir kripto adresine doğrudan BAT alın</translation>
+<translation id="5802986777701714573">Aylık BAT ödüllerinizi almanız için yeni bir yol ekledik. Hemen kazanmaya başlamak için iş ortaklarımızın birinden bir hesabı bağlayın veya yeni öz koruma seçeneğini kullanın.</translation>
 <translation id="7557539689487606886">Premium'a Geçin</translation>
+<translation id="5538904824395606812">Mevcut hizmet sağlayıcınızı veya Quad9'u kullanın</translation>
+<translation id="6393423486818299209">Mevcut hizmet sağlayıcınızı veya Wikimedia DNS'yi kullanın</translation>
+<translation id="3401384982562827787">Mevcut hizmet sağlayıcınızı veya Cloudflare'yi kullanın</translation>
+<translation id="8812367543786936496">Mevcut hizmet sağlayıcınız güvenli dğeilse Brave güvenli bir alternatif DNS sağlayıcı kullanır</translation>
 </translationbundle>

@@ -26,7 +26,7 @@ struct AIChatPageContextView: View {
           Text(Strings.AIChat.infoAboutPageContext)
             .font(.footnote)
             .foregroundStyle(Color(braveSystemName: .textTertiary))
-            .fixedSize(horizontal: true, vertical: false)
+            .fixedSize(horizontal: false, vertical: true)
 
           Button(
             action: {
@@ -49,6 +49,7 @@ struct AIChatPageContextView: View {
             ) {
               AIChatPageContextInfoView(url: url, pageTitle: pageTitle)
                 .background(Color(braveSystemName: .containerBackground))
+                .frame(maxWidth: 400.0)
             }
           }
         }

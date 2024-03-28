@@ -68,7 +68,8 @@ export const WalletPageStory: React.FC<
     accountTabStateOverride,
     pageStateOverride,
     walletStateOverride,
-    uiStateOverride
+    uiStateOverride,
+    apiOverrides
   ])
 
   React.useEffect(() => {

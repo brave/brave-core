@@ -49,10 +49,11 @@ interface Props {
   asset: BraveWallet.BlockchainToken
   assetBalance: string
   account?: BraveWallet.AccountInfo
+  onClickEditToken?: () => void
 }
 
 export const AssetItemMenu = (props: Props) => {
-  const { asset, assetBalance, account } = props
+  const { asset, assetBalance, account, onClickEditToken } = props
 
   // routing
   const history = useHistory()
@@ -99,7 +100,7 @@ export const AssetItemMenu = (props: Props) => {
   // Methods
   const onClickBuy = React.useCallback(() => {
     history.push(makeFundWalletRoute(getAssetIdKey(asset)))
-  }, [asset])
+  }, [asset, history])
 
   const onClickSend = React.useCallback(() => {
     if (account) {
@@ -107,17 +108,17 @@ export const AssetItemMenu = (props: Props) => {
     } else {
       history.push(WalletRoutes.Send)
     }
-  }, [asset.chainId, asset.contractAddress, account?.address])
+  }, [account, history, asset])
 
   const onClickSwap = React.useCallback(() => {
     if (account) {
       history.push(makeSwapRoute({ fromToken: asset, fromAccount: account }))
     }
-  }, [asset, account])
+  }, [account, history, asset])
 
   const onClickDeposit = React.useCallback(() => {
     history.push(makeDepositFundsRoute(getAssetIdKey(asset)))
-  }, [asset])
+  }, [asset, history])
 
   const onClickSell = React.useCallback(() => {
     setSelectedSellAsset(asset)
@@ -160,6 +161,14 @@ export const AssetItemMenu = (props: Props) => {
         <PopupButton onClick={onClickSell}>
           <ButtonIcon name='usd-circle' />
           <PopupButtonText>{getLocale('braveWalletSell')}</PopupButtonText>
+        </PopupButton>
+      )}
+      {onClickEditToken && (
+        <PopupButton onClick={onClickEditToken}>
+          <ButtonIcon name='edit-pencil' />
+          <PopupButtonText>
+            {getLocale('braveWalletAllowSpendEditButton')}
+          </PopupButtonText>
         </PopupButton>
       )}
       {showSellModal && selectedSellAsset && (

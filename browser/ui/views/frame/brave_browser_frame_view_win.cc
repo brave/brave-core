@@ -13,7 +13,9 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/win/titlebar_config.h"
 #include "ui/base/hit_test.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
@@ -38,18 +40,16 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(BrowserFrame* frame,
 
 BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
 
-void BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged() {
-  if (auto* widget = GetWidget();
-      widget && (widget->IsMaximized() || widget->IsFullscreen())) {
-    // In case the widget is maximized, the bounds of it doesn't change even
-    // though prefs change. But we need to lay out window controls again.
-    // https://github.com/brave/brave-browser/issues/31971
+bool BraveBrowserFrameViewWin::ShouldCaptionButtonsBeDrawnOverToolbar() const {
+  auto* browser = browser_view()->browser();
+  return tabs::utils::ShouldShowVerticalTabs(browser) &&
+         !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser);
+}
 
-    // As the LayoutManagerBase could have cached layout, we should call
-    // InvalidateLayout() first.
-    caption_button_container_->InvalidateLayout();
-    LayoutCaptionButtons();
-  }
+void BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged() {
+  caption_button_container_->UpdateButtons();
+  caption_button_container_->InvalidateLayout();
+  LayoutCaptionButtons();
 }
 
 void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
@@ -70,9 +70,25 @@ void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
 
 int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
   if (auto* browser = browser_view()->browser();
-      tabs::utils::ShouldShowVerticalTabs(browser) &&
-      !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
-    return 0;
+      tabs::utils::ShouldShowVerticalTabs(browser)) {
+    if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
+      if (auto* widget = GetWidget(); !widget || !widget->IsMaximized()) {
+        return 0;
+      }
+
+      // In case maximized with Mica enabled, we should return system borders
+      // thickness.
+      return ShouldBrowserCustomDrawTitlebar(browser_view())
+                 ? 0
+                 : FrameTopBorderThickness(/*restored*/ false);
+    }
+
+    if (!ShouldBrowserCustomDrawTitlebar(browser_view())) {
+      // In case Mica enabled, we should extend top insets so that title bar can
+      // be visible.
+      return TopAreaHeight(restored) +
+             caption_button_container_->GetPreferredSize().height();
+    }
   }
 
   return BrowserFrameViewWin::GetTopInset(restored);
@@ -104,4 +120,37 @@ int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
   }
 
   return result;
+}
+
+bool BraveBrowserFrameViewWin::ShouldShowWindowTitle(TitlebarType type) const {
+  if (auto* browser = browser_view()->browser();
+      tabs::utils::ShouldShowVerticalTabs(browser) &&
+      tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser) &&
+      type == TitlebarType::kCustom &&
+      !ShouldBrowserCustomDrawTitlebar(browser_view())) {
+    // When using Mica, title won't be drawn by the OS. In this case, we
+    // should use our custom title
+    // TODO(sko) Possibly, there's code that setting HWND wndclass that
+    // prevents the OS from drawing the title
+    return true;
+  }
+
+  return BrowserFrameViewWin::ShouldShowWindowTitle(type);
+}
+
+void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
+  BrowserFrameViewWin::LayoutCaptionButtons();
+
+  // This may look pretty weird because we're laying out
+  // |caption_button_container_| while ShouldBrowserCustomDrawTitlebar()
+  // is false. This is because when Win11's Mica titlebar is enabled, we need to
+  // show custom caption buttons over toolbar. We're forcing them visible in
+  // chromium_src/.../browser_caption_button_container_win.cc
+  if (ShouldCaptionButtonsBeDrawnOverToolbar() &&
+      !ShouldBrowserCustomDrawTitlebar(browser_view())) {
+    caption_button_container_->SetX(
+        CaptionButtonsOnLeadingEdge()
+            ? 0
+            : width() - caption_button_container_->width());
+  }
 }

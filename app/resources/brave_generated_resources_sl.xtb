@@ -4,6 +4,8 @@
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
 <translation id="7561196759112975576">Vedno</translation>
 <translation id="7961015016161918242">Nikoli</translation>
+<translation id="8507663778530179003">Gumb Prikaži vse zaznamke</translation>
+<translation id="9018648632047670921">Gumb prikaži vse zaznamke</translation>
 <translation id="7630214457764713113">Kopirajte čisto povezavo</translation>
 <translation id="7973394300052703468">Novo &amp;okno brez beleženja zgodovine</translation>
 <translation id="4615489450165434530">Prijavite nedelujočo spletno stran</translation>
@@ -171,12 +173,12 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="2533715613366623756">Upravitelj zaznamkov</translation>
 <translation id="3405021928725149239">Upravitelj zaznamkov</translation>
 <translation id="6284218950354553099">Samodejno pošlji ping o dnevni uporabi Braveu</translation>
-<translation id="5288333155754958121">Zaradi tega anonimnega, zasebnega pinga lahko Brave oceni število aktivnih uporabnikov.</translation>
+<translation id="2181060149810222381">S tem zasebnim pingom lahko Brave oceni aktivne uporabnike.</translation>
 <translation id="1872784258300710671">Brave uporablja popolnoma zasebno analizo izdelkov za oceno splošne uporabe nekaterih funkcij</translation>
 <translation id="8712637175834984815">Razumem</translation>
 <translation id="4394049700291259645">Onemogoči</translation>
 <translation id="7142548388914389999">Dovoli analitiko izdelkov, ki varuje zasebnost (P3A)</translation>
-<translation id="8286082624639565868">Te popolnoma anonimne informacije pomagajo Brave oceniti splošno uporabo določenih funkcij in za vas jih izboljšati.</translation>
+<translation id="2604698253988679506">Ti zasebni odgovori pomagajo družbi Brave oceniti splošno uporabo določenih funkcij in jih izboljšati za vas.</translation>
 <translation id="1947672064022327074">Želite zagnati denarnico Crypto Wallets za podporo Ethereumu?</translation>
 <translation id="7583735190612229830">Nastavite kripto denarnice za interakcijo s to aplikacijo in drugimi podobnimi.</translation>
 <translation id="8731422418734770661">Nastavite Crypto Wallets</translation>
@@ -193,6 +195,7 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="4756627014339714615">Preusmeri</translation>
 <translation id="1338274252864046652">Želite ob zagonu brskalnika vedno zagnati vozlišče IPFS?</translation>
 <translation id="3435896845095436175">Omogoči</translation>
+<translation id="5046066249040287308">Uporabna storitev Denarnice Brave</translation>
 <translation id="4552520379838695057">Ta stran manjka.</translation>
 <translation id="2609895996619941644">Želite preveriti, ali je na računalniku Wayback na voljo shranjena različica?</translation>
 <translation id="8053093028263274061">Žal ni na voljo nobene shranjene različice.</translation>
@@ -205,12 +208,14 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{Vklop zvoka zavihka}one{Vklop zvoka zavihkov}two{Vklop zvoka zavihkov}few{Vklop zvoka zavihkov}other{Vklop zvoka zavihkov}}</translation>
 <translation id="2289567621059034186">Nov zavihek spodaj</translation>
 <translation id="3228962656492373217">Zapri zavihke spodaj</translation>
+<translation id="8030501904366631501">Prenesite vse zavihke v to okno</translation>
 <translation id="2336228925368920074">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="2523967823495420116">Uporabite navpične zavihke</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Izklop zvoka zavihka}one{Izklop zvoka zavihkov}two{Izklop zvoka zavihkov}few{Izklop zvoka zavihkov}other{Izklop zvoka zavihkov}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{Vklop zvoka zavihka}one{Vklop zvoka zavihkov}two{Vklop zvoka zavihkov}few{Vklop zvoka zavihkov}other{Vklop zvoka zavihkov}}</translation>
 <translation id="4405580203042711503">Nov zavihek spodaj</translation>
 <translation id="5611474372949142946">Zapri zavihke spodaj</translation>
+<translation id="573844928911967687">Prenesite vse zavihke v to okno</translation>
 <translation id="3704707436873245822">Kopiraj besedilo s slike</translation>
 <translation id="5268098808165185458">Kopiranje besedila s slike...</translation>
 <translation id="4046485130884276245">Besedilo kopirano s slike</translation>
@@ -260,8 +265,8 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="8373664339577369248">naročilo po meri</translation>
 <translation id="8120600068258956006">Dodaj na seznam predvajanja</translation>
 <translation id="650694591627983430">Mediji, najdeni na tej strani</translation>
-<translation id="8525248723479742219">Predvajaj kasneje</translation>
 <translation id="43751811163166570">Dodano <ph name="PLAYLIST_FOLDER_NAME"/></translation>
+<translation id="6900840851173033633">Žal na tej strani nismo našli nobenega medija.</translation>
 <translation id="4830689155681863580">Odpri na seznamu predvajanja</translation>
 <translation id="4735626465866524761">Spremeni mapo</translation>
 <translation id="8101564000331197174">Odstrani s seznama predvajanja</translation>
@@ -333,6 +338,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="5860254591544742609">Pokaži naslovno vrstico</translation>
 <translation id="5371926069408837914">Razširi ploščo z navpičnimi zavihki, ko premaknete miško, ko je strnjena</translation>
 <translation id="3367129510799209147">Način izbiranja na zavihku</translation>
+<translation id="916373084491701212">Prikaži vrstico za pomikanje</translation>
 <translation id="515949045075831661">Prikaži na desni strani</translation>
 <translation id="3725395376319291415">Prikaži na levi strani</translation>
 <translation id="2113977810652731515">Kartica</translation>
@@ -647,6 +653,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="3504157706952484145">Omrežja Filecoin</translation>
 <translation id="1561541094377237745">Omrežja Solana</translation>
 <translation id="7141438739990875547">Omrežja Bitcoin</translation>
+<translation id="1077567586443625607">Omrežja Zcash</translation>
 <translation id="3159419679550543837">Prikaži testna omrežja</translation>
 <translation id="3215569562674795548">Uredi ali dodaj novo omrežje</translation>
 <translation id="4418993400653250511">ID verige</translation>
@@ -730,6 +737,8 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="7984721311211272523">Onemogočite funkcijo izklopa zvoka s pomočjo ikon zvočnikov v zavihkih</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Pokaži ikono Leo v stranski vrstici</translation>
+<translation id="8055509865174199683">Prikaži Leo v kontekstnem meniju na spletnih mestih</translation>
+<translation id="1529674267267221673">Leo se prikaže v kontekstnem meniju, ko z desno tipko miške kliknete na spletno mesto. To bo v program Leo poslalo kontekst iz trenutne spletne strani.</translation>
 <translation id="8172263161008556851">Pokaži predlagane pozive v pogovoru</translation>
 <translation id="1014480593522400586">Počisti podatke Leo</translation>
 <translation id="8681157601856387010">Če ponastavite pomočnika Leo, se boste morali prijaviti za uporabo Brave
@@ -742,6 +751,9 @@ Leo. Tega dejanja ni mogoče razveljaviti.</translation>
 <translation id="349846214503465941">Omogoči seznam predvajanja</translation>
 <translation id="7903608716704052878">Samodejno dodajanje datotek za ogled brez povezave</translation>
 <translation id="4193768184502613558">Ta možnost samodejno shrani medijske datoteke v predpomnilnik, da jih lahko predvajate brez internetne povezave.</translation>
+<translation id="8950562208228589873">Privzeto OS ali Quad9</translation>
+<translation id="5646330590189545860">Privzeto OS ali Wikimedia</translation>
+<translation id="2026075482948458926">Privzeto OS ali Cloudflare</translation>
 <translation id="6624718837376802990">Avatar nagrade Edgy</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

@@ -92,10 +92,6 @@ BraveOmniboxClientImpl::GetSchemeClassifier() const {
   return scheme_classifier_;
 }
 
-bool BraveOmniboxClientImpl::IsAutocompleteEnabled() const {
-  return profile_->GetPrefs()->GetBoolean(omnibox::kAutocompleteEnabled);
-}
-
 void BraveOmniboxClientImpl::OnURLOpenedFromOmnibox(OmniboxLog* log) {
   if (log->selection.line <= 0) {
     return;

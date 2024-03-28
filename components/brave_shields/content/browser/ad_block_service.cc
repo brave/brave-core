@@ -139,17 +139,15 @@ adblock::BlockerResult AdBlockService::ShouldStartRequest(
     bool previously_matched_important) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
 
-  adblock::BlockerResult fp_result = {};
-
+  adblock::BlockerResult fp_result = default_engine_->ShouldStartRequest(
+      url, resource_type, tab_host, previously_matched_rule,
+      previously_matched_exception, previously_matched_important);
   if (aggressive_blocking ||
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockDefault1pBlocking) ||
       !SameDomainOrHost(
           url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-    fp_result = default_engine_->ShouldStartRequest(
-        url, resource_type, tab_host, previously_matched_rule,
-        previously_matched_exception, previously_matched_important);
     // removeparam results from the default engine are ignored in default
     // blocking mode
     if (!aggressive_blocking) {
@@ -158,14 +156,20 @@ adblock::BlockerResult AdBlockService::ShouldStartRequest(
     if (fp_result.important) {
       return fp_result;
     }
+  } else {
+    // if there's an exception from the default engine, it still needs to be
+    // considered by the additional engine
+    fp_result = {.has_exception = fp_result.has_exception};
   }
 
   GURL request_url = fp_result.rewritten_url.has_value
                          ? GURL(std::string(fp_result.rewritten_url.value))
                          : url;
   auto result = additional_filters_engine_->ShouldStartRequest(
-      request_url, resource_type, tab_host, previously_matched_rule,
-      previously_matched_exception, previously_matched_important);
+      request_url, resource_type, tab_host,
+      previously_matched_rule | fp_result.matched,
+      previously_matched_exception | fp_result.has_exception,
+      previously_matched_important | fp_result.important);
 
   result.matched |= fp_result.matched;
   result.has_exception |= fp_result.has_exception;
@@ -408,23 +412,21 @@ AdBlockResourceProvider* AdBlockService::resource_provider() {
   return resource_provider_.get();
 }
 
-void AdBlockService::UseSourceProvidersForTest(
-    AdBlockFiltersProvider* source_provider,
-    AdBlockResourceProvider* resource_provider) {
+void AdBlockService::UseSourceProviderForTest(
+    AdBlockFiltersProvider* source_provider) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
-      default_engine_.get(), source_provider, resource_provider,
+      default_engine_.get(), source_provider, resource_provider_.get(),
       GetTaskRunner());
 }
 
-void AdBlockService::UseCustomSourceProvidersForTest(
-    AdBlockFiltersProvider* source_provider,
-    AdBlockResourceProvider* resource_provider) {
+void AdBlockService::UseCustomSourceProviderForTest(
+    AdBlockFiltersProvider* source_provider) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
-          additional_filters_engine_.get(), source_provider, resource_provider,
-          GetTaskRunner());
+          additional_filters_engine_.get(), source_provider,
+          resource_provider_.get(), GetTaskRunner());
 }
 
 void AdBlockService::OnGetDebugInfoFromDefaultEngine(

@@ -25,8 +25,8 @@ public class AppReviewManager: ObservableObject {
     static let launchCountLimit = 5
     static let bookmarksCountLimit = 5
     static let playlistCountLimit = 5
-    static let dappConnectionPeriod = AppConstants.buildChannel.isPublic ? 7.days : 7.minutes
-    static let daysInUseMaxPeriod = AppConstants.buildChannel.isPublic ? 7.days : 7.minutes
+    static let dappConnectionPeriod = AppConstants.isOfficialBuild ? 7.days : 7.minutes
+    static let daysInUseMaxPeriod = AppConstants.isOfficialBuild ? 7.days : 7.minutes
     static let daysInUseRequiredPeriod = 4
     static let revisedMinDaysBetweenReviewRequest = 30
 
@@ -121,7 +121,7 @@ public class AppReviewManager: ObservableObject {
     }
 
     if checkLogicCriteriaSatisfied(for: logicType) {
-      guard AppConstants.buildChannel.isPublic else {
+      if !AppConstants.isOfficialBuild {
         let alert = UIAlertController(
           title: "Show App Rating",
           message: "Criteria is satified to Request Review for Logic Type \(logicType)",
@@ -266,7 +266,7 @@ public class AppReviewManager: ObservableObject {
       return Preferences.Review.daysInUse.value.count >= Constants.daysInUseRequiredPeriod
     case .sessionCrash:
       return
-        !(!Preferences.AppState.backgroundedCleanly.value && AppConstants.buildChannel != .debug)
+        !(!Preferences.AppState.backgroundedCleanly.value && AppConstants.isOfficialBuild)
     case .daysInBetweenReview:
       var daysSinceLastRequest = 0
       if let previousRequest = Preferences.Review.lastReviewDate.value {

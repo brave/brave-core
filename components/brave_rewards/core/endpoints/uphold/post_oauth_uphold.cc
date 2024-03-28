@@ -12,7 +12,7 @@
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -21,7 +21,7 @@ using Result = PostOAuthUphold::Result;
 
 namespace {
 
-Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
+Result ParseBody(RewardsEngine& engine, const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
@@ -40,7 +40,7 @@ Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
 }  // namespace
 
 // static
-Result PostOAuthUphold::ProcessResponse(RewardsEngineImpl& engine,
+Result PostOAuthUphold::ProcessResponse(RewardsEngine& engine,
                                         const mojom::UrlResponse& response) {
   if (URLLoader::IsSuccessCode(response.status_code)) {
     return ParseBody(engine, response.body);
@@ -50,8 +50,7 @@ Result PostOAuthUphold::ProcessResponse(RewardsEngineImpl& engine,
   return base::unexpected(Error::kUnexpectedStatusCode);
 }
 
-PostOAuthUphold::PostOAuthUphold(RewardsEngineImpl& engine,
-                                 const std::string& code)
+PostOAuthUphold::PostOAuthUphold(RewardsEngine& engine, const std::string& code)
     : RequestBuilder(engine), code_(code) {}
 
 PostOAuthUphold::~PostOAuthUphold() = default;

@@ -8,40 +8,57 @@ import BraveUI
 import Strings
 import SwiftUI
 
-struct TokenList<Content: View>: View {
-  var tokens: [BraveWallet.BlockchainToken]
-  var content: (BraveWallet.BlockchainToken) -> Content
+struct TokenListHeaderView: View {
+  let title: String
 
-  @State private var query = ""
+  var body: some View {
+    Text(title)
+      .font(.body.weight(.semibold))
+      .foregroundColor(Color(uiColor: WalletV2Design.textPrimary))
+      .frame(maxWidth: .infinity, alignment: .leading)
+  }
+}
 
-  private var filteredTokens: [BraveWallet.BlockchainToken] {
+struct TokenList<Item: Identifiable, Header: View, Content: View, EmptyStateView: View>: View {
+  var tokens: [Item]
+  var searchRules: (_ query: String, _ token: Item) -> Bool
+  var header: Header
+  var emptyStateView: EmptyStateView
+  var content: (Item) -> Content
+
+  @State private var query: String
+
+  private var filteredTokens: [Item] {
     let normalizedQuery = query.lowercased()
     if normalizedQuery.isEmpty {
       return tokens
     }
-    return tokens.filter {
-      $0.symbol.lowercased().contains(normalizedQuery)
-        || $0.name.lowercased().contains(normalizedQuery)
-    }
+    return tokens.filter { searchRules(normalizedQuery, $0) }
   }
 
   init(
-    tokens: [BraveWallet.BlockchainToken],
-    @ViewBuilder content: @escaping (BraveWallet.BlockchainToken) -> Content
+    tokens: [Item],
+    prefilledQuery: String? = nil,
+    searchRules: @escaping (_ query: String, _ token: Item) -> Bool,
+    @ViewBuilder header: @escaping () -> Header,
+    @ViewBuilder emptyStateView: @escaping () -> EmptyStateView,
+    @ViewBuilder content: @escaping (Item) -> Content
   ) {
     self.tokens = tokens
+    self.searchRules = searchRules
+    self.header = header()
+    self.emptyStateView = emptyStateView()
     self.content = content
+    self._query = .init(initialValue: prefilledQuery ?? "")
   }
 
   var body: some View {
-    List {
-      Section(
-        header: WalletListHeaderView(
-          title: Text(Strings.Wallet.assetsTitle)
-        )
-      ) {
-        Group {
-          if filteredTokens.isEmpty {
+    ScrollView {
+      LazyVStack(spacing: 8) {
+        Section(header: header) {
+          if tokens.isEmpty {
+            emptyStateView
+          } else if filteredTokens.isEmpty {
             Text(Strings.Wallet.assetSearchEmpty)
               .font(.footnote)
               .foregroundColor(Color(.secondaryBraveLabel))
@@ -53,11 +70,10 @@ struct TokenList<Content: View>: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
+      .padding()
     }
-    .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .animation(nil, value: query)
     .searchable(
       text: $query,
@@ -66,10 +82,64 @@ struct TokenList<Content: View>: View {
   }
 }
 
+extension TokenList where Header == EmptyView {
+  init(
+    tokens: [Item],
+    prefilledQuery: String? = nil,
+    searchRules: @escaping (_ query: String, _ token: Item) -> Bool,
+    @ViewBuilder emptyStateView: @escaping () -> EmptyStateView,
+    @ViewBuilder content: @escaping (Item) -> Content
+  ) {
+    self.tokens = tokens
+    self.searchRules = searchRules
+    self.header = EmptyView()
+    self.emptyStateView = emptyStateView()
+    self.content = content
+    self._query = .init(initialValue: prefilledQuery ?? "")
+  }
+}
+
+extension TokenList where EmptyStateView == EmptyView {
+  init(
+    tokens: [Item],
+    prefilledQuery: String? = nil,
+    searchRules: @escaping (_ query: String, _ token: Item) -> Bool,
+    @ViewBuilder header: @escaping () -> Header,
+    @ViewBuilder content: @escaping (Item) -> Content
+  ) {
+    self.tokens = tokens
+    self.searchRules = searchRules
+    self.header = header()
+    self.emptyStateView = EmptyView()
+    self.content = content
+    self._query = .init(initialValue: prefilledQuery ?? "")
+  }
+}
+
+extension TokenList where Header == EmptyView, EmptyStateView == EmptyView {
+  init(
+    tokens: [Item],
+    prefilledQuery: String? = nil,
+    searchRules: @escaping (_ query: String, _ token: Item) -> Bool,
+    @ViewBuilder content: @escaping (Item) -> Content
+  ) {
+    self.tokens = tokens
+    self.searchRules = searchRules
+    self.header = EmptyView()
+    self.emptyStateView = EmptyView()
+    self.content = content
+    self._query = .init(initialValue: prefilledQuery ?? "")
+  }
+}
+
 #if DEBUG
 struct TokenListView_Previews: PreviewProvider {
   static var previews: some View {
-    TokenList(tokens: MockBlockchainRegistry.testTokens) { token in
+    TokenList(
+      tokens: MockBlockchainRegistry.testTokens
+    ) { _, _ in
+      return true
+    } content: { token in
       Text(token.name)
     }
   }

@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Rewardsの使用開始</translation>
 <translation id="8220484609979012449">\n\nWeb3ウォレットを使用すれば、このクリエイターに暗号通貨で支援を送ることができます。</translation>
 <translation id="6385969012847057348">このクリエイターは<ph name="CUSTODIAN"/>からの支援を受け取ることができません。</translation>
+<translation id="735733310778086206">このクリエイターはまだWeb3や暗号通貨の寄付を受け取る設定がされていません。</translation>
 <translation id="6268134562674951939">トークンが不足しています</translation>
 <translation id="4529874892536380156">毎月定期的な支援として設定可能です。この設定はいつでもキャンセルできます。</translation>
 <translation id="5562948772940025260">Braveリワードの残高を使用して送信できるのは<ph name="AMOUNT"/>BATまでです。</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">既存の同期されたデバイスを使用してBrave Settingsを開き、設定と &gt; 同期に移動してください。「新しいデバイスを追加」を選択し、画面に表示されたQRコードをスキャンしてください。</translation>
 <translation id="5241263629636958324">クリップボードへコピーしました</translation>
 <translation id="5817918615728894473">ペア設定</translation>
-<translation id="7090325819305486658">データ設定</translation>
+<translation id="3429575397891106447">オプションを同期</translation>
 <translation id="1680065323266179640">同期アカウントを削除</translation>
 <translation id="3792563952903751704">アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されたすべてのデバイスで同期が無効になります。ただし、それらのデバイスでローカルに格納されたデータは削除されません。
   これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。</translation>
@@ -595,14 +596,18 @@
 <translation id="1483493594462132177">送信</translation>
 <translation id="538450413584738399">スワップ</translation>
 <translation id="1366855498335432549">振込</translation>
-<translation id="1420318137760245955">新しい Brave Wallet へようこそ</translation>
-<translation id="8339846196588658366">暗号資産を保管してポートフォリオのパフォーマンスを追跡しましょう。Brave プライバシーブラウザからご利用いただけます。</translation>
-<translation id="4472575034687746823">Get started</translation>
+<translation id="4556086616242530072">ブラウザネイティブ\nセルフカストディ\nマルチチェーン</translation>
+<translation id="7909462264772842773">暗号通貨とNFTの管理がこの上なく快適に。Braveウォレットはイーサリアム、EVMチェーン、Solana、Filecoinなどをサポートしています。</translation>
+<translation id="165255193061631296">新しいウォレットが必要ですか？</translation>
+<translation id="3485737865439729577">Braveウォレットはすぐにお使いいただけます</translation>
 <translation id="2759836790106646094">ウォレットを今すぐバックアップしましょう！</translation>
 <translation id="1078873179929044999">次のステップでは、あなたの暗号資産アカウントを回復するために使用できる 12 語のリカバリフレーズが表示されます。安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを復旧する唯一の方法が、このリカバリフレーズになります。</translation>
 <translation id="2359808026110333948">続ける</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="1904000155026201268">リカバリーフレーズを紛失した場合、自分の暗号資産ウォレットにアクセスできなくなることを理解しました。</translation>
+<translation id="5333225216561354793">以下の事項をご確認ください</translation>
+<translation id="1645800479814134195">私は、このウォレットが自己管理のウォレットであり、関連する資金、資産、またはアカウントに対して私一人が責任を負い、私のウォレットを安全に保護し、バックアップするために適切な行動を取ることを理解しています。私は、Braveが私に代わって私のウォレットにアクセスしたり、取引を取り消すことはできないこと、およびパスワードの紛失、デバイスの盗難、または同様の状況の場合にアクセスを回復する唯一の方法は、私のリカバリフレーズであることを理解しています。</translation>
+<translation id="4565891212173086999"><ph name="CLICK_START"/>利用規約<ph name="CLICK_END"/>を読み、これに同意します。</translation>
 <translation id="3933122286596948824">リカバリーフレーズ</translation>
 <translation id="5077747669435508720">これらの単語を以下に示す正確な順序で書き留めるかコピーして、安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを回復する唯一の方法が、このリカバリフレーズになります。</translation>
 <translation id="2708402071160162126">警告: リカバリフレーズは絶対に他の人に教えないでください。このフレーズを知っている人はだれでも、あなたの資産を完全に取得することができます。</translation>
@@ -647,6 +652,9 @@
 <translation id="3747079125031086337">あなたのリカバリフレーズに含まれている単語を正しい順序で選択します。</translation>
 <translation id="6518133107902771759">確認</translation>
 <translation id="3157931365184549694">Restore</translation>
+<translation id="5844138175312846408">ウォレットを既にお持ちですか？</translation>
+<translation id="2502258949541727762">はじめに</translation>
+<translation id="5981303441790732480">既存のウォレットをインポート</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">パスワード</translation>
 <translation id="5619264711680220002">生体認証によるロック解除</translation>
@@ -665,7 +673,7 @@
 <translation id="5483736362376139517">1年</translation>
 <translation id="6979737339423435258">全期間</translation>
 <translation id="6284218950354553099">毎日の使用状況のpingをBraveに自動送信する</translation>
-<translation id="5288333155754958121">この匿名かつプライベートなPingにより、Braveはアクティブユーザーを推定することができます。</translation>
+<translation id="2181060149810222381">このプライベートなPingにより、Braveはアクティブユーザーを推定することができます。</translation>
 <translation id="3819257035322786455">バックアップ</translation>
 <translation id="4608713693379664295">プライマリ暗号資産アカウント</translation>
 <translation id="4003821417160006384">セカンダリアカウント</translation>
@@ -1212,5 +1220,11 @@
 <translation id="6637015365469044269">今すぐアップグレード</translation>
 <translation id="614530507403667291">新しい会話向けデフォルトモデル</translation>
 <translation id="4071849832011229600">デフォルトモデル</translation>
+<translation id="4185473179105062442">セルフカストディの暗号アドレスに直接BATを受け取る</translation>
+<translation id="5802986777701714573">毎月のBAT報酬の新しい受け取り方を追加しました。パートナーのアカウントに接続するか、新しいセルフカストディオプションを使って、今すぐ報酬を得ましょう。</translation>
 <translation id="7557539689487606886">プレミアムプラン</translation>
+<translation id="5538904824395606812">現在のサービスプロバイダまたはQuad9を使用</translation>
+<translation id="6393423486818299209">現在のサービスプロバイダまたはWikimedia DNSを使用</translation>
+<translation id="3401384982562827787">現在のサービスプロバイダまたはCloudflareを使用</translation>
+<translation id="8812367543786936496">現在のサービスプロバイダが安全でない場合、Braveは安全な代替DNSプロバイダを使用します</translation>
 </translationbundle>

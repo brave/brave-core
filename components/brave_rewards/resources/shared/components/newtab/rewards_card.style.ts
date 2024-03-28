@@ -470,18 +470,6 @@ export const connectAction = styled.div`
   }
 `
 
-export const connectLearnMore = styled.div`
-  margin-top: 14px;
-
-  a {
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    color: #FFFFFF;
-    text-decoration: none;
-  }
-`
-
 export const publisherSupport = styled.div`
   margin-top: 18px;
   display: flex;

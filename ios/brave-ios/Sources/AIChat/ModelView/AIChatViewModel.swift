@@ -84,6 +84,17 @@ public class AIChatViewModel: NSObject, ObservableObject {
     }
   }
 
+  public var defaultAIModelKey: String {
+    get {
+      return api.defaultModelKey
+    }
+
+    set {
+      objectWillChange.send()
+      api.defaultModelKey = newValue
+    }
+  }
+
   public init(
     braveCore: BraveCoreMain,
     webView: WKWebView?,
@@ -158,24 +169,6 @@ public class AIChatViewModel: NSObject, ObservableObject {
   @MainActor
   func refreshPremiumStatus() async {
     self.premiumStatus = await api.premiumStatus()
-  }
-
-  // This function should not exist
-  // We should not be refreshing credentials in this model at all!
-  // This should be done in Brave-Skus-Manager once VPN moves to Skus v2
-  @MainActor
-  func refreshPremiumStatusOrderCredentials() async {
-    await refreshPremiumStatus()
-
-    // Refresh the credentials if expired
-    if premiumStatus == .activeDisconnected,
-      let orderId = Preferences.AIChat.subscriptionOrderId.value
-    {
-      try? await BraveSkusSDK().fetchCredentials(orderId: orderId, for: .leo)
-
-      // Premium status changed after refresh
-      await refreshPremiumStatus()
-    }
   }
 
   @MainActor

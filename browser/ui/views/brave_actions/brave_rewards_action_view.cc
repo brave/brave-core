@@ -211,6 +211,10 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
       brave_rewards::prefs::kDeclaredGeo,
       base::BindRepeating(&BraveRewardsActionView::OnPreferencesChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kTosVersion,
+      base::BindRepeating(&BraveRewardsActionView::OnPreferencesChanged,
+                          base::Unretained(this)));
 
   browser_->tab_strip_model()->AddObserver(this);
 
@@ -453,6 +457,14 @@ size_t BraveRewardsActionView::GetRewardsNotificationCount() {
   if (prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
       prefs->GetString(brave_rewards::prefs::kDeclaredGeo).empty()) {
     ++count;
+  }
+
+  // Increment the notification count if the user needs to accept an updated
+  // terms of service.
+  if (auto* service = GetRewardsService()) {
+    if (service->IsTermsOfServiceUpdateRequired()) {
+      ++count;
+    }
   }
 
   return count;

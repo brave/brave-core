@@ -15,13 +15,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace contribution {
 
 class ContributionMonthly {
  public:
-  explicit ContributionMonthly(RewardsEngineImpl& engine);
+  explicit ContributionMonthly(RewardsEngine& engine);
 
   ~ContributionMonthly();
 
@@ -38,7 +38,7 @@ class ContributionMonthly {
       ResultCallback callback,
       bool success);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   base::WeakPtrFactory<ContributionMonthly> weak_factory_{this};
 };
 

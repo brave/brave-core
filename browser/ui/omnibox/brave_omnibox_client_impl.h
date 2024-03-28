@@ -33,7 +33,6 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
   static void RegisterProfilePrefs(PrefRegistrySimple* prefs);
 
   const AutocompleteSchemeClassifier& GetSchemeClassifier() const override;
-  bool IsAutocompleteEnabled() const override;
 
   void OnURLOpenedFromOmnibox(OmniboxLog* log) override;
 

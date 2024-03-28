@@ -6,6 +6,7 @@
 
 // Release Bundle ID
 MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).browser
+BRAVE_GROUP_ID = group.$(MOZ_BUNDLE_ID)
 
 // Manual Code-Signing
 DEVELOPMENT_TEAM = KL8N8XSYF4

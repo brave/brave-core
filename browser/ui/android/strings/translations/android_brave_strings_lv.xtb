@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Sākt izmantot balvas</translation>
 <translation id="8220484609979012449">\n\nJūs joprojām varat nosūtīt kriptoziedojumus šim satura veidotājam, izmantojot savu Web3 maku.</translation>
 <translation id="6385969012847057348">Šis satura veidotājs nevar saņemt ziedojumus no <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Šis veidotājs vēl nav iestatīts Web3 vai kriptoieguldījumu saņemšanai.</translation>
 <translation id="6268134562674951939">Jums nav pietiekami daudz marķieru</translation>
 <translation id="4529874892536380156">Padariet šo par atkārtotu ikmēneša iemaksu. Jūs varat atcelt to jebkurā laikā.</translation>
 <translation id="5562948772940025260">Jūs varat nosūtīt ne vairāk par <ph name="AMOUNT"/> BAT no savas Brave balvu bilances.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Ierīcē, kura jau ir sinhronizēta, atveriet Brave iestatījumus un dodieties uz Iestatījumi &gt; Sinhronizācija. Izvēlieties iespēju "Pievienot jaunu ierīci" un noskenējiet ekrānā redzamo QR kodu.</translation>
 <translation id="5241263629636958324">Kopēts starpliktuvē</translation>
 <translation id="5817918615728894473">Savienot pārī</translation>
-<translation id="7090325819305486658">Datu preferences</translation>
+<translation id="3429575397891106447">Sinhronizācijas iespējas</translation>
 <translation id="1680065323266179640">Dzēst sinhronizēto kontu</translation>
 <translation id="3792563952903751704">Dzēšot kontu, jūsu šifrētie dati no Brave serveriem tiks noņemti un tiks atspējota sinhronizēšana visās jūsu pieslēgtajās ierīcēs. Taču dati, kas atrodas pašās ierīcēs, netiks dzēsti.
   Konts tiek izdzēsts neatgriezeniski, un nav nekādu iespēju atjaunot datus. Ja vēlēsieties atsākt sinhronizēšanu, jums būs jāveido jauns konts un atkal jāpievieno katra ierīce.</translation>
@@ -596,14 +597,18 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1483493594462132177">Sūtīt</translation>
 <translation id="538450413584738399">Mijmaiņa</translation>
 <translation id="1366855498335432549">Iemaksa</translation>
-<translation id="1420318137760245955">Laipni lūdzam jaunajā Brave makā</translation>
-<translation id="8339846196588658366">Glabājiet kriptovalūtas savā īpašumā un sekojiet līdzi portfeļa efektivitātei. Turklāt to visu varat darīt tieši Brave privātuma pārlūkā.</translation>
-<translation id="4472575034687746823">Sākt darbu</translation>
+<translation id="4556086616242530072">Pielāgots pārlūkprogrammai.\nPilnībā jūsu kontrolē.\nUn piemērots dažāda veida kriptovalūtai.</translation>
+<translation id="7909462264772842773">Parūpējieties par savu kriptovalūtu un NFT. Brave makā var glabāt Ethereum, EVM ķēdes, Solana, Filecoin u. c.</translation>
+<translation id="165255193061631296">Nepieciešams jauns maks?</translation>
+<translation id="3485737865439729577">Izveidojiet Brave maku pāris minūšu laikā</translation>
 <translation id="2759836790106646094">Dublējiet savu maku tagad!</translation>
 <translation id="1078873179929044999">Nākamajā solī redzēsiet 12 vārdu atkopšanas frāzi, kuru varat izmantot, lai atkoptu primāros kriptovalūtas kontus. Glabājiet to drošā vietā. Jūsu atkopšanas frāze ir vienīgais veids, kā atgūt piekļuvi kontam gadījumā, ja aizmirsīsiet paroli, nozaudēsiet vai jums nozags ierīci, vai arī vēlēsieties mainīt maku.</translation>
 <translation id="2359808026110333948">Turpināt</translation>
 <translation id="5488357322146334497">Ziņojums</translation>
 <translation id="1904000155026201268">Es apzinos, ka gadījumā, ja pazaudēšu savus atkopšanas vārdus, nevarēšu piekļūt savam kriptovalūtas makam.</translation>
+<translation id="5333225216561354793">Jums jāapstiprina turpmāk aprakstītais</translation>
+<translation id="1645800479814134195">Es saprotu, ka tas ir mans maks un es esmu atbildīgs par jebkādiem saistītajiem līdzekļiem, aktīviem vai kontiem, kā arī par atbilstošu darbību veikšanu, lai aizsargātu un dublētu savu maku. Es saprotu, ka Brave nevar piekļūt manam makam vai atsaukt darījumus manā vārdā un ka mana atkopšanas frāze ir VIENĪGAIS veids, kā atgūt piekļuvi nozaudētas paroles, nozagtas ierīces vai līdzīgu apstākļu gadījumā.</translation>
+<translation id="4565891212173086999">Esmu izlasījis un piekrītu <ph name="CLICK_START"/>lietošanas noteikumiem<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Jūsu atkopšanas frāze</translation>
 <translation id="5077747669435508720">Pierakstiet vai nokopējiet šos vārdus tieši tādā pašā secībā, kāda parādīta zemāk, un glabājiet tos drošā vietā. Jūsu atkopšanas frāze ir vienīgais veids, kā atgūt piekļuvi kontam gadījumā, ja aizmirsīsiet paroli, nozaudēsiet vai jums nozags ierīci, vai arī vēlēsieties mainīt maku.</translation>
 <translation id="2708402071160162126">BRĪDINĀJUMS: Nekad neizpaudiet atkopšanas frāzi. Jebkurš, kam ir šī frāze, var neatgriezeniski atņemt jūsu līdzekļus.</translation>
@@ -648,6 +653,9 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="3747079125031086337">Atlasiet atkopšanas frāzes vārdus pareizajā secībā.</translation>
 <translation id="6518133107902771759">Pārbaudīt</translation>
 <translation id="3157931365184549694">Atjaunot</translation>
+<translation id="5844138175312846408">Jums jau ir maks?</translation>
+<translation id="2502258949541727762">Pirms mēs sākam</translation>
+<translation id="5981303441790732480">Importējiet savu esošo maku</translation>
 <translation id="9111102763498581341">Atbloķēt</translation>
 <translation id="6657585470893396449">Parole</translation>
 <translation id="5619264711680220002">Biometriskā atbloķēšana</translation>
@@ -666,7 +674,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5483736362376139517">1 gads</translation>
 <translation id="6979737339423435258">Visā periodā</translation>
 <translation id="6284218950354553099">Automātiski nosūtīt dienas lietošanas ehotestu Brave</translation>
-<translation id="5288333155754958121">Šis anonīmais un privātais ehotests ļauj Brave aprēķināt aktīvos lietotājus.</translation>
+<translation id="2181060149810222381">Šis privātais ehotests ļauj Brave aprēķināt aktīvos lietotājus.</translation>
 <translation id="3819257035322786455">Dublējums</translation>
 <translation id="4608713693379664295">Primārie kripto konti</translation>
 <translation id="4003821417160006384">Sekundārie konti</translation>
@@ -1213,5 +1221,11 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="6637015365469044269">Atjaunināt tagad</translation>
 <translation id="614530507403667291">Nosklusējuma modelis jaunām sarunām</translation>
 <translation id="4071849832011229600">Noklusējuma modelis</translation>
+<translation id="4185473179105062442">Saņemiet BAT tieši uz pašaizbildnības kriptovalūtas adresi</translation>
+<translation id="5802986777701714573">Mēs pievienojām jaunu veidu, kā saņemt jūsu ikmēneša BAT atlīdzības. Pievienojiet kāda mūsu partnera kontu vai izmantojiet jauno pašaizbildnības opciju, lai sāktu pelnīt jau tagad.</translation>
 <translation id="7557539689487606886">Pāriet uz Premium</translation>
+<translation id="5538904824395606812">Izmantojiet savu esošo pakalpojumu sniedzēju vai Quad9</translation>
+<translation id="6393423486818299209">Izmantojiet savu esošo pakalpojumu sniedzēju vai Wikimedia DNS</translation>
+<translation id="3401384982562827787">Izmantojiet savu esošo pakalpojumu sniedzēju vai Cloudflare</translation>
+<translation id="8812367543786936496">Ja jūsu esošais pakalpojumu sniedzējs nav drošs, Brave izmanto drošu, alternatīvu DNS sniedzēju</translation>
 </translationbundle>

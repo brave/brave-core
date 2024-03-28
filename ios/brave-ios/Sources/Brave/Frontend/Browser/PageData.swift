@@ -76,7 +76,10 @@ struct PageData {
   }
 
   /// Return all the user script types for this page. The number of script types grows as more frames are loaded.
-  @MainActor func makeUserScriptTypes(domain: Domain) async -> Set<UserScriptType> {
+  @MainActor func makeUserScriptTypes(
+    domain: Domain,
+    isDeAmpEnabled: Bool
+  ) async -> Set<UserScriptType> {
     var userScriptTypes: Set<UserScriptType> = [
       .siteStateListener, .gpc(ShieldPreferences.enableGPC.value),
     ]
@@ -106,23 +109,31 @@ struct PageData {
       }
     }
 
-    let allEngineScriptTypes = await makeAllEngineScripts(for: domain)
+    let allEngineScriptTypes = await makeAllEngineScripts(
+      for: domain,
+      isDeAmpEnabled: isDeAmpEnabled
+    )
     return userScriptTypes.union(allEngineScriptTypes)
   }
 
-  func makeMainFrameEngineScriptTypes(domain: Domain) async -> Set<UserScriptType> {
+  func makeMainFrameEngineScriptTypes(
+    domain: Domain,
+    isDeAmpEnabled: Bool
+  ) async -> Set<UserScriptType> {
     return await adBlockStats.makeEngineScriptTypes(
       frameURL: mainFrameURL,
       isMainFrame: true,
+      isDeAmpEnabled: isDeAmpEnabled,
       domain: domain
     )
   }
 
-  func makeAllEngineScripts(for domain: Domain) async -> Set<UserScriptType> {
+  func makeAllEngineScripts(for domain: Domain, isDeAmpEnabled: Bool) async -> Set<UserScriptType> {
     // Add engine scripts for the main frame
     async let engineScripts = adBlockStats.makeEngineScriptTypes(
       frameURL: mainFrameURL,
       isMainFrame: true,
+      isDeAmpEnabled: isDeAmpEnabled,
       domain: domain
     )
 
@@ -131,6 +142,7 @@ struct PageData {
       return await self.adBlockStats.makeEngineScriptTypes(
         frameURL: frameURL,
         isMainFrame: false,
+        isDeAmpEnabled: isDeAmpEnabled,
         domain: domain
       )
     }).reduce(

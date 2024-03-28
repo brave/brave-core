@@ -7,30 +7,23 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { HostContext, useHostListener } from '../lib/host_context'
-import { supportedWalletRegionsURL, aboutBATURL } from '../../shared/lib/rewards_urls'
+import { aboutBATURL } from '../../shared/lib/rewards_urls'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { SettingsIcon } from '../../shared/components/icons/settings_icon'
 import { ArrowNextIcon } from '../../shared/components/icons/arrow_next_icon'
 
-import * as derivedState from '../lib/derived_state'
 import * as style from './limited_view.style'
 
 export function LimitedView () {
   const host = React.useContext(HostContext)
   const { getString, getPluralString } = React.useContext(LocaleContext)
 
-  const [publisherInfo, setPublisherInfo] =
-    React.useState(host.state.publisherInfo)
   const [publishersVisitedCount, setPublishersVisitedCount] =
     React.useState(host.state.publishersVisitedCount)
   const [publisherCountText, setPublisherCountText] = React.useState('')
-  const [canConnectAccount, setCanConnectAccount] =
-    React.useState(derivedState.canConnectAccount(host.state))
 
   useHostListener(host, (state) => {
-    setPublisherInfo(state.publisherInfo)
     setPublishersVisitedCount(state.publishersVisitedCount)
-    setCanConnectAccount(derivedState.canConnectAccount(state))
   })
 
   React.useEffect(() => {
@@ -49,25 +42,6 @@ export function LimitedView () {
   }
 
   function renderConnectBox () {
-    if (!canConnectAccount) {
-      return (
-        <style.connect>
-          <div>
-            {
-              getString(publisherInfo
-                ? 'connectContributeNoProviders'
-                : 'connectAccountNoProviders')
-            }
-          </div>
-          <style.connectLearnMore>
-            <NewTabLink href={supportedWalletRegionsURL}>
-              {getString('learnMore')}
-            </NewTabLink>
-          </style.connectLearnMore>
-        </style.connect>
-      )
-    }
-
     return (
       <style.connect>
         <style.connectAction>

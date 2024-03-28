@@ -161,37 +161,20 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   WebContents* site_a = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   WebContents* site_b = LoadURLInNewTab(b_site_ephemeral_storage_url_);
 
-  if (base::FeatureList::IsEnabled(
-          net::features::kThirdPartyStoragePartitioning)) {
-    // Main frame and 1p frame. Access is forbidden, because permission is not
-    // granted.
-    EXPECT_EQ(false, SetIDBValue(site_a->GetPrimaryMainFrame()));
-    EXPECT_EQ(false, SetIDBValue(content::ChildFrameAt(
-                         site_a->GetPrimaryMainFrame(), 2)));
-    // 3p frames.
-    EXPECT_EQ(true, SetIDBValue(content::ChildFrameAt(
-                        site_a->GetPrimaryMainFrame(), 0)));
-    EXPECT_EQ(true, SetIDBValue(content::ChildFrameAt(
-                        site_a->GetPrimaryMainFrame(), 1)));
+  // Main frame and 1p frame. Access is forbidden, because permission is not
+  // granted.
+  EXPECT_EQ(false, SetIDBValue(site_a->GetPrimaryMainFrame()));
+  EXPECT_EQ(false, SetIDBValue(content::ChildFrameAt(
+                       site_a->GetPrimaryMainFrame(), 2)));
+  // 3p frames.
+  EXPECT_EQ(true, SetIDBValue(
+                      content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 0)));
+  EXPECT_EQ(true, SetIDBValue(
+                      content::ChildFrameAt(site_a->GetPrimaryMainFrame(), 1)));
 
-    // 3p frame.
-    EXPECT_EQ(true, SetIDBValue(content::ChildFrameAt(
-                        site_b->GetPrimaryMainFrame(), 2)));
-  } else {
-    // Main frame and 1p frame.
-    EXPECT_EQ(false, SetIDBValue(site_a->GetPrimaryMainFrame()));
-    EXPECT_EQ(false, SetIDBValue(content::ChildFrameAt(
-                         site_a->GetPrimaryMainFrame(), 2)));
-    // 3p frames.
-    EXPECT_EQ(false, SetIDBValue(content::ChildFrameAt(
-                         site_a->GetPrimaryMainFrame(), 0)));
-    EXPECT_EQ(false, SetIDBValue(content::ChildFrameAt(
-                         site_a->GetPrimaryMainFrame(), 1)));
-
-    // 3p frame.
-    EXPECT_EQ(false, SetIDBValue(content::ChildFrameAt(
-                         site_b->GetPrimaryMainFrame(), 2)));
-  }
+  // 3p frame.
+  EXPECT_EQ(true, SetIDBValue(
+                      content::ChildFrameAt(site_b->GetPrimaryMainFrame(), 2)));
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,

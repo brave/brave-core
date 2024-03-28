@@ -35,16 +35,6 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/views/controls/menu/menu_runner.h"
 
-namespace {
-
-bool CanTakeTabs(const Browser* from, const Browser* to) {
-  return from != to && !from->IsAttemptingToCloseBrowser() &&
-         !from->IsBrowserClosing() && !from->is_delete_scheduled() &&
-         to->profile() == from->profile();
-}
-
-}  // namespace
-
 BraveTabContextMenuContents::BraveTabContextMenuContents(
     Tab* tab,
     BraveBrowserTabStripController* controller,
@@ -116,9 +106,7 @@ bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
   }
 
   if (command_id == BraveTabMenuModel::CommandBringAllTabsToThisWindow) {
-    return base::ranges::any_of(
-        *BrowserList::GetInstance(),
-        [&](const Browser* from) { return CanTakeTabs(from, browser_); });
+    return brave::CanBringAllTabs(browser_);
   }
 
   return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
@@ -229,7 +217,7 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
       return;
     }
     case BraveTabMenuModel::CommandBringAllTabsToThisWindow: {
-      BringAllTabsToThisWindow();
+      brave::BringAllTabs(browser_);
       return;
     }
     case BraveTabMenuModel::CommandCloseDuplicateTabs:
@@ -238,50 +226,6 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     default:
       NOTREACHED();
       return;
-  }
-}
-
-void BraveTabContextMenuContents::BringAllTabsToThisWindow() {
-  // Find all browsers with the same profile
-  std::vector<Browser*> browsers;
-  base::ranges::copy_if(
-      *BrowserList::GetInstance(), std::back_inserter(browsers),
-      [&](const Browser* from) { return CanTakeTabs(from, browser_); });
-
-  // Detach all tabs from other browsers
-  std::stack<std::unique_ptr<content::WebContents>> detached_pinned_tabs;
-  std::stack<std::unique_ptr<content::WebContents>> detached_unpinned_tabs;
-
-  base::ranges::for_each(browsers, [&detached_pinned_tabs,
-                                    &detached_unpinned_tabs](auto* other) {
-    auto* tab_strip_model = other->tab_strip_model();
-    const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();
-    for (int i = tab_strip_model->count() - 1; i >= 0; --i) {
-      auto contents = tab_strip_model->DetachWebContentsAtForInsertion(i);
-      const bool is_pinned = i < pinned_tab_count;
-      if (is_pinned) {
-        detached_pinned_tabs.push(std::move(contents));
-      } else {
-        detached_unpinned_tabs.push(std::move(contents));
-      }
-    }
-  });
-
-  // Insert pinned tabs
-  auto* tab_strip_model = browser_->tab_strip_model();
-  while (!detached_pinned_tabs.empty()) {
-    tab_strip_model->InsertWebContentsAt(
-        tab_strip_model->IndexOfFirstNonPinnedTab(),
-        std::move(detached_pinned_tabs.top()), AddTabTypes::ADD_PINNED);
-    detached_pinned_tabs.pop();
-  }
-
-  // Insert unpinned tabs
-  while (!detached_unpinned_tabs.empty()) {
-    tab_strip_model->InsertWebContentsAt(
-        tab_strip_model->count(), std::move(detached_unpinned_tabs.top()),
-        AddTabTypes::ADD_NONE);
-    detached_unpinned_tabs.pop();
   }
 }
 

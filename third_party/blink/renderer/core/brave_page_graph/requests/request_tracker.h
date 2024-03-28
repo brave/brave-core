@@ -12,8 +12,10 @@
 
 #include "base/memory/ref_counted.h"
 #include "base/time/time.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 
@@ -45,7 +47,7 @@ struct DocumentRequest {
 
 class RequestTracker {
  public:
-  RequestTracker();
+  explicit RequestTracker(PageGraphContext* page_graph_context);
   ~RequestTracker();
 
   scoped_refptr<const TrackedRequestRecord> RegisterRequestStart(
@@ -53,6 +55,10 @@ class RequestTracker {
       GraphNode* requester,
       NodeResource* resource,
       const String& resource_type);
+  void RegisterRequestRedirect(const InspectorId request_id,
+                               const blink::KURL& url,
+                               const blink::ResourceResponse& redirect_response,
+                               NodeResource* resource);
   scoped_refptr<const TrackedRequestRecord> RegisterRequestComplete(
       const InspectorId request_id,
       int64_t encoded_data_length);
@@ -80,6 +86,8 @@ class RequestTracker {
   // if the final requester has been responded to.
   scoped_refptr<const TrackedRequestRecord> ReturnTrackingRecord(
       const InspectorId request_id);
+
+  PageGraphContext* const page_graph_context_ = nullptr;
 
   // This structure is just included for debugging, to make sure the
   // assumptions built into this request tracking system (e.g. that

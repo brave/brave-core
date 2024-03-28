@@ -10,6 +10,7 @@ import SwiftUI
 struct BiometricsPasscodeEntryView: View {
 
   @ObservedObject var keyringStore: KeyringStore
+  var settingsStore: SettingsStore
 
   var body: some View {
     PasswordEntryView(
@@ -17,22 +18,26 @@ struct BiometricsPasscodeEntryView: View {
       title: Strings.Wallet.enterPasswordForBiometricsNavTitle,
       message: Strings.Wallet.enterPasswordForBiometricsTitle,
       action: { password, completion in
-        keyringStore.validate(password: password) { isValid in
+        keyringStore.validate(password: password) { [weak settingsStore] isValid in
+          defer {
+            settingsStore?.updateBiometricsToggle()
+          }
           if isValid {
             // store password in keychain
             if case let status = keyringStore.storePasswordInKeychain(password),
               status != errSecSuccess
             {
-              completion(.incorrectPassword)
+              // Failed to store password in keychain
+              completion(.failedToEnableBiometrics)
             } else {
-              // password stored in keychain
+              // Successfully stored password in keychain
               completion(nil)
             }
-          } else {
+          } else {  // incorrect/invalid password
             // Conflict with the keyboard submit/dismissal that causes a bug
             // with SwiftUI animating the screen away...
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-              completion(.init(message: Strings.Wallet.incorrectPasswordErrorMessage))
+              completion(.incorrectPassword)
             }
           }
         }
@@ -45,7 +50,8 @@ struct BiometricsPasscodeEntryView: View {
 struct BiometricsPasscodeEntryView_Previews: PreviewProvider {
   static var previews: some View {
     BiometricsPasscodeEntryView(
-      keyringStore: .previewStore
+      keyringStore: .previewStore,
+      settingsStore: .previewStore
     )
   }
 }

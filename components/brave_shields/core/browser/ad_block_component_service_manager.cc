@@ -127,16 +127,16 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
   for (const auto& catalog_entry : filter_list_catalog_) {
     if (IsFilterListEnabled(catalog_entry.uuid)) {
       auto existing_provider =
-          regional_filters_providers_.find(catalog_entry.uuid);
+          component_filters_providers_.find(catalog_entry.uuid);
       // Only check for new lists that are part of the catalog - don't touch any
       // existing providers to account for modified or removed catalog entries.
       // They'll be handled after a browser restart.
-      if (existing_provider == regional_filters_providers_.end()) {
+      if (existing_provider == component_filters_providers_.end()) {
         auto regional_filters_provider =
             std::make_unique<AdBlockComponentFiltersProvider>(
                 component_update_service_, catalog_entry,
                 catalog_entry.first_party_protections);
-        regional_filters_providers_.insert(
+        component_filters_providers_.insert(
             {catalog_entry.uuid, std::move(regional_filters_provider)});
       }
     }
@@ -228,23 +228,23 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
     return;
   }
   // Enable or disable the specified filter list
-  auto it = regional_filters_providers_.find(uuid);
+  auto it = component_filters_providers_.find(uuid);
   if (enabled) {
-    if (it != regional_filters_providers_.end()) {
+    if (it != component_filters_providers_.end()) {
       return;
     }
     auto regional_filters_provider =
         std::make_unique<AdBlockComponentFiltersProvider>(
             component_update_service_, *catalog_entry,
             catalog_entry->first_party_protections);
-    regional_filters_providers_.insert(
+    component_filters_providers_.insert(
         {uuid, std::move(regional_filters_provider)});
   } else {
-    if (it == regional_filters_providers_.end()) {
+    if (it == component_filters_providers_.end()) {
       return;
     }
     it->second->UnregisterComponent();
-    regional_filters_providers_.erase(it);
+    component_filters_providers_.erase(it);
   }
 
   // Update preferences to reflect enabled/disabled state of specified

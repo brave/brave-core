@@ -88,7 +88,7 @@ export const VerifyRecoveryPhrase = () => {
       return
     }
     history.push(WalletRoutes.PortfolioAssets)
-  }, [isOnboarding, report])
+  }, [dispatch, history, isOnboarding, report])
 
   const onNextStep = React.useCallback(async () => {
     await completeWalletBackup().unwrap()
@@ -98,7 +98,7 @@ export const VerifyRecoveryPhrase = () => {
       return
     }
     history.push(WalletRoutes.PortfolioAssets)
-  }, [isOnboarding, completeWalletBackup])
+  }, [completeWalletBackup, isOnboarding, history, dispatch])
 
   // memos
   const recoveryPhrase = React.useMemo(() => {

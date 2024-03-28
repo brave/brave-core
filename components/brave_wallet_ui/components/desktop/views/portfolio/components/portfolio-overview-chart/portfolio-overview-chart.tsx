@@ -5,21 +5,23 @@
 
 import * as React from 'react'
 
-// types
+// types & constants
 import {
   BraveWallet,
   LineChartIframeData,
   TokenPriceHistory
 } from '../../../../../../constants/types'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../../../common/constants/local-storage-keys'
 
 // utils
 import {
-  useSafeWalletSelector //
-} from '../../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../../common/selectors'
-import {
   useGetDefaultFiatCurrencyQuery //
 } from '../../../../../../common/slices/api.slice'
+import {
+  useSyncedLocalStorage //
+} from '../../../../../../common/hooks/use_local_storage'
 
 // components
 import {
@@ -45,10 +47,14 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
   timeframe,
   onTimeframeChanged
 }) => {
-  // redux
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
+  // local-Storage
+  const [hidePortfolioBalances] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
+    false
   )
+
+  // state
+  const [isIframeLoaded, setIsIframeLoaded] = React.useState<boolean>(false)
 
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
@@ -69,6 +75,11 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
     hidePortfolioBalances
   ])
 
+  // methods
+  const handleOnLoad = () => {
+    setIsIframeLoaded(true)
+  }
+
   // render
   return (
     <>
@@ -86,11 +97,12 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
         fullWidth
       >
         <iframe
+          onLoad={handleOnLoad}
           width={'100%'}
           height={'130px'}
           frameBorder={0}
           src={`chrome-untrusted://line-chart-display${
-            isLoading ? '' : `?${encodedPriceData}`
+            isLoading || !isIframeLoaded ? '' : `?${encodedPriceData}`
           }`}
           sandbox='allow-scripts'
         />

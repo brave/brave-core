@@ -142,7 +142,7 @@ function buildChromiumRelease(buildOptions = {}) {
 
 
   Log.progressScope('gclient sync', () => {
-    syncUtil.syncChromium(true, true, false)
+    syncUtil.syncChromium({ force: true, sync_chromium: true })
   })
 
   Log.progressScope('gclient runhooks', () => {

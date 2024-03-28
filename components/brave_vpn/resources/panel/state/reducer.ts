@@ -14,8 +14,8 @@ type RootState = {
   isSelectingRegion: boolean
   expired: boolean
   connectionStatus: ConnectionState
-  regions?: Region[]
-  currentRegion?: Region
+  regions: Region[]
+  currentRegion: Region
   productUrls?: ProductUrls
   currentView: ViewType,
   stateDescription?: string
@@ -26,8 +26,8 @@ const defaultState: RootState = {
   isSelectingRegion: false,
   expired: false,
   connectionStatus: ConnectionState.DISCONNECTED,
-  regions: undefined,
-  currentRegion: undefined,
+  regions: [],
+  currentRegion: new Region(),
   currentView: ViewType.Loading
 }
 

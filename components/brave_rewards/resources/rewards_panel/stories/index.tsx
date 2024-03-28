@@ -17,7 +17,6 @@ import { NotificationCard } from '../components/notification_card'
 
 import { App } from '../components/app'
 
-import grantCaptchaImageURL from './grant_captcha_image.png'
 import * as mojom from '../../shared/lib/mojom'
 import { optional } from '../../shared/lib/optional'
 
@@ -51,21 +50,6 @@ function createHost (): Host {
       ]),
       vbatDeadline: Date.parse('2023-01-01T00:00:00-05:00'),
       vbatExpired: false
-    },
-    grantCaptchaInfo: null && {
-      id: '123',
-      imageURL: grantCaptchaImageURL,
-      hint: 'square',
-      status: 'pending',
-      verifying: false,
-      grantInfo: {
-        id: 'grant123',
-        createdAt: Date.now(),
-        claimableUntil: Date.now() + 120_000,
-        expiresAt: Date.now() + 120_000,
-        amount: 10,
-        type: 'ads'
-      }
     },
     adaptiveCaptchaInfo: null && {
       url: '',
@@ -195,26 +179,6 @@ function createHost (): Host {
 
     resetRewards () {
       console.log('resetRewards')
-    },
-
-    solveGrantCaptcha (solution) {
-      console.log('solveGrantCaptcha', solution)
-      const { grantCaptchaInfo } = stateManager.getState()
-      if (!grantCaptchaInfo) {
-        return
-      }
-      stateManager.update({
-        grantCaptchaInfo: {
-          ...grantCaptchaInfo,
-          status: 'passed'
-        }
-      })
-    },
-
-    clearGrantCaptcha () {
-      stateManager.update({
-        grantCaptchaInfo: null
-      })
     },
 
     clearAdaptiveCaptcha () {

@@ -5,6 +5,7 @@ declare namespace WebcompatReporter {
 
   export interface DialogArgs {
     url: string
+    isErrorPage: boolean
     adBlockSetting: string
     fpBlockSetting: string
     shieldsEnabled: string

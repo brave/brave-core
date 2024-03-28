@@ -15,13 +15,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace wallet_provider {
 
 class ConnectExternalWallet {
  public:
-  explicit ConnectExternalWallet(RewardsEngineImpl& engine);
+  explicit ConnectExternalWallet(RewardsEngine& engine);
 
   virtual ~ConnectExternalWallet();
 
@@ -54,7 +54,7 @@ class ConnectExternalWallet {
                  std::string&& address,
                  endpoints::PostConnect::Result&&) const;
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   OAuthInfo oauth_info_;
 
  private:
