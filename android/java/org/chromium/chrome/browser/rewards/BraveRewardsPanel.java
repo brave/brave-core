@@ -736,14 +736,16 @@ public class BraveRewardsPanel
                         BraveRewardsHelper.spannedFromHtmlString(grantMessage));
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT_ADS: // Ads grant
-                String grantAmount =  (args.length > 0) ? args[0] : "";
-                long createdAtGrantAds = (args.length > 1) ? Long.parseLong(args[1]) : 0l;
-                long claimableUntilGrantAds = (args.length > 2) ? Long.parseLong(args[2]) : 0l;
-                if (claimableUntilGrantAds < new Date().getTime() || createdAtGrantAds == 0l) {
+                String grantAmount = (args.length > 0) ? args[0] : "";
+                long createdAtGrantAds = (args.length > 1) ? Long.parseLong(args[1]) : 0L;
+                long claimableUntilGrantAds = (args.length > 2) ? Long.parseLong(args[2]) : 0L;
+                if (claimableUntilGrantAds < new Date().getTime() || createdAtGrantAds == 0L) {
                     return;
                 }
-                String createdAtMonthGrantAds = (String) android.text.format.DateFormat.format(
-                        "MMMM", new Date(createdAtGrantAds));
+                String createdAtMonthGrantAds =
+                        (String)
+                                android.text.format.DateFormat.format(
+                                        "MMMM", new Date(createdAtGrantAds));
                 long grantAdsDays =
                         TimeUnit.MILLISECONDS.toDays(claimableUntilGrantAds - new Date().getTime());
                 notificationClaimImg.setVisibility(View.VISIBLE);
