@@ -63,9 +63,13 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   void MaybeNotifyTabContentDidChange();
   void MaybeNotifyTabHtmlContentDidChange();
-  void OnMaybeNotifyTabHtmlContentDidChange(base::Value value);
+  void OnMaybeNotifyTabHtmlContentDidChange(
+      const std::vector<GURL>& redirect_chain,
+      base::Value value);
   void MaybeNotifyTabTextContentDidChange();
-  void OnMaybeNotifyTabTextContentDidChange(base::Value value);
+  void OnMaybeNotifyTabTextContentDidChange(
+      const std::vector<GURL>& redirect_chain,
+      base::Value value);
 
   void MaybeNotifyTabDidStartPlayingMedia();
   void MaybeNotifyTabDidStopPlayingMedia();
