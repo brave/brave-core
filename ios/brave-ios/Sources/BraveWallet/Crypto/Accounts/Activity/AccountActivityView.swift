@@ -138,8 +138,10 @@ struct AccountActivityView: View {
       Spacer().frame(height: 24)
 
       HStack(spacing: 24) {
-        PortfolioHeaderButton(style: .buy) {
-          walletActionDestination = .init(kind: .buy)
+        if store.isBuySupported {
+          PortfolioHeaderButton(style: .buy) {
+            walletActionDestination = .init(kind: .buy)
+          }
         }
         PortfolioHeaderButton(style: .send) {
           walletActionDestination = .init(kind: .send)
