@@ -1027,7 +1027,7 @@ void ConversationDriver::RateMessage(
           std::move(callback).Run(id);
           return;
         }
-        std::move(callback).Run(absl::nullopt);
+        std::move(callback).Run(std::nullopt);
       },
       std::move(callback));
 
@@ -1050,7 +1050,7 @@ void ConversationDriver::RateMessage(
     return;
   }
 
-  std::move(callback).Run(absl::nullopt);
+  std::move(callback).Run(std::nullopt);
 }
 
 void ConversationDriver::SendFeedback(

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/toolbar/app_menu.h b/chrome/browser/ui/views/toolbar/app_menu.h
+index c5dd0878cd5a69edb8c2e612720ee48d2b23e58f..316195f4a62813b9825ff1b568414df2599c64c2 100644
+--- a/chrome/browser/ui/views/toolbar/app_menu.h
++++ b/chrome/browser/ui/views/toolbar/app_menu.h
+@@ -29,7 +29,7 @@ class MenuRunner;
+ }
+ 
+ // AppMenu adapts the AppMenuModel to view's menu related classes.
+-class AppMenu final : public views::MenuDelegate,
++class AppMenu : public views::MenuDelegate,
+                       public bookmarks::BaseBookmarkModelObserver,
+                       public GlobalErrorObserver {
+  public:

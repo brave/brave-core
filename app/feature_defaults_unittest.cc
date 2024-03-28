@@ -88,7 +88,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kBiddingAndScoringDebugReportingAPI,
       &blink::features::kBrowsingTopics,
-      &blink::features::kClientHintsFormFactor,
+      &blink::features::kClientHintsFormFactors,
       &blink::features::kComputePressure,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
@@ -106,9 +106,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kReduceCookieIPCs,
       &blink::features::kSharedStorageAPI,
       &blink::features::kSharedStorageAPIM118,
-      &blink::features::kSharedStorageAPIM123,
+      &blink::features::kSharedStorageAPIM124,
       &blink::features::kSharedStorageSelectURLLimit,
-      &blink::features::kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
       &blink::features::kSpeculationRulesPrefetchFuture,
       &blink::features::kTextFragmentAnchor,
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
@@ -132,7 +131,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_WIN)
       &features::kAppBoundEncryptionMetrics,
 #endif
-      &features::kAttributionFencedFrameReportingBeacon,
       &features::kAttributionReportingCrossAppWebOverride,
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeLabs,
@@ -155,13 +153,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kKAnonymityService,
       &features::kKAnonymityServiceOHTTPRequests,
       &features::kLegacyTechReportEnableCookieIssueReports,
-      &features::kLegacyTechReportTopLevelUrl,
       &features::kNewTabPageTriggerForPrerender2,
       &features::kNotificationTriggers,
       &features::kOmniboxTriggerForNoStatePrefetch,
       &features::kOmniboxTriggerForPrerender2,
-      &features::kPrivacyGuide3,
-      &features::kPrivacyGuidePreload,
 #if BUILDFLAG(IS_ANDROID)
       &features::kPrivacyGuidePreloadAndroid,
 #endif
@@ -188,7 +183,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,
       &history::kSyncSegmentsData,
-      &history_clusters::kRenameJourneys,
       &history_clusters::kSidePanelJourneys,
       &history_clusters::features::kOnDeviceClustering,
       &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
@@ -201,7 +195,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::internal::kJourneysZeroStateFiltering,
       &history_clusters::internal::kOmniboxAction,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
-      &history_clusters::internal::kPersistedClusters,
       &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
 #if !BUILDFLAG(IS_ANDROID)
       &kForYouFre,
@@ -245,7 +238,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kRemoteOptimizationGuideFetching,
       &optimization_guide::features::
           kRemoteOptimizationGuideFetchingAnonymousDataConsent,
-      &optimization_guide::features::kTextEmbeddingPageContentAnnotations,
       &page_image_service::kImageService,
       &page_image_service::kImageServiceSuggestPoweredImages,
 #if BUILDFLAG(IS_ANDROID)
@@ -256,7 +248,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kPermissionsPromptSurvey,
 #endif
       &permissions::features::kPermissionOnDeviceNotificationPredictions,
-      &permissions::features::kPermissionStorageAccessAPI,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &privacy_sandbox::kCookieSettingsUiAlignment,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,

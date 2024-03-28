@@ -1,10 +1,10 @@
 diff --git a/third_party/rust/anyhow/v1/BUILD.gn b/third_party/rust/anyhow/v1/BUILD.gn
-index 75cebe9b2206ddff644da12c2188751d9e8ea5c0..4d810b1b524d943597228945cdf93a2e5dc7d3d8 100644
+index 60c7399819c6c381b778601b6c74356a4dcd4131..758abb9c6644f894e1568d527df4fcf9cdf732b0 100644
 --- a/third_party/rust/anyhow/v1/BUILD.gn
 +++ b/third_party/rust/anyhow/v1/BUILD.gn
 @@ -47,5 +47,4 @@ cargo_crate("lib") {
-       "//third_party/rust/chromium_crates_io/vendor/anyhow-1.0.79/build.rs"
+       "//third_party/rust/chromium_crates_io/vendor/anyhow-1.0.80/build.rs"
    build_sources =
-       [ "//third_party/rust/chromium_crates_io/vendor/anyhow-1.0.79/build.rs" ]
+       [ "//third_party/rust/chromium_crates_io/vendor/anyhow-1.0.80/build.rs" ]
 -  testonly = true
  }

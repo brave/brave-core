@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-index cc7261c2d4666218661b6e8ca0a1f0fdef376020..8491cd124b7397f80d8d47ebf9c997cda45fd2eb 100644
+index e6f9687b7614cde2d2fb2321cc51aa2f69bb8b7c..2d06d7b0c49eaa95b144acad5265aba3aa80198b 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 @@ -181,6 +181,7 @@ class RecentTabsSubMenuModelTest : public BrowserWithTestWindowTest,

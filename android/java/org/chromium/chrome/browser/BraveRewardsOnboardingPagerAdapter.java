@@ -20,7 +20,7 @@ import com.google.android.material.slider.Slider;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,7 +145,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
                                             adsValue));
                         }
                         if (BraveAdsNativeHelper.nativeIsOptedInToNotificationAds(
-                                Profile.getLastUsedRegularProfile())) {
+                                ProfileManager.getLastUsedRegularProfile())) {
                             BraveRewardsNativeWorker.getInstance()
                                     .setAdsPerHour((int) slider.getValue());
                         }

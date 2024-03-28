@@ -38,9 +38,6 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
   void SetDeactivationCallback(
       base::RepeatingCallback<void(bool)> deactivation_callback);
 
-  // Allows disabling CSP on wallet panel so EvalJS could be run in main world.
-  static bool& ShouldDisableCSPForTesting();
-
   static constexpr std::string GetWebUIName() { return "WalletPanel"; }
 
  private:

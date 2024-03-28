@@ -54,7 +54,6 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
-import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
@@ -66,23 +65,37 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     private AppMenuDelegate mAppMenuDelegate;
     private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
 
-    public BraveTabbedAppMenuPropertiesDelegate(Context context,
+    public BraveTabbedAppMenuPropertiesDelegate(
+            Context context,
             ActivityTabProvider activityTabProvider,
             MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
-            TabModelSelector tabModelSelector, ToolbarManager toolbarManager, View decorView,
+            TabModelSelector tabModelSelector,
+            ToolbarManager toolbarManager,
+            View decorView,
             AppMenuDelegate appMenuDelegate,
             OneshotSupplier<LayoutStateProvider> layoutStateProvider,
-            OneshotSupplier<StartSurface> startSurfaceSupplier,
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             WebFeedSnackbarController.FeedLauncher feedLauncher,
-            ModalDialogManager modalDialogManager, SnackbarManager snackbarManager,
-            @NonNull OneshotSupplier<IncognitoReauthController>
-                    incognitoReauthControllerOneshotSupplier,
+            ModalDialogManager modalDialogManager,
+            SnackbarManager snackbarManager,
+            @NonNull
+                    OneshotSupplier<IncognitoReauthController>
+                            incognitoReauthControllerOneshotSupplier,
             Supplier<ReadAloudController> readAloudControllerSupplier) {
-        super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
-                toolbarManager, decorView, appMenuDelegate, layoutStateProvider,
-                startSurfaceSupplier, bookmarkModelSupplier, feedLauncher, modalDialogManager,
-                snackbarManager, incognitoReauthControllerOneshotSupplier,
+        super(
+                context,
+                activityTabProvider,
+                multiWindowModeStateDispatcher,
+                tabModelSelector,
+                toolbarManager,
+                decorView,
+                appMenuDelegate,
+                layoutStateProvider,
+                bookmarkModelSupplier,
+                feedLauncher,
+                modalDialogManager,
+                snackbarManager,
+                incognitoReauthControllerOneshotSupplier,
                 readAloudControllerSupplier);
 
         mAppMenuDelegate = appMenuDelegate;

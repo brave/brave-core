@@ -14,6 +14,7 @@
 #include "base/debug/stack_trace.h"
 #include "base/feature_list.h"
 #include "base/notreached.h"
+#include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
@@ -559,7 +560,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_COMMANDER:
 #if BUILDFLAG(ENABLE_COMMANDER)
-      brave::ToggleCommander(std::to_address(browser_));
+      brave::ToggleCommander(base::to_address(browser_));
 #endif
       break;
     case IDC_WINDOW_GROUP_UNGROUPED_TABS:

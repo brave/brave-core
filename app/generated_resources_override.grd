@@ -287,31 +287,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_IN_INCOGNITO" desc="Indicates a download was started in Private mode.">
         Downloaded in Private
       </message>
-      <if expr="is_macosx">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
-      <if expr="is_macosx">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
-      <if expr="is_macosx">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
-      <if expr="is_macosx">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
-
       <if expr="not is_android">
         <if expr="not use_titlecase">
           <if expr="is_macosx">
@@ -557,9 +532,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
-      <if expr="not is_android">
-        </if>
-
       <if expr="is_chromeos">
         <then>
           </then>
@@ -578,6 +550,8 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
        <if expr="is_android">
+        </if>
+      <if expr="is_android">
         </if>
       <if expr="use_titlecase">
         </if>
@@ -1028,6 +1002,9 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_android">
         </if>
+      <if expr="is_macosx">
+        </if>
+
 
       <if expr="is_macosx">
         </if> <if expr="is_macosx">

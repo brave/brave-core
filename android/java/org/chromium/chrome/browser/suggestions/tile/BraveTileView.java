@@ -13,7 +13,6 @@ import android.widget.TextView;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.widget.tile.TileView;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -30,7 +29,7 @@ public class BraveTileView extends TileView {
         super.setTitle(title, titleLines);
         if (ProfileManager.isInitialized()) {
             TextView mTitleView = findViewById(R.id.tile_view_title);
-            if (UserPrefs.get(Profile.getLastUsedRegularProfile())
+            if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
                 mTitleView.setTextColor(
                         getContext().getColor(R.color.brave_state_time_count_color));

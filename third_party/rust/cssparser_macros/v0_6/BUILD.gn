@@ -15,7 +15,10 @@ cargo_crate("lib") {
   crate_type = "proc-macro"
   crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/lib.rs"
   sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/lib.rs" ]
-  inputs = []
+  inputs = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/.cargo-checksum.json",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/.cargo_vcs_info.json",
+  ]
 
   build_native_rust_unit_tests = false
   edition = "2018"

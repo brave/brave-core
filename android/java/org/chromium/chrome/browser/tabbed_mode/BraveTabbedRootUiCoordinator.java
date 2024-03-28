@@ -109,7 +109,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull BackPressManager backPressManager,
             @Nullable Bundle savedInstanceState,
             @Nullable MultiInstanceManager multiInstanceManager,
-            @Nullable BooleanSupplier overviewIncognitoSupplier,
+            @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             @Nullable View baseChromeLayout) {
         super(
                 activity,
@@ -159,7 +159,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 backPressManager,
                 savedInstanceState,
                 multiInstanceManager,
-                overviewIncognitoSupplier,
+                overviewColorSupplier,
                 baseChromeLayout);
 
         mActivity = activity;

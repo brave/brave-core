@@ -23,7 +23,6 @@ import org.chromium.chrome.browser.omnibox.LocationBarMediator.SaveOfflineButton
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
-import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -87,7 +86,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @NonNull
                     OmniboxSuggestionsDropdownScrollListener
                             omniboxSuggestionsDropdownScrollListener,
-            @Nullable OpenHistoryClustersDelegate openHistoryClustersDelegate,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             boolean forcePhoneStyleOmnibox,
             @Nullable View baseChromeLayout) {
@@ -120,7 +118,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 reportExceptionCallback,
                 backPressManager,
                 omniboxSuggestionsDropdownScrollListener,
-                openHistoryClustersDelegate,
                 tabModelSelectorSupplier,
                 forcePhoneStyleOmnibox,
                 baseChromeLayout);

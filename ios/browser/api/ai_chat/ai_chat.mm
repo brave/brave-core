@@ -185,7 +185,7 @@
       isLiked, turnId,
       base::BindOnce(
           [](void (^completion)(NSString*),
-             const absl::optional<std::string>& identifier) {
+             const std::optional<std::string>& identifier) {
             if (completion) {
               completion(identifier ? base::SysUTF8ToNSString(*identifier)
                                     : nil);

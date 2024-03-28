@@ -69,8 +69,7 @@ class CookiesViewHandlerTest : public ChromeRenderViewHostTestHarness {
         mock_browsing_data_cookie_helper_,
         mock_browsing_data_local_storage_helper_,
         /*session_storage_helper=*/nullptr,
-        /*quota_helper=*/nullptr,
-        /*cache_storage_helper=*/nullptr);
+        /*quota_helper=*/nullptr);
     auto mock_cookies_tree_model = std::make_unique<CookiesTreeModel>(
         std::move(container), profile()->GetExtensionSpecialStoragePolicy());
 

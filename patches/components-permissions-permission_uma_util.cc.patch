@@ -1,11 +1,11 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index 8671406b669516792e7967de40f192a400d19413..fbc3ca98564e53038053f25be116d6b52fa73fa7 100644
+index c8187e61331fc6eef01a130f2d5c2b0e77b87852..f90140f32b74c10ccb91121a0553927af76763bb 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
 @@ -142,6 +142,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
-     case RequestType::kCapturedSurfaceControl:
-       return RequestTypeForUma::CAPTURED_SURFACE_CONTROL;
  #endif
+     case RequestType::kIdentityProvider:
+       return RequestTypeForUma::PERMISSION_IDENTITY_PROVIDER;
 +    BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
    }
  }

@@ -40,6 +40,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.ImageUtils;
@@ -464,9 +465,16 @@ public class NTPUtil {
     }
 
     public static boolean isReferralEnabled() {
-        Profile mProfile = Profile.getLastUsedRegularProfile();
-        NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
-        boolean isReferralEnabled = UserPrefs.get(Profile.getLastUsedRegularProfile()).getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
+        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
+        NTPBackgroundImagesBridge mNTPBackgroundImagesBridge =
+                NTPBackgroundImagesBridge.getInstance(mProfile);
+        boolean isReferralEnabled =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                                        .getInteger(
+                                                BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION)
+                                == 1
+                        ? true
+                        : false;
         return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
     }
 

@@ -9,7 +9,6 @@
 
 #include <vector>
 
-#include "base/containers/cxx20_erase.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_vpn/win/service_constants.h"

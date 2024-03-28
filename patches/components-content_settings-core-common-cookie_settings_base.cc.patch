@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index bae54a890e6bfdda88fe76b970f9f94d671a57c4..461a38212fc16471a60714e2e733834e153dfd86 100644
+index 57220aa3bd1f5d961ee3709f2efb611fbf1a6182..f4ce46012f23632594702ba1646fec05299dd038 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
-@@ -462,6 +462,7 @@ CookieSettingsBase::DecideAccess(const GURL& url,
+@@ -512,6 +512,7 @@ CookieSettingsBase::DecideAccess(const GURL& url,
    if (!IsAllowed(setting)) {
      return BlockAllCookies{};
    }
@@ -10,7 +10,7 @@ index bae54a890e6bfdda88fe76b970f9f94d671a57c4..461a38212fc16471a60714e2e733834e
    if (is_explicit_setting) {
      if (setting_source == SettingSource::SETTING_SOURCE_POLICY) {
        return AllowAllCookies{ThirdPartyCookieAllowMechanism::
-@@ -552,6 +553,7 @@ CookieSettingsBase::GetCookieSettingInternal(
+@@ -603,6 +604,7 @@ CookieSettingsBase::GetCookieSettingInternal(
    const ContentSetting cookie_setting = GetContentSetting(
        url, first_party_url, ContentSettingsType::COOKIES, &setting_info);
  

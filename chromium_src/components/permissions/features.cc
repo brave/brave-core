@@ -21,7 +21,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if !BUILDFLAG(IS_ANDROID)
     {kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
-    {kPermissionStorageAccessAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kShowRelatedWebsiteSetsPermissionGrants,
      base::FEATURE_DISABLED_BY_DEFAULT},
 }});

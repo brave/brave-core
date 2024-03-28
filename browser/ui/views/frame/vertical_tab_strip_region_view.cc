@@ -107,17 +107,6 @@ class ToggleButton : public ToolbarButton {
     return l10n_util::GetStringUTF16(IDS_VERTICAL_TABS_EXPAND);
   }
 
-#if DCHECK_IS_ON()
-  void OnBoundsChanged(const gfx::Rect& previous_bounds) override {
-    if (region_view_->is_animating()) {
-      return;
-    }
-
-    CHECK_EQ(width(), GetIconWidth());
-    CHECK_EQ(height(), GetIconWidth());
-  }
-#endif
-
   constexpr static int GetIconWidth() { return tabs::kVerticalTabHeight; }
 
  private:

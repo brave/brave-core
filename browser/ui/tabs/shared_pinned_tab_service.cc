@@ -235,7 +235,8 @@ void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
       // attach them to this |browser| so that they could be cleaned up.
       for (auto i = 0u; i < pinned_tab_data_.size(); i++) {
         if (!pinned_tab_data_.at(i).contents_owner_model) {
-          MoveSharedWebContentsToBrowser(browser, i);
+          MoveSharedWebContentsToBrowser(browser, i,
+                                         /* is_last_closing_browser */ true);
         }
       }
     }
@@ -665,8 +666,10 @@ void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(int index) {
   MoveSharedWebContentsToBrowser(last_active_browser_, index);
 }
 
-void SharedPinnedTabService::MoveSharedWebContentsToBrowser(Browser* browser,
-                                                            int index) {
+void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
+    Browser* browser,
+    int index,
+    bool is_last_closing_browser) {
   auto* tab_strip_model = browser->tab_strip_model();
   DCHECK_LT(index, tab_strip_model->count());
 
@@ -714,7 +717,8 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(Browser* browser,
     chrome::AddRestoredTabFromCache(
         std::move(unique_shared_contents), browser, index,
         /* group= */ {},
-        /* select */ true, /* pin= */ true, /* user_agent_override= */ {},
+        /* select */ !is_last_closing_browser, /* pin= */ true,
+        /* user_agent_override= */ {},
         /* extra_data= */ {});
 
     // In order to prevent browser from being closed, we should close the dummy

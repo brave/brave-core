@@ -22,7 +22,7 @@ constexpr int brave_value(int incr) {
 
 }  // namespace
 
-static_assert(static_cast<int>(ContentSettingsType::NUM_TYPES) <
+static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
                   kBraveValuesStart,
               "There must a gap between the histograms used by Chromium, and "
               "the ones used by Brave.");

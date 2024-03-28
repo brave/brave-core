@@ -15,15 +15,15 @@
   GetDeletionPreferenceFromDataType_ChromiumImpl
 #define GetDataTypeFromDeletionPreference \
   GetDataTypeFromDeletionPreference_ChromiumImpl
-#define NUM_TYPES \
-  NUM_TYPES:      \
+#define TABS \
+  TABS:      \
   case BrowsingDataType::BRAVE_AI_CHAT
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #include "src/components/browsing_data/core/browsing_data_utils.cc"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#undef NUM_TYPES
+#undef TABS
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #undef GetDataTypeFromDeletionPreference
 #undef GetDeletionPreferenceFromDataType

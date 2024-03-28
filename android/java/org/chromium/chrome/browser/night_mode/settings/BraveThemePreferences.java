@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.night_mode.WebContentsDarkModeController;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 public class BraveThemePreferences extends ThemeSettingsFragment {
@@ -35,13 +36,15 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_theme_preferences);
         getActivity().setTitle(getResources().getString(R.string.theme_settings));
 
-        Profile mProfile = Profile.getLastUsedRegularProfile();
-        NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
+        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
+        NTPBackgroundImagesBridge mNTPBackgroundImagesBridge =
+                NTPBackgroundImagesBridge.getInstance(mProfile);
         if (!NTPBackgroundImagesBridge.enableSponsoredImages()
                 || (mNTPBackgroundImagesBridge != null
-                    && !mNTPBackgroundImagesBridge.isSuperReferral())
+                        && !mNTPBackgroundImagesBridge.isSuperReferral())
                 || Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            Preference superReferralPreference = getPreferenceScreen().findPreference(SUPER_REFERRAL);
+            Preference superReferralPreference =
+                    getPreferenceScreen().findPreference(SUPER_REFERRAL);
             if (superReferralPreference != null) {
                 getPreferenceScreen().removePreference(superReferralPreference);
             }
@@ -58,26 +61,29 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
                                : ThemeType.LIGHT;
         }
 
-        mWebContentsDarkModeEnabled = WebContentsDarkModeController.isGlobalUserSettingsEnabled(
-                Profile.getLastUsedRegularProfile());
+        mWebContentsDarkModeEnabled =
+                WebContentsDarkModeController.isGlobalUserSettingsEnabled(
+                        ProfileManager.getLastUsedRegularProfile());
         radioButtonGroupThemePreference.initialize(
                 sharedPreferencesManager.readInt(UI_THEME_SETTING, defaultThemePref),
                 mWebContentsDarkModeEnabled);
 
-        radioButtonGroupThemePreference.setOnPreferenceChangeListener((preference, newValue) -> {
-            if (ChromeFeatureList.isEnabled(
-                        ChromeFeatureList.DARKEN_WEBSITES_CHECKBOX_IN_THEMES_SETTING)) {
-                if (radioButtonGroupThemePreference.isDarkenWebsitesEnabled()
-                        != mWebContentsDarkModeEnabled) {
-                    mWebContentsDarkModeEnabled =
-                            radioButtonGroupThemePreference.isDarkenWebsitesEnabled();
-                    WebContentsDarkModeController.setGlobalUserSettings(
-                            Profile.getLastUsedRegularProfile(), mWebContentsDarkModeEnabled);
-                }
-            }
-            int theme = (int) newValue;
-            sharedPreferencesManager.writeInt(UI_THEME_SETTING, theme);
-            return true;
-        });
+        radioButtonGroupThemePreference.setOnPreferenceChangeListener(
+                (preference, newValue) -> {
+                    if (ChromeFeatureList.isEnabled(
+                            ChromeFeatureList.DARKEN_WEBSITES_CHECKBOX_IN_THEMES_SETTING)) {
+                        if (radioButtonGroupThemePreference.isDarkenWebsitesEnabled()
+                                != mWebContentsDarkModeEnabled) {
+                            mWebContentsDarkModeEnabled =
+                                    radioButtonGroupThemePreference.isDarkenWebsitesEnabled();
+                            WebContentsDarkModeController.setGlobalUserSettings(
+                                    ProfileManager.getLastUsedRegularProfile(),
+                                    mWebContentsDarkModeEnabled);
+                        }
+                    }
+                    int theme = (int) newValue;
+                    sharedPreferencesManager.writeInt(UI_THEME_SETTING, theme);
+                    return true;
+                });
     }
 }

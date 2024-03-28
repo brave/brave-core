@@ -6,8 +6,8 @@
 // @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
 
 import 'chrome://resources/polymer/v3_0/iron-media-query/iron-media-query.js';
-import 'chrome://resources/brave/br_elements/br_shared_vars.css.js';
-import 'chrome://resources/brave/br_elements/br_shared_style.css.js';
+import '../br_shared_vars.css.js';
+import '../br_shared_style.css.js';
 import './br_toolbar_search_field.js';
 
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js';

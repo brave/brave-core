@@ -331,11 +331,11 @@ void NotificationAdPopup::CreatePopup(gfx::NativeWindow browser_native_window,
   notification_ad_view_ = container_view->AddChildView(
       NotificationAdViewFactory::Create(notification_ad_));
 
+  CreateWidgetView(browser_native_window, browser_native_view);
+
   const gfx::Point point(GetWidgetMargin().top(), GetWidgetMargin().left());
   container_view->SetPosition(point);
   container_view->SetSize(notification_ad_view_->size());
-
-  CreateWidgetView(browser_native_window, browser_native_view);
 }
 
 bool NotificationAdPopup::DidChangePopupPosition() const {

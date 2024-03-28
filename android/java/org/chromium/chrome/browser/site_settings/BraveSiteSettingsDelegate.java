@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 
 import org.chromium.base.Callback;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
 import org.chromium.url.GURL;
 
 public class BraveSiteSettingsDelegate extends ChromeSiteSettingsDelegate {
@@ -25,5 +26,15 @@ public class BraveSiteSettingsDelegate extends ChromeSiteSettingsDelegate {
         }
 
         super.getFaviconImageForURL(faviconUrl, callback);
+    }
+
+    @Override
+    public boolean isCategoryVisible(@SiteSettingsCategory.Type int type) {
+        switch (type) {
+            case SiteSettingsCategory.Type.STORAGE_ACCESS:
+                return false;
+            default:
+                return super.isCategoryVisible(type);
+        }
     }
 }

@@ -16,6 +16,9 @@ import {ContentSettingsTypes} from '../site_settings/constants.js'
 import {SettingsSiteSettingsPageElement} from '../site_settings_page/site_settings_page.js'
 
 const PERMISSIONS_BASIC_REMOVE_IDS = [
+  ContentSettingsTypes.STORAGE_ACCESS,
+]
+const PERMISSIONS_ADVANCED_REMOVE_IDS = [
   ContentSettingsTypes.BACKGROUND_SYNC,
 ]
 const CONTENT_ADVANCED_REMOVE_IDS = [
@@ -81,6 +84,7 @@ RegisterPolymerComponentReplacement(
         if (!lists_.permissionsAdvanced) {
           console.error('[Brave Settings Overrides] did not get lists_.permissionsAdvanced data')
         } else {
+          lists_.permissionsAdvanced = lists_.permissionsAdvanced.filter(item => !PERMISSIONS_ADVANCED_REMOVE_IDS.includes(item.id))
           if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
             let indexForIdleDetection = lists_.permissionsAdvanced.findIndex(item => item.id === ContentSettingsTypes.IDLE_DETECTION)
             if (indexForIdleDetection === -1) {

@@ -335,10 +335,11 @@ int BraveCompoundTabContainer::GetUnpinnedContainerIdealLeadingX() const {
   return 0;
 }
 
-BrowserRootView::DropIndex BraveCompoundTabContainer::GetDropIndex(
-    const ui::DropTargetEvent& event) {
+std::optional<BrowserRootView::DropIndex>
+BraveCompoundTabContainer::GetDropIndex(const ui::DropTargetEvent& event,
+                                        bool allow_replacement) {
   if (!ShouldShowVerticalTabs()) {
-    return CompoundTabContainer::GetDropIndex(event);
+    return CompoundTabContainer::GetDropIndex(event, allow_replacement);
   }
 
   TabContainer* sub_drop_target = GetTabContainerAt(event.location());
@@ -356,14 +357,16 @@ BrowserRootView::DropIndex BraveCompoundTabContainer::GetDropIndex(
   if (sub_drop_target == std::to_address(pinned_tab_container_)) {
     // Pinned tab container shares an index and coordinate space, so no
     // adjustments needed.
-    return sub_drop_target->GetDropIndex(adjusted_event);
+    return sub_drop_target->GetDropIndex(adjusted_event, allow_replacement);
   } else {
     // For the unpinned container, we need to transform the output to the
     // correct index space.
-    const BrowserRootView::DropIndex sub_target_index =
-        sub_drop_target->GetDropIndex(adjusted_event);
-    return {sub_target_index.value + NumPinnedTabs(),
-            sub_target_index.drop_before, sub_target_index.drop_in_group};
+    auto sub_target_index =
+        sub_drop_target->GetDropIndex(adjusted_event, allow_replacement);
+    return BrowserRootView::DropIndex{
+        .index = sub_target_index->index + NumPinnedTabs(),
+        .relative_to_index = sub_target_index->relative_to_index,
+        .group_inclusion = sub_target_index->group_inclusion};
   }
 }
 

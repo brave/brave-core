@@ -235,7 +235,7 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
     base::Time expiration =
         base::ValueToTime(settings_dict->Find(kExpirationPath))
             .value_or(base::Time());
-    SessionModel session_model =
+    content_settings::mojom::SessionModel session_model =
         GetSessionModelFromDictionary(*settings_dict, kSessionModelPath);
 
     const base::Value::Dict* resource_dict =
@@ -288,7 +288,7 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
     const std::string& patterns_string,
     const base::Time& expiration,
     const base::Time& last_modified,
-    SessionModel session_model,
+    content_settings::mojom::SessionModel session_model,
     int setting) {
   // Non-supported preference paths should have been filtered out already.
   CHECK(prefs_->HasPrefPath(preference_path))
@@ -663,7 +663,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     // PS: kGoogleLoginControlType preference might not be registered for tests.
     RuleMetaData metadata;
     metadata.SetExpirationAndLifetime(base::Time(), base::TimeDelta());
-    metadata.set_session_model(content_settings::SessionModel::Durable);
+    metadata.set_session_model(content_settings::mojom::SessionModel::DURABLE);
     const auto google_auth_rule = std::make_unique<Rule>(
         google_sign_in_permission::GetGoogleAuthPattern(),
         ContentSettingsPattern::Wildcard(),
@@ -773,7 +773,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     if (ValueToContentSetting(shield_rule->value) == CONTENT_SETTING_BLOCK) {
       RuleMetaData metadata;
       metadata.SetExpirationAndLifetime(base::Time(), base::TimeDelta());
-      metadata.set_session_model(content_settings::SessionModel::Durable);
+      metadata.set_session_model(
+          content_settings::mojom::SessionModel::DURABLE);
 
       rules.emplace_back(std::make_unique<Rule>(
           ContentSettingsPattern::Wildcard(), shield_rule->primary_pattern,
