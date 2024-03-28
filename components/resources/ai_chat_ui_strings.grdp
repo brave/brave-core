@@ -79,7 +79,7 @@
     Manage subscription
   </message>
   <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings">
-    Settings
+    Advanced Settings
   </message>
   <message name="IDS_CHAT_UI_MENU_TITLE_MODELS" desc="Menu section title for language models">
     Language models

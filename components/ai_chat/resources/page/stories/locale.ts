@@ -25,7 +25,7 @@ provideStrings({
   modelFreemiumLabelPremium: 'Unlimited',
   'modelCategory-chat': 'Chat',
   menuNewChat: 'New chat',
-  menuSettings: 'Settings',
+  menuSettings: 'Advanced Settings',
   menuTitleModels: 'Available language models',
   suggestionsTitle: 'Suggested follow-ups',
   suggestQuestionsTitle: 'Suggest questions…',
@@ -90,4 +90,5 @@ provideStrings({
   summarizeLabel: 'Summarize',
   changeLengthLabel: 'Change length',
   shortenLabel: 'Shorten',
+  menuManageSubscription: 'Manage subscription'
 })

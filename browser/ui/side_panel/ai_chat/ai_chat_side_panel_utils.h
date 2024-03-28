@@ -15,6 +15,7 @@ namespace ai_chat {
 // Move this function to browser_finder.
 // https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/side_panel/companion/companion_side_panel_controller_utils.h;l=19;drc=e87fd2634a1140a87d59c7aa72668d16e4c102c2
 Browser* GetBrowserForWebContents(content::WebContents* web_contents);
+void ClosePanel(content::WebContents* web_contents);
 
 }  // namespace ai_chat
 
