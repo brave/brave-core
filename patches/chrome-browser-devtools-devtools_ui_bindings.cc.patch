@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/devtools/devtools_ui_bindings.cc b/chrome/browser/devtools/devtools_ui_bindings.cc
+index e42fa03dc0a29491ff652ec0cb68e14bbc0661a3..73090371d6e7a7f2b03c569ddc5ed62ec4446882 100644
+--- a/chrome/browser/devtools/devtools_ui_bindings.cc
++++ b/chrome/browser/devtools/devtools_ui_bindings.cc
+@@ -1761,6 +1761,7 @@ void DevToolsUIBindings::AddDevToolsExtensionsToClient() {
+                    base::Value(std::move(forbidden_origins)));
+   CallClientMethod("DevToolsAPI", "addExtensions",
+                    base::Value(std::move(results)));
++  BRAVE_DEV_TOOLS_UI_BINDINGS_ADD_DEV_TOOLS_EXTENSIONS_TO_CLIENT
+ }
+ 
+ void DevToolsUIBindings::RegisterExtensionsAPI(const std::string& origin,

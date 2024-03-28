@@ -1,0 +1,13 @@
+diff --git a/front_end/models/extensions/ExtensionServer.ts b/front_end/models/extensions/ExtensionServer.ts
+index 89925c919d28f25fe35a9c66f1e4b486be48d6cf..6e02337e082ce605ceca8267343793747e277480 100644
+--- a/front_end/models/extensions/ExtensionServer.ts
++++ b/front_end/models/extensions/ExtensionServer.ts
+@@ -1331,6 +1331,8 @@ export class ExtensionServer extends Common.ObjectWrapper.ObjectWrapper<EventTyp
+     if (kAllowedOrigins.includes(parsedURL.origin)) {
+       return true;
+     }
++    // @ts-ignore
++    if (window.DevToolsAPI && window.DevToolsAPI.getEnabledOnChromeUrls && window.DevToolsAPI.getEnabledOnChromeUrls() && parsedURL.protocol === 'chrome:') { return true; }
+     if (parsedURL.protocol === 'chrome:' || parsedURL.protocol === 'devtools:' ||
+         parsedURL.protocol === 'chrome-untrusted:' || parsedURL.protocol === 'chrome-error:' ||
+         parsedURL.protocol === 'chrome-search:') {
