@@ -15,9 +15,5 @@ BASE_FEATURE(kBraveBackgroundVideoPlayback,
              "BraveBackgroundVideoPlayback",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveZeroDayFlagAndroid,
-             "BraveZeroDayFlagAndroid",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 }  // namespace features
 }  // namespace preferences

@@ -12,7 +12,6 @@ namespace preferences {
 namespace features {
 
 BASE_DECLARE_FEATURE(kBraveBackgroundVideoPlayback);
-BASE_DECLARE_FEATURE(kBraveZeroDayFlagAndroid);
 
 }  // namespace features
 }  // namespace preferences

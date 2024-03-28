@@ -59,6 +59,9 @@ inline constexpr char kMiscMetricsNewTabLocationBarEntriesStorage[] =
     "brave.misc_metrics.new_tab_location_bar_entries_storage";
 inline constexpr char kMiscMetricsTotalLocationBarEntriesStorage[] =
     "brave.misc_metrics.total_location_bar_entries_storage";
+
+inline constexpr char kMiscMetricsDayZeroAtInstall[] =
+    "brave.misc_metrics.day_zero_at_install";
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_
