@@ -1,6 +1,7 @@
 pub mod cache;
 pub mod errors;
 pub mod http;
+pub mod log;
 pub mod models;
 pub mod sdk;
 mod storage;
