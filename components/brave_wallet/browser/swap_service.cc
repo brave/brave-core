@@ -372,9 +372,11 @@ GURL SwapService::GetLiFiTransactionURL() {
 
 void SwapService::IsSwapSupported(const std::string& chain_id,
                                   IsSwapSupportedCallback callback) {
-  // TODO(onyb): Enable LiFi support when it's ready.
   std::move(callback).Run(IsNetworkSupportedByZeroEx(chain_id) ||
-                          IsNetworkSupportedByJupiter(chain_id));
+                          IsNetworkSupportedByJupiter(chain_id)
+                          // TODO(onyb): Enable LiFi support when it's ready.
+                          // || IsNetworkSupportedByLiFi(chain_id)
+  );
 }
 
 void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,

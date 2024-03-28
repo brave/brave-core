@@ -20,7 +20,8 @@ import { ListItemWrapper } from './virtualized_tokens_list.style'
 
 interface VirtualizedTokensListProps {
   tokenList: BraveWallet.BlockchainToken[]
-  selectedToken?: BraveWallet.BlockchainToken
+  selectedFromToken?: BraveWallet.BlockchainToken
+  selectedToToken?: BraveWallet.BlockchainToken
   onSelectToken: (token: BraveWallet.BlockchainToken) => void
 }
 
@@ -41,13 +42,25 @@ const getListItemKey = (
 }
 
 const ListItem = (props: ListItemProps) => {
-  const { index, data, onSelectToken, style, selectedToken } = props
+  const {
+    index,
+    data,
+    onSelectToken,
+    style,
+    selectedFromToken,
+    selectedToToken
+  } = props
   const token = data[index]
 
   const disabledText =
-    selectedToken?.contractAddress === token.contractAddress &&
-    selectedToken?.coin === token.coin
+    selectedFromToken?.contractAddress === token.contractAddress &&
+    selectedFromToken?.coin === token.coin &&
+    selectedFromToken?.chainId === token.chainId
       ? 'braveWalletFromToken'
+      : selectedToToken?.contractAddress === token.contractAddress &&
+        selectedToToken?.coin === token.coin &&
+        selectedToToken?.chainId === token.chainId
+      ? 'braveWalletToToken'
       : undefined
 
   return (
@@ -62,7 +75,7 @@ const ListItem = (props: ListItemProps) => {
 }
 
 export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
-  const { tokenList, onSelectToken, selectedToken } = props
+  const { tokenList, onSelectToken, selectedFromToken, selectedToToken } = props
 
   return (
     <AutoSizer
@@ -85,7 +98,8 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
             children={(itemProps) => (
               <ListItem
                 {...itemProps}
-                selectedToken={selectedToken}
+                selectedFromToken={selectedFromToken}
+                selectedToToken={selectedToToken}
                 onSelectToken={onSelectToken}
               />
             )}

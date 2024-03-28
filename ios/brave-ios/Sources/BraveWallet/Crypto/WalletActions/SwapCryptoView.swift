@@ -241,8 +241,8 @@ struct SwapCryptoView: View {
 
   /// The DEX Aggregator for the current network.
   var dexAggregator: DEXAggregator {
-    // TODO(stephenheaps): Once LiFiQuote is supported, we need to
-    // update this disclaimer to include LiFi description & privacy
+    // TODO(stephenheaps): We may need to remove and/or update
+    // this disclaimer to include LiFi description & privacy
     // policy https://github.com/brave/brave-browser/issues/36436
     networkStore.defaultSelectedChain.coin == .sol ? .jupiter : .zeroX
   }
