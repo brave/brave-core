@@ -16,16 +16,13 @@ import frecencySelectedDark from './assets/frecency-selected-dark.png'
 import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
 
 import CheckedCircle from './assets/checked-circle.svg'
-import { color, effect, gradient } from '@brave/leo/tokens/css'
+import { color, effect, font, gradient, spacing } from '@brave/leo/tokens/css'
 
 // Reverse decisions to have the controls define their margin. This helps
 // fill the gap before we remove all margins from these types of controls.
 // Usually containers will want to define spacing based on specific UI needs.
 interface ControllableLayoutProps {
   isLayoutControlled?: boolean
-}
-interface Props {
-  textDirection: string
 }
 
 const isDarkTheme = (p: any) => {
@@ -48,19 +45,6 @@ const getTopSiteCustomizationImage = (dark: boolean, selected: boolean, favorite
   }
 }
 
-export const SettingsMenu = styled('div') <Props>`
-  width: 720px;
-  min-width: 720px;
-  ${p => p.textDirection && (p.textDirection === 'rtl') ? 'left: 12px' : 'right: 12px'};
-  background-color: ${p => p.theme.color.contextMenuBackground};
-  color:  ${p => p.theme.color.contextMenuForeground};
-  border-radius: 8px;
-  padding: 24px;
-  padding-bottom: 0px;
-  box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.24);
-  font-family: ${p => p.theme.fontFamily.body};
-`
-
 export const SettingsContent = styled('div') <{}>`
   display: grid;
   grid-template-columns: auto 1fr;
@@ -74,8 +58,8 @@ export const SettingsContent = styled('div') <{}>`
 export const SettingsSidebar = styled('aside') <{}>`
   position: relative;
   /* normalize against SettingsMenu default padding */
-  margin-left: -24px;
-  padding-left: 24px;
+  margin-inline-start: -24px;
+  padding-inline-start: 24px;
 `
 
 interface SettingsSidebarActiveButtonSliderProps {
@@ -86,7 +70,7 @@ export const SettingsSidebarActiveButtonSlider =
   styled('div') <SettingsSidebarActiveButtonSliderProps>`
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   height: 48px;
   width: 4px;
   background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
@@ -190,20 +174,11 @@ export const SettingsFeatureBody = styled('section') <{}>`
   overscroll-behavior: contain;
 `
 
-export const SettingsTitle = styled('div') <{}>`
-  margin-bottom: 17px;
-  grid-template-columns: 1fr 20px;
-  display: grid;
-  align-items: center;
-
-  h1 {
-    font-family: ${p => p.theme.fontFamily.heading};
+export const SettingsTitle = styled('h1') <{}>`
     margin: 0;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 30px;
-    letter-spacing: 0.02em;
-  }
+    margin-bottom: ${spacing.xl};
+    font: ${font.heading.h3};
+    color: ${color.text.secondary};
 `
 
 interface SettingsRowProps extends ControllableLayoutProps {
@@ -258,35 +233,6 @@ export const SettingsSectionTitle = styled('h3') <ControllableLayoutProps>`
   font-weight: 800;
   font-size: 13px;
   line-height: 24px;
-`
-
-interface SettingsWrapperProps {
-  textDirection: string
-}
-
-export const SettingsWrapper = styled('div') <SettingsWrapperProps>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 7;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: ${p => p.theme.fontFamily.heading};
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.8);
-  margin-right: ${p => p.textDirection === 'ltr' && '8px'};
-  margin-left: ${p => p.textDirection === 'rtl' && '8px'};
-  border-right: ${p => p.textDirection === 'ltr' && '1px solid rgba(255, 255, 255, 0.6)'};
-  border-left: ${p => p.textDirection === 'rtl' && '1px solid rgba(255, 255, 255, 0.6)'};
-  background: rgba(33, 37, 41, 0.32);
-
-  &:hover {
-    color: #ffffff;
-  }
 `
 
 export const SettingsWidget = styled('div') <{}>`
