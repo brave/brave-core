@@ -1,0 +1,28 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+assert(is_linux || is_chromeos || is_win || is_mac || is_fuchsia)
+
+mojom("mojom") {
+  sources = [ "brave_tab_search.mojom" ]
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+  webui_module_path = "/"
+}
+
+copy("mojom_copy") {
+  sources = [ "$root_gen_dir/brave/browser/ui/webui/tab_search/brave_tab_search.mojom-webui.ts" ]
+  outputs = [
+    "$root_gen_dir/chrome/browser/ui/webui/tab_search/{{source_file_part}}",
+  ]
+  public_deps = [
+    ":mojom",
+    ":mojom_ts__generator",
+  ]
+}

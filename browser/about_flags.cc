@@ -472,6 +472,12 @@
           FEATURE_VALUE_TYPE(history::kHistoryMoreSearchResults),             \
       })
 
+#define BRAVE_TAB_SEARCH_FEATURES                                           \
+  EXPAND_FEATURE_ENTRIES({"brave-tab-search-history", "Tab Search History", \
+                          "Search history in the tab search popup",         \
+                          kOsWin | kOsMac | kOsLinux,                       \
+                          FEATURE_VALUE_TYPE(features::kTabSearchHistory)})
+
 #define BRAVE_PLAYER_FEATURE_ENTRIES                                         \
   IF_BUILDFLAG(ENABLE_BRAVE_PLAYER,                                          \
                EXPAND_FEATURE_ENTRIES({                                      \
@@ -1001,6 +1007,7 @@
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
+  BRAVE_TAB_SEARCH_FEATURES                                                    \
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.

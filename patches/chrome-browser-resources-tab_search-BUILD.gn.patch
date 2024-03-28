@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/tab_search/BUILD.gn b/chrome/browser/resources/tab_search/BUILD.gn
+index b3e25429f4fe8..7f4758ba67c40 100644
+--- a/chrome/browser/resources/tab_search/BUILD.gn
++++ b/chrome/browser/resources/tab_search/BUILD.gn
+@@ -95,6 +95,7 @@ build_webui("build") {
+       "fuse.js",
+     ]
+   }
++  import("//brave/browser/resources/tab_search/sources.gni") mojo_files += brave_tab_search_mojo_files mojo_files_deps += brave_tab_search_mojo_files_deps web_component_files += brave_tab_search_web_component_files non_web_component_files += brave_tab_search_non_web_component_files exclude_html_css_preprocess_files = brave_tab_search_local_html_files exclude_ts_preprocess_files = brave_tab_search_local_ts_files preprocess_deps = brave_tab_search_preprocess_deps ts_extra_deps += brave_tab_search_ts_extra_deps
+ }
+ 
+ generate_grd("build_fuse_grdp") {

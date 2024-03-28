@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/tab_search/app.ts b/chrome/browser/resources/tab_search/app.ts
+index dbf5c65588078..409398e79e4d0 100644
+--- a/chrome/browser/resources/tab_search/app.ts
++++ b/chrome/browser/resources/tab_search/app.ts
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++import './brave_overrides/index.js'
+ import './tab_organization_page.js';
+ import './tab_search_page.js';
+ import 'chrome://resources/cr_elements/cr_tabs/cr_tabs.js';
