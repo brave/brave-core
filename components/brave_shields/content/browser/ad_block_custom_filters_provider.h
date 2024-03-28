@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_CUSTOM_FILTERS_PROVIDER_H_
 
 #include <string>
+#include <utility>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
@@ -37,8 +38,7 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
 
   // AdBlockFiltersProvider
   void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+      base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)>) override;
 
   std::string GetNameForDebugging() override;
 

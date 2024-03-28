@@ -71,29 +71,54 @@ void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
     // Skip updates of another engine.
     return;
   }
-  auto on_loaded_cb = base::BindOnce(
-      &AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded,
-      weak_factory_.GetWeakPtr());
   if (is_filter_provider_manager_) {
+    auto on_loaded_cb = base::BindOnce(
+        &AdBlockService::SourceProviderObserver::OnNewFiltersLoaded,
+        weak_factory_.GetWeakPtr());
     static_cast<AdBlockFiltersProviderManager*>(filters_provider_.get())
-        ->LoadFilterSetForEngine(is_default_engine, std::move(on_loaded_cb));
+        ->GetFiltersForEngine(is_default_engine, std::move(on_loaded_cb));
   } else {
+    auto on_loaded_cb = base::BindOnce(
+        &AdBlockService::SourceProviderObserver::OnNewFilterListLoaded,
+        weak_factory_.GetWeakPtr());
     filters_provider_->LoadFilterSet(std::move(on_loaded_cb));
   }
 }
 
-void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
-    base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
+void AdBlockService::SourceProviderObserver::OnNewFilterListLoaded(
+    std::pair<uint8_t, DATFileDataBuffer> new_filter_list) {
   task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(
-          [](base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
+          [](std::pair<uint8_t, DATFileDataBuffer> new_list) {
             auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
                 adblock::new_filter_set());
-            std::move(cb).Run(filter_set.get());
+            (*filter_set)
+                ->add_filter_list_with_permissions(new_list.second,
+                                                   new_list.first);
             return filter_set;
           },
-          std::move(cb)),
+          new_filter_list),
+      base::BindOnce(
+          &AdBlockService::SourceProviderObserver::OnFilterSetCreated,
+          weak_factory_.GetWeakPtr()));
+}
+
+void AdBlockService::SourceProviderObserver::OnNewFiltersLoaded(
+    std::vector<std::pair<uint8_t, DATFileDataBuffer>> new_filters) {
+  task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(
+          [](std::vector<std::pair<uint8_t, DATFileDataBuffer>> new_filters) {
+            auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
+                adblock::new_filter_set());
+            for (auto& pair : new_filters) {
+              (*filter_set)
+                  ->add_filter_list_with_permissions(pair.second, pair.first);
+            }
+            return filter_set;
+          },
+          new_filters),
       base::BindOnce(
           &AdBlockService::SourceProviderObserver::OnFilterSetCreated,
           weak_factory_.GetWeakPtr()));

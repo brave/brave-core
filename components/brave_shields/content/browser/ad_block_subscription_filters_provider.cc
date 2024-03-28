@@ -18,24 +18,6 @@
 
 namespace brave_shields {
 
-namespace {
-
-// static
-void AddDATBufferToFilterSet(
-    base::OnceCallback<void(const adblock::FilterListMetadata&)> on_metadata,
-    DATFileDataBuffer buffer,
-    rust::Box<adblock::FilterSet>* filter_set) {
-  auto result = (*filter_set)->add_filter_list(buffer);
-  if (result.result_kind == adblock::ResultKind::Success) {
-    std::move(on_metadata).Run(result.value);
-  } else {
-    VLOG(0) << "Subscription list parsing failed: "
-            << result.error_message.c_str();
-  }
-}
-
-}  // namespace
-
 AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
     PrefService* local_state,
     base::FilePath list_file,
@@ -49,8 +31,7 @@ AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
     default;
 
 void AdBlockSubscriptionFiltersProvider::LoadFilterSet(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+    base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)> cb) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_),
@@ -63,22 +44,12 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
 }
 
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+    base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)> cb,
     const DATFileDataBuffer& dat_buf) {
-  std::move(cb).Run(base::BindOnce(
-      &AddDATBufferToFilterSet,
-      base::BindOnce(
-          [](scoped_refptr<base::SequencedTaskRunner> task_runner,
-             base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
-                 on_metadata,
-             const adblock::FilterListMetadata& metadata) {
-            task_runner->PostTask(FROM_HERE,
-                                  base::BindOnce(on_metadata, metadata));
-          },
-          base::SingleThreadTaskRunner::GetCurrentDefault(),
-          on_metadata_retrieved_),
-      dat_buf));
+  const auto metadata = adblock::read_list_metadata(dat_buf);
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(on_metadata_retrieved_, metadata));
+  std::move(cb).Run({0, dat_buf});
 }
 
 void AdBlockSubscriptionFiltersProvider::OnListAvailable() {
