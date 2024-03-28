@@ -184,6 +184,9 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
+  // Reset the current error state and returns the
+  // most recent message from the conversation to the caller.
+  ClearErrorAndGetFailedMessage() => (ConversationTurn turn);
   GetCanShowPremiumPrompt() => (bool can_show);
   DismissPremiumPrompt();
 

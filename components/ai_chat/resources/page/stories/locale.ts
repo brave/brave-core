@@ -90,4 +90,5 @@ provideStrings({
   summarizeLabel: 'Summarize',
   changeLengthLabel: 'Change length',
   shortenLabel: 'Shorten',
+  maybeLaterLabel: 'Maybe later',
 })

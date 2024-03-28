@@ -12,7 +12,6 @@ import DataContext from '../../state/context'
 import PremiumSuggestion from '../premium_suggestion'
 import styles from './alerts.module.scss'
 
-
 function ErrorRateLimit() {
   const context = React.useContext(DataContext)
 
@@ -38,13 +37,18 @@ function ErrorRateLimit() {
       )
     }
 
+    const handleMaybeLater = () => {
+      getPageHandlerInstance().pageHandler.clearErrorAndGetFailedMessage()
+        .then((res) => { context.setInputText(res.turn.text) })
+    }
+
     return (
       <PremiumSuggestion
         title={getLocale('rateLimitReachedTitle')}
         description={getLocale('rateLimitReachedDesc')}
         secondaryActionButton={
-          <Button kind='plain-faint' onClick={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}>
-            {getLocale('retryButtonLabel')}
+          <Button kind='plain-faint' onClick={handleMaybeLater}>
+            {getLocale('maybeLaterLabel')}
           </Button>
         }
       />
