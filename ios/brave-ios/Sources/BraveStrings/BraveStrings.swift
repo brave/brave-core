@@ -3608,13 +3608,6 @@ extension Strings {
       value: "Copy app size info to clipboard.",
       comment: "Copy app info to clipboard action sheet action."
     )
-  public static let viewAllVersionInfo = NSLocalizedString(
-    "viewAllVersionInfo",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "View all version info.",
-    comment: "View all version info action sheet action."
-  )
   public static let blockThirdPartyCookies = NSLocalizedString(
     "Block3rdPartyCookies",
     tableName: "BraveShared",

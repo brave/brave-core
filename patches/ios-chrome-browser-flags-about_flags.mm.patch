@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
+index 6c79c4eda98b1d0e7dd43c4cf2301ae0ccffc21e..9e6d81aa1765779b5b51f5e49a0b17440790e153 100644
+--- a/ios/chrome/browser/flags/about_flags.mm
++++ b/ios/chrome/browser/flags/about_flags.mm
+@@ -778,6 +778,7 @@ const FeatureEntry::FeatureVariation kIOSDockingPromoVariations[] = {
+ //
+ // When adding a new choice, add it to the end of the list.
+ const flags_ui::FeatureEntry kFeatureEntries[] = {
++    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
+     {"in-product-help-demo-mode-choice",
+      flag_descriptions::kInProductHelpDemoModeName,
+      flag_descriptions::kInProductHelpDemoModeDescription, flags_ui::kOsIos,
