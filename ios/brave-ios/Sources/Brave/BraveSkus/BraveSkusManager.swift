@@ -48,7 +48,7 @@ public class BraveSkusManager {
   @MainActor
   func refreshOrder(for orderId: String, domain: String) async -> Any? {
     Logger.module.debug("[SkusManager] - RefreshOrder")
-    let order = await sku.refreshOrder(domain: domain, orderId: orderId)
+    let order = await sku.refreshOrder(domain, orderId: orderId)
     guard !order.isEmpty,
       let data = order.data(using: .utf8),
       let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
@@ -63,7 +63,7 @@ public class BraveSkusManager {
   @MainActor
   func fetchOrderCredentials(for orderId: String, domain: String) async -> String {
     Logger.module.debug("[SkusManager] - FetchOrderCredentials")
-    return await sku.fetchOrderCredentials(domain: domain, orderId: orderId)
+    return await sku.fetchOrderCredentials(domain, orderId: orderId)
   }
 
   @MainActor
@@ -71,7 +71,7 @@ public class BraveSkusManager {
     Logger.module.debug("[SkusManager] - PrepareCredentialsPresentation")
 
     let credentialType = CredentialType.from(domain: domain)
-    let credential = await sku.prepareCredentialsPresentation(domain: domain, path: path)
+    let credential = await sku.prepareCredentialsPresentation(domain, path: path)
     if !credential.isEmpty {
       switch credentialType {
       case .vpn:
@@ -98,7 +98,7 @@ public class BraveSkusManager {
 
   @MainActor
   func credentialSummary(for domain: String) async -> Any? {
-    let summary = await sku.credentialSummary(domain: domain)
+    let summary = await sku.credentialSummary(domain)
     guard !summary.isEmpty,
       let data = summary.data(using: .utf8),
       let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)

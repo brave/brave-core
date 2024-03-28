@@ -216,8 +216,8 @@ public class BraveSkusSDK {
     Logger.module.info("[BraveSkusSDK] - Fetched Receipt")
 
     Logger.module.info("[BraveSkusSDK] - Creating Order From Receipt")
-    let orderId = await skusService.createOrderFromReceipt(
-      domain: product.group.skusDomain,
+    let orderId = await skusService.createOrder(
+      fromReceipt: product.group.skusDomain,
       receipt: receipt
     )
 
@@ -243,7 +243,7 @@ public class BraveSkusSDK {
 
     let receipt = try BraveSkusSDK.receipt(for: product)
     return await skusService.submitReceipt(
-      domain: product.group.skusDomain,
+      product.group.skusDomain,
       orderId: orderId,
       receipt: receipt
     )
@@ -280,7 +280,7 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
-    return try await decode(skusService.refreshOrder(domain: group.skusDomain, orderId: orderId))
+    return try await decode(skusService.refreshOrder(group.skusDomain, orderId: orderId))
   }
 
   /// Retrieves the Customer's Credentials Summary
@@ -307,7 +307,7 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
-    return try await decode(skusService.credentialSummary(domain: group.skusDomain))
+    return try await decode(skusService.credentialSummary(group.skusDomain))
   }
 
   /// Retrieves the Customer's Credentials for a specified Order
@@ -321,7 +321,7 @@ public class BraveSkusSDK {
     }
 
     Logger.module.info("[BraveSkusSDK] - Fetching Order Credentials")
-    let result = await skusService.fetchOrderCredentials(domain: group.skusDomain, orderId: orderId)
+    let result = await skusService.fetchOrderCredentials(group.skusDomain, orderId: orderId)
     if !result.isEmpty {
       Logger.module.error(
         "[BraveSkusSDK] - Failed to Fetch Credentials: \(result, privacy: .public)"
@@ -344,7 +344,7 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
-    return await skusService.prepareCredentialsPresentation(domain: group.skusDomain, path: path)
+    return await skusService.prepareCredentialsPresentation(group.skusDomain, path: path)
   }
 
   @MainActor
