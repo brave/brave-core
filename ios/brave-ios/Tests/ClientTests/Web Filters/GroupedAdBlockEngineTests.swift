@@ -57,7 +57,7 @@ final class GroupedAdBlockEngineTests: XCTestCase {
     )
   }
 
-  func testEngineMemoryManagment() throws {
+  @MainActor func testEngineMemoryManagment() throws {
     AdblockEngine.setDomainResolver()
     var engine: AdblockEngine? = AdblockEngine()
     weak var weakEngine: AdblockEngine? = engine
@@ -116,14 +116,10 @@ final class GroupedAdBlockEngineTests: XCTestCase {
         do {
           let engine = try GroupedAdBlockEngine.compile(group: group, type: .standard)
           try await engine.useResources(from: resourcesInfo)
-          let url = URL(string: "https://stackoverflow.com")!
-
-          let domain = await MainActor.run {
-            return Domain.getOrCreate(forUrl: url, persistent: false)
-          }
+          let frameURL = URL(string: "https://stackoverflow.com")!
 
           let sameDomainTypes = try await engine.makeEngineScriptTypes(
-            frameURL: url, isMainFrame: true, domain: domain, isDeAmpEnabled: false, index: 0
+            frameURL: frameURL, isMainFrame: true, isDeAmpEnabled: false, index: 0
           )
 
           // We should have no scripts injected
@@ -132,7 +128,7 @@ final class GroupedAdBlockEngineTests: XCTestCase {
           if await engine.group.infos.contains(textFilterListInfo) {
             // This engine file contains some scriplet rules so we can test this part is working
             let crossDomainTypes = try await engine.makeEngineScriptTypes(
-              frameURL: URL(string: "https://reddit.com")!, isMainFrame: true, domain: domain,
+              frameURL: URL(string: "https://reddit.com")!, isMainFrame: true,
               isDeAmpEnabled: false,
               index: 0
             )

@@ -154,7 +154,6 @@ public actor GroupedAdBlockEngine {
   func makeEngineScriptTypes(
     frameURL: URL,
     isMainFrame: Bool,
-    domain: Domain,
     isDeAmpEnabled: Bool,
     index: Int
   ) throws -> Set<UserScriptType> {

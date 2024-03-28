@@ -64,7 +64,9 @@ struct FilterListsView: View {
       )
     }
     .onDisappear {
-      AdBlockGroupsManager.shared.compileEnginesIfNeeded()
+      Task {
+        await AdBlockGroupsManager.shared.compileEnginesIfNeeded()
+      }
     }
   }
 

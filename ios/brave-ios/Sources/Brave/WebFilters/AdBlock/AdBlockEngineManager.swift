@@ -72,7 +72,7 @@ import os
   }
 
   /// All the infos that are compilable based on the enabled sources and available infos
-  private func compilableFiles(
+  func compilableFiles(
     for enabledSources: [GroupedAdBlockEngine.Source]
   ) -> [FileInfo] {
     return enabledSources.compactMap { source in
@@ -135,6 +135,12 @@ import os
     }
   }
 
+  // Delete the cache. Mostly used for testing
+  func deleteCachedEngine() throws {
+    guard let cacheFolderURL = createdCacheFolderURL else { return }
+    try FileManager.default.removeItem(at: cacheFolderURL)
+  }
+
   /// This will compile available data, but will wait a little bit in case something new gets downloaded.
   /// Especially needed during launch when we have a bunch of downloads coming at the same time.
   func compileDelayedIfNeeded(
@@ -164,16 +170,14 @@ import os
     for enabledSources: [GroupedAdBlockEngine.Source],
     resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
     priority: TaskPriority
-  ) {
+  ) async {
     delayTask?.cancel()
 
-    Task {
-      await self.compileAvailableIfNeeded(
-        for: enabledSources,
-        resourcesInfo: resourcesInfo,
-        priority: priority
-      )
-    }
+    await self.compileAvailableIfNeeded(
+      for: enabledSources,
+      resourcesInfo: resourcesInfo,
+      priority: priority
+    )
   }
 
   /// Add or update `resourcesInfo` if it is a newer version. This information is used for lazy loading.
@@ -187,37 +191,11 @@ import os
     }
   }
 
-  /// Ensure all the content blockers are compiled for any file info found in the list of enabled sources
-  func ensureContentBlockers(for enabledSources: [GroupedAdBlockEngine.Source]) {
-    // Compile all content blockers for the given manager
-    compilableFiles(for: enabledSources).forEach { fileInfo in
-      Task {
-        await ensureContentBlockers(for: fileInfo)
-      }
+  func needsCompile(for filterListInfo: GroupedAdBlockEngine.FilterListInfo) -> Bool {
+    guard let info = engine?.group.infos.first(where: { $0.source == filterListInfo.source }) else {
+      return true
     }
-  }
-
-  /// Ensure the content blocker is compiled for the given source
-  func ensureContentBlockers(for fileInfo: FileInfo) async {
-    guard
-      let blocklistType = fileInfo.filterListInfo.source.blocklistType(
-        isAlwaysAggressive: engineType.isAlwaysAggressive
-      )
-    else {
-      return
-    }
-
-    var modes = await ContentBlockerManager.shared.missingModes(for: blocklistType)
-
-    if needsCompile(for: fileInfo.filterListInfo) {
-      modes = blocklistType.allowedModes
-    }
-
-    await compileContentBlockers(
-      for: blocklistType,
-      localFileURL: fileInfo.localFileURL,
-      modes: modes
-    )
+    return filterListInfo.version < info.version
   }
 
   /// Checks to see if we need to compile or recompile the engine based on the available info
@@ -282,34 +260,6 @@ import os
       "Set `\(self.cacheFolderName)` (\(fileTypeString)) engine from \(count) sources:\n\(infosString)"
     )
     self.engine = engine
-  }
-
-  private func needsCompile(for filterListInfo: GroupedAdBlockEngine.FilterListInfo) -> Bool {
-    guard let info = engine?.group.infos.first(where: { $0.source == filterListInfo.source }) else {
-      return true
-    }
-    return filterListInfo.version < info.version
-  }
-
-  /// Compile the content blockers for the given file info and modes
-  func compileContentBlockers(
-    for blocklistType: ContentBlockerManager.BlocklistType,
-    localFileURL: URL,
-    modes: [ContentBlockerManager.BlockingMode]
-  ) async {
-    guard !modes.isEmpty else { return }
-
-    do {
-      try await ContentBlockerManager.shared.compileRuleList(
-        at: localFileURL,
-        for: blocklistType,
-        modes: modes
-      )
-    } catch {
-      ContentBlockerManager.log.error(
-        "Failed to compile rule list for \(blocklistType.debugDescription)"
-      )
-    }
   }
 
   /// Take all the filter lists and combine them into one then save them into a cache folder.

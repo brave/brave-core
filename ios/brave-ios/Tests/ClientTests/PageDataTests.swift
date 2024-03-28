@@ -10,31 +10,44 @@ import XCTest
 @testable import Brave
 
 final class PageDataTests: XCTestCase {
+  @MainActor private lazy var ruleStore: WKContentRuleListStore = {
+    let testBundle = Bundle.module
+    let bundleURL = testBundle.bundleURL
+    return WKContentRuleListStore(url: bundleURL)!
+  }()
+
   @MainActor func testBasicExample() throws {
     // Given
     // Page data with empty ad-block stats
     let mainFrameURL = URL(string: "http://example.com")!
     let subFrameURL = URL(string: "http://example.com/1p/subframe")!
     let upgradedMainFrameURL = URL(string: "https://example.com")!
-    var pageData = PageData(
-      mainFrameURL: mainFrameURL,
-      groupsManager: AdBlockGroupsManager(
-        standardManager: AdBlockEngineManager(
-          engineType: .standard,
-          cacheFolderName: "test_standard"
-        ),
-        aggressiveManager: AdBlockEngineManager(
-          engineType: .standard,
-          cacheFolderName: "test_aggressive"
-        )
-      )
+    let sourceProvider = TestSourceProvider()
+    let groupsManager = AdBlockGroupsManager(
+      standardManager: AdBlockEngineManager(
+        engineType: .standard,
+        cacheFolderName: "test_standard"
+      ),
+      aggressiveManager: AdBlockEngineManager(
+        engineType: .standard,
+        cacheFolderName: "test_aggressive"
+      ),
+      contentBlockerManager: makeContentBlockingManager(),
+      sourceProvider: sourceProvider
     )
+
+    var pageData = PageData(mainFrameURL: mainFrameURL, groupsManager: groupsManager)
     let expectation = expectation(description: "")
 
     Task { @MainActor in
       // When
       // We get the script types for the main frame
       let domain = pageData.domain(persistent: false)
+      //      sourceProvider.set(source: sourceProvider.fileInfos[0].filterListInfo.source, enabled: true)
+      //      sourceProvider.set(source: sourceProvider.fileInfos[1].filterListInfo.source, enabled: true)
+      //      await groupsManager.updated(fileInfo: sourceProvider.fileInfos[0], engineType: .standard)
+      //      await groupsManager.compileEnginesIfNeeded()
+
       let mainFrameRequestTypes = await pageData.makeUserScriptTypes(
         domain: domain,
         isDeAmpEnabled: false
@@ -114,5 +127,9 @@ final class PageDataTests: XCTestCase {
     }
 
     waitForExpectations(timeout: 10)
+  }
+
+  @MainActor private func makeContentBlockingManager() -> ContentBlockerManager {
+    return ContentBlockerManager(ruleStore: ruleStore)
   }
 }

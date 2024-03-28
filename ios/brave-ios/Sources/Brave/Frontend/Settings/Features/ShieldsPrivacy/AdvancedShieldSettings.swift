@@ -32,7 +32,9 @@ import os
         isEnabled: cookieConsentBlocking
       )
 
-      AdBlockGroupsManager.shared.compileEnginesIfNeeded()
+      Task {
+        await AdBlockGroupsManager.shared.compileEnginesIfNeeded()
+      }
     }
   }
   @Published var blockMobileAnnoyances: Bool {
@@ -42,7 +44,9 @@ import os
         isEnabled: blockMobileAnnoyances
       )
 
-      AdBlockGroupsManager.shared.compileEnginesIfNeeded()
+      Task {
+        await AdBlockGroupsManager.shared.compileEnginesIfNeeded()
+      }
     }
   }
   @Published var isP3AEnabled: Bool {
