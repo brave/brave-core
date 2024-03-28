@@ -18,8 +18,8 @@ import androidx.preference.Preference;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
@@ -289,8 +289,7 @@ public class BraveMainPreferencesBase
             removePreferenceIfPresent(PREF_BRAVE_VPN);
         }
 
-        if (BraveConfig.AI_CHAT_ENABLED
-                && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+        if (BraveLeoPrefUtils.isLeoEnabled()) {
             findPreference(PREF_BRAVE_LEO).setOrder(++firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_LEO);
