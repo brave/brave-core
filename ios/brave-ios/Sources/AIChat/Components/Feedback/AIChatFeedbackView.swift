@@ -185,7 +185,7 @@ private struct AIChatDropdownView: View {
 }
 
 private struct AIChatFeedbackInputView: View {
-  private var speechRecognizer = SpeechRecognizer()
+  private var speechRecognizer: SpeechRecognizer
 
   @State
   private var isVoiceEntryPresented = false
@@ -196,7 +196,8 @@ private struct AIChatFeedbackInputView: View {
   @Binding
   var text: String
 
-  init(text: Binding<String>) {
+  init(speechRecognizer: SpeechRecognizer, text: Binding<String>) {
+    self.speechRecognizer = speechRecognizer
     _text = text
   }
 
@@ -337,6 +338,7 @@ struct AIChatFeedbackView: View {
   @State
   private var feedbackText: String = ""
 
+  var speechRecognizer: SpeechRecognizer
   var premiumStatus: AiChat.PremiumStatus
 
   var shouldShowPremiumAd: Bool
@@ -360,7 +362,7 @@ struct AIChatFeedbackView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding([.horizontal, .top])
 
-      AIChatFeedbackInputView(text: $feedbackText)
+      AIChatFeedbackInputView(speechRecognizer: speechRecognizer, text: $feedbackText)
         .padding([.horizontal, .bottom])
 
       if premiumStatus != .active && premiumStatus != .activeDisconnected && shouldShowPremiumAd {
@@ -397,6 +399,7 @@ struct AIChatFeedbackView: View {
 struct AIChatFeedbackView_Previews: PreviewProvider {
   static var previews: some View {
     AIChatFeedbackView(
+      speechRecognizer: SpeechRecognizer(),
       premiumStatus: .inactive,
       shouldShowPremiumAd: true,
       onSubmit: {

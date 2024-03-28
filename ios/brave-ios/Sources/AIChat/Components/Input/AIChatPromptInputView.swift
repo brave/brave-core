@@ -9,7 +9,7 @@ import SpeechRecognition
 import SwiftUI
 
 struct AIChatPromptInputView: View {
-  private var speechRecognizer = SpeechRecognizer()
+  private var speechRecognizer: SpeechRecognizer
 
   @State
   private var isVoiceEntryPresented = false
@@ -22,7 +22,8 @@ struct AIChatPromptInputView: View {
 
   var onSubmit: (String) -> Void
 
-  init(onSubmit: @escaping (String) -> Void) {
+  init(speechRecognizer: SpeechRecognizer, onSubmit: @escaping (String) -> Void) {
+    self.speechRecognizer = speechRecognizer
     self.onSubmit = onSubmit
   }
 
@@ -109,7 +110,7 @@ struct AIChatPromptInputView: View {
 #if DEBUG
 struct AIChatPromptInputView_Preview: PreviewProvider {
   static var previews: some View {
-    AIChatPromptInputView {
+    AIChatPromptInputView(speechRecognizer: SpeechRecognizer()) {
       print("Prompt Submitted: \($0)")
     }
     .previewLayout(.sizeThatFits)
