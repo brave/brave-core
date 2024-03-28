@@ -361,7 +361,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       BraveWallet.OnRampProvider.allSupportedOnRampProviders
     )
     self.allBuyTokensAllOptions = await blockchainRegistry.allBuyTokens(
-      in: network,
+      in: [network],
       for: buyOptions
     )
     let buyTokens = allBuyTokensAllOptions.flatMap { $0.value }
