@@ -8,11 +8,6 @@
 # This test is flaky: passes locally but fails on CI
 -FileSystemAccessUIHelpersTest.GetElidedPathForDisplayAsTitle
 
-# This test crashes because BraveExtensionManagement initializes
-# PrefChangeRegistrar with local state which is null and then attempts to
-# register pref change callbacks.
--MTPDeviceDelegateImplWinTest.GalleryNameMTP
-
 # These tests fail because we modify the version.
 -ChromeBlocklistTrialTest.DefaultRun
 -ChromeBlocklistTrialTest.VerifyFirstRun

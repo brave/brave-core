@@ -221,21 +221,6 @@
 -SideSearchSideContentsHelperTest.EmitsPerJourneyMetricsFromMenuOption
 -SideSearchSideContentsHelperTest.RedirectionConfigNavigatesTabContents
 
-# These tests crash when BraveExtensionManagement is initialized via a
-# TestExtensionSystem
-# https://github.com/brave/brave-browser/issues/25727
--AppHomePageHandlerTest.*
--ChromeUsbDelegateExtensionRenderFrameFeatureDisabledTest.*
--ChromeUsbDelegateExtensionRenderFrameFeatureEnabledTest.*
--ChromeUsbDelegateExtensionRenderFrameTest.*
--ChromeUsbDelegateExtensionServiceWorkerFeatureDisabledTest.*
--ChromeUsbDelegateExtensionServiceWorkerFeatureEnabledTest.*
--ChromeUsbDelegateExtensionServiceWorkerTest.*
--ChromeUsbDelegateImprivataExtensionRenderFrameTest.AllowlistedImprivataExtension
--ChromeUsbDelegateImprivataExtensionServiceWorkerTest.*
--ChromeUsbDelegateSmartCardExtensionRenderFrameTest.AllowlistedSmartCardConnectorExtension
--ChromeUsbDelegateSmartCardExtensionServiceWorkerTest.*
-
 # These tests fail because we customize the download status messages with our
 # own verbiage
 -ContentAnalysisDownloadsDelegateTest.TestGetMessageAndUrl
