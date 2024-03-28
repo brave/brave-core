@@ -81,6 +81,14 @@ void AIChatSettingsHelper::GetModelsWithSubtitles(
       modelWithSubtitle.subtitle =
           l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE);
       is_key_handled = true;
+    } else if (modelWithSubtitle.model->key == "chat-claude-haiku") {
+      modelWithSubtitle.subtitle =
+          l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE);
+      is_key_handled = true;
+    } else if (modelWithSubtitle.model->key == "chat-claude-sonnet") {
+      modelWithSubtitle.subtitle =
+          l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE);
+      is_key_handled = true;
     }
 
     DCHECK(is_key_handled) << "Unhandled model key: " << modelWithSubtitle.model->key;

@@ -30,6 +30,8 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
+#include <iostream>
+
 namespace ai_chat {
 namespace {
 
@@ -74,6 +76,8 @@ base::Value::Dict CreateApiParametersDict(
   }
 
   const double temp = ai_chat::features::kAITemperature.Get();
+
+  std::cerr << "********* model: " << model_name << std::endl;
 
   DCHECK(!model_name.empty());
 
@@ -226,6 +230,7 @@ void RemoteCompletionClient::OnQueryCompleted(
     GenerationCompletedCallback callback,
     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
+  std::cerr << "*********: " << result.response_code() << std::endl;
   // Handle successful request
   if (success) {
     std::string completion = "";

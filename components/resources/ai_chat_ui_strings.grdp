@@ -57,6 +57,12 @@
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model">
     Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks.
   </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_HAIKU" desc="AI Chat intro message for the Claude Haiku model">
+    Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks.
+  </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model">
+    Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Sonnet, a model created by Anthropic to power conversational and text processing tasks.
+  </message>
   <message name="IDS_CHAT_UI_MODEL_NAME_SYNTAX" desc="Sentence structure for model name">
     <ph name="MODEL_NAME">$1<ex>llama2-13b</ex></ph> by <ph name="COMPANY_NAME">$2<ex>Meta</ex></ph>
   </message>
@@ -224,6 +230,12 @@
   </message>
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE" desc="A description for claude-instant-v1 model">
     Conversation and text generation
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE" desc="A description for claude-3-haiku model">
+    Lightning fast chat
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE" desc="A description for claude-3-sonnet model">
+    Balanced speed and intelligence
   </message>
   <message name="IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL" desc="A label for leo settings tooltip">
     Leo settings
