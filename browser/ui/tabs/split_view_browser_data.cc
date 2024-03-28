@@ -82,3 +82,5 @@ std::optional<SplitViewBrowserData::Tile> SplitViewBrowserData::GetTile(
   }
   return *iter;
 }
+
+BROWSER_USER_DATA_KEY_IMPL(SplitViewBrowserData);
