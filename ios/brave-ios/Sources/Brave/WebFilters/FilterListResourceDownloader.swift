@@ -86,9 +86,9 @@ public actor FilterListResourceDownloader {
     engineType: GroupedAdBlockEngine.EngineType
   ) async {
     guard
-      let fileInfo = await AdBlockGroupsManager.fileInfo(
+      let fileInfo = AdBlockEngineManager.FileInfo(
         for: source,
-        folderURL: folderURL
+        downloadedFolderURL: folderURL
       )
     else {
       return

@@ -184,27 +184,35 @@ actor ContentBlockerManager {
   /// Compile the rule list found in the given local URL using the specified modes
   func compileRuleList(
     at localFileURL: URL,
-    for type: BlocklistType,
+    for blocklistType: BlocklistType,
     modes: [BlockingMode]
-  ) async throws {
+  ) async {
+    guard !modes.isEmpty else { return }
+
     let result: ContentBlockingRulesResult
     let signpostID = Self.signpost.makeSignpostID()
     let state = Self.signpost.beginInterval(
       "convertRules",
       id: signpostID,
-      "\(type.debugDescription)"
+      "\(blocklistType.debugDescription)"
     )
 
     do {
-      let filterSet = try String(contentsOf: localFileURL)
-      result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
-      Self.signpost.endInterval("convertRules", state)
-    } catch {
-      Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
-      throw error
-    }
+      do {
+        let filterSet = try String(contentsOf: localFileURL)
+        result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+        Self.signpost.endInterval("convertRules", state)
+      } catch {
+        Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
+        throw error
+      }
 
-    try await compile(encodedContentRuleList: result.rulesJSON, for: type, modes: modes)
+      try await compile(encodedContentRuleList: result.rulesJSON, for: blocklistType, modes: modes)
+    } catch {
+      ContentBlockerManager.log.error(
+        "Failed to compile rule list for \(blocklistType.debugDescription)"
+      )
+    }
   }
 
   /// Compile the given resource and store it in cache for the given blocklist type and specified modes

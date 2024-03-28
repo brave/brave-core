@@ -11,29 +11,45 @@ import os
 
 /// A class that helps manage file sources and enabled filter lists so that 2 engines (standard and aggressive) are continually updated.
 @MainActor public class AdBlockGroupsManager {
+  @MainActor protocol SourceProvider {
+    /// All the enabled sources.
+    /// They will be compiled in the order given so ensure the order here corresponds with how you want your engines to look
+    var enabledSources: [GroupedAdBlockEngine.Source] { get }
+
+    /// If we didn't load the main engine from cache we need to load using the old cache mechanism
+    /// This is only temporary so we're not left with no ad-block during the upgrade.
+    /// We can drop all of this in future upgrades as by then we will have files cached in the new format
+    func legacyCacheFiles(
+      for engineType: GroupedAdBlockEngine.EngineType
+    ) -> [AdBlockEngineManager.FileInfo]
+  }
+
   typealias CosmeticFilterModelTuple = (isAlwaysAggressive: Bool, model: CosmeticFilterModel)
   public static let shared = AdBlockGroupsManager(
     standardManager: GroupedAdBlockEngine.EngineType.standard.makeDefaultManager(),
-    aggressiveManager: GroupedAdBlockEngine.EngineType.aggressive.makeDefaultManager()
+    aggressiveManager: GroupedAdBlockEngine.EngineType.aggressive.makeDefaultManager(),
+    contentBlockerManager: ContentBlockerManager.shared,
+    sourceProvider: DefaultSourceProvider()
   )
 
   private let standardManager: AdBlockEngineManager
   private let aggressiveManager: AdBlockEngineManager
+  private let contentBlockerManager: ContentBlockerManager
+  private let sourceProvider: SourceProvider
 
   /// The info for the resource file. This is a shared file used by all filter lists that contain scriplets. This information is used for lazy loading.
   public var resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
 
-  /// Return an array of all sources that are enabled according to user's settings
-  /// - Note: This does not take into account the domain or global adblock toggle
-  private var enabledSources: [GroupedAdBlockEngine.Source] {
-    var enabledSources = FilterListStorage.shared.enabledSources
-    enabledSources.append(contentsOf: CustomFilterListStorage.shared.enabledSources)
-    return enabledSources
-  }
-
-  init(standardManager: AdBlockEngineManager, aggressiveManager: AdBlockEngineManager) {
+  init(
+    standardManager: AdBlockEngineManager,
+    aggressiveManager: AdBlockEngineManager,
+    contentBlockerManager: ContentBlockerManager,
+    sourceProvider: SourceProvider
+  ) {
     self.standardManager = standardManager
     self.aggressiveManager = aggressiveManager
+    self.contentBlockerManager = contentBlockerManager
+    self.sourceProvider = sourceProvider
     self.resourcesInfo = nil
   }
 
@@ -74,47 +90,16 @@ import os
     let manager = getManager(for: engineType)
 
     if await !manager.loadFromCache(resourcesInfo: self.resourcesInfo) {
-      // If we didn't load the main engine from cache we need to load using the old cache mechanism
-      // This is only temporary so we're not left with no ad-block during the upgrade.
-      // We can drop all of this in future upgrades as by then we will have files cached in the new format
-      for setting in FilterListStorage.shared.allFilterListSettings
-        .filter({ $0.isAlwaysAggressive == engineType.isAlwaysAggressive })
-        .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
-      {
-        guard let folderURL = setting.folderURL else { continue }
-        guard let source = setting.engineSource else { continue }
-        guard let fileInfo = Self.fileInfo(for: source, folderURL: folderURL) else { continue }
+      for fileInfo in sourceProvider.legacyCacheFiles(for: engineType) {
         manager.add(fileInfo: fileInfo)
       }
 
-      manager.compileImmediatelyIfNeeded(
-        for: enabledSources,
+      await manager.compileImmediatelyIfNeeded(
+        for: sourceProvider.enabledSources,
         resourcesInfo: self.resourcesInfo,
         priority: .high
       )
     }
-  }
-
-  static func fileInfo(
-    for source: GroupedAdBlockEngine.Source,
-    folderURL: URL
-  ) -> AdBlockEngineManager.FileInfo? {
-    let version = folderURL.lastPathComponent
-    let localFileURL = folderURL.appendingPathComponent("list.txt")
-
-    guard FileManager.default.fileExists(atPath: localFileURL.relativePath) else {
-      // We are loading the old component from cache. We don't want this file to be loaded.
-      // When we download the new component shortly we will update our cache.
-      // This should only trigger after an app update and eventually this check can be removed.
-      return nil
-    }
-
-    let filterListInfo = GroupedAdBlockEngine.FilterListInfo(
-      source: source,
-      version: version
-    )
-
-    return AdBlockEngineManager.FileInfo(filterListInfo: filterListInfo, localFileURL: localFileURL)
   }
 
   /// Inform this manager of updates to the resources so our engines can be updated
@@ -139,11 +124,11 @@ import os
     engineType: GroupedAdBlockEngine.EngineType
   ) async {
     let manager = getManager(for: engineType)
-    let enabledSources = enabledSources
+    let enabledSources = sourceProvider.enabledSources
 
     // Compile content blockers if this filter list is enabled
     if enabledSources.contains(fileInfo.filterListInfo.source) {
-      await manager.ensureContentBlockers(for: fileInfo)
+      await ensureContentBlockers(for: fileInfo, engineType: engineType)
     }
 
     // Always update the info on the manager
@@ -157,17 +142,60 @@ import os
   }
 
   /// Ensure all engines and content blockers are compiled
-  func compileEnginesIfNeeded() {
-    let enabledSources = enabledSources
-    GroupedAdBlockEngine.EngineType.allCases.forEach { engineType in
+  func compileEnginesIfNeeded() async {
+    let enabledSources = sourceProvider.enabledSources
+    await GroupedAdBlockEngine.EngineType.allCases.asyncConcurrentForEach { engineType in
       let manager = self.getManager(for: engineType)
-      manager.compileImmediatelyIfNeeded(
+      await manager.compileImmediatelyIfNeeded(
         for: enabledSources,
-        resourcesInfo: resourcesInfo,
+        resourcesInfo: self.resourcesInfo,
         priority: .high
       )
-      manager.ensureContentBlockers(for: enabledSources)
+
+      self.ensureContentBlockers(for: enabledSources, engineType: engineType)
     }
+  }
+
+  /// Ensure all the content blockers are compiled for any file info found in the list of enabled sources
+  private func ensureContentBlockers(
+    for enabledSources: [GroupedAdBlockEngine.Source],
+    engineType: GroupedAdBlockEngine.EngineType
+  ) {
+    let manager = getManager(for: engineType)
+    // Compile all content blockers for the given manager
+    manager.compilableFiles(for: enabledSources).forEach { fileInfo in
+      Task {
+        await ensureContentBlockers(for: fileInfo, engineType: engineType)
+      }
+    }
+  }
+
+  /// Ensure the content blocker is compiled for the given source
+  private func ensureContentBlockers(
+    for fileInfo: AdBlockEngineManager.FileInfo,
+    engineType: GroupedAdBlockEngine.EngineType
+  ) async {
+    let manager = getManager(for: engineType)
+
+    guard
+      let blocklistType = fileInfo.filterListInfo.source.blocklistType(
+        isAlwaysAggressive: engineType.isAlwaysAggressive
+      )
+    else {
+      return
+    }
+
+    var modes = await contentBlockerManager.missingModes(for: blocklistType)
+
+    if manager.needsCompile(for: fileInfo.filterListInfo) {
+      modes = blocklistType.allowedModes
+    }
+
+    await contentBlockerManager.compileRuleList(
+      at: fileInfo.localFileURL,
+      for: blocklistType,
+      modes: modes
+    )
   }
 
   private func getResourcesInfo(fromFolderURL folderURL: URL) -> GroupedAdBlockEngine.ResourcesInfo
@@ -180,7 +208,7 @@ import os
   }
 
   /// Add or update `resourcesInfo` if it is a newer version. This information is used for lazy loading.
-  private func updateIfNeeded(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo) {
+  func updateIfNeeded(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo) {
     guard self.resourcesInfo == nil || resourcesInfo.version > self.resourcesInfo!.version else {
       return
     }
@@ -237,7 +265,6 @@ import os
         return try await cachedEngine.makeEngineScriptTypes(
           frameURL: frameURL,
           isMainFrame: isMainFrame,
-          domain: domain,
           isDeAmpEnabled: isDeAmpEnabled,
           index: index
         )
@@ -309,5 +336,52 @@ extension FilterListSetting {
 extension FilterList {
   @MainActor var engineSource: GroupedAdBlockEngine.Source {
     return .filterList(componentId: entry.componentId, uuid: self.entry.uuid)
+  }
+}
+
+extension AdBlockEngineManager.FileInfo {
+  init?(
+    for source: GroupedAdBlockEngine.Source,
+    downloadedFolderURL: URL
+  ) {
+    let version = downloadedFolderURL.lastPathComponent
+    let localFileURL = downloadedFolderURL.appendingPathComponent("list.txt")
+
+    guard FileManager.default.fileExists(atPath: localFileURL.relativePath) else {
+      // We are loading the old component from cache. We don't want this file to be loaded.
+      // When we download the new component shortly we will update our cache.
+      // This should only trigger after an app update and eventually this check can be removed.
+      return nil
+    }
+
+    let filterListInfo = GroupedAdBlockEngine.FilterListInfo(
+      source: source,
+      version: version
+    )
+
+    self.init(filterListInfo: filterListInfo, localFileURL: localFileURL)
+  }
+}
+
+@MainActor private class DefaultSourceProvider: AdBlockGroupsManager.SourceProvider {
+  /// Return an array of all sources that are enabled according to user's settings
+  /// - Note: This does not take into account the domain or global adblock toggle
+  var enabledSources: [GroupedAdBlockEngine.Source] {
+    var enabledSources = FilterListStorage.shared.enabledSources
+    enabledSources.append(contentsOf: CustomFilterListStorage.shared.enabledSources)
+    return enabledSources
+  }
+
+  func legacyCacheFiles(
+    for engineType: GroupedAdBlockEngine.EngineType
+  ) -> [AdBlockEngineManager.FileInfo] {
+    return FilterListStorage.shared.allFilterListSettings
+      .filter({ $0.isAlwaysAggressive == engineType.isAlwaysAggressive })
+      .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
+      .compactMap({ setting in
+        guard let folderURL = setting.folderURL else { return nil }
+        guard let source = setting.engineSource else { return nil }
+        return AdBlockEngineManager.FileInfo(for: source, downloadedFolderURL: folderURL)
+      })
   }
 }
