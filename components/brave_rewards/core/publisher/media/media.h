@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_MEDIA_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_MEDIA_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_MEDIA_MEDIA_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_MEDIA_MEDIA_H_
 
 #include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/legacy/media/github.h"
-#include "brave/components/brave_rewards/core/legacy/media/youtube.h"
+#include "brave/components/brave_rewards/core/publisher/media/github.h"
+#include "brave/components/brave_rewards/core/publisher/media/youtube.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
@@ -57,4 +57,4 @@ class Media {
 
 }  // namespace brave_rewards::internal
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_MEDIA_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_MEDIA_MEDIA_H_

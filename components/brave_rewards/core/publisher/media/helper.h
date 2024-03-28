@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_HELPER_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_MEDIA_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_MEDIA_HELPER_H_
 
 #include <string>
 
@@ -18,4 +18,4 @@ std::string ExtractData(const std::string& data,
 
 }  // namespace brave_rewards::internal
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_MEDIA_HELPER_H_
