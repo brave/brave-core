@@ -265,8 +265,18 @@ if (is_mac) {
     "//brave/browser/brave_browser_main_parts_mac.mm",
     "//brave/browser/brave_shell_integration_mac.h",
     "//brave/browser/brave_shell_integration_mac.mm",
+    "//brave/browser/mac/keystone_glue.h",
+    "//brave/browser/mac/keystone_glue.mm",
+    "//brave/browser/mac/keystone_registration.h",
+    "//brave/browser/mac/keystone_registration.mm",
   ]
-  brave_chrome_browser_deps += [ "//brave/app:command_ids" ]
+  brave_chrome_browser_deps += [
+    "//brave/app:command_ids",
+    "//brave/browser:sparkle_buildflags",
+    "//chrome:strings",
+    "//chrome/app:generated_resources",
+    "//chrome/common:non_code_constants",
+  ]
 }
 
 if (enable_sparkle) {
@@ -275,7 +285,6 @@ if (enable_sparkle) {
     "//brave/browser/mac/sparkle_glue.mm",
     "//brave/browser/mac/su_updater.h",
   ]
-  brave_chrome_browser_deps += [ "//brave/browser/mac:keystone_glue" ]
 }
 
 if (enable_speedreader) {
@@ -444,10 +453,6 @@ brave_chrome_browser_public_deps = [
   "//brave/components/brave_sync:constants",
   "//brave/components/variations:constants",
 ]
-
-if (is_mac) {
-  brave_chrome_browser_public_deps += [ "//brave/browser/mac:keystone_glue" ]
-}
 
 if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]
