@@ -21,6 +21,8 @@ BASE_DECLARE_FEATURE(kBraveHorizontalTabsUpdate);
 
 BASE_DECLARE_FEATURE(kBraveVerticalTabScrollBar);
 
+BASE_DECLARE_FEATURE(kBraveSplitView);
+
 bool HorizontalTabsUpdateEnabled();
 
 }  // namespace tabs::features
