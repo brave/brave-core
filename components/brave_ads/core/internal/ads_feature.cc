@@ -18,7 +18,7 @@ bool ShouldLaunchAsInProcessService() {
 
 BASE_FEATURE(kShouldAlwaysRunBraveAdsServiceFeature,
              "ShouldAlwaysRunBraveAdsService",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool ShouldAlwaysRunService() {
   return base::FeatureList::IsEnabled(kShouldAlwaysRunBraveAdsServiceFeature);
@@ -35,7 +35,7 @@ bool ShouldAlwaysTriggerNewTabPageAdEvents() {
 
 BASE_FEATURE(kShouldSupportSearchResultAdsFeature,
              "ShouldSupportSearchResultAds",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool ShouldSupportSearchResultAds() {
   return base::FeatureList::IsEnabled(kShouldSupportSearchResultAdsFeature);
@@ -43,7 +43,7 @@ bool ShouldSupportSearchResultAds() {
 
 BASE_FEATURE(kShouldAlwaysTriggerBraveSearchResultAdEventsFeature,
              "ShouldAlwaysTriggerBraveSearchResultAdEvents",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool ShouldAlwaysTriggerSearchResultAdEvents() {
   return base::FeatureList::IsEnabled(
