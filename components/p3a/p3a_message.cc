@@ -53,6 +53,24 @@ constexpr char kOrganicRefPrefix[] = "BRV";
 constexpr char kRefNone[] = "none";
 constexpr char kRefOther[] = "other";
 
+#if !defined(OFFICIAL_BUILD)
+constexpr char kBraveDeveloperChannel[] = "developer";
+#else
+constexpr char kChromiumStableChannel[] = "stable";
+constexpr char kBraveReleaseChannel[] = "release";
+#endif
+
+std::string GetBraveChannel(std::string chromium_channel) {
+#if !defined(OFFICIAL_BUILD)
+  return kBraveDeveloperChannel;
+#else
+  if (chromium_channel == kChromiumStableChannel) {
+    return kBraveReleaseChannel;
+  }
+  return chromium_channel;
+#endif
+}
+
 }  // namespace
 
 MessageMetainfo::MessageMetainfo() = default;
@@ -178,11 +196,11 @@ std::string GenerateP3AConstellationMessage(std::string_view metric_name,
 }
 
 void MessageMetainfo::Init(PrefService* local_state,
-                           std::string brave_channel,
+                           std::string browser_channel,
                            std::string week_of_install) {
   local_state_ = local_state;
   platform = brave_stats::GetPlatformIdentifier();
-  channel = brave_channel;
+  channel = GetBraveChannel(browser_channel);
   InitVersion();
   InitRef();
 

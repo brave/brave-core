@@ -17,7 +17,6 @@
 #include "brave/browser/brave_stats/buildflags.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/brave_stats/switches.h"
-#include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -35,6 +34,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/version_info/version_info.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
@@ -60,12 +60,30 @@ static constexpr int kUpdateServerStartupPingDelaySeconds = 3;
 // today.
 static constexpr int kUpdateServerPeriodicPingFrequencySeconds = 5 * 60;
 
+#if !defined(OFFICIAL_BUILD)
+constexpr char kBraveDeveloperChannel[] = "developer";
+#else
+constexpr char kChromiumStableChannel[] = "stable";
+constexpr char kBraveReleaseChannel[] = "release";
+#endif
+
+std::string GetBraveChannel(std::string_view chromium_channel) {
+#if !defined(OFFICIAL_BUILD)
+  return kBraveDeveloperChannel;
+#else
+  if (chromium_channel == kChromiumStableChannel) {
+    return kBraveReleaseChannel;
+  }
+  return std::string(chromium_channel);
+#endif
+}
+
 GURL GetUpdateURL(
     const GURL& base_update_url,
     const brave_stats::BraveStatsUpdaterParams& stats_updater_params) {
   return stats_updater_params.GetUpdateURL(
       base_update_url, brave_stats::GetPlatformIdentifier(),
-      brave::GetChannelName(),
+      GetBraveChannel(version_info::GetChannelString(chrome::GetChannel())),
       version_info::GetBraveVersionWithoutChromiumMajorVersion());
 }
 

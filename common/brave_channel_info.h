@@ -9,6 +9,8 @@
 #include <string>
 
 namespace brave {
+// DEPRECATED: Use `version_info::GetChannelString(chrome::GetChannel())`
+// instead.
 std::string GetChannelName();
 }
 

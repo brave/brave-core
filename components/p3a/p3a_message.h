@@ -27,7 +27,7 @@ class MessageMetainfo {
   ~MessageMetainfo();
 
   void Init(PrefService* local_state,
-            std::string brave_channel,
+            std::string browser_channel,
             std::string week_of_install);
 
   void Update();
