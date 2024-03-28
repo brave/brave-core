@@ -185,9 +185,7 @@ struct DepositTokenView: View {
               DepositDetailsView(
                 type: .prefilledToken(
                   token: selectedTokenViewModel.token,
-                  availableAccounts: depositTokenStore.allAccounts.filter {
-                    $0.coin == selectedTokenViewModel.token.coin
-                  },
+                  availableAccounts: availableAccounts(for: selectedTokenViewModel.token),
                   bitcoinAccounts: depositTokenStore.bitcoinAccounts
                 ),
                 supportedNetworks: depositTokenStore.allNetworks.supportedNetworks(

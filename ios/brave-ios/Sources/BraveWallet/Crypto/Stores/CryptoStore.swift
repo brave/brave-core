@@ -403,6 +403,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: prefilledToken
     )
     buyTokenStore = store

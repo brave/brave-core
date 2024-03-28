@@ -117,6 +117,7 @@ extension BuyTokenStore {
       rpcService: MockJsonRpcService(),
       walletService: BraveWallet.TestBraveWalletService.previewWalletService,
       assetRatioService: BraveWallet.TestAssetRatioService.previewAssetRatioService,
+      bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       prefilledToken: .previewToken
     )
   }
