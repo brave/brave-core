@@ -52,19 +52,19 @@ struct WrappingHStack: Layout {
     }
 
     var x = bounds.minX
-    var y = height / 2.0 + bounds.minY
+    var y = height + bounds.minY
 
     subviews.forEach { subview in
       x += subview.dimensions(in: proposal).width / 2.0
 
       if x + subview.dimensions(in: proposal).width / 2.0 > bounds.maxX {
         x = bounds.minX + subview.dimensions(in: proposal).width / 2.0
-        y += height + vSpacing
+        y += subview.dimensions(in: proposal).height + vSpacing
       }
 
       subview.place(
         at: CGPoint(x: x, y: y),
-        anchor: .center,
+        anchor: .init(x: 0.5, y: 1.0),
         proposal: ProposedViewSize(
           width: subview.dimensions(in: proposal).width,
           height: subview.dimensions(in: proposal).height
@@ -124,25 +124,23 @@ struct WrappingHStackOld<Model, V>: View where Model: Hashable, V: View {
     ZStack(alignment: .topLeading) {
       ForEach(models, id: \.self) { model in
         viewGenerator(model)
-          .padding(.horizontal, hSpacing)
-          .padding(.vertical, vSpacing)
           .alignmentGuide(
             .leading,
             computeValue: { dimension in
               if abs(width - dimension.width) > geometry.size.width {
                 width = 0.0
-                height -= dimension.height
+                height -= dimension.height + vSpacing
               }
 
               let result = width
-              width = model == models.last! ? 0.0 : width - dimension.width
+              width = model == models.last! ? 0.0 : width - dimension.width - hSpacing
               return result
             }
           )
           .alignmentGuide(
             .top,
             computeValue: { dimension in
-              let result = height
+              let result = height + dimension.height
               if model == models.last! {
                 height = 0.0
               }

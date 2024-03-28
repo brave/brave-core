@@ -57,8 +57,8 @@ public struct AIChatAdvancedSettingsView: View {
       .navigationViewStyle(.stack)
       .onAppear {
         Task { @MainActor in
-          await model.refreshPremiumStatusOrderCredentials()
-          await viewModel.fetchOrder()
+          await model.refreshPremiumStatus()
+          await viewModel.fetchCredentialSummary()
         }
       }
     } else {
@@ -67,8 +67,8 @@ public struct AIChatAdvancedSettingsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
           Task { @MainActor in
-            await model.refreshPremiumStatusOrderCredentials()
-            await viewModel.fetchOrder()
+            await model.refreshPremiumStatus()
+            await viewModel.fetchCredentialSummary()
           }
         }
     }
@@ -309,8 +309,8 @@ public struct AIChatAdvancedSettingsView: View {
             AIChatPaywallView(
               premiumUpgrageSuccessful: { _ in
                 Task { @MainActor in
-                  await model.refreshPremiumStatusOrderCredentials()
-                  await viewModel.fetchOrder()
+                  await model.refreshPremiumStatus()
+                  await viewModel.fetchCredentialSummary()
                 }
               })
           }
