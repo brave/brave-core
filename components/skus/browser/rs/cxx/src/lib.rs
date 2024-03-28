@@ -24,7 +24,6 @@ pub use skus;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 use crate::storage::{StorageGetContext, StoragePurgeContext, StorageSetContext};
-use errors::result_to_string;
 
 pub struct NativeClientExecutor {
     is_shutdown: bool,
@@ -126,7 +125,13 @@ mod ffi {
     }
 
     #[derive(Debug)]
-    pub enum SkusResult {
+    pub struct SkusResult {
+        code: SkusResultCode,
+        msg: String,
+    }
+
+    #[derive(Debug)]
+    pub enum SkusResultCode {
         Ok,
         RequestFailed,
         InternalServer,
@@ -216,8 +221,6 @@ mod ffi {
             callback_state: UniquePtr<CreateOrderFromReceiptCallbackState>,
             receipt: String,
         );
-
-        fn result_to_string(result: &SkusResult) -> String;
     }
 
     unsafe extern "C++" {
@@ -485,11 +488,12 @@ async fn refresh_order_task(
         .and_then(|order| serde_json::to_string(&order).map_err(|e| e.into()))
         .map_err(|e| e.into())
     {
-        Ok(order) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &order),
+        Ok(order) => callback.0(callback_state.into_raw(), ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &order),
         Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
 }
 
+#[allow(improper_ctypes_definitions)]
 #[repr(transparent)]
 pub struct FetchOrderCredentialsCallback(
     pub  extern "C" fn(
@@ -510,7 +514,7 @@ async fn fetch_order_credentials_task(
     order_id: String,
 ) {
     match sdk.fetch_order_credentials(&order_id).await.map_err(|e| e.into()) {
-        Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok),
+        Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::new(ffi::SkusResultCode::Ok, "")),
         Err(e) => callback.0(callback_state.into_raw(), e),
     }
 }
@@ -539,9 +543,9 @@ async fn prepare_credentials_presentation_task(
 ) {
     match sdk.prepare_credentials_presentation(&domain, &path).await.map_err(|e| e.into()) {
         Ok(Some(presentation)) => {
-            callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &presentation)
+            callback.0(callback_state.into_raw(), ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &presentation)
         }
-        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
+        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), ""),
         Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
 }
@@ -575,12 +579,13 @@ async fn credential_summary_task(
         })
         .map_err(|e| e.into())
     {
-        Ok(Some(summary)) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &summary),
-        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, "{}"), /* none, empty */
+        Ok(Some(summary)) => callback.0(callback_state.into_raw(), ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &summary),
+        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), "{}"), /* none, empty */
         Err(e) => callback.0(callback_state.into_raw(), e, "{}"),                     // none, empty
     }
 }
 
+#[allow(improper_ctypes_definitions)]
 #[repr(transparent)]
 pub struct SubmitReceiptCallback(
     pub extern "C" fn(callback_state: *mut ffi::SubmitReceiptCallbackState, result: ffi::SkusResult),
@@ -599,7 +604,7 @@ async fn submit_receipt_task(
     receipt: String,
 ) {
     match sdk.submit_receipt(&order_id, &receipt).await.map_err(|e| e.into()) {
-        Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok),
+        Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::new(ffi::SkusResultCode::Ok, "")),
         Err(e) => callback.0(callback_state.into_raw(), e),
     }
 }
@@ -626,7 +631,7 @@ async fn create_order_from_receipt_task(
     receipt: String,
 ) {
     match sdk.create_order_from_receipt(&receipt).await.map_err(|e| e.into()) {
-        Ok(order_id) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &order_id),
+        Ok(order_id) => callback.0(callback_state.into_raw(), ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &order_id),
         Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
 }
