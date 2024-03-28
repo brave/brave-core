@@ -15,6 +15,7 @@ BASE_DECLARE_FEATURE(kBraveCopyCleanLinkByDefault);
 BASE_DECLARE_FEATURE(kBraveOverrideDownloadDangerLevel);
 BASE_DECLARE_FEATURE(kBraveWebViewRoundedCorners);
 BASE_DECLARE_FEATURE(kBraveDayZeroExperiment);
+BASE_DECLARE_FEATURE(kBraveShowHelpWDPInWelcomePage);
 
 }  // namespace features
 

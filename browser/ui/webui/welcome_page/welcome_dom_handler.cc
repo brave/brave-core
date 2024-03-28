@@ -10,9 +10,11 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/importer/importer_constants.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
@@ -98,6 +100,10 @@ void WelcomeDOMHandler::RegisterMessages() {
       "getDefaultBrowser",
       base::BindRepeating(&WelcomeDOMHandler::HandleGetDefaultBrowser,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "enableWebDiscovery",
+      base::BindRepeating(&WelcomeDOMHandler::HandleEnableWebDiscovery,
+                          base::Unretained(this)));
 }
 
 void WelcomeDOMHandler::HandleImportNowRequested(
@@ -159,6 +165,12 @@ void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
   bool enabled = args[0].GetBool();
   ChangeMetricsReportingState(
       enabled, ChangeMetricsReportingStateCalledFrom::kUiSettings);
+}
+
+void WelcomeDOMHandler::HandleEnableWebDiscovery(
+    const base::Value::List& args) {
+  DCHECK(profile_);
+  profile_->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
 }
 
 void WelcomeDOMHandler::SetLocalStateBooleanEnabled(

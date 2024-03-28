@@ -12,6 +12,7 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/task/single_thread_task_runner.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
@@ -73,7 +74,13 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWelcomeSelectThemeLightLabel",
      IDS_BRAVE_WELCOME_SELECT_THEME_LIGHT_LABEL},
     {"braveWelcomeSelectThemeDarkLabel",
-     IDS_BRAVE_WELCOME_SELECT_THEME_DARK_LABEL}};
+     IDS_BRAVE_WELCOME_SELECT_THEME_DARK_LABEL},
+    {"braveWelcomeHelpWDPTitle", IDS_BRAVE_WELCOME_HELP_WDP_TITLE},
+    {"braveWelcomeHelpWDPSubtitle", IDS_BRAVE_WELCOME_HELP_WDP_SUBTITLE},
+    {"braveWelcomeHelpWDPDescription", IDS_BRAVE_WELCOME_HELP_WDP_DESCRIPTION},
+    {"braveWelcomeHelpWDPLearnMore", IDS_BRAVE_WELCOME_HELP_WDP_LEARN_MORE},
+    {"braveWelcomeHelpWDPAccept", IDS_BRAVE_WELCOME_HELP_WDP_ACCEPT},
+    {"braveWelcomeHelpWDPReject", IDS_BRAVE_WELCOME_HELP_WDP_REJECT}};
 
 void OpenJapanWelcomePage(Profile* profile) {
   DCHECK(profile);
@@ -131,8 +138,10 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
 
   // Open additional page in Japanese region
   int country_id = country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
+  const bool is_jpn =
+      country_id == country_codes::CountryStringToCountryID("JP");
   if (!profile->GetPrefs()->GetBoolean(prefs::kHasSeenWelcomePage)) {
-    if (country_id == country_codes::CountryStringToCountryID("JP")) {
+    if (is_jpn) {
       base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
           FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
           base::Seconds(3));
@@ -154,6 +163,11 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean(
       "hardwareAccelerationEnabledAtStartup",
       content::GpuDataManager::GetInstance()->HardwareAccelerationEnabled());
+
+  source->AddBoolean(
+      /*name*/ "showHelpWDP",
+      /*value*/ is_jpn || base::FeatureList::IsEnabled(
+                              features::kBraveShowHelpWDPInWelcomePage));
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 

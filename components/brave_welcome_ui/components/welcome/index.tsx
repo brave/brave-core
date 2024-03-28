@@ -14,33 +14,28 @@ import { WelcomeBrowserProxyImpl, DefaultBrowserBrowserProxyImpl, P3APhase } fro
 import WebAnimationPlayer from '../../api/web_animation_player'
 
 import DataContext from '../../state/context'
-import { ViewType } from '../../state/component_types'
-import { shouldPlayAnimations } from '../../state/hooks'
+import { shouldPlayAnimations, useViewTypeTransition } from '../../state/hooks'
 
 import braveLogoUrl from '../../assets/brave_logo_3d@2x.webp'
 
 function Welcome () {
-  const { setViewType, scenes, browserProfiles } = React.useContext(DataContext)
+  const { viewType, setViewType, scenes } = React.useContext(DataContext)
+  const { forward } = useViewTypeTransition(viewType)
+
   const ref = React.useRef<HTMLDivElement>(null)
 
-  const goToImportThemeOrBrowser = () => {
-    if (!browserProfiles || browserProfiles.length === 0) {
-      setViewType(ViewType.ImportSelectTheme)
-      return
-    }
-    setViewType(ViewType.ImportSelectBrowser)
-  }
+  const goForward = () => setViewType(forward)
 
   const handleSetAsDefaultBrowser = () => {
     DefaultBrowserBrowserProxyImpl.getInstance().setAsDefaultBrowser()
-    goToImportThemeOrBrowser()
+    goForward()
     WelcomeBrowserProxyImpl.getInstance().recordP3A(P3APhase.Import)
     scenes?.s1.play()
   }
 
   const handleSkip = () => {
     WelcomeBrowserProxyImpl.getInstance().recordP3A(P3APhase.Import)
-    goToImportThemeOrBrowser()
+    goForward()
     scenes?.s1.play()
   }
 

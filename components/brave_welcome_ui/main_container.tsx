@@ -14,6 +14,7 @@ import ImportInProgress from './components/import-in-progress'
 import Background from './components/background'
 import Welcome from './components/welcome'
 import Loader from './components/loader'
+import HelpWDP from './components/help-wdp'
 
 const SelectBrowser = React.lazy(() => import('./components/select-browser'))
 const SelectProfile = React.lazy(() => import('./components/select-profile'))
@@ -55,6 +56,10 @@ function MainContainer () {
 
   if (viewType === ViewType.DefaultBrowser) {
     mainEl = <Welcome />
+  }
+
+  if (viewType === ViewType.HelpWDP) {
+    mainEl = <HelpWDP />
   }
 
   const onBackgroundImgLoad = () => {
