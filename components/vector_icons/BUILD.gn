@@ -31,6 +31,8 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_close.icon",
     "leo_code.icon",
     "leo_copy_plain_text.icon",
+    "leo_desktop_vpn_error_color.icon",
+    "leo_desktop_vpn_on_color.icon",
     "leo_download.icon",
     "leo_edit_box.icon",
     "leo_eye_on.icon",

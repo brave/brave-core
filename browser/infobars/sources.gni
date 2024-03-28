@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -70,14 +69,5 @@ if (!is_android) {
         "//brave/components/vector_icons",
       ]
     }
-  }
-
-  if (enable_brave_wayback_machine) {
-    brave_browser_infobar_sources += [
-      "//brave/browser/infobars/brave_wayback_machine_delegate_impl.cc",
-      "//brave/browser/infobars/brave_wayback_machine_delegate_impl.h",
-    ]
-
-    brave_browser_infobar_deps += [ "//brave/components/brave_wayback_machine" ]
   }
 }

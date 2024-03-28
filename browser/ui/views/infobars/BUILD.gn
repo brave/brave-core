@@ -42,52 +42,6 @@ source_set("infobars") {
   ]
 }
 
-if (enable_brave_wayback_machine) {
-  source_set("brave_wayback_machine") {
-    # Remove when https://github.com/brave/brave-browser/issues/10652 is resolved
-    check_includes = false
-
-    sources = [
-      "brave_wayback_machine_infobar_button_container.cc",
-      "brave_wayback_machine_infobar_button_container.h",
-      "brave_wayback_machine_infobar_contents_view.cc",
-      "brave_wayback_machine_infobar_contents_view.h",
-      "brave_wayback_machine_infobar_throbber.cc",
-      "brave_wayback_machine_infobar_throbber.h",
-      "brave_wayback_machine_infobar_view.cc",
-      "brave_wayback_machine_infobar_view.h",
-    ]
-
-    deps = [
-      "//brave/app:brave_generated_resources_grit",
-      "//brave/app/theme:brave_theme_resources",
-      "//brave/app/vector_icons",
-      "//brave/browser/themes",
-      "//brave/components/brave_wayback_machine",
-      "//chrome/browser:theme_properties",
-      "//components/infobars/content",
-      "//components/infobars/core",
-      "//components/prefs:prefs",
-      "//components/resources",
-      "//components/user_prefs",
-      "//content/public/browser",
-      "//ui/base",
-      "//ui/gfx",
-      "//ui/native_theme",
-      "//ui/views",
-      "//url",
-    ]
-
-    # Below dep list are indirectly used by brave_wayback_machine target.
-    # Only added to fix intermittent build failure.
-    # chrome/common/buildflags.h is included indirectly from
-    # brave_wayback_machine_infobar_contents_view.cc.
-    # However, this buildflags.h sometimes not generated when
-    # brave_wayback_machine_infobar_contents_view.cc is compiled.
-    deps += [ "//chrome/common:buildflags" ]
-  }
-}
-
 source_set("brave_sync_account_deleted_infobar") {
   # Remove when https://github.com/brave/brave-browser/issues/10652 is resolved
   check_includes = false

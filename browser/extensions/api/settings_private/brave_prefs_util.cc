@@ -16,7 +16,6 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/common/pref_names.h"
@@ -42,10 +41,6 @@
 #include "components/search_engines/search_engines_pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/components/brave_wayback_machine/pref_names.h"
-#endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/pref_names.h"
@@ -231,10 +226,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kMRUCyclingEnabled] = settings_api::PrefType::kBoolean;
   // WebTorrent pref
   (*s_brave_allowlist)[kWebTorrentEnabled] = settings_api::PrefType::kBoolean;
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  (*s_brave_allowlist)[kBraveWaybackMachineEnabled] =
-      settings_api::PrefType::kBoolean;
-#endif
   (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kEnableClosingLastTab] =

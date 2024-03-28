@@ -94,6 +94,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void UpdateCommandForSidebar();
   void UpdateCommandForBraveVPN();
   void UpdateCommandForPlaylist();
+  void UpdateCommandForWaybackMachine();
   void UpdateCommandsForTabs();
   void UpdateCommandsForSend();
   void UpdateCommandsForPin();
