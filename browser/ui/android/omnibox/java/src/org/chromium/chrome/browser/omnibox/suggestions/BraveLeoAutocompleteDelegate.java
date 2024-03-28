@@ -11,5 +11,7 @@ import org.chromium.content_public.browser.WebContents;
  * Provides additional functionality to trigger and interact with Brave Leo autocomplete suggestion.
  */
 public interface BraveLeoAutocompleteDelegate {
+    boolean isLeoEnabled();
+
     void openLeoQuery(WebContents webContents, String query);
 }
