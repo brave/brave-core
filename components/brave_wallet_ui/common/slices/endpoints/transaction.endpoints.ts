@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { Store } from '@reduxjs/toolkit'
 import { mapLimit } from 'async'
 
 // types
@@ -35,7 +34,10 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import { PanelActions } from '../../../panel/actions'
 
 // utils
-import { handleEndpointError } from '../../../utils/api-utils'
+import {
+  handleEndpointError,
+  navigateToConnectHardwareWallet
+} from '../../../utils/api-utils'
 import {
   getAccountType,
   findAccountByAccountId
@@ -46,10 +48,7 @@ import {
   getCoinFromTxDataUnion
 } from '../../../utils/network-utils'
 import { TX_CACHE_TAGS } from '../../../utils/query-cache-utils'
-import {
-  sortTransactionByDate,
-  toTxDataUnion
-} from '../../../utils/tx-utils'
+import { sortTransactionByDate, toTxDataUnion } from '../../../utils/tx-utils'
 import {
   signLedgerEthereumTransaction,
   signLedgerFilecoinTransaction,
@@ -1485,21 +1484,4 @@ async function sendEvmTransaction({
   return {
     data: { success }
   }
-}
-
-// panel internals
-function navigateToConnectHardwareWallet(
-  panelHandler: BraveWallet.PanelHandlerRemote,
-  store: Pick<Store, 'dispatch' | 'getState'>
-) {
-  panelHandler.setCloseOnDeactivate(false)
-
-  const selectedPanel: string = store.getState()?.panel?.selectedPanel
-
-  if (selectedPanel === 'connectHardwareWallet') {
-    return
-  }
-
-  store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
-  store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
 }

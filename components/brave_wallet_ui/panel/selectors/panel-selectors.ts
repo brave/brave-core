@@ -21,8 +21,5 @@ export const selectedTransactionId = ({ panel }: State) =>
   panel.selectedTransactionId
 export const signAllTransactionsRequests = ({ panel }: State) =>
   panel.signAllTransactionsRequests
-export const signMessageData = ({ panel }: State) => panel.signMessageData
 export const signTransactionRequests = ({ panel }: State) =>
   panel.signTransactionRequests
-export const signMessageErrorData = ({ panel }: State) =>
-  panel.signMessageErrorData

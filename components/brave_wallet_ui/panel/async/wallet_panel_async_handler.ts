@@ -19,15 +19,11 @@ import {
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
   SignTransactionHardwarePayload,
-  SignAllTransactionsHardwarePayload,
-  SignMessageHardwarePayload
+  SignAllTransactionsHardwarePayload
 } from '../constants/action_types'
 import {
-  signMessageWithHardwareKeyring,
   signRawTransactionWithHardwareKeyring,
-  cancelHardwareOperation,
-  dialogErrorFromLedgerErrorCode,
-  dialogErrorFromTrezorErrorCode
+  cancelHardwareOperation
 } from '../../common/async/hardware'
 
 import { Store } from '../../common/async/types'
@@ -36,6 +32,7 @@ import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { isHardwareAccount } from '../../utils/account-utils'
 import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
 import { storeCurrentAndPreviousPanel } from '../../utils/local-storage-utils'
+import { toByteArrayStringUnion } from '../../utils/mojo-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -53,25 +50,6 @@ async function refreshWalletInfo(store: Store) {
       skipBalancesRefresh: true
     })
   )
-}
-
-async function getPendingSignMessageRequests() {
-  const braveWalletService = getWalletPanelApiProxy().braveWalletService
-  const requests = (await braveWalletService.getPendingSignMessageRequests())
-    .requests
-  if (requests && requests.length) {
-    return requests
-  }
-  return null
-}
-
-async function getPendingSignMessageErrors() {
-  const braveWalletService = getWalletPanelApiProxy().braveWalletService
-  const errors = (await braveWalletService.getPendingSignMessageErrors()).errors
-  if (errors && errors.length) {
-    return errors
-  }
-  return null
 }
 
 async function getPendingSignTransactionRequests() {
@@ -169,132 +147,6 @@ handler.on(
     store.dispatch(PanelActions.navigateTo('connectWithSite'))
     const apiProxy = getWalletPanelApiProxy()
     apiProxy.panelHandler.showUI()
-  }
-)
-
-handler.on(PanelActions.signMessage.type, async (store: Store) => {
-  store.dispatch(PanelActions.navigateTo('signData'))
-  const apiProxy = getWalletPanelApiProxy()
-  apiProxy.panelHandler.showUI()
-})
-
-handler.on(
-  PanelActions.signMessageProcessed.type,
-  async (store: Store, payload: SignMessageProcessedPayload) => {
-    const apiProxy = getWalletPanelApiProxy()
-    const braveWalletService = apiProxy.braveWalletService
-    braveWalletService.notifySignMessageRequestProcessed(
-      payload.approved,
-      payload.id,
-      null,
-      null
-    )
-    const signMessageRequests = await getPendingSignMessageRequests()
-    if (signMessageRequests) {
-      store.dispatch(PanelActions.signMessage(signMessageRequests))
-      return
-    }
-    apiProxy.panelHandler.closeUI()
-  }
-)
-
-function toByteArrayStringUnion<
-  D extends keyof BraveWallet.ByteArrayStringUnion
->(unionItem: Pick<BraveWallet.ByteArrayStringUnion, D>) {
-  return Object.assign({}, unionItem) as BraveWallet.ByteArrayStringUnion
-}
-
-handler.on(
-  PanelActions.signMessageHardware.type,
-  async (store, messageData: SignMessageHardwarePayload) => {
-    const apiProxy = getWalletPanelApiProxy()
-    if (!isHardwareAccount(messageData.account.accountId)) {
-      const braveWalletService = apiProxy.braveWalletService
-      braveWalletService.notifySignMessageRequestProcessed(
-        false,
-        messageData.request.id,
-        null,
-        getLocale('braveWalletHardwareAccountNotFound')
-      )
-      const signMessageRequests = await getPendingSignMessageRequests()
-      if (signMessageRequests) {
-        store.dispatch(PanelActions.signMessage(signMessageRequests))
-        return
-      }
-      apiProxy.panelHandler.closeUI()
-      return
-    }
-    await navigateToConnectHardwareWallet(store)
-    const coin = messageData.account.accountId.coin
-    const info = messageData.account.hardware
-    assert(info)
-
-    const signed = await signMessageWithHardwareKeyring(
-      // eslint-disable @typescript-eslint/no-unnecessary-type-assertion
-      info.vendor as HardwareVendor,
-      // eslint-enable @typescript-eslint/no-unnecessary-type-assertion
-      info.path,
-      messageData.request
-    )
-    if (!signed.success && signed.code) {
-      if (signed.code === 'unauthorized') {
-        await store.dispatch(
-          PanelActions.setHardwareWalletInteractionError(signed.code)
-        )
-        return
-      }
-      const deviceError =
-        info.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR
-          ? dialogErrorFromTrezorErrorCode(signed.code)
-          : dialogErrorFromLedgerErrorCode(signed.code)
-      if (deviceError !== 'transactionRejected') {
-        await store.dispatch(
-          PanelActions.setHardwareWalletInteractionError(deviceError)
-        )
-        return
-      }
-    }
-    let signature: BraveWallet.ByteArrayStringUnion | undefined
-    if (signed.success) {
-      signature =
-        coin === BraveWallet.CoinType.SOL
-          ? toByteArrayStringUnion({ bytes: [...(signed.payload as Buffer)] })
-          : toByteArrayStringUnion({ str: signed.payload as string })
-    }
-    const payload: SignMessageProcessedPayload = signed.success
-      ? {
-          approved: signed.success,
-          id: messageData.request.id,
-          signature: signature
-        }
-      : {
-          approved: signed.success,
-          id: messageData.request.id,
-          error: signed.error as string | undefined
-        }
-    store.dispatch(PanelActions.signMessageHardwareProcessed(payload))
-    await store.dispatch(PanelActions.navigateToMain())
-    apiProxy.panelHandler.closeUI()
-  }
-)
-
-handler.on(
-  PanelActions.signMessageHardwareProcessed.type,
-  async (store, payload: SignMessageProcessedPayload) => {
-    const apiProxy = getWalletPanelApiProxy()
-    const braveWalletService = apiProxy.braveWalletService
-    braveWalletService.notifySignMessageRequestProcessed(
-      payload.approved,
-      payload.id,
-      payload.signature || null,
-      payload.error || null
-    )
-    const signMessageRequests = await getPendingSignMessageRequests()
-    if (signMessageRequests) {
-      store.dispatch(PanelActions.signMessage(signMessageRequests))
-      return
-    }
-    apiProxy.panelHandler.closeUI()
   }
 )
 
@@ -492,25 +344,6 @@ handler.on(
   }
 )
 
-handler.on(PanelActions.signMessageError.type, async (store: Store) => {
-  const { panelHandler } = getWalletPanelApiProxy()
-  panelHandler.showUI()
-})
-
-handler.on(
-  PanelActions.signMessageErrorProcessed.type,
-  async (store: Store, id: string) => {
-    const { braveWalletService, panelHandler } = getWalletPanelApiProxy()
-    braveWalletService.notifySignMessageErrorProcessed(id)
-    const requests = await getPendingSignMessageErrors()
-    if (requests) {
-      store.dispatch(PanelActions.signMessageError(requests))
-      return
-    }
-    panelHandler.closeUI()
-  }
-)
-
 handler.on(PanelActions.setupWallet.type, async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet' }, () => {
     if (chrome.runtime.lastError) {
@@ -567,18 +400,6 @@ handler.on(WalletActions.initialize.type, async (store) => {
       store.dispatch(
         PanelActions.signAllTransactions(signAllTransactionsRequests)
       )
-      return
-    }
-
-    const signMessageRequests = await getPendingSignMessageRequests()
-    if (signMessageRequests) {
-      store.dispatch(PanelActions.signMessage(signMessageRequests))
-      return
-    }
-
-    const signMessageErrors = await getPendingSignMessageErrors()
-    if (signMessageErrors) {
-      store.dispatch(PanelActions.signMessageError(signMessageErrors))
       return
     }
   }

@@ -98,7 +98,6 @@ export type PanelTypes =
   | 'networks'
   | 'send'
   | 'settings'
-  | 'signData'
   | 'signTransaction'
   | 'signAllTransactions'
   | 'sitePermissions'
@@ -206,12 +205,10 @@ export interface PanelState {
   connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
   connectingAccounts: string[]
-  signMessageData: BraveWallet.SignMessageRequest[]
   signTransactionRequests: BraveWallet.SignTransactionRequest[]
   signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]
   hardwareWalletCode?: HardwareWalletResponseCodeType
   selectedTransactionId?: string
-  signMessageErrorData: BraveWallet.SignMessageError[]
 }
 
 export interface PageState {

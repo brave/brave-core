@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import Button from '@brave/leo/react/button'
 
 // Types
@@ -13,14 +12,15 @@ import { BraveWallet } from '../../../constants/types'
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
-
-// Selectors
-import { useUnsafePanelSelector } from '../../../common/hooks/use-safe-selector'
-import { PanelSelectors } from '../../../panel/selectors'
+import {
+  useGetPendingSignMessageErrorsQuery,
+  useProcessSignMessageErrorMutation
+} from '../../../common/slices/api.slice'
 
 // Components
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
 
+// Style
 import {
   StyledWrapper,
   Title,
@@ -32,20 +32,16 @@ import {
   LaunchIcon
 } from './sign_in_with_ethereum.style'
 import { Row, Column, VerticalDivider, VerticalSpace } from '../../shared/style'
-import { PanelActions } from '../../../panel/actions'
 
 export const SignInWithEthereumError = () => {
-  // Redux
-  const dispatch = useDispatch()
+  // Queries
+  const { data: signMessageErrorData } = useGetPendingSignMessageErrorsQuery()
 
-  // Selectors
-  const signMessageErrorData = useUnsafePanelSelector(
-    PanelSelectors.signMessageErrorData
-  )
+  // Mutations
+  const [processSignMessageError] = useProcessSignMessageErrorMutation()
 
   // Computed
-  const errorData =
-    signMessageErrorData.length === 0 ? undefined : signMessageErrorData[0]
+  const errorData = signMessageErrorData?.[0]
 
   const message = errorData?.localizedErrMsg ?? ''
   const address = message.substring(
@@ -77,11 +73,10 @@ export const SignInWithEthereumError = () => {
     )
   }
 
-  const onClickClose = () => {
-    if (!errorData?.id) {
-      return
+  const onClickClose = async () => {
+    if (errorData?.id) {
+      await processSignMessageError(errorData.id).unwrap()
     }
-    dispatch(PanelActions.signMessageErrorProcessed(errorData.id))
   }
 
   return (

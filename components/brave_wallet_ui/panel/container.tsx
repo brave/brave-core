@@ -46,6 +46,8 @@ import {
   useGetPendingAddChainRequestQuery,
   useGetPendingDecryptRequestQuery,
   useGetPendingGetEncryptionPublicKeyRequestQuery,
+  useGetPendingSignMessageErrorsQuery,
+  useGetPendingSignMessageRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
@@ -91,12 +93,8 @@ function Container() {
   const connectToSiteOrigin = useUnsafePanelSelector(
     PanelSelectors.connectToSiteOrigin
   )
-  const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
   const connectingAccounts = useUnsafePanelSelector(
     PanelSelectors.connectingAccounts
-  )
-  const signMessageErrorData = useUnsafePanelSelector(
-    PanelSelectors.signMessageErrorData
   )
   const signTransactionRequests = useUnsafePanelSelector(
     PanelSelectors.signTransactionRequests
@@ -113,6 +111,8 @@ function Container() {
   const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
   const { data: getEncryptionPublicKeyRequest } =
     useGetPendingGetEncryptionPublicKeyRequestQuery()
+  const { data: signMessageData } = useGetPendingSignMessageRequestsQuery()
+  const { data: signMessageErrorData } = useGetPendingSignMessageErrorsQuery()
   const { data: addTokenRequests = [] } =
     useGetPendingTokenSuggestionRequestsQuery()
 
@@ -174,7 +174,7 @@ function Container() {
   if (
     selectedAccount &&
     (selectedPendingTransaction ||
-      signMessageData.length ||
+      signMessageData?.length ||
       signAllTransactionsRequests.length ||
       signTransactionRequests.length) &&
     selectedPanel === 'connectHardwareWallet'
@@ -211,7 +211,7 @@ function Container() {
     )
   }
 
-  if (signMessageErrorData.length !== 0) {
+  if (signMessageErrorData?.length) {
     return (
       <PanelWrapper>
         <SignInWithEthereumError />
@@ -239,7 +239,7 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'signData') {
+  if (signMessageData?.length) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>

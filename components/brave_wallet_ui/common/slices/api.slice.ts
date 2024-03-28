@@ -47,6 +47,7 @@ import { sitePermissionEndpoints } from './endpoints/site_permissions.endpoints'
 import { transactionEndpoints } from './endpoints/transaction.endpoints'
 import { swapEndpoints } from './endpoints/swap.endpoints'
 import { encryptionEndpoints } from './endpoints/encryption.endpoints'
+import { signingEndpoints } from './endpoints/signing.endpoints'
 
 export function createWalletApi() {
   // base to add endpoints to
@@ -151,6 +152,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: swapEndpoints })
       // Encryption endpoints
       .injectEndpoints({ endpoints: encryptionEndpoints })
+      // Message Signing endpoints
+      .injectEndpoints({ endpoints: signingEndpoints })
   )
 }
 
@@ -222,6 +225,8 @@ export const {
   useGetPendingAddChainRequestQuery,
   useGetPendingDecryptRequestQuery,
   useGetPendingGetEncryptionPublicKeyRequestQuery,
+  useGetPendingSignMessageErrorsQuery,
+  useGetPendingSignMessageRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery,
   useGetPriceHistoryQuery,
@@ -287,6 +292,8 @@ export const {
   usePrefetch,
   useProcessPendingDecryptRequestMutation,
   useProcessPendingGetEncryptionPublicKeyRequestMutation,
+  useProcessSignMessageErrorMutation,
+  useProcessSignMessageRequestMutation,
   useRefreshNetworkInfoMutation,
   useRejectTransactionsMutation,
   useRemoveAccountMutation,
@@ -315,6 +322,7 @@ export const {
   useSetNftDiscoveryEnabledMutation,
   useSetSelectedAccountMutation,
   useShowRecoveryPhraseMutation,
+  useSignMessageHardwareMutation,
   useSpeedupTransactionMutation,
   useTransactionStatusChangedMutation,
   useUnapprovedTxUpdatedMutation,
