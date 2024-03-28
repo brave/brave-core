@@ -4,6 +4,7 @@
 
 import BraveCore
 import BraveWallet
+import CertificateUtilities
 import Data
 import Favicon
 import Foundation
@@ -101,7 +102,59 @@ class Tab: NSObject {
     return type.isPrivate
   }
 
-  var secureContentState: TabSecureContentState = .unknown
+  private(set) var lastKnownSecureContentState: TabSecureContentState = .unknown
+  func updateSecureContentState() async {
+    lastKnownSecureContentState = await secureContentState
+  }
+  @MainActor private var secureContentState: TabSecureContentState {
+    get async {
+      guard let webView = webView, let url = webView.url else {
+        return .unknown
+      }
+      if let internalURL = InternalURL(url) {
+        if internalURL.isErrorPage, ErrorPageHelper.certificateError(for: url) != 0 {
+          return .invalidCert
+        }
+        return .localhost
+      }
+      if let tabURL = self.url, url.baseDomain != tabURL.baseDomain {
+        // If the web view is loading a new base domain the tab url wont match up until the load
+        // is committed.
+        return .unknown
+      }
+      if url.scheme?.lowercased() == "http" {
+        return .missingSSL
+      }
+      if let serverTrust = webView.serverTrust,
+        case let origin = url.origin, !origin.isOpaque
+      {
+        let isMixedContent = !webView.hasOnlySecureContent
+        let result = await BraveCertificateUtils.verifyTrust(
+          serverTrust,
+          host: origin.host,
+          port: Int(origin.port)
+        )
+        switch result {
+        case 0:
+          // Cert is valid
+          return isMixedContent ? .mixedContent : .secure
+        case Int(Int32.min):
+          // Cert is valid but should be validated by the system
+          // Let the system handle it and we'll show an error if the system cannot validate it
+          do {
+            try await BraveCertificateUtils.evaluateTrust(serverTrust, for: origin.host)
+            return isMixedContent ? .mixedContent : .secure
+          } catch {
+            return .invalidCert
+          }
+        default:
+          return .invalidCert
+        }
+      }
+      return .unknown
+    }
+  }
+
   var sslPinningError: Error?
 
   private let _syncTab: BraveSyncTab?
