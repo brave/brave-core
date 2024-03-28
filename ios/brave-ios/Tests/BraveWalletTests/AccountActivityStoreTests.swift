@@ -55,8 +55,9 @@ class AccountActivityStoreTests: XCTestCase {
   ) -> (
     BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService,
     BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry,
-    BraveWallet.TestAssetRatioService, BraveWallet.TestTxService,
-    BraveWallet.TestSolanaTxManagerProxy, IpfsAPI
+    BraveWallet.TestAssetRatioService, BraveWallet.TestSwapService,
+    BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy,
+    IpfsAPI
   ) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -133,10 +134,24 @@ class AccountActivityStoreTests: XCTestCase {
     blockchainRegistry._allTokens = { chainId, coin, completion in
       completion(self.tokenRegistry[coin] ?? [])
     }
+    blockchainRegistry._buyTokens = { _, chainId, completion in
+      let tokensForChainId = self.tokenRegistry
+        .flatMap(\.value)
+        .filter { $0.chainId == chainId }
+      completion(tokensForChainId)
+    }
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
       completion(true, self.mockAssetPrices)
+    }
+
+    let swapService = BraveWallet.TestSwapService()
+    swapService._isSwapSupported = { chainId, completion in
+      let isSupported =
+        chainId == BraveWallet.MainnetChainId
+        || chainId == BraveWallet.SolanaMainnet
+      completion(isSupported)
     }
 
     let txService = BraveWallet.TestTxService()
@@ -151,8 +166,8 @@ class AccountActivityStoreTests: XCTestCase {
     let ipfsApi = TestIpfsAPI()
 
     return (
-      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService,
-      solTxManagerProxy, ipfsApi
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
     )
   }
 
@@ -192,8 +207,8 @@ class AccountActivityStoreTests: XCTestCase {
     goerliSwapTxCopy.chainId = BraveWallet.GoerliChainId
 
     let (
-      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService,
-      solTxManagerProxy, ipfsApi
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
     ) = setupServices(
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
@@ -234,6 +249,7 @@ class AccountActivityStoreTests: XCTestCase {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
+      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
@@ -380,8 +396,8 @@ class AccountActivityStoreTests: XCTestCase {
     solTestnetSendTxCopy.chainId = BraveWallet.SolanaTestnet
 
     let (
-      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService,
-      solTxManagerProxy, ipfsApi
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
     ) = setupServices(
       mockLamportBalance: mockLamportBalance,
       mockSplTokenBalances: mockSplTokenBalances,
@@ -421,6 +437,7 @@ class AccountActivityStoreTests: XCTestCase {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
+      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
@@ -582,8 +599,8 @@ class AccountActivityStoreTests: XCTestCase {
       ) ?? ""
 
     let (
-      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService,
-      solTxManagerProxy, ipfsApi
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
     ) = setupServices(
       mockFilBalance: mockFilDecimalBalanceInWei,
       mockFilTestnetBalance: mockFilTestnetDecimalBalanceInWei,
@@ -621,6 +638,7 @@ class AccountActivityStoreTests: XCTestCase {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
+      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,

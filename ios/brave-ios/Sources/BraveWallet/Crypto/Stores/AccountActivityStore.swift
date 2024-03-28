@@ -19,6 +19,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   }
   @Published private(set) var isLoadingAccountFiat: Bool = false
   @Published private(set) var accountTotalFiat: String = "$0.00"
+  @Published private(set) var isBuySupported: Bool = true
+  @Published private(set) var isSwapSupported: Bool
   @Published private(set) var userAssets: [AssetViewModel] = []
   @Published private(set) var userNFTs: [NFTAssetViewModel] = []
   /// Sections of transactions for display. Each section represents one date.
@@ -37,6 +39,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
   private let assetRatioService: BraveWalletAssetRatioService
+  private let swapService: BraveWalletSwapService
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
@@ -67,6 +70,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     walletService: BraveWalletBraveWalletService,
     rpcService: BraveWalletJsonRpcService,
     assetRatioService: BraveWalletAssetRatioService,
+    swapService: BraveWalletSwapService,
     txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
@@ -79,11 +83,15 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     self.walletService = walletService
     self.rpcService = rpcService
     self.assetRatioService = assetRatioService
+    self.swapService = swapService
     self.txService = txService
     self.blockchainRegistry = blockchainRegistry
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
+    self._isSwapSupported = .init(
+      wrappedValue: account.coin == .eth || account.coin == .sol
+    )
 
     self.setupObservers()
 
@@ -160,6 +168,26 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         // .fil coin type has two different keyring ids
         $0.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
       }
+      for network in networksForAccount {
+        // Defaults to checking `eth` & `sol` coin type, but
+        // we can provide additional local check against user's
+        // custom networks with swap service
+        let isSwapSupportedForNetwork = await swapService.isSwapSupported(
+          chainId: network.chainId
+        )
+        if isSwapSupportedForNetwork && !self.isSwapSupported {
+          self.isSwapSupported = isSwapSupportedForNetwork
+          break
+        }
+      }
+      let buyOptions: [BraveWallet.OnRampProvider] = Array(
+        BraveWallet.OnRampProvider.allSupportedOnRampProviders
+      )
+      let buyTokenOptions = await blockchainRegistry.allBuyTokens(
+        in: networksForAccount,
+        for: buyOptions
+      ).flatMap(\.value)
+      self.isBuySupported = !buyTokenOptions.isEmpty
       // Include user deleted for case user sent an NFT
       // then deleted it, we need it for display in transaction list
       let allUserNetworkAssets = assetManager.getAllUserAssetsInNetworkAssets(
