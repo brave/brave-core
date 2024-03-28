@@ -728,10 +728,10 @@ public class BraveRewardsPanel
                         BraveRewardsHelper.spannedFromHtmlString(grantMessage));
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT_ADS: // Ads grant
-                String grantAmount = args[0];
-                long createdAtGrantAds = Long.parseLong(args[1]);
-                long claimableUntilGrantAds = Long.parseLong(args[2]);
-                if (claimableUntilGrantAds < new Date().getTime()) {
+                String grantAmount =  (args.length > 0) ? args[0] : "";
+                long createdAtGrantAds = (args.length > 1) ? Long.parseLong(args[1]) : 0l;
+                long claimableUntilGrantAds = (args.length > 2) ? Long.parseLong(args[2]) : 0l;
+                if (claimableUntilGrantAds < new Date().getTime() || createdAtGrantAds == 0l) {
                     return;
                 }
                 String createdAtMonthGrantAds = (String) android.text.format.DateFormat.format(
