@@ -10,7 +10,7 @@
 #define kChromeUIAttributionInternalsHost                                     \
   kChromeUIAttributionInternalsHost, kAdblockHost, kAdblockInternalsHost,     \
       kRewardsPageHost, kRewardsInternalsHost, kWelcomeHost, kWalletPageHost, \
-      kTorInternalsHost, kSkusInternalsHost
+      kTorInternalsHost, kSkusInternalsHost, kBraveNewsInternalsHost
 #define kChromeUIPerformanceSettingsURL kChromeUIPerformanceSettingsURL_UnUsed
 #define kPerformanceSubPage kPerformanceSubPage_UnUsed
 
