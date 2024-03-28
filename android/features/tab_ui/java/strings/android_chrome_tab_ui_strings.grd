@@ -207,7 +207,7 @@
         Hide fullscreen grid
       </message>
       <message name="IDS_TAB_GRID_INVITE_BUTTON_TEXT" desc="Text for sharing the current tab group from the tab group dialog bottom toolbar.">
-        Invite profiles
+        Invite people
       </message>
 
       <!-- Bottom Tab Strip strings -->

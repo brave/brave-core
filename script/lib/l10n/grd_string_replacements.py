@@ -68,6 +68,8 @@ fixup_replacements = [
     (r'Brave Projects', r'Chromium Projects'),
     (r'BraveVox', r'ChromeVox'),
     (r'powered by Brave AI', r'powered by Google AI'),
+    (r'Invite profiles', r'Invite people'),
+    (r'Profiles & Society', r'People & Society'),
 ]
 
 
