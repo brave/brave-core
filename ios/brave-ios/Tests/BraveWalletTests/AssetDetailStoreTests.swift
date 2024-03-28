@@ -234,7 +234,6 @@ class AssetDetailStoreTests: XCTestCase {
   }
 
   func testUpdateWithCoinMarket() {
-    let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()

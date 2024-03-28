@@ -196,6 +196,7 @@ extension AccountActivityStore {
       walletService: MockBraveWalletService(),
       rpcService: MockJsonRpcService(),
       assetRatioService: MockAssetRatioService(),
+      swapService: MockSwapService(),
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
