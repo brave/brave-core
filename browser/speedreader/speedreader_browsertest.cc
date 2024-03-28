@@ -959,16 +959,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspInBody) {
                                   ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 }
 
-class SpeedReaderWithDistillationServiceBrowserTest
-    : public SpeedReaderBrowserTest {
- public:
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    SpeedReaderBrowserTest::SetUpCommandLine(command_line);
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(SpeedReaderWithDistillationServiceBrowserTest,
-                       OnDemandReader) {
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEnableForSite) {
   EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
 
   struct MockObserver : speedreader::PageDistiller::Observer {
@@ -998,6 +989,15 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithDistillationServiceBrowserTest,
       tab_helper()->PageDistillState()));
 
   ClickReaderButton();
+
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
+
+  // Enable speedreader for site explicitly.
+  speedreader_service()->EnableForSite(ActiveWebContents(), true);
+  ActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
+                                              false);
+  WaitDistilled();
 
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
