@@ -6,10 +6,11 @@
 #include <utility>
 #include <vector>
 
-#include "base/big_endian.h"
 #include "base/containers/contains.h"
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
@@ -119,7 +120,8 @@ std::string GetPublisherChannelResponse(
   // Add padding header
   uint32_t length = out.length();
   out.insert(0, 4, ' ');
-  base::WriteBigEndian(&out[0], length);
+  base::as_writable_byte_span(out).first<4u>().copy_from(
+      base::numerics::U32ToBigEndian(length));
   return out;
 }
 
