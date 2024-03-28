@@ -913,6 +913,15 @@ class SettingsViewController: TableViewController {
             self.navigationController?.pushViewController(controller, animated: true)
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
+          text: "Leo Logs",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: AIChatLeoPurchaseLogs())
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
           text: "Retention Preferences Debug Menu",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(

@@ -26,12 +26,6 @@ extension Preferences {
       default: nil
     )
 
-    /// A boolean indicating whether or not the user has any credentials stored locally on device
-    public static let subscriptionHasCredentials = Option<Bool>(
-      key: "aichat.credentials",
-      default: false
-    )
-
     /// A boolean indicating whether or not the user has URL-Bar/Search-Bar auto-complete for AI-Chat
     public static let autocompleteSuggestionsEnabled = Option<Bool>(
       key: "aichat.autocompletesuggestions-enabled",
