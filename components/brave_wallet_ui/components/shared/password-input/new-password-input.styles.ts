@@ -38,3 +38,11 @@ export const PasswordMatchCheckmark = styled.div`
   mask-size: contain;
   vertical-align: middle;
 `
+
+export const TooltipWrapper = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: calc(100% - 90px);
+`

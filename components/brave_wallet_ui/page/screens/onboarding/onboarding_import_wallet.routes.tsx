@@ -34,6 +34,7 @@ import {
 import {
   OnboardingRestoreFromExtension //
 } from './restore-from-recovery-phrase/restore-from-extension'
+import { OnboardingImportWalletType } from './components/onboarding-import-wallet-type/onboarding-import-wallet-type'
 
 export const OnboardingImportWalletRoutes = () => {
   // redux
@@ -45,6 +46,12 @@ export const OnboardingImportWalletRoutes = () => {
   // render
   return (
     <Switch>
+      <Route
+        path={WalletRoutes.OnboardingImportSelectWalletType}
+        exact
+      >
+        <OnboardingImportWalletType />
+      </Route>
       <Route
         path={WalletRoutes.OnboardingImportTerms}
         exact

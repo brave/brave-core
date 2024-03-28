@@ -532,6 +532,24 @@ export const walletEndpoints = ({
           )
         }
       }
+    }),
+
+    setAutoLockMinutes: mutation<boolean, number>({
+      queryFn: async (minutes, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const result = await api.keyringService.setAutoLockMinutes(minutes)
+          return {
+            data: result.success
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'An error occurred while attempting to set the auto lock minutes',
+            error
+          )
+        }
+      }
     })
   }
 }

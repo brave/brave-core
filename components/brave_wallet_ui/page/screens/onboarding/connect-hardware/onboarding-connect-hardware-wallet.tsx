@@ -11,14 +11,22 @@ import {
   WalletRoutes
 } from '../../../../constants/types'
 
+// utils
+import { CreateAccountOptions } from '../../../../options/create-account-options'
+
 // components
-import {
-  WalletPageLayout //
-} from '../../../../components/desktop/wallet-page-layout/index'
-import AddHardwareAccountModal from '../../../../components/desktop/popup-modals/add-account-modal/add-hardware-account-modal'
+import { AccountType } from './components/account-type'
+import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
 
 // styles
-import { OnboardingWrapper } from '../onboarding.style'
+import { VerticalSpace } from '../../../../components/shared/style'
+import { Divider } from './components/account-type.style'
+import { getLocale } from '../../../../../common/locale'
+
+const accountOptions = CreateAccountOptions({
+  isBitcoinEnabled: false, // No bitcoin hardware accounts by now.
+  isZCashEnabled: false // No zcash hardware accounts by now.
+})
 
 export const OnboardingConnectHardwareWallet = () => {
   // routing
@@ -28,7 +36,7 @@ export const OnboardingConnectHardwareWallet = () => {
   const onSelectAccountType = React.useCallback(
     (accountType: CreateAccountOptionsType) => () => {
       history.push(
-        WalletRoutes.OnboardingHardwareWalletConnect.replace(
+        WalletRoutes.OnboardingHardwareWalletConnectSelectDevice.replace(
           ':accountTypeName?',
           accountType.name.toLowerCase()
         )
@@ -38,10 +46,21 @@ export const OnboardingConnectHardwareWallet = () => {
   )
 
   return (
-    <WalletPageLayout>
-      <OnboardingWrapper>
-        <AddHardwareAccountModal onSelectAccountType={onSelectAccountType} />
-      </OnboardingWrapper>
-    </WalletPageLayout>
+    <OnboardingContentLayout title={getLocale('braveWalletConnectHardwareWalletSelectBlockchain')}>
+      <VerticalSpace space='56px' />
+      {accountOptions.map((option, index) => {
+        return (
+          <React.Fragment key={index}>
+            <AccountType
+              title={option.name}
+              description={option.description}
+              icons={option.chainIcons ? option.chainIcons : []}
+              onClick={onSelectAccountType(option)}
+            />
+            {index !== accountOptions.length - 1 && <Divider />}
+          </React.Fragment>
+        )
+      })}
+    </OnboardingContentLayout>
   )
 }

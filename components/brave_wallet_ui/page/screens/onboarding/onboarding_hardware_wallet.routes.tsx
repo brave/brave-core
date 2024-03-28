@@ -31,6 +31,9 @@ import {
 import {
   OnboardingCreatePassword //
 } from './create-password/onboarding-create-password'
+import { OnboardingImportWalletType } from './components/onboarding-import-wallet-type/onboarding-import-wallet-type'
+import { OnboardingImportHardwareWalletWelcome } from './import-hardware-wallet-welcome/import-hardware-wallet-welcome'
+import { OnboardingSelectWalletDevice } from './select-wallet-device/onboarding-select-wallet-device'
 
 export const OnboardingHardwareWalletRoutes = () => {
   // routing
@@ -45,6 +48,18 @@ export const OnboardingHardwareWalletRoutes = () => {
   // render
   return (
     <Switch>
+      <Route
+        path={WalletRoutes.OnboardingImportHardwareWalletWelcome}
+        exact
+      >
+        <OnboardingImportHardwareWalletWelcome />
+      </Route>
+      <Route
+        path={WalletRoutes.OnboardingImportSelectWalletType}
+        exact
+      >
+        <OnboardingImportWalletType />
+      </Route>
       <Route
         path={WalletRoutes.OnboardingHardwareWalletTerms}
         exact
@@ -71,6 +86,14 @@ export const OnboardingHardwareWalletRoutes = () => {
             history.push(WalletRoutes.OnboardingHardwareWalletConnect)
           }
         />
+      </ProtectedRoute>
+
+      <ProtectedRoute
+        path={WalletRoutes.OnboardingHardwareWalletConnectSelectDevice}
+        requirement={isWalletCreated}
+        redirectRoute={WalletRoutes.OnboardingImportTerms}
+      >
+        <OnboardingSelectWalletDevice />
       </ProtectedRoute>
 
       <ProtectedRoute

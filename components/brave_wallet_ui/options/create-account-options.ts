@@ -15,21 +15,24 @@ export const CreateAccountOptions = (options: {
       description: getLocale('braveWalletCreateAccountEthereumDescription'),
       name: 'Ethereum',
       coin: BraveWallet.CoinType.ETH,
-      icon: getNetworkLogo(BraveWallet.MAINNET_CHAIN_ID, 'ETH')
+      icon: getNetworkLogo(BraveWallet.MAINNET_CHAIN_ID, 'ETH'),
+      chainIcons: ['eth-color', 'matic-color', 'op-color', 'aurora-color']
     }
   ]
   accounts.push({
     description: getLocale('braveWalletCreateAccountSolanaDescription'),
     name: 'Solana',
     coin: BraveWallet.CoinType.SOL,
-    icon: getNetworkLogo(BraveWallet.SOLANA_MAINNET, 'SOL')
+    icon: getNetworkLogo(BraveWallet.SOLANA_MAINNET, 'SOL'),
+    chainIcons: ['sol-color']
   })
 
   accounts.push({
     description: getLocale('braveWalletCreateAccountFilecoinDescription'),
     name: 'Filecoin',
     coin: BraveWallet.CoinType.FIL,
-    icon: getNetworkLogo(BraveWallet.FILECOIN_MAINNET, 'FIL')
+    icon: getNetworkLogo(BraveWallet.FILECOIN_MAINNET, 'FIL'),
+    chainIcons: ['filecoin-color']
   })
 
   if (options.isBitcoinEnabled) {
@@ -37,7 +40,8 @@ export const CreateAccountOptions = (options: {
       description: getLocale('braveWalletCreateAccountBitcoinDescription'),
       name: 'Bitcoin',
       coin: BraveWallet.CoinType.BTC,
-      icon: getNetworkLogo(BraveWallet.BITCOIN_MAINNET, 'BTC')
+      icon: getNetworkLogo(BraveWallet.BITCOIN_MAINNET, 'BTC'),
+      chainIcons: []
     })
   }
   if (options.isZCashEnabled) {
@@ -45,7 +49,8 @@ export const CreateAccountOptions = (options: {
       description: getLocale('braveWalletCreateAccountZCashDescription'),
       name: 'ZCash',
       coin: BraveWallet.CoinType.ZEC,
-      icon: getNetworkLogo(BraveWallet.Z_CASH_MAINNET, 'ZEC')
+      icon: getNetworkLogo(BraveWallet.Z_CASH_MAINNET, 'ZEC'),
+      chainIcons: []
     })
   }
   return accounts

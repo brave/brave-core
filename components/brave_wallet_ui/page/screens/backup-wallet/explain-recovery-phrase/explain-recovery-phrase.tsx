@@ -6,9 +6,11 @@
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
 import { useDispatch } from 'react-redux'
+import Button from '@brave/leo/react/button'
+import * as leo from '@brave/leo/tokens/css'
 
 // utils
-import { getLocale, splitStringForTag } from '../../../../../common/locale'
+import { getLocale } from '../../../../../common/locale'
 import { WalletPageActions } from '../../../actions'
 import {
   useReportOnboardingActionMutation //
@@ -16,53 +18,24 @@ import {
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
-import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
-
-// images
-import ExamplePhrase from './images/example-recovery-phrase.svg'
 
 // components
-import {
-  NavButton //
-} from '../../../../components/extension/buttons/nav-button/index'
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import {
-  OnboardingStepsNavigation //
-} from '../../onboarding/components/onboarding-steps-navigation/onboarding-steps-navigation'
-import { ArticleLinkBubble } from '../../onboarding/onboarding-success/components/article-link-bubble/article-link-bubble'
-import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
+import { SkipWarningDialog } from './skip-warning-dialog'
 
 // style
+import { ContinueButton } from '../../onboarding/onboarding.style'
 import {
-  StyledWrapper,
-  Title,
-  Description,
-  NextButtonRow,
-  MainWrapper
-} from '../../onboarding/onboarding.style'
-import {
-  BannerCard,
-  WarningCircle,
-  ImportantText,
-  BannerText,
-  CenteredRow
+  Subtitle,
+  BackupInstructions,
+  ExampleRecoveryPhrase
 } from './explain-recovery-phrase.style'
-
-const importantTextParts = splitStringForTag(
-  getLocale('braveWalletRecoveryPhraseBackupWarningImportant')
-)
-
-const ImportantTextSegments = () => {
-  return (
-    <BannerText>
-      {importantTextParts.beforeTag}
-      <ImportantText>{importantTextParts.duringTag}</ImportantText>
-      {importantTextParts.afterTag}
-    </BannerText>
-  )
-}
+import { Column, VerticalSpace } from '../../../../components/shared/style'
+import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
 
 export const RecoveryPhraseExplainer = () => {
+  // state
+  const [isSkipWarningOpen, setIsSkipWarningOpen] = React.useState(false)
+
   // redux
   const dispatch = useDispatch()
 
@@ -85,6 +58,14 @@ export const RecoveryPhraseExplainer = () => {
     history.push(WalletRoutes.PortfolioAssets)
   }
 
+  const onContinue = () => {
+    history.push(
+      isOnboarding
+        ? WalletRoutes.OnboardingBackupRecoveryPhrase
+        : WalletRoutes.BackupRecoveryPhrase
+    )
+  }
+
   // effects
   React.useEffect(() => {
     report(BraveWallet.OnboardingAction.RecoverySetup)
@@ -92,69 +73,46 @@ export const RecoveryPhraseExplainer = () => {
 
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-          {isOnboarding ? (
-            <OnboardingStepsNavigation
-              preventGoBack
-              preventSkipAhead
-              onSkip={skipBackup}
-            />
-          ) : (
-            <StepsNavigation
-              steps={WALLET_BACKUP_STEPS}
-              preventGoBack
-              currentStep={WalletRoutes.BackupExplainRecoveryPhrase}
-              preventSkipAhead
-              onSkip={skipBackup}
-            />
+    <>
+      <SkipWarningDialog
+        isOpen={isSkipWarningOpen}
+        onBack={() => setIsSkipWarningOpen(false)}
+        onSkip={skipBackup}
+      />
+      <OnboardingContentLayout
+        title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
+        subTitle=''
+      >
+        <Subtitle>
+          {getLocale(
+            'braveWalletOnboardingRecoveryPhraseBackupIntroDescription'
           )}
+        </Subtitle>
+        <VerticalSpace space='14px' />
+        <BackupInstructions>
+          {getLocale('braveWalletRecoveryPhraseBackupWarningImportant')}
+        </BackupInstructions>
+        <VerticalSpace space='54px' />
 
-          <div>
-            <Title>
-              {getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
-            </Title>
-            <Description>
-              {getLocale(
-                'braveWalletOnboardingRecoveryPhraseBackupIntroDescription'
-              )}
-            </Description>
-            <CenteredRow>
-              <ArticleLinkBubble
-                icon='key'
-                iconBackgroundColor='red200'
-                text={getLocale('braveWalletArticleLinkWhatsARecoveryPhrase')}
-                url='https://brave.com/learn/wallet-recovery-phrase/'
-              />
-            </CenteredRow>
-          </div>
+        <ExampleRecoveryPhrase />
 
-          <img
-            width='376px'
-            height='118px'
-            src={ExamplePhrase}
-          />
+        <VerticalSpace space='54px' />
 
-          <BannerCard>
-            <WarningCircle />
-            <ImportantTextSegments />
-          </BannerCard>
-
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={getLocale('braveWalletButtonGotIt')}
-              url={
-                isOnboarding
-                  ? WalletRoutes.OnboardingBackupRecoveryPhrase
-                  : WalletRoutes.BackupRecoveryPhrase
-              }
-            />
-          </NextButtonRow>
-        </StyledWrapper>
-      </MainWrapper>
-    </CenteredPageLayout>
+        <Column>
+          <ContinueButton onClick={onContinue}>
+            {getLocale('braveWalletButtonVerifyPhrase')}
+          </ContinueButton>
+          <VerticalSpace space='24px' />
+          <Button
+            kind='plain-faint'
+            color={leo.color.text.secondary}
+            onClick={() => setIsSkipWarningOpen(true)}
+          >
+            {getLocale('braveWalletButtonSkip')}
+          </Button>
+        </Column>
+      </OnboardingContentLayout>
+    </>
   )
 }
 

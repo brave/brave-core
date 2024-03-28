@@ -6,6 +6,9 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
+// styles
+import { ScrollableColumn as ScrollableCol } from '../../../../components/shared/style'
+
 export const GroupingText = styled.h3`
   color: ${leo.color.text.tertiary};
   font-family: 'Inter', 'Poppins';
@@ -25,3 +28,50 @@ export const SelectAllText = styled.a`
   letter-spacing: 0.36px;
   cursor: pointer;
 `
+
+export const ScrollableColumn = styled(ScrollableCol)`
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${leo.color.gray[20]};
+    border-radius: 100px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: ${leo.color.page.background};
+  }
+`
+
+export const NetworkSelectionGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 105px);
+  gap: ${leo.spacing.m};
+  wrap: wrap;
+`
+
+export const NetworkSelectionContainer = styled.button`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 105px;
+  height: 105px;
+  align-items: center;
+  gap: 4px;
+  border-radius: 8px;
+  border: 1px solid ${leo.color.button.background};
+  padding: ${leo.spacing.xl};
+  background-color: transparent;
+  cursor: pointer;
+  overflow: hidden;
+
+  leo-checkbox {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+`
+
