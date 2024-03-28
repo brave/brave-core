@@ -36,7 +36,7 @@ class NotificationAdEventHandlerDelegate {
   virtual void OnDidFireNotificationAdTimedOutEvent(
       const NotificationAdInfo& ad) {}
 
-  // Invoked when the notification `ad` event fails for `placement_id` and
+  // Invoked when the notification ad event fails for `placement_id` and
   // `event_type`.
   virtual void OnFailedToFireNotificationAdEvent(
       const std::string& placement_id,

@@ -136,7 +136,8 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdViewedEvent(
   }
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), mojom::SearchResultAdEventType::kViewed,
+      search_result_ad->Clone(),
+      mojom::SearchResultAdEventType::kViewedImpression,
       /*intentional*/ base::DoNothing());
 }
 

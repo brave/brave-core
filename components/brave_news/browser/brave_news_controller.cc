@@ -592,7 +592,7 @@ void BraveNewsController::OnPromotedItemView(
   if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
     ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
-        brave_ads::mojom::PromotedContentAdEventType::kViewed,
+        brave_ads::mojom::PromotedContentAdEventType::kViewedImpression,
         /*intentional*/ base::DoNothing());
   }
 }
@@ -669,7 +669,7 @@ void BraveNewsController::OnDisplayAdView(
   }
   ads_service_->TriggerInlineContentAdEvent(
       item_id, creative_instance_id,
-      brave_ads::mojom::InlineContentAdEventType::kViewed,
+      brave_ads::mojom::InlineContentAdEventType::kViewedImpression,
       /*intentional*/ base::DoNothing());
 
   news_metrics_.RecordWeeklyDisplayAdsViewedCount(true);

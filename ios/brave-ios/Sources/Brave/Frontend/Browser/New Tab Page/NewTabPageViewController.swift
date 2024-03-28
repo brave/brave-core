@@ -382,8 +382,8 @@ class NewTabPageViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    reportSponsoredImageBackgroundEvent(.served) { [weak self] _ in
-      self?.reportSponsoredImageBackgroundEvent(.viewed)
+    reportSponsoredImageBackgroundEvent(.servedImpression) { [weak self] _ in
+      self?.reportSponsoredImageBackgroundEvent(.viewedImpression)
     }
 
     presentNotification()
@@ -513,7 +513,7 @@ class NewTabPageViewController: UIViewController {
       let eventType: NewTabPageP3AHelper.EventType? = {
         switch event {
         case .clicked: return .tapped
-        case .viewed: return .viewed
+        case .viewedImpression: return .viewed
         default: return nil
         }
       }()

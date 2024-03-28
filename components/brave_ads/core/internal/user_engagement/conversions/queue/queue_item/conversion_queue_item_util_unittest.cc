@@ -22,9 +22,9 @@ class BraveAdsConversionQueueItemDelayTest : public UnitTestBase {};
 TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateDelayBeforeProcessingConversionQueueItem) {
   // Arrange
-  const ConversionInfo conversion =
-      test::BuildConversion(AdType::kNotificationAd, ConfirmationType::kViewed,
-                            /*should_use_random_uuids=*/false);
+  const ConversionInfo conversion = test::BuildConversion(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/false);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
                                /*process_at=*/Now() + base::Hours(1));
@@ -37,9 +37,9 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
 TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateDelayBeforeProcessingPastDueConversionQueueItem) {
   // Arrange
-  const ConversionInfo conversion =
-      test::BuildConversion(AdType::kNotificationAd, ConfirmationType::kViewed,
-                            /*should_use_random_uuids=*/false);
+  const ConversionInfo conversion = test::BuildConversion(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/false);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion, /*process_at=*/DistantPast());
 
@@ -52,9 +52,9 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
 TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateMinimumDelayBeforeProcessingConversionQueueItem) {
   // Arrange
-  const ConversionInfo conversion =
-      test::BuildConversion(AdType::kNotificationAd, ConfirmationType::kViewed,
-                            /*should_use_random_uuids=*/false);
+  const ConversionInfo conversion = test::BuildConversion(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/false);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
                                /*process_at=*/Now() + base::Milliseconds(1));

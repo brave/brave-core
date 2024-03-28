@@ -45,19 +45,19 @@ void SearchResultAdEventHandler::FireEvent(
     return FailedToFireEvent(ad, event_type, std::move(callback));
   }
 
-  if (event_type == mojom::SearchResultAdEventType::kServed &&
+  if (event_type == mojom::SearchResultAdEventType::kServedImpression &&
       !SearchResultAdPermissionRules::HasPermission()) {
     BLOG(1, "Search result ad: Not allowed due to permission rules");
     return FailedToFireEvent(ad, event_type, std::move(callback));
   }
 
   switch (event_type) {
-    case mojom::SearchResultAdEventType::kServed: {
+    case mojom::SearchResultAdEventType::kServedImpression: {
       FireEvent(ad, event_type, std::move(callback));
       break;
     }
 
-    case mojom::SearchResultAdEventType::kViewed: {
+    case mojom::SearchResultAdEventType::kViewedImpression: {
       FireViewedEvent(std::move(ad_mojom), std::move(callback));
       break;
     }
@@ -124,7 +124,7 @@ void SearchResultAdEventHandler::SaveDepositCallback(
   if (!success) {
     BLOG(0, "Failed to save search result ad deposit");
     return FailedToFireEvent(BuildSearchResultAd(ad_mojom),
-                             mojom::SearchResultAdEventType::kViewed,
+                             mojom::SearchResultAdEventType::kViewedImpression,
                              std::move(callback));
   }
 
@@ -163,13 +163,14 @@ void SearchResultAdEventHandler::SaveCreativeSetConversionCallback(
 
   if (!success) {
     BLOG(0, "Failed to save search result ad creative set conversion");
-    return FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed,
+    return FailedToFireEvent(ad,
+                             mojom::SearchResultAdEventType::kViewedImpression,
                              std::move(callback));
   }
 
   BLOG(3, "Successfully saved search result ad creative set conversion");
 
-  MaybeFireEvent(ad, mojom::SearchResultAdEventType::kViewed,
+  MaybeFireEvent(ad, mojom::SearchResultAdEventType::kViewedImpression,
                  std::move(callback));
 }
 
@@ -249,12 +250,12 @@ void SearchResultAdEventHandler::NotifyDidFireSearchResultAdEvent(
   }
 
   switch (event_type) {
-    case mojom::SearchResultAdEventType::kServed: {
+    case mojom::SearchResultAdEventType::kServedImpression: {
       delegate_->OnDidFireSearchResultAdServedEvent(ad);
       break;
     }
 
-    case mojom::SearchResultAdEventType::kViewed: {
+    case mojom::SearchResultAdEventType::kViewedImpression: {
       delegate_->OnDidFireSearchResultAdViewedEvent(ad);
       break;
     }

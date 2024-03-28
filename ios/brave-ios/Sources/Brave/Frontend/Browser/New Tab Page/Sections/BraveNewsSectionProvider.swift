@@ -236,7 +236,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
           self?.rewards.ads.triggerPromotedContentAdEvent(
             item.content.urlHash,
             creativeInstanceId: creativeInstanceID,
-            eventType: .viewed,
+            eventType: .viewedImpression,
             completion: { _ in }
           )
         }
@@ -246,7 +246,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
           self?.rewards.ads.triggerInlineContentAdEvent(
             ad.placementID,
             creativeInstanceId: ad.creativeInstanceID,
-            eventType: .viewed,
+            eventType: .viewedImpression,
             completion: { _ in }
           )
           self?.recordWeeklyAdsViewedP3A(adViewed: true)

@@ -29,7 +29,7 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
        BuildCreatedAtTimestampUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
 
   // Act & Assert
@@ -47,7 +47,7 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
 
   // Act & Assert

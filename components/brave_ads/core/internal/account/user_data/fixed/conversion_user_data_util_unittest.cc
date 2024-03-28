@@ -30,7 +30,7 @@ class BraveAdsConversionUserDataUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
   // Arrange
   const ConversionInfo conversion = test::BuildVerifiableConversion(
-      AdType::kNotificationAd, ConfirmationType::kViewed,
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey},
       /*should_use_random_uuids=*/false);
@@ -54,9 +54,9 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
 TEST_F(BraveAdsConversionUserDataUtilTest,
        DoNotBuildVerifiableConversionUserData) {
   // Arrange
-  const ConversionInfo conversion =
-      test::BuildConversion(AdType::kNotificationAd, ConfirmationType::kViewed,
-                            /*should_use_random_uuids=*/false);
+  const ConversionInfo conversion = test::BuildConversion(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/false);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
                                /*process_at=*/Now());
@@ -67,9 +67,9 @@ TEST_F(BraveAdsConversionUserDataUtilTest,
 
 TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
   // Arrange
-  const ConversionInfo conversion =
-      test::BuildConversion(AdType::kNotificationAd, ConfirmationType::kViewed,
-                            /*should_use_random_uuids=*/false);
+  const ConversionInfo conversion = test::BuildConversion(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/false);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
                                /*process_at=*/Now());

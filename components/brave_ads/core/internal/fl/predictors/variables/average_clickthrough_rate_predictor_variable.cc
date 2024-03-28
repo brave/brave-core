@@ -43,7 +43,7 @@ std::string AverageClickthroughRatePredictorVariable::GetValue() const {
   const size_t view_count = base::ranges::count_if(
       history_items, [](const HistoryItemInfo& history_item) {
         return history_item.ad_content.confirmation_type ==
-               ConfirmationType::kViewed;
+               ConfirmationType::kViewedImpression;
       });
 
   if (view_count == 0) {

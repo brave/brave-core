@@ -22,7 +22,7 @@ namespace brave_ads {
 TEST(BraveAdsValidationUtilTest, InvalidConversionQueueItem) {
   // Arrange
   ConversionInfo conversion = test::BuildVerifiableConversion(
-      AdType::kNotificationAd, ConfirmationType::kViewed,
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey},
       /*should_use_random_uuids=*/false);
@@ -40,7 +40,7 @@ TEST(BraveAdsValidationUtilTest, InvalidConversionQueueItem) {
 TEST(BraveAdsValidationUtilTest, ValidConversionQueueItem) {
   // Arrange
   const ConversionInfo conversion = test::BuildVerifiableConversion(
-      AdType::kNotificationAd, ConfirmationType::kViewed,
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey},
       /*should_use_random_uuids=*/false);

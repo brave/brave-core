@@ -26,7 +26,7 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Deposit  | Refers to redeeming a confirmation token in exchange for BAT.  |
 | Frequency capping  | Limits how many times a given ad will be shown within a specified period, also known as exclusion rules.  |
 | Geographic  | Geographic advertising targets ads based on specific geographic locations to reach the desired audience.  |
-| Impression  | An impression is when an ad is displayed or shown to a user, also known as a view.  |
+| Impression  | An impression is when an ad is served or viewed by a user.  |
 | Issuers  | Refers to public keys used to sign privacy-preserving Blinded Tokens. See [challenge-bypass-ristretto](https://github.com/brave-intl/challenge-bypass-ristretto) and [privacy pass cryptographic protocol](https://www.petsymposium.org/2018/files/papers/issue3/popets-2018-0026.pdf).  |
 | Multi-armed bandits  | Multi-armed bandits optimize the allocation of resources between different ad variations or strategies to maximize performance.  |
 | Non-Brave Rewards user  | Refers to a user who has not joined Brave Rewards and will not be rewarded BAT for viewing ads.  |

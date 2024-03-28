@@ -127,8 +127,8 @@ void EpsilonGreedyBanditProcessor::Process(
       break;
     }
 
-    case mojom::NotificationAdEventType::kServed:
-    case mojom::NotificationAdEventType::kViewed: {
+    case mojom::NotificationAdEventType::kServedImpression:
+    case mojom::NotificationAdEventType::kViewedImpression: {
       NOTREACHED_NORETURN();
     }
   }

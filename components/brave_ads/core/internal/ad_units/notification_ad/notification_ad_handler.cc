@@ -89,17 +89,17 @@ void NotificationAdHandler::TriggerEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type,
     TriggerAdEventCallback callback) {
-  CHECK_NE(mojom::NotificationAdEventType::kServed, event_type)
-      << "Should not be called with kServed as this event is handled when "
-         "calling TriggerEvent with kViewed";
+  CHECK_NE(mojom::NotificationAdEventType::kServedImpression, event_type)
+      << "Should not be called with kServedImpression as this event is handled "
+         "when calling TriggerEvent with kViewedImpression";
 
   if (!UserHasOptedInToNotificationAds()) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  if (event_type == mojom::NotificationAdEventType::kViewed) {
+  if (event_type == mojom::NotificationAdEventType::kViewedImpression) {
     return event_handler_.FireEvent(
-        placement_id, mojom::NotificationAdEventType::kServed,
+        placement_id, mojom::NotificationAdEventType::kServedImpression,
         base::BindOnce(&NotificationAdHandler::FireServedEventCallback,
                        weak_factory_.GetWeakPtr(), std::move(callback)));
   }
@@ -121,7 +121,7 @@ void NotificationAdHandler::FireServedEventCallback(
   }
 
   event_handler_.FireEvent(
-      placement_id, mojom::NotificationAdEventType::kViewed,
+      placement_id, mojom::NotificationAdEventType::kViewedImpression,
       base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
@@ -172,7 +172,7 @@ void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(
 
 void NotificationAdHandler::OnDidServeNotificationAd(
     const NotificationAdInfo& ad) {
-  BLOG(1, "Served notification ad:\n"
+  BLOG(1, "Served notification ad impression:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
@@ -190,7 +190,7 @@ void NotificationAdHandler::OnDidServeNotificationAd(
 
 void NotificationAdHandler::OnDidFireNotificationAdServedEvent(
     const NotificationAdInfo& ad) {
-  BLOG(3, "Served notification ad with placement id "
+  BLOG(3, "Served notification ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
@@ -199,14 +199,14 @@ void NotificationAdHandler::OnDidFireNotificationAdServedEvent(
 
 void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
     const NotificationAdInfo& ad) {
-  BLOG(3, "Viewed notification ad with placement id "
+  BLOG(3, "Viewed notification ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewed);
+                    ConfirmationType::kViewedImpression);
 
   SetNotificationAdServedAtPredictorVariable(base::Time::Now());
 }

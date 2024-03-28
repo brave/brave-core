@@ -136,9 +136,10 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
         ASSERT_TRUE(ad->IsValid());
 
         // Act & Assert
-        TriggerNewTabPageAdEvent(ad->placement_id, ad->creative_instance_id,
-                                 mojom::NewTabPageAdEventType::kViewed,
-                                 /*should_fire_event=*/true);
+        TriggerNewTabPageAdEvent(
+            ad->placement_id, ad->creative_instance_id,
+            mojom::NewTabPageAdEventType::kViewedImpression,
+            /*should_fire_event=*/true);
       });
 
   GetAds().MaybeServeNewTabPageAd(callback.Get());
@@ -154,7 +155,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   // Act & Assert
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kViewed,
+                           mojom::NewTabPageAdEventType::kViewedImpression,
                            /*should_fire_event=*/true);
 }
 
@@ -166,7 +167,7 @@ TEST_F(
 
   // Act & Assert
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kViewed,
+                           mojom::NewTabPageAdEventType::kViewedImpression,
                            /*should_fire_event=*/false);
 }
 
@@ -183,9 +184,10 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
-        TriggerNewTabPageAdEvent(ad->placement_id, ad->creative_instance_id,
-                                 mojom::NewTabPageAdEventType::kViewed,
-                                 /*should_fire_event=*/true);
+        TriggerNewTabPageAdEvent(
+            ad->placement_id, ad->creative_instance_id,
+            mojom::NewTabPageAdEventType::kViewedImpression,
+            /*should_fire_event=*/true);
 
         // Act & Assert
         TriggerNewTabPageAdEvent(ad->placement_id, ad->creative_instance_id,
@@ -205,7 +207,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   test::DisableBraveRewards();
 
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kViewed,
+                           mojom::NewTabPageAdEventType::kViewedImpression,
                            /*should_fire_event=*/true);
 
   // Act & Assert
@@ -221,10 +223,10 @@ TEST_F(
   test::DisableBraveRewards();
 
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kServed,
+                           mojom::NewTabPageAdEventType::kServedImpression,
                            /*should_fire_event=*/false);
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kViewed,
+                           mojom::NewTabPageAdEventType::kViewedImpression,
                            /*should_fire_event=*/false);
 
   // Act & Assert
@@ -248,9 +250,10 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
         ASSERT_TRUE(ad->IsValid());
 
         // Act & Assert
-        TriggerNewTabPageAdEvent(ad->placement_id, kInvalidCreativeInstanceId,
-                                 mojom::NewTabPageAdEventType::kViewed,
-                                 /*should_fire_event=*/false);
+        TriggerNewTabPageAdEvent(
+            ad->placement_id, kInvalidCreativeInstanceId,
+            mojom::NewTabPageAdEventType::kViewedImpression,
+            /*should_fire_event=*/false);
       });
 
   GetAds().MaybeServeNewTabPageAd(callback.Get());

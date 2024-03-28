@@ -97,13 +97,14 @@ void NewTabPageAdHandler::TriggerEvent(
   }
 
   if (!UserHasJoinedBraveRewards() &&
-      event_type == mojom::NewTabPageAdEventType::kViewed) {
-    // `MaybeServe()` will trigger a `kServed` event if the user has joined
-    // Brave Rewards; otherwise, we need to trigger a `kServed` event when
-    // triggering a `kViewed` event for non-Brave-Rewards users.
+      event_type == mojom::NewTabPageAdEventType::kViewedImpression) {
+    // `MaybeServe()` will trigger a `kServedImpression` event if the user has
+    // joined Brave Rewards; otherwise, we need to trigger a `kServedImpression`
+    // event when triggering a `kViewedImpression` event for non-Brave-Rewards
+    // users.
     return event_handler_.FireEvent(
         placement_id, creative_instance_id,
-        mojom::NewTabPageAdEventType::kServed,
+        mojom::NewTabPageAdEventType::kServedImpression,
         base::BindOnce(&NewTabPageAdHandler::TriggerServedEventCallback,
                        weak_factory_.GetWeakPtr(), creative_instance_id,
                        std::move(callback)));
@@ -125,7 +126,7 @@ void NewTabPageAdHandler::MaybeServeCallback(
 
   event_handler_.FireEvent(
       ad->placement_id, ad->creative_instance_id,
-      mojom::NewTabPageAdEventType::kServed,
+      mojom::NewTabPageAdEventType::kServedImpression,
       base::BindOnce(&FireServedEventCallback, *ad, std::move(callback)));
 }
 
@@ -140,7 +141,8 @@ void NewTabPageAdHandler::TriggerServedEventCallback(
   }
 
   event_handler_.FireEvent(
-      placement_id, creative_instance_id, mojom::NewTabPageAdEventType::kViewed,
+      placement_id, creative_instance_id,
+      mojom::NewTabPageAdEventType::kViewedImpression,
       base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
@@ -151,7 +153,7 @@ void NewTabPageAdHandler::OnOpportunityAroseToServeNewTabPageAd() {
 }
 
 void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
-  BLOG(1, "Served new tab page ad:\n"
+  BLOG(1, "Served new tab page ad impression:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
@@ -171,7 +173,7 @@ void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdServedEvent(
     const NewTabPageAdInfo& ad) {
-  BLOG(3, "Served new tab page ad with placement id "
+  BLOG(3, "Served new tab page ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
@@ -180,14 +182,14 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdServedEvent(
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdViewedEvent(
     const NewTabPageAdInfo& ad) {
-  BLOG(3, "Viewed new tab page ad with placement id "
+  BLOG(3, "Viewed new tab page ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewed);
+                    ConfirmationType::kViewedImpression);
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(

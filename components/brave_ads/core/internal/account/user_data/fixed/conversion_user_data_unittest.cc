@@ -25,7 +25,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildConversionUserDataForRewardsUser) {
   // Arrange
   test::BuildAndSaveConversionQueueItems(
-      AdType::kNotificationAd, ConfirmationType::kViewed,
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   // Act & Assert
@@ -70,7 +70,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   test::DisableBraveRewards();
 
   test::BuildAndSaveConversionQueueItems(
-      AdType::kNotificationAd, ConfirmationType::kViewed,
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   // Act & Assert
@@ -115,7 +115,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
        DoNotBuildConversionUserDataForMissingCreativeInstanceId) {
   // Arrange
   test::BuildAndSaveConversionQueueItems(
-      AdType::kNotificationAd, ConfirmationType::kViewed,
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   // Act & Assert

@@ -28,14 +28,16 @@ TEST_F(BraveAdsAdEventsTest, RecordAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
-  const AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed,
-                                            /*created_at=*/Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, ConfirmationType::kServedImpression,
+                   /*created_at=*/Now());
 
   base::MockCallback<AdEventCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true));
 
   // Act
-  RecordAdEvent(ad, ConfirmationType::kServed, record_ad_event_callback.Get());
+  RecordAdEvent(ad, ConfirmationType::kServedImpression,
+                record_ad_event_callback.Get());
 
   // Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
@@ -56,24 +58,24 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
   // because there are no associated creative set conversions.
   const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
                                     /*should_use_random_uuids=*/true);
-  const AdEventInfo ad_event_1 =
-      BuildAdEvent(ad_1, ConfirmationType::kServed, /*created_at=*/Now());
+  const AdEventInfo ad_event_1 = BuildAdEvent(
+      ad_1, ConfirmationType::kServedImpression, /*created_at=*/Now());
   RecordAdEvent(ad_event_1, record_ad_event_callback.Get());
 
   // Ad event 2: Recorded on 19th March 2024. This ad event should be purged
   // because there are no associated creative set conversions.
   const AdInfo ad_2 = test::BuildAd(AdType::kNotificationAd,
                                     /*should_use_random_uuids=*/true);
-  const AdEventInfo ad_event_2 =
-      BuildAdEvent(ad_2, ConfirmationType::kServed, /*created_at=*/Now());
+  const AdEventInfo ad_event_2 = BuildAdEvent(
+      ad_2, ConfirmationType::kServedImpression, /*created_at=*/Now());
   RecordAdEvent(ad_event_2, record_ad_event_callback.Get());
 
   // Ad event 3: Recorded on 19th March 2024. This ad event should not be purged
   // because it has an associated creative set conversion.
   const AdInfo ad_3 = test::BuildAd(AdType::kNotificationAd,
                                     /*should_use_random_uuids=*/true);
-  const AdEventInfo ad_event_3 =
-      BuildAdEvent(ad_3, ConfirmationType::kServed, /*created_at=*/Now());
+  const AdEventInfo ad_event_3 = BuildAdEvent(
+      ad_3, ConfirmationType::kServedImpression, /*created_at=*/Now());
   RecordAdEvent(ad_event_3, record_ad_event_callback.Get());
 
   CreativeSetConversionList creative_set_conversions;
@@ -92,8 +94,8 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
   // because it occured within the expiry window.
   const AdInfo ad_4 = test::BuildAd(AdType::kNotificationAd,
                                     /*should_use_random_uuids=*/true);
-  const AdEventInfo ad_event_4 =
-      BuildAdEvent(ad_4, ConfirmationType::kServed, /*created_at=*/Now());
+  const AdEventInfo ad_event_4 = BuildAdEvent(
+      ad_4, ConfirmationType::kServedImpression, /*created_at=*/Now());
   RecordAdEvent(ad_event_4, record_ad_event_callback.Get());
 
   base::MockCallback<AdEventCallback> purge_expired_ad_events_callback;
@@ -118,8 +120,8 @@ TEST_F(BraveAdsAdEventsTest, DoNotPurgeExpiredAdEventsOnTheCuspOfExpiry) {
   // because it will occur on the cusp of the expiry window.
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kServed, /*created_at=*/Now());
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
 
   base::MockCallback<AdEventCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true));
@@ -149,31 +151,32 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
   base::MockCallback<AdEventCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(4);
 
-  // Ad event 1: This served ad event should be purged because it does not have
-  // an associated viewed ad event or matching ad type.
+  // Ad event 1: This served impression ad event should be purged because it
+  // does not have an associated viewed impression ad event or matching ad type.
   const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
                                     /*should_use_random_uuids=*/true);
-  const AdEventInfo ad_event_1 = BuildAdEvent(ad_1, ConfirmationType::kServed,
-                                              /*created_at=*/Now());
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad_1, ConfirmationType::kServedImpression,
+                   /*created_at=*/Now());
   RecordAdEvent(ad_event_1, record_ad_event_callback.Get());
 
-  // Ad event 2: This served ad event should not be purged because it has an
-  // associated viewed ad event for the matching ad type.
+  // Ad event 2: This served impression ad event should not be purged because it
+  // has an associated viewed impression ad event for the matching ad type.
   const AdInfo ad_2 = test::BuildAd(AdType::kNotificationAd,
                                     /*should_use_random_uuids=*/true);
-  const AdEventInfo ad_event_2a =
-      BuildAdEvent(ad_2, ConfirmationType::kServed, /*created_at=*/Now());
+  const AdEventInfo ad_event_2a = BuildAdEvent(
+      ad_2, ConfirmationType::kServedImpression, /*created_at=*/Now());
   RecordAdEvent(ad_event_2a, record_ad_event_callback.Get());
-  const AdEventInfo ad_event_2b =
-      BuildAdEvent(ad_2, ConfirmationType::kViewed, /*created_at=*/Now());
+  const AdEventInfo ad_event_2b = BuildAdEvent(
+      ad_2, ConfirmationType::kViewedImpression, /*created_at=*/Now());
   RecordAdEvent(ad_event_2b, record_ad_event_callback.Get());
 
-  // Ad event 3: This served ad event should not be purged because it has a
-  // mismatching ad type.
+  // Ad event 3: This served impression ad event should not be purged because it
+  // has a mismatching ad type.
   const AdInfo ad_3 = test::BuildAd(AdType::kSearchResultAd,
                                     /*should_use_random_uuids=*/true);
-  const AdEventInfo ad_event_3 =
-      BuildAdEvent(ad_3, ConfirmationType::kServed, /*created_at=*/Now());
+  const AdEventInfo ad_event_3 = BuildAdEvent(
+      ad_3, ConfirmationType::kServedImpression, /*created_at=*/Now());
   RecordAdEvent(ad_event_3, record_ad_event_callback.Get());
 
   base::MockCallback<AdEventCallback> purge_orphaned_ad_events_callback;

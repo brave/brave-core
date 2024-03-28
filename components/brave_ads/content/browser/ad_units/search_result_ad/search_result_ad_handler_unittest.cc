@@ -121,10 +121,10 @@ TEST_F(SearchResultAdHandlerTest,
 }
 
 TEST_F(SearchResultAdHandlerTest, NullWebPage) {
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          testing::_, mojom::SearchResultAdEventType::kViewed, testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  testing::_, mojom::SearchResultAdEventType::kViewedImpression,
+                  testing::_))
       .Times(0);
   EXPECT_CALL(
       ads_service_mock_,
@@ -156,10 +156,10 @@ TEST_F(SearchResultAdHandlerTest, NullWebPage) {
 }
 
 TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          testing::_, mojom::SearchResultAdEventType::kViewed, testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  testing::_, mojom::SearchResultAdEventType::kViewedImpression,
+                  testing::_))
       .Times(0);
   EXPECT_CALL(
       ads_service_mock_,
@@ -191,10 +191,10 @@ TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
 }
 
 TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          testing::_, mojom::SearchResultAdEventType::kViewed, testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  testing::_, mojom::SearchResultAdEventType::kViewedImpression,
+                  testing::_))
       .Times(0);
   EXPECT_CALL(
       ads_service_mock_,
@@ -227,10 +227,10 @@ TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
 }
 
 TEST_F(SearchResultAdHandlerTest, EmptyConversions) {
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          testing::_, mojom::SearchResultAdEventType::kViewed, testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  testing::_, mojom::SearchResultAdEventType::kViewedImpression,
+                  testing::_))
       .WillOnce([](mojom::SearchResultAdInfoPtr ad_mojom,
                    mojom::SearchResultAdEventType /*event_type*/,
                    TriggerAdEventCallback /*callback*/) {
@@ -270,10 +270,10 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
   blink::mojom::WebPagePtr web_page = CreateTestWebPage();
   ASSERT_TRUE(web_page);
 
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          testing::_, mojom::SearchResultAdEventType::kViewed, testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  testing::_, mojom::SearchResultAdEventType::kViewedImpression,
+                  testing::_))
       .WillOnce([&web_page](mojom::SearchResultAdInfoPtr ad_mojom,
                             mojom::SearchResultAdEventType /*event_type*/,
                             TriggerAdEventCallback /*callback*/) {
@@ -325,10 +325,10 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
 }
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          testing::_, mojom::SearchResultAdEventType::kViewed, testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  testing::_, mojom::SearchResultAdEventType::kViewedImpression,
+                  testing::_))
       .Times(0);
   EXPECT_CALL(
       ads_service_mock_,
@@ -358,10 +358,10 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
 }
 
 TEST_F(SearchResultAdHandlerTest, WrongClickedUrl) {
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          testing::_, mojom::SearchResultAdEventType::kViewed, testing::_));
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  testing::_, mojom::SearchResultAdEventType::kViewedImpression,
+                  testing::_));
   EXPECT_CALL(
       ads_service_mock_,
       TriggerSearchResultAdEvent(

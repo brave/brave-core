@@ -39,7 +39,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
@@ -49,7 +49,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
         ConfirmationInfo expected_confirmation;
         expected_confirmation.transaction_id = kTransactionId;
         expected_confirmation.creative_instance_id = kCreativeInstanceId;
-        expected_confirmation.type = ConfirmationType::kViewed;
+        expected_confirmation.type = ConfirmationType::kViewedImpression;
         expected_confirmation.ad_type = AdType::kNotificationAd;
         expected_confirmation.created_at = Now();
 
@@ -77,7 +77,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
        DISABLED_DoNotBuildNonRewardConfirmationForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert

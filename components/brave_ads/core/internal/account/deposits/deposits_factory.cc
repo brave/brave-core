@@ -20,13 +20,13 @@ std::unique_ptr<DepositInterface> DepositsFactory::Build(
   }
 
   switch (confirmation_type) {
-    case ConfirmationType::kViewed: {
+    case ConfirmationType::kViewedImpression: {
       return std::make_unique<CashDeposit>();
     }
 
     case ConfirmationType::kClicked:
     case ConfirmationType::kDismissed:
-    case ConfirmationType::kServed:
+    case ConfirmationType::kServedImpression:
     case ConfirmationType::kLanded:
     case ConfirmationType::kSavedAd:
     case ConfirmationType::kMarkAdAsInappropriate:

@@ -41,7 +41,7 @@ class BraveSearchResultAdManager: NSObject {
 
     rewards.ads.triggerSearchResultAdEvent(
       searchResultAd,
-      eventType: .viewed,
+      eventType: .viewedImpression,
       completion: { _ in }
     )
   }
