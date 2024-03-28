@@ -169,16 +169,23 @@ void AdsTabHelper::MaybeNotifyTabContentDidChange() {
 }
 
 void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
+  if (redirect_chain_.empty()) {
+    // Don't notify content changes for tabs which did not finish loading.
+    return;
+  }
+
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       kSerializeDocumentToStringJavaScript,
       base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange,
-                     weak_factory_.GetWeakPtr()),
+                     weak_factory_.GetWeakPtr(), redirect_chain_),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(base::Value value) {
+void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
+    const std::vector<GURL>& redirect_chain,
+    base::Value value) {
   if (ads_service_ && value.is_string()) {
-    ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(), redirect_chain_,
+    ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(), redirect_chain,
                                                 /*html=*/value.GetString());
   }
 }
@@ -188,16 +195,23 @@ void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
     return;
   }
 
+  if (redirect_chain_.empty()) {
+    // Don't notify content changes for tabs which did not finish loading.
+    return;
+  }
+
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       kDocumentBodyInnerTextJavaScript,
       base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabTextContentDidChange,
-                     weak_factory_.GetWeakPtr()),
+                     weak_factory_.GetWeakPtr(), redirect_chain_),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(base::Value value) {
+void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
+    const std::vector<GURL>& redirect_chain,
+    base::Value value) {
   if (ads_service_ && value.is_string()) {
-    ads_service_->NotifyTabTextContentDidChange(tab_id_.id(), redirect_chain_,
+    ads_service_->NotifyTabTextContentDidChange(tab_id_.id(), redirect_chain,
                                                 /*text=*/value.GetString());
   }
 }
