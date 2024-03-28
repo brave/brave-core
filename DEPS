@@ -39,6 +39,7 @@ deps = {
     "url": "https://github.com/ronaldoussoren/macholib.git@36a6777ccd0891c5d1b44ba885573d7c90740015",
     "condition": "checkout_mac",
   },
+  "third_party/adblock-resources/src": "https://github.com/brave/adblock-resources@master"
 }
 
 recursedeps = [

@@ -70,6 +70,7 @@ template("brave_extra_paks") {
     deps = [
       "//brave/components/brave_ads/resources",
       "//brave/components/brave_rewards/resources",
+      "//brave/components/brave_shields/resources",
       "//brave/components/resources",
     ]
 
