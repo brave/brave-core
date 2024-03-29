@@ -10,7 +10,10 @@ import { useHistory } from 'react-router'
 import { BraveWallet, WalletRoutes } from '../../../constants/types'
 
 // Queries
-import { useGetOnRampAssetsQuery } from '../../../common/slices/api.slice'
+import {
+  useGetOnRampAssetsQuery,
+  useUpdateUserAssetVisibleMutation //
+} from '../../../common/slices/api.slice'
 
 // Hooks
 import {
@@ -64,6 +67,7 @@ export const AssetItemMenu = (props: Props) => {
   // Queries
   const { data: { allAssetOptions: allBuyAssetOptions } = {} } =
     useGetOnRampAssetsQuery()
+  const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
 
   // Hooks
   const {
@@ -131,6 +135,13 @@ export const AssetItemMenu = (props: Props) => {
     })
   }, [openSellAssetLink, selectedSellAsset])
 
+  const onClickHide = React.useCallback(async () => {
+    await updateUserAssetVisible({
+      token: asset,
+      isVisible: false
+    }).unwrap()
+  }, [updateUserAssetVisible, asset])
+
   return (
     <StyledWrapper yPosition={42}>
       {isBuySupported && (
@@ -171,6 +182,12 @@ export const AssetItemMenu = (props: Props) => {
           </PopupButtonText>
         </PopupButton>
       )}
+      <PopupButton onClick={onClickHide}>
+        <ButtonIcon name='eye-off' />
+        <PopupButtonText>
+          {getLocale('braveWalletConfirmHidingToken')}
+        </PopupButtonText>
+      </PopupButton>
       {showSellModal && selectedSellAsset && (
         <SellAssetModal
           selectedAsset={selectedSellAsset}
