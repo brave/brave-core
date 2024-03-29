@@ -378,6 +378,7 @@ dependencies = [
  "challenge-bypass-ristretto-cxx",
  "constellation-cxx",
  "filecoin-cxx",
+ "incrementalmerkletree",
  "json-cxx",
  "skus-cxx",
  "speedreader-ffi",

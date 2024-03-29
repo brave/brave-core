@@ -1,0 +1,33 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("rust_lib") {
+  crate_name = "zcash"
+  crate_root = "lib.rs"
+  allow_unsafe = true
+
+  sources = [
+    "lib.rs",
+    "librustzcash/amount.rs",
+    "librustzcash/encoding.rs",
+    "librustzcash/merkle_tree.rs",
+    "librustzcash/mod.rs",
+    "librustzcash/orchard.rs",
+    "mod.rs",
+  ]
+  cxx_bindings = [ "lib.rs" ]
+
+  deps = [
+    "//brave/components/brave_wallet/rust:rust_lib",
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
+    "//brave/third_party/rust/memuse/v0_2:lib",
+    "//brave/third_party/rust/nonempty/v0_7:lib",
+    "//brave/third_party/rust/orchard/v0_7:lib",
+    "//third_party/rust/rand_core/v0_6:lib",
+  ]
+}

@@ -20,14 +20,15 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
 
 namespace brave_wallet {
 
 class CreateTransparentTransactionTask;
+class CreateShieldAllTransactionTask;
 class GetTransparentUtxosContext;
 
 class ZCashWalletService : public mojom::ZCashWalletService,
-                           KeyringServiceObserverBase {
  public:
   using UtxoMap = std::map<std::string, std::vector<mojom::ZCashUtxoPtr>>;
   using RunDiscoveryResult =
@@ -69,6 +70,11 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   void GetReceiverAddress(mojom::AccountIdPtr account_id,
                           GetReceiverAddressCallback callback) override;
 
+  // TODO(cypt4): Make this a part of zcash transaction
+  void ShieldFunds(const std::string& chain_id,
+                   mojom::AccountIdPtr account_id,
+                   ShieldFundsCallback callback) override;
+
   void RunDiscovery(mojom::AccountIdPtr account_id,
                     RunDiscoveryCallback callback);
 
@@ -94,18 +100,30 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                             const std::string& tx_hash,
                             GetTransactionStatusCallback callback);
 
+  void PostShieldTransaction(const std::string& chain_id,
+                             ZCashTransaction zcash_transaction,
+                             SignAndPostTransactionCallback callback);
+
   void SignAndPostTransaction(const std::string& chain_id,
                               const mojom::AccountIdPtr& account_id,
                               ZCashTransaction zcash_transaction,
                               SignAndPostTransactionCallback callback);
 
+<<<<<<< HEAD
   void SetZCashRpcForTesting(std::unique_ptr<ZCashRpc> zcash_rpc);
+=======
+  void PostTransaction(const std::string& chain_id,
+                       const mojom::AccountIdPtr& account_id,
+                       ZCashTransaction zcash_transaction,
+                       SignAndPostTransactionCallback callback);
+>>>>>>> 49ddaf97a02 (Implement shielding)
 
  private:
-  friend class ZCashWalletServiceUnitTest;
+  friend class CreateShieldAllTransactionTask;
   friend class CreateTransparentTransactionTask;
   friend class DiscoverNextUnusedZCashAddressTask;
   friend class ZCashTxManager;
+  friend class ZCashWalletServiceUnitTest;
 
   /*KeyringServiceObserverBase*/
   void Unlocked() override;
@@ -151,16 +169,44 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void CreateTransactionTaskDone(CreateTransparentTransactionTask* task);
 
+#if BUILDFLAG(ENABLE_ORCHARD)
+  // Orchard used randomness so we need to mock it in tests
+  void set_random_seed_for_testing(uint64_t r_seed) {
+    random_seed_for_testing_ = r_seed;
+  }
+
+  void CreateShieldAllTransaction(const std::string& chain_id,
+                                  mojom::AccountIdPtr account_id,
+                                  CreateTransactionCallback callback);
+
+  void CreateShieldTransactionTaskDone(
+      const std::string& chain_id,
+      mojom::AccountIdPtr account_id,
+      ShieldFundsCallback callback,
+      base::expected<ZCashTransaction, std::string> transaction);
+
+  void OnPostShieldTransactionDone(ShieldFundsCallback callback,
+                                   std::string tx_id,
+                                   ZCashTransaction transaction,
+                                   std::string error);
+#endif
+
   void UpdateNextUnusedAddressForAccount(const mojom::AccountIdPtr& account_id,
                                          const mojom::ZCashAddressPtr& address);
 
   ZCashRpc* zcash_rpc();
+  KeyringService* keyring_service();
 
   raw_ptr<KeyringService> keyring_service_;
   std::unique_ptr<ZCashRpc> zcash_rpc_;
 
   std::list<std::unique_ptr<CreateTransparentTransactionTask>>
       create_transaction_tasks_;
+#if BUILDFLAG(ENABLE_ORCHARD)
+  std::optional<uint64_t> random_seed_for_testing_;
+  std::unique_ptr<CreateShieldAllTransactionTask> shield_funds_task_;
+#endif
+
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};

@@ -567,6 +567,9 @@ export enum WalletRoutes {
   // dev bitcoin screen
   DevBitcoin = '/dev-bitcoin',
 
+  // dev zcash screen
+  DevZCash = '/dev-zcash',
+
   // Hashes
   AccountsHash = '#accounts',
   TransactionsHash = '#transactions',

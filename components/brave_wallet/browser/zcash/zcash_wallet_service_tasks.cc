@@ -8,7 +8,11 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/check_is_test.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_keyring.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -34,11 +38,12 @@ bool OutputAddressSupported(const std::string& address, bool is_testnet) {
 }
 
 // https://zips.z.cash/zip-0317
-uint64_t CalculateTxFee(const uint32_t tx_input_count) {
+uint64_t CalculateTxFee(const uint32_t tx_input_count,
+                        const uint32_t orchard_actions_count) {
   // Use simplified calcultion fee form since we don't support p2psh
   // and shielded addresses
-  auto actions_count =
-      std::max(tx_input_count, kDefaultTransparentOutputsCount);
+  auto actions_count = std::max(tx_input_count + orchard_actions_count,
+                                kDefaultTransparentOutputsCount);
   return kMarginalFee * std::max(kGraceActionsCount, actions_count);
 }
 
@@ -230,7 +235,8 @@ void CreateTransparentTransactionTask::WorkOnTask() {
     return;
   }
 
-  DCHECK_EQ(kDefaultTransparentOutputsCount, transaction_.outputs().size());
+  DCHECK_EQ(kDefaultTransparentOutputsCount,
+            transaction_.transparent_part().outputs.size());
 
   std::move(callback_).Run(base::ok(std::move(transaction_)));
   zcash_wallet_service_->CreateTransactionTaskDone(this);
@@ -297,8 +303,9 @@ bool CreateTransparentTransactionTask::PickInputs() {
   });
 
   for (auto& input : all_inputs) {
-    transaction_.inputs().push_back(std::move(input));
-    transaction_.set_fee(CalculateTxFee(transaction_.inputs().size()));
+    transaction_.transparent_part().inputs.push_back(std::move(input));
+    transaction_.set_fee(
+        CalculateTxFee(transaction_.transparent_part().inputs.size(), 0));
 
     if (transaction_.TotalInputsAmount() >=
         transaction_.amount() + transaction_.fee()) {
@@ -310,12 +317,12 @@ bool CreateTransparentTransactionTask::PickInputs() {
     }
   }
 
-  DCHECK(!transaction_.inputs().empty());
+  DCHECK(!transaction_.transparent_part().inputs.empty());
   return done;
 }
 
 bool CreateTransparentTransactionTask::PrepareOutputs() {
-  auto& target_output = transaction_.outputs().emplace_back();
+  auto& target_output = transaction_.transparent_part().outputs.emplace_back();
   target_output.address = transaction_.to();
   if (!OutputAddressSupported(target_output.address, IsTestnet())) {
     return false;
@@ -339,12 +346,245 @@ bool CreateTransparentTransactionTask::PrepareOutputs() {
   }
 
   CHECK(OutputAddressSupported(change_address->address_string, IsTestnet()));
-  auto& change_output = transaction_.outputs().emplace_back();
+  auto& change_output = transaction_.transparent_part().outputs.emplace_back();
   change_output.address = change_address_->address_string;
   change_output.amount = change_amount;
   change_output.script_pubkey =
       ZCashAddressToScriptPubkey(change_output.address, IsTestnet());
   return true;
 }
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+
+CreateShieldAllTransactionTask::CreateShieldAllTransactionTask(
+    ZCashWalletService* zcash_wallet_service,
+    const std::string& chain_id,
+    const mojom::AccountIdPtr& account_id,
+    ZCashWalletService::CreateTransactionCallback callback,
+    std::optional<uint64_t> random_seed_for_testing)
+    : zcash_wallet_service_(zcash_wallet_service),
+      chain_id_(chain_id),
+      account_id_(account_id.Clone()),
+      callback_(std::move(callback)),
+      random_seed_for_testing_(random_seed_for_testing) {}
+
+CreateShieldAllTransactionTask::~CreateShieldAllTransactionTask() = default;
+
+::rust::Box<OrchardBuilderResult>
+CreateShieldAllTransactionTask::CreateOrchardBuilder(
+    ::rust::Slice<const uint8_t> tree_state,
+    ::rust::Vec<OrchardOutput> outputs) {
+  if (random_seed_for_testing_) {
+    CHECK_IS_TEST();
+    return create_testing_orchard_builder(std::move(tree_state),
+                                          std::move(outputs),
+                                          random_seed_for_testing_.value());
+  } else {
+    return create_orchard_builder(std::move(tree_state), std::move(outputs));
+  }
+}
+
+void CreateShieldAllTransactionTask::ScheduleWorkOnTask() {
+  if (error_) {
+    std::move(callback_).Run(base::unexpected(error_.value()));
+    return;
+  }
+
+  if (!tree_state_) {
+    GetTreeState();
+    return;
+  }
+
+  if (!utxo_map_) {
+    GetAllUtxos();
+    return;
+  }
+
+  if (!chain_height_) {
+    GetChainHeight();
+    return;
+  }
+
+  if (!CreateTransaction()) {
+    std::move(callback_).Run(base::unexpected(error_.value()));
+    return;
+  }
+
+  // TODO(cypt4): This call should be async
+  if (!CompleteTransaction()) {
+    std::move(callback_).Run(base::unexpected(error_.value()));
+    return;
+  }
+
+  std::move(callback_).Run(std::move(transaction_.value()));
+}
+
+bool CreateShieldAllTransactionTask::CreateTransaction() {
+  CHECK(utxo_map_);
+  CHECK(chain_height_);
+
+  ZCashTransaction zcash_transaction;
+
+  // Pick inputs
+  std::vector<ZCashTransaction::TxInput> all_inputs;
+  for (const auto& item : utxo_map_.value()) {
+    for (const auto& utxo : item.second) {
+      if (!utxo) {
+        error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+        return false;
+      }
+      if (auto input =
+              ZCashTransaction::TxInput::FromRpcUtxo(item.first, *utxo)) {
+        all_inputs.emplace_back(std::move(*input));
+      }
+    }
+  }
+
+  zcash_transaction.transparent_part().inputs = std::move(all_inputs);
+  // TODO(cypt4): Calculate orchard actions count
+  zcash_transaction.set_fee(CalculateTxFee(
+      zcash_transaction.transparent_part().inputs.size(),
+      2 /* actions count for 1 orchard output no orchard inputs */));
+
+  // Pick orchard outputs
+  ZCashTransaction::OrchardOutput orchard_output;
+  auto addr_bytes =
+      zcash_wallet_service_->keyring_service()->GetOrchardRawBytes(
+          account_id_,
+          mojom::ZCashKeyId::New(account_id_->bitcoin_account_index,
+                                 1 /* internal */, 0));
+  if (!addr_bytes) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    return false;
+  }
+
+  orchard_output.value =
+      zcash_transaction.TotalInputsAmount() - zcash_transaction.fee();
+  orchard_output.address = std::move(addr_bytes.value());
+
+  zcash_transaction.orchard_part().outputs.push_back(std::move(orchard_output));
+
+  zcash_transaction.set_locktime(chain_height_.value());
+  zcash_transaction.set_expiry_height(chain_height_.value() +
+                                      kDefaultZCashBlockHeightDelta);
+
+  transaction_ = std::move(zcash_transaction);
+
+  return true;
+}
+
+bool CreateShieldAllTransactionTask::CompleteTransaction() {
+  CHECK(transaction_);
+  CHECK_EQ(1u, transaction_->orchard_part().outputs.size());
+  CHECK(tree_state_);
+
+  // Sign shielded part
+  auto state_tree_bytes = PrefixedHexStringToBytes(
+      base::StrCat({"0x", tree_state_.value()->orchardTree}));
+  if (!state_tree_bytes) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    return false;
+  }
+
+  ::rust::Vec<OrchardOutput> outputs;
+  for (const auto& output : transaction_->orchard_part().outputs) {
+    outputs.push_back(OrchardOutput{output.value, output.address});
+  }
+
+  auto orchard_bundle = CreateOrchardBuilder(
+      ::rust::Slice<const uint8_t>{state_tree_bytes->data(),
+                                   state_tree_bytes->size()},
+      std::move(outputs));
+
+  if (!orchard_bundle->is_ok()) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    return false;
+  }
+
+  transaction_->orchard_part().digest =
+      orchard_bundle->unwrap().orchard_digest();
+
+  // Calculate Orchard sighash
+  auto sighash = ZCashSerializer::CalculateSignatureDigest(transaction_.value(),
+                                                           std::nullopt);
+
+  {
+    // TODO(cypt4) : Move on background process
+    auto complete_bundle = orchard_bundle->unwrap().complete(sighash);
+
+    if (!complete_bundle->is_ok()) {
+      error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+      return false;
+    }
+
+    auto orchard_raw_part = complete_bundle->unwrap().raw_tx();
+
+    transaction_->orchard_part().raw_tx =
+        std::vector<uint8_t>(orchard_raw_part.begin(), orchard_raw_part.end());
+  }
+
+  // Sign transparent part
+  if (!zcash_wallet_service_->SignTransactionInternal(transaction_.value(),
+                                                      account_id_)) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    return false;
+  }
+
+  return true;
+}
+
+void CreateShieldAllTransactionTask::GetAllUtxos() {
+  zcash_wallet_service_->GetUtxos(
+      chain_id_, account_id_.Clone(),
+      base::BindOnce(&CreateShieldAllTransactionTask::OnGetUtxos,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void CreateShieldAllTransactionTask::GetTreeState() {
+  zcash_wallet_service_->zcash_rpc()->GetLatestTreeState(
+      chain_id_, base::BindOnce(&CreateShieldAllTransactionTask::OnGetTreeState,
+                                weak_ptr_factory_.GetWeakPtr()));
+}
+
+void CreateShieldAllTransactionTask::GetChainHeight() {
+  zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
+      chain_id_,
+      base::BindOnce(&CreateShieldAllTransactionTask::OnGetChainHeight,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void CreateShieldAllTransactionTask::OnGetUtxos(
+    base::expected<ZCashWalletService::UtxoMap, std::string> utxo_map) {
+  if (!utxo_map.has_value()) {
+    error_ = utxo_map.error();
+  } else {
+    utxo_map_ = std::move(*utxo_map);
+  }
+
+  ScheduleWorkOnTask();
+}
+
+void CreateShieldAllTransactionTask::OnGetTreeState(
+    base::expected<mojom::TreeStatePtr, std::string> tree_state) {
+  if (!tree_state.has_value()) {
+    error_ = tree_state.error();
+  } else {
+    tree_state_ = std::move(*tree_state);
+  }
+
+  ScheduleWorkOnTask();
+}
+
+void CreateShieldAllTransactionTask::OnGetChainHeight(
+    base::expected<mojom::BlockIDPtr, std::string> result) {
+  if (!result.has_value() || !result.value()) {
+    error_ = result.error();
+  } else {
+    chain_height_ = (*result)->height;
+  }
+
+  ScheduleWorkOnTask();
+}
+#endif  // BUILDFLAG(ENABLE_ORCHARD_CRATE)
 
 }  // namespace brave_wallet
