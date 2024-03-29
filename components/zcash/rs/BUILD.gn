@@ -3,20 +3,29 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_wallet/common/config.gni")
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("rust_lib") {
   crate_name = "zcash_cxx"
-  crate_root = "lib.rs"
+  crate_root = "src/lib.rs"
   allow_unsafe = true
-  sources = [ "lib.rs" ]
-  cxx_bindings = [ "lib.rs" ]
-
-  features = [ "enable_orchard" ]
+  sources = [
+    "src/lib.rs",
+    "src/mod.rs",
+    "src/librustzcash/mod.rs",
+    "src/librustzcash/amount.rs",
+    "src/librustzcash/merkle_tree.rs",
+    "src/librustzcash/encoding.rs",
+    "src/librustzcash/orchard.rs",
+  ]
+  cxx_bindings = [ "src/lib.rs" ]
 
   deps = [
+    "//third_party/rust/rand_core/v0_6:lib",
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
     "//brave/third_party/rust/orchard/v0_7:lib",
-    "//brave/third_party/rust/zip32/v0_1:lib",
+    "//brave/third_party/rust/nonempty/v0_7:lib",
   ]
 }
+

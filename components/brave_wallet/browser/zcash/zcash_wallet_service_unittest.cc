@@ -79,6 +79,10 @@ class MockZCashRPC : public ZCashRpc {
                     uint64_t block_start,
                     uint64_t block_end,
                     IsKnownAddressCallback callback));
+
+  MOCK_METHOD2(GetLatestTreeState,
+               void(const std::string& chain_id,
+                    GetTreeStateCallback callback));
 };
 
 }  // namespace
@@ -155,7 +159,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
     input.script_pub_key =
         ZCashAddressToScriptPubkey(input.utxo_address, false);
 
-    zcash_transaction.inputs().push_back(std::move(input));
+    zcash_transaction.transparent_part().inputs_.push_back(std::move(input));
   }
 
   {
@@ -164,7 +168,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
     output.amount = 500000;
     output.script_pubkey = ZCashAddressToScriptPubkey(output.address, false);
 
-    zcash_transaction.outputs().push_back(std::move(output));
+    zcash_transaction.transparent_part().outputs_.push_back(std::move(output));
   }
 
   {
@@ -173,7 +177,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
     output.script_pubkey = ZCashAddressToScriptPubkey(output.address, false);
     output.amount = 35000;
 
-    zcash_transaction.outputs().push_back(std::move(output));
+    zcash_transaction.transparent_part().outputs_.push_back(std::move(output));
   }
 
   ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
@@ -211,7 +215,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&sign_callback);
 
-  EXPECT_EQ(ToHex(signed_tx.inputs()[0].script_sig),
+  EXPECT_EQ(ToHex(signed_tx.transparent_part().inputs_[0].script_sig),
             "0x47304402202fc68ead746e8e93bb661ac79e71e1d3d84fd0f2aac76a8cb"
             "4fa831a847787ff022028efe32152f282d7167c40d62b07aedad73a66c7"
             "a3548413f289e2aef3da96b30121028754aaa5d9198198ecf5fd1849cbf"
@@ -492,6 +496,27 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateZCashAddress) {
                 Run(mojom::ZCashAddressValidationResult::InvalidUnified));
     zcash_wallet_service_->ValidateZCashAddress("u1xx", false, callback.Get());
   }
+}
+
+TEST_F(ZCashWalletServiceUnitTest, ShieldFunds) {
+  // ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  //     .WillByDefault(
+  //         ::testing::Invoke([](const std::string& chain_id,
+  //                              ZCashRpc::GetLatestBlockCallback callback) {
+  //           mojom::BlockIDPtr response = mojom::BlockID::New();
+  //           response->height = 2286687;
+  //           std::move(callback).Run(std::move(response));
+  //         }));
+
+  // ON_CALL(*zcash_rpc(), GetLatestTreeState(const std::string& chain_id,
+  //                                          GetTreeStateCallback callback))
+  //     .WillByDefault(
+  //         ::testing::Invoke([](const std::string& chain_id,
+  //                              GetTreeStateCallback callback) {
+
+  //         }));
+
+
 }
 
 }  // namespace brave_wallet

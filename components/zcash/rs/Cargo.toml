@@ -1,4 +1,5 @@
 [package]
+<<<<<<< HEAD
 name = "zcash-cxx"
 version = "1.0.0"
 edition = "2021"
@@ -11,4 +12,17 @@ zip32 = { version = "0.1.1" }
 [lib]
 name = "brave_wallet_cxx"
 path = "lib.rs"
+=======
+name = "zcash"
+description = "Zcash stuff"
+version = "0.0.1"
+edition = "2024"
+publish = false
+
+[dependencies]
+incrementalmerkletree = { features = ["legacy-api"] }
+
+[lib]
+name = "zcash"
+>>>>>>> f07e752de92 (Implement shielding)
 crate-type = ["rlib"]

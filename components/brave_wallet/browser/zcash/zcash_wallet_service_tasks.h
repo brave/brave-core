@@ -114,6 +114,53 @@ class CreateTransparentTransactionTask {
       this};
 };
 
+#if BUILDFLAG(ENABLE_ORCHARD)
+class CreateShieldAllTransactionTask {
+ public:
+  CreateShieldAllTransactionTask(
+      ZCashWalletService* zcash_wallet_service,
+      const std::string& chain_id,
+      const mojom::AccountIdPtr& account_id,
+      ZCashWalletService::CreateTransactionCallback callback);
+
+  ~CreateShieldAllTransactionTask();
+
+  void ScheduleWorkOnTask();
+
+ private:
+  void GetAllUtxos();
+  void GetTreeState();
+  void GetChainHeight();
+
+  void OnGetChainHeight(base::expected<mojom::BlockIDPtr, std::string> result);
+  void OnGetUtxos(
+      base::expected<ZCashWalletService::UtxoMap, std::string> utxo_map);
+  void OnGetTreeState(
+      base::expected<mojom::TreeStatePtr, std::string> tree_state);
+
+  void SetError(const std::string& error_string) { error_ = error_string; }
+
+  bool CreateTransaction();
+  bool CompleteTransaction();
+
+  raw_ptr<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
+  std::string chain_id_;
+  mojom::AccountIdPtr account_id_;
+
+  std::optional<std::string> error_;
+
+  std::optional<mojom::TreeStatePtr> tree_state_;
+  std::optional<ZCashWalletService::UtxoMap> utxo_map_;
+  std::optional<uint32_t> chain_height_;
+
+  std::optional<ZCashTransaction> transaction_;
+
+  ZCashWalletService::CreateTransactionCallback callback_;
+
+  base::WeakPtrFactory<CreateShieldAllTransactionTask> weak_ptr_factory_{this};
+};
+#endif
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_WALLET_SERVICE_TASKS_H_
