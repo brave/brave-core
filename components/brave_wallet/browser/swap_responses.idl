@@ -233,15 +233,8 @@ namespace swap_responses {
     LiFiTransactionRequest transactionRequest;
   };
 
-  dictionary LifiToolError {
-    DOMString errorType;
-    DOMString code;
-    DOMString tool;
-    DOMString message;
-  };
-
   dictionary LiFiErrorResponse {
     DOMString message;
-    LifiToolError[] errors;
+    DOMString? code;
   };
 };

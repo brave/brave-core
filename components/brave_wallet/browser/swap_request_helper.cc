@@ -175,7 +175,7 @@ std::optional<base::Value::Dict> EncodeToken(
     const mojom::BlockchainTokenPtr& token) {
   base::Value::Dict result;
   result.Set("address", token->contract_address.empty()
-                            ? kLiFiNativeAssetContractAddress
+                            ? kLiFiNativeEVMAssetContractAddress
                             : token->contract_address);
   result.Set("decimals", token->decimals);
   result.Set("symbol", token->symbol);
@@ -387,9 +387,12 @@ std::optional<std::string> EncodeQuoteParams(
   }
 
   result.Set("fromAmount", params->from_amount);
-  result.Set("fromTokenAddress", params->from_token.empty()
-                                     ? kLiFiNativeAssetContractAddress
-                                     : params->from_token);
+  result.Set("fromTokenAddress",
+             params->from_token.empty()
+                 ? params->from_chain_id == mojom::kSolanaMainnet
+                       ? kLiFiNativeSVMAssetContractAddress
+                       : kLiFiNativeEVMAssetContractAddress
+                 : params->from_token);
   result.Set("fromAddress", params->from_account_id->address);
 
   if (auto chain_id = EncodeChainId(params->to_chain_id)) {
@@ -398,9 +401,12 @@ std::optional<std::string> EncodeQuoteParams(
     return std::nullopt;
   }
 
-  result.Set("toTokenAddress", params->to_token.empty()
-                                   ? kLiFiNativeAssetContractAddress
-                                   : params->to_token);
+  result.Set("toTokenAddress",
+             params->to_token.empty()
+                 ? params->to_chain_id == mojom::kSolanaMainnet
+                       ? kLiFiNativeSVMAssetContractAddress
+                       : kLiFiNativeEVMAssetContractAddress
+                 : params->to_token);
   result.Set("toAddress", params->to_account_id->address);
   result.Set("allowDestinationCall", true);
 

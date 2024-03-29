@@ -451,8 +451,11 @@ export const useSwap = () => {
           const { routes } = quoteResponse.response.lifiQuote
 
           // TODO(douglas): refactor to allow selecting routes
-          const route = routes[0]
-          const step = route.steps[0]
+          const route = routes[0] || undefined
+
+          if (!route) {
+            return
+          }
 
           if (params.editingFromOrToAmount === 'from') {
             setToAmount(getLiFiToAmount(route).format(6))
@@ -460,12 +463,16 @@ export const useSwap = () => {
             setFromAmount(getLiFiFromAmount(route).format(6))
           }
 
-          await checkAllowance({
-            account: fromAccount,
-            spendAmount: step.estimate.fromAmount,
-            spenderAddress: step.estimate.approvalAddress,
-            token: params.fromToken
-          })
+          const step = route.steps[0]
+
+          if (step) {
+            await checkAllowance({
+              account: fromAccount,
+              spendAmount: step.estimate.fromAmount,
+              spenderAddress: step.estimate.approvalAddress,
+              token: params.fromToken
+            })
+          }
         }
 
         if (quoteResponse.response.jupiterQuote) {
@@ -840,10 +847,9 @@ export const useSwap = () => {
       }
 
       // LiFi specific validations
-      if (quoteErrorUnion?.lifiError) {
-        return quoteErrorUnion?.lifiError.codes.includes(
-          BraveWallet.LifiToolErrorCode.INSUFFICIENT_LIQUIDITY
-        )
+      if (quoteErrorUnion?.lifiError?.code) {
+        return quoteErrorUnion?.lifiError.code ===
+          BraveWallet.LiFiErrorCode.NotFoundError
           ? 'insufficientLiquidity'
           : 'unknownError'
       }
@@ -893,8 +899,12 @@ export const useSwap = () => {
     }
 
     if (quoteUnion.lifiQuote) {
-      const route = quoteUnion.lifiQuote.routes[0]
-      const step = route.steps[0]
+      const route = quoteUnion.lifiQuote.routes[0] || undefined
+      const step = route?.steps[0]
+
+      if (!step) {
+        return
+      }
 
       if (hasAllowance) {
         // in the future, we will loop thru the steps and call exchange (await

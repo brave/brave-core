@@ -392,7 +392,10 @@ mojom::BlockchainTokenPtr ParseToken(const swap_responses::LiFiToken& value) {
   result->symbol = value.symbol;
   result->logo = value.logo_uri.has_value() ? value.logo_uri.value() : "";
   result->contract_address =
-      value.address == kLiFiNativeAssetContractAddress ? "" : value.address;
+      value.address == kLiFiNativeEVMAssetContractAddress ||
+              value.address == kLiFiNativeSVMAssetContractAddress
+          ? ""
+          : value.address;
 
   if (!base::StringToInt(value.decimals, &result->decimals)) {
     return nullptr;
@@ -644,7 +647,53 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
       std::move(evm_transaction));
 }
 
-mojom::LifiToolErrorCode ParseLifiToolErrorCode(const std::string& value) {
+mojom::LiFiErrorCode ParseLiFiErrorCode(
+    const std::optional<std::string>& value) {
+  if (!value) {
+    return mojom::LiFiErrorCode::Success;
+  }
+
+  if (value == "1000") {
+    return mojom::LiFiErrorCode::DefaultError;
+  }
+  if (value == "1001") {
+    return mojom::LiFiErrorCode::FailedToBuildTransactionError;
+  }
+  if (value == "1002") {
+    return mojom::LiFiErrorCode::NoQuoteError;
+  }
+  if (value == "1003") {
+    return mojom::LiFiErrorCode::NotFoundError;
+  }
+  if (value == "1004") {
+    return mojom::LiFiErrorCode::NotProcessableError;
+  }
+  if (value == "1005") {
+    return mojom::LiFiErrorCode::RateLimitError;
+  }
+  if (value == "1006") {
+    return mojom::LiFiErrorCode::ServerError;
+  }
+  if (value == "1007") {
+    return mojom::LiFiErrorCode::SlippageError;
+  }
+  if (value == "1008") {
+    return mojom::LiFiErrorCode::ThirdPartyError;
+  }
+  if (value == "1009") {
+    return mojom::LiFiErrorCode::TimeoutError;
+  }
+  if (value == "1010") {
+    return mojom::LiFiErrorCode::UnauthorizedError;
+  }
+  if (value == "1011") {
+    return mojom::LiFiErrorCode::ValidationError;
+  }
+
+  return mojom::LiFiErrorCode::DefaultError;
+}
+
+mojom::LifiToolErrorCode ParseLiFiToolErrorCode(const std::string& value) {
   // No route was found for this action.
   if (value == "NO_POSSIBLE_ROUTE") {
     return mojom::LifiToolErrorCode::NO_POSSIBLE_ROUTE;
@@ -712,13 +761,7 @@ mojom::LiFiErrorPtr ParseErrorResponse(const base::Value& json_value) {
 
   auto result = mojom::LiFiError::New();
   result->message = value->message;
-
-  std::vector<mojom::LifiToolErrorCode> error_codes = {};
-  for (const auto& error : value->errors) {
-    error_codes.push_back(std::move(ParseLifiToolErrorCode(error.code)));
-  }
-
-  result->codes = error_codes;
+  result->code = ParseLiFiErrorCode(value->code);
 
   return result;
 }

@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/base/load_flags.h"
@@ -523,6 +524,17 @@ void SwapService::OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
   }
 
   if (auto quote = lifi::ParseQuoteResponse(api_request_result.value_body())) {
+    if (quote->routes.empty()) {
+      auto error_response = mojom::LiFiError::New();
+      error_response->code = mojom::LiFiErrorCode::NotFoundError;
+      error_response->message = "No Routes found";
+
+      std::move(callback).Run(
+          nullptr, nullptr,
+          mojom::SwapErrorUnion::NewLifiError(std::move(error_response)), "");
+      return;
+    }
+
     std::move(callback).Run(
         mojom::SwapQuoteUnion::NewLifiQuote(std::move(quote)),
         std::move(swap_fee), nullptr, "");

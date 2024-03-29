@@ -765,6 +765,23 @@ enum LifiToolErrorCode {
   CANNOT_GUARANTEE_MIN_AMOUNT = 9
 };
 
+// https://github.com/lifinance/types/blob/main/src/errors.ts
+enum LiFiErrorCode {
+  Success = 0,
+  DefaultError = 1000,
+  FailedToBuildTransactionError = 1001,
+  NoQuoteError = 1002,
+  NotFoundError = 1003,
+  NotProcessableError = 1004,
+  RateLimitError = 1005,
+  ServerError = 1006,
+  SlippageError = 1007,
+  ThirdPartyError = 1008,
+  TimeoutError = 1009,
+  UnauthorizedError = 1010,
+  ValidationError = 1011,
+};
+
 struct LifiToolError {
   string errorType;
   string code;
@@ -774,7 +791,7 @@ struct LifiToolError {
 
 struct LiFiError {
   string message;
-  array<LifiToolErrorCode> codes;
+  LiFiErrorCode? code;
 };
 
 enum SwapDiscountCode {
