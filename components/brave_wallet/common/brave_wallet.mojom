@@ -1628,6 +1628,8 @@ interface ZCashWalletService {
       (ZCashAccountInfo? account_info);
   ValidateZCashAddress(string addr, bool testnet) =>
       (ZCashAddressValidationResult result);
+  ShieldFunds(string network_id, AccountId account_id) =>
+      (string? tx_id, string? error_message);
 };
 
 enum TransactionStatus {

@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 
 namespace brave_wallet {
@@ -39,7 +40,7 @@ class ZCashTransaction {
   struct TxInput {
     TxInput();
     ~TxInput();
-    TxInput(const TxInput& other) = delete;
+    TxInput(const TxInput& other);
     TxInput& operator=(const TxInput& other) = delete;
     TxInput(TxInput&& other);
     TxInput& operator=(TxInput&& other);
@@ -83,6 +84,50 @@ class ZCashTransaction {
     uint64_t amount = 0;
   };
 
+  struct TransparentPart {
+    TransparentPart();
+    ~TransparentPart();
+    TransparentPart(TransparentPart&& other);
+    TransparentPart(const TransparentPart& other) = delete;
+    TransparentPart& operator=(const TransparentPart& other) = delete;
+    TransparentPart& operator=(TransparentPart&& other);
+    bool operator==(const TransparentPart& other) const;
+    bool operator!=(const TransparentPart& other) const;
+
+    std::vector<TxInput> inputs;
+    std::vector<TxOutput> outputs;
+  };
+
+  struct OrchardOutput {
+    OrchardOutput();
+    ~OrchardOutput();
+    OrchardOutput(OrchardOutput&& other);
+    OrchardOutput(const OrchardOutput& other) = delete;
+    OrchardOutput& operator=(const OrchardOutput& other) = delete;
+    OrchardOutput& operator=(OrchardOutput&& other);
+    bool operator==(const OrchardOutput& other) const;
+    bool operator!=(const OrchardOutput& other) const;
+
+    uint64_t value;
+    std::array<uint8_t, kOrchardRawBytesSize> address;
+  };
+
+  struct OrchardPart {
+    OrchardPart();
+    ~OrchardPart();
+    OrchardPart(OrchardPart&& other);
+    OrchardPart(const OrchardPart& other) = delete;
+    OrchardPart& operator=(const OrchardPart& other) = delete;
+    OrchardPart& operator=(OrchardPart&& other);
+    bool operator==(const OrchardPart& other) const;
+    bool operator!=(const OrchardPart& other) const;
+
+    // Only outputs are supported
+    std::vector<OrchardOutput> outputs;
+    std::optional<std::array<uint8_t, kZCashDigestSize>> digest;
+    std::optional<std::vector<uint8_t>> raw_tx;
+  };
+
   ZCashTransaction();
   ~ZCashTransaction();
   ZCashTransaction(const ZCashTransaction& other) = delete;
@@ -97,7 +142,7 @@ class ZCashTransaction {
   static std::optional<ZCashTransaction> FromValue(
       const base::Value::Dict& value);
 
-  bool IsSigned() const;
+  bool IsTransparentPartSigned() const;
   uint64_t TotalInputsAmount() const;
 
   uint8_t sighash_type() const;
@@ -111,10 +156,11 @@ class ZCashTransaction {
   uint64_t fee() const { return fee_; }
   void set_fee(uint64_t fee) { fee_ = fee; }
 
-  const std::vector<TxInput>& inputs() const { return inputs_; }
-  std::vector<TxInput>& inputs() { return inputs_; }
-  const std::vector<TxOutput>& outputs() const { return outputs_; }
-  std::vector<TxOutput>& outputs() { return outputs_; }
+  const TransparentPart& transparent_part() const { return transparent_part_; }
+  TransparentPart& transparent_part() { return transparent_part_; }
+
+  const OrchardPart& orchard_part() const { return orchard_part_; }
+  OrchardPart& orchard_part() { return orchard_part_; }
 
   uint32_t locktime() const { return locktime_; }
   void set_locktime(uint32_t locktime) { locktime_ = locktime; }
@@ -125,8 +171,9 @@ class ZCashTransaction {
   }
 
  private:
-  std::vector<TxInput> inputs_;
-  std::vector<TxOutput> outputs_;
+  TransparentPart transparent_part_;
+  OrchardPart orchard_part_;
+
   uint32_t locktime_ = 0;
   uint32_t expiry_height_ = 0;
   std::string to_;
