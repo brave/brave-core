@@ -219,10 +219,7 @@ std::optional<std::vector<ParsedAddress>> ExtractParsedAddresses(
   }
 
   std::vector<uint8_t> padded_hrp(kPaddedHrpSize, 0);
-  std::copy(reinterpret_cast<const uint8_t*>(expected_hrp.c_str()),
-            reinterpret_cast<const uint8_t*>(expected_hrp.c_str()) +
-                expected_hrp.length(),
-            padded_hrp.begin());
+  base::ranges::copy(base::make_span(expected_hrp), padded_hrp.begin());
 
   // Check that HRP is similar to the padded HRP
   if (!std::equal(padded_hrp.begin(), padded_hrp.end(),

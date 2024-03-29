@@ -23,6 +23,8 @@ cargo_crate("lib") {
   ]
   inputs = []
 
+  features = [ "legacy-api" ]
+
   build_native_rust_unit_tests = false
   edition = "2021"
   cargo_pkg_version = "0.5.1"

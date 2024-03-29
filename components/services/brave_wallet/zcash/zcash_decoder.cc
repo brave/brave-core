@@ -81,4 +81,19 @@ void ZCashDecoder::ParseSendResponse(const std::string& data,
       mojom::SendResponse::New(result.errorcode(), result.errormessage()));
 }
 
+void ZCashDecoder::ParseTreeState(const std::string& data,
+                                  ParseTreeStateCallback callback) {
+  zcash::TreeState result;
+  auto serialized_message = ResolveSerializedMessage(data);
+  if (!serialized_message ||
+      !result.ParseFromString(serialized_message.value())) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::move(callback).Run(mojom::TreeState::New(
+      result.network(), result.height(), result.hash(), result.time(),
+      result.saplingtree(), result.orchardtree()));
+}
+
 }  // namespace brave_wallet
