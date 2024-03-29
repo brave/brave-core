@@ -586,6 +586,17 @@
                                  kBraveAdblockMobileNotificationsListDefault), \
       },                                                                       \
       {                                                                        \
+          "brave-adblock-experimental-list-default",                           \
+          "Treat 'Brave Experimental Adblock Rules' as a default list "        \
+          "source",                                                            \
+                                                                               \
+          "Enables the 'Brave Experimental Adblock Rules' regional list if "   \
+          "its toggle in brave://adblock hasn't otherwise been modified",      \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockExperimentalListDefault),  \
+      },                                                                       \
+      {                                                                        \
           "brave-adblock-scriptlet-debug-logs",                                \
           "Enable debug logging for scriptlet injections",                     \
           "Enable console debugging for scriptlets injected by cosmetic "      \
