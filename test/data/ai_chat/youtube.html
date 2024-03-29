@@ -1,0 +1,36 @@
+<html>
+
+<head>
+    <script>
+        const ytplayer =
+        {
+            "config": {
+                "args": {
+                    "raw_player_response": {
+                        "captions": {
+                            "playerCaptionsTracklistRenderer": {
+                                "captionTracks": [
+                                    {
+                                        "baseUrl": "https://www.youtube.com/initial.xml"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        async function loadNewConfig() {
+            await fetch('/youtubei/v1/player')
+            console.log('CLICKED')
+        }
+    </script>
+
+</head>
+
+<body>
+    <div id="config" onclick="loadNewConfig();">CLICK ME</div>
+</body>
+
+</html>
