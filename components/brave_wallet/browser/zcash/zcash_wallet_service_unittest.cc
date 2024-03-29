@@ -155,7 +155,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
     input.script_pub_key =
         ZCashAddressToScriptPubkey(input.utxo_address, false);
 
-    zcash_transaction.inputs().push_back(std::move(input));
+    zcash_transaction.transparent_part().inputs_.push_back(std::move(input));
   }
 
   {
@@ -164,7 +164,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
     output.amount = 500000;
     output.script_pubkey = ZCashAddressToScriptPubkey(output.address, false);
 
-    zcash_transaction.outputs().push_back(std::move(output));
+    zcash_transaction.transparent_part().outputs_.push_back(std::move(output));
   }
 
   {
@@ -173,7 +173,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
     output.script_pubkey = ZCashAddressToScriptPubkey(output.address, false);
     output.amount = 35000;
 
-    zcash_transaction.outputs().push_back(std::move(output));
+    zcash_transaction.transparent_part().outputs_.push_back(std::move(output));
   }
 
   ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
@@ -211,7 +211,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&sign_callback);
 
-  EXPECT_EQ(ToHex(signed_tx.inputs()[0].script_sig),
+  EXPECT_EQ(ToHex(signed_tx.transparent_part().inputs_[0].script_sig),
             "0x47304402202fc68ead746e8e93bb661ac79e71e1d3d84fd0f2aac76a8cb"
             "4fa831a847787ff022028efe32152f282d7167c40d62b07aedad73a66c7"
             "a3548413f289e2aef3da96b30121028754aaa5d9198198ecf5fd1849cbf"

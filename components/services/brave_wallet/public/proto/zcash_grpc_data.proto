@@ -4,6 +4,16 @@ option optimize_for = LITE_RUNTIME;
 
 package zcash;
 
+// The TreeState is derived from the Zcash z_gettreestate rpc.
+message TreeState {
+  string network = 1;      // "main" or "test"
+  uint64 height = 2;       // block height
+  string hash = 3;         // block id
+  uint32 time = 4;         // Unix epoch time when the block was mined
+  string saplingTree = 5;  // sapling commitment tree state
+  string orchardTree = 6;  // orchard commitment tree state
+}
+
 message GetAddressUtxosRequest {
   repeated string addresses = 1;
   uint64 startHeight = 2;
@@ -24,6 +34,8 @@ message GetAddressUtxosResponse {
 }
 
 message ChainSpec {}
+
+message Empty {}
 
 message BlockID {
   uint64 height = 1;

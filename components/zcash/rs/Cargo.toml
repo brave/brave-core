@@ -1,0 +1,13 @@
+[package]
+name = "zcash"
+description = "Zcash stuff"
+version = "0.0.1"
+edition = "2024"
+publish = false
+
+[dependencies]
+incrementalmerkletree = { features = ["legacy-api"] }
+
+[lib]
+name = "zcash"
+crate-type = ["rlib"]

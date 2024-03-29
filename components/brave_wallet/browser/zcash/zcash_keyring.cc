@@ -94,7 +94,7 @@ std::optional<std::string> ZCashKeyring::GetUnifiedAddress(
   return GetMergedUnifiedAddress(
       std::vector<ParsedAddress>{
           ParsedAddress(ZCashAddrType::kP2PKH, transparent_pubkey_hash.value()),
-          ParsedAddress(ZCashAddrType::kOrchard, orchard_addr_bytes.value())},
+          ParsedAddress(ZCashAddrType::kOrchard, std::vector<uint8_t>(orchard_addr_bytes->begin(), orchard_addr_bytes->end()))},
       testnet_);
 }
 
@@ -118,7 +118,7 @@ std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkeyHash(
   return Hash160(hd_key_base->GetPublicKeyBytes());
 }
 
-std::optional<std::vector<uint8_t>> ZCashKeyring::GetOrchardRawBytes(
+std::optional<std::array<uint8_t, 43>> ZCashKeyring::GetOrchardRawBytes(
     const mojom::ZCashKeyId& key_id) {
   if (!orchard_key_) {
     NOTREACHED();

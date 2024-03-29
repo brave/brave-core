@@ -30,7 +30,7 @@ class HDKeyZip32 {
 
   std::unique_ptr<HDKeyZip32> DeriveHardenedChild(uint32_t index);
 
-  std::optional<std::vector<uint8_t>> GetPublicDevirsifiedAddress(
+  std::optional<std::array<uint8_t, 43>> GetPublicDevirsifiedAddress(
       uint32_t div_index,
       OrchardKind kind);
 

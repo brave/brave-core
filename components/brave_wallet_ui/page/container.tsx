@@ -61,6 +61,7 @@ import {
 import { UnlockedWalletRoutes } from './router/unlocked_wallet_routes'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send_screen/send_screen'
+import { DevZCash } from './screens/dev-zcash/dev-zcash'
 
 const initialSessionRoute = getInitialSessionRoute()
 
@@ -77,6 +78,9 @@ export const Container = () => {
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
   const isBitcoinEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinEnabled
+  )
+  const isZCashEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashEnabled
   )
 
   // page selectors (safe)
@@ -204,6 +208,17 @@ export const Container = () => {
         redirectRoute={defaultRedirect}
       >
         <DevBitcoin />
+      </ProtectedRoute>
+
+      <ProtectedRoute
+        path={WalletRoutes.DevZCash}
+        exact={true}
+        requirement={
+          !isWalletLocked && !walletNotYetCreated && isZCashEnabled
+        }
+        redirectRoute={defaultRedirect}
+      >
+        <DevZCash />
       </ProtectedRoute>
 
       <Redirect to={defaultRedirect} />

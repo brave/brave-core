@@ -54,7 +54,7 @@ std::unique_ptr<HDKeyZip32> HDKeyZip32::DeriveHardenedChild(uint32_t index) {
 #endif
 }
 
-std::optional<std::vector<uint8_t>> HDKeyZip32::GetPublicDevirsifiedAddress(
+std::optional<std::array<uint8_t, 43>> HDKeyZip32::GetPublicDevirsifiedAddress(
     uint32_t div_index,
     OrchardKind kind) {
 #if BUILDFLAG(ENABLE_ORCHARD)
@@ -63,7 +63,7 @@ std::optional<std::vector<uint8_t>> HDKeyZip32::GetPublicDevirsifiedAddress(
       kind == OrchardKind::External
           ? extended_spending_key_->unwrap().external_address(div_index)
           : extended_spending_key_->unwrap().internal_address(div_index);
-  return std::vector<uint8_t>(bytes.begin(), bytes.end());
+  return bytes;
 #else
   NOTREACHED();
   return std::nullopt;

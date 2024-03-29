@@ -1451,6 +1451,7 @@ struct ZCashAccountInfo {
 };
 
 interface ZCashWalletService {
+  ShieldFunds(string network_id, AccountId account_id) => (string? tx_id, string? error_message);
   GetBalance(string network_id, AccountId account_id) => (ZCashBalance? balance, string? error_message);
   GetReceiverAddress(AccountId account_id) => (ZCashAddress? address, string? error_message);
   GetZCashAccountInfo(AccountId account_id) => (ZCashAccountInfo? account_info);

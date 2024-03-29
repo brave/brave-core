@@ -21,8 +21,11 @@ rust_static_library("rust_lib") {
 
   if (enable_orchard_crate) {
     deps += [
+      "//brave/components/zcash/rs:rust_lib",
       "//brave/third_party/rust/orchard/v0_7:lib",
       "//brave/third_party/rust/zip32/v0_1:lib",
+      "//third_party/rust/rand/v0_8:lib",
+      "//third_party/rust/rand_core/v0_6:lib",
     ]
   }
 }

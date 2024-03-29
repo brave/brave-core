@@ -42,10 +42,18 @@ class ZCashRpc {
       base::expected<mojom::SendResponsePtr, std::string>)>;
   using IsKnownAddressCallback =
       base::OnceCallback<void(base::expected<bool, std::string>)>;
+  using GetTreeStateCallback = base::OnceCallback<void(
+      base::expected<mojom::TreeStatePtr, std::string>)>;
 
   ZCashRpc(PrefService* prefs,
            scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   virtual ~ZCashRpc();
+
+  virtual void GetTreeState(const std::string& chain_id,
+                            mojom::BlockIDPtr block_id,
+                            GetTreeStateCallback callback);
+  virtual void GetLatestTreeState(const std::string& chain_id,
+                                  GetTreeStateCallback callback);
 
   virtual void GetUtxoList(const std::string& chain_id,
                            const std::string& address,
@@ -95,6 +103,10 @@ class ZCashRpc {
                               UrlLoadersList::iterator it,
                               StreamHandlersList::iterator handler_it,
                               base::expected<bool, std::string> result);
+
+  void OnGetTreeStateResponse(ZCashRpc::GetTreeStateCallback callback,
+                              UrlLoadersList::iterator it,
+                              std::unique_ptr<std::string> response_body);
 
   template <typename T>
   void OnParseResult(base::OnceCallback<void(base::expected<T, std::string>)>,
