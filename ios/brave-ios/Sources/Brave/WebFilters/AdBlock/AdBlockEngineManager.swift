@@ -76,7 +76,10 @@ import os
     for enabledSources: [GroupedAdBlockEngine.Source]
   ) -> [FileInfo] {
     return enabledSources.compactMap { source in
-      return availableFiles.first(where: { $0.filterListInfo.source == source })
+      return availableFiles.first(where: {
+        FileManager.default.fileExists(atPath: $0.localFileURL.path)
+          && $0.filterListInfo.source == source
+      })
     }
   }
 
@@ -98,9 +101,13 @@ import os
   }
 
   /// Checks to see if we need to compile or recompile the engine based on the available info
-  func checkNeedsCompile(for enabledSources: [GroupedAdBlockEngine.Source]) -> Bool {
-    let compilableInfos = compilableFiles(for: enabledSources).map({ $0.filterListInfo })
-    guard !compilableInfos.isEmpty else { return false }
+  func checkNeedsCompile(for fileInfos: [AdBlockEngineManager.FileInfo]) -> Bool {
+    if let pendingGroup = pendingGroup {
+      return pendingGroup.infos != fileInfos.map({ $0.filterListInfo })
+    }
+
+    let compilableInfos = fileInfos.map({ $0.filterListInfo })
+    guard !compilableInfos.isEmpty else { return engine?.group.infos.isEmpty == false }
     guard let engine = engine else { return true }
     return compilableInfos != engine.group.infos
   }
@@ -145,22 +152,19 @@ import os
   /// Especially needed during launch when we have a bunch of downloads coming at the same time.
   func compileDelayedIfNeeded(
     for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
-    priority: TaskPriority
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
   ) {
-    guard self.checkNeedsCompile(for: enabledSources) else { return }
-
     // Cancel the previous task
     delayTask?.cancel()
 
     // Restart the task
     delayTask = Task {
       let hasAllInfo = checkHasAllInfo(for: enabledSources)
-      try await Task.sleep(seconds: hasAllInfo ? 1 : 60)
+      try await Task.sleep(seconds: hasAllInfo ? 5 : 60)
+
       await compileAvailableIfNeeded(
         for: enabledSources,
-        resourcesInfo: resourcesInfo,
-        priority: priority
+        resourcesInfo: resourcesInfo
       )
     }
   }
@@ -168,15 +172,13 @@ import os
   /// This will compile available data right away if it is needed and cancel any delayedTasks
   func compileImmediatelyIfNeeded(
     for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
-    priority: TaskPriority
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
   ) async {
     delayTask?.cancel()
 
     await self.compileAvailableIfNeeded(
       for: enabledSources,
-      resourcesInfo: resourcesInfo,
-      priority: priority
+      resourcesInfo: resourcesInfo
     )
   }
 
@@ -192,29 +194,37 @@ import os
   }
 
   func needsCompile(for filterListInfo: GroupedAdBlockEngine.FilterListInfo) -> Bool {
-    guard let info = engine?.group.infos.first(where: { $0.source == filterListInfo.source }) else {
+    var infos = availableFiles.map(\.filterListInfo)
+    if let engineInfos = engine?.group.infos {
+      // This is an optimization because during launch we don't have file infos.
+      // But we will have an engine loaded from cache.
+      // So we also check the engine infos as well
+      infos.append(contentsOf: engineInfos)
+    }
+
+    guard let info = infos.first(where: { $0.source == filterListInfo.source }) else {
       return true
     }
+
     return filterListInfo.version < info.version
   }
 
-  /// Checks to see if we need to compile or recompile the engine based on the available info
-  private func checkHasAllInfo(for sources: [GroupedAdBlockEngine.Source]) -> Bool {
-    return Set(sources) == Set(availableFiles.map(\.filterListInfo.source))
+  func checkHasAllInfo(for sources: [GroupedAdBlockEngine.Source]) -> Bool {
+    let availableSources = compilableFiles(for: sources).map({ $0.filterListInfo.source })
+    return sources.allSatisfy({ availableSources.contains($0) })
   }
 
   /// This will compile available data right away if it is needed
   private func compileAvailableIfNeeded(
     for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
-    priority: TaskPriority
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
   ) async {
     do {
-      guard self.checkNeedsCompile(for: enabledSources) else { return }
+      let compilableFiles = compilableFiles(for: enabledSources)
+      guard self.checkNeedsCompile(for: compilableFiles) else { return }
       try await compileAvailable(
-        for: enabledSources,
-        resourcesInfo: resourcesInfo,
-        priority: priority
+        for: compilableFiles,
+        resourcesInfo: resourcesInfo
       )
     } catch {
       ContentBlockerManager.log.error(
@@ -225,16 +235,23 @@ import os
 
   /// Compile an engine from all available data
   private func compileAvailable(
-    for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
-    priority: TaskPriority
+    for files: [AdBlockEngineManager.FileInfo],
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
   ) async throws {
+    let infosString = files.map({ " \($0.filterListInfo.debugDescription)" })
+      .joined(separator: "\n")
+    let count = files.count
+
+    ContentBlockerManager.log.debug(
+      "Compiling `\(self.cacheFolderName)` engine from \(count) sources:\n\(infosString)"
+    )
+
     let engineType = self.engineType
-    let group = try combineRules(for: enabledSources)
+    let group = try combineRules(for: files)
     self.pendingGroup = group
 
     // 2. Compile the engine
-    let groupedEngine = try await Task.detached(priority: priority) {
+    let groupedEngine = try await Task.detached(priority: .high) {
       let engine = try GroupedAdBlockEngine.compile(group: group, type: engineType)
 
       if let resourcesInfo {
@@ -264,17 +281,14 @@ import os
 
   /// Take all the filter lists and combine them into one then save them into a cache folder.
   private func combineRules(
-    for enabledSources: [GroupedAdBlockEngine.Source]
+    for compilableFiles: [AdBlockEngineManager.FileInfo]
   ) throws -> GroupedAdBlockEngine.FilterListGroup {
-    // 1. Grab all the needed files
-    let compilableFiles = compilableFiles(for: enabledSources)
-
-    // 2. Create a file url
+    // 1. Create a file url
     let cachedFolder = try getOrCreateCacheFolder()
     let fileURL = cachedFolder.appendingPathComponent("list.txt", conformingTo: .text)
     var compiledInfos: [GroupedAdBlockEngine.FilterListInfo] = []
     var unifiedRules = ""
-    // 3. Join all the rules together
+    // 2. Join all the rules together
     compilableFiles.forEach { fileInfo in
       do {
         let fileContents = try String(contentsOf: fileInfo.localFileURL)
@@ -282,12 +296,12 @@ import os
         unifiedRules = [unifiedRules, fileContents].joined(separator: "\n")
       } catch {
         ContentBlockerManager.log.error(
-          "Could not load rules for `\(fileInfo.filterListInfo.debugDescription)`: \(error)"
+          "Could not load rules for \(fileInfo.filterListInfo.debugDescription): \(error)"
         )
       }
     }
 
-    // 4. Save the files into storage
+    // 3. Save the files into storage
     if FileManager.default.fileExists(atPath: fileURL.path) {
       try FileManager.default.removeItem(at: fileURL)
     }

@@ -70,6 +70,20 @@ actor ContentBlockerManager {
     }
   }
 
+  enum CompileResult {
+    case empty
+    case success(WKContentRuleList)
+    case failure(Error)
+
+    func get() throws -> WKContentRuleList? {
+      switch self {
+      case .empty: return nil
+      case .success(let ruleList): return ruleList
+      case .failure(let error): throw error
+      }
+    }
+  }
+
   /// An object representing the type of block list
   public enum BlocklistType: Hashable, CustomDebugStringConvertible {
     fileprivate static let genericPrifix = "stored-type"
@@ -139,7 +153,7 @@ actor ContentBlockerManager {
   /// The store in which these rule lists should be compiled
   let ruleStore: WKContentRuleListStore
   /// We cached the rule lists so that we can return them quicker if we need to
-  private var cachedRuleLists: [String: Result<WKContentRuleList, Error>]
+  private var cachedRuleLists: [String: CompileResult]
   /// A list of etld+1s that are always aggressive
   /// TODO: @JS Replace this with the 1st party ad-block list
   let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
@@ -210,7 +224,7 @@ actor ContentBlockerManager {
       try await compile(encodedContentRuleList: result.rulesJSON, for: blocklistType, modes: modes)
     } catch {
       ContentBlockerManager.log.error(
-        "Failed to compile rule list for \(blocklistType.debugDescription)"
+        "Failed to compile rule list for `\(blocklistType.debugDescription)`"
       )
     }
   }
@@ -223,13 +237,25 @@ actor ContentBlockerManager {
   ) async throws {
     guard !modes.isEmpty else { return }
     var foundError: Error?
+    let ruleList = try decode(encodedContentRuleList: encodedContentRuleList)
+
+    guard !ruleList.isEmpty else {
+      for mode in modes {
+        self.cachedRuleLists[type.makeIdentifier(for: mode)] = .empty
+      }
+
+      ContentBlockerManager.log.debug(
+        "Empty filter set for `\(type.debugDescription)`"
+      )
+      return
+    }
 
     for mode in modes {
       let identifier = type.makeIdentifier(for: mode)
 
       do {
         let moddedRuleList = try self.modify(
-          encodedContentRuleList: encodedContentRuleList,
+          ruleList: ruleList,
           for: mode
         )
         let ruleList = try await compile(
@@ -237,6 +263,7 @@ actor ContentBlockerManager {
           for: type,
           mode: mode
         )
+
         self.cachedRuleLists[identifier] = .success(ruleList)
         Self.log.debug("Compiled rule list for `\(identifier)`")
       } catch {
@@ -253,16 +280,18 @@ actor ContentBlockerManager {
     }
   }
 
-  private func modify(encodedContentRuleList: String, for mode: BlockingMode) throws -> String? {
+  private func modify(
+    ruleList: [[String: Any?]],
+    for mode: BlockingMode
+  ) throws -> String? {
     switch mode {
     case .aggressive, .general:
       // Aggressive mode and general mode has no modification to the rules
-      return nil
+      let modifiedData = try JSONSerialization.data(withJSONObject: ruleList)
+      return String(bytes: modifiedData, encoding: .utf8)
 
     case .standard:
-      // Add the ignore first party rule to make it standard
-      var ruleList = try decode(encodedContentRuleList: encodedContentRuleList)
-
+      var ruleList = ruleList
       // We need to make sure we are not going over the limit
       // So we make space for the added rule
       if ruleList.count >= (Self.maxContentBlockerSize) {

@@ -76,7 +76,7 @@ actor FilterListCustomURLDownloader: ObservableObject {
       localFileURL: downloadResult.fileURL
     )
 
-    await AdBlockGroupsManager.shared.updated(
+    await AdBlockGroupsManager.shared.update(
       fileInfo: fileInfo,
       engineType: .aggressive
     )
@@ -142,6 +142,11 @@ actor FilterListCustomURLDownloader: ObservableObject {
     let resource = await filterListCustomURL.setting.resource
     fetchTasks[resource]?.cancel()
     fetchTasks.removeValue(forKey: resource)
+
+    await AdBlockGroupsManager.shared.removeFileInfo(
+      for: filterListCustomURL.setting.engineSource,
+      engineType: .aggressive
+    )
   }
 }
 

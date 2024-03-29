@@ -71,9 +71,8 @@ final class AdBlockGroupsManagerTests: XCTestCase {
       enabled: true
     )
     await groupsManager.updateIfNeeded(resourcesInfo: resourcesInfo)
-    await groupsManager.updated(fileInfo: fileInfos[1], engineType: .standard)
-    await groupsManager.updated(fileInfo: fileInfos[0], engineType: .aggressive)
-    await groupsManager.updated(fileInfo: fileInfos[1], engineType: .aggressive)
+    await groupsManager.update(fileInfo: fileInfos[1], engineType: .standard)
+    await groupsManager.update(fileInfos: fileInfos, engineType: .aggressive)
     await groupsManager.compileEnginesIfNeeded()
 
     // Then
@@ -154,7 +153,7 @@ final class AdBlockGroupsManagerTests: XCTestCase {
       enabled: true
     )
     groupsManager.updateIfNeeded(resourcesInfo: resourcesInfo)
-    await groupsManager.updated(fileInfo: fileInfo, engineType: .standard)
+    groupsManager.update(fileInfo: fileInfo, engineType: .standard)
     await groupsManager.compileEnginesIfNeeded()
 
     let mainFrameURL = URL(string: "https://dev-pages.bravesoftware.com")!
@@ -218,7 +217,7 @@ final class AdBlockGroupsManagerTests: XCTestCase {
 
     // When
     // Adding an aggressive filter list
-    await groupsManager.updated(fileInfo: fileInfo, engineType: .aggressive)
+    groupsManager.update(fileInfo: fileInfo, engineType: .aggressive)
     await groupsManager.compileEnginesIfNeeded()
 
     // Then

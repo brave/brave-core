@@ -43,10 +43,6 @@ final class PageDataTests: XCTestCase {
       // When
       // We get the script types for the main frame
       let domain = pageData.domain(persistent: false)
-      //      sourceProvider.set(source: sourceProvider.fileInfos[0].filterListInfo.source, enabled: true)
-      //      sourceProvider.set(source: sourceProvider.fileInfos[1].filterListInfo.source, enabled: true)
-      //      await groupsManager.updated(fileInfo: sourceProvider.fileInfos[0], engineType: .standard)
-      //      await groupsManager.compileEnginesIfNeeded()
 
       let mainFrameRequestTypes = await pageData.makeUserScriptTypes(
         domain: domain,

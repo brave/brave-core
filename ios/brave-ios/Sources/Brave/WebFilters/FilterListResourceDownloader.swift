@@ -94,7 +94,7 @@ public actor FilterListResourceDownloader {
       return
     }
 
-    await AdBlockGroupsManager.shared.updated(
+    await AdBlockGroupsManager.shared.update(
       fileInfo: fileInfo,
       engineType: engineType
     )

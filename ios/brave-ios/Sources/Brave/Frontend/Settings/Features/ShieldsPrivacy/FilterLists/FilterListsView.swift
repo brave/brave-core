@@ -71,6 +71,23 @@ struct FilterListsView: View {
   }
 
   @ViewBuilder private var filterListView: some View {
+    #if DEBUG
+    let allEnabled = Binding {
+      filterListStorage.filterLists.allSatisfy({ $0.isEnabled })
+    } set: { isEnabled in
+      filterListStorage.filterLists.enumerated().forEach { index, filterList in
+        let isEnabled = filterList.entry.hidden ? filterList.entry.defaultEnabled : isEnabled
+        filterListStorage.filterLists[index].isEnabled = isEnabled
+      }
+    }
+
+    Toggle(isOn: allEnabled) {
+      VStack(alignment: .leading) {
+        Text("All").foregroundColor(Color(.bravePrimary))
+      }
+    }
+    #endif
+
     ForEach($filterListStorage.filterLists) { $filterList in
       if !filterList.isHidden {
         Toggle(isOn: $filterList.isEnabled) {

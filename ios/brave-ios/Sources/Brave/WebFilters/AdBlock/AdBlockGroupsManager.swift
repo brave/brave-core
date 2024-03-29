@@ -96,8 +96,7 @@ import os
 
       await manager.compileImmediatelyIfNeeded(
         for: sourceProvider.enabledSources,
-        resourcesInfo: self.resourcesInfo,
-        priority: .high
+        resourcesInfo: self.resourcesInfo
       )
     }
   }
@@ -118,27 +117,75 @@ import os
     updateIfNeeded(resourcesInfo: resourcesInfo)
   }
 
-  /// Handle updated filter list info
-  func updated(
-    fileInfo: AdBlockEngineManager.FileInfo,
+  func update(
+    fileInfos: [AdBlockEngineManager.FileInfo],
     engineType: GroupedAdBlockEngine.EngineType
-  ) async {
+  ) {
     let manager = getManager(for: engineType)
     let enabledSources = sourceProvider.enabledSources
 
     // Compile content blockers if this filter list is enabled
-    if enabledSources.contains(fileInfo.filterListInfo.source) {
-      await ensureContentBlockers(for: fileInfo, engineType: engineType)
+    for fileInfo in fileInfos {
+      if enabledSources.contains(fileInfo.filterListInfo.source) {
+        Task {
+          await ensureContentBlockers(for: fileInfo, engineType: engineType)
+        }
+      }
+
+      manager.add(fileInfo: fileInfo)
     }
 
-    // Always update the info on the manager
-    manager.add(fileInfo: fileInfo)
-    manager.compileDelayedIfNeeded(
-      for: enabledSources,
-      resourcesInfo: resourcesInfo,
-      priority: .background
-    )
+    let sources = fileInfos.map({ $0.filterListInfo.source })
 
+    if manager.checkHasAllInfo(for: sources) {
+      Task {
+        await manager.compileImmediatelyIfNeeded(
+          for: enabledSources,
+          resourcesInfo: self.resourcesInfo
+        )
+      }
+    } else {
+      manager.compileDelayedIfNeeded(
+        for: enabledSources,
+        resourcesInfo: resourcesInfo
+      )
+    }
+  }
+
+  /// Handle updated filter list info
+  func update(
+    fileInfo: AdBlockEngineManager.FileInfo,
+    engineType: GroupedAdBlockEngine.EngineType
+  ) {
+    update(fileInfos: [fileInfo], engineType: engineType)
+  }
+
+  func removeFileInfos(
+    for sources: [GroupedAdBlockEngine.Source],
+    engineType: GroupedAdBlockEngine.EngineType
+  ) {
+    let manager = getManager(for: engineType)
+    for source in sources {
+      manager.removeInfo(for: source)
+    }
+
+    manager.compileDelayedIfNeeded(
+      for: sourceProvider.enabledSources,
+      resourcesInfo: resourcesInfo
+    )
+  }
+
+  func removeFileInfo(
+    for source: GroupedAdBlockEngine.Source,
+    engineType: GroupedAdBlockEngine.EngineType
+  ) {
+    let manager = getManager(for: engineType)
+    manager.removeInfo(for: source)
+
+    manager.compileDelayedIfNeeded(
+      for: sourceProvider.enabledSources,
+      resourcesInfo: resourcesInfo
+    )
   }
 
   /// Ensure all engines and content blockers are compiled
@@ -148,8 +195,7 @@ import os
       let manager = self.getManager(for: engineType)
       await manager.compileImmediatelyIfNeeded(
         for: enabledSources,
-        resourcesInfo: self.resourcesInfo,
-        priority: .high
+        resourcesInfo: self.resourcesInfo
       )
 
       self.ensureContentBlockers(for: enabledSources, engineType: engineType)
@@ -354,12 +400,13 @@ extension AdBlockEngineManager.FileInfo {
       return nil
     }
 
-    let filterListInfo = GroupedAdBlockEngine.FilterListInfo(
-      source: source,
-      version: version
+    self.init(
+      filterListInfo: GroupedAdBlockEngine.FilterListInfo(
+        source: source,
+        version: version
+      ),
+      localFileURL: localFileURL
     )
-
-    self.init(filterListInfo: filterListInfo, localFileURL: localFileURL)
   }
 }
 

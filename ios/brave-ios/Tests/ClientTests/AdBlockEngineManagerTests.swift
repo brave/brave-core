@@ -49,7 +49,7 @@ final class AdBlockEngineManagerTests: XCTestCase {
 
     // Then
     // Needs compile returns true and there is no engine
-    var needsCompile = await engineManager.checkNeedsCompile(for: sources)
+    var needsCompile = await engineManager.checkNeedsCompile(for: fileInfos)
     var engine = await engineManager.engine
     XCTAssertTrue(needsCompile)
     XCTAssertNil(engine)
@@ -68,13 +68,12 @@ final class AdBlockEngineManagerTests: XCTestCase {
     // We compile engine
     await engineManager.compileImmediatelyIfNeeded(
       for: sources,
-      resourcesInfo: resourcesInfo,
-      priority: .high
+      resourcesInfo: resourcesInfo
     )
 
     // Then
     // Needs compile returns false and engine is correctly created
-    needsCompile = await engineManager.checkNeedsCompile(for: sources)
+    needsCompile = await engineManager.checkNeedsCompile(for: fileInfos)
     engine = await engineManager.engine
     let compiledResources = await engine?.resourcesInfo
     let group = await engine?.group
