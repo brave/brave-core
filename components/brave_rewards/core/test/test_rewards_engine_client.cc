@@ -85,7 +85,7 @@ TestSPLAccountBalanceResult::~TestSPLAccountBalanceResult() = default;
 
 TestRewardsEngineClient::TestRewardsEngineClient()
     : engine_database_(base::FilePath()) {
-  CHECK(engine_database_.GetInternalDatabaseForTesting()->OpenInMemory());
+  CHECK(engine_database_.GetInternalDatabaseForTesting().OpenInMemory());
 }
 
 TestRewardsEngineClient::~TestRewardsEngineClient() = default;

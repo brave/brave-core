@@ -30,7 +30,7 @@ void DatabaseExternalTransactions::Insert(
   }
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = base::StringPrintf(
       R"(
         INSERT INTO %s (transaction_id, contribution_id, destination, amount)
@@ -55,8 +55,7 @@ void DatabaseExternalTransactions::OnInsert(
     ResultCallback callback,
     mojom::DBCommandResponsePtr response) {
   std::move(callback).Run(
-      response &&
-              response->status == mojom::DBCommandResponse::Status::RESPONSE_OK
+      response && response->status == mojom::DBCommandResponse::Status::kSuccess
           ? mojom::Result::OK
           : mojom::Result::FAILED);
 }
@@ -66,7 +65,7 @@ void DatabaseExternalTransactions::GetTransaction(
     const std::string& destination,
     GetExternalTransactionCallback callback) {
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = base::StringPrintf(
       R"(
         SELECT transaction_id, contribution_id, destination, amount
@@ -74,10 +73,10 @@ void DatabaseExternalTransactions::GetTransaction(
         WHERE contribution_id = ? AND destination = ?
       )",
       kTableName);
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString};
   BindString(command.get(), 0, contribution_id);
   BindString(command.get(), 1, destination);
 
@@ -94,13 +93,13 @@ void DatabaseExternalTransactions::OnGetTransaction(
     GetExternalTransactionCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Failed to get external transaction";
     return std::move(callback).Run(
         base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
 
-  const auto& records = response->result->get_records();
+  const auto& records = response->records;
   if (records.empty()) {
     return std::move(callback).Run(
         base::unexpected(GetExternalTransactionError::kTransactionNotFound));

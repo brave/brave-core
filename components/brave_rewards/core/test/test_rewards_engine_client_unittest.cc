@@ -21,10 +21,10 @@ class TestRewardsEngineClientTest : public testing::Test {
 };
 
 TEST_F(TestRewardsEngineClientTest, CanAccessDatabaseDirectly) {
-  sql::Database* db = client_.database().GetInternalDatabaseForTesting();
-  ASSERT_TRUE(db->Execute("CREATE TABLE test_table (num INTEGER);"));
-  ASSERT_TRUE(db->Execute("INSERT INTO test_table VALUES (42);"));
-  sql::Statement s(db->GetUniqueStatement("SELECT num FROM test_table"));
+  sql::Database& db = client_.database().GetInternalDatabaseForTesting();
+  ASSERT_TRUE(db.Execute("CREATE TABLE test_table (num INTEGER);"));
+  ASSERT_TRUE(db.Execute("INSERT INTO test_table VALUES (42);"));
+  sql::Statement s(db.GetUniqueStatement("SELECT num FROM test_table"));
   ASSERT_TRUE(s.Step());
   ASSERT_EQ(s.ColumnInt(0), 42);
 }

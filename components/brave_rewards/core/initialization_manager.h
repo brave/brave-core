@@ -8,6 +8,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_rewards/core/common/sql_store.h"
 #include "brave/components/brave_rewards/core/rewards_engine_helper.h"
 
 namespace brave_rewards::internal {
@@ -35,11 +36,11 @@ class InitializationManager : public RewardsEngineHelper,
   bool is_shutting_down() const { return state_ == State::kShuttingDown; }
 
  private:
-  void OnDatabaseInitialized(InitializeCallback callback, mojom::Result result);
+  void OnDatabaseMigrated(InitializeCallback callback, bool success);
   void OnStateInitialized(InitializeCallback callback, mojom::Result result);
   void InitializeHelpers();
   void OnContributionsFinished(ShutdownCallback callback, mojom::Result result);
-  void OnDatabaseClosed(ShutdownCallback callback, mojom::Result result);
+  void OnDatabaseClosed(ShutdownCallback callback, SQLReader reader);
 
   State state_ = State::kUninitialized;
   base::WeakPtrFactory<InitializationManager> weak_factory_{this};

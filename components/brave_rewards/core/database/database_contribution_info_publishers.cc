@@ -44,7 +44,7 @@ void DatabaseContributionInfoPublishers::InsertOrUpdate(
 
   for (const auto& publisher : info->publishers) {
     auto command = mojom::DBCommand::New();
-    command->type = mojom::DBCommand::Type::RUN;
+    command->type = mojom::DBCommand::Type::kRun;
     command->command = query;
 
     BindString(command.get(), 0, publisher->contribution_id);
@@ -72,13 +72,13 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
       kTableName, GenerateStringInCase(contribution_ids).c_str());
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kDouble};
 
   transaction->commands.push_back(std::move(command));
 
@@ -93,14 +93,14 @@ void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
     ContributionPublisherListCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
     std::move(callback).Run({});
     return;
   }
 
   std::vector<mojom::ContributionPublisherPtr> list;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto info = mojom::ContributionPublisher::New();
     auto* record_pointer = record.get();
 
@@ -137,18 +137,18 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
       kTableName, GenerateStringInCase(contribution_ids).c_str());
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kString};
 
   transaction->commands.push_back(std::move(command));
 
@@ -163,14 +163,14 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
     ContributionPublisherPairListCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
     std::move(callback).Run({});
     return;
   }
 
   std::vector<ContributionPublisherInfoPair> pair_list;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto publisher = mojom::PublisherInfo::New();
     auto* record_pointer = record.get();
 
@@ -211,7 +211,7 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, contribution_id);

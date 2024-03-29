@@ -23,7 +23,6 @@
 #include "brave/components/brave_rewards/core/database/database_creds_batch.h"
 #include "brave/components/brave_rewards/core/database/database_event_log.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
-#include "brave/components/brave_rewards/core/database/database_initialize.h"
 #include "brave/components/brave_rewards/core/database/database_media_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
@@ -44,10 +43,6 @@ class Database {
  public:
   explicit Database(RewardsEngine& engine);
   virtual ~Database();
-
-  void Initialize(ResultCallback callback);
-
-  void Close(ResultCallback callback);
 
   /**
    * ACTIVITY INFO
@@ -307,7 +302,6 @@ class Database {
 
  private:
   const raw_ref<RewardsEngine> engine_;
-  DatabaseInitialize initialize_;
   DatabaseActivityInfo activity_info_;
   DatabaseBalanceReport balance_report_;
   DatabaseContributionInfo contribution_info_;

@@ -29,7 +29,7 @@ void MapDatabaseResultToSuccess(base::OnceCallback<void(bool)> callback,
                                 mojom::DBCommandResponsePtr response) {
   std::move(callback).Run(response &&
                           response->status ==
-                              mojom::DBCommandResponse::Status::RESPONSE_OK);
+                              mojom::DBCommandResponse::Status::kSuccess);
 }
 
 }  // namespace
@@ -56,7 +56,7 @@ void DatabaseRecurringTip::InsertOrUpdate(mojom::RecurringTipPtr info,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, info->publisher_key);
@@ -89,7 +89,7 @@ void DatabaseRecurringTip::InsertOrUpdate(
   auto transaction = mojom::DBTransaction::New();
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(publisher_id, amount, added_date, next_contribution_at) "
@@ -126,7 +126,7 @@ void DatabaseRecurringTip::AdvanceMonthlyContributionDates(
   for (const std::string& publisher_id : publisher_ids) {
     if (!publisher_id.empty()) {
       auto command = mojom::DBCommand::New();
-      command->type = mojom::DBCommand::Type::RUN;
+      command->type = mojom::DBCommand::Type::kRun;
       command->command = query;
       BindInt64(command.get(), 0,
                 static_cast<int64_t>(next.InSecondsFSinceUnixEpoch()));
@@ -150,7 +150,7 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
   auto transaction = mojom::DBTransaction::New();
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = base::StringPrintf(
       "UPDATE %s SET next_contribution_at = ? "
       "WHERE next_contribution_at IS NULL",
@@ -159,10 +159,10 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
   transaction->commands.push_back(std::move(command));
 
   command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = base::StringPrintf(
       "SELECT MIN(next_contribution_at) FROM %s", kTableName);
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kInt64};
   transaction->commands.push_back(std::move(command));
 
   auto on_completed =
@@ -170,9 +170,9 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
          mojom::DBCommandResponsePtr response) {
         base::Time time;
         if (response &&
-            response->status == mojom::DBCommandResponse::Status::RESPONSE_OK &&
-            response->result && !response->result->get_records().empty()) {
-          const auto& record = response->result->get_records().front();
+            response->status == mojom::DBCommandResponse::Status::kSuccess &&
+            !response->records.empty()) {
+          const auto& record = response->records.front();
           int64_t timestamp = GetInt64Column(record.get(), 0);
           if (timestamp > 0) {
             time = base::Time::FromSecondsSinceUnixEpoch(
@@ -206,18 +206,18 @@ void DatabaseRecurringTip::GetAllRecords(GetRecurringTipsCallback callback) {
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kString};
 
   transaction->commands.push_back(std::move(command));
 
@@ -231,14 +231,14 @@ void DatabaseRecurringTip::OnGetAllRecords(
     GetRecurringTipsCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run({});
     return;
   }
 
   std::vector<mojom::PublisherInfoPtr> list;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto info = mojom::PublisherInfo::New();
     auto* record_pointer = record.get();
 
@@ -278,7 +278,7 @@ void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
       base::StringPrintf("DELETE FROM %s WHERE publisher_id = ?", kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);

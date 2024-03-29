@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/migrations/database_migration_manager.h"
 #include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/state/state.h"
@@ -32,8 +33,8 @@ void InitializationManager::Initialize(InitializeCallback callback) {
 
   state_ = State::kInitializing;
 
-  engine().database()->Initialize(
-      base::BindOnce(&InitializationManager::OnDatabaseInitialized,
+  Get<DatabaseMigrationManager>().MigrateDatabase(
+      base::BindOnce(&InitializationManager::OnDatabaseMigrated,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
@@ -54,12 +55,12 @@ void InitializationManager::Shutdown(ShutdownCallback callback) {
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void InitializationManager::OnDatabaseInitialized(InitializeCallback callback,
-                                                  mojom::Result result) {
+void InitializationManager::OnDatabaseMigrated(InitializeCallback callback,
+                                               bool success) {
   DCHECK(state_ == State::kInitializing);
 
-  if (result != mojom::Result::OK) {
-    LogError(FROM_HERE) << "Database could not be initialized";
+  if (!success) {
+    LogError(FROM_HERE) << "Database could not be migrated";
     std::move(callback).Run(false);
     return;
   }
@@ -102,14 +103,14 @@ void InitializationManager::OnContributionsFinished(ShutdownCallback callback,
     LogError(FROM_HERE) << "Error finalizing contributions";
   }
 
-  engine().database()->Close(
-      base::BindOnce(&InitializationManager::OnDatabaseClosed,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  Get<SQLStore>().Close(base::BindOnce(&InitializationManager::OnDatabaseClosed,
+                                       weak_factory_.GetWeakPtr(),
+                                       std::move(callback)));
 }
 
 void InitializationManager::OnDatabaseClosed(ShutdownCallback callback,
-                                             mojom::Result result) {
-  if (result != mojom::Result::OK) {
+                                             SQLReader reader) {
+  if (!reader.Succeeded()) {
     LogError(FROM_HERE) << "Error closing database";
   }
 

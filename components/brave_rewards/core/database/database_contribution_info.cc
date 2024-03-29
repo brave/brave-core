@@ -51,7 +51,7 @@ void DatabaseContributionInfo::InsertOrUpdate(mojom::ContributionInfoPtr info,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, info->contribution_id);
@@ -83,18 +83,18 @@ void DatabaseContributionInfo::GetRecord(const std::string& contribution_id,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, contribution_id);
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt64};
 
   transaction->commands.push_back(std::move(command));
 
@@ -108,20 +108,20 @@ void DatabaseContributionInfo::OnGetRecord(
     GetContributionInfoCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
     std::move(callback).Run(nullptr);
     return;
   }
 
-  if (response->result->get_records().size() != 1) {
-    engine_->Log(FROM_HERE) << "Record size is not correct: "
-                            << response->result->get_records().size();
+  if (response->records.size() != 1) {
+    engine_->Log(FROM_HERE)
+        << "Record size is not correct: " << response->records.size();
     std::move(callback).Run(nullptr);
     return;
   }
 
-  auto* record = response->result->get_records()[0].get();
+  auto* record = response->records[0].get();
 
   auto info = mojom::ContributionInfo::New();
   info->contribution_id = GetStringColumn(record, 0);
@@ -164,16 +164,16 @@ void DatabaseContributionInfo::GetAllRecords(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt64};
 
   transaction->commands.push_back(std::move(command));
 
@@ -209,7 +209,7 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
       kTableName, kChildTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   const std::string formatted_month =
@@ -221,15 +221,15 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
   BindInt(command.get(), 3,
           static_cast<int>(mojom::ContributionStep::STEP_COMPLETED));
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kString};
 
   transaction->commands.push_back(std::move(command));
 
@@ -243,14 +243,14 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
     GetOneTimeTipsCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
     std::move(callback).Run({});
     return;
   }
 
   std::vector<mojom::PublisherInfoPtr> list;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto info = mojom::PublisherInfo::New();
     auto* record_pointer = record.get();
 
@@ -280,7 +280,7 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
   // TODO(zenparsing): Remove this query once we support unlimited retries with
   // backoff for ACs.
   auto revive_command = mojom::DBCommand::New();
-  revive_command->type = mojom::DBCommand::Type::RUN;
+  revive_command->type = mojom::DBCommand::Type::kRun;
   revive_command->command = R"sql(
       UPDATE contribution_info SET step = 1, retry_count = 0
       WHERE contribution_id IN (
@@ -304,16 +304,16 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt64};
 
   transaction->commands.push_back(std::move(command));
 
@@ -326,20 +326,20 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
 void DatabaseContributionInfo::OnGetList(ContributionInfoListCallback callback,
                                          mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
     std::move(callback).Run({});
     return;
   }
 
-  if (response->result->get_records().empty()) {
+  if (response->records.empty()) {
     std::move(callback).Run({});
     return;
   }
 
   std::vector<mojom::ContributionInfoPtr> list;
   std::vector<std::string> contribution_ids;
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : response->records) {
     auto info = mojom::ContributionInfo::New();
     auto* record_pointer = record.get();
 
@@ -396,7 +396,7 @@ void DatabaseContributionInfo::UpdateStep(const std::string& contribution_id,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(step));
@@ -427,7 +427,7 @@ void DatabaseContributionInfo::UpdateStepAndCount(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(step));
@@ -456,7 +456,7 @@ void DatabaseContributionInfo::FinishAllInProgressRecords(
       "UPDATE %s SET step = ?, retry_count = 0 WHERE step >= 0", kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindInt(command.get(), 0,

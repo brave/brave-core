@@ -16,7 +16,6 @@ namespace brave_rewards::internal::database {
 
 Database::Database(RewardsEngine& engine)
     : engine_(engine),
-      initialize_(engine),
       activity_info_(engine),
       balance_report_(engine),
       contribution_info_(engine),
@@ -34,22 +33,6 @@ Database::Database(RewardsEngine& engine)
       unblinded_token_(engine) {}
 
 Database::~Database() = default;
-
-void Database::Initialize(ResultCallback callback) {
-  initialize_.Start(std::move(callback));
-}
-
-void Database::Close(ResultCallback callback) {
-  auto transaction = mojom::DBTransaction::New();
-  auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::CLOSE;
-
-  transaction->commands.push_back(std::move(command));
-
-  engine_->client()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
-}
 
 /**
  * ACTIVITY INFO

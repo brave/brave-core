@@ -7,41 +7,19 @@
 #include <vector>
 
 #include "base/files/file_util.h"
-#include "base/run_loop.h"
-#include "base/strings/string_split.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
-#include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
-#include "brave/components/brave_rewards/core/database/database_migration.h"
-#include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/migrations/database_migration_manager.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
-#include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
-#include "build/build_config.h"
 #include "sql/statement.h"
-#include "testing/gtest/include/gtest/gtest.h"
-
-// npm run test -- brave_unit_tests --filter=RewardsDatabaseMigrationTest.*
 
 namespace brave_rewards::internal {
-using database::DatabaseMigration;
 
 class RewardsDatabaseMigrationTest : public RewardsEngineTest {
- public:
-  RewardsDatabaseMigrationTest() {
-    engine().GetOptionsForTesting().is_testing = true;
-  }
-
-  ~RewardsDatabaseMigrationTest() override {
-    DatabaseMigration::SetTargetVersionForTesting(0);
-    engine().GetOptionsForTesting().is_testing = false;
-  }
-
  protected:
-  sql::Database* GetDB() {
+  sql::Database& GetDB() {
     return client().database().GetInternalDatabaseForTesting();
   }
 
@@ -54,25 +32,6 @@ class RewardsDatabaseMigrationTest : public RewardsEngineTest {
       return "";
     }
 
-#if BUILDFLAG(IS_WIN)
-    // Test data files may or may not have line endings converted to CRLF by
-    // git checkout on Windows (depending on git autocrlf setting). Remove
-    // CRLFs if they are there and replace with just LF, otherwise leave the
-    // input data as is.
-    auto split = base::SplitStringUsingSubstr(
-        data, "\r\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-    if (split.size() > 1) {
-      data = base::JoinString(split, "\n") + "\n";
-    } else if (split.size() == 1) {
-      bool ends_with_newline = (data.at(data.size() - 1) == '\n');
-      data = split[0];
-      if (ends_with_newline && data.at(data.size() - 1) != '\n') {
-        data += "\n";
-      }
-    }
-#endif
-
     return data;
   }
 
@@ -80,40 +39,64 @@ class RewardsDatabaseMigrationTest : public RewardsEngineTest {
     base::FilePath path = GetTestDataPath().AppendASCII(script_path);
     std::string init_script;
     ASSERT_TRUE(base::ReadFileToString(path, &init_script));
-    ASSERT_TRUE(GetDB()->Execute(init_script));
+    ASSERT_TRUE(GetDB().Execute(init_script));
   }
 
   void InitializeDatabaseAtVersion(int version) {
     base::FilePath path = GetTestDataPath().AppendASCII(
-        base::StringPrintf("publisher_info_db_v%d.sql", version));
+        base::StrCat({"publisher_info_db_v", base::NumberToString(version),
+                      ".sql"}));
 
     std::string init_script;
     ASSERT_TRUE(base::ReadFileToString(path, &init_script));
-    ASSERT_TRUE(GetDB()->Execute(init_script));
+    ASSERT_TRUE(GetDB().Execute(init_script));
+  }
+
+  void RunMigrations() {
+    bool ok = WaitFor<bool>([&](auto callback) {
+      engine().Get<DatabaseMigrationManager>().MigrateDatabase(
+          std::move(callback));
+    });
+    ASSERT_TRUE(ok);
+  }
+
+  void RunMigration(int version) {
+    RunMigration(version, version - 1);
+  }
+
+  void RunMigration(int target_version, int db_version) {
+    InitializeDatabaseAtVersion(db_version);
+    bool ok = WaitFor<bool>([&](auto callback) {
+      engine().Get<DatabaseMigrationManager>().MigrateDatabaseForTesting(
+          target_version, std::move(callback));
+    });
+    ASSERT_TRUE(ok);
   }
 
   int CountTableRows(const std::string& table) {
-    const std::string sql =
-        base::StringPrintf("SELECT COUNT(*) FROM %s", table.c_str());
-    sql::Statement s(GetDB()->GetUniqueStatement(sql));
+    const std::string sql = "SELECT COUNT(*) FROM " + table;
+    sql::Statement s(GetDB().GetUniqueStatement(sql));
     return s.Step() ? static_cast<int>(s.ColumnInt64(0)) : -1;
   }
 };
 
 TEST_F(RewardsDatabaseMigrationTest, SchemaCheck) {
-  DatabaseMigration::SetTargetVersionForTesting(database::GetCurrentVersion());
-  InitializeEngine();
-  std::string expected_schema = GetExpectedSchema();
-  EXPECT_FALSE(expected_schema.empty());
-  EXPECT_EQ(GetDB()->GetSchema(), expected_schema);
+  RunMigrations();
+  std::string expected_schema =
+      base::CollapseWhitespaceASCII(GetExpectedSchema(), false);
+  std::string actual_schema =
+      base::CollapseWhitespaceASCII(GetDB().GetSchema(), false);
+  if (actual_schema != expected_schema) {
+    LOG(ERROR) << "Schemas do not match.\n\n=== START SCHEMA ===\n\n"
+               << GetDB().GetSchema() << "\n\n=== END SCHEMA ===";
+    EXPECT_TRUE(false);
+  }
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_4_ActivityInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(4);
-  InitializeDatabaseAtVersion(3);
-  InitializeEngine();
+  RunMigration(4);
 
-  sql::Statement info_sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement info_sql(GetDB().GetUniqueStatement(R"sql(
       SELECT publisher_id, visits FROM activity_info
   )sql"));
 
@@ -132,11 +115,9 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_4_ActivityInfo) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_5_ActivityInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(5);
-  InitializeDatabaseAtVersion(4);
-  InitializeEngine();
+  RunMigration(5);
 
-  sql::Statement info_sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement info_sql(GetDB().GetUniqueStatement(R"sql(
       SELECT publisher_id, visits FROM activity_info
   )sql"));
 
@@ -158,11 +139,9 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_5_ActivityInfo) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_6_ActivityInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(6);
-  InitializeDatabaseAtVersion(5);
-  InitializeEngine();
+  RunMigration(6);
 
-  sql::Statement info_sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement info_sql(GetDB().GetUniqueStatement(R"sql(
       SELECT publisher_id, visits, duration, score, percent, weight,
         reconcile_stamp
       FROM activity_info
@@ -208,13 +187,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_6_ActivityInfo) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_8_PendingContribution) {
-  DatabaseMigration::SetTargetVersionForTesting(8);
-  InitializeDatabaseAtVersion(7);
-  InitializeEngine();
+  RunMigration(8);
 
   EXPECT_EQ(CountTableRows("pending_contribution"), 1);
 
-  sql::Statement info_sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement info_sql(GetDB().GetUniqueStatement(R"sql(
       SELECT publisher_id, amount, added_date, viewing_id, type
       FROM pending_contribution
       WHERE publisher_id = ?
@@ -231,9 +208,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_8_PendingContribution) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_11_ContributionInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(11);
-  InitializeDatabaseAtVersion(10);
-  InitializeEngine();
+  RunMigration(11);
 
   EXPECT_EQ(CountTableRows("contribution_info"), 5);
   EXPECT_EQ(CountTableRows("contribution_info_publishers"), 4);
@@ -248,7 +223,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_11_ContributionInfo) {
   )sql";
 
   // One-time tip
-  sql::Statement tip_sql(GetDB()->GetUniqueStatement(query));
+  sql::Statement tip_sql(GetDB().GetUniqueStatement(query));
   tip_sql.BindString(0, "id_1570614352_%");
 
   ASSERT_TRUE(tip_sql.Step());
@@ -261,7 +236,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_11_ContributionInfo) {
   EXPECT_EQ(tip_sql.ColumnDouble(6), 1.0);
 
   // Auto contribute
-  sql::Statement ac_sql(GetDB()->GetUniqueStatement(query));
+  sql::Statement ac_sql(GetDB().GetUniqueStatement(query));
   ac_sql.BindString(0, "id_1574671381_%");
 
   ASSERT_TRUE(ac_sql.Step());
@@ -275,13 +250,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_11_ContributionInfo) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_12_ContributionInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(12);
-  InitializeDatabaseAtVersion(11);
-  InitializeEngine();
+  RunMigration(12);
 
   EXPECT_EQ(CountTableRows("pending_contribution"), 4);
 
-  sql::Statement info_sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement info_sql(GetDB().GetUniqueStatement(R"sql(
       SELECT pending_contribution_id, publisher_id
       FROM pending_contribution
   )sql"));
@@ -302,21 +275,17 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_12_ContributionInfo) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_13_Promotion) {
-  DatabaseMigration::SetTargetVersionForTesting(13);
-  InitializeDatabaseAtVersion(12);
-  InitializeEngine();
+  RunMigration(13);
   EXPECT_EQ(CountTableRows("promotion"), 1);
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_14_UnblindedToken) {
-  DatabaseMigration::SetTargetVersionForTesting(14);
-  InitializeDatabaseAtVersion(13);
-  InitializeEngine();
+  RunMigration(14);
 
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 5);
 
   std::string query = "SELECT value FROM unblinded_tokens";
-  sql::Statement tokens_sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement tokens_sql(GetDB().GetUniqueStatement(R"sql(
       SELECT value FROM unblinded_tokens
   )sql"));
 
@@ -333,7 +302,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_14_UnblindedToken) {
   EXPECT_EQ(list.at(3)->value, 0.25);
   EXPECT_EQ(list.at(4)->value, 0.25);
 
-  sql::Statement promotion_sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement promotion_sql(GetDB().GetUniqueStatement(R"sql(
       SELECT approximate_value FROM promotion WHERE promotion_id = ?
   )sql"));
 
@@ -344,13 +313,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_14_UnblindedToken) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_16_ContributionInfo) {
-  DatabaseMigration::SetTargetVersionForTesting(16);
-  InitializeDatabaseAtVersion(15);
-  InitializeEngine();
+  RunMigration(16);
 
   EXPECT_EQ(CountTableRows("contribution_info"), 5);
 
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement sql(GetDB().GetUniqueStatement(R"sql(
       SELECT created_at FROM contribution_info
   )sql"));
 
@@ -367,13 +334,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_16_ContributionInfo) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_18_Promotion) {
-  DatabaseMigration::SetTargetVersionForTesting(18);
-  InitializeDatabaseAtVersion(17);
-  InitializeEngine();
+  RunMigration(18);
 
   EXPECT_EQ(CountTableRows("promotion"), 2);
 
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement sql(GetDB().GetUniqueStatement(R"sql(
       SELECT promotion_id, claim_id, status FROM promotion
   )sql"));
 
@@ -396,13 +361,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_18_Promotion) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_18_CredsBatch) {
-  DatabaseMigration::SetTargetVersionForTesting(18);
-  InitializeDatabaseAtVersion(17);
-  InitializeEngine();
+  RunMigration(18);
 
   EXPECT_EQ(CountTableRows("creds_batch"), 2);
 
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement sql(GetDB().GetUniqueStatement(R"sql(
       SELECT creds_id, trigger_id, trigger_type, creds, blinded_creds,
         signed_creds, public_key, batch_proof, status
       FROM creds_batch
@@ -448,13 +411,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_18_CredsBatch) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_18_UnblindedToken) {
-  DatabaseMigration::SetTargetVersionForTesting(18);
-  InitializeDatabaseAtVersion(17);
-  InitializeEngine();
+  RunMigration(18);
 
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 80);
 
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement sql(GetDB().GetUniqueStatement(R"sql(
       SELECT token_id, creds_id, expires_at FROM unblinded_tokens LIMIT 1
   )sql"));
 
@@ -474,13 +435,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_18_UnblindedToken) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
-  DatabaseMigration::SetTargetVersionForTesting(21);
-  InitializeDatabaseAtVersion(20);
-  InitializeEngine();
+  RunMigration(21);
 
   EXPECT_EQ(CountTableRows("contribution_info_publishers"), 4);
 
-  sql::Statement info_sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement info_sql(GetDB().GetUniqueStatement(R"sql(
       SELECT contribution_id, publisher_key, total_amount, contributed_amount
       FROM contribution_info_publishers
   )sql"));
@@ -516,13 +475,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_23_ContributionQueue) {
-  DatabaseMigration::SetTargetVersionForTesting(23);
-  InitializeDatabaseAtVersion(22);
-  InitializeEngine();
+  RunMigration(23);
 
   EXPECT_EQ(CountTableRows("contribution_queue"), 1);
 
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement sql(GetDB().GetUniqueStatement(R"sql(
       SELECT contribution_queue_id, type, amount, partial
       FROM contribution_queue LIMIT 1
   )sql"));
@@ -542,7 +499,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_23_ContributionQueue) {
 
   EXPECT_EQ(CountTableRows("contribution_queue_publishers"), 1);
 
-  sql::Statement sql_publishers(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement sql_publishers(GetDB().GetUniqueStatement(R"sql(
       SELECT contribution_queue_id, publisher_key, amount_percent
       FROM contribution_queue_publishers LIMIT 1
   )sql"));
@@ -561,13 +518,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_23_ContributionQueue) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_24_ContributionQueue) {
-  DatabaseMigration::SetTargetVersionForTesting(24);
-  InitializeDatabaseAtVersion(23);
-  InitializeEngine();
+  RunMigration(24);
 
   EXPECT_EQ(CountTableRows("contribution_queue"), 1);
 
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement sql(GetDB().GetUniqueStatement(R"sql(
       SELECT contribution_queue_id, type, amount, partial, created_at,
         completed_at
       FROM contribution_queue LIMIT 1
@@ -591,13 +546,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_24_ContributionQueue) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_26_UnblindedTokens) {
-  DatabaseMigration::SetTargetVersionForTesting(26);
-  InitializeDatabaseAtVersion(25);
-  InitializeEngine();
+  RunMigration(26);
 
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 10);
 
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement sql(GetDB().GetUniqueStatement(R"sql(
       SELECT token_id, token_value, public_key, value, creds_id, expires_at,
         redeemed_at, redeem_id, redeem_type
       FROM unblinded_tokens
@@ -670,13 +623,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_26_UnblindedTokens) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_27_UnblindedTokens) {
-  DatabaseMigration::SetTargetVersionForTesting(27);
-  InitializeDatabaseAtVersion(26);
-  InitializeEngine();
+  RunMigration(27);
 
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
 
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement sql(GetDB().GetUniqueStatement(R"sql(
       SELECT token_id, token_value, public_key, value, creds_id, expires_at,
         reserved_at
       FROM unblinded_tokens LIMIT 1
@@ -704,16 +655,14 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_27_UnblindedTokens) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
-  DatabaseMigration::SetTargetVersionForTesting(28);
-  InitializeDatabaseAtVersion(27);
-  InitializeEngine();
+  RunMigration(28);
 
   EXPECT_EQ(CountTableRows("server_publisher_info"), 1);
   EXPECT_EQ(CountTableRows("server_publisher_banner"), 1);
   EXPECT_EQ(CountTableRows("server_publisher_amounts"), 3);
   EXPECT_EQ(CountTableRows("server_publisher_links"), 3);
 
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+  sql::Statement sql(GetDB().GetUniqueStatement(R"sql(
       SELECT publisher_key, status, address, updated_at
       FROM server_publisher_info
   )sql"));
@@ -727,71 +676,55 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_30_NonJapan) {
-  DatabaseMigration::SetTargetVersionForTesting(30);
-  InitializeDatabaseAtVersion(29);
-  InitializeEngine();
+  RunMigration(30);
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_30_Japan) {
-  DatabaseMigration::SetTargetVersionForTesting(30);
-  InitializeDatabaseAtVersion(29);
-  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
-      state::kDeclaredGeo, "JP");
-  InitializeEngine();
+  WaitFor([&](auto callback) {
+    client().SetStringState("declared_geo", "JP", std::move(callback));
+  });
+  RunMigration(30);
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
   EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_31) {
-  DatabaseMigration::SetTargetVersionForTesting(31);
-  InitializeDatabaseAtVersion(30);
-  InitializeEngine();
-  EXPECT_TRUE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
+  RunMigration(31);
+  EXPECT_TRUE(GetDB().DoesColumnExist("pending_contribution", "processor"));
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_32_NonJapan) {
-  DatabaseMigration::SetTargetVersionForTesting(32);
-  InitializeDatabaseAtVersion(30);
-  InitializeEngine();
+  RunMigration(32, 30);
   EXPECT_EQ(CountTableRows("balance_report_info"), 1);
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_32_Japan) {
-  DatabaseMigration::SetTargetVersionForTesting(32);
-  InitializeDatabaseAtVersion(30);
-  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
-      state::kDeclaredGeo, "JP");
-  InitializeEngine();
+  WaitFor([&](auto callback) {
+    client().SetStringState("declared_geo", "JP", std::move(callback));
+  });
+  RunMigration(32, 30);
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_33) {
-  DatabaseMigration::SetTargetVersionForTesting(33);
-  InitializeDatabaseAtVersion(32);
-  InitializeEngine();
-  EXPECT_FALSE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
+  RunMigration(33);
+  EXPECT_FALSE(GetDB().DoesColumnExist("pending_contribution", "processor"));
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_34) {
-  DatabaseMigration::SetTargetVersionForTesting(34);
-  InitializeDatabaseAtVersion(33);
-  InitializeEngine();
-  EXPECT_TRUE(GetDB()->DoesColumnExist("promotion", "claimable_until"));
+  RunMigration(34);
+  EXPECT_TRUE(GetDB().DoesColumnExist("promotion", "claimable_until"));
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_35) {
-  DatabaseMigration::SetTargetVersionForTesting(35);
-  InitializeDatabaseAtVersion(34);
-  InitializeEngine();
-  EXPECT_FALSE(GetDB()->DoesTableExist("server_publisher_amounts"));
+  RunMigration(35);
+  EXPECT_FALSE(GetDB().DoesTableExist("server_publisher_amounts"));
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_36) {
-  DatabaseMigration::SetTargetVersionForTesting(36);
-  InitializeDatabaseAtVersion(35);
-  InitializeEngine();
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
+  RunMigration(36);
+  sql::Statement sql(GetDB().GetUniqueStatement(R"sql(
       SELECT status FROM server_publisher_info
   )sql"));
   EXPECT_TRUE(sql.Step());
@@ -799,33 +732,25 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_36) {
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_37) {
-  DatabaseMigration::SetTargetVersionForTesting(37);
-  InitializeDatabaseAtVersion(36);
-  InitializeEngine();
-  EXPECT_TRUE(GetDB()->DoesTableExist("external_transactions"));
+  RunMigration(37);
+  EXPECT_TRUE(GetDB().DoesTableExist("external_transactions"));
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_38) {
-  DatabaseMigration::SetTargetVersionForTesting(38);
-  InitializeDatabaseAtVersion(37);
-  InitializeEngine();
+  RunMigration(38);
   EXPECT_TRUE(
-      GetDB()->DoesColumnExist("recurring_donation", "next_contribution_at"));
+      GetDB().DoesColumnExist("recurring_donation", "next_contribution_at"));
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_39) {
-  DatabaseMigration::SetTargetVersionForTesting(39);
-  InitializeDatabaseAtVersion(38);
-  InitializeEngine();
-  EXPECT_TRUE(GetDB()->DoesColumnExist("server_publisher_banner", "web3_url"));
+  RunMigration(39);
+  EXPECT_TRUE(GetDB().DoesColumnExist("server_publisher_banner", "web3_url"));
 }
 
 TEST_F(RewardsDatabaseMigrationTest, Migration_40) {
-  DatabaseMigration::SetTargetVersionForTesting(40);
-  InitializeDatabaseAtVersion(39);
-  InitializeEngine();
-  EXPECT_FALSE(GetDB()->DoesTableExist("pending_contribution"));
-  EXPECT_FALSE(GetDB()->DoesTableExist("processed_publisher"));
+  RunMigration(40);
+  EXPECT_FALSE(GetDB().DoesTableExist("pending_contribution"));
+  EXPECT_FALSE(GetDB().DoesTableExist("processed_publisher"));
 }
 
 }  // namespace brave_rewards::internal

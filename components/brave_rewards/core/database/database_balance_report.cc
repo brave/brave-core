@@ -70,7 +70,7 @@ void DatabaseBalanceReport::InsertOrUpdate(mojom::BalanceReportInfoPtr info,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, info->id);
@@ -107,7 +107,7 @@ void DatabaseBalanceReport::InsertOrUpdateList(
 
   for (const auto& report : list) {
     auto command = mojom::DBCommand::New();
-    command->type = mojom::DBCommand::Type::RUN;
+    command->type = mojom::DBCommand::Type::kRun;
     command->command = query;
 
     BindString(command.get(), 0, report->id);
@@ -148,7 +148,7 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = insert_query;
   BindString(command.get(), 0, id);
   transaction->commands.push_back(std::move(command));
@@ -158,7 +158,7 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
       GetTypeColumn(type).c_str(), GetTypeColumn(type).c_str());
 
   command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = update_query;
   BindDouble(command.get(), 0, amount);
   BindString(command.get(), 1, id);
@@ -190,7 +190,7 @@ void DatabaseBalanceReport::GetRecord(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = insert_query;
   BindString(command.get(), 0, GetBalanceReportId(month, year));
   transaction->commands.push_back(std::move(command));
@@ -202,17 +202,17 @@ void DatabaseBalanceReport::GetRecord(
       kTableName);
 
   command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = select_query;
 
   BindString(command.get(), 0, GetBalanceReportId(month, year));
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kDouble};
 
   transaction->commands.push_back(std::move(command));
 
@@ -225,18 +225,18 @@ void DatabaseBalanceReport::OnGetRecord(
     mojom::RewardsEngine::GetBalanceReportCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     return std::move(callback).Run(mojom::Result::FAILED, nullptr);
   }
 
-  if (response->result->get_records().size() != 1) {
-    engine_->Log(FROM_HERE) << "Record size is not correct: "
-                            << response->result->get_records().size();
+  if (response->records.size() != 1) {
+    engine_->Log(FROM_HERE)
+        << "Record size is not correct: " << response->records.size();
     return std::move(callback).Run(mojom::Result::FAILED, nullptr);
   }
 
-  auto* record = response->result->get_records()[0].get();
+  auto* record = response->records[0].get();
 
   auto info = mojom::BalanceReportInfo::New();
   info->id = GetStringColumn(record, 0);
@@ -260,15 +260,15 @@ void DatabaseBalanceReport::GetAllRecords(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kDouble};
 
   transaction->commands.push_back(std::move(command));
 
@@ -282,14 +282,14 @@ void DatabaseBalanceReport::OnGetAllRecords(
     GetBalanceReportListCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run({});
     return;
   }
 
   std::vector<mojom::BalanceReportInfoPtr> list;
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : response->records) {
     auto* record_pointer = record.get();
     auto info = mojom::BalanceReportInfo::New();
 
@@ -312,7 +312,7 @@ void DatabaseBalanceReport::DeleteAllRecords(ResultCallback callback) {
   const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  command->type = mojom::DBCommand::Type::kExecute;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

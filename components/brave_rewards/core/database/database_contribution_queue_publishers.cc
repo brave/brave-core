@@ -45,7 +45,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   for (const auto& publisher : list) {
@@ -78,13 +78,13 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, queue_id);
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble};
 
   transaction->commands.push_back(std::move(command));
 
@@ -99,14 +99,14 @@ void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
     ContributionQueuePublishersListCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run({});
     return;
   }
 
   std::vector<mojom::ContributionQueuePublisherPtr> list;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto info = mojom::ContributionQueuePublisher::New();
     auto* record_pointer = record.get();
 

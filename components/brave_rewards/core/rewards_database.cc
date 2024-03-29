@@ -6,6 +6,7 @@
 #include "brave/components/brave_rewards/core/rewards_database.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -56,41 +57,80 @@ mojom::DBRecordPtr CreateRecord(
     sql::Statement* statement,
     const std::vector<mojom::DBCommand::RecordBindingType>& bindings) {
   auto record = mojom::DBRecord::New();
-  int column = 0;
-
   if (!statement) {
     return record;
   }
 
-  for (const auto& binding : bindings) {
+  // NOTE: The `record_bindings` member of DBCommand is deprecated but still
+  // supported for existing commands. It was previously used to specify how to
+  // pull data out of the SQL results.
+  if (bindings.size() > 0) {
+    int column = 0;
+    for (const auto& binding : bindings) {
+      mojom::DBValuePtr value;
+      switch (binding) {
+        case mojom::DBCommand::RecordBindingType::kString: {
+          value =
+              mojom::DBValue::NewStringValue(statement->ColumnString(column));
+          break;
+        }
+        case mojom::DBCommand::RecordBindingType::kInt: {
+          value = mojom::DBValue::NewIntValue(statement->ColumnInt(column));
+          break;
+        }
+        case mojom::DBCommand::RecordBindingType::kInt64: {
+          value = mojom::DBValue::NewInt64Value(statement->ColumnInt64(column));
+          break;
+        }
+        case mojom::DBCommand::RecordBindingType::kDouble: {
+          value =
+              mojom::DBValue::NewDoubleValue(statement->ColumnDouble(column));
+          break;
+        }
+        case mojom::DBCommand::RecordBindingType::kBool: {
+          value = mojom::DBValue::NewBoolValue(statement->ColumnBool(column));
+          break;
+        }
+      }
+      record->fields.push_back(std::move(value));
+      column++;
+    }
+    return record;
+  }
+
+  for (int column = 0; column < statement->ColumnCount(); ++column) {
     mojom::DBValuePtr value;
-    switch (binding) {
-      case mojom::DBCommand::RecordBindingType::STRING_TYPE: {
-        value = mojom::DBValue::NewStringValue(statement->ColumnString(column));
-        break;
-      }
-      case mojom::DBCommand::RecordBindingType::INT_TYPE: {
-        value = mojom::DBValue::NewIntValue(statement->ColumnInt(column));
-        break;
-      }
-      case mojom::DBCommand::RecordBindingType::INT64_TYPE: {
+    switch (statement->GetColumnType(column)) {
+      case sql::ColumnType::kInteger:
         value = mojom::DBValue::NewInt64Value(statement->ColumnInt64(column));
         break;
-      }
-      case mojom::DBCommand::RecordBindingType::DOUBLE_TYPE: {
+      case sql::ColumnType::kFloat:
         value = mojom::DBValue::NewDoubleValue(statement->ColumnDouble(column));
         break;
-      }
-      case mojom::DBCommand::RecordBindingType::BOOL_TYPE: {
-        value = mojom::DBValue::NewBoolValue(statement->ColumnBool(column));
+      case sql::ColumnType::kText:
+        value = mojom::DBValue::NewStringValue(statement->ColumnString(column));
+        break;
+      case sql::ColumnType::kBlob: {
+        std::string blob_string;
+        statement->ColumnBlobAsString(column, &blob_string);
+        value = mojom::DBValue::NewStringValue(blob_string);
         break;
       }
+      case sql::ColumnType::kNull:
+        value = mojom::DBValue::NewNullValue(0);
+        break;
     }
     record->fields.push_back(std::move(value));
-    column++;
   }
 
   return record;
+}
+
+mojom::DBCommandResponsePtr CreateResponse(
+    mojom::DBCommandResponse::Status status) {
+  auto response = mojom::DBCommandResponse::New();
+  response->status = status;
+  return response;
 }
 
 }  // namespace
@@ -105,109 +145,118 @@ mojom::DBCommandResponsePtr RewardsDatabase::RunTransaction(
     mojom::DBTransactionPtr transaction) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  auto command_response = mojom::DBCommandResponse::New();
-
-  if (!db_.is_open() && !db_.Open(db_path_)) {
-    command_response->status =
-        mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
-    return command_response;
+  // Return success if there are no commands to execute.
+  if (transaction->commands.empty()) {
+    return CreateResponse(mojom::DBCommandResponse::Status::kSuccess);
   }
 
-  // Close command must always be sent as single command in transaction
+  // The close command must always be sent as single command. Otherwise an error
+  // will be generated below.
   if (transaction->commands.size() == 1 &&
-      transaction->commands[0]->type == mojom::DBCommand::Type::CLOSE) {
-    db_.Close();
-    initialized_ = false;
-    command_response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
-    return command_response;
+      transaction->commands[0]->type == mojom::DBCommand::Type::kClose) {
+    if (db_.is_open()) {
+      db_.Close();
+      meta_table_.Reset();
+      initialized_ = false;
+    }
+    return CreateResponse(mojom::DBCommandResponse::Status::kSuccess);
   }
 
+  // Attempt to open the database if it is not already open.
+  if (!db_.is_open() && !db_.Open(db_path_)) {
+    return CreateResponse(
+        mojom::DBCommandResponse::Status::kInitializationError);
+  }
+
+  // Start a transaction.
   sql::Transaction committer(&db_);
   if (!committer.Begin()) {
-    command_response->status =
-        mojom::DBCommandResponse::Status::TRANSACTION_ERROR;
-    return command_response;
+    return CreateResponse(mojom::DBCommandResponse::Status::kTransactionError);
   }
 
+  mojom::DBCommandResponsePtr response;
   bool vacuum_requested = false;
 
-  for (auto const& command : transaction->commands) {
-    mojom::DBCommandResponse::Status status;
-
+  // Attempt to execute each command in the transaction.
+  for (auto& command : transaction->commands) {
     switch (command->type) {
-      case mojom::DBCommand::Type::INITIALIZE: {
-        status =
-            Initialize(transaction->version, transaction->compatible_version,
-                       command_response.get());
+      case mojom::DBCommand::Type::kInitialize: {
+        response =
+            Initialize(transaction->version, transaction->compatible_version);
         break;
       }
-      case mojom::DBCommand::Type::READ: {
-        status = Read(command.get(), command_response.get());
+      case mojom::DBCommand::Type::kRead: {
+        response = Read(*command);
         break;
       }
-      case mojom::DBCommand::Type::EXECUTE: {
-        status = Execute(command.get());
+      case mojom::DBCommand::Type::kExecute: {
+        response = Execute(*command);
         break;
       }
-      case mojom::DBCommand::Type::RUN: {
-        status = Run(command.get());
+      case mojom::DBCommand::Type::kRun: {
+        response = Run(*command);
         break;
       }
-      case mojom::DBCommand::Type::MIGRATE: {
-        status = Migrate(transaction->version, transaction->compatible_version);
+      case mojom::DBCommand::Type::kMigrate: {
+        response =
+            Migrate(transaction->version, transaction->compatible_version);
         break;
       }
-      case mojom::DBCommand::Type::VACUUM: {
+      case mojom::DBCommand::Type::kVacuum: {
         vacuum_requested = true;
-        status = mojom::DBCommandResponse::Status::RESPONSE_OK;
+        response = CreateResponse(mojom::DBCommandResponse::Status::kSuccess);
         break;
       }
-      case mojom::DBCommand::Type::CLOSE: {
-        status = mojom::DBCommandResponse::Status::COMMAND_ERROR;
+      case mojom::DBCommand::Type::kClose: {
+        // The close command cannot appear in a transaction with other commands.
+        response =
+            CreateResponse(mojom::DBCommandResponse::Status::kCommandError);
         break;
       }
     }
 
-    if (status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+    // If an error was encountered, then rollback the transaction and return the
+    // error to the caller.
+    if (response->status != mojom::DBCommandResponse::Status::kSuccess) {
       committer.Rollback();
-      command_response->status = status;
-      return command_response;
+      return response;
     }
   }
 
+  DCHECK(response);
+
+  // Attempt to commit the transaction.
   if (!committer.Commit()) {
-    command_response->status =
-        mojom::DBCommandResponse::Status::TRANSACTION_ERROR;
-    return command_response;
+    return CreateResponse(mojom::DBCommandResponse::Status::kTransactionError);
   }
 
   if (vacuum_requested) {
     if (!db_.Execute("VACUUM")) {
-      // If vacuum was not successful, log an error but do not
-      // prevent forward progress.
+      // If vacuum was not successful, log an error but do not prevent forward
+      // progress.
       LOG(ERROR) << "Error executing VACUUM: " << db_.GetErrorMessage();
     }
   }
 
-  return command_response;
+  return response;
 }
 
-mojom::DBCommandResponse::Status RewardsDatabase::Initialize(
-    const int32_t version,
-    const int32_t compatible_version,
-    mojom::DBCommandResponse* command_response) {
+mojom::DBCommandResponsePtr RewardsDatabase::Initialize(
+    int32_t version,
+    int32_t compatible_version) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  if (!command_response) {
-    return mojom::DBCommandResponse::Status::RESPONSE_ERROR;
-  }
 
   int table_version = 0;
   if (!initialized_) {
-    const bool should_create_tables = ShouldCreateTables();
+    bool should_create_tables = ShouldCreateTables();
 
+    // NOTE: For a new database, the meta table will be initialized with the
+    // current DB version. The current version will be immediately overwritten
+    // by the first migration, but it is not atomic; there will be a time when a
+    // new, empty database has the current version in its meta table.
     if (!meta_table_.Init(&db_, version, compatible_version)) {
-      return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
+      return CreateResponse(
+          mojom::DBCommandResponse::Status::kInitializationError);
     }
 
     if (!should_create_tables) {
@@ -222,96 +271,98 @@ mojom::DBCommandResponse::Status RewardsDatabase::Initialize(
     table_version = meta_table_.GetVersionNumber();
   }
 
-  auto result = mojom::DBCommandResult::NewValue(
-      mojom::DBValue::NewIntValue(table_version));
-  command_response->result = std::move(result);
+  auto record = mojom::DBRecord::New();
+  record->fields.push_back(mojom::DBValue::NewIntValue(table_version));
 
-  return mojom::DBCommandResponse::Status::RESPONSE_OK;
+  auto response = CreateResponse(mojom::DBCommandResponse::Status::kSuccess);
+  response->records.push_back(std::move(record));
+  return response;
 }
 
-mojom::DBCommandResponse::Status RewardsDatabase::Execute(
-    mojom::DBCommand* command) {
+mojom::DBCommandResponsePtr RewardsDatabase::Execute(
+    const mojom::DBCommand& command) {
   if (!initialized_) {
-    return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
+    return CreateResponse(
+        mojom::DBCommandResponse::Status::kInitializationError);
   }
 
-  if (!command) {
-    return mojom::DBCommandResponse::Status::RESPONSE_ERROR;
-  }
-
-  bool result = db_.Execute(command->command);
+  bool result = db_.Execute(command.command);
 
   if (!result) {
     LOG(ERROR) << "DB Execute error: " << db_.GetErrorMessage();
-    return mojom::DBCommandResponse::Status::COMMAND_ERROR;
+    return CreateResponse(mojom::DBCommandResponse::Status::kCommandError);
   }
 
-  return mojom::DBCommandResponse::Status::RESPONSE_OK;
+  auto response = CreateResponse(mojom::DBCommandResponse::Status::kSuccess);
+  response->records.push_back(GetLastChangeCount());
+  return response;
 }
 
-mojom::DBCommandResponse::Status RewardsDatabase::Run(
-    mojom::DBCommand* command) {
+mojom::DBCommandResponsePtr RewardsDatabase::Run(
+    const mojom::DBCommand& command) {
   if (!initialized_) {
-    return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
+    return CreateResponse(
+        mojom::DBCommandResponse::Status::kInitializationError);
   }
 
-  if (!command) {
-    return mojom::DBCommandResponse::Status::RESPONSE_ERROR;
-  }
+  sql::Statement statement(db_.GetUniqueStatement(command.command));
 
-  sql::Statement statement(db_.GetUniqueStatement(command->command));
-
-  for (auto const& binding : command->bindings) {
+  for (auto& binding : command.bindings) {
     HandleBinding(&statement, *binding.get());
   }
 
   if (!statement.Run()) {
     LOG(ERROR) << "DB Run error: " << db_.GetErrorMessage() << " ("
                << db_.GetErrorCode() << ")";
-    return mojom::DBCommandResponse::Status::COMMAND_ERROR;
+    return CreateResponse(mojom::DBCommandResponse::Status::kCommandError);
   }
 
-  return mojom::DBCommandResponse::Status::RESPONSE_OK;
+  auto response = CreateResponse(mojom::DBCommandResponse::Status::kSuccess);
+  response->records.push_back(GetLastChangeCount());
+  return response;
 }
 
-mojom::DBCommandResponse::Status RewardsDatabase::Read(
-    mojom::DBCommand* command,
-    mojom::DBCommandResponse* command_response) {
+mojom::DBCommandResponsePtr RewardsDatabase::Read(
+    const mojom::DBCommand& command) {
   if (!initialized_) {
-    return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
+    return CreateResponse(
+        mojom::DBCommandResponse::Status::kInitializationError);
   }
 
-  if (!command || !command_response) {
-    return mojom::DBCommandResponse::Status::RESPONSE_ERROR;
-  }
+  sql::Statement statement(db_.GetUniqueStatement(command.command));
 
-  sql::Statement statement(db_.GetUniqueStatement(command->command));
-
-  for (auto const& binding : command->bindings) {
+  for (auto& binding : command.bindings) {
     HandleBinding(&statement, *binding.get());
   }
 
-  command_response->result =
-      mojom::DBCommandResult::NewRecords(std::vector<mojom::DBRecordPtr>());
+  auto response = CreateResponse(mojom::DBCommandResponse::Status::kSuccess);
   while (statement.Step()) {
-    command_response->result->get_records().push_back(
-        CreateRecord(&statement, command->record_bindings));
+    response->records.push_back(
+        CreateRecord(&statement, command.record_bindings));
   }
 
-  return mojom::DBCommandResponse::Status::RESPONSE_OK;
+  return response;
 }
 
-mojom::DBCommandResponse::Status RewardsDatabase::Migrate(
-    const int32_t version,
-    const int32_t compatible_version) {
+mojom::DBCommandResponsePtr RewardsDatabase::Migrate(
+    int32_t version,
+    int32_t compatible_version) {
   if (!initialized_) {
-    return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
+    return CreateResponse(
+        mojom::DBCommandResponse::Status::kInitializationError);
   }
 
   CHECK(meta_table_.SetVersionNumber(version));
   CHECK(meta_table_.SetCompatibleVersionNumber(compatible_version));
 
-  return mojom::DBCommandResponse::Status::RESPONSE_OK;
+  return CreateResponse(mojom::DBCommandResponse::Status::kSuccess);
+}
+
+mojom::DBRecordPtr RewardsDatabase::GetLastChangeCount() {
+  auto record = mojom::DBRecord::New();
+  record->fields.push_back(
+      mojom::DBValue::NewIntValue(db_.GetLastChangeCount()));
+  return record;
 }
 
 bool RewardsDatabase::ShouldCreateTables() {
@@ -319,7 +370,8 @@ bool RewardsDatabase::ShouldCreateTables() {
     return true;
   }
 
-  // if there's only one table in the database, that must be `meta`
+  // If there is only one table in the database, assume that it is the `meta`
+  // table and that all other tables need to be created.
   return GetTablesCount() <= 1;
 }
 

@@ -30,24 +30,22 @@ class RewardsDatabase {
   mojom::DBCommandResponsePtr RunTransaction(
       mojom::DBTransactionPtr transaction);
 
-  sql::Database* GetInternalDatabaseForTesting() { return &db_; }
+  sql::Database& GetInternalDatabaseForTesting() { return db_; }
 
  private:
-  mojom::DBCommandResponse::Status Initialize(
-      int32_t version,
-      int32_t compatible_version,
-      mojom::DBCommandResponse* command_response);
+  mojom::DBCommandResponsePtr Initialize(int32_t version,
+                                         int32_t compatible_version);
 
-  mojom::DBCommandResponse::Status Execute(mojom::DBCommand* command);
+  mojom::DBCommandResponsePtr Execute(const mojom::DBCommand& command);
 
-  mojom::DBCommandResponse::Status Run(mojom::DBCommand* command);
+  mojom::DBCommandResponsePtr Run(const mojom::DBCommand& command);
 
-  mojom::DBCommandResponse::Status Read(
-      mojom::DBCommand* command,
-      mojom::DBCommandResponse* command_response);
+  mojom::DBCommandResponsePtr Read(const mojom::DBCommand& command);
 
-  mojom::DBCommandResponse::Status Migrate(int32_t version,
-                                           int32_t compatible_version);
+  mojom::DBCommandResponsePtr Migrate(int32_t version,
+                                      int32_t compatible_version);
+
+  mojom::DBRecordPtr GetLastChangeCount();
 
   bool ShouldCreateTables();
 

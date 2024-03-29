@@ -47,7 +47,7 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
 
   for (const auto& info : list) {
     auto command = mojom::DBCommand::New();
-    command->type = mojom::DBCommand::Type::RUN;
+    command->type = mojom::DBCommand::Type::kRun;
     command->command = query;
 
     if (info->id != 0) {
@@ -74,14 +74,14 @@ void DatabaseUnblindedToken::OnGetRecords(
     GetUnblindedTokenListCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run({});
     return;
   }
 
   std::vector<mojom::UnblindedTokenPtr> list;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto info = mojom::UnblindedToken::New();
     auto* record_pointer = record.get();
 
@@ -101,7 +101,7 @@ void DatabaseUnblindedToken::OnGetRecords(
 void DatabaseUnblindedToken::GetSpendableRecords(
     GetUnblindedTokenListCallback callback) {
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = base::StringPrintf(
       R"(
     SELECT
@@ -119,12 +119,12 @@ void DatabaseUnblindedToken::GetSpendableRecords(
       ut.redeemed_at = 0 AND cb.trigger_type = 1
       )",
       kTableName);
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt64};
 
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
@@ -154,7 +154,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
       kTableName, GenerateStringInCase(ids).c_str());
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindInt64(command.get(), 0, util::GetCurrentTimeStamp());
@@ -191,7 +191,7 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
       kTableName, kTableName, id_values.c_str(), id_values.c_str());
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, redeem_id);
@@ -205,7 +205,7 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
       "WHERE contribution_id = ?";
 
   command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindInt(command.get(), 0,
@@ -220,7 +220,7 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
       kTableName, id_values.c_str());
 
   command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
@@ -236,13 +236,13 @@ void DatabaseUnblindedToken::OnMarkRecordListAsReserved(
     size_t expected_row_count,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 
-  if (response->result->get_records().size() != expected_row_count) {
+  if (response->records.size() != expected_row_count) {
     engine_->LogError(FROM_HERE) << "Records size doesn't match";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
@@ -268,7 +268,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpendable(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, redeem_id);
@@ -298,17 +298,17 @@ void DatabaseUnblindedToken::GetReservedRecordList(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, redeem_id);
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt64};
 
   transaction->commands.push_back(std::move(command));
 
@@ -345,15 +345,15 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
       kTableName, base::JoinString(in_case, ",").c_str());
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt64};
 
   transaction->commands.push_back(std::move(command));
 
