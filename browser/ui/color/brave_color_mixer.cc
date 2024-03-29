@@ -16,6 +16,8 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/color/material_side_panel_color_mixer.h"
+#include "ui/base/ui_base_features.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_recipe.h"
@@ -234,6 +236,10 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabFocusRingActive] = {ui::kColorFocusableBorderFocused};
   mixer[kColorTabFocusRingInactive] = {ui::kColorFocusableBorderFocused};
 
+  // Sidebar tweaks
+  mixer[kColorSidePanelContentBackground] = {SK_ColorWHITE};
+  mixer[ui::kColorListItemUrlFaviconBackground] = {gfx::kGoogleGrey050};
+
   // Upstream uses tab's background color as omnibox chip background color.
   // In our light mode, there is no difference between location bar's bg
   // color and tab's bg color. So, it looks like chip's bg color is transparent.
@@ -287,6 +293,10 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
       ui::kColorFocusableBorderFocused};
   mixer[kColorTabFocusRingActive] = {ui::kColorFocusableBorderFocused};
   mixer[kColorTabFocusRingInactive] = {ui::kColorFocusableBorderFocused};
+
+  // Sidebar tweaks
+  mixer[kColorSidePanelContentBackground] = {gfx::kGoogleGrey900};
+  mixer[ui::kColorListItemUrlFaviconBackground] = {gfx::kGoogleGrey800};
 }
 
 void AddChromeColorMixerForAllThemes(ui::ColorProvider* provider,
@@ -384,6 +394,12 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
 
   if (key.custom_theme) {
     return;
+  }
+
+  // This is behind features::IsChromeRefresh2023 upstream, but without it the
+  // colors are not set correctly.
+  if (!features::IsChromeRefresh2023()) {
+    AddMaterialSidePanelColorMixer(provider, key);
   }
 
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
