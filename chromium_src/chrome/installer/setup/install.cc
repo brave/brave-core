@@ -25,14 +25,8 @@
  */
 
 namespace {
+
 constexpr int kPinAfterMins = 3;
-}
-
-#define set_pin_to_taskbar(...)                                         \
-  set_pin_to_taskbar(ShouldPinToTaskbar(do_not_create_taskbar_shortcut, \
-                                        shortcut_operation, target))
-
-namespace installer {
 
 bool ShouldPinToTaskbar(bool do_not_create_taskbar_shortcut,
                         ShellUtil::ShortcutOperation shortcut_operation,
@@ -57,7 +51,11 @@ bool ShouldPinToTaskbar(bool do_not_create_taskbar_shortcut,
   }
 }
 
-}  // namespace installer
+}  // namespace
+
+#define set_pin_to_taskbar(...)                                         \
+  set_pin_to_taskbar(ShouldPinToTaskbar(do_not_create_taskbar_shortcut, \
+                                        shortcut_operation, target))
 
 #include "src/chrome/installer/setup/install.cc"
 
