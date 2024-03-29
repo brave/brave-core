@@ -15,6 +15,7 @@
 
 namespace brave_wallet {
 
+inline constexpr size_t kZCashDigestSize = 32;
 inline constexpr size_t kOrchardRawBytesSize = 43;
 inline constexpr uint32_t kZip32Purpose = 32u;
 inline constexpr uint32_t kTestnetCoinType = 1u;

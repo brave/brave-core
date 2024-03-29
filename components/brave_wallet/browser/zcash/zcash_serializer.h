@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_keyring.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 
 namespace brave_wallet {
@@ -16,13 +18,16 @@ namespace brave_wallet {
 // https://zips.z.cash/zip-0244
 class ZCashSerializer {
  public:
-  static std::array<uint8_t, 32> CalculateTxIdDigest(
+  static std::array<uint8_t, kZCashDigestSize> CalculateTxIdDigest(
       const ZCashTransaction& zcash_transaction);
-  static std::array<uint8_t, 32> CalculateSignatureDigest(
+  static std::array<uint8_t, kZCashDigestSize> CalculateSignatureDigest(
       const ZCashTransaction& zcash_transaction,
-      const ZCashTransaction::TxInput& input);
+      std::optional<ZCashTransaction::TxInput> input);
   static std::vector<uint8_t> SerializeRawTransaction(
       const ZCashTransaction& zcash_transaction);
+  static bool SignTransparentPart(KeyringService* keyring_service,
+                                  const mojom::AccountIdPtr& account_id,
+                                  ZCashTransaction& tx);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ZCashSerializerTest, HashHeader);
@@ -30,13 +35,23 @@ class ZCashSerializer {
   FRIEND_TEST_ALL_PREFIXES(ZCashSerializerTest, HashPrevouts);
   FRIEND_TEST_ALL_PREFIXES(ZCashSerializerTest, HashSequences);
   FRIEND_TEST_ALL_PREFIXES(ZCashSerializerTest, HashTxIn);
+  FRIEND_TEST_ALL_PREFIXES(ZCashSerializerTest, OrchardBundle);
 
-  static std::array<uint8_t, 32> HashHeader(const ZCashTransaction& tx);
-  static std::array<uint8_t, 32> HashPrevouts(const ZCashTransaction& tx);
-  static std::array<uint8_t, 32> HashSequences(const ZCashTransaction& tx);
-  static std::array<uint8_t, 32> HashOutputs(const ZCashTransaction& tx);
-  static std::array<uint8_t, 32> HashTxIn(
-      const ZCashTransaction::TxInput& tx_in);
+  static void SerializeSignature(const ZCashTransaction& tx,
+                                 ZCashTransaction::TxInput& input,
+                                 const std::vector<uint8_t>& pubkey,
+                                 const std::vector<uint8_t>& signature);
+
+  static std::array<uint8_t, kZCashDigestSize> HashHeader(
+      const ZCashTransaction& tx);
+  static std::array<uint8_t, kZCashDigestSize> HashPrevouts(
+      const ZCashTransaction& tx);
+  static std::array<uint8_t, kZCashDigestSize> HashSequences(
+      const ZCashTransaction& tx);
+  static std::array<uint8_t, kZCashDigestSize> HashOutputs(
+      const ZCashTransaction& tx);
+  static std::array<uint8_t, kZCashDigestSize> HashTxIn(
+      std::optional<ZCashTransaction::TxInput> tx_in);
 };
 
 }  // namespace brave_wallet

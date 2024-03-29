@@ -87,6 +87,40 @@ bool UrlPathEndsWithSlash(const GURL& base_url) {
   return !path_piece.empty() && path_piece.back() == '/';
 }
 
+const GURL MakeGetTreeStateUrl(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  std::string path =
+      base::StrCat({base_url.path(),
+                    "cash.z.wallet.sdk.rpc.CompactTxStreamer/GetTreeState"});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
+const GURL MakeGetLatestTreeStateUrl(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  std::string path = base::StrCat(
+      {base_url.path(),
+       "cash.z.wallet.sdk.rpc.CompactTxStreamer/GetLatestTreeState"});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
 const GURL MakeGetAddressUtxosURL(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
@@ -172,6 +206,19 @@ const GURL MakeGetTransactionURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
+std::string MakeGetTreeStateURLParams(const mojom::BlockIDPtr& block_id) {
+  zcash::BlockID request;
+  auto hash = block_id->hash;
+  request.set_hash(std::string(hash.begin(), hash.end()));
+  request.set_height(block_id->height);
+  return GetPrefixedProtobuf(request.SerializeAsString());
+}
+
+std::string MakeGetLatestTreeStateURLParams() {
+  zcash::Empty request;
+  return GetPrefixedProtobuf(request.SerializeAsString());
+}
+
 std::string MakeGetAddressUtxosURLParams(const std::string& address) {
   zcash::GetAddressUtxosRequest request;
   request.add_addresses(address);
@@ -247,6 +294,55 @@ ZCashRpc::ZCashRpc(
     : prefs_(prefs), url_loader_factory_(url_loader_factory) {}
 
 ZCashRpc::~ZCashRpc() = default;
+
+void ZCashRpc::GetTreeState(const std::string& chain_id,
+                            mojom::BlockIDPtr block_id,
+                            GetTreeStateCallback callback) {
+  GURL request_url = MakeGetTreeStateUrl(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+
+  if (!request_url.is_valid()) {
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    return;
+  }
+
+  auto url_loader =
+      MakeGRPCLoader(request_url, MakeGetTreeStateURLParams(block_id));
+
+  UrlLoadersList::iterator it = url_loaders_list_.insert(
+      url_loaders_list_.begin(), std::move(url_loader));
+
+  (*it)->DownloadToString(
+      url_loader_factory_.get(),
+      base::BindOnce(&ZCashRpc::OnGetTreeStateResponse,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
+      5000);
+}
+
+void ZCashRpc::GetLatestTreeState(const std::string& chain_id,
+                                  GetTreeStateCallback callback) {
+  GURL request_url = MakeGetLatestTreeStateUrl(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+
+  if (!request_url.is_valid()) {
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    return;
+  }
+
+  auto url_loader =
+      MakeGRPCLoader(request_url, MakeGetLatestTreeStateURLParams());
+
+  UrlLoadersList::iterator it = url_loaders_list_.insert(
+      url_loaders_list_.begin(), std::move(url_loader));
+
+  (*it)->DownloadToString(
+      url_loader_factory_.get(),
+      base::BindOnce(&ZCashRpc::OnGetTreeStateResponse,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
+      5000);
+}
 
 void ZCashRpc::GetUtxoList(const std::string& chain_id,
                            const std::string& address,
@@ -484,6 +580,30 @@ void ZCashRpc::OnSendTransactionResponse(
   GetDecoder()->ParseSendResponse(
       *response_body,
       base::BindOnce(&ZCashRpc::OnParseResult<mojom::SendResponsePtr>,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void ZCashRpc::OnGetTreeStateResponse(
+    ZCashRpc::GetTreeStateCallback callback,
+    UrlLoadersList::iterator it,
+    std::unique_ptr<std::string> response_body) {
+  auto current_loader = std::move(*it);
+  url_loaders_list_.erase(it);
+  if (current_loader->NetError()) {
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    return;
+  }
+
+  if (!response_body) {
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
+    return;
+  }
+
+  GetDecoder()->ParseTreeState(
+      *response_body,
+      base::BindOnce(&ZCashRpc::OnParseResult<mojom::TreeStatePtr>,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 

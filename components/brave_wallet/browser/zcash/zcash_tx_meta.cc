@@ -16,12 +16,12 @@ namespace brave_wallet {
 namespace {
 mojom::ZecTxDataPtr ToZecTxData(ZCashTransaction& tx) {
   std::vector<mojom::ZecTxInputPtr> mojom_inputs;
-  for (auto& input : tx.inputs()) {
+  for (auto& input : tx.transparent_part().inputs) {
     mojom_inputs.push_back(
         mojom::ZecTxInput::New(input.utxo_address, input.utxo_value));
   }
   std::vector<mojom::ZecTxOutputPtr> mojom_outputs;
-  for (auto& output : tx.outputs()) {
+  for (auto& output : tx.transparent_part().outputs) {
     mojom_outputs.push_back(
         mojom::ZecTxOutput::New(output.address, output.amount));
   }

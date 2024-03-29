@@ -22,7 +22,8 @@ enum class OrchardKind { External, Internal };
 
 class HDKeyZip32 {
  public:
-  explicit HDKeyZip32(rust::Box<zcash::OrchardExtendedSpendingKeyResult> esk);
+  explicit HDKeyZip32(
+      ::rust::Box<::zcash::OrchardExtendedSpendingKeyResult> esk);
 
   ~HDKeyZip32();
 
@@ -35,7 +36,7 @@ class HDKeyZip32 {
   GetDiversifiedAddress(uint32_t div_index, OrchardKind kind);
 
  private:
-  rust::Box<zcash::OrchardExtendedSpendingKeyResult> extended_spending_key_;
+  ::rust::Box<::zcash::OrchardExtendedSpendingKeyResult> extended_spending_key_;
 };
 
 }  // namespace brave_wallet

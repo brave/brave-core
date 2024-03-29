@@ -13,7 +13,7 @@ static_assert(BUILDFLAG(ENABLE_ORCHARD));
 
 namespace brave_wallet {
 
-HDKeyZip32::HDKeyZip32(rust::Box<zcash::OrchardExtendedSpendingKeyResult> esk)
+HDKeyZip32::HDKeyZip32(::rust::Box<zcash::OrchardExtendedSpendingKeyResult> esk)
     : extended_spending_key_(std::move(esk)) {}
 
 HDKeyZip32::~HDKeyZip32() {}

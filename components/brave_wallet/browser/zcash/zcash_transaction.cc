@@ -89,10 +89,10 @@ ZCashTransaction::ZCashTransaction(ZCashTransaction&& other) = default;
 ZCashTransaction& ZCashTransaction::operator=(ZCashTransaction&& other) =
     default;
 bool ZCashTransaction::operator==(const ZCashTransaction& other) const {
-  return std::tie(this->inputs_, this->outputs_, this->locktime_, this->to_,
-                  this->amount_, this->fee_) ==
-         std::tie(other.inputs_, other.outputs_, other.locktime_, other.to_,
-                  other.amount_, other.fee_);
+  return std::tie(this->transparent_part_, this->orchard_part_, this->locktime_,
+                  this->to_, this->amount_, this->fee_) ==
+         std::tie(other.transparent_part_, this->orchard_part_, other.locktime_,
+                  other.to_, other.amount_, other.fee_);
 }
 bool ZCashTransaction::operator!=(const ZCashTransaction& other) const {
   return !(*this == other);
@@ -112,6 +112,50 @@ bool ZCashTransaction::Outpoint::operator==(
 }
 bool ZCashTransaction::Outpoint::operator!=(
     const ZCashTransaction::Outpoint& other) const {
+  return !(*this == other);
+}
+
+ZCashTransaction::OrchardOutput::OrchardOutput() = default;
+ZCashTransaction::OrchardOutput::~OrchardOutput() = default;
+ZCashTransaction::OrchardOutput::OrchardOutput(OrchardOutput&& other) = default;
+ZCashTransaction::OrchardOutput& ZCashTransaction::OrchardOutput::operator=(
+    OrchardOutput&& other) = default;
+bool ZCashTransaction::OrchardOutput::operator==(
+    const ZCashTransaction::OrchardOutput& other) const {
+  return std::tie(this->address, this->value) ==
+         std::tie(other.address, other.value);
+}
+bool ZCashTransaction::OrchardOutput::operator!=(
+    const ZCashTransaction::OrchardOutput& other) const {
+  return !(*this == other);
+}
+
+ZCashTransaction::OrchardPart::OrchardPart() = default;
+ZCashTransaction::OrchardPart::~OrchardPart() = default;
+ZCashTransaction::OrchardPart::OrchardPart(OrchardPart&& other) = default;
+ZCashTransaction::OrchardPart& ZCashTransaction::OrchardPart::operator=(
+    OrchardPart&& other) = default;
+bool ZCashTransaction::OrchardPart::operator==(const OrchardPart& other) const {
+  return std::tie(this->digest, this->outputs, this->raw_tx) ==
+         std::tie(other.digest, other.outputs, other.raw_tx);
+}
+bool ZCashTransaction::OrchardPart::operator!=(const OrchardPart& other) const {
+  return !(*this == other);
+}
+
+ZCashTransaction::TransparentPart::TransparentPart() = default;
+ZCashTransaction::TransparentPart::~TransparentPart() = default;
+ZCashTransaction::TransparentPart::TransparentPart(TransparentPart&& other) =
+    default;
+ZCashTransaction::TransparentPart& ZCashTransaction::TransparentPart::operator=(
+    TransparentPart&& other) = default;
+bool ZCashTransaction::TransparentPart::operator==(
+    const TransparentPart& other) const {
+  return std::tie(this->inputs, this->outputs) ==
+         std::tie(other.inputs, other.outputs);
+}
+bool ZCashTransaction::TransparentPart::operator!=(
+    const TransparentPart& other) const {
   return !(*this == other);
 }
 
@@ -148,6 +192,8 @@ std::optional<ZCashTransaction::Outpoint> ZCashTransaction::Outpoint::FromValue(
 
 ZCashTransaction::TxInput::TxInput() = default;
 ZCashTransaction::TxInput::~TxInput() = default;
+ZCashTransaction::TxInput::TxInput(const ZCashTransaction::TxInput& other) =
+    default;
 ZCashTransaction::TxInput::TxInput(ZCashTransaction::TxInput&& other) = default;
 ZCashTransaction::TxInput& ZCashTransaction::TxInput::operator=(
     ZCashTransaction::TxInput&& other) = default;
@@ -297,11 +343,11 @@ std::optional<ZCashTransaction::TxOutput> ZCashTransaction::TxOutput::FromValue(
 ZCashTransaction ZCashTransaction::Clone() const {
   ZCashTransaction result;
 
-  for (auto& input : inputs_) {
-    result.inputs_.emplace_back(input.Clone());
+  for (auto& input : transparent_part_.inputs) {
+    result.transparent_part_.inputs.emplace_back(input.Clone());
   }
-  for (auto& output : outputs_) {
-    result.outputs_.emplace_back(output.Clone());
+  for (auto& output : transparent_part_.outputs) {
+    result.transparent_part_.outputs.emplace_back(output.Clone());
   }
   result.locktime_ = locktime_;
   result.to_ = to_;
@@ -315,12 +361,12 @@ base::Value::Dict ZCashTransaction::ToValue() const {
   base::Value::Dict dict;
 
   auto& inputs_value = dict.Set("inputs", base::Value::List())->GetList();
-  for (auto& input : inputs_) {
+  for (auto& input : transparent_part_.inputs) {
     inputs_value.Append(input.ToValue());
   }
 
   auto& outputs_value = dict.Set("outputs", base::Value::List())->GetList();
-  for (auto& output : outputs_) {
+  for (auto& output : transparent_part_.outputs) {
     outputs_value.Append(output.ToValue());
   }
 
@@ -349,7 +395,7 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
     if (!input_opt) {
       return std::nullopt;
     }
-    result.inputs_.push_back(std::move(*input_opt));
+    result.transparent_part_.inputs.push_back(std::move(*input_opt));
   }
 
   auto* outputs_list = value.FindList("outputs");
@@ -364,7 +410,7 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
     if (!output_opt) {
       return std::nullopt;
     }
-    result.outputs_.push_back(std::move(*output_opt));
+    result.transparent_part_.outputs.push_back(std::move(*output_opt));
   }
 
   if (!ReadUint32StringTo(value, "locktime", result.locktime_)) {
@@ -386,18 +432,18 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
   return result;
 }
 
-bool ZCashTransaction::IsSigned() const {
-  if (inputs_.empty()) {
+bool ZCashTransaction::IsTransparentPartSigned() const {
+  if (transparent_part_.inputs.empty()) {
     return false;
   }
 
-  return base::ranges::all_of(inputs_,
+  return base::ranges::all_of(transparent_part_.inputs,
                               [](auto& input) { return input.IsSigned(); });
 }
 
 uint64_t ZCashTransaction::TotalInputsAmount() const {
   uint64_t result = 0;
-  for (auto& input : inputs_) {
+  for (auto& input : transparent_part_.inputs) {
     result += input.utxo_value;
   }
   return result;
