@@ -177,7 +177,6 @@ source_set("test_support") {
     "//brave/components/constants",
     "//chrome/browser/extensions",
     "//chrome/test:test_support",
-    "//chrome/test/data/webui:browser_tests",
     "//content/public/browser",
     "//content/test:test_support",
     "//net",
