@@ -9,6 +9,7 @@
 #include <limits>
 #include <utility>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -70,12 +71,12 @@ const char* GetContextMenuActionKey(ContextMenuAction action) {
 
 void ReportHistogramForSidebarExperiment(
     int value,
-    const char* (*get_histogram_name)(SidebarDefaultMode)) {
+    base::fixed_flat_map<SidebarDefaultMode, const char*, 3> name_map) {
   auto current_mode = sidebar::features::GetSidebarDefaultMode();
 
   for (int i = 0; i <= static_cast<int>(SidebarDefaultMode::kMaxValue); i++) {
     SidebarDefaultMode i_mode = static_cast<SidebarDefaultMode>(i);
-    const char* histogram_name = get_histogram_name(i_mode);
+    const char* histogram_name = name_map.at(i_mode);
 
     // If the mode applies for a given histogram name, report it as usual.
     // If not, do not report & suspend metric, so we don't double count
@@ -85,47 +86,28 @@ void ReportHistogramForSidebarExperiment(
   }
 }
 
-const char* GetEnabledHistogramName(SidebarDefaultMode mode) {
-  switch (mode) {
-    case SidebarDefaultMode::kOff:
-      return kEnabledHistogramName;
-    case SidebarDefaultMode::kAlwaysOn:
-      return kEnabledSidebarEnabledAHistogramName;
-    case SidebarDefaultMode::kOnOneShot:
-      return kEnabledSidebarEnabledBHistogramName;
-    default:
-      NOTREACHED();
-      return nullptr;
-  }
-}
+constexpr auto kEnabledHistogramNames =
+    base::MakeFixedFlatMap<SidebarDefaultMode, const char*>(
+        {{SidebarDefaultMode::kOff, kEnabledHistogramName},
+         {SidebarDefaultMode::kAlwaysOn, kEnabledSidebarEnabledAHistogramName},
+         {SidebarDefaultMode::kOnOneShot,
+          kEnabledSidebarEnabledBHistogramName}});
 
-const char* GetUsageWeeklyHistogramName(SidebarDefaultMode mode) {
-  switch (mode) {
-    case SidebarDefaultMode::kOff:
-      return kUsageWeeklyHistogramName;
-    case SidebarDefaultMode::kAlwaysOn:
-      return kUsageWeeklySidebarEnabledAHistogramName;
-    case SidebarDefaultMode::kOnOneShot:
-      return kUsageWeeklySidebarEnabledBHistogramName;
-    default:
-      NOTREACHED();
-      return nullptr;
-  }
-}
+constexpr auto kUsageWeeklyHistogramNames =
+    base::MakeFixedFlatMap<SidebarDefaultMode, const char*>(
+        {{SidebarDefaultMode::kOff, kUsageWeeklyHistogramName},
+         {SidebarDefaultMode::kAlwaysOn,
+          kUsageWeeklySidebarEnabledAHistogramName},
+         {SidebarDefaultMode::kOnOneShot,
+          kUsageWeeklySidebarEnabledBHistogramName}});
 
-const char* GetUsageDailyHistogramName(SidebarDefaultMode mode) {
-  switch (mode) {
-    case SidebarDefaultMode::kOff:
-      return kUsageDailyHistogramName;
-    case SidebarDefaultMode::kAlwaysOn:
-      return kUsageDailySidebarEnabledAHistogramName;
-    case SidebarDefaultMode::kOnOneShot:
-      return kUsageDailySidebarEnabledBHistogramName;
-    default:
-      NOTREACHED();
-      return nullptr;
-  }
-}
+constexpr auto kUsageDailyHistogramNames =
+    base::MakeFixedFlatMap<SidebarDefaultMode, const char*>(
+        {{SidebarDefaultMode::kOff, kUsageDailyHistogramName},
+         {SidebarDefaultMode::kAlwaysOn,
+          kUsageDailySidebarEnabledAHistogramName},
+         {SidebarDefaultMode::kOnOneShot,
+          kUsageDailySidebarEnabledBHistogramName}});
 
 }  // namespace
 
@@ -207,7 +189,7 @@ void AIChatMetrics::RecordEnabled(
   is_enabled_ = true;
 
   ReportHistogramForSidebarExperiment(is_premium_ ? 2 : 1,
-                                      GetEnabledHistogramName);
+                                      kEnabledHistogramNames);
   if (is_new_user && acquisition_source_.has_value()) {
     UMA_HISTOGRAM_ENUMERATION(kAcquisitionSourceHistogramName,
                               *acquisition_source_);
@@ -241,9 +223,9 @@ void AIChatMetrics::RecordNewChat() {
 
 void AIChatMetrics::RecordNewPrompt() {
   ReportHistogramForSidebarExperiment(is_premium_ ? 2 : 1,
-                                      GetUsageDailyHistogramName);
+                                      kUsageDailyHistogramNames);
   ReportHistogramForSidebarExperiment(is_premium_ ? 2 : 1,
-                                      GetUsageWeeklyHistogramName);
+                                      kUsageWeeklyHistogramNames);
   UMA_HISTOGRAM_EXACT_LINEAR(kUsageMonthlyHistogramName, is_premium_ ? 2 : 1,
                              3);
   p3a_utils::RecordFeatureUsage(local_state_,
