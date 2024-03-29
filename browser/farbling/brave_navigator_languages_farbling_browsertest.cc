@@ -33,7 +33,10 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/renderer/core/frame/navigator_language.h"
+
+// TODO(sko) Depending on core directly isn't allowed by the visibility of the
+// target. it might be better to export it through public/ layer.
+#include "third_party/blink/renderer/core/frame/navigator_language.h"  // nogncheck
 
 using brave_shields::ControlType;
 using brave_shields::features::kBraveReduceLanguage;

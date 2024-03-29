@@ -160,3 +160,27 @@ group("resources") {
     ]
   }
 }
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "//brave/browser/extensions/brave_base_local_data_files_browsertest.cc",
+    "//brave/browser/extensions/brave_base_local_data_files_browsertest.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/constants",
+    "//chrome/browser/extensions",
+    "//chrome/test:test_support",
+    "//chrome/test/data/webui:browser_tests",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//net:test_support",
+  ]
+}
