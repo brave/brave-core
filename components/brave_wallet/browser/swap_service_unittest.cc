@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -201,7 +202,12 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
   fee_cost->amount = "853380";
   fee_cost->included = true;
   fee_cost->token = from_token.Clone();
-  quote->routes[0]->steps[0]->estimate->fee_costs.push_back(fee_cost.Clone());
+
+  if (!quote->routes[0]->steps[0]->estimate->fee_costs) {
+  } else {
+    quote->routes[0]->steps[0]->estimate->fee_costs->push_back(
+        fee_cost.Clone());
+  }
 
   auto gas_cost = mojom::LiFiGasCost::New();
   gas_cost->type = "SEND";
@@ -266,10 +272,13 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
       ->included_steps->at(0)
       ->estimate->execution_duration = "500.298";
 
-  quote->routes[0]
-      ->steps[0]
-      ->included_steps->at(0)
-      ->estimate->fee_costs.push_back(fee_cost.Clone());
+  if (!quote->routes[0]->steps[0]->included_steps->at(0)->estimate->fee_costs) {
+  } else {
+    quote->routes[0]
+        ->steps[0]
+        ->included_steps->at(0)
+        ->estimate->fee_costs->push_back(fee_cost.Clone());
+  }
 
   quote->routes[0]
       ->steps[0]
@@ -1450,10 +1459,14 @@ TEST_F(SwapServiceUnitTest, GetLiFiQuoteError) {
   SetErrorInterceptor(error);
 
   base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
+
+  auto lifi_error = mojom::LiFiError::New();
+  lifi_error->message = "Invalid request";
+
   EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
                             EqualsMojo(mojom::SwapFeesPtr()),
                             EqualsMojo(mojom::SwapErrorUnion::NewLifiError(
-                                mojom::LiFiError::New("Invalid request"))),
+                                std::move(lifi_error))),
                             ""));
 
   swap_service_->GetQuote(
@@ -1473,9 +1486,13 @@ TEST_F(SwapServiceUnitTest, GetLiFiTransactionError) {
   SetErrorInterceptor(error);
 
   base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
+
+  auto lifi_error = mojom::LiFiError::New();
+  lifi_error->message = "Invalid request";
+
   EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
                             EqualsMojo(mojom::SwapErrorUnion::NewLifiError(
-                                mojom::LiFiError::New("Invalid request"))),
+                                std::move(lifi_error))),
                             ""));
 
   auto quote = GetCannedLiFiQuote();
