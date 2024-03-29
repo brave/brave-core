@@ -34,10 +34,6 @@ void BindString(mojom::DBCommand* command,
                 const int index,
                 const std::string& value);
 
-int32_t GetCurrentVersion();
-
-int32_t GetCompatibleVersion();
-
 void OnResultCallback(ResultCallback callback,
                       mojom::DBCommandResponsePtr response);
 

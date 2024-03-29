@@ -42,7 +42,7 @@ void DatabaseEventLog::Insert(const std::string& key,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0,
@@ -83,7 +83,7 @@ void DatabaseEventLog::InsertRecords(
 
   query.pop_back();
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
+  command->type = mojom::DBCommand::Type::kExecute;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
@@ -102,14 +102,14 @@ void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   command->record_bindings = {
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,
-      mojom::DBCommand::RecordBindingType::INT64_TYPE,
+      mojom::DBCommand::RecordBindingType::kString,
+      mojom::DBCommand::RecordBindingType::kString,
+      mojom::DBCommand::RecordBindingType::kString,
+      mojom::DBCommand::RecordBindingType::kInt64,
   };
 
   transaction->commands.push_back(std::move(command));
@@ -123,14 +123,14 @@ void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
 void DatabaseEventLog::OnGetAllRecords(GetEventLogsCallback callback,
                                        mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run({});
     return;
   }
 
   std::vector<mojom::EventLogPtr> list;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto info = mojom::EventLog::New();
     auto* record_pointer = record.get();
 

@@ -21,21 +21,21 @@ struct DBCommandBinding {
 
 struct DBCommand {
   enum Type {
-    INITIALIZE,
-    READ,
-    RUN,
-    EXECUTE,
-    MIGRATE,
-    VACUUM,
-    CLOSE
+    kInitialize,
+    kRead,
+    kRun,
+    kExecute,
+    kMigrate,
+    kVacuum,
+    kClose
   };
 
   enum RecordBindingType {
-    STRING_TYPE,
-    INT_TYPE,
-    INT64_TYPE,
-    DOUBLE_TYPE,
-    BOOL_TYPE
+    kString,
+    kInt,
+    kInt64,
+    kDouble,
+    kBool
   };
 
   Type type;
@@ -54,20 +54,14 @@ struct DBRecord {
   array<DBValue> fields;
 };
 
-union DBCommandResult {
-  array<DBRecord> records;
-  DBValue value;
-};
-
 struct DBCommandResponse {
   enum Status {
-    RESPONSE_OK,
-    INITIALIZATION_ERROR,
-    TRANSACTION_ERROR,
-    COMMAND_ERROR,
-    RESPONSE_ERROR
+    kSuccess,
+    kInitializationError,
+    kTransactionError,
+    kCommandError
   };
 
-  DBCommandResult? result;
   Status status;
+  array<DBRecord> records;
 };

@@ -48,7 +48,7 @@ void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
       kTableName, kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, info->id);
@@ -66,7 +66,7 @@ void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
         "UPDATE %s SET favIcon = ? WHERE publisher_id = ?;", kTableName);
 
     auto command_icon = mojom::DBCommand::New();
-    command_icon->type = mojom::DBCommand::Type::RUN;
+    command_icon->type = mojom::DBCommand::Type::kRun;
     command_icon->command = query_icon;
 
     if (favicon == constant::kClearFavicon) {
@@ -104,19 +104,19 @@ void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt};
 
   transaction->commands.push_back(std::move(command));
 
@@ -129,18 +129,18 @@ void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
 void DatabasePublisherInfo::OnGetRecord(GetPublisherInfoCallback callback,
                                         mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run(mojom::Result::FAILED, {});
     return;
   }
 
-  if (response->result->get_records().size() != 1) {
+  if (response->records.size() != 1) {
     std::move(callback).Run(mojom::Result::NOT_FOUND, {});
     return;
   }
 
-  auto* record = response->result->get_records()[0].get();
+  auto* record = response->records[0].get();
 
   auto info = mojom::PublisherInfo::New();
   info->id = GetStringColumn(record, 0);
@@ -180,21 +180,21 @@ void DatabasePublisherInfo::GetPanelRecord(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, filter->id);
   BindInt64(command.get(), 1, filter->reconcile_stamp);
   BindString(command.get(), 2, filter->id);
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt};
 
   transaction->commands.push_back(std::move(command));
 
@@ -208,18 +208,18 @@ void DatabasePublisherInfo::OnGetPanelRecord(
     GetPublisherPanelInfoCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run(mojom::Result::FAILED, {});
     return;
   }
 
-  if (response->result->get_records().size() != 1) {
+  if (response->records.size() != 1) {
     std::move(callback).Run(mojom::Result::NOT_FOUND, {});
     return;
   }
 
-  auto* record = response->result->get_records()[0].get();
+  auto* record = response->records[0].get();
 
   auto info = mojom::PublisherInfo::New();
   info->id = GetStringColumn(record, 0);
@@ -240,7 +240,7 @@ void DatabasePublisherInfo::RestorePublishers(ResultCallback callback) {
       "UPDATE %s SET excluded=? WHERE excluded=?", kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(mojom::PublisherExclude::DEFAULT));
@@ -259,7 +259,7 @@ void DatabasePublisherInfo::OnRestorePublishers(
     ResultCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
@@ -280,15 +280,15 @@ void DatabasePublisherInfo::GetExcludedList(GetExcludedListCallback callback) {
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt64,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString};
 
   transaction->commands.push_back(std::move(command));
 
@@ -302,14 +302,14 @@ void DatabasePublisherInfo::OnGetExcludedList(
     GetExcludedListCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run({});
     return;
   }
 
   std::vector<mojom::PublisherInfoPtr> list;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto info = mojom::PublisherInfo::New();
     auto* record_pointer = record.get();
 

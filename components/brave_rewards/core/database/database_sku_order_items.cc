@@ -42,7 +42,7 @@ void DatabaseSKUOrderItems::InsertOrUpdateList(
 
   for (auto& item : list) {
     auto command = mojom::DBCommand::New();
-    command->type = mojom::DBCommand::Type::RUN;
+    command->type = mojom::DBCommand::Type::kRun;
     command->command = query;
 
     BindString(command.get(), 0, item->order_item_id);
@@ -76,20 +76,20 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, order_id);
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt64};
 
   transaction->commands.push_back(std::move(command));
 
@@ -103,7 +103,7 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
     GetSKUOrderItemsCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run({});
     return;
@@ -111,7 +111,7 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
 
   std::vector<mojom::SKUOrderItemPtr> list;
   mojom::SKUOrderItemPtr info = nullptr;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto* record_pointer = record.get();
     info = mojom::SKUOrderItem::New();
 

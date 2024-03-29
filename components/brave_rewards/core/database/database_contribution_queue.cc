@@ -49,7 +49,7 @@ void DatabaseContributionQueue::InsertOrUpdate(mojom::ContributionQueuePtr info,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, info->id);
@@ -73,7 +73,7 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
   CHECK(queue);
 
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is not ok";
     std::move(callback).Run(mojom::Result::FAILED);
     return;
@@ -94,13 +94,13 @@ void DatabaseContributionQueue::GetFirstRecord(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kInt};
 
   transaction->commands.push_back(std::move(command));
 
@@ -114,18 +114,18 @@ void DatabaseContributionQueue::OnGetFirstRecord(
     GetFirstContributionQueueCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run(nullptr);
     return;
   }
 
-  if (response->result->get_records().size() != 1) {
+  if (response->records.size() != 1) {
     std::move(callback).Run(nullptr);
     return;
   }
 
-  auto* record = response->result->get_records()[0].get();
+  auto* record = response->records[0].get();
 
   auto info = mojom::ContributionQueue::New();
   info->id = GetStringColumn(record, 0);
@@ -168,7 +168,7 @@ void DatabaseContributionQueue::MarkRecordAsComplete(const std::string& id,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindInt64(command.get(), 0, util::GetCurrentTimeStamp());

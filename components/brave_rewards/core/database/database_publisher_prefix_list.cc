@@ -61,12 +61,12 @@ void DatabasePublisherPrefixList::Search(
       publisher::GetHashPrefixInHex(publisher_key, kHashPrefixSize);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = base::StringPrintf(
       "SELECT EXISTS(SELECT hash_prefix FROM %s WHERE hash_prefix = x'%s')",
       kTableName, hex.c_str());
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::BOOL_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kBool};
 
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
@@ -80,17 +80,16 @@ void DatabasePublisherPrefixList::Search(
 void DatabasePublisherPrefixList::OnSearch(
     SearchPublisherPrefixListCallback callback,
     mojom::DBCommandResponsePtr response) {
-  if (!response || !response->result ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK ||
-      response->result->get_records().empty()) {
+  if (!response ||
+      response->status != mojom::DBCommandResponse::Status::kSuccess ||
+      response->records.empty()) {
     engine_->LogError(FROM_HERE)
         << "Unexpected database result while searching publisher prefix list";
     std::move(callback).Run(false);
     return;
   }
 
-  std::move(callback).Run(
-      GetBoolColumn(response->result->get_records()[0].get(), 0));
+  std::move(callback).Run(GetBoolColumn(response->records[0].get(), 0));
 }
 
 void DatabasePublisherPrefixList::Reset(publisher::PrefixListReader reader,
@@ -119,7 +118,7 @@ void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
   if (begin == reader_->begin()) {
     engine_->Log(FROM_HERE) << "Clearing publisher prefixes table";
     auto command = mojom::DBCommand::New();
-    command->type = mojom::DBCommand::Type::RUN;
+    command->type = mojom::DBCommand::Type::kRun;
     command->command = base::StringPrintf("DELETE FROM %s", kTableName);
     transaction->commands.push_back(std::move(command));
   }
@@ -130,7 +129,7 @@ void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
                           << " records into publisher prefix table";
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s (hash_prefix) VALUES %s", kTableName,
       std::get<std::string>(insert_tuple).data());
@@ -149,7 +148,7 @@ void DatabasePublisherPrefixList::OnInsertNext(
     publisher::PrefixIterator iter,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     reader_ = std::nullopt;
     std::move(callback).Run(mojom::Result::FAILED);
     return;

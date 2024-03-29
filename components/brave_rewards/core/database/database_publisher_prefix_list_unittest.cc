@@ -25,7 +25,7 @@ class Client : public TestRewardsEngineClient {
                         RunDBTransactionCallback callback) override {
     transactions_.push_back(transaction->Clone());
     auto response = mojom::DBCommandResponse::New();
-    response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
+    response->status = mojom::DBCommandResponse::Status::kSuccess;
     std::move(callback).Run(std::move(response));
   }
 

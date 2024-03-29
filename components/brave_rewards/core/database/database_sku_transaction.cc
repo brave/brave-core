@@ -43,7 +43,7 @@ void DatabaseSKUTransaction::InsertOrUpdate(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, transaction->transaction_id);
@@ -77,7 +77,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, external_transaction_id);
@@ -110,17 +110,17 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, order_id);
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kInt};
 
   transaction->commands.push_back(std::move(command));
 
@@ -133,28 +133,28 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
 void DatabaseSKUTransaction::OnGetRecord(GetSKUTransactionCallback callback,
                                          mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run(
         base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }
 
-  if (response->result->get_records().empty()) {
+  if (response->records.empty()) {
     std::move(callback).Run(
         base::unexpected(GetSKUTransactionError::kTransactionNotFound));
     return;
   }
 
-  if (response->result->get_records().size() > 1) {
-    engine_->Log(FROM_HERE) << "Record size is not correct: "
-                            << response->result->get_records().size();
+  if (response->records.size() > 1) {
+    engine_->Log(FROM_HERE)
+        << "Record size is not correct: " << response->records.size();
     std::move(callback).Run(
         base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }
 
-  auto* record = response->result->get_records()[0].get();
+  auto* record = response->records[0].get();
 
   auto info = mojom::SKUTransaction::New();
   info->transaction_id = GetStringColumn(record, 0);

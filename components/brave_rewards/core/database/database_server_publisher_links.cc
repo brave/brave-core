@@ -39,7 +39,7 @@ void DatabaseServerPublisherLinks::InsertOrUpdate(
     }
 
     auto command = mojom::DBCommand::New();
-    command->type = mojom::DBCommand::Type::RUN;
+    command->type = mojom::DBCommand::Type::kRun;
     command->command = base::StringPrintf(
         "INSERT OR REPLACE INTO %s (publisher_key, provider, link) "
         "VALUES (?, ?, ?)",
@@ -62,7 +62,7 @@ void DatabaseServerPublisherLinks::DeleteRecords(
   }
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command =
       base::StringPrintf("DELETE FROM %s WHERE publisher_key IN (%s)",
                          kTableName, publisher_key_list.c_str());
@@ -84,13 +84,13 @@ void DatabaseServerPublisherLinks::GetRecord(
       "SELECT provider, link FROM %s WHERE publisher_key=?", kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString};
 
   transaction->commands.push_back(std::move(command));
 
@@ -104,14 +104,14 @@ void DatabaseServerPublisherLinks::OnGetRecord(
     ServerPublisherLinksCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run({});
     return;
   }
 
   std::map<std::string, std::string> links;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto* record_pointer = record.get();
     const auto pair = std::make_pair(GetStringColumn(record_pointer, 0),
                                      GetStringColumn(record_pointer, 1));

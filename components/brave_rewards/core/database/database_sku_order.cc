@@ -42,7 +42,7 @@ void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, order->order_id);
@@ -76,7 +76,7 @@ void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
       "UPDATE %s SET status = ? WHERE order_id = ?", kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(status));
@@ -105,18 +105,18 @@ void DatabaseSKUOrder::GetRecord(const std::string& order_id,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, order_id);
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt64};
 
   transaction->commands.push_back(std::move(command));
 
@@ -129,20 +129,20 @@ void DatabaseSKUOrder::GetRecord(const std::string& order_id,
 void DatabaseSKUOrder::OnGetRecord(GetSKUOrderCallback callback,
                                    mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run({});
     return;
   }
 
-  if (response->result->get_records().size() != 1) {
-    engine_->Log(FROM_HERE) << "Record size is not correct: "
-                            << response->result->get_records().size();
+  if (response->records.size() != 1) {
+    engine_->Log(FROM_HERE)
+        << "Record size is not correct: " << response->records.size();
     std::move(callback).Run({});
     return;
   }
 
-  auto* record = response->result->get_records()[0].get();
+  auto* record = response->records[0].get();
   auto info = mojom::SKUOrder::New();
   info->order_id = GetStringColumn(record, 0);
   info->total_amount = GetDoubleColumn(record, 1);
@@ -188,18 +188,18 @@ void DatabaseSKUOrder::GetRecordByContributionId(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, contribution_id);
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kDouble,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt64};
 
   transaction->commands.push_back(std::move(command));
 
@@ -226,7 +226,7 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
       "UPDATE %s SET contribution_id = ? WHERE order_id = ?", kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, contribution_id);

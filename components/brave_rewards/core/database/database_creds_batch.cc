@@ -41,7 +41,7 @@ void DatabaseCredsBatch::InsertOrUpdate(mojom::CredsBatchPtr creds,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, creds->creds_id);
@@ -75,21 +75,21 @@ void DatabaseCredsBatch::GetRecordByTrigger(
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
   BindString(command.get(), 0, trigger_id);
   BindInt(command.get(), 1, static_cast<int>(trigger_type));
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt};
 
   transaction->commands.push_back(std::move(command));
 
@@ -103,20 +103,20 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
     GetCredsBatchCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run(nullptr);
     return;
   }
 
-  if (response->result->get_records().size() != 1) {
-    engine_->Log(FROM_HERE) << "Record size is not correct: "
-                            << response->result->get_records().size();
+  if (response->records.size() != 1) {
+    engine_->Log(FROM_HERE)
+        << "Record size is not correct: " << response->records.size();
     std::move(callback).Run(nullptr);
     return;
   }
 
-  auto* record = response->result->get_records()[0].get();
+  auto* record = response->records[0].get();
 
   auto info = mojom::CredsBatch::New();
   info->creds_id = GetStringColumn(record, 0);
@@ -148,7 +148,7 @@ void DatabaseCredsBatch::SaveSignedCreds(mojom::CredsBatchPtr creds,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindString(command.get(), 0, creds->signed_creds);
@@ -174,18 +174,18 @@ void DatabaseCredsBatch::GetAllRecords(GetCredsBatchListCallback callback) {
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt};
 
   transaction->commands.push_back(std::move(command));
 
@@ -198,7 +198,7 @@ void DatabaseCredsBatch::GetAllRecords(GetCredsBatchListCallback callback) {
 void DatabaseCredsBatch::OnGetRecords(GetCredsBatchListCallback callback,
                                       mojom::DBCommandResponsePtr response) {
   if (!response ||
-      response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != mojom::DBCommandResponse::Status::kSuccess) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
     std::move(callback).Run({});
     return;
@@ -206,7 +206,7 @@ void DatabaseCredsBatch::OnGetRecords(GetCredsBatchListCallback callback,
 
   std::vector<mojom::CredsBatchPtr> list;
   mojom::CredsBatchPtr info;
-  for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->records) {
     auto* record_pointer = record.get();
     info = mojom::CredsBatch::New();
 
@@ -242,7 +242,7 @@ void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
       kTableName);
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(status));
@@ -274,7 +274,7 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
       kTableName, GenerateStringInCase(trigger_ids).c_str());
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::RUN;
+  command->type = mojom::DBCommand::Type::kRun;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(status));
@@ -299,18 +299,18 @@ void DatabaseCredsBatch::GetRecordsByTriggers(
       kTableName, GenerateStringInCase(trigger_ids).c_str());
 
   auto command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::READ;
+  command->type = mojom::DBCommand::Type::kRead;
   command->command = query;
 
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
-                              mojom::DBCommand::RecordBindingType::INT_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kString,
+                              mojom::DBCommand::RecordBindingType::kInt};
 
   transaction->commands.push_back(std::move(command));
 
