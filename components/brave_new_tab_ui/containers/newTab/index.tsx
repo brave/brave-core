@@ -34,7 +34,7 @@ import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import Settings, { TabType as SettingsTabType } from './settings'
 
 import { BraveNewsContextProvider } from '../../components/default/braveNews/customize/Context'
-import BraveNewsHint from '../../components/default/braveNews/hint'
+// import BraveNewsHint from '../../components/default/braveNews/hint'
 import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
 import GridWidget from './gridWidget'
 
@@ -690,7 +690,7 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.Footer>
             {newTabData.showToday &&
               <Page.GridItemNavigationBraveNews>
-                <BraveNewsHint />
+                {/* <BraveNewsHint /> */} {/*Commented out to remove the Scroll for Brave News Tile*/}
               </Page.GridItemNavigationBraveNews>
             }
           </Page.Page>

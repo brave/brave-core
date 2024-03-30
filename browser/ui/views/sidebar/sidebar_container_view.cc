@@ -135,7 +135,9 @@ void SidebarContainerView::Init() {
 
   AddChildViews();
   UpdateToolbarButtonVisibility();
-  SetSidebarShowOption(GetSidebarService(browser_)->GetSidebarShowOption());
+  //setting default state to never
+  SetSidebarShowOption(ShowSidebarOption::kShowNever);
+  /*SetSidebarShowOption(GetSidebarService(browser_)->GetSidebarShowOption());*/
 }
 
 void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
