@@ -12,17 +12,17 @@ cargo_crate("lib") {
   # Only for usage from third-party crates. Add the crate to
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/group-0.13.1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/group/v0_13/crate/src/cofactor.rs",
-    "//brave/third_party/rust/group/v0_13/crate/src/lib.rs",
-    "//brave/third_party/rust/group/v0_13/crate/src/prime.rs",
-    "//brave/third_party/rust/group/v0_13/crate/src/tests/mod.rs",
-    "//brave/third_party/rust/group/v0_13/crate/src/wnaf.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/group-0.13.1/src/cofactor.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/group-0.13.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/group-0.13.1/src/prime.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/group-0.13.1/src/tests/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/group-0.13.1/src/wnaf.rs",
   ]
   inputs = [
-    "//brave/third_party/rust/group/v0_13/crate/CHANGELOG.md",
-    "//brave/third_party/rust/group/v0_13/crate/README.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/group-0.13.1/CHANGELOG.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/group-0.13.1/README.md",
   ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
