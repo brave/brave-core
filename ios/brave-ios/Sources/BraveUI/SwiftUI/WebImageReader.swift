@@ -1,10 +1,10 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import SDWebImage
+import SwiftUI
 
 public protocol WebImageDownloaderType: AnyObject {
   func downloadImage(url: URL) async -> UIImage?
@@ -35,7 +35,7 @@ extension SDWebImageManager: WebImageDownloaderType {
       operation?.cancel()
     }
   }
-  
+
   public func imageFromData(data: Data) async -> UIImage? {
     SDImageCodersManager.shared.decodedImage(with: data)
   }
@@ -43,9 +43,9 @@ extension SDWebImageManager: WebImageDownloaderType {
 
 public struct WebImageReader<Content: View>: View {
   var url: URL
-  
+
   @Environment(\.webImageDownloader) private var imageDownloader: WebImageDownloaderType
-  
+
   @State private var image: UIImage?
 
   private var content: (_ image: UIImage?) -> Content
@@ -62,8 +62,9 @@ public struct WebImageReader<Content: View>: View {
     content(image)
       .task {
         if url.absoluteString.hasPrefix("data:image/"),
-           let dataString = url.absoluteString.separatedBy(",").last,
-           let data = Data(base64Encoded: dataString, options: .ignoreUnknownCharacters) {
+          let dataString = url.absoluteString.separatedBy(",").last,
+          let data = Data(base64Encoded: dataString, options: .ignoreUnknownCharacters)
+        {
           image = await imageDownloader.imageFromData(data: data)
         } else {
           image = await imageDownloader.downloadImage(url: url)

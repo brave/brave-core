@@ -1,12 +1,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
+import Data
 import Foundation
 import SDWebImage
-import Data
 import Shared
-import BraveShared
 import os.log
 
 final public class WebImageCache: ImageCacheProtocol {
@@ -40,7 +40,9 @@ final public class WebImageCache: ImageCacheProtocol {
 
   @discardableResult
   public func load(
-    from url: URL, options: ImageCacheOptions = [], progress: ImageCacheProgress = nil,
+    from url: URL,
+    options: ImageCacheOptions = [],
+    progress: ImageCacheProgress = nil,
     completion: ImageCacheCompletion = nil
   ) -> SDWebImageOperation? {
     let progressBlock: SDWebImageDownloaderProgressBlock = { receivedSize, expectedSize, url in
@@ -60,7 +62,12 @@ final public class WebImageCache: ImageCacheProtocol {
 
     webImageOptions.append(.scaleDownLargeImages)
 
-    let imageOperation = webImageManager.loadImage(with: url, options: SDWebImageOptions(webImageOptions), context: webImageContext, progress: progressBlock) { image, data, error, webImageCacheType, _, imageURL in
+    let imageOperation = webImageManager.loadImage(
+      with: url,
+      options: SDWebImageOptions(webImageOptions),
+      context: webImageContext,
+      progress: progressBlock
+    ) { image, data, error, webImageCacheType, _, imageURL in
       let key = self.webImageManager.cacheKey(for: url)
       if let image = image, !self.isPrivate {
         self.webImageManager.imageCache.store(image, imageData: data, forKey: key, cacheType: .all)
@@ -80,11 +87,16 @@ final public class WebImageCache: ImageCacheProtocol {
 
   public func getCachedImage(for url: URL, completion: @escaping (UIImage?) -> Void) {
     let key = self.webImageManager.cacheKey(for: url)
-    webImageManager.imageCache.queryImage(forKey: key, options: [.fromCacheOnly, .queryMemoryData], context: nil, cacheType: .all) { image, _, _ in
+    webImageManager.imageCache.queryImage(
+      forKey: key,
+      options: [.fromCacheOnly, .queryMemoryData],
+      context: nil,
+      cacheType: .all
+    ) { image, _, _ in
       completion(image)
     }
   }
-  
+
   public func isCached(_ url: URL) -> Bool {
     return webImageManager.cacheKey(for: url) != nil
   }

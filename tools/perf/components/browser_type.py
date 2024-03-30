@@ -110,6 +110,10 @@ class BrowserType:
       self.extra_benchmark_args.append('--compatibility-mode=no-field-trials')
 
   @property
+  def is_brave(self) -> bool:
+    return False
+
+  @property
   def extra_browser_args(self) -> List[str]:
     return self._extra_browser_args
 
@@ -175,6 +179,10 @@ class BraveBrowserTypeImpl(BrowserType):
     super().__init__('brave', 'Brave Browser', channel, [], [], False,
                      field_trials_mode)
 
+  @property
+  def is_brave(self) -> bool:
+    return True
+
   def _GetWinInstallPath(self) -> str:
     app_name = 'Brave-Browser'
     if self.channel is not None:
@@ -201,8 +209,7 @@ class BraveBrowserTypeImpl(BrowserType):
     if target_os == 'android':
       if url is None:
         url = _GetBraveDownloadUrl(tag, 'Bravearm64Universal.apk')
-      apk_filename = os.path.join(out_dir, os.pardir,
-                                  f'brave-{version.to_string()}.apk')
+      apk_filename = os.path.join(out_dir, f'brave-{version.to_string()}.apk')
       DownloadFile(url, apk_filename)
       return apk_filename
 

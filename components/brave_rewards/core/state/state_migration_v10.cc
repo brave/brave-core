@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 
 namespace brave_rewards::internal {
@@ -19,8 +19,7 @@ using endpoints::RequestFor;
 
 namespace state {
 
-StateMigrationV10::StateMigrationV10(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+StateMigrationV10::StateMigrationV10(RewardsEngine& engine) : engine_(engine) {}
 
 StateMigrationV10::~StateMigrationV10() = default;
 

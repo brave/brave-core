@@ -10,14 +10,13 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV6::StateMigrationV6(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+StateMigrationV6::StateMigrationV6(RewardsEngine& engine) : engine_(engine) {}
 
 StateMigrationV6::~StateMigrationV6() = default;
 

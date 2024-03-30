@@ -11,10 +11,10 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/engine_test_observer.h"
-#include "brave/components/brave_shields/browser/test_filters_provider.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/test/engine_test_observer.h"
+#include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/debounce/core/common/pref_names.h"
@@ -176,10 +176,10 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
   }
 
   void InitAdBlockForDebounce() {
-    auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
-        "||blocked.com^", "[]");
-    g_brave_browser_process->ad_block_service()->UseSourceProvidersForTest(
-        source_provider.get(), source_provider.get());
+    auto source_provider =
+        std::make_unique<brave_shields::TestFiltersProvider>("||blocked.com^");
+    g_brave_browser_process->ad_block_service()->UseSourceProviderForTest(
+        source_provider.get());
     source_providers_.push_back(std::move(source_provider));
     auto* engine =
         g_brave_browser_process->ad_block_service()->default_engine_.get();

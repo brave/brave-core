@@ -23,6 +23,7 @@ import Stats from './stats'
 // Helpers
 import { getLocale } from '$web-common/locale'
 import VisibilityTimer from '$web-common/visibilityTimer'
+import { loadTimeData } from '$web-common/loadTimeData'
 import isReadableOnBackground from '../../helpers/colorUtil'
 
 // Types
@@ -46,6 +47,7 @@ import * as style from './style'
 import { defaultState } from '../../storage/new_tab_storage'
 
 const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
+const SearchWidget = React.lazy(() => import('../../components/search/SearchPlaceholder'))
 
 interface Props {
   newTabData: NewTab.State
@@ -519,6 +521,10 @@ class NewTabPage extends React.Component<Props, State> {
       chrome.braveRewards.dismissSelfCustodyInvite()
     }
 
+    const onTosUpdateAccepted = () => {
+      chrome.braveRewards.acceptTermsOfServiceUpdate()
+    }
+
     return (
       <Rewards
         {...rewardsState}
@@ -538,6 +544,7 @@ class NewTabPage extends React.Component<Props, State> {
         onDismissNotification={this.dismissNotification}
         customMenuItems={customMenuItems}
         onSelfCustodyInviteDismissed={onSelfCustodyInviteDismissed}
+        onTermsOfServiceUpdateAccepted={onTosUpdateAccepted}
       />
     )
   }
@@ -697,6 +704,10 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.Footer>
             {newTabData.showToday &&
               <Page.GridItemNavigationBraveNews>
+                {loadTimeData.getBoolean('featureFlagSearchWidget')
+                  && <React.Suspense fallback={null}>
+                    <SearchWidget />
+                  </React.Suspense>}
                 {defaultState.featureFlagBraveNewsFeedV2Enabled
                   ? <React.Suspense fallback={null}>
                     <BraveNewsPeek/>
@@ -730,14 +741,11 @@ class NewTabPage extends React.Component<Props, State> {
         />
         }
         <Settings
-          actions={actions}
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
           featureCustomBackgroundEnabled={newTabData.featureCustomBackgroundEnabled}
           onClose={this.closeSettings}
           setActiveTab={this.state.activeSettingsTab || undefined}
-          onDisplayTodaySection={this.props.actions.today.ensureSettingsData}
-          onClearTodayPrefs={this.props.actions.today.resetTodayPrefsToDefault}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowTopSites={this.toggleShowTopSites}
           setMostVisitedSettings={this.setMostVisitedSettings}
@@ -758,7 +766,6 @@ class NewTabPage extends React.Component<Props, State> {
           braveTalkSupported={newTabData.braveTalkSupported}
           toggleShowBraveTalk={this.toggleShowBraveTalk}
           showBraveTalk={newTabData.showBraveTalk}
-          todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}
           newTabData={this.props.newTabData}

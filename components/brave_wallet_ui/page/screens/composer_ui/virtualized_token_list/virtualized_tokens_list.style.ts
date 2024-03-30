@@ -11,6 +11,13 @@ import {
   layoutSmallWidth //
 } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
+export const listItemInitialHeight = 72
+
+export const AutoSizerStyle: React.CSSProperties = {
+  width: '100%',
+  height: '100%'
+}
+
 export const ListItemWrapper = styled(Row)`
   padding: 0px 40px;
   @media screen and (max-width: ${layoutSmallWidth}px) {

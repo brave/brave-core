@@ -11,7 +11,7 @@ import { createStore, combineReducers } from 'redux'
 import { createWalletReducer } from '../../slices/wallet.slice'
 
 // types
-import { BraveWallet, TxSimulationOptInStatus } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
@@ -61,6 +61,12 @@ import {
 } from '../../../stories/mock-data/mock-coin-market-data'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 import { WalletApiDataOverrides } from '../../../constants/testing_types'
+import {
+  mockAddChainRequest,
+  mockDecryptRequest,
+  mockGetEncryptionPublicKeyRequest,
+  mockSwitchChainRequest
+} from '../../../stories/mock-data/mock-eth-requests'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(
@@ -126,7 +132,8 @@ export class MockedWalletApiProxy {
 
   svmSimulationResponse: BraveWallet.SolanaSimulationResponse | null = null
 
-  txSimulationOptInStatus: TxSimulationOptInStatus = 'allowed'
+  txSimulationOptInStatus: BraveWallet.BlowfishOptInStatus =
+    BraveWallet.BlowfishOptInStatus.kAllowed
 
   /**
    * balance = [accountAddress][chainId]
@@ -205,6 +212,19 @@ export class MockedWalletApiProxy {
 
   // name service lookups
   requireOffchainConsent: number = BraveWallet.ResolveMethod.kAsk
+
+  private pendingAddChainRequests = [mockAddChainRequest]
+  private pendingSwitchChainRequests: BraveWallet.SwitchChainRequest[] = [
+    mockSwitchChainRequest
+  ]
+
+  private pendingDecryptRequests: BraveWallet.DecryptRequest[] = [
+    mockDecryptRequest
+  ]
+
+  private pendingEncryptionPublicKeyRequests = [
+    mockGetEncryptionPublicKeyRequest
+  ]
 
   constructor(overrides?: WalletApiDataOverrides | undefined) {
     this.applyOverrides(overrides)
@@ -398,6 +418,27 @@ export class MockedWalletApiProxy {
         getAssetIdKey(t) === tokenId ? { ...t, visible } : t
       )
       return { success: true }
+    },
+    getPendingDecryptRequests: async () => {
+      return {
+        requests: this.pendingDecryptRequests
+      }
+    },
+    notifyDecryptRequestProcessed: (requestId, approved) => {
+      this.pendingDecryptRequests = this.pendingDecryptRequests.filter(
+        (req) => req.requestId !== requestId
+      )
+    },
+    getPendingGetEncryptionPublicKeyRequests: async () => {
+      return {
+        requests: this.pendingEncryptionPublicKeyRequests
+      }
+    },
+    notifyGetPublicKeyRequestProcessed: (requestId, approved) => {
+      this.pendingEncryptionPublicKeyRequests =
+        this.pendingEncryptionPublicKeyRequests.filter(
+          (req) => req.requestId !== requestId
+        )
     }
   }
 
@@ -433,7 +474,8 @@ export class MockedWalletApiProxy {
               sellAmount: fromAmount || '',
               price: '1'
             },
-            jupiterTransaction: undefined
+            jupiterTransaction: undefined,
+            lifiTransaction: undefined
           },
           errorString: ''
         }
@@ -443,12 +485,21 @@ export class MockedWalletApiProxy {
         params: BraveWallet.SwapQuoteParams
       ): Promise<{
         response: BraveWallet.SwapQuoteUnion | null
+        fees: BraveWallet.SwapFees | null
         error: BraveWallet.SwapErrorUnion | null
         errorString: string
       }> => ({
         response: {
           zeroExQuote: this.mockZeroExQuote,
-          jupiterQuote: undefined
+          jupiterQuote: undefined,
+          lifiQuote: undefined
+        },
+        fees: {
+          feeParam: '0.00875',
+          feePct: '0.875',
+          discountPct: '0',
+          effectiveFeePct: '0.875',
+          discountCode: BraveWallet.SwapDiscountCode.kNone
         },
         error: null,
         errorString: ''
@@ -600,6 +651,36 @@ export class MockedWalletApiProxy {
 
       this.chainsForCoins[coin] = foundNetwork
       return { success: true }
+    },
+    getPendingAddChainRequests: async () => {
+      return {
+        requests: this.pendingAddChainRequests
+      }
+    },
+    addEthereumChainRequestCompleted: (chainId, approved) => {
+      this.pendingAddChainRequests = this.pendingAddChainRequests.filter(
+        (req) => req.networkInfo.chainId !== chainId
+      )
+    },
+    getPendingSwitchChainRequests: async () => {
+      return {
+        requests: this.pendingSwitchChainRequests
+      }
+    },
+    notifySwitchChainRequestProcessed: (requestId, approved) => {
+      const request = this.pendingSwitchChainRequests.find(
+        (req) => req.requestId === requestId
+      )
+
+      if (request) {
+        this.pendingSwitchChainRequests =
+          this.pendingSwitchChainRequests.filter(
+            (req) => req.requestId !== requestId
+          )
+        this.braveWalletService.setNetworkForSelectedAccountOnActiveOrigin?.(
+          request.chainId
+        )
+      }
     },
     // Native asset balances
     getBalance: async (address: string, coin: number, chainId: string) => {
@@ -895,7 +976,8 @@ export class MockedWalletApiProxy {
           isWalletCreated: true,
           isWalletLocked: false,
           isNftPinningFeatureEnabled: false,
-          isAnkrBalancesFeatureEnabled: false
+          isAnkrBalancesFeatureEnabled: false,
+          isTransactionSimulationsFeatureEnabled: false
         }
       }
     }

@@ -1,10 +1,10 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import PackagePlugin
 import Foundation
+import PackagePlugin
 
 @main
 struct LoggerPlugin: BuildToolPlugin {
@@ -14,19 +14,22 @@ struct LoggerPlugin: BuildToolPlugin {
       Diagnostics.error("Attempted to use `LoggerPlugin` on an unsupported module target")
       return []
     }
-    
-    try FileManager.default.createDirectory(atPath: outputDirectory.string, withIntermediateDirectories: true)
+
+    try FileManager.default.createDirectory(
+      atPath: outputDirectory.string,
+      withIntermediateDirectories: true
+    )
     let source = """
-    import Foundation
-    import os.log
-    
-    extension Logger {
-      static var module: Logger {
-        .init(subsystem: "\\(Bundle.main.bundleIdentifier ?? "com.brave.ios")", category: "\(target.moduleName)")
+      import Foundation
+      import os.log
+
+      extension Logger {
+        static var module: Logger {
+          .init(subsystem: "\\(Bundle.main.bundleIdentifier ?? "com.brave.ios")", category: "\(target.moduleName)")
+        }
       }
-    }
-    """
-    
+      """
+
     let filePath = outputDirectory.appending("logger.swift")
     if !FileManager.default.fileExists(atPath: filePath.string) {
       try source.write(

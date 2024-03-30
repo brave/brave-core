@@ -49,6 +49,7 @@ interface Props {
   onInputChange: (value: string) => void
   inputValue: string
   inputDisabled: boolean
+  buttonDisabled?: boolean
   hasInputError: boolean
   token: BraveWallet.BlockchainToken | undefined
   network: BraveWallet.NetworkInfo | undefined
@@ -64,6 +65,7 @@ export const ToAsset = (props: Props) => {
     onInputChange: onChange,
     hasInputError,
     inputDisabled,
+    buttonDisabled,
     inputValue,
     network,
     selectedSendOption,
@@ -163,6 +165,7 @@ export const ToAsset = (props: Props) => {
               token={token}
               selectedSendOption={selectedSendOption}
               placeholderText={getLocale('braveWalletChooseAsset')}
+              disabled={buttonDisabled}
             />
           </Row>
           <AmountInput

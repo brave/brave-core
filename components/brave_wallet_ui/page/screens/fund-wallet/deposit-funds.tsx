@@ -54,7 +54,8 @@ import {
   HorizontalSpace,
   LoadingIcon,
   Row,
-  VerticalSpace
+  VerticalSpace,
+  LeoSquaredButton
 } from '../../../components/shared/style'
 import {
   Description,
@@ -87,7 +88,6 @@ import SelectAccountItem from '../../../components/shared/select-account-item/in
 import SelectAccount from '../../../components/shared/select-account/index'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
 import { CopiedToClipboardConfirmation } from '../../../components/desktop/copied-to-clipboard-confirmation/copied-to-clipboard-confirmation'
-import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account/index'
 import SelectHeader from '../../../components/buy-send-swap/select-header/index'
 import {
@@ -381,16 +381,19 @@ function AssetSelection() {
 
   const renderToken = React.useCallback<
     RenderTokenFunc<BraveWallet.BlockchainToken>
-  >(({ item: asset }) => {
-    const assetId = getAssetIdKey(asset)
-    return (
-      <BuyAssetOptionItem
-        key={assetId}
-        token={asset}
-        onClick={() => history.push(makeDepositFundsRoute(assetId))}
-      />
-    )
-  }, [])
+  >(
+    ({ item: asset }) => {
+      const assetId = getAssetIdKey(asset)
+      return (
+        <BuyAssetOptionItem
+          key={assetId}
+          token={asset}
+          onClick={() => history.push(makeDepositFundsRoute(assetId))}
+        />
+      )
+    },
+    [history]
+  )
 
   // effects
   React.useEffect(() => {
@@ -455,16 +458,14 @@ function AssetSelection() {
       </SelectAssetWrapper>
 
       <NextButtonRow>
-        <NavButton
-          buttonType={'primary'}
-          text={
-            selectedAsset
-              ? getLocale('braveWalletButtonContinue')
-              : getLocale('braveWalletBuySelectAsset')
-          }
-          onSubmit={nextStep}
-          disabled={!isNextStepEnabled}
-        />
+        <LeoSquaredButton
+          onClick={nextStep}
+          isDisabled={!isNextStepEnabled}
+        >
+          {selectedAsset
+            ? getLocale('braveWalletButtonContinue')
+            : getLocale('braveWalletBuySelectAsset')}
+        </LeoSquaredButton>
       </NextButtonRow>
     </>
   )
@@ -501,7 +502,9 @@ function DepositAccount() {
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
   >(accountsForSelectedAssetCoinType[0])
-  const receiveAddress = useReceiveAddressQuery(selectedAccount?.accountId)
+  const { receiveAddress, isFetchingAddress } = useReceiveAddressQuery(
+    selectedAccount?.accountId
+  )
   const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
     receiveAddress || skipToken
   )
@@ -596,7 +599,7 @@ function DepositAccount() {
   React.useEffect(() => {
     // force selected account option state
     setSelectedAccount(accountsForSelectedAssetCoinType[0])
-  }, [accountsForSelectedAssetCoinType[0]])
+  }, [accountsForSelectedAssetCoinType])
 
   // render
   if (!selectedDepositAssetId) {
@@ -670,7 +673,7 @@ function DepositAccount() {
 
       <Row>
         <QRCodeContainer>
-          {isLoadingQrCode || !receiveAddress ? (
+          {isLoadingQrCode || !receiveAddress || isFetchingAddress ? (
             <LoadingRing />
           ) : (
             <QRCodeImage src={qrCode} />
@@ -681,7 +684,7 @@ function DepositAccount() {
       <Column gap={'4px'}>
         <AddressTextLabel>Address:</AddressTextLabel>
 
-        {receiveAddress ? (
+        {receiveAddress && !isFetchingAddress ? (
           <>
             <Row gap={'12px'}>
               <AddressText>{receiveAddress}</AddressText>

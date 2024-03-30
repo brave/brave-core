@@ -19,7 +19,7 @@ import {
   useLastPlayerState,
   usePlaylistEditMode
 } from '../reducers/states'
-import { useHistorySynchronization } from '../playerEventSink'
+import { HistoryContext } from './historyContext'
 
 const AppContainer = styled.div<{ isPlaylistPlayerPage: boolean }>`
   --header-height: ${({ isPlaylistPlayerPage }) =>
@@ -37,45 +37,45 @@ const StyledHeader = styled(Header)`
   height: var(--header-height);
 `
 
-export default function App() {
-  useHistorySynchronization()
-
+export default function App () {
   const lastPlayerState = useLastPlayerState()
   const editMode = usePlaylistEditMode()
 
   return (
-    <Route
-      path={'/playlist/:playlistId'}
-      children={({ match }) => {
-        const playlistId = match?.params.playlistId
-        return (
-          <AppContainer isPlaylistPlayerPage={!!playlistId}>
-            <StickyArea>
-              <StyledHeader playlistId={playlistId} />
-              <AlertCenter />
-              <VideoFrame
-                visible={
-                  !!lastPlayerState?.currentItem &&
-                  editMode !== PlaylistEditMode.BULK_EDIT
-                }
-                isMiniPlayer={lastPlayerState?.currentList?.id !== playlistId}
-              />
-            </StickyArea>
-            <section>
-              <Switch>
-                <Route
-                  path='/playlist/:playlistId'
-                  component={PlaylistFolder}
+    <HistoryContext>
+      <Route
+        path={'/playlist/:playlistId'}
+        children={({ match }) => {
+          const playlistId = match?.params.playlistId
+          return (
+            <AppContainer isPlaylistPlayerPage={!!playlistId}>
+              <StickyArea>
+                <StyledHeader playlistId={playlistId} />
+                <AlertCenter />
+                <VideoFrame
+                  visible={
+                    !!lastPlayerState?.currentItem &&
+                    editMode !== PlaylistEditMode.BULK_EDIT
+                  }
+                  isMiniPlayer={lastPlayerState?.currentList?.id !== playlistId}
                 />
-                <Route
-                  path='/'
-                  component={PlaylistsCatalog}
-                ></Route>
-              </Switch>
-            </section>
-          </AppContainer>
-        )
-      }}
-    />
+              </StickyArea>
+              <section>
+                <Switch>
+                  <Route
+                    path='/playlist/:playlistId'
+                    component={PlaylistFolder}
+                  />
+                  <Route
+                    path='/'
+                    component={PlaylistsCatalog}
+                  ></Route>
+                </Switch>
+              </section>
+            </AppContainer>
+          )
+        }}
+      />
+    </HistoryContext>
   )
 }

@@ -128,18 +128,8 @@ BraveRewardsIsSupportedFunction::~BraveRewardsIsSupportedFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = ::brave_rewards::IsSupportedForProfile(
-      profile, ::brave_rewards::IsSupportedOptions::kSkipRegionCheck);
+  bool is_supported = ::brave_rewards::IsSupportedForProfile(profile);
   return RespondNow(WithArguments(is_supported));
-}
-
-BraveRewardsIsUnsupportedRegionFunction::
-    ~BraveRewardsIsUnsupportedRegionFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsIsUnsupportedRegionFunction::Run() {
-  bool is_unsupported_region = ::brave_rewards::IsUnsupportedRegion();
-  return RespondNow(WithArguments(is_unsupported_region));
 }
 
 BraveRewardsRecordNTPPanelTriggerFunction::
@@ -180,20 +170,6 @@ ExtensionFunction::ResponseAction BraveRewardsShowRewardsSetupFunction::Run() {
   if (auto* coordinator = GetPanelCoordinator(this)) {
     coordinator->ShowRewardsSetup();
   }
-  return RespondNow(NoArguments());
-}
-
-BraveRewardsShowGrantCaptchaFunction::~BraveRewardsShowGrantCaptchaFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsShowGrantCaptchaFunction::Run() {
-  auto params = brave_rewards::ShowGrantCaptcha::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  if (auto* coordinator = GetPanelCoordinator(this)) {
-    coordinator->ShowGrantCaptcha(params->grant_id);
-  }
-
   return RespondNow(NoArguments());
 }
 
@@ -656,8 +632,6 @@ void BraveRewardsGetUserTypeFunction::Callback(
   auto map_user_type =
       [](::brave_rewards::mojom::UserType user_type) -> std::string {
     switch (user_type) {
-      case ::brave_rewards::mojom::UserType::kLegacyUnconnected:
-        return "legacy-unconnected";
       case ::brave_rewards::mojom::UserType::kConnected:
         return "connected";
       case ::brave_rewards::mojom::UserType::kUnconnected:
@@ -714,117 +688,9 @@ void BraveRewardsGetBalanceReportFunction::OnBalanceReport(
   base::Value::Dict data;
   data.Set("ads", report ? report->earning_from_ads : 0.0);
   data.Set("contribute", report ? report->auto_contribute : 0.0);
-  data.Set("grant", report ? report->grants : 0.0);
   data.Set("tips", report ? report->one_time_donation : 0.0);
   data.Set("monthly", report ? report->recurring_donation : 0.0);
   Respond(WithArguments(std::move(data)));
-}
-
-BraveRewardsFetchPromotionsFunction::~BraveRewardsFetchPromotionsFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsFetchPromotionsFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not available"));
-  }
-
-  rewards_service->FetchPromotions(base::BindOnce(
-      &BraveRewardsFetchPromotionsFunction::OnPromotionsFetched, this));
-
-  return RespondLater();
-}
-
-void BraveRewardsFetchPromotionsFunction::OnPromotionsFetched(
-    std::vector<::brave_rewards::mojom::PromotionPtr> promotions) {
-  base::Value::List list;
-  for (auto& item : promotions) {
-    base::Value::Dict dict;
-    dict.Set("promotionId", item->id);
-    dict.Set("type", static_cast<int>(item->type));
-    dict.Set("status", static_cast<int>(item->status));
-    dict.Set("createdAt", static_cast<double>(item->created_at));
-    dict.Set("claimableUntil", static_cast<double>(item->claimable_until));
-    dict.Set("expiresAt", static_cast<double>(item->expires_at));
-    dict.Set("amount", item->approximate_value);
-    list.Append(std::move(dict));
-  }
-  Respond(WithArguments(std::move(list)));
-}
-
-BraveRewardsClaimPromotionFunction::~BraveRewardsClaimPromotionFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsClaimPromotionFunction::Run() {
-  std::optional<brave_rewards::ClaimPromotion::Params> params =
-      brave_rewards::ClaimPromotion::Params::Create(args());
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not available"));
-  }
-
-  rewards_service->ClaimPromotion(
-      params->promotion_id,
-      base::BindOnce(&BraveRewardsClaimPromotionFunction::OnClaimPromotion,
-                     this, params->promotion_id));
-  return RespondLater();
-}
-
-void BraveRewardsClaimPromotionFunction::OnClaimPromotion(
-    const std::string& promotion_id,
-    const ::brave_rewards::mojom::Result result,
-    const std::string& captcha_image,
-    const std::string& hint,
-    const std::string& captcha_id) {
-  base::Value::Dict data;
-  data.Set("result", static_cast<int>(result));
-  data.Set("promotionId", promotion_id);
-  data.Set("captchaImage", captcha_image);
-  data.Set("captchaId", captcha_id);
-  data.Set("hint", hint);
-  Respond(WithArguments(std::move(data)));
-}
-
-BraveRewardsAttestPromotionFunction::~BraveRewardsAttestPromotionFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsAttestPromotionFunction::Run() {
-  std::optional<brave_rewards::AttestPromotion::Params> params =
-      brave_rewards::AttestPromotion::Params::Create(args());
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not available"));
-  }
-
-  rewards_service->AttestPromotion(
-      params->promotion_id, params->solution,
-      base::BindOnce(&BraveRewardsAttestPromotionFunction::OnAttestPromotion,
-                     this, params->promotion_id));
-  return RespondLater();
-}
-
-void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
-    const std::string& promotion_id,
-    const ::brave_rewards::mojom::Result result,
-    ::brave_rewards::mojom::PromotionPtr promotion) {
-  base::Value::Dict data;
-  data.Set("promotionId", promotion_id);
-
-  if (!promotion) {
-    Respond(WithArguments(static_cast<int>(result), std::move(data)));
-    return;
-  }
-
-  data.Set("expiresAt", static_cast<double>(promotion->expires_at));
-  data.Set("amount", static_cast<double>(promotion->approximate_value));
-  data.Set("type", static_cast<int>(promotion->type));
-  Respond(WithArguments(static_cast<int>(result), std::move(data)));
 }
 
 BraveRewardsSetAutoContributeEnabledFunction::
@@ -1165,6 +1031,36 @@ BraveRewardsDismissSelfCustodyInviteFunction::Run() {
         brave_rewards::OnSelfCustodyInviteDismissed::kEventName,
         base::Value::List()));
   }
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsIsTermsOfServiceUpdateRequiredFunction::
+    ~BraveRewardsIsTermsOfServiceUpdateRequiredFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsIsTermsOfServiceUpdateRequiredFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  return RespondNow(
+      WithArguments(rewards_service->IsTermsOfServiceUpdateRequired()));
+}
+
+BraveRewardsAcceptTermsOfServiceUpdateFunction::
+    ~BraveRewardsAcceptTermsOfServiceUpdateFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsAcceptTermsOfServiceUpdateFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  rewards_service->AcceptTermsOfServiceUpdate();
   return RespondNow(NoArguments());
 }
 

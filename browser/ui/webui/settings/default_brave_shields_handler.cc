@@ -9,7 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

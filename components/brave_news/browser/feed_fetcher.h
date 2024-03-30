@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_FETCHER_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_FETCHER_H_
 
-#include <memory>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -15,10 +14,9 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/channels_controller.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace brave_news {
 
@@ -31,15 +29,17 @@ class FeedFetcher {
  public:
   FeedFetcher(
       PublishersController& publishers_controller,
-      ChannelsController& channels_controller,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~FeedFetcher();
   FeedFetcher(const FeedFetcher&) = delete;
   FeedFetcher& operator=(const FeedFetcher&) = delete;
 
-  void FetchFeed(FetchFeedCallback callback);
+  void FetchFeed(const BraveNewsSubscriptions& subscriptions,
+                 FetchFeedCallback callback);
 
-  void IsUpdateAvailable(ETags etags, UpdateAvailableCallback callback);
+  void IsUpdateAvailable(const BraveNewsSubscriptions& subscriptions,
+                         ETags etags,
+                         UpdateAvailableCallback callback);
 
  private:
   struct FeedSourceResult {
@@ -60,7 +60,8 @@ class FeedFetcher {
       std::vector<FeedSourceResult> results);
 
   // Steps for |FetchFeed|
-  void OnFetchFeedFetchedPublishers(FetchFeedCallback callback,
+  void OnFetchFeedFetchedPublishers(const BraveNewsSubscriptions& subscriptions,
+                                    FetchFeedCallback callback,
                                     Publishers publishers);
   void OnFetchFeedFetchedFeed(std::string locale,
                               FetchFeedSourceCallback callback,
@@ -70,9 +71,11 @@ class FeedFetcher {
                              std::vector<FeedSourceResult> results);
 
   // Steps for |IsUpdateAvailable|
-  void OnIsUpdateAvailableFetchedPublishers(ETags etags,
-                                            UpdateAvailableCallback callback,
-                                            Publishers publishers);
+  void OnIsUpdateAvailableFetchedPublishers(
+      const BraveNewsSubscriptions& subscriptions,
+      ETags etags,
+      UpdateAvailableCallback callback,
+      Publishers publishers);
   void OnIsUpdateAvailableFetchedHead(
       std::string current_etag,
       base::RepeatingCallback<void(bool)> has_update_callback,
@@ -81,7 +84,6 @@ class FeedFetcher {
                                        std::vector<bool> updates);
 
   const raw_ref<PublishersController> publishers_controller_;
-  const raw_ref<ChannelsController> channels_controller_;
 
   api_request_helper::APIRequestHelper api_request_helper_;
   DirectFeedFetcher direct_feed_fetcher_;

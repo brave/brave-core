@@ -53,6 +53,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private boolean mIsBottomToolbarVisible;
     private ObservableSupplier<Integer> mConstraintsProxy;
     private ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
+    private ToolbarControlContainer mControlContainer;
+    private boolean mInTabSwitcherMode;
 
     public BraveTopToolbarCoordinator(
             ToolbarControlContainer controlContainer,
@@ -128,6 +130,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
         mConstraintsProxy = constraintsSupplier;
         mTabModelSelectorSupplier = tabModelSelectorSupplier;
+        mControlContainer = controlContainer;
 
         if (isToolbarPhone()) {
             if (!isStartSurfaceEnabled) {
@@ -172,17 +175,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     }
 
     @Override
-    public void setTabSwitcherMode(boolean inTabSwitcherMode) {
-        super.setTabSwitcherMode(inTabSwitcherMode);
-
-        if (mBraveToolbarLayout instanceof ToolbarPhone) {
-            mBraveToolbarLayout.setVisibility(
-                    ((ToolbarPhone) mBraveToolbarLayout).isInTabSwitcherMode() ? View.INVISIBLE
-                                                                               : View.VISIBLE);
-        }
-    }
-
-    @Override
     public void initializeWithNative(
             Runnable layoutUpdater,
             OnClickListener tabSwitcherClickHandler,
@@ -211,6 +203,23 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
         if (mBraveToolbarLayout instanceof BraveToolbarLayoutImpl) {
             ((BraveToolbarLayoutImpl) mBraveToolbarLayout)
                     .setTabModelSelector(mTabModelSelectorSupplier.get());
+        }
+    }
+
+    @Override
+    public void setTabSwitcherMode(boolean inTabSwitcherMode) {
+        mInTabSwitcherMode = inTabSwitcherMode;
+
+        super.setTabSwitcherMode(inTabSwitcherMode);
+    }
+
+    @Override
+    public void onTabSwitcherTransitionFinished() {
+        super.onTabSwitcherTransitionFinished();
+
+        if (isToolbarPhone() && mInTabSwitcherMode) {
+            // Make sure we have proper state at the end of the tab switcher transition.
+            mControlContainer.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -24,7 +24,6 @@ class BraveDownloadItemView : public DownloadItemView {
   ~BraveDownloadItemView() override;
 
   // views::View:
-  void Layout() override;
   gfx::Size CalculatePreferredSize() const override;
 
   // download::DownloadItem::Observer:

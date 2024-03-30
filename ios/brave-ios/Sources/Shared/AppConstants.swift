@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 
@@ -9,19 +9,6 @@ public enum AppBuildChannel: String {
   case beta
   case nightly
   case debug
-
-  /// Whether this release channel is used/seen by external users (app store or testers)
-  public var isPublic: Bool {
-    // Using switch to force a return definition for each enum value
-    // Simply using `return [.release, .beta].includes(self)` could lead to easily missing a definition
-    //  if enum is ever expanded
-    switch self {
-    case .release, .beta:
-      return true
-    case .nightly, .debug:
-      return false
-    }
-  }
 
   public var serverChannelParam: String {
     switch self {
@@ -36,7 +23,7 @@ public enum AppBuildChannel: String {
       return "invalid"
     }
   }
-  
+
   public var dauServerChannelParam: String {
     switch self {
     case .release:
@@ -51,14 +38,14 @@ public enum AppBuildChannel: String {
 
 public struct KVOConstants: Equatable {
   public var keyPath: String
-  
+
   public init(keyPath: String) {
     self.keyPath = keyPath
   }
-  
+
   public static let loading: Self = .init(keyPath: "loading")
   public static let estimatedProgress: Self = .init(keyPath: "estimatedProgress")
-  public static let URL: Self = .init(keyPath: "URL")
+  public static let url: Self = .init(keyPath: "URL")
   public static let title: Self = .init(keyPath: "title")
   public static let canGoBack: Self = .init(keyPath: "canGoBack")
   public static let canGoForward: Self = .init(keyPath: "canGoForward")
@@ -71,9 +58,18 @@ public struct AppConstants {
   public static let isRunningTest = NSClassFromString("XCTestCase") != nil
 
   /// Build Channel.
-  public static var buildChannel: AppBuildChannel = .release
+  public fileprivate(set) static var buildChannel: AppBuildChannel = .debug
 
-  public static let webServerPort: Int = {
-    AppConstants.buildChannel.isPublic ? 6571 : Int.random(in: 6572..<6600)
-  }()
+  /// Whether or not this is an official build
+  public fileprivate(set) static var isOfficialBuild: Bool = false
+}
+
+@_spi(AppLaunch)
+extension AppConstants {
+  public static func setBuildChannel(_ buildChannel: AppBuildChannel) {
+    self.buildChannel = buildChannel
+  }
+  public static func setOfficialBuild(_ isOfficialBuild: Bool) {
+    self.isOfficialBuild = isOfficialBuild
+  }
 }

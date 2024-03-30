@@ -13,11 +13,12 @@ import { ExternalWalletProvider } from '../../../../brave_rewards/resources/shar
 
 export const AccountBox = styled.div<{
   orb?: string
-  size?: 'big' | 'medium' | 'small' | 'tiny'
+  size?: 'huge' | 'big' | 'medium' | 'small' | 'tiny'
   marginRight?: number
   round?: boolean
 }>`
-  --box-big: 48px;
+  --box-huge: 48px;
+  --box-big: 40px;
   --box-medium: 32px;
   --box-small: 24px;
   --box-tiny: 20px;
@@ -43,9 +44,10 @@ export const ExternalAccountBox = styled(AccountBox)<{
 `
 
 export const ExternalAccountIcon = styled.img<{
-  size?: 'big' | 'medium' | 'small' | 'tiny'
+  size?: 'huge' | 'big' | 'medium' | 'small' | 'tiny'
 }>`
-  --icon-big: 32px;
+  --icon-huge: 32px;
+  --icon-big: 28px;
   --icon-medium: 24px;
   --icon-small: 18px;
   --icon-tiny: 14px;

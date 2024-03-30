@@ -42,6 +42,10 @@ inline constexpr char kBraveChatP3ALastUsageTime[] =
     "brave.ai_chat.p3a_last_usage_time";
 inline constexpr char kBraveChatP3AUsedSecondDay[] =
     "brave.ai_chat.p3a_used_second_day";
+inline constexpr char kBraveChatP3AContextMenuUsages[] =
+    "brave.ai_chat.p3a_context_menu_usages";
+inline constexpr char kBraveChatP3ALastContextMenuUsageTime[] =
+    "brave.ai_chat.p3a_last_context_menu_time";
 #if BUILDFLAG(IS_ANDROID)
 inline constexpr char kBraveChatSubscriptionActiveAndroid[] =
     "brave.ai_chat.subscription_active_android";

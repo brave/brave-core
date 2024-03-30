@@ -12,13 +12,13 @@
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/connect_uphold_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/uphold_transfer.h"
 
 namespace brave_rewards::internal::uphold {
 
-Uphold::Uphold(RewardsEngineImpl& engine)
+Uphold::Uphold(RewardsEngine& engine)
     : WalletProvider(engine), server_(engine) {
   connect_wallet_ = std::make_unique<ConnectUpholdWallet>(engine);
   transfer_ = std::make_unique<UpholdTransfer>(engine);

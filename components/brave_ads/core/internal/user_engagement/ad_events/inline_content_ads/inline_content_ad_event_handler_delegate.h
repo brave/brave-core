@@ -28,7 +28,7 @@ class InlineContentAdEventHandlerDelegate {
   virtual void OnDidFireInlineContentAdClickedEvent(
       const InlineContentAdInfo& ad) {}
 
-  // Invoked when the inline content `ad` event fails for `placement_id`,
+  // Invoked when the inline content ad event fails for `placement_id`,
   // `creative_instance_id` and `event_type`.
   virtual void OnFailedToFireInlineContentAdEvent(
       const std::string& placement_id,

@@ -54,7 +54,8 @@ class ApiRequestHelperUnitTest : public testing::Test {
         shared_url_loader_factory_);
     loader_wrapper_handler_ =
         std::make_unique<APIRequestHelper::URLLoaderHandler>(
-            api_request_helper_.get());
+            api_request_helper_.get(),
+            base::SequencedTaskRunner::GetCurrentDefault());
   }
   ~ApiRequestHelperUnitTest() override = default;
 
@@ -100,7 +101,7 @@ class ApiRequestHelperUnitTest : public testing::Test {
         "POST", network_url, "", "application/json", callback.Get(), {},
         APIRequestOptions(false, enable_cache, -1u, std::nullopt),
         std::move(conversion_callback));
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 
   void SendMessageSSEJSON(std::string_view string_piece,
@@ -117,9 +118,9 @@ class ApiRequestHelperUnitTest : public testing::Test {
 
  protected:
   std::unique_ptr<APIRequestHelper> api_request_helper_;
+  base::test::TaskEnvironment task_environment_;
 
  private:
-  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
@@ -137,10 +138,8 @@ TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
   SendRequest("{", base::Value());
   SendRequest("0", base::Value());
   SendRequest("a", base::Value());
-  // Android's sanitizer doesn't support trailing commas.
-#if !BUILDFLAG(IS_ANDROID)
-  SendRequest("{\"a\":1,}", ParseJson("{\"a\":1}"));
-#endif
+  // The sanitizer doesn't support trailing commas by default.
+  SendRequest("{\"a\":1,}", base::Value());
 }
 
 TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
@@ -205,13 +204,12 @@ TEST_F(ApiRequestHelperUnitTest, URLLoaderHandlerParsing) {
   base::RunLoop run_loop;
   SendMessageSSE("data: [DONE]",
                  base::BindRepeating(
-                     [](base::RunLoop* run_loop,
-                        data_decoder::DataDecoder::ValueOrError result) {
+                     [](base::RunLoop* run_loop, ValueOrError result) {
                        EXPECT_EQ("data: [DONE]", result->GetString());
                        run_loop->Quit();
                      },
                      &run_loop));
-  run_loop.RunUntilIdle();
+  run_loop.Run();
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
@@ -219,8 +217,7 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   SendMessageSSEJSON(
       "data: {\"completion\": \" Hello there!\", \"stop\": null}",
       base::BindRepeating(
-          [](base::RunLoop* run_loop,
-             data_decoder::DataDecoder::ValueOrError result) {
+          [](base::RunLoop* run_loop, ValueOrError result) {
             const std::string* completion =
                 result->GetDict().FindString("completion");
             EXPECT_EQ(" Hello there!", *completion);
@@ -233,8 +230,7 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   SendMessageSSEJSON(
       "data: {\"completion\": \" Hello there! How are you?\", \"stop\": null}",
       base::BindRepeating(
-          [](base::RunLoop* run_loop,
-             data_decoder::DataDecoder::ValueOrError result) {
+          [](base::RunLoop* run_loop, ValueOrError result) {
             const std::string* completion =
                 result->GetDict().FindString("completion");
             EXPECT_EQ(" Hello there! How are you?", *completion);
@@ -244,28 +240,16 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   run_loop2.Run();
 
   // This test verifies that the callback is not called when the response is
-  // "[DONE]". We use a run loop to wait for the callback to be called, and
-  // we expect it to never be called.
-  base::RunLoop run_loop3;
-  SendMessageSSEJSON("data: [DONE]",
-                     base::BindRepeating(
-                         [](base::RunLoop* run_loop,
-                            data_decoder::DataDecoder::ValueOrError result) {
-                           run_loop->Quit();
-                         },
-                         &run_loop3));
-  run_loop3.RunUntilIdle();
+  // "[DONE]".
+  SendMessageSSEJSON(
+      "data: [DONE]",
+      base::BindRepeating([](ValueOrError result) { ADD_FAILURE(); }));
+  task_environment_.RunUntilIdle();
 
   // Testing with no JSON and an empty string
-  base::RunLoop run_loop4;
-  SendMessageSSEJSON("",
-                     base::BindRepeating(
-                         [](base::RunLoop* run_loop,
-                            data_decoder::DataDecoder::ValueOrError result) {
-                           run_loop->Quit();
-                         },
-                         &run_loop4));
-  run_loop4.RunUntilIdle();
+  SendMessageSSEJSON(
+      "", base::BindRepeating([](ValueOrError result) { ADD_FAILURE(); }));
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace api_request_helper

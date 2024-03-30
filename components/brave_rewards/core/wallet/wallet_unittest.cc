@@ -12,7 +12,7 @@
 #include "base/test/bind.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"

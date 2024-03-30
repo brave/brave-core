@@ -1,11 +1,11 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import SwiftUI
-import BraveCore
 
 extension BraveWallet.AccountInfo: Identifiable {
   public var id: String {
@@ -15,15 +15,15 @@ extension BraveWallet.AccountInfo: Identifiable {
     // no hardware support on iOS
     accountId.kind != .imported
   }
-  
+
   public var isImported: Bool {
     accountId.kind == .imported
   }
-  
+
   public var coin: BraveWallet.CoinType {
     accountId.coin
   }
-  
+
   public var keyringId: BraveWallet.KeyringId {
     accountId.keyringId
   }
@@ -50,11 +50,11 @@ extension BraveWallet.NetworkInfo: Identifiable {
   public var id: String {
     "\(chainId)\(coin.rawValue)"
   }
-  
+
   var shortChainName: String {
     chainName.split(separator: " ").first?.capitalized ?? chainName
   }
-  
+
   var isKnownTestnet: Bool {
     WalletConstants.supportedTestNetworkChainIds.contains(chainId)
   }
@@ -78,7 +78,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
       coin: coin
     )
   }
-  
+
   public var nativeTokenLogoName: String? {
     if let logoBySymbol = assetIconNameBySymbol(symbol) {
       return logoBySymbol
@@ -88,31 +88,43 @@ extension BraveWallet.NetworkInfo: Identifiable {
       return iconUrls.first
     }
   }
-  
+
   public var nativeTokenLogoImage: UIImage? {
     guard let logo = nativeTokenLogoName else { return nil }
     return UIImage(named: logo, in: .module, with: nil)
   }
-  
+
   public var networkLogoName: String? {
     return assetIconNameByChainId(chainId) ?? iconUrls.first
   }
-  
+
   public var networkLogoImage: UIImage? {
     guard let logo = networkLogoName else { return nil }
     return UIImage(named: logo, in: .module, with: nil)
   }
-  
+
   private func assetIconNameByChainId(_ chainId: String) -> String? {
-    if chainId.caseInsensitiveCompare(BraveWallet.MainnetChainId) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.GoerliChainId) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.SepoliaChainId) == .orderedSame {
+    if chainId.caseInsensitiveCompare(BraveWallet.MainnetChainId) == .orderedSame
+      || chainId.caseInsensitiveCompare(BraveWallet.GoerliChainId) == .orderedSame
+      || chainId.caseInsensitiveCompare(BraveWallet.SepoliaChainId) == .orderedSame
+    {
       return AssetImageName.ethereum.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.SolanaMainnet) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.SolanaDevnet) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.SolanaTestnet) == .orderedSame {
+    } else if chainId.caseInsensitiveCompare(BraveWallet.SolanaMainnet) == .orderedSame
+      || chainId.caseInsensitiveCompare(BraveWallet.SolanaDevnet) == .orderedSame
+      || chainId.caseInsensitiveCompare(BraveWallet.SolanaTestnet) == .orderedSame
+    {
       return AssetImageName.solana.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.FilecoinMainnet) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.FilecoinTestnet) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.FilecoinEthereumMainnetChainId) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.FilecoinEthereumTestnetChainId) == .orderedSame {
+    } else if chainId.caseInsensitiveCompare(BraveWallet.FilecoinMainnet) == .orderedSame
+      || chainId.caseInsensitiveCompare(BraveWallet.FilecoinTestnet) == .orderedSame
+      || chainId.caseInsensitiveCompare(BraveWallet.FilecoinEthereumMainnetChainId) == .orderedSame
+      || chainId.caseInsensitiveCompare(BraveWallet.FilecoinEthereumTestnetChainId) == .orderedSame
+    {
       return AssetImageName.filecoin.rawValue
     } else if chainId.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
       return AssetImageName.polygon.rawValue
-    } else if chainId.caseInsensitiveCompare(BraveWallet.BinanceSmartChainMainnetChainId) == .orderedSame {
+    } else if chainId.caseInsensitiveCompare(BraveWallet.BinanceSmartChainMainnetChainId)
+      == .orderedSame
+    {
       return AssetImageName.binance.rawValue
     } else if chainId.caseInsensitiveCompare(BraveWallet.CeloMainnetChainId) == .orderedSame {
       return AssetImageName.celo.rawValue
@@ -128,7 +140,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
       return nil
     }
   }
-  
+
   private func assetIconNameBySymbol(_ symbol: String) -> String? {
     if symbol.caseInsensitiveCompare("ETH") == .orderedSame {
       return AssetImageName.ethereum.rawValue
@@ -143,7 +155,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
 
 extension BraveWallet.BlockchainToken: Identifiable {
   public var id: String {
-    contractAddress.lowercased() + chainId + symbol + tokenId
+    contractAddress + chainId + symbol + tokenId
   }
 
   public func contractAddress(in network: BraveWallet.NetworkInfo) -> String {
@@ -167,7 +179,7 @@ extension BraveWallet.BlockchainToken: Identifiable {
 extension BraveWallet {
   /// The address that is expected when you are swapping ETH via SwapService APIs
   public static let ethSwapAddress: String = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-  
+
   /// The address that is expected when you are swapping SOL via Jupiter Swap APIs
   public static let solSwapAddress: String = "So11111111111111111111111111111111111111112"
 }
@@ -188,7 +200,7 @@ extension BraveWallet.OnRampCurrency: Identifiable {
   public var id: String {
     currencyCode
   }
-  
+
   var symbol: String {
     CurrencyCode.symbol(for: currencyCode)
   }

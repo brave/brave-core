@@ -53,11 +53,14 @@ public class BraveLeoUtils {
                 });
     }
 
-    public static void openLeoQuery(WebContents webContents, String query) {
+    public static void openLeoQuery(
+            WebContents webContents, String query, boolean openLeoChatWindow) {
         try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.openBraveLeo();
             BraveLeoUtilsJni.get().openLeoQuery(webContents, query);
+            if (openLeoChatWindow) {
+                BraveActivity activity = BraveActivity.getBraveActivity();
+                activity.openBraveLeo();
+            }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "get BraveActivity exception", e);
         }

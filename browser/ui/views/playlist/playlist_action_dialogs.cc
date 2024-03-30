@@ -9,11 +9,12 @@
 #include <utility>
 
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/playlist/playlist_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/playlist/thumbnail_view.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/border.h"
@@ -49,8 +50,8 @@ bool CanMoveItem(const playlist::mojom::PlaylistItemPtr& item) {
 // This class takes PlaylistItems and show tiled thumbnail and the count of
 // them. When only one item is passed, shows the title of it instead.
 class TiledItemsView : public views::BoxLayoutView {
+  METADATA_HEADER(TiledItemsView, views::BoxLayoutView)
  public:
-  METADATA_HEADER(TiledItemsView);
 
   static constexpr gfx::Size kThumbnailSize = gfx::Size(64, 48);
   static constexpr int kCornerRadius = 4;
@@ -116,7 +117,7 @@ class TiledItemsView : public views::BoxLayoutView {
   raw_ptr<ThumbnailProvider> thumbnail_provider_;
 };
 
-BEGIN_METADATA(TiledItemsView, views::BoxLayoutView)
+BEGIN_METADATA(TiledItemsView)
 END_METADATA
 
 // A textfield that limits the maximum length of the input text.
@@ -154,8 +155,8 @@ class BoundedTextfield : public views::Textfield {
     Textfield::InsertChar(event);
   }
 
-  void Layout() override {
-    views::Textfield::Layout();
+  void Layout(PassKey) override {
+    LayoutSuperclass<views::Textfield>(this);
 
     length_label_->SetBoundsRect(GetContentsBounds());
   }
@@ -223,6 +224,15 @@ void ShowPlaylistSettings(content::WebContents* contents) {
   ShowSingletonTab(browser_view->browser(), GURL("brave://settings/playlist"));
 }
 
+void ClosePanel(content::WebContents* contents) {
+  auto* browser_view = FindBrowserViewFromSidebarContents(contents);
+  CHECK(browser_view);
+  if (SidePanelUI* ui =
+          SidePanelUI::GetSidePanelUIForBrowser(browser_view->browser())) {
+    ui->Close();
+  }
+}
+
 }  // namespace playlist
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -235,7 +245,7 @@ PlaylistActionDialog::PlaylistActionDialog() {
 
 PlaylistActionDialog::~PlaylistActionDialog() = default;
 
-BEGIN_METADATA(PlaylistActionDialog, views::DialogDelegateView)
+BEGIN_METADATA(PlaylistActionDialog)
 END_METADATA
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -365,7 +375,7 @@ void PlaylistNewPlaylistDialog::CreatePlaylist() {
   }
 }
 
-BEGIN_METADATA(PlaylistNewPlaylistDialog, PlaylistActionDialog)
+BEGIN_METADATA(PlaylistNewPlaylistDialog)
 END_METADATA
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -662,7 +672,7 @@ void PlaylistMoveDialog::OnCreatePlaylistAndMove() {
   }
 }
 
-BEGIN_METADATA(PlaylistMoveDialog, PlaylistActionDialog)
+BEGIN_METADATA(PlaylistMoveDialog)
 END_METADATA
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -709,5 +719,5 @@ void PlaylistRemovePlaylistConfirmDialog::RemovePlaylist() {
   service_->RemovePlaylist(playlist_id_);
 }
 
-BEGIN_METADATA(PlaylistRemovePlaylistConfirmDialog, PlaylistActionDialog)
+BEGIN_METADATA(PlaylistRemovePlaylistConfirmDialog)
 END_METADATA

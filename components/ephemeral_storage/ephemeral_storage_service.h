@@ -97,8 +97,10 @@ class EphemeralStorageService : public KeyedService {
   bool IsDefaultCookieSetting(const GURL& url) const;
 
   void CleanupTLDEphemeralAreaByTimer(const TLDEphemeralAreaKey& key,
+                                      bool cleanup_tld_ephemeral_area,
                                       bool cleanup_first_party_storage_area);
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key,
+                               bool cleanup_tld_ephemeral_area,
                                bool cleanup_first_party_storage_area);
 
   // If a website was closed, but not yet cleaned-up because of storage lifetime

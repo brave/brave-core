@@ -35,9 +35,6 @@
     <color name="brave_wallet_dn_error_text_bg_color">#F0F2FF</color>
     <color name="brave_wallet_dn_highlight_bg_color">#FFFFFF</color>
     <color name="brave_wallet_onboarding_card_view_background">#FFFFFF</color>
-    <color name="brave_wallet_day_night_bull">#FF2AC194</color>
-    <color name="brave_wallet_day_night_bear">#FFEE6374</color>
-    <color name="brave_wallet_day_night_chip_background_color">#EDEEF1</color>
     <color name="brave_wallet_dn_button_color">#3F39E8</color>
     <color name="brave_wallet_checkbox_color">@color/brave_wallet_dn_button_color</color>
     <!-- Brave wallet 2.0 colors -->
@@ -228,19 +225,14 @@
     <color name="wallet_secondary_layout_text_color">#495057</color>
     <color name="recovery_phrase_text_color">#F8F9FA</color>
     <color name="wallet_toolbar_bg_color">#F6F7F8</color>
-    <color name="chip_outline_selected_color">#F8F9FA</color>
     <color name="tab_color">#FF4081</color>
     <color name="wallet_bg">#FFFFFF</color>
     <color name="wallet_edittext_outline_color">#AEB1C2</color>
     <color name="wallet_warning_box_bg_color">#FFFFFF</color>
     <color name="recovery_phrase_warning_text_color">#868E96</color>
     <color name="brave_action_color">#4C54D2</color>
-    <color name="wallet_positive_trend_color">#51CF66</color>
-    <color name="wallet_negative_trend_color">#CF5159</color>
-    <color name="wallet_asset_graph_color">#12A378</color>
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_error_text_color">#FF4B6A</color>
-    <color name="wallet_divider_line">#66A1ABBA</color>
 
     <color name="wallet_sign_msg_err_bg_color">#FFF1F1</color>
 
@@ -325,7 +317,6 @@
     <color name="notification_badge_icon_color">#C2A5D1</color>
     <color name="notification_download_icon_color">#F092C5</color>
     <color name="notification_rationale_dialog_card_bg_color">@android:color/white</color>
-    <color name="you_are_not_earning_rewards_bg_color">#F8F9FA</color>
 
     <color name="tipping_details_description_text_color">#6B7084</color>
     <color name="link_icon_color">#6B7084</color>

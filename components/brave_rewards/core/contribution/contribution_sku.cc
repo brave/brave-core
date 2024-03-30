@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
@@ -42,7 +42,7 @@ void GetCredentialTrigger(mojom::SKUOrderPtr order,
 
 namespace contribution {
 
-ContributionSKU::ContributionSKU(RewardsEngineImpl& engine)
+ContributionSKU::ContributionSKU(RewardsEngine& engine)
     : engine_(engine), credentials_(engine), sku_(engine) {}
 
 ContributionSKU::~ContributionSKU() = default;
@@ -157,84 +157,6 @@ void ContributionSKU::CredsStepSaved(const std::string& contribution_id,
 
   engine_->contribution()->StartUnblinded({mojom::CredsBatchType::SKU},
                                           contribution_id, std::move(callback));
-}
-
-void ContributionSKU::Merchant(const mojom::SKUTransaction& transaction,
-                               ResultCallback callback) {
-  engine_->database()->GetSpendableUnblindedTokensByBatchTypes(
-      {mojom::CredsBatchType::PROMOTION},
-      base::BindOnce(&ContributionSKU::GetUnblindedTokens,
-                     weak_factory_.GetWeakPtr(), transaction,
-                     std::move(callback)));
-}
-
-void ContributionSKU::GetUnblindedTokens(
-    const mojom::SKUTransaction& transaction,
-    ResultCallback callback,
-    std::vector<mojom::UnblindedTokenPtr> list) {
-  if (list.empty()) {
-    engine_->LogError(FROM_HERE) << "List is empty";
-    std::move(callback).Run(mojom::Result::FAILED);
-    return;
-  }
-
-  std::vector<mojom::UnblindedToken> token_list;
-  double current_amount = 0.0;
-  for (auto& item : list) {
-    if (current_amount >= transaction.amount) {
-      break;
-    }
-
-    current_amount += item->value;
-    token_list.push_back(*item);
-  }
-
-  if (current_amount < transaction.amount) {
-    engine_->LogError(FROM_HERE) << "Not enough funds";
-    std::move(callback).Run(mojom::Result::NOT_ENOUGH_FUNDS);
-    return;
-  }
-
-  credential::CredentialsRedeem redeem;
-  redeem.type = mojom::RewardsType::PAYMENT;
-  redeem.processor = mojom::ContributionProcessor::BRAVE_TOKENS;
-  redeem.token_list = token_list;
-  redeem.order_id = transaction.order_id;
-
-  engine_->database()->GetSKUOrder(
-      transaction.order_id,
-      base::BindOnce(&ContributionSKU::GetOrderMerchant,
-                     weak_factory_.GetWeakPtr(), redeem, std::move(callback)));
-}
-
-void ContributionSKU::GetOrderMerchant(
-    const credential::CredentialsRedeem& redeem,
-    ResultCallback callback,
-    mojom::SKUOrderPtr order) {
-  if (!order) {
-    engine_->LogError(FROM_HERE) << "Order was not found";
-    std::move(callback).Run(mojom::Result::FAILED);
-    return;
-  }
-
-  credential::CredentialsRedeem new_redeem = redeem;
-  new_redeem.publisher_key = order->location;
-
-  credentials_.RedeemTokens(
-      new_redeem,
-      base::BindOnce(&ContributionSKU::OnRedeemTokens,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void ContributionSKU::OnRedeemTokens(ResultCallback callback,
-                                     mojom::Result result) {
-  if (result != mojom::Result::OK) {
-    engine_->LogError(FROM_HERE) << "Problem redeeming tokens";
-    std::move(callback).Run(result);
-    return;
-  }
-
-  std::move(callback).Run(result);
 }
 
 void ContributionSKU::Retry(mojom::ContributionInfoPtr contribution,

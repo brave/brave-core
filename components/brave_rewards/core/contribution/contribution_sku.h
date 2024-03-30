@@ -17,20 +17,18 @@
 #include "brave/components/brave_rewards/core/sku/sku.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace contribution {
 
 class ContributionSKU {
  public:
-  explicit ContributionSKU(RewardsEngineImpl& engine);
+  explicit ContributionSKU(RewardsEngine& engine);
   ~ContributionSKU();
 
   void AutoContribution(const std::string& contribution_id,
                         const std::string& wallet_type,
                         ResultCallback callback);
-
-  void Merchant(const mojom::SKUTransaction&, ResultCallback callback);
 
   void Retry(mojom::ContributionInfoPtr contribution, ResultCallback callback);
 
@@ -63,16 +61,6 @@ class ContributionSKU {
                       ResultCallback callback,
                       mojom::Result result);
 
-  void GetUnblindedTokens(const mojom::SKUTransaction&,
-                          ResultCallback,
-                          std::vector<mojom::UnblindedTokenPtr> list);
-
-  void GetOrderMerchant(const credential::CredentialsRedeem&,
-                        ResultCallback,
-                        mojom::SKUOrderPtr);
-
-  void OnRedeemTokens(ResultCallback, mojom::Result);
-
   void OnOrder(mojom::ContributionInfoPtr contribution,
                ResultCallback callback,
                mojom::SKUOrderPtr order);
@@ -81,7 +69,7 @@ class ContributionSKU {
                       mojom::SKUOrderPtr order,
                       ResultCallback callback);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   credential::CredentialsSKU credentials_;
   sku::SKU sku_;
   base::WeakPtrFactory<ContributionSKU> weak_factory_{this};

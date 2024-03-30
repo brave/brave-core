@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_builder.h"
 
-#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -20,13 +20,9 @@ class BraveAdsConversionQueueItemBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsConversionQueueItemBuilderTest, BuildConversionQueueItem) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
-
-  const ConversionInfo conversion =
-      BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                   /*created_at=*/Now()),
-                      /*verifiable_conversion=*/std::nullopt);
+  const ConversionInfo conversion = test::BuildConversion(
+      AdType::kSearchResultAd, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   ConversionQueueItemInfo expected_conversion_queue_item;
@@ -40,14 +36,11 @@ TEST_F(BraveAdsConversionQueueItemBuilderTest, BuildConversionQueueItem) {
 TEST_F(BraveAdsConversionQueueItemBuilderTest,
        BuildVerifiableConversionQueueItem) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
-
-  const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed,
-                   /*created_at=*/Now()),
+  const ConversionInfo conversion = test::BuildVerifiableConversion(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       VerifiableConversionInfo{kVerifiableConversionId,
-                               kVerifiableConversionAdvertiserPublicKey});
+                               kVerifiableConversionAdvertiserPublicKey},
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   ConversionQueueItemInfo expected_conversion_queue_item;

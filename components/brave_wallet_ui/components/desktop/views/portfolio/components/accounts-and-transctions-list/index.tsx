@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useLocation } from 'react-router-dom'
 
@@ -15,9 +14,6 @@ import {
 import {
   emptyRewardsInfo //
 } from '../../../../../../common/async/base-query-cache'
-
-// Actions
-import { WalletActions } from '../../../../../../common/actions'
 
 // Types
 import {
@@ -30,7 +26,6 @@ import {
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
-import { WalletSelectors } from '../../../../../../common/selectors'
 import { getBalance } from '../../../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
 import { getIsRewardsToken } from '../../../../../../utils/rewards_utils'
@@ -49,11 +44,9 @@ import {
 import {
   SellAssetModal //
 } from '../../../../popup-modals/sell-asset-modal/sell-asset-modal'
+import { LoadingSkeleton } from '../../../../../shared/loading-skeleton/index'
 
 // Hooks
-import {
-  useSafeWalletSelector //
-} from '../../../../../../common/hooks/use-safe-selector'
 import {
   useMultiChainSellAssets //
 } from '../../../../../../common/hooks/use-multi-chain-sell-assets'
@@ -66,6 +59,9 @@ import {
 import {
   TokenBalancesRegistry //
 } from '../../../../../../common/slices/entities/token-balance.entity'
+import {
+  useSyncedLocalStorage //
+} from '../../../../../../common/hooks/use_local_storage'
 
 // Styled Components
 import {
@@ -90,6 +86,7 @@ interface Props {
   selectedAssetTransactions: SerializableTransactionInfo[]
   accounts: BraveWallet.AccountInfo[]
   tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
+  isLoadingBalances: boolean
   spotPriceRegistry: SpotPriceRegistry | undefined
 }
 
@@ -100,18 +97,15 @@ export const AccountsAndTransactionsList = ({
   selectedAssetTransactions,
   accounts,
   tokenBalancesRegistry,
+  isLoadingBalances,
   spotPriceRegistry
 }: Props) => {
   // routing
   const { hash } = useLocation()
 
-  // redux
-  const dispatch = useDispatch()
-
-  // unsafe selectors
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
-  )
+  // local-storage
+  const [hidePortfolioBalances, setHidePortfolioBalances] =
+    useSyncedLocalStorage(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES, false)
 
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
@@ -180,9 +174,11 @@ export const AccountsAndTransactionsList = ({
       })
   }, [
     selectedAsset,
+    isRewardsToken,
     filteredAccountsByCoinType,
-    spotPriceRegistry,
-    tokenBalancesRegistry
+    externalRewardsAccount,
+    tokenBalancesRegistry,
+    spotPriceRegistry
   ])
 
   const nonRejectedTransactions = React.useMemo(() => {
@@ -207,12 +203,94 @@ export const AccountsAndTransactionsList = ({
   }, [selectedAsset, openSellAssetLink])
 
   const onToggleHideBalances = React.useCallback(() => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
-      hidePortfolioBalances ? 'false' : 'true'
+    setHidePortfolioBalances((prev) => !prev)
+  }, [setHidePortfolioBalances])
+
+  if (
+    hash !== WalletRoutes.TransactionsHash &&
+    isLoadingBalances &&
+    accountsList.length === 0
+  ) {
+    return (
+      <>
+        {!isRewardsToken && (
+          <Row padding='24px 0px'>
+            <SegmentedControl
+              navOptions={PortfolioAssetOptions}
+              width={384}
+            />
+          </Row>
+        )}
+        <Row
+          width='100%'
+          justifyContent='space-between'
+          alignItems='center'
+          marginBottom={18}
+          padding='0px 8px'
+        >
+          <Text
+            isBold={true}
+            textColor='text01'
+            textSize='16px'
+          >
+            {getLocale('braveWalletAccounts')}
+          </Text>
+          <div>
+            <LoadingSkeleton
+              width={60}
+              height={22}
+            />
+          </div>
+        </Row>
+        <VerticalDivider />
+        <VerticalSpacer space={8} />
+        <Row
+          padding='8px'
+          justifyContent='space-between'
+        >
+          <Row
+            width='unset'
+            justifyContent='flex-start'
+          >
+            <LoadingSkeleton
+              width={44}
+              height={44}
+              borderRadius={8}
+            />
+            <Column
+              padding='0px 0px 0px 12px'
+              alignItems='flex-start'
+            >
+              <LoadingSkeleton
+                width={80}
+                height={18}
+                borderRadius={8}
+              />
+              <VerticalSpacer space={4} />
+              <LoadingSkeleton
+                width={80}
+                height={16}
+                borderRadius={8}
+              />
+            </Column>
+          </Row>
+          <Column alignItems='flex-end'>
+            <LoadingSkeleton
+              width={80}
+              height={18}
+              borderRadius={8}
+            />
+            <VerticalSpacer space={4} />
+            <LoadingSkeleton
+              width={80}
+              height={16}
+              borderRadius={8}
+            />
+          </Column>
+        </Row>
+      </>
     )
-    dispatch(WalletActions.setHidePortfolioBalances(!hidePortfolioBalances))
-  }, [hidePortfolioBalances])
+  }
 
   return (
     <>

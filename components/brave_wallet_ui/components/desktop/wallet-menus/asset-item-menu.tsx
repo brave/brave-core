@@ -10,7 +10,10 @@ import { useHistory } from 'react-router'
 import { BraveWallet, WalletRoutes } from '../../../constants/types'
 
 // Queries
-import { useGetOnRampAssetsQuery } from '../../../common/slices/api.slice'
+import {
+  useGetOnRampAssetsQuery,
+  useUpdateUserAssetVisibleMutation //
+} from '../../../common/slices/api.slice'
 
 // Hooks
 import {
@@ -23,7 +26,8 @@ import Amount from '../../../utils/amount'
 import {
   makeDepositFundsRoute,
   makeFundWalletRoute,
-  makeSendRoute
+  makeSendRoute,
+  makeSwapRoute
 } from '../../../utils/routes-utils'
 import { getAssetIdKey } from '../../../utils/asset-utils'
 
@@ -48,10 +52,11 @@ interface Props {
   asset: BraveWallet.BlockchainToken
   assetBalance: string
   account?: BraveWallet.AccountInfo
+  onClickEditToken?: () => void
 }
 
 export const AssetItemMenu = (props: Props) => {
-  const { asset, assetBalance, account } = props
+  const { asset, assetBalance, account, onClickEditToken } = props
 
   // routing
   const history = useHistory()
@@ -62,6 +67,7 @@ export const AssetItemMenu = (props: Props) => {
   // Queries
   const { data: { allAssetOptions: allBuyAssetOptions } = {} } =
     useGetOnRampAssetsQuery()
+  const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
 
   // Hooks
   const {
@@ -89,7 +95,7 @@ export const AssetItemMenu = (props: Props) => {
     )
   }, [asset.symbol, allBuyAssetOptions, isAssetsBalanceZero])
 
-  const isSwapSupported = coinSupportsSwap(asset.coin)
+  const isSwapSupported = coinSupportsSwap(asset.coin) && account !== undefined
 
   const isSellSupported = React.useMemo(() => {
     return account !== undefined && checkIsAssetSellSupported(asset)
@@ -98,7 +104,7 @@ export const AssetItemMenu = (props: Props) => {
   // Methods
   const onClickBuy = React.useCallback(() => {
     history.push(makeFundWalletRoute(getAssetIdKey(asset)))
-  }, [asset])
+  }, [asset, history])
 
   const onClickSend = React.useCallback(() => {
     if (account) {
@@ -106,15 +112,17 @@ export const AssetItemMenu = (props: Props) => {
     } else {
       history.push(WalletRoutes.Send)
     }
-  }, [asset.chainId, asset.contractAddress, account?.address])
+  }, [account, history, asset])
 
   const onClickSwap = React.useCallback(() => {
-    history.push(WalletRoutes.Swap)
-  }, [])
+    if (account) {
+      history.push(makeSwapRoute({ fromToken: asset, fromAccount: account }))
+    }
+  }, [account, history, asset])
 
   const onClickDeposit = React.useCallback(() => {
     history.push(makeDepositFundsRoute(getAssetIdKey(asset)))
-  }, [asset])
+  }, [asset, history])
 
   const onClickSell = React.useCallback(() => {
     setSelectedSellAsset(asset)
@@ -126,6 +134,13 @@ export const AssetItemMenu = (props: Props) => {
       sellAsset: selectedSellAsset
     })
   }, [openSellAssetLink, selectedSellAsset])
+
+  const onClickHide = React.useCallback(async () => {
+    await updateUserAssetVisible({
+      token: asset,
+      isVisible: false
+    }).unwrap()
+  }, [updateUserAssetVisible, asset])
 
   return (
     <StyledWrapper yPosition={42}>
@@ -159,6 +174,20 @@ export const AssetItemMenu = (props: Props) => {
           <PopupButtonText>{getLocale('braveWalletSell')}</PopupButtonText>
         </PopupButton>
       )}
+      {onClickEditToken && (
+        <PopupButton onClick={onClickEditToken}>
+          <ButtonIcon name='edit-pencil' />
+          <PopupButtonText>
+            {getLocale('braveWalletAllowSpendEditButton')}
+          </PopupButtonText>
+        </PopupButton>
+      )}
+      <PopupButton onClick={onClickHide}>
+        <ButtonIcon name='eye-off' />
+        <PopupButtonText>
+          {getLocale('braveWalletConfirmHidingToken')}
+        </PopupButtonText>
+      </PopupButton>
       {showSellModal && selectedSellAsset && (
         <SellAssetModal
           selectedAsset={selectedSellAsset}

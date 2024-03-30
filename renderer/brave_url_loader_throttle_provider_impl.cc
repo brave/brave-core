@@ -7,8 +7,19 @@
 
 #include <utility>
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/renderer/page_content_extractor.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
+#include "content/public/renderer/render_frame.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "third_party/blink/public/web/web_local_frame.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer.h"
+#include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#endif  // ENABLE_AI_CHAT
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/renderer/onion_domain_throttle.h"
@@ -78,5 +89,27 @@ BraveURLLoaderThrottleProviderImpl::CreateThrottles(
     throttles.emplace_back(std::move(onion_domain_throttle));
   }
 #endif
+  // AI Chat
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsAIChatEnabled() && local_frame_token.has_value() &&
+      content::RenderThread::IsMainThread()) {
+    content::RenderFrame* render_frame = content::RenderFrame::FromWebFrame(
+        blink::WebLocalFrame::FromFrameToken(local_frame_token.value()));
+    auto* page_content_delegate =
+        ai_chat::PageContentExtractor::Get(render_frame);
+    if (page_content_delegate) {
+      auto ai_chat_resource_sniffer =
+          ai_chat::AIChatResourceSniffer::MaybeCreate(
+              request.url, page_content_delegate->GetWeakPtr());
+      if (ai_chat_resource_sniffer) {
+        auto body_sniffer_throttle =
+            std::make_unique<body_sniffer::BodySnifferThrottle>(
+                base::SequencedTaskRunner::GetCurrentDefault());
+        body_sniffer_throttle->AddHandler(std::move(ai_chat_resource_sniffer));
+        throttles.emplace_back(std::move(body_sniffer_throttle));
+      }
+    }
+  }
+#endif  // ENABLE_AI_CHAT
   return throttles;
 }

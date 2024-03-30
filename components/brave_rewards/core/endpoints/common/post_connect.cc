@@ -12,7 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
@@ -23,7 +23,7 @@ using mojom::ConnectExternalWalletResult;
 
 namespace {
 
-Result ParseGeoCountry(RewardsEngineImpl& engine, const std::string& body) {
+Result ParseGeoCountry(RewardsEngine& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
@@ -40,7 +40,7 @@ Result ParseGeoCountry(RewardsEngineImpl& engine, const std::string& body) {
   return *geo_country;
 }
 
-Result ParseErrorMessage(RewardsEngineImpl& engine, const std::string& body) {
+Result ParseErrorMessage(RewardsEngine& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
@@ -101,7 +101,7 @@ Result ParseErrorMessage(RewardsEngineImpl& engine, const std::string& body) {
 }  // namespace
 
 // static
-Result PostConnect::ProcessResponse(RewardsEngineImpl& engine,
+Result PostConnect::ProcessResponse(RewardsEngine& engine,
                                     const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
@@ -167,7 +167,7 @@ ConnectExternalWalletResult PostConnect::ToConnectExternalWalletResult(
   return ConnectExternalWalletResult::kSuccess;
 }
 
-PostConnect::PostConnect(RewardsEngineImpl& engine) : RequestBuilder(engine) {}
+PostConnect::PostConnect(RewardsEngine& engine) : RequestBuilder(engine) {}
 
 PostConnect::~PostConnect() = default;
 

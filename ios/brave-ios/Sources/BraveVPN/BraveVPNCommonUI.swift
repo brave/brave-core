@@ -1,17 +1,22 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import Foundation
 import Shared
 import UIKit
-import BraveUI
 
 struct BraveVPNCommonUI {
 
   struct UX {
-    static let purpleBackgroundColor = #colorLiteral(red: 0.1529411765, green: 0.08235294118, blue: 0.368627451, alpha: 1)
+    static let purpleBackgroundColor = #colorLiteral(
+      red: 0.0862745098,
+      green: 0.06274509804,
+      blue: 0.3960784314,
+      alpha: 1
+    )
   }
 
   static var navigationBarAppearance: UINavigationBarAppearance {
@@ -25,7 +30,8 @@ struct BraveVPNCommonUI {
 
   struct Views {
     static func poweredByView(
-      textColor: UIColor, fontSize: CGFloat = 13,
+      textColor: UIColor,
+      fontSize: CGFloat = 13,
       imageColor: UIColor
     ) -> UIStackView {
       UIStackView().then { stackView in
@@ -51,13 +57,18 @@ struct BraveVPNCommonUI {
     }
 
     static func checkmarkView(
-      string: String, textColor: UIColor, font: UIFont,
+      string: String,
+      textColor: UIColor,
+      font: UIFont,
       useShieldAsCheckmark: Bool
     ) -> UIStackView {
       UIStackView().then { stackView in
         stackView.alignment = useShieldAsCheckmark ? .center : .top
         stackView.spacing = 4
-        let image = useShieldAsCheckmark ? UIImage(named: "vpn_checkmark", in: .module, compatibleWith: nil)! : UIImage(sharedNamed: "vpn_checkmark_popup")!
+        let image =
+          useShieldAsCheckmark
+          ? UIImage(named: "vpn_checkmark", in: .module, compatibleWith: nil)!
+          : UIImage(sharedNamed: "vpn_checkmark_popup")!
 
         let checkmarkImage = UIImageView(image: image).then {
           $0.contentMode = .scaleAspectFit

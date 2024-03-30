@@ -2,6 +2,8 @@ Name: blake2b_simd
 URL: https://crates.io/crates/blake2b_simd
 Description: a pure Rust BLAKE2b implementation with dynamic SIMD
 Version: 1.0.1
-Security Critical: no
+Security Critical: yes
+Shipped: yes
 License: MIT
+License File:
 Revision: 1ee26395667b94f8973d37d3ff3410ef1a3f4832

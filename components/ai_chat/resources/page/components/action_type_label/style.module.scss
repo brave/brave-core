@@ -1,0 +1,25 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.actionTypeLabel {
+  --leo-icon-size: 14px;
+  --leo-icon-color: var(--leo-color-primary-50);
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 4px;
+  width: fit-content;
+  height: 20px;
+  background: var(--leo-color-primary-20);
+  border-radius: 4px;
+}
+
+.text {
+  font: var(--leo-font-components-label);
+  display: inline-flex;
+  align-items: center;
+  text-transform: uppercase;
+  color: var(--leo-color-primary-50);
+}

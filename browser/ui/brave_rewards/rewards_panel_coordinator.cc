@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 
-#include <string>
 #include <utility>
 
 #include "brave/components/constants/webui_url_constants.h"
@@ -31,11 +30,6 @@ bool RewardsPanelCoordinator::OpenRewardsPanel() {
 bool RewardsPanelCoordinator::ShowRewardsSetup() {
   return OpenWithArgs(
       mojom::RewardsPanelArgs(mojom::RewardsPanelView::kRewardsSetup, ""));
-}
-
-bool RewardsPanelCoordinator::ShowGrantCaptcha(const std::string& grant_id) {
-  return OpenWithArgs(mojom::RewardsPanelArgs(
-      mojom::RewardsPanelView::kGrantCaptcha, grant_id));
 }
 
 bool RewardsPanelCoordinator::ShowAdaptiveCaptcha() {

@@ -5,6 +5,15 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
+import android.graphics.drawable.AnimationDrawable;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
+
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFragment;
 
 /**
@@ -25,6 +34,8 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
         return true;
     }
 
+    @Nullable private AnimationDrawable mAnimationDrawable;
+
     @Override
     public void onResume() {
         super.onResume();
@@ -33,6 +44,39 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
             mOnNextPage.showCloseButton(canBeClosed());
             // Show or hide back icon depending on the fragment configuration.
             mOnNextPage.showBackButton(canNavigateBack());
+        }
+        if (mAnimationDrawable != null) {
+            mAnimationDrawable.start();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mAnimationDrawable != null) {
+            mAnimationDrawable.stop();
+        }
+    }
+
+    protected void setAnimatedBackground(@NonNull final View rootView) {
+        mAnimationDrawable =
+                (AnimationDrawable)
+                        ContextCompat.getDrawable(
+                                requireContext(), R.drawable.onboarding_gradient_animation);
+        if (mAnimationDrawable != null) {
+            rootView.setBackground(mAnimationDrawable);
+            mAnimationDrawable.setEnterFadeDuration(10);
+            mAnimationDrawable.setExitFadeDuration(5000);
+        }
+    }
+
+    protected void enable(@NonNull final AppCompatButton button, final boolean enable) {
+        if (enable) {
+            button.setAlpha(1f);
+            button.setEnabled(true);
+        } else {
+            button.setAlpha(0.5f);
+            button.setEnabled(false);
         }
     }
 }

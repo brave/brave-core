@@ -8,9 +8,11 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
@@ -44,8 +46,11 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     std::vector<uint8_t> nonce;
     std::vector<uint8_t> ephemeral_public_key;
     std::vector<uint8_t> ciphertext;
-    EXPECT_FALSE(ParseEthDecryptData(error_case, &version, &nonce,
-                                     &ephemeral_public_key, &ciphertext));
+    const auto json = base::JSONReader::Read(error_case);
+    if (json) {
+      EXPECT_FALSE(ParseEthDecryptData(*json, &version, &nonce,
+                                       &ephemeral_public_key, &ciphertext));
+    }
   }
 }
 
@@ -588,8 +593,8 @@ TEST(EthResponseHelperUnitTest, ParseEthDecryptData) {
   std::vector<uint8_t> nonce;
   std::vector<uint8_t> ephemeral_public_key;
   std::vector<uint8_t> ciphertext;
-  ASSERT_TRUE(ParseEthDecryptData(json, &version, &nonce, &ephemeral_public_key,
-                                  &ciphertext));
+  ASSERT_TRUE(ParseEthDecryptData(base::test::ParseJson(json), &version, &nonce,
+                                  &ephemeral_public_key, &ciphertext));
   EXPECT_EQ(version, "x25519-xsalsa20-poly1305");
   EXPECT_EQ(base::Base64Encode(nonce), "Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8");
   EXPECT_EQ(base::Base64Encode(ephemeral_public_key),

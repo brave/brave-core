@@ -1,17 +1,18 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import Shared
-import BraveShared
 
 class GenericErrorPageHandler: InterstitialPageHandler {
   func canHandle(error: NSError) -> Bool {
     // Handle CFNetwork Error
     if error.domain == kCFErrorDomainCFNetwork as String,
-      let code = CFNetworkErrors(rawValue: Int32(error.code)) {
+      let code = CFNetworkErrors(rawValue: Int32(error.code))
+    {
 
       let unhandledCodes: [CFNetworkErrors] = [
         // Handled by NetworkErrorPageHandler
@@ -66,7 +67,8 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     var action = ""
     var domain = model.domain
     if domain == kCFErrorDomainCFNetwork as String,
-      let code = CFNetworkErrors(rawValue: Int32(model.errorCode)) {
+      let code = CFNetworkErrors(rawValue: Int32(model.errorCode))
+    {
 
       // Update the error code domain
       domain = GenericErrorPageHandler.CFErrorToName(code)
@@ -88,7 +90,8 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     }
 
     let variables = [
-      "page_title": model.originalURL.normalizedHost(stripWWWSubdomainOnly: true) ?? model.originalHost,
+      "page_title": model.originalURL.normalizedHost(stripWWWSubdomainOnly: true)
+        ?? model.originalHost,
       "error_code": "\(model.errorCode)",
       "error_title": "This site can't be reached",
       "error_description": model.description + "<br><br>\(Strings.errorPageCantBeReachedTry)",
@@ -108,6 +111,7 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     return (response, data)
   }
 
+  // swift-format-ignore
   /// Converts `CFNetworkErrors` to a `String`.
   static func CFErrorToName(_ err: CFNetworkErrors) -> String {
     switch err {
@@ -122,10 +126,12 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     case .cfsocks5ErrorBadState: return "CFSOCKS5ErrorBadState"
     case .cfsocks5ErrorBadResponseAddr: return "CFSOCKS5ErrorBadResponseAddr"
     case .cfsocks5ErrorBadCredentials: return "CFSOCKS5ErrorBadCredentials"
-    case .cfsocks5ErrorUnsupportedNegotiationMethod: return "CFSOCKS5ErrorUnsupportedNegotiationMethod"
+    case .cfsocks5ErrorUnsupportedNegotiationMethod:
+      return "CFSOCKS5ErrorUnsupportedNegotiationMethod"
     case .cfsocks5ErrorNoAcceptableMethod: return "CFSOCKS5ErrorNoAcceptableMethod"
     case .cfftpErrorUnexpectedStatusCode: return "CFFTPErrorUnexpectedStatusCode"
-    case .cfErrorHTTPAuthenticationTypeUnsupported: return "CFErrorHTTPAuthenticationTypeUnsupported"
+    case .cfErrorHTTPAuthenticationTypeUnsupported:
+      return "CFErrorHTTPAuthenticationTypeUnsupported"
     case .cfErrorHTTPBadCredentials: return "CFErrorHTTPBadCredentials"
     case .cfErrorHTTPConnectionLost: return "CFErrorHTTPConnectionLost"
     case .cfErrorHTTPParseFailure: return "CFErrorHTTPParseFailure"
@@ -136,10 +142,13 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     case .cfErrorPACFileError: return "CFErrorPACFileError"
     case .cfErrorPACFileAuth: return "CFErrorPACFileAuth"
     case .cfErrorHTTPSProxyConnectionFailure: return "CFErrorHTTPSProxyConnectionFailure"
-    case .cfStreamErrorHTTPSProxyFailureUnexpectedResponseToCONNECTMethod: return "CFStreamErrorHTTPSProxyFailureUnexpectedResponseToCONNECTMethod"
+    case .cfStreamErrorHTTPSProxyFailureUnexpectedResponseToCONNECTMethod:
+      return "CFStreamErrorHTTPSProxyFailureUnexpectedResponseToCONNECTMethod"
 
-    case .cfurlErrorBackgroundSessionInUseByAnotherProcess: return "CFURLErrorBackgroundSessionInUseByAnotherProcess"
-    case .cfurlErrorBackgroundSessionWasDisconnected: return "CFURLErrorBackgroundSessionWasDisconnected"
+    case .cfurlErrorBackgroundSessionInUseByAnotherProcess:
+      return "CFURLErrorBackgroundSessionInUseByAnotherProcess"
+    case .cfurlErrorBackgroundSessionWasDisconnected:
+      return "CFURLErrorBackgroundSessionWasDisconnected"
     case .cfurlErrorUnknown: return "CFURLErrorUnknown"
     case .cfurlErrorCancelled: return "CFURLErrorCancelled"
     case .cfurlErrorBadURL: return "CFURLErrorBadURL"
@@ -171,7 +180,8 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     case .cfurlErrorSecureConnectionFailed: return "CFURLErrorSecureConnectionFailed"
     case .cfurlErrorServerCertificateHasBadDate: return "CFURLErrorServerCertificateHasBadDate"
     case .cfurlErrorServerCertificateUntrusted: return "CFURLErrorServerCertificateUntrusted"
-    case .cfurlErrorServerCertificateHasUnknownRoot: return "CFURLErrorServerCertificateHasUnknownRoot"
+    case .cfurlErrorServerCertificateHasUnknownRoot:
+      return "CFURLErrorServerCertificateHasUnknownRoot"
     case .cfurlErrorServerCertificateNotYetValid: return "CFURLErrorServerCertificateNotYetValid"
     case .cfurlErrorClientCertificateRejected: return "CFURLErrorClientCertificateRejected"
     case .cfurlErrorClientCertificateRequired: return "CFURLErrorClientCertificateRequired"
@@ -182,8 +192,10 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     case .cfurlErrorCannotWriteToFile: return "CFURLErrorCannotWriteToFile"
     case .cfurlErrorCannotRemoveFile: return "CFURLErrorCannotRemoveFile"
     case .cfurlErrorCannotMoveFile: return "CFURLErrorCannotMoveFile"
-    case .cfurlErrorDownloadDecodingFailedMidStream: return "CFURLErrorDownloadDecodingFailedMidStream"
-    case .cfurlErrorDownloadDecodingFailedToComplete: return "CFURLErrorDownloadDecodingFailedToComplete"
+    case .cfurlErrorDownloadDecodingFailedMidStream:
+      return "CFURLErrorDownloadDecodingFailedMidStream"
+    case .cfurlErrorDownloadDecodingFailedToComplete:
+      return "CFURLErrorDownloadDecodingFailedToComplete"
 
     case .cfhttpCookieCannotParseCookieFile: return "CFHTTPCookieCannotParseCookieFile"
     case .cfNetServiceErrorUnknown: return "CFNetServiceErrorUnknown"
@@ -195,12 +207,13 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     case .cfNetServiceErrorInvalid: return "CFNetServiceErrorInvalid"
     case .cfNetServiceErrorTimeout: return "CFNetServiceErrorTimeout"
     case .cfNetServiceErrorDNSServiceFailure: return "CFNetServiceErrorDNSServiceFailure"
-      
+
     case .braveCertificatePinningFailed: return "ERR_SSL_PINNED_KEY_NOT_IN_CERT_CHAIN"
     default: return "Unknown: \(err.rawValue)"
     }
   }
 
+  // swift-format-ignore
   /// Converts `NSURLError` to a `String`.
   static func NSURLErrorToName(_ err: Int) -> String {
     switch err {
@@ -224,7 +237,8 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     case NSURLErrorCannotDecodeRawData: return "NSURLErrorCannotDecodeRawData"
     case NSURLErrorCannotDecodeContentData: return "NSURLErrorCannotDecodeContentData"
     case NSURLErrorCannotParseResponse: return "NSURLErrorCannotParseResponse"
-    case NSURLErrorAppTransportSecurityRequiresSecureConnection: return "NSURLErrorAppTransportSecurityRequiresSecureConnection"
+    case NSURLErrorAppTransportSecurityRequiresSecureConnection:
+      return "NSURLErrorAppTransportSecurityRequiresSecureConnection"
     case NSURLErrorFileDoesNotExist: return "NSURLErrorFileDoesNotExist"
     case NSURLErrorFileIsDirectory: return "NSURLErrorFileIsDirectory"
     case NSURLErrorNoPermissionsToReadFile: return "NSURLErrorNoPermissionsToReadFile"
@@ -235,7 +249,8 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     case NSURLErrorSecureConnectionFailed: return "NSURLErrorSecureConnectionFailed"
     case NSURLErrorServerCertificateHasBadDate: return "NSURLErrorServerCertificateHasBadDate"
     case NSURLErrorServerCertificateUntrusted: return "NSURLErrorServerCertificateUntrusted"
-    case NSURLErrorServerCertificateHasUnknownRoot: return "NSURLErrorServerCertificateHasUnknownRoot"
+    case NSURLErrorServerCertificateHasUnknownRoot:
+      return "NSURLErrorServerCertificateHasUnknownRoot"
     case NSURLErrorServerCertificateNotYetValid: return "NSURLErrorServerCertificateNotYetValid"
     case NSURLErrorClientCertificateRejected: return "NSURLErrorClientCertificateRejected"
     case NSURLErrorClientCertificateRequired: return "NSURLErrorClientCertificateRequired"
@@ -248,17 +263,23 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     case NSURLErrorCannotWriteToFile: return "NSURLErrorCannotWriteToFile"
     case NSURLErrorCannotRemoveFile: return "NSURLErrorCannotRemoveFile"
     case NSURLErrorCannotMoveFile: return "NSURLErrorCannotMoveFile"
-    case NSURLErrorDownloadDecodingFailedMidStream: return "NSURLErrorDownloadDecodingFailedMidStream"
-    case NSURLErrorDownloadDecodingFailedToComplete: return "NSURLErrorDownloadDecodingFailedToComplete"
+    case NSURLErrorDownloadDecodingFailedMidStream:
+      return "NSURLErrorDownloadDecodingFailedMidStream"
+    case NSURLErrorDownloadDecodingFailedToComplete:
+      return "NSURLErrorDownloadDecodingFailedToComplete"
     case NSURLErrorInternationalRoamingOff: return "NSURLErrorInternationalRoamingOff"
     case NSURLErrorCallIsActive: return "NSURLErrorCallIsActive"
     case NSURLErrorDataNotAllowed: return "NSURLErrorDataNotAllowed"
     case NSURLErrorRequestBodyStreamExhausted: return "NSURLErrorRequestBodyStreamExhausted"
-    case NSURLErrorBackgroundSessionRequiresSharedContainer: return "NSURLErrorBackgroundSessionRequiresSharedContainer"
-    case NSURLErrorBackgroundSessionInUseByAnotherProcess: return "NSURLErrorBackgroundSessionInUseByAnotherProcess"
-    case NSURLErrorBackgroundSessionWasDisconnected: return "NSURLErrorBackgroundSessionWasDisconnected"
-      
-    case Int(CFNetworkErrors.braveCertificatePinningFailed.rawValue): return "ERR_SSL_PINNED_KEY_NOT_IN_CERT_CHAIN"
+    case NSURLErrorBackgroundSessionRequiresSharedContainer:
+      return "NSURLErrorBackgroundSessionRequiresSharedContainer"
+    case NSURLErrorBackgroundSessionInUseByAnotherProcess:
+      return "NSURLErrorBackgroundSessionInUseByAnotherProcess"
+    case NSURLErrorBackgroundSessionWasDisconnected:
+      return "NSURLErrorBackgroundSessionWasDisconnected"
+
+    case Int(CFNetworkErrors.braveCertificatePinningFailed.rawValue):
+      return "ERR_SSL_PINNED_KEY_NOT_IN_CERT_CHAIN"
     default: return "Unknown: \(err)"
     }
   }

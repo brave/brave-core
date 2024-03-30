@@ -16,7 +16,7 @@ namespace database {
 
 class DatabaseActivityInfo : public DatabaseTable {
  public:
-  explicit DatabaseActivityInfo(RewardsEngineImpl& engine);
+  explicit DatabaseActivityInfo(RewardsEngine& engine);
   ~DatabaseActivityInfo() override;
 
   void InsertOrUpdate(mojom::PublisherInfoPtr info, ResultCallback callback);

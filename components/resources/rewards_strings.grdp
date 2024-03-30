@@ -68,17 +68,11 @@
   <message name="IDS_REWARDS_CONNECT_ACCOUNT_TEXT" desc="">
     <ph name="BOLD_BEGIN">$1</ph>Ready to start earning?<ph name="BOLD_END">$2</ph> Connect or create an account with one of our partners.
   </message>
-  <message name="IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS" desc="">
-    To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Brave Rewards will automatically support creators.
-  </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_HEADER" desc="">
     Send contributions with Brave Rewards
   </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_TEXT" desc="">
     You'll be able to send on-demand contributions to your favorite creators with your Brave Rewards balance once you have a custodial account connected.
-  </message>
-  <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_NO_PROVIDERS" desc="">
-    To send on-demand contributions, users must connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so sending isn’t available. In the meantime, you’re still automatically supporting creators.
   </message>
   <message name="IDS_REWARDS_PUBLISHER_COUNT_TEXT" desc="">
     {PUBLISHER_COUNT, plural,
@@ -91,20 +85,8 @@
   <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
     Using Brave Rewards helps support content creators, and lets you earn BAT.
   </message>
-  <message name="IDS_REWARDS_WIDGET_AD_GRANT_AMOUNT" desc="">
-    <ph name="MONTH">$1<ex>January</ex></ph> Rewards: <ph name="AMOUNT">$2<ex>1.25 BAT</ex></ph>
-  </message>
-  <message name="IDS_REWARDS_WIDGET_AD_GRANT_TITLE" desc="">
-    Your <ph name="MONTH">$1<ex>January</ex></ph> Ad Rewards are here!
-  </message>
   <message name="IDS_REWARDS_WIDGET_BRAVE_REWARDS" desc="">
     Brave Rewards
-  </message>
-  <message name="IDS_REWARDS_WIDGET_CLAIM_REWARDS" desc="">
-    Claim Rewards
-  </message>
-  <message name="IDS_REWARDS_WIDGET_CLAIM_TOKENS" desc="">
-    Claim Tokens
   </message>
   <message name="IDS_REWARDS_WIDGET_CONTINUE" desc="">
     Continue
@@ -114,9 +96,6 @@
   </message>
   <message name="IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK" desc="">
     How does it work?
-  </message>
-  <message name="IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING" desc="">
-    You have <ph name="DAYS">$1<ex>80 days</ex></ph> left to claim
   </message>
   <message name="IDS_REWARDS_WIDGET_OPT_IN_HEADER" desc="">
     Earn tokens for private ads you see in Brave
@@ -138,9 +117,6 @@
   </message>
   <message name="IDS_REWARDS_WIDGET_BALANCE_TITLE" desc="">
     Balance
-  </message>
-  <message name="IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE" desc="">
-    A token grant is available!
   </message>
 
   <!-- Rewards panel -->
@@ -206,61 +182,11 @@
   <message name="IDS_REWARDS_VBAT_NOTICE_TEXT1" desc="">
     On <ph name="DATE">$1</ph>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.
   </message>
-  <message name="IDS_REWARDS_VBAT_NOTICE_TEXT2" desc="">
-    On <ph name="DATE">$1</ph>, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (<ph name="REGION">$2<ex>US</ex></ph>) to withdraw your earnings. Until then, you can still contribute to your favorite creators.
-  </message>
   <message name="IDS_REWARDS_VBAT_NOTICE_TITLE1" desc="">
     Action required: Connect a custodial account or your vBAT will be lost
   </message>
-  <message name="IDS_REWARDS_VBAT_NOTICE_TITLE2" desc="">
-    You still have time to contribute your vBAT to your favorite creators
-  </message>
-
-  <!-- Rewards grant captcha modal -->
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_TITLE" desc="">
-    Confirm you are a human being
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_FAILED_TITLE" desc="">
-    Hmm… Not Quite. Try Again.
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_HINT" desc="">
-    Drag the BAT icon to the <ph name="HINT">$1<ex>triangle</ex></ph> target.
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_UGP" desc="">
-    It’s your lucky day!
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TEXT_UGP" desc="">
-    Your token grant is on its way.
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_UGP" desc="">
-    Free Token Grant
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_ADS" desc="">
-    You've earned an Ads Reward!
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TEXT_ADS" desc="">
-    Your Reward is on its way.
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_ADS" desc="">
-    Your Reward Amount
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_EXPIRATION" desc="">
-    Grant Expiration Date
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_ERROR_TITLE" desc="">
-    Oops, something is wrong. Please try again later.
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_ERROR_TEXT" desc="">
-    Brave Rewards is having an issue. Please try again later.
-  </message>
 
   <!-- Rewards panel notifications -->
-  <message name="IDS_REWARDS_NOTIFICATION_CLAIM_REWARDS" desc="">
-    Claim Rewards
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_CLAIM_TOKENS" desc="">
-    Claim Tokens
-  </message>
   <message name="IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TITLE" desc="">
     Auto-Contribute
   </message>
@@ -287,18 +213,6 @@
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_ACTION" desc="">
     Log in again
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_TOKEN_GRANT_TITLE" desc="">
-    A token grant is available!
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_AD_GRANT_AMOUNT" desc="">
-    <ph name="MONTH">$1<ex>December</ex></ph> Rewards: <ph name="AMOUNT">$2<ex>1.25 BAT</ex></ph>
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_AD_GRANT_TITLE" desc="">
-    Your <ph name="MONTH">$1<ex>December</ex></ph> Ad Rewards are here!
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_GRANT_DAYS_REMAINING" desc="">
-    You have <ph name="DAYS">$1<ex>20 days</ex></ph> left to claim
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TEXT" desc="">
     There was a problem processing your contribution.
@@ -432,6 +346,20 @@
   </message>
   <message name="IDS_REWARDS_SELF_CUSTODY_INVITE_TEXT" desc="">
     We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.
+  </message>
+
+  <!-- Terms of Service update notification -->
+  <message name="IDS_REWARDS_TOS_UPDATE_HEADING" desc="">
+    Updated Terms of Service
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_TEXT" desc="">
+    We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN">$1</ph>reset<ph name="LINK_END">$2</ph> Brave Rewards, which will disable the feature.
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="">
+    See <ph name="LINK_BEGIN">$1</ph>Brave Rewards Terms of Service<ph name="LINK_END">$2</ph>
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL" desc="">
+    I agree
   </message>
 
   <!-- Tip panel -->

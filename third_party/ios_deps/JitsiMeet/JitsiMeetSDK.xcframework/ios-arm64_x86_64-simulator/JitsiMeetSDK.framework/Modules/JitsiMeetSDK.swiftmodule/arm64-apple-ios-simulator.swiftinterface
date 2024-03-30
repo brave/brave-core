@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)
+// swift-compiler-version: Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100)
 // swift-module-flags: -target arm64-apple-ios12.4-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name JitsiMeetSDK
 // swift-module-flags-ignorable: -enable-bare-slash-regex
 @_exported import JitsiMeetSDK
@@ -30,7 +30,7 @@ public class PiPViewCoordinator {
   public var initialPositionInSuperView: JitsiMeetSDK.PiPViewCoordinator.Position
   @available(*, deprecated, message: "The PiP window size is now fixed to 150px.")
   public var c: CoreFoundation.CGFloat
-  weak public var delegate: JitsiMeetSDK.PiPViewCoordinatorDelegate?
+  weak public var delegate: (any JitsiMeetSDK.PiPViewCoordinatorDelegate)?
   public init(withView view: UIKit.UIView)
   public func configureAsStickyView(withParentView parentView: UIKit.UIView? = nil)
   public func show(completion: JitsiMeetSDK.AnimationCompletion? = nil)

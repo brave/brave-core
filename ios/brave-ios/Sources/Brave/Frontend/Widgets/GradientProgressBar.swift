@@ -1,8 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// swiftlint:disable file_header
 // ADAPTED FROM:
 //
 //  GradientProgressBar.swift
@@ -48,7 +47,8 @@ open class GradientProgressBar: UIProgressView {
   }
 
   func setGradientColors(startColor: UIColor, endColor: UIColor) {
-    gradientColors = [startColor, endColor, startColor, endColor, startColor, endColor, startColor].map(\.cgColor)
+    gradientColors = [startColor, endColor, startColor, endColor, startColor, endColor, startColor]
+      .map(\.cgColor)
     gradientLayer.colors = gradientColors
   }
 
@@ -96,7 +96,12 @@ open class GradientProgressBar: UIProgressView {
     // Apply "alphaMaskLayer" as a mask to the gradient layer in order to show only parts of the current "progress"
     gradientLayer.mask = alphaMaskLayer
 
-    gradientLayer.frame = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: bounds.size.width * 2, height: bounds.size.height)
+    gradientLayer.frame = CGRect(
+      x: bounds.origin.x,
+      y: bounds.origin.y,
+      width: bounds.size.width * 2,
+      height: bounds.size.height
+    )
     gradientLayer.colors = gradientColors
     gradientLayer.locations = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.0]
     gradientLayer.startPoint = .zero
@@ -134,7 +139,12 @@ open class GradientProgressBar: UIProgressView {
 
   override open func layoutSubviews() {
     super.layoutSubviews()
-    self.gradientLayer.frame = CGRect(x: bounds.origin.x - 4, y: bounds.origin.y, width: bounds.size.width * 2, height: bounds.size.height)
+    self.gradientLayer.frame = CGRect(
+      x: bounds.origin.x - 4,
+      y: bounds.origin.y,
+      width: bounds.size.width * 2,
+      height: bounds.size.height
+    )
   }
 
   func animateGradient() {
@@ -163,7 +173,8 @@ open class GradientProgressBar: UIProgressView {
           deadline: DispatchTime.now() + DefaultValues.animationDuration,
           execute: {
             self.hideProgressBar()
-          })
+          }
+        )
       })
     }
     CATransaction.commit()

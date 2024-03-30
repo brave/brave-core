@@ -4,6 +4,6 @@ Description: Nested threshold aggregation built on the STAR protocol
 Version: 0.2.3
 Security Critical: yes
 Shipped: yes
-License: MPL-2.0
-License File: 
+License: Mozilla Public License 2.0
+License File:
 Revision: 4f2220b014fb858bb7aa6de95b433de1d060bd71

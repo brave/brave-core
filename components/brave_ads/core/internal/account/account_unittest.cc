@@ -7,7 +7,7 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
@@ -32,6 +32,7 @@
 #include "brave/components/brave_ads/core/internal/ads_observer_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
@@ -262,6 +263,8 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
+  test::RefillConfirmationTokens(/*count=*/1);
+
   const URLResponseMap url_responses = {
       {BuildCreateRewardConfirmationUrlPath(
            kTransactionId, kCreateRewardConfirmationCredential),
@@ -270,8 +273,6 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
       {BuildFetchPaymentTokenUrlPath(kTransactionId),
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
-
-  test::SetConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
@@ -283,14 +284,47 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
   account_->Deposit(creative_ad.creative_instance_id, creative_ad.segment,
-                    AdType::kNotificationAd, ConfirmationType::kViewed);
+                    AdType::kNotificationAd,
+                    ConfirmationType::kViewedImpression);
+}
+
+TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
+  // Arrange
+  test::BuildAndSetIssuers();
+
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+
+  test::RefillConfirmationTokens(/*count=*/1);
+
+  const URLResponseMap url_responses = {
+      {BuildCreateRewardConfirmationUrlPath(
+           kTransactionId, kCreateRewardConfirmationCredential),
+       {{net::HTTP_CREATED,
+         test::BuildCreateRewardConfirmationUrlResponseBody()}}},
+      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+       {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  const CreativeNotificationAdInfo creative_ad =
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
+  database::SaveCreativeNotificationAds({creative_ad});
+
+  // Act & Assert
+  EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
+  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
+
+  account_->DepositWithUserData(creative_ad.creative_instance_id,
+                                creative_ad.segment, AdType::kNotificationAd,
+                                ConfirmationType::kViewedImpression,
+                                /*user_data=*/{});
 }
 
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
@@ -299,6 +333,22 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
 
   account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
                     ConfirmationType::kClicked);
+}
+
+TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
+  // Arrange
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+
+  test::RefillConfirmationTokens(/*count=*/1);
+
+  // Act & Assert
+  EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
+  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
+
+  account_->DepositWithUserData(kCreativeInstanceId, kSegment,
+                                AdType::kNotificationAd,
+                                ConfirmationType::kClicked, /*user_data=*/{});
 }
 
 TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
@@ -315,51 +365,55 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
 
   account_->Deposit(kMissingCreativeInstanceId, kSegment,
-                    AdType::kNotificationAd, ConfirmationType::kViewed);
+                    AdType::kNotificationAd,
+                    ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAccountTest, GetStatement) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClockTo(TimeFromString("31 October 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("31 October 2020"));
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("18 November 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("18 November 2020"));
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_7);
 
@@ -374,7 +428,7 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
       0.05 * kMinEstimatedEarningsMultiplier.Get();
   expected_statement->max_earnings_this_month = 0.05;
   expected_statement->next_payment_date =
-      TimeFromString("7 January 2021 23:59:59.999", /*is_local=*/false);
+      TimeFromUTCString("7 January 2021 23:59:59.999");
   expected_statement->ads_received_this_month = 3;
   expected_statement->ads_summary_this_month = {{"ad_notification", 3}};
 

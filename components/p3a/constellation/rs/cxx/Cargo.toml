@@ -2,10 +2,11 @@
 name = "constellation-cxx"
 version = "0.1.0"
 edition = "2021"
+license = "MPL-2.0"
 
 [dependencies]
 star-constellation = "0.2.3"
-cxx = "1.0"
+cxx = "1"
 
 [lib]
 name = "constellation_cxx"

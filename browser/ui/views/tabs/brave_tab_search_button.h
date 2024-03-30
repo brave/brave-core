@@ -11,8 +11,8 @@
 #include "ui/gfx/geometry/size.h"
 
 class BraveTabSearchButton : public TabSearchButton {
+  METADATA_HEADER(BraveTabSearchButton, TabSearchButton)
  public:
-  METADATA_HEADER(BraveTabSearchButton);
 
   explicit BraveTabSearchButton(TabStripController* tab_strip_controller,
                                 Edge flat_edge);

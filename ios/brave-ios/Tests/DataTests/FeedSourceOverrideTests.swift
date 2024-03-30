@@ -1,20 +1,26 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import XCTest
 import CoreData
 import Shared
 import TestHelpers
+import XCTest
+
 @testable import Data
 
 class FeedSourceOverrideTests: CoreDataTestCase {
 
-  let fetchRequest = NSFetchRequest<FeedSourceOverride>(entityName: String(describing: FeedSourceOverride.self))
+  let fetchRequest = NSFetchRequest<FeedSourceOverride>(
+    entityName: String(describing: FeedSourceOverride.self)
+  )
 
   private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
-    return NSEntityDescription.entity(forEntityName: String(describing: FeedSourceOverride.self), in: context)!
+    return NSEntityDescription.entity(
+      forEntityName: String(describing: FeedSourceOverride.self),
+      in: context
+    )!
   }
 
   func testSimpleInsert() throws {
@@ -40,7 +46,9 @@ class FeedSourceOverrideTests: CoreDataTestCase {
     backgroundSaveAndWaitForExpectation {
       FeedSourceOverride.setEnabled(forId: source.publisherID, enabled: false)
     }
-    XCTAssertFalse(try XCTUnwrap(FeedSourceOverride.getInternal(fromId: source.publisherID)).enabled)
+    XCTAssertFalse(
+      try XCTUnwrap(FeedSourceOverride.getInternal(fromId: source.publisherID)).enabled
+    )
   }
 
   @discardableResult

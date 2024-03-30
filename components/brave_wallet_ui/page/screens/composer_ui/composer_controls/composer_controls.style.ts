@@ -31,7 +31,7 @@ export const ComposerButtonMenu = styled.div`
   justify-content: center;
   flex-direction: column;
   background-color: ${leo.color.container.background};
-  border-radius: 22px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
   position: absolute;
@@ -59,6 +59,9 @@ export const FlipButton = styled(Button)`
   padding: 10px;
   border-radius: 100%;
   left: 48px;
+  :disabled {
+    cursor: not-allowed;
+  }
   @media screen and (max-width: ${layoutSmallWidth}px) {
     left: 16px;
   }

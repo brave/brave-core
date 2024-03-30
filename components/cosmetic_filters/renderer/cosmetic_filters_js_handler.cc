@@ -16,7 +16,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
@@ -26,6 +26,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
+#include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_css_origin.h"
 #include "third_party/blink/public/web/web_document.h"
@@ -229,7 +230,9 @@ bool CosmeticFiltersJSHandler::OnIsFirstParty(const std::string& url_string) {
 
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
     v8::Local<v8::Context> context) {
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  CHECK(render_frame_);
+  v8::Isolate* isolate =
+      render_frame_->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   if (context.IsEmpty())
     return;

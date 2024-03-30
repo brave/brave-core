@@ -3,17 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveShared
+import BraveWidgetsModels
+import Intents
+import Strings
 import SwiftUI
 import WidgetKit
-import Intents
-import BraveWidgetsModels
-import BraveShared
-import Strings
 
 struct ShortcutsWidget: Widget {
   var body: some WidgetConfiguration {
     IntentConfiguration(
-      kind: "ShortcutsWidget", intent: ShortcutsConfigurationIntent.self,
+      kind: "ShortcutsWidget",
+      intent: ShortcutsConfigurationIntent.self,
       provider: ShortcutProvider()
     ) { entry in
       ShortcutsView(slots: entry.shortcutSlots)
@@ -22,9 +23,9 @@ struct ShortcutsWidget: Widget {
     .configurationDisplayName(Strings.Widgets.shortcutsWidgetTitle)
     .description(Strings.Widgets.shortcutsWidgetDescription)
     .supportedFamilies([.systemMedium])
-#if swift(>=5.9)
+    #if swift(>=5.9)
     .contentMarginsDisabled()
-#endif
+    #endif
   }
 }
 
@@ -37,7 +38,8 @@ private struct ShortcutProvider: IntentTimelineProvider {
   typealias Intent = ShortcutsConfigurationIntent
   typealias Entry = ShortcutEntry
   func getSnapshot(
-    for configuration: Intent, in context: Context,
+    for configuration: Intent,
+    in context: Context,
     completion: @escaping (ShortcutEntry) -> Void
   ) {
     let entry = ShortcutEntry(
@@ -54,11 +56,13 @@ private struct ShortcutProvider: IntentTimelineProvider {
   func placeholder(in context: Context) -> ShortcutEntry {
     .init(
       date: Date(),
-      shortcutSlots: context.isPreview ? [] : [.playlist, .newPrivateTab, .bookmarks])
+      shortcutSlots: context.isPreview ? [] : [.playlist, .newPrivateTab, .bookmarks]
+    )
   }
 
   func getTimeline(
-    for configuration: Intent, in context: Context,
+    for configuration: Intent,
+    in context: Context,
     completion: @escaping (Timeline<ShortcutEntry>) -> Void
   ) {
     let entry = ShortcutEntry(
@@ -105,7 +109,8 @@ private struct ShortcutLink<Content: View>: View {
             Color(UIColor.braveBackground)
               .clipShape(ContainerRelativeShape())
           )
-        })
+        }
+      )
     } else {
       EmptyView()
     }
@@ -202,7 +207,8 @@ private struct ShortcutsView: View {
               Color(UIColor.braveBackground)
                 .clipShape(ContainerRelativeShape())
             )
-          })
+          }
+        )
       }
       HStack(spacing: 8) {
         ForEach(slots, id: \.self) { shortcut in
@@ -211,7 +217,8 @@ private struct ShortcutsView: View {
             text: shortcut.displayString,
             image: {
               shortcut.image
-            })
+            }
+          )
         }
       }
       .frame(maxHeight: .infinity)
@@ -224,12 +231,15 @@ private struct ShortcutsView: View {
 // MARK: - Previews
 
 #if swift(>=5.9)
-@available(iOS 17.0, *)
-#Preview(as: .systemMedium, widget: {
-  ShortcutsWidget()
-}, timeline: {
-  ShortcutEntry(date: .now, shortcutSlots: [.newTab, .newPrivateTab, .bookmarks])
-})
+@available(iOS 17.0, *)#Preview(
+  as: .systemMedium,
+  widget: {
+    ShortcutsWidget()
+  },
+  timeline: {
+    ShortcutEntry(date: .now, shortcutSlots: [.newTab, .newPrivateTab, .bookmarks])
+  }
+)
 #else
 #if DEBUG
 struct ShortcutsWidget_Previews: PreviewProvider {

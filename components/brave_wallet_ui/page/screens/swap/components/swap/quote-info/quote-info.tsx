@@ -49,10 +49,12 @@ interface Props {
   toToken: BraveWallet.BlockchainToken | undefined
   toAmount: string
   spotPrices?: SpotPriceRegistry
+  swapFees?: BraveWallet.SwapFees
 }
 
 export const QuoteInfo = (props: Props) => {
-  const { selectedQuoteOption, fromToken, toToken, spotPrices } = props
+  const { selectedQuoteOption, fromToken, toToken, spotPrices, swapFees } =
+    props
 
   // State
   const [showProviders, setShowProviders] = React.useState<boolean>(false)
@@ -123,7 +125,7 @@ export const QuoteInfo = (props: Props) => {
       '$1',
       coinGeckoDelta.times(-1).format(2)
     )
-  }, [coinGeckoDelta, getLocale])
+  }, [coinGeckoDelta])
 
   const coinGeckoDeltaColor = React.useMemo(() => {
     if (coinGeckoDelta.gte(-1)) {
@@ -158,23 +160,18 @@ export const QuoteInfo = (props: Props) => {
     )
   }, [selectedQuoteOption])
 
-  const braveFee = React.useMemo(() => {
-    if (!selectedQuoteOption?.braveFee) {
+  const braveFee: BraveWallet.SwapFees | undefined = React.useMemo(() => {
+    if (!swapFees) {
       return undefined
     }
 
-    const { braveFee: braveFeeOriginal } = selectedQuoteOption
-
     return {
-      ...braveFeeOriginal,
-      effectiveFeePct: new Amount(braveFeeOriginal.effectiveFeePct).format(6),
-      protocolFeePct: new Amount(braveFeeOriginal.protocolFeePct),
-      discountOnBraveFeePct: new Amount(
-        braveFeeOriginal.discountOnBraveFeePct
-      ).format(6),
-      braveFeePct: new Amount(braveFeeOriginal.braveFeePct).format(6)
+      ...swapFees,
+      effectiveFeePct: new Amount(swapFees.effectiveFeePct).format(6),
+      discountPct: new Amount(swapFees.discountPct).format(6),
+      feePct: new Amount(swapFees.feePct).format(6)
     }
-  }, [selectedQuoteOption])
+  }, [swapFees])
 
   return (
     <Column
@@ -314,7 +311,7 @@ export const QuoteInfo = (props: Props) => {
               name='search-fuel-tank'
               size={16}
             />
-            <Text textSize='14px'>{selectedQuoteOption.networkFee}</Text>
+            <Text textSize='14px'>{selectedQuoteOption.networkFeeFiat}</Text>
           </Bubble>
         </Row>
       )}
@@ -327,13 +324,13 @@ export const QuoteInfo = (props: Props) => {
           <Text textSize='14px'>{getLocale('braveSwapBraveFee')}</Text>
           <Text textSize='14px'>
             <BraveFeeContainer>
-              {braveFee.discountCode === BraveWallet.DiscountCode.kNone && (
+              {braveFee.discountCode === BraveWallet.SwapDiscountCode.kNone && (
                 <Text textSize='14px'>{braveFee.effectiveFeePct}%</Text>
               )}
 
-              {braveFee.discountCode !== BraveWallet.DiscountCode.kNone && (
+              {braveFee.discountCode !== BraveWallet.SwapDiscountCode.kNone && (
                 <>
-                  {!braveFee.hasBraveFee ? (
+                  {new Amount(braveFee.effectiveFeePct).isZero() ? (
                     <Text
                       textSize='14px'
                       textColor='success'
@@ -349,31 +346,14 @@ export const QuoteInfo = (props: Props) => {
                     textSize='14px'
                     textColor='text03'
                   >
-                    {braveFee.braveFeePct}%
+                    {braveFee.feePct}%
                   </BraveFeeDiscounted>
 
-                  {braveFee.hasBraveFee && (
-                    <Text textSize='14px'>
-                      (-{braveFee.discountOnBraveFeePct}%)
-                    </Text>
+                  {new Amount(braveFee.effectiveFeePct).gt(0) && (
+                    <Text textSize='14px'>(-{braveFee.discountPct}%)</Text>
                   )}
                 </>
               )}
-            </BraveFeeContainer>
-          </Text>
-        </Row>
-      )}
-
-      {braveFee && !braveFee.protocolFeePct.isZero() && (
-        <Row
-          rowWidth='full'
-          marginBottom={16}
-          horizontalPadding={16}
-        >
-          <Text textSize='14px'>{getLocale('braveSwapProtocolFee')}</Text>
-          <Text textSize='14px'>
-            <BraveFeeContainer>
-              <Text textSize='14px'>{braveFee.protocolFeePct.format(6)}%</Text>
             </BraveFeeContainer>
           </Text>
         </Row>

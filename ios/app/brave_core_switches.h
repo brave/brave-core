@@ -24,6 +24,10 @@ OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeyVModule;
 ///
 /// Expected value: A URL string
 OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeySyncURL;
+/// Overrides the variations seed URL. Defaults to production
+///
+/// Expected value: A URL string
+OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeyVariationsURL;
 /// Sets a number of overrides for the ads & ledger services such as which
 /// environment its using, debug mode, etc.
 ///
@@ -110,6 +114,9 @@ OBJC_EXPORT const BraveCoreSwitchKey
 /// continue the normal process.
 OBJC_EXPORT const BraveCoreSwitchKey
     BraveCoreSwitchKeyP3AIgnoreServerErrors NS_SWIFT_NAME(p3aIgnoreServerErrors);  // NOLINT
+/// Fetch CRX components from staging instead of production
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyUseDevGoUpdater NS_SWIFT_NAME(useDevGoUpdater);  // NOLINT
 
 /// Defines a switch that may be overriden on launch.
 ///

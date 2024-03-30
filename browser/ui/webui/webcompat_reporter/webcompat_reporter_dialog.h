@@ -12,7 +12,13 @@ class WebContents;
 
 namespace webcompat_reporter {
 
-void OpenReporterDialog(content::WebContents* initiator);
+enum class UISource {
+  kShieldsPanel = 0,
+  kAppMenu,
+  kMaxValue = kAppMenu,
+};
+
+void OpenReporterDialog(content::WebContents* initiator, UISource source);
 
 }  // namespace webcompat_reporter
 

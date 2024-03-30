@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace {
 
@@ -24,7 +24,7 @@ const char kTableName[] = "publisher_info";
 namespace brave_rewards::internal {
 namespace database {
 
-DatabasePublisherInfo::DatabasePublisherInfo(RewardsEngineImpl& engine)
+DatabasePublisherInfo::DatabasePublisherInfo(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabasePublisherInfo::~DatabasePublisherInfo() = default;

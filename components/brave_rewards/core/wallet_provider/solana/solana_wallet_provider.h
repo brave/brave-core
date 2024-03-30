@@ -17,9 +17,10 @@
 namespace brave_rewards::internal {
 
 class SolanaWalletProvider : public RewardsEngineHelper,
+                             public WithHelperKey<SolanaWalletProvider>,
                              public wallet_provider::WalletProvider {
  public:
-  explicit SolanaWalletProvider(RewardsEngineImpl& engine);
+  explicit SolanaWalletProvider(RewardsEngine& engine);
   ~SolanaWalletProvider() override;
 
   const char* WalletType() const override;
@@ -49,7 +50,6 @@ class SolanaWalletProvider : public RewardsEngineHelper,
 
   base::RepeatingTimer polling_timer_;
   base::OneShotTimer polling_timeout_;
-  endpoints::PostChallenges post_challenges_{engine()};
   base::WeakPtrFactory<SolanaWalletProvider> weak_factory_{this};
 };
 

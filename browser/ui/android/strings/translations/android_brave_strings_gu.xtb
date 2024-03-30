@@ -120,9 +120,9 @@
 <translation id="8987927404178983737">મહિનો</translation>
 <translation id="1383876407941801731">શોધો</translation>
 <translation id="3479552764303398839">હમણાં નહીં</translation>
+<translation id="7701040980221191251">કોઈ નહીં</translation>
 <translation id="8798099450830957504">ડિફૉલ્ટ</translation>
 <translation id="1483493594462132177">મોકલો</translation>
-<translation id="4472575034687746823">પ્રારંભ કરો</translation>
 <translation id="2359808026110333948">આગળ વધો</translation>
 <translation id="6896758677409633944">કૉપિ કરો</translation>
 <translation id="7665369617277396874">એકાઉન્ટ ઉમેરો</translation>
@@ -173,10 +173,10 @@
 <translation id="6736243959894955139">સરનામું</translation>
 <translation id="308268297242056490">URI</translation>
 <translation id="3798449238516105146">વર્ઝન</translation>
+<translation id="5494920125229734069">બધા પસંદ કરો</translation>
+<translation id="1166682575529520472">માસિક</translation>
 <translation id="4850886885716139402">જુઓ</translation>
 <translation id="5939518447894949180">રીસેટ કરો</translation>
-<translation id="5916664084637901428">ચાલુ</translation>
-<translation id="5860033963881614850">બંધ</translation>
 <translation id="7525067979554623046">બનાવો</translation>
 <translation id="7544853251252956727">શફલ કરો</translation>
 <translation id="1173894706177603556">નામ બદલો</translation>
@@ -184,5 +184,4 @@
 <translation id="4195643157523330669">નવા ટૅબમાં ખોલો</translation>
 <translation id="4243710787042215766">ખાનગી ટૅબમાં ખોલો</translation>
 <translation id="8261506727792406068">ડિલીટ કરો</translation>
-<translation id="5494920125229734069">બધા પસંદ કરો</translation>
 </translationbundle>

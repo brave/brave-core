@@ -14,6 +14,7 @@ import {
 import { useSelector } from 'react-redux'
 
 // utils
+import { loadTimeData } from '../../../../../common/loadTimeData'
 import { getLocale } from '../../../../../common/locale'
 import {
   useSafeWalletSelector,
@@ -39,6 +40,7 @@ import { StyledWrapper } from './style'
 import { Column } from '../../../shared/style'
 
 // components
+import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
 import { WalletBanner } from '../../wallet-banner/index'
 import {
   EditVisibleAssetsModal //
@@ -69,6 +71,8 @@ export interface Props {
 }
 
 export const CryptoView = ({ sessionRoute }: Props) => {
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
+
   // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
@@ -107,6 +111,11 @@ export const CryptoView = ({ sessionRoute }: Props) => {
 
   // methods
   const onShowBackup = React.useCallback(() => {
+    if (isAndroid) {
+      getWalletPageApiProxy().pageHandler.showWalletBackupUI()
+      return
+    }
+
     if (isPanel) {
       chrome.tabs.create(
         {
@@ -123,15 +132,18 @@ export const CryptoView = ({ sessionRoute }: Props) => {
       return
     }
     history.push(WalletRoutes.Backup)
-  }, [isPanel])
+  }, [isAndroid, isPanel, history])
 
-  const onShowVisibleAssetsModal = React.useCallback((showModal: boolean) => {
-    if (showModal) {
-      history.push(WalletRoutes.AddAssetModal)
-    } else {
-      history.push(WalletRoutes.PortfolioAssets)
-    }
-  }, [])
+  const onShowVisibleAssetsModal = React.useCallback(
+    (showModal: boolean) => {
+      if (showModal) {
+        history.push(WalletRoutes.AddAssetModal)
+      } else {
+        history.push(WalletRoutes.PortfolioAssets)
+      }
+    },
+    [history]
+  )
 
   const hideVisibleAssetsModal = React.useCallback(
     () => onShowVisibleAssetsModal(false),
@@ -140,7 +152,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
 
   const onClose = React.useCallback(() => {
     history.push(WalletRoutes.PortfolioNFTs)
-  }, [])
+  }, [history])
 
   const onBack = React.useCallback(() => {
     if (location.key) {
@@ -148,7 +160,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     } else {
       history.push(WalletRoutes.PortfolioNFTs)
     }
-  }, [location.key])
+  }, [history, location.key])
 
   // computed
   const isCheckingWallets =

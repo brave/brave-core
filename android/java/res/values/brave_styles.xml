@@ -46,18 +46,6 @@
     </style>
 
     <!-- Brave Wallet -->
-    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
-        <item name="android:textSize">12sp</item>
-        <item name="android:lineSpacingExtra">2sp</item>
-        <item name="android:letterSpacing">0.02</item>
-    </style>
-
-    <style name="BraveTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="BraveWalletTextView" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -85,6 +73,12 @@
 
     <style name="BraveWalletCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
         <item name="buttonTint">@color/brave_wallet_checkbox_color</item>
+    </style>
+
+    <style name="PasswordInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!-- border color -->
+        <item name="boxStrokeColor">#3F39E8</item>
+        <item name="hintTextColor">#3F39E8</item>
     </style>
 
     <!--  Brave Wallet buttons  -->
@@ -325,5 +319,13 @@
 
     <style name="TimerBottomSheetDialogStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/timer_rounded_bottomsheet</item>
+    </style>
+
+    <style name="BraveRewardsSecondaryTextColor" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/rewards_panel_secondary_text_color</item>
+    </style>
+
+    <style name="BraveRewardsActionColor" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/rewards_panel_action_color</item>
     </style>
 </resources>

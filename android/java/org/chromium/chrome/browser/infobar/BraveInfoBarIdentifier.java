@@ -12,12 +12,14 @@ import java.lang.annotation.RetentionPolicy;
 
 // Reflects enum items from chromium_src/components/infobars/core/infobar_delegate.h
 
-@IntDef({BraveInfoBarIdentifier.INVALID, BraveInfoBarIdentifier.BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE,
-        BraveInfoBarIdentifier.WAYBACK_MACHINE_INFOBAR_DELEGATE,
-        BraveInfoBarIdentifier.SYNC_CANNOT_RUN_INFOBAR,
-        BraveInfoBarIdentifier.WEB_DISCOVERY_INFOBAR_DELEGATE,
-        BraveInfoBarIdentifier.BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR})
-
+@IntDef({
+    BraveInfoBarIdentifier.INVALID,
+    BraveInfoBarIdentifier.BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE,
+    BraveInfoBarIdentifier.WAYBACK_MACHINE_INFOBAR_DELEGATE,
+    BraveInfoBarIdentifier.SYNC_CANNOT_RUN_INFOBAR,
+    BraveInfoBarIdentifier.WEB_DISCOVERY_INFOBAR_DELEGATE,
+    BraveInfoBarIdentifier.BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR
+})
 @Retention(RetentionPolicy.SOURCE)
 public @interface BraveInfoBarIdentifier {
     int INVALID = -1;

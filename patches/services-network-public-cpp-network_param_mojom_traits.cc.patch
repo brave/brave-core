@@ -1,0 +1,12 @@
+diff --git a/services/network/public/cpp/network_param_mojom_traits.cc b/services/network/public/cpp/network_param_mojom_traits.cc
+index f281b6bfd2ea2d80d002380345d4e4b1559ca13d..6c19b282d5d9f5ecafb78aacbed641cf75c545c4 100644
+--- a/services/network/public/cpp/network_param_mojom_traits.cc
++++ b/services/network/public/cpp/network_param_mojom_traits.cc
+@@ -56,6 +56,7 @@ bool StructTraits<network::mojom::HostPortPairDataView, net::HostPortPair>::
+     return false;
+   }
+   *out = net::HostPortPair(std::move(host), data.port());
++  BRAVE_STRUCT_TRAITS_HOST_PORT_PAIR_READ
+   return true;
+ }
+ 

@@ -46,10 +46,13 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 
   enum Kind { kOld, kPrimary, kSecondary, kTertiary, kQuaternary };
 
-  explicit MdTextButton(PressedCallback callback = PressedCallback(),
-                        const std::u16string& text = std::u16string(),
-                        int button_context = style::CONTEXT_BUTTON_MD,
-                        bool use_text_color_for_icon = true);
+  explicit MdTextButton(
+      PressedCallback callback = PressedCallback(),
+      const std::u16string& text = std::u16string(),
+      int button_context = style::CONTEXT_BUTTON_MD,
+      bool use_text_color_for_icon = true,
+      std::unique_ptr<LabelButtonImageContainer> image_container =
+          std::make_unique<SingleImageContainer>());
   MdTextButton(const MdTextButton&) = delete;
   MdTextButton& operator=(const MdTextButton&) = delete;
   ~MdTextButton() override;

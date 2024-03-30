@@ -34,7 +34,7 @@ export const OnboardingConnectHardwareWallet = () => {
         )
       )
     },
-    []
+    [history]
   )
 
   return (

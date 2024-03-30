@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -13,7 +12,7 @@ import { getLocale } from '../../../../common/locale'
 import { FullPanelPopup } from '../full_panel_popup/full_panel_popup'
 
 // Styles
-import { Column } from '../../shared/style'
+import { Column, LeoSquaredButton } from '../../shared/style'
 import {
   LargeWarningCircleIcon,
   FullWidthChildrenColumn,
@@ -62,20 +61,20 @@ export const CriticalWarningPopup: React.FC<Props> = ({
           padding={'16px'}
           gap={'16px'}
         >
-          <Button
+          <LeoSquaredButton
             kind='outline'
             onClick={onProceed}
           >
             <WarningButtonText>
               {getLocale('braveWalletProceedButton')}
             </WarningButtonText>
-          </Button>
-          <Button
+          </LeoSquaredButton>
+          <LeoSquaredButton
             kind='filled'
             onClick={onCancel}
           >
             {getLocale('braveWalletButtonCancel')}
-          </Button>
+          </LeoSquaredButton>
         </FullWidthChildrenColumn>
       </Column>
     </FullPanelPopup>

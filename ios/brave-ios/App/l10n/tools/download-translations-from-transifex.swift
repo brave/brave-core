@@ -27,40 +27,41 @@ guard let apiKey = ProcessInfo.processInfo.environment["PASSWORD"] else {
   request.setValue("application/vnd.api+json", forHTTPHeaderField: "Content-Type")
   request.httpMethod = "POST"
   request.httpBody = """
-  {
-    "data": {
-      "attributes": {
-        "callback_url": null,
-        "content_encoding": "text",
-        "file_type": "default",
-        "mode": "default",
-        "pseudo": false
-      },
-      "relationships": {
-        "language": {
-          "data": {
-            "id": "l:\(code)",
-            "type": "languages"
+    {
+      "data": {
+        "attributes": {
+          "callback_url": null,
+          "content_encoding": "text",
+          "file_type": "default",
+          "mode": "default",
+          "pseudo": false
+        },
+        "relationships": {
+          "language": {
+            "data": {
+              "id": "l:\(code)",
+              "type": "languages"
+            }
+          },
+          "resource": {
+            "data": {
+              "id": "o:brave:p:brave-ios:r:bravexliff",
+              "type": "resources"
+            }
           }
         },
-        "resource": {
-          "data": {
-            "id": "o:brave:p:brave-ios:r:bravexliff",
-            "type": "resources"
-          }
-        }
-      },
-      "type": "resource_translations_async_downloads"
+        "type": "resource_translations_async_downloads"
+      }
     }
-  }
-  """.data(using: .utf8)!
+    """.data(using: .utf8)!
   do {
     let (_, response) = try await URLSession.shared.data(for: request)
     guard let response = response as? HTTPURLResponse else { fatalError() }
     validateResponse(response)
 
     guard let contentLocation = response.value(forHTTPHeaderField: "Content-Location") as String?,
-          let url = URL(string: contentLocation) else {
+      let url = URL(string: contentLocation)
+    else {
       print("ERROR: No content location found")
       exit(EXIT_FAILURE)
     }
@@ -107,17 +108,25 @@ guard let apiKey = ProcessInfo.processInfo.environment["PASSWORD"] else {
   }
 
   do {
-    let outputPath = URL(fileURLWithPath: fileManager.currentDirectoryPath).appendingPathComponent("translated-xliffs")
+    let outputPath = URL(fileURLWithPath: fileManager.currentDirectoryPath).appendingPathComponent(
+      "translated-xliffs"
+    )
     if !fileManager.fileExists(atPath: outputPath.path) {
       try fileManager.createDirectory(at: outputPath, withIntermediateDirectories: true)
     }
-    try fileManager.moveItem(at: xliffURL, to: outputPath.appendingPathComponent("\(languageCode).xliff"))
+    try fileManager.moveItem(
+      at: xliffURL,
+      to: outputPath.appendingPathComponent("\(languageCode).xliff")
+    )
   } catch {
     print("ERROR: Failed to move files: \(String(describing: error))")
   }
 }
 
-let languageCodes = [ "fr", "pl", "ru", "de", "zh", "zh_TW", "id_ID", "it", "ja", "ko_KR", "ms", "pt_BR", "es", "uk", "nb", "sv", "tr" ]
+let languageCodes = [
+  "fr", "pl", "ru", "de", "zh", "zh_TW", "id_ID", "it", "ja", "ko_KR", "ms", "pt_BR", "es", "uk",
+  "nb", "sv", "tr", "ca",
+]
 let resourceURLs: [String: URL] = await {
   var urls: [String: URL] = [:]
   // Prepare files for each language first
@@ -148,7 +157,9 @@ try await withThrowingTaskGroup(of: Void.self) { group in
           _ = try JSONSerialization.jsonObject(with: xliffData, options: [])
           // Found JSON, not ready
           retryCount += 1
-          print("Resource for \(code) not ready yet. Retrying in 5 seconds (attempt #\(retryCount))")
+          print(
+            "Resource for \(code) not ready yet. Retrying in 5 seconds (attempt #\(retryCount))"
+          )
           try await Task.sleep(nanoseconds: NSEC_PER_SEC * 5)
         } catch {
           await cleanupAndWriteResourceToDisk(xliffData: xliffData, languageCode: code)

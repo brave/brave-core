@@ -18,7 +18,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"

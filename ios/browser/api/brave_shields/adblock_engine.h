@@ -36,6 +36,11 @@ OBJC_EXPORT
 /// error if the engine cannot parse the rules provided due to invalid UTF8
 - (nullable instancetype)initWithRules:(NSString*)rules error:(NSError**)error;
 
+/// Initialize an adblock engine with a set of serialized rules. Returns
+/// nil/Throws an error if the engine cannot decode the rules
+- (nullable instancetype)initWithSerializedData:(NSData*)data
+                                          error:(NSError**)error;
+
 /// Checks if a `url` matches for the specified `Engine` within the context.
 ///
 /// This API is designed for multi-engine use, so block results are used both as
@@ -74,6 +79,9 @@ OBJC_EXPORT
 
 /// Deserializes a previously serialized data file list.
 - (bool)deserialize:(NSData*)data NS_SWIFT_NAME(deserialize(data:));
+
+/// Serializes the engine to a data file list.
+- (nullable NSData*)serialize:(NSError**)error;
 
 /// Adds a tag to the engine for consideration
 - (void)addTag:(NSString*)tag;

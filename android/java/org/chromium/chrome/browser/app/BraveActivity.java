@@ -178,7 +178,6 @@ import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
-import org.chromium.chrome.browser.vpn.fragments.BraveVpnCalloutDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.LinkVpnSubscriptionDialogFragment;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
@@ -796,18 +795,22 @@ public abstract class BraveActivity extends ChromeActivity
 
             // has onBrowsingDataCleared() as an @Override callback from implementing
             // BrowsingDataBridge.OnClearBrowsingDataListener
-            BrowsingDataBridge.getInstance().clearBrowsingData(
-                    this, dataTypesArray, TimePeriod.ALL_TIME);
+            BrowsingDataBridge.getForProfile(getCurrentProfile())
+                    .clearBrowsingData(this, dataTypesArray, TimePeriod.ALL_TIME);
         }
 
         setLoadedFeed(false);
         setComesFromNewTab(false);
         setNewsItemsFeedCards(null);
         Intent intent = getIntent();
-        if (intent != null && intent.getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY, false)) {
-            openBraveWallet(false,
-                    intent.getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, false),
-                    intent.getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, false));
+        if (intent != null
+                && intent.getBooleanExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY, false)) {
+            openBraveWallet(
+                    false,
+                    intent.getBooleanExtra(
+                            BraveWalletActivity.RESTART_WALLET_ACTIVITY_SETUP, false),
+                    intent.getBooleanExtra(
+                            BraveWalletActivity.RESTART_WALLET_ACTIVITY_RESTORE, false));
         }
     }
 
@@ -1202,21 +1205,6 @@ public abstract class BraveActivity extends ChromeActivity
 
         if (!countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
                 && BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
-            if (BraveVpnPrefUtils.shouldShowCallout()
-                            && !BraveVpnPrefUtils.isSubscriptionPurchase()
-                            && (ChromeSharedPreferences.getInstance()
-                                                    .readInt(
-                                                            BravePreferenceKeys
-                                                                    .BRAVE_APP_OPEN_COUNT)
-                                            == 1
-                                    && !isFirstInstall)
-                    || (ChromeSharedPreferences.getInstance()
-                                            .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                                    == 7
-                            && isFirstInstall)) {
-                showVpnCalloutDialog();
-            }
-
             if (!TextUtils.isEmpty(BraveVpnPrefUtils.getPurchaseToken())
                     && !TextUtils.isEmpty(BraveVpnPrefUtils.getProductId())) {
                 mIsVerification = true;
@@ -1344,17 +1332,6 @@ public abstract class BraveActivity extends ChromeActivity
         context.startActivity(playlistActivityIntent);
     }
 
-    private void showVpnCalloutDialog() {
-        try {
-            BraveVpnCalloutDialogFragment braveVpnCalloutDialogFragment =
-                    new BraveVpnCalloutDialogFragment();
-            braveVpnCalloutDialogFragment.show(
-                    getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
-        } catch (IllegalStateException e) {
-            Log.e("showVpnCalloutDialog", e.getMessage());
-        }
-    }
-
     private void showLinkVpnSubscriptionDialog() {
         LinkVpnSubscriptionDialogFragment linkVpnSubscriptionDialogFragment =
                 new LinkVpnSubscriptionDialogFragment();
@@ -1430,9 +1407,18 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void openBraveWallet(boolean fromDapp, boolean setupAction, boolean restoreAction) {
         Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
-        braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
-        braveWalletIntent.putExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
-        braveWalletIntent.putExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
+        braveWalletIntent.putExtra(BraveWalletActivity.IS_FROM_DAPPS, fromDapp);
+        braveWalletIntent.putExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
+        braveWalletIntent.putExtra(
+                BraveWalletActivity.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
+        braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        braveWalletIntent.setAction(Intent.ACTION_VIEW);
+        startActivity(braveWalletIntent);
+    }
+
+    public void openBraveWalletBackup() {
+        Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
+        braveWalletIntent.putExtra(BraveWalletActivity.SHOW_WALLET_ACTIVITY_BACKUP, true);
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         braveWalletIntent.setAction(Intent.ACTION_VIEW);
         startActivity(braveWalletIntent);

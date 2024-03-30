@@ -1,7 +1,9 @@
+// swift-format-ignore-file
+
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 @_exported import Strings
@@ -13,7 +15,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Brave Wallet",
-      comment: "The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings."
+      comment:
+        "The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings."
     )
     public static let wallet = NSLocalizedString(
       "wallet.wallet",
@@ -34,7 +37,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Other wallet actions",
-      comment: "The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page"
+      comment:
+        "The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page"
     )
     public static let portfolioPageTitle = NSLocalizedString(
       "wallet.portfolioPageTitle",
@@ -83,7 +87,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "NFTs",
-      comment: "The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token."
+      comment:
+        "The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token."
     )
     public static let transactionsTitle = NSLocalizedString(
       "wallet.transactionsTitle",
@@ -97,7 +102,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "No assets found",
-      comment: "The text displayed when a user uses a query to search for assets that yields no results"
+      comment:
+        "The text displayed when a user uses a query to search for assets that yields no results"
     )
     public static let searchTitle = NSLocalizedString(
       "wallet.searchTitle",
@@ -118,28 +124,32 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "No Accounts",
-      comment: "The empty state displayed when the user has no accounts associated with a transaction or asset"
+      comment:
+        "The empty state displayed when the user has no accounts associated with a transaction or asset"
     )
     public static let noAccountDescription = NSLocalizedString(
       "wallet.noAccountDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Accounts with a balance will appear here.",
-      comment: "The empty state description displayed when the user has no accounts associated with a transaction or asset"
+      comment:
+        "The empty state description displayed when the user has no accounts associated with a transaction or asset"
     )
     public static let noTransactions = NSLocalizedString(
       "wallet.noTransactions",
       tableName: "BraveWallet",
       bundle: .module,
       value: "No Transactions",
-      comment: "The empty state displayed when the user has no transactions associated with an account"
+      comment:
+        "The empty state displayed when the user has no transactions associated with an account"
     )
     public static let detailsButtonTitle = NSLocalizedString(
       "wallet.detailsButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Details",
-      comment: "A button title which when pressed displays a new screen with additional details/information"
+      comment:
+        "A button title which when pressed displays a new screen with additional details/information"
     )
     public static let hideDetailsButtonTitle = NSLocalizedString(
       "wallet.hideDetailsButtonTitle",
@@ -153,7 +163,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Rename",
-      comment: "A button on an account screen which when pressed presents a new screen to  rename the account"
+      comment:
+        "A button on an account screen which when pressed presents a new screen to  rename the account"
     )
     public static let accountDetailsTitle = NSLocalizedString(
       "wallet.accountDetailsTitle",
@@ -181,7 +192,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Account name must be at most 30 characters long",
-      comment: "The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters."
+      comment:
+        "The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters."
     )
     public static let accountPrivateKey = NSLocalizedString(
       "wallet.accountPrivateKey",
@@ -209,13 +221,15 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Are you sure?",
-      comment: "The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites"
+      comment:
+        "The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites"
     )
     public static let accountPrivateKeyDisplayWarning = NSLocalizedString(
       "wallet.accountPrivateKeyDisplayWarning",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Warning: Never share your private key. Anyone with this key can take your assets forever.",
+      value:
+        "Warning: Never share your private key. Anyone with this key can take your assets forever.",
       comment: "A warning message displayed at the top of the Private Key screen"
     )
     public static let copyToPasteboard = NSLocalizedString(
@@ -237,7 +251,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Paste",
-      comment: "A button title that when tapped will paste some data from the users clipboard to a text field"
+      comment:
+        "A button title that when tapped will paste some data from the users clipboard to a text field"
     )
     public static let showPrivateKeyButtonTitle = NSLocalizedString(
       "wallet.showPrivateKeyButtonTitle",
@@ -258,56 +273,64 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Backup",
-      comment: "A button title that shows a screen that allows the user to backup their recovery phrase"
+      comment:
+        "A button title that shows a screen that allows the user to backup their recovery phrase"
     )
     public static let defaultEthAccountName = NSLocalizedString(
       "wallet.defaultEthAccountName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Ethereum Account %lld",
-      comment: "The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\")"
+      comment:
+        "The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\")"
     )
     public static let defaultSolAccountName = NSLocalizedString(
       "wallet.defaultSolAccountName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Solana Account %lld",
-      comment: "The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\")"
+      comment:
+        "The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\")"
     )
     public static let defaultFilAccountName = NSLocalizedString(
       "wallet.defaultFilAccountName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Filecoin Account %lld",
-      comment: "The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\")"
+      comment:
+        "The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\")"
     )
     public static let defaultSecondaryEthAccountName = NSLocalizedString(
       "wallet.defaultSecondaryEthAccountName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Secondary Ethereum Account %lld",
-      comment: "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\")"
+      comment:
+        "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\")"
     )
     public static let defaultSecondarySolAccountName = NSLocalizedString(
       "wallet.defaultSecondarySolAccountName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Secondary Solana Account %lld",
-      comment: "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\")"
+      comment:
+        "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\")"
     )
     public static let defaultSecondaryFilAccountName = NSLocalizedString(
       "wallet.defaultSecondaryFilAccountName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Secondary Filecoin Account %lld",
-      comment: "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\")"
+      comment:
+        "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\")"
     )
     public static let addAccountWithCoinTypeTitle = NSLocalizedString(
       "wallet.addAccountWithCoinTypeTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Add %@ Account",
-      comment: "The title of the add account screen. '%@' will be placed with a coin type title. For example, 'Add Ethereum Account'. "
+      comment:
+        "The title of the add account screen. '%@' will be placed with a coin type title. For example, 'Add Ethereum Account'. "
     )
     public static let addAccountTitle = NSLocalizedString(
       "wallet.addAccountTitle",
@@ -321,21 +344,24 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Add",
-      comment: "The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree."
+      comment:
+        "The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree."
     )
     public static let failedToImportAccountErrorTitle = NSLocalizedString(
       "wallet.failedToImportAccountErrorTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Failed to import account.",
-      comment: "The title of an alert when the account the user attempted to import fails for some reason"
+      comment:
+        "The title of an alert when the account the user attempted to import fails for some reason"
     )
     public static let failedToImportAccountErrorMessage = NSLocalizedString(
       "wallet.failedToImportAccountErrorMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Please try again.",
-      comment: "The message of an alert when the account the user attempted to import fails for some reason"
+      comment:
+        "The message of an alert when the account the user attempted to import fails for some reason"
     )
     public static let importAccountOriginPasswordTitle = NSLocalizedString(
       "wallet.importAccountOriginPasswordTitle",
@@ -356,7 +382,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter new password",
-      comment: "A placeholder string that will be used on password text fields to create a new wallet"
+      comment:
+        "A placeholder string that will be used on password text fields to create a new wallet"
     )
     public static let repeatedPasswordPlaceholder = NSLocalizedString(
       "wallet.repeatedPasswordPlaceholder",
@@ -370,7 +397,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Match!",
-      comment: "A label will be displayed when the repeat password field input is matched with the password field."
+      comment:
+        "A label will be displayed when the repeat password field input is matched with the password field."
     )
     public static let importAccountSectionTitle = NSLocalizedString(
       "wallet.importAccountSectionTitle",
@@ -384,7 +412,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter, paste, or import your private key string file or JSON.",
-      comment: "A placeholder on a text box for entering the users private key/json data to import accounts"
+      comment:
+        "A placeholder on a text box for entering the users private key/json data to import accounts"
     )
     public static let importNonEthAccountPlaceholder = NSLocalizedString(
       "wallet.importNonEthAccountPlaceholder",
@@ -454,7 +483,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Incorrect password",
-      comment: "The error message displayed when the user enters the wrong password while unlocking the wallet"
+      comment:
+        "The error message displayed when the user enters the wrong password while unlocking the wallet"
     )
     public static let unlockWalletDescription = NSLocalizedString(
       "wallet.unlockWalletDescription",
@@ -468,14 +498,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Unlock",
-      comment: "The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets."
+      comment:
+        "The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets."
     )
     public static let restoreWalletButtonTitle = NSLocalizedString(
       "wallet.restoreWalletButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Restore",
-      comment: "The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave"
+      comment:
+        "The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave"
     )
     public static let cryptoTitle = NSLocalizedString(
       "wallet.cryptoTitle",
@@ -488,8 +520,10 @@ extension Strings {
       "wallet.backupWalletWarningMessage",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Back up your wallet now to protect your crypto assets and ensure you never lose access.",
-      comment: "The message displayed on the crypto tab if you have not yet completed the backup process"
+      value:
+        "Back up your wallet now to protect your crypto assets and ensure you never lose access.",
+      comment:
+        "The message displayed on the crypto tab if you have not yet completed the backup process"
     )
     public static let editVisibleAssetsButtonTitle = NSLocalizedString(
       "wallet.editVisibleAssetsButtonTitle",
@@ -510,7 +544,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Buy crypto with Apple Pay, credit or debit card.",
-      comment: "The description of a buy button on the buy/send/swap modal"
+      comment: "The description of a buy button on the buy/send/swap/deposit modal"
     )
     public static let send = NSLocalizedString(
       "wallet.send",
@@ -524,7 +558,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Send crypto or transfer from one account to another.",
-      comment: "The description of a send button on the buy/send/swap modal"
+      comment: "The description of a send button on the buy/send/swap/deposit modal"
     )
     public static let swap = NSLocalizedString(
       "wallet.swap",
@@ -538,14 +572,29 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Swap tokens and assets.",
-      comment: "The description of a swap button on the buy/send/swap modal"
+      comment: "The description of a swap button on the buy/send/swap/deposit modal"
+    )
+    public static let depositDescription = NSLocalizedString(
+      "wallet.depositDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Deposit assets",
+      comment: "The description of a swap button on the buy/send/swap/deposit modal"
     )
     public static let more = NSLocalizedString(
       "wallet.more",
       tableName: "BraveWallet",
       bundle: .module,
       value: "More",
-      comment: "A button title for user to open more option in asset details screen other than buy/send/swap."
+      comment:
+        "A button title for user to open more option in asset details screen other than buy/send/swap."
+    )
+    public static let deposit = NSLocalizedString(
+      "wallet.deposit",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Deposit",
+      comment: "As in depsit some crypto coins to a specific wallet address."
     )
     public static let infoTitle = NSLocalizedString(
       "wallet.infoTitle",
@@ -572,14 +621,16 @@ extension Strings {
       "wallet.backupWalletSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.",
+      value:
+        "In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.",
       comment: "The subtitle of the backup wallet screen"
     )
     public static let backupWalletDisclaimer = NSLocalizedString(
       "wallet.backupWalletDisclaimer",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.",
+      value:
+        "I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.",
       comment: "The label next to a toggle which the user must acknowledge"
     )
     public static let backupWalletPasswordPlaceholder = NSLocalizedString(
@@ -587,7 +638,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter password to backup wallet",
-      comment: "The placeholder for the password entry field when a user tries to backup their wallet."
+      comment:
+        "The placeholder for the password entry field when a user tries to backup their wallet."
     )
     public static let continueButtonTitle = NSLocalizedString(
       "wallet.continueButtonTitle",
@@ -608,7 +660,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Backup Wallet",
-      comment: "The title that will be displayed when long-pressing the back button in the navigation bar"
+      comment:
+        "The title that will be displayed when long-pressing the back button in the navigation bar"
     )
     public static let setupCryptoTitle = NSLocalizedString(
       "wallet.setupCryptoTitle",
@@ -621,7 +674,8 @@ extension Strings {
       "wallet.setupCryptoSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana and more.",
+      value:
+        "Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana and more.",
       comment: "The subtitle displayed on the 'setup crypto' onboarding screen"
     )
     public static let setupCryptoCreateNewTitle = NSLocalizedString(
@@ -636,7 +690,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Get started with Brave Wallet within minutes.",
-      comment: "The subtitle displayed in the section for user that need to create a brand new wallet"
+      comment:
+        "The subtitle displayed in the section for user that need to create a brand new wallet"
     )
     public static let setupCryptoRestoreTitle = NSLocalizedString(
       "wallet.setupCryptoRestoreTitle",
@@ -650,13 +705,15 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Import your existing wallet.",
-      comment: "The subtitle displayed in the section for user that need to restore an existed wallet"
+      comment:
+        "The subtitle displayed in the section for user that need to restore an existed wallet"
     )
     public static let setupCryptoDisclaimer = NSLocalizedString(
       "wallet.setupCryptoDisclaimer",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "©2023 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave. Other product names and logos may be trademarks of their respective companies. All rights reserved.",
+      value:
+        "©2023 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave. Other product names and logos may be trademarks of their respective companies. All rights reserved.",
       comment: "The disclaimer text at the bottom of the first step of onboarding flow."
     )
     public static let setupCryptoButtonTitle = NSLocalizedString(
@@ -664,42 +721,49 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Get Started",
-      comment: "The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature"
+      comment:
+        "The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature"
     )
     public static let setupCryptoButtonBackButtonTitle = NSLocalizedString(
       "wallet.setupCryptoButtonBackButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Welcome",
-      comment: "The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user."
+      comment:
+        "The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user."
     )
     public static let legalTitle = NSLocalizedString(
       "wallet.legalTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Before We Begin",
-      comment: "The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet."
+      comment:
+        "The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet."
     )
     public static let legalDescription = NSLocalizedString(
       "wallet.legalDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "We require that you acknowledge the items below",
-      comment: "The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet."
+      comment:
+        "The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet."
     )
     public static let legalUserResponsibility = NSLocalizedString(
       "wallet.legalUserResponsibility",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.",
-      comment: "The responsibility explained in screen for users to check indicates they understand before setting up a wallet."
+      value:
+        "I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.",
+      comment:
+        "The responsibility explained in screen for users to check indicates they understand before setting up a wallet."
     )
     public static let legalTermOfUse = NSLocalizedString(
       "wallet.legalTermOfUse",
       tableName: "BraveWallet",
       bundle: .module,
       value: "I have read and agree to the [Terms of Use](%@)",
-      comment: "For users to check indicates they have read and agree to the Terms of Use before setting up a wallet."
+      comment:
+        "For users to check indicates they have read and agree to the Terms of Use before setting up a wallet."
     )
     public static let backupRecoveryPhraseTitle = NSLocalizedString(
       "wallet.backupRecoveryPhraseTitle",
@@ -712,7 +776,8 @@ extension Strings {
       "wallet.backupRecoveryPhraseSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.\n\nKeep it in a secure place that is not accessible to others and avoid sharing it with anyone.",
+      value:
+        "Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.\n\nKeep it in a secure place that is not accessible to others and avoid sharing it with anyone.",
       comment: "The subtitle of the backup recovery phrase screen"
     )
     public static let backupRecoveryPhraseBackButtonTitle = NSLocalizedString(
@@ -720,20 +785,23 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Recovery Phrase",
-      comment: "The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet"
+      comment:
+        "The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet"
     )
     public static let backupSkipButtonTitle = NSLocalizedString(
       "wallet.backupSkipButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "I'll back up later",
-      comment: "The title of the button that user will tap to skip the verifying recovery phrases step."
+      comment:
+        "The title of the button that user will tap to skip the verifying recovery phrases step."
     )
     public static let backupSkipPromptTitle = NSLocalizedString(
       "wallet.backupSkipPromptTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "You can skip this step now, but you still need to back up your recovery phrase to ensure account security.",
+      value:
+        "You can skip this step now, but you still need to back up your recovery phrase to ensure account security.",
       comment: "The title on the pop up when user decides to skip backup recovery phrases."
     )
     public static let backupSkipPromptSubTitle = NSLocalizedString(
@@ -757,7 +825,7 @@ extension Strings {
       value: "Enter word in **position %d** from your recovery phrase.",
       comment: "The sub-title of the screen that user will verify his/her recovery phrase."
     )
-    
+
     public static let verifyRecoveryPhraseError = NSLocalizedString(
       "wallet.verifyRecoveryPhraseError",
       tableName: "BraveWallet",
@@ -784,35 +852,40 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Go to my portfolio",
-      comment: "The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen."
+      comment:
+        "The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen."
     )
     public static let restoreWalletBackButtonTitle = NSLocalizedString(
       "wallet.restoreWalletBackButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Restore Wallet",
-      comment: "The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device"
+      comment:
+        "The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device"
     )
     public static let restoreWalletPhraseInvalidError = NSLocalizedString(
       "wallet.restoreWalletPhraseInvalidError",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Invalid recovery phrase",
-      comment: "The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic'"
+      comment:
+        "The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic'"
     )
     public static let passwordDoesNotMeetRequirementsError = NSLocalizedString(
       "wallet.passwordDoesNotMeetRequirementsError",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Passwords must be at least 8 characters.",
-      comment: "The error message displayed when a user enters a password that does not meet the requirements"
+      comment:
+        "The error message displayed when a user enters a password that does not meet the requirements"
     )
     public static let passwordsDontMatchError = NSLocalizedString(
       "wallet.passwordsDontMatchError",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Verified password doesn't match",
-      comment: "The error displayed when entering two passwords that do not match that are expected to match"
+      comment:
+        "The error displayed when entering two passwords that do not match that are expected to match"
     )
     public static let restoreWalletTitle = NSLocalizedString(
       "wallet.restoreWalletTitle",
@@ -840,21 +913,24 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "I have a 24-word recovery phrase",
-      comment: "A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet."
+      comment:
+        "A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet."
     )
     public static let restoreWalletImportFromRegularBraveWallet = NSLocalizedString(
       "wallet.restoreWalletImportFromRegularBraveWallet",
       tableName: "BraveWallet",
       bundle: .module,
       value: "I have a 12-word recovery phrase",
-      comment: "A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet."
+      comment:
+        "A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet."
     )
     public static let restoreWalletShowRecoveryPhrase = NSLocalizedString(
       "wallet.restoreWalletShowRecoveryPhrase",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Show Recovery Phrase",
-      comment: "A toggle label that will enable or disable visibility of the contents in the recovery phrase text field"
+      comment:
+        "A toggle label that will enable or disable visibility of the contents in the recovery phrase text field"
     )
     public static let restoreWalletNewPasswordTitle = NSLocalizedString(
       "wallet.restoreWalletNewPasswordTitle",
@@ -868,7 +944,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Create Password",
-      comment: "The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet"
+      comment:
+        "The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet"
     )
     public static let createWalletTitle = NSLocalizedString(
       "wallet.createWalletTitle",
@@ -889,28 +966,32 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Weak",
-      comment: "A label will be displayed beside input password when it is considered as a weak password"
+      comment:
+        "A label will be displayed beside input password when it is considered as a weak password"
     )
     public static let passwordStatusMedium = NSLocalizedString(
       "wallet.passwordStatusMedium",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Medium",
-      comment: "A label will be displayed beside input password when it is considered as a medium password"
+      comment:
+        "A label will be displayed beside input password when it is considered as a medium password"
     )
     public static let passwordStatusStrong = NSLocalizedString(
       "wallet.passwordStatusStrong",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Strong",
-      comment: "A label will be displayed beside input password when it is considered as a strong password"
+      comment:
+        "A label will be displayed beside input password when it is considered as a strong password"
     )
     public static let creatingWallet = NSLocalizedString(
       "wallet.creatingWallet",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Creating Wallet...",
-      comment: "The title of the creating wallet screen, shown after user enters their password while the wallet is being set up."
+      comment:
+        "The title of the creating wallet screen, shown after user enters their password while the wallet is being set up."
     )
     public static let biometricsSetupErrorTitle = NSLocalizedString(
       "wallet.biometricsSetupErrorTitle",
@@ -923,7 +1004,8 @@ extension Strings {
       "wallet.biometricsSetupErrorMessage",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "There was an error while trying to enable biometrics unlocking. Please try again later.",
+      value:
+        "There was an error while trying to enable biometrics unlocking. Please try again later.",
       comment: "The message of an alert when the user has an error setting up biometric unlock"
     )
     public static let settingsResetButtonTitle = NSLocalizedString(
@@ -931,20 +1013,23 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Reset and Clear Wallet Data",
-      comment: "The title of a button that will reset the wallet. As in to erase the users wallet from the device"
+      comment:
+        "The title of a button that will reset the wallet. As in to erase the users wallet from the device"
     )
     public static let settingsResetWalletAlertTitle = NSLocalizedString(
       "wallet.settingsResetWalletAlertTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Are you sure you want to reset Brave Wallet?",
-      comment: "The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device"
+      comment:
+        "The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device"
     )
     public static let settingsResetWalletAlertMessage = NSLocalizedString(
       "wallet.settingsResetWalletAlertMessage",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "This action cannot be reversed. Your recovery phrase is the only way to regain account access to your crypto assets.",
+      value:
+        "This action cannot be reversed. Your recovery phrase is the only way to regain account access to your crypto assets.",
       comment: "The message the confirmation dialog when resetting the wallet."
     )
     public static let settingsResetWalletAlertButtonTitle = NSLocalizedString(
@@ -952,14 +1037,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Reset Wallet",
-      comment: "The title of a button that will reset the wallet. As in to erase the users wallet from the device"
+      comment:
+        "The title of a button that will reset the wallet. As in to erase the users wallet from the device"
     )
     public static let dateIntervalHour = NSLocalizedString(
       "wallet.dateIntervalHour",
       tableName: "BraveWallet",
       bundle: .module,
       value: "1H",
-      comment: "An abbreivated form of \"1 Hour\" used to describe what range of data to show on the graph (past hour)"
+      comment:
+        "An abbreivated form of \"1 Hour\" used to describe what range of data to show on the graph (past hour)"
     )
     public static let dateIntervalHourAccessibilityLabel = NSLocalizedString(
       "wallet.dateIntervalHourAccessibilityLabel",
@@ -973,7 +1060,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "1D",
-      comment: "An abbreivated form of \"1 Day\" used to describe what range of data to show on the graph (past day)"
+      comment:
+        "An abbreivated form of \"1 Day\" used to describe what range of data to show on the graph (past day)"
     )
     public static let dateIntervalDayAccessibilityLabel = NSLocalizedString(
       "wallet.dateIntervalDayAccessibilityLabel",
@@ -987,7 +1075,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "1W",
-      comment: "An abbreivated form of \"1 Week\" used to describe what range of data to show on the graph (past week)"
+      comment:
+        "An abbreivated form of \"1 Week\" used to describe what range of data to show on the graph (past week)"
     )
     public static let dateIntervalWeekAccessibilityLabel = NSLocalizedString(
       "wallet.dateIntervalWeekAccessibilityLabel",
@@ -1001,7 +1090,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "1M",
-      comment: "An abbreivated form of \"1 Month\" used to describe what range of data to show on the graph (past month)"
+      comment:
+        "An abbreivated form of \"1 Month\" used to describe what range of data to show on the graph (past month)"
     )
     public static let dateIntervalMonthAccessibilityLabel = NSLocalizedString(
       "wallet.dateIntervalMonthAccessibilityLabel",
@@ -1015,7 +1105,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "3M",
-      comment: "An abbreivated form of \"3 Months\" used to describe what range of data to show on the graph (past 3 months)"
+      comment:
+        "An abbreivated form of \"3 Months\" used to describe what range of data to show on the graph (past 3 months)"
     )
     public static let dateIntervalThreeMonthsAccessibilityLabel = NSLocalizedString(
       "wallet.dateIntervalThreeMonthsAccessibilityLabel",
@@ -1029,7 +1120,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "1Y",
-      comment: "An abbreivated form of \"1 Year\" used to describe what range of data to show on the graph (past year)"
+      comment:
+        "An abbreivated form of \"1 Year\" used to describe what range of data to show on the graph (past year)"
     )
     public static let dateIntervalYearAccessibilityLabel = NSLocalizedString(
       "wallet.dateIntervalYearAccessibilityLabel",
@@ -1050,28 +1142,32 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "From",
-      comment: "A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected"
+      comment:
+        "A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected"
     )
     public static let swapCryptoToTitle = NSLocalizedString(
       "wallet.swapCryptoToTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "To",
-      comment: "A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected"
+      comment:
+        "A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected"
     )
     public static let swapCryptoAmountTitle = NSLocalizedString(
       "wallet.swapCryptoAmountTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter amount of %@ to swap",
-      comment: "A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
+      comment:
+        "A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
     )
     public static let swapCryptoAmountReceivingTitle = NSLocalizedString(
       "wallet.swapCryptoAmountReceivingTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Amount receiving in %@ (estimated)",
-      comment: "A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
+      comment:
+        "A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
     )
     public static let swapOrderTypeLabel = NSLocalizedString(
       "wallet.swapOrderTypeLabel",
@@ -1085,14 +1181,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Limit",
-      comment: "The 'Limit' order type. Limit orders only execute when the price requirements are met"
+      comment:
+        "The 'Limit' order type. Limit orders only execute when the price requirements are met"
     )
     public static let swapMarketOrderType = NSLocalizedString(
       "wallet.swapMarketOrderType",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Market",
-      comment: "The 'Market' order type. Market orders execute immediately based on the price at the time of the order."
+      comment:
+        "The 'Market' order type. Market orders execute immediately based on the price at the time of the order."
     )
     public static let today = NSLocalizedString(
       "wallet.today",
@@ -1106,35 +1204,40 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Select Account",
-      comment: "The title of the account selection screen. Will show above a list of accounts the user may pick from"
+      comment:
+        "The title of the account selection screen. Will show above a list of accounts the user may pick from"
     )
     public static let assetDetailSubtitle = NSLocalizedString(
       "wallet.assetDetailSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "%@ Price (%@)",
-      comment: "A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT)"
+      comment:
+        "A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT)"
     )
     public static let biometricsSetupTitle = NSLocalizedString(
       "wallet.biometricsSetupTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Unlock Brave Wallet with %@",
-      comment: "The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device."
+      comment:
+        "The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device."
     )
     public static let biometricsSetupSubTitle = NSLocalizedString(
       "wallet.biometricsSetupSubTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Would you like to use %@ to unlock Brave Wallet?",
-      comment: "The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device."
+      comment:
+        "The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device."
     )
     public static let biometricsSetupEnableButtonTitle = NSLocalizedString(
       "wallet.biometricsSetupEnableButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Use %@",
-      comment: "The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device."
+      comment:
+        "The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device."
     )
     public static let biometricsSetupFaceId = NSLocalizedString(
       "wallet.biometricsSetupFaceId",
@@ -1155,14 +1258,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Copy Address",
-      comment: "The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard"
+      comment:
+        "The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard"
     )
     public static let autoLockTitle = NSLocalizedString(
       "wallet.autoLockTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Automatically Lock After",
-      comment: "The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes"
+      comment:
+        "The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes"
     )
     public static let autoLockFooter = NSLocalizedString(
       "wallet.autoLockFooter",
@@ -1176,14 +1281,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter amount",
-      comment: "The header title for the textField users will input the dollar value of the crypto they want to buy"
+      comment:
+        "The header title for the textField users will input the dollar value of the crypto they want to buy"
     )
     public static let amountInCurrency = NSLocalizedString(
       "wallet.amountInCurrency",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Amount in %@",
-      comment: "A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT'"
+      comment:
+        "A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT'"
     )
     public static let purchaseMethodButtonTitle = NSLocalizedString(
       "wallet.purchaseMethodButtonTitle",
@@ -1197,21 +1304,24 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "From",
-      comment: "A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected"
+      comment:
+        "A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected"
     )
     public static let sendCryptoAmountTitle = NSLocalizedString(
       "wallet.sendCryptoAmountTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter amount of %@ to send",
-      comment: "A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
+      comment:
+        "A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
     )
     public static let sendCryptoToTitle = NSLocalizedString(
       "wallet.sendCryptoToTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "To",
-      comment: "A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side"
+      comment:
+        "A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side"
     )
     public static let sendToCryptoAddressPlaceholder = NSLocalizedString(
       "wallet.sendToCryptoAddressPlaceholder",
@@ -1225,210 +1335,242 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Scan QR code",
-      comment: "A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes"
+      comment:
+        "A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes"
     )
     public static let sendCryptoSendButtonTitle = NSLocalizedString(
       "wallet.sendCryptoSendButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Send",
-      comment: "The title of the button for users to click when they want to send the sending-transaction"
+      comment:
+        "The title of the button for users to click when they want to send the sending-transaction"
     )
     public static let sendCryptoSendError = NSLocalizedString(
       "wallet.sendCryptoSendError",
       tableName: "BraveWallet",
       bundle: .module,
       value: "We currently cannot proceed with your transaction",
-      comment: "The error message will appear when there is any error occurs during unpproved transaction"
+      comment:
+        "The error message will appear when there is any error occurs during unpproved transaction"
     )
     public static let swapCryptoUnsupportNetworkTitle = NSLocalizedString(
       "wallet.swapCryptoUnsupportNetworkTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Unsupported chain",
-      comment: "The title below account picker when user has selected a test network to swap cryptos"
+      comment:
+        "The title below account picker when user has selected a test network to swap cryptos"
     )
     public static let swapCryptoUnsupportNetworkDescription = NSLocalizedString(
       "wallet.swapCryptoUnsupportNetworkBody",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Brave doesn't currently support swap on the %@. Please switch to a supported chain.",
-      comment: "The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network'"
+      comment:
+        "The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network'"
     )
     public static let swapCryptoSlippageTitle = NSLocalizedString(
       "wallet.swapCryptoSlippageTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Slippage Tolerance",
-      comment: "The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value"
+      comment:
+        "The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value"
     )
     public static let swapCryptoSwapButtonTitle = NSLocalizedString(
       "wallet.swapCryptoSwapButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Swap",
-      comment: "The title of the button for users to click when they want to swap between two cryptos"
+      comment:
+        "The title of the button for users to click when they want to swap between two cryptos"
     )
     public static let swapCryptoMarketPriceTitle = NSLocalizedString(
       "wallet.swapCryptoMarketPriceTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Market Price in %@",
-      comment: "The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT'"
+      comment:
+        "The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT'"
     )
     public static let refreshMarketPriceLabel = NSLocalizedString(
       "wallet.refreshMarketPriceLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Refresh market price",
-      comment: "A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets"
+      comment:
+        "A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets"
     )
     public static let swapSelectedTokens = NSLocalizedString(
       "wallet.swapSelectedTokens",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Swap selected tokens",
-      comment: "An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens."
+      comment:
+        "An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens."
     )
     public static let braveFeeLabel = NSLocalizedString(
       "wallet.braveFeeLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Brave Fee: %@",
-      comment: "The title for Brave Fee label in Swap. The fee percentage is displayed beside the label."
+      comment:
+        "The title for Brave Fee label in Swap. The fee percentage is displayed beside the label."
     )
     public static let protocolFeeLabel = NSLocalizedString(
       "wallet.protocolFeeLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Protocol Fee: %@",
-      comment: "The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label."
+      comment:
+        "The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label."
     )
     public static let braveSwapFree = NSLocalizedString(
       "wallet.braveSwapFree",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Free",
-      comment: "The text beside the striked-through percentage Brave would normally charge for a swap."
+      comment:
+        "The text beside the striked-through percentage Brave would normally charge for a swap."
     )
     public static let transactionCount = NSLocalizedString(
       "wallet.transactionCount",
       tableName: "BraveWallet",
       bundle: .module,
       value: "%lld of %lld",
-      comment: "Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4'"
+      comment:
+        "Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4'"
     )
     public static let next = NSLocalizedString(
       "wallet.next",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Next",
-      comment: "1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests."
+      comment:
+        "1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests."
     )
     public static let transactionFromToAccessibilityLabel = NSLocalizedString(
       "wallet.transactionFromToAccessibilityLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "From: %@. To: %@",
-      comment: "A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\""
+      comment:
+        "A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\""
     )
     public static let confirmationViewModeTransaction = NSLocalizedString(
       "wallet.confirmationViewModeTransaction",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transaction",
-      comment: "One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals"
+      comment:
+        "One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals"
     )
     public static let confirmationViewModeDetails = NSLocalizedString(
       "wallet.confirmationViewModeDetails",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Details",
-      comment: "One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data"
+      comment:
+        "One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data"
     )
     public static let confirmationViewEditPermissions = NSLocalizedString(
       "wallet.confirmationViewEditPermissions",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Edit permissions",
-      comment: "The title shown on the button to edit permissions / the allowance for an ERC 20 Approve transaction while confirming a transaction."
+      comment:
+        "The title shown on the button to edit permissions / the allowance for an ERC 20 Approve transaction while confirming a transaction."
     )
     public static let confirmationViewAllowSpendTitle = NSLocalizedString(
       "wallet.confirmationViewAllowSpendTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Allow this app to spend your %@?",
-      comment: "The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"Allow this app to spend your DAI?\""
+      comment:
+        "The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"Allow this app to spend your DAI?\""
     )
     public static let confirmationViewAllowSpendSubtitle = NSLocalizedString(
       "wallet.confirmationViewAllowSpendSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "By granting this permission, you are allowing this app to withdraw your %@ and automate transactions for you.",
-      comment: "The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\""
+      value:
+        "By granting this permission, you are allowing this app to withdraw your %@ and automate transactions for you.",
+      comment:
+        "The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\""
     )
     public static let confirmationViewUnlimitedWarning = NSLocalizedString(
       "wallet.confirmationViewUnlimitedWarning",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Unlimited approval requested",
-      comment: "The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited."
+      comment:
+        "The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited."
     )
     public static let confirmationViewSolSplTokenAccountCreationWarning = NSLocalizedString(
       "wallet.confirmationViewSolSplTokenAccountCreationWarning",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.",
-      comment: "The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account."
+      value:
+        "The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.",
+      comment:
+        "The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account."
     )
     public static let confirmationViewCurrentAllowance = NSLocalizedString(
       "wallet.confirmationViewCurrentAllowance",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Current Allowance",
-      comment: "The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, \"Current Allowance  100 DAI\"."
+      comment:
+        "The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, \"Current Allowance  100 DAI\"."
     )
     public static let gasFee = NSLocalizedString(
       "wallet.gasFee",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Gas Fee",
-      comment: "A title displayed beside a number describing the cost of the transaction in ETH which is called Gas"
+      comment:
+        "A title displayed beside a number describing the cost of the transaction in ETH which is called Gas"
     )
     public static let transactionFee = NSLocalizedString(
       "wallet.transactionFee",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transaction Fee",
-      comment: "A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction"
+      comment:
+        "A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction"
     )
     public static let editButtonTitle = NSLocalizedString(
       "wallet.editButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Edit",
-      comment: "A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc."
+      comment:
+        "A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc."
     )
     public static let total = NSLocalizedString(
       "wallet.total",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Total",
-      comment: "A title displayed beside a number describing the total amount of gas and ETH that will be transferred"
+      comment:
+        "A title displayed beside a number describing the total amount of gas and ETH that will be transferred"
     )
     public static let amountAndGas = NSLocalizedString(
       "wallet.amountAndGas",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Amount + Gas",
-      comment: "A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\""
+      comment:
+        "A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\""
     )
     public static let amountAndFee = NSLocalizedString(
       "wallet.amountAndFee",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Amount + Fee",
-      comment: "A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\""
+      comment:
+        "A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\""
     )
     public static let inputDataPlaceholder = NSLocalizedString(
       "wallet.inputDataPlaceholder",
@@ -1442,14 +1584,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Function Type: %d",
-      comment: "A label shown inside of a box when there is no input data for a given Solana transaction"
+      comment:
+        "A label shown inside of a box when there is no input data for a given Solana transaction"
     )
     public static let rejectAllTransactions = NSLocalizedString(
       "wallet.rejectAllTransactions",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Reject %d Transactions",
-      comment: "A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions"
+      comment:
+        "A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions"
     )
     public static let confirmTransactionTitle = NSLocalizedString(
       "wallet.confirmTransactionTitle",
@@ -1463,34 +1607,39 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Confirm Transactions",
-      comment: "The title of the transaction confirmation panel UI when there are multiple transactions to confirm"
+      comment:
+        "The title of the transaction confirmation panel UI when there are multiple transactions to confirm"
     )
     public static let confirm = NSLocalizedString(
       "wallet.confirm",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Confirm",
-      comment: "1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen."
+      comment:
+        "1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen."
     )
     public static let rejectTransactionButtonTitle = NSLocalizedString(
       "wallet.rejectTransactionButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Reject",
-      comment: "A button title to reject a transaction. It is shown below details about a given transaction"
+      comment:
+        "A button title to reject a transaction. It is shown below details about a given transaction"
     )
     public static let insufficientFunds = NSLocalizedString(
       "wallet.insufficientFunds",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Insufficient funds",
-      comment: "An error message displayed when the user does not have enough funds to make or confirm a transaction"
+      comment:
+        "An error message displayed when the user does not have enough funds to make or confirm a transaction"
     )
     public static let gasFeeDisclaimer = NSLocalizedString(
       "wallet.gasFeeDisclaimer",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "While not a guarantee, miners will likely prioritize your transaction earlier if you pay a higher fee.",
+      value:
+        "While not a guarantee, miners will likely prioritize your transaction earlier if you pay a higher fee.",
       comment: "A disclaimer shown above the UI to select a gas fee"
     )
     public static let gasFeePredefinedLimitLow = NSLocalizedString(
@@ -1498,35 +1647,40 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Low",
-      comment: "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom"
+      comment:
+        "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom"
     )
     public static let gasFeePredefinedLimitOptimal = NSLocalizedString(
       "wallet.gasFeePredefinedLimitOptimal",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Optimal",
-      comment: "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom"
+      comment:
+        "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom"
     )
     public static let gasFeePredefinedLimitHigh = NSLocalizedString(
       "wallet.gasFeePredefinedLimitHigh",
       tableName: "BraveWallet",
       bundle: .module,
       value: "High",
-      comment: "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom"
+      comment:
+        "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom"
     )
     public static let gasFeeCustomOption = NSLocalizedString(
       "wallet.gasFeeCustomOption",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Custom",
-      comment: "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves"
+      comment:
+        "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves"
     )
     public static let gasCurrentBaseFee = NSLocalizedString(
       "wallet.gasCurrentBaseFee",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Current base fee",
-      comment: "The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount"
+      comment:
+        "The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount"
     )
     public static let gasAmountLimit = NSLocalizedString(
       "wallet.gasAmountLimit",
@@ -1554,14 +1708,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Maximum fee",
-      comment: "The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount"
+      comment:
+        "The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount"
     )
     public static let saveButtonTitle = NSLocalizedString(
       "wallet.saveButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Save",
-      comment: "A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network"
+      comment:
+        "A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network"
     )
     public static let maxPriorityFeeTitle = NSLocalizedString(
       "wallet.maxPriorityFeeTitle",
@@ -1575,28 +1731,32 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Insufficient balance",
-      comment: "An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen."
+      comment:
+        "An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen."
     )
     public static let insufficientFundsForGas = NSLocalizedString(
       "wallet.insufficientFundsForGas",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Insufficient funds for gas",
-      comment: "An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen."
+      comment:
+        "An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen."
     )
     public static let activateToken = NSLocalizedString(
       "wallet.activateToken",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Activate Token %@",
-      comment: "The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC'"
+      comment:
+        "The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC'"
     )
     public static let insufficientLiquidity = NSLocalizedString(
       "wallet.insufficientLiquidity",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Insufficient liquidity",
-      comment: "An error message displayed when the user doesn't have enough liquidity to proceed with a transaction."
+      comment:
+        "An error message displayed when the user doesn't have enough liquidity to proceed with a transaction."
     )
     public static let unknownError = NSLocalizedString(
       "wallet.unknownError",
@@ -1610,49 +1770,56 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Fee: %@ %@ (%@)",
-      comment: "A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\""
+      comment:
+        "A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\""
     )
     public static let transactionApproveSymbolTitle = NSLocalizedString(
       "wallet.transactionApproveSymbolTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Approved %@ %@",
-      comment: "The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\""
+      comment:
+        "The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\""
     )
     public static let transactionApprovalTitle = NSLocalizedString(
       "wallet.transactionApprovalTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Approved",
-      comment: "The title shown for ERC20 approvals when the user doesn't have the visible asset added"
+      comment:
+        "The title shown for ERC20 approvals when the user doesn't have the visible asset added"
     )
     public static let transactionSwappedTitle = NSLocalizedString(
       "wallet.transactionSwappedTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Swapped %@ %@ to %@ %@",
-      comment: "A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\""
+      comment:
+        "A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\""
     )
     public static let transactionSendTitle = NSLocalizedString(
       "wallet.transactionSendTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sent %@ %@ (%@)",
-      comment: "A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\""
+      comment:
+        "A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\""
     )
     public static let transactionUnknownSendTitle = NSLocalizedString(
       "wallet.transactionUnknownSendTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sent %@",
-      comment: "A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\""
+      comment:
+        "A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\""
     )
     public static let viewOnBlockExplorer = NSLocalizedString(
       "wallet.viewOnBlockExplorer",
       tableName: "BraveWallet",
       bundle: .module,
       value: "View on block explorer",
-      comment: "A button title to view a given transaction on the block explorer for the current network/chain."
+      comment:
+        "A button title to view a given transaction on the block explorer for the current network/chain."
     )
     public static let transactionStatusConfirmed = NSLocalizedString(
       "wallet.transactionStatusConfirmed",
@@ -1722,14 +1889,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Select network",
-      comment: "A title that will be displayed on top of the text field for users to choose a network they are willing to add the custom asset in."
+      comment:
+        "A title that will be displayed on top of the text field for users to choose a network they are willing to add the custom asset in."
     )
     public static let customTokenNetworkButtonTitle = NSLocalizedString(
       "wallet.customTokenNetworkButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Select network",
-      comment: "A title for the btton that users can click to choose the network they are willing to add custom asset in."
+      comment:
+        "A title for the btton that users can click to choose the network they are willing to add custom asset in."
     )
     public static let customTokenTitle = NSLocalizedString(
       "wallet.customTokenTitle",
@@ -1743,7 +1912,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Token name",
-      comment: "A title that will be displayed on top of the text field for users to input the custom token name"
+      comment:
+        "A title that will be displayed on top of the text field for users to input the custom token name"
     )
     public static let enterTokenName = NSLocalizedString(
       "wallet.enterTokenName",
@@ -1757,14 +1927,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Token address",
-      comment: "A title that will be displayed on top of the text field for users to input the custom token address"
+      comment:
+        "A title that will be displayed on top of the text field for users to input the custom token address"
     )
     public static let tokenMintAddress = NSLocalizedString(
       "wallet.tokenMintAddress",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Mint address",
-      comment: "A title that will be displayed on top of the text field for users to input the custom token mint address"
+      comment:
+        "A title that will be displayed on top of the text field for users to input the custom token mint address"
     )
     public static let enterAddress = NSLocalizedString(
       "wallet.enterAddress",
@@ -1778,7 +1950,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Token symbol",
-      comment: "A title that will be displayed on top of the text field for users to input the custom token symbol"
+      comment:
+        "A title that will be displayed on top of the text field for users to input the custom token symbol"
     )
     public static let enterTokenSymbol = NSLocalizedString(
       "wallet.enterTokenSymbol",
@@ -1792,21 +1965,24 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Decimals of precision",
-      comment: "A title that will be displayed on top of the text field for users to input the custom token's decimals of precision"
+      comment:
+        "A title that will be displayed on top of the text field for users to input the custom token's decimals of precision"
     )
     public static let addCustomTokenAdvanced = NSLocalizedString(
       "wallet.addCustomTokenAdvanced",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Advanced",
-      comment: "A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id."
+      comment:
+        "A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id."
     )
     public static let addCustomTokenIconURL = NSLocalizedString(
       "wallet.addCustomTokenIconURL",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Icon URL",
-      comment: "A title that will be displayed on top of the text field for users to input the custom token's icon URL."
+      comment:
+        "A title that will be displayed on top of the text field for users to input the custom token's icon URL."
     )
     public static let enterTokenIconURL = NSLocalizedString(
       "wallet.enterTokenIconURL",
@@ -1820,35 +1996,40 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Coingecko ID",
-      comment: "A title that will be displayed on top of the text field for users to input the custom token's coingecko ID."
+      comment:
+        "A title that will be displayed on top of the text field for users to input the custom token's coingecko ID."
     )
     public static let enterTokenCoingeckoId = NSLocalizedString(
       "wallet.enterTokenCoingeckoId",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter token Coingecko ID",
-      comment: "A placeholder for the text field that users will input the custom token Coingecko ID."
+      comment:
+        "A placeholder for the text field that users will input the custom token Coingecko ID."
     )
     public static let addCustomTokenId = NSLocalizedString(
       "wallet.addCustomTokenId",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Token ID (only for ERC721)",
-      comment: "A title that will be displayed on top of the text field for users to input the custom token's ID."
+      comment:
+        "A title that will be displayed on top of the text field for users to input the custom token's ID."
     )
     public static let addCustomTokenTitle = NSLocalizedString(
       "wallet.addCustomTokenTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Token",
-      comment: "A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token."
+      comment:
+        "A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token."
     )
     public static let addCustomNFTTitle = NSLocalizedString(
       "wallet.addCustomNFTTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "NFT",
-      comment: "A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token."
+      comment:
+        "A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token."
     )
     public static let enterTokenId = NSLocalizedString(
       "wallet.enterTokenId",
@@ -1862,49 +2043,57 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Cannot add custom token",
-      comment: "The title of the error pop up when there is an error occurs during the process of adding a custom token."
+      comment:
+        "The title of the error pop up when there is an error occurs during the process of adding a custom token."
     )
     public static let addCustomTokenErrorMessage = NSLocalizedString(
       "wallet.addCustomTokenErrorMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Failed to add custom token, please try again.",
-      comment: "The message of the error pop up when there is an error occurs during the process of adding a custom token."
+      comment:
+        "The message of the error pop up when there is an error occurs during the process of adding a custom token."
     )
     public static let removeCustomTokenErrorTitle = NSLocalizedString(
       "wallet.removeCustomTokenErrorTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Cannot remove custom token",
-      comment: "The title of the error pop up when there is an error occurs during the process of removing a custom token."
+      comment:
+        "The title of the error pop up when there is an error occurs during the process of removing a custom token."
     )
     public static let removeCustomTokenErrorMessage = NSLocalizedString(
       "wallet.removeCustomTokenErrorMessage",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Please verify this is a new custom asset, check your internet connection, and try again.",
-      comment: "The message in the error pop up when there is an error occurs during the process of removing a custom token."
+      value:
+        "Please verify this is a new custom asset, check your internet connection, and try again.",
+      comment:
+        "The message in the error pop up when there is an error occurs during the process of removing a custom token."
     )
     public static let addCustomAsset = NSLocalizedString(
       "wallet.addCustomAsset",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Add custom asset",
-      comment: "The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen."
+      comment:
+        "The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen."
     )
     public static let delete = NSLocalizedString(
       "wallet.delete",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Delete",
-      comment: "The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen."
+      comment:
+        "The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen."
     )
     public static let transactionTypeApprove = NSLocalizedString(
       "wallet.transactionTypeApprove",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Approve",
-      comment: "Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info"
+      comment:
+        "Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info"
     )
     public static let perGasPriceTitle = NSLocalizedString(
       "wallet.perGasPriceTitle",
@@ -1925,98 +2114,121 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Lock",
-      comment: "The title of the lock option inside the menu when user clicks the three dots button beside assets search button."
+      comment:
+        "The title of the lock option inside the menu when user clicks the three dots button beside assets search button."
     )
     public static let lockWallet = NSLocalizedString(
       "wallet.lockWallet",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Lock Wallet",
-      comment: "The title of the lock option inside the menu when user clicks the three dots button beside assets search button."
+      comment:
+        "The title of the lock option inside the menu when user clicks the three dots button beside assets search button."
+    )
+    public static let backUpWallet = NSLocalizedString(
+      "wallet.backUpWallet",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Back Up Now",
+      comment:
+        "The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button."
     )
     public static let settings = NSLocalizedString(
       "wallet.settings",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Settings",
-      comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button."
+      comment:
+        "The title of the settings option inside the menu when user clicks the three dots button beside assets search button."
     )
     public static let walletSettings = NSLocalizedString(
       "wallet.walletSettings",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Wallet Settings",
-      comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button."
+      comment:
+        "The title of the settings option inside the menu when user clicks the three dots button beside assets search button."
     )
     public static let balances = NSLocalizedString(
       "wallet.balances",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Balances",
-      comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open."
+      comment:
+        "The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open."
     )
     public static let graph = NSLocalizedString(
       "wallet.graph",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Graph",
-      comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open."
+      comment:
+        "The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open."
     )
     public static let nftsTab = NSLocalizedString(
       "wallet.nftsTab",
       tableName: "BraveWallet",
       bundle: .module,
       value: "NFTs Tab",
-      comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open."
+      comment:
+        "The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open."
     )
     public static let helpCenter = NSLocalizedString(
       "wallet.helpCenter",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Help Center",
-      comment: "The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel."
+      comment:
+        "The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel."
     )
     public static let swapDexAggrigatorNote = NSLocalizedString(
       "wallet.swapDexAggrigatorNote",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Brave uses %@ as a DEX aggregator.",
-      comment: "A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange)"
+      comment:
+        "A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange)"
     )
     public static let swapDexAggrigatorDisclaimer = NSLocalizedString(
       "wallet.swapDexAggrigatorDisclaimer",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "%@ will process the %@ address and IP address to fulfill a transaction (including getting quotes). %@ will ONLY use this data for the purposes of processing transactions.",
-      comment: "A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage."
+      value:
+        "%@ will process the %@ address and IP address to fulfill a transaction (including getting quotes). %@ will ONLY use this data for the purposes of processing transactions.",
+      comment:
+        "A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage."
     )
     public static let chartAxisDateLabel = NSLocalizedString(
       "wallet.chartAxisDateLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Date",
-      comment: "The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price"
+      comment:
+        "The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price"
     )
     public static let chartAxisPriceLabel = NSLocalizedString(
       "wallet.chartAxisPriceLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Price",
-      comment: "The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date"
+      comment:
+        "The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date"
     )
     public static let coinGeckoDisclaimer = NSLocalizedString(
       "wallet.coinGeckoDisclaimer",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Price data powered by CoinGecko",
-      comment: "A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product."
+      comment:
+        "A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product."
     )
     public static let braveSwapFeeDisclaimer = NSLocalizedString(
       "wallet.braveSwapFeeDisclaimer",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Quote includes a %@ Brave fee.",
-      comment: "A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee'"
+      comment:
+        "A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee'"
     )
     public static let screenshotDetectedTitle = NSLocalizedString(
       "wallet.screenshotDetectedTitle",
@@ -2029,14 +2241,16 @@ extension Strings {
       "wallet.recoveryPhraseScreenshotDetectedMessage",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Warning: A screenshot of your recovery phrase may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
+      value:
+        "Warning: A screenshot of your recovery phrase may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
       comment: "The message displayed when the user takes a screenshot of their recovery phrase"
     )
     public static let privateKeyScreenshotDetectedMessage = NSLocalizedString(
       "wallet.privateKeyScreenshotDetectedMessage",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Warning: A screenshot of your private key may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
+      value:
+        "Warning: A screenshot of your private key may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
       comment: "The message displayed when the user takes a screenshot of their private key"
     )
     public static let sendWarningAddressIsOwn = NSLocalizedString(
@@ -2044,182 +2258,209 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "The receiving address is your own address",
-      comment: "A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address."
+      comment:
+        "A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address."
     )
     public static let sendWarningAddressIsContract = NSLocalizedString(
       "wallet.sendWarningAddressIsContract",
       tableName: "BraveWallet",
       bundle: .module,
       value: "The receiving address is a token's contract address",
-      comment: "A warning that appears below the send crypto address text field, when the input `To` address is a token contract address."
+      comment:
+        "A warning that appears below the send crypto address text field, when the input `To` address is a token contract address."
     )
     public static let sendWarningAddressNotValid = NSLocalizedString(
       "wallet.sendWarningAddressNotValid",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Not a valid ETH address",
-      comment: "A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address."
+      comment:
+        "A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address."
     )
     public static let sendWarningAddressMissingChecksumInfo = NSLocalizedString(
       "wallet.sendWarningAddressMissingChecksumInfo",
       tableName: "BraveWallet",
       bundle: .module,
       value: "This address cannot be verified (missing checksum). Proceed?",
-      comment: "A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information."
+      comment:
+        "A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information."
     )
     public static let sendWarningAddressInvalidChecksum = NSLocalizedString(
       "wallet.sendWarningAddressInvalidChecksum",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.",
-      comment: "A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum."
+      value:
+        "Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.",
+      comment:
+        "A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum."
     )
     public static let sendWarningSolAddressNotValid = NSLocalizedString(
       "wallet.sendWarningSolAddressNotValid",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Not a valid SOL address",
-      comment: "A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address."
+      comment:
+        "A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address."
     )
     public static let sendErrorDomainNotRegistered = NSLocalizedString(
       "wallet.sendErrorDomainNotRegistered",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Domain doesn\'t have a linked %@ address",
-      comment: "An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address`"
+      comment:
+        "An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address`"
     )
     public static let sendErrorInvalidRecipientAddress = NSLocalizedString(
       "wallet.sendErrorInvalidRecipientAddress",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Invalid recipient address",
-      comment: "An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid"
+      comment:
+        "An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid"
     )
     public static let customNetworkChainIdTitle = NSLocalizedString(
       "wallet.customNetworkChainIdTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "The ID of the chain",
-      comment: "The title above the input field for users to input network chain ID in Custom Network Details Screen."
+      comment:
+        "The title above the input field for users to input network chain ID in Custom Network Details Screen."
     )
     public static let customNetworkChainIdPlaceholder = NSLocalizedString(
       "wallet.customNetworkChainIdPlaceholder",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter chain ID",
-      comment: "The placeholder for the input field for users to input network chain ID in Custom Network Details Screen."
+      comment:
+        "The placeholder for the input field for users to input network chain ID in Custom Network Details Screen."
     )
     public static let customNetworkChainIdErrMsg = NSLocalizedString(
       "wallet.customNetworkChainIdErrMsg",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Invalid format—chain ID must be a positive number.",
-      comment: "The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen."
+      comment:
+        "The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen."
     )
     public static let customNetworkChainNameTitle = NSLocalizedString(
       "wallet.customNetworkChainNameTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "The name of the chain",
-      comment: "The title above the input field for users to input network chain name in Custom Network Details Screen."
+      comment:
+        "The title above the input field for users to input network chain name in Custom Network Details Screen."
     )
     public static let customNetworkChainNamePlaceholder = NSLocalizedString(
       "wallet.customNetworkChainNamePlaceholder",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter chain name",
-      comment: "The placeholder for the input field for users to input network chain name in Custom Network Details Screen."
+      comment:
+        "The placeholder for the input field for users to input network chain name in Custom Network Details Screen."
     )
     public static let customNetworkEmptyErrMsg = NSLocalizedString(
       "wallet.customNetworkEmptyErrMsg",
       tableName: "BraveWallet",
       bundle: .module,
       value: "This field cannot be blank.",
-      comment: "The error message for the input fields cannot be empty in Custom Network Details Screen."
+      comment:
+        "The error message for the input fields cannot be empty in Custom Network Details Screen."
     )
     public static let customNetworkSymbolNameTitle = NSLocalizedString(
       "wallet.customNetworkSymbolNameTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Chain's currency name",
-      comment: "The title above the input field for users to input network currency symbol name in Custom Network Details Screen."
+      comment:
+        "The title above the input field for users to input network currency symbol name in Custom Network Details Screen."
     )
     public static let customNetworkSymbolNamePlaceholder = NSLocalizedString(
       "wallet.customNetworkSymbolNamePlaceholder",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter currency name",
-      comment: "The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen."
+      comment:
+        "The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen."
     )
     public static let customNetworkSymbolTitle = NSLocalizedString(
       "wallet.customNetworkSymbolTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Chain's currency symbol",
-      comment: "The title above the input field for users to input network currency symbol in Custom Network Details Screen."
+      comment:
+        "The title above the input field for users to input network currency symbol in Custom Network Details Screen."
     )
     public static let customNetworkSymbolPlaceholder = NSLocalizedString(
       "wallet.customNetworkSymbolPlaceholder",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter currency symbol",
-      comment: "The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen."
+      comment:
+        "The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen."
     )
     public static let customNetworkCurrencyDecimalTitle = NSLocalizedString(
       "wallet.customNetworkCurrencyDecimalTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Chain's currency decimals",
-      comment: "The title above the input field for users to input network currency decimal in Custom Network Details Screen."
+      comment:
+        "The title above the input field for users to input network currency decimal in Custom Network Details Screen."
     )
     public static let customNetworkCurrencyDecimalPlaceholder = NSLocalizedString(
       "wallet.customNetworkCurrencyDecimalPlaceholder",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter currency decimals",
-      comment: "The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen."
+      comment:
+        "The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen."
     )
     public static let customNetworkCurrencyDecimalErrMsg = NSLocalizedString(
       "wallet.customNetworkCurrencyDecimalErrMsg",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Invalid format—currency decimals must be a positive number.",
-      comment: "The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen."
+      comment:
+        "The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen."
     )
     public static let customNetworkRpcUrlsTitle = NSLocalizedString(
       "wallet.customNetworkRpcUrlsTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "RPC URLs",
-      comment: "The title above the input fields for users to input network rpc urls in Custom Network Details Screen."
+      comment:
+        "The title above the input fields for users to input network rpc urls in Custom Network Details Screen."
     )
     public static let customNetworkUrlsPlaceholder = NSLocalizedString(
       "wallet.customNetworkUrlsPlaceholder",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enter URL(s)",
-      comment: "The placeholder for the input field for users to input network rpc url in Custom Network Details Screen."
+      comment:
+        "The placeholder for the input field for users to input network rpc url in Custom Network Details Screen."
     )
     public static let customNetworkInvalidAddressErrMsg = NSLocalizedString(
       "wallet.customNetworkInvalidAddressErrMsg",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Invalid address.",
-      comment: "The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen."
+      comment:
+        "The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen."
     )
     public static let customNetworkIconUrlsTitle = NSLocalizedString(
       "wallet.customNetworkIconUrlsTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Icon URLs",
-      comment: "The title above the input fields for users to input network icon urls in Custom Network Details Screen."
+      comment:
+        "The title above the input fields for users to input network icon urls in Custom Network Details Screen."
     )
     public static let customNetworkBlockExplorerUrlsTitle = NSLocalizedString(
       "wallet.customNetworkBlockExplorerUrlsTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Block explorer URLs",
-      comment: "The title above the input fields for users to input network block explorer urls in Custom Network Details Screen."
+      comment:
+        "The title above the input fields for users to input network block explorer urls in Custom Network Details Screen."
     )
     public static let editfCustomNetworkTitle = NSLocalizedString(
       "wallet.editfCustomNetworkTitle",
@@ -2240,7 +2481,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Network Details",
-      comment: "The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website."
+      comment:
+        "The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website."
     )
     public static let settingsNetworkButtonTitle = NSLocalizedString(
       "wallet.settingsNetworkButtonTitle",
@@ -2261,21 +2503,24 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Chain ID already exists",
-      comment: "An error message will pop up when the user tries to add a custom network that its id already exists."
+      comment:
+        "An error message will pop up when the user tries to add a custom network that its id already exists."
     )
     public static let failedToAddCustomNetworkErrorTitle = NSLocalizedString(
       "wallet.failedToAddCustomNetworkErrorTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Failed to add this network.",
-      comment: "The title of an alert when the custom network the user attempted to add fails for some reason"
+      comment:
+        "The title of an alert when the custom network the user attempted to add fails for some reason"
     )
     public static let failedToRemoveCustomNetworkErrorMessage = NSLocalizedString(
       "wallet.failedToRemoveCustomNetworkErrorMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Failed to remove network.\nPlease try again.",
-      comment: "The message of an alert when the user attempted to remove custom network and it fails for some reason"
+      comment:
+        "The message of an alert when the user attempted to remove custom network and it fails for some reason"
     )
     public static let customNetworksTitle = NSLocalizedString(
       "wallet.customNetworksTitle",
@@ -2296,7 +2541,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Add Network…",
-      comment: "The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network."
+      comment:
+        "The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network."
     )
     public static let noNetworks = NSLocalizedString(
       "wallet.noNetworks",
@@ -2316,7 +2562,8 @@ extension Strings {
       "wallet.transactionBacklogBody",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "You're attempting to start a new transaction while you have previously submitted transactions that have not been confirmed. This will block any new ones from being submitted.",
+      value:
+        "You're attempting to start a new transaction while you have previously submitted transactions that have not been confirmed. This will block any new ones from being submitted.",
       comment: "Text body of confirmation prompt when there's a backlog of wallet transactions"
     )
     public static let transactionBacklogAcknowledgement = NSLocalizedString(
@@ -2324,34 +2571,40 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Clear & replace the incomplete transaction(s)",
-      comment: "Text of toggle for a confirmation prompt when there's a backlog of wallet transactions"
+      comment:
+        "Text of toggle for a confirmation prompt when there's a backlog of wallet transactions"
     )
     public static let learnMoreButton = NSLocalizedString(
       "wallet.learnMoreButton",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Learn More",
-      comment: "Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view"
+      comment:
+        "Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view"
     )
     public static let transactionBacklogAfterReplacement = NSLocalizedString(
       "wallet.transactionBacklogAfterReplacement",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "For now, no additional action is required. Just wait for the unconfirmed transactions to clear.",
-      comment: "Additional information, when users have previously clear and replace the incomplete transaction(s)"
+      value:
+        "For now, no additional action is required. Just wait for the unconfirmed transactions to clear.",
+      comment:
+        "Additional information, when users have previously clear and replace the incomplete transaction(s)"
     )
     public static let settingsResetTransactionTitle = NSLocalizedString(
       "wallet.settingsResetTransactionTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Clear Transaction & Nonce Info",
-      comment: "The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
+      comment:
+        "The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
     )
     public static let settingsResetTransactionFooter = NSLocalizedString(
       "wallet.settingsResetTransactionFooter",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Clearing transactions may be useful for developers or when clearing state on a local server",
+      value:
+        "Clearing transactions may be useful for developers or when clearing state on a local server",
       comment: "The footer message below the button to reset transaction"
     )
     public static let settingsResetTransactionAlertTitle = NSLocalizedString(
@@ -2359,28 +2612,32 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Are you sure you want to reset transacton and nonce information?",
-      comment: "The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
+      comment:
+        "The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
     )
     public static let settingsResetTransactionAlertMessage = NSLocalizedString(
       "wallet.settingsResetTransactionAlertMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "This option is mostly used by developers running a local test server",
-      comment: "The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
+      comment:
+        "The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
     )
     public static let settingsResetTransactionAlertButtonTitle = NSLocalizedString(
       "wallet.settingsResetTransactionAlertButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Reset",
-      comment: "The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
+      comment:
+        "The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
     )
     public static let advancedSettingsTransaction = NSLocalizedString(
       "wallet.advancedSettingsTransaction",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Advanced settings",
-      comment: "The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen."
+      comment:
+        "The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen."
     )
     public static let editNonceHeader = NSLocalizedString(
       "wallet.editNonceHeader",
@@ -2393,7 +2650,8 @@ extension Strings {
       "wallet.editNonceFooter",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Transaction may not be propagated to the network if custom nonce value is non-sequential or has other errors",
+      value:
+        "Transaction may not be propagated to the network if custom nonce value is non-sequential or has other errors",
       comment: "The footer title for edit nonce section in advanced settings screen."
     )
     public static let editNoncePlaceholder = NSLocalizedString(
@@ -2408,7 +2666,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Please check your inputs and try again.",
-      comment: "The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value."
+      comment:
+        "The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value."
     )
     public static let editTransactionErrorCTA = NSLocalizedString(
       "wallet.editTransactionErrorCTA",
@@ -2429,42 +2688,48 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transaction fee",
-      comment: "The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount."
+      comment:
+        "The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount."
     )
     public static let transactionDetailsMarketPriceTitle = NSLocalizedString(
       "wallet.transactionDetailsMarketPriceTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Market price",
-      comment: "The label for the market price of the asset used in a cryptocurrency transaction. Appears next to the formatted currency such as $1523.50"
+      comment:
+        "The label for the market price of the asset used in a cryptocurrency transaction. Appears next to the formatted currency such as $1523.50"
     )
     public static let transactionDetailsDateTitle = NSLocalizedString(
       "wallet.transactionDetailsDateTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Date",
-      comment: "The label for displaying the date a transaction occurred. Appears next to the formatted date such as '3:00PM - Jan 1 2022'"
+      comment:
+        "The label for displaying the date a transaction occurred. Appears next to the formatted date such as '3:00PM - Jan 1 2022'"
     )
     public static let transactionDetailsNetworkTitle = NSLocalizedString(
       "wallet.transactionDetailsNetworkTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Network",
-      comment: "The label for the network a transaction occurred on. Appears next to 'Ethereum Mainnet', 'Rinkeby Test Network', 'Ropsten Test Network', etc. "
+      comment:
+        "The label for the network a transaction occurred on. Appears next to 'Ethereum Mainnet', 'Rinkeby Test Network', 'Ropsten Test Network', etc. "
     )
     public static let transactionDetailsTxHashTitle = NSLocalizedString(
       "wallet.transactionDetailsTransactionHashTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transaction Hash",
-      comment: "The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction."
+      comment:
+        "The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction."
     )
     public static let transactionDetailsStatusTitle = NSLocalizedString(
       "wallet.transactionDetailsStatusTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Status",
-      comment: "The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc."
+      comment:
+        "The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc."
     )
     public static let sent = NSLocalizedString(
       "wallet.sent",
@@ -2478,63 +2743,73 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Allow Biometric Unlock",
-      comment: "A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings."
+      comment:
+        "A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings."
     )
     public static let settingsEnableBiometricsFooter = NSLocalizedString(
       "wallet.settingsEnableBiometricsFooter",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Toggle on if you'd like to use biometrics (Face ID / Touch ID) to unlock your wallet",
-      comment: "The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings."
+      comment:
+        "The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings."
     )
     public static let enterPasswordForBiometricsNavTitle = NSLocalizedString(
       "wallet.enterPasswordForBiometricsNavTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enable Biometrics",
-      comment: "The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings."
+      comment:
+        "The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings."
     )
     public static let enterPasswordForBiometricsTitle = NSLocalizedString(
       "wallet.enterPasswordForBiometricsTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Enter your wallet password to enable biometrics for wallet (you'll only be asked for this once)",
-      comment: "The title displayed on the screen to enter password to enable biometrics unlock from wallet settings."
+      value:
+        "Enter your wallet password to enable biometrics for wallet (you'll only be asked for this once)",
+      comment:
+        "The title displayed on the screen to enter password to enable biometrics unlock from wallet settings."
     )
     public static let dappsConnectionNotificationTitle = NSLocalizedString(
       "wallet.dappsConnectionNotificationTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "This page wants to interact with Brave Wallet",
-      comment: "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet."
+      comment:
+        "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet."
     )
     public static let dappsConnectionNotificationOriginTitle = NSLocalizedString(
       "wallet.dappsConnectionNotificationOriginTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "%@ wants to interact with Brave Wallet",
-      comment: "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\""
+      comment:
+        "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\""
     )
     public static let editPermissionsTitle = NSLocalizedString(
       "wallet.editPermissionsTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Edit Permissions",
-      comment: "The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction."
+      comment:
+        "The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction."
     )
     public static let editPermissionsApproveUnlimited = NSLocalizedString(
       "wallet.editPermissionsApproveUnlimited",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Unlimited",
-      comment: "The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount."
+      comment:
+        "The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount."
     )
     public static let editPermissionsAllowanceHeader = NSLocalizedString(
       "wallet.editPermissionsAllowanceHeader",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Spend limit permission allows %@ to withdraw and spend up to the following amount:",
-      comment: "The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\""
+      comment:
+        "The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\""
     )
     public static let editPermissionsProposedAllowanceHeader = NSLocalizedString(
       "wallet.editPermissionsProposedAllowanceHeader",
@@ -2555,7 +2830,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Set Unlimited",
-      comment: "The title of the button shown beside the custom allowance input field to make the custom allowance value \"Unlimited\"."
+      comment:
+        "The title of the button shown beside the custom allowance input field to make the custom allowance value \"Unlimited\"."
     )
     public static let newSiteConnectScreenTitle = NSLocalizedString(
       "wallet.newSiteConnectScreenTitle",
@@ -2583,35 +2859,40 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "View the addresses of your permitted accounts (required)",
-      comment: "A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with."
+      comment:
+        "A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with."
     )
     public static let settingsDefaultBaseCurrencyTitle = NSLocalizedString(
       "wallet.settingsDefaultBaseCurrencyTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Default Base Currency",
-      comment: "The title that appears before the current default base currency code. Example: \"Default base currency: USD\""
+      comment:
+        "The title that appears before the current default base currency code. Example: \"Default base currency: USD\""
     )
     public static let showTestNetworksTitle = NSLocalizedString(
       "wallet.showTestNetworksTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Show Test Networks",
-      comment: "A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings"
+      comment:
+        "A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings"
     )
     public static let addSuggestedTokenTitle = NSLocalizedString(
       "wallet.addSuggestedTokenTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Add Suggested Token",
-      comment: "The title of the view shown over a dapps website that requests the user add / approve a new token."
+      comment:
+        "The title of the view shown over a dapps website that requests the user add / approve a new token."
     )
     public static let addSuggestedTokenSubtitle = NSLocalizedString(
       "wallet.addSuggestedTokenSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Would you like to import this token?",
-      comment: "The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does."
+      comment:
+        "The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does."
     )
     public static let contractAddressAccessibilityLabel = NSLocalizedString(
       "wallet.contractAddressAccessibilityLabel",
@@ -2625,112 +2906,128 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Switch Network",
-      comment: "The title of the view shown over a dapps website that requests the user change the current network."
+      comment:
+        "The title of the view shown over a dapps website that requests the user change the current network."
     )
     public static let switchNetworkSubtitle = NSLocalizedString(
       "wallet.switchNetworkSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Allow this site to switch the network?",
-      comment: "The subtitle of the view shown over a dapps website that requests permission from the user to change the current network."
+      comment:
+        "The subtitle of the view shown over a dapps website that requests permission from the user to change the current network."
     )
     public static let switchNetworkDescription = NSLocalizedString(
       "wallet.switchNetworkDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "This will switch the network to a previously added network",
-      comment: "The description of the view shown over a dapps website that describes what switching the network will do."
+      comment:
+        "The description of the view shown over a dapps website that describes what switching the network will do."
     )
     public static let switchNetworkButtonTitle = NSLocalizedString(
       "wallet.switchNetworkButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Switch",
-      comment: "The title of the button to approve switching the network on a switch network request from a dapps website."
+      comment:
+        "The title of the button to approve switching the network on a switch network request from a dapps website."
     )
     public static let addNetworkTitle = NSLocalizedString(
       "wallet.addNetworkTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Add Network",
-      comment: "The title of the view shown over a dapps website that requests the user add a new network."
+      comment:
+        "The title of the view shown over a dapps website that requests the user add a new network."
     )
     public static let addNetworkSubtitle = NSLocalizedString(
       "wallet.addNetworkSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Allow this site to add a network?",
-      comment: "The subtitle of the view shown over a dapps website that requests permission from the user to add a new network."
+      comment:
+        "The subtitle of the view shown over a dapps website that requests permission from the user to add a new network."
     )
     public static let addNetworkDescription = NSLocalizedString(
       "wallet.addNetworkDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "This will allow this network to be used within Brave Wallet.",
-      comment: "The description of the view shown over a dapps website that describes what adding a new network will do."
+      comment:
+        "The description of the view shown over a dapps website that describes what adding a new network will do."
     )
     public static let approveNetworkButtonTitle = NSLocalizedString(
       "wallet.approveNetworkButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Approve",
-      comment: "The title of the button to approve adding a new network on a add new network request from a dapps website."
+      comment:
+        "The title of the button to approve adding a new network on a add new network request from a dapps website."
     )
     public static let networkNameTitle = NSLocalizedString(
       "wallet.networkNameTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Network Name",
-      comment: "The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website."
+      comment:
+        "The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website."
     )
     public static let networkURLTitle = NSLocalizedString(
       "wallet.networkURLTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Network URL",
-      comment: "The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website."
+      comment:
+        "The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website."
     )
     public static let viewDetails = NSLocalizedString(
       "wallet.viewDetails",
       tableName: "BraveWallet",
       bundle: .module,
       value: "View Details",
-      comment: "The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add."
+      comment:
+        "The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add."
     )
     public static let signatureRequestTitle = NSLocalizedString(
       "wallet.signatureRequestTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Signature Requested",
-      comment: "A title of the view shown over a dapps website that requests the user sign a message."
+      comment:
+        "A title of the view shown over a dapps website that requests the user sign a message."
     )
     public static let signatureRequestSubtitle = NSLocalizedString(
       "wallet.signatureRequestSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Your signature is being requested",
-      comment: "A subtitle of the view shown over a dapps website that requests the user sign a message."
+      comment:
+        "A subtitle of the view shown over a dapps website that requests the user sign a message."
     )
     public static let signatureRequestDomainTitle = NSLocalizedString(
       "wallet.signatureRequestDomainTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Domain:",
-      comment: "A title displayed inside the text view in Signature Request View above the request's domain information."
+      comment:
+        "A title displayed inside the text view in Signature Request View above the request's domain information."
     )
     public static let signatureRequestMessageTitle = NSLocalizedString(
       "wallet.signatureRequestMessageTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Message:",
-      comment: "A title displayed inside the text view in Signature Request View above the request's message."
+      comment:
+        "A title displayed inside the text view in Signature Request View above the request's message."
     )
     public static let sign = NSLocalizedString(
       "wallet.sign",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sign",
-      comment: "The title of the button used to sign a message request on the signature request view."
+      comment:
+        "The title of the button used to sign a message request on the signature request view."
     )
     public static let web3PreferencesSectionTitle = NSLocalizedString(
       "wallet.web3PreferencesSectionTitle",
@@ -2744,7 +3041,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Default Ethereum Wallet",
-      comment: "The title for the entry displaying the current preferred default Ethereum wallet is."
+      comment:
+        "The title for the entry displaying the current preferred default Ethereum wallet is."
     )
     public static let web3PreferencesDefaultSolWallet = NSLocalizedString(
       "wallet.web3PreferencesDefaultSolWallet",
@@ -2758,77 +3056,88 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sites Can Request Access to Your Ethereum Wallet",
-      comment: "The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API."
+      comment:
+        "The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API."
     )
     public static let web3PreferencesAllowSolProviderAccess = NSLocalizedString(
       "wallet.web3PreferencesAllowSolProviderAccess",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sites Can Request Access to Your Solana Wallet",
-      comment: "The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API."
+      comment:
+        "The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API."
     )
     public static let web3PreferencesDisplayWeb3Notifications = NSLocalizedString(
       "wallet.web3PreferencesDisplayWeb3Notifications",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Display Web3 Notifications",
-      comment: "The title for the entry displaying the preferred option to display web3 site notifications."
+      comment:
+        "The title for the entry displaying the preferred option to display web3 site notifications."
     )
     public static let web3PreferencesManageSiteConnections = NSLocalizedString(
       "wallet.web3PreferencesManageSiteConnections",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Manage Site Connections",
-      comment: "The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen."
+      comment:
+        "The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen."
     )
     public static let manageSiteConnectionsFilterPlaceholder = NSLocalizedString(
       "wallet.manageSiteConnectionsFilterPlaceholder",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Filter Connected DApps",
-      comment: "The filter in the search bar for the screen to manage web3 sites account connections."
+      comment:
+        "The filter in the search bar for the screen to manage web3 sites account connections."
     )
     public static let manageSiteConnectionsRemoveAll = NSLocalizedString(
       "wallet.manageSiteConnectionsRemoveAll",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Remove All",
-      comment: "The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions."
+      comment:
+        "The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions."
     )
     public static let manageSiteConnectionsConfirmAlertTitle = NSLocalizedString(
       "wallet.manageSiteConnectionsConfirmAlertTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Remove all permissions?",
-      comment: "The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections."
+      comment:
+        "The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections."
     )
     public static let manageSiteConnectionsConfirmAlertMessage = NSLocalizedString(
       "wallet.manageSiteConnectionsConfirmAlertMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "This will remove all Wallet connection permissions for all websites.",
-      comment: "The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections."
+      comment:
+        "The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections."
     )
     public static let manageSiteConnectionsDetailConfirmAlertMessage = NSLocalizedString(
       "wallet.manageSiteConnectionsDetailConfirmAlertMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "This will remove all Wallet connection permissions for this website.",
-      comment: "The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections."
+      comment:
+        "The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections."
     )
     public static let manageSiteConnectionsConfirmAlertRemove = NSLocalizedString(
       "wallet.manageSiteConnectionsConfirmAlertRemove",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Remove",
-      comment: "The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections."
+      comment:
+        "The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections."
     )
     public static let manageSiteConnectionsAccount = NSLocalizedString(
       "wallet.manageSiteConnectionsAccount",
       tableName: "BraveWallet",
       bundle: .module,
       value: "%lld %@",
-      comment: "The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\")"
+      comment:
+        "The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\")"
     )
     public static let manageSiteConnectionsAccountSingular = NSLocalizedString(
       "wallet.manageSiteConnectionsAccountSingular",
@@ -2849,21 +3158,24 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Connected %@ Accounts",
-      comment: "The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc."
+      comment:
+        "The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc."
     )
     public static let walletTypeNone = NSLocalizedString(
       "wallet.walletTypeNone",
       tableName: "BraveWallet",
       bundle: .module,
       value: "None",
-      comment: "The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets."
+      comment:
+        "The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets."
     )
     public static let unlockWallet = NSLocalizedString(
       "wallet.unlockWallet",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Unlock Wallet",
-      comment: "The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen."
+      comment:
+        "The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen."
     )
     public static let walletPanelSetupWalletDescription = NSLocalizedString(
       "wallet.walletPanelSetupWalletDescription",
@@ -2877,21 +3189,24 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Open wallet in full screen",
-      comment: "The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner."
+      comment:
+        "The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner."
     )
     public static let editSiteConnectionScreenTitle = NSLocalizedString(
       "wallet.editSiteConnectionScreenTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Connections",
-      comment: "The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts."
+      comment:
+        "The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts."
     )
     public static let editSiteConnectionConnectedAccount = NSLocalizedString(
       "wallet.editSiteConnectionConnectedAccount",
       tableName: "BraveWallet",
       bundle: .module,
       value: "%lld %@ connected",
-      comment: "The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\")"
+      comment:
+        "The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\")"
     )
     public static let editSiteConnectionAccountSingular = NSLocalizedString(
       "wallet.editSiteConnectionAccountSingular",
@@ -2912,105 +3227,121 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Connect",
-      comment: "The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen."
+      comment:
+        "The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen."
     )
     public static let editSiteConnectionAccountActionDisconnect = NSLocalizedString(
       "wallet.editSiteConnectionAccountActionDisconnect",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Disconnect",
-      comment: "The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen."
+      comment:
+        "The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen."
     )
     public static let editSiteConnectionAccountActionSwitch = NSLocalizedString(
       "wallet.editSiteConnectionAccountActionSwitch",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Switch",
-      comment: "The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen."
+      comment:
+        "The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen."
     )
     public static let editSiteConnectionAccountActionTrust = NSLocalizedString(
       "wallet.editSiteConnectionAccountActionTrust",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Trust",
-      comment: "The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen."
+      comment:
+        "The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen."
     )
     public static let editSiteConnectionAccountActionRevoke = NSLocalizedString(
       "wallet.editSiteConnectionAccountActionRevoke",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Revoke",
-      comment: "The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen"
+      comment:
+        "The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen"
     )
     public static let walletPanelConnected = NSLocalizedString(
       "wallet.walletPanelConnected",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Connected",
-      comment: "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark."
+      comment:
+        "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark."
     )
     public static let walletPanelConnect = NSLocalizedString(
       "wallet.walletPanelConnect",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Connect",
-      comment: "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp."
+      comment:
+        "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp."
     )
     public static let walletPanelDisconnected = NSLocalizedString(
       "wallet.walletPanelDisconnected",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Disconnected",
-      comment: "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp."
+      comment:
+        "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp."
     )
     public static let walletPanelBlocked = NSLocalizedString(
       "wallet.walletPanelBlocked",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Blocked",
-      comment: "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs."
+      comment:
+        "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs."
     )
     public static let getEncryptionPublicKeyRequestTitle = NSLocalizedString(
       "wallet.getEncryptionPublicKeyRequestTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Public Encryption Key Request",
-      comment: "A title of the view shown over a dapps website that requests the users public encryption key."
+      comment:
+        "A title of the view shown over a dapps website that requests the users public encryption key."
     )
     public static let getEncryptionPublicKeyRequestSubtitle = NSLocalizedString(
       "wallet.getEncryptionPublicKeyRequestSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "A DApp is requesting your public encryption key",
-      comment: "A subtitle of the view shown over a dapps website that requests the users public encryption key."
+      comment:
+        "A subtitle of the view shown over a dapps website that requests the users public encryption key."
     )
     public static let getEncryptionPublicKeyRequestMessage = NSLocalizedString(
       "wallet.getEncryptionPublicKeyRequestMessage",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.",
-      comment: "The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.'"
+      value:
+        "is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.",
+      comment:
+        "The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.'"
     )
     public static let getEncryptionPublicKeyRequestApprove = NSLocalizedString(
       "wallet.getEncryptionPublicKeyRequestApprove",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Provide",
-      comment: "The title of the button to approve a encryption public key request from a dapps website."
+      comment:
+        "The title of the button to approve a encryption public key request from a dapps website."
     )
     public static let decryptRequestTitle = NSLocalizedString(
       "wallet.decryptRequestTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Decrypt Request",
-      comment: "A title of the view shown over a dapps website that requests the user decrypt a message."
+      comment:
+        "A title of the view shown over a dapps website that requests the user decrypt a message."
     )
     public static let decryptRequestSubtitle = NSLocalizedString(
       "wallet.decryptRequestSubtitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "This DApp would like to read this message to complete your request",
-      comment: "A subtitle of the view shown over a dapps website that requests the user decrypt a message."
+      comment:
+        "A subtitle of the view shown over a dapps website that requests the user decrypt a message."
     )
     public static let decryptRequestApprove = NSLocalizedString(
       "wallet.decryptRequestApprove",
@@ -3024,21 +3355,25 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Reveal",
-      comment: "The title of the button to show the message of a decrypt request from a dapps website."
+      comment:
+        "The title of the button to show the message of a decrypt request from a dapps website."
     )
     public static let decryptMessageScreenshotDetectedMessage = NSLocalizedString(
       "wallet.decryptMessageScreenshotDetectedMessage",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Warning: A screenshot of your message may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
-      comment: "The message displayed when the user takes a screenshot of their dapp decrypt request."
+      value:
+        "Warning: A screenshot of your message may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
+      comment:
+        "The message displayed when the user takes a screenshot of their dapp decrypt request."
     )
     public static let coinTypeEthereum = NSLocalizedString(
       "wallet.coinTypeEthereum",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Ethereum",
-      comment: "One of the coin types for users to create an account in Ethereum mainnet or any EVM networks."
+      comment:
+        "One of the coin types for users to create an account in Ethereum mainnet or any EVM networks."
     )
     public static let coinTypeSolana = NSLocalizedString(
       "wallet.coinTypeSolana",
@@ -3058,7 +3393,8 @@ extension Strings {
       "wallet.coinTypeEthereumDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)",
+      value:
+        "Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)",
       comment: "A description for Ethereum coin type."
     )
     public static let coinTypeSolanaDescription = NSLocalizedString(
@@ -3094,14 +3430,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "You don't have a %@ account",
-      comment: "The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'."
+      comment:
+        "The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'."
     )
     public static let createAccountAlertMessage = NSLocalizedString(
       "wallet.createAccountAlertMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Create one now?",
-      comment: "The message of the alert shown when a user switches to a network they do not have an account for yet."
+      comment:
+        "The message of the alert shown when a user switches to a network they do not have an account for yet."
     )
     public static let networkSelectionTitle = NSLocalizedString(
       "wallet.networkSelectionTitle",
@@ -3136,49 +3474,57 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "View %@ test networks",
-      comment: "A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. \"%@\" will be replaced with the network name such as \"Solana\" or \"Ethereum\""
+      comment:
+        "A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. \"%@\" will be replaced with the network name such as \"Solana\" or \"Ethereum\""
     )
     public static let networkNotSupportedForBuyToken = NSLocalizedString(
       "wallet.networkNotSupportedForBuyToken",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Buy not supported for selected network",
-      comment: "A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing."
+      comment:
+        "A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing."
     )
     public static let auroraBridgeAlertTitle = NSLocalizedString(
       "wallet.auroraBridgeAlertTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Open the Rainbow Bridge App?",
-      comment: "The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`."
+      comment:
+        "The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`."
     )
     public static let auroraBridgeAlertDescription = NSLocalizedString(
       "wallet.auroraBridgeAlertDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Rainbow Bridge is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.",
-      comment: "The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`."
+      value:
+        "Rainbow Bridge is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.",
+      comment:
+        "The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`."
     )
     public static let auroraBridgeButtonTitle = NSLocalizedString(
       "wallet.auroraBridgeButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Bridge to Aurora",
-      comment: "The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site."
+      comment:
+        "The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site."
     )
     public static let auroraBridgeLearnMore = NSLocalizedString(
       "wallet.auroraBridgeLearnMore",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Learn more about using Rainbow Bridge",
-      comment: "A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge."
+      comment:
+        "A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge."
     )
     public static let auroraBridgeRisk = NSLocalizedString(
       "wallet.auroraBridgeRisk",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Learn how to reduce risk on Rainbow Bridge",
-      comment: "A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge."
+      comment:
+        "A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge."
     )
     public static let auroraPopupDontShowAgain = NSLocalizedString(
       "wallet.auroraPopupDontShowAgain",
@@ -3192,14 +3538,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "%@ Settings",
-      comment: "The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc."
+      comment:
+        "The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc."
     )
     public static let dappsSettingsRemoveAllWarning = NSLocalizedString(
       "wallet.dappsSettingsRemoveAllWarning",
       tableName: "BraveWallet",
       bundle: .module,
       value: "This will remove all Wallet connection permissions for %d %@",
-      comment: "The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp."
+      comment:
+        "The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp."
     )
     public static let dappsSettingsWebsiteSingular = NSLocalizedString(
       "wallet.dappsSettingsWebsiteSingular",
@@ -3220,7 +3568,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "General",
-      comment: "The title of the section that will display settings for default wallet and dapp provider api access permission"
+      comment:
+        "The title of the section that will display settings for default wallet and dapp provider api access permission"
     )
     public static let dappsSettingsConnectedSitesSectionTitle = NSLocalizedString(
       "wallet.dappsSettingsConnectedSitesSectionTitle",
@@ -3234,49 +3583,56 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "DApps you connect to Brave Wallet will appear here",
-      comment: "A message that will be displayed under the section header when there is no dapps have been granted wallet connection."
+      comment:
+        "A message that will be displayed under the section header when there is no dapps have been granted wallet connection."
     )
     public static let signTransactionTitle = NSLocalizedString(
       "wallet.signTransactionTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sign Transaction",
-      comment: "The title of the view shown over a dapps website that requests the user sign a transaction."
+      comment:
+        "The title of the view shown over a dapps website that requests the user sign a transaction."
     )
     public static let signAllTransactionsTitle = NSLocalizedString(
       "wallet.signAllTransactionsTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sign All Transactions",
-      comment: "The title of the view shown over a dapps website that requests the user sign all displayed transactions."
+      comment:
+        "The title of the view shown over a dapps website that requests the user sign all displayed transactions."
     )
     public static let confirmPasswordTitle = NSLocalizedString(
       "wallet.confirmPasswordTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Confirm Password",
-      comment: "The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account."
+      comment:
+        "The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account."
     )
     public static let removeAccountConfirmationMessage = NSLocalizedString(
       "wallet.removeAccountConfirmationMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Are you sure you want to remove \"%@\"?",
-      comment: "A message that will be displayed above the password entry field when the user tries to remove a secondary account. '%@' will be replaced with the account's name"
+      comment:
+        "A message that will be displayed above the password entry field when the user tries to remove a secondary account. '%@' will be replaced with the account's name"
     )
     public static let removeAccountErrorMessage = NSLocalizedString(
       "wallet.removeAccountErrorMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Invalid Password",
-      comment: "A message that will be displayed under the password entry field when the user enters an incorrect password and their secondary account is not removed."
+      comment:
+        "A message that will be displayed under the password entry field when the user enters an incorrect password and their secondary account is not removed."
     )
     public static let providerSelectionScreenTitle = NSLocalizedString(
       "wallet.providerSelectionScreenTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Select purchase method",
-      comment: "The title of the screen for users to select a purchase method. For example, 'Ramp.Network'."
+      comment:
+        "The title of the screen for users to select a purchase method. For example, 'Ramp.Network'."
     )
     public static let providerSelectionSectionHeader = NSLocalizedString(
       "wallet.providerSelectionSectionHeader",
@@ -3290,7 +3646,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Buy with %@",
-      comment: "The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'."
+      comment:
+        "The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'."
     )
     public static let rampNetworkProviderName = NSLocalizedString(
       "wallet.rampNetworkProviderName",
@@ -3360,7 +3717,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "%@ by %@",
-      comment: "The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names."
+      comment:
+        "The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names."
     )
     public static let stripeNetworkProviderDescription = NSLocalizedString(
       "wallet.stripeNetworkProviderDescription",
@@ -3381,350 +3739,401 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Approve Transaction",
-      comment: "The title displayed above the value of a Solana dapp transaction in transaction confirmation view, transaction details view and transaction summary rows."
+      comment:
+        "The title displayed above the value of a Solana dapp transaction in transaction confirmation view, transaction details view and transaction summary rows."
     )
     public static let solanaSwapTransactionTitle = NSLocalizedString(
       "wallet.solanaSwapTransactionTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Swap Transaction",
-      comment: "The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows."
+      comment:
+        "The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows."
     )
     public static let solanaSystemProgramName = NSLocalizedString(
       "wallet.solanaSystemProgramName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "System Program - %@",
-      comment: "The title displayed beside the name of any Solana System Program instruction type. '%@' will be replaced with the instruction's name, ex. \"System Program - Transfer\""
+      comment:
+        "The title displayed beside the name of any Solana System Program instruction type. '%@' will be replaced with the instruction's name, ex. \"System Program - Transfer\""
     )
     public static let solanaTransferInstructionName = NSLocalizedString(
       "wallet.solanaTransferInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transfer",
-      comment: "The title displayed above the System Program & Token Program Transfer instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program & Token Program Transfer instruction type for Solana Instruction details."
     )
     public static let solanaTransferWithSeedInstructionName = NSLocalizedString(
       "wallet.solanaTransferWithSeedInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transfer With Seed",
-      comment: "The title displayed above the System Program TransferWithSeed instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program TransferWithSeed instruction type for Solana Instruction details."
     )
     public static let solanaWithdrawNonceAccountInstructionName = NSLocalizedString(
       "wallet.solanaWithdrawNonceAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Withdraw Nonce Account",
-      comment: "The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details."
     )
     public static let solanaCreateAccountInstructionName = NSLocalizedString(
       "wallet.solanaCreateAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Create Account",
-      comment: "The title displayed above the System Program CreateAccount instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program CreateAccount instruction type for Solana Instruction details."
     )
     public static let solanaCreateAccountWithSeedInstructionName = NSLocalizedString(
       "wallet.solanaCreateAccountWithSeedInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Create Account With Seed",
-      comment: "The title displayed above the System Program CreateAccountWithSeed instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program CreateAccountWithSeed instruction type for Solana Instruction details."
     )
     public static let solanaAssignInstructionName = NSLocalizedString(
       "wallet.solanaAssignInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Assign",
-      comment: "The title displayed above the System Program Assign instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program Assign instruction type for Solana Instruction details."
     )
     public static let solanaAssignWithSeedInstructionName = NSLocalizedString(
       "wallet.solanaAssignWithSeedInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Assign With Seed",
-      comment: "The title displayed above the System Program AssignWithSeed instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program AssignWithSeed instruction type for Solana Instruction details."
     )
     public static let solanaAllocateInstructionName = NSLocalizedString(
       "wallet.solanaAllocateInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Allocate",
-      comment: "The title displayed above the System Program Allocate instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program Allocate instruction type for Solana Instruction details."
     )
     public static let solanaAllocateWithSeedInstructionName = NSLocalizedString(
       "wallet.solanaAllocateWithSeedInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Allocate With Seed",
-      comment: "The title displayed above the System Program AllocateWithSeed instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program AllocateWithSeed instruction type for Solana Instruction details."
     )
     public static let solanaAdvanceNonceAccountInstructionName = NSLocalizedString(
       "wallet.solanaAdvanceNonceAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Advance Nonce Account",
-      comment: "The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details."
     )
     public static let solanaInitializeNonceAccountInstructionName = NSLocalizedString(
       "wallet.solanaInitializeNonceAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Initialize Nonce Account",
-      comment: "The title displayed above the System Program InitializeNonceAccount instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program InitializeNonceAccount instruction type for Solana Instruction details."
     )
     public static let solanaAuthorizeNonceAccountInstructionName = NSLocalizedString(
       "wallet.solanaAuthorizeNonceAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Authorize Nonce Account",
-      comment: "The title displayed above the System Program AuthorizeNonceAccount instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program AuthorizeNonceAccount instruction type for Solana Instruction details."
     )
     public static let solanaUpgradeNonceAccountInstructionName = NSLocalizedString(
       "wallet.solanaUpgradeNonceAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Upgrade Nonce Account",
-      comment: "The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details."
     )
     public static let solanaTokenProgramName = NSLocalizedString(
       "wallet.solanaTokenProgramName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Token Program - %@",
-      comment: "The title displayed beside the name of any Solana Token Program instruction type. '%@' will be replaced with the instruction's name, ex. \"Token Program - Initialize Mint\""
+      comment:
+        "The title displayed beside the name of any Solana Token Program instruction type. '%@' will be replaced with the instruction's name, ex. \"Token Program - Initialize Mint\""
     )
     public static let solanaInitializeMintInstructionName = NSLocalizedString(
       "wallet.solanaInitializeMintInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Initialize Mint",
-      comment: "The title displayed above the Token Program InitializeMint instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program InitializeMint instruction type for Solana Instruction details."
     )
     public static let solanaInitializeMint2InstructionName = NSLocalizedString(
       "wallet.solanaInitializeMint2InstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Initialize Mint 2",
-      comment: "The title displayed above the Token Program InitializeMint2 instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program InitializeMint2 instruction type for Solana Instruction details."
     )
     public static let solanaInitializeAccountInstructionName = NSLocalizedString(
       "wallet.solanaInitializeAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Initialize Account",
-      comment: "The title displayed above the Token Program InitializeAccount instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program InitializeAccount instruction type for Solana Instruction details."
     )
     public static let solanaInitializeAccount2InstructionName = NSLocalizedString(
       "wallet.solanaInitializeAccount2InstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Initialize Account 2",
-      comment: "The title displayed above the Token Program InitializeAccount2 instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program InitializeAccount2 instruction type for Solana Instruction details."
     )
     public static let solanaInitializeAccount3InstructionName = NSLocalizedString(
       "wallet.solanaInitializeAccount3InstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Initialize Account 3",
-      comment: "The title displayed above the Token Program InitializeAccount3 instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program InitializeAccount3 instruction type for Solana Instruction details."
     )
     public static let solanaInitializeMultisigInstructionName = NSLocalizedString(
       "wallet.solanaInitializeMultisigInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Initialize Multisig",
-      comment: "The title displayed above the Token Program InitializeMultisig instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program InitializeMultisig instruction type for Solana Instruction details."
     )
     public static let solanaInitializeMultisig2InstructionName = NSLocalizedString(
       "wallet.solanaInitializeMultisig2InstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Initialize Multisig 2",
-      comment: "The title displayed above the Token Program InitializeMultisig2 instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program InitializeMultisig2 instruction type for Solana Instruction details."
     )
     public static let solanaApproveInstructionName = NSLocalizedString(
       "wallet.solanaApproveInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Approve",
-      comment: "The title displayed above the Token Program Approve instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Approve instruction type for Solana Instruction details."
     )
     public static let solanaRevokeInstructionName = NSLocalizedString(
       "wallet.solanaRevokeInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Revoke",
-      comment: "The title displayed above the Token Program Revoke instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Revoke instruction type for Solana Instruction details."
     )
     public static let solanaSetAuthorityInstructionName = NSLocalizedString(
       "wallet.solanaSetAuthorityInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Set Authority",
-      comment: "The title displayed above the Token Program Set Authority instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Set Authority instruction type for Solana Instruction details."
     )
     public static let solanaMintToInstructionName = NSLocalizedString(
       "wallet.solanaMintToInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Mint To",
-      comment: "The title displayed above the Token Program Mint To instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Mint To instruction type for Solana Instruction details."
     )
     public static let solanaBurnInstructionName = NSLocalizedString(
       "wallet.solanaBurnInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Burn",
-      comment: "The title displayed above the Token Program Burn instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Burn instruction type for Solana Instruction details."
     )
     public static let solanaCloseAccountInstructionName = NSLocalizedString(
       "wallet.solanaCloseAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Close Account",
-      comment: "The title displayed above the Token Program Close Account instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Close Account instruction type for Solana Instruction details."
     )
     public static let solanaFreezeAccountInstructionName = NSLocalizedString(
       "wallet.solanaFreezeAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Freeze Account",
-      comment: "The title displayed above the Token Program Freeze Account instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Freeze Account instruction type for Solana Instruction details."
     )
     public static let solanaThawAccountInstructionName = NSLocalizedString(
       "wallet.solanaThawAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Thaw Account",
-      comment: "The title displayed above the Token Program Thaw Account instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Thaw Account instruction type for Solana Instruction details."
     )
     public static let solanaApproveCheckedInstructionName = NSLocalizedString(
       "wallet.solanaApproveCheckedInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Approve Checked",
-      comment: "The title displayed above the Token Program Approved Checked instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Approved Checked instruction type for Solana Instruction details."
     )
     public static let solanaTransferCheckedInstructionName = NSLocalizedString(
       "wallet.solanaTransferCheckedInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transfer Checked",
-      comment: "The title displayed above the Token Program Transfer Checked instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Transfer Checked instruction type for Solana Instruction details."
     )
     public static let solanaMintToCheckedInstructionName = NSLocalizedString(
       "wallet.solanaMintToCheckedInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Mint To Checked",
-      comment: "The title displayed above the Token Program Mint To Checked instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Mint To Checked instruction type for Solana Instruction details."
     )
     public static let solanaBurnCheckedInstructionName = NSLocalizedString(
       "wallet.solanaBurnCheckedInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Burn Checked",
-      comment: "The title displayed above the Token Program Burn Checked instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Burn Checked instruction type for Solana Instruction details."
     )
     public static let solanaSyncNativeInstructionName = NSLocalizedString(
       "wallet.solanaSyncNativeInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sync Native",
-      comment: "The title displayed above the Token Program Sync Native instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above the Token Program Sync Native instruction type for Solana Instruction details."
     )
     public static let solanaAmount = NSLocalizedString(
       "wallet.solanaAmount",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Amount",
-      comment: "The label displayed beside the formatted amount of an instruction type. Ex. \"Amount: 0.1 SOL\""
+      comment:
+        "The label displayed beside the formatted amount of an instruction type. Ex. \"Amount: 0.1 SOL\""
     )
     public static let solanaUnknownInstructionName = NSLocalizedString(
       "wallet.solanaUnknownInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Unknown Instruction Type",
-      comment: "The title displayed above an unknown instruction type for Solana Instruction details."
+      comment:
+        "The title displayed above an unknown instruction type for Solana Instruction details."
     )
     public static let solanaInstructionProgramId = NSLocalizedString(
       "wallet.solanaInstructionProgramId",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Program Id",
-      comment: "The label displayed beside the Program Id for an instruction type we don't support decoding. Ex. \"Program Id: 1111223344aabbccd\""
+      comment:
+        "The label displayed beside the Program Id for an instruction type we don't support decoding. Ex. \"Program Id: 1111223344aabbccd\""
     )
     public static let solanaInstructionAccounts = NSLocalizedString(
       "wallet.solanaInstructionAccounts",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Accounts",
-      comment: "The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\""
+      comment:
+        "The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\""
     )
     public static let solanaInstructionData = NSLocalizedString(
       "wallet.solanaInstructionData",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Data",
-      comment: "The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\""
+      comment:
+        "The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\""
     )
     public static let solanaInstructionAddressLookupAcc = NSLocalizedString(
       "wallet.solanaInstructionAddressLookupAcc",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Address Lookup Table Account",
-      comment: "The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Account: B1A2...\""
+      comment:
+        "The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Account: B1A2...\""
     )
     public static let solanaInstructionAddressLookupIndex = NSLocalizedString(
       "wallet.solanaInstructionAddressLookupIndex",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Address Lookup Table Index",
-      comment: "The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Index: 1\""
+      comment:
+        "The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Index: 1\""
     )
     public static let solanaSignTransactionWarning = NSLocalizedString(
       "wallet.solanaSignTransactionWarning",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.",
-      comment: "The warning message to let users understand the risk of using Brave Wallet to sign any transaction."
+      value:
+        "Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.",
+      comment:
+        "The warning message to let users understand the risk of using Brave Wallet to sign any transaction."
     )
     public static let solanaSignTransactionDetails = NSLocalizedString(
       "wallet.solanaSignTransactionDetails",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Details",
-      comment: "The title on top of a separater, and the transaction details will be displayed below the separater."
+      comment:
+        "The title on top of a separater, and the transaction details will be displayed below the separater."
     )
     public static let signMessageRequestUnknownUnicodeWarning = NSLocalizedString(
       "wallet.signMessageRequestUnknownUnicodeWarning",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Non-ASCII characters detected!",
-      comment: "A warning message to tell users that the sign request message contains non-ascii characters."
+      comment:
+        "A warning message to tell users that the sign request message contains non-ascii characters."
     )
     public static let signMessageConsecutiveNewlineWarning = NSLocalizedString(
       "wallet.signMessageConsecutiveNewlineWarning",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Consecutive newline characters detected!",
-      comment: "A warning message to tell users that the sign request message contains consecutive new-line characters."
+      comment:
+        "A warning message to tell users that the sign request message contains consecutive new-line characters."
     )
     public static let signMessageShowUnknownUnicode = NSLocalizedString(
       "wallet.signMessageShowUnknownUnicode",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Show encoded message",
-      comment: "The title of the button that users can click to display the sign request message in ASCII encoding."
+      comment:
+        "The title of the button that users can click to display the sign request message in ASCII encoding."
     )
     public static let signMessageShowOriginalMessage = NSLocalizedString(
       "wallet.signMessageShowOriginalMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "View original message",
-      comment: "The title of the button that users can click to display the sign request message as its original content."
+      comment:
+        "The title of the button that users can click to display the sign request message as its original content."
     )
     public static let networkFilterTitle = NSLocalizedString(
       "wallet.networkFilterTitle",
@@ -3738,56 +4147,64 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "%@ on %@",
-      comment: "The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name."
+      comment:
+        "The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name."
     )
     public static let nftDetailTokenID = NSLocalizedString(
       "wallet.nftDetailTokenID",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Token ID",
-      comment: "The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value."
+      comment:
+        "The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value."
     )
     public static let nftDetailERC721 = NSLocalizedString(
       "wallet.nftDetailERC721",
       tableName: "BraveWallet",
       bundle: .module,
       value: "ERC 721",
-      comment: "This is one type of token standard. And most likey this does not need to be translated"
+      comment:
+        "This is one type of token standard. And most likey this does not need to be translated"
     )
     public static let nftDetailSPL = NSLocalizedString(
       "wallet.nftDetailSPL",
       tableName: "BraveWallet",
       bundle: .module,
       value: "SPL",
-      comment: "This is one type of NFT standard. And most likey this does not need to be translated"
+      comment:
+        "This is one type of NFT standard. And most likey this does not need to be translated"
     )
     public static let nftDetailTokenStandard = NSLocalizedString(
       "wallet.nftDetailTokenStandard",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Token Standard",
-      comment: "The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard"
+      comment:
+        "The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard"
     )
     public static let nftDetailBlockchain = NSLocalizedString(
       "wallet.nftDetailBlockchain",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Blockchain",
-      comment: "The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain"
+      comment:
+        "The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain"
     )
     public static let nftDetailDescription = NSLocalizedString(
       "wallet.nftDetailDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Description",
-      comment: "The title of a section in NFT detail screen that will display NFT's description if there is any."
+      comment:
+        "The title of a section in NFT detail screen that will display NFT's description if there is any."
     )
     public static let nftDetailSendNFTButtonTitle = NSLocalizedString(
       "wallet.nftDetailSendNFTButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Send",
-      comment: "The title of the button inside NFT detail screen, which user can click to start sending this NFT."
+      comment:
+        "The title of the button inside NFT detail screen, which user can click to start sending this NFT."
     )
     public static let nftDetailImageNotAvailable = NSLocalizedString(
       "wallet.nftDetailImageNotAvailable",
@@ -3801,7 +4218,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "The image rendered above may not exactly match the NFT",
-      comment: "A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information."
+      comment:
+        "A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information."
     )
     public static let nftDetailOverview = NSLocalizedString(
       "wallet.nftDetailOverview",
@@ -3815,14 +4233,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Properties",
-      comment: "The section header that displays the all the properties/attributes information of this NFT."
+      comment:
+        "The section header that displays the all the properties/attributes information of this NFT."
     )
     public static let nftDetailOwnedBy = NSLocalizedString(
       "wallet.nftDetailOwnedBy",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Owned By",
-      comment: "The title of the row under `Overview` section in NFT details screen. When this NFT has an owner."
+      comment:
+        "The title of the row under `Overview` section in NFT details screen. When this NFT has an owner."
     )
     public static let signTransactionSignRisk = NSLocalizedString(
       "wallet.signTransactionSignRisk",
@@ -3836,56 +4256,64 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Confirm Order",
-      comment: "A title displayed in transaction confirmation navigation bar for a Swap transaction."
+      comment:
+        "A title displayed in transaction confirmation navigation bar for a Swap transaction."
     )
     public static let swapConfirmationYouSpend = NSLocalizedString(
       "wallet.swapConfirmationYouSpend",
       tableName: "BraveWallet",
       bundle: .module,
       value: "You spend",
-      comment: "A title displayed in transaction confirmation above the token being swapped from in a Swap transaction."
+      comment:
+        "A title displayed in transaction confirmation above the token being swapped from in a Swap transaction."
     )
     public static let swapConfirmationYoullReceive = NSLocalizedString(
       "wallet.swapConfirmationYoullReceive",
       tableName: "BraveWallet",
       bundle: .module,
       value: "You'll receive",
-      comment: "A title displayed in transaction confirmation above the token being swapped for in a Swap transaction."
+      comment:
+        "A title displayed in transaction confirmation above the token being swapped for in a Swap transaction."
     )
     public static let swapConfirmationNetworkFee = NSLocalizedString(
       "wallet.swapConfirmationNetworkFee",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Network Fee",
-      comment: "A title displayed in transaction confirmation above the network / gas fee for a Swap transaction."
+      comment:
+        "A title displayed in transaction confirmation above the network / gas fee for a Swap transaction."
     )
     public static let swapConfirmationNetworkDesc = NSLocalizedString(
       "wallet.swapConfirmationNetworkDesc",
       tableName: "BraveWallet",
       bundle: .module,
       value: "on %@",
-      comment: "The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name."
+      comment:
+        "The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name."
     )
     public static let web3DomainOptionAsk = NSLocalizedString(
       "wallet.web3DomainOptionAsk",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Ask",
-      comment: "One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url."
+      comment:
+        "One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url."
     )
     public static let web3DomainOptionEnabled = NSLocalizedString(
       "wallet.web3DomainOptionEnabled",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enabled",
-      comment: "One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url."
+      comment:
+        "One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url."
     )
     public static let web3DomainOptionDisabled = NSLocalizedString(
       "wallet.web3DomainOptionDisabled",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Disabled",
-      comment: "One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url."
+      comment:
+        "One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url."
     )
     public static let ensResolveMethodTitle = NSLocalizedString(
       "wallet.ensResolveMethodTitle",
@@ -3906,7 +4334,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "[Learn more](%@) about ENS offchain lookup privacy considerations.",
-      comment: "The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup."
+      comment:
+        "The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup."
     )
     public static let snsResolveMethodTitle = NSLocalizedString(
       "wallet.web3DomainOptionsTitle",
@@ -3927,7 +4356,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "[Learn more](%@) about Unstoppable Domains privacy considerations.",
-      comment: "The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains."
+      comment:
+        "The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains."
     )
     public static let web3DomainOptionsHeader = NSLocalizedString(
       "wallet.web3DomainOptionsHeader",
@@ -3948,7 +4378,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Resolve IPFS Resources",
-      comment: "The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources."
+      comment:
+        "The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources."
     )
     public static let ipfsPublicGatewayAddressTitle = NSLocalizedString(
       "wallet.ipfsPublicGatewayAddressTitle",
@@ -3969,20 +4400,23 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Customize IPFS Gateway",
-      comment: "The navigation title of the screen for users to customize ipfs public gateway address."
+      comment:
+        "The navigation title of the screen for users to customize ipfs public gateway address."
     )
     public static let customizeIPFSNFTPublicGatewayNavTitle = NSLocalizedString(
       "wallet.customizeIPFSNFTPublicGatewayNavTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Customize IPFS Gateway for NFT",
-      comment: "The navigation title of the screen for users to customize ipfs public gateway address for NFT."
+      comment:
+        "The navigation title of the screen for users to customize ipfs public gateway address for NFT."
     )
     public static let nftGatewayLongDescription = NSLocalizedString(
       "wallet.nftGatewayLongDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Valid IPFS gateway should be provided. Provided gateway will be checked for the ability to load IPFS resources.",
+      value:
+        "Valid IPFS gateway should be provided. Provided gateway will be checked for the ability to load IPFS resources.",
       comment: "Description of the NFT Gateway setting"
     )
     public static let setGatewayButtonTitle = NSLocalizedString(
@@ -4011,55 +4445,64 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transaction Signed",
-      comment: "A title of transaction signed status view indicating this transaction has been signed."
+      comment:
+        "A title of transaction signed status view indicating this transaction has been signed."
     )
     public static let submittedTransactionTitle = NSLocalizedString(
       "wallet.submittedTransactionTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transaction Submitted",
-      comment: "A title of transaction signed status view indicating this transaction has been submitted to the network."
+      comment:
+        "A title of transaction signed status view indicating this transaction has been submitted to the network."
     )
     public static let confirmedTransactionTitle = NSLocalizedString(
       "wallet.confirmedTransactionTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transaction Completed",
-      comment: "A title of transaction confirmed status view indicating this transaction has been included in a block."
+      comment:
+        "A title of transaction confirmed status view indicating this transaction has been included in a block."
     )
     public static let failedTransactionTitle = NSLocalizedString(
       "wallet.failedTransactionTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transaction Failed",
-      comment: "A title of transaction failed status view indicating this transaction has not been included in a block."
+      comment:
+        "A title of transaction failed status view indicating this transaction has not been included in a block."
     )
     public static let signedTransactionDescription = NSLocalizedString(
       "wallet.signedTransactionDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Transaction has been signed and will be sent to network by dapps and awaits confirmation.",
-      comment: "A description explains signed transaction will be sent to network by dapps and awaits confirmation."
+      value:
+        "Transaction has been signed and will be sent to network by dapps and awaits confirmation.",
+      comment:
+        "A description explains signed transaction will be sent to network by dapps and awaits confirmation."
     )
     public static let submittedTransactionDescription = NSLocalizedString(
       "wallet.submittedTransactionDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Transaction has been successfully sent to the network and awaits confirmation.",
-      comment: "A description explains submitted transaction has been sent to the netwokr and awaits confirmation."
+      comment:
+        "A description explains submitted transaction has been sent to the netwokr and awaits confirmation."
     )
     public static let confirmedTransactionDescription = NSLocalizedString(
       "wallet.confirmedTransactionDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Transaction has been successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.",
+      value:
+        "Transaction has been successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.",
       comment: "A description explains confirmed transaction has been included in a block."
     )
     public static let failedTransactionDescription = NSLocalizedString(
       "wallet.failedTransactionDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.",
+      value:
+        "Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.",
       comment: "A description explains transaction is failed."
     )
     public static let confirmedTransactionReceiptButtonTitle = NSLocalizedString(
@@ -4102,14 +4545,17 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Brave supports using offchain gateways to resolve .eth domains.",
-      comment: "Title shown send address / ENS domain when requesting to do an ENS off chain lookup."
+      comment:
+        "Title shown send address / ENS domain when requesting to do an ENS off chain lookup."
     )
     public static let ensOffchainGatewayDesc = NSLocalizedString(
       "wallet.ensOffchainGatewayDesc",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request. This helps ensure your .eth domain isn't leaked, and that your transaction is secure.",
-      comment: "Description shown send address / ENS domain when requesting to do an ENS off chain lookup."
+      value:
+        "It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request. This helps ensure your .eth domain isn't leaked, and that your transaction is secure.",
+      comment:
+        "Description shown send address / ENS domain when requesting to do an ENS off chain lookup."
     )
     public static let ensOffchainGatewayButton = NSLocalizedString(
       "wallet.ensOffchainGatewayButton",
@@ -4123,27 +4569,32 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Use a Public Gateway",
-      comment: "The title of the button that user will click to let Brave to resolve IPFS shceme url."
+      comment:
+        "The title of the button that user will click to let Brave to resolve IPFS shceme url."
     )
     public static let web3IPFSInterstitialIPFSTitle = NSLocalizedString(
       "wallet.web3IPFSInterstitialIPFSTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Set your IPFS preference",
-      comment: "The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling."
+      comment:
+        "The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling."
     )
     public static let web3IPFSInterstitialIPFSPrivacy = NSLocalizedString(
       "wallet.web3IPFSInterstitialIPFSPrivacy",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "IPFS (InterPlanetary File System) is the public network for peer-to-peer data storage and delivery. This protocol has different privacy considerations from HTTP(S). <a href=%@>%@</a>",
-      comment: "A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'."
+      value:
+        "IPFS (InterPlanetary File System) is the public network for peer-to-peer data storage and delivery. This protocol has different privacy considerations from HTTP(S). <a href=%@>%@</a>",
+      comment:
+        "A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'."
     )
     public static let web3IPFSInterstitialIPFSPublicGateway = NSLocalizedString(
       "wallet.web3IPFSInterstitialIPFSPublicGateway",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Protects your IP address and content you’re requesting from potential third-party observers, but not from the public gateway operator.  The gateway operator is responsible for ensuring that the content served to you over a gateway is the content you requested. Also, your device does not contribute to the public IPFS network.",
+      value:
+        "Protects your IP address and content you’re requesting from potential third-party observers, but not from the public gateway operator.  The gateway operator is responsible for ensuring that the content served to you over a gateway is the content you requested. Also, your device does not contribute to the public IPFS network.",
       comment: "A brief explaination of resolving IPFS scheme url using a public gateway."
     )
     public static let ipfsErrorTitle = NSLocalizedString(
@@ -4158,28 +4609,32 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "[Learn more](%@) about IPFS gateway privacy considerations.",
-      comment: "The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy."
+      comment:
+        "The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy."
     )
     public static let web3DomainInterstitialPageTAndU = NSLocalizedString(
       "wallet.web3DomainInterstitialPageTAndU",
       tableName: "BraveWallet",
       bundle: .module,
       value: "terms of use",
-      comment: "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain."
+      comment:
+        "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain."
     )
     public static let web3DomainInterstitialPagePrivacyPolicy = NSLocalizedString(
       "wallet.web3DomainInterstitialPagePrivacyPolicy",
       tableName: "BraveWallet",
       bundle: .module,
       value: "privacy policy",
-      comment: "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain."
+      comment:
+        "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain."
     )
     public static let web3DomainInterstitialPageButtonDisable = NSLocalizedString(
       "wallet.web3DomainInterstitialPageButtonDisable",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Disable",
-      comment: "Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered."
+      comment:
+        "Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered."
     )
     // SNS
     public static let snsDomainInterstitialPageTitle = NSLocalizedString(
@@ -4187,21 +4642,25 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enable Support of Solana Name Service (SNS) in Brave?",
-      comment: "Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one."
+      comment:
+        "Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one."
     )
     public static let snsDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.snsDomainInterstitialPageDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave will use a third-party to resolve .sol domain names. Brave hides your IP address. If you enable this, the third-party will see that someone is trying to visit these .sol domains, but nothing else. For more information about which third-parties we use and their privacy policies, please see our <a href=%@>help page</a>.",
-      comment: "Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'."
+      value:
+        "Brave will use a third-party to resolve .sol domain names. Brave hides your IP address. If you enable this, the third-party will see that someone is trying to visit these .sol domains, but nothing else. For more information about which third-parties we use and their privacy policies, please see our <a href=%@>help page</a>.",
+      comment:
+        "Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'."
     )
     public static let snsDomainInterstitialPageButtonProceed = NSLocalizedString(
       "wallet.snsDomainInterstitialPageButtonProceed",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Proceed using an SNS server",
-      comment: "Title on the button that users can click to enable Brave to resolve the SNS domain they entered."
+      comment:
+        "Title on the button that users can click to enable Brave to resolve the SNS domain they entered."
     )
     // ENS
     public static let ensDomainInterstitialPageTitle = NSLocalizedString(
@@ -4209,21 +4668,25 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enable Support of Ethereum Name Service (ENS) in Brave?",
-      comment: "Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one."
+      comment:
+        "Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one."
     )
     public static let ensDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.ensDomainInterstitialPageDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave will be using Infura to resolve .eth domain names that are on Ethereum Name Service (ENS). Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these .eth domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
-      comment: "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
+      value:
+        "Brave will be using Infura to resolve .eth domain names that are on Ethereum Name Service (ENS). Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these .eth domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+      comment:
+        "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
     )
     public static let ensDomainInterstitialPageButtonProceed = NSLocalizedString(
       "wallet.ensDomainInterstitialPageButtonProceed",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Proceed using Infura server",
-      comment: "Title on the button that users can click to enable Brave to resolve the ENS domain they entered."
+      comment:
+        "Title on the button that users can click to enable Brave to resolve the ENS domain they entered."
     )
     // ENS offchain
     public static let ensOffchainDomainInterstitialPageTitle = NSLocalizedString(
@@ -4231,21 +4694,25 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enable support of Ethereum Name Service (ENS) offchain lookup in Brave?",
-      comment: "Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one."
+      comment:
+        "Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one."
     )
     public static let ensOffchainDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.ensOffchainDomainInterstitialPageDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "This .eth domain name is stored offchain and will be resolved by a third party gateway. If you enable ENS offchain lookup, the third party gateway will see that you're trying to visit the .eth domain. <a href=%@>%@</a>.",
-      comment: "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'."
+      value:
+        "This .eth domain name is stored offchain and will be resolved by a third party gateway. If you enable ENS offchain lookup, the third party gateway will see that you're trying to visit the .eth domain. <a href=%@>%@</a>.",
+      comment:
+        "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'."
     )
     public static let ensOffchainDomainInterstitialPageButtonProceed = NSLocalizedString(
       "wallet.ensOffchainDomainInterstitialPageButtonProceed",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Proceed with offchain lookup",
-      comment: "Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered."
+      comment:
+        "Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered."
     )
     // Unstoppable Domains
     public static let udDomainInterstitialPageTitle = NSLocalizedString(
@@ -4253,21 +4720,25 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enable support of Unstoppable Domains in Brave?",
-      comment: "Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one."
+      comment:
+        "Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one."
     )
     public static let udDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.udDomainInterstitialPageDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave will be using Infura to resolve .crypto (and also %@) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
-      comment: "Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
+      value:
+        "Brave will be using Infura to resolve .crypto (and also %@) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+      comment:
+        "Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
     )
     public static let activityPageTitle = NSLocalizedString(
       "wallet.activityPageTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Activity",
-      comment: "The title of the tab that will display user's transaction activity for all accounts."
+      comment:
+        "The title of the tab that will display user's transaction activity for all accounts."
     )
     public static let activityPageEmptyTitle = NSLocalizedString(
       "wallet.activityPageEmptyTitle",
@@ -4351,42 +4822,50 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "No market information available yet",
-      comment: "The message will be displayed when there is no coin market loaded or having an error."
+      comment:
+        "The message will be displayed when there is no coin market loaded or having an error."
     )
     public static let web3SettingsEnableNFTDiscovery = NSLocalizedString(
       "wallet.web3SettingsEnableNFTDiscovery",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enable NFT Discovery",
-      comment: "The title of the toggle for user to enable/disable NFT discovery inside Web3 settings."
+      comment:
+        "The title of the toggle for user to enable/disable NFT discovery inside Web3 settings."
     )
     public static let web3SettingsEnableNFTDiscoveryFooter = NSLocalizedString(
       "wallet.web3SettingsEnableNFTDiscoveryFooter",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Automatically add NFTs you own to the Wallet using third party APIs. [Learn more](%@)",
-      comment: "The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings."
+      value:
+        "Automatically add NFTs you own to the Wallet using third party APIs. [Learn more](%@)",
+      comment:
+        "The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings."
     )
     public static let nftDiscoveryCalloutTitle = NSLocalizedString(
       "wallet.nftDiscoveryCalloutTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Want your NFTs displayed automatically?",
-      comment: "The title of the alert that asks users either to enable NFT discovery or import manually."
+      comment:
+        "The title of the alert that asks users either to enable NFT discovery or import manually."
     )
     public static let nftDiscoveryCalloutDescription = NSLocalizedString(
       "wallet.nftDiscoveryCalloutDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with SimpleHash to provide this service. Learn more.",
-      comment: "The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated."
+      value:
+        "Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with SimpleHash to provide this service. Learn more.",
+      comment:
+        "The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated."
     )
     public static let nftDiscoveryCalloutDescriptionLearnMore = NSLocalizedString(
       "wallet.nftDiscoveryCalloutDescriptionLearnMore",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Learn more",
-      comment: "This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings."
+      comment:
+        "This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings."
     )
     public static let nftDiscoveryCalloutDisable = NSLocalizedString(
       "wallet.nftDiscoveryCalloutDisable",
@@ -4414,14 +4893,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Collected",
-      comment: "The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs."
+      comment:
+        "The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs."
     )
     public static let nftHidden = NSLocalizedString(
       "wallet.nftHidden",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Hidden",
-      comment: "The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs."
+      comment:
+        "The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs."
     )
     public static let nftSpam = NSLocalizedString(
       "wallet.nftSpam",
@@ -4462,7 +4943,8 @@ extension Strings {
       "wallet.nftRemoveFromWalletAlertDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "NFT will be removed from Brave Wallet but will remain on the blockchain. If you remove it, then change your mind, you'll need to import it again manually.",
+      value:
+        "NFT will be removed from Brave Wallet but will remain on the blockchain. If you remove it, then change your mind, you'll need to import it again manually.",
       comment: "The description of the alert when user attempts to remove an NFT from wallet."
     )
     public static let selectTokenToSendTitle = NSLocalizedString(
@@ -4470,14 +4952,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Select a Token to Send",
-      comment: "The title of the view that lets the user select a token & account at the same time in the Send crypto view."
+      comment:
+        "The title of the view that lets the user select a token & account at the same time in the Send crypto view."
     )
     public static let selectTokenToSendNoTokens = NSLocalizedString(
       "wallet.selectTokenToSendNoTokens",
       tableName: "BraveWallet",
       bundle: .module,
       value: "No available tokens",
-      comment: "The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens."
+      comment:
+        "The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens."
     )
     public static let showZeroBalances = NSLocalizedString(
       "wallet.showZeroBalances",
@@ -4519,168 +5003,192 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Low to High",
-      comment: "The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings."
     )
     public static let highToLowSortOption = NSLocalizedString(
       "wallet.highToLowSortOption",
       tableName: "BraveWallet",
       bundle: .module,
       value: "High to Low",
-      comment: "The title of the sort option that sorts highest value to lowest value. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The title of the sort option that sorts highest value to lowest value. Used in Portfolio/NFT filters and display settings."
     )
     public static let aToZSortOption = NSLocalizedString(
       "wallet.aToZSortOption",
       tableName: "BraveWallet",
       bundle: .module,
       value: "A to Z",
-      comment: "The title of the sort option that sorts alphabetically from A to Z. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The title of the sort option that sorts alphabetically from A to Z. Used in Portfolio/NFT filters and display settings."
     )
     public static let zToASortOption = NSLocalizedString(
       "wallet.zToASortOption",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Z to A",
-      comment: "The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings."
     )
     public static let sortAssetsTitle = NSLocalizedString(
       "wallet.sortAssetsTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sort Assets",
-      comment: "The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings."
     )
     public static let sortAssetsDescription = NSLocalizedString(
       "wallet.sortAssetsDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sort by fiat value or name",
-      comment: "The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings."
     )
     public static let hideSmallBalancesTitle = NSLocalizedString(
       "wallet.hideSmallBalancesTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Hide Small Balances",
-      comment: "The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings."
     )
     public static let hideSmallBalancesDescription = NSLocalizedString(
       "wallet.hideSmallBalancesDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Assets with value less than $0.05",
-      comment: "The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings."
     )
     public static let hideUnownedNFTsTitle = NSLocalizedString(
       "wallet.hideUnownedNFTsTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Hide Unowned",
-      comment: "The label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings."
     )
     public static let hideUnownedNFTsDescription = NSLocalizedString(
       "wallet.hideUnownedNFTsDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Hide NFTs that have no balance",
-      comment: "The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings."
     )
     public static let showNFTNetworkLogoTitle = NSLocalizedString(
       "wallet.showNFTNetworkLogoTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Network Logo",
-      comment: "The label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings."
+      comment:
+        "The label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings."
     )
     public static let showNFTNetworkLogoDescription = NSLocalizedString(
       "wallet.showNFTNetworkLogoDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Show network logo on NFTs",
-      comment: "The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings."
+      comment:
+        "The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings."
     )
     public static let selectAccountsTitle = NSLocalizedString(
       "wallet.selectAccountsTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Select Accounts",
-      comment: "The label of the filter option that allows users to select which accounts to filter assets by. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The label of the filter option that allows users to select which accounts to filter assets by. Used in Portfolio/NFT filters and display settings."
     )
     public static let selectAccountsDescription = NSLocalizedString(
       "wallet.selectAccountsDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Select accounts to filter by",
-      comment: "The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings."
     )
     public static let allAccountsLabel = NSLocalizedString(
       "wallet.allAccountsLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "All accounts",
-      comment: "The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings."
     )
     public static let selectNetworksTitle = NSLocalizedString(
       "wallet.selectNetworksTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Select Networks",
-      comment: "The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings."
     )
     public static let selectNetworksDescription = NSLocalizedString(
       "wallet.selectNetworksDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Select networks to filter by",
-      comment: "The description label of the filter option that allows users to select which networks to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The description label of the filter option that allows users to select which networks to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings."
     )
     public static let allNetworksLabel = NSLocalizedString(
       "wallet.allNetworksLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "All networks",
-      comment: "The label of badge beside the filter option that allows users to select which networks to filter assets by, when all networks are selected. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The label of badge beside the filter option that allows users to select which networks to filter assets by, when all networks are selected. Used in Portfolio/NFT filters and display settings."
     )
     public static let saveChangesButtonTitle = NSLocalizedString(
       "wallet.saveChangesButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Save Changes",
-      comment: "The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings."
     )
     public static let groupByTitle = NSLocalizedString(
       "wallet.groupByTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Group By",
-      comment: "The label of the sort option that groups assets by the selected filter value. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The label of the sort option that groups assets by the selected filter value. Used in Portfolio/NFT filters and display settings."
     )
     public static let groupByDescription = NSLocalizedString(
       "wallet.groupByDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Group assets by",
-      comment: "The description label of the sort option that groups assets by the selected filter value, shown below the title. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The description label of the sort option that groups assets by the selected filter value, shown below the title. Used in Portfolio/NFT filters and display settings."
     )
     public static let groupByNoneOptionTitle = NSLocalizedString(
       "wallet.groupByNoneOptionTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "None",
-      comment: "The title of the sort option that does not group assets. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The title of the sort option that does not group assets. Used in Portfolio/NFT filters and display settings."
     )
     public static let groupByAccountsOptionTitle = NSLocalizedString(
       "wallet.groupByAccountsOptionTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Accounts",
-      comment: "The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings."
     )
     public static let groupByNetworksOptionTitle = NSLocalizedString(
       "wallet.groupByNetworksOptionTitle",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Networks",
-      comment: "The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings."
+      comment:
+        "The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings."
     )
     public static let portfolioEmptyStateTitle = NSLocalizedString(
       "wallet.portfolioEmptyStateTitle",
@@ -4693,7 +5201,8 @@ extension Strings {
       "wallet.portfolioEmptyStateDescription",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Deposit or purchase tokens to get started. If you don't see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.",
+      value:
+        "Deposit or purchase tokens to get started. If you don't see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.",
       comment: "The title of the empty state in Portfolio when no assets are shown."
     )
     public static let internalErrorMessage = NSLocalizedString(
@@ -4715,14 +5224,16 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Security Risk Detected",
-      comment: "The title of the view shown when a security issue is detected with a Sign In With Ethereum request."
+      comment:
+        "The title of the view shown when a security issue is detected with a Sign In With Ethereum request."
     )
     public static let signInWithBraveWalletMessage = NSLocalizedString(
       "wallet.signInWithBraveWalletMessage",
       tableName: "BraveWallet",
       bundle: .module,
       value: "You are signing into %@. Brave Wallet will share your wallet address with %@.",
-      comment: "The title of the view shown when a security issue is detected with a Sign In With Ethereum request."
+      comment:
+        "The title of the view shown when a security issue is detected with a Sign In With Ethereum request."
     )
     public static let seeDetailsButtonTitle = NSLocalizedString(
       "wallet.seeDetailsButtonTitle",
@@ -4750,70 +5261,80 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Sign In",
-      comment: "The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests."
+      comment:
+        "The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests."
     )
     public static let siweOriginLabel = NSLocalizedString(
       "wallet.siweOriginLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Origin",
-      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin."
+      comment:
+        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin."
     )
     public static let siweAddressLabel = NSLocalizedString(
       "wallet.siweAddressLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Address",
-      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address."
+      comment:
+        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address."
     )
     public static let siweURILabel = NSLocalizedString(
       "wallet.siweURILabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "URI",
-      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI."
+      comment:
+        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI."
     )
     public static let siweVersionLabel = NSLocalizedString(
       "wallet.siweVersionLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Version",
-      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version."
+      comment:
+        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version."
     )
     public static let siweChainIDLabel = NSLocalizedString(
       "wallet.siweChainIDLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Chain ID",
-      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID."
+      comment:
+        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID."
     )
     public static let siweIssuedAtLabel = NSLocalizedString(
       "wallet.siweIssuedAtLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Issued At",
-      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date."
+      comment:
+        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date."
     )
     public static let siweExpirationTimeLabel = NSLocalizedString(
       "wallet.siweExpirationTimeLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Expiration Time",
-      comment: "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time."
+      comment:
+        "The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time."
     )
     public static let siweNonceLabel = NSLocalizedString(
       "wallet.siweNonceLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Nonce",
-      comment: "The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce."
+      comment:
+        "The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce."
     )
     public static let siweStatementLabel = NSLocalizedString(
       "wallet.siweStatementLabel",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Statement",
-      comment: "The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement."
+      comment:
+        "The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement."
     )
     public static let siweDetailsTitle = NSLocalizedString(
       "wallet.siweDetailsTitle",
@@ -4827,7 +5348,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "%@ from",
-      comment: "The label used to describe a transaction type. Used like 'Send from' or 'Approved from'."
+      comment:
+        "The label used to describe a transaction type. Used like 'Send from' or 'Approved from'."
     )
     public static let transactionSummarySwapOn = NSLocalizedString(
       "wallet.transactionSummarySwapOn",
@@ -4862,7 +5384,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Connected Sites and Allowances",
-      comment: "The description used below Security title in the row opening DApp settings in Account Details."
+      comment:
+        "The description used below Security title in the row opening DApp settings in Account Details."
     )
     public static let assetsSingularDescription = NSLocalizedString(
       "wallet.assetsSingularDescription",
@@ -4876,7 +5399,8 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "%d assets",
-      comment: "The description of the assets row in Account Details when user has zero or multiple Assets."
+      comment:
+        "The description of the assets row in Account Details when user has zero or multiple Assets."
     )
     public static let nftsSingularDescription = NSLocalizedString(
       "wallet.nftsSingularDescription",
@@ -4890,21 +5414,40 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "%d NFTs",
-      comment: "The description of the NFTs row in Account Details when user has zero or multiple NFTs."
+      comment:
+        "The description of the NFTs row in Account Details when user has zero or multiple NFTs."
     )
     public static let transactionsSingularDescription = NSLocalizedString(
       "wallet.transactionsSingularDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "%d transactions",
-      comment: "The description of the transactions row in Account Details when user has 1 Transaction."
+      comment:
+        "The description of the transactions row in Account Details when user has 1 Transaction."
     )
     public static let transactionsDescription = NSLocalizedString(
       "wallet.transactionsDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value: "%d transactions",
-      comment: "The description of the transactions row in Account Details when user has zero or multiple Transactions."
+      comment:
+        "The description of the transactions row in Account Details when user has zero or multiple Transactions."
+    )
+    public static let depositAddressCopy = NSLocalizedString(
+      "wallet.depositAddressCopy",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Copy",
+      comment:
+        "The button title for user to click to copy the account address for deposit."
+    )
+    public static let depositEthDisclosure = NSLocalizedString(
+      "wallet.depositEthDisclosure",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "This is Ethereum wallet which support Ethereum Network and level 2 network such as %@",
+      comment:
+        "The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names."
     )
   }
 }

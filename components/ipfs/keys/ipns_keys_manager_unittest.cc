@@ -49,9 +49,11 @@ class IpnsKeysManagerUnitTest : public testing::Test {
 
   IpnsKeysManager* ipns_keys_manager() { return ipns_keys_manager_.get(); }
 
+ protected:
+  content::BrowserTaskEnvironment browser_task_environment_;
+
  private:
   std::string response_text_;
-  content::BrowserTaskEnvironment browser_task_environment_;
   TestingProfile profile_;
   std::unique_ptr<IpfsBlobContextGetterFactory> blob_factory_;
   std::unique_ptr<IpnsKeysManager> ipns_keys_manager_;
@@ -73,7 +75,7 @@ TEST_F(IpnsKeysManagerUnitTest, SanitizedResponse) {
           EXPECT_EQ(value, "k51q");
           callback_is_called = true;
         }));
-    base::RunLoop().RunUntilIdle();
+    browser_task_environment_.RunUntilIdle();
     EXPECT_TRUE(callback_is_called);
   }
   {
@@ -88,7 +90,7 @@ TEST_F(IpnsKeysManagerUnitTest, SanitizedResponse) {
           EXPECT_TRUE(value.empty());
           callback_is_called = true;
         }));
-    base::RunLoop().RunUntilIdle();
+    browser_task_environment_.RunUntilIdle();
     EXPECT_TRUE(callback_is_called);
   }
 }

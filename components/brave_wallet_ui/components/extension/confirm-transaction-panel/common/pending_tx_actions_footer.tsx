@@ -13,25 +13,18 @@ import { ParsedTransaction } from '../../../../utils/tx-utils'
 import { getLocale } from '../../../../../common/locale'
 
 // components
-import { NavButton } from '../../buttons'
 import { TransactionWarnings } from './tx_warnings'
 
 // Styled components
-import { Row } from '../../../shared/style'
-import {
-  ConfirmingButton,
-  ConfirmingButtonText,
-  FooterContainer,
-  LoadIcon,
-  QueueStepButton
-} from './style'
+import { LeoSquaredButton, Row } from '../../../shared/style'
+import { QueueStepButton } from './style'
 import {
   FooterButtonRow,
-  rejectAllButtonRowPadding
+  rejectAllButtonRowPadding,
+  FooterContainer
 } from './pending_tx_actions_footer.style'
 
 interface Props {
-  rejectButtonType?: 'reject' | 'cancel'
   blowfishWarnings?: BraveWallet.BlowfishWarning[]
   setIsWarningCollapsed?: React.Dispatch<React.SetStateAction<boolean>>
   isWarningCollapsed?: boolean
@@ -53,7 +46,6 @@ export function PendingTransactionActionsFooter({
   isWarningCollapsed,
   setIsWarningCollapsed,
   blowfishWarnings,
-  rejectButtonType,
   isConfirmButtonDisabled,
   rejectAllTransactions,
   transactionDetails,
@@ -114,6 +106,40 @@ export function PendingTransactionActionsFooter({
     insufficientFundsError
   ])
 
+  const hasWarnings = Boolean(warnings.length)
+
+  const { confirmButton, rejectButton } = React.useMemo(() => {
+    return {
+      confirmButton: (
+        <LeoSquaredButton
+          kind={hasWarnings ? 'outline' : 'filled'}
+          onClick={onClickConfirmTransaction}
+          disabled={isConfirmButtonDisabled}
+          isDisabled={isConfirmButtonDisabled}
+          isLoading={transactionConfirmed}
+        >
+          {getLocale('braveWalletAllowSpendConfirmButton')}
+        </LeoSquaredButton>
+      ),
+      rejectButton: (
+        <LeoSquaredButton
+          kind={hasWarnings ? 'filled' : 'outline'}
+          onClick={onReject}
+          disabled={transactionConfirmed}
+          isDisabled={transactionConfirmed}
+        >
+          {getLocale('braveWalletAllowSpendRejectButton')}
+        </LeoSquaredButton>
+      )
+    }
+  }, [
+    hasWarnings,
+    onClickConfirmTransaction,
+    isConfirmButtonDisabled,
+    transactionConfirmed,
+    onReject
+  ])
+
   // computed
   const displayIssuesAsRisks = Boolean(blowfishWarnings?.length)
 
@@ -158,32 +184,16 @@ export function PendingTransactionActionsFooter({
       )}
 
       <FooterButtonRow>
-        <NavButton
-          buttonType={rejectButtonType || 'reject'}
-          text={
-            rejectButtonType === 'cancel'
-              ? getLocale('braveWalletButtonCancel')
-              : getLocale('braveWalletAllowSpendRejectButton')
-          }
-          onSubmit={onReject}
-          disabled={transactionConfirmed}
-          minWidth='45%'
-        />
-        {transactionConfirmed ? (
-          <ConfirmingButton>
-            <ConfirmingButtonText>
-              {getLocale('braveWalletAllowSpendConfirmButton')}
-            </ConfirmingButtonText>
-            <LoadIcon />
-          </ConfirmingButton>
+        {hasWarnings ? (
+          <>
+            <div>{confirmButton}</div>
+            <div>{rejectButton}</div>
+          </>
         ) : (
-          <NavButton
-            buttonType='confirm'
-            text={getLocale('braveWalletAllowSpendConfirmButton')}
-            onSubmit={onClickConfirmTransaction}
-            disabled={isConfirmButtonDisabled}
-            minWidth='45%'
-          />
+          <>
+            <div>{rejectButton}</div>
+            <div>{confirmButton}</div>
+          </>
         )}
       </FooterButtonRow>
     </FooterContainer>

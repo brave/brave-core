@@ -1,15 +1,15 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Lottie
 import BraveUI
 import DesignSystem
+import Foundation
+import Lottie
 import Shared
-import UIKit
 import Then
+import UIKit
 
 public enum OptInCardAction {
   case closedButtonTapped
@@ -26,7 +26,10 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
     $0.spacing = 16
   }
 
-  public let graphicAnimationView = AnimationView(name: "brave-today-welcome-graphic", bundle: .module).then {
+  public let graphicAnimationView = AnimationView(
+    name: "brave-today-welcome-graphic",
+    bundle: .module
+  ).then {
     $0.contentMode = .scaleAspectFit
     $0.loopMode = .loop
   }
@@ -34,7 +37,12 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
   public var optInCardActionHandler: ((OptInCardAction) -> Void)?
 
   private let closeButton = UIButton(type: .system).then {
-    $0.setImage(UIImage(named: "card_close", in: .module, compatibleWith: nil)!.withRenderingMode(.alwaysOriginal), for: .normal)
+    $0.setImage(
+      UIImage(named: "card_close", in: .module, compatibleWith: nil)!.withRenderingMode(
+        .alwaysOriginal
+      ),
+      for: .normal
+    )
     $0.accessibilityLabel = Strings.close
   }
 
@@ -79,7 +87,8 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
           $0.textColor = .white
           $0.font = .systemFont(ofSize: 18, weight: .semibold)
           $0.numberOfLines = 0
-        }),
+        }
+      ),
       .view(
         UILabel().then {
           $0.text = Strings.BraveNews.introCardBody
@@ -87,7 +96,8 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
           $0.textColor = .white
           $0.font = .systemFont(ofSize: 14)
           $0.numberOfLines = 0
-        }),
+        }
+      ),
       .customSpace(24),
       .view(turnOnBraveNewsButton),
       .view(learnMoreButton)
@@ -99,7 +109,11 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
 
     closeButton.addTarget(self, action: #selector(tappedCloseButton), for: .touchUpInside)
     learnMoreButton.addTarget(self, action: #selector(tappedLearnMoreButton), for: .touchUpInside)
-    turnOnBraveNewsButton.addTarget(self, action: #selector(tappedTurnOnBraveButton), for: .touchUpInside)
+    turnOnBraveNewsButton.addTarget(
+      self,
+      action: #selector(tappedTurnOnBraveButton),
+      for: .touchUpInside
+    )
   }
 
   // MARK: - Actions

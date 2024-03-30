@@ -14,10 +14,6 @@
 
 namespace brave_ads {
 
-namespace {
-constexpr char kTypeKey[] = "type";
-}  // namespace
-
 base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad) {
   base::Value::List wallpapers;
   for (const NewTabPageAdWallpaperInfo& wallpaper : ad.wallpapers) {
@@ -32,7 +28,7 @@ base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad) {
   }
 
   return base::Value::Dict()
-      .Set(kTypeKey, ToString(ad.type))
+      .Set(kNewTabPageAdTypeKey, ToString(ad.type))
       .Set(kNewTabPageAdPlacementIdKey, ad.placement_id)
       .Set(kNewTabPageAdCreativeInstanceIdKey, ad.creative_instance_id)
       .Set(kNewTabPageAdCreativeSetIdKey, ad.creative_set_id)
@@ -49,7 +45,7 @@ base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad) {
 NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& dict) {
   NewTabPageAdInfo ad;
 
-  if (const auto* const value = dict.FindString(kTypeKey)) {
+  if (const auto* const value = dict.FindString(kNewTabPageAdTypeKey)) {
     ad.type = ToAdType(*value);
   }
 

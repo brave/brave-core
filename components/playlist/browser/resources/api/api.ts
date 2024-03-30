@@ -12,7 +12,6 @@ import {
   PlaylistNativeUIRemote
 } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
-import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { getPlaylistActions } from './getPlaylistActions'
 
 type PlaylistEventListener = (event: PlaylistEvent) => void
@@ -55,16 +54,6 @@ class API {
 
   removePlaylist(playlistId: string) {
     this.#pageHandler.removePlaylist(playlistId)
-  }
-
-  addMediaFilesFromPageToPlaylist(playlistId: string, url: string) {
-    let mojoUrl = new Url()
-    mojoUrl.url = url
-    this.#pageHandler.addMediaFilesFromPageToPlaylist(
-      playlistId,
-      mojoUrl,
-      /* canCache */ true
-    )
   }
 
   addMediaFilesFromActiveTabToPlaylist(playlistId: string) {
@@ -116,6 +105,10 @@ class API {
 
   openSettingsPage() {
     this.#nativeUI.openSettingsPage()
+  }
+
+  closePanel() {
+    this.#nativeUI.closePanel()
   }
 
   reorderItemFromPlaylist(

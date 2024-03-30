@@ -11,12 +11,12 @@
 #include "base/base64.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
 namespace brave_rewards::internal::endpoints {
 
-PostConnectUphold::PostConnectUphold(RewardsEngineImpl& engine,
+PostConnectUphold::PostConnectUphold(RewardsEngine& engine,
                                      std::string&& address)
     : PostConnect(engine), address_(std::move(address)) {}
 
@@ -84,11 +84,9 @@ std::optional<std::string> PostConnectUphold::Content() const {
     return std::nullopt;
   }
 
-  std::string signedLinkingRequest;
-  base::Base64Encode(std::move(json_request), &signedLinkingRequest);
-
   base::Value::Dict content;
-  content.Set("signedLinkingRequest", std::move(signedLinkingRequest));
+  content.Set("signedLinkingRequest",
+              base::Base64Encode(std::move(json_request)));
 
   std::string json;
   if (!base::JSONWriter::Write(std::move(content), &json)) {

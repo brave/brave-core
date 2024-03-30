@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"

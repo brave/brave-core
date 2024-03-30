@@ -21,7 +21,7 @@
 #include "base/values.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_delegate.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -62,13 +62,13 @@ inline constexpr char kLastUsageTimeHistogramName[] = "Brave.VPN.LastUsageTime";
 // by IS_ANDROID ifdef.
 class BraveVpnService :
 #if !BUILDFLAG(IS_ANDROID)
-    public BraveVPNOSConnectionAPI::Observer,
+    public BraveVPNConnectionManager::Observer,
 #endif
     public mojom::ServiceHandler,
     public KeyedService {
  public:
   BraveVpnService(
-      BraveVPNOSConnectionAPI* connection_api,
+      BraveVPNConnectionManager* connection_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* local_prefs,
       PrefService* profile_prefs,
@@ -105,6 +105,8 @@ class BraveVpnService :
                            CreateSupportTicketCallback callback) override;
   void GetSupportData(GetSupportDataCallback callback) override;
   void ResetConnectionState() override;
+  void EnableOnDemand(bool enable) override;
+  void GetOnDemandState(GetOnDemandStateCallback callback) override;
 #else
   // mojom::vpn::ServiceHandler
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
@@ -174,7 +176,7 @@ class BraveVpnService :
   friend class ::BraveAppMenuModelBrowserTest;
   friend class ::BraveBrowserCommandControllerTest;
 
-  // BraveVPNOSConnectionAPI::Observer overrides:
+  // BraveVPNConnectionManager::Observer overrides:
   void OnConnectionStateChanged(mojom::ConnectionState state) override;
   void OnRegionDataReady(bool success) override;
   void OnSelectedRegionChanged(const std::string& region_name) override;
@@ -218,11 +220,11 @@ class BraveVpnService :
   void CheckInitialState();
 
 #if !BUILDFLAG(IS_ANDROID)
-  base::ScopedObservation<BraveVPNOSConnectionAPI,
-                          BraveVPNOSConnectionAPI::Observer>
+  base::ScopedObservation<BraveVPNConnectionManager,
+                          BraveVPNConnectionManager::Observer>
       observed_{this};
   bool wait_region_data_ready_ = false;
-  raw_ptr<BraveVPNOSConnectionAPI> connection_api_ = nullptr;
+  raw_ptr<BraveVPNConnectionManager> connection_manager_ = nullptr;
 
   PrefChangeRegistrar policy_pref_change_registrar_;
 #endif  // !BUILDFLAG(IS_ANDROID)

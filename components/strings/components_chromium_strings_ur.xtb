@@ -2,7 +2,6 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ur">
 <translation id="130631256467250065">اپنا آلہ اگلی بار دوبارہ شروع کرنے پر آپ کی تبدیلیاں مؤثر ہوں گی۔</translation>
-<translation id="1555506416658437797">ادائیگی کے طریقوں میں ترمیم کریں۔</translation>
 <translation id="7999989146447764333">‏Brave میں کریش رپورٹنگ دستیاب نہیں ہے۔</translation>
 <translation id="1953231710324290369">‏آپ ایک محفوظ Brave صفحہ دیکھ رہے ہیں</translation>
 <translation id="907470742420136113">‏ادائیگی کے طریقوں پُر کرنے کی خاطر ترتیبات میں ترمیم کرنے کے لیے Brave کوشش کر رہا ہے۔</translation>
@@ -30,7 +29,6 @@
           <ph name="PROXIES_TITLE"/>
           پر جائیں اور یقینی بنائیں کہ آپ کی کنفیگریشن
           "کوئی پراکسی نہیں" یا "ڈائریکٹ" پر سیٹ ہے۔</translation>
-<translation id="585620188971323280">ادائیگی کے طریقوں کو پُر کرنے کے لیے ترتیبات میں ترمیم کریں۔</translation>
 <translation id="2765022094254723779">‏Brave کو دوسرے <ph name="BEGIN_LINK_OSS"/>اوپن سورس سافٹ ویئر<ph name="END_LINK_OSS"/> کے ذریعے بھی ممکن بنایا گیا ہے۔</translation>
 <translation id="9156965752763025780">‏آپ کی تبدیلیاں Brave کو اگلی بار آپ کے دوبارہ شروع کرنے کے وقت نافذ ہوں گی۔</translation>
 <translation id="6477625882876869143">‏Brave کو <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> اوپن سورس پروجیکٹ کے ذریعے ممکن بنایا گیا ہے۔</translation>

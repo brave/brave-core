@@ -48,14 +48,6 @@ export const AddressAndOrb = styled.div`
   flex-direction: row;
 `
 
-export const AccountCircle = styled.div<Partial<StyleProps>>`
-  width: 32px;
-  height: 32px;
-  border-radius: 100%;
-  background-image: url(${(p) => p.orb});
-  background-size: cover;
-`
-
 export const AddressText = styled.span`
   cursor: default;
   font-family: Poppins;

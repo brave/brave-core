@@ -19,7 +19,7 @@
 #include "ios/web/web_state/ui/crw_web_view_navigation_proxy.h"
 #include "ios/web/web_state/web_state_impl.h"
 
-#include "net/base/mac/url_conversions.h"
+#include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -57,8 +57,9 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
 
   // Insert the WebState into the Browser && Activate it
   browser_->GetWebStateList()->InsertWebState(
-      browser_->GetWebStateList()->count(), std::move(web_state),
-      WebStateList::INSERT_ACTIVATE, WebStateOpener());
+      std::move(web_state), WebStateList::InsertionParams::AtIndex(
+                                browser_->GetWebStateList()->count())
+                                .Activate());
 
   // Finally Set the WebState WindowID
   IOSChromeSessionTabHelper::FromWebState(web_state_)->SetWindowID(session_id_);

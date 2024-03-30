@@ -28,16 +28,6 @@ class BraveRewardsIsSupportedFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsIsUnsupportedRegionFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.isUnsupportedRegion", UNKNOWN)
-
- protected:
-  ~BraveRewardsIsUnsupportedRegionFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsRecordNTPPanelTriggerFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.recordNTPPanelTrigger", UNKNOWN)
@@ -64,16 +54,6 @@ class BraveRewardsShowRewardsSetupFunction : public ExtensionFunction {
 
  protected:
   ~BraveRewardsShowRewardsSetupFunction() override;
-
-  ResponseAction Run() override;
-};
-
-class BraveRewardsShowGrantCaptchaFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.showGrantCaptcha", UNKNOWN)
-
- protected:
-  ~BraveRewardsShowGrantCaptchaFunction() override;
 
   ResponseAction Run() override;
 };
@@ -280,52 +260,6 @@ class BraveRewardsIncludeInAutoContributionFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsFetchPromotionsFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.fetchPromotions", UNKNOWN)
-
- protected:
-  ~BraveRewardsFetchPromotionsFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnPromotionsFetched(
-      std::vector<brave_rewards::mojom::PromotionPtr> promotions);
-};
-
-class BraveRewardsClaimPromotionFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.claimPromotion", UNKNOWN)
-
- protected:
-  ~BraveRewardsClaimPromotionFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnClaimPromotion(const std::string& promotion_id,
-                        const brave_rewards::mojom::Result result,
-                        const std::string& captcha_image,
-                        const std::string& hint,
-                        const std::string& captcha_id);
-};
-
-class BraveRewardsAttestPromotionFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.attestPromotion", UNKNOWN)
-
- protected:
-  ~BraveRewardsAttestPromotionFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnAttestPromotion(const std::string& promotion_id,
-                         const brave_rewards::mojom::Result result,
-                         brave_rewards::mojom::PromotionPtr promotion);
-};
-
 class BraveRewardsSetAutoContributeEnabledFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.setAutoContributeEnabled", UNKNOWN)
@@ -498,6 +432,29 @@ class BraveRewardsDismissSelfCustodyInviteFunction : public ExtensionFunction {
 
  protected:
   ~BraveRewardsDismissSelfCustodyInviteFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsIsTermsOfServiceUpdateRequiredFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.isTermsOfServiceUpdateRequired",
+                             UNKNOWN)
+
+ protected:
+  ~BraveRewardsIsTermsOfServiceUpdateRequiredFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsAcceptTermsOfServiceUpdateFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.acceptTermsOfServiceUpdate", UNKNOWN)
+
+ protected:
+  ~BraveRewardsAcceptTermsOfServiceUpdateFunction() override;
 
   ResponseAction Run() override;
 };

@@ -27,7 +27,7 @@ std::string PerMonthExclusionRule::GetUuid(
 base::expected<void, std::string> PerMonthExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCreativeSetCap(
-          creative_ad, ad_events_, ConfirmationType::kServed,
+          creative_ad, ad_events_, ConfirmationType::kServedImpression,
           /*time_constraint=*/base::Days(28), creative_ad.per_month)) {
     return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 has exceeded the perMonth frequency cap",

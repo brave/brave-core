@@ -1,0 +1,4 @@
+HTTP/1.1 200 OK
+Content-Type: text/html;
+Content-Security-Policy: default-src 'none';img-src 'none';style-src 'none';frame-ancestors 'none';form-action 'none';sandbox;
+

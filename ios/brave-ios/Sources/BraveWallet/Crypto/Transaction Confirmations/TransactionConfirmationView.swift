@@ -1,13 +1,13 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import BraveCore
 import BigNumber
-import Strings
+import BraveCore
 import DesignSystem
+import Strings
+import SwiftUI
 
 struct TransactionConfirmationView: View {
 
@@ -16,11 +16,11 @@ struct TransactionConfirmationView: View {
   @ObservedObject var keyringStore: KeyringStore
 
   var onDismiss: () -> Void
-  
+
   @State private var isShowingGas: Bool = false
   @State private var isShowingAdvancedSettings: Bool = false
   @State private var transactionDetails: TransactionDetailsStore?
-  
+
   private var transactionType: String {
     if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
       return Strings.Wallet.transactionTypeApprove
@@ -31,21 +31,27 @@ struct TransactionConfirmationView: View {
     case .solanaDappSignTransaction, .solanaDappSignAndSendTransaction:
       return Strings.Wallet.solanaDappTransactionTitle
     default:
-      return confirmationStore.activeParsedTransaction.transaction.isSwap ? Strings.Wallet.swap : Strings.Wallet.send
+      return confirmationStore.activeParsedTransaction.transaction.isSwap
+        ? Strings.Wallet.swap : Strings.Wallet.send
     }
   }
-  
+
   private var navigationTitle: String {
-    if confirmationStore.isTxSubmitting || confirmationStore.activeTxStatus == .signed || confirmationStore.activeTxStatus == .submitted || confirmationStore.activeTxStatus == .confirmed || confirmationStore.activeTxStatus == .error {
+    if confirmationStore.isTxSubmitting || confirmationStore.activeTxStatus == .signed
+      || confirmationStore.activeTxStatus == .submitted
+      || confirmationStore.activeTxStatus == .confirmed
+      || confirmationStore.activeTxStatus == .error
+    {
       return "\(transactionType) \(confirmationStore.value) \(confirmationStore.symbol)"
     } else {
       if confirmationStore.activeParsedTransaction.transaction.txType == .ethSwap {
         return Strings.Wallet.swapConfirmationTitle
       }
-      return confirmationStore.unapprovedTxs.count > 1 ? Strings.Wallet.confirmTransactionsTitle : Strings.Wallet.confirmTransactionTitle
+      return confirmationStore.unapprovedTxs.count > 1
+        ? Strings.Wallet.confirmTransactionsTitle : Strings.Wallet.confirmTransactionTitle
     }
   }
-  
+
   @ViewBuilder private var containerView: some View {
     PendingTransactionView(
       confirmationStore: confirmationStore,
@@ -72,13 +78,14 @@ struct TransactionConfirmationView: View {
           TransactionStatusView(
             confirmationStore: confirmationStore,
             networkStore: networkStore,
-            transactionDetails: $transactionDetails) {
-              if confirmationStore.unapprovedTxs.count == 0 {
-                onDismiss()
-              }
-              // update activeTransactionId
-              confirmationStore.updateActiveTxIdAfterSignedClosed()
+            transactionDetails: $transactionDetails
+          ) {
+            if confirmationStore.unapprovedTxs.count == 0 {
+              onDismiss()
             }
+            // update activeTransactionId
+            confirmationStore.updateActiveTxIdAfterSignedClosed()
+          }
         }
       }
     )
@@ -92,14 +99,17 @@ struct TransactionConfirmationView: View {
     .navigationBarTitleDisplayMode(.inline)
     .foregroundColor(Color(.braveLabel))
     .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
-    .onChange(of: confirmationStore.activeTransactionId, perform: { newValue in
-      // we are looking for `activeTransactionId` value
-      // when the value is an empty string meaning there is no active transaction
-      // aka there is no remaining pending transations
-      if newValue == "" {
-        onDismiss()
+    .onChange(
+      of: confirmationStore.activeTransactionId,
+      perform: { newValue in
+        // we are looking for `activeTransactionId` value
+        // when the value is an empty string meaning there is no active transaction
+        // aka there is no remaining pending transations
+        if newValue == "" {
+          onDismiss()
+        }
       }
-    })
+    )
     .onAppear {
       Task {
         await confirmationStore.prepare()
@@ -170,7 +180,7 @@ struct TransactionConfirmationView_Previews: PreviewProvider {
       confirmationStore: .previewStore,
       networkStore: .previewStore,
       keyringStore: .previewStoreWithWalletCreated,
-      onDismiss: { }
+      onDismiss: {}
     )
     .previewLayout(.sizeThatFits)
   }

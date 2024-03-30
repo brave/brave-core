@@ -1,14 +1,14 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
+import Combine
+import Data
 import Foundation
 import LocalAuthentication
-import BraveCore
-import Data
 import Preferences
-import Combine
 
 public class SettingsStore: ObservableObject, WalletObserverStore {
   /// The number of minutes to wait until the Brave Wallet is automatically locked
@@ -19,13 +19,15 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
   }
 
   /// If we should attempt to unlock via biometrics (Face ID / Touch ID)
-  var isBiometricsUnlockEnabled: Bool {
-    keychain.isPasswordStoredInKeychain(key: KeyringStore.passwordKeychainKey) && isBiometricsAvailable
-  }
+  @Published var isBiometricsUnlockEnabled: Bool = false
 
   /// If the device has biometrics available
   var isBiometricsAvailable: Bool {
     LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+  }
+
+  private var isPasswordStoredInKeychain: Bool {
+    keychain.isPasswordStoredInKeychain(key: KeyringStore.passwordKeychainKey)
   }
 
   /// The current default base currency code
@@ -34,7 +36,7 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
       walletService.setDefaultBaseCurrency(currencyCode.code)
     }
   }
-  
+
   /// The current ENS Resolve Method preference (Ask / Enabled / Disabled)
   @Published var ensResolveMethod: BraveWallet.ResolveMethod = .ask {
     didSet {
@@ -42,7 +44,7 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
       rpcService.setEnsResolveMethod(ensResolveMethod)
     }
   }
-  
+
   /// The current ENS Offchain Resolve Method preference (Ask / Enabled / Disabled)
   @Published var ensOffchainResolveMethod: BraveWallet.ResolveMethod = .ask {
     didSet {
@@ -57,7 +59,7 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
       rpcService.setSnsResolveMethod(snsResolveMethod)
     }
   }
-  
+
   /// The current Unstoppable Domains Resolve Method preference (Ask / Enabled / Disabled)
   @Published var udResolveMethod: BraveWallet.ResolveMethod = .ask {
     didSet {
@@ -65,7 +67,7 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
       rpcService.setUnstoppableDomainsResolveMethod(udResolveMethod)
     }
   }
-  
+
   /// The current preference for enabling NFT discovery (Enabled / Disabled)
   @Published var isNFTDiscoveryEnabled: Bool = false {
     didSet {
@@ -82,7 +84,7 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
   private let keychain: KeychainType
   private var keyringServiceObserver: KeyringServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
-  
+
   var isObserving: Bool {
     keyringServiceObserver != nil && walletServiceObserver != nil
   }
@@ -101,15 +103,14 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     self.txService = txService
     self.ipfsApi = ipfsApi
     self.keychain = keychain
-
     self.setupObservers()
   }
-  
+
   func tearDown() {
     keyringServiceObserver = nil
     walletServiceObserver = nil
   }
-  
+
   func setupObservers() {
     guard !isObserving else { return }
     self.keyringServiceObserver = KeyringServiceObserver(
@@ -127,7 +128,7 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
       }
     )
   }
-  
+
   func setup() {
     Task { @MainActor in
       let currencyCode = await walletService.defaultBaseCurrency()
@@ -140,20 +141,21 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
       self.ensResolveMethod = await rpcService.ensResolveMethod()
       self.ensOffchainResolveMethod = await rpcService.ensOffchainLookupResolveMethod()
       self.udResolveMethod = await rpcService.unstoppableDomainsResolveMethod()
-      
+
       self.isNFTDiscoveryEnabled = await walletService.nftDiscoveryEnabled()
+      self.isBiometricsUnlockEnabled = isPasswordStoredInKeychain && isBiometricsAvailable
     }
   }
 
   func reset() {
     walletService.reset()
-    
+
     keychain.resetPasswordInKeychain(key: KeyringStore.passwordKeychainKey)
     for coin in WalletConstants.supportedCoinTypes() {
       Domain.clearAllWalletPermissions(for: coin)
       Preferences.Wallet.reset(for: coin)
     }
-    
+
     Preferences.Wallet.displayWeb3Notifications.reset()
     Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()
     // Portfolio/NFT Filters
@@ -166,7 +168,7 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     Preferences.Wallet.nonSelectedNetworksFilter.reset()
     // onboarding
     Preferences.Wallet.isOnboardingCompleted.reset()
-    
+
     WalletUserAssetGroup.removeAllGroup()
   }
 
@@ -175,9 +177,9 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
   }
 
   public func addKeyringServiceObserver(_ observer: BraveWalletKeyringServiceObserver) {
-    keyringService.add(observer)
+    keyringService.addObserver(observer)
   }
-  
+
   private var manageSiteConnectionsStore: ManageSiteConnectionsStore?
 
   func manageSiteConnectionsStore(keyringStore: KeyringStore) -> ManageSiteConnectionsStore {
@@ -188,9 +190,13 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     self.manageSiteConnectionsStore = manageSiteConnectionsStore
     return manageSiteConnectionsStore
   }
-  
+
   func closeManageSiteConnectionStore() {
     manageSiteConnectionsStore = nil
+  }
+
+  func updateBiometricsToggle() {
+    self.isBiometricsUnlockEnabled = isPasswordStoredInKeychain && isBiometricsAvailable
   }
 }
 
@@ -200,9 +206,9 @@ extension SettingsStore {
   func autoLockMinutesChanged() {
     keyringServiceObserver?.autoLockMinutesChanged()
   }
-  
+
   func onDefaultBaseCurrencyChanged(_ currency: String) {
-    walletServiceObserver?.onDefaultBaseCurrencyChanged(currency)
+    walletServiceObserver?.onDefaultBaseCurrencyChanged(currency: currency)
   }
 }
 #endif
@@ -211,17 +217,17 @@ struct CurrencyCode: Hashable, Identifiable {
   let code: String
   let symbol: String
   var id: String { code }
-  
+
   init(code: String) {
     self.code = code
     self.symbol = CurrencyCode.symbol(for: code)
   }
-  
+
   private init(code: String, symbol: String) {
     self.code = code
     self.symbol = symbol
   }
-  
+
   static let aed: Self = .init(code: "AED", symbol: "د.إ‎")
   static let ars: Self = .init(code: "ARS", symbol: "$")
   static let aud: Self = .init(code: "AUD", symbol: "$")
@@ -269,11 +275,17 @@ struct CurrencyCode: Hashable, Identifiable {
   static let xau: Self = .init(code: "XAU", symbol: "XAU")
   static let xdr: Self = .init(code: "XDR", symbol: "XDR")
   static let zap: Self = .init(code: "ZAR", symbol: "R")
-  
-  static let allCurrencyCodes: [CurrencyCode] = [aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, `try`, twd, uah, usd, vef, vnd, xag, xau, xdr, zap]
-  
+
+  static let allCodes: [CurrencyCode] = [
+    aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr,
+    jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, `try`,
+    twd, uah, usd, vef, vnd, xag, xau, xdr, zap,
+  ]
+
   static func symbol(for currencyCode: String) -> String {
-    if let currency = CurrencyCode.allCurrencyCodes.first(where: { $0.code.caseInsensitiveCompare(currencyCode) == .orderedSame }) {
+    if let currency = CurrencyCode.allCodes.first(where: {
+      $0.code.caseInsensitiveCompare(currencyCode) == .orderedSame
+    }) {
       return currency.symbol
     }
     return ""

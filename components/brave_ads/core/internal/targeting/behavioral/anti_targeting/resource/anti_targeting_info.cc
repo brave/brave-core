@@ -7,7 +7,6 @@
 
 #include <optional>
 
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "url/gurl.h"
 

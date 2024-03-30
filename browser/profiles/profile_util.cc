@@ -11,8 +11,8 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
-#include "brave/components/brave_shields/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"

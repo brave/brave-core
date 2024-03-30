@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
 
 #include <string>
+#include <utility>
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
@@ -16,8 +17,9 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_util.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_unittest_util.h"
@@ -35,8 +37,7 @@ class BraveAdsConfirmationUserDataBuilderTest : public UnitTestBase {
 
     MockConfirmationUserData();
 
-    AdvanceClockTo(
-        TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
+    AdvanceClockTo(TimeFromUTCString("November 18 2020 12:34:56.789"));
   }
 };
 
@@ -44,7 +45,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildConfirmationUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
@@ -67,6 +69,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
                 ],
                 "countryCode": "US",
                 "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                "foo": "bar",
                 "platform": "windows",
                 "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
                 "segment": "untargeted",
@@ -76,16 +79,18 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
               })",
           {GetBrowserVersionNumber()}, nullptr));
 
+  auto user_data = base::Value::Dict().Set("foo", "bar");
+
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, std::move(user_data), callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildConversionConfirmationUserDataForRewardsUser) {
   // Arrange
-  test::BuildAndSaveConversionQueue(
-      AdType::kNotificationAd, ConfirmationType::kViewed,
+  test::BuildAndSaveConversionQueueItems(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = test::BuildTransaction(
@@ -127,13 +132,13 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildVerifiableConversionConfirmationUserDataForRewardsUser) {
   // Arrange
-  test::BuildAndSaveConversionQueue(
+  test::BuildAndSaveConversionQueueItems(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
@@ -161,7 +166,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -170,13 +175,23 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/false);
+
+  UserDataInfo expected_user_data;
+  expected_user_data.fixed = base::test::ParseJsonDict(
+      R"(
+          {
+            "foo": "bar"
+          })");
+
+  auto user_data = base::Value::Dict().Set("foo", "bar");
 
   // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(UserDataInfo{}));
-  BuildConfirmationUserData(transaction, callback.Get());
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
+  BuildConfirmationUserData(transaction, std::move(user_data), callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -184,8 +199,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Arrange
   test::DisableBraveRewards();
 
-  test::BuildAndSaveConversionQueue(
-      AdType::kNotificationAd, ConfirmationType::kViewed,
+  test::BuildAndSaveConversionQueueItems(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = test::BuildTransaction(
@@ -206,7 +221,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(expected_user_data));
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -214,7 +229,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Arrange
   test::DisableBraveRewards();
 
-  test::BuildAndSaveConversionQueue(
+  test::BuildAndSaveConversionQueueItems(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
@@ -234,7 +249,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 }  // namespace brave_ads

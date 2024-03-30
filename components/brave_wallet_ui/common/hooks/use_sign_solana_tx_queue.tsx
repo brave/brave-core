@@ -42,7 +42,7 @@ export const useProcessSignSolanaTransaction = (props: {
         ? PanelActions.signTransactionProcessed(payload)
         : PanelActions.signAllTransactionsProcessed(payload)
     )
-  }, [props])
+  }, [dispatch, props.request, props.signMode])
 
   const sign = React.useCallback(() => {
     if (!props.request || !props.account) {
@@ -88,7 +88,7 @@ export const useProcessSignSolanaTransaction = (props: {
         })
       )
     }
-  }, [props])
+  }, [dispatch, props.account, props.request, props.signMode])
 
   // render
   return {

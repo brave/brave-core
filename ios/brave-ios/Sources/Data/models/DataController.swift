@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
 import CoreData
-import Shared
-import os.log
 import Preferences
+import Shared
+import UIKit
+import os.log
 
 /// A helper structure for `DataController.perform()` method
 /// to decide whether a new or existing context should be used
@@ -69,7 +71,8 @@ public class DataController {
 
   private let container = NSPersistentContainer(
     name: DataController.modelName,
-    managedObjectModel: DataController.model)
+    managedObjectModel: DataController.model
+  )
 
   /// Warning! Please use `storeURL`. This is for migration purposes only.
   private var supportStoreURL: URL {
@@ -89,7 +92,8 @@ public class DataController {
   // MARK: - Data framework interface
 
   static func perform(
-    context: WriteContext = .new(inMemory: false), save: Bool = true,
+    context: WriteContext = .new(inMemory: false),
+    save: Bool = true,
     task: @escaping (NSManagedObjectContext) -> Void
   ) {
     if !DataController.shared.initializationCompleted && !AppConstants.isRunningTest {
@@ -105,10 +109,14 @@ public class DataController {
       task(existingContext)
     case .new(let inMemory):
       // Though keeping same queue does not make a difference but kept them diff for independent processing.
-      let queue = inMemory ? DataController.sharedInMemory.operationQueue : DataController.shared.operationQueue
+      let queue =
+        inMemory
+        ? DataController.sharedInMemory.operationQueue : DataController.shared.operationQueue
 
       queue.addOperation({
-        let backgroundContext = inMemory ? DataController.newBackgroundContextInMemory() : DataController.newBackgroundContext()
+        let backgroundContext =
+          inMemory
+          ? DataController.newBackgroundContextInMemory() : DataController.newBackgroundContext()
         // performAndWait doesn't block main thread because it fires on OperationQueue`s background thread.
         backgroundContext.performAndWait {
           task(backgroundContext)
@@ -119,14 +127,19 @@ public class DataController {
             assert(!Thread.isMainThread)
             try backgroundContext.save()
           } catch {
-            Logger.module.error("performTask save error: \(error.localizedDescription, privacy: .public)")
+            Logger.module.error(
+              "performTask save error: \(error.localizedDescription, privacy: .public)"
+            )
           }
         }
       })
     }
   }
 
-  public static func performOnMainContext(save: Bool = true, task: @escaping (NSManagedObjectContext) -> Void) {
+  public static func performOnMainContext(
+    save: Bool = true,
+    task: @escaping (NSManagedObjectContext) -> Void
+  ) {
     self.perform(context: .existing(self.viewContext), save: save, task: task)
   }
 

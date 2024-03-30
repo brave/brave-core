@@ -18,7 +18,7 @@ namespace database {
 
 class DatabaseServerPublisherInfo : public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherInfo(RewardsEngineImpl& engine);
+  explicit DatabaseServerPublisherInfo(RewardsEngine& engine);
   ~DatabaseServerPublisherInfo() override;
 
   void InsertOrUpdate(const mojom::ServerPublisherInfo& server_info,

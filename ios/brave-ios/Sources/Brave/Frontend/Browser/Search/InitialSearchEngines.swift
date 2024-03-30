@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
@@ -83,7 +83,9 @@ class InitialSearchEngines {
     engines.filter { !$0.id.excludedFromOnboarding(for: locale) }
   }
 
-  static let braveSearchDefaultRegions = ["US", "CA", "GB", "FR", "DE", "AD", "AT", "ES", "MX", "BR", "AR", "IN"]
+  static let braveSearchDefaultRegions = [
+    "US", "CA", "GB", "FR", "DE", "AD", "AT", "ES", "MX", "BR", "AR", "IN",
+  ]
   static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
   static let ecosiaEnabledRegions = [
     "AT", "AU", "BE", "CA", "DK", "ES", "FI", "GR", "HU", "IT",
@@ -158,11 +160,11 @@ class InitialSearchEngines {
     if Self.braveSearchDefaultRegions.contains(region) {
       defaultSearchEngine = .braveSearch
     }
-    
+
     if Self.naverDefaultRegions.contains(region) {
       defaultSearchEngine = .naver
     }
-    
+
     if Self.daumEnabledRegions.contains(region) {
       replaceOrInsert(engineId: .daum, customId: nil)
     }

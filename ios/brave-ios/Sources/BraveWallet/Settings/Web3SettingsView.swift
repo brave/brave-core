@@ -1,19 +1,19 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Strings
+import BraveCore
 import BraveUI
 import Preferences
-import BraveCore
+import Strings
+import SwiftUI
 
 public struct Web3SettingsView: View {
   var settingsStore: SettingsStore?
   var networkStore: NetworkStore?
   var keyringStore: KeyringStore?
-  
+
   @ObservedObject var enableIPFSResourcesResolver = Preferences.Wallet.resolveIPFSResources
 
   @State private var isShowingResetWalletAlert = false
@@ -22,7 +22,7 @@ public struct Web3SettingsView: View {
   @State private var isShowingBiometricsPasswordEntry = false
   @State private var ipfsNFTGatewayURL: String = ""
   @State private var ipfsGatewayURL: String = ""
-  
+
   public init(
     settingsStore: SettingsStore? = nil,
     networkStore: NetworkStore? = nil,
@@ -32,7 +32,7 @@ public struct Web3SettingsView: View {
     self.networkStore = networkStore
     self.keyringStore = keyringStore
   }
-  
+
   public var body: some View {
     List {
       if let settingsStore = settingsStore {
@@ -60,10 +60,17 @@ public struct Web3SettingsView: View {
             VStack(alignment: .leading, spacing: 6) {
               Text(Strings.Wallet.ipfsResourcesOptionsTitle)
                 .foregroundColor(Color(.braveLabel))
-              Text(LocalizedStringKey(String.localizedStringWithFormat(Strings.Wallet.ipfsResolveMethodDescription, WalletConstants.ipfsLearnMoreLink.absoluteString)))
-                .foregroundColor(Color(.secondaryBraveLabel))
-                .tint(Color(.braveBlurpleTint))
-                .font(.footnote)
+              Text(
+                LocalizedStringKey(
+                  String.localizedStringWithFormat(
+                    Strings.Wallet.ipfsResolveMethodDescription,
+                    WalletConstants.ipfsLearnMoreLink.absoluteString
+                  )
+                )
+              )
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .tint(Color(.braveBlurpleTint))
+              .font(.footnote)
             }
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -78,7 +85,9 @@ public struct Web3SettingsView: View {
             .padding(.vertical, 4)
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          NavigationLink(destination: IPFSCustomGatewayView(ipfsAPI: settingsStore.ipfsApi, isForNFT: true)) {
+          NavigationLink(
+            destination: IPFSCustomGatewayView(ipfsAPI: settingsStore.ipfsApi, isForNFT: true)
+          ) {
             VStack(alignment: .leading, spacing: 6) {
               Text(Strings.Wallet.ipfsPublicGatewayAddressNFTTitle)
                 .foregroundColor(Color(.braveLabel))
@@ -90,7 +99,7 @@ public struct Web3SettingsView: View {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        
+
       }
       if let settingsStore {
         Web3DomainSettingsView(settingsStore: settingsStore)
@@ -110,7 +119,8 @@ public struct Web3SettingsView: View {
               Text(Strings.Wallet.settingsResetTransactionAlertButtonTitle),
               action: {
                 settingsStore?.resetTransaction()
-              }),
+              }
+            ),
             secondaryButton: .cancel(Text(Strings.cancelButtonTitle))
           )
         }
@@ -125,7 +135,8 @@ public struct Web3SettingsView: View {
               Text(Strings.Wallet.settingsResetWalletAlertButtonTitle),
               action: {
                 settingsStore?.reset()
-              }),
+              }
+            ),
             secondaryButton: .cancel(Text(Strings.no))
           )
         }
@@ -133,16 +144,23 @@ public struct Web3SettingsView: View {
     .background(
       Color.clear
         .sheet(isPresented: $isShowingBiometricsPasswordEntry) {
-          if let keyringStore {
-            BiometricsPasscodeEntryView(keyringStore: keyringStore)
+          if let keyringStore, let settingsStore {
+            BiometricsPasscodeEntryView(
+              keyringStore: keyringStore,
+              settingsStore: settingsStore
+            )
           }
         }
     )
     .onAppear {
-      if let urlString = settingsStore?.ipfsApi.nftIpfsGateway?.absoluteString, urlString != ipfsNFTGatewayURL {
+      if let urlString = settingsStore?.ipfsApi.nftIpfsGateway?.absoluteString,
+        urlString != ipfsNFTGatewayURL
+      {
         ipfsNFTGatewayURL = urlString
       }
-      if let urlString = settingsStore?.ipfsApi.ipfsGateway?.absoluteString, urlString != ipfsGatewayURL {
+      if let urlString = settingsStore?.ipfsApi.ipfsGateway?.absoluteString,
+        urlString != ipfsGatewayURL
+      {
         ipfsGatewayURL = urlString
       }
       settingsStore?.setup()
@@ -155,7 +173,7 @@ private struct WalletSettingsView: View {
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var displayDappsNotifications = Preferences.Wallet.displayWeb3Notifications
-  
+
   @Binding var isShowingResetWalletAlert: Bool
   @Binding var isShowingResetTransactionAlert: Bool
   @Binding var isShowingBiometricsPasswordEntry: Bool
@@ -180,7 +198,7 @@ private struct WalletSettingsView: View {
       EmptyView()
     }
   }
-  
+
   @ViewBuilder private var sections: some View {
     Section(
       footer: Text(Strings.Wallet.autoLockFooter)
@@ -201,7 +219,7 @@ private struct WalletSettingsView: View {
     }
     Section {
       Picker(selection: $settingsStore.currencyCode) {
-        ForEach(CurrencyCode.allCurrencyCodes) { currencyCode in
+        ForEach(CurrencyCode.allCodes) { currencyCode in
           Text(currencyCode.code)
             .foregroundColor(Color(.secondaryBraveLabel))
             .tag(currencyCode)
@@ -220,8 +238,10 @@ private struct WalletSettingsView: View {
       ) {
         Toggle(
           Strings.Wallet.settingsEnableBiometricsTitle,
-          isOn: Binding(get: { settingsStore.isBiometricsUnlockEnabled },
-                        set: { toggledBiometricsUnlock($0) })
+          isOn: Binding(
+            get: { settingsStore.isBiometricsUnlockEnabled },
+            set: { toggledBiometricsUnlock($0) }
+          )
         )
         .foregroundColor(Color(.braveLabel))
         .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
@@ -229,14 +249,24 @@ private struct WalletSettingsView: View {
       }
     }
     Section(
-      footer: Text(LocalizedStringKey(String.localizedStringWithFormat(Strings.Wallet.web3SettingsEnableNFTDiscoveryFooter, WalletConstants.nftDiscoveryURL.absoluteDisplayString)))
-        .foregroundColor(Color(.secondaryBraveLabel))
-        .tint(Color(.braveBlurpleTint))
+      footer: Text(
+        LocalizedStringKey(
+          String.localizedStringWithFormat(
+            Strings.Wallet.web3SettingsEnableNFTDiscoveryFooter,
+            WalletConstants.nftDiscoveryURL.absoluteDisplayString
+          )
+        )
+      )
+      .foregroundColor(Color(.secondaryBraveLabel))
+      .tint(Color(.braveBlurpleTint))
     ) {
-      Toggle(Strings.Wallet.web3SettingsEnableNFTDiscovery, isOn: $settingsStore.isNFTDiscoveryEnabled)
-        .foregroundColor(Color(.braveLabel))
-        .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      Toggle(
+        Strings.Wallet.web3SettingsEnableNFTDiscovery,
+        isOn: $settingsStore.isNFTDiscoveryEnabled
+      )
+      .foregroundColor(Color(.braveLabel))
+      .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       footer: Text(Strings.Wallet.networkFooter)
@@ -258,7 +288,9 @@ private struct WalletSettingsView: View {
             destination:
               DappsSettings(
                 coin: coin,
-                siteConnectionStore: settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
+                siteConnectionStore: settingsStore.manageSiteConnectionsStore(
+                  keyringStore: keyringStore
+                )
               )
               .onDisappear {
                 settingsStore.closeManageSiteConnectionStore()
@@ -268,9 +300,12 @@ private struct WalletSettingsView: View {
               .foregroundColor(Color(.braveLabel))
           }
         }
-        Toggle(Strings.Wallet.web3PreferencesDisplayWeb3Notifications, isOn: $displayDappsNotifications.value)
-          .foregroundColor(Color(.braveLabel))
-          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+        Toggle(
+          Strings.Wallet.web3PreferencesDisplayWeb3Notifications,
+          isOn: $displayDappsNotifications.value
+        )
+        .foregroundColor(Color(.braveLabel))
+        .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
@@ -278,26 +313,31 @@ private struct WalletSettingsView: View {
       footer: Text(Strings.Wallet.settingsResetTransactionFooter)
         .foregroundColor(Color(.secondaryBraveLabel))
     ) {
-      Button(action: { isShowingResetTransactionAlert = true }) {
+      Button {
+        isShowingResetTransactionAlert = true
+      } label: {
         Text(Strings.Wallet.settingsResetTransactionTitle)
           .foregroundColor(Color(.braveBlurpleTint))
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section {
-      Button(action: { isShowingResetWalletAlert = true }) {
+      Button {
+        isShowingResetWalletAlert = true
+      } label: {
         Text(Strings.Wallet.settingsResetButtonTitle)
           .foregroundColor(.red)
-      } // iOS 15: .role(.destructive)
+      }  // iOS 15: .role(.destructive)
     }
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
-  
+
   private func toggledBiometricsUnlock(_ enabled: Bool) {
     if enabled {
       self.isShowingBiometricsPasswordEntry = true
     } else {
       keyringStore.resetKeychainStoredPassword()
+      settingsStore.updateBiometricsToggle()
     }
   }
 }
@@ -319,12 +359,10 @@ struct WalletSettingsView_Previews: PreviewProvider {
 }
 #endif
 
-/*
- Section containing the follow preferences:
- - Allow SNS Resolve (Ask/Enabled/Disabled)
- - Allow ENS Resolve (Ask/Enabled/Disabled)
- - Allow ENS Offchain Resolve (Ask/Enabled/Disabled)
- */
+// Section containing the follow preferences:
+// - Allow SNS Resolve (Ask/Enabled/Disabled)
+// - Allow ENS Resolve (Ask/Enabled/Disabled)
+// - Allow ENS Offchain Resolve (Ask/Enabled/Disabled)
 private struct Web3DomainSettingsView: View {
 
   @ObservedObject var settingsStore: SettingsStore
@@ -342,7 +380,7 @@ private struct Web3DomainSettingsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
-  
+
   @ViewBuilder private var ensResolveMethodPreference: some View {
     Picker(selection: $settingsStore.ensResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
@@ -356,7 +394,7 @@ private struct Web3DomainSettingsView: View {
         .padding(.vertical, 4)
     }
   }
-  
+
   @ViewBuilder private var ensOffchainResolveMethodPreference: some View {
     Picker(selection: $settingsStore.ensOffchainResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
@@ -368,15 +406,22 @@ private struct Web3DomainSettingsView: View {
       VStack(alignment: .leading, spacing: 6) {
         Text(Strings.Wallet.ensOffchainResolveMethodTitle)
           .foregroundColor(Color(.braveLabel))
-        Text(LocalizedStringKey(String.localizedStringWithFormat(Strings.Wallet.ensOffchainResolveMethodDescription, WalletConstants.braveWalletENSOffchainURL.absoluteDisplayString)))
-          .foregroundColor(Color(.secondaryBraveLabel))
-          .tint(Color(.braveBlurpleTint))
-          .font(.footnote)
+        Text(
+          LocalizedStringKey(
+            String.localizedStringWithFormat(
+              Strings.Wallet.ensOffchainResolveMethodDescription,
+              WalletConstants.braveWalletENSOffchainURL.absoluteDisplayString
+            )
+          )
+        )
+        .foregroundColor(Color(.secondaryBraveLabel))
+        .tint(Color(.braveBlurpleTint))
+        .font(.footnote)
       }
       .padding(.vertical, 4)
     }
   }
-  
+
   @ViewBuilder private var snsResolveMethodPreference: some View {
     Picker(selection: $settingsStore.snsResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
@@ -390,7 +435,7 @@ private struct Web3DomainSettingsView: View {
         .padding(.vertical, 4)
     }
   }
-  
+
   @ViewBuilder private var udResolveMethodPreference: some View {
     Picker(selection: $settingsStore.udResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
@@ -402,10 +447,17 @@ private struct Web3DomainSettingsView: View {
       VStack(alignment: .leading, spacing: 6) {
         Text(Strings.Wallet.udResolveMethodTitle)
           .foregroundColor(Color(.braveLabel))
-        Text(LocalizedStringKey(String.localizedStringWithFormat(Strings.Wallet.udResolveMethodDescription, WalletConstants.braveWalletUnstoppableDomainsURL.absoluteDisplayString)))
-          .foregroundColor(Color(.secondaryBraveLabel))
-          .tint(Color(.braveBlurpleTint))
-          .font(.footnote)
+        Text(
+          LocalizedStringKey(
+            String.localizedStringWithFormat(
+              Strings.Wallet.udResolveMethodDescription,
+              WalletConstants.braveWalletUnstoppableDomainsURL.absoluteDisplayString
+            )
+          )
+        )
+        .foregroundColor(Color(.secondaryBraveLabel))
+        .tint(Color(.braveBlurpleTint))
+        .font(.footnote)
       }
       .padding(.vertical, 4)
     }

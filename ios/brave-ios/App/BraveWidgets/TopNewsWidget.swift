@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import WidgetKit
-import SwiftUI
-import CodableHelpers
-import Shared
-import DesignSystem
-import os
 import AVFoundation
+import CodableHelpers
+import DesignSystem
 import OrderedCollections
+import Shared
+import SwiftUI
+import WidgetKit
+import os
 
 struct TopNewsWidget: Widget {
   var supportedFamilies: [WidgetFamily] {
@@ -20,7 +20,7 @@ struct TopNewsWidget: Widget {
       return [.systemSmall]
     }
   }
-  
+
   var body: some WidgetConfiguration {
     StaticConfiguration(kind: "TopNewsWidget", provider: TopNewsWidgetProvider()) { entry in
       TopNewsView(entry: entry)
@@ -28,10 +28,10 @@ struct TopNewsWidget: Widget {
     .supportedFamilies(supportedFamilies)
     .configurationDisplayName(Strings.Widgets.newsClusteringWidgetTitle)
     .description(Strings.Widgets.newsClusteringWidgetDescription)
-#if swift(>=5.9)
+    #if swift(>=5.9)
     .contentMarginsDisabled()
     .containerBackgroundRemovable(false)
-#endif
+    #endif
   }
 }
 
@@ -39,7 +39,7 @@ private struct TopNewsEntry: TimelineEntry {
   var date: Date
   var topic: NewsTopic?
   var image: UIImage?
-  
+
   init(date: Date = .now, topic: NewsTopic?, image: UIImage? = nil) {
     self.date = date
     self.topic = topic
@@ -62,26 +62,29 @@ extension WidgetFamily {
 
 private struct TopNewsWidgetProvider: TimelineProvider {
   private let model: NewsTopicsModel = .live
-  
+
   private func thumbnailSize(for context: Context) -> CGSize {
     let size = context.displaySize
     let scale = context.environmentVariants.displayScale?.max() ?? 1.0
     return .init(width: size.width * scale, height: size.height * scale)
   }
-  
+
   func getSnapshot(in context: Context, completion: @escaping (TopNewsEntry) -> Void) {
     Task {
       let topics = await model.fetchNewsTopics()
       var entry: TopNewsEntry = .init(topic: topics.first)
       if let topic = entry.topic, !context.family.isLockScreen {
-        if let (_, image) = await model.fetchImageThumbnailsForTopics([topic], thumbnailSize(for: context)).first {
+        if let (_, image) = await model.fetchImageThumbnailsForTopics(
+          [topic],
+          thumbnailSize(for: context)
+        ).first {
           entry.image = image
         }
       }
       completion(entry)
     }
   }
-  
+
   func getTimeline(in context: Context, completion: @escaping (Timeline<TopNewsEntry>) -> Void) {
     Task {
       let topics = Array(await model.fetchNewsTopics().prefix(6))
@@ -90,12 +93,16 @@ private struct TopNewsWidgetProvider: TimelineProvider {
         images = await model.fetchImageThumbnailsForTopics(topics, thumbnailSize(for: context))
       }
       let entries: [TopNewsEntry] = zip(topics, topics.indices).map {
-        .init(date: Date.now.addingTimeInterval(15.minutes * TimeInterval($1)), topic: $0, image: images[$0.id])
+        .init(
+          date: Date.now.addingTimeInterval(15.minutes * TimeInterval($1)),
+          topic: $0,
+          image: images[$0.id]
+        )
       }
       completion(.init(entries: entries, policy: .after(Date.now.addingTimeInterval(60.minutes))))
     }
   }
-  
+
   func placeholder(in context: Context) -> TopNewsEntry {
     .init(date: Date(), topic: nil)
   }
@@ -104,7 +111,7 @@ private struct TopNewsWidgetProvider: TimelineProvider {
 private struct TopNewsView: View {
   @Environment(\.widgetFamily) private var widgetFamily
   var entry: TopNewsEntry
-  
+
   var body: some View {
     if #available(iOS 16.0, *) {
       if widgetFamily == .accessoryRectangular {
@@ -120,7 +127,7 @@ private struct TopNewsView: View {
 
 private struct LockScreenTopNewsView: View {
   var entry: TopNewsEntry
-  
+
   var body: some View {
     if let topic = entry.topic {
       VStack(alignment: .leading, spacing: 2) {
@@ -175,17 +182,19 @@ private struct LockScreenTopNewsView: View {
 
 private struct WidgetTopNewsView: View {
   var entry: TopNewsEntry
-  
+
   var body: some View {
     if let topic = entry.topic {
       VStack(alignment: .leading) {
-        HStack() {
+        HStack {
           Image(braveSystemName: "leo.brave.icon-monochrome")
             .font(.footnote)
             .imageScale(.large)
             .foregroundColor(Color(.braveOrange))
             .padding(4)
-            .background(Color(.white).clipShape(Circle()).shadow(color: .black.opacity(0.2), radius: 2, y: 1))
+            .background(
+              Color(.white).clipShape(Circle()).shadow(color: .black.opacity(0.2), radius: 2, y: 1)
+            )
         }
         Spacer()
         VStack(alignment: .leading, spacing: 4) {
@@ -212,7 +221,9 @@ private struct WidgetTopNewsView: View {
             .aspectRatio(contentMode: .fill)
             .overlay(
               LinearGradient(
-                colors: [.black.opacity(0.0), .black.opacity(0.6)], startPoint: .top, endPoint: .bottom
+                colors: [.black.opacity(0.0), .black.opacity(0.6)],
+                startPoint: .top,
+                endPoint: .bottom
               )
             )
         } else {
@@ -227,7 +238,9 @@ private struct WidgetTopNewsView: View {
           .imageScale(.large)
           .foregroundColor(Color(.braveOrange))
           .padding(4)
-          .background(Color(.white).clipShape(Circle()).shadow(color: .black.opacity(0.2), radius: 2, y: 1))
+          .background(
+            Color(.white).clipShape(Circle()).shadow(color: .black.opacity(0.2), radius: 2, y: 1)
+          )
         Spacer()
         Text(Strings.Widgets.newsClusteringErrorLabel)
           .font(.system(size: 14, weight: .medium, design: .rounded))
@@ -245,7 +258,7 @@ private struct WidgetTopNewsView: View {
               .scaleEffect(x: 1.5, y: 1.5)
           }
       }
-//      .background(Color(.braveBackground))
+      //      .background(Color(.braveBackground))
     }
   }
 }
@@ -257,10 +270,18 @@ struct TopNewsView_PreviewProvider: PreviewProvider {
       date: Date(),
       topic: .init(
         topicIndex: 0,
-        title: "Jacinda Ardern resignation – live: Shock as New Zealand prime minister announces decision",
-        description: "Ardern became the world’s youngest female head of government when she was elected prime minister at age 37 in 2017",
-        url: URL(string: "https://www.independent.co.uk/news/world/australasia/jacinda-ardern-resignation-new-zealand-polls-prime-minister-b2265025.html")!,
-        imageURL: URL(string: "https://static.independent.co.uk/2023/01/19/01/NUEVA_ZELANDA_ELECCIONES_98401.jpg?width=1200&auto=webp")!,
+        title:
+          "Jacinda Ardern resignation – live: Shock as New Zealand prime minister announces decision",
+        description:
+          "Ardern became the world’s youngest female head of government when she was elected prime minister at age 37 in 2017",
+        url: URL(
+          string:
+            "https://www.independent.co.uk/news/world/australasia/jacinda-ardern-resignation-new-zealand-polls-prime-minister-b2265025.html"
+        )!,
+        imageURL: URL(
+          string:
+            "https://static.independent.co.uk/2023/01/19/01/NUEVA_ZELANDA_ELECCIONES_98401.jpg?width=1200&auto=webp"
+        )!,
         publisherName: "The Independent World News",
         date: {
           let df = DateFormatter()

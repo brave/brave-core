@@ -7,14 +7,13 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV8::StateMigrationV8(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+StateMigrationV8::StateMigrationV8(RewardsEngine& engine) : engine_(engine) {}
 
 StateMigrationV8::~StateMigrationV8() = default;
 

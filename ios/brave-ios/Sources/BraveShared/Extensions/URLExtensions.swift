@@ -1,10 +1,10 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 import Shared
 
 extension URL {
@@ -23,30 +23,104 @@ extension URL {
   public var origin: URLOrigin {
     .init(url: self)
   }
-  
+
   /// Obtains a clean stripped url from the current Internal URL
   ///
   /// Returns the original url without  internal parameters
-  public var stippedInternalURL: URL? {
+  public var strippedInternalURL: URL? {
     if InternalURL.isValid(url: self),
-       let internalURL = InternalURL(self) {
-      
+      let internalURL = InternalURL(self)
+    {
+
       switch internalURL.urlType {
       case .errorPage:
         return internalURL.originalURLFromErrorPage
-      case .web3Page, .sessionRestorePage, .readerModePage, .aboutHomePage, .blockedPage:
+      case .web3Page, .sessionRestorePage, .aboutHomePage:
         return internalURL.extractedUrlParam
+      case .blockedPage:
+        return decodeEmbeddedInternalURL(for: .blocked)
+      case .readerModePage:
+        return decodeEmbeddedInternalURL(for: .readermode)
       default:
         return nil
       }
     }
-    
+
     return nil
+  }
+
+  /// URL returned for display purposes
+  public var displayURL: URL? {
+    if self.absoluteString.starts(with: "blob:") {
+      return self.havingRemovedAuthorisationComponents()
+    }
+
+    if self.isFileURL {
+      return URL(string: "file://\(self.lastPathComponent)")
+    }
+
+    if self.isInternalURL(for: .readermode) {
+      return self.decodeEmbeddedInternalURL(for: .readermode)?
+        .havingRemovedAuthorisationComponents()
+    }
+
+    if let internalUrl = InternalURL(self), internalUrl.isErrorPage {
+      return internalUrl.originalURLFromErrorPage?.displayURL
+    }
+
+    if let internalUrl = InternalURL(self),
+      internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isBlockedPage
+    {
+      return internalUrl.extractedUrlParam?.displayURL
+    }
+
+    if !InternalURL.isValid(url: self) {
+      let url = self.havingRemovedAuthorisationComponents()
+      if let internalUrl = InternalURL(url), internalUrl.isErrorPage {
+        return internalUrl.originalURLFromErrorPage?.displayURL
+      }
+      return url
+    }
+
+    return nil
+  }
+
+  /// Returns true if this is an embedded url for the given `InternalURL.Path`
+  public func isInternalURL(for internalPath: InternalURL.Path) -> Bool {
+    let scheme = self.scheme
+    let host = self.host
+    let path = self.path
+    return scheme == InternalURL.scheme && host == InternalURL.host
+      && path == "/\(internalPath.rawValue)"
+  }
+
+  /// Extract an embedded url given by the `url` query param from an interna urll (i.e. `internal://local`)
+  public func decodeEmbeddedInternalURL(for internalPath: InternalURL.Path) -> URL? {
+    guard self.isInternalURL(for: internalPath) else { return nil }
+    let components = URLComponents(url: self, resolvingAgainstBaseURL: false)
+    let queryItem = components?.queryItems?.first(where: {
+      $0.name == InternalURL.Param.url.rawValue
+    })
+    guard let value = queryItem?.value else { return nil }
+    return URL(string: value)
+  }
+
+  /// Embed a url into an internal URL for the given path. The url will be placed in a `url` querey param
+  public func encodeEmbeddedInternalURL(for path: InternalURL.Path) -> URL? {
+    let baseURL = "\(InternalURL.baseUrl)/\(path.rawValue)"
+
+    guard
+      let encodedURL = absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
+    else {
+      return nil
+    }
+
+    return URL(string: "\(baseURL)?\(InternalURL.Param.url.rawValue)=\(encodedURL)")
   }
 }
 
 extension InternalURL {
-  
+
   enum URLType {
     case blockedPage
     case sessionRestorePage
@@ -56,32 +130,32 @@ extension InternalURL {
     case web3Page
     case other
   }
-  
+
   var urlType: URLType {
     if isBlockedPage {
       return .blockedPage
     }
-    
+
     if isErrorPage {
       return .errorPage
     }
-    
+
     if isWeb3URL {
       return .web3Page
     }
-    
+
     if isReaderModePage {
       return .readerModePage
     }
-    
+
     if isSessionRestore {
       return .sessionRestorePage
     }
-    
+
     if isAboutHomeURL {
       return .aboutHomePage
     }
-    
+
     return .other
   }
 }

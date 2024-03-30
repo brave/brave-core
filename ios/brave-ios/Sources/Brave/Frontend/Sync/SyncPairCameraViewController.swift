@@ -1,16 +1,22 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import AVFoundation
-import BraveShared
 import BraveCore
-import Data
+import BraveShared
 import BraveUI
+import Data
+import Shared
+import UIKit
 
 protocol SyncPairControllerDelegate: AnyObject {
   func syncOnScannedHexCode(_ controller: UIViewController & NavigationPrevention, hexCode: String)
-  func syncOnWordsEntered(_ controller: UIViewController & NavigationPrevention, codeWords: String, isCodeScanned: Bool)
+  func syncOnWordsEntered(
+    _ controller: UIViewController & NavigationPrevention,
+    codeWords: String,
+    isCodeScanned: Bool
+  )
 }
 
 class SyncPairCameraViewController: SyncViewController {
@@ -108,7 +114,10 @@ class SyncPairCameraViewController: SyncViewController {
     enterWordsButton = RoundInterfaceButton(type: .roundedRect)
     enterWordsButton.translatesAutoresizingMaskIntoConstraints = false
     enterWordsButton.setTitle(Strings.enterCodeWords, for: .normal)
-    enterWordsButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
+    enterWordsButton.titleLabel?.font = UIFont.systemFont(
+      ofSize: 15,
+      weight: UIFont.Weight.semibold
+    )
     enterWordsButton.addTarget(self, action: #selector(onEnterWordsPressed), for: .touchUpInside)
     stackView.addArrangedSubview(enterWordsButton)
 
@@ -140,9 +149,14 @@ class SyncPairCameraViewController: SyncViewController {
     }
   }
 
-  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  override func viewWillTransition(
+    to size: CGSize,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
     coordinator.animate(alongsideTransition: nil) { _ in
-      self.cameraView.videoPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation(ui: UIApplication.shared.statusBarOrientation)
+      self.cameraView.videoPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation(
+        ui: UIApplication.shared.statusBarOrientation
+      )
     }
   }
 
@@ -160,7 +174,7 @@ class SyncPairCameraViewController: SyncViewController {
 
     processQRCodeData(data: data)
   }
-  
+
   private func processQRCodeData(data: String) {
     // Pause scanning
     cameraView.cameraOverlaySuccess()
@@ -176,7 +190,10 @@ class SyncPairCameraViewController: SyncViewController {
       self.cameraView.cameraOverlayError()
     }
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + SyncPairCameraViewController.forcedCameraTimeout, execute: task)
+    DispatchQueue.main.asyncAfter(
+      deadline: .now() + SyncPairCameraViewController.forcedCameraTimeout,
+      execute: task
+    )
 
     // Check Internet Connectivity
     if !DeviceInfo.hasConnectivity() {
@@ -184,14 +201,17 @@ class SyncPairCameraViewController: SyncViewController {
       showErrorAlert(title: Strings.syncNoConnectionTitle, message: Strings.syncNoConnectionBody)
       return
     }
-    
+
     let wordsValidation = syncAPI.getQRCodeValidationResult(data)
     if wordsValidation == .valid {
       // Sync code is valid
       delegate?.syncOnScannedHexCode(self, hexCode: syncAPI.getHexSeed(fromQrCodeJson: data))
     } else {
       cameraView.cameraOverlayError()
-      showErrorAlert(title: Strings.syncUnableCreateGroup, message: wordsValidation.errorDescription)
+      showErrorAlert(
+        title: Strings.syncUnableCreateGroup,
+        message: wordsValidation.errorDescription
+      )
     }
   }
 
@@ -199,17 +219,21 @@ class SyncPairCameraViewController: SyncViewController {
     let alert = UIAlertController(
       title: Strings.syncUnableCreateGroup,
       message: message,
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
 
     alert.addAction(
       UIAlertAction(
-        title: Strings.OKString, style: .default,
+        title: Strings.OKString,
+        style: .default,
         handler: { [weak self] _ in
           guard let self = self else { return }
           self.cameraLocked = false
           self.cameraView.cameraOverlayNormal()
           self.cameraView.startRunning()
-        }))
+        }
+      )
+    )
     present(alert, animated: true)
   }
 }
@@ -230,14 +254,14 @@ extension SyncPairCameraViewController: NavigationPrevention {
 
 extension AVCaptureVideoOrientation {
   var uiInterfaceOrientation: UIInterfaceOrientation {
-    get {
-      switch self {
-      case .landscapeLeft: return .landscapeLeft
-      case .landscapeRight: return .landscapeRight
-      case .portrait: return .portrait
-      case .portraitUpsideDown: return .portraitUpsideDown
-      @unknown default: assertionFailure(); return .portrait
-      }
+    switch self {
+    case .landscapeLeft: return .landscapeLeft
+    case .landscapeRight: return .landscapeRight
+    case .portrait: return .portrait
+    case .portraitUpsideDown: return .portraitUpsideDown
+    @unknown default:
+      assertionFailure()
+      return .portrait
     }
   }
 

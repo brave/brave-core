@@ -55,7 +55,7 @@ void CatalogUrlRequest::PeriodicallyFetch() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void CatalogUrlRequest::Fetch() {
-  if (is_fetching_ || retry_timer_.IsRunning()) {
+  if (is_fetching_ || timer_.IsRunning()) {
     return;
   }
 
@@ -112,7 +112,7 @@ void CatalogUrlRequest::FetchCallback(
 }
 
 void CatalogUrlRequest::FetchAfterDelay() {
-  CHECK(!retry_timer_.IsRunning());
+  CHECK(!timer_.IsRunning());
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, ShouldDebug() ? kDebugCatalogPing : GetCatalogPing(),
@@ -144,10 +144,10 @@ void CatalogUrlRequest::FailedToFetchCatalog() {
 void CatalogUrlRequest::Retry() {
   CHECK(!timer_.IsRunning());
 
-  const base::Time retry_at = retry_timer_.StartWithPrivacy(
-      FROM_HERE, kRetryAfter,
-      base::BindOnce(&CatalogUrlRequest::RetryCallback,
-                     weak_factory_.GetWeakPtr()));
+  const base::Time retry_at =
+      timer_.StartWithPrivacy(FROM_HERE, kRetryAfter,
+                              base::BindOnce(&CatalogUrlRequest::RetryCallback,
+                                             weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching catalog " << FriendlyDateAndTime(retry_at));
 
@@ -163,7 +163,7 @@ void CatalogUrlRequest::RetryCallback() {
 }
 
 void CatalogUrlRequest::StopRetrying() {
-  retry_timer_.Stop();
+  timer_.Stop();
 }
 
 void CatalogUrlRequest::NotifyWillFetchCatalog(

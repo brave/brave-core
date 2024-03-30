@@ -48,10 +48,6 @@ export const cardHeaderText = styled.div`
   margin-top: 2px;
 `
 
-export const unsupportedRegionCard = styled.div`
-  margin-top: 24px;
-`
-
 export const optInIcon = styled.div`
   margin-top: 14px;
   margin-left: auto;
@@ -474,18 +470,6 @@ export const connectAction = styled.div`
   }
 `
 
-export const connectLearnMore = styled.div`
-  margin-top: 14px;
-
-  a {
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    color: #FFFFFF;
-    text-decoration: none;
-  }
-`
-
 export const publisherSupport = styled.div`
   margin-top: 18px;
   display: flex;
@@ -522,44 +506,6 @@ export const settings = styled.div`
     vertical-align: middle;
     margin-right: 8px;
     margin-bottom: 3px;
-  }
-`
-
-export const vbatNotice = styled.div`
-  margin: 10px -12px 0;
-  border-radius: 8px;
-  overflow: hidden;
-
-  .vbat-notice-header {
-    font-size: 14px;
-    line-height: 20px;
-    padding: 16px;
-
-    .icon {
-      width: 20px;
-      height: auto;
-    }
-  }
-
-  .vbat-notice-close .icon {
-    width: 11px;
-    height: auto;
-  }
-
-  .vbat-notice-content {
-    font-size: 12px;
-    line-height: 18px;
-    padding: 16px;
-  }
-
-  .vbat-notice-actions {
-    display: block;
-    text-align: center;
-  }
-
-  .vbat-notice-connect button {
-    width: 100%;
-    margin-bottom: 10px;
   }
 `
 
@@ -611,4 +557,16 @@ export const selfCustodyInviteDismiss = styled.div`
     font: ${leo.font.components.buttonSmall};
   }
 `
+
+export const tosUpdateNotice = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  margin: 8px -10px 0;
+
+  --tos-update-notice-border-radius: 8px;
+  --tos-update-notice-padding: 16px;
+  --tos-update-heading-padding-bottom: 0;
+  --tos-update-notice-heading-font: ${leo.font.heading.h4};
+  --tos-update-notice-text-font: ${leo.font.small.link};
+`;
 

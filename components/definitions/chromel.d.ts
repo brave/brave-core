@@ -102,16 +102,7 @@ declare namespace chrome.braveRewards {
   const onPublisherData: {
     addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
   }
-  const onPromotions: {
-    addListener: (callback: (result: RewardsExtension.Result, promotions: RewardsExtension.Promotion[]) => void) => void
-  }
-  const onPromotionFinish: {
-    addListener: (callback: (result: RewardsExtension.Result, promotion: RewardsExtension.Promotion) => void) => void
-  }
   const includeInAutoContribution: (publisherKey: string, exclude: boolean) => {}
-  const fetchPromotions: (callback: (promotions: RewardsExtension.Promotion[]) => void) => {}
-  const claimPromotion: (promotionId: string, callback: (properties: RewardsExtension.Captcha) => void) => {}
-  const attestPromotion: (promotionId: string, solution: string, callback: (result: number, promotion?: RewardsExtension.Promotion) => void) => {}
   const getRewardsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsAccountStatement: (callback: (success: boolean, adsAccountStatement: NewTab.AdsAccountStatement) => void) => {}
   const getWalletExists: (callback: (exists: boolean) => void) => {}
@@ -162,12 +153,6 @@ declare namespace chrome.braveRewards {
 
   const showRewardsSetup: () => void
 
-  const showGrantCaptcha: (grantId: string) => void
-
-  const onUnblindedTokensReady: {
-    addListener: (callback: () => void) => void
-  }
-
   const onCompleteReset: {
     addListener: (callback: (properties: { success: boolean }) => void) => void
   }
@@ -183,6 +168,16 @@ declare namespace chrome.braveRewards {
   const dismissSelfCustodyInvite: () => void
 
   const onSelfCustodyInviteDismissed: {
+    addListener: (callback: () => void) => void
+  }
+
+  const isTermsOfServiceUpdateRequired: (
+    callback: (updateRequired: boolean) => void
+  ) => void
+
+  const acceptTermsOfServiceUpdate: () => void
+
+  const onTermsOfServiceUpdateAccepted: {
     addListener: (callback: () => void) => void
   }
 

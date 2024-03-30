@@ -7,6 +7,8 @@
 
 #include "brave/browser/brave_vpn/win/storage_utils.h"
 #include "brave/browser/ui/browser_dialogs.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "chrome/browser/browser_process.h"
 
 namespace brave_vpn {
 
@@ -24,6 +26,13 @@ void BraveVpnWireguardObserverService::ShowFallbackDialog() {
 
 void BraveVpnWireguardObserverService::OnConnectionStateChanged(
     brave_vpn::mojom::ConnectionState state) {
+  // Check because WG settings could be changed in runtime.
+  if (!brave_vpn::IsBraveVPNWireguardEnabled(
+          g_browser_process->local_state())) {
+    return;
+  }
+
+  VLOG(2) << __func__ << state;
   if (state == brave_vpn::mojom::ConnectionState::DISCONNECTED ||
       state == brave_vpn::mojom::ConnectionState::CONNECT_FAILED) {
     if (ShouldShowFallbackDialog()) {

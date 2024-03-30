@@ -312,7 +312,7 @@ TEST_F(ViewCounterModelTest, NTPFailedToLoadSponsoredImagesTest) {
   // background image explicitely when background image is shown as ads was
   // frequency capped. Client(ViewCounterService) calls this increase method
   // when it's capped.
-  model.IncreaseBackgroundWallpaperImageIndex();
+  model.RotateBackgroundWallpaperImageIndex();
   model.RegisterPageView();
 
   // Check background index is increased properly.

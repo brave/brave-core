@@ -11,7 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
-#include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"

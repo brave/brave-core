@@ -103,17 +103,20 @@
   <message name="IDS_BRAVE_NEWS_CHANNEL_CARS" desc="Translation of the 'Cars' channel">
     Cars
   </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_CELEBRITIES" desc="Translation of the 'Celebrities' channel">
+    Celebrities
+  </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_CRYPTO" desc="Translation of the 'Crypto' channel">
     Crypto
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_CULTURE" desc="Translation of the 'Culture' channel">
     Culture
   </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_EDUCATION" desc="Translation of the 'Education' channel">
+    Education
+  </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT" desc="Translation of the 'Entertainment' channel">
     Entertainment
-  </message>
-  <message name="IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT_NEWS" desc="Translation of the 'Entertainment News' channel">
-    Entertainment News
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_FASHION" desc="Translation of the 'Fashion' channel">
     Fashion
@@ -136,6 +139,9 @@
   <message name="IDS_BRAVE_NEWS_CHANNEL_HOME" desc="Translation of the 'Home' channel">
     Home
   </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_LIFESTYLE" desc="Translation of the 'Lifestyle' channel">
+    Lifestyle
+  </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_MUSIC" desc="Translation of the 'Music' channel">
     Music
   </message>
@@ -157,17 +163,14 @@
   <message name="IDS_BRAVE_NEWS_CHANNEL_TECHNOLOGY" desc="Translation of the 'Technology' channel">
     Technology
   </message>
-  <message name="IDS_BRAVE_NEWS_CHANNEL_TECH_NEWS" desc="Translation of the 'Tech News' channel">
-    Tech News
-  </message>
-  <message name="IDS_BRAVE_NEWS_CHANNEL_TECH_REVIEWS" desc="Translation of the 'Tech Reviews' channel">
-    Tech Reviews
-  </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_TOP_NEWS" desc="Translation of the 'Top News' channel">
     Top News
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_TOP_SOURCES" desc="Translation of the 'Top Sources' channel">
     Top Sources
+  </message>
+  <message name="IDS_BRAVE_NEWS_CHANNEL_UK_NEWS" desc="Translation of the 'UK News' channel">
+    UK News
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_US_NEWS" desc="Translation of the 'US News' channel">
     US News

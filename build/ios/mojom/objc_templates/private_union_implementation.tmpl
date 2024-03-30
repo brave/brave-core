@@ -58,13 +58,18 @@
 
 - (id)copyWithZone:(nullable NSZone *)zone
 {
-  auto copy = [[{{objc_class_name}} alloc] init];
-  copy.tag = self.tag;
+  switch (self.tag) {
 {%- for field in union.fields %}
-{%-   set name = field.name|objc_property_formatter %}
-  copy.{{name}} = self.{{name}};
+{%-   set field_tag = "%s%s"|format(tag_enum_name, field.name|objc_enum_formatter) %}
+{%-   set property_name = field.name|objc_property_formatter %}
+{%-   set type = field.kind|objc_wrapper_type %}
+{%-   set function_name = field.name|under_to_camel(lower_initial=False) %}
+    case {{field_tag}}:
+      return [[{{objc_class_name}} alloc] initWith{{function_name}}:self.{{property_name}}];
 {%- endfor %}
-  return copy;
+    default:
+      return [[{{objc_class_name}} alloc] init];
+  }
 }
 
 @end

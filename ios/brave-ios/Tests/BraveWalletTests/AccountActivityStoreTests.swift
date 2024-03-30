@@ -1,33 +1,46 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Combine
-import XCTest
 import BraveCore
-@testable import BraveWallet
+import Combine
 import Preferences
+import XCTest
+
+@testable import BraveWallet
 
 class AccountActivityStoreTests: XCTestCase {
-  
+
   private var cancellables: Set<AnyCancellable> = .init()
 
   let networks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
     .eth: [.mockMainnet, .mockGoerli],
     .sol: [.mockSolana, .mockSolanaTestnet],
-    .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet]
+    .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet],
   ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
     .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),
-    .init(fromAsset: BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId,
-          toAsset: "usd", price: "1.00", assetTimeframeChange: "-57.23"),
+    .init(
+      fromAsset: BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId,
+      toAsset: "usd",
+      price: "1.00",
+      assetTimeframeChange: "-57.23"
+    ),
     .init(fromAsset: "sol", toAsset: "usd", price: "2.00", assetTimeframeChange: "-57.23"),
-    .init(fromAsset: BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(),
-          toAsset: "usd", price: "0.50", assetTimeframeChange: "-57.23"),
-    .init(fromAsset: BraveWallet.BlockchainToken.mockFilToken.assetRatioId.lowercased(),
-          toAsset: "usd", price: "4.00", assetTimeframeChange: "-57.23")
+    .init(
+      fromAsset: BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(),
+      toAsset: "usd",
+      price: "0.50",
+      assetTimeframeChange: "-57.23"
+    ),
+    .init(
+      fromAsset: BraveWallet.BlockchainToken.mockFilToken.assetRatioId.lowercased(),
+      toAsset: "usd",
+      price: "4.00",
+      assetTimeframeChange: "-57.23"
+    ),
   ]
 
   private func setupServices(
@@ -35,11 +48,17 @@ class AccountActivityStoreTests: XCTestCase {
     mockERC20BalanceWei: String = "",
     mockERC721BalanceWei: String = "",
     mockLamportBalance: UInt64 = 0,
-    mockSplTokenBalances: [String: String] = [:], // [tokenMintAddress: balance],
+    mockSplTokenBalances: [String: String] = [:],  // [tokenMintAddress: balance],
     mockFilBalance: String = "",
     mockFilTestnetBalance: String = "",
     transactions: [BraveWallet.TransactionInfo]
-  ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService, BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy, IpfsAPI) {
+  ) -> (
+    BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService,
+    BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry,
+    BraveWallet.TestAssetRatioService, BraveWallet.TestSwapService,
+    BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy,
+    IpfsAPI
+  ) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     keyringService._allAccounts = {
@@ -67,40 +86,46 @@ class AccountActivityStoreTests: XCTestCase {
       completion(mockERC20BalanceWei, .success, "")
     }
     rpcService._erc721TokenBalance = { _, _, _, _, completion in
-      completion(mockERC721BalanceWei, .success, "") // eth nft balance
+      completion(mockERC721BalanceWei, .success, "")  // eth nft balance
     }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
       if chainId == BraveWallet.SolanaMainnet {
         completion(mockLamportBalance, .success, "")
-      } else { // testnet balance
+      } else {  // testnet balance
         completion(0, .success, "")
       }
     }
     rpcService._splTokenAccountBalance = { _, tokenMintAddress, _, completion in
       // spd token, sol nft balance
-      completion(mockSplTokenBalances[tokenMintAddress] ?? "", UInt8(0), mockSplTokenBalances[tokenMintAddress] ?? "", .success, "")
+      completion(
+        mockSplTokenBalances[tokenMintAddress] ?? "",
+        UInt8(0),
+        mockSplTokenBalances[tokenMintAddress] ?? "",
+        .success,
+        ""
+      )
     }
     rpcService._erc721Metadata = { _, _, _, completion in
       let metadata = """
-      {
-        "image": "mock.image.url",
-        "name": "mock nft name",
-        "description": "mock nft description"
-      }
-      """
-      completion( "", metadata, .success, "")
+        {
+          "image": "mock.image.url",
+          "name": "mock nft name",
+          "description": "mock nft description"
+        }
+        """
+      completion("", metadata, .success, "")
     }
     rpcService._solTokenMetadata = { _, _, completion in
       let metaData = """
-      {
-        "image": "sol.mock.image.url",
-        "name": "sol mock nft name",
-        "description": "sol mock nft description"
-      }
-      """
+        {
+          "image": "sol.mock.image.url",
+          "name": "sol mock nft name",
+          "description": "sol mock nft description"
+        }
+        """
       completion("", metaData, .success, "")
     }
-    
+
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
@@ -109,46 +134,82 @@ class AccountActivityStoreTests: XCTestCase {
     blockchainRegistry._allTokens = { chainId, coin, completion in
       completion(self.tokenRegistry[coin] ?? [])
     }
+    blockchainRegistry._buyTokens = { _, chainId, completion in
+      let tokensForChainId = self.tokenRegistry
+        .flatMap(\.value)
+        .filter { $0.chainId == chainId }
+      completion(tokensForChainId)
+    }
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
       completion(true, self.mockAssetPrices)
     }
-    
+
+    let swapService = BraveWallet.TestSwapService()
+    swapService._isSwapSupported = { chainId, completion in
+      let isSupported =
+        chainId == BraveWallet.MainnetChainId
+        || chainId == BraveWallet.SolanaMainnet
+      completion(isSupported)
+    }
+
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
     txService._allTransactionInfo = { coin, chainId, _, completion in
       completion(transactions.filter({ $0.chainId == chainId }))
     }
-    
+
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._estimatedTxFee = { $2(0, .success, "") }
-    
+
     let ipfsApi = TestIpfsAPI()
 
-    return (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi)
+    return (
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
+    )
   }
-  
+
   func testUpdateEthereumAccount() {
     Preferences.Wallet.showTestNetworks.value = true
-    let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
+    // Monday, November 8, 2021 7:27:51 PM
+    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockEthAccount
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockEthDecimalBalance: Double = 0.0896
     let numEthDecimals = Int(BraveWallet.NetworkInfo.mockMainnet.nativeToken.decimals)
-    let mockEthBalanceWei = formatter.weiString(from: mockEthDecimalBalance, radix: .hex, decimals: numEthDecimals) ?? ""
+    let mockEthBalanceWei =
+      formatter.weiString(from: mockEthDecimalBalance, radix: .hex, decimals: numEthDecimals) ?? ""
     let mockERC20DecimalBalance = 1.5
-    let mockERC20BalanceWei = formatter.weiString(from: mockERC20DecimalBalance, radix: .hex, decimals: Int(BraveWallet.BlockchainToken.mockUSDCToken.decimals)) ?? ""
+    let mockERC20BalanceWei =
+      formatter.weiString(
+        from: mockERC20DecimalBalance,
+        radix: .hex,
+        decimals: Int(BraveWallet.BlockchainToken.mockUSDCToken.decimals)
+      ) ?? ""
     let mockNFTBalance: Double = 1
-    let mockERC721BalanceWei = formatter.weiString(from: mockNFTBalance, radix: .hex, decimals: 0) ?? ""
-    
-    let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description", attributes: nil)
-    
-    let ethSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo // default in mainnet
-    let goerliSwapTxCopy = BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
+    let mockERC721BalanceWei =
+      formatter.weiString(from: mockNFTBalance, radix: .hex, decimals: 0) ?? ""
+
+    let mockERC721Metadata: NFTMetadata = .init(
+      imageURLString: "mock.image.url",
+      name: "mock nft name",
+      description: "mock nft description",
+      attributes: nil
+    )
+
+    // default in mainnet
+    let ethSendTxCopy =
+      BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
+    let goerliSwapTxCopy =
+      BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
     goerliSwapTxCopy.chainId = BraveWallet.GoerliChainId
-    
-    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
+
+    let (
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
+    ) = setupServices(
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
       mockERC721BalanceWei: mockERC721BalanceWei,
@@ -158,24 +219,29 @@ class AccountActivityStoreTests: XCTestCase {
         return tx
       }
     )
-    
+
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
-      [NetworkAssets(
-        network: .mockMainnet,
-        tokens: [
-          BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
-          .mockERC721NFTToken.copy(asVisibleAsset: true),
-          .mockUSDCToken.copy(asVisibleAsset: true)
-        ],
-        sortOrder: 0),
-       NetworkAssets(
-        network: .mockGoerli,
-        tokens: [BraveWallet.NetworkInfo.mockGoerli.nativeToken.copy(asVisibleAsset: true)],
-        sortOrder: 1)
+      [
+        NetworkAssets(
+          network: .mockMainnet,
+          tokens: [
+            BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
+            .mockERC721NFTToken.copy(asVisibleAsset: true),
+            .mockUSDCToken.copy(asVisibleAsset: true),
+            // To verify brave/brave-browser#36806
+            .previewDaiToken.copy(asVisibleAsset: false),
+          ],
+          sortOrder: 0
+        ),
+        NetworkAssets(
+          network: .mockGoerli,
+          tokens: [BraveWallet.NetworkInfo.mockGoerli.nativeToken.copy(asVisibleAsset: true)],
+          sortOrder: 1
+        ),
       ]
     }
-    
+
     let accountActivityStore = AccountActivityStore(
       account: account,
       observeAccountUpdates: false,
@@ -183,13 +249,14 @@ class AccountActivityStoreTests: XCTestCase {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
+      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
       userAssetManager: mockAssetManager
     )
-    
+
     let userAssetsException = expectation(description: "accountActivityStore-userAssets")
     accountActivityStore.$userAssets
       .dropFirst()
@@ -201,24 +268,39 @@ class AccountActivityStoreTests: XCTestCase {
           return
         }
         XCTAssertEqual(lastUpdatedAssets.count, 3)
-        
-        XCTAssertEqual(lastUpdatedAssets[0].token.symbol, BraveWallet.NetworkInfo.mockMainnet.nativeToken.symbol)
+
+        XCTAssertEqual(
+          lastUpdatedAssets[0].token.symbol,
+          BraveWallet.NetworkInfo.mockMainnet.nativeToken.symbol
+        )
         XCTAssertEqual(lastUpdatedAssets[0].network, BraveWallet.NetworkInfo.mockMainnet)
         XCTAssertEqual(lastUpdatedAssets[0].totalBalance, mockEthDecimalBalance)
         XCTAssertEqual(lastUpdatedAssets[0].price, self.mockAssetPrices[safe: 0]?.price ?? "")
 
-        XCTAssertEqual(lastUpdatedAssets[1].token.symbol, BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+        XCTAssertEqual(
+          lastUpdatedAssets[1].token.symbol,
+          BraveWallet.BlockchainToken.mockUSDCToken.symbol
+        )
         XCTAssertEqual(lastUpdatedAssets[1].network, BraveWallet.NetworkInfo.mockMainnet)
         XCTAssertEqual(lastUpdatedAssets[1].totalBalance, mockERC20DecimalBalance)
         XCTAssertEqual(lastUpdatedAssets[1].price, self.mockAssetPrices[safe: 1]?.price ?? "")
-        
-        XCTAssertEqual(lastUpdatedAssets[2].token.symbol, BraveWallet.NetworkInfo.mockGoerli.nativeToken.symbol)
+
+        XCTAssertEqual(
+          lastUpdatedAssets[2].token.symbol,
+          BraveWallet.NetworkInfo.mockGoerli.nativeToken.symbol
+        )
         XCTAssertEqual(lastUpdatedAssets[2].network, BraveWallet.NetworkInfo.mockGoerli)
         XCTAssertEqual(lastUpdatedAssets[2].totalBalance, 0)
         XCTAssertEqual(lastUpdatedAssets[2].price, self.mockAssetPrices[safe: 0]?.price ?? "")
+
+        // Verify brave/brave-browser#36806
+        let daiTokenVisible = lastUpdatedAssets.contains(where: {
+          $0.id == BraveWallet.BlockchainToken.previewDaiToken.id
+        })
+        XCTAssertFalse(daiTokenVisible)
       }
       .store(in: &cancellables)
-    
+
     let userNFTsException = expectation(description: "accountActivityStore-userNFTs")
     XCTAssertTrue(accountActivityStore.userNFTs.isEmpty)  // Initial state
     accountActivityStore.$userNFTs
@@ -231,14 +313,28 @@ class AccountActivityStoreTests: XCTestCase {
           return
         }
         XCTAssertEqual(lastUpdatedNFTs.count, 1)
-        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockERC721NFTToken.symbol)
-        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.address], Int(mockNFTBalance))
-        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.imageURLString, mockERC721Metadata.imageURLString)
+        XCTAssertEqual(
+          lastUpdatedNFTs[safe: 0]?.token.symbol,
+          BraveWallet.BlockchainToken.mockERC721NFTToken.symbol
+        )
+        XCTAssertEqual(
+          lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.address],
+          Int(mockNFTBalance)
+        )
+        XCTAssertEqual(
+          lastUpdatedNFTs[safe: 0]?.nftMetadata?.imageURLString,
+          mockERC721Metadata.imageURLString
+        )
         XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.name, mockERC721Metadata.name)
-        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.description, mockERC721Metadata.description)
+        XCTAssertEqual(
+          lastUpdatedNFTs[safe: 0]?.nftMetadata?.description,
+          mockERC721Metadata.description
+        )
       }.store(in: &cancellables)
-    
-    let transactionSectionsExpectation = expectation(description: "accountActivityStore-transactions")
+
+    let transactionSectionsExpectation = expectation(
+      description: "accountActivityStore-transactions"
+    )
     XCTAssertTrue(accountActivityStore.transactionSections.isEmpty)
     accountActivityStore.$transactionSections
       .dropFirst()
@@ -259,36 +355,50 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction, goerliSwapTxCopy)
         XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction.chainId, goerliSwapTxCopy.chainId)
       }.store(in: &cancellables)
-    
+
     accountActivityStore.update()
 
     waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }
-  
+
   func testUpdateSolanaAccount() {
     Preferences.Wallet.showTestNetworks.value = true
-    let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
+    // Monday, November 8, 2021 7:27:51 PM
+    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockSolAccount
-    let mockLamportBalance: UInt64 = 3876535000 // ~3.8765 SOL
-    let mockSolDecimalBalance: Double = 3.8765 // rounded
-    
+    let mockLamportBalance: UInt64 = 3_876_535_000  // ~3.8765 SOL
+    let mockSolDecimalBalance: Double = 3.8765  // rounded
+
     let mockSpdTokenBalance: Double = 0
     let mockSolanaNFTTokenBalance: Double = 1
-    
+
     let mockSplTokenBalances: [String: String] = [
       BraveWallet.BlockchainToken.mockSpdToken.contractAddress: "\(mockSpdTokenBalance)",
-      BraveWallet.BlockchainToken.mockSolanaNFTToken.contractAddress: "\(mockSolanaNFTTokenBalance)"
+      BraveWallet.BlockchainToken.mockSolanaNFTToken.contractAddress:
+        "\(mockSolanaNFTTokenBalance)",
     ]
-    
-    let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description", attributes: nil)
-    
-    let solSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSolSystemTransfer.copy() as! BraveWallet.TransactionInfo // default in mainnet
-    let solTestnetSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSolTokenTransfer.copy() as! BraveWallet.TransactionInfo
+
+    let mockSolMetadata: NFTMetadata = .init(
+      imageURLString: "sol.mock.image.url",
+      name: "sol mock nft name",
+      description: "sol mock nft description",
+      attributes: nil
+    )
+
+    let solSendTxCopy =
+      BraveWallet.TransactionInfo.previewConfirmedSolSystemTransfer.copy()
+      as! BraveWallet.TransactionInfo  // default in mainnet
+    let solTestnetSendTxCopy =
+      BraveWallet.TransactionInfo.previewConfirmedSolTokenTransfer.copy()
+      as! BraveWallet.TransactionInfo
     solTestnetSendTxCopy.chainId = BraveWallet.SolanaTestnet
-    
-    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
+
+    let (
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
+    ) = setupServices(
       mockLamportBalance: mockLamportBalance,
       mockSplTokenBalances: mockSplTokenBalances,
       transactions: [solTestnetSendTxCopy, solSendTxCopy].enumerated().map { (index, tx) in
@@ -297,7 +407,7 @@ class AccountActivityStoreTests: XCTestCase {
         return tx
       }
     )
-    
+
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [
@@ -306,18 +416,20 @@ class AccountActivityStoreTests: XCTestCase {
           tokens: [
             BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
             .mockSolanaNFTToken.copy(asVisibleAsset: true),
-            .mockSpdToken.copy(asVisibleAsset: true)
+            .mockSpdToken.copy(asVisibleAsset: true),
           ],
-          sortOrder: 0),
+          sortOrder: 0
+        ),
         NetworkAssets(
           network: .mockSolanaTestnet,
           tokens: [
             BraveWallet.NetworkInfo.mockSolanaTestnet.nativeToken.copy(asVisibleAsset: true)
           ],
-          sortOrder: 1)
+          sortOrder: 1
+        ),
       ]
     }
-    
+
     let accountActivityStore = AccountActivityStore(
       account: account,
       observeAccountUpdates: false,
@@ -325,13 +437,14 @@ class AccountActivityStoreTests: XCTestCase {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
+      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
       userAssetManager: mockAssetManager
     )
-    
+
     let userAssetsExpectation = expectation(description: "accountActivityStore-userAssets")
     accountActivityStore.$userAssets
       .dropFirst()
@@ -343,19 +456,31 @@ class AccountActivityStoreTests: XCTestCase {
           return
         }
         XCTAssertEqual(lastUpdatedAssets.count, 3)
-        
-        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.token.symbol, BraveWallet.NetworkInfo.mockSolana.nativeToken.symbol)
+
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 0]?.token.symbol,
+          BraveWallet.NetworkInfo.mockSolana.nativeToken.symbol
+        )
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.network, BraveWallet.NetworkInfo.mockSolana)
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockSolDecimalBalance)
-        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.price, self.mockAssetPrices[safe: 2]?.price ?? "")
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 0]?.price,
+          self.mockAssetPrices[safe: 2]?.price ?? ""
+        )
 
-        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.token.symbol, BraveWallet.BlockchainToken.mockSpdToken.symbol)
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 1]?.token.symbol,
+          BraveWallet.BlockchainToken.mockSpdToken.symbol
+        )
         XCTAssertEqual(lastUpdatedAssets[safe: 1]?.network, BraveWallet.NetworkInfo.mockSolana)
         XCTAssertEqual(lastUpdatedAssets[safe: 1]?.totalBalance, mockSpdTokenBalance)
-        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.price, self.mockAssetPrices[safe: 3]?.price ?? "")
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 1]?.price,
+          self.mockAssetPrices[safe: 3]?.price ?? ""
+        )
       }
       .store(in: &cancellables)
-    
+
     let userNFTsExpectation = expectation(description: "accountActivityStore-userNFTs")
     XCTAssertTrue(accountActivityStore.userNFTs.isEmpty)  // Initial state
     accountActivityStore.$userNFTs
@@ -368,14 +493,28 @@ class AccountActivityStoreTests: XCTestCase {
           return
         }
         XCTAssertEqual(lastUpdatedNFTs.count, 1)
-        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockSolanaNFTToken.symbol)
-        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.address], Int(mockSolanaNFTTokenBalance))
-        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.imageURLString, mockSolMetadata.imageURLString)
+        XCTAssertEqual(
+          lastUpdatedNFTs[safe: 0]?.token.symbol,
+          BraveWallet.BlockchainToken.mockSolanaNFTToken.symbol
+        )
+        XCTAssertEqual(
+          lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.address],
+          Int(mockSolanaNFTTokenBalance)
+        )
+        XCTAssertEqual(
+          lastUpdatedNFTs[safe: 0]?.nftMetadata?.imageURLString,
+          mockSolMetadata.imageURLString
+        )
         XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.name, mockSolMetadata.name)
-        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.description, mockSolMetadata.description)
+        XCTAssertEqual(
+          lastUpdatedNFTs[safe: 0]?.nftMetadata?.description,
+          mockSolMetadata.description
+        )
       }.store(in: &cancellables)
-    
-    let transactionSectionsExpectation = expectation(description: "accountActivityStore-transactions")
+
+    let transactionSectionsExpectation = expectation(
+      description: "accountActivityStore-transactions"
+    )
     XCTAssertTrue(accountActivityStore.transactionSections.isEmpty)
     accountActivityStore.$transactionSections
       .dropFirst()
@@ -396,19 +535,20 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction, solTestnetSendTxCopy)
         XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction.chainId, solTestnetSendTxCopy.chainId)
       }.store(in: &cancellables)
-    
+
     accountActivityStore.update()
 
     waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }
-  
+
   func testUpdateFilecoinAccount() {
     Preferences.Wallet.showTestNetworks.value = true
-    let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
+    // Monday, November 8, 2021 7:27:51 PM
+    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockFilAccount
-    
+
     let transactionData: BraveWallet.FilTxData = .init(
       nonce: "",
       gasPremium: "100911",
@@ -427,8 +567,7 @@ class AccountActivityStoreTests: XCTestCase {
       txStatus: .unapproved,
       txType: .other,
       txParams: [],
-      txArgs: [
-      ],
+      txArgs: [],
       createdTime: firstTransactionDate,
       submittedTime: Date(),
       confirmedTime: Date(),
@@ -436,20 +575,33 @@ class AccountActivityStoreTests: XCTestCase {
       chainId: BraveWallet.FilecoinMainnet,
       effectiveRecipient: nil
     )
-    
+
     let transactionCopy = transaction.copy() as! BraveWallet.TransactionInfo
     transactionCopy.id = UUID().uuidString
     transactionCopy.chainId = BraveWallet.FilecoinTestnet
-    
+
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockFilDecimalBalance: Double = 2
     let filecoinMainnetDecimals = Int(BraveWallet.NetworkInfo.mockFilecoinMainnet.decimals)
-    let mockFilDecimalBalanceInWei = formatter.weiString(from: "\(mockFilDecimalBalance)", radix: .decimal, decimals: filecoinMainnetDecimals) ?? ""
+    let mockFilDecimalBalanceInWei =
+      formatter.weiString(
+        from: "\(mockFilDecimalBalance)",
+        radix: .decimal,
+        decimals: filecoinMainnetDecimals
+      ) ?? ""
     let mockFileTestnetDecimalBalance: Double = 1
     let filecoinTestnetDecimals = Int(BraveWallet.NetworkInfo.mockFilecoinTestnet.decimals)
-    let mockFilTestnetDecimalBalanceInWei = formatter.weiString(from: "\(mockFileTestnetDecimalBalance)", radix: .decimal, decimals: filecoinTestnetDecimals) ?? ""
-    
-    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
+    let mockFilTestnetDecimalBalanceInWei =
+      formatter.weiString(
+        from: "\(mockFileTestnetDecimalBalance)",
+        radix: .decimal,
+        decimals: filecoinTestnetDecimals
+      ) ?? ""
+
+    let (
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
+    ) = setupServices(
       mockFilBalance: mockFilDecimalBalanceInWei,
       mockFilTestnetBalance: mockFilTestnetDecimalBalanceInWei,
       transactions: [transaction, transactionCopy].enumerated().map { (index, tx) in
@@ -458,7 +610,7 @@ class AccountActivityStoreTests: XCTestCase {
         return tx
       }
     )
-    
+
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [
@@ -467,16 +619,18 @@ class AccountActivityStoreTests: XCTestCase {
           tokens: [
             BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken.copy(asVisibleAsset: true)
           ],
-          sortOrder: 0),
+          sortOrder: 0
+        ),
         NetworkAssets(
           network: .mockFilecoinTestnet,
           tokens: [
             BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken.copy(asVisibleAsset: true)
           ],
-          sortOrder: 1)
+          sortOrder: 1
+        ),
       ]
     }
-    
+
     let accountActivityStore = AccountActivityStore(
       account: account,
       observeAccountUpdates: false,
@@ -484,13 +638,14 @@ class AccountActivityStoreTests: XCTestCase {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
+      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
       userAssetManager: mockAssetManager
     )
-    
+
     let userAssetsExpectation = expectation(description: "accountActivityStore-userAssets")
     accountActivityStore.$userAssets
       .dropFirst()
@@ -502,20 +657,40 @@ class AccountActivityStoreTests: XCTestCase {
           return
         }
         XCTAssertEqual(lastUpdatedAssets.count, 2)
-        
-        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.token.symbol, BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken.symbol)
-        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.network, BraveWallet.NetworkInfo.mockFilecoinMainnet)
+
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 0]?.token.symbol,
+          BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken.symbol
+        )
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 0]?.network,
+          BraveWallet.NetworkInfo.mockFilecoinMainnet
+        )
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockFilDecimalBalance)
-        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.price, self.mockAssetPrices[safe: 4]?.price ?? "")
-        
-        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.token.symbol, BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken.symbol)
-        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.network, BraveWallet.NetworkInfo.mockFilecoinTestnet)
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 0]?.price,
+          self.mockAssetPrices[safe: 4]?.price ?? ""
+        )
+
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 1]?.token.symbol,
+          BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken.symbol
+        )
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 1]?.network,
+          BraveWallet.NetworkInfo.mockFilecoinTestnet
+        )
         XCTAssertEqual(lastUpdatedAssets[safe: 1]?.totalBalance, mockFileTestnetDecimalBalance)
-        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.price, self.mockAssetPrices[safe: 4]?.price ?? "")
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 1]?.price,
+          self.mockAssetPrices[safe: 4]?.price ?? ""
+        )
       }
       .store(in: &cancellables)
-    
-    let transactionSectionsExpectation = expectation(description: "accountActivityStore-transactions")
+
+    let transactionSectionsExpectation = expectation(
+      description: "accountActivityStore-transactions"
+    )
     XCTAssertTrue(accountActivityStore.transactionSections.isEmpty)
     accountActivityStore.$transactionSections
       .dropFirst()
@@ -535,14 +710,14 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction, transaction)
         XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction.chainId, transaction.chainId)
       }.store(in: &cancellables)
-    
+
     accountActivityStore.update()
-    
+
     waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }
-  
+
   override class func tearDown() {
     super.tearDown()
     Preferences.Wallet.showTestNetworks.reset()

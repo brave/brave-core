@@ -5,8 +5,11 @@
 
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 
+#include <memory>
+
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -14,8 +17,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_news {
-namespace p3a {
+namespace brave_news::p3a {
 
 class BraveNewsP3ATest : public testing::Test {
  public:
@@ -24,9 +26,17 @@ class BraveNewsP3ATest : public testing::Test {
 
  protected:
   void SetUp() override {
-    PrefRegistrySimple* registry = pref_service_.registry();
-    BraveNewsController::RegisterProfilePrefs(registry);
     task_environment_.AdvanceClock(base::Days(2));
+    PrefRegistrySimple* registry = pref_service_.registry();
+    BraveNewsPrefManager::RegisterProfilePrefs(registry);
+
+    pref_manager_ = std::make_unique<BraveNewsPrefManager>(pref_service_);
+    metrics_ = std::make_unique<NewsMetrics>(&pref_service_, *pref_manager_);
+  }
+
+  void TearDown() override {
+    metrics_ = nullptr;
+    pref_manager_ = nullptr;
   }
 
   PrefService* GetPrefs() { return &pref_service_; }
@@ -36,35 +46,35 @@ class BraveNewsP3ATest : public testing::Test {
     return storage.GetWeeklySum();
   }
 
+  std::unique_ptr<NewsMetrics> metrics_;
   content::BrowserTaskEnvironment task_environment_;
   base::HistogramTester histogram_tester_;
+  std::unique_ptr<BraveNewsPrefManager> pref_manager_;
 
  private:
   TestingPrefServiceSimple pref_service_;
 };
 
 TEST_F(BraveNewsP3ATest, TestWeeklySessionCountBasic) {
-  PrefService* prefs = GetPrefs();
-
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 1);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 0, 1);
 
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 2);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 1, 1);
 
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 3);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 2, 1);
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 4);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 2, 2);
 
-  RecordAtSessionStart(prefs);
-  RecordAtSessionStart(prefs);
-  RecordAtSessionStart(prefs);
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
+  metrics_->RecordAtSessionStart();
+  metrics_->RecordAtSessionStart();
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 8);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 3, 4);
 
@@ -72,27 +82,26 @@ TEST_F(BraveNewsP3ATest, TestWeeklySessionCountBasic) {
 }
 
 TEST_F(BraveNewsP3ATest, TestWeeklySessionCountTimeFade) {
-  PrefService* prefs = GetPrefs();
-  RecordAtSessionStart(prefs);
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
+  metrics_->RecordAtSessionStart();
 
   task_environment_.AdvanceClock(base::Days(2));
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
 
   task_environment_.AdvanceClock(base::Days(2));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 4);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 2, 3);
 
   EXPECT_EQ(GetWeeklySum(prefs::kBraveNewsWeeklySessionCount), 3);
 
   task_environment_.AdvanceClock(base::Days(3));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 5);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 1, 2);
 
   task_environment_.AdvanceClock(base::Days(2));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 6);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 0, 1);
 
@@ -100,34 +109,33 @@ TEST_F(BraveNewsP3ATest, TestWeeklySessionCountTimeFade) {
 }
 
 TEST_F(BraveNewsP3ATest, TestWeeklyDisplayAdsViewedCount) {
-  PrefService* prefs = GetPrefs();
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kWeeklyDisplayAdsViewedHistogramName, 1);
   histogram_tester_.ExpectBucketCount(kWeeklyDisplayAdsViewedHistogramName, 0,
                                       1);
 
-  RecordWeeklyDisplayAdsViewedCount(prefs, true);
-  RecordWeeklyDisplayAdsViewedCount(prefs, true);
+  metrics_->RecordWeeklyDisplayAdsViewedCount(true);
+  metrics_->RecordWeeklyDisplayAdsViewedCount(true);
 
   task_environment_.AdvanceClock(base::Days(2));
-  RecordWeeklyDisplayAdsViewedCount(prefs, true);
+  metrics_->RecordWeeklyDisplayAdsViewedCount(true);
 
   EXPECT_EQ(GetWeeklySum(prefs::kBraveNewsWeeklyDisplayAdViewedCount), 3);
 
   task_environment_.AdvanceClock(base::Days(2));
-  RecordWeeklyDisplayAdsViewedCount(prefs, false);
+  metrics_->RecordWeeklyDisplayAdsViewedCount(false);
   histogram_tester_.ExpectTotalCount(kWeeklyDisplayAdsViewedHistogramName, 5);
   histogram_tester_.ExpectBucketCount(kWeeklyDisplayAdsViewedHistogramName, 2,
                                       3);
 
   task_environment_.AdvanceClock(base::Days(3));
-  RecordWeeklyDisplayAdsViewedCount(prefs, false);
+  metrics_->RecordWeeklyDisplayAdsViewedCount(false);
   histogram_tester_.ExpectTotalCount(kWeeklyDisplayAdsViewedHistogramName, 6);
   histogram_tester_.ExpectBucketCount(kWeeklyDisplayAdsViewedHistogramName, 1,
                                       2);
 
   task_environment_.AdvanceClock(base::Days(2));
-  RecordWeeklyDisplayAdsViewedCount(prefs, false);
+  metrics_->RecordWeeklyDisplayAdsViewedCount(false);
   histogram_tester_.ExpectTotalCount(kWeeklyDisplayAdsViewedHistogramName, 7);
   histogram_tester_.ExpectBucketCount(kWeeklyDisplayAdsViewedHistogramName, 0,
                                       2);
@@ -136,189 +144,198 @@ TEST_F(BraveNewsP3ATest, TestWeeklyDisplayAdsViewedCount) {
 }
 
 TEST_F(BraveNewsP3ATest, TestWeeklyAddedDirectFeedsCount) {
-  PrefService* prefs = GetPrefs();
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 1);
   histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 0,
                                       1);
 
-  RecordWeeklyAddedDirectFeedsCount(prefs, 1);
-  RecordWeeklyAddedDirectFeedsCount(prefs, 1);
+  pref_manager_->AddDirectPublisher(GURL("https://foo.com"), "");
+  pref_manager_->AddDirectPublisher(GURL("https://bar.com"), "");
 
   task_environment_.AdvanceClock(base::Days(2));
-  RecordWeeklyAddedDirectFeedsCount(prefs, 0);
-  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 4);
-  histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 2,
-                                      2);
 
-  RecordWeeklyAddedDirectFeedsCount(prefs, 1);
-  RecordWeeklyAddedDirectFeedsCount(prefs, 1);
+  // Add a feed we're already subscribed to (should have no effect).
+  pref_manager_->AddDirectPublisher(GURL("https://foo.com"), "");
+
+  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 3);
+  histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 1,
+                                      1);
+
+  pref_manager_->AddDirectPublisher(GURL("https://baz.com"), "");
+  auto id_to_remove =
+      pref_manager_->AddDirectPublisher(GURL("https://buz.com"), "");
 
   EXPECT_EQ(GetWeeklySum(prefs::kBraveNewsWeeklyAddedDirectFeedsCount), 4);
 
-  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 6);
+  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 5);
   histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 4,
                                       1);
-  RecordWeeklyAddedDirectFeedsCount(prefs, -1);
-  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 7);
+
+  // Unsubscribe from a direct feed (should trigger a -1) being recorded.
+  pref_manager_->SetPublisherSubscribed(id_to_remove,
+                                        mojom::UserEnabled::DISABLED);
+  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 6);
   histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 3,
                                       2);
 
   task_environment_.AdvanceClock(base::Days(6));
-  RecordWeeklyAddedDirectFeedsCount(prefs, 0);
-  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 8);
+
+  // Add a feed we're already subscribed to.
+  pref_manager_->AddDirectPublisher(GURL("https://foo.com"), "");
+
+  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 6);
   histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 1,
-                                      2);
+                                      1);
 
   EXPECT_EQ(GetWeeklySum(prefs::kBraveNewsWeeklyAddedDirectFeedsCount), 1);
 }
 
 TEST_F(BraveNewsP3ATest, TestDirectFeedsTotal) {
   PrefService* prefs = GetPrefs();
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
+
+  // Should not report if not a monthly user
+  histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 0);
+
+  prefs->SetTime(prefs::kBraveNewsLastSessionTime, base::Time::Now());
+  metrics_->RecordAtInit();
+
   histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 1);
   histogram_tester_.ExpectBucketCount(kDirectFeedsTotalHistogramName, 0, 1);
 
-  ScopedDictPrefUpdate update1(prefs, prefs::kBraveNewsDirectFeeds);
-  update1->Set("id1", base::Value::Dict());
-  ScopedDictPrefUpdate update2(prefs, prefs::kBraveNewsDirectFeeds);
-  update2->Set("id2", base::Value::Dict());
+  pref_manager_->AddDirectPublisher(GURL("https://foo.com"), "");
+  pref_manager_->AddDirectPublisher(GURL("https://bar.com"), "");
 
-  RecordDirectFeedsTotal(prefs);
-  histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 2);
+  histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 3);
   histogram_tester_.ExpectBucketCount(kDirectFeedsTotalHistogramName, 2, 1);
 }
 
 TEST_F(BraveNewsP3ATest, TestTotalCardsViewed) {
-  PrefService* prefs = GetPrefs();
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kTotalCardViewsHistogramName, 1);
   histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 0, 1);
 
-  RecordTotalCardViews(prefs, 0);
+  metrics_->RecordTotalActionCount(ActionType::kCardView, 0);
   histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 0, 2);
 
-  RecordTotalCardViews(prefs, 1);
+  metrics_->RecordTotalActionCount(ActionType::kCardView, 1);
   histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 1, 1);
 
-  RecordTotalCardViews(prefs, 14);
+  metrics_->RecordTotalActionCount(ActionType::kCardView, 14);
   histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 3, 1);
 
   task_environment_.AdvanceClock(base::Days(4));
   EXPECT_EQ(GetWeeklySum(prefs::kBraveNewsTotalCardViews), 15);
 
-  RecordAtSessionStart(prefs);
-  RecordTotalCardViews(prefs, 15);
+  metrics_->RecordAtSessionStart();
+  metrics_->RecordTotalActionCount(ActionType::kCardView, 15);
   histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 4, 1);
 
-  RecordAtSessionStart(prefs);
-  RecordTotalCardViews(prefs, 15);
+  metrics_->RecordAtSessionStart();
+  metrics_->RecordTotalActionCount(ActionType::kCardView, 15);
   histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 5, 1);
 
   task_environment_.AdvanceClock(base::Days(4));
 
-  RecordAtSessionStart(prefs);
-  RecordTotalCardViews(prefs, 0);
+  metrics_->RecordAtSessionStart();
+  metrics_->RecordTotalActionCount(ActionType::kCardView, 0);
   histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 4, 2);
 }
 
 TEST_F(BraveNewsP3ATest, TestLastUsageTime) {
-  PrefService* prefs = GetPrefs();
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   // Should not report if News was never used
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 0);
 
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 1);
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 1, 1);
 
   task_environment_.AdvanceClock(base::Days(7));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 2);
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 2, 1);
 
   task_environment_.AdvanceClock(base::Days(7));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 3);
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 3, 1);
 
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 4);
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 1, 2);
 
   task_environment_.AdvanceClock(base::Days(21));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 5);
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 4, 1);
 
   task_environment_.AdvanceClock(base::Days(7));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 6);
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 5, 1);
 
   task_environment_.AdvanceClock(base::Days(33));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 7);
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 6, 1);
 
   task_environment_.AdvanceClock(base::Days(90));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 8);
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 6, 2);
 }
 
 TEST_F(BraveNewsP3ATest, TestNewUserReturningFollowingDay) {
-  PrefService* prefs = GetPrefs();
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 1);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 0, 1);
 
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 2);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 2, 1);
 
   task_environment_.AdvanceClock(base::Days(1));
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 3);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 3, 1);
 
   task_environment_.AdvanceClock(base::Days(2));
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 4);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 3, 2);
 
   task_environment_.AdvanceClock(base::Days(5));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 5);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 1, 1);
 }
 
 TEST_F(BraveNewsP3ATest, TestNewUserReturningNotFollowingDay) {
-  PrefService* prefs = GetPrefs();
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 1);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 0, 1);
 
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 2);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 2, 1);
 
   task_environment_.AdvanceClock(base::Days(2));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 3);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 2, 2);
 
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 4);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 4, 1);
 
   task_environment_.AdvanceClock(base::Days(2));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 5);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 4, 2);
 
   task_environment_.AdvanceClock(base::Days(4));
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kNewUserReturningHistogramName, 6);
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 1, 1);
 }
@@ -332,25 +349,20 @@ TEST_F(BraveNewsP3ATest, TestIsEnabled) {
 
   prefs->SetBoolean(prefs::kBraveNewsOptedIn, true);
   prefs->SetBoolean(prefs::kNewTabPageShowToday, true);
-  RecordFeatureEnabledChange(prefs);
   histogram_tester_.ExpectUniqueSample(kIsEnabledHistogramName, 1, 1);
 
   prefs->SetBoolean(prefs::kNewTabPageShowToday, false);
-  RecordFeatureEnabledChange(prefs);
   histogram_tester_.ExpectBucketCount(kIsEnabledHistogramName, 0, 1);
 }
 
 TEST_F(BraveNewsP3ATest, TestGeneralUsage) {
-  PrefService* prefs = GetPrefs();
-
-  RecordAtInit(prefs);
+  metrics_->RecordAtInit();
   histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 0);
   histogram_tester_.ExpectTotalCount(kUsageMonthlyHistogramName, 0);
 
-  RecordAtSessionStart(prefs);
+  metrics_->RecordAtSessionStart();
   histogram_tester_.ExpectUniqueSample(kUsageDailyHistogramName, 1, 1);
   histogram_tester_.ExpectUniqueSample(kUsageMonthlyHistogramName, 1, 1);
 }
 
-}  // namespace p3a
-}  // namespace brave_news
+}  // namespace brave_news::p3a

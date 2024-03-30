@@ -16,83 +16,180 @@ import {
   SideBySideButtons,
   PaddedButton,
   Input,
+  Checkbox,
+  CheckboxLabel,
   TextArea,
   FieldCtr,
-  InputLabel
+  InputLabel,
+  ScreenshotLink
 } from './basic'
 
 // Localization data
 import { getLocale } from '../../../common/locale'
+import { captureScreenshot, clearScreenshot, getCapturedScreenshot } from '../browser_proxy'
 
 interface Props {
   siteUrl: string
-  onSubmitReport: (details: string, contact: string) => void
+  isErrorPage: boolean
+  isHttpPage: boolean
+  isLocalPage: boolean
+  onSubmitReport: (details: string, contact: string, attachScreenshot: boolean) => void
   onClose: () => void
 }
 
 interface State {
   details: string
   contact: string
+  attachScreenshot: boolean
+  screenshotObjectUrl: string | null
 }
+
+const WEBCOMPAT_INFO_WIKI_URL = 'https://github.com/brave/brave-browser/wiki/Web-compatibility-reports'
 
 export default class ReportView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { details: '', contact: '' }
+    this.state = { details: '', contact: '', attachScreenshot: false, screenshotObjectUrl: null }
+  }
+
+  handleScreenshotChange = async (ev: React.ChangeEvent<HTMLInputElement>) => {
+    if (this.state.screenshotObjectUrl) {
+      URL.revokeObjectURL(this.state.screenshotObjectUrl)
+    }
+    if (!ev.target.checked) {
+      this.setState({ attachScreenshot: false, screenshotObjectUrl: null })
+      clearScreenshot()
+      return
+    }
+
+    await captureScreenshot()
+    this.setState({ attachScreenshot: true, screenshotObjectUrl: null })
+  }
+
+  // the element for the onClick is an <a>. generate an ev typescript react type for ev
+  handleViewScreenshot = async (ev: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    ev.preventDefault()
+    if (this.state.screenshotObjectUrl) {
+      window.open(this.state.screenshotObjectUrl, '_blank', 'noopener')
+      return
+    }
+    const encodedScreenshot = await getCapturedScreenshot()
+    const decodedScreenshot = Buffer.from(encodedScreenshot, 'base64')
+    const blob = new Blob([decodedScreenshot], { type: 'image/png' })
+    const screenshotObjectUrl = URL.createObjectURL(blob)
+
+    this.setState({ screenshotObjectUrl })
+
+    window.open(screenshotObjectUrl, '_blank', 'noopener')
   }
 
   render () {
     const {
       siteUrl,
+      isErrorPage,
+      isHttpPage,
+      isLocalPage,
       onSubmitReport,
       onClose
     } = this.props
-    const { details, contact } = this.state
+    const { details, contact, attachScreenshot } = this.state
+
+    const isIneligiblePage = !isHttpPage || isLocalPage || isErrorPage
+
+    let infoTextKey = 'reportExplanation'
+    if (!isHttpPage) {
+      infoTextKey = 'reportNonHttpExplanation'
+    } else if (isLocalPage) {
+      infoTextKey = 'reportLocalExplanation'
+    } else if (isErrorPage) {
+      infoTextKey = 'reportErrorPageExplanation'
+    }
+
     return (
       <ModalLayout>
         <TextSection>
           <ModalTitle>{getLocale('reportModalTitle')}</ModalTitle>
         </TextSection>
-        <InfoText>{getLocale('reportExplanation')}</InfoText>
-        <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
-        <DisclaimerText>{getLocale('reportDisclaimer')}</DisclaimerText>
-        <FieldCtr>
-          <TextArea
-            placeholder={getLocale('reportDetails')}
-            onChange={(ev) => this.setState({ details: ev.target.value })}
-            rows={7}
-            maxLength={2000}
-            value={details}
-          />
-        </FieldCtr>
-        <FieldCtr>
-          <InputLabel htmlFor='contact-info'>
-            {getLocale('reportContactLabel')}
-          </InputLabel>
-          <Input
-            placeholder={getLocale('reportContactPlaceholder')}
-            onChange={(ev) => this.setState({ contact: ev.target.value })}
-            type='text'
-            maxLength={2000}
-            value={contact}
-            id='contact-info'
-          />
-        </FieldCtr>
+        <InfoText>
+          {getLocale(infoTextKey)}
+        </InfoText>
+        {!isIneligiblePage &&
+          <>
+            <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
+            <FieldCtr>
+              <TextArea
+                placeholder={getLocale('reportDetails')}
+                onChange={(ev) => this.setState({ details: ev.target.value })}
+                rows={7}
+                maxLength={2000}
+                value={details}
+              />
+            </FieldCtr>
+            <FieldCtr>
+              <InputLabel htmlFor='contact-info'>
+                {getLocale('reportContactLabel')}
+              </InputLabel>
+              <Input
+                placeholder={getLocale('reportContactPlaceholder')}
+                onChange={(ev) => this.setState({ contact: ev.target.value })}
+                type='text'
+                maxLength={2000}
+                value={contact}
+                id='contact-info'
+              />
+            </FieldCtr>
+            <FieldCtr>
+              <Checkbox
+                onChange={this.handleScreenshotChange}
+                type='checkbox'
+                checked={attachScreenshot}
+                id='attach-screenshot'
+              />
+              <CheckboxLabel htmlFor='attach-screenshot'>
+                {getLocale('attachScreenshotLabel')}
+              </CheckboxLabel>
+            </FieldCtr>
+            {!!this.state.attachScreenshot &&
+              <ScreenshotLink onClick={this.handleViewScreenshot}>
+                {getLocale('viewScreenshotLabel')}
+              </ScreenshotLink>
+            }
+            <DisclaimerText>
+              {getLocale('reportDisclaimer')}
+              &nbsp;
+              <a href={WEBCOMPAT_INFO_WIKI_URL} target="_blank">
+                {getLocale('reportInfoLink')}
+              </a>
+            </DisclaimerText>
+          </>
+        }
         <SideBySideButtons>
+          {!isIneligiblePage ?
+          <>
+            <PaddedButton
+              text={getLocale('cancel')}
+              level={'secondary'}
+              type={'default'}
+              size={'small'}
+              onClick={onClose}
+            />
+            <PaddedButton
+              text={getLocale('submit')}
+              level={'primary'}
+              type={'accent'}
+              size={'small'}
+              onClick={() => onSubmitReport(details, contact, attachScreenshot)}
+            />
+          </>
+        :
           <PaddedButton
-            text={getLocale('cancel')}
-            level={'secondary'}
-            type={'default'}
-            size={'small'}
-            onClick={onClose}
-          />
-          <PaddedButton
-            text={getLocale('submit')}
+            text={getLocale('close')}
             level={'primary'}
             type={'accent'}
             size={'small'}
-            onClick={() => onSubmitReport(details, contact)}
+            onClick={onClose}
           />
+        }
         </SideBySideButtons>
       </ModalLayout>
     )

@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/android/brave_shields_content_settings.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 
 #include <string>
 

@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ai_chat/android/sources.gni")
+import("//brave/browser/ai_chat/sources.gni")
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/brave_adaptive_captcha/sources.gni")
 import("//brave/browser/brave_ads/sources.gni")
@@ -135,6 +136,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui/tabs",
   "//brave/common",
   "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/body_sniffer",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser",
@@ -153,8 +155,8 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_search/browser",
   "//brave/components/brave_search/common",
   "//brave/components/brave_search/common:mojom",
-  "//brave/components/brave_shields/common",
-  "//brave/components/brave_shields/common:mojom",
+  "//brave/components/brave_shields/core/common",
+  "//brave/components/brave_shields/core/common:mojom",
   "//brave/components/brave_sync",
   "//brave/components/brave_sync:features",
   "//brave/components/brave_sync:network_time_helper",
@@ -264,8 +266,18 @@ if (is_mac) {
     "//brave/browser/brave_browser_main_parts_mac.mm",
     "//brave/browser/brave_shell_integration_mac.h",
     "//brave/browser/brave_shell_integration_mac.mm",
+    "//brave/browser/mac/keystone_glue.h",
+    "//brave/browser/mac/keystone_glue.mm",
+    "//brave/browser/mac/keystone_registration.h",
+    "//brave/browser/mac/keystone_registration.mm",
   ]
-  brave_chrome_browser_deps += [ "//brave/app:command_ids" ]
+  brave_chrome_browser_deps += [
+    "//brave/app:command_ids",
+    "//brave/browser:sparkle_buildflags",
+    "//chrome:strings",
+    "//chrome/app:generated_resources",
+    "//chrome/common:non_code_constants",
+  ]
 }
 
 if (enable_sparkle) {
@@ -274,7 +286,6 @@ if (enable_sparkle) {
     "//brave/browser/mac/sparkle_glue.mm",
     "//brave/browser/mac/su_updater.h",
   ]
-  brave_chrome_browser_deps += [ "//brave/browser/mac:keystone_glue" ]
 }
 
 if (enable_speedreader) {
@@ -295,6 +306,9 @@ if (enable_ai_chat) {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
   ]
+
+  brave_chrome_browser_sources += brave_browser_ai_chat_sources
+  brave_chrome_browser_deps += brave_browser_ai_chat_deps
 
   if (is_android) {
     brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
@@ -440,10 +454,6 @@ brave_chrome_browser_public_deps = [
   "//brave/components/brave_sync:constants",
   "//brave/components/variations:constants",
 ]
-
-if (is_mac) {
-  brave_chrome_browser_public_deps += [ "//brave/browser/mac:keystone_glue" ]
-}
 
 if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]

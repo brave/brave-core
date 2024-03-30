@@ -22,8 +22,8 @@ template <typename T>
 bool WasAdServed(const AdInfo& ad,
                  const AdEventList& ad_events,
                  const T& event_type) {
-  return event_type == T::kServed ||
-         HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed);
+  return event_type == T::kServedImpression ||
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kServedImpression);
 }
 
 template <typename T>
@@ -32,8 +32,8 @@ bool ShouldDebounceViewedAdEvent(const AdInfo& ad,
                                  const T& event_type) {
   CHECK(WasAdServed(ad, ad_events, event_type));
 
-  return event_type == T::kViewed &&
-         HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed);
+  return event_type == T::kViewedImpression &&
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewedImpression);
 }
 
 template <typename T>

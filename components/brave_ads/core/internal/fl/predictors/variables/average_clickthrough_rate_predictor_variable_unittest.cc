@@ -53,8 +53,8 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   AdvanceClockBy(base::Days(2));
@@ -74,7 +74,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
   // Act & Assert
   EXPECT_EQ("0", predictor_variable->GetValue());
@@ -91,7 +91,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   // Act & Assert
@@ -109,7 +109,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
@@ -127,9 +127,9 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest, GetValue) {
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   // Act & Assert

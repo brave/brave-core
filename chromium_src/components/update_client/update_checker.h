@@ -26,7 +26,7 @@ namespace update_client {
 
 // SequentialUpdateChecker delegates to UpdateChecker to perform a separate
 // update request for each component, instead of one request for all components.
-// We do for the following reason:
+// We do this for the following reason:
 // Google's ToS do not allow distributing all components. In particular, the
 // Widevine plugin must be fetched from Google servers. Brave's update server
 // for components handles this as follows: When an update for a Google
@@ -68,13 +68,6 @@ class SequentialUpdateChecker : public UpdateChecker {
       ErrorCategory error_category,
       int error,
       int retry_after_sec);
-
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-  void SetPersistedFlag(const std::string& extension_id,
-                        const std::string& key);
-  bool GetPersistedFlag(const std::string& extension_id,
-                        const std::string& key);
-#endif
 
   THREAD_CHECKER(thread_checker_);
 

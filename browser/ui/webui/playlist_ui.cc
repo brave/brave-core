@@ -22,6 +22,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/user_prefs/user_prefs.h"
@@ -60,6 +61,7 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
        IDS_PLAYLIST_A11Y_CREATE_PLAYLIST_FOLDER},
       {"bravePlaylistA11YOpenPlaylistSettings",
        IDS_PLAYLIST_A11Y_OPEN_PLAYLIST_SETTINGS},
+      {"bravePlaylistA11YClosePanel", IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP},
       {"bravePlaylistA11YPlay", IDS_PLAYLIST_A11Y_PLAY},
       {"bravePlaylistA11YPause", IDS_PLAYLIST_A11Y_PAUSE},
       {"bravePlaylistA11YNext", IDS_PLAYLIST_A11Y_NEXT},
@@ -220,6 +222,10 @@ void PlaylistUI::ShowMoveItemsUI(const std::string& playlist_id,
 
 void PlaylistUI::OpenSettingsPage() {
   playlist::ShowPlaylistSettings(web_ui()->GetWebContents());
+}
+
+void PlaylistUI::ClosePanel() {
+  playlist::ClosePanel(web_ui()->GetWebContents());
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)

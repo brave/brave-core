@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key.h"
 
-#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
@@ -23,15 +22,14 @@ std::optional<challenge_bypass_ristretto::SigningKey> Create(
     return std::nullopt;
   }
 
-  return ValueOrLogError(challenge_bypass_ristretto::SigningKey::decode_base64(
-      base::as_bytes(base::make_span(signing_key_base64))));
+  return ValueOrLogError(
+      challenge_bypass_ristretto::SigningKey::DecodeBase64(signing_key_base64));
 }
 
 }  // namespace
 
 SigningKey::SigningKey()
-    : signing_key_(
-          ValueOrLogError(challenge_bypass_ristretto::SigningKey::random())) {}
+    : signing_key_(challenge_bypass_ristretto::SigningKey::Random()) {}
 
 SigningKey::SigningKey(const std::string& signing_key_base64)
     : signing_key_(Create(signing_key_base64)) {}
@@ -59,7 +57,7 @@ std::optional<std::string> SigningKey::EncodeBase64() const {
     return std::nullopt;
   }
 
-  return ValueOrLogError(signing_key_->encode_base64());
+  return signing_key_->EncodeBase64();
 }
 
 std::optional<SignedToken> SigningKey::Sign(
@@ -69,7 +67,7 @@ std::optional<SignedToken> SigningKey::Sign(
   }
 
   return ValueOrLogError<challenge_bypass_ristretto::SignedToken, SignedToken>(
-      signing_key_->sign(blinded_token.get()));
+      signing_key_->Sign(blinded_token.get()));
 }
 
 std::optional<UnblindedToken> SigningKey::RederiveUnblindedToken(
@@ -80,7 +78,7 @@ std::optional<UnblindedToken> SigningKey::RederiveUnblindedToken(
 
   return ValueOrLogError<challenge_bypass_ristretto::UnblindedToken,
                          UnblindedToken>(
-      signing_key_->rederive_unblinded_token(token_preimage.get()));
+      signing_key_->RederiveUnblindedToken(token_preimage.get()));
 }
 
 std::optional<PublicKey> SigningKey::GetPublicKey() {
@@ -88,7 +86,7 @@ std::optional<PublicKey> SigningKey::GetPublicKey() {
     return std::nullopt;
   }
 
-  return PublicKey(signing_key_->public_key());
+  return PublicKey(signing_key_->GetPublicKey());
 }
 
 std::ostream& operator<<(std::ostream& os, const SigningKey& signing_key) {

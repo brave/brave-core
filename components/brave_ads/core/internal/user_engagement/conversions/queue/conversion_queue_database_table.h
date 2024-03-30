@@ -35,13 +35,11 @@ class ConversionQueue final : public TableInterface {
   void Delete(const ConversionQueueItemInfo& conversion_queue_item,
               ResultCallback callback) const;
 
-  void Update(const ConversionQueueItemInfo& conversion_queue_item,
-              ResultCallback callback) const;
+  void MarkAsProcessed(const ConversionQueueItemInfo& conversion_queue_item,
+                       ResultCallback callback) const;
 
   void GetAll(GetConversionQueueCallback callback) const;
-
-  void GetUnprocessed(GetConversionQueueCallback callback) const;
-
+  void GetNext(GetConversionQueueCallback callback) const;
   void GetForCreativeInstanceId(
       const std::string& creative_instance_id,
       GetConversionQueueForCreativeInstanceIdCallback callback) const;

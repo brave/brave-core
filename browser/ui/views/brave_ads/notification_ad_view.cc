@@ -90,7 +90,7 @@ void NotificationAdView::MaybeNotifyAccessibilityEvent() {
   NotifyAccessibilityEvent(ax::mojom::Event::kTextChanged, true);
 }
 
-BEGIN_METADATA(NotificationAdView, views::View)
+BEGIN_METADATA(NotificationAdView)
 END_METADATA
 
 }  // namespace brave_ads

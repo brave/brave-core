@@ -24,10 +24,7 @@ export const localeStrings = {
   connectWalletSelfCustodyTerms: '$1Terms of Use$2 and $3Privacy Policy$4.',
   connectWalletSelfCustodyError: 'Something went wrong. Please try again',
   connectWalletLoginText: 'Log in or sign up',
-  rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
-  rewardsGrantDaysRemaining: 'You have $1 left to claim',
   rewardsLearnMore: 'Learn more',
-  rewardsTokenGrantTitle: 'A token grant is available!',
   newBadgeText: 'NEW',
 
   braveRewards: 'Brave Rewards',
@@ -96,7 +93,6 @@ export const localeStrings = {
   rewardsBrowserNeedsUpdateToSeeAds: 'Your browser needs to be updated to continue seeing ads.',
   adsNotSupportedRegion: 'Sorry! Ads are not yet available in your region.',
   connectAccountText: '$1Ready to start earning?$2 Connect or create an account with one of our partners.',
-  connectAccountNoProviders: 'To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there\'s no custodian available in your region, so earning isn\'t available at this time. However, you\'ll still be automatically supporting creators by using Rewards.',
   learnMore: 'Learn more',
   newTabAdCountLabel: 'New tab page ads',
   notificationAdCountLabel: 'Notification ads',
@@ -104,10 +100,18 @@ export const localeStrings = {
   newsAdInfo: 'Brave News contains ads that cannot be independently disabled.',
   newsAdInfoDisabled: 'Brave News is currently disabled.',
 
+  resetWallet: 'Reset Brave Rewards',
+  rewardsResetText: 'By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our $1support article about resetting$2 for more details.',
+  rewardsResetConsent: 'I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I\'ve read the $1support article about resetting$2.',
+  reset: 'Reset',
+
+  rewardsTosUpdateHeading: 'Updated Terms of Service',
+  rewardsTosUpdateText: 'We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can $1reset$2 Brave Rewards, which will disable the feature.',
+  rewardsTosUpdateLinkText: 'See $1Brave Rewards Terms of Service$2',
+  rewardsTosUpdateButtonLabel: 'I agree',
+
   rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
   rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
-  rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',
-  rewardsVBATNoticeText2: 'On $1, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region ($2) to withdraw your earnings. Until then, you can still contribute to your favorite creators.',
   rewardsConnectAccount: 'Connect account',
 
   rewardsPaymentCompleted: 'The payout for $1 rewards has completed.',

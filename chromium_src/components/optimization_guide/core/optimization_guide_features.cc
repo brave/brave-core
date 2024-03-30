@@ -12,6 +12,7 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kOptimizationGuideFetchingForSRP, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kOptimizationGuidePersonalizedFetching, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOptimizationHints, base::FEATURE_DISABLED_BY_DEFAULT},
     {kRemoteOptimizationGuideFetching, base::FEATURE_DISABLED_BY_DEFAULT},
     {kRemoteOptimizationGuideFetchingAnonymousDataConsent,

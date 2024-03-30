@@ -1,0 +1,7 @@
+{
+  "description": "Brave Ad Block Updater extension",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4txGiQ3yLerqLDucoT7AeFjSShvHcUlEbW4XTf5Fg8qi9GzXVXSS1PLZZSYX94fIch+0gd0bFBsSuN5vJVjR/xIyYaS29uvav5WJ/p3zt+mqW1eDarQ3CS0rsqWHjeTQJjaqw/TY7zS7/QJFspQro6/tOAPivWXYHV7kWVUtpuX8vcLLM11mexxKUEcbTrFwTmF3aOZcQnCTTR1NFV46v9MxnBj86RZQ9v/APjDIt9d9l8/bvq5Jp4w+8sv5ctb6nxSBSrhyVlbYe2eVrdVwOrcKijGA1ROfEk4A/R8knajBl6ihiXlGteVqIOrka3onyB0y8UTP++a7TZey85yXUwIDAQAB",
+  "manifest_version": 2,
+  "name": "Brave Ad Block Updater (EasyList Cookie (plaintext))",
+  "version": "1.0.1"
+}

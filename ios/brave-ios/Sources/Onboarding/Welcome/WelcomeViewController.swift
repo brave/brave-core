@@ -1,19 +1,19 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import SnapKit
-import BraveShared
-import Preferences
-import Shared
 import BraveCore
+import BraveShared
 import BraveUI
-import SafariServices
 import DesignSystem
+import Foundation
 import Growth
+import Preferences
+import SafariServices
+import Shared
+import SnapKit
+import UIKit
 
 private enum WelcomeViewID: Int {
   case background = 1
@@ -28,19 +28,24 @@ private enum WelcomeViewID: Int {
 
 public class WelcomeViewController: UIViewController {
   private var state: WelcomeViewCalloutState?
-  private let p3aUtilities: BraveP3AUtils // Privacy Analytics
-  private let attributionManager: AttributionManager // Manager to handle daily active user and user referral
+  private let p3aUtilities: BraveP3AUtils  // Privacy Analytics
+  // Manager to handle daily active user and user referral
+  private let attributionManager: AttributionManager
 
   public convenience init(p3aUtilities: BraveP3AUtils, attributionManager: AttributionManager) {
     self.init(state: .loading, p3aUtilities: p3aUtilities, attributionManager: attributionManager)
   }
 
-  public init(state: WelcomeViewCalloutState?, p3aUtilities: BraveP3AUtils, attributionManager: AttributionManager) {
+  public init(
+    state: WelcomeViewCalloutState?,
+    p3aUtilities: BraveP3AUtils,
+    attributionManager: AttributionManager
+  ) {
     self.state = state
     self.p3aUtilities = p3aUtilities
     self.attributionManager = attributionManager
     super.init(nibName: nil, bundle: nil)
-    
+
     self.transitioningDelegate = self
     self.modalPresentationStyle = .fullScreen
     self.loadViewIfNeeded()
@@ -49,7 +54,7 @@ public class WelcomeViewController: UIViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   private let backgroundGradientView = BraveGradientView(gradient: .backgroundGradient)
 
   private let topImageView = UIImageView().then {
@@ -104,7 +109,7 @@ public class WelcomeViewController: UIViewController {
     super.viewDidAppear(animated)
 
     Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-    
+
     switch state {
     case .loading:
       let animation = CAKeyframeAnimation(keyPath: "transform.scale").then {
@@ -112,9 +117,9 @@ public class WelcomeViewController: UIViewController {
         $0.keyTimes = [0, 0.5, 1]
         $0.duration = 1.0
       }
-      
+
       iconView.layer.add(animation, forKey: nil)
-      
+
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
         self.animateToWelcomeState()
       }
@@ -122,13 +127,13 @@ public class WelcomeViewController: UIViewController {
       UIView.animate(withDuration: 1.5) {
         self.calloutView.frame.origin.y = self.calloutView.frame.origin.x - 35
       }
-      
+
       DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
         self.animateToDefaultBrowserState()
       }
     case .settings:
       calloutView.animateTitleViewVisibility(alpha: 1.0, duration: 1.5)
-      
+
       DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
         self.onSetDefaultBrowser()
       }
@@ -178,7 +183,8 @@ public class WelcomeViewController: UIViewController {
     stack.addStackViewItems(
       .view(UIView.spacer(.vertical, amount: 1)),
       .view(contentContainer),
-      .view(UIView.spacer(.vertical, amount: 1)))
+      .view(UIView.spacer(.vertical, amount: 1))
+    )
 
     [calloutView, iconView].forEach {
       contentContainer.addArrangedSubview($0)
@@ -217,7 +223,7 @@ public class WelcomeViewController: UIViewController {
         $0.height.equalTo(225.0)
       }
       calloutView.setState(state: state)
-      
+
     case .welcome:
       let topTransform = { () -> CGAffineTransform in
         var transformation = CGAffineTransform.identity
@@ -319,14 +325,24 @@ public class WelcomeViewController: UIViewController {
   }
 
   private func animateToWelcomeState() {
-    let nextController = WelcomeViewController(state: nil, p3aUtilities: p3aUtilities, attributionManager: attributionManager).then {
-        $0.setLayoutState(state: WelcomeViewCalloutState.welcome(title: Strings.Onboarding.welcomeScreenTitle))
-      }
+    let nextController = WelcomeViewController(
+      state: nil,
+      p3aUtilities: p3aUtilities,
+      attributionManager: attributionManager
+    ).then {
+      $0.setLayoutState(
+        state: WelcomeViewCalloutState.welcome(title: Strings.Onboarding.welcomeScreenTitle)
+      )
+    }
     present(nextController, animated: true)
   }
 
   private func animateToDefaultBrowserState() {
-    let nextController = WelcomeViewController(state: nil, p3aUtilities: p3aUtilities, attributionManager: attributionManager)
+    let nextController = WelcomeViewController(
+      state: nil,
+      p3aUtilities: p3aUtilities,
+      attributionManager: attributionManager
+    )
     let state = WelcomeViewCalloutState.defaultBrowser(
       info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
         title: Strings.Callout.defaultBrowserCalloutTitle,
@@ -345,22 +361,32 @@ public class WelcomeViewController: UIViewController {
     nextController.setLayoutState(state: state)
     present(nextController, animated: true)
   }
-  
+
   private func animateToDefaultSettingsState() {
-    let nextController = WelcomeViewController(state: nil, p3aUtilities: p3aUtilities, attributionManager: attributionManager).then {
-        $0.setLayoutState(
-          state: WelcomeViewCalloutState.settings(
-            title: Strings.Onboarding.navigateSettingsOnboardingScreenTitle,
-            details: Strings.Onboarding.navigateSettingsOnboardingScreenDescription))
-      }
+    let nextController = WelcomeViewController(
+      state: nil,
+      p3aUtilities: p3aUtilities,
+      attributionManager: attributionManager
+    ).then {
+      $0.setLayoutState(
+        state: WelcomeViewCalloutState.settings(
+          title: Strings.Onboarding.navigateSettingsOnboardingScreenTitle,
+          details: Strings.Onboarding.navigateSettingsOnboardingScreenDescription
+        )
+      )
+    }
 
     present(nextController, animated: true) {
       Preferences.Onboarding.basicOnboardingDefaultBrowserSelected.value = true
     }
   }
-  
+
   private func animateToP3aState() {
-    let nextController = WelcomeViewController(state: nil, p3aUtilities: p3aUtilities, attributionManager: attributionManager)
+    let nextController = WelcomeViewController(
+      state: nil,
+      p3aUtilities: p3aUtilities,
+      attributionManager: attributionManager
+    )
     let state = WelcomeViewCalloutState.p3a(
       info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
         title: Strings.Callout.p3aCalloutTitle,
@@ -372,12 +398,15 @@ public class WelcomeViewController: UIViewController {
           self?.p3aUtilities.isP3AEnabled = isOn
         },
         linkAction: { url in
-          let p3aLearnMoreController = SFSafariViewController(url: .brave.p3aHelpArticle, configuration: .init())
+          let p3aLearnMoreController = SFSafariViewController(
+            url: .brave.p3aHelpArticle,
+            configuration: .init()
+          )
           p3aLearnMoreController.modalPresentationStyle = .currentContext
-          
+
           nextController.present(p3aLearnMoreController, animated: true)
         },
-        
+
         primaryButtonAction: { [weak nextController, weak self] in
           guard let controller = nextController, let self = self else {
             return
@@ -387,9 +416,9 @@ public class WelcomeViewController: UIViewController {
         }
       )
     )
-   
+
     nextController.setLayoutState(state: state)
-    
+
     present(nextController, animated: true) { [unowned self] in
       self.p3aUtilities.isNoticeAcknowledged = true
       Preferences.Onboarding.p3aOnboardingShown.value = true
@@ -403,52 +432,66 @@ public class WelcomeViewController: UIViewController {
     }
     // The loading state should start before calling API
     controller.calloutView.isLoading = true
-    
+
     let attributionManager = controller.attributionManager
-    
+
     Task { @MainActor in
+      var featureLinkType: FeatureLinkageType?
+
       do {
         if controller.p3aUtilities.isP3AEnabled {
           switch attributionManager.activeFetureLinkageLogic {
           case .campaingId:
             let featureType = try await attributionManager.handleSearchAdsFeatureLinkage()
-            attributionManager.adFeatureLinkage = featureType
+            featureLinkType = featureType
           case .reporting:
             // Handle API calls and send linkage type
-            let featureType = try await controller.attributionManager.handleAdsReportingFeatureLinkage()
-            attributionManager.adFeatureLinkage = featureType
+            let featureType = try await controller.attributionManager
+              .handleAdsReportingFeatureLinkage()
+            featureLinkType = featureType
           }
         } else {
           // p3a consent is not given
           attributionManager.setupReferralCodeAndPingServer()
         }
-        
+
         controller.calloutView.isLoading = false
-        close()
+        close {
+          if let featureType = featureLinkType {
+            attributionManager.adFeatureLinkage = featureType
+          }
+        }
       } catch FeatureLinkageError.executionTimeout(let attributionData) {
         // Time out occurred while executing ad reports lookup
         // Ad Campaign Lookup is successful so dau server should be pinged
         // attribution data referral code
         await pingServerWithGeneratedReferralCode(
-          using: attributionData, controller: controller)
+          using: attributionData,
+          controller: controller
+        )
       } catch SearchAdError.successfulCampaignFailedKeywordLookup(let attributionData) {
         // Error occurred while executing ad reports lookup
         // Ad Campaign Lookup is successful so dau server should be pinged
         // attribution data referral code
         await pingServerWithGeneratedReferralCode(
-          using: attributionData, controller: controller)
+          using: attributionData,
+          controller: controller
+        )
       } catch {
         // Error occurred before getting successful
         // attributuion data, generic code should be pinged
         attributionManager.setupReferralCodeAndPingServer()
-        
+
         controller.calloutView.isLoading = false
         close()
       }
     }
   }
-  
-  private func pingServerWithGeneratedReferralCode(using attributionData: AdAttributionData, controller: WelcomeViewController) async {
+
+  private func pingServerWithGeneratedReferralCode(
+    using attributionData: AdAttributionData,
+    controller: WelcomeViewController
+  ) async {
     Task {
       await withCheckedContinuation { continuation in
         DispatchQueue.global().async {
@@ -457,7 +500,7 @@ public class WelcomeViewController: UIViewController {
         }
       }
     }
-    
+
     controller.calloutView.isLoading = false
     close()
   }
@@ -467,11 +510,11 @@ public class WelcomeViewController: UIViewController {
       return
     }
     UIApplication.shared.open(settingsUrl)
-    
+
     animateToP3aState()
   }
 
-  private func close() {
+  private func close(completion: (() -> Void)? = nil) {
     var presenting: UIViewController = self
     while true {
       if let presentingController = presenting.presentingViewController {
@@ -480,24 +523,31 @@ public class WelcomeViewController: UIViewController {
       }
 
       if let presentingController = presenting as? UINavigationController,
-        let topController = presentingController.topViewController {
+        let topController = presentingController.topViewController
+      {
         presenting = topController
       }
 
       break
     }
-    
+
     Preferences.Onboarding.basicOnboardingProgress.value = OnboardingProgress.newTabPage.rawValue
-    presenting.dismiss(animated: false, completion: nil)
+    presenting.dismiss(animated: false, completion: completion)
   }
 }
 
 extension WelcomeViewController: UIViewControllerTransitioningDelegate {
-  public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+  public func animationController(
+    forPresented presented: UIViewController,
+    presenting: UIViewController,
+    source: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
     return WelcomeAnimator(isPresenting: true)
   }
 
-  public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+  public func animationController(
+    forDismissed dismissed: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
     return WelcomeAnimator(isPresenting: false)
   }
 }
@@ -680,13 +730,15 @@ private class WelcomeAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     }
   }
 
-  func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+  func transitionDuration(
+    using transitionContext: UIViewControllerContextTransitioning?
+  ) -> TimeInterval {
     return 0.5
   }
 }
 
-private extension UIView {
-  func subview(with tag: Int) -> UIView? {
+extension UIView {
+  fileprivate func subview(with tag: Int) -> UIView? {
     if self.tag == tag {
       return self
     }

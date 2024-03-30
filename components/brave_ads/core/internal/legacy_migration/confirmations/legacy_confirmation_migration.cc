@@ -11,10 +11,13 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_confirmations_json_reader.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
@@ -43,7 +46,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
            [](InitializeCallback callback,
               const std::optional<std::string>& json) {
              if (!json) {
-               // Confirmation state does not exist
+               // Confirmation state does not exist.
                return SuccessfullyMigrated(std::move(callback));
              }
 
@@ -58,25 +61,38 @@ void MigrateConfirmationState(InitializeCallback callback) {
 
              BLOG(1, "Migrating confirmation state");
 
-             const std::string migrated_json =
-                 ConfirmationStateManager::GetInstance().ToJson();
+             const absl::optional<ConfirmationList> confirmations =
+                 json::reader::ReadConfirmations(*json);
+             if (!confirmations) {
+               // Confirmation queue state does not exist.
+               return SuccessfullyMigrated(std::move(callback));
+             }
 
-             Save(kConfirmationStateFilename, migrated_json,
-                  base::BindOnce(
-                      [](InitializeCallback callback, const bool success) {
-                        if (!success) {
-                          // TODO(https://github.com/brave/brave-browser/issues/32066):
-                          // Remove migration failure dumps.
-                          base::debug::DumpWithoutCrashing();
+             ConfirmationQueueItemList confirmation_queue_items;
+             for (const auto& confirmation : *confirmations) {
+               const ConfirmationQueueItemInfo confirmation_queue_item =
+                   BuildConfirmationQueueItem(confirmation, base::Time::Now());
+               confirmation_queue_items.push_back(confirmation_queue_item);
+             }
 
-                          BLOG(0, "Failed to save confirmation state");
-                          return FailedToMigrate(std::move(callback));
-                        }
+             database::table::ConfirmationQueue database_table;
+             database_table.Save(
+                 confirmation_queue_items,
+                 base::BindOnce(
+                     [](InitializeCallback callback, const bool success) {
+                       if (!success) {
+                         // TODO(https://github.com/brave/brave-browser/issues/32066):
+                         // Remove migration failure dumps.
+                         base::debug::DumpWithoutCrashing();
 
-                        BLOG(3, "Successfully migrated confirmation state");
-                        SuccessfullyMigrated(std::move(callback));
-                      },
-                      std::move(callback)));
+                         BLOG(0, "Failed to save confirmation state");
+                         return FailedToMigrate(std::move(callback));
+                       }
+
+                       BLOG(3, "Successfully migrated confirmation state");
+                       SuccessfullyMigrated(std::move(callback));
+                     },
+                     std::move(callback)));
            },
            std::move(callback)));
 }

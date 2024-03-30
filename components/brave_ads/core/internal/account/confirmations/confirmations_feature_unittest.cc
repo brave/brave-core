@@ -30,15 +30,15 @@ TEST(BraveAdsConfirmationsFeatureTest, ProcessConfirmationAfter) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kConfirmationsFeature, {{"process_after", "3h"}});
+      kConfirmationsFeature, {{"retry_processing_after", "3h"}});
 
   // Act & Assert
-  EXPECT_EQ(base::Hours(3), kProcessConfirmationAfter.Get());
+  EXPECT_EQ(base::Hours(3), kRetryProcessingConfirmationAfter.Get());
 }
 
 TEST(BraveAdsConfirmationsFeatureTest, DefaultProcessConfirmationAfter) {
   // Act & Assert
-  EXPECT_EQ(base::Seconds(15), kProcessConfirmationAfter.Get());
+  EXPECT_EQ(base::Seconds(15), kRetryProcessingConfirmationAfter.Get());
 }
 
 TEST(BraveAdsConfirmationsFeatureTest,
@@ -47,7 +47,7 @@ TEST(BraveAdsConfirmationsFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
 
   // Act & Assert
-  EXPECT_EQ(base::Seconds(15), kProcessConfirmationAfter.Get());
+  EXPECT_EQ(base::Seconds(15), kRetryProcessingConfirmationAfter.Get());
 }
 
 }  // namespace brave_ads

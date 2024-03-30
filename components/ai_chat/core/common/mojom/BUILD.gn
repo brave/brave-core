@@ -7,9 +7,13 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("mojom") {
   generate_java = true
+  generate_legacy_js_bindings = true
+  webui_module_path = "/"
+
   sources = [
     "ai_chat.mojom",
     "page_content_extractor.mojom",
+    "settings_helper.mojom",
   ]
 
   deps = [

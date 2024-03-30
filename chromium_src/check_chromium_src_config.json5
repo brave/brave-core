@@ -25,6 +25,7 @@
         "chrome/browser/shell_integration_unittest_mac.cc",
         "chrome/browser/signin/account_consistency_disabled_unittest.cc",
         "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view_browsertest.cc",
+        "chrome/browser/ui/webui/help/version_updater_mac.h",
         "chrome/common/chrome_constants_unittest_mac.cc",
         "chrome/installer/mini_installer/brave_mini_installer_unittest.cc",
         "chrome/installer/setup/brave_behaviors.cc",
@@ -39,10 +40,10 @@
         "components/privacy_sandbox/privacy_sandbox_settings_unittest.cc",
         "components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
         "components/search_engines/brave_template_url_service_util_unittest.cc",
+        "components/update_client/brave_persisted_data_unittest.cc",
         "components/variations/service/field_trial_unittest.cc",
         "net/base/brave_proxy_string_util_unittest.cc",
         "net/cookies/brave_canonical_cookie_unittest.cc",
-        "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h",
         "v8/include/DO NOT PUT FILES HERE",
     ],
 
@@ -108,6 +109,9 @@
         ],
         "components/permissions/permission_request_data.h": [
             "BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE",
+        ],
+        "components/qr_code_generator/bitmap_generator.cc": [
+            "UI_GFX_PAINT_VECTOR_ICON_H_",
         ],
         "sandbox/win/src/interceptors_64.h": [
             "TargetGetModuleFileNameExA64",

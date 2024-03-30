@@ -1,18 +1,19 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import XCTest
 import BraveShared
-@testable import CertificateUtilities
+import XCTest
+
 @testable import BraveCore
+@testable import CertificateUtilities
 
 class CertificatePinningTest: XCTestCase {
   // Test whether pinning via Brave-Core works
   // https://github.com/brave/brave-core/blob/master/chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc
   func testBraveCoreLivePinningSuccess() {
     let urls = ["https://brave.com"]
-    
+
     var managers = [URLSession]()
     var expectations = [XCTestExpectation]()
     for host in urls {
@@ -44,12 +45,12 @@ class CertificatePinningTest: XCTestCase {
 
     wait(for: expectations, timeout: 10.0)
   }
-  
+
   // Test whether pinning via Brave-Core works
   // https://github.com/brave/brave-core/blob/master/chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc
   func testBraveCoreLivePinningFailure() {
     let urls = ["https://ssl-pinning.someblog.org"]
-    
+
     var managers = [URLSession]()
     var expectations = [XCTestExpectation]()
     for host in urls {
@@ -83,15 +84,22 @@ class CertificatePinningTest: XCTestCase {
 }
 
 extension CertificatePinningTest: URLSessionDelegate {
-  func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+  func urlSession(
+    _ session: URLSession,
+    didReceive challenge: URLAuthenticationChallenge
+  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
       if let serverTrust = challenge.protectionSpace.serverTrust {
-        let result = BraveCertificateUtility.verifyTrust(serverTrust, host: challenge.protectionSpace.host, port: challenge.protectionSpace.port)
+        let result = BraveCertificateUtility.verifyTrust(
+          serverTrust,
+          host: challenge.protectionSpace.host,
+          port: challenge.protectionSpace.port
+        )
         // Cert is valid and should be pinned
         if result == 0 {
           return (.useCredential, URLCredential(trust: serverTrust))
         }
-        
+
         // Cert is valid and should not be pinned
         // Let the system handle it and we'll show an error if the system cannot validate it
         if result == Int32.min {

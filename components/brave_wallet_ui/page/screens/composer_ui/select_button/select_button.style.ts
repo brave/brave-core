@@ -49,10 +49,13 @@ export const Button = styled(WalletButton)<{
   align-items: center;
   justify-content: center;
   background-color: transparent;
-  border-radius: ${(p) => (p.isNFT ? 8 : 100)}px;
+  border-radius: ${(p) => (p.isNFT ? 8 : 12)}px;
   justify-content: center;
   padding: ${(p) => (p.morePadding ? 10 : 8)}px 12px;
   white-space: nowrap;
+  :disabled {
+    cursor: not-allowed;
+  }
   &:hover {
     background-color: var(--button-background-hover);
   }

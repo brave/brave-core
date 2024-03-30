@@ -31,7 +31,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest, SaveEmpty) {
       callback;
   EXPECT_CALL(callback, Run(/*success=*/true, /*segments=*/::testing::IsEmpty(),
                             /*creative_ads=*/::testing::IsEmpty()));
-  database_table_.GetAll(callback.Get());
+  database_table_.GetForActiveCampaigns(callback.Get());
 }
 
 TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest, Save) {
@@ -48,7 +48,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest, Save) {
   EXPECT_CALL(callback, Run(/*success=*/true,
                             SegmentList{"architecture", "arts & entertainment"},
                             testing::UnorderedElementsAreArray(creative_ads)));
-  database_table_.GetAll(callback.Get());
+  database_table_.GetForActiveCampaigns(callback.Get());
 }
 
 TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest, SaveInBatches) {
@@ -68,7 +68,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest, SaveInBatches) {
                             SegmentList{"architecture", "arts & entertainment",
                                         "automotive"},
                             testing::UnorderedElementsAreArray(creative_ads)));
-  database_table_.GetAll(callback.Get());
+  database_table_.GetForActiveCampaigns(callback.Get());
 }
 
 TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
@@ -86,7 +86,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
       callback;
   EXPECT_CALL(callback,
               Run(/*success=*/true, SegmentList{"architecture"}, creative_ads));
-  database_table_.GetAll(callback.Get());
+  database_table_.GetForActiveCampaigns(callback.Get());
 }
 
 TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest, GetForSegments) {
@@ -256,7 +256,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest, GetNonExpired) {
   EXPECT_CALL(callback,
               Run(/*success=*/true, SegmentList{creative_ad_2.segment},
                   CreativePromotedContentAdList{creative_ad_2}));
-  database_table_.GetAll(callback.Get());
+  database_table_.GetForActiveCampaigns(callback.Get());
 }
 
 TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest, GetTableName) {

@@ -73,17 +73,7 @@ class RewardsBrowserTestContribution : public RewardsServiceObserver {
 
   std::vector<mojom::Result> GetMultipleACStatus();
 
-  void SetUpUpholdWallet(
-      RewardsServiceImpl* rewards_service,
-      const double balance,
-      const mojom::WalletStatus status = mojom::WalletStatus::kConnected);
-
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-  void SetUpGeminiWallet(
-      RewardsServiceImpl* rewards_service,
-      const double balance,
-      const mojom::WalletStatus status = mojom::WalletStatus::kConnected);
-#endif
+  void StartProcessWithBalance(double balance);
 
   std::vector<mojom::Result> GetMultipleTipStatus();
 

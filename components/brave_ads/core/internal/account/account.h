@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards.h"
@@ -55,12 +56,18 @@ class Account final : public AdsClientNotifierObserver,
                const std::string& segment,
                AdType ad_type,
                ConfirmationType confirmation_type) const;
+  void DepositWithUserData(const std::string& creative_instance_id,
+                           const std::string& segment,
+                           AdType ad_type,
+                           ConfirmationType confirmation_type,
+                           base::Value::Dict user_data) const;
 
  private:
   void DepositCallback(const std::string& creative_instance_id,
                        const std::string& segment,
                        AdType ad_type,
                        ConfirmationType confirmation_type,
+                       base::Value::Dict user_data,
                        bool success,
                        double value) const;
 
@@ -68,14 +75,17 @@ class Account final : public AdsClientNotifierObserver,
                       const std::string& segment,
                       double value,
                       AdType ad_type,
-                      ConfirmationType confirmation_type) const;
+                      ConfirmationType confirmation_type,
+                      base::Value::Dict user_data) const;
   void ProcessDepositCallback(const std::string& creative_instance_id,
                               AdType ad_type,
                               ConfirmationType confirmation_type,
+                              base::Value::Dict user_data,
                               bool success,
                               const TransactionInfo& transaction) const;
 
-  void SuccessfullyProcessedDeposit(const TransactionInfo& transaction) const;
+  void SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
+                                    base::Value::Dict user_data) const;
   void FailedToProcessDeposit(const std::string& creative_instance_id,
                               AdType ad_type,
                               ConfirmationType confirmation_type) const;

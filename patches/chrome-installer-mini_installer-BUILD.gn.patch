@@ -1,31 +1,21 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 6a32fb624ea4cd4b262cd7db7d4fba9b7e806536..f2ab3bf0f6dced6c22d916ad30bc816a682530f0 100644
+index b94944f6d55272924a363109bd5507c4628ee399..38dac84718877f8764ac67da34be31542375cdcb 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -115,7 +115,7 @@ group("setup_runtime_deps") {
- 
- packed_files_rc_file = "$target_gen_dir/mini_installer/packed_files.rc"
+@@ -137,7 +137,7 @@ if (enable_uncompressed_archive) {
+       "$target_gen_dir/mini_installer/packed_files_uncompressed.rc"
+ }
  
 -action("mini_installer_archive") {
 +import("//brave/chromium_src/chrome/installer/mini_installer/build.gni") brave_mini_installer_archive_action("mini_installer_archive") {
    script = "//chrome/tools/build/win/create_installer_archive.py"
  
    release_file = "chrome.release"
-@@ -219,7 +219,7 @@ action("mini_installer_archive") {
-   ]
+@@ -312,6 +312,7 @@ template("generate_mini_installer") {
+       no_default_deps = true
+       ldflags += [ "/ENTRY:MainEntryPoint" ]
+     }
++if (defined(invoker.extra_deps)) { deps += invoker.extra_deps } }} generate_mini_installer("delta_installer_unsigned") { rc_file = "$target_gen_dir/packed_delta_files.rc" extra_deps = [ "//brave:delta_installer_archive" ] if (false) {
+   }
  }
  
--executable("mini_installer") {
-+template("mini_installer") { executable(target_name) {
-   sources = [
-     "mini_installer_exe_main.cc",
-     packed_files_rc_file,
-@@ -276,7 +276,7 @@ executable("mini_installer") {
-     no_default_deps = true
-     ldflags += [ "/ENTRY:MainEntryPoint" ]
-   }
--}
-+sources -= [packed_files_rc_file] sources += [invoker.packed_files_rc_file] if (defined(invoker.extra_deps)) { deps += invoker.extra_deps } }} mini_installer("mini_installer") { packed_files_rc_file = packed_files_rc_file } mini_installer("delta_installer_unsigned") { packed_files_rc_file = "$target_gen_dir/packed_delta_files.rc" extra_deps = [ "//brave:delta_installer_archive" ] }
- 
- # previous_version_mini_installer.exe can't be generated in an x86 Debug
- # component build because it requires too much memory.

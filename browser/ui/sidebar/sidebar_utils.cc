@@ -7,14 +7,18 @@
 
 #include <optional>
 
+#include "base/check_is_test.h"
+#include "base/command_line.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/constants.h"
+#include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser.h"
@@ -31,6 +35,7 @@
 namespace sidebar {
 
 using BuiltInItemType = SidebarItem::BuiltInItemType;
+using ShowSidebarOption = SidebarService::ShowSidebarOption;
 
 namespace {
 
@@ -227,6 +232,28 @@ bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
       break;
   }
   return false;
+}
+
+SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
+    version_info::Channel channel) {
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDontShowSidebarOnNonStable) &&
+      channel != version_info::Channel::STABLE) {
+    return ShowSidebarOption::kShowAlways;
+  }
+
+  if (!g_browser_process) {
+    CHECK_IS_TEST();
+    return ShowSidebarOption::kShowAlways;
+  }
+
+  if (auto* local_state = g_browser_process->local_state()) {
+    return local_state->GetBoolean(kTargetUserForSidebarEnabledTest)
+               ? ShowSidebarOption::kShowAlways
+               : ShowSidebarOption::kShowNever;
+  }
+
+  return ShowSidebarOption::kShowNever;
 }
 
 }  // namespace sidebar

@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import WebKit
@@ -35,7 +35,7 @@ enum UserScriptType: Hashable {
     /// These are hide selectors that will get automatically processed when the script loads.
     let styleSelectors: Set<StyleSelectorEntry>
   }
-  
+
   struct EngineScriptConfiguration: Hashable {
     /// on the JS side since we cannot control this on the iOS side
     let frameURL: URL
@@ -48,7 +48,7 @@ enum UserScriptType: Hashable {
     /// We need to pass this setting over to the javascript code
     let isDeAMPEnabled: Bool
   }
-  
+
   /// A script that informs iOS of site state changes
   case siteStateListener
   /// A symple encryption library to be used by other scripts
@@ -92,7 +92,7 @@ extension UserScriptType: CustomDebugStringConvertible {
     case .nacl:
       return "nacl"
     case .gpc(let isEnabled):
-      return "gpc(\(isEnabled)"
+      return "gpc(\(isEnabled))"
     case .siteStateListener:
       return "siteStateListener"
     case .selectorsPoller:

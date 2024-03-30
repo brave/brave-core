@@ -9,22 +9,23 @@ assert(enable_brave_vpn)
 assert(is_mac)
 
 source_set("mac") {
-  visibility = [ "//brave/components/brave_vpn/browser/connection/*" ]
-
   sources = [
-    "brave_vpn_ras_connection_api_mac.h",
-    "brave_vpn_ras_connection_api_mac.mm",
+    "ikev2_connection_api_impl_mac.h",
+    "ikev2_connection_api_impl_mac.mm",
   ]
 
   deps = [
     "//base",
+    "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/browser/connection/ikev2",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
+    "//components/prefs",
     "//net",
     "//services/network/public/cpp",
   ]
+
   frameworks = [
     "NetworkExtension.framework",
     "Foundation.framework",

@@ -1,31 +1,31 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import BraveStrings
 import BraveCore
+import BraveStrings
 import DesignSystem
+import SwiftUI
 
 /// View for showing `SignMessageRequest` for  ethSiweData
 struct SignInWithEthereumView: View {
-  
+
   let account: BraveWallet.AccountInfo
   let originInfo: BraveWallet.OriginInfo
   let message: BraveWallet.SIWEMessage
   var action: (_ approved: Bool) -> Void
-  
+
   @State private var isShowingDetails: Bool = false
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   var body: some View {
     ScrollView {
       VStack(spacing: 10) {
         faviconAndOrigin
-        
+
         messageContainer
-        
+
         buttonsContainer
           .padding(.top)
           .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
@@ -56,7 +56,7 @@ struct SignInWithEthereumView: View {
     .background(Color(braveSystemName: .containerHighlight))
     .navigationTitle(Strings.Wallet.signInWithBraveWallet)
   }
-  
+
   private var faviconAndOrigin: some View {
     VStack(spacing: 8) {
       OriginInfoFavicon(originInfo: originInfo)
@@ -67,7 +67,7 @@ struct SignInWithEthereumView: View {
         .multilineTextAlignment(.center)
     }
   }
-  
+
   private var messageContainer: some View {
     VStack(alignment: .leading, spacing: 10) {
       AddressView(address: account.address) {
@@ -76,13 +76,16 @@ struct SignInWithEthereumView: View {
           name: account.name
         )
       }
-      
+
       // 'You are signing into xyz. Brave Wallet will share your wallet address with xyz.'
-      Text(String.localizedStringWithFormat(
-        Strings.Wallet.signInWithBraveWalletMessage,
-        originInfo.eTldPlusOne, originInfo.eTldPlusOne
-      ))
-      
+      Text(
+        String.localizedStringWithFormat(
+          Strings.Wallet.signInWithBraveWalletMessage,
+          originInfo.eTldPlusOne,
+          originInfo.eTldPlusOne
+        )
+      )
+
       NavigationLink(
         destination: SignInWithEthereumDetailsView(
           originInfo: originInfo,
@@ -94,10 +97,10 @@ struct SignInWithEthereumView: View {
           .foregroundColor(Color(braveSystemName: .textInteractive))
           .contentShape(Rectangle())
       }
-      
+
       if let statement = message.statement, let resources = message.resources {
         Divider()
-        
+
         VStack(alignment: .leading, spacing: 6) {
           Text(Strings.Wallet.siweMessageLabel)
             .font(.headline)
@@ -105,7 +108,7 @@ struct SignInWithEthereumView: View {
             .textSelection(.enabled)
             .font(.subheadline)
         }
-        
+
         VStack(alignment: .leading, spacing: 6) {
           Text(Strings.Wallet.siweResourcesLabel)
             .font(.headline)
@@ -127,7 +130,7 @@ struct SignInWithEthereumView: View {
         .cornerRadius(12)
     )
   }
-  
+
   @ViewBuilder private var buttonsContainer: some View {
     if sizeCategory.isAccessibilityCategory {
       VStack {
@@ -139,17 +142,17 @@ struct SignInWithEthereumView: View {
       }
     }
   }
-  
+
   @ViewBuilder private var buttons: some View {
-    Button(action: { // cancel
+    Button {  // cancel
       action(false)
-    }) {
+    } label: {
       Text(Strings.cancelButtonTitle)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    Button(action: { // approve
+    Button {  // approve
       action(true)
-    }) {
+    } label: {
       Text(Strings.Wallet.siweSignInButtonTitle)
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))
@@ -158,35 +161,53 @@ struct SignInWithEthereumView: View {
 
 /// The view pushed when user taps to view request details.
 private struct SignInWithEthereumDetailsView: View {
-  
+
   let originInfo: BraveWallet.OriginInfo
   let message: BraveWallet.SIWEMessage
-  
+
   var body: some View {
     ScrollView {
       LazyVStack {
         LazyVStack {
-          Group { // Max view count on `LazyVStack`
+          Group {  // Max view count on `LazyVStack`
             detailRow(title: Strings.Wallet.siweOriginLabel, value: Text(originInfo: originInfo))
             Divider()
-            detailRow(title: Strings.Wallet.siweAddressLabel, value: Text(verbatim: message.address))
+            detailRow(
+              title: Strings.Wallet.siweAddressLabel,
+              value: Text(verbatim: message.address)
+            )
             if let statement = message.statement {
               Divider()
               detailRow(title: Strings.Wallet.siweStatementLabel, value: Text(verbatim: statement))
             }
             Divider()
-            detailRow(title: Strings.Wallet.siweURILabel, value: Text(verbatim: message.uri.absoluteString))
+            detailRow(
+              title: Strings.Wallet.siweURILabel,
+              value: Text(verbatim: message.uri.absoluteString)
+            )
           }
-          Group { // Max view count on `LazyVStack`
+          Group {  // Max view count on `LazyVStack`
             Divider()
-            detailRow(title: Strings.Wallet.siweVersionLabel, value: Text(verbatim: "\(message.version)"))
+            detailRow(
+              title: Strings.Wallet.siweVersionLabel,
+              value: Text(verbatim: "\(message.version)")
+            )
             Divider()
-            detailRow(title: Strings.Wallet.siweChainIDLabel, value: Text(verbatim: "\(message.chainId)"))
+            detailRow(
+              title: Strings.Wallet.siweChainIDLabel,
+              value: Text(verbatim: "\(message.chainId)")
+            )
             Divider()
-            detailRow(title: Strings.Wallet.siweIssuedAtLabel, value: Text(verbatim: message.issuedAt))
+            detailRow(
+              title: Strings.Wallet.siweIssuedAtLabel,
+              value: Text(verbatim: message.issuedAt)
+            )
             if let expirationTime = message.expirationTime {
               Divider()
-              detailRow(title: Strings.Wallet.siweExpirationTimeLabel, value: Text(verbatim: expirationTime))
+              detailRow(
+                title: Strings.Wallet.siweExpirationTimeLabel,
+                value: Text(verbatim: expirationTime)
+              )
             }
             Divider()
             detailRow(title: Strings.Wallet.siweNonceLabel, value: Text(verbatim: message.nonce))
@@ -208,11 +229,11 @@ private struct SignInWithEthereumDetailsView: View {
     .navigationBarTitleDisplayMode(.inline)
     .background(Color(braveSystemName: .containerHighlight))
   }
-  
+
   private func detailRow(title: String, value: String) -> some View {
     detailRow(title: title, value: Text(verbatim: value))
   }
-  
+
   private func detailRow(title: String, value: Text) -> some View {
     HStack(spacing: 12) {
       Text(title)

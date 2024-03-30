@@ -14,8 +14,8 @@ class Browser;
 class LocationBarView;
 
 class BraveRoundedOmniboxResultsFrame : public RoundedOmniboxResultsFrame {
+  METADATA_HEADER(BraveRoundedOmniboxResultsFrame, RoundedOmniboxResultsFrame)
  public:
-  METADATA_HEADER(BraveRoundedOmniboxResultsFrame);
   BraveRoundedOmniboxResultsFrame(views::View* contents,
                                   LocationBarView* location_bar);
   ~BraveRoundedOmniboxResultsFrame() override;

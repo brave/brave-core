@@ -60,6 +60,14 @@
                             menu-options="[[cryptocurrency_list_]]">
     </settings-dropdown-menu>
   </div>
+  <div class="settings-box" hidden="[[!isTransactionSimulationsFeatureEnabled]]">
+    <div class="start">$i18nRaw{transactionSimulationDesc}</div>
+      <settings-dropdown-menu id="transactionSimulationOptInStatus"
+        class="narrow-drop-down"
+        pref="{{prefs.brave.wallet.transaction_simulation_opt_in_status}}"
+        menu-options="[[transaction_simulation_opt_in_options_]]">
+    </settings-dropdown-menu>
+  </div>
   <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
     <settings-toggle-button id="enableNftDiscovery"
         class="cr-row"
@@ -67,6 +75,12 @@
         label="$i18n{enableNftDiscoveryLabel}"
         sub-label="$i18n{enableNftDiscoveryDesc}"
         learn-more-url="$i18n{enableNftDiscoveryLearnMoreURL}">
+    </settings-toggle-button>
+    <settings-toggle-button id="enablePrivateWindows"
+        class="cr-row"
+        pref="{{prefs.brave.wallet.private_windows_enabled}}"
+        label="$i18n{enablePrivateWindowsLabel}"
+        sub-label="$i18n{enablePrivateWindowsDesc}">
     </settings-toggle-button>
   </template>
   <div class="settings-box" hidden="[[!isNativeWalletEnabled_]]">

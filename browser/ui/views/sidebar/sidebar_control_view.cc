@@ -173,8 +173,7 @@ void SidebarControlView::AddChildViews() {
       AddChildView(std::make_unique<SidebarItemsScrollView>(browser_));
   sidebar_items_view_->SetProperty(
       views::kFlexBehaviorKey,
-      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
-                               views::MaximumFlexSizeRule::kUnbounded)
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero)
           .WithOrder(2));
   sidebar_item_add_view_ = AddChildView(std::make_unique<SidebarItemAddButton>(
       browser_, brave_l10n::GetLocalizedResourceUTF16String(
@@ -270,5 +269,5 @@ void SidebarControlView::SetSidebarOnLeft(bool sidebar_on_left) {
   UpdateBackgroundAndBorder();
 }
 
-BEGIN_METADATA(SidebarControlView, views::View)
+BEGIN_METADATA(SidebarControlView)
 END_METADATA

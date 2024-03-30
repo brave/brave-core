@@ -12,8 +12,8 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -152,6 +152,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[omnibox::kBookmarkSuggestionsEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[omnibox::kCommanderSuggestionsEnabled] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kAskEnableWidvine] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageSuperReferralThemesOption] =
       settings_api::PrefType::kNumber;
@@ -256,7 +258,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kBraveWalletAutoLockMinutes] =
       settings_api::PrefType::kNumber;
+  (*s_brave_allowlist)[kBraveWalletTransactionSimulationOptInStatus] =
+      settings_api::PrefType::kNumber;
   (*s_brave_allowlist)[kBraveWalletNftDiscoveryEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBraveWalletPrivateWindowsEnabled] =
       settings_api::PrefType::kBoolean;
 
   // IPFS pref
@@ -293,8 +299,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[omnibox::kPreventUrlElisionsInOmnibox] =
       settings_api::PrefType::kBoolean;
 #if BUILDFLAG(ENABLE_TOR)
-  (*s_brave_allowlist)[tor::prefs::kAutoOnionRedirect] =
-      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[tor::prefs::kOnionOnlyInTorWindows] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[tor::prefs::kBridgesConfig] =

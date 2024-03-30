@@ -1,9 +1,9 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
 import Shared
+import UIKit
 
 @available(iOS, obsoleted: 16.0, message: "Replaced by UIFindInteraction")
 protocol FindInPageBarDelegate: AnyObject {
@@ -84,21 +84,30 @@ class FindInPageBar: UIView {
     matchCountView.accessibilityIdentifier = "FindInPage.matchCount"
     addSubview(matchCountView)
 
-    previousButton.setImage(UIImage(named: "find_previous", in: .module, compatibleWith: nil)!.template, for: [])
+    previousButton.setImage(
+      UIImage(named: "find_previous", in: .module, compatibleWith: nil)!.template,
+      for: []
+    )
     previousButton.setTitleColor(.braveLabel, for: [])
     previousButton.accessibilityLabel = Strings.findInPagePreviousResultButtonAccessibilityLabel
     previousButton.addTarget(self, action: #selector(didFindPrevious), for: .touchUpInside)
     previousButton.accessibilityIdentifier = "FindInPage.find_previous"
     addSubview(previousButton)
 
-    nextButton.setImage(UIImage(named: "find_next", in: .module, compatibleWith: nil)!.template, for: [])
+    nextButton.setImage(
+      UIImage(named: "find_next", in: .module, compatibleWith: nil)!.template,
+      for: []
+    )
     nextButton.setTitleColor(.braveLabel, for: [])
     nextButton.accessibilityLabel = Strings.findInPageNextResultButtonAccessibilityLabel
     nextButton.addTarget(self, action: #selector(didFindNext), for: .touchUpInside)
     nextButton.accessibilityIdentifier = "FindInPage.find_next"
     addSubview(nextButton)
 
-    closeButton.setImage(UIImage(named: "find_close", in: .module, compatibleWith: nil)!.template, for: [])
+    closeButton.setImage(
+      UIImage(named: "find_close", in: .module, compatibleWith: nil)!.template,
+      for: []
+    )
     closeButton.setTitleColor(.braveLabel, for: [])
     closeButton.accessibilityLabel = Strings.findInPageDoneButtonAccessibilityLabel
     closeButton.addTarget(self, action: #selector(didPressClose), for: .touchUpInside)
@@ -110,7 +119,9 @@ class FindInPageBar: UIView {
     addSubview(topBorder)
 
     searchText.snp.makeConstraints { make in
-      make.leading.top.bottom.equalTo(self).inset(UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0))
+      make.leading.top.bottom.equalTo(self).inset(
+        UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+      )
     }
     searchText.setContentHuggingPriority(.defaultLow, for: .horizontal)
     searchText.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)

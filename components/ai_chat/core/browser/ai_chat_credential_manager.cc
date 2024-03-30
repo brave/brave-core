@@ -324,8 +324,7 @@ void AIChatCredentialManager::CreateOrderFromReceipt(
   std::string request_json;
   base::JSONWriter::Write(request, &request_json);
 
-  std::string encoded_request_json;
-  base::Base64Encode(request_json, &encoded_request_json);
+  std::string encoded_request_json = base::Base64Encode(request_json);
   skus_service_->CreateOrderFromReceipt(leo_sku_domain, encoded_request_json,
                                         std::move(callback));
 }

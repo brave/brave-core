@@ -19,7 +19,7 @@ using SearchPublisherPrefixListCallback = base::OnceCallback<void(bool)>;
 
 class DatabasePublisherPrefixList : public DatabaseTable {
  public:
-  explicit DatabasePublisherPrefixList(RewardsEngineImpl& engine);
+  explicit DatabasePublisherPrefixList(RewardsEngine& engine);
   ~DatabasePublisherPrefixList() override;
 
   void Reset(publisher::PrefixListReader reader, ResultCallback callback);

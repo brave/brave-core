@@ -5,20 +5,20 @@
 
 #include "src/third_party/blink/renderer/modules/storage/storage_area.cc"
 
+#include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
+
 namespace blink {
 
-PageGraphBlinkReceiverData ToPageGraphBlinkReceiverData(
-    StorageArea* storage_area) {
+PageGraphObject ToPageGraphObject(StorageArea* storage_area) {
   DCHECK(storage_area);
   switch (storage_area->storage_type()) {
-    case StorageArea::StorageType::kLocalStorage:
-      return {
-          {"storage_type", "localStorage"},
-      };
-    case StorageArea::StorageType::kSessionStorage:
-      return {
-          {"storage_type", "sessionStorage"},
-      };
+    case StorageArea::StorageType::kLocalStorage: {
+      return PageGraphObject().Set("storage_type", base::Value("localStorage"));
+    }
+    case StorageArea::StorageType::kSessionStorage: {
+      return PageGraphObject().Set("storage_type",
+                                   base::Value("sessionStorage"));
+    }
   }
 }
 

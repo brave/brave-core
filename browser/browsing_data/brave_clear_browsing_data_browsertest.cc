@@ -118,10 +118,10 @@ class BraveClearDataOnExitTest
 
     // Run the application event loop to completion, which will cycle the
     // native MessagePump on all platforms.
+    base::RunLoop run_loop;
     base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::RunLoop::QuitCurrentWhenIdleClosureDeprecated());
-
-    base::RunLoop().Run();
+        FROM_HERE, run_loop.QuitWhenIdleClosure());
+    run_loop.Run();
 
     // Take care of any remaining message loop work.
     content::RunAllPendingInMessageLoop();

@@ -34,7 +34,7 @@ std::string GetEventTypeAsString(
 TEST(BraveAdsNotificationAdEventPredictorVariableTest, GetDataType) {
   // Arrange
   const NotificationAdEventPredictorVariable predictor_variable(
-      mojom::NotificationAdEventType::kViewed);
+      mojom::NotificationAdEventType::kViewedImpression);
 
   // Act & Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kString,

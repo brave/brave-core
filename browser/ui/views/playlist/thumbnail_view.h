@@ -10,8 +10,8 @@
 #include "ui/views/controls/image_view.h"
 
 class ThumbnailView : public views::ImageView {
+  METADATA_HEADER(ThumbnailView, views::ImageView)
  public:
-  METADATA_HEADER(ThumbnailView);
 
   explicit ThumbnailView(const gfx::Image& thumbnail);
   ~ThumbnailView() override;

@@ -129,6 +129,32 @@ bool SpeedreaderService::IsEnabledForSite(content::WebContents* contents) {
   return IsEnabledForSite(contents->GetLastCommittedURL());
 }
 
+bool SpeedreaderService::IsExplicitlyEnabledForSite(const GURL& url) {
+  const auto setting = GetEnabledForSiteSetting(url);
+  return setting == CONTENT_SETTING_ALLOW;
+}
+
+bool SpeedreaderService::IsExplicitlyEnabledForSite(
+    content::WebContents* contents) {
+  if (!contents) {
+    return false;
+  }
+  return IsExplicitlyEnabledForSite(contents->GetLastCommittedURL());
+}
+
+bool SpeedreaderService::IsExplicitlyDisabledForSite(const GURL& url) {
+  const auto setting = GetEnabledForSiteSetting(url);
+  return setting == CONTENT_SETTING_BLOCK;
+}
+
+bool SpeedreaderService::IsExplicitlyDisabledForSite(
+    content::WebContents* contents) {
+  if (!contents) {
+    return false;
+  }
+  return IsExplicitlyDisabledForSite(contents->GetLastCommittedURL());
+}
+
 void SpeedreaderService::EnableForAllSites(bool enabled) {
   if (IsEnabledForAllSites() == enabled) {
     return;

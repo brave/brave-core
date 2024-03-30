@@ -28,9 +28,13 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
     prune_paths.update([
         # Formerly external Brave code which has moved to brave-core
         # (i.e these are already covered by the Brave Browser license notice).
-        os.path.join('brave', 'third_party', 'challenge_bypass_ristretto_ffi'),
         os.path.join('brave', 'vendor', 'brave-ios'),
         os.path.join('brave', 'vendor', 'brave_base'),
+
+        # These have auto-generated license files and
+        # GetThirdPartyDepsFromGNDepsOutput causes strange license errors
+        # unless the this entire directory is excluded.
+        os.path.join('brave', 'third_party', 'rust'),
 
         # No third-party code directly under android_deps. It's all under
         # android_deps/libs instead and it's special-cased further down.

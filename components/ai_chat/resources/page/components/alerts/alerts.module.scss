@@ -6,3 +6,38 @@
     }
   }
 }
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.info {
+  display: flex;
+  gap: 8px;
+  color: var(--leo-color-text-secondary);
+  padding-top: 16px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.infoIcon {
+  --leo-icon-size: 16px;
+}
+
+.infoText {
+  font: var(--leo-font-small-regular);
+
+  leo-button {
+    padding-left: 5px;
+  }
+}
+
+.link {
+  --leo-button-padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+
+  span {
+    font: var(--leo-font-small-regular);
+  }
+}

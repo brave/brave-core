@@ -1,6 +1,11 @@
-# Copyright 2023 The Chromium Authors
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
 
 import("//build/rust/cargo_crate.gni")
 
@@ -8,21 +13,15 @@ cargo_crate("lib") {
   crate_name = "thread_local"
   epoch = "1"
   crate_type = "rlib"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/thread_local-1.1.7/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/thread_local/v1/crate/benches/thread_local.rs",
-    "//brave/third_party/rust/thread_local/v1/crate/src/cached.rs",
-    "//brave/third_party/rust/thread_local/v1/crate/src/lib.rs",
-    "//brave/third_party/rust/thread_local/v1/crate/src/thread_id.rs",
-    "//brave/third_party/rust/thread_local/v1/crate/src/unreachable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thread_local-1.1.7/src/cached.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thread_local-1.1.7/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thread_local-1.1.7/src/thread_id.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thread_local-1.1.7/src/unreachable.rs",
   ]
-  inputs = [ "//brave/third_party/rust/thread_local/v1/crate/README.md" ]
+  inputs = []
 
-  # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2021"
   cargo_pkg_version = "1.1.7"
@@ -33,8 +32,10 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
+    "//brave/third_party/rust/cfg_if/v1:lib",
     "//brave/third_party/rust/once_cell/v1:lib",
-    "//third_party/rust/cfg_if/v1:lib",
   ]
 }

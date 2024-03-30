@@ -266,11 +266,10 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     std::string payload;
     base::JSONWriter::Write(payload_value, &payload);
     base::flat_map<std::string, std::string> request_headers;
-    std::string base64_credentials;
     std::string credentials = base::StringPrintf(
         "%s:%s", sardine_client_id.c_str(),  // username:password
         sardine_client_secret.c_str());
-    base::Base64Encode(credentials, &base64_credentials);
+    std::string base64_credentials = base::Base64Encode(credentials);
     std::string header =
         base::StringPrintf("Basic %s", base64_credentials.c_str());
     request_headers["Authorization"] = std::move(header);

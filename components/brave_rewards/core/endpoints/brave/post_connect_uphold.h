@@ -44,13 +44,13 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
 class PostConnectUphold final : public PostConnect {
  public:
-  PostConnectUphold(RewardsEngineImpl& engine, std::string&& address);
+  PostConnectUphold(RewardsEngine& engine, std::string&& address);
   ~PostConnectUphold() override;
 
  private:

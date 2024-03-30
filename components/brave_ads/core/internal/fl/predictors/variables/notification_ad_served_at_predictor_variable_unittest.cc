@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -28,7 +29,7 @@ TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest, GetDataType) {
 
 TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest, GetValue) {
   // Arrange
-  const base::Time now = TimeFromString("August 19 2019", /*is_local=*/false);
+  const base::Time now = TimeFromUTCString("August 19 2019");
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<NotificationAdServedAtPredictorVariable>(now);
 

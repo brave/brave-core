@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
@@ -14,7 +14,8 @@ extension UIAction {
   ///   1. See a change that happens based on their selection
   ///   2. Ensure that if the view which has shown the context menu were to be removed from the view
   ///      heirarchy as a result of the action, that the context menu does not crash on dismissal.
-  public static func deferredActionHandler(_ handler: @escaping UIActionHandler) -> UIActionHandler {
+  public static func deferredActionHandler(_ handler: @escaping UIActionHandler) -> UIActionHandler
+  {
     return { action in
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
         handler(action)

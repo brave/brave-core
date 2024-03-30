@@ -1,12 +1,12 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Shared
-import BraveUI
 import BraveStrings
+import BraveUI
+import Shared
+import SwiftUI
 
 public struct OnboardingBottomBarView: View {
   public var dismiss: (() -> Void)?
@@ -15,7 +15,7 @@ public struct OnboardingBottomBarView: View {
   public init() {}
 
   public var body: some View {
-    VStack() {
+    VStack {
       Button {
         dismiss?()
       } label: {
@@ -38,9 +38,9 @@ public struct OnboardingBottomBarView: View {
           .padding(.horizontal, 16)
       }
       .padding(.bottom, 16)
-      Button(action: {
+      Button {
         switchBottomBar?()
-      }) {
+      } label: {
         Text(Strings.Callout.bottomBarCalloutButtonTitle)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .font(.title3.weight(.medium))
@@ -51,9 +51,9 @@ public struct OnboardingBottomBarView: View {
       .accentColor(Color(.white))
       .clipShape(Capsule())
       .padding(.horizontal, 16)
-      Button(action: {
+      Button {
         dismiss?()
-      }) {
+      } label: {
         Text(Strings.Callout.bottomBarCalloutDismissButtonTitle)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .font(.title3.weight(.medium))

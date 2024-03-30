@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <sstream>
+#include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -14,6 +15,8 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/single_thread_task_runner.h"
@@ -37,6 +40,7 @@
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "ui/accessibility/ax_node.h"
 #include "ui/accessibility/ax_tree_manager.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 #include "brave/components/text_recognition/browser/text_recognition.h"
@@ -61,15 +65,15 @@ constexpr auto kVideoPageContentTypes =
         {ai_chat::mojom::PageContentType::VideoTranscriptYouTube,
          ai_chat::mojom::PageContentType::VideoTranscriptVTT});
 
-net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
+net::NetworkTrafficAnnotationTag GetVideoNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("ai_chat_video", R"(
       semantics {
         sender: "AI Chat"
         description:
           "This is used to fetch video transcript"
           "on behalf of the user interacting with the ChatUI."
         trigger:
-          "Triggered by user asking for a summary."
+          "Triggered by user communicating with Leo"
         data:
           "Provided by the website that contains the video"
         destination: WEBSITE
@@ -82,13 +86,35 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
+net::NetworkTrafficAnnotationTag GetGithubNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("ai_chat_github", R"(
+      semantics {
+        sender: "AI Chat"
+        description:
+          "This is used to fetch github pull request patch files "
+          "on behalf of the user when interacting with Leo on github."
+        trigger:
+          "Triggered by user communicating with Leo on github.com"
+        data:
+          "Provided by github"
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: YES
+        policy_exception_justification: "Cookies necessary for private repos."
+      }
+    )");
+}
+
 class PageContentFetcher {
  public:
+  explicit PageContentFetcher(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+      : url_loader_factory_(url_loader_factory) {}
+
   void Start(mojo::Remote<mojom::PageContentExtractor> content_extractor,
              std::string_view invalidation_token,
-             scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
              FetchPageContentCallback callback) {
-    url_loader_factory_ = url_loader_factory;
     content_extractor_ = std::move(content_extractor);
     if (!content_extractor_) {
       DeleteSelf();
@@ -103,15 +129,28 @@ class PageContentFetcher {
         std::move(callback), invalidation_token));
   }
 
- private:
-  void DeleteSelf() { delete this; }
-
-  void SendResultAndDeleteSelf(FetchPageContentCallback callback,
-                               std::string content = "",
-                               std::string invalidation_token = "",
-                               bool is_video = false) {
-    std::move(callback).Run(content, is_video, invalidation_token);
-    delete this;
+  void StartGithub(
+      GURL patch_url,
+      FetchPageContentCallback callback) {
+    auto request = std::make_unique<network::ResourceRequest>();
+    request->url = patch_url;
+    request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
+    request->credentials_mode = network::mojom::CredentialsMode::kInclude;
+    request->site_for_cookies =
+        net::SiteForCookies::FromOrigin(url::Origin::Create(patch_url));
+    request->method = net::HttpRequestHeaders::kGetMethod;
+    auto loader = network::SimpleURLLoader::Create(
+        std::move(request), GetGithubNetworkTrafficAnnotationTag());
+    loader->SetRetryOptions(
+        1, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
+               network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
+    loader->SetAllowHttpErrorResults(true);
+    auto* loader_ptr = loader.get();
+    auto on_response = base::BindOnce(&PageContentFetcher::OnPatchFetchResponse,
+                                      weak_ptr_factory_.GetWeakPtr(),
+                                      std::move(callback), std::move(loader));
+    loader_ptr->DownloadToString(url_loader_factory_.get(),
+                                 std::move(on_response), 2 * 1024 * 1024);
   }
 
   void OnTabContentResult(FetchPageContentCallback callback,
@@ -160,7 +199,7 @@ class PageContentFetcher {
     request->credentials_mode = network::mojom::CredentialsMode::kOmit;
     request->method = net::HttpRequestHeaders::kGetMethod;
     auto loader = network::SimpleURLLoader::Create(
-        std::move(request), GetNetworkTrafficAnnotationTag());
+        std::move(request), GetVideoNetworkTrafficAnnotationTag());
     loader->SetRetryOptions(
         1, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
                network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
@@ -174,6 +213,17 @@ class PageContentFetcher {
                        std::move(loader), is_youtube, new_invalidation_token);
     loader_ptr->DownloadToString(url_loader_factory_.get(),
                                  std::move(on_response), 2 * 1024 * 1024);
+  }
+
+ private:
+  void DeleteSelf() { delete this; }
+
+  void SendResultAndDeleteSelf(FetchPageContentCallback callback,
+                               std::string content = "",
+                               std::string invalidation_token = "",
+                               bool is_video = false) {
+    std::move(callback).Run(content, is_video, invalidation_token);
+    delete this;
   }
 
   void OnYoutubeTranscriptXMLParsed(
@@ -192,7 +242,8 @@ class PageContentFetcher {
     //   see in a moment. And this  </text>
     // </transcript>
 
-    if (!data_decoder::IsXmlElementNamed(result.value(), "transcript")) {
+    if (!result.has_value() ||
+        !data_decoder::IsXmlElementNamed(result.value(), "transcript")) {
       VLOG(1) << "Could not find transcript element.";
       return;
     }
@@ -266,7 +317,31 @@ class PageContentFetcher {
                             invalidation_token, true);
   }
 
+  void OnPatchFetchResponse(FetchPageContentCallback callback,
+                            std::unique_ptr<network::SimpleURLLoader> loader,
+                            std::unique_ptr<std::string> response_body) {
+    auto response_code = -1;
+    base::flat_map<std::string, std::string> headers;
+    if (loader->ResponseInfo()) {
+      auto headers_list = loader->ResponseInfo()->headers;
+      if (headers_list) {
+        response_code = headers_list->response_code();
+      }
+    }
+    bool is_ok =
+        loader->NetError() == net::OK && response_body && response_code == 200;
+
+    std::string patch_content = is_ok ? *response_body : "";
+    if (!is_ok || patch_content.empty()) {
+      DVLOG(1) << __func__ << " invalid patch response from url: "
+               << loader->GetFinalURL().spec() << " status: " << response_code;
+    }
+    DVLOG(2) << "Got patch: " << patch_content;
+    SendResultAndDeleteSelf(std::move(callback), patch_content, "", false);
+  }
+
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+
   mojo::Remote<mojom::PageContentExtractor> content_extractor_;
   base::WeakPtrFactory<PageContentFetcher> weak_ptr_factory_{this};
 };
@@ -329,11 +404,50 @@ ui::AXNode* FindPdfRoot(const ui::AXNode* start_node) {
   return nullptr;
 }
 
+std::string ExtractPdfContent(const ui::AXNode* pdf_root) {
+  // Skip status subtree and get text from region siblings
+  if (!pdf_root || pdf_root->GetChildCount() < 2 ||
+      pdf_root->GetChildAtIndex(0)->GetRole() != ax::mojom::Role::kBanner) {
+    return std::string();
+  }
+  std::string pdf_content;
+  const auto& children = pdf_root->GetAllChildren();
+  for (auto it = children.cbegin() + 1; it != children.cend(); ++it) {
+    const ui::AXNode* node = *it;
+    if (node->GetRole() == ax::mojom::Role::kRegion) {
+      base::StrAppend(&pdf_content, {node->GetTextContentUTF8(),
+                                     it == children.cend() - 1 ? "" : "\n"});
+    }
+  }
+  return pdf_content;
+}
+
+// Obtains a patch URL from a pull request URL
+std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
+  if (!url.is_valid() || url.scheme() != "https" ||
+      url.host() != "github.com") {
+    return std::nullopt;
+  }
+
+  std::vector<std::string> path_parts = base::SplitString(
+      url.path(), "/", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  // Only handle URLs of the form: /<user>/<repo>/pull/<number>
+  if (path_parts.size() < 4 || path_parts[2] != "pull") {
+    return std::nullopt;
+  }
+  std::string patch_url_str = url.GetWithEmptyPath().spec() + path_parts[0] +
+                              "/" + path_parts[1] + "/pull/" + path_parts[3] +
+                              ".patch";
+  return GURL(patch_url_str);
+}
+
 }  // namespace
 
 void FetchPageContent(content::WebContents* web_contents,
                       std::string_view invalidation_token,
-                      FetchPageContentCallback callback) {
+                      FetchPageContentCallback callback,
+                      scoped_refptr<network::SharedURLLoaderFactory>
+                          url_loader_factory_for_test) {
   VLOG(2) << __func__ << " Extracting page content from renderer...";
 
   auto* primary_rfh = web_contents->GetPrimaryMainFrame();
@@ -348,40 +462,32 @@ void FetchPageContent(content::WebContents* web_contents,
   }
 
   if (web_contents->GetContentsMimeType() == "application/pdf") {
-    ui::AXTreeID ax_tree_id;
+    ui::AXTreeManager* ax_tree_manager = nullptr;
     // FindPdfChildFrame
     primary_rfh->ForEachRenderFrameHost(
-        [&ax_tree_id](content::RenderFrameHost* rfh) {
+        [&ax_tree_manager](content::RenderFrameHost* rfh) {
           if (!rfh->GetProcess()->IsPdf()) {
             return;
           }
-          ax_tree_id = rfh->GetAXTreeID();
-        });
-    if (ax_tree_id.type() != ax::mojom::AXTreeIDType::kUnknown) {
-      auto* ax_tree_manager = ui::AXTreeManager::FromID(ax_tree_id);
-      if (ax_tree_manager) {
-        auto* pdf_root = FindPdfRoot(ax_tree_manager->GetRoot());
-        // Skip status subtree and get text from region sibling
-        if (pdf_root && pdf_root->GetChildCount() == 2 &&
-            pdf_root->GetChildAtIndex(0)->GetRole() ==
-                ax::mojom::Role::kBanner &&
-            pdf_root->GetChildAtIndex(1)->GetRole() ==
-                ax::mojom::Role::kRegion) {
-          auto pdf_content = pdf_root->GetChildAtIndex(1)->GetTextContentUTF8();
-          if (!pdf_content.empty()) {
-            std::move(callback).Run(pdf_content, false, "");
+          ui::AXTreeID ax_tree_id = rfh->GetAXTreeID();
+          if (ax_tree_id.type() == ax::mojom::AXTreeIDType::kUnknown) {
             return;
           }
-        }
-      }
+          ax_tree_manager = ui::AXTreeManager::FromID(ax_tree_id);
+        });
+    std::string pdf_content;
+    if (ax_tree_manager) {
+      pdf_content = ExtractPdfContent(FindPdfRoot(ax_tree_manager->GetRoot()));
     }
+
     // No need to proceed renderer content fetching because we won't get any.
-    std::move(callback).Run("", false, "");
+    std::move(callback).Run(pdf_content, false, "");
     return;
   }
 
+  auto url = web_contents->GetLastCommittedURL();
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-  auto host = web_contents->GetURL().host();
+  auto host = url.host();
   if (base::Contains(kScreenshotRetrievalHosts, host)) {
     content::RenderWidgetHostView* view =
         web_contents->GetRenderWidgetHostView();
@@ -394,20 +500,24 @@ void FetchPageContent(content::WebContents* web_contents,
     }
   }
 #endif
+  auto* loader = url_loader_factory_for_test.get()
+                     ? url_loader_factory_for_test.get()
+                     : web_contents->GetBrowserContext()
+                           ->GetDefaultStoragePartition()
+                           ->GetURLLoaderFactoryForBrowserProcess()
+                           .get();
+  auto* fetcher = new PageContentFetcher(loader);
+  auto patch_url = GetGithubPatchURLForPRURL(url);
+  if (patch_url) {
+    fetcher->StartGithub(patch_url.value(), std::move(callback));
+    return;
+  }
 
   mojo::Remote<mojom::PageContentExtractor> extractor;
-
   // GetRemoteInterfaces() cannot be null if the render frame is created.
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-
-  auto* fetcher = new PageContentFetcher();
-  auto* loader = web_contents->GetBrowserContext()
-                     ->GetDefaultStoragePartition()
-                     ->GetURLLoaderFactoryForBrowserProcess()
-                     .get();
-  fetcher->Start(std::move(extractor), invalidation_token, loader,
-                 std::move(callback));
+  fetcher->Start(std::move(extractor), invalidation_token, std::move(callback));
 }
 
 }  // namespace ai_chat

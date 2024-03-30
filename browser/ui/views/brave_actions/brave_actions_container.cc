@@ -100,7 +100,7 @@ void BraveActionsContainer::Update() {
   }
 
   UpdateVisibility();
-  Layout();
+  DeprecatedLayoutImmediately();
 }
 
 void BraveActionsContainer::UpdateVisibility() {

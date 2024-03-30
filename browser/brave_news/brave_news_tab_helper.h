@@ -14,6 +14,7 @@
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -25,7 +26,7 @@ class RenderFrameHost;
 class BraveNewsTabHelper
     : public content::WebContentsUserData<BraveNewsTabHelper>,
       public content::WebContentsObserver,
-      public brave_news::PublishersController::Observer {
+      public brave_news::BraveNewsPrefManager::PrefObserver {
  public:
   struct FeedDetails {
     GURL feed_url;
@@ -68,14 +69,14 @@ class BraveNewsTabHelper
   void PrimaryPageChanged(content::Page& page) override;
   void DOMContentLoaded(content::RenderFrameHost* rfh) override;
 
-  // brave_news::PublisherController::Observer:
-  void OnPublishersUpdated(
-      brave_news::PublishersController* controller) override;
+  // brave_news::BraveNewsPrefManager::PrefObserver:
+  void OnPublishersChanged() override;
 
  private:
   explicit BraveNewsTabHelper(content::WebContents* contents);
 
   bool ShouldFindFeeds();
+  void OnReceivedNewPublishers(brave_news::Publishers publishers);
   void AvailableFeedsChanged();
 
   raw_ptr<brave_news::BraveNewsController> controller_;
@@ -83,9 +84,9 @@ class BraveNewsTabHelper
   std::vector<FeedDetails> rss_page_feeds_;
   base::ObserverList<PageFeedsObserver> observers_;
 
-  base::ScopedObservation<brave_news::PublishersController,
-                          brave_news::PublishersController::Observer>
-      publishers_observation_{this};
+  base::ScopedObservation<brave_news::BraveNewsPrefManager,
+                          brave_news::BraveNewsPrefManager::PrefObserver>
+      pref_observation_{this};
 
   base::WeakPtrFactory<BraveNewsTabHelper> weak_ptr_factory_{this};
 

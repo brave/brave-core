@@ -8,9 +8,9 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_shields/browser/ad_block_component_installer.h"
-#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
-#include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
+#include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry+private.h"
 #include "components/component_updater/component_updater_service.h"
 
@@ -27,15 +27,6 @@
     _cus = componentUpdaterService;
   }
   return self;
-}
-
-- (void)registerDefaultComponent:
-    (void (^)(NSString* _Nullable installPath))componentReady {
-  brave_shields::RegisterAdBlockDefaultComponent(
-      _cus, base::BindRepeating(^(const base::FilePath& install_path) {
-        const auto installPath = base::SysUTF8ToNSString(install_path.value());
-        componentReady(installPath);
-      }));
 }
 
 - (void)registerResourceComponent:
@@ -56,7 +47,7 @@
         base::ThreadPool::PostTaskAndReplyWithResult(
             FROM_HERE, {base::MayBlock()},
             base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                           install_path.AppendASCII("regional_catalog.json")),
+                           install_path.AppendASCII("list_catalog.json")),
             base::BindOnce(^(const std::string& json) {
               // Parse data
               auto catalog = brave_shields::FilterListCatalogFromJSON(json);

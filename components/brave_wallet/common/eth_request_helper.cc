@@ -555,7 +555,7 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   return true;
 }
 
-bool ParseEthDecryptData(const std::string& json,
+bool ParseEthDecryptData(const base::Value& obj,
                          std::string* version,
                          std::vector<uint8_t>* nonce,
                          std::vector<uint8_t>* ephemeral_public_key,
@@ -566,12 +566,7 @@ bool ParseEthDecryptData(const std::string& json,
   //   "ephemPublicKey": "base64-string",
   //   "ciphertext":"base64-string"
   // }
-  auto obj = base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                              base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!obj) {
-    return false;
-  }
-  auto* dict = obj->GetIfDict();
+  auto* dict = obj.GetIfDict();
   if (!dict) {
     return false;
   }

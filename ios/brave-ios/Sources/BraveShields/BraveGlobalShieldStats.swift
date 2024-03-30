@@ -1,11 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Strings
 import Combine
+import Foundation
 import Preferences
+import Strings
 
 open class BraveGlobalShieldStats {
   public static let shared = BraveGlobalShieldStats()
@@ -54,7 +54,10 @@ open class BraveGlobalShieldStats {
   }
 
   private func postUpdateNotification() {
-    NotificationCenter.default.post(name: Notification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification), object: nil)
+    NotificationCenter.default.post(
+      name: Notification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification),
+      object: nil
+    )
   }
 
   fileprivate init() {
@@ -70,38 +73,39 @@ open class BraveGlobalShieldStats {
   public let averageBytesSavedPerItem = 30485
 
   public var timeSaved: String {
-    get {
-      let estimatedMillisecondsSaved = (adblock + trackingProtection) * millisecondsPerItem
-      let hours = estimatedMillisecondsSaved < 1000 * 60 * 60 * 24
-      let minutes = estimatedMillisecondsSaved < 1000 * 60 * 60
-      let seconds = estimatedMillisecondsSaved < 1000 * 60
-      var counter: Double = 0
-      var text = ""
+    let estimatedMillisecondsSaved = (adblock + trackingProtection) * millisecondsPerItem
+    let hours = estimatedMillisecondsSaved < 1000 * 60 * 60 * 24
+    let minutes = estimatedMillisecondsSaved < 1000 * 60 * 60
+    let seconds = estimatedMillisecondsSaved < 1000 * 60
+    var counter: Double = 0
+    var text = ""
 
-      if seconds {
-        counter = ceil(Double(estimatedMillisecondsSaved / 1000))
-        text = Strings.Shields.shieldsTimeStatsSeconds
-      } else if minutes {
-        counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60))
-        text = Strings.Shields.shieldsTimeStatsMinutes
-      } else if hours {
-        counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60 / 60))
-        text = Strings.Shields.shieldsTimeStatsHour
-      } else {
-        counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60 / 60 / 24))
-        text = Strings.Shields.shieldsTimeStatsDays
-      }
+    if seconds {
+      counter = ceil(Double(estimatedMillisecondsSaved / 1000))
+      text = Strings.Shields.shieldsTimeStatsSeconds
+    } else if minutes {
+      counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60))
+      text = Strings.Shields.shieldsTimeStatsMinutes
+    } else if hours {
+      counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60 / 60))
+      text = Strings.Shields.shieldsTimeStatsHour
+    } else {
+      counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60 / 60 / 24))
+      text = Strings.Shields.shieldsTimeStatsDays
+    }
 
-      if let counterLocaleStr = Int(counter).decimalFormattedString {
-        return counterLocaleStr + text
-      } else {
-        return "0" + Strings.Shields.shieldsTimeStatsSeconds  // If decimalFormattedString returns nil, default to "0s"
-      }
+    if let counterLocaleStr = Int(counter).decimalFormattedString {
+      return counterLocaleStr + text
+    } else {
+      // If decimalFormattedString returns nil, default to "0s"
+      return "0" + Strings.Shields.shieldsTimeStatsSeconds
     }
   }
 
   public var dataSaved: String {
-    var estimatedDataSavedInBytes = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection) * averageBytesSavedPerItem
+    var estimatedDataSavedInBytes =
+      (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection)
+      * averageBytesSavedPerItem
 
     if estimatedDataSavedInBytes <= 0 { return "0" }
     let _1MB = 1000 * 1000
@@ -122,8 +126,8 @@ open class BraveGlobalShieldStats {
   }
 }
 
-private extension Int {
-  var decimalFormattedString: String? {
+extension Int {
+  fileprivate var decimalFormattedString: String? {
     let numberFormatter = NumberFormatter()
     numberFormatter.numberStyle = NumberFormatter.Style.decimal
     numberFormatter.locale = NSLocale.current

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bubble/webui_bubble_manager.h b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-index cb1eeda40739e1d1f4b6e2513e3e8666c540d59f..897a7dabccea9709fd7ec2ab3182fe59b8794579 100644
+index 69ea403a3a306b4d8bb50265c5a1d8ca4db05e26..c5afb3857893a356ccd15a5a0b236d96c1d44ea1 100644
 --- a/chrome/browser/ui/views/bubble/webui_bubble_manager.h
 +++ b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-@@ -170,6 +170,7 @@ class WebUIBubbleManagerT : public WebUIBubbleManager {
+@@ -202,6 +202,7 @@ class WebUIBubbleManagerT : public WebUIBubbleManager {
  
      auto bubble_view = std::make_unique<WebUIBubbleDialogView>(
          anchor_view_, contents_wrapper->GetWeakPtr(), anchor, arrow);

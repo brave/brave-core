@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import SwiftUI
@@ -15,8 +15,10 @@ private struct ShimmerViewModifier: ViewModifier {
       .mask(
         Group {
           if isShimmering {
-            _GradientView(animation: .easeInOut(duration: duration).repeatForever(autoreverses: false))
-              .transition(.opacity.animation(.default))
+            _GradientView(
+              animation: .easeInOut(duration: duration).repeatForever(autoreverses: false)
+            )
+            .transition(.opacity.animation(.default))
           } else {
             Color.black
               .transition(.opacity.animation(.default))
@@ -68,9 +70,11 @@ struct ShimmerViewModifier_PreviewProvider: PreviewProvider {
     @State private var isShimmering: Bool = false
     var body: some View {
       VStack {
-        Text("Donec ullamcorper nulla non metus auctor fringilla. Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam.")
-          .shimmer(isShimmering)
-          .redacted(reason: .placeholder)
+        Text(
+          "Donec ullamcorper nulla non metus auctor fringilla. Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam."
+        )
+        .shimmer(isShimmering)
+        .redacted(reason: .placeholder)
         Toggle(isOn: $isShimmering) {
           Text("Shimmering")
         }

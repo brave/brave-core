@@ -53,7 +53,8 @@ void ShowWebcompatReporter(Browser* browser) {
     return;
   }
 
-  webcompat_reporter::OpenReporterDialog(web_contents);
+  webcompat_reporter::OpenReporterDialog(
+      web_contents, webcompat_reporter::UISource::kAppMenu);
 }
 
 void ShowBraveWallet(Browser* browser) {

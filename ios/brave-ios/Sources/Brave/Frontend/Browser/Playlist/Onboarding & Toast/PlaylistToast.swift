@@ -1,15 +1,15 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
 import BraveUI
-import Shared
-import SnapKit
 import Data
 import DesignSystem
+import Foundation
+import Shared
+import SnapKit
+import UIKit
 
 private class ToastShadowView: UIView {
   private var shadowLayer: CAShapeLayer?
@@ -104,7 +104,11 @@ class PlaylistToast: Toast {
   private let state: PlaylistItemAddedState
   var item: PlaylistInfo?
 
-  init(item: PlaylistInfo?, state: PlaylistItemAddedState, completion: ((_ buttonPressed: Bool) -> Void)?) {
+  init(
+    item: PlaylistInfo?,
+    state: PlaylistItemAddedState,
+    completion: ((_ buttonPressed: Bool) -> Void)?
+  ) {
     self.item = item
     self.state = state
     super.init(frame: .zero)
@@ -171,12 +175,16 @@ class PlaylistToast: Toast {
         $0.titleLabel?.adjustsFontSizeToFitWidth = true
         $0.titleLabel?.minimumScaleFactor = 0.1
         $0.isShadowHidden = true
-        $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
+        $0.addGestureRecognizer(
+          UITapGestureRecognizer(target: self, action: #selector(buttonPressed))
+        )
       }
 
       self.button.snp.makeConstraints {
         if let titleLabel = self.button.titleLabel {
-          $0.width.equalTo(titleLabel.intrinsicContentSize.width + 2 * ButtonToastUX.toastButtonPadding)
+          $0.width.equalTo(
+            titleLabel.intrinsicContentSize.width + 2 * ButtonToastUX.toastButtonPadding
+          )
         }
       }
 
@@ -221,7 +229,9 @@ class PlaylistToast: Toast {
       $0.contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 20.0)
       $0.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: -10.0)
       $0.isShadowHidden = false
-      $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
+      $0.addGestureRecognizer(
+        UITapGestureRecognizer(target: self, action: #selector(buttonPressed))
+      )
     }
 
     horizontalStackView.addArrangedSubview(button)
@@ -234,10 +244,15 @@ class PlaylistToast: Toast {
     }
 
     if state == .none {
-      button.setImage(UIImage(named: "quick_action_new_tab", in: .module, compatibleWith: nil)!.template, for: [])
+      button.setImage(
+        UIImage(named: "quick_action_new_tab", in: .module, compatibleWith: nil)!.template,
+        for: []
+      )
       button.setTitle(Strings.PlayList.toastAddToPlaylistTitle, for: [])
     } else {
-      assertionFailure("Should Never get here. Others case are handled at the start of this function.")
+      assertionFailure(
+        "Should Never get here. Others case are handled at the start of this function."
+      )
     }
 
     updateGradientView()
@@ -253,7 +268,12 @@ class PlaylistToast: Toast {
     dismiss(false)
   }
 
-  override func showToast(viewController: UIViewController? = nil, delay: DispatchTimeInterval, duration: DispatchTimeInterval?, makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void) {
+  override func showToast(
+    viewController: UIViewController? = nil,
+    delay: DispatchTimeInterval,
+    duration: DispatchTimeInterval?,
+    makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void
+  ) {
     super.showToast(viewController: viewController, delay: delay, duration: duration) {
       guard let viewController = viewController as? BrowserViewController else {
         assertionFailure("Playlist Toast should only be presented on BrowserViewController")
@@ -287,14 +307,15 @@ class PlaylistToast: Toast {
       animations: {
         self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
         self.layoutIfNeeded()
+      },
+      completion: { finished in
+        self.displayState = .dismissed
+        self.removeFromSuperview()
+        if !buttonPressed {
+          self.completionHandler?(false)
+        }
       }
-    ) { finished in
-      self.displayState = .dismissed
-      self.removeFromSuperview()
-      if !buttonPressed {
-        self.completionHandler?(false)
-      }
-    }
+    )
   }
 
   private var shadowLayerZOrder: Int {
@@ -334,7 +355,10 @@ class PlaylistToast: Toast {
       let velocity = recognizer.velocity(in: toastView)
       if abs(velocity.y) > abs(velocity.x) {
         let y = min(panState.y, panState.y + recognizer.translation(in: toastView).y)
-        let projected = project(initialVelocity: velocity.y, decelerationRate: UIScrollView.DecelerationRate.normal.rawValue)
+        let projected = project(
+          initialVelocity: velocity.y,
+          decelerationRate: UIScrollView.DecelerationRate.normal.rawValue
+        )
         if y + projected > toastView.frame.maxY {
           dismiss(false)
         }

@@ -103,7 +103,6 @@ import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesGridLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
-import org.chromium.chrome.browser.tab_resumption.TabResumptionModuleUtils.SuggestionClickCallback;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -542,8 +541,7 @@ public class BraveNewTabPageLayout
                                         }
                                     }
                                     if (mBraveNewsController != null) {
-                                        mBraveNewsController.onSessionCardViewsCountChanged(
-                                                (short) mNewsSessionCardViews, newCardViews);
+                                        mBraveNewsController.onNewCardsViewed(newCardViews);
                                     }
                                     mPrevVisibleNewsCardPosition = lastVisibleItemPosition;
                                 }
@@ -1176,8 +1174,7 @@ public class BraveNewTabPageLayout
             boolean isSurfacePolishEnabled,
             boolean isSurfacePolishOmniboxColorEnabled,
             boolean isTablet,
-            ObservableSupplier<Integer> tabStripHeightSupplier,
-            SuggestionClickCallback suggestionClickCallback) {
+            ObservableSupplier<Integer> tabStripHeightSupplier) {
         super.initialize(
                 manager,
                 activity,
@@ -1195,8 +1192,7 @@ public class BraveNewTabPageLayout
                 isSurfacePolishEnabled,
                 isSurfacePolishOmniboxColorEnabled,
                 isTablet,
-                tabStripHeightSupplier,
-                suggestionClickCallback);
+                tabStripHeightSupplier);
 
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
 

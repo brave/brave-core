@@ -1,8 +1,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import XCTest
+
 @testable import Brave
 
 class NetworkManagerTests: XCTestCase {
@@ -120,7 +121,8 @@ class NetworkManagerTests: XCTestCase {
         _ = try await self.manager.downloadResource(
           with: self.url,
           resourceType: .regular,
-          retryTimeout: nil)
+          retryTimeout: nil
+        )
         exp.fulfill()
       } catch {
 
@@ -143,7 +145,8 @@ class NetworkManagerTests: XCTestCase {
         _ = try await self.manager.downloadResource(
           with: self.url,
           resourceType: .regular,
-          retryTimeout: nil)
+          retryTimeout: nil
+        )
       } catch {
         exp.fulfill()
       }
@@ -165,7 +168,8 @@ class NetworkManagerTests: XCTestCase {
         let value = try await self.manager.downloadResource(
           with: self.url,
           resourceType: .regular,
-          retryTimeout: nil)
+          retryTimeout: nil
+        )
         XCTAssert(value.data.isEmpty)
         exp.fulfill()
       } catch {
@@ -188,7 +192,8 @@ class NetworkManagerTests: XCTestCase {
         let value = try await self.manager.downloadResource(
           with: self.url,
           resourceType: .cached(etag: self.etag),
-          retryTimeout: nil)
+          retryTimeout: nil
+        )
         XCTAssertEqual(value.etag, self.etag)
         exp.fulfill()
       } catch {
@@ -212,7 +217,8 @@ class NetworkManagerTests: XCTestCase {
         _ = try await self.manager.downloadResource(
           with: self.url,
           resourceType: .cached(etag: nil),
-          retryTimeout: nil)
+          retryTimeout: nil
+        )
         exp.fulfill()
       } catch {
 
@@ -238,7 +244,8 @@ class NetworkManagerTests: XCTestCase {
         _ = try await self.manager.downloadResource(
           with: self.url,
           resourceType: .cached(etag: self.etag),
-          retryTimeout: nil)
+          retryTimeout: nil
+        )
         exp.fulfill()
       } catch {
 
@@ -262,7 +269,8 @@ class NetworkManagerTests: XCTestCase {
         _ = try await self.manager.downloadResource(
           with: self.url,
           resourceType: .regular,
-          retryTimeout: 5)
+          retryTimeout: 5
+        )
         exp.fulfill()
       } catch {
 
@@ -280,7 +288,10 @@ class NetworkManagerTests: XCTestCase {
     headerFields: [String: String]? = nil
   ) -> HTTPURLResponse {
     return HTTPURLResponse(
-      url: url, statusCode: code,
-      httpVersion: "HTTP/1.1", headerFields: headerFields)!
+      url: url,
+      statusCode: code,
+      httpVersion: "HTTP/1.1",
+      headerFields: headerFields
+    )!
   }
 }

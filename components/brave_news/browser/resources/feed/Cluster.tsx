@@ -13,6 +13,7 @@ import { getTranslatedChannelName } from '../shared/channel';
 
 interface Props {
   info: Info
+  feedDepth?: number
 }
 
 const Container = styled(Card)`
@@ -35,7 +36,7 @@ const Container = styled(Card)`
   }
 `
 
-export default function Cluster({ info }: Props) {
+export default function Cluster({ info, feedDepth }: Props) {
   const groupName = info.type === ClusterType.CHANNEL
     ? getTranslatedChannelName(info.id)
     : info.id
@@ -45,7 +46,12 @@ export default function Cluster({ info }: Props) {
     </Title>
     {info.articles.map((a, i) => {
       const info: any = a.article || a.hero
-      return <Article key={i} info={info} hideChannel={info.type === ClusterType.CHANNEL} />
+      return <Article
+        key={i}
+        info={info}
+        hideChannel={info.type === ClusterType.CHANNEL}
+        feedDepth={feedDepth === undefined ? undefined : (feedDepth + i)}
+      />
     })}
   </Container>
 }

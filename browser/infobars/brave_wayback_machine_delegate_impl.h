@@ -18,6 +18,8 @@ namespace infobars {
 class InfoBar;
 }  // namespace infobars
 
+class BraveWaybackMachineInfoBarDelegate;
+
 class BraveWaybackMachineDelegateImpl : public BraveWaybackMachineDelegate {
  public:
   static void AttachTabHelperIfNeeded(content::WebContents* web_contents);

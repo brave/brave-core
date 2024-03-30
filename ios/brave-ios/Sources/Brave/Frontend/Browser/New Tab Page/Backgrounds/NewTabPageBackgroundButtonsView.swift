@@ -1,14 +1,14 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
+import BraveCore
 import BraveUI
 import Preferences
 import Shared
 import SnapKit
-import BraveCore
+import UIKit
 
 /// The background view of new tab page which will hold static elements such as
 /// the image credit, brand logos or the share by QR code button
@@ -22,7 +22,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     /// Displays a brands logo button
     case brandLogo(_ logo: NTPSponsoredImageLogo)
     /// Displays a button with a little QR code image
-    case QRCode
+    case qrCode
   }
   /// A block executed when a user taps one of the active buttons.
   var tappedActiveButton: ((UIControl) -> Void)?
@@ -42,7 +42,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
       case .brandLogo(let logo):
         sponsorLogoButton.imageView.image = UIImage(contentsOfFile: logo.imagePath.path)
         activeView = sponsorLogoButton
-      case .QRCode:
+      case .qrCode:
         activeView = qrCodeButton
       }
     }
@@ -81,7 +81,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
 
   init(privateBrowsingManager: PrivateBrowsingManager) {
     self.privateBrowsingManager = privateBrowsingManager
-    
+
     super.init(frame: .zero)
 
     Preferences.BraveNews.isEnabled.observe(from: self)
@@ -109,7 +109,8 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     let isLandscape = frame.width > frame.height
 
     let braveNewsVisible =
-      !privateBrowsingManager.isPrivateBrowsing && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
+      !privateBrowsingManager.isPrivateBrowsing
+      && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
 
     imageCreditButton.snp.remakeConstraints {
       $0.leading.equalTo(collectionViewSafeAreaLayoutGuide).inset(16)
@@ -118,7 +119,9 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
 
     sponsorLogoButton.snp.remakeConstraints {
       $0.size.equalTo(170)
-      $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(10 + (braveNewsVisible ? 30 : 0))
+      $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(
+        10 + (braveNewsVisible ? 30 : 0)
+      )
 
       if isLandscape {
         $0.left.equalTo(collectionViewSafeAreaLayoutGuide.snp.left).offset(20)
@@ -129,7 +132,9 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
 
     qrCodeButton.snp.remakeConstraints {
       $0.size.equalTo(48)
-      $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(24 + (braveNewsVisible ? 30 : 0))
+      $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(
+        24 + (braveNewsVisible ? 30 : 0)
+      )
 
       if isLandscape {
         $0.left.equalTo(collectionViewSafeAreaLayoutGuide.snp.left).offset(48)
@@ -190,7 +195,9 @@ extension NewTabPageBackgroundButtonsView {
     }
   }
   private class QRCodeButton: SpringButton {
-    let imageView = UIImageView(image: UIImage(named: "qr_code_button", in: .module, compatibleWith: nil)!)
+    let imageView = UIImageView(
+      image: UIImage(named: "qr_code_button", in: .module, compatibleWith: nil)!
+    )
 
     override init(frame: CGRect) {
       super.init(frame: frame)

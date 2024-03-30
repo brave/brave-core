@@ -24,8 +24,8 @@ class Label;
 }  // namespace views
 
 class BraveSearchConversionPromotionView : public views::View {
+  METADATA_HEADER(BraveSearchConversionPromotionView, views::View)
  public:
-  METADATA_HEADER(BraveSearchConversionPromotionView);
 
   BraveSearchConversionPromotionView(BraveOmniboxResultView* result_view,
                                      PrefService* local_state,

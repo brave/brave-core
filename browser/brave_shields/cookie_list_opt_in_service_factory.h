@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_SHIELDS_COOKIE_LIST_OPT_IN_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_SHIELDS_COOKIE_LIST_OPT_IN_SERVICE_FACTORY_H_
 
-#include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
+#include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"

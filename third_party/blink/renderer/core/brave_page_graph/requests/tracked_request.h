@@ -7,10 +7,12 @@
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_REQUESTS_TRACKED_REQUEST_H_
 
 #include "base/containers/span.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "third_party/blink/renderer/platform/crypto.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace brave_page_graph {
@@ -22,7 +24,8 @@ class ResponseMetadata;
 class TrackedRequest {
  public:
   // Constructor for when we see the outgoing request first.
-  TrackedRequest(const InspectorId request_id,
+  TrackedRequest(PageGraphContext* page_graph_context,
+                 const InspectorId request_id,
                  GraphNode* requester,
                  NodeResource* resource,
                  const String& resource_type);
@@ -39,6 +42,9 @@ class TrackedRequest {
   void AddRequest(GraphNode* requester,
                   NodeResource* resource,
                   const String& request_type);
+  void AddRequestRedirect(const blink::KURL& url,
+                          const blink::ResourceResponse& redirect_response,
+                          NodeResource* resource);
   void SetIsError();
   void SetCompleted();
 
@@ -51,7 +57,12 @@ class TrackedRequest {
  protected:
   void FinishResponseBodyHash();
 
-  enum class RequestStatus : uint8_t { kError = 0, kSuccess, kUnknown };
+  enum class RequestStatus {
+    kError,
+    kSuccess,
+  };
+
+  PageGraphContext* const page_graph_context_ = nullptr;
 
   const InspectorId request_id_;
 
@@ -60,7 +71,7 @@ class TrackedRequest {
 
   NodeResource* resource_ = nullptr;
 
-  RequestStatus request_status_ = RequestStatus::kUnknown;
+  std::optional<RequestStatus> request_status_;
 
   mutable bool is_complete_ = false;
 

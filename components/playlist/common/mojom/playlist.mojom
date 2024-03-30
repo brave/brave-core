@@ -5,6 +5,7 @@
 
 module playlist.mojom;
 
+import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
 // TODO(sko) This should be removed
@@ -41,6 +42,13 @@ struct PlaylistItem {
   url.mojom.Url page_source;
   url.mojom.Url page_redirected;
   url.mojom.Url media_source;
+  // indicates that |media_source| url is blob: and from MediaSource API.
+  // In this case, we should additional process to cache media.
+  // e.g. * hide media source API and get plain url
+  //      * Fake UA
+  //      * load the same site in the background and record media
+  bool is_blob_from_media_source;
+
   url.mojom.Url thumbnail_source;
 
   // cached path or original src url
@@ -86,12 +94,9 @@ interface PlaylistService {
   GetAllPlaylistItems() => (array<PlaylistItem> items);
   GetPlaylistItem(string id) => (PlaylistItem? item);
 
-  // Store all media files from given URL.
-  AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url,
-                                  bool can_cache);
-
   // Store or find all media files from the active tab.
-  AddMediaFilesFromActiveTabToPlaylist(string playlist_id, bool can_cache);
+  AddMediaFilesFromActiveTabToPlaylist(string playlist_id, bool can_cache)
+      => (array<PlaylistItem> items);
   FindMediaFilesFromActiveTab() => (url.mojom.Url page_url,
                                     array<PlaylistItem> items);
 
@@ -135,13 +140,12 @@ interface PlaylistService {
   // Removes all stored data and resets preferences to default values.
   ResetAll();
 
-  RequestStreamingQuery(string query_id, string url,string method);
+  RequestStreamingQuery(string query_id, string url,string method,
+   pending_remote<PlaylistStreamingObserver> observer);
   ClearAllQueries();
   CancelQuery(string query_id);
 
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
-  AddObserverForStreaming(pending_remote<PlaylistStreamingObserver> observer);
-  ClearObserverForStreaming();
 };
 
 // WebUI will delegate some UIs to native UI via this interface. While
@@ -155,6 +159,8 @@ interface PlaylistNativeUI {
   ShowMoveItemsUI(string playlist_id, array<string> item_id);
 
   OpenSettingsPage();
+
+  ClosePanel();
 };
 
 // UI-side handler for response from the service.
@@ -185,14 +191,19 @@ interface PlaylistServiceObserver {
       array<PlaylistItem> items);
 };
 
-// Interface that is used to notify that found media from renderer process to 
+// Interface that is used to notify that found media from renderer process to
 // browser process.
 interface PlaylistMediaHandler {
-  OnMediaUpdatedFromRenderFrame();
+  OnMediaDetected(mojo_base.mojom.Value media);
 };
 
 interface PlaylistStreamingObserver {
   OnResponseStarted(string url, int64 content_length);
   OnDataReceived(array<uint8> data_received);
   OnDataCompleted();
+};
+
+interface PlaylistRenderFrameObserverConfigurator {
+  AddMediaSourceAPISuppressor(string media_source_api_suppressor);
+  AddMediaDetector(string media_detector);
 };

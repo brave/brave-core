@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 
 #include <optional>
+#include <utility>
 
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
@@ -99,7 +100,7 @@ void BraveSidePanel::AddedToWidget() {
       this, static_cast<BraveBrowserView*>(browser_view_), this);
 }
 
-void BraveSidePanel::Layout() {
+void BraveSidePanel::Layout(PassKey) {
   if (children().empty()) {
     return;
   }
@@ -154,8 +155,11 @@ void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
 }
 
 void BraveSidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
-  // Do nothing.
+  // Need to keep here because SidePanelCoordinator referes this |view|'s
+  // child view(header_combobox_). We don't use this |header_view_|.
+  // So just keep it here.
+  header_view_ = std::move(view);
 }
 
-BEGIN_METADATA(BraveSidePanel, views::View)
+BEGIN_METADATA(BraveSidePanel)
 END_METADATA

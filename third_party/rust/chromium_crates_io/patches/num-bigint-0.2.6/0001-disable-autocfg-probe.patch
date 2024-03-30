@@ -1,0 +1,31 @@
+From 7bed12c118d7d9b93756b4d615dcb41a52f012b1 Mon Sep 17 00:00:00 2001
+From: bridiver <34129+bridiver@users.noreply.github.com>
+Date: Thu, 7 Mar 2024 13:38:33 -0700
+Subject: [PATCH] disable autocfg probe
+
+---
+ .../rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs b/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs
+index e483c15fd7f..e83ae28887d 100644
+--- a/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs
++++ b/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs
+@@ -4,11 +4,12 @@ use std::env;
+ 
+ fn main() {
+     let ac = autocfg::new();
+-    if ac.probe_type("i128") {
++//  if ac.probe_type("i128") {
+         println!("cargo:rustc-cfg=has_i128");
++/*
+     } else if env::var_os("CARGO_FEATURE_I128").is_some() {
+         panic!("i128 support was not detected!");
+     }
+-
++*/
+     autocfg::rerun_path("build.rs");
+ }
+-- 
+2.38.1
+

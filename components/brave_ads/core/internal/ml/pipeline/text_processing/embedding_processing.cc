@@ -13,7 +13,6 @@
 #include "base/base64.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"

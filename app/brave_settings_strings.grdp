@@ -11,6 +11,15 @@
   <message name="IDS_SETTINGS_RELAUNCH_BUTTON_LABEL" desc="Notifies the user that they need to relaunch Brave">
     Relaunch Now
   </message>
+  <message name="IDS_SETTINGS_SELECT_VALUE_YES" desc="Select value">
+    Yes
+  </message>
+  <message name="IDS_SETTINGS_SELECT_VALUE_NO" desc="Select value">
+    No
+  </message>
+  <message name="IDS_SETTINGS_SELECT_VALUE_ASK" desc="Select value">
+    Ask
+  </message>
 
   <!-- Settings / Get started -->
   <message name="IDS_SETTINGS_BRAVE_GET_STARTED_TITLE" desc="The title for the Get Started section in settings">
@@ -121,6 +130,9 @@
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BOOKMARKS" desc="The label for settings checkbox controlling whether or not bookmarks show up in autocomplete">
     Bookmarks
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_COMMANDER" desc="The label for settings checkbox controlling whether or not commander suggestions show up in autocomplete">
+    Quick commands
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_LEO" desc="The label for settings checkbox en/disabling autcomplete provider with Leo assistant">
     Leo AI Assistant
@@ -450,7 +462,7 @@
     Allow Facebook logins and embedded posts
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_TWITTER_EMBEDDED_TWEETS_LABEL" desc="Label for a switch control which allows Twitter embedded tweets">
-    Allow Twitter embedded tweets
+    Allow X (previously Twitter) embedded tweets
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_LINKEDIN_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows LinkedIn embedded posts">
     Allow LinkedIn embedded posts
@@ -458,6 +470,9 @@
 
 
   <!-- Settings / Privacy and security -->
+  <message name="IDS_SETTINGS_BRAVE_BLOCK_COOKIES_LINK_ROW_LABEL" desc="This text is the label of a page. Here, it serves as a button that opens the new page.">
+    Block cookies
+  </message>
   <!-- WebRTC Policy Setting -->
   <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
     WebRTC IP handling policy
@@ -506,6 +521,10 @@
       Never
     </message>
   </if>
+  <!-- Data collection -->
+  <message name="IDS_BRAVE_DATA_COLLECTION_SETTINGS_SECTION" desc="Open Data collection settings section">
+    Data collection
+  </message>
 
   <!-- Settings / Privacy and security / Clear Browsing Data dialog -->
   <message name="IDS_SETTINGS_BRAVE_ON_EXIT" desc="Clear Browsing Data dialog On exit tab label">
@@ -1002,12 +1021,6 @@
   <message name="IDS_SETTINGS_TOR_CANCEL_DIALOG_BUTTON" desc="Text fragment for enabling tor component">
     Cancel
   </message>
-  <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_TITLE" desc="Text fragment for onion site component">
-    Automatically redirect .onion sites
-  </message>
-  <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
-    In Tor windows, Brave will automatically switch to the .onion version of a website when available.
-  </message>
   <message name="IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_TITLE" desc="">
     Only resolve .onion addresses in Tor windows
   </message>
@@ -1100,6 +1113,12 @@
   <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_DESC" desc="The description for enabling NFT discovery">
     Automatically add NFTs you own to the Wallet using third party APIs.
   </message>
+  <message name="IDS_SETTINGS_ENABLE_BRAVE_WALLET_IN_PRIVATE_WINDOWS_LABEL" desc="The label for enabling private window support">
+    Enable Brave Wallet in Private Windows.
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_BRAVE_WALLET_IN_PRIVATE_WINDOWS_DESC" desc="The description for enabling private window support">
+    Warning: Reusing a wallet address in a private window session can enable a site to link a private window session to a non-private window session.
+  </message>
   <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES" desc="The title for the amount of minutes it takes for the Brave Wallet to automatically lock">
     Automatically lock Brave Wallet
   </message>
@@ -1152,6 +1171,9 @@
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
     Yes
+  </message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATIONS_DESC" desc="The description for the user's opt-in status of the transaction simulations service">
+    See the results of transactions before you sign. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK">&lt;/a&gt;</ph> 
   </message>
 
   <!-- Settings / Wallet / Networks -->
@@ -1472,6 +1494,9 @@ Leo. This action cannot be undone.
   <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL" desc="Label for selecting default model">
     Default model for new conversations
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_MANAGE_URL" desc="Label for managing accounts url">
+    Manage premium subscription
+  </message>
 
   <!-- Settings / Playlist -->
   <message name="IDS_SETTINGS_PLAYLIST_ENABLE_PLAYLIST_LABEL" desc="The text for setting to en/disable Playlist feature">
@@ -1483,6 +1508,18 @@ Leo. This action cannot be undone.
   <message name="IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_SUB_LABEL" desc="A description for setting to en/disable media cache behavior">
     This option will automatically cache media files so you can play them without an Internet connection.
   </message>
+
+  <!-- Settings / Secure DNS -->
+  <message name="IDS_SETTINGS_AUTOMATIC_MODE_WITH_QUAD9_DESCRIPTION" desc="Text of the select option that puts secure DNS in auto-upgrade mode that falls back to Quad9">
+    OS default or Quad9
+  </message>
+  <message name="IDS_SETTINGS_AUTOMATIC_MODE_WITH_WIKIMEDIA_DESCRIPTION" desc="Text of the select option that puts secure DNS in auto-upgrade mode that falls back to Wikimedia">
+    OS default or Wikimedia
+  </message>
+  <message name="IDS_SETTINGS_AUTOMATIC_MODE_WITH_CLOUDFLARE_DESCRIPTION" desc="Text of the select option that puts secure DNS in auto-upgrade mode that falls back to Cloudflare">
+    OS default or Cloudflare
+  </message>
+
 
 <!-- Avatars. Generated via zsh and node:
         declare -i a=56

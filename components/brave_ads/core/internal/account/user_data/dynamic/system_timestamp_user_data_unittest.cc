@@ -7,7 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -19,8 +19,7 @@ class BraveAdsSystemTimestampUserDataTest : public UnitTestBase {};
 TEST_F(BraveAdsSystemTimestampUserDataTest,
        BuildSystemTimestampUserDataForRewardsUser) {
   // Arrange
-  AdvanceClockTo(
-      TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("November 18 2020 12:34:56.789"));
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(

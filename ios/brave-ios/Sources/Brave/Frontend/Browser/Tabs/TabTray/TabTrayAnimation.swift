@@ -1,13 +1,13 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveUI
 import DesignSystem
-import UIKit
+import Foundation
 import Shared
+import UIKit
 import os.log
 
 extension TabTrayController: UIViewControllerTransitioningDelegate {
@@ -28,7 +28,8 @@ extension TabTrayController: UIViewControllerTransitioningDelegate {
 
 extension TabTrayController: BasicAnimationControllerDelegate {
   func animatePresentation(context: UIViewControllerContextTransitioning) {
-    guard let containerController = context.viewController(forKey: .from) as? UINavigationController,
+    guard
+      let containerController = context.viewController(forKey: .from) as? UINavigationController,
       let bvc = containerController.topViewController as? BrowserViewController,
       let destinationController = context.viewController(forKey: .to)
     else {
@@ -36,7 +37,8 @@ extension TabTrayController: BasicAnimationControllerDelegate {
         """
             Attempted to present the tab tray on something that is not a BrowserViewController which is
             currently unsupported.
-        """)
+        """
+      )
       context.completeTransition(true)
       return
     }
@@ -130,9 +132,12 @@ extension TabTrayController: BasicAnimationControllerDelegate {
         backgroundView.alpha = 0
       }
       // Need delayed animation for these
-      animator.addAnimations({
-        cellTitleSnapshot?.alpha = 1.0
-      }, delayFactor: 0.5)
+      animator.addAnimations(
+        {
+          cellTitleSnapshot?.alpha = 1.0
+        },
+        delayFactor: 0.5
+      )
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
         tabCell?.isHidden = false
         UIViewPropertyAnimator(duration: 0.1, curve: .linear) {
@@ -159,7 +164,8 @@ extension TabTrayController: BasicAnimationControllerDelegate {
 
             Likely the `modalPresentationStyle` was changed away from `fullScreen` and should be changed
             back if using this custom animation.
-        """)
+        """
+      )
       context.completeTransition(true)
       return
     }
@@ -171,7 +177,8 @@ extension TabTrayController: BasicAnimationControllerDelegate {
         """
             Attempted to dismiss the tab tray from something that is not a BrowserViewController which is
             currently unsupported.
-        """)
+        """
+      )
       context.completeTransition(true)
       return
     }
@@ -198,19 +205,20 @@ extension TabTrayController: BasicAnimationControllerDelegate {
 
       context.containerView.addSubview(toView)
       context.containerView.addSubview(backgroundView)
-      
+
       toView.setNeedsLayout()
       toView.layoutIfNeeded()
-      
+
       // BVC snapshot animates from the cell to its final resting spot
-      let toVCSnapshot: UIView = toView.snapshotView(afterScreenUpdates: true) ?? UIImageView(image: toView.snapshot)
+      let toVCSnapshot: UIView =
+        toView.snapshotView(afterScreenUpdates: true) ?? UIImageView(image: toView.snapshot)
       toVCSnapshot.layer.cornerCurve = .continuous
       toVCSnapshot.layer.cornerRadius = TabCell.UX.cornerRadius
       toVCSnapshot.clipsToBounds = true
 
       context.containerView.addSubview(toVCSnapshot)
       context.containerView.addSubview(tabSnapshot)
-      
+
       // Hide the destination as we're animating a snapshot into place
       toView.isHidden = true
 

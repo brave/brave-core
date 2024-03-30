@@ -15,13 +15,13 @@
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace sku {
 
 class SKU {
  public:
-  explicit SKU(RewardsEngineImpl& engine);
+  explicit SKU(RewardsEngine& engine);
   ~SKU();
 
   void Process(const std::vector<mojom::SKUOrderItem>& items,
@@ -53,7 +53,7 @@ class SKU {
                SKUOrderCallback callback,
                mojom::SKUOrderPtr order);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   SKUCommon common_;
   base::WeakPtrFactory<SKU> weak_factory_{this};
 };

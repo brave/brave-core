@@ -14,13 +14,27 @@
 #include "base/time/default_clock.h"
 #include "base/values.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
+
+namespace {
+// Used to compensate for DST-related differences. i.e. time
+// method arguments not matching up with stored time values.
+constexpr base::TimeDelta kPotentialDSTOffset = base::Hours(1);
+}  // namespace
 
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
                                      size_t period_days)
+    : TimePeriodStorage(prefs, pref_name, nullptr, period_days) {}
+
+TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
+                                     const char* pref_name,
+                                     const char* dict_key,
+                                     size_t period_days)
     : clock_(std::make_unique<base::DefaultClock>()),
       prefs_(prefs),
       pref_name_(pref_name),
+      dict_key_(dict_key),
       period_days_(period_days) {
   DCHECK(pref_name);
   if (prefs) {
@@ -30,11 +44,13 @@ TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
 
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
+                                     const char* dict_key,
                                      size_t period_days,
                                      std::unique_ptr<base::Clock> clock)
     : clock_(std::move(clock)),
       prefs_(prefs),
       pref_name_(pref_name),
+      dict_key_(dict_key),
       period_days_(period_days) {
   DCHECK(prefs);
   DCHECK(pref_name);
@@ -97,7 +113,8 @@ uint64_t TimePeriodStorage::GetPeriodSumInTimeRange(
                          [start_time, end_time](uint64_t acc, const auto& u2) {
                            uint64_t add = 0;
                            // Check only last continious days.
-                           if (u2.day >= start_time && u2.day <= end_time) {
+                           if (u2.day >= start_time - kPotentialDSTOffset &&
+                               u2.day <= end_time + kPotentialDSTOffset) {
                              add = u2.value;
                            }
                            return acc + add;
@@ -148,7 +165,7 @@ void TimePeriodStorage::FilterToPeriod() {
   // Push daily values for new days. In loop condition, add one hour
   // to now_midnight to account for DST changes.
   for (base::Time day_midnight = last_saved_midnight + base::Days(1);
-       day_midnight <= (now_midnight + base::Hours(1));
+       day_midnight <= (now_midnight + kPotentialDSTOffset);
        day_midnight += base::Days(1)) {
     // Day changed. Since we consider only small incoming intervals, lets just
     // save it with a new timestamp.
@@ -172,8 +189,18 @@ void TimePeriodStorage::FilterToPeriod() {
 
 void TimePeriodStorage::Load() {
   DCHECK(daily_values_.empty());
-  const auto& list = prefs_->GetList(pref_name_);
-  for (const auto& it : list) {
+  const auto& pref_value = prefs_->GetValue(pref_name_);
+
+  const base::Value::List* list;
+  if (dict_key_) {
+    list = pref_value.GetDict().FindList(dict_key_);
+  } else {
+    list = pref_value.GetIfList();
+  }
+  if (!list) {
+    return;
+  }
+  for (const auto& it : *list) {
     DCHECK(it.is_dict());
     const base::Value::Dict& dict = it.GetDict();
     auto day = dict.FindDouble("day");
@@ -202,5 +229,10 @@ void TimePeriodStorage::Save() {
     value.Set("value", static_cast<double>(u.value));
     list.Append(std::move(value));
   }
-  prefs_->SetList(pref_name_, std::move(list));
+  if (dict_key_) {
+    ScopedDictPrefUpdate update(prefs_, pref_name_);
+    update->Set(dict_key_, std::move(list));
+  } else {
+    prefs_->SetList(pref_name_, std::move(list));
+  }
 }

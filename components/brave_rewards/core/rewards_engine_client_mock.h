@@ -111,9 +111,6 @@ class MockRewardsEngineClient : public mojom::RewardsEngineClient {
   MOCK_METHOD1(IsAutoContributeSupportedForClient,
                void(IsAutoContributeSupportedForClientCallback));
 
-  MOCK_METHOD3(OnContributeUnverifiedPublishers,
-               void(mojom::Result, const std::string&, const std::string&));
-
   MOCK_METHOD1(GetLegacyWallet, void(GetLegacyWalletCallback));
 
   MOCK_METHOD3(ShowNotification,
@@ -122,8 +119,6 @@ class MockRewardsEngineClient : public mojom::RewardsEngineClient {
                     ShowNotificationCallback));
 
   MOCK_METHOD1(GetClientInfo, void(GetClientInfoCallback));
-
-  MOCK_METHOD0(UnblindedTokensReady, void());
 
   MOCK_METHOD0(ReconcileStampReset, void());
 

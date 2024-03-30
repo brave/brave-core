@@ -99,7 +99,6 @@
 <translation id="3680755684186855422">புத்தகக்குறிகள் தரவை உம் பல்வேறு சாதனங்களிலுள்ள பிரேவ் உலாவிகளினிடையே ஒத்திசைத்திட பிரேவ் ஒத்திசைவு அனுமதிக்கிறது.</translation>
 <translation id="5241263629636958324">நகலகத்திற்கு நகலெடுக்கப்பட்டது</translation>
 <translation id="5817918615728894473">இணை</translation>
-<translation id="7090325819305486658">தரவு விருப்பத்தேர்வுகள்</translation>
 <translation id="728334460283296316">சாதனத்தை நீக்கு</translation>
 <translation id="7745082336226088126">ஒத்திசைவு குறியீட்டை வருடு அ உள்ளிடு</translation>
 <translation id="1602067095281698985">புது ஒத்திசைவு சங்கிலியை ஆரம்பி</translation>
@@ -188,12 +187,13 @@
 <translation id="8295049095570748497">உருசியாவில் ஒரு முதன்மையான தேடுபொறி</translation>
 <translation id="1410130669636877548">நீங்கள் வலையில் தேடும்போது சில தேடுபொறிகள் மற்றவையுடன் சிறப்பாக உம் தனியுரிமையை காக்கும்.</translation>
 <translation id="3479552764303398839">இப்பொழுது இல்லை</translation>
+<translation id="7701040980221191251">எதுவுமில்லை</translation>
+<translation id="8488282162676695335">பிரேவ் பணப்பை</translation>
 <translation id="8798099450830957504">இயல்புநிலை</translation>
 <translation id="1822560017823072927">இயல்புநிலை பொதுசன மற்றும் தனிப்பட்ட இடைமுகப்புகள்</translation>
 <translation id="5825943197137337319">இயல்புநிலை பொது இடைமுகங்களை மட்டும்</translation>
 <translation id="1483493594462132177">அனுப்பு</translation>
 <translation id="1366855498335432549">வைப்பு</translation>
-<translation id="4472575034687746823">தொடங்குக</translation>
 <translation id="2359808026110333948">தொடர்க</translation>
 <translation id="6896758677409633944">நகலெடு</translation>
 <translation id="1544192797660353713">பணப்பை</translation>
@@ -209,7 +209,6 @@
 <translation id="3819257035322786455">மறுபிரதி</translation>
 <translation id="1940465339426637378">சொத்துக்கள்</translation>
 <translation id="4522570452068850558">விவரங்கள்</translation>
-<translation id="8488282162676695335">பிரேவ் பணப்பை</translation>
 <translation id="4412698727486357573">உதவி மையம்</translation>
 <translation id="3866249974567520381">விவரம்</translation>
 <translation id="8239147115686034860">தானாக பிரேவ் பணப்பையைப் பூட்டு</translation>
@@ -268,10 +267,11 @@
 <translation id="6736243959894955139">முகவரி</translation>
 <translation id="308268297242056490">URI</translation>
 <translation id="3798449238516105146">பதிப்பு</translation>
+<translation id="4932733599132424254">தேதி</translation>
+<translation id="5494920125229734069">எல்லாவற்றையும் தேர்ந்தெடு</translation>
+<translation id="1166682575529520472">மாதாந்திர</translation>
 <translation id="4850886885716139402">காட்சி</translation>
 <translation id="5939518447894949180">மீட்டமை</translation>
-<translation id="5916664084637901428">இயக்கு</translation>
-<translation id="5860033963881614850">முடக்கத்தில்</translation>
 <translation id="7525067979554623046">உருவாக்கு</translation>
 <translation id="7544853251252956727">கலை</translation>
 <translation id="1173894706177603556">மறுபெயரிடு</translation>
@@ -279,6 +279,4 @@
 <translation id="4195643157523330669">புதிய தாவலில் திற</translation>
 <translation id="4243710787042215766">மறைநிலை தாவலில் திற</translation>
 <translation id="8261506727792406068">நீக்கு</translation>
-<translation id="4932733599132424254">தேதி</translation>
-<translation id="5494920125229734069">எல்லாவற்றையும் தேர்ந்தெடு</translation>
 </translationbundle>

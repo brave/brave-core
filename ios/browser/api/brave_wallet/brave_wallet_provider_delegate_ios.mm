@@ -12,7 +12,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/api/url/url_origin_ios+private.h"
-#include "net/base/mac/url_conversions.h"
+#include "net/base/apple/url_conversions.h"
 
 namespace brave_wallet {
 
@@ -34,6 +34,10 @@ url::Origin BraveWalletProviderDelegateBridge::GetOrigin() const {
 
 void BraveWalletProviderDelegateBridge::ShowWalletOnboarding() {
   [bridge_ showWalletOnboarding];
+}
+
+void BraveWalletProviderDelegateBridge::ShowWalletBackup() {
+  [bridge_ showWalletBackup];
 }
 
 void BraveWalletProviderDelegateBridge::ShowAccountCreation(

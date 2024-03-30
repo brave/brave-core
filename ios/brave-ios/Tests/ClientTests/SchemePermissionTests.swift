@@ -1,12 +1,12 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import XCTest
-import Storage
 import BraveCore
+import Foundation
+import Storage
+import XCTest
 
 @testable import Brave
 
@@ -51,7 +51,7 @@ class SchemePermissionTests: XCTestCase {
       }
     }
   }
-  
+
   // MARK: Internal
 
   func testShouldRequestOpenPopup() {
@@ -62,22 +62,38 @@ class SchemePermissionTests: XCTestCase {
     let urlRequestWhatsApp = urlRequestForScheme(.whatsapp)
 
     // Test Http URL Scheme
-    XCTAssertTrue(urlRequestHttp.request.url!.shouldRequestBeOpenedAsPopup(), urlRequestHttp.comment)
+    XCTAssertTrue(
+      urlRequestHttp.request.url!.shouldRequestBeOpenedAsPopup(),
+      urlRequestHttp.comment
+    )
 
     // Test Https URL Scheme
-    XCTAssertTrue(urlRequestHttps.request.url!.shouldRequestBeOpenedAsPopup(), urlRequestHttps.comment)
+    XCTAssertTrue(
+      urlRequestHttps.request.url!.shouldRequestBeOpenedAsPopup(),
+      urlRequestHttps.comment
+    )
 
     // Test Javascript URL Scheme
-    XCTAssertTrue(urlRequestJavascript.request.url!.shouldRequestBeOpenedAsPopup(), urlRequestJavascript.comment)
+    XCTAssertTrue(
+      urlRequestJavascript.request.url!.shouldRequestBeOpenedAsPopup(),
+      urlRequestJavascript.comment
+    )
 
     // Test About URL Scheme
-    XCTAssertTrue(urlRequestAbout.request.url!.shouldRequestBeOpenedAsPopup(), urlRequestAbout.comment)
+    XCTAssertTrue(
+      urlRequestAbout.request.url!.shouldRequestBeOpenedAsPopup(),
+      urlRequestAbout.comment
+    )
 
     // Test Whatapp URL Scheme
-    XCTAssertTrue(urlRequestWhatsApp.request.url!.shouldRequestBeOpenedAsPopup(), urlRequestWhatsApp.comment)
+    XCTAssertTrue(
+      urlRequestWhatsApp.request.url!.shouldRequestBeOpenedAsPopup(),
+      urlRequestWhatsApp.comment
+    )
   }
 
-  private func urlRequestForScheme(_ type: SchemeTestType) -> (request: URLRequest, comment: String) {
+  private func urlRequestForScheme(_ type: SchemeTestType) -> (request: URLRequest, comment: String)
+  {
     (request: URLRequest(url: URL(string: type.url)!), comment: type.description)
   }
 

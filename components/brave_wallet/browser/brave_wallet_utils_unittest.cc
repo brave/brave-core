@@ -41,7 +41,10 @@
 #include "url/origin.h"
 
 using base::test::ParseJsonDict;
+using testing::Contains;
 using testing::ElementsAreArray;
+using testing::Eq;
+using testing::Not;
 
 namespace brave_wallet {
 
@@ -1166,6 +1169,42 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_TRUE(AllCoinsTested());
 }
 
+TEST(BraveWalletUtilsUnitTest, AddCustomNetworkTwice) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
+
+  auto assets = GetAllUserAssets(&prefs);
+  EXPECT_EQ(24u, assets.size());
+
+  AddCustomNetwork(&prefs, chain1);
+  assets = GetAllUserAssets(&prefs);
+  EXPECT_EQ(25u, assets.size());
+
+  EXPECT_EQ(assets.back()->name, chain1.symbol_name);
+  EXPECT_TRUE(assets.back()->visible);
+
+  SetUserAssetVisible(&prefs, assets.back(), false);
+  assets = GetAllUserAssets(&prefs);
+  EXPECT_EQ(assets.back()->name, chain1.symbol_name);
+  EXPECT_FALSE(assets.back()->visible);
+
+  RemoveCustomNetwork(&prefs, chain1.chain_id, chain1.coin);
+  // TODO(apaymyshev): Maybe we should remove such assets.
+  assets = GetAllUserAssets(&prefs);
+  EXPECT_EQ(25u, assets.size());
+  EXPECT_EQ(assets.back()->name, chain1.symbol_name);
+  EXPECT_FALSE(assets.back()->visible);
+
+  // Network added again. No duplicate assets.
+  AddCustomNetwork(&prefs, chain1);
+  assets = GetAllUserAssets(&prefs);
+  EXPECT_EQ(25u, assets.size());
+  EXPECT_EQ(assets.back()->name, chain1.symbol_name);
+  EXPECT_TRUE(assets.back()->visible);
+}
+
 TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
@@ -1629,6 +1668,140 @@ TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
         "visible": true
       }
       )"));
+}
+
+TEST(BraveWalletUtilsUnitTest, GetAllUserAssets) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  auto assets = GetAllUserAssets(&prefs);
+  EXPECT_EQ(24u, assets.size());
+  for (auto& asset : assets) {
+    EXPECT_NE(asset->name, "");
+    if (asset->symbol == "BAT") {
+      EXPECT_EQ(asset->contract_address,
+                "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
+      EXPECT_TRUE(asset->is_erc20);
+    } else {
+      EXPECT_EQ(asset->contract_address, "");
+      EXPECT_FALSE(asset->is_erc20);
+    }
+    EXPECT_FALSE(asset->is_erc721);
+    EXPECT_FALSE(asset->is_erc1155);
+    EXPECT_FALSE(asset->is_nft);
+    EXPECT_FALSE(asset->is_spam);
+    EXPECT_NE(asset->symbol, "");
+    EXPECT_GT(asset->decimals, 0);
+    EXPECT_TRUE(asset->visible);
+    EXPECT_EQ(asset->token_id, "");
+    EXPECT_NE(asset->chain_id, "");
+    EXPECT_TRUE(mojom::IsKnownEnumValue(asset->coin));
+  }
+}
+
+TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
+
+  auto asset = GetAllUserAssets(&prefs)[4]->Clone();
+  asset->chain_id = "0x98765";
+  asset->contract_address = "0x5AAEB6053F3E94C9B9A09F33669435E7EF1BEAED";
+
+  EXPECT_FALSE(AddUserAsset(&prefs, asset->Clone()));
+
+  AddCustomNetwork(&prefs,
+                   GetTestNetworkInfo1("0x98765", mojom::CoinType::ETH));
+
+  EXPECT_EQ(25u, GetAllUserAssets(&prefs).size());
+
+  ASSERT_TRUE(AddUserAsset(&prefs, asset->Clone()));
+
+  // Address gets checksum format.
+  asset->contract_address = "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed";
+
+  EXPECT_EQ(26u, GetAllUserAssets(&prefs).size());
+  EXPECT_THAT(GetAllUserAssets(&prefs), Contains(Eq(std::ref(asset))));
+
+  // Adding same asset again fails.
+  ASSERT_FALSE(AddUserAsset(&prefs, asset->Clone()));
+
+  ASSERT_TRUE(RemoveUserAsset(&prefs, asset));
+
+  EXPECT_EQ(25u, GetAllUserAssets(&prefs).size());
+  EXPECT_THAT(GetAllUserAssets(&prefs), Not(Contains(Eq(std::ref(asset)))));
+
+  // Invalid contract address is rejected.
+  asset->coin = mojom::CoinType::ETH;
+  asset->chain_id = mojom::kMainnetChainId;
+  asset->contract_address = "not_eth_address";
+  ASSERT_FALSE(AddUserAsset(&prefs, asset->Clone()));
+
+  // Invalid contract address is rejected.
+  asset->coin = mojom::CoinType::SOL;
+  asset->chain_id = mojom::kSolanaMainnet;
+  asset->contract_address = "not_base58_encoded_string";
+  ASSERT_FALSE(AddUserAsset(&prefs, asset->Clone()));
+}
+
+TEST(BraveWalletUtilsUnitTest, RemoveUserAsset) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
+
+  auto asset = GetAllUserAssets(&prefs)[4]->Clone();
+
+  EXPECT_TRUE(RemoveUserAsset(&prefs, asset));
+  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
+  EXPECT_THAT(GetAllUserAssets(&prefs), Not(Contains(Eq(std::ref(asset)))));
+
+  asset->chain_id = "0x98765";
+  EXPECT_FALSE(RemoveUserAsset(&prefs, asset));
+}
+
+TEST(BraveWalletUtilsUnitTest, SetUserAssetVisible) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  auto asset = GetAllUserAssets(&prefs)[4]->Clone();
+
+  EXPECT_TRUE(asset->visible);
+
+  EXPECT_TRUE(SetUserAssetVisible(&prefs, asset, false));
+  asset->visible = false;
+  EXPECT_EQ(asset, GetAllUserAssets(&prefs)[4]->Clone());
+
+  EXPECT_TRUE(SetUserAssetVisible(&prefs, asset, true));
+  asset->visible = true;
+  EXPECT_EQ(asset, GetAllUserAssets(&prefs)[4]->Clone());
+
+  asset->chain_id = "0x98765";
+  EXPECT_FALSE(SetUserAssetVisible(&prefs, asset, false));
+}
+
+TEST(BraveWalletUtilsUnitTest, SetAssetSpamStatus) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  auto asset = GetAllUserAssets(&prefs)[4]->Clone();
+
+  EXPECT_FALSE(asset->is_spam);
+  EXPECT_TRUE(asset->visible);
+
+  EXPECT_TRUE(SetAssetSpamStatus(&prefs, asset, true));
+  asset->is_spam = true;
+  asset->visible = false;
+  EXPECT_EQ(asset, GetAllUserAssets(&prefs)[4]->Clone());
+
+  EXPECT_TRUE(SetAssetSpamStatus(&prefs, asset, false));
+  asset->is_spam = false;
+  asset->visible = true;
+  EXPECT_EQ(asset, GetAllUserAssets(&prefs)[4]->Clone());
+
+  asset->chain_id = "0x98765";
+  EXPECT_FALSE(SetAssetSpamStatus(&prefs, asset, true));
 }
 
 }  // namespace brave_wallet

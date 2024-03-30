@@ -287,9 +287,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_REWARDS_MAY_NOT_WORK_WHILE_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Brave Rewards may not work while notifications are disabled.">
         Brave Rewards may not work while notifications are disabled.
       </message>
-      <message name="IDS_TURN_ON"  desc="Text for Turn On">
-        TURN ON
-      </message>
       <message name="IDS_BLOCK_SWITCH_TO_APP_NOTICES"  desc="Text for Block 'Switch to App' Notices">
         Block 'Switch to App' Notices
       </message>
@@ -461,8 +458,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_REWARDS" desc="Content description for the button that is enable, disable Brave Rewards.">
         Manage Brave Rewards
       </message>
-      <message name="IDS_PREFS_SECTION_ONLINE_CHECKOUT" desc="Title for online checkout section">
-        Online checkout
+      <message name="IDS_PREFS_SECTION_AUTOFILL" desc="Title for Autofill section">
+        Autofill
+      </message>
+      <message name="IDS_PREFS_AUTOFILL_PRIVATE_WINDOW_TITLE" desc="Title for Autofill in private window option in settings">
+        Autofill in private tabs
+      </message>
+      <message name="IDS_PREFS_AUTOFILL_PRIVATE_WINDOW_SUMMARY" desc="Summary for Autofill in private window option in settings">
+        Saved information can be auto-filled in private tabs
       </message>
       <message name="IDS_PREFS_SUPPORT_SECTION" desc="Title for the support section ">
         Support
@@ -565,9 +568,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_ADBLOCK_FILTER_SYNTAX" desc="Text for Adblock filter syntax.">
         Adblock filter syntax
-      </message>
-      <message name="IDS_ASSET_PRICE" desc="Text for asset price.">
-        <ph name="ASSET_NAME">%1$s<ex>Ethereum</ex></ph> Price (<ph name="ASSET_SYMBOL">%2$s<ex>ETH</ex></ph>)
       </message>
       <message name="IDS_ENS_TITLE" desc="Title for ENS settings.">
         Ethereum Name Service
@@ -1052,9 +1052,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="A message about auto-contribute">
         Auto-Contribute
       </message>
-      <message name="IDS_BRAVE_UI_CLAIM" desc="A claim grant button text">
-        Claim Rewards
-      </message>
       <message name="IDS_BALANCE" desc="Title text for `Your Balance` section in Brave rewards panel">
         Balance
       </message>
@@ -1063,18 +1060,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_CONTR_ERROR" desc="A notification about contribution processing problem">
         There was a problem processing your contribution.
-      </message>
-      <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="A notification about free token grant">
-        A token grant is available!
-      </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_TITLE" desc="Brave Ads notification title">
-        Your <ph name="MONTH_VALUE">%1$s<ex>October</ex></ph> Ads Rewards are here!
-      </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_TEXT" desc='Brave Ads notification text'>
-        <ph name="MONTH_VALUE">%1$s<ex>October</ex></ph> Rewards: <ph name="TOKEN">%2$s<ex>token</ex></ph> BAT
-      </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_SUB_TEXT" desc='Brave Ads notification sub text'>
-        You have <ph name="TOKEN">%1$s<ex>89</ex></ph> days left to claim
       </message>
       <message name="IDS_BRAVE_UI_ON_YOUTUBE" desc="A suffix to YouTube channel creator">
         on YouTube
@@ -1793,9 +1778,6 @@ Are you sure you want to do this?
       <message name="IDS_PRIVACY_STATS" desc="Private stats title text.">
         Privacy Stats
       </message>
-      <message name="IDS_BUY" desc="Buy section text.">
-        Buy
-      </message>
       <message name="IDS_SUMMARY" desc="Summary section text">
         Summary
       </message>
@@ -1967,9 +1949,6 @@ Are you sure you want to do this?
     <message name="IDS_SWAP" desc="Brave Wallet swap button text">
       Swap
     </message>
-    <message name="IDS_DEPOSIT" desc="Brave Wallet deposit text">
-      Deposit
-    </message>
     <message name="IDS_DEFI_SECURE_STORAGE" desc="Brave Wallet onboarding text">
       Browser native.\nSelf-custody.\nAnd multi-chain.
     </message>
@@ -2021,27 +2000,6 @@ Are you sure you want to do this?
     <message name="IDS_WALLET_COPY" desc="Brave Wallet onboarding bottom menu text">
       Copy
     </message>
-    <message name="IDS_WALLET" desc="Brave Wallet toolbar title">
-      Wallet
-    </message>
-    <message name="IDS_BACKUP_WALLET_BANNER_TEXT" desc="Brave Wallet backup banner text">
-      Back up your crypto wallet
-    </message>
-    <message name="IDS_BUY_SWAP_TEXT" desc="Brave Wallet buy bottomsheet text">
-      Buy crypto with credit or debit card.
-    </message>
-    <message name="IDS_SEND_SWAP_TEXT" desc="Brave Wallet send bottomsheet text">
-      Send crypto or transfer from one account to another.
-    </message>
-    <message name="IDS_SWAP_TEXT" desc="Brave Wallet swap bottomsheet text">
-      Swap tokens and assets.
-    </message>
-    <message name="IDS_DEPOSIT_DESCRIPTION" desc="Brave Wallet deposit description">
-      Deposit crypto to Brave Wallet.
-    </message>
-    <message name="IDS_SECURE_YOUR_CRYPTO" desc="Brave Wallet onboarding text">
-      Secure your crypto with a password
-    </message>
     <message name="IDS_ENTER_PASSWORD" desc="Brave wallet password hint text">
       Enter Password
     </message>
@@ -2055,43 +2013,16 @@ Are you sure you want to do this?
       Verified password did not match
     </message>
     <message name="IDS_CREATING_WALLET_ONBOARDING_TEXT" desc="Text displayed along with a spinner during Brave Wallet creation or restoring.">
-      Creating Wallet...
+      Creating your wallet…
     </message>
-    <message name="IDS_YOUR_WALLET_IS_RESTORING_PAGE_TITLE" desc="Text for a spinner page title during Brave Wallet restoring. It is not displayed anywhere" translateable="false">
-      Your wallet is restoring...
-    </message>
-    <message name="IDS_YOUR_WALLET_IS_CREATING_PAGE_TITLE" desc="Text for a spinner page title during Brave Wallet creating. It is not displayed anywhere" translateable="false">
-      Your wallet is being created...
-    </message>
-    <message name="IDS_LIVE" desc="Brave Wallet graph duration text">
-      1H
-    </message>
-    <message name="IDS_DAY_1" desc="Brave Wallet graph duration text">
-      1D
-    </message>
-    <message name="IDS_WEEK_1" desc="Brave Wallet graph duration text">
-      1W
-    </message>
-    <message name="IDS_MONTH_1" desc="Brave Wallet graph duration text">
-      1M
-    </message>
-    <message name="IDS_MONTH_3" desc="Brave Wallet graph duration text">
-      3M
-    </message>
-    <message name="IDS_YEAR_1" desc="Brave Wallet graph duration text">
-      1Y
-    </message>
-    <message name="IDS_ALL" desc="Brave Wallet graph duration text">
-      ALL
+    <message name="IDS_CREATING_WALLET_SUBTITLE_TEXT" desc="Text displayed along with a spinner during Brave Wallet creation or restoring.">
+      It may take a few seconds…
     </message>
     <message name="IDS_NEW_ACCOUNT_PREFIX" desc="Brave Wallet new account default name prefix">
       <ph name="ACCOUNT_NAME">%1$s<ex>Ethereum</ex></ph> Account <ph name="ACCOUNT_NUMBER">%2$s<ex>2</ex></ph>
     </message>
     <message name="IDS_ADD_ACCOUNT" desc="Brave Wallet account dialog button text">
       Add account
-    </message>
-    <message name="IDS_ADD_IMPORT_ACCOUNT" desc="Brave Wallet account dialog button text">
-      Add/Import account
     </message>
     <message name="IDS_UPDATE_ACCOUNT" desc="Brave Wallet account dialog button text">
       Update account
@@ -2153,6 +2084,36 @@ Are you sure you want to do this?
     <message name="IDS_BEFORE_WE_BEGIN" desc="Brave Wallet term of use screen title">
       Before we begin
     </message>
+    <message name="IDS_CREATE_PASSWORD" desc="Brave Wallet password creation description">
+      Create a password
+    </message>
+    <message name="IDS_CREATE_PASSWORD_SUBTITLE" desc="Brave Wallet password creation screen subtitle">
+      You'll use this password to access your wallet.
+    </message>
+    <message name="IDS_WALLET_PASSWORD" desc="Wallet password creation screen title">
+      Enter new password
+    </message>
+    <message name="IDS_WALLET_RETYPE_PASSWORD" desc="Wallet password creation screen subtitle">
+      Re-enter password
+    </message>
+    <message name="IDS_WALLET_PASSWORD_MINIMUM_LENGTH" desc="Wallet password minimum lenght">
+      Password must be at least 8 characters.
+    </message>
+    <message name="IDS_WALLET_PASSWORD_DOES_NOT_MATCH" desc="Wallet password not matching error">
+      Password doesn’t match.
+    </message>
+    <message name="IDS_WALLET_PASSWORD_STRONG" desc="Wallet password lenght strong strength">
+      Strong
+    </message>
+    <message name="IDS_WALLET_PASSWORD_WEAK" desc="Wallet password length weak strength">
+      Weak
+    </message>
+    <message name="IDS_WALLET_PASSWORD_MEDIUM" desc="Wallet password length medium strength">
+      Medium
+    </message>
+    <message name="IDS_WALLET_PASSWORD_MATCH" desc="Wallet password match message">
+      Match!
+    </message>
     <message name="IDS_ALREADY_HAVE_A_WALLET_DESCRIPTION" desc="Brave Wallet onboarding restore description">
       Import your existing wallet
     </message>
@@ -2183,38 +2144,8 @@ Are you sure you want to do this?
     <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Ethereum Mainnet
     </message>
-    <message name="IDS_ADDRESS_MISSING_CHECKSUM_WARNING" desc="Brave Wallet send address missing checksum warning text">
-      Missing checksum information
-    </message>
-    <message name="IDS_ADDRESS_NOT_VALID_CHECKSUM_ERROR" desc="Brave Wallet send address invalid checksum error text">
-      Invalid checksum information
-    </message>
     <message name="IDS_ACCOUNTS" desc="Brave Wallet section text">
       Accounts
-    </message>
-    <message name="IDS_TRANSACTIONS" desc="Brave Wallet section text">
-      Transactions
-    </message>
-    <message name="IDS_TREND_1H_TEXT" desc="Brave Wallet assets 1 hour trend text">
-      1 Hour
-    </message>
-    <message name="IDS_TREND_1D_TEXT" desc="Brave Wallet assets 1 day trend text">
-      1 Day
-    </message>
-    <message name="IDS_TREND_1W_TEXT" desc="Brave Wallet assets 1 week trend text">
-      1 Week
-    </message>
-    <message name="IDS_TREND_1M_TEXT" desc="Brave Wallet assets 1 month trend text">
-      1 Month
-    </message>
-    <message name="IDS_TREND_3M_TEXT" desc="Brave Wallet assets 3 months trend text">
-      3 Months
-    </message>
-    <message name="IDS_TREND_1Y_TEXT" desc="Brave Wallet assets 1 year trend text">
-      1 Year
-    </message>
-    <message name="IDS_TREND_ALL_TEXT" desc="Brave Wallet assets all time trend text">
-      All time
     </message>
     <!-- Stats -->
     <message name="IDS_BRAVE_STATS_USAGE_PING_TITLE" desc="Description that shows in settings for toggling stats usage pings">
@@ -2222,18 +2153,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BRAVE_STATS_USAGE_PING_SUMMARY" desc="Description that shows under main toggle setting for usage pings">
       This private ping lets Brave estimate active users.
-    </message>
-    <message name="IDS_BACKUP" desc="Brave wallet accounts text">
-      Backup
-    </message>
-    <message name="IDS_PRIMARY_CRYPTO_ACCOUNTS" desc="Brave wallet accounts text">
-      Primary Crypto Accounts
-    </message>
-    <message name="IDS_SECONDARY_ACCOUNTS" desc="Brave wallet accounts text">
-      Secondary Accounts
-    </message>
-    <message name="IDS_SECONDARY_ACCOUNTS_TEXT" desc="Brave wallet accounts text">
-      These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.
     </message>
     <message name="IDS_ACCOUNT_NAME" desc="Brave wallet accounts text">
       Account Name
@@ -2247,26 +2166,8 @@ Are you sure you want to do this?
     <message name="IDS_IMPORT_TEXT" desc="Brave wallet accounts text">
       Import...
     </message>
-    <message name="IDS_ASSETS" desc="Brave wallet accounts text">
-      Assets
-    </message>
     <message name="IDS_DETAILS" desc="Brave wallet accounts text">
       Details
-    </message>
-    <message name="IDS_ACCOUNT_DETAILS" desc="Brave wallet accounts text">
-      Account Details
-    </message>
-    <message name="IDS_EDIT_VISIBLE_ASSETS" desc="Brave wallet edit assets button name">
-      Edit visible assets
-    </message>
-    <message name="IDS_EDIT_VISIBLE_NFTS" desc="Brave wallet edit NFTs button name">
-      Edit visible NFTs
-    </message>
-    <message name="IDS_SAVE_ACCOUNT_WATCHLIST" desc="Brave wallet save a watchlist assets button name">
-      Save account watchlist
-    </message>
-    <message name="IDS_SEARCH_TOKENS" desc="Brave wallet search tokens control hint">
-      Search tokens
     </message>
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
       Brave Wallet
@@ -2276,33 +2177,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Title for help center link">
       Help center
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOOLBAR" desc="Title for Brave wallet NFT detail screen toolbar.">
-      NFT Detail
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_DESCRIPTION" desc="Description text for Brave wallet NFT asset detail.">
-      Description
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_BLOCKCHAIN" desc="Blockchain text for Brave wallet NFT asset detail.">
-      Blockchain
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_TOKEN_STANDARD" desc="Token standard text for Brave wallet NFT asset detail.">
-      Token Standard
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_ERC_721" desc="Type of NFT token standard." translateable="false">
-      ERC 721
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_SOL_SPL" desc="Type of NFT token standard adopted by Solana." translateable="false">
-      SPL
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_TOKEN_ID" desc="Token ID text for brave wallet NFT asset detail.">
-      Token ID
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_MINT_ADDRESS" desc="Mint address text for brave wallet NFT asset detail.">
-      Mint Address
-    </message>
-    <message name="IDS_BRAVE_WALLET_NFT_IMAGE_NOT_AVAILABLE" desc="Text message for image not available when loading NFT image.">
-      Image not available
     </message>
     <message name="IDS_BRAVE_WALLET_SETTINGS_AUTOLOCK_OPTION" desc="Title for brave wallet automatically lock.">
       Automatically lock Brave Wallet
@@ -2358,26 +2232,11 @@ Are you sure you want to do this?
     <message name="IDS_VPN_SETTINGS_CALLOUT_TEXT" desc="Vpn settings callout text">
         Upgrade to a VPN to protect your connection and block invasive trackers everywhere.
     </message>
-    <message name="IDS_ENABLE" desc="VPN callout text">
-      Enable
-    </message>
     <message name="IDS_ENABLED" desc="VPN settings toggle text">
       Enabled
     </message>
     <message name="IDS_POWERED_BY" desc="VPN text">
       Powered by
-    </message>
-    <message name="IDS_VPN_MODAL_TEXT_1" desc="VPN modal text">
-      Block ads &amp; trackers across all apps
-    </message>
-    <message name="IDS_VPN_MODAL_TEXT_2" desc="VPN modal text">
-      Secures all connections
-    </message>
-    <message name="IDS_VPN_MODAL_TEXT_3" desc="VPN modal text">
-      Fast and unlimited up to 100 Mbps
-    </message>
-    <message name="IDS_VPN_MODAL_TEXT_4" desc="VPN modal text">
-      24/7 support
     </message>
     <message name="IDS_PLAN_TEXT_1" desc="Brave VPN plan text">
       Protect every app &amp; your whole device
@@ -2398,7 +2257,10 @@ Are you sure you want to do this?
       Protect 5 devices on 1 subscription
     </message>
     <message name="IDS_TRIAL_TEXT" desc="Brave VPN plan text">
-      All plans include a free 7-day trial!
+      All plans include a <ph name="TRIAL_DAYS">%1$s</ph>
+    </message>
+    <message name="IDS_DAY_7_TRIAL_TEXT" desc="Brave VPN plan text">
+      free 7-day trial!
     </message>
     <message name="IDS_MONTHLY_SUBSCRIPTION" desc="Brave VPN plan text">
       Monthly subscription <ph name="TRIAL_TEXT">%1$s</ph>
@@ -2428,7 +2290,7 @@ Are you sure you want to do this?
       Try for FREE
     </message>
     <message name="IDS_TRY_7_DAYS_FOR_FREE" desc="Brave VPN plan action text">
-      Try for Free for 7 Days
+      Try 7 Days Free
     </message>
     <message name="IDS_INSTALL_VPN" desc="Brave VPN plan text">
       Install VPN
@@ -2615,24 +2477,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_TRANSACTION_DETAILS" desc="Brave crypto wallet transaction details section">
       Details
     </message>
-    <message name="IDS_PORTFOLIO" desc="Brave crypto wallet section Portfolio">
-      Portfolio
-    </message>
-    <message name="IDS_EXPLORE" desc="Brave crypto wallet section Explore">
-      Explore
-    </message>
-    <message name="IDS_INFORMATION" desc="Brave crypto wallet information label">
-      INFORMATION
-    </message>
-    <message name="IDS_RANK" desc="Brave crypto wallet rank label">
-      Rank
-    </message>
-    <message name="IDS_VOLUME_24_H" desc="Brave crypto wallet 24-hour volume label">
-      24h Volume
-    </message>
-    <message name="IDS_MARKET_CAP" desc="Brave crypto wallet market cap label">
-      Market Cap
-    </message>
     <!-- <message name="IDS_APPS" desc="Brave crypto wallet section Apps">
       Apps
     </message> -->
@@ -2677,18 +2521,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_CHOOSE_A_FILE" desc="Brave wallet accounts text">
       Choose a file
-    </message>
-    <message name="IDS_PRIVATE_KEY" desc="Wallet account private key text">
-      Private Key
-    </message>
-    <message name="IDS_SHOW_PRIVATE_KEY" desc="Wallet account private key text">
-      Show Private Key
-    </message>
-    <message name="IDS_HIDE_PRIVATE_KEY" desc="Wallet account private key text">
-      Hide Private Key
-    </message>
-    <message name="IDS_PRIVATE_KEY_WARNING_TEXT" desc="Wallet account private key warning text">
-      Warning: Never disclose this key. Anyone with this private key can steal any assets held in your account.
     </message>
     <message name="IDS_ACTIVATE_ERC20" desc="A button to activate an ERC20 token">
       Activate <ph name="TOKEN">%1$s<ex>BAT</ex></ph>
@@ -2762,9 +2594,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_TX_STATUS_ERROR" desc="Brave wallet tx status is error">
       Error
     </message>
-    <message name="IDS_WALLET_TX_FEE" desc="Brave wallet tx fee">
-      Fee: <ph name="VALUE">%1$s<ex>0.000123</ex></ph> <ph name="CHAIN_ASSET">%2$s<ex>ETH</ex></ph> ($<ph name="FIAT_VALUE">%3$s<ex>101.22</ex></ph>)
-    </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_TEXT_1" desc="Dormant users engagement notification text">
       Are you using the fastest web browser?
     </message>
@@ -2837,53 +2666,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_FAILED_TO_IMPORT_ACCOUNT" desc="Brave wallet msg that appears when we couldn't import an account">
       Failed to import account, please try again.
     </message>
-    <message name="IDS_WALLET_POWERED_BY_COIN_GECKO" desc="Disclaimer on assets details page for GoinGecko contract agreement">
-      Price data powered by CoinGecko
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET" desc="Add custom asset clickable name">
-      Add custom asset
-    </message>
-    <message name="IDS_WALLET_ADD_NFT" desc="Add NFT clickable name">
-      Add NFT
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_ADD_BUTTON" desc="Add custom asset dialog Add button text">
-      Add
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_NAME" desc="Add custom asset dialog Token name field">
-      Token name
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_MINT_ADDRESS" desc="Add custom asset dialog mint address field">
-      Mint address
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_SYMBOL" desc="Add custom asset dialog Token symbol field">
-      Token symbol
-    </message>
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_DECIMALS" desc="Add custom asset dialog Decimals of precision field">
       Decimals of precision
-    </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_ID" desc="Add custom asset dialog Token ID">
-      Token ID (only for ERC721)
-    </message>
-    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET" desc="Remove custom asset dialog title">
-      Remove custom asset
-    </message>
-    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET_DESC" desc="Remove custom asset dialog description">
-      Do you want to remove <ph name="TOKEN_NAME">%1$s<ex>Custom</ex></ph> (<ph name="TOKEN_SYMBOL">%2$s<ex>CUS</ex></ph>) token?
-    </message>
-    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET_YES" desc="Remove custom asset dialog button name">
-      Yes
-    </message>
-    <message name="IDS_WALLET_REMOVE_CUSTOM_ASSET_NO" desc="Remove custom asset dialog button name">
-      No
-    </message>
-    <message name="IDS_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">
-      The receiving address is your own address
-    </message>
-    <message name="IDS_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">
-      Not a valid ETH address
-    </message>
-    <message name="IDS_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">
-      The receiving address is a token's contract address
     </message>
     <message name="IDS_REWARDS_SUMMARY" desc="Text for `Rewards Summary` button in Brave rewards panel">
       Rewards Summary
@@ -3290,12 +3074,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_ACTION_NO" desc="Action text for general negative actions">
       No
     </message>
-    <message name="IDS_BRAVE_ACTION_ENABLE" desc="Action text to enable something">
-      Enable
-    </message>
-    <message name="IDS_BRAVE_ACTION_CANCEL" desc="Action text to cancel something">
-      Cancel
-    </message>
     <message name="IDS_WALLET_ETH_NAME" desc="Name of ETH cointype" translateable="false">
       Ethereum
     </message>
@@ -3329,38 +3107,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SPLIT_TUNNELING" desc="Vpn splittunnel text">
       Split Tunneling
     </message>
-    <message name="IDS_INVALID_SOL_ADDRESS" desc="Message to indicate invalid Solana address">
-      Not a valid SOL address
-    </message>
-        <message name="IDS_INVALID_FIL_ADDRESS" desc="Message to indicate invalid Filecoin address">
-      Not a valid FIL address
-    </message>
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">
       The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>
-    </message>
-    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_TITLE" desc="Bridge to Aurora modal title">
-      Open the <ph name="APP_NAME"><ex>Rainbow Bridge</ex>%1$s</ph> app?
-    </message>
-    <message name="IDS_BRAVE_WALLET_RAINBOW_BRIDGE" desc="Marketing name for Rainbow Bridge app" translateable="false">
-      Rainbow Bridge
-    </message>
-    <message name="IDS_BRAVE_WALLET_RAINBOW_BRIDGE_LEARN_MORE" desc="Rainbow Bridge walk through link description">
-      <ph name="CLICK_START">%1$s</ph>Learn more about using Rainbow Bridge<ph name="CLICK_END">%2$s</ph>
-    </message>
-    <message name="IDS_BRAVE_WALLET_RAINBOW_BRIDGE_RISKS_LEARN_MORE" desc="Rainbow Bridge security walk-through link description">
-      <ph name="CLICK_START">%1$s</ph>Learn how to reduce risk on Rainbow Bridge<ph name="CLICK_END">%2$s</ph>
-    </message>
-    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_DESCRIPTION" desc="Bridge to Aurora modal description">
-      <ph name="APP_NAME"><ex>Rainbow Bridge</ex>%1$s</ph> is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.
-    </message>
-    <message name="IDS_BRAVE_WALLET_AURORA_MODAL_OPEN_BUTTON_TEXT" desc="Bridge to Aurora modal action button text">
-      Open the <ph name="APP_NAME"><ex>Rainbow Bridge</ex>%1$s</ph> app
-    </message>
-    <message name="IDS_BRAVE_WALLET_AURORA_BUTTON_TEXT" desc="Bridge to Aurora button text" translateable="false">
-      Bridge to Aurora
-    </message>
-    <message name="IDS_DONT_SHOW_AGAIN" desc="Text for don't show again check ">
-      Don't show again
     </message>
     <message name="IDS_UPDATING_VPN_PROFILE" desc="Message to indicate profile is being update after split tunnel update.">
       Updating VPN Profile ...
@@ -3617,9 +3365,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SECURITY_RISK_DETECTED" desc="Sign in with Brave Wallet Error Security risk">
       Security risk detected
     </message>
-    <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_ADDRESS" desc="Add custom asset dialog Token contract address field for Solana NFT">
-      Token address
-    </message>
     <message name="IDS_LINK_SUBSCRIPTION_TITLE" desc="Brave vpn link subscription settings title text">
       Link purchase to your Brave account
     </message>
@@ -3655,9 +3400,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_REWARDS_PANEL_UNVERIFIED_ON_SECTION_TEXT" desc="Rewards panel unverified state section text when rewards is enabled">
       Connect or create an account with one of our partners.
-    </message>
-    <message name="IDS_REWARDS_PANEL_UNVERIFIED_ON_SECTION_UNSUPPORTED_REGION_TEXT" desc="Rewards panel unverified state section text when rewards is enabled but region is not supported">
-      To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Brave Rewards will automatically support creators.
     </message>
     <message name="IDS_LEARN_MORE_ABOUT_BAT" desc="Rewards panel unverified state section learn more text">
       Learn more about earning BAT
@@ -3728,12 +3470,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_TEST" desc="Network filter title for test networks">
       Test Networks
     </message>
-    <message name="IDS_BRAVE_WALLET_NFTS" desc="NFTs as title">
-      NFTs
-    </message>
-    <message name="IDS_BRAVE_WALLET_HIDDEN" desc="Hidden NFT section">
-      Hidden
-    </message>
     <message name="IDS_VBAT_SUPPORTED_REGION_TITLE" desc="Vbat modal title text for supported region">
       Action required: Connect a custodial account or your vBAT will be lost
     </message>
@@ -3761,22 +3497,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_SPEEDREADER_TITLE" desc="Title for on demand speedreader menu item">
       View in reader mode
     </message>
-    <message name="IDS_BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION" desc="Portfolio asset item network description">
-      <ph name="SYMBOL"><ex>BAT</ex>%1$s</ph> on <ph name="NETWORK"><ex>Ethereum Mainnet</ex>%2$s</ph>
-    </message>
-    
-    <message name="IDS_NO_NFTS" desc="Message shown when there no NFTs in the NFT grid.">
-      No NFTs here yet.
-    </message>
-    <message name="IDS_ADD_NFTS" desc="How to import NFTs in the NFT grid.">
-      Ready to add some? Just click the button below to import.
-    </message>
-    <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_HEADER" desc="Enable NFT auto-discovery modal header">
-      Want your NFTs displayed automatically?
-    </message>
-    <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION" desc="Enable NFT auto-discovery modal description">
-      Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph>SimpleHash<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph> to provide this service. <ph name="BEGIN_LINK_2">&lt;LINK_2&gt;</ph>Learn more.<ph name="END_LINK_2">&lt;/LINK_2&gt;</ph>
-    </message>
     <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL" desc="The label for enabling NFT discovery">
       Enable NFT discovery
     </message>
@@ -3789,29 +3509,17 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_INDEX" desc="Label for Solana Address Lookup Table Index section">
       Address Lookup Table Index:
     </message>
-    <message name="IDS_BRAVE_WALLET_ACTIVITY" desc="Wallet activity and transactions">
-      Activity
-    </message>
     <message name="IDS_DATE_TEXT" desc="Date text as heading">
       Date
     </message>
     <message name="IDS_MARKET_PRICE_TEXT" desc="Market price text title as heading of an asset">
       Market Price
     </message>
-    <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET" desc="Text for when zero transactions are currently availble for viewing">
-      No transactions to view yet.
-    </message>
-    <message name="IDS_BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION" desc="Explanation of why the transaction list is empty, and what to expect after the first transaction is available">
-      Once you make a transaction, you'll be able to view it here.
-    </message>
     <message name="IDS_BRAVE_WALLET_SELECT_ALL" desc="Action title for select all button">
       Select all
     </message>
     <message name="IDS_BRAVE_WALLET_DESELECT_ALL" desc="Action title for deselect all button">
       Deselect all
-    </message>
-    <message name="IDS_BRAVE_WALLET_NO_AVAILABLE_ASSETS" desc="No availible assets title for empty asset list">
-      No available assets
     </message>
     <message name="IDS_MENU_BRAVE_LEO" desc="Brave AI menu item text">
       Leo
@@ -3848,9 +3556,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Leo confirm button text.">
       Confirm
-    </message>  
-    <message name="IDS_ELLIPSIS_TEXT" desc="Generic ellipsis text" translateable="false">
-      ...
     </message>
     <message name="IDS_LINK_SUBSCRIPTION_TITLE_LEO" desc="Brave Leo link subscription settings title text">
       Link purchase to your Brave account
@@ -4033,9 +3738,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PLAYLIST_TIME_TEXT" desc="Playlist duration time text" translateable="false">
       <ph name="TIME_TEXT">%1$s</ph>:
     </message>
-    <message name="IDS_PLAYLIST_DURATION_TEXT" desc="Playlist duration text" translateable="false">
-      <ph name="HOUR_TEXT">%1$s</ph><ph name="MINUTE_TEXT">%2$s</ph><ph name="SECOND_TEXT">%3$s</ph>
-    </message>
     <message name="IDS_PLAYLIST_PLEASE_SELECT_ITEMS" desc="Playlist select items error message text">
       Please select items first
     </message>
@@ -4097,8 +3799,117 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_LEO_DEFAULT_MODEL_PREF_SCREEN" desc="Title for Leo Default Model settings screen.">
       Default model
     </message>
+    <message name="IDS_SOLANA_ELIGIBLE_UI_TITLE" desc="Solana payout eligible ui title">
+      Receive BAT directly to a self-custody crypto address
+    </message>
+    <message name="IDS_SOLANA_ELIGIBLE_UI_TEXT" desc="Solana payout eligible ui text">
+      We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.
+    </message>
     <message name="IDS_LEO_GO_PREMIUM_PREF" desc="Title for Leo Go premium settings.">
       Go Premium
+    </message>
+    <!-- Secure DNS settings -->
+    <message name="IDS_SETTINGS_AUTOMATIC_MODE_WITH_QUAD9_LABEL" desc="Text of the radio button that puts secure DNS in auto-upgrade mode">
+      Use your current service provider or Quad9
+    </message>
+    <message name="IDS_SETTINGS_AUTOMATIC_MODE_WITH_WIKIMEDIA_LABEL" desc="Text of the radio button that puts secure DNS in auto-upgrade mode">
+      Use your current service provider or Wikimedia DNS
+    </message>
+    <message name="IDS_SETTINGS_AUTOMATIC_MODE_WITH_CLOUDFLARE_LABEL" desc="Text of the radio button that puts secure DNS in auto-upgrade mode">
+      Use your current service provider or Cloudflare
+    </message>
+    <message name="IDS_SETTINGS_AUTOMATIC_MODE_DESCRIPTION_FALLBACK" desc="Descriptive text that appears below IDS_SETTINGS_AUTOMATIC_MODE_LABEL.">
+      If your current service provider is insecure, Brave uses a secure alternative DNS provider
+    </message>
+    <!-- End of Secure DNS Settings -->
+    <!-- Autofill Service strings -->
+    <message name="IDS_CITY" desc="Autofill field for city">
+      city
+    </message>
+    <message name="IDS_TOWN" desc="Autofill field for town">
+      town
+    </message>
+    <message name="IDS_PREFECTURE" desc="Autofill field for prefecture">
+      prefecture
+    </message>
+    <message name="IDS_REGION" desc="Autofill field for region">
+      region
+    </message>
+    <message name="IDS_STATE" desc="Autofill field for state">
+      state
+    </message>
+    <message name="IDS_ORGANIZATION" desc="Autofill field for organization">
+      organization
+    </message>
+    <message name="IDS_COMPANY" desc="Autofill field for company">
+      company
+    </message>
+    <message name="IDS_COUNTRY" desc="Autofill field for country">
+      country
+    </message>
+    <message name="IDS_LABEL" desc="Autofill field for label">
+      label
+    </message>
+    <message name="IDS_CONTAINER" desc="Autofill field for container">
+      container
+    </message>
+    <message name="IDS_USERNAME" desc="Autofill field for username">
+      username
+    </message>
+    <message name="IDS_LOGIN" desc="Autofill field for login">
+      login
+    </message>
+    <message name="IDS_ID" desc="Autofill field for id">
+      id
+    </message>
+    <message name="IDS_EMAIL" desc="Autofill field for email">
+      email
+    </message>
+    <message name="IDS_NAME" desc="Autofill field for name">
+      name
+    </message>
+    <message name="IDS_FIRST" desc="Autofill field for first name">
+      first
+    </message>
+    <message name="IDS_LAST" desc="Autofill field for last name">
+      last
+    </message>
+    <message name="IDS_FULL" desc="Autofill field for full name">
+      full
+    </message>
+    <message name="IDS_PHONE" desc="Autofill field for phone">
+      phone
+    </message>
+    <message name="IDS_MOBILE" desc="Autofill field for mobile">
+      mobile
+    </message>
+    <message name="IDS_ADDRESS" desc="Autofill field for address">
+      address
+    </message>
+    <message name="IDS_APARTMENT" desc="Autofill field for apartment">
+      apartment
+    </message>
+    <message name="IDS_PINCODE" desc="Autofill field for pincode">
+      pin code
+    </message>
+    <message name="IDS_POSTALCODE" desc="Autofill field for postal code">
+      postal code
+    </message>
+    <message name="IDS_ZIP" desc="Autofill field for zip code">
+      zip
+    </message>
+    <!-- End of Autofill Service strings -->
+    <message name="IDS_I_AGREE_ACTION" desc="CTA text for tos rewards panel">
+      I agree
+    </message>
+    <message name="IDS_REWARDS_TOS_TITLE" desc="Terms of service text for rewards panel">
+      Updated Terms of Service
+    </message>
+    <message name="IDS_REWARDS_TOS_UPDATE_TEXT" desc="Terms of service text for rewards panel">
+    We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you prefer not to agree, you have the option to <ph name="RESET_START">&lt;reset&gt;</ph>reset<ph name="RESET_END">&lt;/reset&gt;</ph> Brave Rewards, and this will disable the feature.
+    </message>
+    <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="Terms of service text for rewards panel">
+      See <ph name="TOS_START">&lt;tos&gt;</ph>Brave Rewards Terms of Service<ph name="TOS_END">&lt;/tos&gt;</ph>
     </message>
   </messages>
   </release>

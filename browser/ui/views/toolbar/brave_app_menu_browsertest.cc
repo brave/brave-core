@@ -18,6 +18,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
+#include "ui/base/ui_base_features.h"
 #include "ui/views/controls/button/toggle_button.h"
 #include "ui/views/controls/menu/menu_item_view.h"
 #include "ui/views/controls/menu/menu_runner.h"
@@ -88,3 +89,26 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, NotPurchasedVPN) {
   EXPECT_TRUE(!!menu_root->GetMenuItemByID(IDC_SHOW_BRAVE_VPN_PANEL));
 }
 #endif
+
+class BraveAppMenuBrowserTestWithChromeRefresh2023
+    : public BraveAppMenuBrowserTest {
+ public:
+  BraveAppMenuBrowserTestWithChromeRefresh2023() = default;
+  ~BraveAppMenuBrowserTestWithChromeRefresh2023() override = default;
+
+  void SetUp() override {
+    BraveAppMenuBrowserTest::SetUp();
+
+    feature_list_.InitAndEnableFeature(features::kChromeRefresh2023);
+  }
+
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// To check enabling kChromeRefresh2023 doesn't make crash with app menu
+// opening.
+IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTestWithChromeRefresh2023,
+                       AppMenuOpeningTest) {
+  // Open app menu to check it doesn't make crash.
+  menu_button()->ShowMenu(views::MenuRunner::NO_FLAGS);
+}

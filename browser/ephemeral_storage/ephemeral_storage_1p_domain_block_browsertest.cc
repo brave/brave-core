@@ -10,11 +10,11 @@
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/engine_test_observer.h"
-#include "brave/components/brave_shields/browser/test_filters_provider.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/test/engine_test_observer.h"
+#include "brave/components/brave_shields/content/test/test_filters_provider.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -41,15 +41,13 @@ class EphemeralStorage1pDomainBlockBrowserTest
     b_site_simple_url_ = https_server_.GetURL("b.com", "/simple.html");
   }
 
-  void UpdateAdBlockInstanceWithRules(const std::string& rules,
-                                      const std::string& resources = "") {
+  void UpdateAdBlockInstanceWithRules(const std::string& rules) {
     source_provider_ =
-        std::make_unique<brave_shields::TestFiltersProvider>(rules, resources);
+        std::make_unique<brave_shields::TestFiltersProvider>(rules);
 
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
-    ad_block_service->UseSourceProvidersForTest(source_provider_.get(),
-                                                source_provider_.get());
+    ad_block_service->UseSourceProviderForTest(source_provider_.get());
 
     auto* engine =
         g_brave_browser_process->ad_block_service()->default_engine_.get();

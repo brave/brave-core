@@ -106,7 +106,29 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"privacyTitle", IDS_CHAT_UI_PRIVACY_TITLE},
       {"contextToggleLabel", IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL},
       {"contextToggleTooltipInfo", IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO},
-      {"subscriptionPolicyInfo", IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO}};
+      {"subscriptionPolicyInfo", IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO},
+      {"explainLabel", IDS_AI_CHAT_CONTEXT_EXPLAIN},
+      {"summarizeLabel", IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT},
+      {"paraphraseLabel", IDS_AI_CHAT_CONTEXT_PARAPHRASE},
+      {"createCategoryTitle", IDS_AI_CHAT_CONTEXT_CREATE},
+      {"taglineLabel", IDS_AI_CHAT_CONTEXT_CREATE_TAGLINE},
+      {"socialMediaPostLabel", IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST},
+      {"socialMediaShortLabel",
+       IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT},
+      {"socialMediaLongLabel",
+       IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG},
+      {"rewriteCategoryTitle", IDS_AI_CHAT_CONTEXT_REWRITE},
+      {"improveLabel", IDS_AI_CHAT_CONTEXT_IMPROVE},
+      {"changeToneLabel", IDS_AI_CHAT_CONTEXT_CHANGE_TONE},
+      {"changeLengthLabel", IDS_AI_CHAT_CONTEXT_CHANGE_LENGTH},
+      {"academicizeLabel", IDS_AI_CHAT_CONTEXT_ACADEMICIZE},
+      {"professionalizeLabel", IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE},
+      {"persuasiveToneLabel", IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE},
+      {"casualizeLabel", IDS_AI_CHAT_CONTEXT_CASUALIZE},
+      {"funnyToneLabel", IDS_AI_CHAT_CONTEXT_FUNNY_TONE},
+      {"shortenLabel", IDS_AI_CHAT_CONTEXT_SHORTEN},
+      {"expandLabel", IDS_AI_CHAT_CONTEXT_EXPAND},
+      {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL}};
 
   return kLocalizedStrings;
 }

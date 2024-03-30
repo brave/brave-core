@@ -10,134 +10,18 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/containers/contains.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "base/values.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/endpoints/brave/get_parameters_utils.h"
+#include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 
-namespace brave_rewards::internal {
+namespace brave_rewards::internal::state {
 
-namespace {
-
-std::string VectorDoubleToString(const std::vector<double>& items) {
-  base::Value::List list;
-  for (const auto& item : items) {
-    list.Append(item);
-  }
-
-  std::string items_string;
-  base::JSONWriter::Write(list, &items_string);
-
-  return items_string;
-}
-
-std::vector<double> StringToVectorDouble(const std::string& items_string) {
-  std::optional<base::Value> list = base::JSONReader::Read(items_string);
-  if (!list || !list->is_list()) {
-    return {};
-  }
-
-  auto& list_value = list->GetList();
-  std::vector<double> items;
-  for (auto& item : list_value) {
-    if (!item.is_double()) {
-      continue;
-    }
-    items.push_back(item.GetDouble());
-  }
-
-  return items;
-}
-
-std::string PayoutStatusToString(
-    const base::flat_map<std::string, std::string>& payout_status) {
-  base::Value::Dict dict;
-  for (const auto& status : payout_status) {
-    dict.Set(status.first, status.second);
-  }
-
-  std::string payout_status_string;
-  base::JSONWriter::Write(dict, &payout_status_string);
-
-  return payout_status_string;
-}
-
-base::flat_map<std::string, std::string> StringToPayoutStatus(
-    const std::string& payout_status_string) {
-  auto json = base::JSONReader::Read(payout_status_string);
-  if (!json || !json->is_dict()) {
-    return {};
-  }
-
-  auto& dict = json->GetDict();
-  base::flat_map<std::string, std::string> payout_status;
-  for (const auto [key, value] : dict) {
-    if (!value.is_string()) {
-      continue;
-    }
-    payout_status.emplace(key, value.GetString());
-  }
-
-  return payout_status;
-}
-
-base::Value WalletProviderRegionsToValue(
-    const base::flat_map<std::string, mojom::RegionsPtr>&
-        wallet_provider_regions) {
-  base::Value::Dict wallet_provider_regions_dict;
-
-  for (const auto& [wallet_provider, regions] : wallet_provider_regions) {
-    base::Value::List allow;
-    for (const auto& country : regions->allow) {
-      allow.Append(country);
-    }
-
-    base::Value::List block;
-    for (const auto& country : regions->block) {
-      block.Append(country);
-    }
-
-    base::Value::Dict regions_dict;
-    regions_dict.Set("allow", std::move(allow));
-    regions_dict.Set("block", std::move(block));
-
-    wallet_provider_regions_dict.Set(wallet_provider, std::move(regions_dict));
-  }
-
-  return base::Value(std::move(wallet_provider_regions_dict));
-}
-
-base::flat_map<std::string, mojom::RegionsPtr> ValueToWalletProviderRegions(
-    RewardsEngineImpl& engine,
-    const base::Value& value) {
-  if (!value.is_dict()) {
-    engine.LogError(FROM_HERE) << "Failed to parse JSON";
-    return {};
-  }
-
-  auto wallet_provider_regions =
-      endpoints::GetWalletProviderRegions(value.GetDict());
-  if (!wallet_provider_regions) {
-    engine.LogError(FROM_HERE) << "Failed to parse JSON";
-    return {};
-  }
-
-  return std::move(*wallet_provider_regions);
-}
-
-}  // namespace
-
-namespace state {
-
-State::State(RewardsEngineImpl& engine) : engine_(engine), migration_(engine) {}
+State::State(RewardsEngine& engine) : engine_(engine), migration_(engine) {}
 
 State::~State() = default;
 
@@ -221,7 +105,10 @@ void State::SetAutoContributionAmount(const double amount) {
 double State::GetAutoContributionAmount() {
   double amount = engine_->GetState<double>(kAutoContributeAmount);
   if (amount == 0.0) {
-    amount = GetAutoContributeChoice();
+    auto& provider = engine_->Get<RewardsParametersProvider>();
+    if (auto params = provider.GetCachedParameters()) {
+      amount = params->auto_contribute_choice;
+    }
   }
 
   return amount;
@@ -263,126 +150,12 @@ void State::SetCreationStamp(const uint64_t stamp) {
   engine_->SetState(kCreationStamp, stamp);
 }
 
-void State::SetRewardsParameters(const mojom::RewardsParameters& parameters) {
-  engine_->SetState(kParametersRate, parameters.rate);
-  engine_->SetState(kParametersAutoContributeChoice,
-                    parameters.auto_contribute_choice);
-  engine_->SetState(kParametersAutoContributeChoices,
-                    VectorDoubleToString(parameters.auto_contribute_choices));
-  engine_->SetState(kParametersTipChoices,
-                    VectorDoubleToString(parameters.tip_choices));
-  engine_->SetState(kParametersMonthlyTipChoices,
-                    VectorDoubleToString(parameters.monthly_tip_choices));
-  engine_->SetState(kParametersPayoutStatus,
-                    PayoutStatusToString(parameters.payout_status));
-  engine_->SetState(
-      kParametersWalletProviderRegions,
-      WalletProviderRegionsToValue(parameters.wallet_provider_regions));
-  engine_->SetState(kParametersVBatDeadline, parameters.vbat_deadline);
-  engine_->SetState(kParametersVBatExpired, parameters.vbat_expired);
-}
-
-mojom::RewardsParametersPtr State::GetRewardsParameters() {
-  auto parameters = mojom::RewardsParameters::New();
-  parameters->rate = GetRate();
-  parameters->auto_contribute_choice = GetAutoContributeChoice();
-  parameters->auto_contribute_choices = GetAutoContributeChoices();
-  parameters->tip_choices = GetTipChoices();
-  parameters->monthly_tip_choices = GetMonthlyTipChoices();
-  parameters->payout_status = GetPayoutStatus();
-  parameters->wallet_provider_regions = GetWalletProviderRegions();
-  parameters->vbat_deadline = GetVBatDeadline();
-  parameters->vbat_expired = GetVBatExpired();
-
-  return parameters;
-}
-
-double State::GetRate() {
-  return engine_->GetState<double>(kParametersRate);
-}
-
-double State::GetAutoContributeChoice() {
-  return engine_->GetState<double>(kParametersAutoContributeChoice);
-}
-
-std::vector<double> State::GetAutoContributeChoices() {
-  const std::string amounts_string =
-      engine_->GetState<std::string>(kParametersAutoContributeChoices);
-  std::vector<double> amounts = StringToVectorDouble(amounts_string);
-
-  const double current_amount = GetAutoContributionAmount();
-  if (!base::Contains(amounts, current_amount)) {
-    amounts.push_back(current_amount);
-    std::sort(amounts.begin(), amounts.end());
-  }
-
-  return amounts;
-}
-
-std::vector<double> State::GetTipChoices() {
-  return StringToVectorDouble(
-      engine_->GetState<std::string>(kParametersTipChoices));
-}
-
-std::vector<double> State::GetMonthlyTipChoices() {
-  return StringToVectorDouble(
-      engine_->GetState<std::string>(kParametersMonthlyTipChoices));
-}
-
-base::flat_map<std::string, std::string> State::GetPayoutStatus() {
-  return StringToPayoutStatus(
-      engine_->GetState<std::string>(kParametersPayoutStatus));
-}
-
-base::flat_map<std::string, mojom::RegionsPtr>
-State::GetWalletProviderRegions() {
-  return ValueToWalletProviderRegions(
-      *engine_,
-      engine_->GetState<base::Value>(kParametersWalletProviderRegions));
-}
-
-base::Time State::GetVBatDeadline() {
-  return engine_->GetState<base::Time>(kParametersVBatDeadline);
-}
-
-bool State::GetVBatExpired() {
-  return engine_->GetState<bool>(kParametersVBatExpired);
-}
-
-void State::SetEmptyBalanceChecked(const bool checked) {
-  engine_->database()->SaveEventLog(kEmptyBalanceChecked,
-                                    std::to_string(checked));
-  engine_->SetState(kEmptyBalanceChecked, checked);
-}
-
-bool State::GetEmptyBalanceChecked() {
-  return engine_->GetState<bool>(kEmptyBalanceChecked);
-}
-
 void State::SetServerPublisherListStamp(const uint64_t stamp) {
   engine_->SetState(kServerPublisherListStamp, stamp);
 }
 
 uint64_t State::GetServerPublisherListStamp() {
   return engine_->GetState<uint64_t>(kServerPublisherListStamp);
-}
-
-void State::SetPromotionCorruptedMigrated(const bool migrated) {
-  engine_->database()->SaveEventLog(kPromotionCorruptedMigrated,
-                                    std::to_string(migrated));
-  engine_->SetState(kPromotionCorruptedMigrated, migrated);
-}
-
-bool State::GetPromotionCorruptedMigrated() {
-  return engine_->GetState<bool>(kPromotionCorruptedMigrated);
-}
-
-void State::SetPromotionLastFetchStamp(const uint64_t stamp) {
-  engine_->SetState(kPromotionLastFetchStamp, stamp);
-}
-
-uint64_t State::GetPromotionLastFetchStamp() {
-  return engine_->GetState<uint64_t>(kPromotionLastFetchStamp);
 }
 
 std::optional<std::string> State::GetEncryptedString(const std::string& key) {
@@ -416,12 +189,8 @@ bool State::SetEncryptedString(const std::string& key,
     return false;
   }
 
-  std::string base64_string;
-  base::Base64Encode(*encrypted, &base64_string);
-
-  engine_->SetState(key, std::move(base64_string));
+  engine_->SetState(key, base::Base64Encode(*encrypted));
   return true;
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

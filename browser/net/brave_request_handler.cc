@@ -21,7 +21,7 @@
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"

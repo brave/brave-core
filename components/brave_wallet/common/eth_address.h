@@ -14,6 +14,8 @@
 
 namespace brave_wallet {
 
+inline constexpr size_t kEthAddressLength = 20u;
+
 class EthAddress {
  public:
   // public key must be uncompressed and no header byte so its length is 64
@@ -25,6 +27,9 @@ class EthAddress {
   static EthAddress FromBytes(base::span<const uint8_t> bytes);
   static EthAddress ZeroAddress();
   static bool IsValidAddress(const std::string& input);
+  static std::optional<std::string> ToEip1191ChecksumAddress(
+      const std::string& address,
+      const std::string& chain_id);
 
   EthAddress();
   EthAddress(const EthAddress& other);

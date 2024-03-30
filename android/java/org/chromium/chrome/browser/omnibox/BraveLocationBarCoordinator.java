@@ -89,7 +89,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                             omniboxSuggestionsDropdownScrollListener,
             @Nullable OpenHistoryClustersDelegate openHistoryClustersDelegate,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            boolean forcePhoneStyleOmnibox) {
+            boolean forcePhoneStyleOmnibox,
+            @Nullable View baseChromeLayout) {
         super(
                 locationBarLayout,
                 autocompleteAnchorView,
@@ -121,7 +122,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 omniboxSuggestionsDropdownScrollListener,
                 openHistoryClustersDelegate,
                 tabModelSelectorSupplier,
-                forcePhoneStyleOmnibox);
+                forcePhoneStyleOmnibox,
+                baseChromeLayout);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);

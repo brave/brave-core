@@ -111,6 +111,10 @@ bool IsUnifiedAddress(const std::string& address) {
   return address.starts_with("u1") || address.starts_with("utest1");
 }
 
+bool IsUnifiedTestnetAddress(const std::string& address) {
+  return address.starts_with("utest1");
+}
+
 std::string PubkeyToTransparentAddress(base::span<const uint8_t> pubkey,
                                        bool testnet) {
   std::vector<uint8_t> result = GetNetworkPrefix(testnet);

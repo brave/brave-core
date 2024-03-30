@@ -1,14 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
-import Preferences
+import BraveCore
 import BraveShields
 import Data
-import BraveCore
+import Foundation
 import Growth
+import Preferences
+import Shared
 import Storage
 import os.log
 
@@ -24,7 +24,7 @@ public class Migration {
     Preferences.migratePreferences(keyPrefix: keyPrefix)
     Preferences.migrateWalletPreferences()
     Preferences.migrateAdAndTrackingProtection()
-    
+
     if Preferences.General.isFirstLaunch.value {
       if UIDevice.current.userInterfaceIdiom == .phone {
         // Default Value for preference of tab bar visibility for new users changed to landscape only
@@ -35,6 +35,9 @@ public class Migration {
       Preferences.Playlist.firstLoadAutoPlay.value = true
     }
 
+    migrateDeAmpPreferences()
+    migrateDebouncePreferences()
+
     // Adding Observer to enable sync types
     NotificationCenter.default.addObserver(
       self,
@@ -42,6 +45,24 @@ public class Migration {
       name: BraveServiceStateObserver.coreServiceLoadedNotification,
       object: nil
     )
+  }
+
+  private func migrateDeAmpPreferences() {
+    guard let isDeAmpEnabled = Preferences.Shields.autoRedirectAMPPagesDeprecated.value else {
+      return
+    }
+    braveCore.deAmpPrefs.isDeAmpEnabled = isDeAmpEnabled
+    Preferences.Shields.autoRedirectAMPPagesDeprecated.value = nil
+  }
+
+  private func migrateDebouncePreferences() {
+    guard let isDebounceEnabled = Preferences.Shields.autoRedirectTrackingURLsDeprecated.value
+    else {
+      return
+    }
+    let debounceService = DebounceServiceFactory.get(privateMode: false)
+    debounceService?.isEnabled = isDebounceEnabled
+    Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
   }
 
   @objc private func enableUserSelectedTypesForSync() {
@@ -52,36 +73,37 @@ public class Migration {
 
     braveCore.syncAPI.enableSyncTypes(syncProfileService: braveCore.syncProfileService)
   }
-  
+
   public static func migrateLostTabsActiveWindow() {
     if UIApplication.shared.supportsMultipleScenes { return }
     if Preferences.Migration.lostTabsWindowIDMigration.value { return }
-    
+
     var sessionWindows = SessionWindow.all()
     var activeWindow = sessionWindows.first(where: { $0.isSelected })
     if activeWindow == nil {
       activeWindow = sessionWindows.removeFirst()
     }
-    
+
     guard let activeWindow = activeWindow else {
       Preferences.Migration.lostTabsWindowIDMigration.value = true
       return
     }
-    
+
     let windowIds = UIApplication.shared.openSessions
       .compactMap({ BrowserState.getWindowInfo(from: $0).windowId })
       .filter({ $0 != activeWindow.windowId.uuidString })
-    
-    let zombieTabs = sessionWindows
+
+    let zombieTabs =
+      sessionWindows
       .filter({ windowIds.contains($0.windowId.uuidString) })
       .compactMap({
         $0.sessionTabs
       })
       .flatMap({ $0 })
-    
+
     if !zombieTabs.isEmpty {
       let activeURLs = activeWindow.sessionTabs?.compactMap({ $0.url }) ?? []
-      
+
       // Restore private tabs if persistency is enabled
       if Preferences.Privacy.persistentPrivateBrowsing.value {
         zombieTabs.filter({ $0.isPrivate }).forEach {
@@ -90,7 +112,7 @@ public class Migration {
           }
         }
       }
-      
+
       // Restore regular tabs
       zombieTabs.filter({ !$0.isPrivate }).forEach {
         if let url = $0.url, !activeURLs.contains(url) {
@@ -98,7 +120,7 @@ public class Migration {
         }
       }
     }
-    
+
     Preferences.Migration.lostTabsWindowIDMigration.value = true
   }
 
@@ -106,7 +128,7 @@ public class Migration {
     if Preferences.Migration.coreDataCompleted.value { return }
     Preferences.Migration.coreDataCompleted.value = true
   }
-  
+
   public static func migrateAdsConfirmations(for configruation: BraveRewards.Configuration) {
     // To ensure after a user launches 1.21 that their ads confirmations, viewed count and
     // estimated payout remain correct.
@@ -119,7 +141,9 @@ public class Migration {
     let adsConfirmations = base.appendingPathComponent("ads/confirmations.json")
     let fm = FileManager.default
 
-    if !fm.fileExists(atPath: ledgerStateContainer.path) || fm.fileExists(atPath: adsConfirmations.path) {
+    if !fm.fileExists(atPath: ledgerStateContainer.path)
+      || fm.fileExists(atPath: adsConfirmations.path)
+    {
       // Nothing to migrate or already migrated
       return
     }
@@ -132,18 +156,23 @@ public class Migration {
       }
       try confirmations.write(toFile: adsConfirmations.path, atomically: true, encoding: .utf8)
     } catch {
-      adsRewardsLog.error("Failed to migrate confirmations.json to ads folder: \(error.localizedDescription)")
+      adsRewardsLog.error(
+        "Failed to migrate confirmations.json to ads folder: \(error.localizedDescription)"
+      )
     }
   }
 }
 
-fileprivate extension Preferences {
+extension Preferences {
   private final class DeprecatedPreferences {
-    static let blockAdsAndTracking = Option<Bool>(key: "shields.block-ads-and-tracking", default: true)
+    static let blockAdsAndTracking = Option<Bool>(
+      key: "shields.block-ads-and-tracking",
+      default: true
+    )
   }
-  
+
   /// Migration preferences
-  final class Migration {
+  fileprivate final class Migration {
     static let completed = Option<Bool>(key: "migration.completed", default: false)
     // This is new preference introduced in iOS 1.32.3, tracks whether we should perform database migration.
     // It should be called only for users who have not completed the migration beforehand.
@@ -151,19 +180,24 @@ fileprivate extension Preferences {
     // then do CRUD operations on the db if needed.
     static let coreDataCompleted = Option<Bool>(
       key: "migration.cd-completed",
-      default: Preferences.Migration.completed.value)
+      default: Preferences.Migration.completed.value
+    )
     /// A new preference key will be introduced in 1.44.x, indicates if Wallet Preferences migration has completed
     static let walletProviderAccountRequestCompleted =
-    Option<Bool>(key: "migration.wallet-provider-account-request-completed", default: false)
+      Option<Bool>(key: "migration.wallet-provider-account-request-completed", default: false)
 
-    static let tabMigrationToInteractionStateCompleted = Option<Bool>(key: "migration.tab-to-interaction-state", default: false)
-    
+    static let tabMigrationToInteractionStateCompleted = Option<Bool>(
+      key: "migration.tab-to-interaction-state",
+      default: false
+    )
+
     /// A more complicated ad blocking and tracking protection preference  in `1.52.x`
     /// allows a user to select between `standard`, `aggressive` and `disabled` instead of a simple on/off `Bool`
     static let adBlockAndTrackingProtectionShieldLevelCompleted = Option<Bool>(
-      key: "migration.ad-block-and-tracking-protection-shield-level-completed", default: false
+      key: "migration.ad-block-and-tracking-protection-shield-level-completed",
+      default: false
     )
-    
+
     static let lostTabsWindowIDMigration = Option<Bool>(
       key: "migration.lost-tabs-window-id-two",
       default: !UIApplication.shared.supportsMultipleScenes
@@ -171,7 +205,12 @@ fileprivate extension Preferences {
   }
 
   /// Migrate a given key from `Prefs` into a specific option
-  class func migrate<T>(keyPrefix: String, key: String, to option: Preferences.Option<T>, transform: ((T) -> T)? = nil) {
+  fileprivate class func migrate<T>(
+    keyPrefix: String,
+    key: String,
+    to option: Preferences.Option<T>,
+    transform: ((T) -> T)? = nil
+  ) {
     let userDefaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)
     let profileKey = "\(keyPrefix)\(key)"
     // Have to do two checks because T may be an Optional, since object(forKey:) returns Any? it will succeed
@@ -188,9 +227,9 @@ fileprivate extension Preferences {
       Logger.module.info("Could not migrate legacy pref with key: \"\(profileKey)\".")
     }
   }
-  
+
   /// Migrate the users preferences from prior versions of the app (<2.0)
-  class func migratePreferences(keyPrefix: String) {
+  fileprivate class func migratePreferences(keyPrefix: String) {
     if Preferences.Migration.completed.value {
       return
     }
@@ -221,7 +260,10 @@ fileprivate extension Preferences {
     let baseDir = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0]
     [baseDir + "/WebKit", baseDir + "/Caches"].forEach {
       do {
-        try FileManager.default.setAttributes([.posixPermissions: NSNumber(value: 0o755 as Int16)], ofItemAtPath: $0)
+        try FileManager.default.setAttributes(
+          [.posixPermissions: NSNumber(value: 0o755 as Int16)],
+          ofItemAtPath: $0
+        )
       } catch {
         Logger.module.error("Failed setting the directory attributes for \($0)")
       }
@@ -256,45 +298,49 @@ fileprivate extension Preferences {
     Preferences.General.isFirstLaunch.value = Preferences.DAU.lastLaunchInfo.value == nil
     Preferences.Migration.completed.value = true
   }
-  
-  class func migrateAdAndTrackingProtection() {
+
+  fileprivate class func migrateAdAndTrackingProtection() {
     guard !Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value else { return }
-    
+
     // Migrate old tracking protection setting to new BraveShields setting
-    DeprecatedPreferences.blockAdsAndTracking.migrate() { isEnabled in
+    DeprecatedPreferences.blockAdsAndTracking.migrate { isEnabled in
       if !isEnabled {
         // We only need to migrate `disabled`. `standard` is the default.
         ShieldPreferences.blockAdsAndTrackingLevel = .disabled
       }
     }
-    
+
     Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true
   }
-  
+
   /// Migrate Wallet Preferences from version <1.43
-  class func migrateWalletPreferences() {
+  fileprivate class func migrateWalletPreferences() {
     guard Preferences.Migration.walletProviderAccountRequestCompleted.value != true else { return }
-    
+
     // Migrate `allowDappProviderAccountRequests` to `allowEthProviderAccess`
-    migrate(keyPrefix: "", key: "wallet.allow-eth-provider-account-requests", to: Preferences.Wallet.allowEthProviderAccess)
-    
+    migrate(
+      keyPrefix: "",
+      key: "wallet.allow-eth-provider-account-requests",
+      to: Preferences.Wallet.allowEthProviderAccess
+    )
+
     Preferences.Migration.walletProviderAccountRequestCompleted.value = true
   }
 }
 
-private extension Preferences.Option {
+extension Preferences.Option {
   /// Migrate this preference to another one using the given transform
   ///
   /// This method will return any stored value (if it is available). If nothing is stored, the callback is not triggered.
   /// Any stored value is then removed from the container.
-  func migrate(onStoredValue: ((ValueType) -> Void)) {
+  fileprivate func migrate(onStoredValue: ((ValueType) -> Void)) {
     // Have to do two checks because T may be an Optional, since object(forKey:) returns Any? it will succeed
     // as casting to T if T is Optional even if the key doesnt exist.
     if let value = container.object(forKey: key) {
       if let value = value as? ValueType {
         onStoredValue(value)
       }
-      
+
       container.removeObject(forKey: key)
     } else {
       Logger.module.info("Could not migrate legacy pref with key: \"\(self.key)\".")

@@ -2,15 +2,16 @@
 name = "skus-cxx"
 version = "0.1.0"
 edition = "2018"
+license = "MPL-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cxx = { version = "1.0", features = [ "alloc", "std" ] }
+cxx = "1"
 async-trait = "0.1.64"
 futures = "0.3.19"
 libc = { version = "0.2" }
-skus = { path = "../lib" }
+skus = "1"
 serde_json = "1.0"
 tracing-subscriber = { version = "0.2.0", default-features = false, features = ["ansi", "ansi_term", "fmt", "registry", "sharded-slab", "thread_local"] }
 tracing = "0.1"

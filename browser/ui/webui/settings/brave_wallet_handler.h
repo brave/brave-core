@@ -40,6 +40,8 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
 
   void GetAutoLockMinutes(const base::Value::List& args);
   void GetSolanaProviderOptions(const base::Value::List& args);
+  void GetTransactionSimulationOptInStatusOptions(
+      const base::Value::List& args);
   void RemoveChain(const base::Value::List& args);
   void ResetChain(const base::Value::List& args);
   void GetNetworksList(const base::Value::List& args);
@@ -51,6 +53,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void IsNftPinningEnabled(const base::Value::List& args);
   void IsBitcoinEnabled(const base::Value::List& args);
   void IsZCashEnabled(const base::Value::List& args);
+  void IsTransactionSimulationsEnabled(const base::Value::List& args);
   void GetPinnedNftCount(const base::Value::List& args);
   void ClearPinnedNft(const base::Value::List& args);
 

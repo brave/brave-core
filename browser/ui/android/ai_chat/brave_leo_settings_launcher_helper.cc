@@ -6,6 +6,7 @@
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
 
 #include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
 #include "brave/build/android/jni_headers/BraveLeoSettingsLauncherHelper_jni.h"
 #include "content/public/browser/web_contents.h"
 
@@ -24,6 +25,20 @@ void GoPremium(content::WebContents* web_contents) {
 void ManagePremium(content::WebContents* web_contents) {
   Java_BraveLeoSettingsLauncherHelper_managePremium(
       base::android::AttachCurrentThread(), web_contents->GetJavaWebContents());
+}
+
+void OpenURL(const std::string& url) {
+  Java_BraveLeoSettingsLauncherHelper_openURL(
+      base::android::AttachCurrentThread(),
+      base::android::ConvertUTF8ToJavaString(
+          base::android::AttachCurrentThread(), url));
+}
+
+void HandleVoiceRecognition(content::WebContents* web_contents,
+                            content::WebContents* context_web_contents) {
+  Java_BraveLeoSettingsLauncherHelper_handleVoiceRecognition(
+      base::android::AttachCurrentThread(), web_contents->GetJavaWebContents(),
+      context_web_contents->GetJavaWebContents());
 }
 
 }  // namespace ai_chat

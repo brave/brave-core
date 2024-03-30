@@ -10,8 +10,8 @@
 
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"

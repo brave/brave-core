@@ -1,29 +1,28 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
 import BraveCore
+import Foundation
 import Strings
+import SwiftUI
 
 struct AssetSearchView: View {
   var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   var cryptoStore: CryptoStore
   var userAssetsStore: UserAssetsStore
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   @State private var allAssets: [AssetViewModel] = []
   @State private var allNFTMetadata: [String: NFTMetadata] = [:]
-  @State private var query = ""
   @State private var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = []
   @State private var isPresentingNetworkFilter = false
   @State private var selectedToken: BraveWallet.BlockchainToken?
   @State private var isLoadingMetadata: Bool = false
-  
+
   public init(
     keyringStore: KeyringStore,
     cryptoStore: CryptoStore,
@@ -35,30 +34,26 @@ struct AssetSearchView: View {
     self.userAssetsStore = userAssetsStore
   }
 
-  private var filteredTokens: [AssetViewModel] {
+  private var filteredTokensByNetworks: [AssetViewModel] {
     let filterByNetwork = !networkFilters.allSatisfy(\.isSelected)
-    let filterByQuery = !query.isEmpty
-    if !filterByNetwork && !filterByQuery {
+    if !filterByNetwork {
       return allAssets
     }
     let selectedNetworks = networkFilters.filter(\.isSelected)
-    let normalizedQuery = query.lowercased()
     return allAssets.filter { asset in
       if filterByNetwork,
-         !selectedNetworks.contains(where: { asset.network.chainId == $0.model.chainId }) {
+        !selectedNetworks.contains(where: { asset.network.chainId == $0.model.chainId })
+      {
         return false
-      }
-      if filterByQuery {
-        return asset.token.symbol.lowercased().contains(normalizedQuery) || asset.token.name.lowercased().contains(normalizedQuery)
       }
       return true
     }
   }
-  
+
   private var networkFilterButton: some View {
-    Button(action: {
+    Button {
       self.isPresentingNetworkFilter = true
-    }) {
+    } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
         .foregroundColor(Color(.braveBlurpleTint))
@@ -80,55 +75,49 @@ struct AssetSearchView: View {
       }
     }
   }
-  
+
   var body: some View {
     NavigationView {
-      List {
-        Section(
-          header: WalletListHeaderView(
-            title: Text(Strings.Wallet.assetsTitle)
-          )
-        ) {
-          Group {
-            if filteredTokens.isEmpty {
-              Text(Strings.Wallet.assetSearchEmpty)
-                .font(.footnote)
-                .foregroundColor(Color(.secondaryBraveLabel))
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
+      TokenList(
+        tokens: filteredTokensByNetworks
+      ) { query, viewModel in
+        viewModel.token.symbol.localizedCaseInsensitiveContains(query)
+          || viewModel.token.name.localizedCaseInsensitiveContains(query)
+      } header: {
+        TokenListHeaderView(title: Strings.Wallet.assetsTitle)
+      } emptyStateView: {
+        Text(Strings.Wallet.assetSearchEmpty)
+          .font(.footnote)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .multilineTextAlignment(.center)
+          .frame(maxWidth: .infinity)
+      } content: { viewModel in
+        Button {
+          selectedToken = viewModel.token
+        } label: {
+          SearchAssetView(
+            title: title(for: viewModel.token),
+            symbol: viewModel.token.symbol,
+            networkName: viewModel.network.chainName
+          ) {
+            if viewModel.token.isErc721 || viewModel.token.isNft {
+              NFTIconView(
+                token: viewModel.token,
+                network: viewModel.network,
+                url: allNFTMetadata[viewModel.token.id]?.imageURL,
+                shouldShowNetworkIcon: true,
+                isLoadingMetadata: isLoadingMetadata
+              )
             } else {
-              ForEach(filteredTokens) { assetViewModel in
-                Button(action: { selectedToken = assetViewModel.token }) {
-                  SearchAssetView(
-                    title: title(for: assetViewModel.token),
-                    symbol: assetViewModel.token.symbol,
-                    networkName: assetViewModel.network.chainName
-                  ) {
-                    if assetViewModel.token.isErc721 || assetViewModel.token.isNft {
-                      NFTIconView(
-                        token: assetViewModel.token,
-                        network: assetViewModel.network,
-                        url: allNFTMetadata[assetViewModel.token.id]?.imageURL,
-                        shouldShowNetworkIcon: true,
-                        isLoadingMetadata: isLoadingMetadata
-                      )
-                    } else {
-                      AssetIconView(
-                        token: assetViewModel.token,
-                        network: assetViewModel.network,
-                        shouldShowNetworkIcon: true
-                      )
-                    }
-                  }
-                }
-              }
+              AssetIconView(
+                token: viewModel.token,
+                network: viewModel.network,
+                shouldShowNetworkIcon: true
+              )
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
-      .listStyle(.insetGrouped)
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .background(
         NavigationLink(
           isActive: Binding(
@@ -140,8 +129,12 @@ struct AssetSearchView: View {
               if selectedToken.isErc721 || selectedToken.isNft {
                 NFTDetailView(
                   keyringStore: keyringStore,
-                  nftDetailStore: cryptoStore.nftDetailStore(for: selectedToken, nftMetadata: allNFTMetadata[selectedToken.id], owner: nil),
-                  buySendSwapDestination: .constant(nil)
+                  nftDetailStore: cryptoStore.nftDetailStore(
+                    for: selectedToken,
+                    nftMetadata: allNFTMetadata[selectedToken.id],
+                    owner: nil
+                  ),
+                  walletActionDestination: .constant(nil)
                 ) { metadata in
                   allNFTMetadata[selectedToken.id] = metadata
                 }
@@ -150,7 +143,9 @@ struct AssetSearchView: View {
                 }
               } else {
                 AssetDetailView(
-                  assetDetailStore: cryptoStore.assetDetailStore(for: .blockchainToken(selectedToken)),
+                  assetDetailStore: cryptoStore.assetDetailStore(
+                    for: .blockchainToken(selectedToken)
+                  ),
                   keyringStore: keyringStore,
                   networkStore: cryptoStore.networkStore
                 )
@@ -162,15 +157,16 @@ struct AssetSearchView: View {
           },
           label: {
             EmptyView()
-          })
+          }
+        )
       )
       .navigationTitle(Strings.Wallet.searchTitle.capitalized)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: {
+          Button {
             presentationMode.dismiss()
-          }) {
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }
@@ -180,11 +176,6 @@ struct AssetSearchView: View {
           Spacer()
         }
       }
-      .animation(nil, value: query)
-      .searchable(
-        text: $query,
-        placement: .navigationBarDrawer(displayMode: .always)
-      )
     }
     .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {
@@ -200,14 +191,16 @@ struct AssetSearchView: View {
     }
     .onChange(of: networkStore.allChains) { allChains in
       self.networkFilters = allChains.map { network in
-        let existingSelectionValue = self.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
+        let existingSelectionValue = self.networkFilters.first(where: {
+          $0.model.chainId == network.chainId
+        })?.isSelected
         return .init(isSelected: existingSelectionValue ?? true, model: network)
       }
     }
   }
-  
+
   private func title(for token: BraveWallet.BlockchainToken) -> String {
-    if (token.isErc721 || token.isNft), !token.tokenId.isEmpty {
+    if token.isErc721 || token.isNft, !token.tokenId.isEmpty {
       return token.nftTokenTitle
     } else {
       return token.name
@@ -220,7 +213,7 @@ struct SearchAssetView<ImageView: View>: View {
   var title: String
   var symbol: String
   let networkName: String
-  
+
   init(
     title: String,
     symbol: String,
@@ -241,16 +234,21 @@ struct SearchAssetView<ImageView: View>: View {
           .font(.footnote)
           .fontWeight(.semibold)
           .foregroundColor(Color(.bravePrimary))
-        Text(String.localizedStringWithFormat(Strings.Wallet.userAssetSymbolNetworkDesc, symbol, networkName))
-          .font(.caption)
-          .foregroundColor(Color(.braveLabel))
+        Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.userAssetSymbolNetworkDesc,
+            symbol,
+            networkName
+          )
+        )
+        .font(.caption)
+        .foregroundColor(Color(.braveLabel))
       }
       Spacer()
       Image(systemName: "chevron.right")
         .font(.body.weight(.semibold))
         .foregroundColor(Color(.separator))
     }
-    .frame(maxWidth: .infinity)
     .padding(.vertical, 6)
     .accessibilityElement()
     .accessibilityLabel("\(title), \(symbol), \(networkName)")

@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
-import BraveShared
 import BraveCore
+import BraveShared
 import Data
+import Shared
+import UIKit
 import os.log
 
 class SyncPairWordsViewController: SyncViewController {
@@ -20,7 +22,7 @@ class SyncPairWordsViewController: SyncViewController {
     $0.layer.shadowOpacity = 1.0
     $0.layer.shadowOffset = CGSize(width: 0, height: 0.5)
   }
-  
+
   private lazy var wordCountLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
@@ -31,7 +33,10 @@ class SyncPairWordsViewController: SyncViewController {
 
   private lazy var copyPasteButton: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(named: "copy_paste", in: .module, compatibleWith: nil)?.template, for: .normal)
+    button.setImage(
+      UIImage(named: "copy_paste", in: .module, compatibleWith: nil)?.template,
+      for: .normal
+    )
     button.addTarget(self, action: #selector(pasteButtonPressed), for: .touchUpInside)
     button.tintColor = .braveLabel
     return button
@@ -49,13 +54,13 @@ class SyncPairWordsViewController: SyncViewController {
     $0.isHidden = true
   }
   private let loadingSpinner = UIActivityIndicatorView(style: .large)
-  
+
   private var codewordsView = SyncCodewordsView(data: [])
   private let syncAPI: BraveSyncAPI
   weak var delegate: SyncPairControllerDelegate?
 
   // MARK: Lifecycle
-  
+
   init(syncAPI: BraveSyncAPI) {
     self.syncAPI = syncAPI
     super.init()
@@ -82,34 +87,38 @@ class SyncPairWordsViewController: SyncViewController {
     codewordsView.wordCountChangeCallback = { [weak self] count in
       self?.wordCountLabel.text = String(format: Strings.wordCount, count)
     }
-  
+
     loadingSpinner.startAnimating()
 
     navigationItem.rightBarButtonItem = UIBarButtonItem(
-      title: Strings.confirm, style: .done, target: self, action: #selector(doneButtonPressed))
+      title: Strings.confirm,
+      style: .done,
+      target: self,
+      action: #selector(doneButtonPressed)
+    )
 
     edgesForExtendedLayout = UIRectEdge()
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     codewordsView.becomeFirstResponder()
   }
-  
+
   private func doLayout() {
     view.addSubview(scrollView)
 
     scrollView.addSubview(containerView)
-    
+
     containerView.addSubview(codewordsView)
     containerView.addSubview(wordCountLabel)
     containerView.addSubview(copyPasteButton)
-    
+
     loadingView.addSubview(loadingSpinner)
 
     view.addSubview(loadingView)
     view.addSubview(useCameraButton)
-    
+
     scrollView.snp.makeConstraints {
       $0.edges.equalTo(view)
     }
@@ -154,9 +163,9 @@ class SyncPairWordsViewController: SyncViewController {
       $0.centerX.equalTo(view)
     }
   }
-  
+
   // MARK: Actions
-  
+
   @objc func useCameraButtonTapped() {
     navigationController?.popViewController(animated: true)
   }
@@ -175,9 +184,9 @@ class SyncPairWordsViewController: SyncViewController {
       self.checkCodes()
     }
   }
-  
+
   // MARK: Internal
-  
+
   /// Check Codes is performing code word validation from core side to determine
   /// the sync code words entered are valid and not expired
   /// This is pre validation before  sync chain not deleted confirmation
@@ -191,7 +200,7 @@ class SyncPairWordsViewController: SyncViewController {
 
     view.endEditing(true)
     enableNavigationPrevention()
-    
+
     timeoutSyncSetup()
 
     if syncCodeValidation == .valid {
@@ -202,7 +211,7 @@ class SyncPairWordsViewController: SyncViewController {
       disableNavigationPrevention()
     }
   }
-  
+
   /// Time out and disable loading for sync setup
   private func timeoutSyncSetup() {
     // Time out after 25 sec
@@ -211,15 +220,15 @@ class SyncPairWordsViewController: SyncViewController {
       self.showAlert()
     }
   }
-  
+
   private func showAlert(title: String? = nil, message: String? = nil) {
     if syncAPI.isInSyncGroup {
       return
     }
-    
+
     let title = title ?? Strings.unableToConnectTitle
     let message = message ?? Strings.unableToConnectDescription
-    
+
     let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
     present(alert, animated: true, completion: nil)

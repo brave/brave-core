@@ -1,11 +1,11 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import UIKit
-import BraveCore
 
 /// A set of 2 items
 public struct FeedPair: Hashable {
@@ -37,10 +37,15 @@ public enum FeedCard: Hashable {
   /// A pair of `headline` and `rating card` items where first item is a headline and second item is rating card
   case headlineRatingCardPair(_ feed: FeedItem)
   /// A group of items that can be displayed in a number of different configurations
-  case group(_ feeds: [FeedItem], title: String, direction: NSLayoutConstraint.Axis, displayBrand: Bool)
+  case group(
+    _ feeds: [FeedItem],
+    title: String,
+    direction: NSLayoutConstraint.Axis,
+    displayBrand: Bool
+  )
   /// A numbered group of items which will always be displayed in a vertical list.
   case numbered(_ feeds: [FeedItem], title: String)
-  
+
   /// Obtain an estimated height for this card given a width it will be displayed with
   public func estimatedHeight(for width: CGFloat) -> CGFloat {
     switch self {

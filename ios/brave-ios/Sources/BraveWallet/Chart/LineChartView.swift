@@ -1,11 +1,11 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import SwiftUI
 import Strings
+import SwiftUI
 
 /// A data point for a chart
 protocol DataPoint {
@@ -217,7 +217,8 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
                   selectedDataPoint = nil
                 })
             )
-        })
+        }
+      )
     }
     .padding(.bottom, 16)
     .padding(.top, 4)
@@ -290,7 +291,12 @@ private struct LineChartDescriptor: AXChartDescriptorRepresentable {
           name: "",
           isContinuous: true,
           dataPoints: values.map {
-            AXDataPoint(x: $0.date.formatted(.dateTime), y: $0.value, additionalValues: [], label: nil)
+            AXDataPoint(
+              x: $0.date.formatted(.dateTime),
+              y: $0.value,
+              additionalValues: [],
+              label: nil
+            )
           }
         )
       ]

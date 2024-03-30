@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
@@ -14,7 +14,7 @@ public struct SkusVPNCredential {
   /// How long is the SKU credential valid for.
   /// Important: This date is different from the Guardian's credential expiration date.
   public let expirationDate: Date
-  
+
   public init(guardianCredential: String, environment: String, expirationDate: Date) {
     self.guardianCredential = guardianCredential
     self.environment = environment

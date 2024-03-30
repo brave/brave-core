@@ -1,34 +1,34 @@
-/* Copyright 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import SwiftUI
 import BraveCore
-import Strings
-import DesignSystem
 import BraveUI
+import DesignSystem
 import Shared
+import Strings
+import SwiftUI
+import UIKit
 
 struct PortfolioSegmentedControl: View {
-  
+
   enum Item: Int, Equatable, CaseIterable, Identifiable, WalletSegmentedControlItem {
     case assets
     case nfts
-    
+
     var title: String {
       switch self {
       case .assets: return Strings.Wallet.assetsTitle
       case .nfts: return Strings.Wallet.nftsTitle
       }
     }
-    
+
     var id: Int { rawValue }
   }
-  
+
   @Binding var selected: Item
-  
+
   var body: some View {
     WalletSegmentedControl(
       items: Item.allCases,
@@ -52,19 +52,19 @@ protocol WalletSegmentedControlItem: Equatable, Hashable, Identifiable {
 }
 
 struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
-  
+
   let items: [Item]
   @Binding var selected: Item
   let dynamicTypeRange = (...DynamicTypeSize.xxxLarge)
-  
+
   var minHeight: CGFloat = 40
   @ScaledMetric var height: CGFloat = 40
   var maxHeight: CGFloat = 60
-  
+
   @State private var viewSize: CGSize = .zero
   @State private var location: CGPoint = .zero
   @GestureState private var isDragGestureActive: Bool = false
-  
+
   var body: some View {
     Capsule()
       .fill(Color(braveSystemName: .containerHighlight))
@@ -87,18 +87,18 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
           $0
         }
       }
-      .overlay { // selected capsule
+      .overlay {  // selected capsule
         Capsule()
           .fill(Color(braveSystemName: .containerBackground))
           .padding(4)
           .frame(width: itemWidth)
           .position(location)
       }
-      .overlay { // text for each item
+      .overlay {  // text for each item
         HStack {
           ForEach(items) { item in
             titleView(for: item)
-            
+
             if item != items.last {
               Spacer()
             }
@@ -108,50 +108,50 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
       .readSize { size in
         viewSize = size
       }
-    .frame(height: min(max(height, minHeight), maxHeight))
-    .gesture(dragGesture)
-    .onChange(of: isDragGestureActive) { isDragGestureActive in
-      if !isDragGestureActive { // cancellation of gesture, ex while scrolling
-        if let itemForLocation = item(for: location) {
-          select(itemForLocation)
+      .frame(height: min(max(height, minHeight), maxHeight))
+      .gesture(dragGesture)
+      .onChange(of: isDragGestureActive) { isDragGestureActive in
+        if !isDragGestureActive {  // cancellation of gesture, ex while scrolling
+          if let itemForLocation = item(for: location) {
+            select(itemForLocation)
+          }
         }
       }
-    }
-    .onChange(of: viewSize) { viewSize in
-      if location == .zero {
-        // set initial location
-        select(selected, animated: false)
-      } else if !isDragGestureActive {
-        // possible when accessibility size changes
-        select(selected, animated: false)
-      }
-    }
-    .osAvailabilityModifiers {
-      if #available(iOS 16, *) {
-        $0.simultaneousGesture(tapGesture)
-      } else {
-        $0
-      }
-    }
-    .accessibilityRepresentation {
-      Picker(selection: $selected) {
-        ForEach(items) { item in
-          Text(item.title).tag(item.id)
+      .onChange(of: viewSize) { viewSize in
+        if location == .zero {
+          // set initial location
+          select(selected, animated: false)
+        } else if !isDragGestureActive {
+          // possible when accessibility size changes
+          select(selected, animated: false)
         }
-      } label: {
-        EmptyView()
       }
-      .pickerStyle(.segmented)
-    }
+      .osAvailabilityModifiers {
+        if #available(iOS 16, *) {
+          $0.simultaneousGesture(tapGesture)
+        } else {
+          $0
+        }
+      }
+      .accessibilityRepresentation {
+        Picker(selection: $selected) {
+          ForEach(items) { item in
+            Text(item.title).tag(item.id)
+          }
+        } label: {
+          EmptyView()
+        }
+        .pickerStyle(.segmented)
+      }
   }
-  
+
   private func select(_ item: Item, animated: Bool = true) {
     selected = item
     withAnimation(animated ? .spring() : nil) {
       location = location(for: item)
     }
   }
-  
+
   private func titleView(for item: Item) -> some View {
     Text(item.title)
       .font(.subheadline.weight(.semibold))
@@ -160,7 +160,7 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
       .allowsHitTesting(false)
       .frame(width: itemWidth)
   }
-  
+
   private var dragGesture: some Gesture {
     DragGesture()
       .updating($isDragGestureActive) { value, state, transaction in
@@ -182,7 +182,7 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
         }
       }
   }
-  
+
   @available(iOS 16, *)
   private var tapGesture: some Gesture {
     SpatialTapGesture()
@@ -192,18 +192,18 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
         }
       }
   }
-  
+
   private var itemWidth: CGFloat {
     viewSize.width / CGFloat(items.count)
   }
-  
+
   private func location(for item: Item) -> CGPoint {
     CGPoint(
       x: xPosition(for: item),
       y: viewSize.height / 2
     )
   }
-  
+
   private func xPosition(for item: Item) -> CGFloat {
     let itemWidth = viewSize.width / CGFloat(items.count)
     let firstItemPosition = itemWidth / 2
@@ -211,7 +211,7 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
     let newX = firstItemPosition + (CGFloat(selectedIndex) * itemWidth)
     return newX
   }
-  
+
   private func item(for location: CGPoint) -> Item? {
     let percent = location.x / viewSize.width
     let itemIndex = Int(percent * CGFloat(items.count))

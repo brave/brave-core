@@ -32,9 +32,12 @@ source_set("ui") {
     "//chrome/browser/ui/webui:configs",
   ]
 
-  deps = []
+  deps = [ "//brave/components/brave_shields/core/browser" ]
+
   public_deps = []
   sources = [
+    "brave_ui_features.cc",
+    "brave_ui_features.h",
     "webui/brave_adblock_internals_ui.cc",
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
@@ -278,20 +281,32 @@ source_set("ui") {
 
   if (enable_commander) {
     sources += [
-      "commander/brave_simple_command_source.cc",
-      "commander/brave_simple_command_source.h",
+      "commander/bookmark_command_source.cc",
+      "commander/bookmark_command_source.h",
+      "commander/command_source.cc",
+      "commander/command_source.h",
       "commander/commander_service.cc",
       "commander/commander_service.h",
       "commander/commander_service_factory.cc",
       "commander/commander_service_factory.h",
       "commander/commander_service_factory.h",
+      "commander/entity_match.cc",
+      "commander/entity_match.h",
+      "commander/open_url_command_source.cc",
+      "commander/open_url_command_source.h",
       "commander/ranker.cc",
       "commander/ranker.h",
+      "commander/simple_command_source.cc",
+      "commander/simple_command_source.h",
+      "commander/tab_command_source.cc",
+      "commander/tab_command_source.h",
+      "commander/window_command_source.cc",
+      "commander/window_command_source.h",
     ]
 
     deps += [
+      "//brave/browser/ui/commander:fuzzy_finder",
       "//brave/components/commander/browser",
-      "//chrome/browser/ui/commander:fuzzy_finder",
     ]
   }
 
@@ -303,6 +318,8 @@ source_set("ui") {
       "views/bookmarks/brave_bookmark_bar_view.h",
       "views/bookmarks/brave_bookmark_context_menu.cc",
       "views/bookmarks/brave_bookmark_context_menu.h",
+      "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.cc",
+      "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.h",
       "views/brave_first_run_dialog.cc",
       "views/brave_first_run_dialog.h",
       "views/brave_layout_provider.cc",
@@ -341,6 +358,8 @@ source_set("ui") {
       "views/frame/brave_non_client_hit_test_helper.h",
       "views/frame/brave_opaque_browser_frame_view.cc",
       "views/frame/brave_opaque_browser_frame_view.h",
+      "views/frame/brave_tab_strip_region_view.cc",
+      "views/frame/brave_tab_strip_region_view.h",
       "views/frame/brave_window_frame_graphic.cc",
       "views/frame/brave_window_frame_graphic.h",
       "views/omnibox/brave_omnibox_popup_view_views.cc",
@@ -462,6 +481,8 @@ source_set("ui") {
         "views/frame/brave_browser_frame_view_win.cc",
         "views/frame/brave_browser_frame_view_win.h",
       ]
+
+      deps += [ "//chrome/browser:titlebar_config" ]
     }
 
     if (is_linux) {
@@ -547,9 +568,9 @@ source_set("ui") {
     "//brave/components/brave_rewards/resources:page_generated_resources",
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
-    "//brave/components/brave_shields/browser",
-    "//brave/components/brave_shields/common",
-    "//brave/components/brave_shields/common:mojom",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_shields/core/common:mojom",
     "//brave/components/brave_sync:crypto",
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_sync:time_limited_codes",
@@ -603,8 +624,6 @@ source_set("ui") {
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/common",
-    "//chrome/services/qrcode_generator",
-    "//chrome/services/qrcode_generator/public/cpp",
     "//components/bookmarks/common",
     "//components/content_settings/browser",
     "//components/country_codes",
@@ -619,6 +638,7 @@ source_set("ui") {
     "//components/optimization_guide/core:features",
     "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
     "//components/prefs",
+    "//components/qr_code_generator:bitmap_generator",
     "//components/resources:components_resources_grit",
     "//components/search_engines",
     "//components/sessions",
@@ -976,10 +996,7 @@ source_set("ui") {
   }
 
   if (is_win && is_official_build) {
-    sources += [
-      "//chrome/browser/ui/webui/help/version_updater_win.cc",
-      "//chrome/browser/ui/webui/help/version_updater_win.h",
-    ]
+    sources += [ "//chrome/browser/ui/webui/help/version_updater_win.cc" ]
     deps += [ "//google_update" ]
   }
 

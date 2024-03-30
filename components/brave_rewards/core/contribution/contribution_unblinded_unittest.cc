@@ -10,15 +10,11 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 
 // npm run test -- brave_unit_tests --filter=UnblindedTest.*
 
 using ::testing::_;
-
-namespace {
-const char contribution_id[] = "60770beb-3cfb-4550-a5db-deccafb5c790";
-}  // namespace
 
 namespace brave_rewards::internal {
 namespace contribution {
@@ -26,48 +22,9 @@ namespace contribution {
 class UnblindedTest : public ::testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
   Unblinded unblinded_{mock_engine_impl_};
 };
-
-TEST_F(UnblindedTest, NotEnoughFunds) {
-  EXPECT_CALL(*mock_engine_impl_.mock_database(),
-              GetSpendableUnblindedTokensByBatchTypes(_, _))
-      .Times(1)
-      .WillOnce([](const std::vector<mojom::CredsBatchType>&, auto callback) {
-        std::vector<mojom::UnblindedTokenPtr> tokens;
-
-        auto token = mojom::UnblindedToken::New();
-        token->id = 1;
-        token->token_value = "asdfasdfasdfsad=";
-        token->value = 2;
-        token->expires_at = 1574133178;
-        tokens.push_back(std::move(token));
-
-        std::move(callback).Run(std::move(tokens));
-      });
-
-  EXPECT_CALL(*mock_engine_impl_.mock_database(),
-              GetContributionInfo(contribution_id, _))
-      .Times(1)
-      .WillOnce([](const std::string& id, auto callback) {
-        auto info = mojom::ContributionInfo::New();
-        info->contribution_id = contribution_id;
-        info->amount = 5.0;
-        info->type = mojom::RewardsType::ONE_TIME_TIP;
-        info->step = mojom::ContributionStep::STEP_NO;
-        info->retry_count = 0;
-
-        std::move(callback).Run(std::move(info));
-      });
-
-  base::MockCallback<ResultCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::NOT_ENOUGH_FUNDS)).Times(1);
-  unblinded_.Start({mojom::CredsBatchType::PROMOTION}, contribution_id,
-                   callback.Get());
-
-  task_environment_.RunUntilIdle();
-}
 
 TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
   std::vector<mojom::ContributionPublisherPtr> publisher_list;

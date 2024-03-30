@@ -14,13 +14,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace wallet_provider {
 
 class Transfer {
  public:
-  explicit Transfer(RewardsEngineImpl& engine);
+  explicit Transfer(RewardsEngine& engine);
 
   virtual ~Transfer();
 
@@ -61,7 +61,7 @@ class Transfer {
   virtual void CommitTransaction(ResultCallback,
                                  mojom::ExternalTransactionPtr) const = 0;
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace wallet_provider

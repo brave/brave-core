@@ -407,4 +407,91 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
   }
 }
 
+TEST_F(ZCashWalletServiceUnitTest, ValidateZCashAddress) {
+  // https://github.com/Electric-Coin-Company/zcash-android-wallet-sdk/blob/v2.0.6/sdk-incubator-lib/src/main/java/cash/z/ecc/android/sdk/fixture/WalletFixture.kt
+
+  // Normal transparent address - mainnet
+  {
+    base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
+        callback;
+    EXPECT_CALL(callback, Run(mojom::ZCashAddressValidationResult::Success));
+    zcash_wallet_service_->ValidateZCashAddress(
+        "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3EvQ", false, callback.Get());
+  }
+
+  // Normal transparent address - testnet
+  {
+    base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
+        callback;
+    EXPECT_CALL(callback, Run(mojom::ZCashAddressValidationResult::Success));
+    zcash_wallet_service_->ValidateZCashAddress(
+        "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpTE", true, callback.Get());
+  }
+
+  // Testnet mismatch
+  {
+    base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
+        callback;
+    EXPECT_CALL(callback,
+                Run(mojom::ZCashAddressValidationResult::NetworkMismatch));
+    zcash_wallet_service_->ValidateZCashAddress(
+        "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpTE", false, callback.Get());
+  }
+
+  // Wrong transparent address
+  {
+    base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
+        callback;
+    EXPECT_CALL(callback,
+                Run(mojom::ZCashAddressValidationResult::InvalidTransparent));
+    zcash_wallet_service_->ValidateZCashAddress("t1xxx", false, callback.Get());
+  }
+
+  // Unified address - mainnet
+  {
+    base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
+        callback;
+    EXPECT_CALL(callback, Run(mojom::ZCashAddressValidationResult::Success));
+    zcash_wallet_service_->ValidateZCashAddress(
+        "u1lmy8anuylj33arxh3sx7ysq54tuw7zehsv6pdeeaqlrhkjhm3uvl9egqxqfd7hcsp3ms"
+        "zp6jxxx0gsw0ldp5wyu95r4mfzlueh8h5xhrjqgz7xtxp3hvw45dn4gfrz5j54ryg6reyf"
+        "0",
+        false, callback.Get());
+  }
+
+  // Unified address - testnet
+  {
+    base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
+        callback;
+    EXPECT_CALL(callback, Run(mojom::ZCashAddressValidationResult::Success));
+    zcash_wallet_service_->ValidateZCashAddress(
+        "utest1vergg5jkp4xy8sqfasw6s5zkdpnxvfxlxh35uuc3me7dp596y2r05t6dv9htwe3p"
+        "f8ksrfr8ksca2lskzjanqtl8uqp5vln3zyy246ejtx86vqftp73j7jg9099jxafyjhfm6u"
+        "956j3",
+        true, callback.Get());
+  }
+
+  // Unified address network mismatch
+  {
+    base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
+        callback;
+    EXPECT_CALL(callback,
+                Run(mojom::ZCashAddressValidationResult::NetworkMismatch));
+    zcash_wallet_service_->ValidateZCashAddress(
+        "utest1vergg5jkp4xy8sqfasw6s5zkdpnxvfxlxh35uuc3me7dp596y2r05t6dv9htwe3p"
+        "f8ksrfr8ksca2lskzjanqtl8uqp5vln3zyy246ejtx86vqftp73j7jg9099jxafyjhfm6u"
+        "956j3",
+        false, callback.Get());
+  }
+
+  // Wrong unified address
+  {
+    base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
+        callback;
+    EXPECT_CALL(callback,
+                Run(mojom::ZCashAddressValidationResult::InvalidUnified));
+    zcash_wallet_service_->ValidateZCashAddress("u1xx", false, callback.Get());
+  }
+}
+
 }  // namespace brave_wallet

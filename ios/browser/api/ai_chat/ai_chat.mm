@@ -150,6 +150,14 @@
   driver_->SetShouldSendPageContents(should_send);
 }
 
+- (NSString*)defaultModelKey {
+  return base::SysUTF8ToNSString(driver_->GetDefaultModel());
+}
+
+- (void)setDefaultModelKey:(NSString*)modelKey {
+  driver_->SetDefaultModel(base::SysNSStringToUTF8(modelKey));
+}
+
 - (void)clearConversationHistory {
   driver_->ClearConversationHistory();
 }
@@ -189,10 +197,12 @@
 - (void)sendFeedback:(NSString*)category
             feedback:(NSString*)feedback
             ratingId:(NSString*)ratingId
+         sendPageUrl:(bool)sendPageUrl
           completion:(void (^)(bool))completion {
-  driver_->SendFeedback(
-      base::SysNSStringToUTF8(category), base::SysNSStringToUTF8(feedback),
-      base::SysNSStringToUTF8(ratingId), base::BindOnce(completion));
+  driver_->SendFeedback(base::SysNSStringToUTF8(category),
+                        base::SysNSStringToUTF8(feedback),
+                        base::SysNSStringToUTF8(ratingId), sendPageUrl,
+                        base::BindOnce(completion));
 }
 
 - (bool)canShowPremiumPrompt {

@@ -111,6 +111,7 @@ def DownloadFile(url: str, output: str):
   except Exception as e:
     raise RuntimeError(f'Can\'t download {url}') from e
   data = f.read()
+  os.makedirs(os.path.dirname(output), exist_ok=True)
   with open(output, 'wb') as output_file:
     output_file.write(data)
 

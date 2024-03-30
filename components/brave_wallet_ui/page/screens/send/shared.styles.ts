@@ -28,6 +28,7 @@ export interface TextProps {
     | 'warning'
     | 'primary'
     | 'secondary'
+    | 'info'
   maintainHeight?: boolean
   textAlign?: 'left' | 'right'
 }
@@ -36,13 +37,15 @@ export const Text = styled.span<TextProps>`
   --primary: ${leo.color.text.primary};
   --secondary: ${leo.color.text.secondary};
   --tertiary: ${leo.color.text.tertiary};
+  --info: ${leo.color.systemfeedback.infoText};
+  --error: ${leo.color.systemfeedback.errorText};
+  --warning: ${leo.color.systemfeedback.warningText};
   // ToDo: We should to remove these old color variables
   // in a refactor.
   --text01: ${(p) => p.theme.color.text01};
   --text02: ${(p) => p.theme.color.text02};
   --text03: ${(p) => p.theme.color.text03};
   --success: ${(p) => p.theme.color.successIcon};
-  --warning: ${leo.color.systemfeedback.warningText};
   --line-height: ${(p) =>
     p.textSize === '12px' ? '18px' : p.textSize === '22px' ? '24px' : '20px'};
   font-family: 'Poppins';

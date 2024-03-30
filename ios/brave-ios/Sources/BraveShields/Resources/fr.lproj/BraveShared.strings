@@ -46,6 +46,24 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Regarder plutôt dans le lecteur Brave";
 
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Revenir en arrière ";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Parce que vous avez demandé un blocage agressif des traqueurs et des publicités, Brave bloque ce site avant la première connexion au réseau.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave a empêché le site suivant de charger :";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Ce site risque de vous pister lorsque vous consultez d'autres sites";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Continuer";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Domaine bloqué";
+
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Activer l'API JS de contrôle global de la confidentialité";
 

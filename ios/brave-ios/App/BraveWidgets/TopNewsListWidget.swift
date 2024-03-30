@@ -3,16 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import WidgetKit
-import SwiftUI
-import CodableHelpers
-import Shared
-import DesignSystem
-import os
 import AVFoundation
-import BraveWidgetsModels
-import UIKit
 import BraveShared
+import BraveWidgetsModels
+import CodableHelpers
+import DesignSystem
+import Shared
+import SwiftUI
+import UIKit
+import WidgetKit
+import os
 
 struct TopNewsListWidget: Widget {
   var body: some WidgetConfiguration {
@@ -22,9 +22,9 @@ struct TopNewsListWidget: Widget {
     .supportedFamilies([.systemMedium, .systemLarge])
     .configurationDisplayName(Strings.Widgets.newsClusteringWidgetTitle)
     .description(Strings.Widgets.newsClusteringWidgetDescription)
-#if swift(>=5.9)
+    #if swift(>=5.9)
     .contentMarginsDisabled()
-#endif
+    #endif
   }
 }
 
@@ -37,7 +37,7 @@ private struct TopNewsListEntry: TimelineEntry {
 private struct TopNewsListWidgetProvider: TimelineProvider {
   private let model: NewsTopicsModel = .live
   private let thumbnailSize: CGSize = .init(width: 192, height: 192)
-  
+
   func getSnapshot(in context: Context, completion: @escaping (TopNewsListEntry) -> Void) {
     Task {
       let grouping = context.family == .systemMedium ? 2 : 5
@@ -47,7 +47,8 @@ private struct TopNewsListWidgetProvider: TimelineProvider {
       completion(.init(date: Date(), topics: topics, images: images))
     }
   }
-  func getTimeline(in context: Context, completion: @escaping (Timeline<TopNewsListEntry>) -> Void) {
+  func getTimeline(in context: Context, completion: @escaping (Timeline<TopNewsListEntry>) -> Void)
+  {
     Task {
       let grouping = context.family == .systemMedium ? 2 : 5
       let interval = context.family == .systemMedium ? 15 : 20
@@ -55,7 +56,11 @@ private struct TopNewsListWidgetProvider: TimelineProvider {
       let topics = allTopics.splitEvery(grouping)
       let images = await model.fetchImageThumbnailsForTopics(allTopics, thumbnailSize)
       let entries: [TopNewsListEntry] = zip(topics, topics.indices).map({ topics, index in
-          .init(date: Date().addingTimeInterval(interval.minutes * TimeInterval(index)), topics: topics, images: images)
+        .init(
+          date: Date().addingTimeInterval(interval.minutes * TimeInterval(index)),
+          topics: topics,
+          images: images
+        )
       })
       completion(.init(entries: entries, policy: .after(Date().addingTimeInterval(60.minutes))))
     }
@@ -69,7 +74,7 @@ private struct TopNewsListView: View {
   @Environment(\.pixelLength) var pixelLength
   @Environment(\.widgetFamily) var widgetFamily
   var entry: TopNewsListEntry
-  
+
   private var headerView: some View {
     HStack {
       HStack(spacing: 4) {
@@ -82,7 +87,12 @@ private struct TopNewsListView: View {
           .font(.system(size: 14, weight: .bold, design: .rounded))
       }
       Spacer()
-      Link(destination: URL(string: "\(AppURLScheme.appURLScheme)://shortcut?path=\(WidgetShortcut.braveNews.rawValue)")!) {
+      Link(
+        destination: URL(
+          string:
+            "\(AppURLScheme.appURLScheme)://shortcut?path=\(WidgetShortcut.braveNews.rawValue)"
+        )!
+      ) {
         Text(Strings.Widgets.newsClusteringReadMoreButtonTitle)
           .foregroundColor(Color(.braveBlurpleTint))
           .font(.system(size: 13, weight: .semibold, design: .rounded))
@@ -92,7 +102,7 @@ private struct TopNewsListView: View {
     .padding(.vertical, widgetFamily == .systemLarge ? 12 : 8)
     .unredacted()
   }
-  
+
   var body: some View {
     Group {
       if let topics = entry.topics, !topics.isEmpty {
@@ -106,7 +116,13 @@ private struct TopNewsListView: View {
                   VStack(alignment: .leading, spacing: 2) {
                     Text(topic.title)
                       .lineLimit(widgetFamily == .systemLarge ? 3 : 2)
-                      .font(.system(size: widgetFamily == .systemLarge ? 14 : 13, weight: .semibold, design: .rounded))
+                      .font(
+                        .system(
+                          size: widgetFamily == .systemLarge ? 14 : 13,
+                          weight: .semibold,
+                          design: .rounded
+                        )
+                      )
                       .foregroundColor(.primary)
                     Text(topic.publisherName)
                       .lineLimit(1)
@@ -125,7 +141,12 @@ private struct TopNewsListView: View {
                         .aspectRatio(contentMode: .fill)
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(Color.primary.opacity(0.3), lineWidth: pixelLength))
+                    .overlay(
+                      RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(
+                        Color.primary.opacity(0.3),
+                        lineWidth: pixelLength
+                      )
+                    )
                 }
               }
             }
@@ -137,7 +158,13 @@ private struct TopNewsListView: View {
       } else {
         ZStack(alignment: .top) {
           Text(Strings.Widgets.newsClusteringErrorLabel)
-            .font(.system(size: widgetFamily == .systemLarge ? 26 : 18, weight: .semibold, design: .rounded))
+            .font(
+              .system(
+                size: widgetFamily == .systemLarge ? 26 : 18,
+                weight: .semibold,
+                design: .rounded
+              )
+            )
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background {
@@ -172,7 +199,7 @@ struct TopNewsListView_PreviewProvider: PreviewProvider {
   struct PreviewView: View {
     let model = NewsTopicsModel.mock
     @State private var topics: [NewsTopic] = []
-    
+
     var body: some View {
       TopNewsListView(entry: .init(date: .now, topics: topics, images: [:]))
         .task {

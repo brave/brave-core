@@ -111,9 +111,10 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                     try {
                         BraveRewardsNativeWorker rewardsNativeWorker =
                                 BraveRewardsNativeWorker.getInstance();
-                        if (braveActivity != null && rewardsNativeWorker != null
-                                && !rewardsNativeWorker.isRewardsEnabled()
-                                && rewardsNativeWorker.IsSupported()) {
+                            if (braveActivity != null
+                                    && rewardsNativeWorker != null
+                                    && !rewardsNativeWorker.isRewardsEnabled()
+                                    && rewardsNativeWorker.isSupported()) {
                                 createNotification(context, intent);
                         }
                     } catch (IllegalStateException exc) {

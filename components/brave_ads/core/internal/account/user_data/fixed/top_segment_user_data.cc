@@ -31,7 +31,7 @@ base::Value::Dict BuildTopSegmentUserData(const TransactionInfo& transaction) {
     return user_data;
   }
 
-  if (transaction.confirmation_type != ConfirmationType::kViewed) {
+  if (transaction.confirmation_type != ConfirmationType::kViewedImpression) {
     return user_data;
   }
 

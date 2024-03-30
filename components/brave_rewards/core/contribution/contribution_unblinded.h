@@ -16,18 +16,17 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace contribution {
 
 class Unblinded {
  public:
-  explicit Unblinded(RewardsEngineImpl& engine);
+  explicit Unblinded(RewardsEngine& engine);
   ~Unblinded();
 
   void Start(const std::vector<mojom::CredsBatchType>& types,
@@ -131,8 +130,7 @@ class Unblinded {
       double amount,
       const std::vector<mojom::ContributionPublisherPtr>& publisher_list);
 
-  const raw_ref<RewardsEngineImpl> engine_;
-  credential::CredentialsPromotion credentials_promotion_;
+  const raw_ref<RewardsEngine> engine_;
   credential::CredentialsSKU credentials_sku_;
   base::WeakPtrFactory<Unblinded> weak_factory_{this};
 };

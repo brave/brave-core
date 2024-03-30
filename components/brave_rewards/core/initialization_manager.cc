@@ -7,19 +7,17 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/core/api/api.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/promotion/promotion.h"
+#include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/recovery/recovery.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
 
 namespace brave_rewards::internal {
 
-InitializationManager::InitializationManager(RewardsEngineImpl& engine)
+InitializationManager::InitializationManager(RewardsEngine& engine)
     : RewardsEngineHelper(engine) {}
 
 InitializationManager::~InitializationManager() = default;
@@ -92,11 +90,8 @@ void InitializationManager::InitializeHelpers() {
   engine().publisher()->SetPublisherServerListTimer();
   engine().contribution()->SetAutoContributeTimer();
   engine().contribution()->SetMonthlyContributionTimer();
-  engine().promotion()->Refresh(false);
   engine().contribution()->Initialize();
-  engine().promotion()->Initialize();
-  engine().api()->Initialize();
-  engine().recovery()->Check();
+  engine().Get<RewardsParametersProvider>().StartAutoUpdate();
   engine().uphold()->CheckEligibility();
   engine().Get<LinkageChecker>().CheckLinkage();
 }

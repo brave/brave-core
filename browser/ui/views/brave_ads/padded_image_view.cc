@@ -27,7 +27,7 @@ PaddedImageView::PaddedImageView() {
   SetBorder(views::CreateEmptyBorder(kBorderInset));
 }
 
-BEGIN_METADATA(PaddedImageView, views::ImageView)
+BEGIN_METADATA(PaddedImageView)
 END_METADATA
 
 }  // namespace brave_ads

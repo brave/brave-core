@@ -1,0 +1,12 @@
+diff --git a/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm b/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
+index 0825f3f1ef87120a9b82d3f52289dc54d2d6f233..b0f31dd7fd32f892edf2f4f24a18aef0448dfc52 100644
+--- a/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
++++ b/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
+@@ -1930,6 +1930,7 @@ void ExtractUnderlines(NSAttributedString* string,
+ }
+ 
+ - (id)accessibilityParent {
++  BRAVE_ACCESSIBILITY_PARENT
+   if (_accessibilityParent)
+     return NSAccessibilityUnignoredAncestor(_accessibilityParent);
+   return [super accessibilityParent];

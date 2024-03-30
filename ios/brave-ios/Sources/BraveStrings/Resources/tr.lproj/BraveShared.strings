@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Aç";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Ödüller";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Brave Ödülleri";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Kalkanları ve Gizlilik";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Kalkanlar ve Gizlilik";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Reklamlar ve diğer ürpertici şeyler engellendi";
@@ -496,7 +502,8 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Uygulama bilgilerini panoya kopyalayın.";
 
-/* Copy app info to clipboard action sheet action. */
+/* Copy app info to clipboard action sheet action.
+   View all version info action sheet action. */
 "copyAppSizeInfoToClipboard" = "Uygulama boyutu bilgilerini panoya kopyala.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -942,6 +949,9 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Daha fazla bilgi edinin";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Kaydedilmiş Giriş Bilgileri kalıcı olarak kaldırılacaktır.";
@@ -1407,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Web Sitesi Aç";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo, doğrudan tarayıcınıza dâhil edilmiş, gücünü yapay zekâdan alan bir akıllı asistandır";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "Günün en iyi hikayeleri özel bir haber akışında";
@@ -3370,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "Brave News";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "Haberler";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "İlginizi çeken konuları takip edin";
 
@@ -3573,9 +3589,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave, sesli aramalarınızı kaydetmez veya paylaşmaz.";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "Sesli Arama";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "etkinleştir";

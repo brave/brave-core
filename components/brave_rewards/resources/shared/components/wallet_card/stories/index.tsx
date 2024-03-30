@@ -59,7 +59,7 @@ export function Wallet () {
         <div style={{ width: '375px' }}>
           <WalletCard
             userType={'connected'}
-            balance={optional(0)}
+            balance={optional(123.032)}
             externalWallet={externalWallet}
             providerPayoutStatus={'complete'}
             minEarningsThisMonth={0.25}
@@ -73,7 +73,6 @@ export function Wallet () {
             summaryData={summaryData}
             autoContributeEnabled={true}
             onExternalWalletAction={actionLogger('onExternalWalletAction')}
-            onViewStatement={actionLogger('onViewStatement')}
             onManageAds={actionLogger('onManageAds')}
           />
         </div>

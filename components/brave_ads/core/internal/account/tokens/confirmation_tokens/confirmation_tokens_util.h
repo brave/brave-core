@@ -13,6 +13,10 @@
 
 namespace brave_ads {
 
+class ConfirmationTokens;
+
+ConfirmationTokens& GetConfirmationTokens();
+
 std::optional<ConfirmationTokenInfo> MaybeGetConfirmationToken();
 
 void AddConfirmationTokens(const ConfirmationTokenList& confirmation_tokens);

@@ -19,9 +19,9 @@ export const navWidth = 240
 
 export const Wrapper = styled.div<{
   noPadding?: boolean
-  isPanel?: boolean
+  noTopPosition?: boolean
 }>`
-  --layout-top-position: ${(p) => (p.isPanel ? 0 : layoutTopPosition)}px;
+  --layout-top-position: ${(p) => (p.noTopPosition ? 0 : layoutTopPosition)}px;
   position: fixed;
   top: 0px;
   bottom: 0px;
@@ -155,6 +155,7 @@ export const CardHeader = styled.div<{
   shadowOpacity?: number
   backgroundOpacity?: number
   isPanel?: boolean
+  isAndroid?: boolean
   useDarkBackground?: boolean
 }>`
   --shadow-opacity: ${(p) =>
@@ -177,7 +178,8 @@ export const CardHeader = styled.div<{
     p.useDarkBackground
       ? 'var(--dark-background-color)'
       : leo.color.container.background};
-  border-radius: ${(p) => (p.isPanel ? '0px' : '24px 24px 0px 0px')};
+  border-radius: ${(p) =>
+    p.isPanel || p.isAndroid ? '0px' : '24px 24px 0px 0px'};
   width: 100%;
   padding: ${(p) => (p.isPanel ? '0px' : '0px 32px')};
   position: relative;
@@ -309,7 +311,7 @@ export const BlockForHeight = styled.div`
 
 export const FeatureRequestButtonWrapper = styled.div`
   display: flex;
-  @media screen and (max-width: ${layoutSmallWidth}px) {
+  @media screen and (max-width: 1445px) {
     display: none;
   }
 `

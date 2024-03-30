@@ -13,13 +13,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace wallet {
 
 class WalletCreate {
  public:
-  explicit WalletCreate(RewardsEngineImpl& engine);
+  explicit WalletCreate(RewardsEngine& engine);
 
   void CreateWallet(std::optional<std::string>&& geo_country,
                     CreateRewardsWalletCallback callback);
@@ -30,7 +30,7 @@ class WalletCreate {
                 std::optional<std::string>&& geo_country,
                 Result&&);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace wallet

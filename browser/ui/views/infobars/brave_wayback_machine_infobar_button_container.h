@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_BUTTON_CONTAINER_H_
 #define BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_BUTTON_CONTAINER_H_
@@ -33,7 +33,7 @@ class BraveWaybackMachineInfoBarButtonContainer : public views::View {
   void StopThrobber();
 
   // views::View overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
   gfx::Size CalculatePreferredSize() const override;
 
  private:

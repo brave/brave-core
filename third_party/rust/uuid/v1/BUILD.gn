@@ -1,6 +1,11 @@
-# Copyright 2023 The Chromium Authors
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
 
 import("//build/rust/cargo_crate.gni")
 
@@ -8,52 +13,33 @@ cargo_crate("lib") {
   crate_name = "uuid"
   epoch = "1"
   crate_type = "rlib"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/uuid/v1/crate/benches/format_str.rs",
-    "//brave/third_party/rust/uuid/v1/crate/benches/parse_str.rs",
-    "//brave/third_party/rust/uuid/v1/crate/benches/v4.rs",
-    "//brave/third_party/rust/uuid/v1/crate/examples/random_uuid.rs",
-    "//brave/third_party/rust/uuid/v1/crate/examples/sortable_uuid.rs",
-    "//brave/third_party/rust/uuid/v1/crate/examples/uuid_macro.rs",
-    "//brave/third_party/rust/uuid/v1/crate/examples/windows_guid.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/builder.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/error.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/external.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/external/arbitrary_support.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/external/serde_support.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/external/slog_support.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/fmt.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/lib.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/macros.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/md5.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/parser.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/rng.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/sha1.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/timestamp.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/v1.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/v3.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/v4.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/v5.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/v6.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/v7.rs",
-    "//brave/third_party/rust/uuid/v1/crate/src/v8.rs",
-    "//brave/third_party/rust/uuid/v1/crate/tests/macros.rs",
-    "//brave/third_party/rust/uuid/v1/crate/tests/ui/compile_fail/invalid_parse.rs",
-    "//brave/third_party/rust/uuid/v1/crate/tests/ui/compile_pass/renamed.rs",
-    "//brave/third_party/rust/uuid/v1/crate/tests/ui/compile_pass/valid.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/external.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/external/arbitrary_support.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/external/serde_support.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/external/slog_support.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/fmt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/md5.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/rng.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/sha1.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/timestamp.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/v1.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/v3.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/v4.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/v5.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/v6.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/v7.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uuid-1.3.0/src/v8.rs",
   ]
-  inputs = [
-    "//brave/third_party/rust/uuid/v1/crate/CODE_OF_CONDUCT.md",
-    "//brave/third_party/rust/uuid/v1/crate/CONTRIBUTING.md",
-    "//brave/third_party/rust/uuid/v1/crate/README.md",
-  ]
+  inputs = []
 
-  # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2018"
   cargo_pkg_version = "1.3.0"
@@ -64,7 +50,9 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-  deps = [ "//third_party/rust/getrandom/v0_2:lib" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [ "//brave/third_party/rust/getrandom/v0_2:lib" ]
   features = [
     "getrandom",
     "rng",

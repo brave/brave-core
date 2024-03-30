@@ -7,9 +7,10 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"

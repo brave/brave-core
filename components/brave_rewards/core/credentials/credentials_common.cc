@@ -12,13 +12,12 @@
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace credential {
 
-CredentialsCommon::CredentialsCommon(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+CredentialsCommon::CredentialsCommon(RewardsEngine& engine) : engine_(engine) {}
 
 CredentialsCommon::~CredentialsCommon() = default;
 

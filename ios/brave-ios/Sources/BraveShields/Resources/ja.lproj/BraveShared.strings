@@ -46,6 +46,24 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "代わりにBraveプレーヤーで視聴";
 
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "戻る";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "トラッカーや広告のブロックをリクエストされたため、Braveは初回のネットワーク接続の前にこのサイトをブロックしています。";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Braveは、次のサイトの読み込みを防止しました：";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "このサイトは他のサイト間であなたの行動を追跡する可能性があります";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "続行する";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "ドメインがブロックされました";
+
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Global Privacy Control JS APIを有効にする";
 

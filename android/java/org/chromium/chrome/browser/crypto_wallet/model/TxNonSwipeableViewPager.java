@@ -68,7 +68,7 @@ public class TxNonSwipeableViewPager extends ViewPager {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    public class ViewPagerScroller extends Scroller {
+    public static class ViewPagerScroller extends Scroller {
         ViewPagerScroller(Context context) {
             super(context, new DecelerateInterpolator());
         }

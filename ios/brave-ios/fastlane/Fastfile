@@ -7,46 +7,31 @@ fastlane_version "2.86.0"
 default_platform :ios
 
 platform :ios do
-  desc "Run Unit Tests"
-  lane :test do |options|
-    run_tests(
-      project: "App/Client.xcodeproj",
-      scheme: "Debug",
-      devices: ["iPhone 15"],
-      code_coverage: true,
-      output_types: "junit",
-      output_files: "junit.xml",
-      ensure_devices_found: true,
-      derived_data_path: "../../../out/DerivedData",
-      skip_testing: [
-        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
-        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
-        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
-        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInSolTxIfAvailable",
-        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInEthTxIfAvailable",
-        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionEthNetwork",
-        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionSolNetwork",
-        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
-        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
-        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
-        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork"
-      ]
-    )
+  desc "Builds the app for testing"
+  lane :build_for_testing do |options|
+    defaultScanParams = scan_params()
+    run_tests(defaultScanParams.merge!({
+      build_for_testing: true
+    }))
+  end
 
-    run_tests(
-      project: "App/Client.xcodeproj",
-      scheme: "Debug",
-      devices: ["iPad (10th generation)"],
-      code_coverage: true,
+  desc "Runs unit tests on a previous build (assumes build_for_testing is run)"
+  lane :test_without_building do |options|
+    defaultScanParams = scan_params()
+    run_tests(defaultScanParams.merge!({
+      test_without_building: true,
+      devices: ["iPhone 15"],
       ensure_devices_found: true,
-      output_types: "junit",
+      skip_testing: skipped_tests()
+    }))
+
+    run_tests(defaultScanParams.merge!({
+      test_without_building: true,
+      devices: ["iPad (10th generation)"],
+      ensure_devices_found: true,
       output_files: "junit-ipad.xml",
-      derived_data_path: "../../../out/DerivedData",
-      skip_testing: [
-        "ClientTests/UserAgentTests"
-      ],
-      xcargs: "-testPlan Brave_iPad"
-    )
+      testplan: "Brave_iPad"
+    }))
   end
 
   desc "Creates a Brave Beta build for TestFlight."
@@ -63,6 +48,7 @@ platform :ios do
           "com.brave.ios.browser.beta.BrowserIntents" => "Brave iOS Beta Intents Extension",
           "com.brave.ios.browser.beta.BraveWidgetsExtension" => "Brave iOS Beta Widgets Extension",
           "com.brave.ios.browser.beta.BraveWireGuard" => "Brave iOS Beta Wireguard Extension",
+          "com.brave.ios.browser.beta.AutoFillProvider" => "Brave iOS Beta AutoFill Provider",
         },
       }
     }
@@ -83,6 +69,7 @@ platform :ios do
           "com.brave.ios.BrowserBeta.BrowserIntents" => "Brave iOS Nightly Intents Extension",
           "com.brave.ios.BrowserBeta.BraveWidgetsExtension" => "Brave iOS Nightly Widgets Extension",
           "com.brave.ios.BrowserBeta.BraveWireGuard" => "Brave iOS Nightly Wireguard Extension",
+          "com.brave.ios.BrowserBeta.AutoFillProvider" => "Brave iOS Nightly AutoFill Provider",
         },
       }
     }
@@ -103,6 +90,7 @@ platform :ios do
           "com.brave.ios.browser.BrowserIntents" => "Brave iOS Release Intents Extension",
           "com.brave.ios.browser.BraveWidgetsExtension" => "Brave iOS Release Widgets Extension",
           "com.brave.ios.browser.BraveWireGuard" => "Brave iOS Release WireGuard Extension",
+          "com.brave.ios.browser.AutoFillProvider" => "Brave iOS Release AutoFill Provider",
         },
         manageAppVersionAndBuildNumber: false
       },
@@ -118,6 +106,7 @@ platform :ios do
       changelog: "Bug fixes & improvements",
       distribute_external: true,
       skip_waiting_for_build_processing: false,
+      reject_build_waiting_for_review: true,
       ipa: "build/Client.ipa",
       groups: ["Brave Internal"]
     }
@@ -148,6 +137,33 @@ platform :ios do
       output_directory: "build",
       derived_data_path: "../../../out/DerivedData",
     }
+  end
+
+  private_lane :scan_params do
+    {
+      project: "App/Client.xcodeproj",
+      scheme: "Debug (No Core)",
+      code_coverage: true,
+      output_types: "junit",
+      output_files: "junit.xml",
+      derived_data_path: "../../../out/DerivedData"
+    }
+  end
+
+  private_lane :skipped_tests do
+    [
+      "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
+      "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
+      "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
+      "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInSolTxIfAvailable",
+      "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInEthTxIfAvailable",
+      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionEthNetwork",
+      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionSolNetwork",
+      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
+      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
+      "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
+      "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork"
+    ]
   end
 
 end

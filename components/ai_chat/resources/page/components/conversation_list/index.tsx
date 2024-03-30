@@ -16,6 +16,8 @@ import ContextMenuAssistant from '../context_menu_assistant'
 import { getLocale } from '$web-common/locale'
 import SiteTitle from '../site_title'
 import Quote from '../quote'
+import ActionTypeLabel from '../action_type_label'
+import LongPageInfo from '../alerts/long_page_info'
 
 const CodeBlock = React.lazy(async () => ({ default: (await import('../code_block')).default.Block }))
 const CodeInline = React.lazy(async () => ({ default: (await import('../code_block')).default.Inline }))
@@ -99,8 +101,8 @@ function ConversationList(props: ConversationListProps) {
 
   const longPressProps = useLongPress({
     onLongPress: (e: React.TouchEvent) => {
-      const target = e.target as HTMLElement
-      const id = target.getAttribute('data-id')
+      const currentTarget = e.currentTarget as HTMLElement
+      const id = currentTarget.getAttribute('data-id')
       if (id === null) return
       showAssistantMenu(parseInt(id))
     },
@@ -122,6 +124,7 @@ function ConversationList(props: ConversationListProps) {
           const isHuman = turn.characterType === mojom.CharacterType.HUMAN
           const isAIAssistant = turn.characterType === mojom.CharacterType.ASSISTANT
           const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
+          const showLongPageContentInfo = id === 1 && isAIAssistant && context.shouldShowLongPageWarning
 
           const turnContainer = classnames({
             [styles.turnContainerMobile]: context.isMobile,
@@ -168,10 +171,14 @@ function ConversationList(props: ConversationListProps) {
                 <div
                   className={styles.message}
                 >
-                  {<FormattedTextRenderer text={turn.text} />}
+                  {!turn.selectedText &&
+                      <FormattedTextRenderer text={turn.text} />}
+                  {turn.selectedText &&
+                      <ActionTypeLabel actionType={turn.actionType} />}
                   {isLoading && <span className={styles.caret} />}
                   {turn.selectedText && <Quote text={turn.selectedText} />}
                   {showSiteTitle && <div className={styles.siteTitleContainer}><SiteTitle size="default" /></div>}
+                  {showLongPageContentInfo && <LongPageInfo />}
                 </div>
               </div>
               {isAIAssistant ? (

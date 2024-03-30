@@ -15,7 +15,6 @@ import {
   getMockedTransactionInfo,
   mockEthAccountInfo
 } from '../common/constants/mocks'
-import { mockWalletState } from '../stories/mock-data/mock-wallet-state'
 import {
   findTransactionToken,
   getTransactionGasLimit,
@@ -24,10 +23,13 @@ import {
   transactionHasSameAddressError,
   isSendingToKnownTokenContractAddress
 } from './tx-utils'
-import { mockERC20Token } from '../stories/mock-data/mock-asset-options'
+import {
+  mockERC20Token,
+  mockErc20TokensList
+} from '../stories/mock-data/mock-asset-options'
 
 const tokenList = [
-  ...mockWalletState.fullTokenList,
+  ...mockErc20TokensList,
   { ...mockERC20Token, contractAddress: '0xdeadbeef' },
   mockERC20Token
 ]

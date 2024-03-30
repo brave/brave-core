@@ -7,6 +7,7 @@ import * as React from 'react'
 import styled, { createGlobalStyle, css } from 'styled-components'
 import { requestAnimationFrameThrottle } from '../../../../common/throttle'
 import { defaultState } from '../../../storage/new_tab_storage'
+import { spacing } from '@brave/leo/tokens/css'
 
 const breakpointLargeBlocks = '980px'
 const breakpointEveryBlock = '870px'
@@ -67,8 +68,8 @@ const StyledPage = styled('div') <PageProps>`
 
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-  position: fixed;
-  top: 0;
+  position: sticky;
+  top: calc(100vh - var(--ntp-fixed-content-height));
   z-index: 6;
   width: 100%;
   display: grid;
@@ -278,6 +279,10 @@ export const GridItemNavigationBraveNews = styled('div') <{}>`
   [data-show-news-prompt] & {
     bottom: 120px;
   }
+
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing.l};
 `
 
 export const Footer = styled('footer') <{}>`
@@ -365,7 +370,6 @@ function getPageBackground(p: HasImageProps) {
 export const App = styled('div') <AppProps & HasImageProps>`
   --bg-opacity: ${p => p.imageHasLoaded ? 1 : 0};
   position: relative;
-  padding-top: var(--ntp-fixed-content-height, "0px");
   box-sizing: border-box;
   display: flex;
   flex: 1;

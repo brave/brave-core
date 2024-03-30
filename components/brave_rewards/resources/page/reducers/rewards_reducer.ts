@@ -29,6 +29,22 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.userType = userTypeFromMojo(action.payload.userType)
       break
     }
+    case types.IS_TERMS_OF_SERVICE_UPDATE_REQUIRED: {
+      chrome.send('brave_rewards.isTermsOfServiceUpdateRequired')
+      break
+    }
+    case types.ON_IS_TERMS_OF_SERVICE_UPDATE_REQUIRED: {
+      state = {
+        ...state,
+        isUserTermsOfServiceUpdateRequired: action.payload.updateRequired
+      }
+      break
+    }
+    case types.ACCEPT_TERMS_OF_SERVICE_UPDATE: {
+      chrome.send('brave_rewards.acceptTermsOfServiceUpdate')
+      chrome.send('brave_rewards.isTermsOfServiceUpdateRequired')
+      break
+    }
     case types.GET_IS_AUTO_CONTRIBUTE_SUPPORTED: {
       chrome.send('brave_rewards.isAutoContributeSupported')
       break

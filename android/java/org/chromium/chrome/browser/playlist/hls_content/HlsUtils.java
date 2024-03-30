@@ -5,13 +5,17 @@
 package org.chromium.chrome.browser.playlist.hls_content;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.media3.common.util.UriUtil;
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
 
+import com.brave.playlist.playback_service.VideoPlaybackService;
 import com.brave.playlist.util.HLSParsingUtil;
 import com.brave.playlist.util.MediaUtils;
+import com.brave.playlist.util.PlaylistUtils;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.PathUtils;
 import org.chromium.chrome.browser.playlist.PlaylistStreamingObserverImpl;
@@ -36,7 +40,6 @@ public class HlsUtils {
     }
 
     private static int sSofar;
-    private static PlaylistStreamingObserverImpl sPlaylistStreamingObserverImpl;
 
     public static void getManifestFile(
             Context context,
@@ -49,8 +52,11 @@ public class HlsUtils {
         String mediaPath = getHlsMediaFilePath(playlistItem);
         String hlsManifestFilePath = getHlsManifestFilePath(playlistItem);
         final String manifestUrl = getHlsResolutionManifestUrl(context, playlistItem);
-        playlistService.requestStreamingQuery(playlistItem.id, manifestUrl, GET_METHOD);
-
+        if (TextUtils.isEmpty(manifestUrl)) {
+            return;
+        }
+        PlaylistStreamingObserverImpl playlistStreamingObserverImpl =
+                new PlaylistStreamingObserverImpl();
         PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate
                 playlistStreamingObserverImplDelegate =
                         new PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate() {
@@ -75,11 +81,12 @@ public class HlsUtils {
                             @Override
                             public void onDataCompleted() {
                                 try {
-                                    if (sPlaylistStreamingObserverImpl != null) {
-                                        sPlaylistStreamingObserverImpl.close();
-                                        sPlaylistStreamingObserverImpl.destroy();
+                                    if (playlistStreamingObserverImpl != null
+                                            && playlistStreamingObserverImpl.getDelegate()
+                                                    != null) {
+                                        playlistStreamingObserverImpl.close();
+                                        playlistStreamingObserverImpl.destroy();
                                     }
-                                    playlistService.clearObserverForStreaming();
                                     Queue<Segment> segmentsQueue =
                                             HLSParsingUtil.getContentSegments(
                                                     hlsManifestFilePath, manifestUrl);
@@ -90,9 +97,9 @@ public class HlsUtils {
                                 }
                             }
                         };
-        sPlaylistStreamingObserverImpl =
-                new PlaylistStreamingObserverImpl(playlistStreamingObserverImplDelegate);
-        playlistService.addObserverForStreaming(sPlaylistStreamingObserverImpl);
+        playlistStreamingObserverImpl.setDelegate(playlistStreamingObserverImplDelegate);
+        playlistService.requestStreamingQuery(
+                playlistItem.id, manifestUrl, GET_METHOD, playlistStreamingObserverImpl);
     }
 
     public static void getHLSFile(
@@ -110,8 +117,8 @@ public class HlsUtils {
         }
         String mediaPath = getHlsMediaFilePath(playlistItem);
         final String manifestUrl = getHlsResolutionManifestUrl(context, playlistItem);
-        playlistService.requestStreamingQuery(
-                playlistItem.id, UriUtil.resolve(manifestUrl, segment.url), GET_METHOD);
+        PlaylistStreamingObserverImpl playlistStreamingObserverImpl =
+                new PlaylistStreamingObserverImpl();
         PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate
                 playlistStreamingObserverImplDelegate =
                         new PlaylistStreamingObserverImpl.PlaylistStreamingObserverImplDelegate() {
@@ -132,11 +139,12 @@ public class HlsUtils {
                             @Override
                             public void onDataCompleted() {
                                 try {
-                                    if (sPlaylistStreamingObserverImpl != null) {
-                                        sPlaylistStreamingObserverImpl.close();
-                                        sPlaylistStreamingObserverImpl.destroy();
+                                    if (playlistStreamingObserverImpl != null
+                                            && playlistStreamingObserverImpl.getDelegate()
+                                                    != null) {
+                                        playlistStreamingObserverImpl.close();
+                                        playlistStreamingObserverImpl.destroy();
                                     }
-                                    playlistService.clearObserverForStreaming();
                                     sSofar++;
                                     Segment newSegment = segmentsQueue.peek();
                                     if (newSegment != null) {
@@ -159,9 +167,12 @@ public class HlsUtils {
                                 }
                             }
                         };
-        sPlaylistStreamingObserverImpl =
-                new PlaylistStreamingObserverImpl(playlistStreamingObserverImplDelegate);
-        playlistService.addObserverForStreaming(sPlaylistStreamingObserverImpl);
+        playlistStreamingObserverImpl.setDelegate(playlistStreamingObserverImplDelegate);
+        playlistService.requestStreamingQuery(
+                playlistItem.id,
+                UriUtil.resolve(manifestUrl, segment.url),
+                GET_METHOD,
+                playlistStreamingObserverImpl);
     }
 
     private static String getPlaylistIdFromFile(PlaylistItem playlistItem) {
@@ -218,5 +229,10 @@ public class HlsUtils {
         if (mediaFile.exists()) {
             mediaFile.delete();
         }
+    }
+
+    public static boolean isVideoPlaybackServiceRunning() {
+        return PlaylistUtils.isServiceRunning(
+                ContextUtils.getApplicationContext(), VideoPlaybackService.class);
     }
 }

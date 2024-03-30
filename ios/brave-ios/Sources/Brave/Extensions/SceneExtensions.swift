@@ -1,11 +1,11 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import UIKit
 import LocalAuthentication
+import UIKit
 
 extension UIWindowScene {
   /// A single scene should only have ONE browserViewController
@@ -20,13 +20,13 @@ extension UIWindowScene {
       })
     })
   }
-  
+
   /// A scene should only ever have one browserViewController
   /// Returns the first instance of `BrowserViewController` that is found in the current scene
   public var browserViewController: BrowserViewController? {
     return browserViewControllers.first
   }
-  
+
   /// Returns the browser colors of the current window scene
   var browserColors: any BrowserColors {
     if let bvc = browserViewController, bvc.privateBrowsingManager.isPrivateBrowsing {
@@ -37,7 +37,10 @@ extension UIWindowScene {
 }
 
 extension UIViewController {
-  func askForLocalAuthentication(viewType: AuthViewType = .general, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
+  func askForLocalAuthentication(
+    viewType: AuthViewType = .general,
+    completion: ((Bool, LAError.Code?) -> Void)? = nil
+  ) {
     guard let windowProtection = currentScene?.browserViewController?.windowProtection else {
       completion?(false, nil)
       return
@@ -49,8 +52,10 @@ extension UIViewController {
       completion?(true, nil)
     } else {
       windowProtection.presentAuthenticationForViewController(
-        determineLockWithPasscode: false, viewType: viewType) { status, error in
-          completion?(status, error)
+        determineLockWithPasscode: false,
+        viewType: viewType
+      ) { status, error in
+        completion?(status, error)
       }
     }
   }

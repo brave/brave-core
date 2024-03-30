@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_STORAGE_TAB_HELPER_H_
 
 #include "base/memory/ref_counted.h"
-#include "brave/components/brave_shields/browser/blocked_domain_1pes_lifetime.h"
+#include "brave/components/brave_shields/content/browser/blocked_domain_1pes_lifetime.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 using brave_shields::BlockedDomain1PESLifetime;

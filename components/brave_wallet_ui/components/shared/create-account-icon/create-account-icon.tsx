@@ -24,7 +24,7 @@ import { useAccountOrb } from '../../../common/hooks/use-orb'
 interface Props {
   account?: BraveWallet.AccountInfo
   externalProvider?: ExternalWalletProvider | null
-  size?: 'big' | 'medium' | 'small' | 'tiny'
+  size?: 'huge' | 'big' | 'medium' | 'small' | 'tiny'
   marginRight?: number
   round?: boolean
 }

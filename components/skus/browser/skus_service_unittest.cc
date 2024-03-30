@@ -9,7 +9,6 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -254,7 +253,7 @@ class SkusServiceTestUnitTest : public testing::Test {
           callback_called = true;
           result = summary;
         }));
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
     EXPECT_TRUE(callback_called);
     return result;
   }
@@ -265,8 +264,9 @@ class SkusServiceTestUnitTest : public testing::Test {
   }
   PrefService* prefs() { return &prefs_; }
 
- private:
   base::test::TaskEnvironment task_environment_;
+
+ private:
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;
   TestingPrefServiceSimple prefs_;
   network::TestURLLoaderFactory url_loader_factory_;

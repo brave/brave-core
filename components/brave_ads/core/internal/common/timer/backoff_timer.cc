@@ -22,8 +22,8 @@ base::Time BackoffTimer::StartWithPrivacy(const base::Location& location,
                                           base::OnceClosure user_task) {
   timer_.Stop();
 
-  const base::TimeDelta backoff_delay = CalculateDelay(delay);
-  return timer_.StartWithPrivacy(location, backoff_delay, std::move(user_task));
+  return timer_.StartWithPrivacy(location, CalculateDelay(delay),
+                                 std::move(user_task));
 }
 
 bool BackoffTimer::IsRunning() const {

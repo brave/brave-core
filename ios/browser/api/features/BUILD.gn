@@ -1,0 +1,36 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("features") {
+  sources = [
+    "features.h",
+    "features.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common:common",
+    "//brave/components/ai_chat/core/common/buildflags:buildflags",
+    "//brave/components/brave_component_updater/browser:browser",
+    "//brave/components/brave_news/common:common",
+    "//brave/components/brave_rewards/common:features",
+    "//brave/components/brave_search/common",
+    "//brave/components/brave_search_conversion:brave_search_conversion",
+    "//brave/components/brave_shields/core/common:common",
+    "//brave/components/brave_sync:features",
+    "//brave/components/brave_wallet/common:buildflags",
+    "//brave/components/brave_wallet/common:common",
+    "//brave/components/de_amp/common",
+    "//brave/components/debounce/core/common",
+    "//brave/components/ipfs:ipfs",
+    "//brave/components/ipfs/buildflags:buildflags",
+    "//brave/components/ntp_background_images/browser:browser",
+    "//brave/components/p3a:p3a",
+    "//brave/components/skus/common:common",
+    "//build:blink_buildflags",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}

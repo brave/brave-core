@@ -277,12 +277,12 @@ export const SignInWithEthereum = (props: Props) => {
                 {getLocale('braveWalletSignTransactionMessageTitle')}:
               </Title>
               <VerticalSpace space='4px' />
-              <URLText
+              <MessageText
                 textSize='14px'
                 isBold={false}
               >
                 {data.signData.ethSiweData?.statement ?? ''}
-              </URLText>
+              </MessageText>
               <VerticalSpace space='16px' />
               <Title
                 isBold={true}

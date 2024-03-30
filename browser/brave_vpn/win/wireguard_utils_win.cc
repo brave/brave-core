@@ -16,16 +16,17 @@
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/path_service.h"
 #include "base/process/launch.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/win/com_init_util.h"
 #include "base/win/scoped_bstr.h"
-#include "brave/components/brave_vpn/common/win/utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/brave_wireguard_manager_idl.h"
 #include "brave/browser/brave_vpn/win/service_constants.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/brave_wireguard_manager_idl.h"
 
 namespace brave_vpn {
 
@@ -76,11 +77,9 @@ bool EnableBraveVpnWireguardServiceImpl(const std::string& config) {
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
-  std::string encoded_config;
-  base::Base64Encode(config, &encoded_config);
   DWORD error_code = 0;
-  if (FAILED(service->EnableVpn(base::UTF8ToWide(encoded_config).c_str(),
-                                &error_code))) {
+  if (FAILED(service->EnableVpn(
+          base::UTF8ToWide(base::Base64Encode(config)).c_str(), &error_code))) {
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
@@ -193,7 +192,8 @@ void WireguardGenerateKeypair(
 }
 
 void ShowBraveVpnStatusTrayIcon() {
-  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath();
+  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath(
+      base::PathService::CheckedGet(base::DIR_ASSETS));
   base::CommandLine interactive_cmd(executable_path);
   interactive_cmd.AppendSwitch(
       brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);

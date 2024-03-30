@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import org.chromium.base.Log;
@@ -26,7 +24,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 
 /**
  * Initial onboarding fragment to setup Brave Wallet.
@@ -36,7 +34,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
 
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
-    private AnimationDrawable mAnimationDrawable;
+    private boolean mButtonClicked;
 
     public OnboardingInitWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
         mRestartSetupAction = restartSetupAction;
@@ -46,6 +44,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mButtonClicked = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Api33AndPlusBackPressHelper.create(
                     this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
@@ -61,17 +60,16 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAnimationDrawable =
-                (AnimationDrawable)
-                        ContextCompat.getDrawable(
-                                requireContext(), R.drawable.onboarding_gradient_animation);
-        view.findViewById(R.id.setup_wallet_root).setBackground(mAnimationDrawable);
-        mAnimationDrawable.setEnterFadeDuration(10);
-        mAnimationDrawable.setExitFadeDuration(5000);
+        setAnimatedBackground(view.findViewById(R.id.setup_wallet_root));
 
         CardView newWallet = view.findViewById(R.id.new_wallet_card_view);
         newWallet.setOnClickListener(
                 v -> {
+                    if (mButtonClicked) {
+                        return;
+                    }
+                    mButtonClicked = true;
+
                     checkOnBraveActivity(true, false);
                     if (mOnNextPage != null) {
                         // Add a little delay for a smooth ripple effect animation.
@@ -83,6 +81,11 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
         CardView restoreWallet = view.findViewById(R.id.restore_wallet_card_view);
         restoreWallet.setOnClickListener(
                 v -> {
+                    if (mButtonClicked) {
+                        return;
+                    }
+                    mButtonClicked = true;
+
                     checkOnBraveActivity(false, true);
                     if (mOnNextPage != null) {
                         // Add a little delay for a smooth ripple effect animation.
@@ -108,13 +111,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mAnimationDrawable.start();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mAnimationDrawable.stop();
+        mButtonClicked = false;
     }
 
     @Override
@@ -136,9 +133,9 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "checkOnBraveActivity " + e);
             Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
-            intent.putExtra(Utils.RESTART_WALLET_ACTIVITY, true);
-            intent.putExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
-            intent.putExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
+            intent.putExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY, true);
+            intent.putExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
+            intent.putExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             intent.setAction(Intent.ACTION_VIEW);
             startActivity(intent);

@@ -25,7 +25,11 @@ import {
   isNativeAsset
 } from '../../../utils/asset-utils'
 import { handleEndpointError } from '../../../utils/api-utils'
-import { getAccountBalancesKey } from '../../../utils/balance-utils'
+import {
+  createEmptyTokenBalancesRegistry,
+  getAccountBalancesKey,
+  setBalance
+} from '../../../utils/balance-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import { cacher } from '../../../utils/query-cache-utils'
@@ -219,7 +223,7 @@ export const tokenBalancesEndpoints = ({
           zcashWalletService
         } = api
 
-        const tokenBalancesRegistry: TokenBalancesRegistry = {}
+        const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
 
         const includeRewardsBalance = arg.networks.some(getIsRewardsNetwork)
 
@@ -241,50 +245,47 @@ export const tokenBalancesEndpoints = ({
             rewardsBalance
           ) {
             // add rewards info to balance registry
-            tokenBalancesRegistry[externalRewardsProvider] = {
-              [BraveWallet.MAINNET_CHAIN_ID]: {
-                [rewardsToken.contractAddress]: new Amount(rewardsBalance)
-                  .multiplyByDecimals(rewardsToken.decimals)
-                  .format()
-              }
-            }
+            setBalance(
+              // TODO(apaymyshev): we need a better way to handle such fake
+              // account
+              { uniqueKey: externalRewardsProvider },
+              BraveWallet.MAINNET_CHAIN_ID,
+              rewardsToken.contractAddress,
+              new Amount(rewardsBalance)
+                .multiplyByDecimals(rewardsToken.decimals)
+                .format(),
+              tokenBalancesRegistry
+            )
           }
         }
 
         function onBalance(
-          accountBalanceKey: string,
+          accountId: BraveWallet.AccountId,
           chainId: string,
           contractAddress: string,
           balance: string
         ) {
-          // update registry for persisted cache
-          if (!tokenBalancesRegistry[accountBalanceKey]) {
-            tokenBalancesRegistry[accountBalanceKey] = {}
-          }
-          if (!tokenBalancesRegistry[accountBalanceKey][chainId]) {
-            tokenBalancesRegistry[accountBalanceKey][chainId] = {}
-          }
-          tokenBalancesRegistry[accountBalanceKey][chainId][contractAddress] =
-            balance
+          setBalance(
+            accountId,
+            chainId,
+            contractAddress,
+            balance,
+            tokenBalancesRegistry
+          )
         }
 
         function onAnkrBalances(
-          accountKey: string,
+          accountId: BraveWallet.AccountId,
           ankrAssetBalances: BraveWallet.AnkrAssetBalance[]
         ) {
-          // update registry for persisted cache
-          if (!tokenBalancesRegistry[accountKey]) {
-            tokenBalancesRegistry[accountKey] = {}
-          }
-
           for (const { asset, balance } of ankrAssetBalances) {
-            if (!tokenBalancesRegistry[accountKey][asset.chainId]) {
-              tokenBalancesRegistry[accountKey][asset.chainId] = {}
-            }
-
-            tokenBalancesRegistry[accountKey][asset.chainId][
-              asset.contractAddress
-            ] = balance
+            setBalance(
+              accountId,
+              asset.chainId,
+              asset.contractAddress,
+              balance,
+              tokenBalancesRegistry
+            )
           }
         }
 
@@ -329,9 +330,7 @@ export const tokenBalancesEndpoints = ({
                       )
                     : []
 
-                const accountKey = getAccountBalancesKey(accountId)
-
-                onAnkrBalances(accountKey, ankrAssetBalances)
+                onAnkrBalances(accountId, ankrAssetBalances)
 
                 const nonAnkrSupportedAccountNetworks =
                   nonAnkrSupportedNetworks.filter((network) =>
@@ -582,7 +581,9 @@ async function fetchAccountCurrentNativeBalance({
     // LOCALHOST will error until a local instance is detected
     // return a '0' balance until it's detected.
     if (error !== 0) {
-      console.log(`getBalance error: ${errorMessage}`)
+      console.log(
+        `getBalance (LOCALHOST - ${accountId.coin}) error: ${errorMessage}`
+      )
       return Amount.zero().format()
     }
 
@@ -613,7 +614,11 @@ async function fetchAccountCurrentNativeBalance({
       )
 
       if (error && errorMessage) {
-        throw new Error(`getBalance error: ${errorMessage}`)
+        throw new Error(
+          `getBalance (${
+            accountId.coin === BraveWallet.CoinType.FIL ? 'FIL' : 'ETH'
+          } - ${token.chainId}) error: ${errorMessage}`
+        )
       }
 
       return Amount.normalize(balance)
@@ -625,7 +630,9 @@ async function fetchAccountCurrentNativeBalance({
       )
 
       if (errorMessage || balance === null) {
-        throw new Error(`getBalance error: ${errorMessage || 'Unknown error'}`)
+        throw new Error(
+          `getBalance (BTC) error: ${errorMessage || 'Unknown error'}`
+        )
       }
 
       return Amount.normalize(balance.totalBalance.toString())
@@ -638,7 +645,9 @@ async function fetchAccountCurrentNativeBalance({
       )
 
       if (errorMessage || balance === null) {
-        throw new Error(`getBalance error: ${errorMessage || 'Unknown error'}`)
+        throw new Error(
+          `getBalance (ZEC) error: ${errorMessage || 'Unknown error'}`
+        )
       }
 
       return Amount.normalize(balance.totalBalance.toString())
@@ -689,7 +698,17 @@ async function fetchAccountTokenCurrentBalance({
           )
 
       if (error && errorMessage) {
-        throw new Error(errorMessage || 'Unknown error')
+        throw new Error(
+          errorMessage +
+            `-- ERC${token.isErc721 ? '721' : '20'} -- ${token.chainId} -- ${
+              token.contractAddress
+            }` ||
+            `Unknown ERC${
+              token.isErc721 ? '721' : '20'
+            } Balance error for chain: ${token.chainId} and contract: ${
+              token.contractAddress
+            }`
+        )
       }
 
       return Amount.normalize(balance)
@@ -704,7 +723,12 @@ async function fetchAccountTokenCurrentBalance({
         )
 
       if (error && errorMessage) {
-        throw new Error(errorMessage || 'Unknown error')
+        throw new Error(
+          errorMessage + `-- SPL (${token.chainId})` ||
+            `Unknown SPL balance error on chain: ${
+              token.chainId //
+            } and contract: ${token.contractAddress}`
+        )
       }
 
       return token.isNft ? uiAmountString : amount
@@ -731,14 +755,12 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
   braveWalletService: BraveWallet.BraveWalletServiceRemote
   onBalance: (
-    accountBalanceKey: string,
+    accountId: BraveWallet.AccountId,
     chainId: string,
     contractAddress: string,
     balance: string
   ) => void | Promise<void>
 }): Promise<void> {
-  const accountBalanceKey = getAccountBalancesKey(arg.accountId)
-
   // Construct arg to query native token for use in case the
   // optimized balance fetcher kicks in.
   const nativeTokenArg = arg.tokens
@@ -769,7 +791,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
 
     if (balance) {
       onBalance(
-        accountBalanceKey,
+        arg.accountId,
         arg.chainId,
         nativeTokenArg.contractAddress,
         balance
@@ -809,7 +831,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
       for (const { balance, contractAddress } of result.balances) {
         if (balance) {
           onBalance(
-            accountBalanceKey,
+            arg.accountId,
             arg.chainId,
             contractAddress,
             new Amount(balance).format()
@@ -837,12 +859,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
 
     for (const { mint, amount } of result.balances) {
       if (amount) {
-        onBalance(
-          accountBalanceKey,
-          arg.chainId,
-          mint,
-          Amount.normalize(amount)
-        )
+        onBalance(arg.accountId, arg.chainId, mint, Amount.normalize(amount))
       }
     }
 
@@ -865,7 +882,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
       })
 
       if (result && new Amount(result).gt(0)) {
-        onBalance(accountBalanceKey, arg.chainId, token.contractAddress, result)
+        onBalance(arg.accountId, arg.chainId, token.contractAddress, result)
       }
     }
   )
@@ -885,13 +902,13 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
   braveWalletService: BraveWallet.BraveWalletServiceRemote
   onBalance?: (
-    accountBalanceKey: string,
+    accountId: BraveWallet.AccountId,
     chainId: string,
     contractAddress: string,
     balance: string
   ) => void | Promise<void>
 }): Promise<TokenBalancesRegistry> {
-  const tokenBalancesRegistry: TokenBalancesRegistry = {}
+  const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
 
   await eachLimit(args, 1, async (arg: GetTokenBalancesForChainIdArg) => {
     await fetchAccountTokenBalanceRegistryForChainId({
@@ -902,15 +919,14 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
       zcashWalletService,
       onBalance:
         onBalance ||
-        function (accountBalanceKey, chainId, contractAddress, balance) {
-          if (!tokenBalancesRegistry[accountBalanceKey]) {
-            tokenBalancesRegistry[accountBalanceKey] = {}
-          }
-          if (!tokenBalancesRegistry[accountBalanceKey][chainId]) {
-            tokenBalancesRegistry[accountBalanceKey][chainId] = {}
-          }
-          tokenBalancesRegistry[accountBalanceKey][chainId][contractAddress] =
-            balance
+        function (accountId, chainId, contractAddress, balance) {
+          setBalance(
+            accountId,
+            chainId,
+            contractAddress,
+            balance,
+            tokenBalancesRegistry
+          )
         }
     })
   })

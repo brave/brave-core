@@ -14,15 +14,10 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
-if (is_official_build) {
-  assert(brave_zero_ex_api_key != "")
-}
-
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
     "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"",
-    "BRAVE_ZERO_EX_API_KEY=\"$brave_zero_ex_api_key\"",
     "ENABLE_BITCOIN_BY_DEFAULT=$enable_bitcoin_by_default",
     "ENABLE_ZCASH_BY_DEFAULT=$enable_zcash_by_default",
   ]
@@ -153,6 +148,7 @@ source_set("unit_tests") {
     "common_utils_unittest.cc",
     "encoding_utils_unittest.cc",
     "eth_abi_utils_unittest.cc",
+    "eth_address_unittest.cc",
     "eth_request_helper_unittest.cc",
     "eth_sign_typed_data_helper_unittest.cc",
     "f4_jumble_unittest.cc",

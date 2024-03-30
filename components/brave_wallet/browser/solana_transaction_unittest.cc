@@ -103,11 +103,15 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   ASSERT_TRUE(
       RestoreWallet(keyring_service(), kMnemonicDivideCruise, "brave", false));
 
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
+  auto selected_dapp_account = AddAccount(keyring_service(), "Account 1");
+  ASSERT_TRUE(selected_dapp_account);
   auto from_account = AddAccount(keyring_service(), "Account 2");
   ASSERT_TRUE(from_account);
   ASSERT_EQ(from_account->address, kFromAccount);
-  SetSelectedAccount(from_account->account_id);
+
+  // Set selected account to be different from the one we expect to be used in
+  // signing the transaction (from_account).
+  SetSelectedAccount(selected_dapp_account->account_id);
 
   uint64_t last_valid_block_height = 3090;
 
@@ -163,7 +167,9 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0  // data
   };
   std::string expected_tx = base::Base64Encode(expected_bytes);
-  EXPECT_EQ(transaction.GetSignedTransaction(keyring_service()), expected_tx);
+  EXPECT_EQ(transaction.GetSignedTransaction(keyring_service(),
+                                             from_account->account_id),
+            expected_tx);
 
   // Test three signers where one is fee payer and two signatures are from
   // sign_transaction_param. Create two transactions where signer accounts
@@ -214,7 +220,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   ASSERT_TRUE(Base58Decode(sign_tx_param->encoded_serialized_msg,
                            &message_bytes, kSolanaMaxTxSize, false));
   std::vector<uint8_t> signature =
-      keyring_service()->SignMessageBySolanaKeyring(*from_account->account_id,
+      keyring_service()->SignMessageBySolanaKeyring(from_account->account_id,
                                                     message_bytes);
   expected_bytes.insert(expected_bytes.end(), signature.begin(),
                         signature.end());
@@ -225,14 +231,18 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   expected_bytes.insert(expected_bytes.end(), message_bytes.begin(),
                         message_bytes.end());
   expected_tx = base::Base64Encode(expected_bytes);
-  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service()), expected_tx);
+  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service(),
+                                              from_account->account_id),
+            expected_tx);
 
   // Test when there are redundant signatures not in signers, we will only use
   // those in signers.
   sign_tx_param->signatures.push_back(mojom::SignaturePubkeyPair::New(
       std::vector<uint8_t>({64, 3}), kTestAccount2));
   transaction2.set_sign_tx_param(sign_tx_param.Clone());
-  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service()), expected_tx);
+  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service(),
+                                              from_account->account_id),
+            expected_tx);
 
   // Test when num of signatures available is less than signers.size in message,
   // the # of signature should still be the same to signers.size and unavaliable
@@ -247,11 +257,14 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   expected_bytes.insert(expected_bytes.end(), kSolanaSignatureSize * 2, 0);
   expected_bytes.insert(expected_bytes.end(), message_bytes.begin(),
                         message_bytes.end());
-  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service()),
+  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service(),
+                                              from_account->account_id),
             base::Base64Encode(expected_bytes));
 
   // Test key_service is nullptr.
-  EXPECT_TRUE(transaction2.GetSignedTransaction(nullptr).empty());
+  EXPECT_TRUE(
+      transaction2.GetSignedTransaction(nullptr, from_account->account_id)
+          .empty());
 
   std::vector<uint8_t> oversized_data(1232, 1);
   instruction = SolanaInstruction(
@@ -265,7 +278,10 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       kRecentBlockhash, last_valid_block_height, kFromAccount, {instruction});
   ASSERT_TRUE(msg4);
   SolanaTransaction transaction4 = SolanaTransaction(std::move(*msg4));
-  EXPECT_TRUE(transaction4.GetSignedTransaction(keyring_service()).empty());
+  EXPECT_TRUE(
+      transaction4
+          .GetSignedTransaction(keyring_service(), from_account->account_id)
+          .empty());
 }
 
 TEST_F(SolanaTransactionUnitTest, FromSignedTransactionBytes) {
@@ -776,11 +792,15 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   ASSERT_TRUE(
       RestoreWallet(keyring_service(), kMnemonicDivideCruise, "brave", false));
 
-  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1"));
+  auto selected_dapp_account = AddAccount(keyring_service(), "Account 1");
+  ASSERT_TRUE(selected_dapp_account);
   auto from_account = AddAccount(keyring_service(), "Account 2");
   ASSERT_TRUE(from_account);
   ASSERT_EQ(from_account->address, kFromAccount);
-  SetSelectedAccount(from_account->account_id);
+
+  // Set selected account to be different from the one we expect to be used in
+  // signing the transaction (from_account).
+  SetSelectedAccount(selected_dapp_account->account_id);
 
   // Empty message is invalid
   std::vector<uint8_t> signature_bytes;
@@ -790,8 +810,8 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   EXPECT_TRUE(Base58Decode(signature, &signature_bytes, kSolanaSignatureSize));
   SolanaTransaction transaction(mojom::SolanaMessageVersion::kLegacy, "", 0, "",
                                 SolanaMessageHeader(), {}, {}, {});
-  EXPECT_EQ(transaction.GetSignedTransactionBytes(keyring_service(),
-                                                  &signature_bytes),
+  EXPECT_EQ(transaction.GetSignedTransactionBytes(
+                keyring_service(), from_account->account_id, &signature_bytes),
             std::nullopt);
 
   // Valid
@@ -805,15 +825,16 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
       {instruction_one_signer});
   ASSERT_TRUE(message);
   SolanaTransaction transaction2(std::move(*message));
-  EXPECT_NE(transaction2.GetSignedTransactionBytes(keyring_service(),
-                                                   &signature_bytes),
+  EXPECT_NE(transaction2.GetSignedTransactionBytes(
+                keyring_service(), from_account->account_id, &signature_bytes),
             std::nullopt);
 
   // Empty signature is invalid
   std::vector<uint8_t> empty_signature_bytes;
-  EXPECT_EQ(transaction2.GetSignedTransactionBytes(keyring_service(),
-                                                   &empty_signature_bytes),
-            std::nullopt);
+  EXPECT_EQ(
+      transaction2.GetSignedTransactionBytes(
+          keyring_service(), from_account->account_id, &empty_signature_bytes),
+      std::nullopt);
 
   // Test empty signature will be appended for non-selected-account signers.
   SolanaInstruction instruction_three_signers(
@@ -839,7 +860,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   transaction3.set_sign_tx_param(mojom::SolanaSignTransactionParam::New(
       Base58Encode(*seriazlied_msg), std::move(sig_key_pairs)));
   auto signed_tx_bytes = transaction3.GetSignedTransactionBytes(
-      keyring_service(), &signature_bytes);
+      keyring_service(), from_account->account_id, &signature_bytes);
   ASSERT_TRUE(signed_tx_bytes);
   std::vector<uint8_t> expect_signed_tx_bytes = {3};
   expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
@@ -862,10 +883,12 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   expect_signed_tx_bytes2.insert(expect_signed_tx_bytes2.end(),
                                  seriazlied_msg->begin(),
                                  seriazlied_msg->end());
-  EXPECT_EQ(transaction3
-                .GetSignedTransactionBytes(keyring_service(), &signature_bytes)
-                .value(),
-            expect_signed_tx_bytes2);
+  EXPECT_EQ(
+      transaction3
+          .GetSignedTransactionBytes(keyring_service(),
+                                     from_account->account_id, &signature_bytes)
+          .value(),
+      expect_signed_tx_bytes2);
 
   // Test selected account is not the fee payer.
   SolanaInstruction ins_not_fee_payer(
@@ -890,7 +913,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
 
   expect_signed_tx_bytes = {2};  // 2 signatures
   std::vector<uint8_t> selected_account_sig =
-      keyring_service()->SignMessageBySolanaKeyring(*from_account->account_id,
+      keyring_service()->SignMessageBySolanaKeyring(from_account->account_id,
                                                     *seriazlied_msg);
   expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
                                 passed_sig_bytes.begin(),
@@ -900,7 +923,8 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
                                 selected_account_sig.end());
   expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
                                 seriazlied_msg->begin(), seriazlied_msg->end());
-  auto result = transaction4.GetSignedTransactionBytes(keyring_service());
+  auto result = transaction4.GetSignedTransactionBytes(
+      keyring_service(), from_account->account_id);
   ASSERT_TRUE(result);
   EXPECT_EQ(*result, expect_signed_tx_bytes);
 }

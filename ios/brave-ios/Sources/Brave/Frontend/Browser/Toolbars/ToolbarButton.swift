@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 
@@ -39,7 +39,7 @@ class ToolbarButton: UIButton {
     adjustsImageWhenHighlighted = false
     imageView?.contentMode = .scaleAspectFit
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
@@ -62,7 +62,7 @@ class ToolbarButton: UIButton {
       self.imageView?.tintColor = self.tintColor
     }
   }
-  
+
   private func updateTintColor() {
     let tintColor: UIColor? = {
       if !isEnabled {
@@ -80,7 +80,11 @@ class ToolbarButton: UIButton {
     self.tintColor = tintColor
   }
 
-  override func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willDisplayMenuFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
+  override func contextMenuInteraction(
+    _ interaction: UIContextMenuInteraction,
+    willDisplayMenuFor configuration: UIContextMenuConfiguration,
+    animator: UIContextMenuInteractionAnimating?
+  ) {
     UIImpactFeedbackGenerator(style: .medium).bzzt()
   }
 }

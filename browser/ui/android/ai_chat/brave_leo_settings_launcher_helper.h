@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_ANDROID_AI_CHAT_BRAVE_LEO_SETTINGS_LAUNCHER_HELPER_H_
 #define BRAVE_BROWSER_UI_ANDROID_AI_CHAT_BRAVE_LEO_SETTINGS_LAUNCHER_HELPER_H_
 
+#include <string>
+
 namespace content {
 class WebContents;
 }
@@ -18,6 +20,11 @@ void ShowBraveLeoSettings(content::WebContents* web_contents);
 void GoPremium(content::WebContents* web_contents);
 // Opens Manage Subscription in case of IAP of account.brave.com
 void ManagePremium(content::WebContents* web_contents);
+// Opens any other URL
+void OpenURL(const std::string& url);
+// Handles voice recognition for a prompt
+void HandleVoiceRecognition(content::WebContents* web_contents,
+                            content::WebContents* context_web_contents);
 
 }  // namespace ai_chat
 

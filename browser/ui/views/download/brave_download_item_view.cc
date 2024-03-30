@@ -76,10 +76,6 @@ BraveDownloadItemView::~BraveDownloadItemView() = default;
 
 // View overrides.
 
-void BraveDownloadItemView::Layout() {
-  DownloadItemView::Layout();
-}
-
 gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
   // Call base class to get the width.
   gfx::Size size = DownloadItemView::CalculatePreferredSize();

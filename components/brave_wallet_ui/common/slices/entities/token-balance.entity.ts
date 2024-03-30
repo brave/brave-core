@@ -3,12 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-export interface TokenBalancesForChainId {
-  [contractAddress: string]: string
+export type ChainBalances = {
+  tokenBalances: Record<string, string> // key = contractAddress or native
+}
+
+export type AccountBalances = {
+  chains: Record<string, ChainBalances> // key = chainId
 }
 
 export type TokenBalancesRegistry = {
-  [uniqueAccountKey: string]: {
-    [chainId: string]: TokenBalancesForChainId
-  }
+  accounts: Record<string, AccountBalances> // key = uniqueKey
 }

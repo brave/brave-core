@@ -1,12 +1,9 @@
-import Foundation
-import WebKit
-import Shared
 import BraveShared
-import Storage
 import CertificateUtilities
-
-private let MozDomain = "mozilla"
-private let MozErrorDownloadsNotEnabled = 100
+import Foundation
+import Shared
+import Storage
+import WebKit
 
 struct ErrorPageModel {
   let requestURL: URL
@@ -69,10 +66,10 @@ public class ErrorPageHandler: InternalSchemeResponse {
     guard let model = ErrorPageModel(request: request) else {
       return nil
     }
-    return errorHandlers.filter({ $0.canHandle(error: model.error )}).first?.response(for: model)
+    return errorHandlers.filter({ $0.canHandle(error: model.error) }).first?.response(for: model)
   }
-  
-  public init() { }
+
+  public init() {}
 }
 
 class ErrorPageHelper {
@@ -84,10 +81,11 @@ class ErrorPageHelper {
   }
 
   func loadPage(_ error: NSError, forUrl url: URL, inWebView webView: WKWebView) {
-    guard var components = URLComponents(string: "\(InternalURL.baseUrl)/\(ErrorPageHandler.path)") else {
+    guard var components = URLComponents(string: "\(InternalURL.baseUrl)/\(ErrorPageHandler.path)")
+    else {
       return
     }
-    
+
     // In rare cases the web view's url might be nil, like when opening a non existing website via share menu.
     // In this case we fall back to the failing url.
     let webViewUrl = webView.url ?? url
@@ -105,20 +103,16 @@ class ErrorPageHelper {
       // 'timestamp' is used for the js reload logic
       URLQueryItem(name: "timestamp", value: "\(Int(Date().timeIntervalSince1970 * 1000))"),
     ]
-    
-    // The error came from WebKit's internal validation and the cert is untrusted
-    if error.userInfo["NSErrorPeerUntrustedByApple"] as? Bool == true {
-      queryItems.append(URLQueryItem(name: "peeruntrusted", value: "true"))
-    }
 
     // If this is an invalid certificate, show a certificate error allowing the
     // user to go back or continue. The certificate itself is encoded and added as
     // a query parameter to the error page URL; we then read the certificate from
     // the URL if the user wants to continue.
     if CertificateErrorPageHandler.isValidCertificateError(error: error),
-       let certChain = error.userInfo["NSErrorPeerCertificateChainKey"] as? [SecCertificate],
-       let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError,
-       let certErrorCode = underlyingError.userInfo["_kCFStreamErrorCodeKey"] as? Int {
+      let certChain = error.userInfo["NSErrorPeerCertificateChainKey"] as? [SecCertificate],
+      let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError,
+      let certErrorCode = underlyingError.userInfo["_kCFStreamErrorCodeKey"] as? Int
+    {
       let encodedCerts = ErrorPageHelper.encodeCertChain(certChain)
       queryItems.append(URLQueryItem(name: "badcerts", value: encodedCerts))
 
@@ -128,7 +122,9 @@ class ErrorPageHelper {
 
     components.queryItems = queryItems
     if let urlWithQuery = components.url {
-      if let internalUrl = InternalURL(webViewUrl), internalUrl.isSessionRestore, let page = InternalURL.authorize(url: urlWithQuery) {
+      if let internalUrl = InternalURL(webViewUrl), internalUrl.isSessionRestore,
+        let page = InternalURL.authorize(url: urlWithQuery)
+      {
         // A session restore page is already on the history stack, so don't load another page on the history stack.
         webView.replaceLocation(with: page)
       } else {
@@ -143,31 +139,33 @@ extension ErrorPageHelper {
   static func errorCode(for url: URL) -> Int {
     // ErrorCode is zero if there's no error.
     // Non-Zero (negative or positive) when there is an error
-    
+
     if InternalURL.isValid(url: url),
       let internalUrl = InternalURL(url),
-       internalUrl.isErrorPage {
-      
+      internalUrl.isErrorPage
+    {
+
       let query = url.getQuery()
       guard let code = query["code"],
-            let errCode = Int(code)
+        let errCode = Int(code)
       else {
         return 0
       }
-      
+
       return errCode
     }
     return 0
   }
-  
+
   static func certificateError(for url: URL) -> Int {
     let errCode = errorCode(for: url)
-    
+
     // ErrorCode is zero if there's no error.
     // Non-Zero (negative or positive) when there is an error
     if errCode != 0 {
       if let code = CFNetworkErrors(rawValue: Int32(errCode)),
-        CertificateErrorPageHandler.CFNetworkErrorsCertErrors.contains(code) {
+        CertificateErrorPageHandler.CFNetworkErrorsCertErrors.contains(code)
+      {
         return errCode
       }
 
@@ -182,31 +180,37 @@ extension ErrorPageHelper {
     }
     return 0
   }
-  
+
+  static func hasCertificates(for url: URL) -> Bool {
+    return (url as NSURL).valueForQueryParameter(key: "badcerts") != nil
+  }
+
   static func serverTrust(from errorURL: URL) throws -> SecTrust? {
     guard let internalUrl = InternalURL(errorURL),
-          internalUrl.isErrorPage,
-          let originalURL = internalUrl.originalURLFromErrorPage else {
+      internalUrl.isErrorPage,
+      let originalURL = internalUrl.originalURLFromErrorPage
+    else {
       return nil
     }
-    
+
     guard let certs = CertificateErrorPageHandler.certsFromErrorURL(errorURL),
-          !certs.isEmpty,
-          let host = originalURL.host else {
+      !certs.isEmpty,
+      let host = originalURL.host
+    else {
       return nil
     }
-    
+
     return try BraveCertificateUtils.createServerTrust(certs, for: host)
   }
-  
+
   private static func encodeCertChain(_ certificates: [SecCertificate]) -> String {
     let certs = certificates.map({
       (SecCertificateCopyData($0) as Data).base64EncodedString
     })
-    
+
     return certs.joined(separator: ",")
   }
-  
+
   func addCertificate(_ cert: SecCertificate, forOrigin origin: String) {
     certStore?.addCertificate(cert, forOrigin: origin)
   }

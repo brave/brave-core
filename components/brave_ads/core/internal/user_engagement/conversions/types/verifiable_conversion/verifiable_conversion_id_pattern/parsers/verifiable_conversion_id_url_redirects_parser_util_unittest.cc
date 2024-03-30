@@ -43,12 +43,4 @@ TEST(BraveAdsVerifiableConversionIdUrlParserUtilTest,
       ConversionResourceIdPatternInfo{kUrlPattern, kSearchInType, kIdPattern}));
 }
 
-TEST(BraveAdsVerifiableConversionIdUrlParserUtilTest,
-     DoNotParseVerifableConversionIdFromEmptyUrlRedirects) {
-  // Act & Assert
-  EXPECT_FALSE(MaybeParseVerifableConversionIdFromUrlRedirects(
-      /*redirect_chain=*/{},
-      ConversionResourceIdPatternInfo{kUrlPattern, kSearchInType, kIdPattern}));
-}
-
 }  // namespace brave_ads

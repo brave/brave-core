@@ -11,6 +11,10 @@ import { getPriceIdForToken } from '../../../utils/api-utils'
 import Amount from '../../../utils/amount'
 import { getBalance } from '../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
+import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
+import {
+  networkEntityAdapter //
+} from '../../../common/slices/entities/network.entity'
 
 // Proxies
 import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
@@ -32,7 +36,8 @@ import {
   useGetAccountInfosRegistryQuery,
   useGetTokenSpotPricesQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetActiveOriginConnectedAccountIdsQuery
+  useGetActiveOriginConnectedAccountIdsQuery,
+  useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
 import {
   useSelectedAccountQuery //
@@ -73,9 +78,6 @@ export const DAppConnectionSettings = () => {
   const { data: connectedAccounts = [] } =
     useGetActiveOriginConnectedAccountIdsQuery()
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-  const userVisibleTokensInfo = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
 
   // State
   const [showSettings, setShowSettings] = React.useState<boolean>(false)
@@ -95,11 +97,24 @@ export const DAppConnectionSettings = () => {
   const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: networks } = useGetVisibleNetworksQuery()
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  const { data: userTokensRegistry } = useGetUserTokensRegistryQuery()
   const { data: accounts } = useGetAccountInfosRegistryQuery(undefined, {
     selectFromResult: (res) => ({
       data: selectAllAccountInfosFromQuery(res)
     })
   })
+
+  const fungibleTokensByChainId = React.useMemo(() => {
+    if (!userTokensRegistry || !selectedNetwork) {
+      return []
+    }
+    return getEntitiesListFromEntityState(
+      userTokensRegistry,
+      userTokensRegistry.fungibleVisibleTokenIdsByChainId[
+        networkEntityAdapter.selectId(selectedNetwork)
+      ]
+    )
+  }, [userTokensRegistry, selectedNetwork])
 
   const { data: tokenBalancesRegistry } = useBalancesFetcher({
     accounts,
@@ -107,11 +122,8 @@ export const DAppConnectionSettings = () => {
   })
 
   const tokenPriceIds = React.useMemo(
-    () =>
-      userVisibleTokensInfo
-        .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
-        .map((token) => getPriceIdForToken(token)),
-    [userVisibleTokensInfo]
+    () => fungibleTokensByChainId.map(getPriceIdForToken),
+    [fungibleTokensByChainId]
   )
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
@@ -150,13 +162,6 @@ export const DAppConnectionSettings = () => {
     isPermissionDenied
   ])
 
-  const fungibleTokensByChainId = React.useMemo(() => {
-    return userVisibleTokensInfo
-      .filter((asset) => asset.visible)
-      .filter((token) => token.chainId === selectedNetwork?.chainId)
-      .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
-  }, [userVisibleTokensInfo, selectedNetwork?.chainId])
-
   // Methods
   const onSelectOption = React.useCallback(
     (option: DAppConnectionOptionsType) => {
@@ -169,7 +174,7 @@ export const DAppConnectionSettings = () => {
     (account: BraveWallet.AccountInfo) => {
       // Return an empty string to display a loading
       // skeleton while assets are populated.
-      if (userVisibleTokensInfo.length === 0) {
+      if (!userTokensRegistry) {
         return Amount.empty()
       }
       // Return a 0 balance if the account has no
@@ -198,7 +203,7 @@ export const DAppConnectionSettings = () => {
       return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
     },
     [
-      userVisibleTokensInfo,
+      userTokensRegistry,
       fungibleTokensByChainId,
       tokenBalancesRegistry,
       spotPriceRegistry

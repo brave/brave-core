@@ -1,11 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveUI
 import Foundation
 import UIKit
-import BraveShared
 
 public class AboutHomeHandler: InternalSchemeResponse {
   public static let path = "about/home"
@@ -27,8 +27,8 @@ public class AboutHomeHandler: InternalSchemeResponse {
     }
     return (response, data)
   }
-  
-  public init() { }
+
+  public init() {}
 }
 
 public class AboutLicenseHandler: InternalSchemeResponse {
@@ -37,13 +37,14 @@ public class AboutLicenseHandler: InternalSchemeResponse {
   public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)
-    guard let path = Bundle.module.path(forResource: "Licenses", ofType: "html"), let html = try? String(contentsOfFile: path, encoding: .utf8),
+    guard let path = Bundle.module.path(forResource: "Licenses", ofType: "html"),
+      let html = try? String(contentsOfFile: path, encoding: .utf8),
       let data = html.data(using: .utf8)
     else {
       return nil
     }
     return (response, data)
   }
-  
-  public init() { }
+
+  public init() {}
 }

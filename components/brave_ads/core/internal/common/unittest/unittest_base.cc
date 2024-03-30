@@ -129,6 +129,18 @@ void UnitTestBase::FastForwardClockBy(const base::TimeDelta time_delta) {
   task_environment_.FastForwardBy(time_delta);
 }
 
+void UnitTestBase::SuspendedFastForwardClockBy(
+    const base::TimeDelta time_delta) {
+  CHECK(!time_delta.is_zero())
+      << "If time stood still, each moment would be stopped; frozen";
+
+  CHECK(time_delta.is_positive())
+      << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
+         "you are travelling at 88 mph";
+
+  task_environment_.SuspendedFastForwardBy(time_delta);
+}
+
 void UnitTestBase::FastForwardClockTo(const base::Time time) {
   FastForwardClockBy(time - Now());
 }
@@ -165,10 +177,12 @@ void UnitTestBase::AdvanceClockTo(const base::Time time) {
   return AdvanceClockBy(time - Now());
 }
 
-void UnitTestBase::AdvanceClockToMidnight(const bool is_local) {
-  const base::Time midnight_rounded_down_to_nearest_day =
-      is_local ? Now().LocalMidnight() : Now().UTCMidnight();
-  return AdvanceClockTo(midnight_rounded_down_to_nearest_day + base::Days(1));
+void UnitTestBase::AdvanceClockToLocalMidnight() {
+  return AdvanceClockTo(Now().LocalMidnight() + base::Days(1));
+}
+
+void UnitTestBase::AdvanceClockToUTCMidnight() {
+  return AdvanceClockTo(Now().UTCMidnight() + base::Days(1));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

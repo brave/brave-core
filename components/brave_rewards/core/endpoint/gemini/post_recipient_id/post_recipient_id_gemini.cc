@@ -14,12 +14,12 @@
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::gemini {
 
-PostRecipientId::PostRecipientId(RewardsEngineImpl& engine) : engine_(engine) {}
+PostRecipientId::PostRecipientId(RewardsEngine& engine) : engine_(engine) {}
 
 PostRecipientId::~PostRecipientId() = default;
 
@@ -63,10 +63,7 @@ std::string PostRecipientId::GeneratePayload() {
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
-
-  std::string base64;
-  base::Base64Encode(json, &base64);
-  return base64;
+  return base::Base64Encode(json);
 }
 
 void PostRecipientId::Request(const std::string& token,

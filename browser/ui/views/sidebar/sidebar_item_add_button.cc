@@ -77,5 +77,5 @@ void SidebarItemAddButton::UpdateButtonImages() {
           kLeoPlusAddIcon, kColorSidebarAddButtonDisabled, kDefaultIconSize));
 }
 
-BEGIN_METADATA(SidebarItemAddButton, SidebarButtonView)
+BEGIN_METADATA(SidebarItemAddButton)
 END_METADATA

@@ -5,13 +5,9 @@
 
 import { createAction } from '@reduxjs/toolkit'
 import {
-  GetEncryptionPublicKeyProcessedPayload,
-  DecryptProcessedPayload,
   ShowConnectToSitePayload,
-  EthereumChainRequestPayload,
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
-  SwitchEthereumChainProcessedPayload,
   SignTransactionHardwarePayload,
   SignAllTransactionsHardwarePayload,
   SignMessageHardwarePayload
@@ -22,18 +18,6 @@ import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
 export const showConnectToSite =
   createAction<ShowConnectToSitePayload>('showConnectToSite')
-export const addEthereumChain =
-  createAction<BraveWallet.AddChainRequest>('addEthereumChain')
-export const addEthereumChainRequestCompleted =
-  createAction<EthereumChainRequestPayload>('addEthereumChainRequestCompleted')
-export const switchEthereumChain = createAction<BraveWallet.SwitchChainRequest>(
-  'switchEthereumChain'
-)
-export const switchEthereumChainProcessed =
-  createAction<SwitchEthereumChainProcessedPayload>(
-    'switchEthereumChainProcessed'
-  )
-export const showUnlock = createAction('showUnlock')
 export const setupWallet = createAction('setupWallet')
 export const openWalletSettings = createAction('openWalletSettings')
 export const navigateTo = createAction<PanelTypes>('navigateTo')
@@ -53,17 +37,6 @@ export const setHardwareWalletInteractionError = createAction<
 >('setHardwareWalletInteractionError')
 export const cancelConnectHardwareWallet =
   createAction<BraveWallet.AccountInfo>('cancelConnectHardwareWallet')
-export const getEncryptionPublicKey =
-  createAction<BraveWallet.GetEncryptionPublicKeyRequest>(
-    'getEncryptionPublicKey'
-  )
-export const getEncryptionPublicKeyProcessed =
-  createAction<GetEncryptionPublicKeyProcessedPayload>(
-    'getEncryptionPublicKeyProcessed'
-  )
-export const decrypt = createAction<BraveWallet.DecryptRequest>('decrypt')
-export const decryptProcessed =
-  createAction<DecryptProcessedPayload>('decryptProcessed')
 export const setSelectedTransactionId = createAction<string | undefined>(
   'setSelectedTransactionId'
 )

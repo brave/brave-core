@@ -1,24 +1,25 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
+import BraveCore
 import BraveUI
+import BraveVPN
+import BraveWallet
+import Data
+import Foundation
 import Preferences
 import Shared
-import Data
-import BraveWallet
-import BraveCore
+import SwiftUI
 import os.log
-import BraveVPN
 
 extension BrowserViewController {
   func featuresMenuSection(_ menuController: MenuViewController) -> some View {
     VStack(alignment: .leading, spacing: 5) {
       VPNMenuButton(
-        retryStateActive: Preferences.VPN.vpnReceiptStatus.value == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
+        retryStateActive: Preferences.VPN.vpnReceiptStatus.value
+          == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
         vpnProductInfo: self.vpnProductInfo,
         displayVPNDestination: { [unowned self] vc in
           (self.presentedViewController as? MenuViewController)?
@@ -26,23 +27,35 @@ extension BrowserViewController {
         },
         enableInstalledVPN: { [unowned menuController] in
           // Donate Enable VPN Activity for suggestions
-          let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .enableBraveVPN)
+          let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(
+            type: .enableBraveVPN
+          )
           menuController.userActivity = enableVPNActivity
           enableVPNActivity.becomeCurrent()
-        }, displayAlert: { [unowned menuController] alert in
+        },
+        displayAlert: { [unowned menuController] alert in
           menuController.present(alert, animated: true)
-        }, openURL: { [weak self] url in
+        },
+        openURL: { [weak self] url in
           guard let self = self else { return }
-          self.openURLInNewTab(url, isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
-                               isPrivileged: false)
-        })
-      
+          self.openURLInNewTab(
+            url,
+            isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
+            isPrivileged: false
+          )
+        }
+      )
+
       // Region Button is populated without current selected detail title for features menu
-      RegionMenuButton(vpnRegionInfo: BraveVPN.activatedRegion, settingTitleEnabled: false, regionSelectAction: {
-        let vc = BraveVPNRegionPickerViewController()
-        (self.presentedViewController as? MenuViewController)?
-          .pushInnerMenu(vc)
-      })
+      RegionMenuButton(
+        vpnRegionInfo: BraveVPN.activatedRegion,
+        settingTitleEnabled: false,
+        regionSelectAction: {
+          let vc = BraveVPNRegionPickerViewController()
+          (self.presentedViewController as? MenuViewController)?
+            .pushInnerMenu(vc)
+        }
+      )
     }
   }
 
@@ -55,7 +68,8 @@ extension BrowserViewController {
         .padding(.bottom, 5)
 
       VPNMenuButton(
-        retryStateActive: Preferences.VPN.vpnReceiptStatus.value == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
+        retryStateActive: Preferences.VPN.vpnReceiptStatus.value
+          == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
         vpnProductInfo: self.vpnProductInfo,
         description: Strings.OptionsMenu.braveVPNItemDescription,
         displayVPNDestination: { [unowned self] vc in
@@ -64,29 +78,40 @@ extension BrowserViewController {
         },
         enableInstalledVPN: { [unowned menuController] in
           // Donate Enable VPN Activity for suggestions
-          let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .enableBraveVPN)
+          let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(
+            type: .enableBraveVPN
+          )
           menuController.userActivity = enableVPNActivity
           enableVPNActivity.becomeCurrent()
-        }, displayAlert: { [unowned self] alert in
+        },
+        displayAlert: { [unowned self] alert in
           self.popToBVC()
           self.present(alert, animated: true)
-        }, openURL: { [unowned self] url in
-          self.openURLInNewTab(url,
-                               isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
-                               isPrivileged: false)
+        },
+        openURL: { [unowned self] url in
+          self.openURLInNewTab(
+            url,
+            isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
+            isPrivileged: false
+          )
         }
       )
-      
+
       // Region Button is populated including the details for privacy feature menu
-      RegionMenuButton(vpnRegionInfo: BraveVPN.activatedRegion, regionSelectAction: {
-        let vc = BraveVPNRegionPickerViewController()
-        (self.presentedViewController as? MenuViewController)?
-          .pushInnerMenu(vc)
-      })
-      
+      RegionMenuButton(
+        vpnRegionInfo: BraveVPN.activatedRegion,
+        regionSelectAction: {
+          let vc = BraveVPNRegionPickerViewController()
+          (self.presentedViewController as? MenuViewController)?
+            .pushInnerMenu(vc)
+        }
+      )
+
       Divider()
 
-      MenuItemFactory.button(for: .playlist(subtitle: Strings.OptionsMenu.bravePlaylistItemDescription)) { [weak self] in
+      MenuItemFactory.button(
+        for: .playlist(subtitle: Strings.OptionsMenu.bravePlaylistItemDescription)
+      ) { [weak self] in
         guard let self = self else { return }
         self.presentPlaylistController()
       }
@@ -94,9 +119,13 @@ extension BrowserViewController {
       // Add Brave Talk and News options only in normal browsing
       if !privateBrowsingManager.isPrivateBrowsing {
         // Show Brave News if it is first launch and after first launch If the new is enabled
-        if Preferences.General.isFirstLaunch.value || (!Preferences.General.isFirstLaunch.value && Preferences.BraveNews.isEnabled.value) {
+        if Preferences.General.isFirstLaunch.value
+          || (!Preferences.General.isFirstLaunch.value && Preferences.BraveNews.isEnabled.value)
+        {
           MenuItemFactory.button(for: .news) { [weak self] in
-            guard let self = self, let newTabPageController = self.tabManager.selectedTab?.newTabPageViewController else {
+            guard let self = self,
+              let newTabPageController = self.tabManager.selectedTab?.newTabPageViewController
+            else {
               return
             }
 
@@ -111,9 +140,18 @@ extension BrowserViewController {
           self.finishEditingAndSubmit(url)
         }
       }
-      
-      MenuItemFactory.button(for: .wallet(subtitle: Strings.OptionsMenu.braveWalletItemDescription)) { [unowned self] in
+
+      MenuItemFactory.button(for: .wallet(subtitle: Strings.OptionsMenu.braveWalletItemDescription))
+      { [unowned self] in
         self.presentWallet()
+      }
+
+      // Add Brave-Leo options only in normal browsing
+      if !privateBrowsingManager.isPrivateBrowsing {
+        MenuItemFactory.button(for: .leo) { [unowned self] in
+          self.popToBVC()
+          self.openBraveLeo()
+        }
       }
     }
     .fixedSize(horizontal: false, vertical: true)
@@ -121,13 +159,17 @@ extension BrowserViewController {
     .padding(.bottom, 5)
   }
 
-  func destinationMenuSection(_ menuController: MenuViewController, isShownOnWebPage: Bool) -> some View {
+  func destinationMenuSection(
+    _ menuController: MenuViewController,
+    isShownOnWebPage: Bool
+  ) -> some View {
     VStack(spacing: 0) {
       MenuItemFactory.button(for: .bookmarks) { [unowned self, unowned menuController] in
         let vc = BookmarksViewController(
           folder: bookmarkManager.lastVisitedFolder(),
           bookmarkManager: bookmarkManager,
-          isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing)
+          isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+        )
         vc.toolbarUrlActionsDelegate = self
         menuController.presentInnerMenu(vc)
       }
@@ -135,7 +177,8 @@ extension BrowserViewController {
         let vc = HistoryViewController(
           isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
           historyAPI: self.braveCore.historyAPI,
-          tabManager: self.tabManager)
+          tabManager: self.tabManager
+        )
         vc.toolbarUrlActionsDelegate = self
         menuController.pushInnerMenu(vc)
       }
@@ -148,7 +191,7 @@ extension BrowserViewController {
       }
 
       if isShownOnWebPage {
-        MenuItemFactory.button(for: .wallet()) {[weak self] in
+        MenuItemFactory.button(for: .wallet()) { [weak self] in
           self?.presentWallet()
         }
         MenuItemFactory.button(for: .playlist()) { [weak self] in
@@ -161,23 +204,31 @@ extension BrowserViewController {
         let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: isPrivateMode)
         let walletService = BraveWallet.ServiceFactory.get(privateMode: isPrivateMode)
         let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode)
-        
+        let walletP3A = braveCore.braveWalletAPI.walletP3A()
+
         var keyringStore: KeyringStore? = walletStore?.keyringStore
         if keyringStore == nil {
           if let keyringService = keyringService,
-             let walletService = walletService,
-             let rpcService = rpcService {
+            let walletService = walletService,
+            let rpcService = rpcService,
+            let walletP3A
+          {
             keyringStore = KeyringStore(
               keyringService: keyringService,
               walletService: walletService,
-              rpcService: rpcService
+              rpcService: rpcService,
+              walletP3A: walletP3A
             )
           }
         }
-        
+
         var cryptoStore: CryptoStore? = walletStore?.cryptoStore
         if cryptoStore == nil {
-          cryptoStore = CryptoStore.from(ipfsApi: braveCore.ipfsAPI, privateMode: isPrivateMode)
+          cryptoStore = CryptoStore.from(
+            ipfsApi: braveCore.ipfsAPI,
+            walletP3A: walletP3A,
+            privateMode: isPrivateMode
+          )
         }
 
         let vc = SettingsViewController(
@@ -201,7 +252,10 @@ extension BrowserViewController {
   func presentWallet() {
     guard let walletStore = self.walletStore ?? newWalletStore() else { return }
     walletStore.origin = nil
-    let vc = WalletHostingViewController(walletStore: walletStore, webImageDownloader: braveCore.webImageDownloader)
+    let vc = WalletHostingViewController(
+      walletStore: walletStore,
+      webImageDownloader: braveCore.webImageDownloader
+    )
     vc.delegate = self
     self.dismiss(animated: true) {
       self.present(vc, animated: true)
@@ -210,20 +264,22 @@ extension BrowserViewController {
 
   public func presentPlaylistController() {
     if PlaylistCarplayManager.shared.isPlaylistControllerPresented {
-      let alert = UIAlertController(title: Strings.PlayList.playlistAlreadyShowingTitle,
-                                    message: Strings.PlayList.playlistAlreadyShowingBody,
-                                    preferredStyle: .alert)
+      let alert = UIAlertController(
+        title: Strings.PlayList.playlistAlreadyShowingTitle,
+        message: Strings.PlayList.playlistAlreadyShowingBody,
+        preferredStyle: .alert
+      )
       alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
       dismiss(animated: true) {
         self.present(alert, animated: true)
       }
       return
     }
-    
+
     // Present existing playlist controller
     if let playlistController = PlaylistCarplayManager.shared.playlistController {
       PlaylistP3A.recordUsage()
-      
+
       dismiss(animated: true) {
         PlaylistCarplayManager.shared.isPlaylistControllerPresented = true
         self.present(playlistController, animated: true)
@@ -231,12 +287,13 @@ extension BrowserViewController {
     } else {
       // Retrieve the item and offset-time from the current tab's webview.
       let tab = self.tabManager.selectedTab
-      PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { [weak self] playlistController in
+      PlaylistCarplayManager.shared.getPlaylistController(tab: tab) {
+        [weak self] playlistController in
         guard let self = self else { return }
 
         playlistController.modalPresentationStyle = .fullScreen
         PlaylistP3A.recordUsage()
-        
+
         self.dismiss(animated: true) {
           PlaylistCarplayManager.shared.isPlaylistControllerPresented = true
           self.present(playlistController, animated: true)
@@ -253,7 +310,8 @@ extension BrowserViewController {
     @State private var playlistItemAdded: Bool = false
 
     private var playlistActivity: (enabled: Bool, item: PlaylistInfo?)? {
-      browserViewController.addToPlayListActivityItem ?? browserViewController.openInPlaylistActivityItem
+      browserViewController.addToPlayListActivityItem
+        ?? browserViewController.openInPlaylistActivityItem
     }
 
     private var isPlaylistItemAdded: Bool {
@@ -276,20 +334,41 @@ extension BrowserViewController {
                 }
               } else {
                 browserViewController.dismiss(animated: true) {
-                  browserViewController.openPlaylist(tab: browserViewController.tabManager.selectedTab, item: item)
+                  browserViewController.openPlaylist(
+                    tab: browserViewController.tabManager.selectedTab,
+                    item: item
+                  )
                 }
               }
             }
             .animation(.default, value: playlistItemAdded)
           }
-          MenuItemButton(icon: Image(braveSystemName: "leo.share.macos"), title: Strings.shareWithMenuItem) {
+
+          // Add Brave-Leo options only in normal browsing
+          if !browserViewController.tabManager.privateBrowsingManager.isPrivateBrowsing {
+            MenuItemButton(
+              icon: Image(braveSystemName: "leo.product.brave-leo"),
+              title: Strings.leoMenuItem
+            ) {
+              browserViewController.dismiss(animated: true)
+              browserViewController.openBraveLeo()
+            }
+          }
+
+          MenuItemButton(
+            icon: Image(braveSystemName: "leo.share.macos"),
+            title: Strings.shareWithMenuItem
+          ) {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
           }
           NightModeMenuButton(dismiss: {
             browserViewController.dismiss(animated: true)
           })
-          MenuItemButton(icon: Image(braveSystemName: "leo.browser.bookmark-add"), title: Strings.addToMenuItem) {
+          MenuItemButton(
+            icon: Image(braveSystemName: "leo.browser.bookmark-add"),
+            title: Strings.addToMenuItem
+          ) {
             browserViewController.dismiss(animated: true) {
               browserViewController.openAddBookmark()
             }

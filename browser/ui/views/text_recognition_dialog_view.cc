@@ -305,5 +305,5 @@ bool TextRecognitionDialogView::OnLanguageOptionchanged(size_t index) {
 
 #endif
 
-BEGIN_METADATA(TextRecognitionDialogView, views::DialogDelegateView)
+BEGIN_METADATA(TextRecognitionDialogView)
 END_METADATA

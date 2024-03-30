@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -21,8 +21,7 @@ class BraveAdsCreatedAtTimestampUserDataTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AdvanceClockTo(
-        TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
+    AdvanceClockTo(TimeFromUTCString("November 18 2020 12:34:56.789"));
   }
 };
 
@@ -30,7 +29,7 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
        BuildCreatedAtTimestampUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
 
   // Act & Assert
@@ -48,7 +47,7 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
 
   // Act & Assert

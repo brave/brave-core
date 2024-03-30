@@ -5,5 +5,5 @@ Version: 4.1.1
 Security Critical: yes
 Shipped: yes
 License: BSD 3-Clause
-License File: 
+License File: //brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-4.1.1/LICENSE
 Revision: 0cd099a9fb8ff9f6fedc8723d44dbb1c743e9d35

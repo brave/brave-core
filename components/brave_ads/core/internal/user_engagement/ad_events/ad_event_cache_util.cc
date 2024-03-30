@@ -19,7 +19,7 @@ namespace brave_ads {
 
 void RebuildAdEventCache() {
   const database::table::AdEvents database_table;
-  database_table.GetAll(
+  database_table.GetUnexpired(
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         if (!success) {
           return BLOG(1, "Failed to get ad events");

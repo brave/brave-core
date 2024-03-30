@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
@@ -21,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
@@ -40,8 +38,7 @@ void EligibleInlineContentAdsV2::GetForUserModel(
     EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads");
 
-  const database::table::AdEvents database_table;
-  database_table.GetForType(
+  ad_events_database_table_.GetUnexpiredForType(
       mojom::AdType::kInlineContentAd,
       base::BindOnce(
           &EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback,
@@ -75,8 +72,7 @@ void EligibleInlineContentAdsV2::GetEligibleAds(
     const std::string& dimensions,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const BrowsingHistoryList& browsing_history) {
-  const database::table::CreativeInlineContentAds database_table;
-  database_table.GetForDimensions(
+  database_table_.GetForDimensions(
       dimensions,
       base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),

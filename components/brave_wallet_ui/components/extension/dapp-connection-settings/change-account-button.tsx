@@ -103,7 +103,12 @@ export const ChangeAccountButton = (props: Props) => {
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
       setSelectedAccount(account.accountId)
     }
-  }, [requestSitePermission, account.accountId, selectedCoin])
+  }, [
+    requestSitePermission,
+    account.accountId,
+    selectedCoin,
+    setSelectedAccount
+  ])
 
   const onClickDisconnect = React.useCallback(async () => {
     await removeSitePermission(account.accountId).unwrap()
@@ -115,15 +120,16 @@ export const ChangeAccountButton = (props: Props) => {
       setSelectedAccount(account.accountId)
     }
   }, [
-    removeSitePermission, //
-    connectedAccounts,
+    removeSitePermission,
     account.accountId,
-    selectedCoin
+    connectedAccounts.length,
+    selectedCoin,
+    setSelectedAccount
   ])
 
   const onClickSwitchAccount = React.useCallback(() => {
     setSelectedAccount(account.accountId)
-  }, [account.accountId])
+  }, [account.accountId, setSelectedAccount])
 
   const onClickConnectDisconnectOrSwitch = React.useCallback(() => {
     return hasPermission

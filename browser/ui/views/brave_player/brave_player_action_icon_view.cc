@@ -103,5 +103,5 @@ void BravePlayerActionIconView::UpdateBorder() {
       GetInsets()));
 }
 
-BEGIN_METADATA(BravePlayerActionIconView, PageActionIconView);
+BEGIN_METADATA(BravePlayerActionIconView);
 END_METADATA

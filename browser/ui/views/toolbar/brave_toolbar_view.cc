@@ -128,7 +128,13 @@ void BraveToolbarView::Init() {
   // This will allow us to move this window by dragging toolbar.
   // See brave_non_client_hit_test_helper.h
   views::SetHitTestComponent(this, HTCAPTION);
-  DCHECK_EQ(1u, children().size());
+  if (features::IsChromeRefresh2023()) {
+    // Upstream has two more children |background_view_left_| and
+    // |background_view_right_| behind the container view.
+    DCHECK_EQ(3u, children().size());
+  } else {
+    DCHECK_EQ(1u, children().size());
+  }
   views::SetHitTestComponent(children()[0], HTCAPTION);
 
   // For non-normal mode, we don't have to more.
@@ -190,7 +196,7 @@ void BraveToolbarView::Init() {
   views::View* container_view = location_bar_->parent();
   DCHECK(container_view);
   bookmark_ = container_view->AddChildViewAt(
-      std::make_unique<BookmarkButton>(
+      std::make_unique<BraveBookmarkButton>(
           base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB)),
       *container_view->GetIndexOf(location_bar_));
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
@@ -260,7 +266,7 @@ void BraveToolbarView::OnShowBookmarksButtonChanged() {
 void BraveToolbarView::OnLocationBarIsWideChanged() {
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
 
-  Layout();
+  DeprecatedLayoutImmediately();
   SchedulePaint();
 }
 
@@ -351,7 +357,7 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
   if (bookmark_ && bookmark_->GetVisible())
     anchor_view = bookmark_;
 
-  std::unique_ptr<BubbleSyncPromoDelegate> delegate;
+  std::unique_ptr<BubbleSignInPromoDelegate> delegate;
   delegate =
       std::make_unique<BookmarkBubbleSignInDelegate>(browser()->profile());
   BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(), bookmark_,
@@ -370,8 +376,8 @@ void BraveToolbarView::ViewHierarchyChanged(
   }
 }
 
-void BraveToolbarView::Layout() {
-  ToolbarView::Layout();
+void BraveToolbarView::Layout(PassKey) {
+  LayoutSuperclass<ToolbarView>(this);
 
   if (!brave_initialized_)
     return;

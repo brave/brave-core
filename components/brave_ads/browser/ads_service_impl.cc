@@ -186,24 +186,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
-    mojom::DBTransactionInfoPtr transaction,
-    Database* database) {
-  CHECK(transaction);
-
-  mojom::DBCommandResponseInfoPtr command_response =
-      mojom::DBCommandResponseInfo::New();
-
-  if (!database) {
-    command_response->status =
-        mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
-  } else {
-    database->RunTransaction(std::move(transaction), command_response.get());
-  }
-
-  return command_response;
-}
-
 void RegisterResourceComponentsForCountryCode(const std::string& country_code) {
   g_brave_browser_process->resource_component()
       ->RegisterComponentForCountryCode(country_code);
@@ -312,7 +294,7 @@ void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() const {
   RegisterResourceComponentsForCountryCode(country_code);
 }
 
-bool AdsServiceImpl::UserHasOptedInToBraveRewards() const {
+bool AdsServiceImpl::UserHasJoinedBraveRewards() const {
   return profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
@@ -360,9 +342,8 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
   return ShouldAlwaysRunService() || UserHasOptedInToBraveNewsAds() ||
-         (UserHasOptedInToBraveRewards() &&
-          (UserHasOptedInToNotificationAds() ||
-           UserHasOptedInToNewTabPageAds()));
+         (UserHasJoinedBraveRewards() && (UserHasOptedInToNotificationAds() ||
+                                          UserHasOptedInToNewTabPageAds()));
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
@@ -455,8 +436,8 @@ void AdsServiceImpl::Initialize(const size_t current_start_number) {
 void AdsServiceImpl::InitializeDatabase() {
   CHECK(!database_);
 
-  database_ =
-      std::make_unique<Database>(base_path_.AppendASCII("database.sqlite"));
+  database_ = base::SequenceBound<Database>(
+      file_task_runner_, base_path_.AppendASCII("database.sqlite"));
 }
 
 void AdsServiceImpl::InitializeRewardsWallet(
@@ -703,8 +684,6 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
                           prefs::kMaximumNotificationAdsPerHour));
   auto notification_ad_position_callback = base::BindRepeating(
       &AdsServiceImpl::OnNotificationAdPositionChanged, base::Unretained(this));
-  pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateX,
-                             notification_ad_position_callback);
   pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateY,
                              notification_ad_position_callback);
 }
@@ -1085,11 +1064,7 @@ void AdsServiceImpl::Shutdown() {
 
   CloseAdaptiveCaptcha();
 
-  if (database_) {
-    const bool success =
-        file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
-    CHECK(success) << "Failed to release database";
-  }
+  database_.Reset();
 
   if (is_bat_ads_initialized_) {
     VLOG(2) << "Shutdown Bat Ads Service";
@@ -1129,7 +1104,7 @@ void AdsServiceImpl::SnoozeScheduledCaptcha() {
 void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->TriggerNotificationAdEvent(
-        placement_id, mojom::NotificationAdEventType::kViewed,
+        placement_id, mojom::NotificationAdEventType::kViewedImpression,
         /*intentional*/ base::DoNothing());
   }
 }
@@ -1393,10 +1368,11 @@ void AdsServiceImpl::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
 
 void AdsServiceImpl::NotifyTabDidChange(const int32_t tab_id,
                                         const std::vector<GURL>& redirect_chain,
+                                        const bool is_error_page,
                                         const bool is_visible) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
-    bat_ads_client_notifier_remote_->NotifyTabDidChange(tab_id, redirect_chain,
-                                                        is_visible);
+    bat_ads_client_notifier_remote_->NotifyTabDidChange(
+        tab_id, redirect_chain, is_error_page, is_visible);
   }
 }
 
@@ -1725,12 +1701,11 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
 void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                                       RunDBTransactionCallback callback) {
   CHECK(transaction);
+  CHECK(database_);
 
-  file_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
-                     database_.get()),
-      std::move(callback));
+  database_.AsyncCall(&Database::RunTransaction)
+      .WithArgs(std::move(transaction))
+      .Then(std::move(callback));
 }
 
 void AdsServiceImpl::RecordP2AEvents(const std::vector<std::string>& events) {
@@ -1846,6 +1821,8 @@ void AdsServiceImpl::OnDidUpdateResourceComponent(
     bat_ads_client_notifier_remote_->NotifyDidUpdateResourceComponent(
         manifest_version, id);
   }
+
+  PrefetchNewTabPageAd();
 }
 
 void AdsServiceImpl::OnDidUnregisterResourceComponent(const std::string& id) {

@@ -98,7 +98,7 @@ export const RestoreWallet = () => {
     } else {
       history.push(WalletRoutes.Restore)
     }
-  }, [walletLocation, isWalletCreated, isWalletLocked])
+  }, [walletLocation, isWalletCreated, isWalletLocked, history])
 
   const onBack = React.useCallback(() => {
     toggleShowRestore()
@@ -118,7 +118,7 @@ export const RestoreWallet = () => {
     if (success) {
       history.push(WalletRoutes.PortfolioAssets)
     }
-  }, [recoveryPhrase, password, isLegacyWallet])
+  }, [restoreWallet, recoveryPhrase, password, isLegacyWallet, history])
 
   const handleRecoveryPhraseChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,7 +145,7 @@ export const RestoreWallet = () => {
         setRecoveryPhrase(removePeriod)
       }
     },
-    []
+    [recoveryPhrase]
   )
 
   const handleKeyDown = React.useCallback(

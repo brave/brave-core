@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="10dp">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@null"
+                    app:srcCompat="@drawable/ic_solana_eligible_ui_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:layout_gravity="center_horizontal"
+                    android:textAlignment="center"
+                    android:text="@string/solana_eligible_ui_title"
+                    android:textColor="@color/rewards_panel_text_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:layout_gravity="center_horizontal"
+                    android:textAlignment="center"
+                    android:text="@string/solana_eligible_ui_text"
+                    android:textColor="@color/rewards_panel_secondary_text_color"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/btn_connect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:background="@drawable/blue_48_rounded_bg"
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:layout_marginTop="16dp"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:drawableEndCompat="@drawable/ic_arrow_right"
+                        android:drawablePadding="4dp"
+                        android:paddingVertical="8dp"
+                        app:drawableTint="@android:color/white"
+                        android:fontFamily="sans-serif-medium"
+                        android:textSize="16sp"
+                        android:text="@string/brave_ui_wallet_button_connect"
+                        android:textColor="@android:color/white" />
+
+                </LinearLayout>
+
+                <android.widget.Button
+                    android:id="@+id/btn_not_now"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="6dp"
+                    android:background="@android:color/transparent"
+                    android:text="@string/not_now"
+                    android:textAllCaps="false"
+                    android:textColor="@color/rewards_panel_secondary_text_color"
+                    android:textSize="16sp"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/solana_eligible_ui_modal_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|top"
+                android:contentDescription="@null"
+                app:tint="@color/rewards_estimated_earning_close_color"
+                app:srcCompat="@drawable/btn_close" />
+
+        </FrameLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.cardview.widget.CardView>

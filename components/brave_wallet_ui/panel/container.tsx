@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { skipToken } from '@reduxjs/toolkit/query/react'
+import ProgressRing from '@brave/leo/react/progressRing'
 
 // Components
 import {
@@ -32,8 +32,7 @@ import {
   ConnectWithSiteWrapper
 } from '../stories/style'
 import { PanelWrapper, WelcomePanelWrapper } from './style'
-
-import { BraveWallet } from '../constants/types'
+import { FullScreenWrapper } from '../page/screens/page-screen.styles'
 
 import { TransactionStatus } from '../components/extension/post-confirmation'
 import {
@@ -44,7 +43,10 @@ import {
 import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
-  useGetNetworkQuery,
+  useGetPendingAddChainRequestQuery,
+  useGetPendingDecryptRequestQuery,
+  useGetPendingGetEncryptionPublicKeyRequestQuery,
+  useGetPendingSwitchChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
 import {
@@ -89,15 +91,7 @@ function Container() {
   const connectToSiteOrigin = useUnsafePanelSelector(
     PanelSelectors.connectToSiteOrigin
   )
-  const addChainRequest = useUnsafePanelSelector(PanelSelectors.addChainRequest)
   const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
-  const switchChainRequest = useUnsafePanelSelector(
-    PanelSelectors.switchChainRequest
-  )
-  const getEncryptionPublicKeyRequest = useUnsafePanelSelector(
-    PanelSelectors.getEncryptionPublicKeyRequest
-  )
-  const decryptRequest = useUnsafePanelSelector(PanelSelectors.decryptRequest)
   const connectingAccounts = useUnsafePanelSelector(
     PanelSelectors.connectingAccounts
   )
@@ -114,24 +108,27 @@ function Container() {
   // queries & mutations
   const { accounts } = useAccountsQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
-  const { data: switchChainRequestNetwork } = useGetNetworkQuery(
-    switchChainRequest.chainId
-      ? {
-          chainId: switchChainRequest.chainId,
-          // Passed ETH here since AllowAddChangeNetworkPanel
-          // is only used for EVM networks
-          // and switchChainRequest doesn't return coinType.
-          coin: BraveWallet.CoinType.ETH
-        }
-      : skipToken
-  )
+  const { data: addChainRequest } = useGetPendingAddChainRequestQuery()
+  const { data: switchChainRequest } = useGetPendingSwitchChainRequestQuery()
+  const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
+  const { data: getEncryptionPublicKeyRequest } =
+    useGetPendingGetEncryptionPublicKeyRequestQuery()
   const { data: addTokenRequests = [] } =
     useGetPendingTokenSuggestionRequestsQuery()
 
   const selectedPendingTransaction = useSelectedPendingTransaction()
 
   if (!hasInitialized) {
-    return null
+    return (
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <FullScreenWrapper>
+          <ProgressRing mode='indeterminate' />
+        </FullScreenWrapper>
+      </PanelWrapper>
+    )
   }
 
   if (!isWalletCreated) {
@@ -194,29 +191,21 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'addEthereumChain') {
+  if (addChainRequest) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          <AllowAddChangeNetworkPanel
-            originInfo={addChainRequest.originInfo}
-            networkPayload={addChainRequest.networkInfo}
-            panelType='add'
-          />
+          <AllowAddChangeNetworkPanel addChainRequest={addChainRequest} />
         </LongWrapper>
       </PanelWrapper>
     )
   }
 
-  if (selectedPanel === 'switchEthereumChain' && switchChainRequestNetwork) {
+  if (switchChainRequest) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          <AllowAddChangeNetworkPanel
-            originInfo={switchChainRequest.originInfo}
-            networkPayload={switchChainRequestNetwork}
-            panelType='change'
-          />
+          <AllowAddChangeNetworkPanel switchChainRequest={switchChainRequest} />
         </LongWrapper>
       </PanelWrapper>
     )
@@ -230,10 +219,7 @@ function Container() {
     )
   }
 
-  if (
-    selectedPanel === 'provideEncryptionKey' &&
-    getEncryptionPublicKeyRequest
-  ) {
+  if (getEncryptionPublicKeyRequest) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
@@ -243,7 +229,7 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'allowReadingEncryptedMessage' && decryptRequest) {
+  if (decryptRequest) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
@@ -288,12 +274,10 @@ function Container() {
   }
 
   if (selectedPendingTransaction) {
-    const isSwap =
-      selectedPendingTransaction?.txType === BraveWallet.TransactionType.ETHSwap
     return (
       <PanelWrapper
-        width={isSwap ? undefined : 390}
-        height={isSwap ? 540 : 650}
+        width={390}
+        height={650}
       >
         <LongWrapper>
           <PendingTransactionPanel

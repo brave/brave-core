@@ -1,34 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
-/**
- *  System helper methods written in Swift.
- */
+/// System helper methods written in Swift.
 public struct SystemUtils {
-
-  /**
-     Returns an accurate version of the system uptime even while the device is asleep.
-     http://stackoverflow.com/questions/12488481/getting-ios-system-uptime-that-doesnt-pause-when-asleep
-
-     - returns: Time interval since last reboot.
-     */
-  public static func systemUptime() -> TimeInterval {
-    var boottime = timeval()
-    var mib = [CTL_KERN, KERN_BOOTTIME]
-    var size = MemoryLayout<timeval>.stride
-    var now = time_t()
-    time(&now)
-
-    sysctl(&mib, u_int(mib.count), &boottime, &size, nil, 0)
-    let tv_sec: time_t = withUnsafePointer(to: &boottime.tv_sec) { $0.pointee }
-    return TimeInterval(now - tv_sec)
-  }
-}
-
-extension SystemUtils {
   // This should be run on first run of the application.
   // It shouldn't be run from an extension.
   // Its function is to write a lock file that is only accessible from the application,
@@ -45,11 +22,20 @@ extension SystemUtils {
       return
     }
     let contents = "Device is unlocked".data(using: .utf8)
-    fm.createFile(atPath: lockFile, contents: contents, attributes: [FileAttributeKey(rawValue: FileAttributeKey.protectionKey.rawValue): FileProtectionType.complete])
+    fm.createFile(
+      atPath: lockFile,
+      contents: contents,
+      attributes: [
+        FileAttributeKey(rawValue: FileAttributeKey.protectionKey.rawValue): FileProtectionType
+          .complete
+      ]
+    )
   }
 
   private static var lockedDeviceURL: URL? {
-    let directoryURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier)
+    let directoryURL = FileManager.default.containerURL(
+      forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier
+    )
     return directoryURL?.appendingPathComponent("security.dummy")
   }
 }

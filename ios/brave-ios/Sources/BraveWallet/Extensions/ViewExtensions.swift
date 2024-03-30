@@ -1,11 +1,11 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import SwiftUI
 import UIKit
-import BraveCore
 
 extension View {
   /// Helper for `hidden()` modifier that accepts a boolean determining if we should hide the view or not.
@@ -21,7 +21,10 @@ extension View {
   /// containing `UIViewController` of the current SwiftUI view and configure its navigation
   /// bar appearance to be transparent.
   /// It also takes two parameters to custom the back button title and back button display mode.
-  public func transparentNavigationBar(backButtonTitle: String? = nil, backButtonDisplayMode: UINavigationItem.BackButtonDisplayMode = .default) -> some View {
+  public func transparentNavigationBar(
+    backButtonTitle: String? = nil,
+    backButtonDisplayMode: UINavigationItem.BackButtonDisplayMode = .default
+  ) -> some View {
     self.introspectViewController { vc in
       let appearance = UINavigationBarAppearance()
       appearance.configureWithTransparentBackground()
@@ -50,7 +53,7 @@ extension View {
       }
     })
   }
-  
+
   func transparentUnlessScrolledNavigationAppearance() -> some View {
     introspectViewController(customize: { vc in
       vc.navigationItem.do {
@@ -79,7 +82,7 @@ extension View {
       }
     })
   }
-  
+
   func addAccount(
     keyringStore: KeyringStore,
     networkStore: NetworkStore,
@@ -94,14 +97,25 @@ extension View {
       Color.clear
         .alert(isPresented: isShowingConfirmation) {
           Alert(
-            title: Text(String.localizedStringWithFormat(Strings.Wallet.createAccountAlertTitle, accountNetwork?.shortChainName ?? "")),
+            title: Text(
+              String.localizedStringWithFormat(
+                Strings.Wallet.createAccountAlertTitle,
+                accountNetwork?.shortChainName ?? ""
+              )
+            ),
             message: Text(Strings.Wallet.createAccountAlertMessage),
-            primaryButton: .default(Text(Strings.yes), action: {
-              onConfirmAddAccount()
-            }),
-            secondaryButton: .cancel(Text(Strings.no), action: {
-              onCancelAddAccount?()
-            })
+            primaryButton: .default(
+              Text(Strings.yes),
+              action: {
+                onConfirmAddAccount()
+              }
+            ),
+            secondaryButton: .cancel(
+              Text(Strings.no),
+              action: {
+                onCancelAddAccount?()
+              }
+            )
           )
         }
     )

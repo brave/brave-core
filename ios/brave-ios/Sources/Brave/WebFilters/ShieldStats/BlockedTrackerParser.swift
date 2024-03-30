@@ -1,12 +1,12 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
 import BraveShared
+import Foundation
 import Onboarding
+import Shared
 
 public enum AdBlockTrackerType: String, CaseIterable {
   case google
@@ -32,12 +32,15 @@ class BlockedTrackerParser {
 
     return fallbackToDomainURL ? domain : nil
   }
-  
-  static func parse(blockedRequestURLs: Set<URL>, selectedTabURL: URL) -> (displayTrackers: [AdBlockTrackerType], trackerCount: Int)? {
+
+  static func parse(
+    blockedRequestURLs: Set<URL>,
+    selectedTabURL: URL
+  ) -> (displayTrackers: [AdBlockTrackerType], trackerCount: Int)? {
     guard let list = entityList else { return nil }
-    
+
     var trackers = [String: [String]]()
-    
+
     for entity in list.entities {
       for url in blockedRequestURLs {
         let domain = url.baseDomain ?? url.host ?? url.schemelessAbsoluteString
@@ -50,32 +53,41 @@ class BlockedTrackerParser {
         }
       }
     }
-    
+
     let firstTracker = trackers.popFirst()
-    let trackerCount = ((firstTracker?.value.count ?? 0) - 1) + trackers.reduce(0, { res, values in
-        res + values.value.count
-    })
-    
+    let trackerCount =
+      ((firstTracker?.value.count ?? 0) - 1)
+      + trackers.reduce(
+        0,
+        { res, values in
+          res + values.value.count
+        }
+      )
+
     if trackerCount >= 10, !selectedTabURL.isSearchEngineURL {
       let displayTrackers = fetchBigTechAdBlockTrackers(trackers: trackers)
-      
+
       return (displayTrackers, trackerCount)
     }
 
-    return  nil
+    return nil
   }
-  
-  private static func fetchBigTechAdBlockTrackers(trackers: [String: [String]]) -> [AdBlockTrackerType] {
+
+  private static func fetchBigTechAdBlockTrackers(
+    trackers: [String: [String]]
+  ) -> [AdBlockTrackerType] {
     var existingBigTechTrackers: [AdBlockTrackerType] = []
-    
+
     for adBlockTracker in AdBlockTrackerType.allCases {
-      let bigTechTrackerKey = trackers.first(where: { return $0.key.lowercased().contains(adBlockTracker.rawValue) })
-      
+      let bigTechTrackerKey = trackers.first(where: {
+        return $0.key.lowercased().contains(adBlockTracker.rawValue)
+      })
+
       if bigTechTrackerKey != nil {
         existingBigTechTrackers.append(adBlockTracker)
       }
     }
-    
+
     return existingBigTechTrackers
   }
 }

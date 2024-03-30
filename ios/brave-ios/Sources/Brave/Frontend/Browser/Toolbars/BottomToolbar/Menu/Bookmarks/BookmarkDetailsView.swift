@@ -1,11 +1,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import SnapKit
-import Shared
 import Data
+import Shared
+import SnapKit
+import UIKit
 
 class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
 
@@ -73,8 +73,8 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
       .forEach(contentStackView.addArrangedSubview)
 
     var url = url
-    if url?.isBookmarklet == true {
-      url = url?.removingPercentEncoding
+    if let urlString = url, URL.bookmarkletURL(from: urlString) != nil {
+      url = urlString.removingPercentEncoding
     } else if let url = url, let favUrl = URL(string: url) {
       faviconImageView.loadFavicon(siteURL: favUrl, isPrivateBrowsing: isPrivateBrowsing)
     }
@@ -94,7 +94,7 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
   // MARK: - Delegate actions
 
   @objc func textFieldDidChange(_ textField: UITextField) {
-    if textField.text?.isBookmarklet == true {
+    if let text = textField.text, URL.bookmarkletURL(from: text) != nil {
       delegate?.correctValues(validationPassed: validateCodeFields())
     } else {
       delegate?.correctValues(validationPassed: validateFields())
@@ -107,6 +107,9 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
   }
 
   private func validateCodeFields() -> Bool {
-    return BookmarkValidation.validateBookmarklet(title: titleTextField.text, url: urlTextField?.text)
+    return BookmarkValidation.validateBookmarklet(
+      title: titleTextField.text,
+      url: urlTextField?.text
+    )
   }
 }

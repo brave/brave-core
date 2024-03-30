@@ -26,10 +26,10 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
@@ -140,6 +140,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             menu.findItem(R.id.request_vpn_location_row_menu_id).setVisible(false);
         }
 
+        // Brave donesn't show `Clear browsing data` menu.
+        menu.findItem(R.id.quick_delete_menu_id).setVisible(false).setEnabled(false);
+        menu.findItem(R.id.quick_delete_divider_line_id).setVisible(false).setEnabled(false);
+
         // Brave's items are only visible for page menu.
         // To make logic simple, below three items are added whenever menu gets visible
         // and removed when menu is dismissed.
@@ -164,7 +168,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
 
         BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported()
+        if (braveRewardsNativeWorker != null
+                && braveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             MenuItem rewards =
                     menu.add(Menu.NONE, R.id.brave_rewards_id, 0, R.string.menu_brave_rewards);
@@ -188,10 +193,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         MenuItem braveLeo = menu.findItem(R.id.brave_leo_id);
         if (braveLeo != null) {
             Tab tab = mActivityTabProvider.get();
-            if (BraveConfig.AI_CHAT_ENABLED
-                    && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)
-                    && tab != null
-                    && !tab.isIncognito()) {
+            if (BraveLeoPrefUtils.isLeoEnabled() && tab != null && !tab.isIncognito()) {
                 braveLeo.setVisible(true);
                 if (shouldShowIconBeforeItem()) {
                     braveLeo.setIcon(

@@ -40,19 +40,18 @@ void TabManager::RemoveObserver(TabManagerObserver* observer) {
 
 bool TabManager::IsVisible(const int32_t tab_id) const {
   if (!visible_tab_id_) {
+    // `OnNotifyTabDidChange` was not invoked for a tab that is currently
+    // visible in the browsing session.
     return false;
   }
 
   return visible_tab_id_ == tab_id;
 }
 
-bool TabManager::IsPlayingMedia(const int32_t tab_id) const {
-  const std::optional<TabInfo> tab = MaybeGetForId(tab_id);
-  return tab ? tab->is_playing_media : false;
-}
-
 std::optional<TabInfo> TabManager::GetVisible() const {
   if (!visible_tab_id_) {
+    // `OnNotifyTabDidChange` was not invoked for a tab that is currently
+    // visible in the browsing session.
     return std::nullopt;
   }
 
@@ -60,17 +59,27 @@ std::optional<TabInfo> TabManager::GetVisible() const {
 }
 
 std::optional<TabInfo> TabManager::MaybeGetForId(const int32_t tab_id) const {
-  if (!base::Contains(tabs_, tab_id)) {
+  if (!DoesExistForId(tab_id)) {
     return std::nullopt;
   }
 
   return tabs_.at(tab_id);
 }
 
+bool TabManager::IsPlayingMedia(const int32_t tab_id) const {
+  const std::optional<TabInfo> tab = MaybeGetForId(tab_id);
+  return tab ? tab->is_playing_media : false;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
+bool TabManager::DoesExistForId(const int32_t tab_id) const {
+  return base::Contains(tabs_, tab_id);
+}
+
 TabInfo& TabManager::GetOrCreateForId(const int32_t tab_id) {
-  if (!base::Contains(tabs_, tab_id)) {
+  if (!DoesExistForId(tab_id)) {
+    // Create a new tab.
     TabInfo tab;
     tab.id = tab_id;
     tabs_[tab_id] = tab;
@@ -79,8 +88,13 @@ TabInfo& TabManager::GetOrCreateForId(const int32_t tab_id) {
   return tabs_[tab_id];
 }
 
-void TabManager::Remove(const int32_t tab_id) {
+void TabManager::RemoveForId(const int32_t tab_id) {
   tabs_.erase(tab_id);
+
+  if (tabs_.empty()) {
+    BLOG(2, "There are no tabs");
+    visible_tab_id_.reset();
+  }
 }
 
 void TabManager::NotifyTabDidChangeFocus(const int32_t tab_id) const {
@@ -144,12 +158,14 @@ void TabManager::OnNotifyTabHtmlContentDidChange(
   CHECK(!redirect_chain.empty());
 
   const uint32_t hash = base::FastHash(html);
-  if (hash != last_html_content_hash_) {
-    last_html_content_hash_ = hash;
-
-    BLOG(2, "Tab id " << tab_id << " HTML content changed");
-    NotifyHtmlContentDidChange(tab_id, redirect_chain, html);
+  if (hash == last_html_content_hash_) {
+    // No change.
+    return;
   }
+  last_html_content_hash_ = hash;
+
+  BLOG(2, "Tab id " << tab_id << " HTML content changed");
+  NotifyHtmlContentDidChange(tab_id, redirect_chain, html);
 }
 
 void TabManager::OnNotifyTabTextContentDidChange(
@@ -159,78 +175,88 @@ void TabManager::OnNotifyTabTextContentDidChange(
   CHECK(!redirect_chain.empty());
 
   const uint32_t hash = base::FastHash(text);
-  if (hash != last_text_content_hash_) {
-    last_text_content_hash_ = hash;
-
-    BLOG(2, "Tab id " << tab_id << " text content changed");
-    NotifyTextContentDidChange(tab_id, redirect_chain, text);
+  if (hash == last_text_content_hash_) {
+    // No change.
+    return;
   }
+  last_text_content_hash_ = hash;
+
+  BLOG(2, "Tab id " << tab_id << " text content changed");
+  NotifyTextContentDidChange(tab_id, redirect_chain, text);
 }
 
 void TabManager::OnNotifyTabDidStartPlayingMedia(const int32_t tab_id) {
   TabInfo& tab = GetOrCreateForId(tab_id);
-  if (!tab.is_playing_media) {
-    tab.is_playing_media = true;
-
-    BLOG(2, "Tab id " << tab_id << " started playing media");
-    NotifyTabDidStartPlayingMedia(tab_id);
+  if (tab.is_playing_media) {
+    // Already playing media.
+    return;
   }
+  tab.is_playing_media = true;
+
+  BLOG(2, "Tab id " << tab_id << " started playing media");
+  NotifyTabDidStartPlayingMedia(tab_id);
 }
 
 void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t tab_id) {
   TabInfo& tab = GetOrCreateForId(tab_id);
-  if (tab.is_playing_media) {
-    tab.is_playing_media = false;
-
-    BLOG(2, "Tab id " << tab_id << " stopped playing media");
-    NotifyTabDidStopPlayingMedia(tab_id);
+  if (!tab.is_playing_media) {
+    // Not playing media.
+    return;
   }
+  tab.is_playing_media = false;
+
+  BLOG(2, "Tab id " << tab_id << " stopped playing media");
+  NotifyTabDidStopPlayingMedia(tab_id);
 }
 
 void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
                                       const std::vector<GURL>& redirect_chain,
+                                      const bool is_error_page,
                                       const bool is_visible) {
-  const bool is_existing_tab = !!MaybeGetForId(tab_id);
+  CHECK(!redirect_chain.empty());
+
+  const bool does_exist = DoesExistForId(tab_id);
 
   TabInfo& tab = GetOrCreateForId(tab_id);
 
-  const bool redirect_chain_did_change = tab.redirect_chain != redirect_chain;
-  if (redirect_chain_did_change) {
-    tab.redirect_chain = redirect_chain;
+  // Check if the tab changed.
+  const bool did_change = does_exist && tab.redirect_chain != redirect_chain;
+
+  // Check if the tab changed focus.
+  const bool did_change_focus = !does_exist || tab.is_visible != is_visible;
+
+  // Update the tab.
+  tab.is_visible = is_visible;
+  tab.redirect_chain = redirect_chain;
+  tab.is_error_page = is_error_page;
+
+  if (is_visible) {
+    // Update the visible tab id.
+    visible_tab_id_ = tab_id;
   }
 
-  if (!is_visible) {
-    BLOG(7, "Tab id " << tab_id << " is occluded");
-    if (!redirect_chain_did_change) {
-      return;
-    }
+  // Notify observers.
+  if (!does_exist) {
+    BLOG(2, "Created tab with id " << tab_id);
+    NotifyDidOpenNewTab(tab);
+  }
 
+  if (did_change) {
     BLOG(2, "Tab id " << tab_id << " did change");
-    return NotifyTabDidChange(tab);
+    NotifyTabDidChange(tab);
   }
 
-  if (visible_tab_id_ == tab_id) {
-    BLOG(2, "Tab id " << tab_id << " did change");
-    return NotifyTabDidChange(tab);
+  if (did_change_focus) {
+    BLOG(2, "Tab id " << tab_id << " did become "
+                      << (is_visible ? "focused" : "occluded"));
+    NotifyTabDidChangeFocus(tab_id);
   }
-
-  BLOG(2, "Tab id " << tab_id << " is visible");
-
-  visible_tab_id_ = tab_id;
-
-  if (is_existing_tab) {
-    BLOG(2, "Focused on existing tab with id " << tab_id);
-    return NotifyTabDidChangeFocus(tab_id);
-  }
-
-  BLOG(2, "Opened a new tab with id " << tab_id);
-  NotifyDidOpenNewTab(tab);
 }
 
 void TabManager::OnNotifyDidCloseTab(const int32_t tab_id) {
   BLOG(2, "Tab id " << tab_id << " was closed");
 
-  Remove(tab_id);
+  RemoveForId(tab_id);
 
   NotifyDidCloseTab(tab_id);
 }

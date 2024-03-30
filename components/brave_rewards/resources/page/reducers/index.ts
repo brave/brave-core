@@ -9,7 +9,6 @@ import { loadState, saveState } from './state_cache'
 
 import rewardsReducer from './rewards_reducer'
 import walletReducer from './wallet_reducer'
-import promotionReducer from './promotion_reducer'
 import publishersReducer from './publishers_reducer'
 import * as Rewards from '../lib/types'
 
@@ -22,7 +21,6 @@ function mergeReducers (state: Rewards.State | undefined, action: any) {
 
   state = rewardsReducer(state, action)
   state = walletReducer(state, action)
-  state = promotionReducer(state, action)
   state = publishersReducer(state, action)
 
   if (!state) {

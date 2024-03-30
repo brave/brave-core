@@ -16,7 +16,6 @@ const defaultState: RewardsInternals.State = {
     walletCreationEnvironment: undefined
   },
   contributions: [],
-  promotions: [],
   log: '',
   fullLog: '',
   externalWallet: {

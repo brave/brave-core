@@ -1,13 +1,13 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveUI
-import Preferences
-import Data
 import CoreData
+import Data
+import Foundation
+import Preferences
 import Shared
 import UIKit
 import os.log
@@ -21,7 +21,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
   var sectionDidChange: (() -> Void)?
   var action: (Favorite, BookmarksAction) -> Void
   var legacyLongPressAction: (UIAlertController) -> Void
-  
+
   private let isPrivateBrowsing: Bool
 
   var hasMoreThanOneFavouriteItems: Bool {
@@ -88,19 +88,36 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     action(bookmark, .opened())
   }
 
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
     let fetchedCount = frc.fetchedObjects?.count ?? 0
-    let numberOfItems = min(fetchedCount, Self.numberOfItems(
-      in: collectionView,
-      availableWidth: fittingSizeForCollectionView(collectionView, section: section).width))
+    let numberOfItems = min(
+      fetchedCount,
+      Self.numberOfItems(
+        in: collectionView,
+        availableWidth: fittingSizeForCollectionView(collectionView, section: section).width
+      )
+    )
     return Preferences.NewTabPage.showNewTabFavourites.value ? numberOfItems : 0
   }
 
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    return collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteCell.identifier, for: indexPath)
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
+    return collectionView.dequeueReusableCell(
+      withReuseIdentifier: FavoriteCell.identifier,
+      for: indexPath
+    )
   }
 
-  func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt indexPath: IndexPath
+  ) {
 
     guard let cell = cell as? FavoriteCell else {
       return
@@ -128,7 +145,10 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     if minWidth < size.width {
       // If the default icon size is too large, make it slightly smaller
       // to fit at least 4 icons
-      size = CGSize(width: floor(width / 4.0), height: FavoriteCell.height(forWidth: floor(width / 4.0)))
+      size = CGSize(
+        width: floor(width / 4.0),
+        height: FavoriteCell.height(forWidth: floor(width / 4.0))
+      )
     } else if collectionView.traitCollection.horizontalSizeClass == .regular {
       // If we're on regular horizontal size class and the computed size
       // of the icon is larger than `largerIconSize`, use `largerIconSize`
@@ -139,18 +159,30 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     return size
   }
 
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath
+  ) -> CGSize {
     return itemSize(collectionView: collectionView, section: indexPath.section)
   }
 
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    insetForSectionAt section: Int
+  ) -> UIEdgeInsets {
     let isLandscape = collectionView.frame.width > collectionView.frame.height
     // Adjust the left-side padding a bit for portrait iPad
     let inset = isLandscape ? 12 : collectionView.readableContentGuide.layoutFrame.origin.x
     return UIEdgeInsets(top: 6, left: inset, bottom: 6, right: inset)
   }
 
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    minimumInteritemSpacingForSectionAt section: Int
+  ) -> CGFloat {
     let width = fittingSizeForCollectionView(collectionView, section: section).width
     let size = itemSize(collectionView: collectionView, section: section)
     let numberOfItems = Self.numberOfItems(in: collectionView, availableWidth: width)
@@ -158,24 +190,33 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     return floor((width - (size.width * CGFloat(numberOfItems))) / (CGFloat(numberOfItems) - 1))
   }
 
-  func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    contextMenuConfigurationForItemAt indexPath: IndexPath,
+    point: CGPoint
+  ) -> UIContextMenuConfiguration? {
     guard let favourite = frc.fetchedObjects?[indexPath.item] else { return nil }
-    return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ -> UIMenu? in
+    return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
+      _ -> UIMenu? in
       let openInNewTab = UIAction(
         title: Strings.openNewTabButtonTitle,
         handler: UIAction.deferredActionHandler { _ in
           self.action(favourite, .opened(inNewTab: true, switchingToPrivateMode: false))
-        })
+        }
+      )
       let edit = UIAction(
         title: Strings.editFavorite,
         handler: UIAction.deferredActionHandler { _ in
           self.action(favourite, .edited)
-        })
+        }
+      )
       let delete = UIAction(
-        title: Strings.removeFavorite, attributes: .destructive,
+        title: Strings.removeFavorite,
+        attributes: .destructive,
         handler: UIAction.deferredActionHandler { _ in
           favourite.delete()
-        })
+        }
+      )
 
       var urlChildren: [UIAction] = [openInNewTab]
       if !self.isPrivateBrowsing {
@@ -183,17 +224,25 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
           title: Strings.openNewPrivateTabButtonTitle,
           handler: UIAction.deferredActionHandler { _ in
             self.action(favourite, .opened(inNewTab: true, switchingToPrivateMode: true))
-          })
+          }
+        )
         urlChildren.append(openInNewPrivateTab)
       }
 
       let urlMenu = UIMenu(title: "", options: .displayInline, children: urlChildren)
       let favMenu = UIMenu(title: "", options: .displayInline, children: [edit, delete])
-      return UIMenu(title: favourite.title ?? favourite.url ?? "", identifier: nil, children: [urlMenu, favMenu])
+      return UIMenu(
+        title: favourite.title ?? favourite.url ?? "",
+        identifier: nil,
+        children: [urlMenu, favMenu]
+      )
     }
   }
 
-  func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+  ) -> UITargetedPreview? {
     guard let indexPath = configuration.identifier as? IndexPath,
       let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell
     else {
@@ -202,7 +251,10 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     return UITargetedPreview(view: cell.imageView)
   }
 
-  func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+  ) -> UITargetedPreview? {
     guard let indexPath = configuration.identifier as? IndexPath,
       let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell
     else {

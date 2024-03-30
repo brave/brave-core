@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/sku/sku_transaction.h"
 
 namespace brave_rewards::internal {
@@ -41,7 +41,7 @@ mojom::SKUTransactionType GetTransactionTypeFromWalletType(
 
 namespace sku {
 
-SKUTransaction::SKUTransaction(RewardsEngineImpl& engine)
+SKUTransaction::SKUTransaction(RewardsEngine& engine)
     : engine_(engine), payment_server_(engine) {}
 
 SKUTransaction::~SKUTransaction() = default;

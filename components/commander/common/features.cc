@@ -11,4 +11,8 @@ BASE_FEATURE(kBraveCommander,
              "BraveCommander",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveCommandsInOmnibox,
+             "BraveCommandsInOmnibox",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 }  // namespace features

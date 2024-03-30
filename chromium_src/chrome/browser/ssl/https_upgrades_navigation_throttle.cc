@@ -7,7 +7,7 @@
 
 #include "base/time/time.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ssl/https_first_mode_settings_tracker.h"

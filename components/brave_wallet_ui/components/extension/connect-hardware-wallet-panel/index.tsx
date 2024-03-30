@@ -135,7 +135,7 @@ export const ConnectHardwareWalletPanel = ({
   // methods
   const onCancelConnect = React.useCallback(() => {
     dispatch(PanelActions.cancelConnectHardwareWallet(account))
-  }, [account])
+  }, [account, dispatch])
 
   const onSignData = React.useCallback(() => {
     if (!messageAccount || !request) {
@@ -157,7 +157,7 @@ export const ConnectHardwareWalletPanel = ({
         })
       )
     }
-  }, [messageAccount, request])
+  }, [dispatch, messageAccount, request])
 
   const retryHardwareOperation = React.useCallback(() => {
     if (isSigning) {
@@ -182,7 +182,7 @@ export const ConnectHardwareWalletPanel = ({
     // back to brave://wallet-panel.top-chrome/ without any
     // params. Otherwise hardware authorization will fail.
     history.push('')
-  }, [])
+  }, [history])
 
   // render
   return (

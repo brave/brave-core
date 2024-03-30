@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -22,7 +22,7 @@ class BraveAdsRotatingHashUserDataTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local=*/false));
+    AdvanceClockTo(TimeFromUTCString("2 June 2022 11:00"));
   }
 };
 
@@ -32,7 +32,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
@@ -52,7 +52,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
@@ -63,7 +63,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
        DoNotBuildRotatingHashUserDataIfMissingDeviceId) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert

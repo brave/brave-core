@@ -1,10 +1,10 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CryptoKit
+import Foundation
 
 /// Class that aids creating the same random values for any given eTLD.
 ///
@@ -58,8 +58,8 @@ class RandomConfiguration {
   }
 }
 
-private extension Data {
-  var hexString: String {
+extension Data {
+  fileprivate var hexString: String {
     map({ String(format: "%02hhx", $0) }).joined()
   }
 }

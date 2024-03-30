@@ -51,8 +51,8 @@ std::u16string ToString(const media_session::MediaPosition& position) {
 class Seeker : public views::Slider,
                public views::SliderListener,
                public views::ViewTargeterDelegate {
+  METADATA_HEADER(Seeker, views::Slider)
  public:
-  METADATA_HEADER(Seeker);
 
   static constexpr int kThumbRadius = 6;
   static constexpr int kPreferredHeight = kThumbRadius * 2;
@@ -181,7 +181,7 @@ class Seeker : public views::Slider,
   gfx::SlideAnimation thumb_animation_{this};
 };
 
-BEGIN_METADATA(Seeker, views::Slider)
+BEGIN_METADATA(Seeker)
 END_METADATA
 
 }  // namespace

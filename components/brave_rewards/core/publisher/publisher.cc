@@ -17,19 +17,19 @@
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/publisher/media/media.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
 namespace brave_rewards::internal {
 namespace publisher {
 
-Publisher::Publisher(RewardsEngineImpl& engine)
+Publisher::Publisher(RewardsEngine& engine)
     : engine_(engine),
       prefix_list_updater_(engine),
       server_publisher_fetcher_(engine) {}

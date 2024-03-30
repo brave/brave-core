@@ -31,7 +31,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/switches.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/version_info/version_info.h"
@@ -507,28 +509,6 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownFilNetworks() {
   return *networks.get();
 }
 
-GURL BitcoinMainnetRpcUrl() {
-  auto switch_url =
-      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kBitcoinMainnetRpcUrl));
-  if (switch_url.is_valid()) {
-    return switch_url;
-  }
-
-  return GURL("https://bitcoin-mainnet.wallet.brave.com/");
-}
-
-GURL BitcoinTestnetRpcUrl() {
-  auto switch_url =
-      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kBitcoinTestnetRpcUrl));
-  if (switch_url.is_valid()) {
-    return switch_url;
-  }
-
-  return GURL("https://blockstream.info/testnet/api/");
-}
-
 GURL ZCashMainnetRpcUrl() {
   auto switch_url =
       GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
@@ -559,7 +539,7 @@ const mojom::NetworkInfo* GetBitcoinMainnet() {
        {"https://www.blockchain.com/explorer"},
        {},
        0,
-       {BitcoinMainnetRpcUrl()},
+       {GURL(kBitcoinMainnetRpcEndpoint)},
        "BTC",
        "Bitcoin",
        8,
@@ -579,7 +559,7 @@ const mojom::NetworkInfo* GetBitcoinTestnet() {
        {"https://blockstream.info/testnet"},
        {},
        0,
-       {BitcoinTestnetRpcUrl()},
+       {GURL(kBitcoinTestnetRpcEndpoint)},
        "BTC",
        "Bitcoin",
        8,
@@ -754,8 +734,80 @@ mojom::BlockchainTokenPtr NetworkToNativeToken(
   result->name = network.symbol_name;
   result->symbol = network.symbol;
   result->decimals = network.decimals;
+  result->logo = network.icon_urls.empty() ? "" : network.icon_urls[0];
+  result->visible = true;
 
   return result;
+}
+
+// Get the address to be used in user assets API.
+// For EVM, convert the address to a checksum address.
+// For Solana, verify if address is a base58 encoded address, if so, return it.
+// static
+std::optional<std::string> GetUserAssetAddress(const std::string& address,
+                                               mojom::CoinType coin,
+                                               const std::string& chain_id) {
+  if (address.empty()) {  // native asset
+    return address;
+  }
+
+  if (coin == mojom::CoinType::ETH) {
+    return EthAddress::ToEip1191ChecksumAddress(address, chain_id);
+  }
+
+  if (coin == mojom::CoinType::SOL) {
+    std::vector<uint8_t> bytes;
+    if (!::brave_wallet::IsBase58EncodedSolanaPubkey(address)) {
+      return std::nullopt;
+    }
+    return address;
+  }
+
+  return std::nullopt;
+}
+
+bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
+  return token->is_erc721 || token->is_erc1155;
+}
+
+bool TokenMatchesDict(const brave_wallet::mojom::BlockchainTokenPtr& token,
+                      const base::Value::Dict* dict) {
+  if (!dict) {
+    return false;
+  }
+
+  std::optional<int> coin = dict->FindInt("coin");
+  if (!coin || *coin != static_cast<int>(token->coin)) {
+    return false;
+  }
+
+  const std::string* chain_id = dict->FindString("chain_id");
+  if (!chain_id || *chain_id != token->chain_id) {
+    return false;
+  }
+
+  const std::string* address_value = dict->FindString("address");
+  if (!address_value || !base::EqualsCaseInsensitiveASCII(
+                            *address_value, token->contract_address)) {
+    return false;
+  }
+
+  if (ShouldCheckTokenId(token)) {
+    const std::string* token_id_ptr = dict->FindString("token_id");
+    return token_id_ptr && *token_id_ptr == token->token_id;
+  } else {
+    return true;
+  }
+}
+
+bool ValidateAndFixAssetAddress(mojom::BlockchainTokenPtr& token) {
+  if (auto address = GetUserAssetAddress(token->contract_address, token->coin,
+                                         token->chain_id)) {
+    token->contract_address = *address;
+    return true;
+  }
+
+  return false;
 }
 
 }  // namespace
@@ -1666,23 +1718,8 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
     return;
   }
 
-  ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
-
-  base::Value::Dict native_asset;
-  native_asset.Set("coin", static_cast<int>(chain.coin));
-  native_asset.Set("chain_id", chain.chain_id);
-  native_asset.Set("address", "");
-  native_asset.Set("name", chain.symbol_name);
-  native_asset.Set("symbol", chain.symbol);
-  native_asset.Set("is_erc20", false);
-  native_asset.Set("is_erc721", false);
-  native_asset.Set("is_erc1155", false);
-  native_asset.Set("is_nft", false);
-  native_asset.Set("decimals", chain.decimals);
-  native_asset.Set("visible", true);
-  native_asset.Set("logo", chain.icon_urls.empty() ? "" : chain.icon_urls[0]);
-
-  update->Append(std::move(native_asset));
+  RemoveUserAsset(prefs, NetworkToNativeToken(chain));
+  AddUserAsset(prefs, NetworkToNativeToken(chain));
 }
 
 void RemoveCustomNetwork(PrefService* prefs,
@@ -1805,6 +1842,178 @@ bool SetCurrentChainId(PrefService* prefs,
   return true;
 }
 
+std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs) {
+  std::vector<mojom::BlockchainTokenPtr> result;
+  const auto& user_assets_list = prefs->GetList(kBraveWalletUserAssetsList);
+  for (auto& asset : user_assets_list) {
+    auto* token_dict = asset.GetIfDict();
+    if (!token_dict) {
+      continue;
+    }
+
+    if (auto token_ptr = ValueToBlockchainToken(*token_dict)) {
+      result.push_back(std::move(token_ptr));
+    }
+  }
+  return result;
+}
+
+mojom::BlockchainTokenPtr AddUserAsset(PrefService* prefs,
+                                       mojom::BlockchainTokenPtr token) {
+  if (!GetChain(prefs, token->chain_id, token->coin)) {
+    return nullptr;
+  }
+
+  if (!ValidateAndFixAssetAddress(token)) {
+    return nullptr;
+  }
+
+  if (ShouldCheckTokenId(token)) {
+    uint256_t token_id_uint = 0;
+    if (!HexValueToUint256(token->token_id, &token_id_uint)) {
+      return nullptr;
+    }
+  }
+
+  ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
+
+  for (auto& existing_asset : *update) {
+    if (TokenMatchesDict(token, existing_asset.GetIfDict())) {
+      return nullptr;
+    }
+  }
+
+  update->Append(BlockchainTokenToValue(token));
+
+  return token;
+}
+
+bool RemoveUserAsset(PrefService* prefs,
+                     const mojom::BlockchainTokenPtr& token) {
+  ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
+
+  return update->EraseIf([&token](const base::Value& value) {
+    return TokenMatchesDict(token, value.GetIfDict());
+  });
+}
+
+bool SetUserAssetVisible(PrefService* prefs,
+                         const mojom::BlockchainTokenPtr& token,
+                         bool visible) {
+  ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
+
+  for (auto& token_value : *update) {
+    if (TokenMatchesDict(token, token_value.GetIfDict())) {
+      token_value.GetDict().Set("visible", visible);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool SetAssetSpamStatus(PrefService* prefs,
+                        const mojom::BlockchainTokenPtr& token,
+                        bool is_spam) {
+  ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
+
+  for (auto& token_value : *update) {
+    if (TokenMatchesDict(token, token_value.GetIfDict())) {
+      token_value.GetDict().Set("is_spam", is_spam);
+      // Marking a token as spam makes it not visible and vice-versa
+      token_value.GetDict().Set("visible", !is_spam);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+std::vector<mojom::BlockchainTokenPtr> GetDefaultEthereumAssets() {
+  std::vector<mojom::BlockchainTokenPtr> user_assets_list;
+
+  mojom::BlockchainTokenPtr bat_token = NetworkToNativeToken(*GetEthMainnet());
+  bat_token->contract_address = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
+  bat_token->name = "Basic Attention Token";
+  bat_token->symbol = "BAT";
+  bat_token->is_erc20 = true;
+  bat_token->logo = "bat.png";
+
+  for (const auto* chain : GetKnownEthNetworks()) {
+    auto asset = NetworkToNativeToken(*chain);
+    user_assets_list.push_back(std::move(asset));
+
+    // ETH Mainnet token is followed by BAT token.
+    if (chain->chain_id == mojom::kMainnetChainId) {
+      user_assets_list.push_back(std::move(bat_token));
+    }
+  }
+
+  return user_assets_list;
+}
+
+std::vector<mojom::BlockchainTokenPtr> GetDefaultSolanaAssets() {
+  std::vector<mojom::BlockchainTokenPtr> user_assets_list;
+
+  for (const auto* chain : GetKnownSolNetworks()) {
+    auto asset = NetworkToNativeToken(*chain);
+    asset->logo = "sol.png";
+    user_assets_list.push_back(std::move(asset));
+  }
+
+  return user_assets_list;
+}
+
+std::vector<mojom::BlockchainTokenPtr> GetDefaultFilecoinAssets() {
+  std::vector<mojom::BlockchainTokenPtr> user_assets_list;
+
+  for (const auto* chain : GetKnownFilNetworks()) {
+    auto asset = NetworkToNativeToken(*chain);
+    asset->logo = "fil.png";
+    user_assets_list.push_back(std::move(asset));
+  }
+
+  return user_assets_list;
+}
+
+std::vector<mojom::BlockchainTokenPtr> GetDefaultBitcoinAssets() {
+  std::vector<mojom::BlockchainTokenPtr> user_assets_list;
+
+  user_assets_list.push_back(GetBitcoinNativeToken(mojom::kBitcoinMainnet));
+  user_assets_list.push_back(GetBitcoinNativeToken(mojom::kBitcoinTestnet));
+
+  return user_assets_list;
+}
+
+std::vector<mojom::BlockchainTokenPtr> GetDefaultZCashAssets() {
+  std::vector<mojom::BlockchainTokenPtr> user_assets_list;
+
+  user_assets_list.push_back(GetZcashNativeToken(mojom::kZCashMainnet));
+  user_assets_list.push_back(GetZcashNativeToken(mojom::kZCashTestnet));
+
+  return user_assets_list;
+}
+
+base::Value::List GetDefaultUserAssets() {
+  base::Value::List user_assets_pref;
+  for (auto& asset : GetDefaultEthereumAssets()) {
+    user_assets_pref.Append(BlockchainTokenToValue(asset));
+  }
+  for (auto& asset : GetDefaultSolanaAssets()) {
+    user_assets_pref.Append(BlockchainTokenToValue(asset));
+  }
+  for (auto& asset : GetDefaultFilecoinAssets()) {
+    user_assets_pref.Append(BlockchainTokenToValue(asset));
+  }
+  for (auto& asset : GetDefaultBitcoinAssets()) {
+    user_assets_pref.Append(BlockchainTokenToValue(asset));
+  }
+  for (auto& asset : GetDefaultZCashAssets()) {
+    user_assets_pref.Append(BlockchainTokenToValue(asset));
+  }
+  return user_assets_pref;
+}
+
 std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   switch (coin) {
     case mojom::CoinType::BTC:
@@ -1899,6 +2108,19 @@ mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id) {
   }
 
   return result;
+}
+
+mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatus(
+    PrefService* prefs) {
+  return static_cast<mojom::BlowfishOptInStatus>(
+      prefs->GetInteger(kBraveWalletTransactionSimulationOptInStatus));
+}
+
+void SetTransactionSimulationOptInStatus(
+    PrefService* prefs,
+    const mojom::BlowfishOptInStatus& status) {
+  prefs->SetInteger(kBraveWalletTransactionSimulationOptInStatus,
+                    static_cast<int>(status));
 }
 
 }  // namespace brave_wallet

@@ -1,10 +1,10 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveUI
+import Foundation
 import Shared
 import UIKit
 
@@ -61,12 +61,14 @@ class BraveRewardsPublisherView: UIStackView {
         UIStackView(arrangedSubviews: [faviconImageView, hostLabel]).then {
           $0.spacing = 8
           $0.alignment = .center
-        }),
+        }
+      ),
       .view(
         UIStackView(arrangedSubviews: [bodyLabel]).then {
           $0.isLayoutMarginsRelativeArrangement = true
           $0.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        }),
+        }
+      ),
       .customSpace(4),
       .view(learnMoreButton)
     )

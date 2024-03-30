@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Začnite používať Odmeny</translation>
 <translation id="8220484609979012449">\n\nTomuto tvorcovi môžete stále posielať príspevky v kryptomenách pomocou peňaženky Web3.</translation>
 <translation id="6385969012847057348">Tento tvorca nemôže prijímať príspevky od <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Tento tvorca zatiaľ nemá možnosť prijímať príspevky Web3 alebo príspevky vo forme kryptomeny.</translation>
 <translation id="6268134562674951939">Nemáte dostatok tokenov</translation>
 <translation id="4529874892536380156">Zmeňte tento príspevok na mesačný opakovaný príspevok. Môžete ho kedykoľvek zrušiť.</translation>
 <translation id="5562948772940025260">Pomocou vášho zostatku v službe Odmeny Brave môžete poslať maximálne <ph name="AMOUNT"/> BAT.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Pomocou existujúceho zosynchronizovaného zariadenia otvorte nastavenia Brave a choďte do nastavení &gt; Sync. Vyberte "Pridať nové zariadenie" a naskenujte QR kód, ktorý sa vám zobrazí na obrazovke.</translation>
 <translation id="5241263629636958324">Zkopírováno do schránky</translation>
 <translation id="5817918615728894473">Párovať</translation>
-<translation id="7090325819305486658">Dátové preferencie</translation>
+<translation id="3429575397891106447">Možnosti synchronizácie</translation>
 <translation id="1680065323266179640">Zmazať Synchronizačný účet</translation>
 <translation id="3792563952903751704">Vymazanie účtu vymaže vaše šifrované údaje z Brave serverov a znemožní Synchronizáciu na všetkých vašich pripojených zariadeniach. Nezmaže však údaje uložené na týchto zariadeniach lokálne.
   Vymazanie je trvalé a údaje sa nedajú obnoviť. Ak sa rozhodnete znova používať Synchronizáciu, budete musieť vytvoriť nový účet a znova pridať po jednom všetky zariadenia.</translation>
@@ -427,18 +428,10 @@ Naozaj chcete pokračovať?</translation>
 <translation id="2394961582378297792">Odhlásené</translation>
 <translation id="5308380583665731573">Pripojenie</translation>
 <translation id="3368922792935385530">Pripojené</translation>
-<translation id="8673913984316081937">Overenie vašej peňaženky je voliteľné</translation>
-<translation id="8558636200953226885">Ale po overení, môžete...</translation>
-<translation id="8697510149346635496">Stiahnuť BATy, ktoré ste získali za zobrazenie reklám rešpektujúcich súkromie</translation>
-<translation id="1481480653609649134">Kúpte si ďalšie BATy pomocou kreditnej karty a z iných zdrojov</translation>
-<translation id="9096003370755878766">Stiahnuť BATy, ktoré ste si predtým mohli pridať do peňaženky Brave Rewards</translation>
-<translation id="1554282356558968486">Službu peňaženka pre nás zabezpečuje</translation>
 <translation id="6569877533335686968">Podporovať</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Ak požiadate o nejaké služby, Uphold vás môže požiadať o potvrdenie identity.</translation>
-<translation id="3200197118442451932">Spoločnosť Brave Software Inc. nespracováva, neuchováva a ani nepristupuje k osobným údajom, ktoré poskytnete <ph name="WALLET_PROVIDER"/>, keď si u nich založíte účet.</translation>
 <translation id="1665118090708049096">Prejsť na môj účet <ph name="WALLET_PROVIDER"/></translation>
 <translation id="4858636682078269312">Prihláste sa do svojho účtu <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Nepripojené</translation>
@@ -525,7 +518,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="2225863440766607138">Sledovače</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">Za posledné 3 hodiny ste pomocou prehliadača Brave zablokovali <ph name="COUNT"/> trackers &amp; reklám.</translation>
-<translation id="3621193901658023971">Prehliadajte až 6x rýchlejšie na hlavných spravodajských stránkach v Brave pomocou blokovania sledovačov a reklám.</translation>
+<translation id="5005713153542196658">Hlavné spravodajské stránky si v Brave blokovaním sledovacích zariadení &amp; reklám prehliadajte až 6x rýchlejšie.</translation>
 <translation id="7427567994475794038">Zapnite si Hlásenia o súkromí a zistite, koľko sledovačov a reklám bolo za posledné 3 hodiny zablokovaných.</translation>
 <translation id="2053891538879944400">Pomocou prehliadača Brave ste ušetrili <ph name="DATA"/> <ph name="DATA_TEXT"/> dát.</translation>
 <translation id="8640064498452534195">Na zobrazenie množstva údajov, ktoré ste ušetrili, zapnite Hlásenia o súkromí.</translation>
@@ -590,6 +583,10 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8622329973403382303">Urobte si krátku prehliadku, aby ste si osvojili, ako funguje vstup do histórie ako rocková hviezda Odmien!</translation>
 <translation id="3479552764303398839">Teraz nie</translation>
 <translation id="7138272885617540195">Povoliť otvárenie odkazov na aplikácie v aplikáciích mimo Brave</translation>
+<translation id="4954512758656527938">Predvolená peňaženka Ethereum</translation>
+<translation id="7701023802820268122">Predvolená peňaženka Solana</translation>
+<translation id="7701040980221191251">Žiadne</translation>
+<translation id="8488282162676695335">Peňaženka Brave</translation>
 <translation id="8792121506918889955">Poriadok zaobchádzania WebRTC IP</translation>
 <translation id="8798099450830957504">Predvolené</translation>
 <translation id="1822560017823072927">Štandardné verejné a súkromné rozhrania</translation>
@@ -599,14 +596,18 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1483493594462132177">Odeslat</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Záloha</translation>
-<translation id="1420318137760245955">Vitajte v novej peňaženke Brave</translation>
-<translation id="8339846196588658366">Uchovávajte kryptoaktíva pod vaším dohľadom a sledujte výkonnosť portfólia. Všetko priamo z prehliadača Brave, ktorý chráni vaše osobné údaje.</translation>
-<translation id="4472575034687746823">Začíname</translation>
+<translation id="4556086616242530072">Vlastný prehliadač.\nVlastná úschova.\nA viacreťazcový.</translation>
+<translation id="7909462264772842773">Prevezmite kontrolu nad svojimi kryptomenami a NFT. Brave Wallet podporuje Ethereum, reťazce EVM, Solana, Filecoin a ďalšie.</translation>
+<translation id="165255193061631296">Potrebujete novú peňaženku?</translation>
+<translation id="3485737865439729577">Začnite používať Brave Wallet za pár minút</translation>
 <translation id="2759836790106646094">Teraz zálohovať peňaženku!</translation>
 <translation id="1078873179929044999">V ďalšom kroku uvidíte 12-slovnú frázu na obnovenie, ktorú môžete použiť na obnovenie svojich základných kryptoúčtov. Uložte si ju na bezpečné miesto. V prípade zabudnutého hesla, strateného alebo ukradnutého zariadenia alebo zmeny peňaženky je fráza na obnovenie jediný spôsob, ako opäť získať prístup k účtu.</translation>
 <translation id="2359808026110333948">Pokračovať</translation>
 <translation id="5488357322146334497">Zpráva</translation>
 <translation id="1904000155026201268">Rozumiem, že ak stratím frázu na obnovenie, nebudem mať prístup k svojej kryptopeňaženke.</translation>
+<translation id="5333225216561354793">Potrebujeme, aby ste potvrdili nasledujúce položky</translation>
+<translation id="1645800479814134195">Beriem na vedomie, že ide o peňaženku na vlastnú zodpovednosť a že som sám zodpovedný za všetky súvisiace finančné prostriedky, aktíva alebo účty a za prijatie vhodných opatrení na zabezpečenie, ochranu a zálohovanie svojej peňaženky. Beriem na vedomie, že spoločnosť Brave nemôže v mojom mene získať prístup k mojej peňaženke ani zvrátiť transakcie a že fáza obnovy je JEDINÝM spôsobom, ako získať prístup v prípade straty hesla, krádeže zariadenia alebo podobných okolností.</translation>
+<translation id="4565891212173086999">Prečítal som si a súhlasím s <ph name="CLICK_START"/>Podmienkami používania<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Vaša fráza na obnovenie</translation>
 <translation id="5077747669435508720">napíšte si alebo skopírujte tieto slová presne v uvedenom poradí a uložte si ich na bezpečné miesto. V prípade zabudnutého hesla, strateného alebo ukradnutého zariadenia alebo zmeny peňaženiek je fráza na obnovenie jediný spôsob, ako opäť získať prístup k účtu.</translation>
 <translation id="2708402071160162126">VAROVANIE: Nikdy nezverejňujte svoju frázu na zálohovanie. Každý, kto má túto frázu, vám môže navždy vziať aktíva.</translation>
@@ -651,6 +652,9 @@ Naozaj chcete pokračovať?</translation>
 <translation id="3747079125031086337">Vyberte si slová vo svojej fráze na obnovenie v správnom poradí.</translation>
 <translation id="6518133107902771759">Overiť</translation>
 <translation id="3157931365184549694">Obnoviť</translation>
+<translation id="5844138175312846408">Už máte peňaženku?</translation>
+<translation id="2502258949541727762">Skôr ako začneme</translation>
+<translation id="5981303441790732480">Importovať existujúcu peňaženku</translation>
 <translation id="9111102763498581341">Odomknúť</translation>
 <translation id="6657585470893396449">Heslo</translation>
 <translation id="5619264711680220002">Biometrické odomknutie</translation>
@@ -669,7 +673,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="5483736362376139517">1 rok</translation>
 <translation id="6979737339423435258">Celé obdobie</translation>
 <translation id="6284218950354553099">Automaticky odoslať správu o dennom využívaní službe Brave</translation>
-<translation id="5288333155754958121">Táto anonymná, súkromná správa umožní Brave odhadnúť počet aktívnych používateľov.</translation>
+<translation id="2181060149810222381">Tento súkromný ping umožňuje spoločnosti Brave odhadnúť počet aktívnych používateľov.</translation>
 <translation id="3819257035322786455">Zálohovať</translation>
 <translation id="4608713693379664295">Hlavné krypto účty</translation>
 <translation id="4003821417160006384">Sekundárne účty</translation>
@@ -685,7 +689,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8475984867371585028">Upraviť viditeľné NFT</translation>
 <translation id="5050890334032852465">Uložiť zoznam sledovania účtu</translation>
 <translation id="7755766175599167100">Hľadať tokeny</translation>
-<translation id="8488282162676695335">Peňaženka Brave</translation>
 <translation id="3784455785234192852">Uzamknúť</translation>
 <translation id="4412698727486357573">Centrum pomoci</translation>
 <translation id="8796429300536029044">Podrobnosti o NFT</translation>
@@ -717,12 +720,12 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8272917646984397798">Zabezpečuje všetky pripojenia</translation>
 <translation id="1751947227857853925">Rýchle a bez obmedzení až do 100 Mb/s</translation>
 <translation id="1400240082805528049">Neptretržitá podpora</translation>
-<translation id="5051030058817632680">Blokuje nechcené sieťové pripojenia</translation>
+<translation id="5892534145504632332">Ochráňte každú aplikáciu &amp; celé vaše zariadenie</translation>
+<translation id="7195416926059527505">Bezpečnejšie pre vašu domácu alebo verejnú Wi-Fi</translation>
+<translation id="1354700000739359839">Blesková rýchlosť až 100 Mb/s</translation>
 <translation id="3510283489391432976">Zvoľte svoju geografickú polohu/krajinu</translation>
-<translation id="4390800080658195654">Zachováva vašu anonymitu online</translation>
-<translation id="639981156979733813">Podporuje rýchlosti až do 100 Mb/s</translation>
-<translation id="765343799669302337">Používa zabezpečený šifrovaný tunel VPN WireGuard</translation>
-<translation id="1571230671455380494">Vaše informácie nikdy nezdieľame ani nepredávame</translation>
+<translation id="7695158478627528928">Brave vašu aktivitu nikdy nezaznamenáva</translation>
+<translation id="4575683170451975058">1 predplatným ochráňte 5 zariadení</translation>
 <translation id="276866628038850725">Všetky predplatné zahŕňajú 7-dňovú bezplatnú skúšobnú dobu.</translation>
 <translation id="1532536259167115948">Mesačné predplatné <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Ročné predplatné <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +736,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">Vyskúšajte si to zadarmo na 7 dní. Po 7 dňoch vám bude účtovaná cena podľa plánu. Všetky predplatné sa obnovujú automaticky, ale môžete ich zrušiť ešte pred obnovením.</translation>
 <translation id="6053992191006521518">Vyskúšajte ZADARMO</translation>
+<translation id="3990956504562716932">Vyskúšajte na 7 dní zadarmo</translation>
 <translation id="721747358270435486">Inštalovať VPN</translation>
 <translation id="836074276610740314">Nainštalovať profil VPN</translation>
 <translation id="8021842065465097929">Brave teraz nainštaluje profil VPN.</translation>
@@ -903,7 +907,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="4945690646623486292">Zvoliť sieť</translation>
 <translation id="5233638681132016545">Nová karta</translation>
 <translation id="8006088103295786154">Prístup k peňaženke Brave</translation>
-<translation id="8030169304546394654">Prerušené spojenie</translation>
+<translation id="8030169304546394654">Odpojené</translation>
 <translation id="3423275441470187644">Dôverovať</translation>
 <translation id="2391762656119864333">Odvolať</translation>
 <translation id="3432029672560911238">Účet používateľa</translation>
@@ -1117,71 +1121,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="591648995518106347">Automaticky načítať vhodné články v režime čítačky</translation>
 <translation id="1295796122927221823">Zobraziť v režime čítačky</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> v <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Zoznam skladieb Brave</translation>
-<translation id="4850886885716139402">Zobraziť</translation>
-<translation id="7392941176393379100">Pridané do „<ph name="PLAYLIST_NAME"/>“</translation>
-<translation id="8289472222022674331">Správa údajov v zozname skladieb</translation>
-<translation id="7650602357673790368">V predvolenom nastavení zoznam skladieb automaticky ukladá obsah do zariadenia na prehrávanie v režime offline (v súkromných a zdieľaných zoznamoch skladieb). Ak nie ste pripojení k Wi-Fi, automatické ukladanie použije mobilné dáta.\n\nAk chcete zmeniť toto predvolené nastavenie, použite nastavenia.</translation>
-<translation id="5900576657906675258">Pridať položku do zoznamu skladieb</translation>
-<translation id="349846214503465941">Zapnúť zoznam skladieb</translation>
-<translation id="1309636029062006520">Vytvorte si zoznamy skladieb z obľúbených zvukových súborov a videí a prehrávajte ich kedykoľvek a kdekoľvek.</translation>
-<translation id="3561815498111282415">Automaticky uložiť do režimu offline</translation>
-<translation id="1832424694374124654">Automaticky uloží nové položky zoznamu skladieb do zariadenia, aby ste mohli prehrávať bez pripojenia na internet.</translation>
-<translation id="8103022210423023846">Automatické ukladanie zapnuté</translation>
-<translation id="3926329432879804185">Automatické ukladanie vypnuté</translation>
-<translation id="7768812595186089508">Automaticky ukladať len po pripojení k sieti Wi-Fi</translation>
-<translation id="5939518447894949180">Resetovať</translation>
-<translation id="8199028711686989861">Odstránenie všetkých videí zo zoznamu skladieb vrátane ukladania v režime offline.</translation>
-<translation id="5916664084637901428">Zapnuté</translation>
-<translation id="5860033963881614850">Vypnutý</translation>
-<translation id="2920568868625746681">Iba Wi-Fi</translation>
-<translation id="4590997608186539865">Zoznam</translation>
-<translation id="7525067979554623046">Vytvořit</translation>
-<translation id="5491049004699827548">Vytvorte svoj prvý zoznam skladieb</translation>
-<translation id="5319108110887582146">Vytvorte si zoznam skladieb z obľúbených zvukových súborov a videí a prehrávajte ich kedykoľvek a kdekoľvek. Dokonca aj v režime offline.</translation>
-<translation id="6802849415466883498">Vytvoriť zoznam skladieb</translation>
-<translation id="8525248723479742219">Prehrať neskôr</translation>
-<translation id="7453007860684252933">Prehľadávať a pridať</translation>
-<translation id="9014883386413828317">Pridajte svoj obľúbený obsah. Nájdite tlačidlo ( + ) v pravej dolnej časti obrazovky.</translation>
-<translation id="5928669500312007783">Vyhľadať médiá</translation>
-<translation id="8152485753254079984">Nový zoznam skladieb</translation>
-<translation id="9130105487623071247">Názov zoznamu skladieb</translation>
-<translation id="726581235416249619">Zoznam skladieb bez názvu</translation>
-<translation id="1456254983411148628">Odstrániť údaje</translation>
-<translation id="2365883822666964139">Vybrané: <ph name="NUMBER"/></translation>
-<translation id="8617390509150638117">Počet položiek: <ph name="NUMBER"/></translation>
-<translation id="2317629745818459803">Prehrať všetko</translation>
-<translation id="7544853251252956727">Náhodne prehrávať</translation>
-<translation id="2881339830231736485">Naposledy prehrané</translation>
-<translation id="7636458383879257005">Ťuknite, dlho stlačte alebo potiahnite</translation>
-<translation id="8120600068258956006">Pridať do zoznamu skladieb</translation>
-<translation id="39991094779686024">Zoznamy skladieb</translation>
-<translation id="1710072605877822603">Pridať médiá</translation>
-<translation id="3874252678044305931">Pridajte videá do zoznamu médií Brave a pozrite si ich kedykoľvek, dokonca aj v režime offline.</translation>
-<translation id="8973629800378391099">Vytvorte si zoznamy médií s obľúbeným obsahom. Šetrite mobilné dáta. A prehrávajte bez reklám.</translation>
-<translation id="4936812987266342401">Stačí ťuknúť na tlačidlo a pridať videá do zoznamu</translation>
-<translation id="6263657785571415306">Zostaňte sústredení: Pridávajte videá počas prezerania webu a pozrite si ich neskôr.</translation>
-<translation id="2839555636100404687">Prehrávanie je lepšie pomocou zoznamu médií</translation>
-<translation id="9079526681359439081">Prehrávanie na pozadí. Ovládanie z uzamknutej obrazovky. A ďalšie funkcie...</translation>
-<translation id="3620862810055853183">Otvoriť zoznam skladieb</translation>
-<translation id="3861012838874771868">Otvoriť nastavenia zoznamu skladieb</translation>
-<translation id="5220099266891491416">Tlačidlo Skryť zoznam skladieb</translation>
-<translation id="7416347631175891923">Vyskúšajte to!</translation>
-<translation id="1173894706177603556">Premenovať</translation>
-<translation id="1620612903815671893">Odstrániť údaje zo zoznamu skladieb v režime offline</translation>
-<translation id="3261711068865275261">Odstrániť všetky offline údaje</translation>
-<translation id="6653691766801349738">Ponechať zoznam skladieb na použitie v režime offline</translation>
-<translation id="8708086574143054053">Ponechať všetky zoznamy skladieb na použitie v režime offline</translation>
-<translation id="3596306474342941843">Odstrániť zoznam skladieb</translation>
-<translation id="7765158879357617694">Presunúť</translation>
-<translation id="3803384303807438047">Odstrániť údaje položky v režime offline</translation>
-<translation id="4195643157523330669">Otvoriť na novej karte</translation>
-<translation id="4243710787042215766">Otvoriť v súkromnej karte</translation>
-<translation id="8261506727792406068">Odstrániť</translation>
-<translation id="377872456482681602">Najprv vyberte položky</translation>
-<translation id="6172429305139364624">Položka zoznamu skladieb nie je uložená v medzipamäti.\nUložte položku do medzipamäte pre režim offline.</translation>
-<translation id="3631131732607750008">Platnosť obsahu vypršala. Skúste to znova o niekoľko sekúnd.</translation>
-<translation id="286472539388773794">Zadajte platný názov zoznamu médií</translation>
 <translation id="9085765419770918643">Zatiaľ tu nie sú žiadne NFT.</translation>
 <translation id="8445532667841598737">Ste pripravený nejaké pridať? Na ich importovanie jednoducho kliknite na tlačidlo nižšie.</translation>
 <translation id="5925465310724910998">Chcete automaticky zobrazovať vaše NFT?</translation>
@@ -1190,12 +1129,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="622372328961630111">Automaticky pridávajte NFT, ktoré vlastníte, do peňaženky pomocou rozhraní API tretích strán. <ph name="BEGIN_LINK_1"/>Ďalšie informácie.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Účet vyhľadávacej tabuľky adries:</translation>
 <translation id="7659483790930268440">Index vyhľadávacej tabuľky adries:</translation>
-<translation id="7322560193401221004">Zapamätať si pozíciu prehrávania súboru</translation>
-<translation id="7505951907514709271">Pre jednotlivé súbory obnoviť prehrávanie od bodu posledného pozastavenia</translation>
-<translation id="6835165453349969605">Zapamätať si pozíciu prehrávania zoznamu médií</translation>
-<translation id="6344103698928069918">Pre zoznam médií obnoviť prehrávanie od bodu posledného pozastavenia</translation>
-<translation id="8141583471142904652">Nepretržité počúvanie</translation>
-<translation id="851432578283946230">Automaticky prehrá ďalšie položky v zozname médií</translation>
 <translation id="7853202427316060426">Aktivity</translation>
 <translation id="4932733599132424254">Dátum</translation>
 <translation id="346505172740911461">Trhová cena</translation>
@@ -1212,6 +1145,86 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="2471230424465522689">Nie pred</translation>
 <translation id="4841860051609590575">ID žiadosti</translation>
 <translation id="1179407411385015942">Leo je inteligentný asistent s umelou inteligenciou zabudovaný priamo v prehliadači</translation>
+<translation id="4109670531935487117">Zobraziť návrhy automatického dokončovania na paneli s adresou</translation>
 <translation id="1250335737108905610">Resetovať a vymazať údaje asistenta Leo</translation>
 <translation id="6165101586663336913">Reštart asistenta Leo bude vyžadovať, aby ste sa v budúcnosti prihlásili na používanie Leo a tiež vymaže vašu históriu chatu. Vymazaním histórie chatu sa vymažú všetky vaše predchádzajúce konverzácie s asistentom Leo. Túto akciu nie je možné vrátiť späť.</translation>
+<translation id="3692772534525889713">Prepojte nákup v Obchode Play so svojím účtom Brave a používajte Brave Leo na iných zariadeniach.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Mesačne</translation>
+<translation id="451189393813405346">Opýtajte sa Lea</translation>
+<translation id="7322560193401221004">Zapamätať si pozíciu prehrávania súboru</translation>
+<translation id="7505951907514709271">Pre jednotlivé súbory obnoviť prehrávanie od bodu posledného pozastavenia</translation>
+<translation id="6835165453349969605">Zapamätať si pozíciu prehrávania zoznamu médií</translation>
+<translation id="6344103698928069918">Pre zoznam médií obnoviť prehrávanie od bodu posledného pozastavenia</translation>
+<translation id="8141583471142904652">Nepretržité počúvanie</translation>
+<translation id="851432578283946230">Automaticky prehrá ďalšie položky v zozname médií</translation>
+<translation id="295620834661738195">Zoznam skladieb Brave</translation>
+<translation id="4850886885716139402">Zobraziť</translation>
+<translation id="7392941176393379100">Pridané do „<ph name="PLAYLIST_NAME"/>“</translation>
+<translation id="349846214503465941">Zapnúť zoznam skladieb</translation>
+<translation id="1309636029062006520">Vytvorte si zoznamy skladieb z obľúbených zvukových súborov a videí a prehrávajte ich kedykoľvek a kdekoľvek.</translation>
+<translation id="7899390017499980820">Tlačidlo Pridať do zoznamu skladieb</translation>
+<translation id="6901152954398668317">Zobraziť alebo skryť tlačidlo „Pridať do zoznamu skladieb“ pre rýchly prístup k pridávaniu alebo odstraňovaniu médií.</translation>
+<translation id="5939518447894949180">Resetovať</translation>
+<translation id="8199028711686989861">Odstránenie všetkých videí zo zoznamu skladieb vrátane ukladania v režime offline.</translation>
+<translation id="4590997608186539865">Zoznam</translation>
+<translation id="7525067979554623046">Vytvořit</translation>
+<translation id="8525248723479742219">Prehrať neskôr</translation>
+<translation id="7453007860684252933">Prehľadávať a pridať</translation>
+<translation id="9014883386413828317">Pridajte svoj obľúbený obsah. Nájdite tlačidlo ( + ) v pravej dolnej časti obrazovky.</translation>
+<translation id="5928669500312007783">Vyhľadať médiá</translation>
+<translation id="8152485753254079984">Nový zoznam skladieb</translation>
+<translation id="9130105487623071247">Názov zoznamu skladieb</translation>
+<translation id="726581235416249619">Zoznam skladieb bez názvu</translation>
+<translation id="2365883822666964139">Vybrané: <ph name="NUMBER"/></translation>
+<translation id="8617390509150638117">Počet položiek: <ph name="NUMBER"/></translation>
+<translation id="2317629745818459803">Prehrať všetko</translation>
+<translation id="7544853251252956727">Náhodne prehrávať</translation>
+<translation id="2881339830231736485">Naposledy prehrané</translation>
+<translation id="8120600068258956006">Pridať do zoznamu skladieb</translation>
+<translation id="39991094779686024">Zoznamy skladieb</translation>
+<translation id="1710072605877822603">Pridať médiá</translation>
+<translation id="3874252678044305931">Pridajte videá do zoznamu médií Brave a pozrite si ich kedykoľvek, dokonca aj v režime offline.</translation>
+<translation id="8973629800378391099">Vytvorte si zoznamy médií s obľúbeným obsahom. Šetrite mobilné dáta. A prehrávajte bez reklám.</translation>
+<translation id="4936812987266342401">Stačí ťuknúť na tlačidlo a pridať videá do zoznamu</translation>
+<translation id="6263657785571415306">Zostaňte sústredení: Pridávajte videá počas prezerania webu a pozrite si ich neskôr.</translation>
+<translation id="2839555636100404687">Prehrávanie je lepšie pomocou zoznamu médií</translation>
+<translation id="9079526681359439081">Prehrávanie na pozadí. Ovládanie z uzamknutej obrazovky. A ďalšie funkcie...</translation>
+<translation id="3620862810055853183">Otvoriť zoznam skladieb</translation>
+<translation id="3861012838874771868">Otvoriť nastavenia zoznamu skladieb</translation>
+<translation id="5220099266891491416">Tlačidlo Skryť zoznam skladieb</translation>
+<translation id="7416347631175891923">Vyskúšajte to!</translation>
+<translation id="1173894706177603556">Premenovať</translation>
+<translation id="3596306474342941843">Odstrániť zoznam skladieb</translation>
+<translation id="7765158879357617694">Presunúť</translation>
+<translation id="3803384303807438047">Odstrániť údaje položky v režime offline</translation>
+<translation id="4195643157523330669">Otvoriť na novej karte</translation>
+<translation id="4243710787042215766">Otvoriť v súkromnej karte</translation>
+<translation id="8261506727792406068">Odstrániť</translation>
+<translation id="377872456482681602">Najprv vyberte položky</translation>
+<translation id="286472539388773794">Zadajte platný názov zoznamu médií</translation>
+<translation id="2824489375399072491">Zdieľať s:</translation>
+<translation id="5319532905552885478">Mediálny obsah je už pridaný do predvoleného zoznamu</translation>
+<translation id="4802584673094436231">Pripravuje sa...</translation>
+<translation id="481455355267255546">Nasleduje</translation>
+<translation id="5474757891469990756">Vychutnajte si Leo na maximum s možnosťou Premium:</translation>
+<translation id="4173478269537830374">Preskúmajte rôzne modely AI</translation>
+<translation id="3453542753968940696">Prioritný prístup k výkonným modelom s rôznymi funkciami.</translation>
+<translation id="3245401959451976966">Dajte priestor svojej kreativite</translation>
+<translation id="5031778211368112461">Získajte prístup k modelom vhodnejším na kreatívne úlohy a tvorbu obsahu.</translation>
+<translation id="4165928407303989823">Majte prehľad</translation>
+<translation id="298783097210745222">Dostávajte presnejšie odpovede pri rozhovoroch na viac špecifické témy.</translation>
+<translation id="2389665228467129817">Chatujte dlhšie</translation>
+<translation id="4314705522985583059">Získajte vyššie limity sadzieb za dlhšie rozhovory.</translation>
+<translation id="6365289557497555234">Všetky typy predplatného sa automaticky obnovujú, ale je možné ich kedykoľvek pred obnovením zrušiť.</translation>
+<translation id="6637015365469044269">Aktualizujte teraz</translation>
+<translation id="614530507403667291">Predvolený model pre nové konverzácie</translation>
+<translation id="4071849832011229600">Predvolený model</translation>
+<translation id="4185473179105062442">Získajte BAT priamo na Vašu krypto adresu s vlastnou úschovou</translation>
+<translation id="5802986777701714573">Pridali sme nový spôsob, ako môžete dostávať mesačné odmeny BAT. Pripojte si účet od niektorého z našich partnerov alebo použite novú možnosť vlastnej úschovy a začnite zarábať hneď teraz.</translation>
+<translation id="7557539689487606886">Prejsť na Premium</translation>
+<translation id="5538904824395606812">Použite svojho súčasného poskytovateľa služieb alebo Quad9</translation>
+<translation id="6393423486818299209">Použite svojho súčasného poskytovateľa služieb alebo Wikimedia DNS</translation>
+<translation id="3401384982562827787">Použite svojho súčasného poskytovateľa služieb alebo Cloudflare</translation>
+<translation id="8812367543786936496">Ak váš súčasný poskytovateľ služieb nie je zabezpečený, Brave používa zabezpečeného alternatívneho poskytovateľa DNS</translation>
 </translationbundle>

@@ -49,7 +49,7 @@ void Notify(const AdsClientNotifier& queued_notifier) {
   queued_notifier.NotifyTabDidStartPlayingMedia(kTabId);
   queued_notifier.NotifyTabDidStopPlayingMedia(kTabId);
   queued_notifier.NotifyTabDidChange(kTabId, {GURL(kRedirectChainUrl)},
-                                     kIsVisible);
+                                     /*is_error_page=*/false, kIsVisible);
   queued_notifier.NotifyDidCloseTab(kTabId);
   queued_notifier.NotifyUserGestureEventTriggered(kPageTransitionType);
   queued_notifier.NotifyUserDidBecomeIdle();
@@ -90,10 +90,10 @@ void ExpectNotifierCalls(AdsClientNotifierObserverMock& observer,
       .Times(expected_calls_count);
   EXPECT_CALL(observer, OnNotifyTabDidStopPlayingMedia(kTabId))
       .Times(expected_calls_count);
-  EXPECT_CALL(
-      observer,
-      OnNotifyTabDidChange(
-          kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)), kIsVisible))
+  EXPECT_CALL(observer,
+              OnNotifyTabDidChange(
+                  kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)),
+                  /*is_error_page=*/false, kIsVisible))
       .Times(expected_calls_count);
   EXPECT_CALL(observer, OnNotifyDidCloseTab(kTabId))
       .Times(expected_calls_count);

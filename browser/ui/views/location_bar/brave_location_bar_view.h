@@ -38,8 +38,8 @@ FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
 // The purposes of this subclass are to:
 // - Add the BraveActionsContainer to the location bar
 class BraveLocationBarView : public LocationBarView {
+  METADATA_HEADER(BraveLocationBarView, LocationBarView)
  public:
-  METADATA_HEADER(BraveLocationBarView);
   BraveLocationBarView(Browser* browser,
                        Profile* profile,
                        CommandUpdater* command_updater,
@@ -88,6 +88,14 @@ class BraveLocationBarView : public LocationBarView {
  private:
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, AddItemsToList);
+  FRIEND_TEST_ALL_PREFIXES(
+      PlaylistBrowserTestWithSitesUsingMediaSource,
+      MediaShouldBeExtractedFromBackground_SucceedInExtracting);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTestWithSitesUsingMediaSource,
+                           MediaShouldBeExtractedFromBackground_FailToExtract);
+  FRIEND_TEST_ALL_PREFIXES(
+      PlaylistBrowserTestWithSitesUsingMediaSource,
+      MediaShouldBeExtractedFromBackground_DynamicallyAddedMedia);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 

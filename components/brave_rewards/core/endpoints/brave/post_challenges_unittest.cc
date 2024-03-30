@@ -43,11 +43,19 @@ class RewardsPostChallengesTest : public RewardsEngineTest {
   }
 };
 
+TEST_F(RewardsPostChallengesTest, UnableToCreateRequest) {
+  engine().SetState(state::kWalletBrave, std::string(""));
+  auto result = SendRequest(mojom::UrlResponse::New());
+  EXPECT_EQ(result,
+            base::unexpected(PostChallenges::Error::kFailedToCreateRequest));
+}
+
 TEST_F(RewardsPostChallengesTest, ServerError400) {
   auto response = mojom::UrlResponse::New();
   response->status_code = net::HttpStatusCode::HTTP_BAD_REQUEST;
   auto result = SendRequest(std::move(response));
-  EXPECT_EQ(result, base::unexpected(PostChallenges::Error::kInvalidRequest));
+  EXPECT_EQ(result,
+            base::unexpected(PostChallenges::Error::kUnexpectedStatusCode));
 }
 
 TEST_F(RewardsPostChallengesTest, ServerCreated) {

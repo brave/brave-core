@@ -300,11 +300,19 @@ void SpeedreaderTabHelper::ProcessNavigation(
   TransitStateTo(DistillStates::DistillReverting(reason, false), true);
   TransitStateTo(DistillStates::ViewOriginal(), true);
 
-  if (url_looks_readable && enabled_for_site) {
-    // Speedreader enabled for this page.
-    TransitStateTo(DistillStates::Distilling(
-                       DistillStates::Distilling::Reason::kAutomatic),
-                   true);
+  if (enabled_for_site) {
+    // Enable speedreader if the user explicitly enabled speedreader on the
+    // site.
+    const bool explicit_enabled_for_size =
+        kSpeedreaderExplicitPref.Get() &&
+        GetSpeedreaderService()->GetEnabledForSiteSetting(
+            navigation_handle->GetURL());
+    if (url_looks_readable || explicit_enabled_for_size) {
+      // Speedreader enabled for this page.
+      TransitStateTo(DistillStates::Distilling(
+                         DistillStates::Distilling::Reason::kAutomatic),
+                     true);
+    }
   }
 }
 
@@ -540,9 +548,9 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
       const attribute = '$1'
       const value = '$2'
       if (value == '') {
-        document.documentElement.removeAttribute(attribute)
+        document?.documentElement?.removeAttribute(attribute)
       } else {
-        document.documentElement.setAttribute(attribute, value)
+        document?.documentElement?.setAttribute(attribute, value)
       }
     })();
   )js";

@@ -369,11 +369,14 @@ export class BaseQueryCache {
         this.rewardsInfo = emptyRewardsInfo
         return this.rewardsInfo
       }
-
-      const balance = await getBraveRewardsProxy().fetchBalance()
-
       const { provider, status, links } =
         (await getBraveRewardsProxy().getExternalWallet()) || {}
+
+      if (!provider || provider === 'solana') {
+        return emptyRewardsInfo
+      }
+
+      const balance = await getBraveRewardsProxy().fetchBalance()
 
       this.rewardsInfo = {
         isRewardsEnabled: true,

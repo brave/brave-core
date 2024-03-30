@@ -22,7 +22,7 @@ using GetContributionInfoCallback =
 
 class DatabaseContributionInfo : public DatabaseTable {
  public:
-  explicit DatabaseContributionInfo(RewardsEngineImpl& engine);
+  explicit DatabaseContributionInfo(RewardsEngine& engine);
   ~DatabaseContributionInfo() override;
 
   void InsertOrUpdate(mojom::ContributionInfoPtr info, ResultCallback callback);
@@ -35,10 +35,6 @@ class DatabaseContributionInfo : public DatabaseTable {
   void GetOneTimeTips(const mojom::ActivityMonth month,
                       const int year,
                       GetOneTimeTipsCallback callback);
-
-  void GetContributionReport(const mojom::ActivityMonth month,
-                             const int year,
-                             GetContributionReportCallback callback);
 
   void GetNotCompletedRecords(ContributionInfoListCallback callback);
 
@@ -67,14 +63,6 @@ class DatabaseContributionInfo : public DatabaseTable {
 
   void OnGetOneTimeTips(GetOneTimeTipsCallback callback,
                         mojom::DBCommandResponsePtr response);
-
-  void OnGetContributionReport(GetContributionReportCallback callback,
-                               mojom::DBCommandResponsePtr response);
-
-  void OnGetContributionReportPublishers(
-      std::vector<mojom::ContributionInfoPtr> contributions,
-      GetContributionReportCallback callback,
-      std::vector<ContributionPublisherInfoPair> publisher_pair_list);
 
   void OnGetList(ContributionInfoListCallback callback,
                  mojom::DBCommandResponsePtr response);

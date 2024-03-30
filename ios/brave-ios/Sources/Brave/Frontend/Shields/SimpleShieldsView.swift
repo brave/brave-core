@@ -1,11 +1,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveShared
 import BraveUI
+import Shared
+import UIKit
 
 class SimpleShieldsView: UIView {
 
@@ -98,13 +98,15 @@ class SimpleShieldsView: UIView {
           $0.alignment = .center
           $0.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
           $0.isLayoutMarginsRelativeArrangement = true
-        }),
+        }
+      ),
       .view(shieldsSwitch),
       .view(
         UIStackView(arrangedSubviews: [braveShieldsLabel, statusLabel]).then {
           $0.spacing = 4
           $0.alignment = .center
-        }),
+        }
+      ),
       .customSpace(32),
       .view(blockCountView),
       .view(footerLabel),
@@ -121,9 +123,9 @@ class SimpleShieldsView: UIView {
 // MARK: - BlockCountView
 
 extension SimpleShieldsView {
-  
+
   class BlockCountView: UIView {
-    
+
     private struct UX {
       static let descriptionEdgeInset = UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16)
       static let iconEdgeInset = UIEdgeInsets(top: 22, left: 14, bottom: 22, right: 14)
@@ -165,7 +167,10 @@ extension SimpleShieldsView {
     }
 
     let infoButton = BraveButton().then {
-      $0.setImage(UIImage(named: "shields-help", in: .module, compatibleWith: nil)!.template, for: .normal)
+      $0.setImage(
+        UIImage(named: "shields-help", in: .module, compatibleWith: nil)!.template,
+        for: .normal
+      )
       $0.hitTestSlop = UX.hitBoxEdgeInsets
       $0.imageEdgeInsets = .zero
       $0.titleEdgeInsets = .zero
@@ -226,7 +231,7 @@ extension SimpleShieldsView {
           .compactMap { $0 }
           .joined(separator: " ")
       }
-      set { assertionFailure() }  // swiftlint:disable:this unused_setter_value
+      set { assertionFailure() }
     }
 
     override func accessibilityActivate() -> Bool {

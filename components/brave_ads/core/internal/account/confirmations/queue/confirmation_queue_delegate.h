@@ -1,4 +1,4 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -14,25 +14,34 @@ struct ConfirmationInfo;
 
 class ConfirmationQueueDelegate {
  public:
-  // Invoked to tell the delegate when we add a confirmation to the queue.
+  // Invoked to tell the delegate that we added a confirmation to the queue.
   virtual void OnDidAddConfirmationToQueue(
       const ConfirmationInfo& confirmation) {}
 
-  // Invoked to tell the delegate when we will process the confirmation queue.
+  // Invoked to tell the delegate that we failed to add a confirmation to the
+  // queue.
+  virtual void OnFailedToAddConfirmationToQueue(
+      const ConfirmationInfo& confirmation) {}
+
+  // Invoked to tell the delegate that we will process the confirmation queue.
   virtual void OnWillProcessConfirmationQueue(
       const ConfirmationInfo& confirmation,
       base::Time process_at) {}
 
-  // Invoked to tell the delegate when we process the confirmation queue.
+  // Invoked to tell the delegate that we processed the confirmation queue.
   virtual void OnDidProcessConfirmationQueue(
       const ConfirmationInfo& confirmation) {}
 
-  // Invoked to tell the delegate when we fail to process the confirmation
+  // Invoked to tell the delegate that we failed to process the confirmation
   // queue.
   virtual void OnFailedToProcessConfirmationQueue(
       const ConfirmationInfo& confirmation) {}
 
-  // Invoked to tell the delegate when the confirmation queue has been
+  // Invoked to tell the delegate that we failed to process the next
+  // confirmation.
+  virtual void OnFailedToProcessNextConfirmationInQueue() {}
+
+  // Invoked to tell the delegate that the confirmation queue has been
   // exhausted.
   virtual void OnDidExhaustConfirmationQueue() {}
 

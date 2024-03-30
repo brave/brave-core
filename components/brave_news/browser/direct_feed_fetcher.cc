@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <variant>
 
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"

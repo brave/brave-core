@@ -1,14 +1,16 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import DesignSystem
 import Foundation
 import SwiftUI
-import DesignSystem
 
 /// Presents a SwiftUI view heirarchy in a popup that displays in the center of the screen
-public class PopupViewController<Content: View>: UIViewController, UIViewControllerTransitioningDelegate, BasicAnimationControllerDelegate {
+public class PopupViewController<Content: View>: UIViewController,
+  UIViewControllerTransitioningDelegate, BasicAnimationControllerDelegate
+{
   private let hostingController: UIHostingController<PopupView<Content>>
 
   private let backgroundView = UIView().then {
@@ -58,7 +60,10 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
     context.containerView.addSubview(view)
 
     backgroundView.alpha = 0.0
-    hostingController.view.transform = CGAffineTransform(translationX: 0, y: context.containerView.bounds.height)
+    hostingController.view.transform = CGAffineTransform(
+      translationX: 0,
+      y: context.containerView.bounds.height
+    )
 
     UIViewPropertyAnimator(duration: 0.35, dampingRatio: 1.0) { [self] in
       backgroundView.alpha = 1.0
@@ -71,7 +76,10 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
   public func animateDismissal(context: UIViewControllerContextTransitioning) {
     let animator = UIViewPropertyAnimator(duration: 0.25, dampingRatio: 1.0) { [self] in
       backgroundView.alpha = 0.0
-      hostingController.view.transform = CGAffineTransform(translationX: 0, y: context.containerView.bounds.height)
+      hostingController.view.transform = CGAffineTransform(
+        translationX: 0,
+        y: context.containerView.bounds.height
+      )
     }
     animator.addCompletion { _ in
       self.view.removeFromSuperview()
@@ -80,11 +88,17 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
     animator.startAnimation()
   }
 
-  public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+  public func animationController(
+    forDismissed dismissed: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
     BasicAnimationController(delegate: self, direction: .dismissing)
   }
 
-  public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+  public func animationController(
+    forPresented presented: UIViewController,
+    presenting: UIViewController,
+    source: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
     BasicAnimationController(delegate: self, direction: .presenting)
   }
 }
@@ -128,7 +142,8 @@ struct PopupPreviews: PreviewProvider {
           Text(verbatim: "Subtitle Subtitle Subtitle Subtitle Subtitle")
             .font(.subheadline)
             .multilineTextAlignment(.center)
-          Button(action: {}) {
+          Button {
+          } label: {
             Text(verbatim: "Test")
           }
           .padding(.top)

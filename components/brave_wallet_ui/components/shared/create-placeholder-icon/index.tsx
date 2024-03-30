@@ -113,7 +113,7 @@ export function withPlaceholderIcon<
           : isValidIconExtension(new URL(asset?.logo || '').pathname)
       }
       return false
-    }, [isRemoteURL, tokenImageURL, asset?.logo, isStorybook])
+    }, [asset?.logo, isRemoteURL, tokenImageURL, isNonFungibleToken])
 
     const needsPlaceholder =
       (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
@@ -133,7 +133,7 @@ export function withPlaceholderIcon<
         return isStorybook ? ipfsUrl || '' : `chrome://image?${ipfsUrl}`
       }
       return ''
-    }, [isRemoteURL, tokenImageURL, ipfsUrl])
+    }, [isRemoteURL, ipfsUrl])
 
     // render
     if (!asset) {

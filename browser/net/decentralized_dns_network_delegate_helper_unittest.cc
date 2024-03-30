@@ -71,8 +71,9 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
     return test_url_loader_factory_;
   }
 
- private:
   content::BrowserTaskEnvironment task_environment_;
+
+ private:
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   network::TestURLLoaderFactory test_url_loader_factory_;
@@ -145,19 +146,16 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
     const char* url;
     bool is_valid;
   } test_cases[] = {
-      {"https://brave.crypto", true},
-      {"https://brave.x", true},
-      {"https://brave.coin", false},
-      {"https://brave.nft", true},
-      {"https://brave.dao", true},
-      {"https://brave.wallet", true},
-      {"https://brave.888", false},
-      {"https://brave.blockchain", true},
-      {"https://brave.bitcoin", true},
-      {"https://brave.zil", true},
-      {"https://brave", false},
-      {"https://brave.com", false},
-      {"", false},
+      {"https://brave.crypto", true},   {"https://brave.x", true},
+      {"https://brave.coin", false},    {"https://brave.nft", true},
+      {"https://brave.dao", true},      {"https://brave.wallet", true},
+      {"https://brave.888", false},     {"https://brave.blockchain", true},
+      {"https://brave.bitcoin", true},  {"https://brave.zil", true},
+      {"https://brave.altimist", true}, {"https://brave.anime", true},
+      {"https://brave.klever", true},   {"https://brave.manga", true},
+      {"https://brave.polygon", true},  {"https://brave.unstoppable", true},
+      {"https://brave.pudgy", true},    {"https://brave", false},
+      {"https://brave.com", false},     {"", false},
   };
 
   for (const auto& test_case : test_cases) {
@@ -200,7 +198,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       brave_wallet::MakeJsonRpcStringArrayResponse(
           {"", "", "", "", "", "https://brave.com"}),
       net::HTTP_REQUEST_TIMEOUT);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   // Polygon result.
@@ -217,7 +215,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       brave_wallet::MakeJsonRpcStringArrayResponse(
           {"hash", "", "", "", "", ""}),
       net::HTTP_OK);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(brave_request_info->new_url_spec, "https://brave.com/");
 
   // Eth result.
@@ -233,7 +231,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       brave_wallet::MakeJsonRpcStringArrayResponse(
           {"hash", "", "", "", "", ""}),
       net::HTTP_OK);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(brave_request_info->new_url_spec, "ipfs://hash");
 }
 

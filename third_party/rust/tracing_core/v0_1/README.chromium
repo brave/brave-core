@@ -3,8 +3,8 @@ URL: https://crates.io/crates/tracing-core
 Description: Core primitives for application-level tracing.
 
 Version: 0.1.32
-Security Critical: no
+Security Critical: yes
 Shipped: yes
 License: MIT
-License File: 
+License File: //brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/LICENSE
 Revision: c4b2a56937dd40aaa2e2991636eca6748353201f

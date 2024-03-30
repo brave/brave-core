@@ -20,7 +20,7 @@ class BraveAdsSegmentUserDataTest : public UnitTestBase {};
 TEST_F(BraveAdsSegmentUserDataTest, BuildSegmentUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
@@ -38,7 +38,7 @@ TEST_F(BraveAdsSegmentUserDataTest,
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert

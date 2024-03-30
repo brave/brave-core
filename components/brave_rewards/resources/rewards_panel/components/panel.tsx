@@ -16,6 +16,7 @@ import { NavBar } from './navbar'
 import { PanelOverlays } from './panel_overlays'
 import { PublisherCard } from './publisher_card'
 import { SelfCustodyInvite } from './self_custody_invite'
+import { TosUpdateNotice } from '../../shared/components/tos_update_notice'
 
 import * as urls from '../../shared/lib/rewards_urls'
 
@@ -59,6 +60,8 @@ export function Panel () {
     React.useState(host.state.declaredCountry)
   const [showSelfCustodyInvite, setShowSelfCustodyInvite] =
     React.useState(shouldShowSelfCustodyInvite(host.state))
+  const [tosUpdateRequired, setTosUpdateRequired] =
+    React.useState(host.state.isTermsOfServiceUpdateRequired)
 
   useHostListener(host, (state) => {
     setUserType(state.userType)
@@ -77,6 +80,7 @@ export function Panel () {
     setAvailableCountries(state.availableCountries)
     setDefaultCountry(state.defaultCountry)
     setShowSelfCustodyInvite(shouldShowSelfCustodyInvite(state))
+    setTosUpdateRequired(state.isTermsOfServiceUpdateRequired)
   })
 
   const needsCountry = rewardsEnabled && !declaredCountry
@@ -149,6 +153,15 @@ export function Panel () {
 
   if (onboardingResult || !rewardsEnabled || needsCountry) {
     return renderOnboaring()
+  }
+
+  if (tosUpdateRequired) {
+    return (
+      <TosUpdateNotice
+        onAccept={host.acceptTermsOfServiceUpdate}
+        onResetRewards={host.resetRewards}
+      />
+    )
   }
 
   if (showSelfCustodyInvite) {

@@ -15,6 +15,7 @@
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/image/image.h"
 #include "ui/views/controls/button/button.h"
@@ -27,8 +28,8 @@ class ImageView;
 class ThumbnailView;
 
 class SelectableView : public views::Button {
+  METADATA_HEADER(SelectableView, views::Button)
  public:
-  METADATA_HEADER(SelectableView);
   using OnPressedCallback = base::RepeatingCallback<void(SelectableView&)>;
 
   SelectableView(const std::string& id,

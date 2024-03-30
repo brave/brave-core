@@ -225,6 +225,15 @@ TEST(BraveVPNUtilsUnitTest, FeatureTest) {
 }
 
 #if BUILDFLAG(IS_MAC)
+TEST(BraveVPNUtilsUnitTest, DefaultPrefsTest) {
+  TestingPrefServiceSimple local_state_pref_service;
+  brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
+
+  // Off by default.
+  EXPECT_FALSE(local_state_pref_service.GetBoolean(
+      brave_vpn::prefs::kBraveVPNOnDemandEnabled));
+}
+
 TEST(BraveVPNUtilsUnitTest, IsBraveVPNWireguardEnabledMac) {
   {
     TestingPrefServiceSimple local_state_pref_service;

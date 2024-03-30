@@ -1,0 +1,30 @@
+/* The title of the section where chat models are displayed as a list. */
+"wallet.defaultModelChatSectionTitle" = "Chat";
+
+/* The title of the section where language models are displayed as a list. */
+"wallet.defaultModelLanguageSectionTitle" = "SPRACHMODELLE";
+
+/* The title of the menu where user can change the default model */
+"wallet.defaultModelViewTitle" = "Standardmodell";
+
+/* The title of the badge where a model which can be used limited */
+"wallet.limitedModelStatusTitle" = "Eingeschränkt";
+
+/* The title of action for quick menu which displaying advanced settings */
+"wallet.quickMenuAdvancedSettingsActionTitle" = "Erweiterte Einstellungen";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"wallet.quickMenuGoPremiumActionTitle" = "Jetzt Premium sichern";
+
+/* The title of action for quick menu which display subscription management view */
+"wallet.quickMenuManageSubscriptionActionTitle" = "Abonnements verwalten";
+
+/* The title of action for quick menu which starts a new chat */
+"wallet.quickMenuNewChatActionTitle" = "Neuer Chat";
+
+/* The title of a button that will reset data for leo */
+"wallet.resetLeoDataAlertButtonTitle" = "Zurücksetzen";
+
+/* The title of the badge where a model which can be used unlimited */
+"wallet.unlimitedModelStatusTitle" = "Unbegrenzt";
+

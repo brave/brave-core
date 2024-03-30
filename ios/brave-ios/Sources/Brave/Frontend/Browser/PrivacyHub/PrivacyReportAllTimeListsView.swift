@@ -1,33 +1,34 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Shared
 import BraveShared
-import Data
 import BraveUI
+import Data
+import Favicon
+import Shared
+import SwiftUI
 
 struct PrivacyReportAllTimeListsView: View {
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   @State private var trackers: [PrivacyReportsTracker] = []
   @State private var websites: [PrivacyReportsWebsite] = []
-  
+
   @State private var trackersLoading = true
   @State private var websitesLoading = true
-  
+
   private(set) var isPrivateBrowsing: Bool
   private(set) var onDismiss: () -> Void
-  
+
   enum Page: String, CaseIterable, Identifiable {
     case trackersAndAds, websites
-    
+
     var id: String {
       rawValue
     }
-    
+
     var displayString: String {
       switch self {
       case .trackersAndAds: return Strings.PrivacyHub.allTimeListsTrackersView
@@ -35,9 +36,9 @@ struct PrivacyReportAllTimeListsView: View {
       }
     }
   }
-  
+
   @State private var currentPage: Page = .trackersAndAds
-  
+
   private var selectionPicker: some View {
     Picker("", selection: $currentPage) {
       ForEach(Page.allCases) {
@@ -49,7 +50,7 @@ struct PrivacyReportAllTimeListsView: View {
     .padding(.horizontal, 20)
     .padding(.vertical, 12)
   }
-  
+
   @ViewBuilder
   private func blockedLabels(by source: PrivacyReportsTracker.Source?) -> some View {
     switch source {
@@ -64,47 +65,51 @@ struct PrivacyReportAllTimeListsView: View {
       EmptyView()
     }
   }
-  
+
   private var trackersList: some View {
     List {
       Section {
         ForEach(trackers) { item in
           HStack {
             VStack(alignment: .leading, spacing: 4) {
-              
+
               VStack(alignment: .leading, spacing: 0) {
                 Text(item.name)
                   .font(.callout)
                   .foregroundColor(Color(.bravePrimary))
-                
+
                 if let url = URL(string: item.name),
-                   let humanFriendlyTrackerName = BlockedTrackerParser.parse(url: url, fallbackToDomainURL: false) {
+                  let humanFriendlyTrackerName = BlockedTrackerParser.parse(
+                    url: url,
+                    fallbackToDomainURL: false
+                  )
+                {
                   Text(humanFriendlyTrackerName)
                     .font(.footnote)
                     .foregroundColor(Color(.braveLabel))
                 }
               }
-              
+
               Group {
                 if sizeCategory.isAccessibilityCategory {
                   VStack(alignment: .leading, spacing: 4) {
                     Text(Strings.PrivacyHub.blockedBy)
                       .foregroundColor(Color(.secondaryBraveLabel))
-                    
+
                     blockedLabels(by: item.source)
                   }
                 } else {
                   HStack(spacing: 4) {
                     Text(Strings.PrivacyHub.blockedBy)
                       .foregroundColor(Color(.secondaryBraveLabel))
-                    
+
                     blockedLabels(by: item.source)
                   }
                 }
               }
               .font(.caption)
             }
-            
+
             Spacer()
             Text("\(item.count)")
               .font(.headline)
@@ -121,7 +126,7 @@ struct PrivacyReportAllTimeListsView: View {
     .listStyle(.insetGrouped)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
   }
-  
+
   private var websitesList: some View {
     List {
       Section {
@@ -145,7 +150,7 @@ struct PrivacyReportAllTimeListsView: View {
     .listStyle(.insetGrouped)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
   }
-  
+
   var body: some View {
     VStack(spacing: 0) {
       Picker("", selection: $currentPage) {
@@ -157,7 +162,7 @@ struct PrivacyReportAllTimeListsView: View {
       .pickerStyle(.segmented)
       .padding(.horizontal, 20)
       .padding(.vertical, 12)
-      
+
       if trackersLoading || websitesLoading {
         ProgressView()
           .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -178,18 +183,21 @@ struct PrivacyReportAllTimeListsView: View {
       }
     }
     .onAppear {
-      BlockedResource.allTimeMostFrequentTrackers() { allTimeListTrackers in
+      BlockedResource.allTimeMostFrequentTrackers { allTimeListTrackers in
         BraveVPNAlert.allByHostCount { vpnItems in
-          trackers = PrivacyReportsTracker.merge(shieldItems: allTimeListTrackers, vpnItems: vpnItems)
+          trackers = PrivacyReportsTracker.merge(
+            shieldItems: allTimeListTrackers,
+            vpnItems: vpnItems
+          )
           trackersLoading = false
         }
       }
-      
+
       BlockedResource.allTimeMostRiskyWebsites { riskyWebsites in
         websites = riskyWebsites.map {
           PrivacyReportsWebsite(domain: $0.domain, faviconUrl: $0.faviconUrl, count: $0.count)
         }
-        
+
         websitesLoading = false
       }
     }

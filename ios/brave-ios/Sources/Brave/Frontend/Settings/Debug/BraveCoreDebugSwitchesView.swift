@@ -1,12 +1,12 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Preferences
 import BraveCore
 import BraveUI
+import Preferences
+import SwiftUI
 
 extension BraveCoreSwitchKey {
   fileprivate var displayString: String {
@@ -17,6 +17,8 @@ extension BraveCoreSwitchKey {
       return "Component Updater"
     case .syncURL:
       return "Sync URL"
+    case .variationsURL:
+      return "Variations URL"
     case .p3aDoNotRandomizeUploadInterval:
       return "Don't Randomize Upload Interval"
     case .p3aIgnoreServerErrors:
@@ -31,6 +33,10 @@ extension BraveCoreSwitchKey {
       return "Json Upload Server URL"
     case .enableFeatures:
       return "Enable Features"
+    case .p3aWalletCountTestNetworks:
+      return "Brave Wallet Count Test Networks"
+    case .useDevGoUpdater:
+      return "Use staging CRX components"
     default:
       return ""
     }
@@ -38,14 +44,20 @@ extension BraveCoreSwitchKey {
   /// Whether or not the key is passed in without a value
   public var isValueless: Bool {
     switch self {
-    case .p3aDoNotRandomizeUploadInterval, .p3aIgnoreServerErrors:
+    case .p3aDoNotRandomizeUploadInterval,
+      .p3aIgnoreServerErrors,
+      .p3aWalletCountTestNetworks,
+      .useDevGoUpdater:
       return true
     default:
       return false
     }
   }
-  
+
   static let enableFeatures: Self = .init(rawValue: "enable-features")
+  static let p3aWalletCountTestNetworks: Self = .init(
+    rawValue: BraveWallet.P3aCountTestNetworksSwitch
+  )
 }
 
 private enum SkusEnvironment: String, CaseIterable {
@@ -178,10 +190,13 @@ struct BraveCoreDebugSwitchesView: View {
     private var binding: Binding<Bool> {
       .init(
         get: {
-          activeSwitches.value.contains(coreSwitch.rawValue) && (coreSwitch.isValueless || !switchValues.value[coreSwitch.rawValue, default: ""].isEmpty)
+          activeSwitches.value.contains(coreSwitch.rawValue)
+            && (coreSwitch.isValueless
+              || !switchValues.value[coreSwitch.rawValue, default: ""].isEmpty)
         },
         set: { isOn in
-          if !coreSwitch.isValueless && switchValues.value[coreSwitch.rawValue, default: ""].isEmpty {
+          if !coreSwitch.isValueless && switchValues.value[coreSwitch.rawValue, default: ""].isEmpty
+          {
             return
           }
           var switches = Set(activeSwitches.value)
@@ -212,7 +227,9 @@ struct BraveCoreDebugSwitchesView: View {
             if let value = switchValues.value[coreSwitch.rawValue], !value.isEmpty {
               Text("\(Image(systemName: "equal.square.fill")) \(value)")
                 .font(.caption)
-                .foregroundColor(binding.wrappedValue ? Color(.braveBlurpleTint) : Color(.secondaryBraveLabel))
+                .foregroundColor(
+                  binding.wrappedValue ? Color(.braveBlurpleTint) : Color(.secondaryBraveLabel)
+                )
                 .lineLimit(1)
             }
           }
@@ -241,21 +258,40 @@ struct BraveCoreDebugSwitchesView: View {
           } label: {
             SwitchContainer(.syncURL)
           }
+          // Variations URL
           NavigationLink {
-            BasicStringInputView(coreSwitch: .componentUpdater, hint: "Should match the format: url-source={url}")
+            BasicStringInputView(coreSwitch: .variationsURL)
+              .keyboardType(.URL)
+          } label: {
+            SwitchContainer(.variationsURL)
+          }
+          NavigationLink {
+            BasicStringInputView(
+              coreSwitch: .componentUpdater,
+              hint: "Should match the format: url-source={url}"
+            )
           } label: {
             SwitchContainer(.componentUpdater)
           }
           NavigationLink {
-            BasicStringInputView(coreSwitch: .vModule, hint: "Should match the format:\n\n{folder-expression}={level}\n\nDefaults to */brave/*=5")
+            BasicStringInputView(
+              coreSwitch: .vModule,
+              hint:
+                "Should match the format:\n\n{folder-expression}={level}\n\nDefaults to */brave/*=5"
+            )
           } label: {
             SwitchContainer(.vModule)
           }
           NavigationLink {
-            BasicStringInputView(coreSwitch: .enableFeatures, hint: "Should match the format:\n\n{feature_name}\n\nMultiple features can be enabled via comma separation")
+            BasicStringInputView(
+              coreSwitch: .enableFeatures,
+              hint:
+                "Should match the format:\n\n{feature_name}\n\nMultiple features can be enabled via comma separation"
+            )
           } label: {
             SwitchContainer(.enableFeatures)
           }
+          SwitchContainer(.useDevGoUpdater)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -264,25 +300,40 @@ struct BraveCoreDebugSwitchesView: View {
           SwitchContainer(.p3aDoNotRandomizeUploadInterval)
           SwitchContainer(.p3aIgnoreServerErrors)
           NavigationLink {
-            BasicStringInputView(coreSwitch: .p3aUploadIntervalSeconds, hint: "Overrides the number of seconds to upload P3A metrics")
+            BasicStringInputView(
+              coreSwitch: .p3aUploadIntervalSeconds,
+              hint: "Overrides the number of seconds to upload P3A metrics"
+            )
           } label: {
             SwitchContainer(.p3aUploadIntervalSeconds)
           }
           NavigationLink {
-            BasicStringInputView(coreSwitch: .p3aJsonUploadServerURL, hint: "Overrides the P3A cloud backend URL.")
+            BasicStringInputView(
+              coreSwitch: .p3aJsonUploadServerURL,
+              hint: "Overrides the P3A cloud backend URL."
+            )
           } label: {
             SwitchContainer(.p3aJsonUploadServerURL)
           }
           NavigationLink {
-            BasicStringInputView(coreSwitch: .p3aTypicalRotationIntervalSeconds, hint: "Interval in seconds between restarting the uploading process for all gathered values")
+            BasicStringInputView(
+              coreSwitch: .p3aTypicalRotationIntervalSeconds,
+              hint:
+                "Interval in seconds between restarting the uploading process for all gathered values"
+            )
           } label: {
             SwitchContainer(.p3aTypicalRotationIntervalSeconds)
           }
           NavigationLink {
-            BasicStringInputView(coreSwitch: .p3aExpressRotationIntervalSeconds, hint: "Interval in seconds between restarting the uploading process for all gathered values")
+            BasicStringInputView(
+              coreSwitch: .p3aExpressRotationIntervalSeconds,
+              hint:
+                "Interval in seconds between restarting the uploading process for all gathered values"
+            )
           } label: {
             SwitchContainer(.p3aExpressRotationIntervalSeconds)
           }
+          SwitchContainer(.p3aWalletCountTestNetworks)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {

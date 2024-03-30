@@ -1,6 +1,11 @@
-# Copyright 2023 The Chromium Authors
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
 
 import("//build/rust/cargo_crate.gni")
 
@@ -8,41 +13,32 @@ cargo_crate("lib") {
   crate_name = "encoding_rs"
   epoch = "0.8"
   crate_type = "rlib"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/ascii.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/big5.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/data.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/euc_jp.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/euc_kr.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/gb18030.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/handles.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/iso_2022_jp.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/lib.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/macros.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/mem.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/replacement.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/shift_jis.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/simd_funcs.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/single_byte.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/test_labels_names.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/testing.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/utf_16.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/utf_8.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/variant.rs",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/src/x_user_defined.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/ascii.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/big5.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/euc_jp.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/euc_kr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/gb18030.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/handles.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/iso_2022_jp.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/mem.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/replacement.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/shift_jis.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/simd_funcs.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/single_byte.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/test_labels_names.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/testing.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/utf_16.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/utf_8.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/variant.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/src/x_user_defined.rs",
   ]
-  inputs = [
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/CONTRIBUTING.md",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/Ideas.md",
-    "//brave/third_party/rust/encoding_rs/v0_8/crate/README.md",
-  ]
+  inputs = []
 
-  # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2018"
   cargo_pkg_version = "0.8.32"
@@ -54,6 +50,8 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-  deps = [ "//third_party/rust/cfg_if/v1:lib" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [ "//brave/third_party/rust/cfg_if/v1:lib" ]
   features = [ "alloc" ]
 }

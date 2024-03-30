@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
+#include <memory>
 #include <optional>
 #include <utility>
 #include <vector>
@@ -21,6 +22,7 @@
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -54,6 +56,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+#include "brave/browser/ui/commander/commander_service.h"
 #endif
 
 namespace {
@@ -92,7 +98,9 @@ BraveBrowserCommandController::~BraveBrowserCommandController() = default;
 void BraveBrowserCommandController::TabChangedAt(content::WebContents* contents,
                                                  int index,
                                                  TabChangeType type) {
-  UpdateCommandsForMute();
+  UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
+                       brave::HasDuplicateTabs(&*browser_));
+  UpdateCommandsForTabs();
   UpdateCommandsForSend();
 }
 
@@ -112,9 +120,16 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
 
   UpdateCommandEnabled(IDC_WINDOW_CLOSE_TABS_TO_LEFT,
                        brave::CanCloseTabsToLeft(&*browser_));
-  UpdateCommandsForMute();
+  UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
+                       brave::HasDuplicateTabs(&*browser_));
+  UpdateCommandsForTabs();
   UpdateCommandsForSend();
   UpdateCommandsForPin();
+}
+
+void BraveBrowserCommandController::OnTabGroupChanged(
+    const TabGroupChange& change) {
+  UpdateCommandsForTabs();
 }
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
@@ -224,6 +239,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
 #endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+  UpdateCommandEnabled(IDC_COMMANDER, commander::IsEnabled());
+#endif
+
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
@@ -240,10 +260,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_TALK, true);
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
-  UpdateCommandEnabled(IDC_GROUP_TABS_ON_CURRENT_ORIGIN, true);
 
-  UpdateCommandEnabled(IDC_MOVE_GROUP_TO_NEW_WINDOW, true);
-  UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS, true);
+  UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
+                       brave::HasDuplicateTabs(&*browser_));
   UpdateCommandEnabled(IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP, true);
 
   UpdateCommandEnabled(IDC_SCROLL_TAB_TO_TOP, true);
@@ -251,7 +270,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
   UpdateCommandEnabled(IDC_BRAVE_SEND_TAB_TO_SELF, true);
 
-  UpdateCommandsForMute();
+  UpdateCommandsForTabs();
   UpdateCommandsForSend();
   UpdateCommandsForPin();
 
@@ -328,13 +347,33 @@ void BraveBrowserCommandController::UpdateCommandForPlaylist() {
 #endif
 }
 
-void BraveBrowserCommandController::UpdateCommandsForMute() {
+void BraveBrowserCommandController::UpdateCommandsForTabs() {
   UpdateCommandEnabled(IDC_WINDOW_MUTE_ALL_TABS,
                        brave::CanMuteAllTabs(&*browser_, false));
   UpdateCommandEnabled(IDC_WINDOW_MUTE_OTHER_TABS,
                        brave::CanMuteAllTabs(&*browser_, true));
   UpdateCommandEnabled(IDC_WINDOW_UNMUTE_ALL_TABS,
                        brave::CanUnmuteAllTabs(&*browser_));
+
+  UpdateCommandEnabled(IDC_GROUP_TABS_ON_CURRENT_ORIGIN, true);
+  UpdateCommandEnabled(IDC_MOVE_GROUP_TO_NEW_WINDOW, true);
+
+  bool is_in_group = brave::IsInGroup(&*browser_);
+  bool has_ungrouped_tabs = brave::HasUngroupedTabs(&*browser_);
+  UpdateCommandEnabled(IDC_WINDOW_GROUP_UNGROUPED_TABS, has_ungrouped_tabs);
+  UpdateCommandEnabled(IDC_WINDOW_UNGROUP_GROUP, is_in_group);
+  UpdateCommandEnabled(IDC_WINDOW_REMOVE_TAB_FROM_GROUP, is_in_group);
+  UpdateCommandEnabled(IDC_WINDOW_NAME_GROUP, is_in_group);
+  UpdateCommandEnabled(IDC_WINDOW_NEW_TAB_IN_GROUP, is_in_group);
+  UpdateCommandEnabled(IDC_WINDOW_UNGROUP_ALL_TABS,
+                       brave::CanUngroupAllTabs(&*browser_));
+  UpdateCommandEnabled(IDC_WINDOW_TOGGLE_GROUP_EXPANDED, is_in_group);
+  UpdateCommandEnabled(IDC_WINDOW_CLOSE_UNGROUPED_TABS, has_ungrouped_tabs);
+  UpdateCommandEnabled(IDC_WINDOW_CLOSE_TABS_NOT_IN_CURRENT_GROUP, is_in_group);
+  UpdateCommandEnabled(IDC_WINDOW_CLOSE_GROUP, is_in_group);
+
+  UpdateCommandEnabled(IDC_WINDOW_BRING_ALL_TABS,
+                       brave::CanBringAllTabs(&*browser_));
 }
 
 void BraveBrowserCommandController::UpdateCommandsForSend() {
@@ -517,6 +556,44 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
       brave::ToggleAllBookmarksButtonVisibility(std::to_address(browser_));
+      break;
+    case IDC_COMMANDER:
+#if BUILDFLAG(ENABLE_COMMANDER)
+      brave::ToggleCommander(std::to_address(browser_));
+#endif
+      break;
+    case IDC_WINDOW_GROUP_UNGROUPED_TABS:
+      brave::GroupUngroupedTabs(&*browser_);
+      break;
+    case IDC_WINDOW_UNGROUP_GROUP:
+      brave::UngroupCurrentGroup(&*browser_);
+      break;
+    case IDC_WINDOW_REMOVE_TAB_FROM_GROUP:
+      brave::RemoveTabFromGroup(&*browser_);
+      break;
+    case IDC_WINDOW_UNGROUP_ALL_TABS:
+      brave::UngroupAllTabs(&*browser_);
+      break;
+    case IDC_WINDOW_NAME_GROUP:
+      brave::NameGroup(&*browser_);
+      break;
+    case IDC_WINDOW_NEW_TAB_IN_GROUP:
+      brave::NewTabInGroup(&*browser_);
+      break;
+    case IDC_WINDOW_TOGGLE_GROUP_EXPANDED:
+      brave::ToggleGroupExpanded(&*browser_);
+      break;
+    case IDC_WINDOW_CLOSE_UNGROUPED_TABS:
+      brave::CloseUngroupedTabs(&*browser_);
+      break;
+    case IDC_WINDOW_CLOSE_TABS_NOT_IN_CURRENT_GROUP:
+      brave::CloseTabsNotInCurrentGroup(&*browser_);
+      break;
+    case IDC_WINDOW_CLOSE_GROUP:
+      brave::CloseGroup(&*browser_);
+      break;
+    case IDC_WINDOW_BRING_ALL_TABS:
+      brave::BringAllTabs(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

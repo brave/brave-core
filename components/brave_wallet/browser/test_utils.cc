@@ -139,6 +139,14 @@ mojom::AccountInfoPtr AccountUtils::EnsureBtcTestAccount(uint32_t index) {
   return EnsureAccount(mojom::KeyringId::kBitcoin84Testnet, index);
 }
 
+mojom::AccountInfoPtr AccountUtils::EnsureZecAccount(uint32_t index) {
+  return EnsureAccount(mojom::KeyringId::kZCashMainnet, index);
+}
+
+mojom::AccountInfoPtr AccountUtils::EnsureZecTestAccount(uint32_t index) {
+  return EnsureAccount(mojom::KeyringId::kZCashTestnet, index);
+}
+
 mojom::AccountInfoPtr AccountUtils::CreateEthAccount(const std::string& name) {
   return CreateDerivedAccount(mojom::KeyringId::kDefault, name);
 }
@@ -163,6 +171,15 @@ mojom::AccountInfoPtr AccountUtils::CreateBtcAccount(const std::string& name) {
 mojom::AccountInfoPtr AccountUtils::CreateBtcTestAccount(
     const std::string& name) {
   return CreateDerivedAccount(mojom::KeyringId::kBitcoin84Testnet, name);
+}
+
+mojom::AccountInfoPtr AccountUtils::CreateZecAccount(const std::string& name) {
+  return CreateDerivedAccount(mojom::KeyringId::kZCashMainnet, name);
+}
+
+mojom::AccountInfoPtr AccountUtils::CreateZecTestAccount(
+    const std::string& name) {
+  return CreateDerivedAccount(mojom::KeyringId::kZCashTestnet, name);
 }
 
 mojom::AccountInfoPtr AccountUtils::CreateEthHWAccount() {
@@ -222,6 +239,14 @@ std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcAccounts() {
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcTestAccounts() {
   return AllAccounts(mojom::KeyringId::kBitcoin84Testnet);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllZecAccounts() {
+  return AllAccounts(mojom::KeyringId::kZCashMainnet);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllZecTestAccounts() {
+  return AllAccounts(mojom::KeyringId::kZCashTestnet);
 }
 
 void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {

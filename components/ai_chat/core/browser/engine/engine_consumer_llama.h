@@ -59,7 +59,7 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
       SuggestedQuestionsCallback callback,
       GenerationResult result);
 
-  bool needs_general_seed_ = true;
+  bool is_mixtral_ = false;
 
   base::WeakPtrFactory<EngineConsumerLlamaRemote> weak_ptr_factory_{this};
 };

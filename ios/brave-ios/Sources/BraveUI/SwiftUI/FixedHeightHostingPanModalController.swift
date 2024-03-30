@@ -1,10 +1,10 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import PanModal
+import SwiftUI
 
 /// A controller that manages some SwiftUI that is expected to be a fixed size and
 /// presented in a `PanModal`
@@ -13,7 +13,9 @@ import PanModal
 /// but you don't need it do expand but still want the ability to dismiss via gesture.
 ///
 /// - note: The SwiftUI within this class should not scroll as `panScrollable` is hard-coded to `nil`
-public class FixedHeightHostingPanModalController<Content: View>: UIViewController, PanModalPresentable {
+public class FixedHeightHostingPanModalController<Content: View>: UIViewController,
+  PanModalPresentable
+{
   private let hostingController: UIHostingController<Content>
   public init(rootView: Content) {
     hostingController = .init(rootView: rootView)
@@ -37,7 +39,12 @@ public class FixedHeightHostingPanModalController<Content: View>: UIViewControll
     hostingController.view.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
     }
-    NotificationCenter.default.addObserver(self, selector: #selector(sizeCategoryChanged), name: UIContentSizeCategory.didChangeNotification, object: nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(sizeCategoryChanged),
+      name: UIContentSizeCategory.didChangeNotification,
+      object: nil
+    )
   }
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -65,7 +72,10 @@ public class FixedHeightHostingPanModalController<Content: View>: UIViewControll
   public override var preferredContentSize: CGSize {
     get {
       let containerSize = CGSize(width: min(375, view.bounds.width), height: view.bounds.height)
-      return .init(width: containerSize.width, height: hostingControllerIntrinsicHeight(for: containerSize))
+      return .init(
+        width: containerSize.width,
+        height: hostingControllerIntrinsicHeight(for: containerSize)
+      )
     }
     set {}
   }

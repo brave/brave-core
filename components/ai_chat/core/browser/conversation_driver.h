@@ -69,6 +69,8 @@ class ConversationDriver {
   ConversationDriver& operator=(const ConversationDriver&) = delete;
 
   void ChangeModel(const std::string& model_key);
+  std::string GetDefaultModel();
+  void SetDefaultModel(const std::string& model_key);
   const mojom::Model& GetCurrentModel();
   std::vector<mojom::ModelPtr> GetModels();
   const std::vector<mojom::ConversationTurn>& GetConversationHistory();
@@ -101,13 +103,13 @@ class ConversationDriver {
   void DismissPremiumPrompt();
   bool HasUserOptedIn();
   void SetUserOptedIn(bool user_opted_in);
-  bool IsPageContentsTruncated();
+  int GetContentUsedPercentage();
   void SubmitSummarizationRequest();
   mojom::SiteInfoPtr BuildSiteInfo();
   bool HasPendingConversationEntry();
 
-  // Used to summarize the selected text in the page.
-  void SummarizeSelectedText(const std::string& selected_text);
+  void SubmitSelectedText(const std::string& selected_text,
+                          mojom::ActionType action_type);
 
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
@@ -116,6 +118,7 @@ class ConversationDriver {
   void SendFeedback(const std::string& category,
                     const std::string& feedback,
                     const std::string& rating_id,
+                    bool send_hostname,
                     mojom::PageHandler::SendFeedbackCallback callback);
 
   // Used to determine whether the page content should be unlinked when
@@ -142,6 +145,15 @@ class ConversationDriver {
                               std::string_view invalidation_token) = 0;
 
   virtual void OnFaviconImageDataChanged();
+
+  // Implementer should call this when the content is updated in a way that
+  // will not be detected by the on-demand techniques used by GetPageContent.
+  // For example for sites where GetPageContent does not read the live DOM but
+  // reads static JS from HTML that doesn't change for same-page navigation and
+  // we need to intercept new JS data from subresource loads.
+  void OnPageContentUpdated(std::string content,
+                            bool is_video,
+                            std::string invalidation_token);
 
   // To be called when a page navigation is detected and a new conversation
   // is expected.
@@ -174,8 +186,9 @@ class ConversationDriver {
                                       std::string result);
   void OnEngineCompletionComplete(int64_t navigation_id,
                                   EngineConsumer::GenerationResult result);
-  void OnSuggestedQuestionsResponse(int64_t navigation_id,
-                                    std::vector<std::string> result);
+  void OnSuggestedQuestionsResponse(
+      int64_t navigation_id,
+      EngineConsumer::SuggestedQuestionResult result);
   void OnSuggestedQuestionsChanged();
   void OnPageHasContentChanged(mojom::SiteInfoPtr site_info);
   void OnPremiumStatusReceived(

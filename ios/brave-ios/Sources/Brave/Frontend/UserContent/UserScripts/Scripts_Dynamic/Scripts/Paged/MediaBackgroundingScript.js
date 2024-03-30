@@ -7,20 +7,20 @@
 
 window.__firefox__.includeOnce("MediaBackgrounding", function($) {
   var descriptor = Object.getOwnPropertyDescriptor(Document.prototype, "visibilityState");
-  var visibilityState_Get = descriptor.get;
-  var visibilityState_Set = descriptor.set;
+  var visibilityStateGet = descriptor.get;
+  var visibilityStateSet = descriptor.set;
   Object.defineProperty(Document.prototype, 'visibilityState', {
     enumerable: descriptor.enumerable,
     configurable: descriptor.configurable,
     get: $(function() {
-        var result = visibilityState_Get.call(this);
+        var result = visibilityStateGet.call(this);
         if (result != "visible") {
             return "visible";
         }
         return result;
     }),
     set: $(function(value) {
-      visibilityState_Set.call(this, value);
+      visibilityStateSet.call(this, value);
     })
   });
 
@@ -60,18 +60,18 @@ window.__firefox__.includeOnce("MediaBackgrounding", function($) {
   let addListeners = $(function(element) {
     if (!element.pauseListener) {
       element.pauseListener = true;
-      element.visibilityState = visibilityState_Get.call(document);
+      element.visibilityState = visibilityStateGet.call(document);
 
       document.addEventListener("visibilitychange", $(function(e) {
-        element.visibilityState = visibilityState_Get.call(document);
+        element.visibilityState = visibilityStateGet.call(document);
       }), false);
 
       element.addEventListener("pause", $(function(e) {
-        if (!element.userHitPause && visibilityState_Get.call(document) == "visible") {
+        if (!element.userHitPause && visibilityStateGet.call(document) == "visible") {
           var onVisibilityChanged = $((e) => {
             document.removeEventListener("visibilitychange", onVisibilityChanged);
 
-            if (visibilityState_Get.call(document) != "visible" && !element.ended) {
+            if (visibilityStateGet.call(document) != "visible" && !element.ended) {
               playControl.call(element);
             }
           });

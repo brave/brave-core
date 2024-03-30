@@ -47,7 +47,6 @@
     <color name="brave_wallet_dn_error_text_bg_color">#453e2d</color>
     <color name="brave_wallet_dn_highlight_bg_color">#1F1F27</color>
     <color name="brave_wallet_onboarding_card_view_background">#0D1214</color>
-    <color name="brave_wallet_day_night_chip_background_color">#21242A</color>
     <color name="brave_wallet_checkbox_color">#7C91FF</color>
 
     <!-- Brave wallet 2.0 colors -->
@@ -136,7 +135,6 @@
     <color name="wallet_secondary_layout_text_color">#C2C4CF</color>
     <color name="recovery_phrase_text_color">#1E2029</color>
     <color name="wallet_toolbar_bg_color">#000000</color>
-    <color name="chip_outline_selected_color">#0D0F14</color>
     <color name="wallet_bg">#0D0F14</color>
     <color name="wallet_edittext_outline_color">#3B3E4F</color>
     <color name="wallet_warning_box_bg_color">#3B3E4F</color>
@@ -144,7 +142,6 @@
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_error_text_color">#FF4B6A</color>
     <color name="wallet_sign_msg_err_bg_color">#FF460A10</color>
-    <color name="wallet_divider_line">#66687485</color>
 
     <color name="rewards_panel_bg_color">#17171F</color>
     <color name="rewards_panel_text_color">#FFFFFF</color>
@@ -205,7 +202,6 @@
     <color name="notification_badge_icon_color">#737ADE</color>
     <color name="notification_download_icon_color">#F0F2FF</color>
     <color name="notification_rationale_dialog_card_bg_color">#17171F</color>
-    <color name="you_are_not_earning_rewards_bg_color">#17171F</color>
 
     <color name="tipping_details_description_text_color">#8C90A1</color>
     <color name="link_icon_color">#8C90A1</color>

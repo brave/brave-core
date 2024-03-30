@@ -154,14 +154,17 @@ class BraveTextButtonHighlightPathGenerator
 
 namespace views {
 
-MdTextButton::MdTextButton(PressedCallback callback,
-                           const std::u16string& text,
-                           int button_context,
-                           bool use_text_color_for_icon)
+MdTextButton::MdTextButton(
+    PressedCallback callback,
+    const std::u16string& text,
+    int button_context,
+    bool use_text_color_for_icon,
+    std::unique_ptr<LabelButtonImageContainer> image_container)
     : MdTextButtonBase(std::move(callback),
                        text,
                        button_context,
-                       use_text_color_for_icon) {
+                       use_text_color_for_icon,
+                       std::move(image_container)) {
   SetCornerRadius(100);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveTextButtonHighlightPathGenerator>());

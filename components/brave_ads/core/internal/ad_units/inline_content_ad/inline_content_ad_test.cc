@@ -34,7 +34,7 @@ class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
 
     NotifyTabDidChange(
         /*tab_id=*/1, /*redirect_chain=*/{GURL("brave://newtab")},
-        /*is_visible=*/true);
+        /*is_error_page=*/false, /*is_visible=*/true);
   }
 
   void SetUpMocks() override {
@@ -120,9 +120,10 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
         ASSERT_TRUE(ad->IsValid());
 
         // Act & Assert
-        TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
-                                    mojom::InlineContentAdEventType::kViewed,
-                                    /*should_fire_event=*/true);
+        TriggerInlineContentAdEvent(
+            ad->placement_id, ad->creative_instance_id,
+            mojom::InlineContentAdEventType::kViewedImpression,
+            /*should_fire_event=*/true);
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
@@ -140,9 +141,10 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
-        TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
-                                    mojom::InlineContentAdEventType::kViewed,
-                                    /*should_fire_event=*/true);
+        TriggerInlineContentAdEvent(
+            ad->placement_id, ad->creative_instance_id,
+            mojom::InlineContentAdEventType::kViewedImpression,
+            /*should_fire_event=*/true);
 
         // Act & Assert
         TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
@@ -167,10 +169,10 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
         ASSERT_TRUE(ad->IsValid());
 
         // Act & Assert
-        TriggerInlineContentAdEvent(ad->placement_id,
-                                    kInvalidCreativeInstanceId,
-                                    mojom::InlineContentAdEventType::kViewed,
-                                    /*should_fire_event=*/false);
+        TriggerInlineContentAdEvent(
+            ad->placement_id, kInvalidCreativeInstanceId,
+            mojom::InlineContentAdEventType::kViewedImpression,
+            /*should_fire_event=*/false);
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());

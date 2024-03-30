@@ -222,7 +222,7 @@ const App = () => {
   React.useEffect(() => {
     window.addEventListener('message', onMessageEventListener)
     return () => window.removeEventListener('message', onMessageEventListener)
-  }, [])
+  }, [onMessageEventListener])
 
   return (
     <BrowserRouter>

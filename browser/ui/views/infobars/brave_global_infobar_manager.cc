@@ -71,7 +71,6 @@ BraveGlobalInfoBarManager::~BraveGlobalInfoBarManager() {
 }
 
 void BraveGlobalInfoBarManager::Show() {
-  DCHECK(is_closed_);
   if (!is_closed_) {
     return;
   }

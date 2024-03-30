@@ -6,6 +6,9 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
+// types
+import { BraveWallet } from '../../../constants/types'
+
 // utils
 import { getLocale, getLocaleWithTag } from '../../../../common/locale'
 
@@ -15,11 +18,15 @@ import {
 } from '../../../common/slices/api.slice'
 
 // components
-import { NavButton } from '../buttons/nav-button/index'
 import { LoadingPanel } from '../loading_panel/loading_panel'
 
 // styles
-import { Row, VerticalDivider, VerticalSpacer } from '../../shared/style'
+import {
+  LeoSquaredButton,
+  Row,
+  VerticalDivider,
+  VerticalSpacer
+} from '../../shared/style'
 import { Backdrop, Background, FloatingCard } from '../shared-panel-styles'
 import {
   BulletPoints,
@@ -100,20 +107,26 @@ export const EnableTransactionSimulations: React.FC = () => {
             </TermsText>
 
             <OptionsRow>
-              <NavButton
-                buttonType='cancel'
-                text={getLocale('braveWalletButtonNoThanks')}
-                onSubmit={() => {
-                  return optInOrOut('denied')
+              <LeoSquaredButton
+                kind='plain-faint'
+                onClick={async () => {
+                  await optInOrOut(
+                    BraveWallet.BlowfishOptInStatus.kDenied
+                  ).unwrap()
                 }}
-              />
-              <NavButton
-                buttonType='primary'
-                text={getLocale('braveWalletButtonEnable')}
-                onSubmit={() => {
-                  return optInOrOut('allowed')
+              >
+                {getLocale('braveWalletButtonNoThanks')}
+              </LeoSquaredButton>
+              <LeoSquaredButton
+                kind='filled'
+                onClick={async () => {
+                  await optInOrOut(
+                    BraveWallet.BlowfishOptInStatus.kAllowed
+                  ).unwrap()
                 }}
-              />
+              >
+                {getLocale('braveWalletButtonEnable')}
+              </LeoSquaredButton>
             </OptionsRow>
           </CardContent>
         </FloatingCard>

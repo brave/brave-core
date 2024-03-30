@@ -49,7 +49,7 @@ TransactionInfo BuildTransaction(const base::Time time, const double value) {
       base::Uuid::GenerateRandomV4().AsLowercaseString();
   transaction.value = value;
   transaction.ad_type = AdType::kNotificationAd;
-  transaction.confirmation_type = ConfirmationType::kViewed;
+  transaction.confirmation_type = ConfirmationType::kViewedImpression;
   transaction.reconciled_at = time;
 
   return transaction;

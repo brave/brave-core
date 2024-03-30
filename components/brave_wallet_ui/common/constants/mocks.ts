@@ -109,6 +109,36 @@ export const mockNetwork: BraveWallet.NetworkInfo = {
   isEip1559: false
 }
 
+export const mockFilecoinEVMMMainnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: '0x13a',
+  chainName: 'Filecoin EVM Mainnet',
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://api.node.glif.io/rpc/v1' }],
+  blockExplorerUrls: ['https://filfox.info/en/message'],
+  symbol: 'FIL',
+  symbolName: 'Filcoin',
+  decimals: 18,
+  iconUrls: [FILECOINIconUrl],
+  coin: BraveWallet.CoinType.ETH,
+  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
+  isEip1559: false
+}
+
+export const mockFilecoinEVMMTestnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: '0x4cb2f',
+  chainName: 'Filecoin EVM Testnet',
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://api.calibration.node.glif.io/rpc/v1' }],
+  blockExplorerUrls: ['https://calibration.filfox.info/en/message'],
+  symbol: 'FIL',
+  symbolName: 'Filcoin',
+  decimals: 18,
+  iconUrls: [FILECOINIconUrl],
+  coin: BraveWallet.CoinType.ETH,
+  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
+  isEip1559: false
+}
+
 export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
   chainId: 'f',
   chainName: 'Filecoin Mainnet',
@@ -313,6 +343,20 @@ export const mockBitcoinAccount: BraveWallet.AccountInfo = {
     address: '',
     bitcoinAccountIndex: 0,
     uniqueKey: 'unique_key_MockBitcoinAccount'
+  },
+  hardware: undefined
+}
+
+export const mockBitcoinTestAccount: BraveWallet.AccountInfo = {
+  name: 'MockBitcoinTestAccount',
+  address: '',
+  accountId: {
+    coin: BraveWallet.CoinType.BTC,
+    keyringId: BraveWallet.KeyringId.kBitcoin84Testnet,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '',
+    bitcoinAccountIndex: 0,
+    uniqueKey: 'unique_key_MockBitcoinTestAccount'
   },
   hardware: undefined
 }

@@ -1,10 +1,10 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 import Preferences
 import Shared
 
@@ -17,28 +17,30 @@ class RewardsNotification: NSObject, BraveNotification {
     /// The user ignored the ad for a given amount of time for it to automatically dismiss
     case timedOut
   }
-  
+
   var view: UIView
   var dismissAction: (() -> Void)?
   var id: String { ad.placementID }
   let ad: NotificationAd
   var dismissPolicy: DismissPolicy {
     guard let adView = view as? AdView else { return .automatic() }
-    
+
     var dismissTimeInterval: TimeInterval = 30
-    if !AppConstants.buildChannel.isPublic, let override = Preferences.Rewards.adsDurationOverride.value, override > 0 {
+    if !AppConstants.isOfficialBuild,
+      let override = Preferences.Rewards.adsDurationOverride.value, override > 0
+    {
       dismissTimeInterval = TimeInterval(override)
     }
     return .automatic(after: dismissTimeInterval)
   }
-  
+
   private let handler: (Action) -> Void
-  
+
   func willDismiss(timedOut: Bool) {
     guard let adView = view as? AdView else { return }
     handler(timedOut ? .timedOut : .dismissed)
   }
-  
+
   init(
     ad: NotificationAd,
     handler: @escaping (Action) -> Void
@@ -49,16 +51,16 @@ class RewardsNotification: NSObject, BraveNotification {
     super.init()
     self.setup()
   }
-  
+
   private func setup() {
     guard let adView = view as? AdView else { return }
-    
+
     adView.adContentButton.titleLabel.text = ad.title
     adView.adContentButton.bodyLabel.text = ad.body
-    
+
     adView.adContentButton.addTarget(self, action: #selector(tappedAdView(_:)), for: .touchUpInside)
   }
-  
+
   @objc private func tappedAdView(_ sender: AdContentButton) {
     guard let adView = sender.superview as? AdView else { return }
     dismissAction?()
@@ -78,12 +80,12 @@ extension RewardsNotification {
       body: Strings.Ads.myFirstAdBody,
       url: "https://brave.com/my-first-ad"
     )
-    
+
     guard let targetURL = URL(string: notification.targetURL) else {
       assertionFailure("My First Ad URL is not valid: \(notification.targetURL)")
       return
     }
-    
+
     let rewardsNotification = RewardsNotification(ad: notification) { action in
       completion(action, targetURL)
     }

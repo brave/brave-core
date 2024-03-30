@@ -1,7 +1,7 @@
-/* Copyright 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SwiftUI
 
@@ -10,7 +10,7 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
   @Binding var isExpanded: Bool
   @ViewBuilder var content: () -> Content
   @ViewBuilder var label: () -> Label
-  
+
   private var header: some View {
     HStack {
       label()
@@ -23,14 +23,10 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
     .padding(.horizontal)
     // when expanded, padding is applied to entire `LazyVStack`
     .padding(.vertical, isExpanded ? 0 : 6)
-    .osAvailabilityModifiers {
+    .overlay {
       if !isExpanded {
-        $0.overlay {
-          RoundedRectangle(cornerRadius: 16)
-            .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
-        }
-      } else {
-        $0
+        RoundedRectangle(cornerRadius: 16)
+          .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
       }
     }
     .contentShape(Rectangle())
@@ -38,7 +34,7 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
       isExpanded.toggle()
     }
   }
-  
+
   var body: some View {
     VStack(spacing: 4) {
       header
@@ -52,18 +48,10 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
     }
     // when collapsed, padding is applied to `header`
     .padding(.vertical, isExpanded ? 6 : 0)
-    .osAvailabilityModifiers {
-      if !isNFTGroup {
-        if isExpanded {
-          $0.overlay {
-            RoundedRectangle(cornerRadius: 16)
-              .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
-          }
-        } else {
-          $0
-        }
-      } else {
-        $0
+    .overlay {
+      if !isNFTGroup && isExpanded {
+        RoundedRectangle(cornerRadius: 16)
+          .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
       }
     }
   }

@@ -12,11 +12,15 @@
 #include "base/strings/strcat.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/common/constants.h"
+#include "brave/components/commander/common/features.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/commander_action.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
 #include "components/omnibox/browser/autocomplete_provider_listener.h"
+#include "components/prefs/pref_service.h"
+#include "third_party/omnibox_proto/groups.pb.h"
 
 namespace commander {
 CommanderProvider::CommanderProvider(AutocompleteProviderClient* client,
@@ -62,12 +66,27 @@ void CommanderProvider::OnCommanderUpdated() {
 
   matches_.clear();
 
-  if (!last_input_.starts_with(commander::kCommandPrefix.data())) {
+  // If |last_input_| is empty, don't provide any suggestions.
+  if (last_input_.empty()) {
     return;
   }
 
-  int rank = 10000;
+  // We can be triggered explicitly by the prefix, or in a normal search if
+  // suggestions are enabled.
+  auto has_prefix = last_input_.starts_with(commander::kCommandPrefix.data());
+  if (!has_prefix &&
+      (!client_->GetPrefs()->GetBoolean(
+           omnibox::kCommanderSuggestionsEnabled) ||
+       !base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox))) {
+    return;
+  }
+
   const auto& items = delegate->GetItems();
+
+  // If we have a prefix, the commands should be given the maximum ranking, as
+  // we want them to be prioritised. If not, add commands only if they're a good
+  // match, and dump them at the bottom of our results.
+  int rank = (has_prefix ? 1000 : 100) + items.size();
   for (uint32_t i = 0; i < items.size(); ++i) {
     const auto& option = items[i];
     AutocompleteMatch match(this, rank--, false,
@@ -86,6 +105,12 @@ void CommanderProvider::OnCommanderUpdated() {
     match.description = option.title;
     match.allowed_to_be_default_match = true;
     match.swap_contents_and_description = true;
+
+    // Only group quick commands if there are potentially other results.
+    if (!has_prefix) {
+      match.suggestion_group_id = omnibox::GroupId::GROUP_OTHER_NAVS;
+    }
+
     // We don't want to change the prompt at all while the user is going through
     // their options.
     match.fill_into_edit = last_input_;
@@ -106,8 +131,8 @@ void CommanderProvider::OnCommanderUpdated() {
         match.description_class[0].style = ACMatchClassification::MATCH;
       } else {
         // Otherwise, change the style to be match, from this token onwards.
-        match.description_class.push_back(
-            ACMatchClassification(range.start(), ACMatchClassification::MATCH));
+        match.description_class.emplace_back(range.start(),
+                                             ACMatchClassification::MATCH);
       }
 
       // If the end of the range isn't the last character in the string, and
@@ -116,8 +141,8 @@ void CommanderProvider::OnCommanderUpdated() {
       if (range.end() < match.description.size() &&
           (j + 1 >= option.matched_ranges.size() ||
            option.matched_ranges[j + 1].start() > range.end())) {
-        match.description_class.push_back(
-            ACMatchClassification(range.end(), ACMatchClassification::DIM));
+        match.description_class.emplace_back(range.end(),
+                                             ACMatchClassification::DIM);
       }
     }
     matches_.push_back(match);

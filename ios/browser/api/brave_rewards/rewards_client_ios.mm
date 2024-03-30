@@ -175,9 +175,6 @@ void RewardsClientIOS::IsAutoContributeSupportedForClient(
 void RewardsClientIOS::GetClientInfo(GetClientInfoCallback callback) {
   [bridge_ clientInfo:std::move(callback)];
 }
-void RewardsClientIOS::UnblindedTokensReady() {
-  [bridge_ unblindedTokensReady];
-}
 void RewardsClientIOS::ReconcileStampReset() {
   [bridge_ reconcileStampReset];
 }

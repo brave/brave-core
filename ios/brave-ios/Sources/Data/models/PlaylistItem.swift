@@ -1,10 +1,10 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CoreData
+import Foundation
 import Shared
 import os.log
 
@@ -22,7 +22,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   @NSManaged public var pageTitle: String?
   @NSManaged public var uuid: String?
   @NSManaged public var playlistFolder: PlaylistFolder?
-  
+
   @available(*, unavailable)
   public init() {
     fatalError("No Such Initializer: init()")
@@ -37,8 +37,17 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
     super.init(entity: entity, insertInto: context)
   }
-  
-  public init(context: NSManagedObjectContext, name: String, pageTitle: String?, pageSrc: String, cachedData: Data, duration: TimeInterval, mimeType: String, mediaSrc: String) {
+
+  public init(
+    context: NSManagedObjectContext,
+    name: String,
+    pageTitle: String?,
+    pageSrc: String,
+    cachedData: Data,
+    duration: TimeInterval,
+    mimeType: String,
+    mediaSrc: String
+  ) {
     let entity = Self.entity(context)
     super.init(entity: entity, insertInto: context)
     self.name = name
@@ -69,8 +78,11 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     fetchRequest.sortDescriptors = [orderSort, createdSort]
 
     return NSFetchedResultsController(
-      fetchRequest: fetchRequest, managedObjectContext: context,
-      sectionNameKeyPath: nil, cacheName: nil)
+      fetchRequest: fetchRequest,
+      managedObjectContext: context,
+      sectionNameKeyPath: nil,
+      cacheName: nil
+    )
   }
 
   public class func frc(parentFolder: PlaylistFolder?) -> NSFetchedResultsController<PlaylistItem> {
@@ -90,8 +102,11 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     fetchRequest.sortDescriptors = [orderSort, createdSort]
 
     return NSFetchedResultsController(
-      fetchRequest: fetchRequest, managedObjectContext: context,
-      sectionNameKeyPath: nil, cacheName: nil)
+      fetchRequest: fetchRequest,
+      managedObjectContext: context,
+      sectionNameKeyPath: nil,
+      cacheName: nil
+    )
   }
 
   public class func allFoldersFRC() -> NSFetchedResultsController<PlaylistItem> {
@@ -105,23 +120,36 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     fetchRequest.sortDescriptors = [orderSort, createdSort]
 
     return NSFetchedResultsController(
-      fetchRequest: fetchRequest, managedObjectContext: context,
-      sectionNameKeyPath: nil, cacheName: nil)
+      fetchRequest: fetchRequest,
+      managedObjectContext: context,
+      sectionNameKeyPath: nil,
+      cacheName: nil
+    )
   }
 
-  public static func addItem(_ item: PlaylistInfo, folderUUID: String? = nil, cachedData: Data?, completion: (() -> Void)? = nil) {
+  public static func addItem(
+    _ item: PlaylistInfo,
+    folderUUID: String? = nil,
+    cachedData: Data?,
+    completion: (() -> Void)? = nil
+  ) {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
-      let playlistItem = PlaylistItem(context: context,
-                                      name: item.name,
-                                      pageTitle: item.pageTitle,
-                                      pageSrc: item.pageSrc,
-                                      cachedData: cachedData ?? Data(),
-                                      duration: item.duration,
-                                      mimeType: item.mimeType,
-                                      mediaSrc: item.src)
+      let playlistItem = PlaylistItem(
+        context: context,
+        name: item.name,
+        pageTitle: item.pageTitle,
+        pageSrc: item.pageSrc,
+        cachedData: cachedData ?? Data(),
+        duration: item.duration,
+        mimeType: item.mimeType,
+        mediaSrc: item.src
+      )
       playlistItem.order = item.order
       playlistItem.uuid = item.tagId
-      playlistItem.playlistFolder = PlaylistFolder.getFolder(uuid: folderUUID ?? PlaylistFolder.savedFolderUUID, context: context)
+      playlistItem.playlistFolder = PlaylistFolder.getFolder(
+        uuid: folderUUID ?? PlaylistFolder.savedFolderUUID,
+        context: context
+      )
 
       PlaylistItem.reorderItems(context: context)
       PlaylistItem.saveContext(context)
@@ -131,21 +159,28 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       }
     }
   }
-  
-  public static func addInMemoryItems(_ items: [PlaylistInfo], folderUUID: String, completion: (() -> Void)? = nil) {
-    DataController.perform(context: .existing(DataController.viewContextInMemory), save: false) { context in
+
+  public static func addInMemoryItems(
+    _ items: [PlaylistInfo],
+    folderUUID: String,
+    completion: (() -> Void)? = nil
+  ) {
+    DataController.perform(context: .existing(DataController.viewContextInMemory), save: false) {
+      context in
       context.perform {
         let folder = PlaylistFolder.getFolder(uuid: folderUUID, context: context)
-        
+
         items.forEach({ item in
-          let playlistItem = PlaylistItem(context: context,
-                                          name: item.name,
-                                          pageTitle: item.pageTitle,
-                                          pageSrc: item.pageSrc,
-                                          cachedData: Data(),
-                                          duration: item.duration,
-                                          mimeType: item.mimeType,
-                                          mediaSrc: item.src)
+          let playlistItem = PlaylistItem(
+            context: context,
+            name: item.name,
+            pageTitle: item.pageTitle,
+            pageSrc: item.pageSrc,
+            cachedData: Data(),
+            duration: item.duration,
+            mimeType: item.mimeType,
+            mediaSrc: item.src
+          )
           playlistItem.order = item.order
           playlistItem.uuid = item.tagId
           playlistItem.playlistFolder = folder
@@ -160,20 +195,26 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       }
     }
   }
-  
-  public static func saveInMemoryItemsToDisk(items: [PlaylistItem], folderUUID: String, completion: (() -> Void)? = nil) {
+
+  public static func saveInMemoryItemsToDisk(
+    items: [PlaylistItem],
+    folderUUID: String,
+    completion: (() -> Void)? = nil
+  ) {
     DataController.perform(context: .existing(DataController.viewContext), save: false) { context in
       let folder = PlaylistFolder.getFolder(uuid: folderUUID, context: context)
-      
+
       items.forEach({ item in
-        let playlistItem = PlaylistItem(context: context,
-                                        name: item.name,
-                                        pageTitle: item.pageTitle,
-                                        pageSrc: item.pageSrc,
-                                        cachedData: item.cachedData ?? Data(),
-                                        duration: item.duration,
-                                        mimeType: item.mimeType,
-                                        mediaSrc: item.mediaSrc)
+        let playlistItem = PlaylistItem(
+          context: context,
+          name: item.name,
+          pageTitle: item.pageTitle,
+          pageSrc: item.pageSrc,
+          cachedData: item.cachedData ?? Data(),
+          duration: item.duration,
+          mimeType: item.mimeType,
+          mediaSrc: item.mediaSrc
+        )
         playlistItem.order = item.order
         playlistItem.uuid = item.uuid
         playlistItem.playlistFolder = folder
@@ -189,7 +230,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       context.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
       PlaylistItem.saveContext(context)
       context.mergePolicy = policy
-      
+
       DispatchQueue.main.async {
         completion?()
       }
@@ -209,30 +250,34 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     return PlaylistItem.all(
       where: predicate,
       sortDescriptors: [orderSort, createdSort],
-      fetchBatchSize: 20) ?? []
+      fetchBatchSize: 20
+    ) ?? []
   }
 
   public static func getItems(pageSrc: String) -> [PlaylistItem] {
     return PlaylistItem.all(where: NSPredicate(format: "pageSrc == %@", pageSrc)) ?? []
   }
-  
+
   public static func getItem(uuid: String) -> PlaylistItem? {
     return PlaylistItem.first(where: NSPredicate(format: "uuid == %@", uuid))
   }
-  
+
   public class func all() -> [PlaylistItem] {
     all() ?? []
   }
 
   public static func itemExists(pageSrc: String) -> Bool {
-    if let count = PlaylistItem.count(predicate: NSPredicate(format: "pageSrc == %@", pageSrc)), count > 0 {
+    if let count = PlaylistItem.count(predicate: NSPredicate(format: "pageSrc == %@", pageSrc)),
+      count > 0
+    {
       return true
     }
     return false
   }
-  
+
   public static func itemExists(uuid: String) -> Bool {
-    if let count = PlaylistItem.count(predicate: NSPredicate(format: "uuid == %@", uuid)), count > 0 {
+    if let count = PlaylistItem.count(predicate: NSPredicate(format: "uuid == %@", uuid)), count > 0
+    {
       return true
     }
     return false
@@ -243,17 +288,25 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       var isStale = false
 
       if let cacheData = $0.cachedData,
-        let url = try? URL(resolvingBookmarkData: cacheData, bookmarkDataIsStale: &isStale) {
+        let url = try? URL(resolvingBookmarkData: cacheData, bookmarkDataIsStale: &isStale)
+      {
         return url.path == cacheURL.path
       }
       return false
     })
   }
-  
-  public static func updateLastPlayed(itemId: String, pageSrc: String, lastPlayedOffset: TimeInterval) {
+
+  public static func updateLastPlayed(
+    itemId: String,
+    pageSrc: String,
+    lastPlayedOffset: TimeInterval
+  ) {
     if itemExists(pageSrc: pageSrc) || itemExists(uuid: itemId) {
       DataController.perform(context: .new(inMemory: false), save: false) { context in
-        if let existingItem = PlaylistItem.first(where: NSPredicate(format: "pageSrc == %@ OR uuid == %@", pageSrc, itemId), context: context) {
+        if let existingItem = PlaylistItem.first(
+          where: NSPredicate(format: "pageSrc == %@ OR uuid == %@", pageSrc, itemId),
+          context: context
+        ) {
           existingItem.lastPlayedOffset = lastPlayedOffset
         }
 
@@ -265,7 +318,10 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   public static func updateItem(_ item: PlaylistInfo, completion: (() -> Void)? = nil) {
     if itemExists(pageSrc: item.pageSrc) || itemExists(uuid: item.tagId) {
       DataController.perform(context: .new(inMemory: false), save: false) { context in
-        if let existingItem = PlaylistItem.first(where: NSPredicate(format: "pageSrc == %@ OR uuid == %@", item.pageSrc, item.tagId), context: context) {
+        if let existingItem = PlaylistItem.first(
+          where: NSPredicate(format: "pageSrc == %@ OR uuid == %@", item.pageSrc, item.tagId),
+          context: context
+        ) {
           existingItem.name = item.name
           existingItem.pageTitle = item.pageTitle
           existingItem.pageSrc = item.pageSrc
@@ -286,20 +342,28 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       addItem(item, cachedData: nil, completion: completion)
     }
   }
-  
-  public static func updateItems(_ items: [PlaylistInfo], folderUUID: String? = nil, newETag: String? = nil, completion: (() -> Void)? = nil) {
+
+  public static func updateItems(
+    _ items: [PlaylistInfo],
+    folderUUID: String? = nil,
+    newETag: String? = nil,
+    completion: (() -> Void)? = nil
+  ) {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
       let uuids = items.compactMap({ $0.tagId })
-      let existingItems = PlaylistItem.all(where: NSPredicate(format: "uuid IN %@", uuids), context: context) ?? []
+      let existingItems =
+        PlaylistItem.all(where: NSPredicate(format: "uuid IN %@", uuids), context: context) ?? []
       let existingUUIDs = existingItems.compactMap({ $0.uuid })
       let newItems = items.filter({ !existingUUIDs.contains($0.tagId) })
-      let folder = PlaylistFolder.getFolder(uuid: folderUUID ?? PlaylistFolder.savedFolderUUID,
-                                            context: context)
-      
+      let folder = PlaylistFolder.getFolder(
+        uuid: folderUUID ?? PlaylistFolder.savedFolderUUID,
+        context: context
+      )
+
       if let eTag = newETag {
         folder?.sharedFolderETag = eTag
       }
-      
+
       existingItems.forEach { existingItem in
         items.forEach { item in
           if existingItem.uuid == item.tagId {
@@ -313,21 +377,23 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
           }
         }
       }
-      
+
       newItems.forEach { item in
-        let playlistItem = PlaylistItem(context: context,
-                                        name: item.name,
-                                        pageTitle: item.pageTitle,
-                                        pageSrc: item.pageSrc,
-                                        cachedData: Data(),
-                                        duration: item.duration,
-                                        mimeType: item.mimeType,
-                                        mediaSrc: item.src)
+        let playlistItem = PlaylistItem(
+          context: context,
+          name: item.name,
+          pageTitle: item.pageTitle,
+          pageSrc: item.pageSrc,
+          cachedData: Data(),
+          duration: item.duration,
+          mimeType: item.mimeType,
+          mediaSrc: item.src
+        )
         playlistItem.order = item.order
         playlistItem.uuid = item.tagId
         playlistItem.playlistFolder = folder
       }
-      
+
       PlaylistItem.reorderItems(context: context)
       PlaylistItem.saveContext(context)
 
@@ -336,26 +402,33 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       }
     }
   }
-    public static func updateCache(uuid: String, pageSrc: String, cachedData: Data?) {
+  public static func updateCache(uuid: String, pageSrc: String, cachedData: Data?) {
     DataController.perform(context: .new(inMemory: false), save: true) { context in
-        if let item = PlaylistItem.first(where: NSPredicate(format: "uuid == %@ OR pageSrc == %@", uuid, pageSrc), context: context) {
-            if let cachedData = cachedData, !cachedData.isEmpty {
-              item.cachedData = cachedData
-            } else {
-              item.cachedData = nil
-            }
+      if let item = PlaylistItem.first(
+        where: NSPredicate(format: "uuid == %@ OR pageSrc == %@", uuid, pageSrc),
+        context: context
+      ) {
+        if let cachedData = cachedData, !cachedData.isEmpty {
+          item.cachedData = cachedData
+        } else {
+          item.cachedData = nil
         }
+      }
     }
   }
 
   public static func removeItem(uuid: String) {
-    PlaylistItem.deleteAll(predicate: NSPredicate(format: "uuid == %@", uuid), context: .new(inMemory: false), includesPropertyValues: false)
+    PlaylistItem.deleteAll(
+      predicate: NSPredicate(format: "uuid == %@", uuid),
+      context: .new(inMemory: false),
+      includesPropertyValues: false
+    )
   }
 
   public static func removeItems(_ items: [PlaylistInfo], completion: (() -> Void)? = nil) {
     var uuids = [String]()
     var mediaSrcs = [String]()
-    
+
     items.forEach({
       if $0.tagId.isEmpty {
         mediaSrcs.append($0.src)
@@ -363,14 +436,24 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         uuids.append($0.tagId)
       }
     })
-    
-    PlaylistItem.deleteAll(predicate: NSPredicate(format: "uuid IN %@", uuids), context: .new(inMemory: false), includesPropertyValues: false, completion: completion)
-    
+
+    PlaylistItem.deleteAll(
+      predicate: NSPredicate(format: "uuid IN %@", uuids),
+      context: .new(inMemory: false),
+      includesPropertyValues: false,
+      completion: completion
+    )
+
     if !mediaSrcs.isEmpty {
       // As a backup, we delete by media source (not page source)
       // This is more unique than pageSrc.
       // This is because you can add multiple items per page but they'd each have a different media source.
-      PlaylistItem.deleteAll(predicate: NSPredicate(format: "mediaSrc IN %@", mediaSrcs), context: .new(inMemory: false), includesPropertyValues: false, completion: completion)
+      PlaylistItem.deleteAll(
+        predicate: NSPredicate(format: "mediaSrc IN %@", mediaSrcs),
+        context: .new(inMemory: false),
+        includesPropertyValues: false,
+        completion: completion
+      )
     }
   }
 
@@ -381,7 +464,9 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         folder = PlaylistFolder.getFolder(uuid: folderUUID, context: context)
       }
 
-      let playlistItems = items.compactMap { try? context.existingObject(with: $0) as? PlaylistItem }
+      let playlistItems = items.compactMap {
+        try? context.existingObject(with: $0) as? PlaylistItem
+      }
       playlistItems.forEach {
         $0.playlistFolder = folder
         folder?.playlistItems?.insert($0)

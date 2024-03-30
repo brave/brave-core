@@ -1,16 +1,16 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 
-public let PopoverArrowHeight: CGFloat = 8.0
-
 open class PopoverNavigationController: UINavigationController, PopoverContentComponent {
+
+  private static let popoverArrowHeight: CGFloat = 8.0
 
   private class NavigationBar: UINavigationBar {
     override var frame: CGRect {
-      get { return super.frame.with { $0.origin.y = PopoverArrowHeight } }
+      get { return super.frame.with { $0.origin.y = popoverArrowHeight } }
       set { super.frame = newValue }
     }
     override var barPosition: UIBarPosition {
@@ -64,7 +64,9 @@ open class PopoverNavigationController: UINavigationController, PopoverContentCo
     let senderSelector = Selector(senderKeyPath)
     let handlerSelector = Selector(String(format: "handleNav%@nsition:", "igationTra"))
     if responds(to: senderSelector) {
-      if let controller = value(forKeyPath: senderKeyPath) as? NSObject, controller.responds(to: handlerSelector) {
+      if let controller = value(forKeyPath: senderKeyPath) as? NSObject,
+        controller.responds(to: handlerSelector)
+      {
         let pan = UIPanGestureRecognizer(target: controller, action: handlerSelector)
         pan.delegate = self
         view.addGestureRecognizer(pan)
@@ -90,7 +92,9 @@ open class PopoverNavigationController: UINavigationController, PopoverContentCo
     return self.visibleViewController === self.viewControllers.first
   }
 
-  override public func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+  override public func preferredContentSizeDidChange(
+    forChildContentContainer container: UIContentContainer
+  ) {
     self.preferredContentSize = container.preferredContentSize
   }
 

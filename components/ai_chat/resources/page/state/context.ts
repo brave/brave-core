@@ -37,7 +37,6 @@ export interface AIChatContext {
   dismissPremiumPrompt: () => void
   getCanShowPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
-  dismissLongPageWarning: () => void
   dismissLongConversationInfo: () => void
   updateShouldSendPageContents: (shouldSend: boolean) => void
 }
@@ -72,7 +71,6 @@ export const defaultContext: AIChatContext = {
   dismissPremiumPrompt: () => {},
   getCanShowPremiumPrompt: () => {},
   userRefreshPremiumSession: () => {},
-  dismissLongPageWarning: () => {},
   dismissLongConversationInfo: () => {},
   updateShouldSendPageContents: () => {}
 }

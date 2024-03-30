@@ -58,6 +58,7 @@
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
+#include "ios/chrome/browser/credential_provider/model/credential_provider_buildflags.h"
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
@@ -73,11 +74,17 @@
 #include "ios/chrome/browser/sync/model/send_tab_to_self_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/session_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
-#include "ios/chrome/browser/ui/webui/chrome_web_ui_ios_controller_factory.h"
+#include "ios/chrome/browser/webui/ui_bundled/chrome_web_ui_ios_controller_factory.h"
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+#include "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
+#include "ios/chrome/browser/credential_provider/model/credential_provider_support.h"
+#include "ios/chrome/browser/credential_provider/model/credential_provider_util.h"
+#endif
 
 // Chromium logging is global, therefore we cannot link this to the instance in
 // question
@@ -244,6 +251,12 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
         initWithBackgroundImagesService:
             std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
                 cus, GetApplicationContext()->GetLocalState())];
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+    if (IsCredentialProviderExtensionSupported()) {
+      CredentialProviderServiceFactory::GetForBrowserState(_mainBrowserState);
+    }
+#endif
   }
   return self;
 }
@@ -263,15 +276,15 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
       BrowserListFactory::GetForBrowserState(_otr_browser->GetBrowserState());
   [_otr_browser->GetCommandDispatcher() prepareForShutdown];
   _otr_browserList->RemoveBrowser(_otr_browser.get());
-  _otr_browser->GetWebStateList()->CloseAllWebStates(
-      WebStateList::CLOSE_NO_FLAGS);
+  CloseAllWebStates(*_otr_browser->GetWebStateList(),
+                    WebStateList::CLOSE_NO_FLAGS);
   _otr_browser.reset();
 
   _browserList =
       BrowserListFactory::GetForBrowserState(_browser->GetBrowserState());
   [_browser->GetCommandDispatcher() prepareForShutdown];
   _browserList->RemoveBrowser(_browser.get());
-  _browser->GetWebStateList()->CloseAllWebStates(WebStateList::CLOSE_NO_FLAGS);
+  CloseAllWebStates(*_browser->GetWebStateList(), WebStateList::CLOSE_NO_FLAGS);
   _browser.reset();
 
   _mainBrowserState = nullptr;
@@ -314,6 +327,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   // Make sure the system url request getter is called at least once during
   // startup in case cleanup is done early before first network request
   GetApplicationContext()->GetSystemURLRequestContext();
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+  [self performFaviconsCleanup];
+#endif
 }
 
 - (void)registerComponentsForUpdate:
@@ -505,5 +522,18 @@ static bool CustomLogHandler(int severity,
   base::apple::SetOverrideFrameworkBundle(bundle);
   return base::i18n::InitializeICU();
 }
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+- (void)performFaviconsCleanup {
+  ChromeBrowserState* browserState = _mainBrowserState;
+  if (!browserState) {
+    return;
+  }
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&UpdateFaviconsStorageForBrowserState,
+                                browserState->AsWeakPtr(),
+                                /*fallback_to_google_server=*/false));
+}
+#endif
 
 @end

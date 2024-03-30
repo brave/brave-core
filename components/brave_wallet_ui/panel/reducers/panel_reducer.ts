@@ -34,33 +34,9 @@ const defaultState: PanelState = {
   connectToSiteOrigin: defaultOriginInfo,
   selectedPanel,
   connectingAccounts: [],
-  addChainRequest: {
-    originInfo: defaultOriginInfo,
-    networkInfo: {
-      chainId: BraveWallet.MAINNET_CHAIN_ID,
-      chainName: 'Ethereum Mainnet',
-      activeRpcEndpointIndex: 0,
-      rpcEndpoints: [{ url: 'https://mainnet-infura.brave.com/' }],
-      blockExplorerUrls: [],
-      iconUrls: [],
-      symbol: 'ETH',
-      symbolName: 'Ethereum',
-      decimals: 18,
-      coin: BraveWallet.CoinType.ETH,
-      supportedKeyrings: [BraveWallet.KeyringId.kDefault],
-      isEip1559: true
-    }
-  },
   signMessageData: [],
   signAllTransactionsRequests: [],
   signTransactionRequests: [],
-  getEncryptionPublicKeyRequest: undefined,
-  decryptRequest: undefined,
-  switchChainRequest: {
-    requestId: '',
-    originInfo: defaultOriginInfo,
-    chainId: ''
-  },
   hardwareWalletCode: undefined,
   selectedTransactionId: undefined,
   signMessageErrorData: []
@@ -85,46 +61,6 @@ export const createPanelReducer = (initialState: PanelState) => {
         ...state,
         connectToSiteOrigin: payload.originInfo,
         connectingAccounts: payload.accounts
-      }
-    }
-  )
-
-  reducer.on(
-    PanelActions.addEthereumChain.type,
-    (state: any, request: BraveWallet.AddChainRequest) => {
-      return {
-        ...state,
-        addChainRequest: request
-      }
-    }
-  )
-
-  reducer.on(
-    PanelActions.switchEthereumChain.type,
-    (state: any, request: BraveWallet.SwitchChainRequest) => {
-      return {
-        ...state,
-        switchChainRequest: request
-      }
-    }
-  )
-
-  reducer.on(
-    PanelActions.getEncryptionPublicKey.type,
-    (state: any, request: BraveWallet.GetEncryptionPublicKeyRequest) => {
-      return {
-        ...state,
-        getEncryptionPublicKeyRequest: request
-      }
-    }
-  )
-
-  reducer.on(
-    PanelActions.decrypt.type,
-    (state: any, request: BraveWallet.DecryptRequest) => {
-      return {
-        ...state,
-        decryptRequest: request
       }
     }
   )

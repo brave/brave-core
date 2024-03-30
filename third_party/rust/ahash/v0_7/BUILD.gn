@@ -1,6 +1,11 @@
-# Copyright 2023 The Chromium Authors
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
 
 import("//build/rust/cargo_crate.gni")
 
@@ -8,36 +13,24 @@ cargo_crate("lib") {
   crate_name = "ahash"
   epoch = "0.7"
   crate_type = "rlib"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/ahash/v0_7/crate/build.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/src/aes_hash.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/src/convert.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/src/fallback_hash.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/src/hash_map.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/src/hash_quality_test.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/src/hash_set.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/src/lib.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/src/operations.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/src/random_state.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/src/specialize.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/tests/bench.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/tests/map_tests.rs",
-    "//brave/third_party/rust/ahash/v0_7/crate/tests/nopanic.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/aes_hash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/convert.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/fallback_hash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/hash_map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/hash_quality_test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/hash_set.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/operations.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/random_state.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/src/specialize.rs",
   ]
-  inputs = [
-    "//brave/third_party/rust/ahash/v0_7/crate/FAQ.md",
-    "//brave/third_party/rust/ahash/v0_7/crate/README.md",
-  ]
+  inputs = []
 
-  # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.7.6"
+  cargo_pkg_version = "0.7.7"
   cargo_pkg_authors = "Tom Kaitchuck <Tom.Kaitchuck@gmail.com>"
   cargo_pkg_name = "ahash"
   cargo_pkg_description =
@@ -46,11 +39,17 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [ "//brave/third_party/rust/once_cell/v1:lib" ]
-  if (is_linux || is_chromeos || is_android || is_win || is_ios || is_fuchsia) {
-    deps += [ "//third_party/rust/getrandom/v0_2:lib" ]
+  if (is_android || is_fuchsia || is_ios || (is_linux || is_chromeos) ||
+      is_mac || is_win) {
+    deps += [ "//brave/third_party/rust/getrandom/v0_2:lib" ]
   }
   build_deps = [ "//brave/third_party/rust/version_check/v0_9:buildrs_support" ]
-  build_root = "crate/./build.rs"
-  build_sources = [ "crate/./build.rs" ]
+  build_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/build.rs"
+  build_sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/build.rs",
+  ]
 }

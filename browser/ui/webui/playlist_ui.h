@@ -40,7 +40,7 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   void BindInterface(mojo::PendingReceiver<playlist::mojom::PageHandlerFactory>
                          pending_receiver);
 
-  // Set by BubbleContentsWrapperT. MojoBubbleWebUIController provides default
+  // Set by WebUIContentsWrapperT. MojoBubbleWebUIController provides default
   // implementation for this but we don't use it.
   void set_embedder(
       base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder) {
@@ -61,6 +61,7 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   void ShowMoveItemsUI(const std::string& playlist_id,
                        const std::vector<std::string>& items) override;
   void OpenSettingsPage() override;
+  void ClosePanel() override;
 
   static constexpr std::string GetWebUIName() { return "PlaylistPanel"; }
 

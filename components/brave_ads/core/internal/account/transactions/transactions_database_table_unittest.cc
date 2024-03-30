@@ -35,7 +35,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression, DistantFuture(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -62,7 +62,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction);
 
@@ -73,9 +74,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
 
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true,
-                  ::testing::UnorderedElementsAreArray(transactions)));
+  EXPECT_CALL(callback, Run(/*success=*/true, transactions));
   const Transactions database_table;
   database_table.GetAll(callback.Get());
 }
@@ -85,7 +84,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression, DistantFuture(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -106,12 +105,12 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   database_table.GetForDateRange(Now(), DistantFuture(), callback.Get());
 }
 
-TEST_F(BraveAdsTransactionsDatabaseTableTest, UpdateTransactions) {
+TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
   // Arrange
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression, DistantFuture(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -129,20 +128,20 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, UpdateTransactions) {
 
   transaction_2.reconciled_at = Now();
 
-  base::MockCallback<ResultCallback> update_callback;
-  EXPECT_CALL(update_callback, Run(/*success=*/true));
+  base::MockCallback<ResultCallback> reconcile_callback;
+  EXPECT_CALL(reconcile_callback, Run(/*success=*/true));
 
   const Transactions database_table;
 
   // Act
-  database_table.Update(payment_tokens, update_callback.Get());
+  database_table.Reconcile(payment_tokens, reconcile_callback.Get());
 
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback,
               Run(/*success=*/true,
                   ::testing::UnorderedElementsAreArray(
-                      TransactionList{{transaction_1, transaction_2}})));
+                      TransactionList{transaction_1, transaction_2})));
   database_table.GetAll(callback.Get());
 }
 
@@ -151,7 +150,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression, DistantFuture(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 

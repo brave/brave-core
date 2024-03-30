@@ -24,4 +24,7 @@ const base::FeatureParam<bool> kSpeedreaderTTS{&kSpeedreaderFeature, "tts",
 const base::FeatureParam<bool> kSpeedreaderDebugView{&kSpeedreaderFeature,
                                                      "debug_view", false};
 
+const base::FeatureParam<bool> kSpeedreaderExplicitPref{&kSpeedreaderFeature,
+                                                        "explicit_pref", true};
+
 }  // namespace speedreader

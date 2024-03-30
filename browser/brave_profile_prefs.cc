@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -29,9 +30,9 @@
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/brave_shields/browser/brave_farbling_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
-#include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -52,7 +53,6 @@
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/preloading/preloading_prefs.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
-#include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
@@ -124,7 +124,6 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/components/sidebar/pref_names.h"
-#include "brave/components/sidebar/sidebar_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -189,82 +188,12 @@ void RegisterProfilePrefsForMigration(
 
   brave_rewards::RegisterProfilePrefsForMigration(registry);
 
-  brave_news::p3a::RegisterProfilePrefsForMigration(registry);
+  brave_news::p3a::NewsMetrics::RegisterProfilePrefsForMigration(registry);
 
   // Added May 2023
 #if defined(TOOLKIT_VIEWS)
   registry->RegisterBooleanPref(sidebar::kSidebarAlignmentChangedTemporarily,
                                 false);
-#endif
-
-  // Added September 2023
-#if !BUILDFLAG(IS_IOS)
-  // TODO(https://github.com/brave/brave-browser/issues/33144): Remove after
-  // several browser releases.
-  constexpr const char* const kLegacyBraveP2AAdPrefs[] = {
-      "Brave.P2A.TotalAdOpportunities",
-      "Brave.P2A.AdOpportunitiesPerSegment.architecture",
-      "Brave.P2A.AdOpportunitiesPerSegment.artsentertainment",
-      "Brave.P2A.AdOpportunitiesPerSegment.automotive",
-      "Brave.P2A.AdOpportunitiesPerSegment.business",
-      "Brave.P2A.AdOpportunitiesPerSegment.careers",
-      "Brave.P2A.AdOpportunitiesPerSegment.cellphones",
-      "Brave.P2A.AdOpportunitiesPerSegment.crypto",
-      "Brave.P2A.AdOpportunitiesPerSegment.education",
-      "Brave.P2A.AdOpportunitiesPerSegment.familyparenting",
-      "Brave.P2A.AdOpportunitiesPerSegment.fashion",
-      "Brave.P2A.AdOpportunitiesPerSegment.folklore",
-      "Brave.P2A.AdOpportunitiesPerSegment.fooddrink",
-      "Brave.P2A.AdOpportunitiesPerSegment.gaming",
-      "Brave.P2A.AdOpportunitiesPerSegment.healthfitness",
-      "Brave.P2A.AdOpportunitiesPerSegment.history",
-      "Brave.P2A.AdOpportunitiesPerSegment.hobbiesinterests",
-      "Brave.P2A.AdOpportunitiesPerSegment.home",
-      "Brave.P2A.AdOpportunitiesPerSegment.law",
-      "Brave.P2A.AdOpportunitiesPerSegment.military",
-      "Brave.P2A.AdOpportunitiesPerSegment.other",
-      "Brave.P2A.AdOpportunitiesPerSegment.personalfinance",
-      "Brave.P2A.AdOpportunitiesPerSegment.pets",
-      "Brave.P2A.AdOpportunitiesPerSegment.realestate",
-      "Brave.P2A.AdOpportunitiesPerSegment.science",
-      "Brave.P2A.AdOpportunitiesPerSegment.sports",
-      "Brave.P2A.AdOpportunitiesPerSegment.technologycomputing",
-      "Brave.P2A.AdOpportunitiesPerSegment.travel",
-      "Brave.P2A.AdOpportunitiesPerSegment.weather",
-      "Brave.P2A.AdOpportunitiesPerSegment.untargeted",
-      "Brave.P2A.TotalAdImpressions",
-      "Brave.P2A.AdImpressionsPerSegment.architecture",
-      "Brave.P2A.AdImpressionsPerSegment.artsentertainment",
-      "Brave.P2A.AdImpressionsPerSegment.automotive",
-      "Brave.P2A.AdImpressionsPerSegment.business",
-      "Brave.P2A.AdImpressionsPerSegment.careers",
-      "Brave.P2A.AdImpressionsPerSegment.cellphones",
-      "Brave.P2A.AdImpressionsPerSegment.crypto",
-      "Brave.P2A.AdImpressionsPerSegment.education",
-      "Brave.P2A.AdImpressionsPerSegment.familyparenting",
-      "Brave.P2A.AdImpressionsPerSegment.fashion",
-      "Brave.P2A.AdImpressionsPerSegment.folklore",
-      "Brave.P2A.AdImpressionsPerSegment.fooddrink",
-      "Brave.P2A.AdImpressionsPerSegment.gaming",
-      "Brave.P2A.AdImpressionsPerSegment.healthfitness",
-      "Brave.P2A.AdImpressionsPerSegment.history",
-      "Brave.P2A.AdImpressionsPerSegment.hobbiesinterests",
-      "Brave.P2A.AdImpressionsPerSegment.home",
-      "Brave.P2A.AdImpressionsPerSegment.law",
-      "Brave.P2A.AdImpressionsPerSegment.military",
-      "Brave.P2A.AdImpressionsPerSegment.other",
-      "Brave.P2A.AdImpressionsPerSegment.personalfinance",
-      "Brave.P2A.AdImpressionsPerSegment.pets",
-      "Brave.P2A.AdImpressionsPerSegment.realestate",
-      "Brave.P2A.AdImpressionsPerSegment.science",
-      "Brave.P2A.AdImpressionsPerSegment.sports",
-      "Brave.P2A.AdImpressionsPerSegment.technologycomputing",
-      "Brave.P2A.AdImpressionsPerSegment.travel",
-      "Brave.P2A.AdImpressionsPerSegment.weather",
-      "Brave.P2A.AdImpressionsPerSegment.untargeted"};
-  for (const char* const pref : kLegacyBraveP2AAdPrefs) {
-    registry->RegisterListPref(pref);
-  }
 #endif
 
   // Added 2023-09
@@ -299,7 +228,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
-  brave_news::BraveNewsController::RegisterProfilePrefs(registry);
+  brave_news::BraveNewsPrefManager::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings
@@ -504,10 +433,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterProfilePrefs(registry);
-#endif
-
-#if defined(TOOLKIT_VIEWS)
-  sidebar::SidebarService::RegisterProfilePrefs(registry, chrome::GetChannel());
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

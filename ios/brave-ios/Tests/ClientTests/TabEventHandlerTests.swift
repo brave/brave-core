@@ -1,12 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-@testable import Brave
 import WebKit
-
 import XCTest
+
+@testable import Brave
 
 @MainActor class TabEventHandlerTests: XCTestCase {
 
@@ -55,19 +55,19 @@ import XCTest
 
     handler.unregister(tabObservers)
   }
-  
+
   func testOnlyRegisteredForEvents111() {
     let tab = Tab(configuration: WKWebViewConfiguration(), type: .private)
-    
+
     let urlTest1 = URL(string: "https://www.brave.com")
     let urlTest2 = URL(string: "http://localhost:8080")
     let urlTest3 = URL(string: "https://127.0.0.1:8080")
     let urlTest4 = URL(string: "https://locallhost.com")
-    
+
     let titleTest1 = "Brave"
     let wrongTestTitle = "Wrong Title"
     let localHostTitle = "localhost"
-    
+
     let displaytitle1 = tab.fetchDisplayTitle(using: urlTest1, title: titleTest1)
     let displaytitle2 = tab.fetchDisplayTitle(using: urlTest2, title: wrongTestTitle)
     let displaytitle3 = tab.fetchDisplayTitle(using: urlTest3, title: wrongTestTitle)

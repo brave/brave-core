@@ -1,0 +1,35 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("browser") {
+  sources = [
+    "ad_block_component_filters_provider.cc",
+    "ad_block_component_filters_provider.h",
+    "ad_block_component_installer.cc",
+    "ad_block_component_installer.h",
+    "ad_block_component_service_manager.cc",
+    "ad_block_component_service_manager.h",
+    "ad_block_filter_list_catalog_provider.cc",
+    "ad_block_filter_list_catalog_provider.h",
+    "ad_block_filters_provider.cc",
+    "ad_block_filters_provider.h",
+    "ad_block_filters_provider_manager.cc",
+    "ad_block_filters_provider_manager.h",
+    "ad_block_service_helper.cc",
+    "ad_block_service_helper.h",
+    "filter_list_catalog_entry.cc",
+    "filter_list_catalog_entry.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/adblock:rust_lib",
+    "//brave/components/brave_shields/core/common",
+    "//components/component_updater:component_updater",
+    "//components/prefs",
+    "//crypto",
+  ]
+  public_deps = [ "//base" ]
+}

@@ -9,13 +9,13 @@
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/get_publisher/get_publisher.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 
 class PrivateCDNServer {
  public:
-  explicit PrivateCDNServer(RewardsEngineImpl& engine);
+  explicit PrivateCDNServer(RewardsEngine& engine);
   ~PrivateCDNServer();
 
   private_cdn::GetPublisher& get_publisher() { return get_publisher_; }

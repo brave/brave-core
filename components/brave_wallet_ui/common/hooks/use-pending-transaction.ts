@@ -16,9 +16,12 @@ import { PanelActions } from '../../panel/actions'
 // utils
 import Amount from '../../utils/amount'
 import { getPriceIdForToken } from '../../utils/api-utils'
-import { isHardwareAccount } from '../../utils/account-utils'
+import { isHardwareAccount, getAccountType } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
-import { getCoinFromTxDataUnion } from '../../utils/network-utils'
+import {
+  getCoinFromTxDataUnion,
+  hasEIP1559Support
+} from '../../utils/network-utils'
 import { UISelectors } from '../selectors'
 import {
   accountHasInsufficientFundsForGas,
@@ -100,7 +103,7 @@ export const usePendingTransactions = () => {
 
   // mutations
   const [rejectTransactions] = useRejectTransactionsMutation()
-  const [approveTransaction] = useApproveTransactionMutation();
+  const [approveTransaction] = useApproveTransactionMutation()
 
   // queries
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
@@ -158,17 +161,6 @@ export const usePendingTransactions = () => {
   )
 
   const {
-    data: gasEstimates,
-    isLoading: isLoadingGasEstimates,
-    isError: hasEvmFeeEstimatesError
-  } = useGetGasEstimation1559Query(
-    transactionInfo && txCoinType === BraveWallet.CoinType.ETH
-      ? transactionInfo.chainId
-      : skipToken,
-    defaultQuerySubscriptionOptions
-  )
-
-  const {
     data: solFeeEstimate,
     isLoading: isLoadingSolFeeEstimates = txCoinType ===
       BraveWallet.CoinType.SOL,
@@ -186,6 +178,19 @@ export const usePendingTransactions = () => {
   )
 
   const { account: txAccount } = useAccountQuery(transactionInfo?.fromAccountId)
+
+  const {
+    data: gasEstimates,
+    isLoading: isLoadingGasEstimates,
+    isError: hasEvmFeeEstimatesError
+  } = useGetGasEstimation1559Query(
+    txAccount &&
+      transactionsNetwork &&
+      hasEIP1559Support(getAccountType(txAccount), transactionsNetwork)
+      ? transactionsNetwork.chainId
+      : skipToken,
+    defaultQuerySubscriptionOptions
+  )
 
   // tx detail & gas memos
   const gasFee = React.useMemo(() => {
@@ -307,8 +312,7 @@ export const usePendingTransactions = () => {
     sellTokenBalance,
     transactionDetails?.sellAmountWei,
     transactionInfo,
-    transferTokenBalance,
-    txAccount
+    transferTokenBalance
   ])
 
   const insufficientFundsForGasError = React.useMemo(() => {
@@ -371,7 +375,7 @@ export const usePendingTransactions = () => {
         )
       }
     },
-    [transactionInfo?.id, transactionDetails]
+    [transactionInfo, transactionDetails, dispatch]
   )
 
   const updateUnapprovedTransactionNonce = React.useCallback(
@@ -380,7 +384,7 @@ export const usePendingTransactions = () => {
         walletApi.endpoints.updateUnapprovedTransactionNonce.initiate(args)
       )
     },
-    []
+    [dispatch]
   )
 
   const queueNextTransaction = React.useCallback(() => {
@@ -399,7 +403,7 @@ export const usePendingTransactions = () => {
         : pendingTransactions[nextIndex]?.id // go to next item in list
 
     dispatch(UIActions.setPendingTransactionId(newSelectedPendingTransactionId))
-  }, [selectedPendingTransactionId, pendingTransactions])
+  }, [selectedPendingTransactionId, pendingTransactions, dispatch])
 
   const rejectAllTransactions = React.useCallback(async () => {
     await rejectTransactions(
@@ -419,7 +423,7 @@ export const usePendingTransactions = () => {
         )
       )
     },
-    []
+    [dispatch]
   )
 
   const onReject = React.useCallback(() => {
@@ -456,10 +460,11 @@ export const usePendingTransactions = () => {
 
     try {
       const result = await approveTransaction({
-          chainId: transactionInfo.chainId,
-          id: transactionInfo.id,
-          coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
-          txType: transactionInfo.txType}).unwrap()
+        chainId: transactionInfo.chainId,
+        id: transactionInfo.id,
+        coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
+        txType: transactionInfo.txType
+      }).unwrap()
       if (!result.success) {
         dispatch(
           UIActions.setTransactionProviderError({
@@ -488,7 +493,7 @@ export const usePendingTransactions = () => {
       dispatch(PanelActions.setSelectedTransactionId(transactionInfo.id))
       dispatch(PanelActions.navigateTo('transactionStatus'))
     }
-  }, [transactionInfo])
+  }, [approveTransaction, dispatch, transactionInfo])
 
   // memos
   const fromOrb = useAccountOrb(txAccount)
@@ -583,7 +588,7 @@ export const usePendingTransactions = () => {
         currentTokenAllowance,
         isCurrentAllowanceUnlimited
       }
-    }, [erc20AllowanceResult])
+    }, [erc20AllowanceResult, transactionDetails])
 
   const { tokenInfo: erc20ApproveTokenInfo } = useGetTokenInfo(
     transactionDetails?.recipient &&

@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -28,7 +29,7 @@ TEST_F(BraveAdsTransactionsTest, Add) {
   // Act
   const TransactionInfo transaction = AddTransaction(
       kCreativeInstanceId, kSegment, /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewed, add_transaction_callback.Get());
+      ConfirmationType::kViewedImpression, add_transaction_callback.Get());
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
@@ -41,15 +42,15 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClockTo(TimeFromString("31 August 2019", /*is_local=*/true));  //
+  AdvanceClockTo(TimeFromString("31 August 2019"));  //
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("11 September 2019",
-                                /*is_local=*/false));  // A legendary moment.
+  AdvanceClockTo(
+      TimeFromUTCString("11 September 2019"));  // A legendary moment.
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, ConfirmationType::kDismissed,
@@ -75,7 +76,7 @@ TEST_F(BraveAdsTransactionsTest, RemoveAll) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 

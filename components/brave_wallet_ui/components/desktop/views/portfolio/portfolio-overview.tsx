@@ -11,20 +11,25 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 
 // selectors
 import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector,
   useUnsafePageSelector,
   useSafeUISelector
 } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors, WalletSelectors } from '../../../../common/selectors'
+import { UISelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
 // hooks
 import {
   useBalancesFetcher //
 } from '../../../../common/hooks/use-balances-fetcher'
+import {
+  useLocalStorage,
+  useSyncedLocalStorage
+} from '../../../../common/hooks/use_local_storage'
 
 // Constants
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../common/constants/local-storage-keys'
 import {
   BraveWallet,
   UserAssetInfoType,
@@ -51,14 +56,16 @@ import {
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import { getIsRewardsToken } from '../../../../utils/rewards_utils'
 import {
-  getStoredPortfolioTimeframe //
+  getStoredPortfolioTimeframe, //
+  makeInitialFilteredOutNetworkKeys
 } from '../../../../utils/local-storage-utils'
 import { makePortfolioAssetRoute } from '../../../../utils/routes-utils'
 
 // Options
 import { PortfolioNavOptions } from '../../../../options/nav-options'
 import {
-  AccountsGroupByOption //
+  AccountsGroupByOption, //
+  NoneGroupByOption
 } from '../../../../options/group-assets-by-options'
 
 // Components
@@ -72,7 +79,7 @@ import {
   PortfolioOverviewChart //
 } from './components/portfolio-overview-chart/portfolio-overview-chart'
 import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
-import { NftView } from '../nfts/nft-view'
+import { Nfts } from '../nfts/components/nfts'
 import {
   BuySendSwapDepositNav //
 } from './components/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
@@ -115,30 +122,39 @@ export const PortfolioOverview = () => {
   // routing
   const history = useHistory()
 
+  // local-storage
+  const [filteredOutPortfolioNetworkKeys] = useLocalStorage(
+    LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_NETWORK_KEYS,
+    makeInitialFilteredOutNetworkKeys
+  )
+  const [filteredOutPortfolioAccountIds] = useLocalStorage<string[]>(
+    LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS,
+    []
+  )
+  const [selectedGroupAssetsByItem] = useLocalStorage<string>(
+    LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY,
+    NoneGroupByOption.id
+  )
+  const [hidePortfolioSmallBalances] = useLocalStorage<boolean>(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_SMALL_BALANCES,
+    false
+  )
+  const [hidePortfolioBalances] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
+    false
+  )
+  const [hidePortfolioNFTsTab] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
+    false
+  )
+  const [hidePortfolioGraph] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
+    false
+  )
+
   // redux
   const dispatch = useDispatch()
   const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
-  const hidePortfolioGraph = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioGraph
-  )
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
-  )
-  const hidePortfolioNFTsTab = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioNFTsTab
-  )
-  const filteredOutPortfolioNetworkKeys = useUnsafeWalletSelector(
-    WalletSelectors.filteredOutPortfolioNetworkKeys
-  )
-  const filteredOutPortfolioAccountIds = useUnsafeWalletSelector(
-    WalletSelectors.filteredOutPortfolioAccountIds
-  )
-  const hidePortfolioSmallBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioSmallBalances
-  )
-  const selectedGroupAssetsByItem = useSafeWalletSelector(
-    WalletSelectors.selectedGroupAssetsByItem
-  )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
@@ -220,42 +236,46 @@ export const PortfolioOverview = () => {
     usersFilteredAccounts
   ])
 
-  // Filters the user's tokens based on the users
-  // filteredOutPortfolioNetworkKeys pref.
-  const visibleTokensForFilteredChains = React.useMemo(() => {
-    return userTokensWithRewards.filter(
-      (token) =>
-        !filteredOutPortfolioNetworkKeys.includes(
-          networkEntityAdapter
-            .selectId({
-              chainId: token.chainId,
-              coin: token.coin
-            })
-            .toString()
-        )
-    )
-  }, [filteredOutPortfolioNetworkKeys, userTokensWithRewards])
-
-  const userVisibleNfts = React.useMemo(() => {
-    return visibleTokensForFilteredChains.filter(
-      (token) => token.isErc721 || token.isNft
-    )
-  }, [visibleTokensForFilteredChains])
-
   const networksList = React.useMemo(() => {
     return displayRewardsInPortfolio && externalRewardsNetwork
       ? [externalRewardsNetwork].concat(networks)
       : networks
   }, [displayRewardsInPortfolio, externalRewardsNetwork, networks])
 
-  const visiblePortfolioNetworks = React.useMemo(() => {
-    return networksList.filter(
-      (network) =>
-        !filteredOutPortfolioNetworkKeys.includes(
-          networkEntityAdapter.selectId(network).toString()
-        )
+  const [visiblePortfolioNetworks, visiblePortfolioNetworkIds] =
+    React.useMemo(() => {
+      const visibleNetworks = networksList.filter(
+        (network) =>
+          !filteredOutPortfolioNetworkKeys.includes(
+            networkEntityAdapter.selectId(network).toString()
+          )
+      )
+      return [
+        visibleNetworks,
+        visibleNetworks.map(networkEntityAdapter.selectId)
+      ]
+    }, [networksList, filteredOutPortfolioNetworkKeys])
+
+  // Filters the user's tokens based on the users
+  // filteredOutPortfolioNetworkKeys pref and visible networks.
+  const visibleTokensForFilteredChains = React.useMemo(() => {
+    return userTokensWithRewards.filter((token) =>
+      visiblePortfolioNetworkIds.includes(
+        networkEntityAdapter
+          .selectId({
+            chainId: token.chainId,
+            coin: token.coin
+          })
+          .toString()
+      )
     )
-  }, [networksList, filteredOutPortfolioNetworkKeys])
+  }, [userTokensWithRewards, visiblePortfolioNetworkIds])
+
+  const userVisibleNfts = React.useMemo(() => {
+    return visibleTokensForFilteredChains.filter(
+      (token) => token.isErc721 || token.isNft
+    )
+  }, [visibleTokensForFilteredChains])
 
   const { data: tokenBalancesRegistry } =
     // wait to see if we need rewards before fetching
@@ -310,7 +330,7 @@ export const PortfolioOverview = () => {
         return a !== '' && b !== '' ? new Amount(a).plus(b).format() : ''
       })
     },
-    [usersFilteredAccounts, tokenBalancesRegistry]
+    [tokenBalancesRegistry, networks, usersFilteredAccounts]
   )
 
   // This looks at the users asset list and returns the full balance for
@@ -351,12 +371,13 @@ export const PortfolioOverview = () => {
     [visibleAssetOptions]
   )
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length && defaultFiat
-      ? { ids: tokenPriceIds, toCurrency: defaultFiat }
-      : skipToken,
-    querySubscriptionOptions60s
-  )
+  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+    useGetTokenSpotPricesQuery(
+      tokenPriceIds.length && defaultFiat
+        ? { ids: tokenPriceIds, toCurrency: defaultFiat }
+        : skipToken,
+      querySubscriptionOptions60s
+    )
 
   const {
     data: portfolioPriceHistory,
@@ -379,7 +400,7 @@ export const PortfolioOverview = () => {
   const fullPortfolioFiatBalance = React.useMemo((): Amount => {
     if (
       !tokenBalancesRegistry ||
-      !spotPriceRegistry ||
+      isLoadingSpotPrices ||
       isLoadingTokensOrRewards
     ) {
       return Amount.empty()
@@ -411,7 +432,8 @@ export const PortfolioOverview = () => {
     visibleAssetOptions,
     spotPriceRegistry,
     accountsListWithRewards,
-    isLoadingTokensOrRewards
+    isLoadingTokensOrRewards,
+    isLoadingSpotPrices
   ])
 
   const formattedFullPortfolioFiatBalance = React.useMemo(() => {
@@ -484,7 +506,7 @@ export const PortfolioOverview = () => {
         )
       )
     },
-    []
+    [dispatch, history, nftMetadata]
   )
 
   const tokenLists = React.useMemo(() => {
@@ -653,8 +675,9 @@ export const PortfolioOverview = () => {
           path={WalletRoutes.PortfolioNFTs}
           exact
         >
-          <NftView
-            nftsList={userVisibleNfts}
+          <Nfts
+            networks={networks}
+            nftList={userVisibleNfts}
             accounts={usersFilteredAccounts}
             onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
             tokenBalancesRegistry={tokenBalancesRegistry}

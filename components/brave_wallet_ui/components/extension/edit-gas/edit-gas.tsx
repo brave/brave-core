@@ -138,17 +138,20 @@ export const EditGas = ({
     setGasPrice(event.target.value)
   }
 
-  const handleGasLimitInputChanged = ({
-    target: {
-      value,
-      validity: { valid }
-    }
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    if (valid) {
-      const val = new Amount(value).toNumber().toString()
-      setGasLimit(val)
-    }
-  }
+  const handleGasLimitInputChanged = React.useCallback(
+    ({
+      target: {
+        value,
+        validity: { valid }
+      }
+    }: React.ChangeEvent<HTMLInputElement>) => {
+      if (valid) {
+        const val = new Amount(value).toNumber().toString()
+        setGasLimit(val)
+      }
+    },
+    []
+  )
 
   const handleMaxPriorityFeePerGasInputChanged = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -287,7 +290,7 @@ export const EditGas = ({
         )}
       </>
     ),
-    [gasLimit, handleGasLimitInputChanged, spotPriceRegistry]
+    [gasLimit, handleGasLimitInputChanged]
   )
 
   const isZeroGasPrice = React.useMemo(() => {
@@ -296,7 +299,7 @@ export const EditGas = ({
       gasPrice !== '' &&
       new Amount(gasPrice).multiplyByDecimals(9).isZero()
     )
-  }, [gasPrice])
+  }, [gasPrice, isEIP1559Transaction])
 
   const isSaveButtonDisabled = React.useMemo(() => {
     if (gasLimit === '') {
@@ -331,7 +334,6 @@ export const EditGas = ({
     isEIP1559Transaction,
     gasPrice,
     maxFeePerGas,
-    baseFeePerGas,
     maxPriorityFeePerGas
   ])
 

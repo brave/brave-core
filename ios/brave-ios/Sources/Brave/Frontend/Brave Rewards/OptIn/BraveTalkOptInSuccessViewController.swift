@@ -1,15 +1,15 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
 import BraveUI
+import UIKit
 
 class BraveTalkOptInSuccessViewController: UIViewController, PopoverContentComponent {
 
   private var braveTalkView: View {
-    view as! View  // swiftlint:disable:this force_cast
+    view as! View
   }
 
   override func loadView() {
@@ -21,7 +21,8 @@ class BraveTalkOptInSuccessViewController: UIViewController, PopoverContentCompo
     super.traitCollectionDidChange(previousTraitCollection)
 
     if previousTraitCollection?.preferredContentSizeCategory
-      != traitCollection.preferredContentSizeCategory {
+      != traitCollection.preferredContentSizeCategory
+    {
 
       updatePreferredContentSize()
     }
@@ -32,7 +33,9 @@ class BraveTalkOptInSuccessViewController: UIViewController, PopoverContentCompo
     let scale = UIFontMetrics.default
 
     // For phones in portrait we leave extra space to dismiss the popup by tapping outside of it.
-    if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
+    if traitCollection.horizontalSizeClass == .compact
+      && traitCollection.verticalSizeClass == .regular
+    {
       let scaledHeight = scale.scaledValue(for: baseHeight)
       let height = min(scaledHeight, UIScreen.main.bounds.height - 150)
 

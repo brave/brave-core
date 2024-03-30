@@ -15,6 +15,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
+#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
@@ -48,6 +49,48 @@ static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
 bool IsPremiumStatus(mojom::PremiumStatus status) {
   return status == mojom::PremiumStatus::Active ||
          status == mojom::PremiumStatus::ActiveDisconnected;
+}
+
+const base::flat_map<mojom::ActionType, std::string>&
+GetActionTypeQuestionMap() {
+  static const base::NoDestructor<
+      base::flat_map<mojom::ActionType, std::string>>
+      map({{mojom::ActionType::SUMMARIZE_PAGE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE)},
+           {mojom::ActionType::SUMMARIZE_VIDEO,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO)},
+           {mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+            l10n_util::GetStringUTF8(
+                IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT)},
+           {mojom::ActionType::EXPLAIN,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPLAIN)},
+           {mojom::ActionType::PARAPHRASE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PARAPHRASE)},
+           {mojom::ActionType::CREATE_TAGLINE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_CREATE_TAGLINE)},
+           {mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
+            l10n_util::GetStringUTF8(
+                IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_SHORT)},
+           {mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG,
+            l10n_util::GetStringUTF8(
+                IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_LONG)},
+           {mojom::ActionType::IMPROVE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_IMPROVE)},
+           {mojom::ActionType::PROFESSIONALIZE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROFESSIONALIZE)},
+           {mojom::ActionType::PERSUASIVE_TONE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PERSUASIVE_TONE)},
+           {mojom::ActionType::CASUALIZE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_CASUALIZE)},
+           {mojom::ActionType::FUNNY_TONE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_FUNNY_TONE)},
+           {mojom::ActionType::ACADEMICIZE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_ACADEMICIZE)},
+           {mojom::ActionType::SHORTEN,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SHORTEN)},
+           {mojom::ActionType::EXPAND,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND)}});
+  return *map;
 }
 
 }  // namespace
@@ -151,6 +194,22 @@ void ConversationDriver::ChangeModel(const std::string& model_key) {
   }
   model_key_ = new_model->key;
   InitEngine();
+}
+
+std::string ConversationDriver::GetDefaultModel() {
+  return pref_service_->GetString(prefs::kDefaultModelKey);
+}
+
+void ConversationDriver::SetDefaultModel(const std::string& model_key) {
+  DCHECK(!model_key.empty());
+  // Check that the key exists
+  auto* new_model = GetModel(model_key);
+  if (!new_model) {
+    NOTREACHED() << "No matching model found for key: " << model_key;
+    return;
+  }
+
+  pref_service_->SetString(prefs::kDefaultModelKey, model_key);
 }
 
 const mojom::Model& ConversationDriver::GetCurrentModel() {
@@ -413,17 +472,42 @@ void ConversationDriver::OnGeneratePageContentComplete(
     std::string contents_text,
     bool is_video,
     std::string invalidation_token) {
-  VLOG(1) << "OnGeneratePageContentComplete";
-  VLOG(4) << "Contents(is_video=" << is_video
-          << ", invalidation_token=" << invalidation_token
-          << "): " << contents_text;
+  DVLOG(1) << "OnGeneratePageContentComplete";
+  DVLOG(4) << "Contents(is_video=" << is_video
+           << ", invalidation_token=" << invalidation_token
+           << "): " << contents_text;
   if (navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;
   }
 
-  is_page_text_fetch_in_progress_ = false;
+  // Ignore if we received content from observer in the meantime
+  if (!is_page_text_fetch_in_progress_) {
+    DVLOG(1) << __func__
+             << " but already received contents from observer. Ignoring.";
+    return;
+  }
 
+  OnPageContentUpdated(contents_text, is_video, invalidation_token);
+
+  std::move(callback).Run(article_text_, is_video_,
+                          content_invalidation_token_);
+}
+
+void ConversationDriver::OnExistingGeneratePageContentComplete(
+    GetPageContentCallback callback) {
+  // Don't need to check navigation ID since existing event will be
+  // deleted when there's a new conversation.
+  DVLOG(1) << "Existing page content fetch completed, proceeding with "
+              "the results of that operation.";
+  std::move(callback).Run(article_text_, is_video_,
+                          content_invalidation_token_);
+}
+
+void ConversationDriver::OnPageContentUpdated(std::string contents_text,
+                                              bool is_video,
+                                              std::string invalidation_token) {
+  is_page_text_fetch_in_progress_ = false;
   // If invalidation token matches existing token, then
   // content was not re-fetched and we can use our existing cache.
   if (!invalidation_token.empty() &&
@@ -441,27 +525,12 @@ void ConversationDriver::OnGeneratePageContentComplete(
     OnPageHasContentChanged(BuildSiteInfo());
   }
 
-  on_page_text_fetch_complete_->Signal();
-  on_page_text_fetch_complete_ = std::make_unique<base::OneShotEvent>();
-
   if (contents_text.empty()) {
     VLOG(1) << __func__ << ": No data";
   }
 
-  VLOG(4) << "calling callback with text: " << article_text_;
-
-  std::move(callback).Run(article_text_, is_video_,
-                          content_invalidation_token_);
-}
-
-void ConversationDriver::OnExistingGeneratePageContentComplete(
-    GetPageContentCallback callback) {
-  // Don't need to check navigation ID since existing event will be
-  // deleted when there's a new conversation.
-  VLOG(1) << "Existing page content fetch completed, proceeding with "
-             "the results of that operation.";
-  std::move(callback).Run(article_text_, is_video_,
-                          content_invalidation_token_);
+  on_page_text_fetch_complete_->Signal();
+  on_page_text_fetch_complete_ = std::make_unique<base::OneShotEvent>();
 }
 
 void ConversationDriver::OnNewPage(int64_t navigation_id) {
@@ -583,7 +652,7 @@ void ConversationDriver::GenerateQuestions() {
 
 void ConversationDriver::OnSuggestedQuestionsResponse(
     int64_t navigation_id,
-    std::vector<std::string> result) {
+    EngineConsumer::SuggestedQuestionResult result) {
   // We might have navigated away whilst this async operation is in
   // progress, so check if we're the same navigation.
   if (navigation_id != current_navigation_id_) {
@@ -591,9 +660,16 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
     return;
   }
 
-  suggestions_.insert(suggestions_.end(), result.begin(), result.end());
-  suggestion_generation_status_ =
-      mojom::SuggestionGenerationStatus::HasGenerated;
+  if (result.has_value()) {
+    suggestions_.insert(suggestions_.end(), result->begin(), result->end());
+    suggestion_generation_status_ =
+        mojom::SuggestionGenerationStatus::HasGenerated;
+  } else {
+    // TODO(nullhook): Set a specialized error state generated questions
+    suggestion_generation_status_ =
+        mojom::SuggestionGenerationStatus::CanGenerate;
+  }
+
   // Notify observers
   OnSuggestedQuestionsChanged();
   DVLOG(2) << "Got questions:" << base::JoinString(suggestions_, "\n");
@@ -607,13 +683,15 @@ void ConversationDriver::MaybeUnlinkPageContent() {
   }
 }
 
-void ConversationDriver::SummarizeSelectedText(
-    const std::string& selected_text) {
-  mojom::ConversationTurn turn = {
-      CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-      ConversationTurnVisibility::VISIBLE,
-      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_SELECTED_TEXT),
-      selected_text};
+void ConversationDriver::SubmitSelectedText(const std::string& selected_text,
+                                            mojom::ActionType action_type) {
+  const auto& action_type_question_map = GetActionTypeQuestionMap();
+  auto iter = action_type_question_map.find(action_type);
+  DCHECK(iter != action_type_question_map.end());
+
+  mojom::ConversationTurn turn = {CharacterType::HUMAN, action_type,
+                                  ConversationTurnVisibility::VISIBLE,
+                                  iter->second, selected_text};
   SubmitHumanConversationEntry(turn);
 }
 
@@ -672,24 +750,22 @@ void ConversationDriver::SubmitHumanConversationEntry(
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
   // TODO(jocelyn): Assigning turn.type below is a workaround for now since
-  // callers of SubmitHumanConversationEntry mojo API  currently don't have
+  // callers of SubmitHumanConversationEntry mojo API currently don't have
   // action_type specified.
-  std::string question_part;
-  if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
-    turn.action_type = mojom::ActionType::SUMMARIZE_PAGE;
-    question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
-  } else if (turn.text ==
-             l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
-    turn.action_type = mojom::ActionType::SUMMARIZE_VIDEO;
-    question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
-  } else if (turn.action_type == mojom::ActionType::SUMMARIZE_SELECTED_TEXT) {
-    question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT);
-  } else {
-    turn.action_type = mojom::ActionType::QUERY;
-    question_part = turn.text;
+  std::string question_part = turn.text;
+  if (turn.action_type == mojom::ActionType::UNSPECIFIED) {
+    if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
+      turn.action_type = mojom::ActionType::SUMMARIZE_PAGE;
+      question_part =
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
+    } else if (turn.text ==
+               l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
+      turn.action_type = mojom::ActionType::SUMMARIZE_VIDEO;
+      question_part =
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
+    } else {
+      turn.action_type = mojom::ActionType::QUERY;
+    }
   }
 
   auto history = chat_history_;
@@ -827,12 +903,18 @@ bool ConversationDriver::HasPendingConversationEntry() {
   return pending_conversation_entry_ != nullptr;
 }
 
-bool ConversationDriver::IsPageContentsTruncated() {
-  if (article_text_.empty()) {
-    return false;
+int ConversationDriver::GetContentUsedPercentage() {
+  if (GetCurrentModel().max_page_content_length >
+      static_cast<uint32_t>(article_text_.length())) {
+    return 100;
   }
-  return (static_cast<uint32_t>(article_text_.length()) >
-          GetCurrentModel().max_page_content_length);
+
+  // Convert to float to avoid integer division, which truncates towards zero
+  // and could lead to inaccurate results before multiplication.
+  float pct = static_cast<float>(GetCurrentModel().max_page_content_length) /
+              static_cast<float>(article_text_.length()) * 100;
+
+  return base::ClampRound(pct);
 }
 
 void ConversationDriver::SubmitSummarizationRequest() {
@@ -851,8 +933,14 @@ void ConversationDriver::SubmitSummarizationRequest() {
 mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
   mojom::SiteInfoPtr site_info = mojom::SiteInfo::New();
   site_info->title = base::UTF16ToUTF8(GetPageTitle());
-  site_info->is_content_truncated = IsPageContentsTruncated();
+  site_info->content_used_percentage = GetContentUsedPercentage();
   site_info->is_content_association_possible = IsContentAssociationPossible();
+  const GURL url = GetPageURL();
+
+  if (url.SchemeIsHTTPOrHTTPS()) {
+    site_info->hostname = url.host();
+  }
+
   return site_info;
 }
 
@@ -969,6 +1057,7 @@ void ConversationDriver::SendFeedback(
     const std::string& category,
     const std::string& feedback,
     const std::string& rating_id,
+    bool send_hostname,
     mojom::PageHandler::SendFeedbackCallback callback) {
   auto on_complete = base::BindOnce(
       [](mojom::PageHandler::SendFeedbackCallback callback,
@@ -982,7 +1071,12 @@ void ConversationDriver::SendFeedback(
       },
       std::move(callback));
 
+  const GURL page_url = GetPageURL();
+
   feedback_api_->SendFeedback(category, feedback, rating_id,
+                              (send_hostname && page_url.SchemeIsHTTPOrHTTPS())
+                                  ? std::optional<std::string>(page_url.host())
+                                  : std::nullopt,
                               std::move(on_complete));
 }
 

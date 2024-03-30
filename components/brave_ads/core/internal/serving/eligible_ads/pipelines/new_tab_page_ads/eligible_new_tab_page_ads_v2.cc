@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/new_tab_page_ads/new_tab_page_ad_exclusion_rules.h"
@@ -21,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 
 namespace brave_ads {
 
@@ -38,8 +36,7 @@ void EligibleNewTabPageAdsV2::GetForUserModel(
     EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads");
 
-  const database::table::AdEvents database_table;
-  database_table.GetForType(
+  ad_events_database_table_.GetUnexpiredForType(
       mojom::AdType::kNewTabPageAd,
       base::BindOnce(
           &EligibleNewTabPageAdsV2::GetEligibleAdsForUserModelCallback,
@@ -71,8 +68,7 @@ void EligibleNewTabPageAdsV2::GetEligibleAds(
     const AdEventList& ad_events,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const BrowsingHistoryList& browsing_history) {
-  const database::table::CreativeNewTabPageAds database_table;
-  database_table.GetAll(
+  database_table_.GetForActiveCampaigns(
       base::BindOnce(&EligibleNewTabPageAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, browsing_history, std::move(callback)));

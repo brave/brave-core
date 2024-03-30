@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">ابدأ في استخدام Rewards</translation>
 <translation id="8220484609979012449">\n\nبإمكانك إرسال المساهمات المشفرة إلى منشئ المحتوى هذا باستخدام محفظة Web3 خاصتك.</translation>
 <translation id="6385969012847057348">منشئ المحتوى هذا غير قادر على تلقي أي مساهمات من <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">لم يُجهز منشئ المحتوى هذا لتلقي مساهمات Web3 أو التشفير بعد.</translation>
 <translation id="6268134562674951939">ليس لديك ما يكفي من الرموز المميزة</translation>
 <translation id="4529874892536380156">اجعل هذه مساهمة شهرية متكررة. يمكنك إلغاؤها في أي وقت.</translation>
 <translation id="5562948772940025260">يمكنك فقط إرسال ما يصل إلى <ph name="AMOUNT"/>عملة BAT رقمية باستخدام رصيد Brave Rewards.</translation>
@@ -323,7 +324,7 @@
 <translation id="2614069607859982576">باستخدام الجهاز المتزامن الحالي، افتح إعدادات Brave وانتقل إلى الإعدادات والمزامنة. اختر "إضافة جهاز جديد" وقم بمسح رمز QR المعروض على الشاشة.</translation>
 <translation id="5241263629636958324">تم النسخ إلى الحافظة</translation>
 <translation id="5817918615728894473">إقران</translation>
-<translation id="7090325819305486658">تفضيلات البيانات</translation>
+<translation id="3429575397891106447">مزامنة الخيارات</translation>
 <translation id="1680065323266179640">حذف حساب المزامنة</translation>
 <translation id="3792563952903751704">سيؤدي حذف حسابك إلى إزالة بياناتك المشفرة من خوادم Brave وتعطيل المزامنة على جميع أجهزتك المتصلة. ومع ذلك، لن يحذف البيانات المخزنة محليًا على تلك الأجهزة.
 هذا الحذف نهائي ولا توجد طريقة لاستعادة البيانات. إذا قررتبدء استخدام المزامنة مرة أخرى، فستحتاج إلى إنشاء حساب جديد وإعادة إضافة كل جهاز واحدًا تلو الآخر.</translation>
@@ -424,18 +425,10 @@
 <translation id="2394961582378297792">تم تسجيل الخروج</translation>
 <translation id="5308380583665731573">اتصال</translation>
 <translation id="3368922792935385530">متصل</translation>
-<translation id="8673913984316081937">التحقق من محفظتك أمر اختياري</translation>
-<translation id="8558636200953226885">لكن إذا قمت بالتحقق فسيمكنك...</translation>
-<translation id="8697510149346635496">اسحب رموز BAT التي تكسبها من عرض الإعلانات التي تحترم الخصوصية</translation>
-<translation id="1481480653609649134">قم بشراء رموز BAT إضافية بواسطة بطاقات الائتمان وغيرها من المصادر</translation>
-<translation id="9096003370755878766">اسحب رموز BAT التي قد تكون أضفتها سابقاً في محفظة مكافآت Brave الخاصة بك</translation>
-<translation id="1554282356558968486">تتوفر خدمتنا للمحافظ من قبل</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">قد يتطلب منك Uphold التحقق من هويتك بناءً على الخدمات المطلوبة.</translation>
-<translation id="3200197118442451932">لا تقوم شركة Brave Software Inc. بمعالجة المعلومات الشخصية التي تقدمها إلى <ph name="WALLET_PROVIDER"/>أو تخزينها أو الوصول إليها، عندما تقوم بإنشاء حساب بواسطتها.</translation>
 <translation id="1665118090708049096">الانتقال إلى <ph name="WALLET_PROVIDER"/>حسابي</translation>
 <translation id="4858636682078269312">سجّل الدخول إلى حساب <ph name="WALLET_PROVIDER"/> الخاص بك</translation>
 <translation id="8874184842967597500">غير متصل</translation>
@@ -522,7 +515,7 @@
 <translation id="2225863440766607138">أدوات تتبع</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">لقد قمت بحظر <ph name="COUNT"/> أدوات تتبع &amp; وإعلانات مع متصفح Brave في الساعات الثلاث الماضية.</translation>
-<translation id="3621193901658023971">تصفح بسرعة تصل إلى 6 أضعاف على المواقع الإخبارية الرئيسية في Brave عن طريق حجب أدوات التتبع &amp; والإعلانات.</translation>
+<translation id="5005713153542196658">تصفح بسرعة تصل إلى 6 أضعاف على المواقع الإخبارية الرئيسية في Brave عن طريق حجب أدوات التتبع &amp; والإعلانات.</translation>
 <translation id="7427567994475794038">قم بتشغيل تقارير الخصوصية لمعرفة عدد أدوات التتبع &amp; والإعلانات التي قد تم حظرها في الساعات الثلاث الماضية.</translation>
 <translation id="2053891538879944400">لقد حفظت <ph name="DATA"/> <ph name="DATA_TEXT"/> من البيانات مع متصفح Brave.</translation>
 <translation id="8640064498452534195">قم بتشغيل تقارير الخصوصية لمعرفة مقدار البيانات التي قمت بحفظها.</translation>
@@ -587,6 +580,10 @@
 <translation id="8622329973403382303">قم بجولة سريعة للتعرف على الطريقة التي تعمل بها لتدخل التاريخ كنجم Rewards لامع!</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
 <translation id="7138272885617540195">يتم السماح لروابط التطبيقات بالفتح في التطبيقات خارج موقع Brave</translation>
+<translation id="4954512758656527938">محفظة Ethereum الافتراضية</translation>
+<translation id="7701023802820268122">محفظة Solana الافتراضية</translation>
+<translation id="7701040980221191251">بلا</translation>
+<translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="8792121506918889955">سياسة التعامل مع WebRTC IP</translation>
 <translation id="8798099450830957504">التلقائي</translation>
 <translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
@@ -596,14 +593,18 @@
 <translation id="1483493594462132177">إرسال</translation>
 <translation id="538450413584738399">تبديل</translation>
 <translation id="1366855498335432549">إيداع</translation>
-<translation id="1420318137760245955">مرحبًا بك في Brave Wallet الجديد</translation>
-<translation id="8339846196588658366">الاحتفاظ بأصول العملات المشفرة وتتبع أداء الحافظة. يمكن القيام بهذا كله من متصفح حماية الخصوصية Brave.</translation>
-<translation id="4472575034687746823">الخطوات الأولى</translation>
+<translation id="4556086616242530072">متصفح native.\nSelf-custody.\nAnd متعدد السلاسل.</translation>
+<translation id="7909462264772842773">تحكم في التشفير والرموز المميزة غير القابلة للاستبدال (NFT) الخاصة بك. تدعم محفظة Brave سلاسل Ethereum وEVM وSolana وFilecoin والمزيد.</translation>
+<translation id="165255193061631296">هل تحتاج إلى إنشاء محفظة جديدة؟</translation>
+<translation id="3485737865439729577">ابدأ مع محفظة Brave خلال دقائق</translation>
 <translation id="2759836790106646094">قم بعمل نسخة احتياطية من محفظتك الآن!</translation>
 <translation id="1078873179929044999">في الخطوة التالية، سترى ’ عبارة استرداد مكونة من 12 كلمة، والتي يمكنك استخدامها لاستعادة حسابات التشفير الأساسية الخاصة بك. احفظها في مكان آمن. عبارة الاسترداد الخاصة بك هي الطريقة الوحيدة لاسترداد الحساب في حالة نسيان كلمة المرور أو فقدان الجهاز أو سرقته أو إذا كنت تريد تبديل المحافظ..</translation>
 <translation id="2359808026110333948">استمرار</translation>
 <translation id="5488357322146334497">رسالة</translation>
 <translation id="1904000155026201268">أدرك أنه في حالة فقدان عبارة الاسترداد الخاصة بي، فلن أتمكن من الوصول إلى محفظة عملاتي المشفرة.</translation>
+<translation id="5333225216561354793">نطلب منك الإقرار بالبنود الواردة أدناه</translation>
+<translation id="1645800479814134195">أفهم أن هذه محفظة ذاتية الحفظ، وأنني وحدي المسؤول عن أي أموال أو أصول أو حسابات مرتبطة بها، وعن اتخاذ الإجراء المناسب لتأمين محفظتي وحمايتها وإجراء النسخ الاحتياطي لها. أفهم أن Brave لا يمكنها الوصول إلى محفظتي أو عكس المعاملات نيابة عني، وأن عبارة الاسترداد الخاصة بي هي الطريقة الوحيدة لاستعادة الوصول في حالة فقدان كلمة المرور أو سرقة الجهاز أو حدوث ظرف مماثل.</translation>
+<translation id="4565891212173086999">لقد قرأت وأوافق على <ph name="CLICK_START"/>شروط الاستخدام<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">عبارة الاسترداد الخاصة بك</translation>
 <translation id="5077747669435508720">اكتب هذه الكلمات أو انسخها بالترتيب الدقيق الموضح أدناه، واحفظها في مكان آمن. عبارة الاسترداد الخاصة بك هي الطريقة الوحيدة لاستعادة الوصول إلى الحساب في حالة نسيان كلمة المرور أو فقدان الجهاز أو سرقته أو إذا كنت تريد تبديل المحافظ.</translation>
 <translation id="2708402071160162126">تحذير: لا تشارك عبارة الاسترداد الخاصة بك. يمكن لأي شخص لديه هذه العبارة أن يأخذ أصولك إلى الأبد.</translation>
@@ -648,6 +649,9 @@
 <translation id="3747079125031086337">تحديد الكلمات في العبارة الاستردادية في مكانها الصحيح.</translation>
 <translation id="6518133107902771759">تحقق</translation>
 <translation id="3157931365184549694">استعادة</translation>
+<translation id="5844138175312846408">هل لديك محفظة بالفعل؟</translation>
+<translation id="2502258949541727762">قبل أن نبدأ</translation>
+<translation id="5981303441790732480">قم باستيراد محفظتك الحالية</translation>
 <translation id="9111102763498581341">فتح القفل</translation>
 <translation id="6657585470893396449">كلمة المرور</translation>
 <translation id="5619264711680220002">إلغاء القفل الحيوي</translation>
@@ -666,7 +670,7 @@
 <translation id="5483736362376139517">سنة واحدة</translation>
 <translation id="6979737339423435258">جميع الأوقات</translation>
 <translation id="6284218950354553099">الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave</translation>
-<translation id="5288333155754958121">يتيح هذا أمر البينج المجهول والخاص لـ Brave تقدير المستخدمين النشطين.</translation>
+<translation id="2181060149810222381">تتيح أداة البينج الخاصة هذه لمتصفح Brave تقدير المستخدمين النشطين.</translation>
 <translation id="3819257035322786455">الاحتفاظ بنسخة احتياطية</translation>
 <translation id="4608713693379664295">حسابات التشفير الأساسية</translation>
 <translation id="4003821417160006384">الحسابات الثانوية</translation>
@@ -682,7 +686,6 @@
 <translation id="8475984867371585028">تحرير الرموز المميزة غير القابلة للاستبدال المرئية</translation>
 <translation id="5050890334032852465">حفظ قائمة مراقبة الحساب</translation>
 <translation id="7755766175599167100">البحث عن الرموز المميزة</translation>
-<translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="3784455785234192852">القفل بإحكام</translation>
 <translation id="4412698727486357573">مركز المساعدة</translation>
 <translation id="8796429300536029044">تفاصيل الرمز المميز غير القابل للاستبدال (NFT)</translation>
@@ -714,12 +717,12 @@
 <translation id="8272917646984397798">يؤمن جميع الاتصالات</translation>
 <translation id="1751947227857853925">سريع وغير محدود حتى 100 ميجابت في الثانية</translation>
 <translation id="1400240082805528049">دعم على مدار الساعة طوال أيام الأسبوع</translation>
-<translation id="5051030058817632680">يمنع اتصالات الشبكة غير المرغوب فيها</translation>
+<translation id="5892534145504632332">حماية كل التطبيقات &amp; وجهازك بالكامل</translation>
+<translation id="7195416926059527505">أكثر أمانًا للمنزل أو شبكة Wi-Fi العامة</translation>
+<translation id="1354700000739359839">بسرعة البرق تصل إلى 100 ميجابت في الثانية</translation>
 <translation id="3510283489391432976">اختيار موقعك الجغرافي / بلدك</translation>
-<translation id="4390800080658195654">يبقيك مجهولاً على الإنترنت</translation>
-<translation id="639981156979733813">يدعم سرعات تصل إلى 100 ميجابت في الثانية</translation>
-<translation id="765343799669302337">يستخدم WireGuard نفق VPN المشفر والآمن</translation>
-<translation id="1571230671455380494">نحن لا نشارك أو نبيع المعلومات الخاصة بك</translation>
+<translation id="7695158478627528928">لا يسجل Brave نشاطك أبدًا</translation>
+<translation id="4575683170451975058">حماية 5 أجهزة باشتراك واحد</translation>
 <translation id="276866628038850725">تتضمن جميع الخطط إصدارًا تجريبيًا مجانيًا لمدة 7 أيام!</translation>
 <translation id="1532536259167115948">الاشتراك الشهري <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">الاشتراك السنوي <ph name="TRIAL_TEXT"/></translation>
@@ -730,6 +733,7 @@
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">جربه مجانًا لمدة 7 أيام. بعد 7 أيام، سيتم تحصيل سعر الخطة منك. يتم تجديد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها قبل التجديد.</translation>
 <translation id="6053992191006521518">المحاولة مجانًا</translation>
+<translation id="3990956504562716932">جرب مجانًا لمدة 7 أيام</translation>
 <translation id="721747358270435486">تثبيت VPN</translation>
 <translation id="836074276610740314">تثبيت ملف تعريف VPN</translation>
 <translation id="8021842065465097929">ستقوم Brave الآن بتثبيت ملف تعريف VPN.</translation>
@@ -1114,71 +1118,6 @@
 <translation id="591648995518106347">تحميل المقالات المؤهلة تلقائيًا في وضع القارئ</translation>
 <translation id="1295796122927221823">عرض في وضع القارئ</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> في <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">قائمة تشغيل Brave</translation>
-<translation id="4850886885716139402">عرض</translation>
-<translation id="7392941176393379100">تمت الإضافة إلى '<ph name="PLAYLIST_NAME"/>'</translation>
-<translation id="8289472222022674331">إدارة بيانات قائمة التشغيل</translation>
-<translation id="7650602357673790368">بشكل افتراضي، ستحفظ قائمة التشغيل المحتوى تلقائيًا على جهازك للتشغيل في وضع عدم الاتصال (في كل من قوائم التشغيل الخاصة والمشتركة). إذا لم تكن تستخدم شبكة WiFi، فسيستخدم الحفظ التلقائي بياناتك الخلوية.\n\nلتغيير هذا الإعداد الافتراضي، استخدم الإعدادات.</translation>
-<translation id="5900576657906675258">إضافة عنصر إلى قائمة التشغيل</translation>
-<translation id="349846214503465941">تمكين قائمة التشغيل</translation>
-<translation id="1309636029062006520">قم بإنشاء قوائم تشغيل الصوت ومقاطع الفيديو المفضلة لديك، وقم بتشغيلها في أي وقت وفي أي مكان.</translation>
-<translation id="3561815498111282415">الحفظ التلقائي في وضع عدم الاتصال</translation>
-<translation id="1832424694374124654">يحفظ عناصر قائمة التشغيل الجديدة تلقائيًا على جهازك حتى تتمكن من اللعب بدون اتصال بالإنترنت.</translation>
-<translation id="8103022210423023846">تشغيل الحفظ التلقائي</translation>
-<translation id="3926329432879804185">إيقاف تشغيل الحفظ التلقائي</translation>
-<translation id="7768812595186089508">الحفظ التلقائي فقط عند الاتصال بشبكة Wi-Fi</translation>
-<translation id="5939518447894949180">إعادة الضبط</translation>
-<translation id="8199028711686989861">احذف جميع الفيديوهات من قائمة التشغيل، بما في ذلك التخزين في وضع عدم الاتصال.</translation>
-<translation id="5916664084637901428">مفعّل</translation>
-<translation id="5860033963881614850">غير مفعّل</translation>
-<translation id="2920568868625746681">WiFi فقط</translation>
-<translation id="4590997608186539865">قائمة التشغيل</translation>
-<translation id="7525067979554623046">إنشاء</translation>
-<translation id="5491049004699827548">إنشاء قائمة التشغيل الأولى</translation>
-<translation id="5319108110887582146">قم بإنشاء قائمة تشغيل الصوت ومقاطع الفيديو المفضلة لديك وقم بتشغيلها في أي وقت وفي أي مكان. حتى في وضع عدم الاتصال بالإنترنت.</translation>
-<translation id="6802849415466883498">إنشاء قائمة تشغيل</translation>
-<translation id="8525248723479742219">تشغيل لاحقًا</translation>
-<translation id="7453007860684252933">استعراض وإضافة</translation>
-<translation id="9014883386413828317">أضف المحتوى المفضل لديك. ابحث عن الزر ( + ) في ركن شاشتك الأيمن السفلي.</translation>
-<translation id="5928669500312007783">الاستعراض بحثًا عن الوسائط</translation>
-<translation id="8152485753254079984">قائمة تشغيل جديدة</translation>
-<translation id="9130105487623071247">اسم قائمة التشغيل</translation>
-<translation id="726581235416249619">قائمة تشغيل بدون عنوان</translation>
-<translation id="1456254983411148628">حذف البيانات</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> المحددة</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> من العناصر</translation>
-<translation id="2317629745818459803">تشغيل الكل</translation>
-<translation id="7544853251252956727">ترتيب عشوائي</translation>
-<translation id="2881339830231736485">ما تم تشغيله مؤخرًا</translation>
-<translation id="7636458383879257005">الضغط أو النقر مع الاستمرار أو السحب</translation>
-<translation id="8120600068258956006">إضافة إلى قائمة التشغيل</translation>
-<translation id="39991094779686024">قوائم التشغيل</translation>
-<translation id="1710072605877822603">إضافة وسائط</translation>
-<translation id="3874252678044305931">أضف مقاطع فيديو إلى قائمة تشغيل Brave، ويمكنك إعادة مشاهدتها في أي وقت حتى في وضع عدم الاتصال بالإنترنت.</translation>
-<translation id="8973629800378391099">قم بإعداد قوائم تشغيل لمحتواك المفضل. واحفظ بيانات الجوال. واستمتع بإعادة التشغيل بدون إعلانات.</translation>
-<translation id="4936812987266342401">ما عليك سوى الضغط على الزر لإضافة مقاطع الفيديو إلى قائمة تشغيل</translation>
-<translation id="6263657785571415306">مواصلة البث: يمكنك إضافة مقاطع فيديو أثناء التصفح، ومشاهدتها لاحقًا.</translation>
-<translation id="2839555636100404687">التشغيل أفضل في قائمة التشغيل</translation>
-<translation id="9079526681359439081">يمكنك التشغيل في الخلفية، والتحكم من شاشة القفل، وغير ذلك الكثير…</translation>
-<translation id="3620862810055853183">فتح قائمة التشغيل</translation>
-<translation id="3861012838874771868">فتح إعدادات قائمة التشغيل</translation>
-<translation id="5220099266891491416">إخفاء زر "قائمة التشغيل"</translation>
-<translation id="7416347631175891923">جرّبه!</translation>
-<translation id="1173894706177603556">إعادة تسمية</translation>
-<translation id="1620612903815671893">حذف بيانات قائمة التشغيل في وضع عدم الاتصال بالإنترنت</translation>
-<translation id="3261711068865275261">إزالة جميع البيانات في وضع عدم الاتصال بالإنترنت</translation>
-<translation id="6653691766801349738">الاحتفاظ بقائمة التشغيل للاستخدام في وضع عدم الاتصال بالإنترنت</translation>
-<translation id="8708086574143054053">الاحتفاظ بجميع قوائم التشغيل للاستخدام في وضع عدم الاتصال بالإنترنت</translation>
-<translation id="3596306474342941843">حذف قائمة التشغيل</translation>
-<translation id="7765158879357617694">نقل</translation>
-<translation id="3803384303807438047">حذف بيانات العنصر في وضع عدم الاتصال بالإنترنت</translation>
-<translation id="4195643157523330669">فتح الإشارة في علامة تبويب جديدة</translation>
-<translation id="4243710787042215766">فتح في علامة تبويب خاصة</translation>
-<translation id="8261506727792406068">حذف</translation>
-<translation id="377872456482681602">الرجاء تحديد العناصر أولاً</translation>
-<translation id="6172429305139364624">لا يتم تخزين عنصر قائمة التشغيل مؤقتًا.\nيُرجى تخزين العنصر مؤقتًا لوضع عدم الاتصال بالإنترنت.</translation>
-<translation id="3631131732607750008">انتهت صلاحية المحتوى. حاول مرة أخرى خلال بضع ثوانٍ.</translation>
-<translation id="286472539388773794">يرجى إدخال اسم صالح لقائمة التشغيل</translation>
 <translation id="9085765419770918643">لا يوجد الرمز المميز غير قابل للاستبدال (NFT) حتى الآن</translation>
 <translation id="8445532667841598737">هل أنت مستعد لإضافة البعض؟ فقط انقر فوق الزر أدناه للاستيراد.</translation>
 <translation id="5925465310724910998">هل تريد عرض الرموز المميزة غير القابلة للاستبدال (NFT) تلقائيًا؟</translation>
@@ -1187,12 +1126,6 @@
 <translation id="622372328961630111">أضف الرموز المميزة غير القابلة للاستبدال (NFT) التي تمتلكها بشكل تلقائي إلى المحفظة باستخدام واجهات برمجة التطبيقات التابعة لجهات خارجية. <ph name="BEGIN_LINK_1"/>تعرّف على المزيد.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">حساب جدول البحث عن العنوان:</translation>
 <translation id="7659483790930268440">فهرس جدول البحث عن العنوان:</translation>
-<translation id="7322560193401221004">تذكر مكان تشغيل الملف</translation>
-<translation id="7505951907514709271">بالنسبة للملفات الفردية، يمكنك استئناف التشغيل من النقطة التي توقفت عندها</translation>
-<translation id="6835165453349969605">تذكر مكان قائمة التشغيل</translation>
-<translation id="6344103698928069918">لعرض قائمة تشغيل، استأنف التشغيل من النقطة التي توقفت عندها</translation>
-<translation id="8141583471142904652">الاستماع المستمر</translation>
-<translation id="851432578283946230">يشغل العناصر التالية في قائمة التشغيل تلقائيًا</translation>
 <translation id="7853202427316060426">النشاط</translation>
 <translation id="4932733599132424254">التاريخ</translation>
 <translation id="346505172740911461">سعر السوق</translation>
@@ -1209,6 +1142,86 @@
 <translation id="2471230424465522689">ليس قبل</translation>
 <translation id="4841860051609590575">طلب الرقم التعريفي</translation>
 <translation id="1179407411385015942">Leo هو مساعد ذكي يعمل بالذكاء الاصطناعي، وهو مدمج في المتصفح مباشرةً</translation>
+<translation id="4109670531935487117">عرض اقتراحات الإكمال التلقائي في شريط العنوان</translation>
 <translation id="1250335737108905610">إعادة تعيين بيانات Leo وحذفها</translation>
 <translation id="6165101586663336913">ستتطلب إعادة تعيين مساعد Leo الاشتراك في استخدام Leo في المستقبل وستؤدي أيضًا إلى حذف سجل الدردشة الخاص بك. سيؤدي حذف سجل الدردشة إلى حذف جميع محادثاتك السابقة مع Leo. لا يمكن التراجع عن هذا الإجراء.</translation>
+<translation id="3692772534525889713">اربط مشترياتك من Play Store بحسابك في Brave لاستخدام Brave Leo على الأجهزة الأخرى.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">شهريًا</translation>
+<translation id="451189393813405346">اسأل Leo</translation>
+<translation id="7322560193401221004">تذكر مكان تشغيل الملف</translation>
+<translation id="7505951907514709271">بالنسبة للملفات الفردية، يمكنك استئناف التشغيل من النقطة التي توقفت عندها</translation>
+<translation id="6835165453349969605">تذكر مكان قائمة التشغيل</translation>
+<translation id="6344103698928069918">لعرض قائمة تشغيل، استأنف التشغيل من النقطة التي توقفت عندها</translation>
+<translation id="8141583471142904652">الاستماع المستمر</translation>
+<translation id="851432578283946230">يشغل العناصر التالية في قائمة التشغيل تلقائيًا</translation>
+<translation id="295620834661738195">قائمة تشغيل Brave</translation>
+<translation id="4850886885716139402">عرض</translation>
+<translation id="7392941176393379100">تمت الإضافة إلى '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="349846214503465941">تمكين قائمة التشغيل</translation>
+<translation id="1309636029062006520">قم بإنشاء قوائم تشغيل الصوت ومقاطع الفيديو المفضلة لديك، وقم بتشغيلها في أي وقت وفي أي مكان.</translation>
+<translation id="7899390017499980820">الزر "إضافة إلى قائمة التشغيل"</translation>
+<translation id="6901152954398668317">إظهار أو إخفاء زر "إضافة إلى قائمة التشغيل" للوصول السريع لإضافة أو إزالة الوسائط.</translation>
+<translation id="5939518447894949180">إعادة الضبط</translation>
+<translation id="8199028711686989861">احذف جميع الفيديوهات من قائمة التشغيل، بما في ذلك التخزين في وضع عدم الاتصال.</translation>
+<translation id="4590997608186539865">قائمة التشغيل</translation>
+<translation id="7525067979554623046">إنشاء</translation>
+<translation id="8525248723479742219">تشغيل لاحقًا</translation>
+<translation id="7453007860684252933">استعراض وإضافة</translation>
+<translation id="9014883386413828317">أضف المحتوى المفضل لديك. ابحث عن الزر ( + ) في ركن شاشتك الأيمن السفلي.</translation>
+<translation id="5928669500312007783">الاستعراض بحثًا عن الوسائط</translation>
+<translation id="8152485753254079984">قائمة تشغيل جديدة</translation>
+<translation id="9130105487623071247">اسم قائمة التشغيل</translation>
+<translation id="726581235416249619">قائمة تشغيل بدون عنوان</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> المحددة</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> من العناصر</translation>
+<translation id="2317629745818459803">تشغيل الكل</translation>
+<translation id="7544853251252956727">ترتيب عشوائي</translation>
+<translation id="2881339830231736485">ما تم تشغيله مؤخرًا</translation>
+<translation id="8120600068258956006">إضافة إلى قائمة التشغيل</translation>
+<translation id="39991094779686024">قوائم التشغيل</translation>
+<translation id="1710072605877822603">إضافة وسائط</translation>
+<translation id="3874252678044305931">أضف مقاطع فيديو إلى قائمة تشغيل Brave، ويمكنك إعادة مشاهدتها في أي وقت حتى في وضع عدم الاتصال بالإنترنت.</translation>
+<translation id="8973629800378391099">قم بإعداد قوائم تشغيل لمحتواك المفضل. واحفظ بيانات الجوال. واستمتع بإعادة التشغيل بدون إعلانات.</translation>
+<translation id="4936812987266342401">ما عليك سوى الضغط على الزر لإضافة مقاطع الفيديو إلى قائمة تشغيل</translation>
+<translation id="6263657785571415306">مواصلة البث: يمكنك إضافة مقاطع فيديو أثناء التصفح، ومشاهدتها لاحقًا.</translation>
+<translation id="2839555636100404687">التشغيل أفضل في قائمة التشغيل</translation>
+<translation id="9079526681359439081">يمكنك التشغيل في الخلفية، والتحكم من شاشة القفل، وغير ذلك الكثير…</translation>
+<translation id="3620862810055853183">فتح قائمة التشغيل</translation>
+<translation id="3861012838874771868">فتح إعدادات قائمة التشغيل</translation>
+<translation id="5220099266891491416">إخفاء زر "قائمة التشغيل"</translation>
+<translation id="7416347631175891923">جرّبه!</translation>
+<translation id="1173894706177603556">إعادة تسمية</translation>
+<translation id="3596306474342941843">حذف قائمة التشغيل</translation>
+<translation id="7765158879357617694">نقل</translation>
+<translation id="3803384303807438047">حذف بيانات العنصر في وضع عدم الاتصال بالإنترنت</translation>
+<translation id="4195643157523330669">فتح الإشارة في علامة تبويب جديدة</translation>
+<translation id="4243710787042215766">فتح في علامة تبويب خاصة</translation>
+<translation id="8261506727792406068">حذف</translation>
+<translation id="377872456482681602">الرجاء تحديد العناصر أولاً</translation>
+<translation id="286472539388773794">يرجى إدخال اسم صالح لقائمة التشغيل</translation>
+<translation id="2824489375399072491">شارك مع :</translation>
+<translation id="5319532905552885478">أضيف محتوى الوسائط بالفعل إلى قائمة التشغيل الافتراضية</translation>
+<translation id="4802584673094436231">قيد التجهيز...</translation>
+<translation id="481455355267255546">التالي</translation>
+<translation id="5474757891469990756">أطلق قوى Leo الكاملة مع Premium:</translation>
+<translation id="4173478269537830374">اكتشف نماذج الذكاء الاصطناعي المختلفة</translation>
+<translation id="3453542753968940696">أولوية الوصول إلى النماذج القوية ذات المهارات المختلفة.</translation>
+<translation id="3245401959451976966">أطلق العنان لإبداعك</translation>
+<translation id="5031778211368112461">الوصول إلى النماذج الأكثر ملاءمةً للمهام الإبداعية وإنشاء المحتوى.</translation>
+<translation id="4165928407303989823">البقاء على الموضوع</translation>
+<translation id="298783097210745222">احصل على إجابات أكثر دقة لمحادثات أكثر دقة.</translation>
+<translation id="2389665228467129817">الدردشة لفترة أطول</translation>
+<translation id="4314705522985583059">احصل على حدود أسعار أعلى للمحادثات الأطول.</translation>
+<translation id="6365289557497555234">تجدد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها في أي وقت قبل التجديد.</translation>
+<translation id="6637015365469044269">التحديث الآن</translation>
+<translation id="614530507403667291">النموذج التلقائي للمحادثات الجديدة</translation>
+<translation id="4071849832011229600">النموذج الافتراضي</translation>
+<translation id="4185473179105062442">استقبل BAT مباشرة على عنوان تشفير ذاتي الحماية</translation>
+<translation id="5802986777701714573">لقد أضفنا طريقة جديدة لك لتلقي مكافآتك الشهرية من BAT. اربط حساب لدى أحد شركائنا أو استخدم خيار الحماية الذاتية الجديد لبدء الربح الآن.</translation>
+<translation id="7557539689487606886">الاشتراك الحصري (Premium)</translation>
+<translation id="5538904824395606812">استخدم مزود الخدمة الحالي أو Quad9</translation>
+<translation id="6393423486818299209">استخدم مزود الخدمة الحالي أو Wikimedia DNS</translation>
+<translation id="3401384982562827787">استخدم مزود الخدمة الحالي أو Cloudflare</translation>
+<translation id="8812367543786936496">إذا كان مزود الخدمة الحالي الخاص بك غير آمن، فمتصفح Brave يستخدم مزود DNS بديل آمن</translation>
 </translationbundle>

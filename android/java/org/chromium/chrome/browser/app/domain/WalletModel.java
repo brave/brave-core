@@ -33,7 +33,6 @@ public class WalletModel {
     private final CryptoModel mCryptoModel;
     private final DappsModel mDappsModel;
     private final KeyringModel mKeyringModel;
-    private final MarketModel mMarketModel;
     private Context mContext;
     private CryptoActions mCryptoActions;
 
@@ -61,7 +60,6 @@ public class WalletModel {
                 mCryptoModel.getPendingTxHelper());
         mKeyringModel =
                 new KeyringModel(mContext, mKeyringService, mBraveWalletService, mCryptoActions);
-        mMarketModel = new MarketModel(mAssetRatioService);
         // be careful with dependencies, must avoid cycles
         mCryptoModel.setAccountInfosFromKeyRingModel(mKeyringModel.mAccountInfos);
         init();
@@ -88,7 +86,6 @@ public class WalletModel {
         mDappsModel.resetServices(
                 mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
         mKeyringModel.resetService(mContext, mKeyringService, braveWalletService);
-        mMarketModel.resetService(mAssetRatioService);
         init();
     }
 
@@ -132,10 +129,6 @@ public class WalletModel {
 
     public DappsModel getDappsModel() {
         return mDappsModel;
-    }
-
-    public MarketModel getMarketModel() {
-        return mMarketModel;
     }
 
     public KeyringService getKeyringService() {

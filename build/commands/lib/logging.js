@@ -21,6 +21,7 @@ process.stdout.on('resize', setLineLength)
 const progressStyle = chalk.bold.inverse
 const statusStyle = chalk.green.italic
 const warningStyle = chalk.black.bgYellow
+const errorStyle = chalk.black.bgRed
 
 const cmdDirStyle = chalk.blue
 const cmdCmdStyle = chalk.green
@@ -60,7 +61,7 @@ function status(message) {
 }
 
 function error(message) {
-  console.error(progressStyle(message))
+  console.error(errorStyle(message))
 }
 
 function warn(message) {

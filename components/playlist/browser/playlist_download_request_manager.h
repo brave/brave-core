@@ -18,15 +18,10 @@
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_observer.h"
 
 namespace base {
 class Value;
 }  // namespace base
-
-namespace blink::web_pref {
-struct WebPreferences;
-}  // namespace blink::web_pref
 
 namespace content {
 class BrowserContext;
@@ -34,9 +29,11 @@ class BrowserContext;
 
 namespace playlist {
 
+class PlaylistService;
+
 // This class finds media files and their thumbnails and title from a page
 // by injecting media detector script to dedicated WebContents.
-class PlaylistDownloadRequestManager : public content::WebContentsObserver {
+class PlaylistDownloadRequestManager {
  public:
   struct Request {
     using Callback =
@@ -49,19 +46,17 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
     Request(Request&&) noexcept;
     ~Request();
 
-    absl::variant<std::string, base::WeakPtr<content::WebContents>>
-        url_or_contents;
+    GURL url;
 
     bool should_force_fake_ua = false;
 
     Callback callback = base::NullCallback();
   };
 
-  static void SetPlaylistJavaScriptWorldId(const int32_t id);
-
-  PlaylistDownloadRequestManager(content::BrowserContext* context,
+  PlaylistDownloadRequestManager(PlaylistService* service,
+                                 content::BrowserContext* context,
                                  MediaDetectorComponentManager* manager);
-  ~PlaylistDownloadRequestManager() override;
+  virtual ~PlaylistDownloadRequestManager();
   PlaylistDownloadRequestManager(const PlaylistDownloadRequestManager&) =
       delete;
   PlaylistDownloadRequestManager& operator=(
@@ -70,10 +65,6 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
   // Request::callback will be called with generated param.
   virtual void GetMediaFilesFromPage(Request request);
 
-  // Update |web_prefs| if we want for |web_contents|.
-  void ConfigureWebPrefsForBackgroundWebContents(
-      content::WebContents* web_contents,
-      blink::web_pref::WebPreferences* web_prefs);
   void ResetRequests();
 
   const content::WebContents* background_contents() const {
@@ -91,28 +82,29 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
     return media_detector_component_manager_;
   }
 
-  void SetRunScriptOnMainWorldForTest();
+  std::vector<mojom::PlaylistItemPtr> GetPlaylistItems(base::Value value,
+                                                       GURL page_url);
+  void MaybeResetBackgroundWebContentsAndFetchNextRequest(
+      const std::vector<mojom::PlaylistItemPtr>& items,
+      content::WebContents* contents);
+
+  bool CanCacheMedia(const mojom::PlaylistItemPtr& item) const;
+  bool ShouldExtractMediaFromBackgroundWebContents(
+      const mojom::PlaylistItemPtr& item) const;
 
  private:
+  friend class PlaylistDownloadRequestManagerUnitTest;
+
   // Calling this will trigger loading |url| on a web contents,
   // and we'll inject javascript on the contents to get a list of
   // media files on the page.
   void RunMediaDetector(Request request);
 
   bool ReadyToRunMediaDetectorScript() const;
-  void CreateWebContents(bool should_force_fake_ua);
-  void GetMedia(content::WebContents* contents);
-  void OnGetMedia(base::WeakPtr<content::WebContents> contents,
-                  base::Value value);
-  void ProcessFoundMedia(base::WeakPtr<content::WebContents> contents,
-                         base::Value value);
+  void CreateWebContents(const Request& request = {});
 
   // Pop a task from queue and detect media from the page if any.
   void FetchPendingRequest();
-
-  // content::WebContentsObserver overrides:
-  void DidFinishLoad(content::RenderFrameHost* render_frame_host,
-                     const GURL& validated_url) override;
 
   // We create |web_contents_| on demand. So, when downloading media is
   // requested, |web_contents_| may not be ready to inject js script. This
@@ -128,15 +120,13 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
   // If it's zero, all requested fetching are completed. Then |web_contents_|
   // destroying task will be scheduled.
   int in_progress_urls_count_ = 0;
-  GURL requested_url_;
   Request::Callback callback_for_current_request_ = base::NullCallback();
   base::Time request_start_time_;
 
+  raw_ptr<PlaylistService> service_;
   raw_ptr<content::BrowserContext> context_;
 
   raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
-
-  bool run_script_on_main_world_ = false;
 
   base::WeakPtrFactory<PlaylistDownloadRequestManager> weak_factory_{this};
 };

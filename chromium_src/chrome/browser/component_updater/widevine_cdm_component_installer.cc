@@ -61,7 +61,7 @@ namespace component_updater {
 
 void RegisterWidevineCdmComponent(ComponentUpdateService* cus,
                                   base::OnceClosure callback) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!IsWidevineEnabled()) {
     return;
   }
@@ -383,7 +383,7 @@ void RegisterWidevineCdmComponent(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     base::OnceClosure callback) {
   VLOG(1) << "RegisterWidevineCdmComponent";
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!IsWidevineEnabled()) {
     return;
   }

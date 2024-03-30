@@ -1,11 +1,11 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
 import BraveCore
 import BraveUI
+import UIKit
 
 class RewardsInternalsAutoContributeController: UITableViewController {
 
@@ -60,14 +60,18 @@ class RewardsInternalsAutoContributeController: UITableViewController {
     }
   }
 
-  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+  {
     if section == 1 {
       return "Supported Verified Publishers"
     }
     return nil
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(for: indexPath) as AutoContributePublisherCell
     switch indexPath.section {
     case 0:
@@ -82,7 +86,9 @@ class RewardsInternalsAutoContributeController: UITableViewController {
     case 1:
       guard let publisher = publishers[safe: indexPath.item] else { return cell }
       cell.textLabel?.text = publisher.displayName
-      cell.detailTextLabel?.text = percentFormatter.string(from: NSNumber(value: Double(publisher.percent) / 100.0))
+      cell.detailTextLabel?.text = percentFormatter.string(
+        from: NSNumber(value: Double(publisher.percent) / 100.0)
+      )
       return cell
     default:
       fatalError()

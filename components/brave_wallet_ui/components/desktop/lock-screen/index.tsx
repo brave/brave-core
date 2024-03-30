@@ -66,7 +66,7 @@ export const LockScreen = () => {
     } else {
       setHasIncorrectPassword(true)
     }
-  }, [password, attemptUnlockWallet])
+  }, [attemptUnlockWallet, password, history])
 
   const handleKeyDown = React.useCallback(
     async (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -95,7 +95,7 @@ export const LockScreen = () => {
     } else {
       history.push(WalletRoutes.Restore)
     }
-  }, [isPanel])
+  }, [history, isPanel])
 
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 

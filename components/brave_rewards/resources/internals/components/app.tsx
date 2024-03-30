@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 // Components
 import { AdDiagnostics } from './ad_diagnostics'
 import { Contributions } from './contributions'
-import { Promotions } from './promotions'
 import { General } from './general'
 import { EventLogs } from './event_logs'
 import { Log } from './log'
@@ -61,10 +60,6 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
         this.getGeneralInfo()
         break
       }
-      case 'promotions': {
-        this.getPromotions()
-        break
-      }
       case 'contributions': {
         this.getContributions()
         break
@@ -96,10 +91,6 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
     this.actions.downloadCompleted()
   }
 
-  getPromotions = () => {
-    this.actions.getPromotions()
-  }
-
   getContributions = () => {
     this.actions.getContributions()
   }
@@ -119,7 +110,6 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
   render () {
     const {
       contributions,
-      promotions,
       log,
       fullLog,
       eventLogs,
@@ -147,9 +137,6 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
               onClear={this.clearLog}
               onDownloadCompleted={this.downloadCompleted}
             />
-          </div>
-          <div data-key='promotions' data-title={getLocale('tabPromotions')}>
-            <Promotions items={promotions} onGet={this.getPromotions} />
           </div>
           <div data-key='contributions' data-title={getLocale('tabContributions')}>
             <Contributions items={contributions} onGet={this.getContributions} />

@@ -1,8 +1,8 @@
 diff --git a/components/os_crypt/sync/BUILD.gn b/components/os_crypt/sync/BUILD.gn
-index db26459da52479751d042e89935d97c74c329c54..81d372eb39299c766d97137ea7f33de6d70e484d 100644
+index 4fe7a0bfaa5b3398372f55c6454e738f140efe6b..2f4434130ed3dc69f5447ccd374defd9d5b1c303 100644
 --- a/components/os_crypt/sync/BUILD.gn
 +++ b/components/os_crypt/sync/BUILD.gn
-@@ -89,6 +89,7 @@ component("os_crypt") {
+@@ -87,6 +87,7 @@ component("os_crypt") {
        defines += [ "USE_KWALLET" ]
      }
    }

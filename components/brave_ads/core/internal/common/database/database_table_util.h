@@ -13,9 +13,12 @@
 
 namespace brave_ads::database {
 
+void DropTableIndex(mojom::DBTransactionInfo* transaction,
+                    const std::string& index_name);
+
 void CreateTableIndex(mojom::DBTransactionInfo* transaction,
                       const std::string& table_name,
-                      const std::string& key);
+                      const std::vector<std::string>& columns);
 
 void DropTable(mojom::DBTransactionInfo* transaction,
                const std::string& table_name);

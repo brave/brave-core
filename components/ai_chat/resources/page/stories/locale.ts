@@ -72,7 +72,7 @@ provideStrings({
   braveLeoChatDefaultSubtitle: 'General purpose chat',
   braveLeoChatLeoExpandedSubtitle: 'Advanced and accurate chat',
   braveLeoChatClaudeInstantSubtitle: 'Strength in creative tasks',
-  pageContentTooLongWarning: 'The page you\'re trying to summarize is too long. Some context could be missing from the conversation.',
+  pageContentTooLongWarning: 'The page is too long for Leo. Some context could be missing from the conversation. Leo was able to read $1 of the page\'s contents.',
   errorConversationEnd: 'This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.',
   leoSettingsTooltipLabel: 'Leo settings',
   summarizePageButtonLabel: 'Summarize this page',
@@ -87,4 +87,7 @@ provideStrings({
   contextToggleLabel: 'Use page context for response',
   contextToggleTooltipInfo: 'Toggle on to ask about this page. It\'s content will be sent to Brave Leo along with your messages.',
   subscriptionPolicyInfo: 'All subscriptions are auto-renewed but can be cancelled at any time before renewal.',
+  summarizeLabel: 'Summarize',
+  changeLengthLabel: 'Change length',
+  shortenLabel: 'Shorten',
 })

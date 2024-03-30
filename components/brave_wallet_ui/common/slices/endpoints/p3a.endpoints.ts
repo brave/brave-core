@@ -4,17 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import {
-  BraveWallet,
-  SupportedCoinTypes,
-  SupportedTestNetworks
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { TokenBalancesRegistry } from '../../../common/slices/entities/token-balance.entity'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Utils
 import { loadTimeData } from '../../../../common/loadTimeData'
 import { handleEndpointError } from '../../../utils/api-utils'
+import { getActiveWalletCount } from '../../../utils/balance-utils'
 
 export const p3aEndpoints = ({
   mutation,
@@ -25,7 +22,12 @@ export const p3aEndpoints = ({
       { success: boolean },
       TokenBalancesRegistry
     >({
-      queryFn: async (registry, { endpoint }, extraOptions, baseQuery) => {
+      queryFn: async (
+        tokenBalancesRegistry,
+        { endpoint },
+        extraOptions,
+        baseQuery
+      ) => {
         try {
           const {
             data: { braveWalletP3A },
@@ -34,45 +36,15 @@ export const p3aEndpoints = ({
 
           const { accounts } = await cache.getAllAccounts()
 
-          const activeWalletCount: {
-            [coin: BraveWallet.CoinType]: number
-          } = {}
-
           const countTestNetworks = loadTimeData.getBoolean(
             BraveWallet.P3A_COUNT_TEST_NETWORKS_LOAD_TIME_KEY
           )
 
-          for (const address of Object.keys(registry)) {
-            const account = accounts.find(
-              (account) => account.accountId.address === address
-            )
-
-            if (!account) {
-              continue
-            }
-
-            const coin = account.accountId.coin
-
-            if (!SupportedCoinTypes.includes(coin)) {
-              continue
-            }
-
-            if (activeWalletCount[coin] === undefined) {
-              activeWalletCount[coin] = 0
-            }
-
-            if (
-              countTestNetworks &&
-              Object.keys(registry[address]).some((chainId) =>
-                SupportedTestNetworks.includes(chainId)
-              )
-            ) {
-              activeWalletCount[coin] += 1
-              continue
-            }
-
-            activeWalletCount[coin] += 1
-          }
+          const activeWalletCount = getActiveWalletCount(
+            accounts,
+            tokenBalancesRegistry,
+            countTestNetworks
+          )
 
           for (const [coin, count] of Object.entries(activeWalletCount)) {
             braveWalletP3A.recordActiveWalletCount(count, parseInt(coin))

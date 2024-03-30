@@ -340,7 +340,7 @@ program
   .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)')
   .option('--run_disabled_tests', 'run disabled tests')
   .option('--manual_android_test_device', 'indicates that Android test device is run manually')
-  .option('--android_test_emulator_version <emulator_version>', 'set Android version for the emulator for tests', parseInteger, '30')
+  .option('--android_test_emulator_version <emulator_version>', 'set Android version for the emulator for tests', parseInteger, '27')
   .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
   .option('--offline', 'use offline mode for RBE')
   .arguments('[build_config]')
@@ -360,11 +360,7 @@ program
   .command('format')
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option('--full', 'format all lines in changed files instead of only the changed lines')
-  .option('--js', 'format javascript code with clang-format')
-  .option('--python', 'enable formating of Python file types using yapf')
-  .option('--rust', 'enables formatting of Rust file types using rustfmt')
-  .option('--swift',
-    'enables formatting of Swift file types using swift-format')
+  .option('--diff', 'print diff to stdout rather than modifying files')
   .action(util.format)
 
 program

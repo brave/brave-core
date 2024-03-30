@@ -88,10 +88,8 @@ TEST_F(BraveSyncPrefsTest, FailedToDecryptBraveSeedValue) {
   // Valid base64 string but not valid encrypted string must set
   // failed_to_decrypt to true. Note: "v10" prefix is important to make
   // DecryptString fail. Also the remaining string must be 12 or more bytes.
-  std::string valid_base64_string;
-  base::Base64Encode("v10_AABBCCDDEEFF", &valid_base64_string);
   pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
-                            valid_base64_string);
+                            base::Base64Encode("v10_AABBCCDDEEFF"));
   EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
   EXPECT_TRUE(failed_to_decrypt);
 
@@ -109,6 +107,24 @@ using BraveSyncPrefsDeathTest = BraveSyncPrefsTest;
 #endif
 TEST_F(BraveSyncPrefsDeathTest, MAYBE_GetSeedOutNullptrCHECK) {
   EXPECT_CHECK_DEATH(brave_sync_prefs()->GetSeed(nullptr));
+}
+
+TEST_F(BraveSyncPrefsTest, LeaveChainDetailsMaxLenIOS) {
+  brave_sync_prefs()->SetAddLeaveChainDetailBehaviourForTests(
+      brave_sync::Prefs::AddLeaveChainDetailBehaviour::kAdd);
+
+  auto max_len = Prefs::GetLeaveChainDetailsMaxLenForTests();
+
+  std::string details("a");
+  brave_sync_prefs()->AddLeaveChainDetail("", 0, details.c_str());
+  details = brave_sync_prefs()->GetLeaveChainDetails();
+  EXPECT_LE(details.size(), max_len);
+  EXPECT_GE(details.size(), 1u);
+
+  details.assign(max_len + 1, 'a');
+  brave_sync_prefs()->AddLeaveChainDetail(__FILE__, __LINE__, details.c_str());
+  details = brave_sync_prefs()->GetLeaveChainDetails();
+  EXPECT_EQ(details.size(), max_len);
 }
 
 }  // namespace brave_sync

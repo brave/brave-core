@@ -14,8 +14,8 @@
 #include "chrome/browser/ui/views/tabs/tab_drag_context.h"
 
 class BraveTabContainer : public TabContainerImpl {
+  METADATA_HEADER(BraveTabContainer, TabContainerImpl)
  public:
-  METADATA_HEADER(BraveTabContainer);
 
   BraveTabContainer(TabContainerController& controller,
                     TabHoverCardController* hover_card_controller,

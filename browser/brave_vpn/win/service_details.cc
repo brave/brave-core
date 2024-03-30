@@ -144,17 +144,9 @@ std::wstring GetBraveVpnWireguardTunnelServiceName() {
   NOTREACHED_NORETURN();
 }
 
-base::FilePath GetBraveVPNWireguardServiceInstallationPath(
-    const base::FilePath& target_path,
-    const base::Version& version) {
-  return target_path.AppendASCII(version.GetString())
-      .Append(brave_vpn::kBraveVpnWireguardServiceSubFolder)
-      .Append(brave_vpn::kBraveVpnWireguardServiceExecutable);
-}
-
-base::FilePath GetBraveVPNWireguardServiceExecutablePath() {
-  base::FilePath asset_dir = base::PathService::CheckedGet(base::DIR_ASSETS);
-  return asset_dir.Append(brave_vpn::kBraveVpnWireguardServiceSubFolder)
+base::FilePath GetBraveVPNWireguardServiceExecutablePath(
+    const base::FilePath& root_dir) {
+  return root_dir.Append(brave_vpn::kBraveVpnWireguardServiceSubFolder)
       .Append(brave_vpn::kBraveVpnWireguardServiceExecutable);
 }
 

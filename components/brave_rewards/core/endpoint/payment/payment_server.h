@@ -14,13 +14,13 @@
 #include "brave/components/brave_rewards/core/endpoint/payment/post_votes/post_votes.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 
 class PaymentServer {
  public:
-  explicit PaymentServer(RewardsEngineImpl& engine);
+  explicit PaymentServer(RewardsEngine& engine);
   ~PaymentServer();
 
   payment::PostOrder& post_order() { return post_order_; }

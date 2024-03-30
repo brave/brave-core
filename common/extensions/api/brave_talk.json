@@ -16,18 +16,17 @@
         "name": "isSupported",
         "type": "function",
         "description": "Fetches whether or not Brave Talk is supported",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "supported",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "supported",
+              "type": "boolean"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }
     ],
     "types": [

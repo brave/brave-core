@@ -4,21 +4,28 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import { getLocale } from '$web-common/locale'
 
 // types
-import { BraveWallet, WalletState } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // hooks
-import useAssetManagement from '../../../common/hooks/assets-management'
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
 import {
   useGetCustomAssetSupportedNetworks //
 } from '../../../common/hooks/use_get_custom_asset_supported_networks'
+import {
+  useAddUserTokenMutation,
+  useGetNetworksRegistryQuery,
+  useUpdateUserTokenMutation
+} from '../../../common/slices/api.slice'
+import {
+  emptyNetworksRegistry,
+  networkEntityAdapter
+} from '../../../common/slices/entities/network.entity'
 
 // components
 import { SelectNetworkDropdown } from '../../desktop/select-network-dropdown/index'
@@ -44,17 +51,26 @@ import {
 import { HorizontalSpace, LeoSquaredButton } from '../style'
 
 interface Props {
-  contractAddress: string
+  selectedAsset?: BraveWallet.BlockchainToken
+  contractAddress?: string
   onHideForm: () => void
-  onChangeContractAddress: (contractAddress: string) => void
+  onChangeContractAddress?: (contractAddress: string) => void
 }
 
 export const AddCustomTokenForm = (props: Props) => {
   const {
-    contractAddress: tokenContractAddress,
+    selectedAsset,
+    contractAddress,
     onHideForm,
     onChangeContractAddress
   } = props
+
+  // queries
+  const { data: networksRegistry = emptyNetworksRegistry } =
+    useGetNetworksRegistryQuery()
+  const selectedAssetNetwork = selectedAsset
+    ? networksRegistry.entities[networkEntityAdapter.selectId(selectedAsset)]
+    : undefined
 
   // state
   const [showAdvancedFields, setShowAdvancedFields] =
@@ -63,25 +79,38 @@ export const AddCustomTokenForm = (props: Props) => {
     React.useState<boolean>(false)
 
   // Form States
-  const [customTokenName, setCustomTokenName] = React.useState<string>()
-  const [customTokenSymbol, setCustomTokenSymbol] = React.useState<string>()
-  const [customTokenDecimals, setCustomTokenDecimals] = React.useState<string>()
-  const [customCoingeckoId, setCustomCoingeckoId] = React.useState<string>()
-  const [customIconURL, setCustomIconURL] = React.useState<string>()
-  const [customAssetsNetwork, setCustomAssetsNetwork] =
-    React.useState<BraveWallet.NetworkInfo>()
-
-  // redux
-  const addUserAssetError = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.addUserAssetError
+  const [customTokenName, setCustomTokenName] = React.useState<
+    string | undefined
+  >(selectedAsset?.name)
+  const [customTokenSymbol, setCustomTokenSymbol] = React.useState<
+    string | undefined
+  >(selectedAsset?.symbol)
+  const [customTokenDecimals, setCustomTokenDecimals] = React.useState<
+    string | undefined
+  >(selectedAsset?.decimals.toString())
+  const [customCoingeckoId, setCustomCoingeckoId] = React.useState<
+    string | undefined
+  >(selectedAsset?.coingeckoId)
+  const [customIconURL, setCustomIconURL] = React.useState<string | undefined>(
+    selectedAsset?.logo
   )
+  const [customAssetsNetwork, setCustomAssetsNetwork] = React.useState<
+    BraveWallet.NetworkInfo | undefined
+  >(selectedAssetNetwork)
 
   // more state
-  const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
+  const [hasError, setHasError] = React.useState<boolean>(false)
 
-  // custom hooks
-  const { onAddCustomAsset } = useAssetManagement()
+  // computed
+  const tokenContractAddress = selectedAsset
+    ? selectedAsset.contractAddress
+    : contractAddress
 
+  // mutations
+  const [addUserToken] = useAddUserTokenMutation()
+  const [updateUserToken] = useUpdateUserTokenMutation()
+
+  // queries
   const {
     tokenInfo: matchedTokenInfo,
     isVisible: tokenAlreadyExists,
@@ -157,6 +186,21 @@ export const AddCustomTokenForm = (props: Props) => {
     []
   )
 
+  const resetBaseInputFields = React.useCallback(() => {
+    setCustomTokenName(undefined)
+    setCustomTokenSymbol(undefined)
+    setCustomTokenDecimals(undefined)
+    setCustomCoingeckoId(undefined)
+    setCustomIconURL(undefined)
+  }, [])
+
+  const resetInputFields = React.useCallback(() => {
+    resetBaseInputFields()
+    if (onChangeContractAddress) {
+      onChangeContractAddress('')
+    }
+  }, [resetBaseInputFields, onChangeContractAddress])
+
   const handleTokenAddressChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setHasError(false)
@@ -166,9 +210,11 @@ export const AddCustomTokenForm = (props: Props) => {
         return
       }
 
-      onChangeContractAddress(event.target.value)
+      if (onChangeContractAddress) {
+        onChangeContractAddress(event.target.value)
+      }
     },
-    [onChangeContractAddress]
+    [onChangeContractAddress, resetInputFields]
   )
 
   const handleTokenDecimalsChanged = React.useCallback(
@@ -196,26 +242,34 @@ export const AddCustomTokenForm = (props: Props) => {
   )
 
   // methods
-  const resetBaseInputFields = React.useCallback(() => {
-    setCustomTokenName(undefined)
-    setCustomTokenSymbol(undefined)
-    setCustomTokenDecimals(undefined)
-    setCustomCoingeckoId(undefined)
-    setCustomIconURL(undefined)
-  }, [])
-
-  const resetInputFields = React.useCallback(() => {
-    resetBaseInputFields()
-    onChangeContractAddress('')
-  }, [resetBaseInputFields, onChangeContractAddress])
-
-  const onClickAddCustomToken = React.useCallback(() => {
+  const onClickAddCustomToken = React.useCallback(async () => {
     if (!tokenInfo) {
       return
     }
-    onAddCustomAsset(tokenInfo)
-    onHideForm()
-  }, [tokenInfo, onAddCustomAsset, onHideForm])
+
+    if (tokenAlreadyExists && selectedAsset) {
+      await updateUserToken({
+        existingToken: selectedAsset,
+        updatedToken: tokenInfo
+      }).unwrap()
+      onHideForm()
+      return
+    }
+
+    try {
+      await addUserToken(tokenInfo).unwrap()
+      onHideForm()
+    } catch (error) {
+      setHasError(true)
+    }
+  }, [
+    tokenInfo,
+    addUserToken,
+    onHideForm,
+    updateUserToken,
+    tokenAlreadyExists,
+    selectedAsset
+  ])
 
   const onToggleShowAdvancedFields = () =>
     setShowAdvancedFields((prev) => !prev)
@@ -257,7 +311,7 @@ export const AddCustomTokenForm = (props: Props) => {
   const tokenContractAddressError =
     tokenInfo?.contractAddress === '' ||
     (tokenInfo?.coin !== BraveWallet.CoinType.SOL &&
-      !tokenContractAddress.toLowerCase().startsWith('0x'))
+      !tokenContractAddress?.toLowerCase().startsWith('0x'))
 
   const buttonDisabled =
     isTokenInfoLoading ||
@@ -297,6 +351,7 @@ export const AddCustomTokenForm = (props: Props) => {
           showNetworkDropDown={showNetworkDropDown}
           onSelectCustomNetwork={onSelectCustomNetwork}
           networkListSubset={networkList}
+          disabled={!!selectedAsset}
         />
         <FormRow>
           <FormColumn>
@@ -318,6 +373,7 @@ export const AddCustomTokenForm = (props: Props) => {
             <Input
               value={tokenContractAddress}
               onChange={handleTokenAddressChanged}
+              disabled={!!selectedAsset}
             />
           </FormColumn>
         </FormRow>
@@ -375,7 +431,7 @@ export const AddCustomTokenForm = (props: Props) => {
         {hasError && (
           <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
         )}
-        {tokenAlreadyExists && (
+        {tokenAlreadyExists && !selectedAsset && (
           <ErrorText>
             {getLocale('braveWalletCustomTokenExistsError')}
           </ErrorText>
@@ -398,9 +454,13 @@ export const AddCustomTokenForm = (props: Props) => {
           <AddButtonWrapper>
             <LeoSquaredButton
               onClick={onClickAddCustomToken}
-              isDisabled={buttonDisabled || tokenAlreadyExists}
+              isDisabled={
+                buttonDisabled || (!selectedAsset && tokenAlreadyExists)
+              }
             >
-              {getLocale('braveWalletWatchListAdd')}
+              {selectedAsset
+                ? getLocale('braveWalletButtonSaveChanges')
+                : getLocale('braveWalletWatchListAdd')}
             </LeoSquaredButton>
           </AddButtonWrapper>
         </Tooltip>

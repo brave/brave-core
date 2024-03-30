@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdap
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.omnibox.GroupsProto.GroupConfig;
+import org.chromium.components.omnibox.suggestions.OmniboxSuggestionUiType;
 import org.chromium.ui.modelutil.PropertyModel;
 
 import java.util.Arrays;
@@ -105,6 +106,15 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         mBraveLeoSuggestionProcessor.onNativeInitialized();
     }
 
+    private int getTileNavSuggestPosition(List<DropdownItemViewInfo> viewInfoList) {
+        for (int i = 0; i < viewInfoList.size(); ++i) {
+            if (viewInfoList.get(i).type == OmniboxSuggestionUiType.TILE_NAVSUGGEST) {
+                return i;
+            }
+        }
+        return viewInfoList.size();
+    }
+
     @Override
     @NonNull
     List<DropdownItemViewInfo> buildDropdownViewInfoList(AutocompleteResult autocompleteResult) {
@@ -118,16 +128,24 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
             final PropertyModel leoModel = mBraveLeoSuggestionProcessor.createModel();
             mBraveLeoSuggestionProcessor.populateModel(leoModel);
             var newMatches = autocompleteResult.getSuggestionsList();
-            GroupConfig config = GroupConfig.getDefaultInstance();
-            if (newMatches.size() > 0) {
-                int currentGroupId = newMatches.get(newMatches.size() - 1).getGroupId();
-                config =
-                        autocompleteResult
-                                .getGroupsInfo()
-                                .getGroupConfigsOrDefault(
-                                        currentGroupId, GroupConfig.getDefaultInstance());
+
+            GroupConfig config;
+            int tileNavSuggestPosition = getTileNavSuggestPosition(viewInfoList);
+
+            // We would like to get Leo position above the most visited tiles
+            // and get into the same group as the item right above, if any exists.
+            // This way we will have a rounded corners around all the group
+            // including the suggestion
+            if (tileNavSuggestPosition > 0) {
+                DropdownItemViewInfo itemAbove = viewInfoList.get(tileNavSuggestPosition - 1);
+                config = itemAbove.groupConfig;
+            } else {
+                // There is no any item above nav suggest tiles, so use the default
+                config = GroupConfig.getDefaultInstance();
             }
+
             viewInfoList.add(
+                    tileNavSuggestPosition,
                     new DropdownItemViewInfo(mBraveLeoSuggestionProcessor, leoModel, config));
         }
         if (isBraveSearchPromoBanner()) {
@@ -143,7 +161,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private boolean isBraveLeoEnabled() {
         Tab tab = mActivityTabSupplier.get();
         if (mLeoAutocompleteDelegate != null
-                && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)
+                && mLeoAutocompleteDelegate.isLeoEnabled()
                 && tab != null
                 && !tab.isIncognito()
                 && ChromeSharedPreferences.getInstance()

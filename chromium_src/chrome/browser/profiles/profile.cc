@@ -6,12 +6,18 @@
 #include "brave/chromium_src/chrome/browser/profiles/profile.h"
 
 #include "brave/components/tor/tor_constants.h"
+#include "components/search_engines/search_engine_choice_utils.h"
 
 #define BRAVE_ALLOWS_BROWSER_WINDOWS *this == TorID() ||
 
 #define IsIncognitoProfile IsIncognitoProfile_ChromiumImpl
 #define IsPrimaryOTRProfile IsPrimaryOTRProfile_ChromiumImpl
+#define WipeSearchEngineChoicePrefs                                 \
+  IsChoiceScreenFlagEnabled(search_engines::ChoicePromo::kAny);     \
+  if (IsChoiceScreenFlagEnabled(search_engines::ChoicePromo::kAny)) \
+  search_engines::WipeSearchEngineChoicePrefs
 #include "src/chrome/browser/profiles/profile.cc"
+#undef WipeSearchEngineChoicePrefs
 #undef IsIncognitoProfile
 #undef IsPrimaryOTRProfile
 

@@ -8,7 +8,6 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
-import { GrantInfo } from '../../lib/grant_info'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
 import { UserType } from '../../lib/user_type'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
@@ -24,11 +23,9 @@ import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
 import { TermsOfService } from '../terms_of_service'
-import { GrantOverlay } from './grant_overlay'
 import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView } from '../payment_status_view'
-import { UnsupportedRegionCard } from './unsupported_region_card'
-import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
+import { TosUpdateNotice } from '../tos_update_notice'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { Optional } from '../../../shared/lib/optional'
 
@@ -57,8 +54,6 @@ export function RewardsCardHeader () {
 interface Props {
   rewardsEnabled: boolean
   userType: UserType
-  vbatDeadline: number | undefined
-  isUnsupportedRegion: boolean
   declaredCountry: string
   needsBrowserUpgradeToServeAds: boolean
   rewardsBalance: Optional<number>
@@ -71,22 +66,20 @@ interface Props {
   minEarningsLastMonth: number
   maxEarningsLastMonth: number
   contributionsThisMonth: number
-  grantInfo: GrantInfo | null
   externalWallet: ExternalWallet | null
   publishersVisited: number
-  canConnectAccount: boolean
   showSelfCustodyInvite: boolean
+  isTermsOfServiceUpdateRequired: boolean
   onEnableRewards: () => void
   onSelectCountry: () => void
-  onClaimGrant: () => void
   onSelfCustodyInviteDismissed: () => void
+  onTermsOfServiceUpdateAccepted: () => void
 }
 
 export function RewardsCard (props: Props) {
   const { getString, getPluralString } = React.useContext(LocaleContext)
 
   const [publisherCountText, setPublisherCountText] = React.useState('')
-  const [hideVBATNotice, setHideVBATNotice] = React.useState(false)
 
   React.useEffect(() => {
     let active = true
@@ -100,15 +93,6 @@ export function RewardsCard (props: Props) {
   }
 
   function renderBalance () {
-    if (props.grantInfo && props.grantInfo.amount > 0) {
-      return (
-        <GrantOverlay
-          grantInfo={props.grantInfo}
-          onClaim={props.onClaimGrant}
-        />
-      )
-    }
-
     const { externalWallet } = props
     if (externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut) {
       const onClick = () => {
@@ -201,17 +185,6 @@ export function RewardsCard (props: Props) {
     )
   }
 
-  function renderRewardsUnsupportedRegion () {
-    return (
-      <style.root>
-        <RewardsCardHeader />
-        <style.unsupportedRegionCard>
-          <UnsupportedRegionCard />
-        </style.unsupportedRegionCard>
-      </style.root>
-    )
-  }
-
   function renderRewardsOptIn () {
     return (
       <style.root>
@@ -249,6 +222,24 @@ export function RewardsCard (props: Props) {
         <style.selectCountry>
           <SelectCountryCard onContinue={props.onSelectCountry} />
         </style.selectCountry>
+      </style.root>
+    )
+  }
+
+  function renderTosUpdateNotice () {
+    const onReset = () => {
+      window.open(urls.resetURL, '_blank', 'noreferrer')
+    }
+
+    return (
+      <style.root>
+        <RewardsCardHeader />
+        <style.tosUpdateNotice>
+          <TosUpdateNotice
+            onAccept={props.onTermsOfServiceUpdateAccepted}
+            onResetRewards={onReset}
+          />
+        </style.tosUpdateNotice>
       </style.root>
     )
   }
@@ -311,24 +302,6 @@ export function RewardsCard (props: Props) {
     )
   }
 
-  function renderVBATNotice () {
-    const onClose = () => { setHideVBATNotice(true) }
-    return (
-      <style.root>
-        <RewardsCardHeader />
-        <style.vbatNotice>
-          <VBATNotice
-            vbatDeadline={props.vbatDeadline}
-            canConnectAccount={props.canConnectAccount}
-            declaredCountry={props.declaredCountry}
-            onConnectAccount={onConnect}
-            onClose={onClose}
-          />
-        </style.vbatNotice>
-      </style.root>
-    )
-  }
-
   function renderSelfCustodyInvite () {
     const onConnectSelfCustody = () => {
       props.onSelfCustodyInviteDismissed()
@@ -370,30 +343,17 @@ export function RewardsCard (props: Props) {
         <RewardsCardHeader />
         <style.connect>
           {
-            props.canConnectAccount
-              ? <>
-                  {
-                    formatMessage(getString('rewardsConnectAccountText'), {
-                      tags: {
-                        $1: (content) => <strong key='bold'>{content}</strong>
-                      }
-                    })
-                  }
-                  <style.connectAction>
-                    <button onClick={onConnect}>
-                      {getString('rewardsConnectAccount')}<ArrowNextIcon />
-                    </button>
-                  </style.connectAction>
-                </>
-              : <>
-                  {getString('rewardsConnectAccountNoProviders')}
-                  <style.connectLearnMore>
-                    <NewTabLink href={urls.supportedWalletRegionsURL}>
-                      {getString('rewardsLearnMore')}
-                    </NewTabLink>
-                  </style.connectLearnMore>
-                </>
+            formatMessage(getString('rewardsConnectAccountText'), {
+              tags: {
+                $1: (content) => <strong key='bold'>{content}</strong>
+              }
+            })
           }
+          <style.connectAction>
+            <button onClick={onConnect}>
+              {getString('rewardsConnectAccount')}<ArrowNextIcon />
+            </button>
+          </style.connectAction>
         </style.connect>
         {
           <style.publisherSupport>
@@ -408,10 +368,6 @@ export function RewardsCard (props: Props) {
     )
   }
 
-  if (props.isUnsupportedRegion) {
-    return renderRewardsUnsupportedRegion()
-  }
-
   if (!props.rewardsEnabled) {
     return renderRewardsOptIn()
   }
@@ -420,10 +376,8 @@ export function RewardsCard (props: Props) {
     return renderCountrySelect()
   }
 
-  if (!hideVBATNotice) {
-    if (shouldShowVBATNotice(props.userType, props.vbatDeadline)) {
-      return renderVBATNotice()
-    }
+  if (props.isTermsOfServiceUpdateRequired) {
+    return renderTosUpdateNotice()
   }
 
   if (props.showSelfCustodyInvite) {

@@ -23,7 +23,7 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
@@ -52,6 +52,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/ssl_host_state_delegate.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
 #include "gmock/gmock.h"
 #include "net/base/features.h"
@@ -380,7 +381,6 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Incognito) {
 
   EXPECT_FALSE(is_element_enabled("torEnabled"));
   EXPECT_FALSE(is_element_enabled("useBridges"));
-  EXPECT_FALSE(is_element_enabled("autoOnionLocation"));
   EXPECT_TRUE(is_element_enabled("onionOnlyInTorWindows"));
   EXPECT_TRUE(is_element_enabled("torSnowflake"));
 
@@ -410,7 +410,6 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Incognito) {
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(is_element_enabled("torEnabled"));
   EXPECT_TRUE(is_element_enabled("useBridges"));
-  EXPECT_TRUE(is_element_enabled("autoOnionLocation"));
   EXPECT_TRUE(is_element_enabled("onionOnlyInTorWindows"));
   EXPECT_TRUE(is_element_enabled("torSnowflake"));
 }

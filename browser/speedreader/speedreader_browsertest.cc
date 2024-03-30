@@ -70,13 +70,21 @@ const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/speedreader/article/guardian.html";
 const char kTestEsPageReadable[] = "/speedreader/article/es.html";
 const char kTestPageReadableOnUnreadablePath[] =
-    "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
+    "/speedreader/pages/simple.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
 const char kTestXml[] = "/speedreader/article/rss.xml";
 const char kTestTtsSimple[] = "/speedreader/article/simple.html";
 const char kTestTtsTags[] = "/speedreader/article/tags.html";
 const char kTestTtsStructure[] = "/speedreader/article/structure.html";
 const char kTestErrorPage[] = "/speedreader/article/page_not_reachable.html";
+const char kTestCSPHtmlPage[] = "/speedreader/article/csp_html.html";
+const char kTestCSPHttpPage[] = "/speedreader/article/csp_http.html";
+const char kTestCSPHackEquivPage[] = "/speedreader/article/csp_hack_equiv.html";
+const char kTestCSPHackCharsetPage[] =
+    "/speedreader/article/csp_hack_charset.html";
+const char kTestCSPOrderPage1[] = "/speedreader/article/csp_order_1.html";
+const char kTestCSPOrderPage2[] = "/speedreader/article/csp_order_2.html";
+const char kTestCSPInBodyPage[] = "/speedreader/article/csp_in_body.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
@@ -350,19 +358,27 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
 
   NavigateToPageSynchronously(kTestPageReadable);
-
-  const bool is_correct_web_contents =
-      browser()->tab_strip_model()->GetWebContentsAt(1) == ActiveWebContents();
-  const auto second_load_page_length =
+  auto second_load_page_length =
       content::EvalJs(ActiveWebContents(), kGetContentLength,
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                       ISOLATED_WORLD_ID_BRAVE_INTERNAL)
           .ExtractInt();
+  if (second_load_page_length == 1) {
+    // TODO(issues/36355): Sometimes browser failed to load this page.
+    ActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
+                                                false);
+    content::WaitForLoadStop(ActiveWebContents());
+    second_load_page_length =
+        content::EvalJs(ActiveWebContents(), kGetContentLength,
+                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                        ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+            .ExtractInt();
+  }
+
   EXPECT_LT(83000, second_load_page_length)
       << " First load length: " << first_load_page_length
       << " speedreaded length: " << speedreaded_length
-      << " Second load length: " << second_load_page_length
-      << " IsCorrectWebContents: " << is_correct_web_contents;
+      << " Second load length: " << second_load_page_length;
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Redirect) {
@@ -877,16 +893,73 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
       tab_helper()->PageDistillState()));
 }
 
-class SpeedReaderWithDistillationServiceBrowserTest
-    : public SpeedReaderBrowserTest {
- public:
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    SpeedReaderBrowserTest::SetUpCommandLine(command_line);
-  }
-};
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
+  ToggleSpeedreader();
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderWithDistillationServiceBrowserTest,
-                       OnDemandReader) {
+  for (const auto* page : {kTestCSPHackEquivPage, kTestCSPHackCharsetPage,
+                           kTestCSPHtmlPage, kTestCSPHttpPage}) {
+    SCOPED_TRACE(page);
+
+    content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+    console_observer.SetPattern(
+        "Refused to load the image 'https://a.test/should_fail.png' because it "
+        "violates the following Content Security Policy directive: \"img-src "
+        "'none'\".*");
+
+    NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
+
+    constexpr const char kCheckNoMaliciousContent[] = R"js(
+      !document.getElementById('malicious1') &&
+      !document.querySelector('meta[http-equiv="undefinedHttpEquiv"]')
+    )js";
+    EXPECT_EQ(true,
+              content::EvalJs(ActiveWebContents(), kCheckNoMaliciousContent,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+
+    EXPECT_TRUE(console_observer.Wait());
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspOrder) {
+  ToggleSpeedreader();
+
+  // base first.
+  {
+    content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+    NavigateToPageSynchronously(kTestCSPOrderPage1,
+                                WindowOpenDisposition::CURRENT_TAB);
+    EXPECT_TRUE(console_observer.messages().empty());
+  }
+
+  // CSP first.
+  {
+    content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+    console_observer.SetPattern(
+        "Refused to set the document's base URI to 'https://a.test/' because "
+        "it violates the following Content Security Policy directive: "
+        "\"base-uri 'none'\".*");
+    NavigateToPageSynchronously(kTestCSPOrderPage2,
+                                WindowOpenDisposition::CURRENT_TAB);
+    EXPECT_TRUE(console_observer.Wait());
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspInBody) {
+  ToggleSpeedreader();
+
+  NavigateToPageSynchronously(kTestCSPInBodyPage,
+                              WindowOpenDisposition::CURRENT_TAB);
+  constexpr const char kCheckCsp[] = R"js(
+    document.querySelectorAll('meta[content="CSP in body"]').length === 0
+  )js";
+
+  EXPECT_EQ(true, content::EvalJs(ActiveWebContents(), kCheckCsp,
+                                  content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                  ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEnableForSite) {
   EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
 
   struct MockObserver : speedreader::PageDistiller::Observer {
@@ -916,6 +989,15 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithDistillationServiceBrowserTest,
       tab_helper()->PageDistillState()));
 
   ClickReaderButton();
+
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
+
+  // Enable speedreader for site explicitly.
+  speedreader_service()->EnableForSite(ActiveWebContents(), true);
+  ActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
+                                              false);
+  WaitDistilled();
 
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));

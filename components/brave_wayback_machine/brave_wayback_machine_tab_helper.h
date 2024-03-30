@@ -31,6 +31,7 @@ class BraveWaybackMachineTabHelper
   void set_delegate(std::unique_ptr<BraveWaybackMachineDelegate> delegate);
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
+
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWaybackMachineTest, InfobarAddTest);
 

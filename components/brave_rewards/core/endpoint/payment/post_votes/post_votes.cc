@@ -12,14 +12,14 @@
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
-PostVotes::PostVotes(RewardsEngineImpl& engine) : engine_(engine) {}
+PostVotes::PostVotes(RewardsEngine& engine) : engine_(engine) {}
 
 PostVotes::~PostVotes() = default;
 
@@ -41,8 +41,7 @@ std::string PostVotes::GeneratePayload(
 
   std::string data_json;
   base::JSONWriter::Write(data, &data_json);
-  std::string data_encoded;
-  base::Base64Encode(data_json, &data_encoded);
+  std::string data_encoded = base::Base64Encode(data_json);
 
   base::Value::List credentials = credential::GenerateCredentials(
       *engine_, redeem.token_list, data_encoded);

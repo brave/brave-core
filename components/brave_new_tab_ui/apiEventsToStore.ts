@@ -121,19 +121,13 @@ chrome.braveRewards.initialized.addListener(fetchRewardsData)
 
 chrome.braveRewards.onRewardsWalletCreated.addListener(fetchRewardsData)
 
-chrome.braveRewards.onPromotions.addListener((result: number, promotions: NewTab.Promotion[]) => {
-  getActions().onPromotions(result, promotions)
-})
-
-chrome.braveRewards.onPromotionFinish.addListener((result: number, promotion: NewTab.Promotion) => {
-  getActions().onPromotionFinish(result, promotion)
-})
-
 chrome.braveRewards.onCompleteReset.addListener((properties: { success: boolean }) => {
   getActions().onCompleteReset(properties.success)
 })
 
 chrome.braveRewards.onSelfCustodyInviteDismissed.addListener(fetchRewardsData)
+
+chrome.braveRewards.onTermsOfServiceUpdateAccepted.addListener(fetchRewardsData)
 
 chrome.braveRewards.onExternalWalletLoggedOut.addListener(fetchRewardsData)
 

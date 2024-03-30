@@ -1,14 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
-import WebKit
 import SwiftyJSON
+import WebKit
 import os.log
 
-let ReaderModeProfileKeyStyle = "readermode.style"
+let readerModeProfileKeyStyle = "readermode.style"
 
 enum ReaderModeMessageType: String {
   case stateChange = "ReaderModeStateChange"
@@ -119,7 +119,10 @@ struct ReaderModeStyle {
 
   /// Encode the style to a JSON dictionary that can be passed to ReaderMode.js
   func encode() -> String {
-    return JSON(["theme": theme.rawValue, "fontType": fontType.rawValue, "fontSize": fontSize.rawValue] as [String: Any]).stringValue() ?? ""
+    return JSON(
+      ["theme": theme.rawValue, "fontType": fontType.rawValue, "fontSize": fontSize.rawValue]
+        as [String: Any]
+    ).stringValue() ?? ""
   }
 
   /// Encode the style to a dictionary that can be stored in the profile
@@ -155,7 +158,11 @@ struct ReaderModeStyle {
   }
 }
 
-let DefaultReaderModeStyle = ReaderModeStyle(theme: .light, fontType: .sansSerif, fontSize: ReaderModeFontSize.defaultSize)
+let defaultReaderModeStyle = ReaderModeStyle(
+  theme: .light,
+  fontType: .sansSerif,
+  fontSize: ReaderModeFontSize.defaultSize
+)
 
 /// This struct captures the response from the Readability.js code.
 struct ReadabilityResult {
@@ -171,7 +178,7 @@ struct ReadabilityResult {
       guard JSONSerialization.isValidJSONObject(dict) else {
         return nil
       }
-      
+
       if let uri = dict["uri"] as? NSDictionary {
         if let url = uri["spec"] as? String {
           self.url = url
@@ -221,7 +228,10 @@ struct ReadabilityResult {
 
   /// Encode to a dictionary, which can then for example be json encoded
   func encode() -> [String: Any] {
-    return ["domain": domain, "url": url, "content": content, "title": title, "credits": credits, "dir": direction]
+    return [
+      "domain": domain, "url": url, "content": content, "title": title, "credits": credits,
+      "dir": direction,
+    ]
   }
 
   /// Encode to a JSON encoded string
@@ -233,12 +243,20 @@ struct ReadabilityResult {
 
 /// Delegate that contains callbacks that we have added on top of the built-in WKWebViewDelegate
 protocol ReaderModeScriptHandlerDelegate: AnyObject {
-  func readerMode(_ readerMode: ReaderModeScriptHandler, didChangeReaderModeState state: ReaderModeState, forTab tab: Tab)
+  func readerMode(
+    _ readerMode: ReaderModeScriptHandler,
+    didChangeReaderModeState state: ReaderModeState,
+    forTab tab: Tab
+  )
   func readerMode(_ readerMode: ReaderModeScriptHandler, didDisplayReaderizedContentForTab tab: Tab)
-  func readerMode(_ readerMode: ReaderModeScriptHandler, didParseReadabilityResult readabilityResult: ReadabilityResult, forTab tab: Tab)
+  func readerMode(
+    _ readerMode: ReaderModeScriptHandler,
+    didParseReadabilityResult readabilityResult: ReadabilityResult,
+    forTab tab: Tab
+  )
 }
 
-let ReaderModeNamespace = "window.__firefox__.reader"
+let readerModeNamespace = "window.__firefox__.reader"
 
 class ReaderModeScriptHandler: TabContentScript {
   weak var delegate: ReaderModeScriptHandlerDelegate?
@@ -250,7 +268,7 @@ class ReaderModeScriptHandler: TabContentScript {
   required init(tab: Tab) {
     self.tab = tab
   }
-  
+
   static let scriptName = "ReaderModeScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "readerModeMessageHandler"
@@ -281,19 +299,23 @@ class ReaderModeScriptHandler: TabContentScript {
     delegate?.readerMode(self, didParseReadabilityResult: readabilityResult, forTab: tab)
   }
 
-  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceiveScriptMessage message: WKScriptMessage,
+    replyHandler: (Any?, String?) -> Void
+  ) {
     defer { replyHandler(nil, nil) }
-    
+
     if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
       assertionFailure("Missing required security token.")
       return
     }
-    
+
     guard let body = message.body as? [String: AnyObject] else {
       return
     }
 
-    if let msg = body["data"] as? Dictionary<String, Any> {
+    if let msg = body["data"] as? [String: Any] {
       if let messageType = ReaderModeMessageType(rawValue: msg["Type"] as? String ?? "") {
         switch messageType {
         case .pageEvent:
@@ -315,10 +337,15 @@ class ReaderModeScriptHandler: TabContentScript {
     }
   }
 
-  var style: ReaderModeStyle = DefaultReaderModeStyle {
+  var style: ReaderModeStyle = defaultReaderModeStyle {
     didSet {
       if state == ReaderModeState.active {
-        tab?.webView?.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).setStyle", args: [style.encode()], contentWorld: Self.scriptSandbox, escapeArgs: false) { (object, error) -> Void in
+        tab?.webView?.evaluateSafeJavaScript(
+          functionName: "\(readerModeNamespace).setStyle",
+          args: [style.encode()],
+          contentWorld: Self.scriptSandbox,
+          escapeArgs: false
+        ) { (object, error) -> Void in
           return
         }
       }

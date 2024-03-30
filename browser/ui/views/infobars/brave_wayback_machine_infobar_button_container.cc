@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
 
@@ -41,7 +41,7 @@ BraveWaybackMachineInfoBarButtonContainer::
 BraveWaybackMachineInfoBarButtonContainer::
     ~BraveWaybackMachineInfoBarButtonContainer() = default;
 
-void BraveWaybackMachineInfoBarButtonContainer::Layout() {
+void BraveWaybackMachineInfoBarButtonContainer::Layout(PassKey) {
   if (throbber_->GetVisible()) {
     int x = button_->width() - throbber_->width() - kThrobberDiameter / 2;
     int y = (button_->height() - throbber_->height()) / 2;
@@ -60,14 +60,14 @@ void BraveWaybackMachineInfoBarButtonContainer::StartThrobber() {
   AdjustButtonInsets(true);
   throbber_->SetVisible(true);
   throbber_->Start();
-  Layout();
+  DeprecatedLayoutImmediately();
 }
 
 void BraveWaybackMachineInfoBarButtonContainer::StopThrobber() {
   AdjustButtonInsets(false);
   throbber_->SetVisible(false);
   throbber_->Stop();
-  Layout();
+  DeprecatedLayoutImmediately();
 }
 
 void BraveWaybackMachineInfoBarButtonContainer::AdjustButtonInsets(

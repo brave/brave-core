@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Beginnen Sie, Rewards zu nutzen</translation>
 <translation id="8220484609979012449">\n\nSie können trotzdem Kyptobeiträge an diesen Ersteller senden, indem Sie Ihr Web3-Wallet nutzen.</translation>
 <translation id="6385969012847057348">Der Ersteller kann keine Beiträge von <ph name="CUSTODIAN"/> erhalten.</translation>
+<translation id="735733310778086206">Dieser Ersteller kann noch keine Web3- oder Krypto-Zahlungen empfangen.</translation>
 <translation id="6268134562674951939">Sie haben nicht genügend Token</translation>
 <translation id="4529874892536380156">Machen Sie einen monatlich wiederkehrenden Beitrag daraus. Sie können ihn jederzeit beenden.</translation>
 <translation id="5562948772940025260">Sie können mithilfe Ihres Brave Rewards-Guthabens höchstens <ph name="AMOUNT"/> BAT senden.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Während Sie die existierenden synchronisierten Geräte verwenden, öffnen Sie die Brave-Einstellungen &gt; Sync. Wählen Sie "Neues Gerät Hinzufügen" und scannen Sie den QR-Code, der auf dem Bildschirm angezeigt wird.</translation>
 <translation id="5241263629636958324">In die Zwischenablage kopiert</translation>
 <translation id="5817918615728894473">Koppeln</translation>
-<translation id="7090325819305486658">Datenpräferenzen</translation>
+<translation id="3429575397891106447">Synchronisierungs-Optionen</translation>
 <translation id="1680065323266179640">Synchronisierungskonto löschen</translation>
 <translation id="3792563952903751704">Wenn Sie Ihr Konto löschen, werden Ihre verschlüsselten Daten von den Brave-Servern entfernt und die Synchronisierung auf allen Ihren verknüpften Geräten deaktiviert. Die lokal auf diesen Geräten gespeicherten Daten werden dabei jedoch nicht gelöscht.
   Diese Löschung ist dauerhaft und die Daten können nicht wiederhergestellt werden. Falls Sie die Synchronisierung wieder verwenden möchten, müssen Sie ein neues Konto erstellen und jedes Gerät einzeln hinzufügen.</translation>
@@ -427,18 +428,10 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2394961582378297792">Abgemeldet</translation>
 <translation id="5308380583665731573">Verbinden</translation>
 <translation id="3368922792935385530">Verbunden</translation>
-<translation id="8673913984316081937">Die Verifizierung Ihres Wallets ist optional</translation>
-<translation id="8558636200953226885">Aber wenn Sie sich verifizieren, können Sie …</translation>
-<translation id="8697510149346635496">BAT abheben, die Sie mit dem Ansehen von Werbung verdienen, die Ihre Privatsphäre respektiert.</translation>
-<translation id="1481480653609649134">Kaufen Sie zusätzlich BAT mit Kreditkarten und anderen Quellen</translation>
-<translation id="9096003370755878766">Heben Sie die BAT ab, die Sie unter Umständen zu Ihrer Brave Rewards-Wallet hinzugefügt haben.</translation>
-<translation id="1554282356558968486">Unser Wallet-Service wird bereitgestellt von</translation>
 <translation id="6569877533335686968">Aufrechterhalten</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Uphold fordert Sie möglicherweise auf, Ihre Identität zu verifizieren. Dies beruht auf den von Ihnen angeforderten Services.</translation>
-<translation id="3200197118442451932">Brave Software Inc. verarbeitet, speichert oder greift auf keine der persönlichen Informationen zu, die Sie <ph name="WALLET_PROVIDER"/> zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
 <translation id="1665118090708049096">Zu meinem <ph name="WALLET_PROVIDER"/>-Konto wechseln</translation>
 <translation id="4858636682078269312">Bei Ihrem <ph name="WALLET_PROVIDER"/>-Konto anmelden</translation>
 <translation id="8874184842967597500">Nicht verbunden</translation>
@@ -525,7 +518,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2225863440766607138">Tracker</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">In den letzten 3 Stunden haben Sie <ph name="COUNT"/> Tracker &amp; Werbeanzeigen mit dem Brave Browser blockiert.</translation>
-<translation id="3621193901658023971">Browsen Sie in Brave bis zu 6 x schneller auf großen Nachrichtenseiten, indem Sie Tracker &amp; Werbeanzeigen blockieren.</translation>
+<translation id="5005713153542196658">Surfen Sie bis zu sechs Mal schneller auf den wichtigsten Nachrichtenseiten in Brave, indem Sie Tracker und Anzeigen blockieren.</translation>
 <translation id="7427567994475794038">Aktivieren Sie Privatsphäreberichte, um zu sehen, wie viele Tracker &amp; Werbeanzeigen in den letzten 3 Stunden blockiert wurden.</translation>
 <translation id="2053891538879944400">Sie haben <ph name="DATA"/> <ph name="DATA_TEXT"/> Daten mit dem Brave Browser gespart.</translation>
 <translation id="8640064498452534195">Aktivieren Sie die Privatsphäreberichte, um zu sehen, wie viele Daten Sie gespart haben.</translation>
@@ -590,6 +583,10 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8622329973403382303">Machen Sie eine schnelle Tour, um Ihre Kenntnisse darüber, wie es funktioniert, aufzufrischen und als Rewards-Rockstar in die Geschichte einzugehen!</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
 <translation id="7138272885617540195">Erlauben, dass Anwendungslinks in Anwendungen außerhalb von Brave geöffnet werden</translation>
+<translation id="4954512758656527938">Standard-Ethereum-Wallet</translation>
+<translation id="7701023802820268122">Standard-Solana-Wallet</translation>
+<translation id="7701040980221191251">Keine</translation>
+<translation id="8488282162676695335">Brave-Wallet</translation>
 <translation id="8792121506918889955">WebRTC-IP-Nutzungsrichtlinien</translation>
 <translation id="8798099450830957504">Standardeinstellung</translation>
 <translation id="1822560017823072927">Voreingestellte öffentliche und private Benutzerschnittstellen</translation>
@@ -599,14 +596,18 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1483493594462132177">Senden</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Einzahlen</translation>
-<translation id="1420318137760245955">Willkommen zur neuen Brave Wallet</translation>
-<translation id="8339846196588658366">Halten Sie Krypto-Assets in Ihrer Verwahrung und verfolgen Sie die Portfolio-Performance. Alles direkt über den Brave-Datenschutzbrowser.</translation>
-<translation id="4472575034687746823">Start</translation>
+<translation id="4556086616242530072">Browser-nativ.\nSelbstverwahrend.\nUnd Multi-Chain.</translation>
+<translation id="7909462264772842773">Übernehmen Sie die Kontrolle über Ihre Kryptowährungen und NFTs. Brave Wallet unterstützt Ethereum, EVM-Ketten, Solana, Filecoin und mehr.</translation>
+<translation id="165255193061631296">Brauchen Sie eine neue Wallet?</translation>
+<translation id="3485737865439729577">Starten Sie innerhalb weniger Minuten mit Brave Wallet</translation>
 <translation id="2759836790106646094">Sichere jetzt deine Wallet!</translation>
 <translation id="1078873179929044999">Im nächsten Schritt sehen Sie eine 12-Wörter-Wiederherstellungsphrase, mit der Sie Ihre primären Krypto-Konten wiederherstellen können. Speichern Sie sie an einem sicheren Ort. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff im Falle eines vergessenen Passworts, eines verlorenen oder gestohlenen Geräts oder eines Wechsels der Wallet wiederzuerlangen.</translation>
 <translation id="2359808026110333948">Fortfahren</translation>
 <translation id="5488357322146334497">Nachricht</translation>
 <translation id="1904000155026201268">Mir ist bewusst, dass ich keinen Zugriff auf mein Krypto-Wallet mehr habe, wenn ich meine Formulierung zur Wiederherstellung zur Wiederherstellung verliere.</translation>
+<translation id="5333225216561354793">Wir setzen voraus, dass Sie die folgenden Punkte anerkennen</translation>
+<translation id="1645800479814134195">Ich verstehe, dass es sich um eine eigenverwahrte Wallet handelt und dass ich allein für alle damit verbundenen Gelder, Assets oder Konten verantwortlich bin und dass ich angemessene Maßnahmen ergreifen muss, um meine Wallet zu sichern und zu schützen. Ich verstehe, dass Brave nicht auf meine Wallet zugreifen oder Transaktionen in meinem Namen rückgängig machen kann und dass meine Wiederherstellungsphrase die einzige Möglichkeit ist, um im Falle eines verlorenen Passworts, eines gestohlenen Geräts oder ähnlicher Umstände wieder Zugriff zu erhalten.</translation>
+<translation id="4565891212173086999">Ich habe die <ph name="CLICK_START"/>Nutzungsbedingungen<ph name="CLICK_END"/> gelesen und stimme ihnen zu.</translation>
 <translation id="3933122286596948824">Deine Formulierung zur Wiederherstellung</translation>
 <translation id="5077747669435508720">Schreiben oder kopieren Sie diese Wörter in der genauen Reihenfolge, die unten gezeigt wird, und bewahren Sie sie an einem sicheren Ort auf. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff wiederzuerlangen, wenn Sie Ihr Passwort vergessen, Ihr Gerät verloren oder gestohlen haben oder Ihre Wallet wechseln möchten.</translation>
 <translation id="2708402071160162126">WARNUNG: Teilen Sie niemals Ihre Wiederherstellungsphrase. Wer diese Phrase besitzt, kann sich Ihre Assets permanent aneignen.</translation>
@@ -651,6 +652,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3747079125031086337">Wählen Sie die Wörter in Ihrer Wiederherstellungsphrase in der richtigen Reihenfolge aus.</translation>
 <translation id="6518133107902771759">Überprüfen</translation>
 <translation id="3157931365184549694">Wiederherstellen</translation>
+<translation id="5844138175312846408">Haben Sie bereits eine Wallet?</translation>
+<translation id="2502258949541727762">Bevor es losgeht</translation>
+<translation id="5981303441790732480">Ihre vorhandene Wallet importieren</translation>
 <translation id="9111102763498581341">Entsperren</translation>
 <translation id="6657585470893396449">Passwort</translation>
 <translation id="5619264711680220002">Biometrische Entsperrung</translation>
@@ -669,7 +673,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5483736362376139517">1 Jahr</translation>
 <translation id="6979737339423435258">Gesamte Zeit</translation>
 <translation id="6284218950354553099">Ping der täglichen Nutzung automatisch an Brave senden.</translation>
-<translation id="5288333155754958121">Mit diesem anonymen, privaten Ping kann Brave die aktiven Nutzer schätzen.</translation>
+<translation id="2181060149810222381">Mit diesem privaten Ping kann Brave die aktiven Nutzer schätzen.</translation>
 <translation id="3819257035322786455">Sichern</translation>
 <translation id="4608713693379664295">Primäre Kryptokonten</translation>
 <translation id="4003821417160006384">Sekundärkonten</translation>
@@ -685,7 +689,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8475984867371585028">Sichtbare NFTs bearbeiten</translation>
 <translation id="5050890334032852465">Konto-Überwachungsliste speichern</translation>
 <translation id="7755766175599167100">Token suchen</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Sperren</translation>
 <translation id="4412698727486357573">Hilfe-Center</translation>
 <translation id="8796429300536029044">NFT-Detail</translation>
@@ -717,12 +720,12 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8272917646984397798">Sichert alle Verbindungen</translation>
 <translation id="1751947227857853925">Schnell und unbegrenzt bis zu 100 Mbit/s</translation>
 <translation id="1400240082805528049">Support rund um die Uhr</translation>
-<translation id="5051030058817632680">Blockiert unerwünschte Netzwerkverbindungen</translation>
+<translation id="5892534145504632332">Schützen Sie jede App und Ihr gesamtes Gerät</translation>
+<translation id="7195416926059527505">Mehr Sicherheit in häuslichen oder öffentlichen WLAN-Netzwerken</translation>
+<translation id="1354700000739359839">Hohe Geschwindigkeiten von bis zu 100 Mbit/s</translation>
 <translation id="3510283489391432976">Wählen Sie Ihren Standort/Ihren Land</translation>
-<translation id="4390800080658195654">Hält Sie online anonym</translation>
-<translation id="639981156979733813">Unterstützt Geschwindigkeiten von bis zu 100 Mbit/s</translation>
-<translation id="765343799669302337">Verwendet einen sicheren verschlüsselten WireGuard-VPN-Tunnel</translation>
-<translation id="1571230671455380494">Wir teilen oder verkaufen Ihre Daten niemals</translation>
+<translation id="7695158478627528928">Keine Protokollierung Ihrer Aktivitäten durch Brave</translation>
+<translation id="4575683170451975058">Schutz von 5 Geräten mit 1 Abonnement</translation>
 <translation id="276866628038850725">Alle Abos beinhalten eine kostenlose 7-Tage-Testversion!</translation>
 <translation id="1532536259167115948">Monatsabo <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Jahresabo <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +736,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">Sieben Tage kostenlos ausprobieren. Nach sieben Tagen wird Ihnen der Abopreis in Rechnung gestellt. Alle Abonnements werden automatisch verlängert, können aber vor der Verlängerung gekündigt werden.</translation>
 <translation id="6053992191006521518">KOSTENLOS testen</translation>
+<translation id="3990956504562716932">7 Tage lang kostenlos testen</translation>
 <translation id="721747358270435486">VPN installieren</translation>
 <translation id="836074276610740314">VPN-Profil installieren</translation>
 <translation id="8021842065465097929">Brave installiert nun ein VPN-Profil.</translation>
@@ -1117,71 +1121,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="591648995518106347">Berechtigte Artikel automatisch im Lesemodus laden</translation>
 <translation id="1295796122927221823">Im Lesemodus ansehen</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> im <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Brave Playlist</translation>
-<translation id="4850886885716139402">Anzeigen</translation>
-<translation id="7392941176393379100">Zu '<ph name="PLAYLIST_NAME"/>' hinzugefügt</translation>
-<translation id="8289472222022674331">Verwaltung Ihrer Playlist-Daten</translation>
-<translation id="7650602357673790368">Standardmäßig speichert die Playlist Inhalte auf Ihrem Gerät, damit sie offline wiedergegeben werden können (sowohl auf privaten als auch auf freigegebenen Playlists). Wenn Sie nicht im WLAN sind, nutzt die automatische Speicherung Ihr mobiles Datenvolumen.\n\nSie können diesen Standard in den Einstellungen ändern.</translation>
-<translation id="5900576657906675258">Element zur Playlist hinzufügen</translation>
-<translation id="349846214503465941">Playlist aktivieren</translation>
-<translation id="1309636029062006520">Erstellen Sie Playlists aus Ihren liebsten Audios und Videos und spielen Sie sie überall und jederzeit ab.</translation>
-<translation id="3561815498111282415">Automatisch offline speichern</translation>
-<translation id="1832424694374124654">Speichert neue Playlist-Elemente automatisch auf Ihrem Gerät, damit sie ohne Internetverbindung wiedergegeben werden können.</translation>
-<translation id="8103022210423023846">Automatische Speicherung EIN</translation>
-<translation id="3926329432879804185">Automatische Speicherung AUS</translation>
-<translation id="7768812595186089508">Automatische Speicherung nur bei WLAN-Verbindung</translation>
-<translation id="5939518447894949180">Zurücksetzen</translation>
-<translation id="8199028711686989861">Alle Videos aus Playlist löschen, einschließlich Speicherung im Offline-Modus.</translation>
-<translation id="5916664084637901428">An</translation>
-<translation id="5860033963881614850">Aus</translation>
-<translation id="2920568868625746681">Nur WLAN</translation>
-<translation id="4590997608186539865">Playlist</translation>
-<translation id="7525067979554623046">Erstellen</translation>
-<translation id="5491049004699827548">Erstellen Sie Ihre erste Playlist</translation>
-<translation id="5319108110887582146">Erstellen Sie eine Playlist aus Ihren liebsten Audios und Videos und spielen Sie sie überall und jederzeit ab. Sogar offline.</translation>
-<translation id="6802849415466883498">Playlist erstellen</translation>
-<translation id="8525248723479742219">Später abspielen</translation>
-<translation id="7453007860684252933">Durchsuchen und hinzufügen</translation>
-<translation id="9014883386413828317">Fügen Sie Ihre Lieblingsinhalte hinzu. Achten Sie auf die Schaltfläche (+) im rechten unteren Bereich des Bildschirms.</translation>
-<translation id="5928669500312007783">Nach Medien suchen</translation>
-<translation id="8152485753254079984">Neue Playlist</translation>
-<translation id="9130105487623071247">Name der Playlist</translation>
-<translation id="726581235416249619">Unbenannte Playlist</translation>
-<translation id="1456254983411148628">Daten entfernen</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> ausgewählt</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> Elemente</translation>
-<translation id="2317629745818459803">Alle wiedergeben</translation>
-<translation id="7544853251252956727">Zufallsmix</translation>
-<translation id="2881339830231736485">Kürzlich wiedergegeben</translation>
-<translation id="7636458383879257005">Tippen, gedrückt halten oder ziehen</translation>
-<translation id="8120600068258956006">Zur Playlist hinzufügen</translation>
-<translation id="39991094779686024">Playlisten</translation>
-<translation id="1710072605877822603">Medien hinzufügen</translation>
-<translation id="3874252678044305931">Fügen Sie Videos zur Playlist hinzu. Geben Sie sie jederzeit wieder, auch offline.</translation>
-<translation id="8973629800378391099">Machen Sie Playlists zu Ihren Lieblingsinhalten. Speichern Sie mobile Daten. Und geben Sie sie ohne Werbung wieder.</translation>
-<translation id="4936812987266342401">Tippen Sie einfach auf die Schaltfläche, um Videos zu einer Playlist hinzuzufügen</translation>
-<translation id="6263657785571415306">Bleiben Sie im Fluss: Fügen Sie Videos hinzu, während Sie surfen, und sehen Sie sich später an.</translation>
-<translation id="2839555636100404687">Die Wiedergabe in einer Playlist ist besser</translation>
-<translation id="9079526681359439081">Im Hintergrund wiedergeben. Aus dem Sperrbildschirm steuern. Und mehr...</translation>
-<translation id="3620862810055853183">Playlist öffnen</translation>
-<translation id="3861012838874771868">Playlist-Einstellungen öffnen</translation>
-<translation id="5220099266891491416">Schaltfläche Playlist ausblenden</translation>
-<translation id="7416347631175891923">Probieren Sie es!</translation>
-<translation id="1173894706177603556">Umbenennen</translation>
-<translation id="1620612903815671893">Offlinedaten der Playlist entfernen</translation>
-<translation id="3261711068865275261">Alle Offline-Daten entfernen</translation>
-<translation id="6653691766801349738">Playlist für Offline-Nutzung behalten</translation>
-<translation id="8708086574143054053">Alle Playlists für Offline-Nutzung behalten</translation>
-<translation id="3596306474342941843">Playlist löschen</translation>
-<translation id="7765158879357617694">Verschieben</translation>
-<translation id="3803384303807438047">Offline-Daten des Elements löschen</translation>
-<translation id="4195643157523330669">In neuem Tab öffnen</translation>
-<translation id="4243710787042215766">In privater Registerkarte öffnen</translation>
-<translation id="8261506727792406068">Löschen</translation>
-<translation id="377872456482681602">Bitte wählen Sie zuerst Elemente aus</translation>
-<translation id="6172429305139364624">Playlist-Element wird nicht zwischengespeichert.\nBitte zwischenspeichern Sie das Element zur Offline-Nutzung.</translation>
-<translation id="3631131732607750008">Inhalt abgelaufen. Versuchen Sie es in ein paar Sekunden erneut.</translation>
-<translation id="286472539388773794">Bitte geben Sie einen gültigen Playlistnamen ein</translation>
 <translation id="9085765419770918643">Es gibt noch keine NFTs hier.</translation>
 <translation id="8445532667841598737">Bereit, einige hinzuzufügen? Klicken Sie zum Importieren einfach auf die untenstehende Schaltfläche.</translation>
 <translation id="5925465310724910998">Sie möchten, dass Ihre NFTs automatisch angezeigt werden?</translation>
@@ -1190,12 +1129,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="622372328961630111">Fügen Sie über Drittanbieter-APIs automatisch Ihre eigenen NFTs zur Wallet hinzu. <ph name="BEGIN_LINK_1"/>Erfahren Sie mehr.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Konto der Adresssuch-Tabelle:</translation>
 <translation id="7659483790930268440">Index der Adresssuch-Tabelle:</translation>
-<translation id="7322560193401221004">Wiedergabeposition merken</translation>
-<translation id="7505951907514709271">Setzen Sie die Wiedergabe für Einzeldateien dort fort, wo Sie sie zuletzt angehalten haben</translation>
-<translation id="6835165453349969605">Wiedergabeposition der Liste merken</translation>
-<translation id="6344103698928069918">Setzen Sie die Wiedergabe für eine Playlist dort fort, wo Sie sie zuletzt angehalten haben.</translation>
-<translation id="8141583471142904652">Ohne Unterbrechung hören</translation>
-<translation id="851432578283946230">Spielt automatisch die nächsten Titel in Ihrer Playlist ab</translation>
 <translation id="7853202427316060426">Aktivität</translation>
 <translation id="4932733599132424254">Datum</translation>
 <translation id="346505172740911461">Marktpreis</translation>
@@ -1212,6 +1145,86 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2471230424465522689">Nicht vor</translation>
 <translation id="4841860051609590575">Anfragen-ID</translation>
 <translation id="1179407411385015942">Leo ist ein intelligenter KI-Assistent, der direkt in den Browser integriert ist</translation>
+<translation id="4109670531935487117">Vorschläge zur Autovervollständigung in der Adressleiste anzeigen</translation>
 <translation id="1250335737108905610">Leo-Daten zurücksetzen und löschen</translation>
 <translation id="6165101586663336913">Wenn Sie den Leo-Assistenten zurücksetzen, müssen Sie sich in Zukunft erneut bereiterklären, Leo zu nutzen. Außerdem wird Ihr Chatverlauf gelöscht. Wenn Sie Ihren Chatverlauf löschen, werden alle bisherigen Unterhaltungen mit Leo entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden.</translation>
+<translation id="3692772534525889713">Verknüpfen Sie Ihren Play Store-Kauf mit Ihrem Brave-Konto, um Brave Leo auf anderen Geräten verwenden zu können.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Monatlich</translation>
+<translation id="451189393813405346">Leo fragen</translation>
+<translation id="7322560193401221004">Wiedergabeposition merken</translation>
+<translation id="7505951907514709271">Setzen Sie die Wiedergabe für Einzeldateien dort fort, wo Sie sie zuletzt angehalten haben</translation>
+<translation id="6835165453349969605">Wiedergabeposition der Liste merken</translation>
+<translation id="6344103698928069918">Setzen Sie die Wiedergabe für eine Playlist dort fort, wo Sie sie zuletzt angehalten haben.</translation>
+<translation id="8141583471142904652">Ohne Unterbrechung hören</translation>
+<translation id="851432578283946230">Spielt automatisch die nächsten Titel in Ihrer Playlist ab</translation>
+<translation id="295620834661738195">Brave Playlist</translation>
+<translation id="4850886885716139402">Anzeigen</translation>
+<translation id="7392941176393379100">Zu '<ph name="PLAYLIST_NAME"/>' hinzugefügt</translation>
+<translation id="349846214503465941">Playlist aktivieren</translation>
+<translation id="1309636029062006520">Erstellen Sie Playlists aus Ihren liebsten Audios und Videos und spielen Sie sie überall und jederzeit ab.</translation>
+<translation id="7899390017499980820">Schaltfläche „Zur Playlist hinzufügen“</translation>
+<translation id="6901152954398668317">Schaltfläche "Zur Playlist hinzufügen" für schnellen Zugriff und zum Hinzufügen oder Entfernen von Medien anzeigen oder ausblenden.</translation>
+<translation id="5939518447894949180">Zurücksetzen</translation>
+<translation id="8199028711686989861">Alle Videos aus Playlist löschen, einschließlich Speicherung im Offline-Modus.</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Erstellen</translation>
+<translation id="8525248723479742219">Später abspielen</translation>
+<translation id="7453007860684252933">Durchsuchen und hinzufügen</translation>
+<translation id="9014883386413828317">Fügen Sie Ihre Lieblingsinhalte hinzu. Achten Sie auf die Schaltfläche (+) im rechten unteren Bereich des Bildschirms.</translation>
+<translation id="5928669500312007783">Nach Medien suchen</translation>
+<translation id="8152485753254079984">Neue Playlist</translation>
+<translation id="9130105487623071247">Name der Playlist</translation>
+<translation id="726581235416249619">Unbenannte Playlist</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> ausgewählt</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> Elemente</translation>
+<translation id="2317629745818459803">Alle wiedergeben</translation>
+<translation id="7544853251252956727">Zufallsmix</translation>
+<translation id="2881339830231736485">Kürzlich wiedergegeben</translation>
+<translation id="8120600068258956006">Zur Playlist hinzufügen</translation>
+<translation id="39991094779686024">Playlisten</translation>
+<translation id="1710072605877822603">Medien hinzufügen</translation>
+<translation id="3874252678044305931">Fügen Sie Videos zur Playlist hinzu. Geben Sie sie jederzeit wieder, auch offline.</translation>
+<translation id="8973629800378391099">Machen Sie Playlists zu Ihren Lieblingsinhalten. Speichern Sie mobile Daten. Und geben Sie sie ohne Werbung wieder.</translation>
+<translation id="4936812987266342401">Tippen Sie einfach auf die Schaltfläche, um Videos zu einer Playlist hinzuzufügen</translation>
+<translation id="6263657785571415306">Bleiben Sie im Fluss: Fügen Sie Videos hinzu, während Sie surfen, und sehen Sie sich später an.</translation>
+<translation id="2839555636100404687">Die Wiedergabe in einer Playlist ist besser</translation>
+<translation id="9079526681359439081">Im Hintergrund wiedergeben. Aus dem Sperrbildschirm steuern. Und mehr...</translation>
+<translation id="3620862810055853183">Playlist öffnen</translation>
+<translation id="3861012838874771868">Playlist-Einstellungen öffnen</translation>
+<translation id="5220099266891491416">Schaltfläche Playlist ausblenden</translation>
+<translation id="7416347631175891923">Probieren Sie es!</translation>
+<translation id="1173894706177603556">Umbenennen</translation>
+<translation id="3596306474342941843">Playlist löschen</translation>
+<translation id="7765158879357617694">Verschieben</translation>
+<translation id="3803384303807438047">Offline-Daten des Elements löschen</translation>
+<translation id="4195643157523330669">In neuem Tab öffnen</translation>
+<translation id="4243710787042215766">In privater Registerkarte öffnen</translation>
+<translation id="8261506727792406068">Löschen</translation>
+<translation id="377872456482681602">Bitte wählen Sie zuerst Elemente aus</translation>
+<translation id="286472539388773794">Bitte geben Sie einen gültigen Playlistnamen ein</translation>
+<translation id="2824489375399072491">Teilen mit:</translation>
+<translation id="5319532905552885478">Medieninhalte sind bereits zur Standard-Wiedergabeliste hinzugefügt</translation>
+<translation id="4802584673094436231">Wird vorbereitet …</translation>
+<translation id="481455355267255546">Nächster</translation>
+<translation id="5474757891469990756">Entfesseln Sie mit Premium die volle Stärke von Leo:</translation>
+<translation id="4173478269537830374">Erkunden Sie verschiedene KI-Modelle</translation>
+<translation id="3453542753968940696">Prioritärer Zugang zu leistungsstarken Modellen mit unterschiedlichen Fähigkeiten.</translation>
+<translation id="3245401959451976966">Entfesseln Sie Ihre Kreativität</translation>
+<translation id="5031778211368112461">Erhalten Sie Zugang zu Modellen, die besser für kreative Aufgaben und die Erstellung von Inhalten geeignet sind.</translation>
+<translation id="4165928407303989823">Bleiben Sie beim Thema</translation>
+<translation id="298783097210745222">Erhalten Sie genauere Antworten für differenziertere Gespräche.</translation>
+<translation id="2389665228467129817">Chatten Sie länger</translation>
+<translation id="4314705522985583059">Holen Sie sich höhere Antwortquoten für längere Gespräche.</translation>
+<translation id="6365289557497555234">Alle Abonnements werden automatisch verlängert, können\naber jederzeit vor der Erneuerung gekündigt werden.</translation>
+<translation id="6637015365469044269">Jetzt Upgrade durchführen</translation>
+<translation id="614530507403667291">Standardmodell für neue Unterhaltungen</translation>
+<translation id="4071849832011229600">Standardmodell</translation>
+<translation id="4185473179105062442">Erhalten Sie BAT direkt an eine Selbstverwahrungs-Kryptoadresse</translation>
+<translation id="5802986777701714573">Wir haben eine neue Möglichkeit für Sie geschaffen, Ihre monatlichen BAT-Belohnungen zu erhalten. Verknüpfen Sie ein Konto von einem unserer Partner oder nutzen Sie die neue Möglichkeit der Selbstverwahrung, um jetzt anzufangen zu verdienen.</translation>
+<translation id="7557539689487606886">Jetzt Premium sichern</translation>
+<translation id="5538904824395606812">Ihren aktuellen Dienstanbieter oder Quad9 nutzen</translation>
+<translation id="6393423486818299209">Ihren aktuellen Dienstanbieter oder Wikimedia DNS nutzen</translation>
+<translation id="3401384982562827787">Ihren aktuellen Dienstanbieter oder Cloudflare nutzen</translation>
+<translation id="8812367543786936496">Wenn Ihr aktueller Dienstanbieter unsicher ist, nutzt Brave einen alternativen, sicheren DNS-Anbieter</translation>
 </translationbundle>

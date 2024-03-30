@@ -159,5 +159,5 @@ void PlaylistActionIconView::OnAddedItemFromTabHelper(
   }
 }
 
-BEGIN_METADATA(PlaylistActionIconView, PageActionIconView);
+BEGIN_METADATA(PlaylistActionIconView);
 END_METADATA

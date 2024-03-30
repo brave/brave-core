@@ -1,10 +1,11 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import XCTest
+
 @testable import BraveNews
 
 // Tests things that all fill strategies should do the same
@@ -72,7 +73,8 @@ class DefaultFillStrategyTests: XCTestCase {
       return .init(score: 0, content: article, source: .mock)
     }
     var list: [FeedItem] =
-      (0..<3).map { _ in .init(score: 0, content: .mockArticle, source: .mock) } + adjustedScoresList
+      (0..<3).map { _ in .init(score: 0, content: .mockArticle, source: .mock) }
+      + adjustedScoresList
     let listCopy = list
     let items = strategy.next(3, from: &list, where: { ($0.content.baseScore ?? 0) >= 10 })
     XCTAssertEqual(items, adjustedScoresList)
@@ -114,7 +116,8 @@ class FilteredFillStrategyTests: XCTestCase {
       return .init(score: 0, content: article, source: .mock)
     }
     var list: [FeedItem] =
-      (0..<3).map { _ in .init(score: 0, content: .mockArticle, source: .mock) } + adjustedScoresList
+      (0..<3).map { _ in .init(score: 0, content: .mockArticle, source: .mock) }
+      + adjustedScoresList
     let listCopy = list
     let items = strategy.next(3, from: &list, where: { ($0.content.baseScore ?? 0) >= 10 })
     XCTAssertEqual(items, adjustedScoresList)

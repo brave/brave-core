@@ -18,9 +18,9 @@
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
 #include "url/gurl.h"
@@ -28,6 +28,10 @@
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
+
+namespace data_decoder {
+class DataDecoder;
+}
 
 namespace api_request_helper {
 
@@ -93,14 +97,16 @@ struct APIRequestOptions {
   std::optional<base::TimeDelta> timeout;
 };
 
+using ValueOrError = base::expected<base::Value, std::string>;
+
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
 // Unit tests which need to use the data decoding from this class can use
 // data_decoder::test::InProcessDataDecoder to run all decode operations
 // in-process.
 class APIRequestHelper {
  public:
-  using DataReceivedCallback = base::RepeatingCallback<void(
-      data_decoder::DataDecoder::ValueOrError result)>;
+  using DataReceivedCallback =
+      base::RepeatingCallback<void(ValueOrError result)>;
   using ResultCallback = base::OnceCallback<void(APIRequestResult)>;
   using ResponseStartedCallback =
       base::OnceCallback<void(const std::string& url,
@@ -111,7 +117,8 @@ class APIRequestHelper {
 
   class URLLoaderHandler : public network::SimpleURLLoaderStreamConsumer {
    public:
-    explicit URLLoaderHandler(APIRequestHelper* api_request_helper);
+    URLLoaderHandler(APIRequestHelper* api_request_helper,
+                     scoped_refptr<base::SequencedTaskRunner> task_runner);
     ~URLLoaderHandler() override;
     URLLoaderHandler(const URLLoaderHandler&) = delete;
     URLLoaderHandler& operator=(const URLLoaderHandler&) = delete;
@@ -127,7 +134,8 @@ class APIRequestHelper {
    private:
     friend class APIRequestHelper;
 
-    data_decoder::DataDecoder* GetDataDecoder();
+    void ParseJsonImpl(std::string json,
+                       base::OnceCallback<void(ValueOrError)> callback);
 
     // Run completion callback if there are no operations in progress.
     // If Cancel is needed even if url or data operations are in progress,
@@ -146,9 +154,8 @@ class APIRequestHelper {
                     const std::unique_ptr<std::string> response_body);
 
     // Decode one shot responses
-    void OnParseJsonResponse(
-        APIRequestResult result,
-        data_decoder::DataDecoder::ValueOrError result_value);
+    void OnParseJsonResponse(APIRequestResult result,
+                             ValueOrError result_value);
 
     std::unique_ptr<network::SimpleURLLoader> url_loader_;
     raw_ptr<APIRequestHelper> api_request_helper_;
@@ -171,6 +178,8 @@ class APIRequestHelper {
     // completes.
     int current_decoding_operation_count_ = 0;
     bool request_is_finished_ = false;
+
+    const scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
     base::WeakPtrFactory<URLLoaderHandler> weak_ptr_factory_{this};
   };
@@ -248,8 +257,12 @@ class APIRequestHelper {
   net::NetworkTrafficAnnotationTag annotation_tag_;
   URLLoaderHandlerList url_loaders_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  const scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::WeakPtrFactory<APIRequestHelper> weak_ptr_factory_{this};
 };
+
+void SanitizeAndParseJson(std::string json,
+                          base::OnceCallback<void(ValueOrError)> callback);
 
 }  // namespace api_request_helper
 

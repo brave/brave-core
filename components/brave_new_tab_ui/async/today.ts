@@ -64,9 +64,6 @@ handler.on<Actions.ReadFeedItemPayload>(
   Actions.readFeedItem.getType(),
   async (store, payload) => {
     const state = store.getState() as ApplicationState
-    getBraveNewsController().onSessionCardVisitsCountChanged(
-      state.today.cardsVisited
-    )
     if (payload.isPromoted) {
       const promotedArticle = payload.item.promotedArticle
       if (!promotedArticle) {
@@ -137,8 +134,7 @@ handler.on<number>(
   Actions.feedItemViewedCountChanged.getType(),
   async (store, payload) => {
     const state = store.getState() as ApplicationState
-    getBraveNewsController().onSessionCardViewsCountChanged(
-      state.today.cardsViewed,
+    getBraveNewsController().onNewCardsViewed(
       state.today.cardsViewedDelta
     )
   }

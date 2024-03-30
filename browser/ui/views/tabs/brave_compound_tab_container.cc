@@ -55,8 +55,8 @@ class ContentsView : public views::View {
 //    In order to avoid that, attach overlay scroll bar which doesn't take
 //    space.
 class CustomScrollView : public views::ScrollView {
+  METADATA_HEADER(CustomScrollView, views::ScrollView)
  public:
-  METADATA_HEADER(CustomScrollView);
 
   explicit CustomScrollView(PrefService* prefs)
       : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {
@@ -82,22 +82,22 @@ class CustomScrollView : public views::ScrollView {
       SetVerticalScrollBarMode(views::ScrollView::ScrollBarMode::kEnabled);
       // We can't use ScrollBarViews on Mac
 #if !BUILDFLAG(IS_MAC)
-      SetVerticalScrollBar(
-          std::make_unique<views::ScrollBarViews>(/* horizontal= */ false));
+      SetVerticalScrollBar(std::make_unique<views::ScrollBarViews>(
+          views::ScrollBar::Orientation::kVertical));
 #endif
     } else {
       SetVerticalScrollBarMode(
           views::ScrollView::ScrollBarMode::kHiddenButEnabled);
-      SetVerticalScrollBar(
-          std::make_unique<views::OverlayScrollBar>(/* horizontal= */ false));
+      SetVerticalScrollBar(std::make_unique<views::OverlayScrollBar>(
+          views::ScrollBar::Orientation::kVertical));
     }
-    Layout();
+    DeprecatedLayoutImmediately();
   }
 
   BooleanPrefMember should_show_scroll_bar_;
 };
 
-BEGIN_METADATA(CustomScrollView, views::ScrollView)
+BEGIN_METADATA(CustomScrollView)
 END_METADATA
 
 }  // namespace
@@ -176,7 +176,7 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
     auto* contents_view =
         scroll_view_->SetContents(std::make_unique<ContentsView>(this));
     contents_view->AddChildView(std::to_address(unpinned_tab_container_));
-    Layout();
+    DeprecatedLayoutImmediately();
   } else {
     unpinned_tab_container_->parent()->RemoveChildView(
         std::to_address(unpinned_tab_container_));
@@ -227,13 +227,13 @@ void BraveCompoundTabContainer::TransferTabBetweenContainers(
   }
 
   if (layout_dirty) {
-    Layout();
+    DeprecatedLayoutImmediately();
   }
 }
 
-void BraveCompoundTabContainer::Layout() {
+void BraveCompoundTabContainer::Layout(PassKey) {
   if (!ShouldShowVerticalTabs()) {
-    CompoundTabContainer::Layout();
+    LayoutSuperclass<CompoundTabContainer>(this);
     return;
   }
 
@@ -549,5 +549,5 @@ int BraveCompoundTabContainer::GetAvailableWidthConsideringScrollBar() {
   return width();
 }
 
-BEGIN_METADATA(BraveCompoundTabContainer, CompoundTabContainer)
+BEGIN_METADATA(BraveCompoundTabContainer)
 END_METADATA

@@ -15,7 +15,7 @@ source_set("unittests") {
 
     deps = [
       "//base/test:test_support",
-      "//brave/components/brave_shields/browser",
+      "//brave/components/brave_shields/content/browser",
       "//brave/components/resources:strings_grit",
       "//chrome/browser",
       "//chrome/browser/ui",

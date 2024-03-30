@@ -42,9 +42,9 @@ void PromotedContentAdHandler::TriggerEvent(
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type,
     TriggerAdEventCallback callback) {
-  CHECK_NE(mojom::PromotedContentAdEventType::kServed, event_type)
-      << "Should not be called with kServed as this event is handled when "
-         "calling TriggerEvent with kViewed";
+  CHECK_NE(mojom::PromotedContentAdEventType::kServedImpression, event_type)
+      << "Should not be called with kServedImpression as this event is handled "
+         "when calling TriggerEvent with kViewedImpression";
 
   if (creative_instance_id.empty()) {
     return std::move(callback).Run(/*success=*/false);
@@ -54,10 +54,10 @@ void PromotedContentAdHandler::TriggerEvent(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  if (event_type == mojom::PromotedContentAdEventType::kViewed) {
+  if (event_type == mojom::PromotedContentAdEventType::kViewedImpression) {
     return event_handler_.FireEvent(
         placement_id, creative_instance_id,
-        mojom::PromotedContentAdEventType::kServed,
+        mojom::PromotedContentAdEventType::kServedImpression,
         base::BindOnce(&PromotedContentAdHandler::TriggerServedEventCallback,
                        weak_factory_.GetWeakPtr(), creative_instance_id,
                        std::move(callback)));
@@ -82,27 +82,27 @@ void PromotedContentAdHandler::TriggerServedEventCallback(
 
   event_handler_.FireEvent(
       placement_id, creative_instance_id,
-      mojom::PromotedContentAdEventType::kViewed,
+      mojom::PromotedContentAdEventType::kViewedImpression,
       base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
 void PromotedContentAdHandler::OnDidFirePromotedContentAdServedEvent(
     const PromotedContentAdInfo& ad) {
-  BLOG(3, "Served promoted content ad with placement id "
+  BLOG(3, "Served promoted content ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 }
 
 void PromotedContentAdHandler::OnDidFirePromotedContentAdViewedEvent(
     const PromotedContentAdInfo& ad) {
-  BLOG(3, "Viewed promoted content ad with placement id "
+  BLOG(3, "Viewed promoted content ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewed);
+                    ConfirmationType::kViewedImpression);
 }
 
 void PromotedContentAdHandler::OnDidFirePromotedContentAdClickedEvent(

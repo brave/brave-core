@@ -49,7 +49,7 @@ class ViewCounterModel {
   void RegisterPageView();
   void MaybeResetBrandedWallpaperCount();
   void Reset();
-  void IncreaseBackgroundWallpaperImageIndex();
+  void RotateBackgroundWallpaperImageIndex();
 
  private:
   friend class NTPBackgroundImagesViewCounterTest;

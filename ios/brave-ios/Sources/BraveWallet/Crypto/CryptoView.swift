@@ -1,15 +1,15 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import SwiftUI
 import BraveCore
-import Introspect
 import BraveUI
+import Foundation
+import Introspect
 import Preferences
+import SwiftUI
+import UIKit
 
 public struct CryptoView: View {
   var walletStore: WalletStore
@@ -19,9 +19,9 @@ public struct CryptoView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
 
   var openWalletURLAction: ((URL) -> Void)?
-  
+
   var appRatingRequestAction: (() -> Void)?
-  
+
   @ObservedObject var isOnboardingCompleted = Preferences.Wallet.isOnboardingCompleted
 
   public init(
@@ -55,13 +55,14 @@ public struct CryptoView: View {
   @ToolbarContentBuilder
   private var dismissButtonToolbarContents: some ToolbarContent {
     ToolbarItemGroup(placement: .cancellationAction) {
-      Button(action: {
-        if case .requestPermissions(let request, let onPermittedAccountsUpdated) = presentingContext {
+      Button {
+        if case .requestPermissions(let request, let onPermittedAccountsUpdated) = presentingContext
+        {
           request.decisionHandler(.rejected)
           onPermittedAccountsUpdated([])
         }
         dismissAction()
-      }) {
+      } label: {
         Image("wallet-dismiss", bundle: .module)
           .renderingMode(.template)
           .foregroundColor(Color(.braveBlurpleTint))
@@ -143,7 +144,7 @@ public struct CryptoView: View {
                 }
               }
               .navigationViewStyle(.stack)
-            case .buySendSwap(let destination):
+            case .walletAction(let destination):
               switch destination.kind {
               case .buy:
                 BuyTokenView(
@@ -151,7 +152,7 @@ public struct CryptoView: View {
                   networkStore: store.networkStore,
                   buyTokenStore: store.openBuyTokenStore(destination.initialToken),
                   onDismiss: {
-                    store.closeBSSStores()
+                    store.closeWalletActionStores()
                     dismissAction()
                   }
                 )
@@ -162,12 +163,12 @@ public struct CryptoView: View {
                   sendTokenStore: store.openSendTokenStore(destination.initialToken),
                   completion: { success in
                     if success {
-                      store.closeBSSStores()
+                      store.closeWalletActionStores()
                       dismissAction()
                     }
                   },
                   onDismiss: {
-                    store.closeBSSStores()
+                    store.closeWalletActionStores()
                     dismissAction()
                   }
                 )
@@ -178,12 +179,26 @@ public struct CryptoView: View {
                   swapTokensStore: store.openSwapTokenStore(destination.initialToken),
                   completion: { success in
                     if success {
-                      store.closeBSSStores()
+                      store.closeWalletActionStores()
                       dismissAction()
                     }
                   },
                   onDismiss: {
-                    store.closeBSSStores()
+                    store.closeWalletActionStores()
+                    dismissAction()
+                  }
+                )
+              case .deposit(let query):
+                DepositTokenView(
+                  keyringStore: keyringStore,
+                  networkStore: store.networkStore,
+                  depositTokenStore: store.openDepositTokenStore(
+                    prefilledToken: destination.initialToken,
+                    prefilledAccount: destination.initialAccount
+                  ),
+                  prefilledQuery: query,
+                  onDismiss: {
+                    store.closeWalletActionStores()
                     dismissAction()
                   }
                 )
@@ -254,9 +269,9 @@ public struct CryptoView: View {
             SetupCryptoView(keyringStore: keyringStore, dismissAction: dismissAction)
               .toolbar {
                 ToolbarItemGroup(placement: .destructiveAction) {
-                  Button(action: {
+                  Button {
                     dismissAction()
-                  }) {
+                  } label: {
                     Text(Strings.CancelString)
                   }
                 }
@@ -267,17 +282,22 @@ public struct CryptoView: View {
         }
       }
     }
-    .animation(.default, value: visibleScreen)  // Animate unlock dismiss (required for some reason)
+    // Animate unlock dismiss (required for some reason)
+    .animation(.default, value: visibleScreen)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .environment(\.openURL, .init(handler: { [openWalletURLAction] url in
-      openWalletURLAction?(url)
-      return .handled
-    }))
+    .environment(
+      \.openURL,
+      .init(handler: { [openWalletURLAction] url in
+        openWalletURLAction?(url)
+        return .handled
+      })
+    )
     .environment(
       \.appRatingRequestAction,
       .init(action: { [appRatingRequestAction] in
         appRatingRequestAction?()
-      }))
+      })
+    )
     .environment(\.webImageDownloader, webImageDownloader)
     .onChange(of: visibleScreen) { newValue in
       if case .panelUnlockOrSetup = presentingContext, newValue == .crypto {
@@ -285,7 +305,7 @@ public struct CryptoView: View {
       }
     }
   }
-  
+
   private func dismissAction() {
     presentationMode.dismiss()
   }
@@ -299,9 +319,9 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
   // This toolbar content is for `PendingRequestView` which is presented on top of full screen wallet
   private var pendingRequestToolbarDismissContent: some ToolbarContent {
     ToolbarItemGroup(placement: .cancellationAction) {
-      Button(action: {
+      Button {
         cryptoStore.isPresentingPendingRequest = false
-      }) {
+      } label: {
         Image("wallet-dismiss", bundle: .module)
           .renderingMode(.template)
           .foregroundColor(Color(.braveBlurpleTint))
@@ -317,28 +337,39 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
     )
     .background(
       Color.clear
-        .sheet(item: $cryptoStore.buySendSwapDestination) { action in
+        .sheet(item: $cryptoStore.walletActionDestination) { action in
           switch action.kind {
           case .buy:
             BuyTokenView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
               buyTokenStore: cryptoStore.openBuyTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.buySendSwapDestination = nil }
+              onDismiss: { cryptoStore.walletActionDestination = nil }
             )
           case .send:
             SendTokenView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
               sendTokenStore: cryptoStore.openSendTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.buySendSwapDestination = nil }
+              onDismiss: { cryptoStore.walletActionDestination = nil }
             )
           case .swap:
             SwapCryptoView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
               swapTokensStore: cryptoStore.openSwapTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.buySendSwapDestination = nil }
+              onDismiss: { cryptoStore.walletActionDestination = nil }
+            )
+          case .deposit(let query):
+            DepositTokenView(
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore,
+              depositTokenStore: cryptoStore.openDepositTokenStore(
+                prefilledToken: action.initialToken,
+                prefilledAccount: action.initialAccount
+              ),
+              prefilledQuery: query,
+              onDismiss: { cryptoStore.walletActionDestination = nil }
             )
           }
         }
@@ -362,19 +393,20 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
         }
     )
     .environment(
-      \.buySendSwapDestination,
-       Binding(
-        get: { [weak cryptoStore] in cryptoStore?.buySendSwapDestination },
+      \.walletActionDestination,
+      Binding(
+        get: { [weak cryptoStore] in cryptoStore?.walletActionDestination },
         set: { [weak cryptoStore] destination in
           if cryptoStore?.isPresentingAssetSearch == true {
             cryptoStore?.isPresentingAssetSearch = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-              cryptoStore?.buySendSwapDestination = destination
+              cryptoStore?.walletActionDestination = destination
             }
           } else {
-            cryptoStore?.buySendSwapDestination = destination
+            cryptoStore?.walletActionDestination = destination
           }
-        })
+        }
+      )
     )
   }
 }

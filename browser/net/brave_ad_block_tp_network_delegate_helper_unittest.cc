@@ -15,9 +15,9 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
-#include "brave/components/brave_shields/browser/test_filters_provider.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/chrome_paths.h"
@@ -124,10 +124,10 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     TestingBraveBrowserProcess::DeleteInstance();
   }
 
-  void ResetAdblockInstance(std::string rules, std::string resources) {
-    filters_provider_ = std::make_unique<TestFiltersProvider>(rules, resources);
-    g_brave_browser_process->ad_block_service()->UseSourceProvidersForTest(
-        filters_provider_.get(), filters_provider_.get());
+  void ResetAdblockInstance(std::string rules) {
+    filters_provider_ = std::make_unique<TestFiltersProvider>(rules);
+    g_brave_browser_process->ad_block_service()->UseSourceProviderForTest(
+        filters_provider_.get());
     task_environment_.RunUntilIdle();
   }
 
@@ -208,7 +208,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RequestDataURL) {
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
-  ResetAdblockInstance("||brave.com/test.txt", "");
+  ResetAdblockInstance("||brave.com/test.txt");
 
   const GURL url("https://brave.com/test.txt");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -225,7 +225,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, Default1pException) {
-  ResetAdblockInstance("||brave.com/test.txt", "");
+  ResetAdblockInstance("||brave.com/test.txt");
 
   const GURL url("https://brave.com/test.txt");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -240,7 +240,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, Default1pException) {
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, AggressiveNo1pException) {
-  ResetAdblockInstance("||brave.com/test.txt", "");
+  ResetAdblockInstance("||brave.com/test.txt");
 
   const GURL url("https://brave.com/test.txt");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);

@@ -1,11 +1,11 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveUI
+import Shared
+import UIKit
 
 public class EnableVPNSettingHeader: UIView {
 
@@ -60,7 +60,10 @@ public class EnableVPNSettingHeader: UIView {
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
 
-  private let poweredByStackView = BraveVPNCommonUI.Views.poweredByView(textColor: .white, imageColor: .white)
+  private let poweredByStackView = BraveVPNCommonUI.Views.poweredByView(
+    textColor: .white,
+    imageColor: .white
+  )
 
   private let contentView = UIView().then {
     $0.clipsToBounds = true
@@ -84,7 +87,7 @@ public class EnableVPNSettingHeader: UIView {
     } else {
       assertionFailure("Could not find asset for close button")
     }
-    
+
     $0.tintColor = .white
   }
 
@@ -96,7 +99,9 @@ public class EnableVPNSettingHeader: UIView {
 
     addSubview(contentView)
 
-    [titleLabel, bodyLabel, enableButton, poweredByStackView].forEach(mainStackView.addArrangedSubview(_:))
+    [titleLabel, bodyLabel, enableButton, poweredByStackView].forEach(
+      mainStackView.addArrangedSubview(_:)
+    )
 
     contentView.addSubview(mainStackView)
     mainStackView.snp.makeConstraints {

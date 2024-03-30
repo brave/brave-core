@@ -1,12 +1,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveShared
-import BraveUI
 import BraveShields
+import BraveUI
+import Shared
+import UIKit
 
 class AdvancedShieldsView: UIStackView {
   let siteTitle = HeaderTitleView()
@@ -132,12 +132,12 @@ extension AdvancedShieldsView {
 
     override var accessibilityLabel: String? {
       get { titleLabel.accessibilityLabel }
-      set { assertionFailure() }  // swiftlint:disable:this unused_setter_value
+      set { assertionFailure() }
     }
 
     override var accessibilityValue: String? {
       get { toggleSwitch.accessibilityValue }
-      set { assertionFailure() }  // swiftlint:disable:this unused_setter_value
+      set { assertionFailure() }
     }
 
     @objc private func switchValueChanged() {
@@ -169,7 +169,9 @@ final class ChangeGlobalDefaultsView: UIControl {
     $0.alpha = 0.0
     $0.backgroundColor = UIColor.bravePrimary.withAlphaComponent(0.1)
   }
-  private let imageView = UIImageView(image: UIImage(named: "internet-block", in: .module, compatibleWith: nil)!.template).then {
+  private let imageView = UIImageView(
+    image: UIImage(named: "internet-block", in: .module, compatibleWith: nil)!.template
+  ).then {
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.tintColor = .braveLabel
   }
@@ -179,7 +181,9 @@ final class ChangeGlobalDefaultsView: UIControl {
     $0.textColor = .braveLabel
     $0.text = Strings.Shields.globalChangeButton
   }
-  private let chevron = UIImageView(image: UIImage(named: "chevron", in: .module, compatibleWith: nil)!.template).then {
+  private let chevron = UIImageView(
+    image: UIImage(named: "chevron", in: .module, compatibleWith: nil)!.template
+  ).then {
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.tintColor = .secondaryBraveLabel
   }
@@ -187,10 +191,14 @@ final class ChangeGlobalDefaultsView: UIControl {
   override var isHighlighted: Bool {
     didSet {
       UIView.animate(
-        withDuration: 0.15, delay: 0, options: [.beginFromCurrentState],
+        withDuration: 0.15,
+        delay: 0,
+        options: [.beginFromCurrentState],
         animations: {
           self.highlightedBackgroundView.alpha = self.isHighlighted ? 1.0 : 0.0
-        }, completion: nil)
+        },
+        completion: nil
+      )
     }
   }
 

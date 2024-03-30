@@ -22,8 +22,8 @@ source_set("preferences") {
     "//brave/common",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_rewards/common",
-    "//brave/components/brave_shields/browser",
-    "//brave/components/brave_shields/common",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/brave_sync",
     "//brave/components/p3a",
     "//components/content_settings/core/browser",
@@ -38,7 +38,7 @@ java_cpp_strings("java_pref_names_srcjar") {
   sources = [
     "//brave/components/brave_adaptive_captcha/pref_names.h",
     "//brave/components/brave_rewards/common/pref_names.h",
-    "//brave/components/brave_shields/common/pref_names.h",
+    "//brave/components/brave_shields/core/common/pref_names.h",
     "//brave/components/brave_vpn/common/pref_names.h",
     "//brave/components/constants/pref_names.h",
     "//brave/components/de_amp/common/pref_names.cc",
@@ -52,7 +52,7 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/p3a/pref_names.h",
     "//brave/components/request_otr/common/pref_names.h",
     "//brave/components/speedreader/speedreader_pref_names.h",
-    "//components/translate/core/browser/translate_pref_names.cc",
+    "//components/translate/core/browser/translate_pref_names.h",
   ]
 
   if (enable_ai_chat) {

@@ -1,17 +1,17 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Shared
 import BraveShared
 import Data
+import Shared
+import SwiftUI
 
 extension PrivacyReportsView {
   struct PrivacyHubVPNAlertsSection: View {
     @Environment(\.pixelLength) private var pixelLength
-    
+
     let lastVPNAlerts: [BraveVPNAlert]
 
     private(set) var onDismiss: () -> Void
@@ -53,7 +53,7 @@ extension PrivacyReportsView {
 #if DEBUG
 struct PrivacyHubVPNAlertsSection_Previews: PreviewProvider {
   static var previews: some View {
-    PrivacyReportsView.PrivacyHubVPNAlertsSection(lastVPNAlerts: [], onDismiss: { })
+    PrivacyReportsView.PrivacyHubVPNAlertsSection(lastVPNAlerts: [], onDismiss: {})
   }
 }
 #endif

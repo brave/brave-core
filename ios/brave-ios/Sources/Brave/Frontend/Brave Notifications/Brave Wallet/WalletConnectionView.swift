@@ -1,14 +1,14 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import Shared
-import BraveUI
 import BraveCore
+import BraveUI
 import Combine
+import Foundation
+import Shared
+import UIKit
 
 class WalletConnectionView: UIControl {
   private let scrollView = UIScrollView()
@@ -44,11 +44,11 @@ class WalletConnectionView: UIControl {
     result.setContentCompressionResistancePriority(.required, for: .vertical)
     return result
   }()
-  
+
   private var cancellable: AnyCancellable?
-  
+
   var origin: URLOrigin
-  
+
   init(origin: URLOrigin) {
     self.origin = origin
     super.init(frame: .zero)
@@ -57,42 +57,42 @@ class WalletConnectionView: UIControl {
 
   @available(*, unavailable)
   required init(coder: NSCoder) {
-      fatalError()
+    fatalError()
   }
-  
+
   private func setup() {
     let contentInset = 24.0
     addSubview(scrollView)
     scrollView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    
+
     scrollView.addSubview(stackView)
     stackView.snp.makeConstraints {
       $0.edges.equalToSuperview().inset(contentInset)
     }
     stackView.addArrangedSubview(iconImageView)
     stackView.addArrangedSubview(titleLabel)
-    
+
     scrollView.contentLayoutGuide.snp.makeConstraints {
       $0.width.equalToSuperview()
       $0.top.bottom.equalTo(stackView).inset(contentInset)
     }
-    
+
     iconImageView.snp.makeConstraints {
       $0.width.height.equalTo(20)
     }
-    
+
     snp.makeConstraints {
       $0.height.equalTo(stackView).inset(-contentInset).priority(.low)
     }
 
     layer.backgroundColor = UIColor.braveBlurpleTint.cgColor
     layer.cornerRadius = 10
-    
+
     titleLabel.attributedText = titleText(for: origin)
     updateAccessibilityTraits()
-    
+
     // font size adjustment with a maximum content size category of .medium
     cancellable = NotificationCenter.default
       .publisher(for: UIContentSizeCategory.didChangeNotification, object: nil)
@@ -102,7 +102,7 @@ class WalletConnectionView: UIControl {
         self.updateAccessibilityTraits()
       }
   }
-  
+
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     guard superview != nil else { return }
@@ -110,16 +110,16 @@ class WalletConnectionView: UIControl {
       $0.height.lessThanOrEqualToSuperview().dividedBy(2)
     }
   }
-  
+
   private func font(forTextStyle textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
     var sizeCategory = UIApplication.shared.preferredContentSizeCategory
-    if sizeCategory.isAccessibilityCategory { // set a maximum size category
+    if sizeCategory.isAccessibilityCategory {  // set a maximum size category
       sizeCategory = .accessibilityMedium
     }
     let traitCollection = UITraitCollection(preferredContentSizeCategory: sizeCategory)
     return UIFont.preferredFont(for: textStyle, weight: weight, traitCollection: traitCollection)
   }
-  
+
   private func titleText(for origin: URLOrigin) -> NSAttributedString {
     let regularFont = self.font(forTextStyle: .subheadline, weight: .regular)
     guard let originString = origin.url?.host else {
@@ -132,7 +132,10 @@ class WalletConnectionView: UIControl {
 
     if let originEtldPlusOne = origin.url?.baseDomain {
       // eTLD+1 available, bold it
-      let displayString = String.localizedStringWithFormat(Strings.Wallet.dappsConnectionNotificationOriginTitle, originString)
+      let displayString = String.localizedStringWithFormat(
+        Strings.Wallet.dappsConnectionNotificationOriginTitle,
+        originString
+      )
       let rangeForEldPlusOne = (displayString as NSString).range(of: originEtldPlusOne)
       let string = NSMutableAttributedString(
         string: displayString,
@@ -142,14 +145,17 @@ class WalletConnectionView: UIControl {
       return string
     } else {
       // eTLD+1 unavailable
-      let displayString = String.localizedStringWithFormat(Strings.Wallet.dappsConnectionNotificationOriginTitle, originString)
+      let displayString = String.localizedStringWithFormat(
+        Strings.Wallet.dappsConnectionNotificationOriginTitle,
+        originString
+      )
       return NSAttributedString(
         string: displayString,
         attributes: [.font: regularFont]
       )
     }
   }
-  
+
   private func updateAccessibilityTraits() {
     isAccessibilityElement = true
     accessibilityLabel = titleLabel.text

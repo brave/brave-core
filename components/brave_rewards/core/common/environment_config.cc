@@ -9,7 +9,7 @@
 
 namespace brave_rewards::internal {
 
-EnvironmentConfig::EnvironmentConfig(RewardsEngineImpl& engine)
+EnvironmentConfig::EnvironmentConfig(RewardsEngine& engine)
     : RewardsEngineHelper(engine) {}
 
 EnvironmentConfig::~EnvironmentConfig() = default;

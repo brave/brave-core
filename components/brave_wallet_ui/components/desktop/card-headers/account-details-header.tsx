@@ -172,26 +172,32 @@ export const AccountDetailsHeader = (props: Props) => {
   ])
 
   const menuOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
+    let options = AccountDetailsMenuOptions
     // We are not able to remove a Derived account
     // so we filter out this option.
     if (account.accountId.kind === BraveWallet.AccountKind.kDerived) {
-      return AccountDetailsMenuOptions.filter(
+      options = options.filter(
         (option: AccountButtonOptionsObjectType) => option.id !== 'remove'
       )
     }
     // We are not able to fetch Private Keys for
     // a Hardware account so we filter out this option.
-    if (account.accountId.kind === BraveWallet.AccountKind.kHardware) {
-      return AccountDetailsMenuOptions.filter(
+    // BTC and ZEC are not yet supported.
+    if (
+      account.accountId.coin === BraveWallet.CoinType.BTC ||
+      account.accountId.coin === BraveWallet.CoinType.ZEC ||
+      account.accountId.kind === BraveWallet.AccountKind.kHardware
+    ) {
+      options = options.filter(
         (option: AccountButtonOptionsObjectType) => option.id !== 'privateKey'
       )
     }
-    return AccountDetailsMenuOptions
+    return options
   }, [account])
 
   const goBack = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
-  }, [])
+  }, [history])
 
   return (
     <Row
@@ -211,7 +217,7 @@ export const AccountDetailsHeader = (props: Props) => {
         </MenuButton>
         <CreateAccountIcon
           account={account}
-          size='big'
+          size='huge'
           marginRight={8}
         />
         <Column alignItems='flex-start'>

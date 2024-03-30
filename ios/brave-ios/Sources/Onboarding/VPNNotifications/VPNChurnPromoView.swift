@@ -1,13 +1,13 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Shared
 import BraveShared
-import DesignSystem
 import BraveUI
+import DesignSystem
+import Shared
+import SwiftUI
 
 public enum VPNChurnPromoType {
   case autoRenewSoonExpire
@@ -37,7 +37,7 @@ public enum VPNChurnPromoType {
       return "subscribe_all-devices_image"
     }
   }
-  
+
   var title: String {
     switch self {
     case .autoRenewSoonExpire:
@@ -58,7 +58,7 @@ public enum VPNChurnPromoType {
       return Strings.VPN.subscribeVPNAllDevicesPopOverTitle
     }
   }
-  
+
   var description: String? {
     switch self {
     case .autoRenewSoonExpire:
@@ -75,7 +75,7 @@ public enum VPNChurnPromoType {
       return nil
     }
   }
-  
+
   var subDescription: String? {
     switch self {
     case .autoRenewSoonExpire:
@@ -86,7 +86,7 @@ public enum VPNChurnPromoType {
       return nil
     }
   }
-  
+
   var buttonTitle: String {
     switch self {
     case .autoRenewSoonExpire, .autoRenewDiscount, .autoRenewFreeMonth:
@@ -102,20 +102,22 @@ public enum VPNChurnPromoType {
 public struct VPNChurnPromoView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
   @State private var height: CGFloat?
-  
+
   public var renewAction: (() -> Void)?
-  
+
   public var churnPromoType: VPNChurnPromoType
-  
-  private let descriptionItems = [Strings.VPN.popupCheckboxBlockAdsAlternate,
-                          Strings.VPN.popupCheckmarkSecureConnections,
-                          Strings.VPN.popupCheckboxFastAlternate,
-                          Strings.VPN.popupCheckmark247Support]
-  
+
+  private let descriptionItems = [
+    Strings.VPN.popupCheckboxBlockAdsAlternate,
+    Strings.VPN.popupCheckmarkSecureConnections,
+    Strings.VPN.popupCheckboxFastAlternate,
+    Strings.VPN.popupCheckmark247Support,
+  ]
+
   public init(churnPromoType: VPNChurnPromoType) {
     self.churnPromoType = churnPromoType
   }
-  
+
   public var body: some View {
     ScrollView {
       VStack(spacing: 24) {
@@ -178,14 +180,14 @@ public struct VPNChurnPromoView: View {
         .multilineTextAlignment(.center)
     }
   }
-  
+
   @ViewBuilder
   private var detailView: some View {
     switch churnPromoType {
     case .autoRenewSoonExpire, .subscribeVPNProtection, .subscribeAllDevices:
       let description = churnPromoType.description ?? ""
       let subDescription = churnPromoType.subDescription ?? ""
-      
+
       VStack(spacing: 24) {
         Text(description)
           .font(.title3)
@@ -211,7 +213,7 @@ public struct VPNChurnPromoView: View {
       }
     case .updateBillingExpired, .updateBillingSoonExpire:
       let description = churnPromoType.description ?? ""
-      
+
       Text(description)
         .font(.title3)
         .multilineTextAlignment(.center)
@@ -220,16 +222,16 @@ public struct VPNChurnPromoView: View {
 
   private var footerView: some View {
     VStack(spacing: 24) {
-      Button(action: {
+      Button {
         renewAction?()
         presentationMode.dismiss()
-      }) {
+      } label: {
         Text(churnPromoType.buttonTitle)
           .padding(.vertical, 4)
           .frame(maxWidth: .infinity)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .large))
-      
+
       HStack(spacing: 8) {
         Text(Strings.VPN.poweredBy)
           .font(.footnote)
@@ -249,16 +251,16 @@ struct VPNChurnPromoView_Previews: PreviewProvider {
   static var previews: some View {
     VPNChurnPromoView(churnPromoType: .autoRenewSoonExpire)
       .previewLayout(.sizeThatFits)
-    
+
     VPNChurnPromoView(churnPromoType: .autoRenewDiscount)
       .previewLayout(.sizeThatFits)
-    
+
     VPNChurnPromoView(churnPromoType: .autoRenewFreeMonth)
       .previewLayout(.sizeThatFits)
-    
+
     VPNChurnPromoView(churnPromoType: .updateBillingSoonExpire)
       .previewLayout(.sizeThatFits)
-    
+
     VPNChurnPromoView(churnPromoType: .updateBillingExpired)
       .previewLayout(.sizeThatFits)
   }

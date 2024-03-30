@@ -14,28 +14,25 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace wallet {
 
 class WalletBalance {
  public:
-  explicit WalletBalance(RewardsEngineImpl& engine);
+  explicit WalletBalance(RewardsEngine& engine);
   ~WalletBalance();
 
   void Fetch(FetchBalanceCallback callback);
 
  private:
-  void OnGetUnblindedTokens(FetchBalanceCallback callback,
-                            std::vector<mojom::UnblindedTokenPtr> tokens);
-
   void OnFetchExternalWalletBalance(const std::string& wallet_type,
                                     mojom::BalancePtr balance_ptr,
                                     FetchBalanceCallback callback,
                                     mojom::Result result,
                                     double balance);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace wallet

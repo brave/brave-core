@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
@@ -90,9 +91,7 @@ void TextEmbeddingProcessor::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
-  if (redirect_chain.empty()) {
-    return;
-  }
+  CHECK(!redirect_chain.empty());
 
   const GURL& url = redirect_chain.back();
 

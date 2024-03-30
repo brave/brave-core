@@ -5,19 +5,18 @@
 
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 
-#include <string>
-
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
+#include "components/sessions/core/session_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "net/http/http_response_headers.h"
 #include "ui/base/page_transition_types.h"
-#include "url/gurl.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -29,23 +28,20 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char16_t kGetDocumentHTMLScript[] =
+constexpr char16_t kSerializeDocumentToStringJavaScript[] =
     u"new XMLSerializer().serializeToString(document)";
 
-constexpr char16_t kGetInnerTextScript[] = u"document?.body?.innerText";
-
-bool UserHasOptedInToBraveRewards(const PrefService* prefs) {
-  return prefs->GetBoolean(brave_rewards::prefs::kEnabled);
-}
+constexpr char16_t kDocumentBodyInnerTextJavaScript[] =
+    u"document?.body?.innerText";
 
 }  // namespace
 
 AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<AdsTabHelper>(*web_contents),
-      tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)),
-      weak_factory_(this) {
+      tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
   if (!tab_id_.is_valid()) {
+    // `WebContents` is null or has no `SessionTabHelper`.
     return;
   }
 
@@ -57,9 +53,12 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   }
 
 #if !BUILDFLAG(IS_ANDROID)
+  // See "background_helper_android.h" for Android.
   BrowserList::AddObserver(this);
+
   OnBrowserSetLastActive(BrowserList::GetInstance()->GetLastActive());
 #endif
+
   OnVisibilityChanged(web_contents->GetVisibility());
 }
 
@@ -69,209 +68,261 @@ AdsTabHelper::~AdsTabHelper() {
 #endif
 }
 
-void AdsTabHelper::TabUpdated() {
+PrefService* AdsTabHelper::GetPrefs() const {
+  return Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+      ->GetPrefs();
+}
+
+bool AdsTabHelper::UserHasJoinedBraveRewards() const {
+  return GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
+bool AdsTabHelper::IsVisible() const {
+  return is_web_contents_visible_ && is_browser_active_;
+}
+
+bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
+  CHECK(navigation_handle);
+
+  if (navigation_handle->IsErrorPage()) {
+    return true;
+  }
+
+  const net::HttpResponseHeaders* const response_headers =
+      navigation_handle->GetResponseHeaders();
+  if (response_headers) {
+    const int response_code_class = response_headers->response_code() / 100;
+    return response_code_class == 4 /*client error*/ ||
+           response_code_class == 5 /*server error*/;
+  }
+
+  return false;
+}
+
+void AdsTabHelper::ProcessNavigation() {
+  MaybeNotifyTabContentDidChange();
+
+  // Set `is_restoring_` to `false` so that we notify listeners of tab changes
+  // after the tab is restored.
+  is_restoring_ = false;
+}
+
+void AdsTabHelper::MaybeNotifyBrowserDidBecomeActive() {
+  if (ads_service_) {
+    ads_service_->NotifyBrowserDidBecomeActive();
+  }
+}
+
+void AdsTabHelper::MaybeNotifyBrowserDidResignActive() {
+  if (ads_service_) {
+    ads_service_->NotifyBrowserDidResignActive();
+  }
+}
+
+void AdsTabHelper::MaybeNotifyUserGestureEventTriggered(
+    content::NavigationHandle* navigation_handle) {
+  CHECK(navigation_handle);
+
   if (!ads_service_) {
     return;
   }
 
-  const bool is_visible = is_active_ && is_browser_active_;
-
-  ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_, is_visible);
-}
-
-void AdsTabHelper::RunIsolatedJavaScript(
-    content::RenderFrameHost* render_frame_host) {
-  CHECK(render_frame_host);
-
-  const PrefService* prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
-  if (!prefs) {
+  if (is_restoring_) {
+    // Don't notify user gesture events for restored tabs.
     return;
   }
 
-  render_frame_host->ExecuteJavaScriptInIsolatedWorld(
-      kGetDocumentHTMLScript,
-      base::BindOnce(&AdsTabHelper::OnJavaScriptHtmlResult,
-                     weak_factory_.GetWeakPtr()),
+  if (!navigation_handle->HasUserGesture() &&
+      navigation_handle->IsRendererInitiated()) {
+    // Some browser initiated navigations return `false` for `HasUserGesture` so
+    // we must also check `IsRendererInitiated`. See crbug.com/617904.
+    return;
+  }
+
+  const ui::PageTransition page_transition =
+      navigation_handle->GetPageTransition();
+  ads_service_->NotifyUserGestureEventTriggered(page_transition);
+}
+
+void AdsTabHelper::MaybeNotifyTabDidChange() {
+  if (!ads_service_) {
+    return;
+  }
+
+  if (is_restoring_) {
+    // Don't notify changes for restored tabs.
+    return;
+  }
+
+  ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_,
+                                   is_error_page_, IsVisible());
+}
+
+void AdsTabHelper::MaybeNotifyTabContentDidChange() {
+  if (is_restoring_ || is_error_page_) {
+    // Don't notify content changes for restored tabs or error pages.
+    return;
+  }
+
+  MaybeNotifyTabHtmlContentDidChange();
+  MaybeNotifyTabTextContentDidChange();
+}
+
+void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
+  if (redirect_chain_.empty()) {
+    // Don't notify content changes for tabs which did not finish loading.
+    return;
+  }
+
+  web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      kSerializeDocumentToStringJavaScript,
+      base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange,
+                     weak_factory_.GetWeakPtr(), redirect_chain_),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+}
 
-  if (UserHasOptedInToBraveRewards(prefs)) {
-    render_frame_host->ExecuteJavaScriptInIsolatedWorld(
-        kGetInnerTextScript,
-        base::BindOnce(&AdsTabHelper::OnJavaScriptTextResult,
-                       weak_factory_.GetWeakPtr()),
-        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
+    const std::vector<GURL>& redirect_chain,
+    base::Value value) {
+  if (ads_service_ && value.is_string()) {
+    ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(), redirect_chain,
+                                                /*html=*/value.GetString());
   }
 }
 
-void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
-  if (!ads_service_) {
+void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
+  if (!UserHasJoinedBraveRewards()) {
     return;
   }
 
-  if (!value.is_string()) {
+  if (redirect_chain_.empty()) {
+    // Don't notify content changes for tabs which did not finish loading.
     return;
   }
 
-  const std::string& html = value.GetString();
-  ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(), redirect_chain_,
-                                              html);
+  web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      kDocumentBodyInnerTextJavaScript,
+      base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabTextContentDidChange,
+                     weak_factory_.GetWeakPtr(), redirect_chain_),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
-  if (!ads_service_) {
+void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
+    const std::vector<GURL>& redirect_chain,
+    base::Value value) {
+  if (ads_service_ && value.is_string()) {
+    ads_service_->NotifyTabTextContentDidChange(tab_id_.id(), redirect_chain,
+                                                /*text=*/value.GetString());
+  }
+}
+
+void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia() {
+  if (ads_service_) {
+    ads_service_->NotifyTabDidStopPlayingMedia(tab_id_.id());
+  }
+}
+
+void AdsTabHelper::MaybeNotifyTabDidStopPlayingMedia() {
+  if (ads_service_) {
+    ads_service_->NotifyTabDidStopPlayingMedia(tab_id_.id());
+  }
+}
+
+void AdsTabHelper::MaybeNotifyTabdidClose() {
+  if (ads_service_) {
+    ads_service_->NotifyDidCloseTab(tab_id_.id());
+  }
+}
+
+void AdsTabHelper::DidStartNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!ads_service_ || !navigation_handle->IsInPrimaryMainFrame()) {
     return;
   }
 
-  if (!value.is_string()) {
-    return;
-  }
+  is_restoring_ =
+      navigation_handle->GetRestoreType() == content::RestoreType::kRestored;
 
-  const std::string& text = value.GetString();
-  ads_service_->NotifyTabTextContentDidChange(tab_id_.id(), redirect_chain_,
-                                              text);
+  redirect_chain_.clear();
+
+  is_error_page_ = false;
 }
 
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  CHECK(navigation_handle);
-
   if (!ads_service_ || !navigation_handle->IsInPrimaryMainFrame() ||
-      !navigation_handle->HasCommitted() || !tab_id_.is_valid()) {
+      !navigation_handle->HasCommitted()) {
     return;
-  }
-
-  const bool tab_not_restored =
-      navigation_handle->GetRestoreType() == content::RestoreType::kNotRestored;
-
-  // Some browser initiated navigations have HasUserGesture set to false. This
-  // should eventually be fixed in crbug.com/617904.
-  if (tab_not_restored && (navigation_handle->HasUserGesture() ||
-                           !navigation_handle->IsRendererInitiated())) {
-    ads_service_->NotifyUserGestureEventTriggered(
-        navigation_handle->GetPageTransition());
   }
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
-  if (!navigation_handle->IsSameDocument()) {
-    should_process_ = tab_not_restored;
-    return;
-  }
+  is_error_page_ = IsErrorPage(navigation_handle);
 
-  content::RenderFrameHost* render_frame_host =
-      navigation_handle->GetRenderFrameHost();
-  RunIsolatedJavaScript(render_frame_host);
+  MaybeNotifyUserGestureEventTriggered(navigation_handle);
+
+  MaybeNotifyTabDidChange();
+
+  // For navigations that lead to a document change, `ProcessNavigation` is
+  // called from `DocumentOnLoadCompletedInPrimaryMainFrame`.
+  if (navigation_handle->IsSameDocument()) {
+    ProcessNavigation();
+  }
 }
 
 void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  content::RenderFrameHost* render_frame_host =
-      web_contents()->GetPrimaryMainFrame();
-  if (should_process_) {
-    RunIsolatedJavaScript(render_frame_host);
-  }
-}
-
-void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
-                                 const GURL& validated_url) {
-  CHECK(render_frame_host);
-
-  if (render_frame_host->GetParent()) {
-    return;
-  }
-
-  TabUpdated();
+  ProcessNavigation();
 }
 
 void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
                                        const content::MediaPlayerId& id) {
-  if (ads_service_) {
-    ads_service_->NotifyTabDidStartPlayingMedia(tab_id_.id());
-  }
+  MaybeNotifyTabDidStartPlayingMedia();
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& video_type,
     const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
-  if (ads_service_) {
-    ads_service_->NotifyTabDidStopPlayingMedia(tab_id_.id());
-  }
+  MaybeNotifyTabDidStopPlayingMedia();
 }
 
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
-  const bool old_is_active = is_active_;
+  const bool last_is_web_contents_visible = is_web_contents_visible_;
+  is_web_contents_visible_ = visibility == content::Visibility::VISIBLE;
 
-  switch (visibility) {
-    case content::Visibility::HIDDEN:
-    case content::Visibility::OCCLUDED: {
-      is_active_ = false;
-      break;
-    }
-
-    case content::Visibility::VISIBLE: {
-      is_active_ = true;
-      break;
-    }
-  }
-
-  if (old_is_active == is_active_) {
+  if (redirect_chain_.empty()) {
+    // Don't notify changes for tabs which have not finished loading.
     return;
   }
 
-  TabUpdated();
+  if (last_is_web_contents_visible != is_web_contents_visible_) {
+    MaybeNotifyTabDidChange();
+  }
 }
 
 void AdsTabHelper::WebContentsDestroyed() {
-  if (!ads_service_) {
-    return;
-  }
+  MaybeNotifyTabdidClose();
 
-  ads_service_->NotifyDidCloseTab(tab_id_.id());
   ads_service_ = nullptr;
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-// "components/brave_ads/browser/background_helper_android.cc" handles Android
 void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
-  if (!browser || !ads_service_) {
-    return;
+  const bool last_is_browser_active = is_browser_active_;
+  is_browser_active_ = browser->tab_strip_model()->GetIndexOfWebContents(
+                           web_contents()) != TabStripModel::kNoTab;
+  if (last_is_browser_active != is_browser_active_) {
+    MaybeNotifyBrowserDidBecomeActive();
   }
-
-  const bool old_is_browser_active = is_browser_active_;
-
-  if (browser->tab_strip_model()->GetIndexOfWebContents(web_contents()) !=
-      TabStripModel::kNoTab) {
-    is_browser_active_ = true;
-  }
-
-  if (old_is_browser_active == is_browser_active_) {
-    return;
-  }
-
-  ads_service_->NotifyBrowserDidBecomeActive();
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
-  CHECK(browser);
-
-  if (!ads_service_) {
-    return;
+  const bool last_is_browser_active = is_browser_active_;
+  is_browser_active_ = browser->tab_strip_model()->GetIndexOfWebContents(
+                           web_contents()) == TabStripModel::kNoTab;
+  if (last_is_browser_active != is_browser_active_) {
+    MaybeNotifyBrowserDidResignActive();
   }
-
-  const bool old_is_browser_active = is_browser_active_;
-
-  if (browser->tab_strip_model()->GetIndexOfWebContents(web_contents()) !=
-      TabStripModel::kNoTab) {
-    is_browser_active_ = false;
-  }
-
-  if (old_is_browser_active == is_browser_active_) {
-    return;
-  }
-
-  ads_service_->NotifyBrowserDidResignActive();
 }
 #endif
 

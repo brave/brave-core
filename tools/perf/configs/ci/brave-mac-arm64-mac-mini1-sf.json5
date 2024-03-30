@@ -42,6 +42,10 @@
     {
       "name": "speedometer2",
       "pageset-repeat": 50
+    },
+    {
+      "name": "speedometer3",
+      "pageset-repeat": 10
     }
   ]
 }

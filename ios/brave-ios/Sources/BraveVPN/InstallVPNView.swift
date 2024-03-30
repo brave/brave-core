@@ -1,12 +1,12 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveShared
 import BraveUI
+import Shared
+import UIKit
 
 extension InstallVPNViewController {
   class View: UIView {
@@ -20,7 +20,9 @@ extension InstallVPNViewController {
     private let imageView = UIView().then {
       $0.backgroundColor = BraveVPNCommonUI.UX.purpleBackgroundColor
 
-      let image = UIImageView(image: UIImage(named: "install_vpn_image", in: .module, compatibleWith: nil)!).then { img in
+      let image = UIImageView(
+        image: UIImage(named: "install_vpn_image", in: .module, compatibleWith: nil)!
+      ).then { img in
         img.contentMode = .scaleAspectFill
         img.setContentHuggingPriority(.required, for: .vertical)
         img.setContentCompressionResistancePriority(UILayoutPriority(1), for: .vertical)
@@ -66,7 +68,12 @@ extension InstallVPNViewController {
           label.text = Strings.VPN.installProfileBody
           label.numberOfLines = 0
           label.font = .systemFont(ofSize: 18, weight: .medium)
-          label.textColor = #colorLiteral(red: 0.4745098039, green: 0.4745098039, blue: 0.4745098039, alpha: 1)
+          label.textColor = #colorLiteral(
+            red: 0.4745098039,
+            green: 0.4745098039,
+            blue: 0.4745098039,
+            alpha: 1
+          )
           label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         }
 
@@ -78,7 +85,8 @@ extension InstallVPNViewController {
         $0.spacing = 4
         $0.addStackViewItems(
           .view(installVPNButton),
-          .view(contactSupportButton))
+          .view(contactSupportButton)
+        )
       }
 
       [textStackView, buttonsStackView].forEach(contentStackView.addArrangedSubview(_:))
@@ -136,4 +144,3 @@ extension InstallVPNViewController {
     required init(coder: NSCoder) { fatalError() }
   }
 }
-

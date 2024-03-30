@@ -8,9 +8,9 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/test_filters_provider.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -81,13 +81,12 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
   }
 
   void UpdateAdBlockInstanceWithRules(const std::string& rules) {
-    filters_provider_ = std::make_unique<TestFiltersProvider>(rules, "");
+    filters_provider_ = std::make_unique<TestFiltersProvider>(rules);
 
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
 
-    ad_block_service->UseSourceProvidersForTest(filters_provider_.get(),
-                                                filters_provider_.get());
+    ad_block_service->UseSourceProviderForTest(filters_provider_.get());
 
     WaitForAdBlockServiceThreads();
   }

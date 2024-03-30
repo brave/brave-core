@@ -22,8 +22,8 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_search_conversion/p3a.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/constants/pref_names.h"
@@ -58,6 +58,7 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
+#include "brave/components/sidebar/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -126,6 +127,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #if defined(TOOLKIT_VIEWS)
   onboarding::RegisterLocalStatePrefs(registry);
+  registry->RegisterBooleanPref(sidebar::kTargetUserForSidebarEnabledTest,
+                                false);
 #endif
 
 #if BUILDFLAG(ENABLE_CRASH_DIALOG)

@@ -1,16 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import WebKit
 import Shared
 import UIKit
+import WebKit
 import os.log
 
-/**
- * Handles screenshots for a given tab, including pages with non-webview content.
- */
+/// Handles screenshots for a given tab, including pages with non-webview content.
 class ScreenshotHelper {
   var viewIsVisible = false
 

@@ -7,6 +7,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/brave_stats/browser/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -15,6 +16,8 @@
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
+
+NSString* const kBraveStatsAPIKey = @BUILDFLAG(BRAVE_STATS_API_KEY);
 
 @implementation BraveStats {
   PrefService* _localPrefs;

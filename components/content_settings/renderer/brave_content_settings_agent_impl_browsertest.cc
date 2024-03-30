@@ -8,9 +8,9 @@
 
 #include "base/feature_list.h"
 #include "base/path_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -400,17 +400,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   base::ScopedTempDir temp_user_data_dir_;
   net::test_server::EmbeddedTestServer https_server_;
-};
-
-class BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest
-    : public BraveContentSettingsAgentImplBrowserTest {
- public:
-  BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest() {
-    feature_list_.Reset();
-    feature_list_.InitWithFeatures(
-        {}, {net::features::kBraveEphemeralStorage,
-             net::features::kThirdPartyStoragePartitioning});
-  }
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -873,16 +862,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 }
 
-IN_PROC_BROWSER_TEST_F(
-    BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest,
-    BlockThirdPartyCookieByDefault) {
-  NavigateToPageWithIframe();
-  CheckCookie(child_frame(), kTestCookie);
-
-  NavigateIframe(cross_site_url());
-  Check3PCookie(child_frame(), kEmptyCookie);
-}
-
 // With ephemeral storage enabled, the 3p cookie should still appear to be set
 // correctly.
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -892,18 +871,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   NavigateIframe(cross_site_url());
   Check3PCookie(child_frame(), kTestCookie);
-}
-
-IN_PROC_BROWSER_TEST_F(
-    BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest,
-    ExplicitBlock3PCookies) {
-  Block3PCookies();
-
-  NavigateToPageWithIframe();
-  CheckCookie(child_frame(), kTestCookie);
-
-  NavigateIframe(cross_site_url());
-  Check3PCookie(child_frame(), kEmptyCookie);
 }
 
 // With ephemeral storage enabled, the 3p cookie should still appear to be
@@ -958,23 +925,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   Check3PCookie(child_frame(), kTestCookie);
 }
 
-IN_PROC_BROWSER_TEST_F(
-    BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest,
-    ChromiumCookieBlockOverridesBraveAllowCookiesIframe) {
-  AllowCookies();
-  HostContentSettingsMap* content_settings =
-      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-  content_settings->SetContentSettingCustomScope(
-      iframe_pattern(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::COOKIES, CONTENT_SETTING_BLOCK);
-
-  NavigateToPageWithIframe();
-  CheckCookie(contents(), kTestCookie);
-
-  NavigateIframe(cross_site_url());
-  Check3PCookie(child_frame(), kEmptyCookie);
-}
-
 // Ephemeral storage still works with the Chromium cookie blocking content
 // setting.
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -1026,20 +976,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   NavigateIframe(cross_site_url());
   Check3PCookie(child_frame(), kEmptyCookie);
-}
-
-IN_PROC_BROWSER_TEST_F(
-    BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest,
-    LocalStorageTest) {
-  NavigateToPageWithIframe();
-
-  // Local storage is null, accessing it shouldn't throw.
-  NavigateIframe(cross_site_url());
-  CheckLocalStorageAccessDenied(child_frame());
-
-  // Local storage is null, accessing it doesn't throw.
-  NavigateIframe(cross_site_url());
-  CheckLocalStorageAccessDenied(child_frame());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,

@@ -16,8 +16,8 @@ class BraveSearchConversionPromotionView;
 // This will render brave specific matches such as the braver search conversion
 // promotion.
 class BraveOmniboxResultView : public OmniboxResultView {
+  METADATA_HEADER(BraveOmniboxResultView, OmniboxResultView)
  public:
-  METADATA_HEADER(BraveOmniboxResultView);
   using OmniboxResultView::OmniboxResultView;
   BraveOmniboxResultView(const BraveOmniboxResultView&) = delete;
   BraveOmniboxResultView& operator=(const BraveOmniboxResultView&) = delete;

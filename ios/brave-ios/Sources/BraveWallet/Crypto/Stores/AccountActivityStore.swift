@@ -1,10 +1,10 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 
 class AccountActivityStore: ObservableObject, WalletObserverStore {
   /// If we want to observe selected account changes (ex. in `WalletPanelView`).
@@ -19,6 +19,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   }
   @Published private(set) var isLoadingAccountFiat: Bool = false
   @Published private(set) var accountTotalFiat: String = "$0.00"
+  @Published private(set) var isBuySupported: Bool = true
+  @Published private(set) var isSwapSupported: Bool
   @Published private(set) var userAssets: [AssetViewModel] = []
   @Published private(set) var userNFTs: [NFTAssetViewModel] = []
   /// Sections of transactions for display. Each section represents one date.
@@ -37,6 +39,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
   private let assetRatioService: BraveWalletAssetRatioService
+  private let swapService: BraveWalletSwapService
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
@@ -49,17 +52,17 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private var tokenPricesCache: [String: String] = [:]
   private var nftMetadataCache: [String: NFTMetadata] = [:]
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
-  
+
   private var keyringServiceObserver: KeyringServiceObserver?
   private var rpcServiceObserver: JsonRpcServiceObserver?
   private var txServiceObserver: TxServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
-  
+
   var isObserving: Bool {
-    keyringServiceObserver != nil && rpcServiceObserver != nil 
-    && txServiceObserver != nil && walletServiceObserver != nil
+    keyringServiceObserver != nil && rpcServiceObserver != nil
+      && txServiceObserver != nil && walletServiceObserver != nil
   }
-  
+
   init(
     account: BraveWallet.AccountInfo,
     observeAccountUpdates: Bool,
@@ -67,6 +70,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     walletService: BraveWalletBraveWalletService,
     rpcService: BraveWalletJsonRpcService,
     assetRatioService: BraveWalletAssetRatioService,
+    swapService: BraveWalletSwapService,
     txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
@@ -79,19 +83,23 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     self.walletService = walletService
     self.rpcService = rpcService
     self.assetRatioService = assetRatioService
+    self.swapService = swapService
     self.txService = txService
     self.blockchainRegistry = blockchainRegistry
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
-    
+    self._isSwapSupported = .init(
+      wrappedValue: account.coin == .eth || account.coin == .sol
+    )
+
     self.setupObservers()
-    
+
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
     }
   }
-  
+
   func tearDown() {
     keyringServiceObserver = nil
     rpcServiceObserver = nil
@@ -99,15 +107,18 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     walletServiceObserver = nil
     transactionDetailsStore?.tearDown()
   }
-  
+
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _accountsChanged: {
         Task { @MainActor in
           let allAccounts = await self.keyringService.allAccounts()
-          if let account = allAccounts.accounts.first(where: { $0.accountId == self.account.accountId }) {
+          if let account = allAccounts.accounts.first(where: {
+            $0.accountId == self.account.accountId
+          }) {
             // user may have updated the account name
             self.account = account
           }
@@ -153,9 +164,30 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   func update() {
     Task { @MainActor in
       let networksForAccountCoin = await rpcService.allNetworks(for: [account.coin])
-      let networksForAccount = networksForAccountCoin.filter { // .fil coin type has two different keyring ids
+      let networksForAccount = networksForAccountCoin.filter {
+        // .fil coin type has two different keyring ids
         $0.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
       }
+      for network in networksForAccount {
+        // Defaults to checking `eth` & `sol` coin type, but
+        // we can provide additional local check against user's
+        // custom networks with swap service
+        let isSwapSupportedForNetwork = await swapService.isSwapSupported(
+          chainId: network.chainId
+        )
+        if isSwapSupportedForNetwork && !self.isSwapSupported {
+          self.isSwapSupported = isSwapSupportedForNetwork
+          break
+        }
+      }
+      let buyOptions: [BraveWallet.OnRampProvider] = Array(
+        BraveWallet.OnRampProvider.allSupportedOnRampProviders
+      )
+      let buyTokenOptions = await blockchainRegistry.allBuyTokens(
+        in: networksForAccount,
+        for: buyOptions
+      ).flatMap(\.value)
+      self.isBuySupported = !buyTokenOptions.isEmpty
       // Include user deleted for case user sent an NFT
       // then deleted it, we need it for display in transaction list
       let allUserNetworkAssets = assetManager.getAllUserAssetsInNetworkAssets(
@@ -163,15 +195,22 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         includingUserDeleted: true
       )
       let allUserAssets = allUserNetworkAssets.flatMap(\.tokens)
-      let allTokens = await blockchainRegistry.allTokens(in: networksForAccountCoin).flatMap(\.tokens)
+      let allTokens = await blockchainRegistry.allTokens(in: networksForAccountCoin).flatMap(
+        \.tokens
+      )
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
         userNetworkAssets: allUserNetworkAssets,
         tokenBalances: tokenBalanceCache,
         tokenPrices: tokenPricesCache,
         nftMetadata: nftMetadataCache
       )
-      let allAccountsForCoin = await keyringService.allAccounts().accounts.filter { $0.coin == account.coin }
-      let transactions = await txService.allTransactions(networks: networksForAccountCoin, for: account)
+      let allAccountsForCoin = await keyringService.allAccounts().accounts.filter {
+        $0.coin == account.coin
+      }
+      let transactions = await txService.allTransactions(
+        networks: networksForAccountCoin,
+        for: account
+      )
       self.transactionSections = buildTransactionSections(
         transactions: transactions,
         networksForCoin: [account.coin: networksForAccountCoin],
@@ -182,14 +221,14 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         nftMetadata: nftMetadataCache,
         solEstimatedTxFees: solEstimatedTxFeesCache
       )
-      
+
       self.isLoadingAccountFiat = true
       let tokenBalances = await self.rpcService.fetchBalancesForTokens(
         account: account,
         networkAssets: allUserNetworkAssets
       )
       tokenBalanceCache.merge(with: tokenBalances)
-      
+
       // fetch price for every user asset
       let prices: [String: String] = await assetRatioService.fetchPrices(
         for: allUserAssets.map(\.assetRatioId),
@@ -197,19 +236,20 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         timeframe: .oneDay
       )
       tokenPricesCache.merge(with: prices)
-      
+
       var totalFiat: Double = 0
       for (key, balance) in tokenBalances where balance > 0 {
         if let token = allUserAssets.first(where: { $0.id == key }),
-           let priceString = prices[token.assetRatioId.lowercased()],
-           let price = Double(priceString) {
+          let priceString = prices[token.assetRatioId.lowercased()],
+          let price = Double(priceString)
+        {
           let tokenFiat = balance * price
           totalFiat += tokenFiat
         }
       }
       self.accountTotalFiat = currencyFormatter.string(from: .init(value: totalFiat)) ?? "$0.00"
       self.isLoadingAccountFiat = false
-      
+
       guard !Task.isCancelled else { return }
       // update assets, NFTs, transactions after balance & price fetch
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
@@ -228,14 +268,14 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         nftMetadata: nftMetadataCache,
         solEstimatedTxFees: solEstimatedTxFeesCache
       )
-      
+
       // fetch NFTs metadata
       let allNFTMetadata = await rpcService.fetchNFTMetadata(
         tokens: userNFTs.map(\.token),
         ipfsApi: ipfsApi
       )
       nftMetadataCache.merge(with: allNFTMetadata)
-      
+
       guard !Task.isCancelled else { return }
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
         userNetworkAssets: allUserNetworkAssets,
@@ -253,7 +293,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         nftMetadata: nftMetadataCache,
         solEstimatedTxFees: solEstimatedTxFeesCache
       )
-      
+
       if !transactions.isEmpty {
         var solEstimatedTxFees: [String: UInt64] = [:]
         switch account.coin {
@@ -263,7 +303,9 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
             knownTokens: allUserAssets + allTokens + tokenInfoCache
           )
           if !unknownTokenInfo.isEmpty {
-            let unknownTokens: [BraveWallet.BlockchainToken] = await rpcService.fetchEthTokens(for: unknownTokenInfo)
+            let unknownTokens: [BraveWallet.BlockchainToken] = await rpcService.fetchEthTokens(
+              for: unknownTokenInfo
+            )
             tokenInfoCache.append(contentsOf: unknownTokens)
           }
         case .sol:
@@ -285,7 +327,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       }
     }
   }
-  
+
   private func buildAssetsAndNFTs(
     userNetworkAssets: [NetworkAssets],
     tokenBalances: [String: Double],
@@ -295,7 +337,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     var updatedUserAssets: [AssetViewModel] = []
     var updatedUserNFTs: [NFTAssetViewModel] = []
     for networkAssets in userNetworkAssets {
-      for token in networkAssets.tokens {
+      for token in networkAssets.tokens where token.visible {
         if token.isErc721 || token.isNft {
           guard Int(tokenBalances[token.id] ?? 0) > 0 else {
             // only show NFTs belonging to this account
@@ -327,10 +369,10 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     updatedUserAssets = updatedUserAssets.sorted(by: { lhs, rhs in
       AssetViewModel.sorted(by: .valueDesc, lhs: lhs, rhs: rhs)
     })
-    
+
     return (updatedUserAssets, updatedUserNFTs)
   }
-  
+
   private func buildTransactionSections(
     transactions: [BraveWallet.TransactionInfo],
     networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
@@ -343,21 +385,29 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   ) -> [TransactionSection] {
     // Group transactions by day (only compare day/month/year)
     let transactionsGroupedByDate = Dictionary(grouping: transactions) { transaction in
-      let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: transaction.createdTime)
+      let dateComponents = Calendar.current.dateComponents(
+        [.year, .month, .day],
+        from: transaction.createdTime
+      )
       return Calendar.current.date(from: dateComponents) ?? transaction.createdTime
     }
-    let tokenPrices = self.userAssets.reduce(into: [String: Double](), {
-      $0[$1.token.assetRatioId.lowercased()] = Double($1.price)
-    })
+    let tokenPrices = self.userAssets.reduce(
+      into: [String: Double](),
+      {
+        $0[$1.token.assetRatioId.lowercased()] = Double($1.price)
+      }
+    )
     // Map to 1 `TransactionSection` per date
     return transactionsGroupedByDate.keys.sorted(by: { $0 > $1 }).compactMap { date in
       let transactions = transactionsGroupedByDate[date] ?? []
       guard !transactions.isEmpty else { return nil }
-      let parsedTransactions: [ParsedTransaction] = transactions
+      let parsedTransactions: [ParsedTransaction] =
+        transactions
         .sorted(by: { $0.createdTime > $1.createdTime })
         .compactMap { transaction in
           guard let networks = networksForCoin[transaction.coin],
-                let network = networks.first(where: { $0.chainId == transaction.chainId }) else {
+            let network = networks.first(where: { $0.chainId == transaction.chainId })
+          else {
             return nil
           }
           return TransactionParser.parseTransaction(
@@ -379,10 +429,13 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       )
     }
   }
-  
+
   private var transactionDetailsStore: TransactionDetailsStore?
-  func transactionDetailsStore(for transaction: BraveWallet.TransactionInfo) -> TransactionDetailsStore {
-    let parsedTransaction = transactionSections
+  func transactionDetailsStore(
+    for transaction: BraveWallet.TransactionInfo
+  ) -> TransactionDetailsStore {
+    let parsedTransaction =
+      transactionSections
       .flatMap(\.transactions)
       .first(where: { $0.transaction.id == transaction.id })
     let transactionDetailsStore = TransactionDetailsStore(
@@ -401,9 +454,20 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     self.transactionDetailsStore = transactionDetailsStore
     return transactionDetailsStore
   }
-  
+
   func closeTransactionDetailsStore() {
     self.transactionDetailsStore?.tearDown()
     self.transactionDetailsStore = nil
+  }
+}
+
+extension AccountActivityStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+  }
+
+  public func userAssetUpdated() {
+    // auto-discovery found new asset, user changed
+    // visibility status, or added new custom asset
+    update()
   }
 }

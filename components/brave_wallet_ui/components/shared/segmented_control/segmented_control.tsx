@@ -28,9 +28,12 @@ export const SegmentedControl = (props: Props) => {
   const { pathname: walletLocation, hash } = useLocation()
 
   // Methods
-  const onClick = React.useCallback((navOption: NavOption) => {
-    history.push(navOption.route)
-  }, [])
+  const onClick = React.useCallback(
+    (navOption: NavOption) => {
+      history.push(navOption.route)
+    },
+    [history]
+  )
 
   const isSelected = React.useCallback(
     (navOption: NavOption) => {

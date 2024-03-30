@@ -39,7 +39,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint::gemini {
 
@@ -50,7 +50,7 @@ using PostAccountCallback = base::OnceCallback<void(mojom::Result,
 
 class PostAccount {
  public:
-  explicit PostAccount(RewardsEngineImpl& engine);
+  explicit PostAccount(RewardsEngine& engine);
   ~PostAccount();
 
   void Request(const std::string& token, PostAccountCallback);
@@ -65,7 +65,7 @@ class PostAccount {
 
   void OnRequest(PostAccountCallback, mojom::UrlResponsePtr);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace endpoint::gemini

@@ -18,8 +18,8 @@
 class BraveHelpBubbleHostView : public views::View,
                                 public views::ViewObserver,
                                 public views::WidgetObserver {
+  METADATA_HEADER(BraveHelpBubbleHostView, views::View)
  public:
-  METADATA_HEADER(BraveHelpBubbleHostView);
 
   BraveHelpBubbleHostView();
   BraveHelpBubbleHostView(const BraveHelpBubbleHostView&) = delete;

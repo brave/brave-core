@@ -7,7 +7,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
-#include "base/ranges/algorithm.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
@@ -90,9 +89,12 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server()->ServeFilesFromSourceDirectory(GetChromeTestDataDir());
     ASSERT_TRUE(https_server()->Start());
+    SetPermissionManagerForProfile(browser()->profile());
+  }
 
+  void SetPermissionManagerForProfile(Profile* profile) {
     permission_manager_ = static_cast<permissions::BravePermissionManager*>(
-        PermissionManagerFactory::GetForProfile(browser()->profile()));
+        PermissionManagerFactory::GetForProfile(profile));
   }
 
   PermissionRequestManager* GetPermissionRequestManager() {
@@ -100,8 +102,8 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
         browser()->tab_strip_model()->GetActiveWebContents());
   }
 
-  HostContentSettingsMap* host_content_settings_map() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  HostContentSettingsMap* host_content_settings_map(Profile* profile) {
+    return HostContentSettingsMapFactory::GetForProfile(profile);
   }
 
   content::WebContents* web_contents() {
@@ -118,6 +120,55 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
     PermissionContextBase* context =
         permission_manager()->GetPermissionContextForTesting(type);
     return context->IsPendingGroupedRequestsEmptyForTesting();
+  }
+
+  void TestRequestPermissionsDoNotLeak(Profile* profile1, Profile* profile2) {
+    SetPermissionManagerForProfile(profile1);
+    auto* permission_request_manager = GetPermissionRequestManager();
+    const std::string address = "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A";
+    ContentSettingsType type = ContentSettingsType::BRAVE_ETHEREUM;
+    blink::PermissionType permission = blink::PermissionType::BRAVE_ETHEREUM;
+
+    RequestType request_type = ContentSettingsTypeToRequestType(type);
+    url::Origin sub_request_origin;
+    ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+        request_type, GetLastCommitedOrigin(), address, &sub_request_origin));
+
+    url::Origin origin;
+    ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+        GetLastCommitedOrigin(), {address}, &origin));
+
+    auto observer = std::make_unique<PermissionRequestManagerObserver>(
+        permission_request_manager);
+
+    base::MockCallback<base::OnceCallback<void(
+        const std::vector<blink::mojom::PermissionStatus>&)>>
+        callback;
+
+    permission_manager()->RequestPermissionsForOrigin(
+        {permission}, web_contents()->GetPrimaryMainFrame(), origin.GetURL(),
+        true, callback.Get());
+
+    content::RunAllTasksUntilIdle();
+    permissions::BraveWalletPermissionContext::AcceptOrCancel(
+        {address}, brave_wallet::mojom::PermissionLifetimeOption::kForever,
+        web_contents());
+
+    EXPECT_TRUE(observer->IsRequestsFinalized());
+    EXPECT_TRUE(!observer->IsShowingBubble());
+    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(type));
+
+    // Verify the permission has changed for profile1
+    EXPECT_EQ(host_content_settings_map(profile1)->GetContentSetting(
+                  sub_request_origin.GetURL(), GetLastCommitedOrigin().GetURL(),
+                  type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+
+    // Verify the permission hasn't leaked to profile2
+    EXPECT_EQ(host_content_settings_map(profile2)->GetContentSetting(
+                  sub_request_origin.GetURL(), GetLastCommitedOrigin().GetURL(),
+                  type),
+              ContentSetting::CONTENT_SETTING_ASK);
   }
 
  protected:
@@ -160,10 +211,6 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
           &sub_request_origins[j]))
           << "case: " << i << ", address: " << j;
     }
-    // The activation of features::kPermissionQuietChip affects the order in
-    // which permission_request_manager->Requests() stores the request in to
-    // FILO.
-    base::ranges::reverse(sub_request_origins);
 
     url::Origin origin;
     ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
@@ -212,9 +259,10 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
     for (size_t j = 0; j < addresses.size(); ++j) {
-      EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                    sub_request_origins[j].GetURL(),
-                    GetLastCommitedOrigin().GetURL(), cases[i].type),
+      EXPECT_EQ(host_content_settings_map(browser()->profile())
+                    ->GetContentSetting(sub_request_origins[j].GetURL(),
+                                        GetLastCommitedOrigin().GetURL(),
+                                        cases[i].type),
                 ContentSetting::CONTENT_SETTING_ASK)
           << "case: " << i << ", address: " << j;
     }
@@ -262,16 +310,38 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     EXPECT_TRUE(!observer->IsShowingBubble()) << "case: " << i;
     EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
-    // Reversing back sub_request_origins to its original ordering.
-    base::ranges::reverse(sub_request_origins);
     for (size_t j = 0; j < addresses.size(); ++j) {
-      EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                    sub_request_origins[j].GetURL(),
-                    GetLastCommitedOrigin().GetURL(), cases[i].type),
+      EXPECT_EQ(host_content_settings_map(browser()->profile())
+                    ->GetContentSetting(sub_request_origins[j].GetURL(),
+                                        GetLastCommitedOrigin().GetURL(),
+                                        cases[i].type),
                 expected_settings[j])
           << "case: " << i << ", address: " << j;
     }
   }
+}
+
+IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
+                       IncognitoPermissionsDoNotLeak) {
+  const GURL& url = https_server()->GetURL("a.test", "/empty.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  auto* profile = browser()->profile();
+  auto* incognito_profile =
+      CreateIncognitoBrowser(browser()->profile())->profile();
+
+  // Verify permissions do not leak from incongito profile into normal profile.
+  TestRequestPermissionsDoNotLeak(incognito_profile, profile);
+}
+
+IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, PermissionsDoNotLeak) {
+  const GURL& url = https_server()->GetURL("a.test", "/empty.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  auto* profile = browser()->profile();
+  auto* incognito_profile =
+      CreateIncognitoBrowser(browser()->profile())->profile();
+
+  // Verify permissions do not leak from normal profile into incognito profile.
+  TestRequestPermissionsDoNotLeak(profile, incognito_profile);
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
@@ -308,10 +378,6 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
           &sub_request_origins[j]))
           << "case: " << i << ", address: " << j;
     }
-    // The activation of features::kPermissionQuietChip affects the order in
-    // which permission_request_manager->Requests() stores the request in to
-    // FILO.
-    base::ranges::reverse(sub_request_origins);
 
     url::Origin origin;
     ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(

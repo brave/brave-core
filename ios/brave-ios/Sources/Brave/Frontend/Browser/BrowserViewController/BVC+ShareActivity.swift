@@ -1,30 +1,37 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import os.log
-import Preferences
-import Shared
 import BraveCore
 import BraveNews
-import Growth
 import FeedKit
+import Growth
+import Preferences
+import Shared
+import UIKit
+import os.log
 
 extension BrowserViewController {
-  func makeShareActivities(for url: URL, tab: Tab?, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) -> [UIActivity] {
+  func makeShareActivities(
+    for url: URL,
+    tab: Tab?,
+    sourceView: UIView?,
+    sourceRect: CGRect,
+    arrowDirection: UIPopoverArrowDirection
+  ) -> [UIActivity] {
     var activities = [UIActivity]()
-    
+
     // Copy Clean URL Activity
-    if !url.isLocal, !InternalURL.isValid(url: url), !url.isReaderModeURL {
-      let cleanedURL = URLSanitizerServiceFactory.get(
-        privateMode: tab?.isPrivate ?? true)?.sanitizeURL(url) ?? url
-      
+    if !url.isLocal, !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode) {
+      let cleanedURL =
+        URLSanitizerServiceFactory.get(
+          privateMode: tab?.isPrivate ?? true
+        )?.sanitizeURL(url) ?? url
+
       activities.append(
         BasicMenuActivity(
-          title: Strings.copyCleanLink,
-          braveSystemImage: "leo.broom",
+          activityType: .copyCleanLink,
           callback: {
             UIPasteboard.general.url = cleanedURL
           }
@@ -33,45 +40,53 @@ extension BrowserViewController {
     }
 
     // Send Tab To Self Activity - Show device selection screen
-    if  braveCore.syncAPI.isSendTabToSelfVisible, !privateBrowsingManager.isPrivateBrowsing,
-          !url.isLocal, !InternalURL.isValid(url: url), !url.isReaderModeURL {
+    if braveCore.syncAPI.isSendTabToSelfVisible, !privateBrowsingManager.isPrivateBrowsing,
+      !url.isLocal, !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode)
+    {
       activities.append(
         BasicMenuActivity(
-          title: Strings.OpenTabs.sendWebsiteShareActionTitle,
-          braveSystemImage: "leo.smartphone.laptop",
+          activityType: .sendURL,
           callback: { [weak self] in
             guard let self = self else { return }
-            
+
             let deviceList = self.braveCore.sendTabAPI.getListOfSyncedDevices()
             let dataSource = SendableTabInfoDataSource(
               with: deviceList,
               displayTitle: tab?.displayTitle ?? "",
-              sendableURL: url)
-            
-            let controller = SendTabToSelfController(sendTabAPI: self.braveCore.sendTabAPI, dataSource: dataSource)
-            
+              sendableURL: url
+            )
+
+            let controller = SendTabToSelfController(
+              sendTabAPI: self.braveCore.sendTabAPI,
+              dataSource: dataSource
+            )
+
             controller.sendWebSiteHandler = { [weak self] dataSource in
               guard let self = self else { return }
-              
+
               self.present(
-                SendTabProcessController(type: .progress, data: dataSource, sendTabAPI: self.braveCore.sendTabAPI),
+                SendTabProcessController(
+                  type: .progress,
+                  data: dataSource,
+                  sendTabAPI: self.braveCore.sendTabAPI
+                ),
                 animated: true,
-                completion: nil)
+                completion: nil
+              )
             }
             self.present(controller, animated: true, completion: nil)
           }
         )
       )
     }
-    
+
     // Toogle Reader Mode Activity
     // If the reader mode button is occluded due to a secure content state warning add it as an activity
     if let tab = tabManager.selectedTab, tab.secureContentState.shouldDisplayWarning {
       if tab.readerModeAvailableOrActive {
         activities.append(
           BasicMenuActivity(
-            title: Strings.toggleReaderMode,
-            braveSystemImage: "leo.product.speedreader",
+            activityType: .toggleReaderMode,
             callback: { [weak self] in
               self?.toggleReaderMode()
             }
@@ -80,16 +95,17 @@ extension BrowserViewController {
       }
       // Any other buttons on the leading side of the location view should be added here as well
     }
-    
+
     // Find In Page Activity
     activities.append(
       BasicMenuActivity(
-        title: Strings.findInPage,
-        braveSystemImage: "leo.search",
+        activityType: .findInPage,
         callback: { [weak self] in
           guard let self = self else { return }
-          
-          if #available(iOS 16.0, *), let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction {
+
+          if #available(iOS 16.0, *),
+            let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction
+          {
             findInteraction.searchText = ""
             findInteraction.presentFindNavigator(showingReplace: false)
           } else {
@@ -98,15 +114,14 @@ extension BrowserViewController {
         }
       )
     )
-    
+
     // Page Zoom Activity
     activities.append(
       BasicMenuActivity(
-        title: Strings.PageZoom.settingsTitle,
-        braveSystemImage: "leo.font.size",
+        activityType: .pageZoom,
         callback: { [weak self] in
           guard let self = self else { return }
-          
+
           self.displayPageZoom(visible: true)
         }
       )
@@ -120,11 +135,10 @@ extension BrowserViewController {
       if !FavoritesHelper.isAlreadyAdded(url) {
         activities.append(
           BasicMenuActivity(
-            title: Strings.addToFavorites,
-            braveSystemImage: "leo.widget.generic",
+            activityType: .addFavourites,
             callback: { [weak self] in
               guard let self = self else { return }
-              
+
               FavoritesHelper.add(url: url, title: tab?.displayTitle)
               // Handle App Rating
               // Check for review condition after adding a favorite
@@ -133,12 +147,11 @@ extension BrowserViewController {
           )
         )
       }
-      
+
       // Request Desktop Site Activity
       activities.append(
         BasicMenuActivity(
-          title: tab?.isDesktopSite == true ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString,
-          braveSystemImage: tab?.isDesktopSite == true ? "leo.smartphone" : "leo.monitor",
+          activityType: tab?.isDesktopSite == true ? .requestMobileSite : .requestDesktopSite,
           callback: {
             tab?.switchUserAgent()
           }
@@ -147,7 +160,8 @@ extension BrowserViewController {
 
       // Add Feed To Brave News Activity
       if Preferences.BraveNews.isEnabled.value, let metadata = tab?.pageMetadata,
-        !metadata.feeds.isEmpty {
+        !metadata.feeds.isEmpty
+      {
         let feeds: [RSSFeedLocation] = metadata.feeds.compactMap { feed in
           guard let url = URL(string: feed.href) else { return nil }
           return RSSFeedLocation(title: feed.title, url: url)
@@ -155,8 +169,7 @@ extension BrowserViewController {
         if !feeds.isEmpty {
           activities.append(
             BasicMenuActivity(
-              title: Strings.BraveNews.addSourceShareTitle,
-              braveSystemImage: "leo.rss",
+              activityType: .addSourceNews,
               callback: { [weak self] in
                 guard let self = self else { return }
                 let controller = BraveNewsAddSourceResultsViewController(
@@ -174,13 +187,12 @@ extension BrowserViewController {
           )
         }
       }
-      
+
       // Create PDF Activity
       if let webView = tab?.webView, tab?.temporaryDocument == nil {
         activities.append(
           BasicMenuActivity(
-            title: Strings.createPDF,
-            braveSystemImage: "leo.file",
+            activityType: .createPDF,
             callback: {
               webView.createPDF { [weak self] result in
                 dispatchPrecondition(condition: .onQueue(.main))
@@ -199,8 +211,13 @@ extension BrowserViewController {
                     .appendingPathComponent("\(filename ?? "Untitled").pdf")
                   do {
                     try pdfData.write(to: url)
-                    let pdfActivityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-                    if let popoverPresentationController = pdfActivityController.popoverPresentationController {
+                    let pdfActivityController = UIActivityViewController(
+                      activityItems: [url],
+                      applicationActivities: nil
+                    )
+                    if let popoverPresentationController = pdfActivityController
+                      .popoverPresentationController
+                    {
                       popoverPresentationController.sourceView = sourceView
                       popoverPresentationController.sourceRect = sourceRect
                       popoverPresentationController.permittedArrowDirections = arrowDirection
@@ -208,11 +225,15 @@ extension BrowserViewController {
                     }
                     self.present(pdfActivityController, animated: true)
                   } catch {
-                    Logger.module.error("Failed to write PDF to disk: \(error.localizedDescription, privacy: .public)")
+                    Logger.module.error(
+                      "Failed to write PDF to disk: \(error.localizedDescription, privacy: .public)"
+                    )
                   }
-                  
+
                 case .failure(let error):
-                  Logger.module.error("Failed to create PDF with error: \(error.localizedDescription)")
+                  Logger.module.error(
+                    "Failed to create PDF with error: \(error.localizedDescription)"
+                  )
                 }
               }
             }
@@ -223,15 +244,15 @@ extension BrowserViewController {
       // Add Feed To Brave News Activity
       // Check if it's a feed, url is a temp document file URL
       if let selectedTab = tabManager.selectedTab,
-        (selectedTab.mimeType == "application/xml" || selectedTab.mimeType == "application/json"),
-        let tabURL = selectedTab.url {
+        selectedTab.mimeType == "application/xml" || selectedTab.mimeType == "application/json",
+        let tabURL = selectedTab.url
+      {
 
         let parser = FeedParser(URL: url)
         if case .success(let feed) = parser.parse() {
           activities.append(
             BasicMenuActivity(
-              title: Strings.BraveNews.addSourceShareTitle,
-              braveSystemImage: "leo.rss",
+              activityType: .addSourceNews,
               callback: { [weak self] in
                 guard let self = self else { return }
                 let controller = BraveNewsAddSourceResultsViewController(
@@ -244,7 +265,7 @@ extension BrowserViewController {
                 let idiom = UIDevice.current.userInterfaceIdiom
                 container.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
                 self.present(container, animated: true)
-                
+
               }
             )
           )
@@ -254,43 +275,57 @@ extension BrowserViewController {
 
     // Add Search Engine Activity
     if let webView = tabManager.selectedTab?.webView,
-      evaluateWebsiteSupportOpenSearchEngine(webView) {
-      
+      evaluateWebsiteSupportOpenSearchEngine(webView)
+    {
       activities.append(
         BasicMenuActivity(
-          title: Strings.CustomSearchEngine.customEngineNavigationTitle,
-          braveSystemImage: "leo.search.zoom-in",
+          activityType: .addSearchEngine,
           callback: { [weak self] in
             self?.addCustomSearchEngineForFocusedElement()
           }
         )
       )
     }
-    
+
     // Display Certificate Activity
-    if let secureState = tabManager.selectedTab?.secureContentState, secureState != .missingSSL && secureState != .unknown {
+    if let tabURL = tabManager.selectedTab?.webView?.url,
+      tabManager.selectedTab?.webView?.serverTrust != nil
+        || ErrorPageHelper.hasCertificates(for: tabURL)
+    {
+      if let selectedTab = tabManager.selectedTab {
+        logSecureContentState(tab: selectedTab, details: "Display Certificate Activity Settings")
+      }
+
       activities.append(
         BasicMenuActivity(
-          title: Strings.displayCertificate,
-          braveSystemImage: "leo.lock.plain") { [weak self] in
-            self?.displayPageCertificateInfo()
-          }
+          activityType: .displaySecurityCertificate
+        ) { [weak self] in
+          self?.displayPageCertificateInfo()
+        }
       )
-    } 
-  
-    // Report Web-compat Issue Actibity
+    }
+
+    // Report Web-compat Issue Activity
     activities.append(
       BasicMenuActivity(
-        title: Strings.Shields.reportABrokenSite,
-        braveSystemImage: "leo.warning.triangle-outline") { [weak self] in
-          self?.showSubmitReportView(for: url)
-        }
+        activityType: .reportBrokenSite
+      ) { [weak self] in
+        self?.showSubmitReportView(for: url)
+      }
     )
-    
+
     return activities
   }
 
-  func presentActivityViewController(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
+  func presentActivityViewController(
+    _ url: URL,
+    tab: Tab? = nil,
+    sourceView: UIView?,
+    sourceRect: CGRect,
+    arrowDirection: UIPopoverArrowDirection
+  ) {
+    let shareExtesionHelper = ShareExtensionHelper(url: url, tab: tab)
+
     let activities: [UIActivity] = makeShareActivities(
       for: url,
       tab: tab,
@@ -299,10 +334,9 @@ extension BrowserViewController {
       arrowDirection: arrowDirection
     )
 
-    let controller = ShareExtensionHelper.makeActivityViewController(
-      selectedURL: url,
-      selectedTab: tab,
-      applicationActivities: activities
+    let controller = shareExtesionHelper.createActivityViewController(
+      applicationActivities:
+        activities
     )
 
     controller.completionWithItemsHandler = { [weak self] _, _, _, _ in

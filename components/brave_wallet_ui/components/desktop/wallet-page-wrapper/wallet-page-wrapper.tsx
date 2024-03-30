@@ -100,7 +100,7 @@ export const WalletPageWrapper = (props: Props) => {
     if (cardHeader) {
       setHeaderHeight(headerRef?.current?.clientHeight ?? 0)
     }
-  }, [headerRef?.current?.clientHeight, cardHeader])
+  }, [cardHeader, headerRef])
 
   const onScroll = React.useCallback(() => {
     const scrollPosition = scrollRef.current
@@ -146,7 +146,7 @@ export const WalletPageWrapper = (props: Props) => {
       setHeaderDividerOpacity(0)
       setHeaderBackgroundOpacity(1)
     }
-  }, [scrollRef.current])
+  }, [scrollRef])
 
   return (
     <>
@@ -160,7 +160,7 @@ export const WalletPageWrapper = (props: Props) => {
       )}
       <Wrapper
         noPadding={noPadding}
-        isPanel={isPanel}
+        noTopPosition={isPanel || isAndroid}
       >
         {isWalletCreated && !hideHeader && !isPanel && !isAndroid && (
           <TabHeader hideHeaderMenu={hideHeaderMenu} />
@@ -205,6 +205,7 @@ export const WalletPageWrapper = (props: Props) => {
                 <CardHeader
                   shadowOpacity={headerShadowOpacity}
                   isPanel={isPanel}
+                  isAndroid={isAndroid}
                   useDarkBackground={useDarkBackground}
                   backgroundOpacity={headerBackgroundOpacity}
                 >

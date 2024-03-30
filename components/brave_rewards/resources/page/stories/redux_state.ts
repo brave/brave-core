@@ -22,7 +22,7 @@ export const reduxState: Rewards.ApplicationState = {
       modalConnectState: '',
       modalRedirect: 'hide',
       modalRedirectProvider: '',
-      modalReset: false,
+      modalReset: true,
       modalAdsHistory: false,
       adsSettings: false,
       autoContributeSettings: false,
@@ -131,15 +131,9 @@ export const reduxState: Rewards.ApplicationState = {
       adsMaxEarningsLastMonth: 0
     },
     adsHistory: [],
-    promotions: [],
     excludedList: [],
     externalWalletProviderList: ['uphold'],
     balance: optional<number>(),
-    monthlyReport: {
-      month: -1,
-      year: -1
-    },
-    monthlyReportIds: [],
     currentCountryCode: '',
     parameters: {
       autoContributeChoice: 0,
@@ -156,6 +150,7 @@ export const reduxState: Rewards.ApplicationState = {
     },
     initializing: false,
     showOnboarding: false,
-    userType: 'unconnected'
+    userType: 'unconnected',
+    isUserTermsOfServiceUpdateRequired: true
   }
 }

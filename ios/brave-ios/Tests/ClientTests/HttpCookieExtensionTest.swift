@@ -1,10 +1,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import XCTest
-@testable import Brave
 import WebKit
+import XCTest
+
+@testable import Brave
 
 class HttpCookieExtensionTest: XCTestCase {
 
@@ -24,7 +25,8 @@ class HttpCookieExtensionTest: XCTestCase {
       WKWebsiteDataStore.default().fetchDataRecords(ofTypes: [WKWebsiteDataTypeCookies]) { _ in }
       WKWebsiteDataStore.default().httpCookieStore.setCookie(cookie) {
         HTTPCookie.saveToDisk(completion: { _ in
-          WKWebsiteDataStore.default().fetchDataRecords(ofTypes: [WKWebsiteDataTypeCookies]) { _ in }
+          WKWebsiteDataStore.default().fetchDataRecords(ofTypes: [WKWebsiteDataTypeCookies]) { _ in
+          }
           WKWebsiteDataStore.default().httpCookieStore.delete(
             cookie,
             completionHandler: {
@@ -35,7 +37,8 @@ class HttpCookieExtensionTest: XCTestCase {
                   }
                 })
               })
-            })
+            }
+          )
         })
       }
     } else {

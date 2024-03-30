@@ -16,6 +16,7 @@ import frecencySelectedDark from './assets/frecency-selected-dark.png'
 import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
 
 import CheckedCircle from './assets/checked-circle.svg'
+import { color, effect, gradient } from '@brave/leo/tokens/css'
 
 // Reverse decisions to have the controls define their margin. This helps
 // fill the gap before we remove all margins from these types of controls.
@@ -47,7 +48,7 @@ const getTopSiteCustomizationImage = (dark: boolean, selected: boolean, favorite
   }
 }
 
-export const SettingsMenu = styled('div')<Props>`
+export const SettingsMenu = styled('div') <Props>`
   width: 720px;
   min-width: 720px;
   ${p => p.textDirection && (p.textDirection === 'rtl') ? 'left: 12px' : 'right: 12px'};
@@ -60,7 +61,7 @@ export const SettingsMenu = styled('div')<Props>`
   font-family: ${p => p.theme.fontFamily.body};
 `
 
-export const SettingsContent = styled('div')<{}>`
+export const SettingsContent = styled('div') <{}>`
   display: grid;
   grid-template-columns: auto 1fr;
   grid-gap: 20px;
@@ -70,7 +71,7 @@ export const SettingsContent = styled('div')<{}>`
   }
 `
 
-export const SettingsSidebar = styled('aside')<{}>`
+export const SettingsSidebar = styled('aside') <{}>`
   position: relative;
   /* normalize against SettingsMenu default padding */
   margin-left: -24px;
@@ -82,7 +83,7 @@ interface SettingsSidebarActiveButtonSliderProps {
 }
 
 export const SettingsSidebarActiveButtonSlider =
-  styled('div')<SettingsSidebarActiveButtonSliderProps>`
+  styled('div') <SettingsSidebarActiveButtonSliderProps>`
   position: absolute;
   top: 0;
   left: 0;
@@ -96,55 +97,13 @@ export const SettingsSidebarActiveButtonSlider =
   transition-timing-function: ease-in;
   transition-property: transform;
 `
-interface SettingsSidebarSVGContentProps {
-  src: string
-  isActive: boolean
-}
 
-export const SettingsSidebarSVGContent = styled('div')<SettingsSidebarSVGContentProps>`
-  position: relative;
-  width: 20px;
-  height: 20px;
-  background: ${p => isDarkTheme(p) ? p.theme.palette.grey400 : p.theme.palette.grey800};
-  -webkit-mask-image: url(${p => p.src});
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  flex-shrink: 0;
-
-  transition: background var(--sidebar-button-transition-timing) ease-in-out;
-
-  ${p => p.isActive && css`
-    --active-opacity: 1;
-  `}
-
-  /* Active version (hidden until item is active).
-    This is a separate element so that we can:
-    1. fade it in (no transition for background gradient) */
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    opacity: var(--active-opacity, 0);
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
-    -webkit-mask-image: url(${p => p.src});
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    transition: opacity var(--sidebar-button-transition-timing) ease-in-out;
-  }
-
-`
-
-export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
+export const SettingsSidebarButtonText = styled.span`
   margin-left: 16px;
   font-weight: 500;
   font-size: 13px;
   font-family: ${p => p.theme.fontFamily.heading};
   line-height: normal;
-  color: ${p => p.theme.color.contextMenuForeground};
   position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -154,15 +113,9 @@ export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
               color var(--sidebar-button-transition-timing) ease-in-out,
               font-weight var(--sidebar-button-transition-timing) ease-in-out;
 
-  &:hover {
-    color: ${p => p.theme.color.brandBrave};
-  }
-
-  ${p => p.isActive && css`
-    --active-opacity: 1;
+  [data-active] & {
     font-weight: 600;
-    color: ${p => p.theme.palette.magenta500};
-  `}
+  }
 
   /* Active version (hidden until item is active).
      This is a separate element so that we can:
@@ -172,7 +125,7 @@ export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
   &::after {
     content: attr(data-text);
     position: absolute;
-    opacity: var(--active-opacity, 0);
+    opacity: var(--active-opacity);
     top: 0;
     left: 0;
     right: 0;
@@ -180,10 +133,10 @@ export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
     background: ${p => p.theme.color.panelBackground};
     background-size: 100%;
     background-repeat: repeat;
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+    background-image: ${gradient.hero};
     overflow: hidden;
     text-overflow: ellipsis;
     transition: opacity var(--sidebar-button-transition-timing) ease-in-out,
@@ -191,12 +144,11 @@ export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
   }
 `
 
-interface SettingsSidebarButtonProps {
-  activeTab: boolean
-}
-
-export const SettingsSidebarButton = styled('button')<SettingsSidebarButtonProps>`
+export const SettingsSidebarButton = styled.button`
+  --leo-icon-color: ${color.icon.default};
   --sidebar-button-transition-timing: .12s;
+  --active-opacity: 0;
+
   appearance: none;
   padding: 0;
   margin: 0;
@@ -208,14 +160,17 @@ export const SettingsSidebarButton = styled('button')<SettingsSidebarButtonProps
   display: flex;
   align-items: center;
   background: inherit;
+  color: ${color.text.secondary};
 
   &:hover {
-    ${SettingsSidebarSVGContent} {
-      background: ${p => p.theme.color.brandBrave};
-    }
-    ${SettingsSidebarButtonText} {
-      color: ${p => p.theme.color.brandBrave};
-    }
+    --leo-icon-color: ${color.text.interactive};
+    color: ${color.text.interactive};
+  }
+
+  &[data-active], &:active {
+    --active-opacity: 1;
+    --leo-icon-color: ${gradient.hero};
+    color: ${gradient.hero};
   }
 
   &:active,
@@ -223,25 +178,19 @@ export const SettingsSidebarButton = styled('button')<SettingsSidebarButtonProps
     outline: none;
   }
 
-  &:active {
-    --active-opacity: 1;
-  }
-
   &:focus-visible {
-    outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
-    outline-width: 1px;
+    box-shadow: ${effect.focusState};
   }
 `
 
-export const SettingsFeatureBody = styled('section')<{}>`
+export const SettingsFeatureBody = styled('section') <{}>`
   padding: 10px 16px;
   height: 360px;
   overflow: auto;
   overscroll-behavior: contain;
 `
 
-export const SettingsTitle = styled('div')<{}>`
+export const SettingsTitle = styled('div') <{}>`
   margin-bottom: 17px;
   grid-template-columns: 1fr 20px;
   display: grid;
@@ -257,34 +206,12 @@ export const SettingsTitle = styled('div')<{}>`
   }
 `
 
-export const SettingsCloseIcon = styled('button')<{}>`
-  appearance: none;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  background: inherit;
-  outline: none;
-
-  &:active {
-    color: ${p => p.theme.color.brandBraveActive};
-  }
-
-  &:focus-visible {
-    outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
-    outline-width: 2px;
-  }
-`
-
 interface SettingsRowProps extends ControllableLayoutProps {
   isChildSetting?: boolean
   isInteractive?: boolean
 }
 
-export const SettingsRow = styled('div')<SettingsRowProps>`
+export const SettingsRow = styled('div') <SettingsRowProps>`
   box-sizing: border-box;
   margin-bottom: ${p => !p.isLayoutControlled && '10px'};
   display: grid;
@@ -316,7 +243,7 @@ export const SettingsRow = styled('div')<SettingsRowProps>`
   }
 `
 
-export const SettingsText = styled('span')<{}>`
+export const SettingsText = styled('span') <{}>`
   display: flex;
   align-items: center;
   font-style: normal;
@@ -326,7 +253,7 @@ export const SettingsText = styled('span')<{}>`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const SettingsSectionTitle = styled('h3')<ControllableLayoutProps>`
+export const SettingsSectionTitle = styled('h3') <ControllableLayoutProps>`
   margin: 0 0 ${p => p.isLayoutControlled ? '0' : '8px'} 0;
   font-weight: 800;
   font-size: 13px;
@@ -337,7 +264,7 @@ interface SettingsWrapperProps {
   textDirection: string
 }
 
-export const SettingsWrapper = styled('div')<SettingsWrapperProps>`
+export const SettingsWrapper = styled('div') <SettingsWrapperProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -362,7 +289,7 @@ export const SettingsWrapper = styled('div')<SettingsWrapperProps>`
   }
 `
 
-export const SettingsWidget = styled('div')<{}>`
+export const SettingsWidget = styled('div') <{}>`
   width: calc(50% - var(--widget-gap));
   margin-top: calc(20px - var(--widget-gap));
   padding: 0px 1px;
@@ -380,28 +307,28 @@ export const StyledWidgetSettings = styled('div')`
   gap: var(--widget-gap);
 `
 
-export const FeaturedSettingsWidget = styled('div')<{}>`
+export const FeaturedSettingsWidget = styled('div') <{}>`
   width: 100%;
 `
 
-export const StyledBannerImage = styled('img')<{}>`
+export const StyledBannerImage = styled('img') <{}>`
   width: 100%;
   margin-bottom: 10px;
 `
 
-export const StyledSettingsInfo = styled('div')<{}>`
+export const StyledSettingsInfo = styled('div') <{}>`
   float: left;
   max-width: 250px;
   flex-grow: 1;
 `
 
-export const StyledSettingsTitle = styled('div')<{}>`
+export const StyledSettingsTitle = styled('div') <{}>`
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 5px;
 `
 
-export const StyledSettingsCopy = styled('div')<{}>`
+export const StyledSettingsCopy = styled('div') <{}>`
   font-size: 13px;
   font-weight: 300;
   line-height: 17px;
@@ -412,7 +339,7 @@ interface WidgetToggleProps {
   float: boolean
 }
 
-export const StyledWidgetToggle = styled('button')<WidgetToggleProps>`
+export const StyledWidgetToggle = styled('button') <WidgetToggleProps>`
   color: white;
   font-weight: 600;
   font-size: 13px;
@@ -435,7 +362,7 @@ export const StyledWidgetToggle = styled('button')<WidgetToggleProps>`
   }
 `
 
-export const StyledButtonIcon = styled('div')<{}>`
+export const StyledButtonIcon = styled('div') <{}>`
   display: inline-block;
   margin-right: 5px;
   width: 19px;
@@ -452,14 +379,14 @@ export const StyledHideButtonIcon = styled(StyledButtonIcon)`
   height: 17px;
 `
 
-export const StyledButtonLabel = styled('span')<{}>`
+export const StyledButtonLabel = styled('span') <{}>`
   max-width: 100px;
   text-overflow: ellipsis;
   display: inline-block;
   white-space: nowrap;
 `
 
-export const ToggleCardsWrapper = styled('div')<{}>`
+export const ToggleCardsWrapper = styled('div') <{}>`
   padding: 15px 15px 5px 15px;
   clear: both;
   border-radius: 10px;
@@ -467,21 +394,21 @@ export const ToggleCardsWrapper = styled('div')<{}>`
   color: ${p => isDarkTheme(p) ? '#FFF' : 'rgb(59, 62, 79)'};
 `
 
-export const ToggleCardsText = styled('div')<{}>`
+export const ToggleCardsText = styled('div') <{}>`
   text-align: left;
   max-width: 325px;
 `
 
-export const ToggleCardsTitle = styled('span')<{}>`
+export const ToggleCardsTitle = styled('span') <{}>`
   font-weight: bold;
 `
 
-export const ToggleCardsCopy = styled('p')<{}>`
+export const ToggleCardsCopy = styled('p') <{}>`
   line-height: 18px;
   font-weight: normal;
 `
 
-export const ToggleCardsSwitch = styled('div')<{}>`
+export const ToggleCardsSwitch = styled('div') <{}>`
   float: right;
   margin: -65px -10px 0 0;
 `
@@ -496,7 +423,7 @@ export const StyledTopSitesCustomizationSettings = styled('div')`
   gap: var(--widget-gap)
 `
 
-export const StyledTopSitesCustomizationSettingsOption = styled('button')<{}>`
+export const StyledTopSitesCustomizationSettingsOption = styled('button') <{}>`
   width: calc(50% - var(--widget-gap) / 2);
   display: flex;
   flex-direction: column;
@@ -516,13 +443,13 @@ interface CustomizationImageBorderProps {
   selected?: boolean
 }
 
-export const StyledTopSitesCustomizationImageBorder = styled('div')<CustomizationImageBorderProps>`
+export const StyledTopSitesCustomizationImageBorder = styled('div') <CustomizationImageBorderProps>`
   margin-bottom: 8px;
   border-radius: 11px;
 
   ${p => p.selected && css`
     background: ${p => isDarkTheme(p) ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
-                                      : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
+      : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
     padding: 3px;
   `}
 
@@ -544,7 +471,7 @@ interface CustomizationImageProps {
   selected?: boolean
 }
 
-export const StyledTopSitesCustomizationImage = styled('img')<CustomizationImageProps>`
+export const StyledTopSitesCustomizationImage = styled('img') <CustomizationImageProps>`
   width: 100%;
   height: 100%;
   cursor: pointer;
@@ -556,7 +483,7 @@ export const StyledTopSitesCustomizationImage = styled('img')<CustomizationImage
   `}
 `
 
-export const StyledTopSitesCustomizationOptionTitle = styled('div')<{}>`
+export const StyledTopSitesCustomizationOptionTitle = styled('div') <{}>`
   font-weight: 500;
   font-size: 13px;
   line-height: 20px;
@@ -564,14 +491,14 @@ export const StyledTopSitesCustomizationOptionTitle = styled('div')<{}>`
   text-align: left;
 `
 
-export const StyledTopSitesCustomizationOptionDesc = styled('div')<{}>`
+export const StyledTopSitesCustomizationOptionDesc = styled('div') <{}>`
   font-weight: 400;
   font-size: 11px;
   line-height: 17px;
   text-align: left;
 `
 
-export const StyledCustomBackgroundSettings = styled('div')<{}>`
+export const StyledCustomBackgroundSettings = styled('div') <{}>`
   --option-gap: 10px;
   display: flex;
   flex-direction: row;
@@ -580,7 +507,7 @@ export const StyledCustomBackgroundSettings = styled('div')<{}>`
   gap: var(--option-gap)
 `
 
-export const StyledCustomBackgroundOption = styled('button')<{}>`
+export const StyledCustomBackgroundOption = styled('button') <{}>`
   width: calc(50% - var(--option-gap) / 2);
   display: flex;
   flex-direction: column;
@@ -611,14 +538,14 @@ interface ImageBackgroundProps {
   image: string
 }
 
-export const StyledSelectionBorder = styled('div')<SelectionProps>`
+export const StyledSelectionBorder = styled('div') <SelectionProps>`
   position: relative;
   width: 100%;
   height: 160px;
   ${p => p.selected && css`
     background: ${p => isDarkTheme(p)
-        ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
-        : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
+      ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
+      : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
     padding: 2px;
     border-radius: 10px;
     &::after {
@@ -633,7 +560,7 @@ export const StyledSelectionBorder = styled('div')<SelectionProps>`
     &:hover::after { display: none; }
   `}
 `
-export const StyledUploadIconContainer = styled('div')<SelectionProps>`
+export const StyledUploadIconContainer = styled('div') <SelectionProps>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -651,7 +578,7 @@ export const StyledUploadIconContainer = styled('div')<SelectionProps>`
   `}
 `
 
-export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps & ImageBackgroundProps>`
+export const StyledCustomBackgroundOptionImage = styled('div') <SelectionProps & ImageBackgroundProps>`
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
@@ -664,7 +591,7 @@ export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps & 
   background-image: url("${p => p.image}");
 `
 
-export const StyledCustomBackgroundOptionColor = styled('div')<SelectionProps & ColoredBackgroundProps>`
+export const StyledCustomBackgroundOptionColor = styled('div') <SelectionProps & ColoredBackgroundProps>`
   width: 100%;
   height: 100%;
   ${p => p.selected
@@ -673,14 +600,14 @@ export const StyledCustomBackgroundOptionColor = styled('div')<SelectionProps & 
   background: ${p => p.colorValue};
 `
 
-export const StyledUploadLabel = styled('div')<{}>`
+export const StyledUploadLabel = styled('div') <{}>`
 font-style: normal;
 font-weight: 400;
 font-size: 11px;
 line-height: 17px;
 `
 
-export const StyledCustomBackgroundOptionLabel = styled('div')<{}>`
+export const StyledCustomBackgroundOptionLabel = styled('div') <{}>`
 font-style: normal;
 font-weight: 400;
 font-size: 14px;

@@ -23,7 +23,7 @@ class AdBlockService;
 }
 
 namespace brave_vpn {
-class BraveVPNOSConnectionAPI;
+class BraveVPNConnectionManager;
 }
 
 class TestingBraveBrowserProcess : public BraveBrowserProcess {
@@ -87,9 +87,9 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   brave_ads::ResourceComponent* resource_component() override;
   brave::BraveFarblingService* brave_farbling_service() override;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
-  void SetBraveVPNOSConnectionAPIForTesting(
-      std::unique_ptr<brave_vpn::BraveVPNOSConnectionAPI> api);
+  brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
+  void SetBraveVPNConnectionManagerForTesting(
+      std::unique_ptr<brave_vpn::BraveVPNConnectionManager> manager);
 #endif
   misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
 
@@ -108,8 +108,8 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  std::unique_ptr<brave_vpn::BraveVPNOSConnectionAPI>
-      brave_vpn_os_connection_api_;
+  std::unique_ptr<brave_vpn::BraveVPNConnectionManager>
+      brave_vpn_connection_manager_;
 #endif
 };
 

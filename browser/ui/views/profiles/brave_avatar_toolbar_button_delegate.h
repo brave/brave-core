@@ -20,6 +20,14 @@ class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {
   ~BraveAvatarToolbarButtonDelegate() override = default;
 
   gfx::Image GetGaiaAccountImage() const;
+
+  // Overrides from AvatarToolbarButtonDelegate:
+  ui::ImageModel GetAvatarIcon(int icon_size,
+                               SkColor icon_color) const override;
+  std::u16string GetAvatarTooltipText() const override;
+
+ private:
+  raw_ptr<Browser> browser_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_AVATAR_TOOLBAR_BUTTON_DELEGATE_H_

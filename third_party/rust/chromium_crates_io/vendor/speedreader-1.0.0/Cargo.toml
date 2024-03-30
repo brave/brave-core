@@ -1,0 +1,60 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/removed_Cargo.toml
+# by tools/crates/gnrt. Do not edit!
+
+# This is an empty crate that has replaced the 'speedreader' crate, since
+# it was listed in `resolve.remove_crates` in gnrt_config.toml.
+
+[package]
+name = "speedreader"
+version = "1.0.0"
+
+[features]
+
+[dependencies.html5ever]
+version = "*"
+default_features = true
+features = []
+[dependencies.kuchikiki]
+version = "*"
+default_features = true
+features = []
+[dependencies.lazy_static]
+version = "*"
+default_features = true
+features = []
+[dependencies.lifeguard]
+version = "*"
+default_features = true
+features = []
+[dependencies.lol_html]
+version = "*"
+default_features = true
+features = []
+[dependencies.markup5ever]
+version = "*"
+default_features = true
+features = []
+[dependencies.readability]
+version = "*"
+default_features = true
+features = []
+[dependencies.regex]
+version = "*"
+default_features = true
+features = []
+[dependencies.serde_json]
+version = "*"
+default_features = true
+features = []
+[dependencies.thiserror]
+version = "*"
+default_features = true
+features = []
+[dependencies.url]
+version = "*"
+default_features = true
+features = []

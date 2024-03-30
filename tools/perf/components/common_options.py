@@ -41,12 +41,15 @@ class CommonOptions:
   target_os: str = PerfBenchmark.FixupTargetOS(sys.platform)
   target_arch: str = ''
 
-  do_run_tests: bool = True
   do_report: bool = False
   report_on_failure: bool = False
   local_run: bool = False
   targets: List[str] = []
   config: str = ''
+
+  @property
+  def is_android(self) -> bool:
+    return self.target_os == 'android'
 
   @classmethod
   def add_parser_args(cls, parser: argparse.ArgumentParser) -> None:
@@ -107,11 +110,6 @@ class CommonOptions:
                         action='store_true',
                         help='[ci-mode] Don\'t to the dashboard')
     parser.add_argument(
-        '--report-only',
-        action='store_true',
-        help='[ci-mode] Don\'t run tests, only report the previous run'
-        'to the dashboard.')
-    parser.add_argument(
         '--report-on-failure',
         action='store_true',
         help='[ci-mode] Report to the dashboard despite test failures')
@@ -161,7 +159,6 @@ class CommonOptions:
       options.targets = args.targets.split(',')
 
     options.local_run = args.local_run or options.mode != PerfMode.RUN
-    options.do_run_tests = not args.report_only
     options.do_report = (not args.no_report and not args.local_run
                          and options.mode == PerfMode.RUN)
 

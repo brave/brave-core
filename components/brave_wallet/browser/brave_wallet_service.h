@@ -78,7 +78,8 @@ class BraveWalletService : public KeyedService,
       BitcoinWalletService* bitcoin_wallet_service,
       ZCashWalletService* zcash_wallet_service,
       PrefService* profile_prefs,
-      PrefService* local_state);
+      PrefService* local_state,
+      bool is_private_window_);
 
   ~BraveWalletService() override;
 
@@ -91,20 +92,6 @@ class BraveWalletService : public KeyedService,
   static void MigrateHiddenNetworks(PrefService* profile_prefs);
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
   static void MigrateAssetsPrefToList(PrefService* prefs);
-
-  static mojom::BlockchainTokenPtr AddUserAsset(mojom::BlockchainTokenPtr token,
-                                                PrefService* profile_prefs);
-  static std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
-      const std::string& chain_id,
-      mojom::CoinType coin,
-      PrefService* profile_prefs);
-  static std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
-      PrefService* profile_prefs);
-  static base::Value::List GetDefaultEthereumAssets();
-  static base::Value::List GetDefaultSolanaAssets();
-  static base::Value::List GetDefaultFilecoinAssets();
-  static base::Value::List GetDefaultBitcoinAssets();
-  static base::Value::List GetDefaultZCashAssets();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
@@ -225,11 +212,16 @@ class BraveWalletService : public KeyedService,
   void Base58Encode(const std::vector<std::vector<std::uint8_t>>& addresses,
                     Base58EncodeCallback callback) override;
 
-  void DiscoverAssetsOnAllSupportedChains() override;
+  void DiscoverAssetsOnAllSupportedChains(bool bypass_rate_limit) override;
 
   void GetNftDiscoveryEnabled(GetNftDiscoveryEnabledCallback callback) override;
 
   void SetNftDiscoveryEnabled(bool enabled) override;
+
+  void GetPrivateWindowsEnabled(
+      GetPrivateWindowsEnabledCallback callback) override;
+
+  void SetPrivateWindowsEnabled(bool enabled) override;
 
   void GetBalanceScannerSupportedChains(
       GetBalanceScannerSupportedChainsCallback callback) override;
@@ -250,6 +242,14 @@ class BraveWalletService : public KeyedService,
 
   void GetAnkrSupportedChainIds(
       GetAnkrSupportedChainIdsCallback callback) override;
+
+  void IsPrivateWindow(IsPrivateWindowCallback callback) override;
+
+  void GetTransactionSimulationOptInStatus(
+      GetTransactionSimulationOptInStatusCallback callback) override;
+
+  void SetTransactionSimulationOptInStatus(
+      mojom::BlowfishOptInStatus status) override;
 
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
@@ -315,12 +315,9 @@ class BraveWalletService : public KeyedService,
   friend class SolanaProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;
 
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, AddSuggestToken);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAsset);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, Reset);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAssetAddress);
 
   bool HasPendingDecryptRequestForOrigin(const url::Origin& origin) const;
   bool HasPendingGetEncryptionPublicKeyRequestForOrigin(
@@ -341,15 +338,6 @@ class BraveWalletService : public KeyedService,
   void OnGenerateZecReceiveAddress(
       GenerateReceiveAddressCallback callback,
       base::expected<mojom::ZCashAddressPtr, std::string> result);
-
-  static std::optional<std::string> GetChecksumAddress(
-      const std::string& contract_address,
-      const std::string& chain_id);
-  static std::optional<std::string> GetUserAssetAddress(
-      const std::string& address,
-      mojom::CoinType coin,
-      const std::string& chain_id);
-  static bool ValidateAndFixAssetAddress(mojom::BlockchainTokenPtr& token);
 
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
 
@@ -372,7 +360,6 @@ class BraveWalletService : public KeyedService,
   void CancelAllSignAllTransactionsCallbacks();
   void CancelAllGetEncryptionPublicKeyCallbacks();
   void CancelAllDecryptCallbacks();
-  void DiscoverAssetsOnAllSupportedChains(bool bypass_rate_limit);
 
   base::OnceClosure sign_tx_request_added_cb_for_testing_;
   base::OnceClosure sign_all_txs_request_added_cb_for_testing_;
@@ -380,6 +367,7 @@ class BraveWalletService : public KeyedService,
   int sign_message_id_ = 0;
   int sign_transaction_id_ = 0;
   int sign_all_transactions_id_ = 0;
+  bool is_private_window_;
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
   base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;

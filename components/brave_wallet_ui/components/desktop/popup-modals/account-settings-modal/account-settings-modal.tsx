@@ -78,7 +78,7 @@ const DepositModal = ({ selectedAccount }: DepositModalProps) => {
   const orb = useAccountOrb(selectedAccount)
 
   // queries
-  const receiveAddress = useReceiveAddressQuery(selectedAccount.accountId)
+  const { receiveAddress } = useReceiveAddressQuery(selectedAccount.accountId)
   const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
     receiveAddress || skipToken
   )
@@ -175,10 +175,10 @@ export const AccountSettingsModal = () => {
     setUpdateError(false)
   }
 
-  const onClose = () => {
+  const onClose = React.useCallback(() => {
     dispatch(AccountsTabActions.setShowAccountModal(false))
     dispatch(AccountsTabActions.setAccountModalType('deposit'))
-  }
+  }, [dispatch])
 
   const onSubmitUpdateName = React.useCallback(async () => {
     if (!selectedAccount || !accountName) {
@@ -194,7 +194,7 @@ export const AccountSettingsModal = () => {
     } catch (error) {
       setUpdateError(true)
     }
-  }, [selectedAccount, accountName, dispatch, onClose])
+  }, [selectedAccount, accountName, updateAccountName, onClose])
 
   const onShowPrivateKey = async () => {
     if (!password || !selectedAccount) {

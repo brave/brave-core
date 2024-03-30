@@ -1,11 +1,12 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Shared
 import JitsiMeetSDK
+import Preferences
+import Shared
 
 /// Handles coordinating when to use the Jitsi SDK for better Brave Talk integration
 ///
@@ -16,19 +17,22 @@ import JitsiMeetSDK
     // If needed to disable for certain build channels, check AppConstants.buildChannel here
     return true
   }
-  
+
   public init() {
-    if !AppConstants.buildChannel.isPublic {
+    if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
       JitsiMeetLogger.add(BraveTalkJitsiLogHandler())
     }
   }
-  
+
   public enum AppLifetimeEvent {
     case didFinishLaunching(options: [UIApplication.LaunchOptionsKey: Any] = [:])
-    case continueUserActivity(NSUserActivity, restorationHandler: (([UIUserActivityRestoring]) -> Void)? = nil)
+    case continueUserActivity(
+      NSUserActivity,
+      restorationHandler: (([UIUserActivityRestoring]) -> Void)? = nil
+    )
     case openURL(URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:])
   }
-  
+
   @discardableResult
   public static func sendAppLifetimeEvent(_ event: AppLifetimeEvent) -> Bool {
     guard Self.isIntegrationEnabled else { return false }
@@ -41,29 +45,34 @@ import JitsiMeetSDK
     case .didFinishLaunching(let options):
       return meet.application(application, didFinishLaunchingWithOptions: options)
     case .continueUserActivity(let activity, let restorationHandler):
-      return meet.application(application, continue: activity, restorationHandler: restorationHandler)
+      return meet.application(
+        application,
+        continue: activity,
+        restorationHandler: restorationHandler
+      )
     case .openURL(let url, let options):
       return meet.application(application, open: url, options: options)
     }
   }
-  
+
   private var pipViewCoordinator: PiPViewCoordinator?
   private var jitsiMeetView: JitsiMeetView?
   private var delegate: JitsiDelegate?
   private var isMuted: Bool = false
   public private(set) var isBraveTalkInPiPMode: Bool = false
   public private(set) var isCallActive: Bool = false
-  
+
   public func toggleMute() {
     guard Self.isIntegrationEnabled else { return }
-    isMuted.toggle() // The SDK doesn't seem to call `audioMutedChanged` when we call setAudioMuted below…
+    // The SDK doesn't seem to call `audioMutedChanged` when we call setAudioMuted below…
+    isMuted.toggle()
     jitsiMeetView?.setAudioMuted(isMuted)
   }
-  
+
   public enum KeyboardPressPhase {
     case began, changed, ended, cancelled
   }
-  
+
   public func handleResponderPresses(presses: Set<UIPress>, phase: KeyboardPressPhase) {
     guard Self.isIntegrationEnabled, isCallActive, !isBraveTalkInPiPMode else { return }
     let isSpacebarPressed = presses.contains(where: { $0.key?.keyCode == .keyboardSpacebar })
@@ -83,9 +92,9 @@ import JitsiMeetSDK
     }
     jitsiMeetView?.setAudioMuted(isMuted)
   }
-  
+
   private func dismissJitsiMeetView(_ completion: @escaping () -> Void) {
-    self.pipViewCoordinator?.hide() { _ in
+    self.pipViewCoordinator?.hide { _ in
       self.jitsiMeetView?.removeFromSuperview()
       self.jitsiMeetView = nil
       self.pipViewCoordinator = nil
@@ -95,10 +104,11 @@ import JitsiMeetSDK
       completion()
     }
   }
-  
+
   public func launchNativeBraveTalk(
     for room: String,
     token: String,
+    host: String,
     onEnterCall: @escaping () -> Void,
     onExitCall: @escaping () -> Void
   ) {
@@ -106,7 +116,7 @@ import JitsiMeetSDK
 
     // Only create the RN bridge when the user joins a call
     JitsiMeet.sharedInstance().instantiateReactNativeBridge()
-    
+
     // Call this right away instead of waiting for the conference to join so that we can stop the page load
     // faster.
     onEnterCall()
@@ -149,20 +159,20 @@ import JitsiMeetSDK
         }
       }
     )
-    
+
     jitsiMeetView = JitsiMeetView()
     jitsiMeetView?.delegate = delegate
-    
+
     pipViewCoordinator = PiPViewCoordinator(withView: jitsiMeetView!)
     pipViewCoordinator?.delegate = delegate
     pipViewCoordinator?.configureAsStickyView()
-    
-    jitsiMeetView?.join(.braveTalkOptions(room: room, token: token))
+
+    jitsiMeetView?.join(.braveTalkOptions(room: room, token: token, host: host))
     jitsiMeetView?.alpha = 0
-    
+
     pipViewCoordinator?.show()
   }
-  
+
   public func resetPictureInPictureBounds(_ bounds: CGRect) {
     guard Self.isIntegrationEnabled, let pip = pipViewCoordinator else { return }
     pip.resetBounds(bounds: bounds)
@@ -177,7 +187,7 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinator
   var exitedPiP: () -> Void
   var audioIsMuted: (Bool) -> Void
   var readyToClose: () -> Void
-  
+
   init(
     conferenceWillJoin: @escaping () -> Void,
     conferenceJoined: @escaping () -> Void,
@@ -195,36 +205,36 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinator
     self.audioIsMuted = audioIsMuted
     self.readyToClose = readyToClose
   }
-  
+
   func conferenceJoined(_ data: [AnyHashable: Any]!) {
     if let isMuted = data?["isAudioMuted"] as? Bool {
       audioIsMuted(isMuted)
     }
     conferenceJoined()
   }
-  
+
   func conferenceWillJoin(_ data: [AnyHashable: Any]!) {
     conferenceWillJoin()
   }
-  
+
   func conferenceTerminated(_ data: [AnyHashable: Any]!) {
     conferenceTerminated()
   }
-  
+
   func enterPicture(inPicture data: [AnyHashable: Any]!) {
     enterPiP()
   }
-  
+
   func exitPictureInPicture() {
     // Actually happens after exiting PiP, unlike entering PiP
     exitedPiP()
   }
-  
+
   func audioMutedChanged(_ data: [AnyHashable: Any]!) {
     guard let isMuted = data?["muted"] as? Bool else { return }
     audioIsMuted(isMuted)
   }
-  
+
   func ready(toClose data: [AnyHashable: Any]!) {
     readyToClose()
   }

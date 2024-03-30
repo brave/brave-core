@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import JavaScriptCore
@@ -18,8 +18,8 @@ public struct BookmarkValidation {
 
   public static func validateBookmarklet(title: String?, url: String?) -> Bool {
     guard let url = url else { return validateTitle(title) }
-    if !url.isBookmarklet { return false }
-    guard let javascriptCode = url.bookmarkletCodeComponent else {
+    guard let bookmarklet = URL.bookmarkletURL(from: url) else { return false }
+    guard let javascriptCode = bookmarklet.bookmarkletCodeComponent else {
       return false
     }
 

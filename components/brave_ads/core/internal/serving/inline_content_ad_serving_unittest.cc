@@ -31,7 +31,7 @@ class BraveAdsInlineContentAdServingTest : public UnitTestBase {
                     MaybeServeInlineContentAdCallback callback) {
     NotifyTabDidChange(
         /*tab_id=*/1, /*redirect_chain=*/{GURL("brave://newtab")},
-        /*is_visible=*/true);
+        /*is_error_page=*/false, /*is_visible=*/true);
 
     SubdivisionTargeting subdivision_targeting;
     AntiTargetingResource anti_targeting_resource;

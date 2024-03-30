@@ -1,10 +1,10 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BigNumber
+import Foundation
 
 /// Handles formatting between Wei and decimal values
 struct WeiFormatter {
@@ -75,7 +75,8 @@ struct WeiFormatter {
     }
     var decimal = bv / (BDouble(10) ** decimals)
     if case .gasFee(let limit, let limitRadix) = decimalFormatStyle,
-      let gasLimit = BDouble(limit, radix: limitRadix.rawValue) {
+      let gasLimit = BDouble(limit, radix: limitRadix.rawValue)
+    {
       decimal *= gasLimit
     }
     return decimal.decimalExpansion(
@@ -149,10 +150,10 @@ struct WeiFormatter {
     return (gwei * (BDouble(10) ** 9))
       .rounded().asString(radix: outputRadix.rawValue)
   }
-  
+
   static func decimalToAmount(_ decimalString: String, tokenDecimals: Int) -> UInt64? {
     guard isStringValid(decimalString, radix: .decimal),
-          let value = BDouble(decimalString, radix: Radix.decimal.rawValue)
+      let value = BDouble(decimalString, radix: Radix.decimal.rawValue)
     else {
       return nil
     }
@@ -181,11 +182,11 @@ extension Double {
     if abs(self) == Double(Int(abs(self))) {
       return 0
     }
-    
+
     let integerString = String(Int(abs(self)))
     let doubleString = String(Double(abs(self)))
     let decimalCount = doubleString.count - integerString.count - 1
-    
+
     return decimalCount
   }
 }

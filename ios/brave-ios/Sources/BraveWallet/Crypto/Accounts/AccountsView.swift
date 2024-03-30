@@ -1,14 +1,14 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
 import BraveCore
-import Combine
-import SwiftUI
 import BraveUI
+import Combine
 import Strings
+import SwiftUI
+import UIKit
 
 struct AccountsView: View {
   @ObservedObject var store: AccountsStore
@@ -20,10 +20,9 @@ struct AccountsView: View {
   @State private var selectedAccountForEdit: BraveWallet.AccountInfo?
   /// When populated, private key export is presented modally for the given account.
   @State private var selectedAccountForExport: BraveWallet.AccountInfo?
-  
-  @Environment(\.buySendSwapDestination)
-  private var buySendSwapDestination: Binding<BuySendSwapDestination?>
-  
+
+  @Binding var walletActionDestination: WalletActionDestination?
+
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 16) {
@@ -40,26 +39,29 @@ struct AccountsView: View {
             )
           }
         })
-        
+
         if !store.importedAccounts.isEmpty {
-          Section(content: {
-            ForEach(store.importedAccounts) { accountDetails in
-              AccountCardView(
-                account: accountDetails.account,
-                tokensWithBalances: accountDetails.tokensWithBalance,
-                balance: accountDetails.totalBalanceFiat,
-                isLoading: store.isLoading,
-                action: { action in
-                  handle(action: action, for: accountDetails.account)
-                }
-              )
+          Section(
+            content: {
+              ForEach(store.importedAccounts) { accountDetails in
+                AccountCardView(
+                  account: accountDetails.account,
+                  tokensWithBalances: accountDetails.tokensWithBalance,
+                  balance: accountDetails.totalBalanceFiat,
+                  isLoading: store.isLoading,
+                  action: { action in
+                    handle(action: action, for: accountDetails.account)
+                  }
+                )
+              }
+            },
+            header: {
+              Text(Strings.Wallet.importedCryptoAccountsTitle)
+                .font(.headline.weight(.semibold))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-          }, header: {
-            Text(Strings.Wallet.importedCryptoAccountsTitle)
-              .font(.headline.weight(.semibold))
-              .foregroundColor(Color(braveSystemName: .textPrimary))
-              .frame(maxWidth: .infinity, alignment: .leading)
-          })
+          )
         }
       }
       .padding(16)
@@ -71,7 +73,7 @@ struct AccountsView: View {
       NavigationLink(
         isActive: Binding(
           get: { selectedAccountActivity != nil },
-          set: { 
+          set: {
             if !$0 {
               selectedAccountActivity = nil
               if let selectedAccountActivity {
@@ -89,20 +91,23 @@ struct AccountsView: View {
               ),
               cryptoStore: cryptoStore,
               keyringStore: keyringStore,
-              buySendSwapDestination: buySendSwapDestination
+              walletActionDestination: $walletActionDestination
             )
           }
         },
         label: {
           EmptyView()
-        })
+        }
+      )
     )
     .background(
       Color.clear
-        .sheet(isPresented: Binding(
-          get: { selectedAccountForEdit != nil },
-          set: { if !$0 { selectedAccountForEdit = nil } }
-        )) {
+        .sheet(
+          isPresented: Binding(
+            get: { selectedAccountForEdit != nil },
+            set: { if !$0 { selectedAccountForEdit = nil } }
+          )
+        ) {
           if let account = selectedAccountForEdit {
             AccountDetailsView(
               keyringStore: keyringStore,
@@ -114,10 +119,12 @@ struct AccountsView: View {
     )
     .background(
       Color.clear
-        .sheet(isPresented: Binding(
-          get: { selectedAccountForExport != nil },
-          set: { if !$0 { selectedAccountForExport = nil } }
-        )) {
+        .sheet(
+          isPresented: Binding(
+            get: { selectedAccountForExport != nil },
+            set: { if !$0 { selectedAccountForExport = nil } }
+          )
+        ) {
           if let account = selectedAccountForExport {
             NavigationView {
               AccountPrivateKeyView(
@@ -126,9 +133,9 @@ struct AccountsView: View {
               )
               .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                  Button(action: {
+                  Button {
                     selectedAccountForExport = nil
-                  }) {
+                  } label: {
                     Text(Strings.cancelButtonTitle)
                       .foregroundColor(Color(.braveBlurpleTint))
                   }
@@ -142,7 +149,7 @@ struct AccountsView: View {
       store.update()
     }
   }
-  
+
   private func handle(action: AccountCardView.Action, for account: BraveWallet.AccountInfo) {
     switch action {
     case .viewDetails:
@@ -154,7 +161,11 @@ struct AccountsView: View {
     case .exportAccount:
       selectedAccountForExport = account
     case .depositToAccount:
-      break
+      walletActionDestination = WalletActionDestination(
+        kind: .deposit(query: nil),
+        initialToken: nil,
+        initialAccount: account
+      )
     }
   }
 }
@@ -166,7 +177,8 @@ struct AccountsViewController_Previews: PreviewProvider {
       AccountsView(
         store: .previewStore,
         cryptoStore: .previewStore,
-        keyringStore: .previewStoreWithWalletCreated
+        keyringStore: .previewStoreWithWalletCreated,
+        walletActionDestination: Binding(projectedValue: .constant(nil))
       )
     }
     .previewLayout(.sizeThatFits)
@@ -176,7 +188,7 @@ struct AccountsViewController_Previews: PreviewProvider {
 #endif
 
 private struct AccountCardView: View {
-  
+
   enum Action: Equatable {
     case viewDetails
     case editDetails
@@ -184,18 +196,18 @@ private struct AccountCardView: View {
     case exportAccount
     case depositToAccount
   }
-  
+
   let account: BraveWallet.AccountInfo
   let tokensWithBalances: [BraveWallet.BlockchainToken]
   let balance: String
   let isLoading: Bool
   let action: (Action) -> Void
-  
+
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   @ScaledMetric private var avatarSize = 40.0
   private let maxAvatarSize: CGFloat = 80.0
   private let contentPadding: CGFloat = 16
-  
+
   /// Content for the top section of the card. Buttons may be hidden so we can overlay
   /// the buttons on the card itself to not interfere with touches on the card itself.
   private func topSectionContent(hidingButtons: Bool = true) -> some View {
@@ -221,7 +233,7 @@ private struct AccountCardView: View {
       }
       .hidden(isHidden: !hidingButtons)
       Spacer()
-      
+
       // buttons can be hidden so it's used in layout, but displayed
       // in overlay to not interfere with row button touches.
       buttons
@@ -229,48 +241,43 @@ private struct AccountCardView: View {
     }
     .padding(contentPadding)
   }
-  
+
   private var buttons: some View {
     HStack(spacing: 12) {
-      /*
-       TODO: Accounts Block Explorer #8638
-      Button(action: {
-        action(.viewOnBlockExplorer)
-      }) {
-        RoundedRectangle(cornerRadius: 8)
-          .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
-          .frame(width: 36, height: 36)
-          .overlay {
-            Image(braveSystemName: "leo.web3.blockexplorer")
-              .foregroundColor(Color(braveSystemName: .iconInteractive))
-          }
-      }
-      */
+      // TODO: Accounts Block Explorer brave/brave-ios#8638
+      // Button {
+      //   action(.viewOnBlockExplorer)
+      // } label: {
+      //   RoundedRectangle(cornerRadius: 8)
+      //     .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
+      //     .frame(width: 36, height: 36)
+      //     .overlay {
+      //       Image(braveSystemName: "leo.web3.blockexplorer")
+      //         .foregroundColor(Color(braveSystemName: .iconInteractive))
+      //     }
+      // }
       Menu {
-        Button(action: {
+        Button {
           action(.viewDetails)
-        }) {
+        } label: {
           Label(Strings.Wallet.viewDetails, braveSystemImage: "leo.eye.on")
         }
-        Button(action: {
+        Button {
           action(.editDetails)
-        }) {
+        } label: {
           Label(Strings.Wallet.editButtonTitle, braveSystemImage: "leo.edit.pencil")
         }
         Divider()
-        Button(action: {
+        Button {
           action(.exportAccount)
-        }) {
+        } label: {
           Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
         }
-        /*
-         TODO: Account Deposit UI #8639
-        Button(action: {
+        Button {
           action(.depositToAccount)
-        }) {
-          Label("Deposit", braveSystemImage: "leo.qr.code")
+        } label: {
+          Label(Strings.Wallet.deposit, braveSystemImage: "leo.qr.code")
         }
-        */
       } label: {
         RoundedRectangle(cornerRadius: 8)
           .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
@@ -282,7 +289,7 @@ private struct AccountCardView: View {
       }
     }
   }
-  
+
   private var bottomSectionContent: some View {
     HStack {
       if isLoading && tokensWithBalances.isEmpty {
@@ -311,15 +318,15 @@ private struct AccountCardView: View {
     }
     .padding(contentPadding)
   }
-  
+
   var body: some View {
-    Button(action: {
+    Button {
       action(.viewDetails)
-    }) {
+    } label: {
       VStack(spacing: 0) {
         topSectionContent()
           .background(colorScheme == .dark ? Color.black.opacity(0.5) : Color.white.opacity(0.5))
-        
+
         bottomSectionContent
           .background(
             colorScheme == .dark ? Color.black.opacity(0.4) : Color.clear
@@ -338,7 +345,7 @@ private struct AccountCardView: View {
       topSectionContent(hidingButtons: false)
     }
   }
-  
+
   private var cardBackground: some View {
     BlockieMaterial(address: account.address)
       .blur(radius: 25, opaque: true)

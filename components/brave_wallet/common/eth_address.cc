@@ -17,10 +17,6 @@
 
 namespace brave_wallet {
 
-namespace {
-constexpr size_t kAddressLength = 20u;
-}  // namespace
-
 EthAddress::EthAddress(std::vector<uint8_t> bytes) : bytes_(std::move(bytes)) {}
 EthAddress::EthAddress(base::span<const uint8_t> bytes)
     : bytes_(bytes.begin(), bytes.end()) {}
@@ -44,9 +40,9 @@ EthAddress EthAddress::FromPublicKey(const std::vector<uint8_t>& public_key) {
   }
 
   std::vector<uint8_t> hash = KeccakHash(public_key);
-  std::vector<uint8_t> result(hash.end() - kAddressLength, hash.end());
+  std::vector<uint8_t> result(hash.end() - kEthAddressLength, hash.end());
 
-  DCHECK_EQ(result.size(), kAddressLength);
+  DCHECK_EQ(result.size(), kEthAddressLength);
 
   return EthAddress(std::move(result));
 }
@@ -68,7 +64,7 @@ EthAddress EthAddress::FromHex(const std::string& input) {
 
 // static
 EthAddress EthAddress::FromBytes(base::span<const uint8_t> bytes) {
-  if (bytes.size() != kAddressLength) {
+  if (bytes.size() != kEthAddressLength) {
     return EthAddress();
   }
   return EthAddress(bytes);
@@ -76,7 +72,7 @@ EthAddress EthAddress::FromBytes(base::span<const uint8_t> bytes) {
 
 // static
 EthAddress EthAddress::ZeroAddress() {
-  return EthAddress(std::vector<uint8_t>(kAddressLength, 0));
+  return EthAddress(std::vector<uint8_t>(kEthAddressLength, 0));
 }
 
 // static
@@ -85,7 +81,7 @@ bool EthAddress::IsValidAddress(const std::string& input) {
     VLOG(1) << __func__ << ": input is not a valid hex representation";
     return false;
   }
-  if (input.size() - 2 != kAddressLength * 2) {
+  if (input.size() - 2 != kEthAddressLength * 2) {
     VLOG(1) << __func__ << ": input should be 20 bytes long";
     return false;
   }
@@ -95,6 +91,26 @@ bool EthAddress::IsValidAddress(const std::string& input) {
 std::string EthAddress::ToHex() const {
   const std::string input(bytes_.begin(), bytes_.end());
   return ::brave_wallet::ToHex(input);
+}
+
+// static
+std::optional<std::string> EthAddress::ToEip1191ChecksumAddress(
+    const std::string& address,
+    const std::string& chain_id) {
+  if (address.empty()) {
+    return "";
+  }
+
+  const auto eth_addr = EthAddress::FromHex(address);
+  if (eth_addr.IsEmpty()) {
+    return std::nullopt;
+  }
+  uint256_t chain;
+  if (!HexValueToUint256(chain_id, &chain)) {
+    return std::nullopt;
+  }
+
+  return eth_addr.ToChecksumAddress(chain);
 }
 
 std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {

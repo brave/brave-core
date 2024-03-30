@@ -275,4 +275,8 @@ bssl::SignatureVerifyCache* CoseSign1::GetVerifyCache() {
   return nullptr;
 }
 
+bool CoseSign1::AcceptPreCertificates() {
+  return true;
+}
+
 }  // namespace nitro_utils

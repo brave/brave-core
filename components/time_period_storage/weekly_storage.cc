@@ -11,6 +11,10 @@ constexpr size_t kDaysInWeek = 7;
 
 WeeklyStorage::WeeklyStorage(PrefService* prefs, const char* pref_name)
     : TimePeriodStorage(prefs, pref_name, kDaysInWeek) {}
+WeeklyStorage::WeeklyStorage(PrefService* prefs,
+                             const char* pref_name,
+                             const char* dict_key)
+    : TimePeriodStorage(prefs, pref_name, dict_key, kDaysInWeek) {}
 
 uint64_t WeeklyStorage::GetWeeklySum() const {
   return GetPeriodSum();

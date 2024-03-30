@@ -137,8 +137,6 @@ std::optional<base::UnguessableToken> EphemeralStorageService::Get1PESToken(
     }
     token = base::UnguessableToken::Create();
     fpes_tokens_[ephemeral_storage_domain] = *token;
-  } else {
-    fpes_tokens_.erase(ephemeral_storage_domain);
   }
   return token;
 }
@@ -185,6 +183,7 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
   DVLOG(1) << __func__ << " " << ephemeral_domain << " "
            << storage_partition_config;
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
+  const bool cleanup_tld_ephemeral_area = !shields_disabled_on_one_of_hosts;
   const bool cleanup_first_party_storage_area = FirstPartyStorageAreaNotInUse(
       ephemeral_domain, shields_disabled_on_one_of_hosts);
 
@@ -195,10 +194,12 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
         FROM_HERE, tld_ephemeral_area_keep_alive_,
         base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralAreaByTimer,
                        weak_ptr_factory_.GetWeakPtr(), key,
+                       cleanup_tld_ephemeral_area,
                        cleanup_first_party_storage_area));
     tld_ephemeral_areas_to_cleanup_.emplace(key, std::move(cleanup_timer));
   } else {
-    CleanupTLDEphemeralArea(key, cleanup_first_party_storage_area);
+    CleanupTLDEphemeralArea(key, cleanup_tld_ephemeral_area,
+                            cleanup_first_party_storage_area);
   }
 }
 
@@ -271,17 +272,22 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
 
 void EphemeralStorageService::CleanupTLDEphemeralAreaByTimer(
     const TLDEphemeralAreaKey& key,
+    bool cleanup_tld_ephemeral_area,
     bool cleanup_first_party_storage_area) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   tld_ephemeral_areas_to_cleanup_.erase(key);
-  CleanupTLDEphemeralArea(key, cleanup_first_party_storage_area);
+  CleanupTLDEphemeralArea(key, cleanup_tld_ephemeral_area,
+                          cleanup_first_party_storage_area);
 }
 
 void EphemeralStorageService::CleanupTLDEphemeralArea(
     const TLDEphemeralAreaKey& key,
+    bool cleanup_tld_ephemeral_area,
     bool cleanup_first_party_storage_area) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
-  delegate_->CleanupTLDEphemeralArea(key);
+  if (cleanup_tld_ephemeral_area) {
+    delegate_->CleanupTLDEphemeralArea(key);
+  }
   fpes_tokens_.erase(key.first);
   if (cleanup_first_party_storage_area) {
     CleanupFirstPartyStorageArea(key.first);

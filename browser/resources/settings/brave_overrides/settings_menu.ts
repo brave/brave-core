@@ -85,9 +85,9 @@ RegisterStyleOverride(
       }
 
       .cr-nav-menu-item[selected] {
-        --iron-icon-fill-color: var(--leo-gradient-icons-active);
+        --iron-icon-fill-color: var(--leo-color-icon-interactive);
 
-        color: var(--cr-link-color) !important;
+        color: var(--leo-color-text-interactive) !important;
         background: transparent !important;
       }
 
@@ -144,7 +144,7 @@ RegisterStyleOverride(
         display: block;
         height: 32px;
         width: 4px;
-        background: linear-gradient(96.98deg, #E51D00 0%, #E5007B 78.13%);
+        background: var(--leo-color-text-interactive);
         border-radius: 0px 2px 2px 0px;
       }
 
@@ -231,6 +231,15 @@ RegisterPolymerTemplateModifications({
     const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
     getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
 
+    // Add Content item
+    const contentEl = createMenuElement(
+      loadTimeData.getString('contentSettingsContentSection'),
+      '/brave-content',
+      'content-big',
+      'content',
+    )
+    appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
+
     // Add Shields item
     const shieldsEl = createMenuElement(
       loadTimeData.getString('braveShieldsTitle'),
@@ -238,7 +247,7 @@ RegisterPolymerTemplateModifications({
       'shield-done',
       'shields',
     )
-    appearanceBrowserEl.insertAdjacentElement('afterend', shieldsEl)
+    contentEl.insertAdjacentElement('afterend', shieldsEl)
 
     // Add privacy item
     const privacyEl = getMenuElement(templateContent, '/privacy')
@@ -270,15 +279,6 @@ RegisterPolymerTemplateModifications({
       'braveSync',
     )
     leoAssistantEl.insertAdjacentElement('afterend', syncEl)
-
-    // Add Playlist item
-    const playlistEl = createMenuElement(
-      loadTimeData.getString('playlist'),
-      '/playlist',
-      'product-playlist',
-      'playlist',
-    )
-    leoAssistantEl.insertAdjacentElement('afterend', playlistEl)
 
     // Add search item
     const searchEl = getMenuElement(templateContent, '/search')

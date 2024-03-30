@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -33,7 +34,7 @@ std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
 
   auto web_view = std::make_unique<SidePanelWebUIViewT<AIChatUI>>(
       base::RepeatingClosure(), base::RepeatingClosure(),
-      std::make_unique<BubbleContentsWrapperT<AIChatUI>>(
+      std::make_unique<WebUIContentsWrapperT<AIChatUI>>(
           GURL(kChatUIURL), profile.get(),
           IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
           /*webui_resizes_host=*/false,
@@ -58,7 +59,8 @@ void RegisterContextualSidePanel(content::WebContents* web_contents) {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   content::BrowserContext* context = web_contents->GetBrowserContext();
-  if (ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context))) {
+  if (ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context)) &&
+      IsRegularProfile(context)) {
     // If |registry| already has it, it's no-op.
     registry->Register(std::make_unique<SidePanelEntry>(
         SidePanelEntry::Id::kChatUI,

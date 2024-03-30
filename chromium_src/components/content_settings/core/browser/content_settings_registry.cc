@@ -7,7 +7,7 @@
 #include "src/components/content_settings/core/browser/content_settings_registry.cc"
 #undef BRAVE_INIT
 
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "net/base/features.h"
 

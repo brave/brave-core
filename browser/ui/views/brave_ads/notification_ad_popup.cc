@@ -537,7 +537,7 @@ bool NotificationAdPopup::IsWidgetValid() const {
   return GetWidget() && !GetWidget()->IsClosed();
 }
 
-BEGIN_METADATA(NotificationAdPopup, views::WidgetDelegateView)
+BEGIN_METADATA(NotificationAdPopup)
 END_METADATA
 
 }  // namespace brave_ads

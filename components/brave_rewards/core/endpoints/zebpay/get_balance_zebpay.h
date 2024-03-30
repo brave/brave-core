@@ -26,7 +26,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -41,10 +41,10 @@ struct ResultFor<GetBalanceZebPay> {
 class GetBalanceZebPay final : public RequestBuilder,
                                public ResponseHandler<GetBalanceZebPay> {
  public:
-  static Result ProcessResponse(RewardsEngineImpl& engine,
+  static Result ProcessResponse(RewardsEngine& engine,
                                 const mojom::UrlResponse& response);
 
-  GetBalanceZebPay(RewardsEngineImpl& engine, std::string&& token);
+  GetBalanceZebPay(RewardsEngine& engine, std::string&& token);
   ~GetBalanceZebPay() override;
 
  private:

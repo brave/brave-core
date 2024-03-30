@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import SwiftUI
@@ -12,7 +12,7 @@ extension Gradient {
   init(braveSystemName gradient: FigmaGradient) {
     self.init(
       stops: gradient.stops.map { stop in
-          .init(color: Color(stop.color), location: CGFloat(stop.position))
+        .init(color: Color(stop.color), location: CGFloat(stop.position))
       }
     )
   }
@@ -21,7 +21,10 @@ extension Gradient {
 extension LinearGradient {
   /// Create a SwiftUI LinearGradient from a Brave design system gradient
   public init(braveSystemName gradient: FigmaGradient) {
-    assert(gradient.type == .axial, "Attempting to create a LinearGradient with a non-linear Brave defined gradient")
+    assert(
+      gradient.type == .axial,
+      "Attempting to create a LinearGradient with a non-linear Brave defined gradient"
+    )
     self.init(
       gradient: Gradient(braveSystemName: gradient),
       startPoint: .init(x: gradient.startPoint.x, y: gradient.startPoint.y),

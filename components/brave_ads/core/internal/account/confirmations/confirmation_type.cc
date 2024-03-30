@@ -19,8 +19,8 @@ namespace {
 constexpr char kUndefinedType[] = "";
 constexpr char kClickedType[] = "click";
 constexpr char kDismissedType[] = "dismiss";
-constexpr char kViewedType[] = "view";
-constexpr char kServedType[] = "served";
+constexpr char kViewedImpressionType[] = "view";
+constexpr char kServedImpressionType[] = "served";
 constexpr char kLandedType[] = "landed";
 constexpr char kSavedAdType[] = "bookmark";
 constexpr char kMarkAdAsInappropriateType[] = "flag";
@@ -33,8 +33,8 @@ constexpr auto kToConfirmationTypeMap =
         {{kUndefinedType, ConfirmationType::kUndefined},
          {kClickedType, ConfirmationType::kClicked},
          {kDismissedType, ConfirmationType::kDismissed},
-         {kViewedType, ConfirmationType::kViewed},
-         {kServedType, ConfirmationType::kServed},
+         {kViewedImpressionType, ConfirmationType::kViewedImpression},
+         {kServedImpressionType, ConfirmationType::kServedImpression},
          {kLandedType, ConfirmationType::kLanded},
          {kSavedAdType, ConfirmationType::kSavedAd},
          {kMarkAdAsInappropriateType, ConfirmationType::kMarkAdAsInappropriate},
@@ -47,8 +47,8 @@ constexpr auto kConfirmationTypeToStringMap =
         {{ConfirmationType::kUndefined, kUndefinedType},
          {ConfirmationType::kClicked, kClickedType},
          {ConfirmationType::kDismissed, kDismissedType},
-         {ConfirmationType::kViewed, kViewedType},
-         {ConfirmationType::kServed, kServedType},
+         {ConfirmationType::kViewedImpression, kViewedImpressionType},
+         {ConfirmationType::kServedImpression, kServedImpressionType},
          {ConfirmationType::kLanded, kLandedType},
          {ConfirmationType::kSavedAd, kSavedAdType},
          {ConfirmationType::kMarkAdAsInappropriate, kMarkAdAsInappropriateType},

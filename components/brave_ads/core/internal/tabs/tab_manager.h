@@ -39,16 +39,16 @@ class TabManager final : public AdsClientNotifierObserver {
   void RemoveObserver(TabManagerObserver* observer);
 
   bool IsVisible(int32_t tab_id) const;
-
-  bool IsPlayingMedia(int32_t tab_id) const;
-
   std::optional<TabInfo> GetVisible() const;
 
   std::optional<TabInfo> MaybeGetForId(int32_t tab_id) const;
 
+  bool IsPlayingMedia(int32_t tab_id) const;
+
  private:
+  bool DoesExistForId(int32_t tab_id) const;
   TabInfo& GetOrCreateForId(int32_t tab_id);
-  void Remove(int32_t tab_id);
+  void RemoveForId(int32_t tab_id);
 
   void NotifyTabDidChangeFocus(int32_t tab_id) const;
   void NotifyTabDidChange(const TabInfo& tab) const;
@@ -74,17 +74,18 @@ class TabManager final : public AdsClientNotifierObserver {
   void OnNotifyTabDidStopPlayingMedia(int32_t tab_id) override;
   void OnNotifyTabDidChange(int32_t tab_id,
                             const std::vector<GURL>& redirect_chain,
+                            bool is_error_page,
                             bool is_visible) override;
   void OnNotifyDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<TabManagerObserver> observers_;
 
-  uint32_t last_text_content_hash_ = 0;
-  uint32_t last_html_content_hash_ = 0;
-
   std::optional<int32_t> visible_tab_id_;
 
   std::map</*tab_id*/ int32_t, TabInfo> tabs_;
+
+  uint32_t last_text_content_hash_ = 0;
+  uint32_t last_html_content_hash_ = 0;
 };
 
 }  // namespace brave_ads

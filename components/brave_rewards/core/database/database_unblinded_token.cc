@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -24,7 +24,7 @@ const char kTableName[] = "unblinded_tokens";
 
 }  // namespace
 
-DatabaseUnblindedToken::DatabaseUnblindedToken(RewardsEngineImpl& engine)
+DatabaseUnblindedToken::DatabaseUnblindedToken(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseUnblindedToken::~DatabaseUnblindedToken() = default;

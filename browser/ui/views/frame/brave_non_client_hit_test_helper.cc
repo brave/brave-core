@@ -18,10 +18,21 @@ int NonClientHitTest(BrowserView* browser_view,
     return HTNOWHERE;
   }
 
-  // All toolbar elements are children of the container view in the toolbar.
-  DCHECK_EQ(1u, browser_view->toolbar()->children().size());
+  const auto children_count = browser_view->toolbar()->children().size();
+  int container_view_index = 0;
+  if (features::IsChromeRefresh2023()) {
+    // Upstream has two more children |background_view_left_| and
+    // |background_view_right_| behind the container view.
+    DCHECK_EQ(3u, children_count);
+    container_view_index = 2;
+  } else {
+    // All toolbar elements are children of the container view in the toolbar.
+    DCHECK_EQ(1u, children_count);
+  }
+
   int hit_test_result = views::GetHitTestComponent(
-      browser_view->toolbar()->children()[0], point_in_widget);
+      browser_view->toolbar()->children()[container_view_index],
+      point_in_widget);
   if (hit_test_result == HTNOWHERE || hit_test_result == HTCLIENT) {
     // The |point_in_widget| is out of toolbar or on toolbar's sub views.
     return hit_test_result;

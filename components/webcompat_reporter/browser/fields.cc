@@ -6,7 +6,7 @@
 #include "brave/components/webcompat_reporter/browser/fields.h"
 
 #include "base/notreached.h"
-#include "brave/components/brave_shields/common/brave_shields_panel.mojom-shared.h"
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-shared.h"
 
 namespace webcompat_reporter {
 

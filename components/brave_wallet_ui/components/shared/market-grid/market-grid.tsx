@@ -112,6 +112,7 @@ export const MarketGrid = ({
     })
   }, [
     coinMarketData,
+    fiatCurrency,
     isBuySupported,
     isDepositSupported,
     onClickBuy,
@@ -155,14 +156,14 @@ export const MarketGrid = ({
         </GridRow>
       )
     },
-    [rows, gridTemplateColumns]
+    [rows, gridTemplateColumns, headers]
   )
 
   const onContentLoad = React.useCallback(() => {
     if (wrapperRef.current) {
       onUpdateIframeHeight(wrapperRef.current.scrollHeight)
     }
-  }, [onUpdateIframeHeight, wrapperRef.current])
+  }, [onUpdateIframeHeight, wrapperRef])
 
   React.useEffect(() => {
     const handleResize = () => {

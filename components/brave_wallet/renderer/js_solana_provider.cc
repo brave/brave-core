@@ -27,6 +27,7 @@
 #include "gin/handle.h"
 #include "gin/object_template_builder.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
@@ -128,7 +129,9 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
 // static
 void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
                                content::RenderFrame* render_frame) {
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  CHECK(render_frame);
+  v8::Isolate* isolate =
+      render_frame->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame->GetWebFrame()->MainWorldScriptContext();
@@ -236,7 +239,8 @@ void JSSolanaProvider::AccountChangedEvent(
   if (!render_frame()) {
     return;
   }
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::Isolate* isolate =
+      render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame()->GetWebFrame()->MainWorldScriptContext();
@@ -253,7 +257,9 @@ void JSSolanaProvider::AccountChangedEvent(
 }
 
 void JSSolanaProvider::DisconnectEvent() {
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  CHECK(render_frame());
+  v8::Isolate* isolate =
+      render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
   FireEvent(kDisconnectEvent, std::vector<v8::Local<v8::Value>>());
 }
@@ -887,7 +893,8 @@ std::optional<std::string> JSSolanaProvider::GetSerializedMessage(
   if (!render_frame()) {
     return std::nullopt;
   }
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::Isolate* isolate =
+      render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
 
   v8::MaybeLocal<v8::Value> serialized_msg;
@@ -954,7 +961,8 @@ JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
   if (!render_frame()) {
     return std::nullopt;
   }
-  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::Isolate* isolate =
+      render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
 
   v8::Local<v8::Value> signatures;

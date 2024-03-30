@@ -10,7 +10,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_builder_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_util.h"
@@ -31,8 +30,7 @@ void ConversionQueue::Add(const ConversionInfo& conversion) {
       BuildConversionQueueItem(conversion, ProcessConversionAt());
   CHECK(conversion_queue_item.IsValid());
 
-  const database::table::ConversionQueue database_table;
-  database_table.Save(
+  database_table_.Save(
       {conversion_queue_item},
       base::BindOnce(&ConversionQueue::AddCallback, weak_factory_.GetWeakPtr(),
                      conversion_queue_item));
@@ -56,8 +54,9 @@ void ConversionQueue::AddCallback(
 
 bool ConversionQueue::ShouldProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  return !timer_.IsRunning() ||
-         ShouldProcessBeforeScheduledQueueItem(conversion_queue_item);
+  return !is_processing_ &&
+         (!timer_.IsRunning() ||
+          ShouldProcessBeforeScheduledQueueItem(conversion_queue_item));
 }
 
 bool ConversionQueue::ShouldProcessBeforeScheduledQueueItem(
@@ -76,8 +75,8 @@ void ConversionQueue::ProcessQueueItemAfterDelay(
   const base::Time process_at = timer_.Start(
       FROM_HERE,
       CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item),
-      base::BindOnce(&ConversionQueue::ProcessQueueItem, base::Unretained(this),
-                     conversion_queue_item));
+      base::BindOnce(&ConversionQueue::ProcessQueueItem,
+                     weak_factory_.GetWeakPtr(), conversion_queue_item));
 
   NotifyWillProcessConversionQueue(conversion_queue_item.conversion,
                                    process_at);
@@ -87,19 +86,15 @@ void ConversionQueue::ProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
   CHECK(conversion_queue_item.IsValid());
 
-  MarkQueueItemAsProcessed(conversion_queue_item);
-}
+  is_processing_ = true;
 
-void ConversionQueue::MarkQueueItemAsProcessed(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  const database::table::ConversionQueue database_table;
-  database_table.Update(
+  database_table_.MarkAsProcessed(
       conversion_queue_item,
-      base::BindOnce(&ConversionQueue::MarkQueueItemAsProcessedCallback,
+      base::BindOnce(&ConversionQueue::ProcessQueueItemCallback,
                      weak_factory_.GetWeakPtr(), conversion_queue_item));
 }
 
-void ConversionQueue::MarkQueueItemAsProcessedCallback(
+void ConversionQueue::ProcessQueueItemCallback(
     const ConversionQueueItemInfo& conversion_queue_item,
     const bool success) {
   if (!success) {
@@ -112,6 +107,8 @@ void ConversionQueue::MarkQueueItemAsProcessedCallback(
 
 void ConversionQueue::SuccessfullyProcessedQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
+  is_processing_ = false;
+
   NotifyDidProcessConversionQueue(conversion_queue_item.conversion);
 
   ProcessNextQueueItem();
@@ -119,14 +116,15 @@ void ConversionQueue::SuccessfullyProcessedQueueItem(
 
 void ConversionQueue::FailedToProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
+  is_processing_ = false;
+
   NotifyFailedToProcessConversionQueue(conversion_queue_item.conversion);
 
   ProcessNextQueueItem();
 }
 
 void ConversionQueue::ProcessNextQueueItem() {
-  const database::table::ConversionQueue database_table;
-  database_table.GetUnprocessed(
+  database_table_.GetNext(
       base::BindOnce(&ConversionQueue::ProcessNextQueueItemCallback,
                      weak_factory_.GetWeakPtr()));
 }
@@ -144,7 +142,6 @@ void ConversionQueue::ProcessNextQueueItemCallback(
 
   const ConversionQueueItemInfo& conversion_queue_item =
       conversion_queue_items.front();
-
   ProcessQueueItemAfterDelay(conversion_queue_item);
 }
 

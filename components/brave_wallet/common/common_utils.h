@@ -32,6 +32,7 @@ bool IsNftPinningEnabled();
 bool IsBitcoinEnabled();
 bool IsZCashEnabled();
 bool IsAnkrBalancesEnabled();
+bool IsTransactionSimulationsEnabled();
 
 bool IsAllowed(PrefService* prefs);
 
@@ -52,6 +53,9 @@ mojom::KeyringId GetFilecoinKeyringId(const std::string& network);
 std::string GetFilecoinChainId(mojom::KeyringId keyring_id);
 
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
+
+mojom::CoinType GetCoinTypeFromTxDataUnion(
+    const mojom::TxDataUnion& tx_data_union);
 
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 

@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
+#include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
@@ -31,9 +32,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   for (const auto& creative_ad : creative_ads) {
     BindString(command, index++, creative_ad.campaign_id);
     BindInt64(command, index++,
-              creative_ad.start_at.ToDeltaSinceWindowsEpoch().InMicroseconds());
-    BindInt64(command, index++,
-              creative_ad.end_at.ToDeltaSinceWindowsEpoch().InMicroseconds());
+              ToChromeTimestampFromTime(creative_ad.start_at));
+    BindInt64(command, index++, ToChromeTimestampFromTime(creative_ad.end_at));
     BindInt(command, index++, creative_ad.daily_cap);
     BindString(command, index++, creative_ad.advertiser_id);
     BindInt(command, index++, creative_ad.priority);
@@ -43,22 +43,6 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   }
 
   return count;
-}
-
-void MigrateToV29(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
-
-  DropTable(transaction, "campaigns");
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      "CREATE TABLE campaigns (campaign_id TEXT NOT NULL PRIMARY KEY UNIQUE ON "
-      "CONFLICT REPLACE, start_at TIMESTAMP NOT NULL, end_at TIMESTAMP NOT "
-      "NULL, daily_cap INTEGER DEFAULT 0 NOT NULL, advertiser_id TEXT NOT "
-      "NULL, priority INTEGER NOT NULL DEFAULT 0, ptr DOUBLE NOT NULL DEFAULT "
-      "1);";
-  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace
@@ -95,12 +79,20 @@ void Campaigns::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE campaigns (campaign_id TEXT NOT NULL PRIMARY KEY UNIQUE ON "
-      "CONFLICT REPLACE, start_at TIMESTAMP NOT NULL, end_at TIMESTAMP NOT "
-      "NULL, daily_cap INTEGER DEFAULT 0 NOT NULL, advertiser_id TEXT NOT "
-      "NULL, priority INTEGER NOT NULL DEFAULT 0, ptr DOUBLE NOT NULL DEFAULT "
-      "1);";
+      R"(
+          CREATE TABLE campaigns (
+            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+            start_at TIMESTAMP NOT NULL,
+            end_at TIMESTAMP NOT NULL,
+            daily_cap INTEGER DEFAULT 0 NOT NULL,
+            advertiser_id TEXT NOT NULL,
+            priority INTEGER NOT NULL DEFAULT 0,
+            ptr DOUBLE NOT NULL DEFAULT 1
+          );)";
   transaction->commands.push_back(std::move(command));
+
+  CreateTableIndex(transaction, GetTableName(),
+                   /*columns=*/{"start_at", "end_at"});
 }
 
 void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
@@ -108,14 +100,23 @@ void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 29: {
-      MigrateToV29(transaction);
+    case 35: {
+      MigrateToV35(transaction);
       break;
     }
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Campaigns::MigrateToV35(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // We can safely recreate the table because it will be repopulated after
+  // downloading the catalog.
+  DropTable(transaction, GetTableName());
+  Create(transaction);
+}
 
 std::string Campaigns::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
@@ -125,8 +126,16 @@ std::string Campaigns::BuildInsertOrUpdateSql(
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 (campaign_id, start_at, end_at, daily_cap, "
-      "advertiser_id, priority, ptr) VALUES $2;",
+      R"(
+          INSERT INTO $1 (
+            id,
+            start_at,
+            end_at,
+            daily_cap,
+            advertiser_id,
+            priority,
+            ptr
+          ) VALUES $2;)",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count=*/7, binded_parameters_count)},
       nullptr);

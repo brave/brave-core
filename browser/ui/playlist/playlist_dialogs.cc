@@ -29,6 +29,10 @@ void ShowMoveItemsDialog(content::WebContents* contents,
 void ShowPlaylistSettings() {
   NOTREACHED();
 }
+
+void ClosePanel() {
+  NOTREACHED();
+}
 // #else functions are defined in playlist_action_dialogs.cc
 #endif
 

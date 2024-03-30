@@ -7,11 +7,7 @@ import {
   NativeAssetBalanceRegistry,
   TokenBalanceRegistry
 } from '../common/constants/mocks'
-import {
-  BraveWallet,
-  RewardsExternalWallet,
-  TxSimulationOptInStatus
-} from './types'
+import { BraveWallet, RewardsExternalWallet } from './types'
 
 export interface WalletApiDataOverrides {
   selectedCoin?: BraveWallet.CoinType
@@ -25,7 +21,7 @@ export interface WalletApiDataOverrides {
   accountInfos?: BraveWallet.AccountInfo[]
   nativeBalanceRegistry?: NativeAssetBalanceRegistry
   tokenBalanceRegistry?: TokenBalanceRegistry
-  simulationOptInStatus?: TxSimulationOptInStatus
+  simulationOptInStatus?: BraveWallet.BlowfishOptInStatus
   evmSimulationResponse?: BraveWallet.EVMSimulationResponse | null
   svmSimulationResponse?: BraveWallet.SolanaSimulationResponse | null
 }

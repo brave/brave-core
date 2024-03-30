@@ -11,7 +11,7 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/url_constants.h"
@@ -155,6 +155,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_HISTORY},
       {"appearanceSettingsUseBookmarkSuggestions",
        IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BOOKMARKS},
+      {"appearanceSettingsUseCommanderSuggestions",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_COMMANDER},
       {"appearanceSettingsUseLeoSuggestions",
        IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_LEO},
       {"appearanceSettingsGetMoreThemes",
@@ -164,8 +166,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 #if defined(TOOLKIT_VIEWS)
       {"appearanceSettingsToolbarSection",
        IDS_SETTINGS_APPEARANCE_SETTINGS_TOOLBAR_SECTION},
-      {"appearanceSettingsContentSection",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION},
       {"appearanceSettingsTabsSection",
        IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SECTION},
       {"appearanceSettingsTabsUseVerticalTabs",
@@ -203,6 +203,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED_DESC},
       {"appearanceSettingsSidebarDisabledDesc",
        IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
+      {"contentSettingsContentSection",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION},
 #endif  // defined(TOOLKIT_VIEWS)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       {"showBraveVPNButton", IDS_SETTINGS_SHOW_VPN_BUTTON},
@@ -210,8 +212,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"vpnPageTitle", IDS_SETTINGS_VPN_PAGE_TITLE},
       {"useWireguardLabel", IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE},
       {"sublabelVpnConnected", IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED},
-      {"sublabelVpnDisconnected",
-       IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED},
 #endif
 #if BUILDFLAG(IS_MAC)
       {"showToolbarInFullScreen", IDS_SHOW_TOOLBAR_IN_FULL_SCREEN},
@@ -384,6 +384,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_SS_UNLOCKED_ERROR_MESSAGE},
       {"braveSyncLeaveAndRejoinTheChainButton",
        IDS_BRAVE_SYNC_LEAVE_AND_REJOIN_THE_CHAIN_BUTTON},
+      {"braveDataCollection", IDS_BRAVE_DATA_COLLECTION_SETTINGS_SECTION},
       {"braveIPFS", IDS_BRAVE_IPFS_SETTINGS_SECTION},
       {"braveWeb3", IDS_BRAVE_WEB3_SETTINGS_SECTION},
       {"braveWeb3Domains", IDS_BRAVE_WEB3_DOMAINS_SETTINGS_SECTION},
@@ -425,6 +426,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE},
       {"braveLeoModelSubtitle-chat-claude-instant",
        IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE},
+      {"braveLeoAssistantManageUrlLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_MANAGE_URL},
 
       // New Tab Page
       {"braveNewTab", IDS_SETTINGS_NEW_TAB},
@@ -460,6 +463,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR},
       {"enableNftDiscoveryLabel", IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL},
       {"enableNftDiscoveryDesc", IDS_SETTINGS_ENABLE_NFT_DISCOVERY_DESC},
+      {"enablePrivateWindowsLabel",
+       IDS_SETTINGS_ENABLE_BRAVE_WALLET_IN_PRIVATE_WINDOWS_LABEL},
+      {"enablePrivateWindowsDesc",
+       IDS_SETTINGS_ENABLE_BRAVE_WALLET_IN_PRIVATE_WINDOWS_DESC},
       {"showBravewalletTestNetworks",
        IDS_SETTINGS_SHOW_BRAVE_WALLET_TEST_NETWORKS},
       {"autoLockMinutes", IDS_SETTINGS_AUTO_LOCK_MINUTES},
@@ -528,8 +535,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_ERROR},
       {"torSubmitDialogButton", IDS_SETTINGS_TOR_SUBMIT_DIALOG_BUTTON},
       {"torCancelDialogButton", IDS_SETTINGS_TOR_CANCEL_DIALOG_BUTTON},
-      {"autoOnionLocationLabel", IDS_SETTINGS_AUTO_ONION_LOCATION_TITLE},
-      {"autoOnionLocationDesc", IDS_SETTINGS_AUTO_ONION_LOCATION_DESC},
       {"onionOnlyInTorWindowsLabel",
        IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_TITLE},
       {"onionOnlyInTorWindowsDesc",
@@ -725,6 +730,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT},
       {"shortcutsPageSaveAddShortcut", IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT},
       {"shortcutsPageAddShortcut", IDS_SHORTCUTS_PAGE_ADD_SHORTCUT},
+      {"settingsSelectValueYes", IDS_SETTINGS_SELECT_VALUE_YES},
+      {"settingsSelectValueNo", IDS_SETTINGS_SELECT_VALUE_NO},
+      {"settingsSelectValueAsk", IDS_SETTINGS_SELECT_VALUE_ASK},
   };
 
   html_source->AddLocalizedStrings(localized_strings);
@@ -772,6 +780,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("ipfsMethodDesc", l10n_util::GetStringFUTF16(
                                                IDS_SETTINGS_IPFS_METHOD_DESC,
                                                ipfs::kIPFSLearnMorePrivacyURL));
+
+  html_source->AddString(
+      "transactionSimulationDesc",
+      l10n_util::GetStringFUTF16(IDS_BRAVE_WALLET_TRANSACTION_SIMULATIONS_DESC,
+                                 kTransactionSimulationLearnMoreURL));
 
   html_source->AddString("resolveUnstoppableDomainsSubDesc",
                          l10n_util::GetStringFUTF16(

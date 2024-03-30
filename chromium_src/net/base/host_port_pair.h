@@ -9,26 +9,52 @@
 #include <string>
 #include <string_view>
 
-// Nudges HostPortPair past Chromium's style
-// threshold for in-line constructors and destructors.
-#define BRAVE_HOST_PORT_PAIR_H_                                      \
-  HostPortPair(std::string_view username, std::string_view password, \
-               std::string_view in_host, uint16_t in_port);          \
-  ~HostPortPair();                                                   \
-  HostPortPair(const HostPortPair&);                                 \
-  const std::string& username() const;                               \
-  const std::string& password() const;                               \
-  void set_username(const std::string& username);                    \
-  void set_password(const std::string& password);                    \
-  bool operator<(const HostPortPair& other) const;                   \
-  bool Equals(const HostPortPair& other) const;                      \
-                                                                     \
- private:                                                            \
-  std::string username_;                                             \
-  std::string password_;
+#define HostPortPair HostPortPair_ChromiumImpl
 
 #include "src/net/base/host_port_pair.h"  // IWYU pragma: export
 
-#undef BRAVE_HOST_PORT_PAIR_H_
+#undef HostPortPair
+
+namespace net {
+
+class NET_EXPORT HostPortPair : public HostPortPair_ChromiumImpl {
+ public:
+  HostPortPair();
+  HostPortPair(std::string_view in_host, uint16_t in_port);
+  HostPortPair(std::string_view username,
+               std::string_view password,
+               std::string_view in_host,
+               uint16_t in_port);
+  HostPortPair(const HostPortPair&);
+  ~HostPortPair();
+
+  static HostPortPair FromURL(const GURL& url);
+  static HostPortPair FromSchemeHostPort(
+      const url::SchemeHostPort& scheme_host_port);
+  static HostPortPair FromIPEndPoint(const IPEndPoint& ipe);
+  static HostPortPair FromString(std::string_view str);
+  static std::optional<HostPortPair> FromValue(const base::Value& value);
+
+  const std::string& username() const;
+  const std::string& password() const;
+
+  void set_username(const std::string& username);
+  void set_password(const std::string& password);
+
+  bool operator<(const HostPortPair& other) const;
+  bool operator==(const HostPortPair& other) const;
+  bool Equals(const HostPortPair& other) const;
+
+  std::string ToString() const;
+
+ private:
+  // NOLINTNEXTLINE(runtime/explicit)
+  HostPortPair(const HostPortPair_ChromiumImpl& other);
+
+  std::string username_;
+  std::string password_;
+};
+
+}  // namespace net
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_BASE_HOST_PORT_PAIR_H_

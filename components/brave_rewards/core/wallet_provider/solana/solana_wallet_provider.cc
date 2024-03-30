@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/signer.h"
+#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
@@ -44,7 +45,7 @@ std::string UsernameFromAddress(const std::string& address) {
 
 }  // namespace
 
-SolanaWalletProvider::SolanaWalletProvider(RewardsEngineImpl& engine)
+SolanaWalletProvider::SolanaWalletProvider(RewardsEngine& engine)
     : RewardsEngineHelper(engine), WalletProvider(engine) {}
 
 SolanaWalletProvider::~SolanaWalletProvider() = default;
@@ -56,7 +57,8 @@ const char* SolanaWalletProvider::WalletType() const {
 void SolanaWalletProvider::AssignWalletLinks(
     mojom::ExternalWallet& external_wallet) {
   auto explorer_url =
-      GURL("https://solscan.io/account/").Resolve(external_wallet.address);
+      URLHelpers::Resolve(GURL("https://explorer.solana.com/address/"),
+                          {external_wallet.address, "/tokens"});
   external_wallet.account_url = explorer_url.spec();
   external_wallet.activity_url = explorer_url.spec();
 }
@@ -76,7 +78,7 @@ void SolanaWalletProvider::FetchBalance(
 
 void SolanaWalletProvider::BeginLogin(
     BeginExternalWalletLoginCallback callback) {
-  post_challenges_.Request(
+  Get<endpoints::PostChallenges>().Request(
       base::BindOnce(&SolanaWalletProvider::OnPostChallengesResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }

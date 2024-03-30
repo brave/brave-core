@@ -77,7 +77,9 @@ const updateFileUTimesIfOverrideIsNewer = (original, override) => {
     const date = new Date()
     fs.utimesSync(original, date, date)
     console.log(original + ' is touched.')
+    return true
   }
+  return false
 }
 
 const deleteFileIfOverrideIsNewer = (original, override) => {
@@ -85,11 +87,13 @@ const deleteFileIfOverrideIsNewer = (original, override) => {
     try {
       fs.unlinkSync(original)
       console.log(original + ' has been deleted.')
+      return true
     } catch (err) {
       console.error('Unable to delete file: ' + original + ' error: ', err)
       process.exit(1)
     }
   }
+  return false
 }
 
 const getAdditionalGenLocation = () => {
@@ -470,24 +474,37 @@ const util = {
     const additionalGen = getAdditionalGenLocation()
 
     // Touch original files by updating mtime.
+    let isDirty = false
     const chromiumSrcDirLen = chromiumSrcDir.length
     sourceFiles.forEach(chromiumSrcFile => {
       const relativeChromiumSrcFile = chromiumSrcFile.slice(chromiumSrcDirLen)
       let overriddenFile = path.join(config.srcDir, relativeChromiumSrcFile)
       if (fs.existsSync(overriddenFile)) {
         // If overriddenFile is older than file in chromium_src, touch it to trigger rebuild.
-        updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+        isDirty |= updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
       } else {
         // If the original file doesn't exist, assume that it's in the gen dir.
         overriddenFile = path.join(config.outputDir, 'gen', relativeChromiumSrcFile)
-        deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+        isDirty |= deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
         // Also check the secondary gen dir, if exists
         if (!!additionalGen) {
           overriddenFile = path.join(config.outputDir, additionalGen, 'gen', relativeChromiumSrcFile)
-          deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+          isDirty |= deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
         }
       }
     })
+    if (isDirty && config.rbeService) {
+      // Cleanup Reproxy deps cache on chromium_src override change.
+      const reproxyCacheDir = `${config.rootDir}/.reproxy_cache`
+      if (fs.existsSync(reproxyCacheDir)) {
+        const cacheFileFilter = (file) => {
+          return file.endsWith('.cache') || file.endsWith('.cache.sha256')
+        }
+        for (const file of util.walkSync(reproxyCacheDir, cacheFileFilter)) {
+          fs.rmSync(file)
+        }
+      }
+    }
     Log.progressFinish('touch original files overridden by chromium_src')
   },
 
@@ -704,7 +721,7 @@ const util = {
     if (options.all)
       args.push('--all')
     if (options.files)
-      args.push('--files', options.files)
+      args.push('--files', `"${options.files}"`)
     if (options.verbose) {
       args.push(...Array(options.verbose).fill('--verbose'))
     }
@@ -723,20 +740,16 @@ const util = {
     cmd_options = mergeWithDefault(cmd_options)
     cmd = 'git'
     args = ['cl', 'format', '--upstream=' + options.base]
+
+    // Keep in sync with CheckPatchFormatted presubmit check.
+    args.push('--python')
+    args.push('--no-rust-fmt')
+
     if (options.full)
       args.push('--full')
-    if (options.js)
-      args.push('--js')
-    if (options.python)
-      args.push('--python')
-    if (options.rust)
-      args.push('--rust-fmt')
-    else
-      args.push('--no-rust-fmt')
-    if (options.swift)
-      args.push('--swift-format')
-    else
-      args.push('--no-swift-format')
+    if (options.diff)
+      args.push('--diff')
+
     util.run(cmd, args, cmd_options)
   },
 

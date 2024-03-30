@@ -1,25 +1,25 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
 import Preferences
 import Strings
+import SwiftUI
 
 struct NetworkPicker: View {
-  
+
   struct Style: Equatable {
     let textColor: UIColor
     let borderColor: UIColor
-    
+
     static let `default` = Style(
       textColor: .bravePrimary,
       borderColor: .secondaryButtonTint
     )
   }
-  
+
   let style: Style
   let isForOrigin: Bool
   var keyringStore: KeyringStore
@@ -27,8 +27,8 @@ struct NetworkPicker: View {
   @State private var isPresentingAddNetwork: Bool = false
   @State private var networkSelectionStore: NetworkSelectionStore?
   @Environment(\.presentationMode) @Binding private var presentationMode
-  @Environment(\.buySendSwapDestination) @Binding private var buySendSwapDestination
-  
+  @Environment(\.walletActionDestination) @Binding private var walletActionDestination
+
   init(
     style: Style = .`default`,
     isForOrigin: Bool = false,
@@ -40,40 +40,42 @@ struct NetworkPicker: View {
     self.keyringStore = keyringStore
     self.networkStore = networkStore
   }
-  
+
   private var availableChains: [BraveWallet.NetworkInfo] {
     networkStore.allChains.filter { chain in
       if !Preferences.Wallet.showTestNetworks.value {
         var testNetworkChainIdsToRemove = WalletConstants.supportedTestNetworkChainIds
         // Don't remove selected network (possible if selected then disabled showing test networks)
-        testNetworkChainIdsToRemove.removeAll(where: { $0 == networkStore.defaultSelectedChain.chainId })
+        testNetworkChainIdsToRemove.removeAll(where: {
+          $0 == networkStore.defaultSelectedChain.chainId
+        })
         if testNetworkChainIdsToRemove.contains(chain.chainId) {
           return false
         }
       }
-      if let destination = buySendSwapDestination {
-        if destination.kind != .send {
+      if let destination = walletActionDestination {
+        if destination.kind.id != WalletActionDestination.Kind.send.id {
           return !networkStore.isCustomChain(chain)
         }
       }
       return true
     }
   }
-  
+
   private var chainName: String {
     if isForOrigin {
       return networkStore.selectedChainForOrigin.chainName
     }
     return networkStore.defaultSelectedChain.chainName
   }
-  
+
   var body: some View {
-    Button(action: {
+    Button {
       networkSelectionStore = .init(
         mode: .select(isForOrigin: isForOrigin),
         networkStore: networkStore
       )
-    }) {
+    } label: {
       HStack {
         Text(chainName)
           .fontWeight(.bold)

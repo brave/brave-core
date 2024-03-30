@@ -42,10 +42,6 @@ function contributions (contributions: RewardsInternals.ContributionInfo[]) {
   getActions().onContributions(contributions)
 }
 
-function promotions (promotions: RewardsInternals.Promotion[]) {
-  getActions().onPromotions(promotions)
-}
-
 function partialLog (log: string) {
   getActions().onGetPartialLog(log)
 }
@@ -87,7 +83,6 @@ window.brave_rewards_internals = {
   onGetRewardsInternalsInfo,
   balance,
   contributions,
-  promotions,
   partialLog,
   fullLog,
   onGetExternalWallet,

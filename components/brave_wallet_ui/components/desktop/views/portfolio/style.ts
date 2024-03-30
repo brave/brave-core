@@ -80,6 +80,7 @@ export const ButtonRow = styled.div<{
   margin: ${(p) => (p.noMargin ? '0px' : '20px 0px')};
   padding: 0px
     ${(p) => (p.horizontalPadding !== undefined ? p.horizontalPadding : 0)}px;
+  gap: 10px;
 `
 
 export const BalanceRow = styled.div<{ gap?: string }>`
@@ -159,30 +160,6 @@ export const FilterTokenRow = styled.div<{
   padding: 0px
     ${(p) => (p.horizontalPadding !== undefined ? p.horizontalPadding : 0)}px;
   margin-bottom: ${(p) => (p.isV2 ? '16px' : 0)};
-`
-
-export const BuySellBridgeButton = styled(WalletButton)<{
-  noBottomMargin?: boolean
-}>`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 14px;
-  height: 40px;
-  cursor: pointer;
-  outline: none;
-  border-radius: 40px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-  background-color: ${(p) => p.theme.palette.blurple500};
-  color: ${(p) => p.theme.palette.white};
-  border: none;
-  margin-bottom: ${(p) => (p.noBottomMargin ? 0 : 32)}px;
-  margin-right: 10px;
 `
 
 export const SelectTimelineWrapper = styled(Row)`

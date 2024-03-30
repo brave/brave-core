@@ -3,26 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import CoreSpotlight
-import Combine
-import BraveShared
-import Shared
-import Storage
-import Data
 import Brave
-import BrowserIntentsModels
-import BraveWidgetsModels
-import BraveVPN
-import Growth
-import os.log
 import BraveCore
 import BraveNews
+import BraveShared
+import BraveVPN
+import BraveWidgetsModels
+import BrowserIntentsModels
+import Combine
+import CoreSpotlight
+import Data
+import Growth
 import Preferences
+import Shared
+import Storage
+import UIKit
+import os.log
 
-private extension Logger {
-  static var module: Logger {
-    .init(subsystem: "\(Bundle.main.bundleIdentifier ?? "com.brave.ios")", category: "SceneDelegate")
+extension Logger {
+  fileprivate static var module: Logger {
+    .init(
+      subsystem: "\(Bundle.main.bundleIdentifier ?? "com.brave.ios")",
+      category: "SceneDelegate"
+    )
   }
 }
 
@@ -37,10 +40,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   private var cancellables: Set<AnyCancellable> = []
 
-  func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+  func scene(
+    _ scene: UIScene,
+    willConnectTo session: UISceneSession,
+    options connectionOptions: UIScene.ConnectionOptions
+  ) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
 
-    let attributionManager = AttributionManager(dau: AppState.shared.dau, urp: UserReferralProgram.shared)
+    let attributionManager = AttributionManager(
+      dau: AppState.shared.dau,
+      urp: UserReferralProgram.shared
+    )
 
     let browserViewController = createBrowserWindow(
       scene: windowScene,
@@ -53,19 +63,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       newsFeedDataSource: AppState.shared.newsFeedDataSource,
       userActivity: connectionOptions.userActivities.first ?? session.stateRestorationActivity
     )
-    
+
     let conditions = scene.activationConditions
     conditions.canActivateForTargetContentIdentifierPredicate = NSPredicate(value: true)
     if let windowId = session.userInfo?["WindowID"] as? String {
       let preferPredicate = NSPredicate(format: "self == %@", windowId)
-        conditions.prefersToActivateForTargetContentIdentifierPredicate = preferPredicate
+      conditions.prefersToActivateForTargetContentIdentifierPredicate = preferPredicate
     }
-    
+
     Preferences.General.themeNormalMode.objectWillChange
       .receive(on: RunLoop.main)
       .sink { [weak self, weak scene] _ in
         guard let self = self,
-              let scene = scene as? UIWindowScene else { return }
+          let scene = scene as? UIWindowScene
+        else { return }
         self.updateTheme(for: scene)
       }
       .store(in: &cancellables)
@@ -74,7 +85,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       .receive(on: RunLoop.main)
       .sink { [weak self, weak scene] _ in
         guard let self = self,
-              let scene = scene as? UIWindowScene else { return }
+          let scene = scene as? UIWindowScene
+        else { return }
         self.updateTheme(for: scene)
       }
       .store(in: &cancellables)
@@ -84,7 +96,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       .receive(on: RunLoop.main)
       .sink { [weak self, weak scene] _ in
         guard let self = self,
-              let scene = scene as? UIWindowScene else { return }
+          let scene = scene as? UIWindowScene
+        else { return }
         self.updateTheme(for: scene)
       }
       .store(in: &cancellables)
@@ -92,7 +105,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // Handle URP Lookup at first launch
     if SceneDelegate.shouldHandleUrpLookup {
       SceneDelegate.shouldHandleUrpLookup = false
-      
+
       attributionManager.handleReferralLookup { [weak browserViewController] url in
         browserViewController?.openReferralLink(url: url)
       }
@@ -106,13 +119,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     PlaylistCarplayManager.shared.do {
       $0.browserController = browserViewController
     }
-    
+
     self.present(
       browserViewController: browserViewController,
       windowScene: windowScene,
       connectionOptions: connectionOptions
     )
-    
+
     // Handle Install Attribution Fetch at first launch
     if SceneDelegate.shouldHandleInstallAttributionFetch {
       SceneDelegate.shouldHandleInstallAttributionFetch = false
@@ -138,43 +151,51 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
       }
     }
-    
+
     if Preferences.URP.installAttributionLookupOutstanding.value == nil {
       // Similarly to referral lookup, this prefrence should be set if it is a new user
       // Trigger install attribution fetch only first launch
-      Preferences.URP.installAttributionLookupOutstanding.value = Preferences.General.isFirstLaunch.value
+      Preferences.URP.installAttributionLookupOutstanding.value =
+        Preferences.General.isFirstLaunch.value
     }
-        
-    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
+
+    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
     PrivacyReportsManager.consolidateData()
-    PrivacyReportsManager.scheduleProcessingBlockedRequests(isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing)
+    PrivacyReportsManager.scheduleProcessingBlockedRequests(
+      isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing
+    )
     PrivacyReportsManager.scheduleVPNAlertsTask()
   }
-  
-  private func present(browserViewController: BrowserViewController, windowScene: UIWindowScene, connectionOptions: UIScene.ConnectionOptions) {
+
+  private func present(
+    browserViewController: BrowserViewController,
+    windowScene: UIWindowScene,
+    connectionOptions: UIScene.ConnectionOptions
+  ) {
     // Assign each browser a navigation controller
-    let navigationController = UINavigationController(rootViewController: browserViewController).then {
-      $0.isNavigationBarHidden = true
-      $0.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
-    }
-    
+    let navigationController = UINavigationController(rootViewController: browserViewController)
+      .then {
+        $0.isNavigationBarHidden = true
+        $0.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
+      }
+
     // Assign each browser a window of its own
     let window = UIWindow(windowScene: windowScene).then {
       $0.backgroundColor = .black
       $0.overrideUserInterfaceStyle = expectedThemeOverride(for: windowScene)
       $0.tintColor = .braveBlurpleTint
-      
+
       $0.rootViewController = navigationController
     }
-    
+
     self.window = window
 
     // TODO: Refactor to accept a UIWindowScene
     // Then store the `windowProtection` in the `BrowserViewController` directly.
     // As each instance should have its own protection?
-    self.windowProtection = WindowProtection(window: window)
+    self.windowProtection = WindowProtection(windowScene: windowScene)
     window.makeKeyAndVisible()
-    
+
     // Open shared URLs on launch if there are any
     if !connectionOptions.urlContexts.isEmpty {
       self.scene(windowScene, openURLContexts: connectionOptions.urlContexts)
@@ -183,9 +204,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     if let shortcutItem = connectionOptions.shortcutItem {
       QuickActions.sharedInstance.launchedShortcutItem = shortcutItem
     }
-    
+
     if let response = connectionOptions.notificationResponse {
-      if response.notification.request.identifier == BrowserViewController.defaultBrowserNotificationId {
+      if response.notification.request.identifier
+        == BrowserViewController.defaultBrowserNotificationId
+      {
         guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
           Logger.module.error("[SCENE] - Failed to unwrap iOS settings URL")
           return
@@ -203,19 +226,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   func sceneDidBecomeActive(_ scene: UIScene) {
     scene.userActivity?.becomeCurrent()
-    
+
     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
       let scene = scene as? UIWindowScene
     else {
       return
     }
-    
-    if let windowId = (scene.userActivity?.userInfo?["WindowID"] ??
-                       scene.session.userInfo?["WindowID"]) as? String,
-       let windowUUID = UUID(uuidString: windowId) {
+
+    if let windowId =
+      (scene.userActivity?.userInfo?["WindowID"] ?? scene.session.userInfo?["WindowID"]) as? String,
+      let windowUUID = UUID(uuidString: windowId)
+    {
       SessionWindow.setSelected(windowId: windowUUID)
     }
-    
+
     Preferences.AppState.backgroundedCleanly.value = false
     AppState.shared.profile.reopen()
     AppState.shared.uptimeMonitor.beginMonitoring()
@@ -239,11 +263,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // We try to send DAU ping each time the app goes to foreground to work around network edge cases
     // (offline, bad connection etc.).
     // Also send the ping only after the URP lookup and install attribution has processed.
-    if Preferences.URP.referralLookupOutstanding.value == true, Preferences.URP.installAttributionLookupOutstanding.value == true {
+    if Preferences.URP.referralLookupOutstanding.value == true,
+      Preferences.URP.installAttributionLookupOutstanding.value == true
+    {
       AppState.shared.dau.sendPingToServer()
     }
-    
-    BraveSkusManager.refreshSKUCredential(isPrivate: scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true)
+
+    Task { @MainActor in
+      let isPrivateBrowsing =
+        scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
+      await BraveSkusManager(isPrivateMode: isPrivateBrowsing)?.refreshCredentials()
+    }
   }
 
   func sceneWillResignActive(_ scene: UIScene) {
@@ -264,14 +294,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     Preferences.AppState.isOnboardingActive.value = false
   }
 
-  func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+  func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
     guard let scene = scene as? UIWindowScene else {
       Logger.module.error("[SCENE] - Scene is not a UIWindowScene")
       return
     }
 
-    URLContexts.forEach({
-      guard let routerpath = NavigationPath(url: $0.url, isPrivateBrowsing: scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true) else {
+    contexts.forEach({
+      guard
+        let routerpath = NavigationPath(
+          url: $0.url,
+          isPrivateBrowsing: scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing
+            == true
+        )
+      else {
         Logger.module.error("[SCENE] - Invalid Navigation Path: \($0.url)")
         return
       }
@@ -279,7 +315,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       scene.browserViewController?.handleNavigationPath(path: routerpath)
     })
   }
-  
+
   func scene(_ scene: UIScene, didUpdate userActivity: NSUserActivity) {
     Logger.module.debug("[SCENE] - Updated User Activity for Scene")
   }
@@ -308,69 +344,88 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       // open a new one.
       if let userInfo = userActivity.userInfo,
         let urlString = userInfo[CSSearchableItemActivityIdentifier] as? String,
-        let url = URL(string: urlString) {
+        let url = URL(string: urlString)
+      {
         scene.browserViewController?.switchToTabForURLOrOpen(url, isPrivileged: false)
         return
       }
     case ActivityType.newTab.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
-          type: .newTab, using: browserViewController)
+          type: .newTab,
+          using: browserViewController
+        )
       }
 
       return
     case ActivityType.newPrivateTab.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
-          type: .newPrivateTab, using: browserViewController)
+          type: .newPrivateTab,
+          using: browserViewController
+        )
       }
 
       return
     case ActivityType.openHistoryList.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
-          type: .openHistoryList, using: browserViewController)
+          type: .openHistoryList,
+          using: browserViewController
+        )
       }
-      
+
       return
     case ActivityType.openBookmarks.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
-          type: .openBookmarks, using: browserViewController)
+          type: .openBookmarks,
+          using: browserViewController
+        )
       }
 
       return
     case ActivityType.clearBrowsingHistory.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
-          type: .clearBrowsingHistory, using: browserViewController)
+          type: .clearBrowsingHistory,
+          using: browserViewController
+        )
       }
 
       return
     case ActivityType.enableBraveVPN.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
-          type: .enableBraveVPN, using: browserViewController)
+          type: .enableBraveVPN,
+          using: browserViewController
+        )
       }
 
       return
     case ActivityType.openBraveNews.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
-          type: .openBraveNews, using: browserViewController)
+          type: .openBraveNews,
+          using: browserViewController
+        )
       }
 
       return
     case ActivityType.openPlayList.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
-          type: .openPlayList, using: browserViewController)
+          type: .openPlayList,
+          using: browserViewController
+        )
       }
 
     case ActivityType.openSyncedTabs.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
-          type: .openSyncedTabs, using: browserViewController)
+          type: .openSyncedTabs,
+          using: browserViewController
+        )
       }
       return
     default:
@@ -382,14 +437,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let siteURL = intentURL, let url = URL(string: siteURL) else {
           browserViewController.openBlankNewTab(
             attemptLocationFieldFocus: false,
-            isPrivate: Preferences.Privacy.privateBrowsingOnly.value)
+            isPrivate: Preferences.Privacy.privateBrowsingOnly.value
+          )
           return
         }
-      
+
         browserViewController.switchToTabForURLOrOpen(
           url,
           isPrivate: Preferences.Privacy.privateBrowsingOnly.value,
-          isPrivileged: false)
+          isPrivileged: false
+        )
       }
       return
     }
@@ -410,9 +467,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
   }
 
-  func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+  func windowScene(
+    _ windowScene: UIWindowScene,
+    performActionFor shortcutItem: UIApplicationShortcutItem,
+    completionHandler: @escaping (Bool) -> Void
+  ) {
     if let browserViewController = windowScene.browserViewController {
-      QuickActions.sharedInstance.handleShortCutItem(shortcutItem, withBrowserViewController: browserViewController)
+      QuickActions.sharedInstance.handleShortCutItem(
+        shortcutItem,
+        withBrowserViewController: browserViewController
+      )
       completionHandler(true)
     } else {
       completionHandler(false)
@@ -428,46 +492,57 @@ extension SceneDelegate {
   private func expectedThemeOverride(for scene: UIWindowScene?) -> UIUserInterfaceStyle {
 
     // The expected appearance theme should be dark mode when night mode is enabled for websites
-    let themeValue = Preferences.General.nightModeEnabled.value ? DefaultTheme.dark.rawValue : Preferences.General.themeNormalMode.value
+    let themeValue =
+      Preferences.General.nightModeEnabled.value
+      ? DefaultTheme.dark.rawValue : Preferences.General.themeNormalMode.value
 
-    let themeOverride = DefaultTheme(rawValue: themeValue)?.userInterfaceStyleOverride ?? .unspecified
-    let isPrivateBrowsing = scene?.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
+    let themeOverride =
+      DefaultTheme(rawValue: themeValue)?.userInterfaceStyleOverride ?? .unspecified
+    let isPrivateBrowsing =
+      scene?.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
     return isPrivateBrowsing ? .dark : themeOverride
   }
 
   private func updateTheme(for scene: UIWindowScene) {
     scene.windows.forEach { window in
       UIView.transition(
-        with: window, duration: 0.15, options: [.transitionCrossDissolve],
+        with: window,
+        duration: 0.15,
+        options: [.transitionCrossDissolve],
         animations: {
           window.overrideUserInterfaceStyle = self.expectedThemeOverride(for: scene)
-        }, completion: nil)
+        },
+        completion: nil
+      )
     }
   }
 }
 
 extension SceneDelegate {
-  private func createBrowserWindow(scene: UIWindowScene,
-                                   braveCore: BraveCoreMain,
-                                   profile: Profile,
-                                   attributionManager: AttributionManager,
-                                   diskImageStore: DiskImageStore?,
-                                   migration: Migration?,
-                                   rewards: Brave.BraveRewards,
-                                   newsFeedDataSource: BraveNews.FeedDataSource,
-                                   userActivity: NSUserActivity?) -> BrowserViewController {
+  private func createBrowserWindow(
+    scene: UIWindowScene,
+    braveCore: BraveCoreMain,
+    profile: Profile,
+    attributionManager: AttributionManager,
+    diskImageStore: DiskImageStore?,
+    migration: Migration?,
+    rewards: Brave.BraveRewards,
+    newsFeedDataSource: BraveNews.FeedDataSource,
+    userActivity: NSUserActivity?
+  ) -> BrowserViewController {
 
     let privateBrowsingManager = PrivateBrowsingManager()
 
     // Don't track crashes if we're building the development environment due to the fact that terminating/stopping
     // the simulator via Xcode will count as a "crash" and lead to restore popups in the subsequent launch
-    let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value && AppConstants.buildChannel != .debug
-    
+    let crashedLastSession =
+      !Preferences.AppState.backgroundedCleanly.value && AppConstants.isOfficialBuild
+
     // Store the scene's activities
     let windowId: UUID
     let isPrivate: Bool
     let urlToOpen: URL?
-    
+
     if UIApplication.shared.supportsMultipleScenes {
       let windowInfo: BrowserState.SessionState
       if let userActivity = userActivity {
@@ -475,15 +550,16 @@ extension SceneDelegate {
       } else {
         windowInfo = BrowserState.getWindowInfo(from: scene.session)
       }
-      
+
       if let existingWindowId = windowInfo.windowId,
-         let windowUUID = UUID(uuidString: existingWindowId) {
+        let windowUUID = UUID(uuidString: existingWindowId)
+      {
         // Restore the scene from the User-Info WindowID
         windowId = windowUUID
         isPrivate = windowInfo.isPrivate
         privateBrowsingManager.isPrivateBrowsing = windowInfo.isPrivate
         urlToOpen = windowInfo.openURL
-        
+
         // Create a new session window if it does not already exist
         SessionWindow.createWindow(isPrivate: isPrivate, isSelected: true, uuid: windowId)
         Logger.module.info("[SCENE] - SESSION RESTORED")
@@ -501,7 +577,7 @@ extension SceneDelegate {
       privateBrowsingManager.isPrivateBrowsing = false
       urlToOpen = nil
     }
-    
+
     scene.userActivity = BrowserState.userActivity(for: windowId.uuidString, isPrivate: false)
     BrowserState.setWindowInfo(for: scene.session, windowId: windowId.uuidString, isPrivate: false)
 
@@ -529,25 +605,29 @@ extension SceneDelegate {
       // Remove Ad-Grant Reminders
       $0.removeScheduledAdGrantReminders()
     }
-    
+
     if let tabIdString = userActivity?.userInfo?["TabID"] as? String,
-       let tabWindowId = userActivity?.userInfo?["TabWindowID"] as? String,
-       let tabId = UUID(uuidString: tabIdString) {
-      
-      let currentTabScene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).filter({
+      let tabWindowId = userActivity?.userInfo?["TabWindowID"] as? String,
+      let tabId = UUID(uuidString: tabIdString)
+    {
+
+      let currentTabScene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }
+      ).filter({
         guard let sceneWindowId = BrowserState.getWindowInfo(from: $0.session).windowId else {
           return false
         }
-        
+
         return sceneWindowId == tabWindowId
       }).first
-      
-      if let currentTabScene = currentTabScene, let currentTabSceneBrowser = currentTabScene.browserViewController {
+
+      if let currentTabScene = currentTabScene,
+        let currentTabSceneBrowser = currentTabScene.browserViewController
+      {
         browserViewController.loadViewIfNeeded()
         currentTabSceneBrowser.moveTab(tabId: tabId, to: browserViewController)
       }
     }
-    
+
     if let urlToOpen = urlToOpen {
       DispatchQueue.main.async {
         browserViewController.loadViewIfNeeded()
@@ -557,14 +637,14 @@ extension SceneDelegate {
 
     return browserViewController
   }
-  
+
   private func restoreOrCreateWindow() -> (windowId: UUID, isPrivate: Bool, urlToOpen: URL?) {
     // Find active windows/sessions
     let activeWindow = SessionWindow.getActiveWindow(context: DataController.swiftUIContext)
     let activeSession = UIApplication.shared.openSessions
       .compactMap({ BrowserState.getWindowInfo(from: $0) })
       .first(where: { $0.windowId != nil && $0.windowId == activeWindow?.windowId.uuidString })
-      
+
     if activeSession != nil {
       if !UIApplication.shared.supportsMultipleScenes {
         // iPhones should not create new windows
@@ -573,7 +653,7 @@ extension SceneDelegate {
           return (activeWindow.windowId, false, nil)
         }
       }
-      
+
       // An existing window is already active on screen
       // So create a new window
       let windowId = UUID()
@@ -581,7 +661,7 @@ extension SceneDelegate {
       Logger.module.info("[SCENE] - CREATED NEW WINDOW")
       return (windowId, false, nil)
     }
-    
+
     // Restore the active window if possible
     let windowId: UUID
     if !UIApplication.shared.supportsMultipleScenes {
@@ -590,7 +670,7 @@ extension SceneDelegate {
     } else {
       windowId = activeWindow?.windowId ?? UUID()
     }
-    
+
     // Create a new session window if it does not already exist
     SessionWindow.createWindow(isPrivate: false, isSelected: true, uuid: windowId)
     Logger.module.info("[SCENE] - RESTORING ACTIVE WINDOW OR CREATING A NEW WINDOW")
@@ -599,7 +679,10 @@ extension SceneDelegate {
 }
 
 extension SceneDelegate: UIViewControllerRestoration {
-  public static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+  public static func viewController(
+    withRestorationIdentifierPath identifierComponents: [String],
+    coder: NSCoder
+  ) -> UIViewController? {
     return nil
   }
 }

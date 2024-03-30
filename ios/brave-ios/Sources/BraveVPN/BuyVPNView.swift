@@ -1,19 +1,20 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
-import Preferences
 import DesignSystem
+import Preferences
+import Shared
+import UIKit
 
 enum SubscriptionType: String {
-  case yearly = "yearly", monthly = "monthly"
+  case yearly = "yearly"
+  case monthly = "monthly"
 }
 
 class BuyVPNView: UIView {
-  
+
   var activeSubcriptionChoice: SubscriptionType {
     didSet {
       setNeedsLayout()
@@ -69,7 +70,7 @@ class BuyVPNView: UIView {
     [
       pageControl,
       UIView.spacer(.vertical, amount: 12),
-      line
+      line,
     ]
     .forEach(stackView.addArrangedSubview(_:))
   }
@@ -93,16 +94,16 @@ class BuyVPNView: UIView {
       let normalFontAttribute: [NSAttributedString.Key: Any] = [
         .font: $0.font.with(traits: nil)
       ]
-      
+
       let boldedUnderlineFontAttribute: [NSAttributedString.Key: Any] = [
         .font: boldedFont,
-        .underlineStyle: NSUnderlineStyle.single.rawValue
+        .underlineStyle: NSUnderlineStyle.single.rawValue,
       ]
-      
+
       let textToSet = String(format: Strings.VPN.freeTrialDetail, "\(Strings.VPN.freeTrialPeriod)")
       let rangeOfUnderLinedBold = (textToSet as NSString).range(of: Strings.VPN.freeTrialPeriod)
       let rangeOfNormalText = (textToSet as NSString).range(of: Strings.VPN.freeTrialDetail)
-      
+
       let attributedText = NSMutableAttributedString(string: textToSet)
       attributedText.addAttributes(boldedUnderlineFontAttribute, range: rangeOfUnderLinedBold)
       attributedText.addAttributes(normalFontAttribute, range: rangeOfNormalText)
@@ -119,7 +120,7 @@ class BuyVPNView: UIView {
       UIView.spacer(.vertical, amount: 6),
       yearlySubButton,
       monthlySubButton,
-      iapDisclaimer
+      iapDisclaimer,
     ]
     .forEach(contentStackView.addArrangedSubview(_:))
 
@@ -169,7 +170,7 @@ class BuyVPNView: UIView {
     $0.lineBreakMode = .byWordWrapping
     $0.textColor = UIColor.white.withAlphaComponent(0.6)
   }
-  
+
   private let checkmarksStackView = UIStackView().then {
     $0.distribution = .fillEqually
   }
@@ -177,14 +178,14 @@ class BuyVPNView: UIView {
   // MARK: - Init/Lifecycle
 
   private let scrollView = UIScrollView()
-  
+
   init(with activeSubscription: SubscriptionType) {
     activeSubcriptionChoice = activeSubscription
-    
+
     super.init(frame: .zero)
-    
+
     backgroundColor = .clear
-    
+
     addSubview(scrollView)
     scrollView.addSubview(mainStackView)
 
@@ -253,8 +254,11 @@ class BuyVPNView: UIView {
     checkmarksStackView.setNeedsLayout()
     checkmarksStackView.layoutIfNeeded()
 
-    checkmarksStackView.bounds = CGRect(origin: .zero, size: checkmarksStackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize))
-    
+    checkmarksStackView.bounds = CGRect(
+      origin: .zero,
+      size: checkmarksStackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    )
+
     switch activeSubcriptionChoice {
     case .monthly:
       monthlySubButton.isTypeSelected = true
@@ -264,7 +268,7 @@ class BuyVPNView: UIView {
       monthlySubButton.isTypeSelected = false
     }
   }
-  
+
   private func verticalFlexibleSpace(maxHeight: CGFloat, priority: CGFloat) -> UIView {
     UIView().then {
       $0.snp.makeConstraints { make in
@@ -277,17 +281,19 @@ class BuyVPNView: UIView {
   @objc func pageControlTapped(_ sender: UIPageControl) {
     featuresScrollView.setContentOffset(
       CGPoint(x: self.featuresScrollView.frame.width * CGFloat(sender.currentPage), y: 0),
-      animated: true)
+      animated: true
+    )
   }
 }
 
 // MARK: UIScrollViewDelegate
 
 extension BuyVPNView: UIScrollViewDelegate {
-  
+
   // Paging implementation.
   func scrollViewWillEndDragging(
-    _ scrollView: UIScrollView, withVelocity velocity: CGPoint,
+    _ scrollView: UIScrollView,
+    withVelocity velocity: CGPoint,
     targetContentOffset: UnsafeMutablePointer<CGPoint>
   ) {
     if scrollView.frame.width <= 0 {
@@ -336,7 +342,10 @@ private class CheckmarksView: UIView {
           BraveVPNCommonUI.Views.checkmarkView(
             string: checkmark,
             textColor: .white,
-            font: .systemFont(ofSize: fontSize, weight: .semibold), useShieldAsCheckmark: true))
+            font: .systemFont(ofSize: fontSize, weight: .semibold),
+            useShieldAsCheckmark: true
+          )
+        )
       }
     }
 
@@ -371,7 +380,12 @@ class SubscriptionButton: UIControl {
   private struct UX {
     static let secondaryTextColor = primaryTextColor.withAlphaComponent(0.7)
     static let discountTextColor = primaryTextColor.withAlphaComponent(0.6)
-    static let borderColor = #colorLiteral(red: 0.3725490196, green: 0.3607843137, blue: 0.9450980392, alpha: 1)
+    static let borderColor = #colorLiteral(
+      red: 0.3725490196,
+      green: 0.3607843137,
+      blue: 0.9450980392,
+      alpha: 1
+    )
     static let primaryTextColor = #colorLiteral(red: 1, green: 1, blue: 0.9411764706, alpha: 1)
   }
 
@@ -382,11 +396,14 @@ class SubscriptionButton: UIControl {
   private var detail: String = ""
   private var price: String = ""
   private var priceDiscount: String?
-  
+
   var isTypeSelected = false {
     didSet {
       layer.borderWidth = isTypeSelected ? 2 : 0
-      backgroundColor = isTypeSelected ? #colorLiteral(red: 0.31, green: 0.192, blue: 0.663, alpha: 1) : #colorLiteral(red: 0.231, green: 0.165, blue: 0.427, alpha: 1)
+      backgroundColor =
+        isTypeSelected
+        ? #colorLiteral(red: 0.31, green: 0.192, blue: 0.663, alpha: 1)
+        : #colorLiteral(red: 0.231, green: 0.165, blue: 0.427, alpha: 1)
     }
   }
 
@@ -423,17 +440,17 @@ class SubscriptionButton: UIControl {
       // we have to calculate it manually.
       let yearlyDouble = yearlyProduct.price.doubleValue
       let discountDouble = monthlyProduct.price.multiplying(by: 12).doubleValue
-      
+
       if discountDouble > 0.0 {
         let discountSavingPercentage = 100 - Int((yearlyDouble * 100) / discountDouble)
 
         detail = String(format: Strings.VPN.yearlySubDetail, "\(discountSavingPercentage)%")
       }
-      
+
       price = "\(formattedYearlyPrice) / \(Strings.yearAbbreviation)"
       priceDiscount = discountFormattedPrice
     }
-    
+
     self.isTypeSelected = isTypeSelected
 
     super.init(frame: .zero)
@@ -520,12 +537,15 @@ class SubscriptionButton: UIControl {
         let discountLabel = BraveVPNCommonUI.Views.ShrinkableLabel().then {
           let strikeThroughText = NSMutableAttributedString(string: priceDiscount).then {
             $0.addAttribute(
-              NSAttributedString.Key.strikethroughStyle, value: 2,
-              range: NSRange(location: 0, length: $0.length))
+              NSAttributedString.Key.strikethroughStyle,
+              value: 2,
+              range: NSRange(location: 0, length: $0.length)
+            )
           }
 
           $0.attributedText = strikeThroughText
-          $0.textColor = #colorLiteral(red: 1, green: 1, blue: 0.9411764706, alpha: 1).withAlphaComponent(0.6)
+          $0.textColor = #colorLiteral(red: 1, green: 1, blue: 0.9411764706, alpha: 1)
+            .withAlphaComponent(0.6)
           $0.font = .systemFont(ofSize: 13, weight: .regular)
           $0.textAlignment = .right
         }
@@ -567,6 +587,7 @@ private class DisclaimerLabel: BraveVPNCommonUI.Views.ShrinkableLabel {
     let size = super.intrinsicContentSize
     return CGSize(
       width: size.width + insetAmount * 2,
-      height: size.height)
+      height: size.height
+    )
   }
 }

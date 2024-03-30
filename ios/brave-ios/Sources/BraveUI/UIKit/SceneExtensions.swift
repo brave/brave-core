@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
@@ -14,11 +14,11 @@ extension UIView {
     if let scene = window?.windowScene {
       return scene
     }
-    
+
     if let scene = superview?.currentScene {
       return scene
     }
-    
+
     return nil
   }
 }
@@ -31,15 +31,15 @@ extension UIViewController {
     if let scene = view.window?.windowScene {
       return scene
     }
-    
+
     if let scene = parent?.currentScene {
       return scene
     }
-    
+
     if let scene = presentingViewController?.currentScene {
       return scene
     }
-    
+
     return nil
   }
 }

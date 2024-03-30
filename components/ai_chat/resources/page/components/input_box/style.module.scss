@@ -61,6 +61,11 @@
   }
 }
 
+.growWrapMobile {
+  @extend .growWrap;
+  grid-template-columns: calc(100% - 60px);
+}
+
 .buttonAgree {
   background-color: var(--leo-color-button-background);
   color: white;
@@ -104,5 +109,7 @@
 .actions {
   position: absolute;
   top: 2px;
-  right: var(--leo-spacing-m);
+  inset-inline-end: var(--leo-spacing-m);
+  display: flex;
+  gap: 10px;
 }

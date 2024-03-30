@@ -1,14 +1,14 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CoreData
-import Shared
+import Foundation
 import Network
-import os.log
 import Preferences
+import Shared
+import os.log
 
 /// Stores the alerts data we receive from Brave VPN.
 /// The alert is a resource blocked by the VPN service
@@ -89,14 +89,14 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
   /// Sometimes multiple trackers from the same host are recorded.
   /// For `BlockedRequest` items we count trackers from a single domain only once.
   public static func allByHostCount(completion: @escaping (Set<CountableEntity>) -> Void) {
-    
+
     DataController.perform { context in
       let fetchRequest = braveVPNAlertFetchRequest(for: context)
-      
+
       fetchRequest.propertiesToFetch = ["host"]
       fetchRequest.propertiesToGroupBy = ["host"]
       fetchRequest.resultType = .dictionaryResultType
-      
+
       do {
         // Returning 1 count per host here because for the VPN alerts we can't rely on count numbers.
         // Reason is a tracker is detected and saved multiple times per domain,
@@ -105,9 +105,13 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
         //
         // Each tracker is count as one entry, to only bump the number slightly
         // and show a proper UI that this a vpn alert type of tracker blocked.
-        completion(.init(try context.fetch(fetchRequest)
-                      .compactMap { $0["host"] as? String }
-                      .map { .init(name: $0, count: 1) }))
+        completion(
+          .init(
+            try context.fetch(fetchRequest)
+              .compactMap { $0["host"] as? String }
+              .map { .init(name: $0, count: 1) }
+          )
+        )
       } catch {
         Logger.module.error("allByHostCount error: \(error.localizedDescription)")
         completion(.init())
@@ -118,33 +122,50 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
   /// Returns the newest recorded alerts. `count` argument tells up to how many records to fetch.
   public static func last(_ count: Int) -> [BraveVPNAlert]? {
     let timestampSort = NSSortDescriptor(keyPath: \BraveVPNAlert.timestamp, ascending: false)
-    let nonConsolidatedAlertsPredicate = NSPredicate(format: "\(#keyPath(BraveVPNAlert.timestamp)) > 0")
+    let nonConsolidatedAlertsPredicate = NSPredicate(
+      format: "\(#keyPath(BraveVPNAlert.timestamp)) > 0"
+    )
 
-    return all(where: nonConsolidatedAlertsPredicate, sortDescriptors: [timestampSort], fetchLimit: count)
+    return all(
+      where: nonConsolidatedAlertsPredicate,
+      sortDescriptors: [timestampSort],
+      fetchLimit: count
+    )
   }
 
   /// Returns amount of alerts blocked for each type.
-  public static func alertTotals(completion:
-                                 @escaping ((trackerCount: Int, locationPingCount: Int, emailTrackerCount: Int)) -> Void) {
-    
+  public static func alertTotals(
+    completion:
+      @escaping ((trackerCount: Int, locationPingCount: Int, emailTrackerCount: Int)) -> Void
+  ) {
+
     DataController.perform { context in
       let fetchRequest = braveVPNAlertFetchRequest(for: context)
 
       do {
         fetchRequest.predicate = .init(
           format: "category == %d",
-          BraveVPNAlert.TrackerType.app.rawValue)
-        let trackerCount = try context.count(for: fetchRequest) + Preferences.BraveVPNAlertTotals.consolidatedEmailTrackerCount.value
+          BraveVPNAlert.TrackerType.app.rawValue
+        )
+        let trackerCount =
+          try context.count(for: fetchRequest)
+          + Preferences.BraveVPNAlertTotals.consolidatedEmailTrackerCount.value
 
         fetchRequest.predicate = .init(
           format: "category == %d",
-          BraveVPNAlert.TrackerType.location.rawValue)
-        let locationPingCount = try context.count(for: fetchRequest) + Preferences.BraveVPNAlertTotals.consolidatedLocationPingCount.value
+          BraveVPNAlert.TrackerType.location.rawValue
+        )
+        let locationPingCount =
+          try context.count(for: fetchRequest)
+          + Preferences.BraveVPNAlertTotals.consolidatedLocationPingCount.value
 
         fetchRequest.predicate = .init(
           format: "category == %d",
-          BraveVPNAlert.TrackerType.mail.rawValue)
-        let emailTrackerCount = try context.count(for: fetchRequest) + Preferences.BraveVPNAlertTotals.consolidatedEmailTrackerCount.value
+          BraveVPNAlert.TrackerType.mail.rawValue
+        )
+        let emailTrackerCount =
+          try context.count(for: fetchRequest)
+          + Preferences.BraveVPNAlertTotals.consolidatedEmailTrackerCount.value
 
         completion((trackerCount, locationPingCount, emailTrackerCount))
       } catch {
@@ -153,46 +174,49 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
       }
     }
   }
-  
+
   public static func clearData() {
     deleteAll()
   }
-  
+
   public static func consolidateData(olderThan days: Int) {
-    
+
     struct ConsolidatedVPNAlert: Hashable {
       let host: String
       let action: Int32
       let category: Int32
-      
+
       func hash(into hasher: inout Hasher) {
-          hasher.combine(host)
+        hasher.combine(host)
       }
     }
-    
+
     DataController.perform { context in
       let timestampKeyPath = #keyPath(BraveVPNAlert.timestamp)
-      
+
       let date = Int64(Date().timeIntervalSince1970.advanced(by: -Double(days * 60 * 60 * 24)))
-      
+
       // 1. Find all older items.
-      let predicate = NSPredicate(format: "\(timestampKeyPath) <= %lld AND \(timestampKeyPath) > 0", date)
+      let predicate = NSPredicate(
+        format: "\(timestampKeyPath) <= %lld AND \(timestampKeyPath) > 0",
+        date
+      )
       let oldItems = all(where: predicate, context: context)
-      
+
       guard let entity = entity(in: context) else {
         Logger.module.error("Error fetching the entity 'BlockedResource' from Managed Object-Model")
         return
       }
-      
+
       var oldTrackerCount = 0
       var oldLocationPingCount = 0
       var oldEmailTrackerCount = 0
-      
+
       // 2. Insert unique trackers only as we do not care about detection date or their count.
       var uniqueTrackers = Set<ConsolidatedVPNAlert>()
       oldItems?.forEach {
         uniqueTrackers.insert(.init(host: $0.host, action: $0.action, category: $0.category))
-        
+
         switch $0.categoryEnum {
         case .app: oldTrackerCount += 1
         case .location: oldLocationPingCount += 1
@@ -200,12 +224,12 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
         case .none: break
         }
       }
-      
+
       // 3. Consolidating total alerts data.
       Preferences.BraveVPNAlertTotals.consolidatedEmailTrackerCount.value += oldTrackerCount
       Preferences.BraveVPNAlertTotals.consolidatedLocationPingCount.value += oldLocationPingCount
       Preferences.BraveVPNAlertTotals.consolidatedEmailTrackerCount.value += oldEmailTrackerCount
-      
+
       // 4. Consolidating vpn trackers, they are later used for all-time lists.
       uniqueTrackers.forEach {
         let consolidatedRecord = BraveVPNAlert(entity: entity, insertInto: context)
@@ -215,7 +239,7 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
         consolidatedRecord.uuid = $0.host
         consolidatedRecord.timestamp = -1
       }
-      
+
       // 5. Remove all old items from the database.
       oldItems?.forEach {
         $0.delete(context: .existing(context))
@@ -223,7 +247,9 @@ public final class BraveVPNAlert: NSManagedObject, CRUD, Identifiable {
     }
   }
 
-  private static func braveVPNAlertFetchRequest(for context: NSManagedObjectContext) -> NSFetchRequest<NSDictionary> {
+  private static func braveVPNAlertFetchRequest(
+    for context: NSManagedObjectContext
+  ) -> NSFetchRequest<NSDictionary> {
     let _fetchRequest = NSFetchRequest<NSDictionary>(entityName: "BraveVPNAlert")
     _fetchRequest.entity = BraveVPNAlert.entity(in: context)
     return _fetchRequest

@@ -9,13 +9,13 @@
 #include "brave/components/brave_rewards/core/endpoint/rewards/get_prefix_list/get_prefix_list.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 
 class RewardsServer {
  public:
-  explicit RewardsServer(RewardsEngineImpl& engine);
+  explicit RewardsServer(RewardsEngine& engine);
   ~RewardsServer();
 
   rewards::GetPrefixList& get_prefix_list() { return get_prefix_list_; }

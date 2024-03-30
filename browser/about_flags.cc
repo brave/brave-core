@@ -12,6 +12,7 @@
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
@@ -23,7 +24,7 @@
 #include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -77,6 +78,7 @@
 #include "brave/browser/android/preferences/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
 #else
+#include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #endif
 
@@ -248,6 +250,15 @@
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletAnkrBalancesFeature),       \
+      },                                                                      \
+      {                                                                       \
+          "brave-wallet-enable-transaction-simulations",                      \
+          "Enable transaction simulations",                                   \
+          "Enable usage of Blowfish API for running transaction simulations " \
+          "in Brave Wallet",                                                  \
+          kOsDesktop | kOsAndroid,                                            \
+          FEATURE_VALUE_TYPE(brave_wallet::features::                         \
+                                 kBraveWalletTransactionSimulationsFeature),  \
       })
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                             \
@@ -316,14 +327,19 @@
           }))
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_COMMANDS_FEATURE_ENTRIES                                        \
-  EXPAND_FEATURE_ENTRIES({                                                    \
-      "brave-commands",                                                       \
-      "Brave Commands",                                                       \
-      "Enable experimental page for viewing and executing commands in Brave", \
-      kOsWin | kOsMac | kOsLinux,                                             \
-      FEATURE_VALUE_TYPE(commands::features::kBraveCommands),                 \
-  })
+#define BRAVE_COMMANDS_FEATURE_ENTRIES                                      \
+  EXPAND_FEATURE_ENTRIES(                                                   \
+      {                                                                     \
+          "brave-commands",                                                 \
+          "Brave Commands",                                                 \
+          "Enable experimental page for viewing and executing commands in " \
+          "Brave",                                                          \
+          kOsWin | kOsMac | kOsLinux,                                       \
+          FEATURE_VALUE_TYPE(commands::features::kBraveCommands),           \
+      },                                                                    \
+      {"brave-commands-omnibox", "Brave Commands in Omnibox",               \
+       "Enable quick commands in the omnibox", kOsWin | kOsMac | kOsLinux,  \
+       FEATURE_VALUE_TYPE(features::kBraveCommandsInOmnibox)})
 #else
 #define BRAVE_COMMANDS_FEATURE_ENTRIES
 #endif
@@ -362,18 +378,9 @@
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
-#define BRAVE_ZERO_DAY_FLAG_ANDROID                                        \
-  EXPAND_FEATURE_ENTRIES({                                                 \
-      "brave-zero-day-flag-android",                                       \
-      "ZeroDayFlag flag for product test",                                 \
-      "This flag will be set through griffin to perform product testing",  \
-      kOsAndroid,                                                          \
-      FEATURE_VALUE_TYPE(preferences::features::kBraveZeroDayFlagAndroid), \
-  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
-#define BRAVE_ZERO_DAY_FLAG_ANDROID
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -399,6 +406,13 @@
           "Shows scroll bar on vertical tab strip when it overflows",     \
           kOsWin | kOsMac | kOsLinux,                                     \
           FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar), \
+      },                                                                  \
+      {                                                                   \
+          "brave-split-view",                                             \
+          "Enable split view",                                            \
+          "Enables split view",                                           \
+          kOsWin | kOsMac | kOsLinux,                                     \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),            \
       })
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES
@@ -490,6 +504,13 @@
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               ntp_background_images::features::kBraveNTPBrandedWallpaperDemo), \
+      },                                                                       \
+      {                                                                        \
+          "brave-ntp-search-widget",                                           \
+          "Brave Search Widget on the NTP",                                    \
+          "Enables searching directly from the New Tab Page",                  \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveNtpSearchWidget),                 \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
@@ -925,6 +946,14 @@
           FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
       },                                                                       \
       {                                                                        \
+          "fallback-dns-over-https",                                           \
+          "Use a fallback DoH provider",                                       \
+          "In Automatic DoH mode, use a fallback DoH provider if the current " \
+          "provider doesn't offer Secure DNS.",                                \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(net::features::kBraveFallbackDoHProvider),        \
+      },                                                                       \
+      {                                                                        \
           "brave-show-strict-fingerprinting-mode",                             \
           "Show Strict Fingerprinting Mode",                                   \
           "Show Strict (aggressive) option for Fingerprinting Mode in "        \
@@ -967,7 +996,6 @@
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
-  BRAVE_ZERO_DAY_FLAG_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_AI_CHAT                                                                \

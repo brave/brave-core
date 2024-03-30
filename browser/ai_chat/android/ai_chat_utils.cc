@@ -26,6 +26,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   // Send the query to the AIChat's backend.
   auto* chat_tab_helper = AIChatTabHelper::FromWebContents(web_contents);
   DCHECK(chat_tab_helper);
+  chat_tab_helper->MaybeUnlinkPageContent();
   mojom::ConversationTurn turn = {
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,

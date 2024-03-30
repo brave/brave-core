@@ -14,11 +14,6 @@ export type ShowConnectToSitePayload = {
   originInfo: BraveWallet.OriginInfo
 }
 
-export type EthereumChainRequestPayload = {
-  chainId: string
-  approved: boolean
-}
-
 export type SignMessageHardwarePayload = {
   request: BraveWallet.SignMessageRequest
   account: BraveWallet.AccountInfo
@@ -36,21 +31,6 @@ export type SignAllTransactionsProcessedPayload = {
   id: number
   signatures?: BraveWallet.ByteArrayStringUnion[]
   error?: string
-}
-
-export type SwitchEthereumChainProcessedPayload = {
-  requestId: string
-  approved: boolean
-}
-
-export type GetEncryptionPublicKeyProcessedPayload = {
-  requestId: string
-  approved: boolean
-}
-
-export type DecryptProcessedPayload = {
-  requestId: string
-  approved: boolean
 }
 
 export type SignTransactionHardwarePayload = {

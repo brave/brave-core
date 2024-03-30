@@ -29,16 +29,22 @@ namespace brave_rewards::internal::endpoints {
 // {
 //   "challengeId": "<challenge-id>"
 // }
-class PostChallenges : public RewardsEngineHelper {
+class PostChallenges : public RewardsEngineHelper,
+                       public WithHelperKey<PostChallenges> {
  public:
-  explicit PostChallenges(RewardsEngineImpl& engine);
+  explicit PostChallenges(RewardsEngine& engine);
   ~PostChallenges() override;
 
-  using Error = mojom::PostChallengesError;
+  enum class Error {
+    kFailedToCreateRequest,
+    kUnexpectedStatusCode,
+    kFailedToParseBody
+  };
+
   using Result = base::expected<std::string, Error>;
   using RequestCallback = base::OnceCallback<void(Result result)>;
 
-  void Request(RequestCallback callback);
+  virtual void Request(RequestCallback callback);
 
  private:
   mojom::UrlRequestPtr CreateRequest();

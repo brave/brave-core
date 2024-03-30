@@ -1,42 +1,53 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import XCTest
-import Shared
 import BraveShared
-import Storage
 import Data
-import WebKit
 import ObjectiveC.runtime
+import Shared
+import Storage
+import WebKit
+import XCTest
+
 @testable import Brave
 
-private extension WKWebView {
-  class func swizzleMe() {
+extension WKWebView {
+  fileprivate class func swizzleMe() {
     let originalSelector = #selector(WKWebView.init(frame:configuration:))
     let swizzledSelector = #selector(WKWebView.reInit(frame:configuration:))
 
     let originalMethod = class_getInstanceMethod(self, originalSelector)!
     let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)!
 
-    let didAddMethod = class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+    let didAddMethod = class_addMethod(
+      self,
+      originalSelector,
+      method_getImplementation(swizzledMethod),
+      method_getTypeEncoding(swizzledMethod)
+    )
 
     if didAddMethod {
-      class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+      class_replaceMethod(
+        self,
+        swizzledSelector,
+        method_getImplementation(originalMethod),
+        method_getTypeEncoding(originalMethod)
+      )
     } else {
-      method_exchangeImplementations(originalMethod, swizzledMethod);
+      method_exchangeImplementations(originalMethod, swizzledMethod)
     }
   }
 
   @objc
-  func reInit(frame: CGRect, configuration: WKWebViewConfiguration) -> WKWebView {
+  fileprivate func reInit(frame: CGRect, configuration: WKWebViewConfiguration) -> WKWebView {
     configuration.setValue(true, forKey: "alwaysRunsAtForegroundPriority")
     return reInit(frame: frame, configuration: configuration)
   }
 }
 
-private extension HTTPCookie {
-  class func filter(cookies: [HTTPCookie], for url: URL) -> [HTTPCookie]? {
+extension HTTPCookie {
+  fileprivate class func filter(cookies: [HTTPCookie], for url: URL) -> [HTTPCookie]? {
     guard let host = url.host?.lowercased() else { return nil }
     return cookies.filter({ $0.validFor(host: host) })
   }
@@ -57,11 +68,19 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
     super.init()
   }
 
-  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+  func webView(
+    _ webView: WKWebView,
+    decidePolicyFor navigationAction: WKNavigationAction,
+    decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+  ) {
     decisionHandler(.allow)
   }
 
-  func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+  func webView(
+    _ webView: WKWebView,
+    decidePolicyFor navigationResponse: WKNavigationResponse,
+    decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+  ) {
     decisionHandler(.allow)
   }
 
@@ -90,7 +109,13 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
     DataController.shared.initializeOnce()
     tabManager = { () -> TabManager in
       let profile = BrowserProfile(localName: "profile")
-      return TabManager(windowId: UUID(), prefs: profile.prefs, rewards: nil, tabGeneratorAPI: nil, privateBrowsingManager: privateBrowsingManager)
+      return TabManager(
+        windowId: UUID(),
+        prefs: profile.prefs,
+        rewards: nil,
+        tabGeneratorAPI: nil,
+        privateBrowsingManager: privateBrowsingManager
+      )
     }()
   }
 
@@ -112,7 +137,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
       modifiedSince: .distantPast,
       completionHandler: {
         completion()
-      })
+      }
+    )
   }
 
   func testPrivateTabSessionSharing() {
@@ -127,7 +153,11 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         "https://yahoo.com",
       ]
 
-      self.tabManager.addTabsForURLs(urls.compactMap({ URL(string: $0) }), zombie: false, isPrivate: true)
+      self.tabManager.addTabsForURLs(
+        urls.compactMap({ URL(string: $0) }),
+        zombie: false,
+        isPrivate: true
+      )
       if self.tabManager.allTabs.count != 4 {
         XCTFail("Error: Not all Tabs are created equally")
         return dataStoreExpectation.fulfill()
@@ -154,7 +184,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         },
         didFinishListener: {
           group.leave()
-        })
+        }
+      )
       self.tabManager.addNavigationDelegate(webViewNavigationAdapter)
 
       group.notify(queue: .main) {
@@ -177,12 +208,15 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
             completionHandler: { records in
               XCTAssertFalse(records.isEmpty, "Error: Data Store not shared amongst private tabs!")
 
-              let recordNames = Set<String>(records.compactMap({ URL(string: "http://\($0.displayName)")?.host }))
+              let recordNames = Set<String>(
+                records.compactMap({ URL(string: "http://\($0.displayName)")?.host })
+              )
               let urlNames = Set<String>(urls.compactMap({ URL(string: $0)?.host }))
 
               XCTAssertTrue(urlNames.isSubset(of: recordNames), "Data Store records do not match!")
               group.leave()
-            })
+            }
+          )
         }
 
         group.notify(queue: .main) {
@@ -205,8 +239,14 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         "https://slack.com",
       ]
 
-      self.tabManager.addTabsForURLs(urls.compactMap({ URL(string: $0) }), zombie: false, isPrivate: false)
-      self.tabManager.removeTabs(self.tabManager.allTabs.filter({ $0.url?.absoluteString.contains("localhost") ?? false }))
+      self.tabManager.addTabsForURLs(
+        urls.compactMap({ URL(string: $0) }),
+        zombie: false,
+        isPrivate: false
+      )
+      self.tabManager.removeTabs(
+        self.tabManager.allTabs.filter({ $0.url?.absoluteString.contains("localhost") ?? false })
+      )
       if self.tabManager.allTabs.count != 4 {
         XCTFail("Error: Not all Tabs are created equally")
         return dataStoreExpectation.fulfill()
@@ -233,7 +273,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         },
         didFinishListener: {
           group.leave()
-        })
+        }
+      )
       self.tabManager.addNavigationDelegate(webViewNavigationAdapter)
 
       group.notify(queue: .main) {
@@ -261,12 +302,15 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
             completionHandler: { records in
               XCTAssertFalse(records.isEmpty, "Error: Data Store not shared amongst normal tabs!")
 
-              let recordNames = Set<String>(records.compactMap({ URL(string: "http://\($0.displayName)")?.host }))
+              let recordNames = Set<String>(
+                records.compactMap({ URL(string: "http://\($0.displayName)")?.host })
+              )
               let urlNames = Set<String>(urls.compactMap({ URL(string: $0)?.host }))
 
               XCTAssertTrue(urlNames.isSubset(of: recordNames), "Data Store records do not match!")
               group.leave()
-            })
+            }
+          )
         }
 
         group.notify(queue: .main) {
@@ -289,7 +333,11 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         "https://msn.com",
       ]
 
-      self.tabManager.addTabsForURLs(urls.compactMap({ URL(string: $0) }), zombie: false, isPrivate: true)
+      self.tabManager.addTabsForURLs(
+        urls.compactMap({ URL(string: $0) }),
+        zombie: false,
+        isPrivate: true
+      )
       if self.tabManager.allTabs.count != 4 {
         XCTFail("Error: Not all Tabs are created equally")
         dataStoreExpectation.fulfill()
@@ -316,7 +364,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         },
         didFinishListener: {
           group.leave()
-        })
+        }
+      )
       self.tabManager.addNavigationDelegate(webViewNavigationAdapter)
 
       group.notify(queue: .main) {
@@ -339,10 +388,15 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
           },
           didFinishListener: {
             group.leave()
-          })
+          }
+        )
 
         self.tabManager.addNavigationDelegate(webViewNavigationAdapter)
-        self.tabManager.addTabsForURLs([URL(string: "https://brave.com")!], zombie: false, isPrivate: true)
+        self.tabManager.addTabsForURLs(
+          [URL(string: "https://brave.com")!],
+          zombie: false,
+          isPrivate: true
+        )
         if self.tabManager.tabs(withType: .private).isEmpty {
           XCTFail("Error: Private tab not created")
           return dataStoreExpectation.fulfill()
@@ -374,9 +428,14 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
             webView.configuration.websiteDataStore.fetchDataRecords(
               ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
               completionHandler: { records in
-                XCTAssertFalse(records.isEmpty, "Error: Data Store does not contain the latest webpage's data!")
+                XCTAssertFalse(
+                  records.isEmpty,
+                  "Error: Data Store does not contain the latest webpage's data!"
+                )
 
-                let recordNames = records.compactMap({ URL(string: "http://\($0.displayName)")?.host })
+                let recordNames = records.compactMap({
+                  URL(string: "http://\($0.displayName)")?.host
+                })
 
                 for url in urls.compactMap({ URL(string: $0)?.host }) {
                   if recordNames.contains(url) {
@@ -385,7 +444,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
                 }
 
                 group.leave()
-              })
+              }
+            )
           }
 
           group.notify(queue: .main) {
@@ -433,7 +493,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         },
         didFinishListener: {
           group.leave()
-        })
+        }
+      )
       self.tabManager.addNavigationDelegate(webViewNavigationAdapter)
 
       // All requests finished loading.. switch to normal mode.. check the cookies..
@@ -445,7 +506,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
           },
           didFinishListener: {
             group.leave()
-          })
+          }
+        )
 
         self.tabManager.addNavigationDelegate(webViewNavigationAdapter)
         self.tabManager.addTabsForURLs([otherURL], zombie: false, isPrivate: false)
@@ -490,13 +552,19 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
               completionHandler: { records in
                 XCTAssertFalse(records.isEmpty, "Error: Data Store not persistent in normal mode!")
 
-                let recordNames = Set<String>(records.compactMap({ URL(string: "http://\($0.displayName)")?.host }))
+                let recordNames = Set<String>(
+                  records.compactMap({ URL(string: "http://\($0.displayName)")?.host })
+                )
                 let urlNames = Set<String>([url.host ?? "FailedTestDomain"])
 
-                XCTAssertFalse(urlNames.isSubset(of: recordNames), "Data Store leaking from private tab to normal tab!")
+                XCTAssertFalse(
+                  urlNames.isSubset(of: recordNames),
+                  "Data Store leaking from private tab to normal tab!"
+                )
 
                 group.leave()
-              })
+              }
+            )
           }
 
           group.notify(queue: .main) {
@@ -612,14 +680,18 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
          return found
        })();
       """
-    
+
     let scripts = Set<UserScriptManager.ScriptType>(UserScriptManager.ScriptType.allCases)
     let customScripts = Set<UserScriptType>([.farblingProtection(etld: "fake.com")])
 
     let group = DispatchGroup()
     for tab in self.tabManager.allTabs {
       // include all scripts
-      UserScriptManager.shared.loadCustomScripts(into: tab, userScripts: scripts, customScripts: customScripts)
+      UserScriptManager.shared.loadCustomScripts(
+        into: tab,
+        userScripts: scripts,
+        customScripts: customScripts
+      )
 
       group.enter()
     }
@@ -630,7 +702,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
       },
       didFinishListener: {
         group.leave()
-      })
+      }
+    )
 
     self.tabManager.addNavigationDelegate(webViewNavigationAdapter)
 
@@ -640,7 +713,11 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         XCTFail("WebView is not created yet")
         return
       }
-      webView.evaluateSafeJavaScript(functionName: javascript, contentWorld: .page, asFunction: false) { result, error in
+      webView.evaluateSafeJavaScript(
+        functionName: javascript,
+        contentWorld: .page,
+        asFunction: false
+      ) { result, error in
         guard let keys = result as? String else {
           XCTFail("Javascript error while finding secret tokens")
           expectation.fulfill()
@@ -691,7 +768,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         },
         didFinishListener: {
           group.leave()
-        })
+        }
+      )
       self.tabManager.addNavigationDelegate(webViewNavigationAdapter)
 
       // All requests finished loading.. switch to private mode.. check the cookies..
@@ -703,7 +781,8 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
           },
           didFinishListener: {
             group.leave()
-          })
+          }
+        )
 
         self.tabManager.addNavigationDelegate(webViewNavigationAdapter)
         self.tabManager.addTabsForURLs([otherURL], zombie: false, isPrivate: true)
@@ -747,13 +826,19 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
             webView.configuration.websiteDataStore.fetchDataRecords(
               ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
               completionHandler: { records in
-                let recordNames = Set<String>(records.compactMap({ URL(string: "http://\($0.displayName)")?.host }))
+                let recordNames = Set<String>(
+                  records.compactMap({ URL(string: "http://\($0.displayName)")?.host })
+                )
                 let urlNames = Set<String>([url.host ?? "FailedTestDomain"])
 
-                XCTAssertFalse(urlNames.isSubset(of: recordNames), "Data Store leaking from normal tab to private tab!")
+                XCTAssertFalse(
+                  urlNames.isSubset(of: recordNames),
+                  "Data Store leaking from normal tab to private tab!"
+                )
 
                 group.leave()
-              })
+              }
+            )
           }
 
           group.notify(queue: .main) {

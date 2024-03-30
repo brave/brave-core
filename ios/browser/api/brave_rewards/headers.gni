@@ -5,7 +5,6 @@
 
 rewards_public_headers = [
   "//brave/ios/browser/api/brave_rewards/brave_rewards_api.h",
-  "//brave/ios/browser/api/brave_rewards/promotion_solution.h",
   "//brave/ios/browser/api/brave_rewards/rewards_notification.h",
   "//brave/ios/browser/api/brave_rewards/rewards_observer.h",
   "$root_gen_dir/brave/ios/browser/api/brave_rewards/rewards.mojom.objc.h",

@@ -27,7 +27,12 @@ std::string BuildInsertSql(const std::string& from,
   CHECK_EQ(from_columns.size(), to_columns.size());
 
   return base::ReplaceStringPlaceholders(
-      "INSERT INTO $1 ($2) SELECT $3 FROM $4;",
+      R"(
+          INSERT INTO $1 ($2)
+          SELECT
+            $3
+          FROM
+            $4;)",
       {to, base::JoinString(to_columns, ", "),
        base::JoinString(from_columns, ", "), from},
       nullptr);
@@ -35,18 +40,36 @@ std::string BuildInsertSql(const std::string& from,
 
 }  // namespace
 
+void DropTableIndex(mojom::DBTransactionInfo* transaction,
+                    const std::string& index_name) {
+  CHECK(transaction);
+  CHECK(!index_name.empty());
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      R"(
+          DROP INDEX IF EXISTS
+            ad_events_created_at_index;)";
+  transaction->commands.push_back(std::move(command));
+}
+
 void CreateTableIndex(mojom::DBTransactionInfo* transaction,
                       const std::string& table_name,
-                      const std::string& key) {
+                      const std::vector<std::string>& columns) {
   CHECK(transaction);
   CHECK(!table_name.empty());
-  CHECK(!key.empty());
+  CHECK(!columns.empty());
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
-      "CREATE INDEX IF NOT EXISTS $1_$2_index ON $3 ($4);",
-      {table_name, key, table_name, key}, nullptr);
+      R"(
+          CREATE INDEX IF NOT EXISTS
+            $1_$2_index ON $3 ($4);)",
+      {table_name, base::JoinString(columns, "_"), table_name,
+       base::JoinString(columns, ", ")},
+      nullptr);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -57,8 +80,11 @@ void DropTable(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql = base::ReplaceStringPlaceholders("DROP TABLE IF EXISTS $1;",
-                                                 {table_name}, nullptr);
+  command->sql = base::ReplaceStringPlaceholders(
+      R"(
+          DROP TABLE IF EXISTS
+            $1;)",
+      {table_name}, nullptr);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -69,8 +95,11 @@ void DeleteTable(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      base::ReplaceStringPlaceholders("DELETE FROM $1;", {table_name}, nullptr);
+  command->sql = base::ReplaceStringPlaceholders(
+      R"(
+          DELETE
+            FROM $1;)",
+      {table_name}, nullptr);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -116,8 +145,11 @@ void RenameTable(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql = base::ReplaceStringPlaceholders("ALTER TABLE $1 RENAME TO $2;",
-                                                 {from, to}, nullptr);
+  command->sql = base::ReplaceStringPlaceholders(
+      R"(
+          ALTER TABLE
+            $1 RENAME TO $2;)",
+      {from, to}, nullptr);
   transaction->commands.push_back(std::move(command));
 }
 

@@ -16,7 +16,11 @@ import {
 } from '../token_list_item/token_list_item'
 
 // Styled Components
-import { ListItemWrapper } from './virtualized_tokens_list.style'
+import {
+  AutoSizerStyle,
+  ListItemWrapper,
+  listItemInitialHeight
+} from './virtualized_tokens_list.style'
 
 interface VirtualizedTokensListProps {
   tokenList: BraveWallet.BlockchainToken[]
@@ -28,9 +32,8 @@ interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
   index: number
   data: BraveWallet.BlockchainToken[]
   style: React.CSSProperties
+  setSize: (index: number, size: number) => void
 }
-
-const itemSize = 72
 
 const getListItemKey = (
   index: number,
@@ -41,7 +44,7 @@ const getListItemKey = (
 }
 
 const ListItem = (props: ListItemProps) => {
-  const { index, data, onSelectToken, style, selectedToken } = props
+  const { index, data, onSelectToken, style, selectedToken, setSize } = props
   const token = data[index]
 
   const disabledText =
@@ -50,12 +53,22 @@ const ListItem = (props: ListItemProps) => {
       ? 'braveWalletFromToken'
       : undefined
 
+  const handleSetSize = React.useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref) {
+        setSize(index, ref.getBoundingClientRect().height)
+      }
+    },
+    [index, setSize]
+  )
+
   return (
     <ListItemWrapper style={style}>
       <TokenListItem
         onClick={() => onSelectToken(token)}
         token={token}
         disabledText={disabledText}
+        ref={handleSetSize}
       />
     </ListItemWrapper>
   )
@@ -64,29 +77,66 @@ const ListItem = (props: ListItemProps) => {
 export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
   const { tokenList, onSelectToken, selectedToken } = props
 
+  // Refs
+  const listRef = React.useRef<List | null>(null)
+  const itemSizes = React.useRef<number[]>(
+    new Array(tokenList.length).fill(listItemInitialHeight)
+  )
+
+  // Methods
+  const onListMount = React.useCallback(
+    (ref: List | null) => {
+      if (ref) {
+        // Set ref on mount
+        listRef.current = ref
+        // Clear cached data and rerender
+        listRef.current.resetAfterIndex(0)
+      }
+    },
+    [listRef]
+  )
+
+  const setSize = React.useCallback(
+    (index: number, size: number) => {
+      // Performance: Only update the sizeMap and reset cache if an actual value
+      // changed
+      if (itemSizes.current[index] !== size && size > -1) {
+        itemSizes.current[index] = size
+        if (listRef.current) {
+          // Clear cached data and rerender
+          listRef.current.resetAfterIndex(0)
+        }
+      }
+    },
+    [itemSizes, listRef]
+  )
+
+  const getSize = React.useCallback(
+    (index: number) => {
+      return itemSizes.current[index] || listItemInitialHeight
+    },
+    [itemSizes]
+  )
+
   return (
-    <AutoSizer
-      style={{
-        height: '100%',
-        width: '100%'
-      }}
-    >
+    <AutoSizer style={AutoSizerStyle}>
       {function ({ height, width }) {
         return (
           <List
+            ref={onListMount}
             width={width}
             height={height}
             itemData={tokenList}
-            itemSize={(index: number) => itemSize}
-            estimatedItemSize={itemSize}
             itemCount={tokenList.length}
-            overscanCount={2}
+            itemSize={getSize}
             itemKey={getListItemKey}
+            overscanCount={10}
             children={(itemProps) => (
               <ListItem
                 {...itemProps}
                 selectedToken={selectedToken}
                 onSelectToken={onSelectToken}
+                setSize={setSize}
               />
             )}
           />

@@ -11,11 +11,9 @@
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/promoted_content_ads/promoted_content_ad_permission_rules.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/promoted_content_ads/promoted_content_ad_event_factory.h"
 
 namespace brave_ads {
@@ -47,15 +45,14 @@ void PromotedContentAdEventHandler::FireEvent(
                              std::move(callback));
   }
 
-  if (event_type == mojom::PromotedContentAdEventType::kServed &&
+  if (event_type == mojom::PromotedContentAdEventType::kServedImpression &&
       !PromotedContentAdPermissionRules::HasPermission()) {
     BLOG(1, "Promoted content ad: Not allowed due to permission rules");
     return FailedToFireEvent(placement_id, creative_instance_id, event_type,
                              std::move(callback));
   }
 
-  const database::table::CreativePromotedContentAds database_table;
-  database_table.GetForCreativeInstanceId(
+  database_table_.GetForCreativeInstanceId(
       creative_instance_id,
       base::BindOnce(
           &PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback,
@@ -84,8 +81,7 @@ void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
   const PromotedContentAdInfo ad =
       BuildPromotedContentAd(creative_ad, placement_id);
 
-  const database::table::AdEvents database_table;
-  database_table.GetForType(
+  ad_events_database_table_.GetUnexpiredForType(
       mojom::AdType::kPromotedContentAd,
       base::BindOnce(&PromotedContentAdEventHandler::GetForTypeCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type,
@@ -172,12 +168,12 @@ void PromotedContentAdEventHandler::NotifyDidFirePromotedContentAdEvent(
   }
 
   switch (event_type) {
-    case mojom::PromotedContentAdEventType::kServed: {
+    case mojom::PromotedContentAdEventType::kServedImpression: {
       delegate_->OnDidFirePromotedContentAdServedEvent(ad);
       break;
     }
 
-    case mojom::PromotedContentAdEventType::kViewed: {
+    case mojom::PromotedContentAdEventType::kViewedImpression: {
       delegate_->OnDidFirePromotedContentAdViewedEvent(ad);
       break;
     }

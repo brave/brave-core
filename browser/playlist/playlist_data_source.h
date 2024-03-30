@@ -8,16 +8,10 @@
 
 #include <string>
 
-#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
-#include "content/public/browser/url_data_source.h"
 
 class GURL;
 class Profile;
-
-namespace base {
-class FilePath;
-}  // namespace base
 
 namespace playlist {
 
@@ -38,18 +32,43 @@ class PlaylistDataSource : public FaviconSource {
   void StartDataRequest(const GURL& url,
                         const content::WebContents::Getter& wc_getter,
                         GotDataCallback got_data_callback) override;
+  void StartRangeDataRequest(const GURL& url,
+                             const content::WebContents::Getter& wc_getter,
+                             const net::HttpByteRange& range,
+                             GotRangeDataCallback callback) override;
   std::string GetMimeType(const GURL& url) override;
   bool AllowCaching() override;
+  bool SupportsRangeRequests(const GURL& url) const override;
 
  private:
-  void GetDataFile(const base::FilePath& data_path,
-                   GotDataCallback got_data_callback);
-  void OnGotDataFile(GotDataCallback got_data_callback,
-                     scoped_refptr<base::RefCountedMemory> input);
+  struct DataRequest {
+    enum class Type {
+      kThumbnail,
+      kMedia,
+      kFavicon,
+    };
 
-  raw_ptr<PlaylistService> service_;
+    explicit DataRequest(const GURL& url);
+    DataRequest(const DataRequest&) = delete;
+    DataRequest& operator=(const DataRequest&) = delete;
+    ~DataRequest();
 
-  base::WeakPtrFactory<PlaylistDataSource> weak_factory_{this};
+    std::string id;
+    Type type;
+  };
+
+  void GetThumbnail(const DataRequest& request,
+                    const content::WebContents::Getter& wc_getter,
+                    GotDataCallback got_data_callback);
+  void GetFavicon(const DataRequest& request,
+                  const content::WebContents::Getter& wc_getter,
+                  GotDataCallback got_data_callback);
+  void GetMediaFile(const DataRequest& request,
+                    const content::WebContents::Getter& wc_getter,
+                    const net::HttpByteRange& range,
+                    GotRangeDataCallback got_data_callback);
+
+  raw_ptr<PlaylistService> service_ = nullptr;
 };
 
 }  // namespace playlist

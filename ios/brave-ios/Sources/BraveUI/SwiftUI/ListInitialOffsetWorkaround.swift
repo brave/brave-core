@@ -1,11 +1,11 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import SwiftUI
 import Introspect
+import SwiftUI
 
 private struct iOS16ListInitialOffsetFixViewModifier: ViewModifier {
   @State private var isFixApplied: Bool = false
@@ -31,7 +31,7 @@ extension View {
   /// This bug is fixed in iOS 16.2
   @available(iOS, introduced: 14.0, deprecated: 16.2)
   @ViewBuilder public func listInitialOffsetWorkaround() -> some View {
-#if swift(>=5.7.2)
+    #if swift(>=5.7.2)
     if #available(iOS 16.2, *) {
       modifier(EmptyModifier())
     } else if #available(iOS 16.1, *) {
@@ -39,14 +39,14 @@ extension View {
     } else {
       modifier(EmptyModifier())
     }
-#elseif swift(>=5.7.1)
+    #elseif swift(>=5.7.1)
     if #available(iOS 16.1, *) {
       modifier(iOS16ListInitialOffsetFixViewModifier())
     } else {
       modifier(EmptyModifier())
     }
-#else
+    #else
     modifier(EmptyModifier())
-#endif
+    #endif
   }
 }

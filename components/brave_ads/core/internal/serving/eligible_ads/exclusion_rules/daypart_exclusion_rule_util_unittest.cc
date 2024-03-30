@@ -19,7 +19,7 @@ TEST(BraveAdsDaypartExclusionRuleUtilTest, MatchDayOfWeek) {
   daypart.days_of_week = "0123456";
 
   // Act & Assert
-  EXPECT_TRUE(MatchDayOfWeek(daypart, 3));
+  EXPECT_TRUE(MatchDayOfWeek(daypart, /*wednesday*/ 3));
 }
 
 TEST(BraveAdsDaypartExclusionRuleUtilTest, DoNotMatchDayOfWeek) {
@@ -28,7 +28,7 @@ TEST(BraveAdsDaypartExclusionRuleUtilTest, DoNotMatchDayOfWeek) {
   daypart.days_of_week = "012456";
 
   // Act & Assert
-  EXPECT_FALSE(MatchDayOfWeek(daypart, 3));
+  EXPECT_FALSE(MatchDayOfWeek(daypart, /*wednesday*/ 3));
 }
 
 TEST(BraveAdsDaypartExclusionRuleUtilTest, MatchTimeSlot) {

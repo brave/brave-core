@@ -15,12 +15,12 @@
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoint::bitflyer {
 
-PostOauth::PostOauth(RewardsEngineImpl& engine) : engine_(engine) {}
+PostOauth::PostOauth(RewardsEngine& engine) : engine_(engine) {}
 
 PostOauth::~PostOauth() = default;
 
@@ -111,11 +111,8 @@ void PostOauth::Request(const std::string& external_account_id,
                         PostOauthCallback callback) {
   auto get_auth_user = [&]() {
     auto& config = engine_->Get<EnvironmentConfig>();
-    std::string user;
-    base::Base64Encode(base::StrCat({config.bitflyer_client_id(), ":",
-                                     config.bitflyer_client_secret()}),
-                       &user);
-    return user;
+    return base::Base64Encode(base::StrCat(
+        {config.bitflyer_client_id(), ":", config.bitflyer_client_secret()}));
   };
 
   auto request = mojom::UrlRequest::New();

@@ -4,17 +4,23 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/build/ios/config.gni")
+import("//brave/build/ios/create_xcframework.gni")
 import("//brave/build/mac/tweak_info_plist.gni")
 import("//brave/ios/browser/api/ads/headers.gni")
 import("//brave/ios/browser/api/ai_chat/headers.gni")
 import("//brave/ios/browser/api/brave_rewards/headers.gni")
+import("//brave/ios/browser/api/brave_services_key/headers.gni")
 import("//brave/ios/browser/api/brave_shields/headers.gni")
 import("//brave/ios/browser/api/brave_stats/headers.gni")
 import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
+import("//brave/ios/browser/api/credential_provider/headers.gni")
 import("//brave/ios/browser/api/de_amp/headers.gni")
 import("//brave/ios/browser/api/debounce/headers.gni")
+import("//brave/ios/browser/api/developer_options_code/headers.gni")
 import("//brave/ios/browser/api/favicon/headers.gni")
+import("//brave/ios/browser/api/features/headers.gni")
 import("//brave/ios/browser/api/ipfs/headers.gni")
 import("//brave/ios/browser/api/ntp_background_images/headers.gni")
 import("//brave/ios/browser/api/opentabs/headers.gni")
@@ -45,7 +51,11 @@ config("internal_config") {
 }
 
 group("brave_ios") {
-  public_deps = [ ":brave_core_ios_framework" ]
+  public_deps = [
+    ":brave_core_xcframework",
+    ":generated_xcconfig",
+    ":material_components_xcframework",
+  ]
 }
 
 group("brave_ios_tests") {
@@ -99,6 +109,10 @@ brave_core_public_headers += browser_api_web_webstate_public_headers
 brave_core_public_headers += ipfs_public_headers
 brave_core_public_headers += ntp_background_images_public_headers
 brave_core_public_headers += browser_api_web_ui_public_headers
+brave_core_public_headers += brave_services_key_public_headers
+brave_core_public_headers += browser_api_features_public_headers
+brave_core_public_headers += credential_provider_public_headers
+brave_core_public_headers += developer_options_code_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"
@@ -149,9 +163,62 @@ ios_framework_bundle("brave_core_ios_framework") {
   deps += brave_wallet_public_deps
   deps += rewards_public_deps
   deps += skus_public_deps
+  deps += credential_provider_public_deps
 
   sources = brave_core_public_headers
 
   public_headers = get_target_outputs(":brave_core_umbrella_header")
   public_headers += brave_core_public_headers
+}
+
+ios_create_xcframework("brave_core_xcframework") {
+  framework_dir = "$root_build_dir/BraveCore.framework"
+  remove_asset_catalogs = true
+  deps = [ ":brave_core_ios_framework" ]
+}
+
+ios_create_xcframework("material_components_xcframework") {
+  framework_dir = "$root_build_dir/MaterialComponents.framework"
+  fix_info_plist_versions = true
+  deps = [ "//ios/third_party/material_components_ios" ]
+}
+
+# Generates an xcconfig based on GN args that are needed in the Xcode app build
+# process such as Info.plist or build setting subsititions.
+generated_file("generated_xcconfig") {
+  outputs = [ "$root_build_dir/args.xcconfig" ]
+
+  # Some special logic to avoid .0 patch versions in marketing versions
+  ios_marketing_version = "$brave_version_major.$brave_version_minor"
+  if (brave_ios_marketing_version_patch != 0) {
+    ios_marketing_version += ".$brave_ios_marketing_version_patch"
+  }
+
+  contents = [
+    "brave_version_major = $brave_version_major",
+    "brave_version_minor = $brave_version_minor",
+    "brave_version_build = $brave_version_build",
+    "brave_ios_marketing_version = $ios_marketing_version",
+    "brave_ios_marketing_version_patch = $brave_ios_marketing_version_patch",
+    "brave_channel = $brave_channel",
+  ]
+
+  # If absolute paths are stripped from debug symbols ensure that SPM/Xcode
+  # also maps debug symbols the same way to allow proper debugging with LLDB
+  if (strip_absolute_paths_from_debug_symbols) {
+    ios_dir = rebase_path("//brave/ios/brave-ios")
+    ios_dir_build_relative =
+        rebase_path("//brave/ios/brave-ios", root_build_dir)
+    contents += [ "brave_ios_debug_prefix_map_flag = -debug-prefix-map $ios_dir=$ios_dir_build_relative" ]
+  }
+
+  # Set up any active compilation conditions that may be used in Swift for
+  # example conditionally compiling based on `#if OFFICIAL_BUILD`
+  swift_active_compliation_conditions = []
+  if (is_official_build) {
+    swift_active_compliation_conditions += [ "OFFICIAL_BUILD" ]
+  }
+  swift_active_compilation_conditions_joined =
+      string_join(" ", swift_active_compliation_conditions)
+  contents += [ "brave_swift_active_compliation_conditions = $swift_active_compilation_conditions_joined" ]
 }

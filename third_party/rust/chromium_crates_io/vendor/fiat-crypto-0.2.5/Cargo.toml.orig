@@ -1,0 +1,18 @@
+[package]
+name = "fiat-crypto"
+version = "0.2.5"
+authors = ["Fiat Crypto library authors <jgross@mit.edu>"]
+edition = "2018"
+description = "Fiat-crypto generated Rust"
+homepage = "https://github.com/mit-plv/fiat-crypto"
+repository = "https://github.com/mit-plv/fiat-crypto"
+readme = "README.md"
+license = "MIT OR Apache-2.0 OR BSD-1-Clause"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+[features]
+default = [ "std" ]
+std = []

@@ -16,11 +16,11 @@ std::unique_ptr<AdEventInterface<SearchResultAdInfo>>
 SearchResultAdEventFactory::Build(
     const mojom::SearchResultAdEventType event_type) {
   switch (event_type) {
-    case mojom::SearchResultAdEventType::kServed: {
+    case mojom::SearchResultAdEventType::kServedImpression: {
       return std::make_unique<SearchResultAdEventServed>();
     }
 
-    case mojom::SearchResultAdEventType::kViewed: {
+    case mojom::SearchResultAdEventType::kViewedImpression: {
       return std::make_unique<SearchResultAdEventViewed>();
     }
 

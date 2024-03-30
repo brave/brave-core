@@ -20,6 +20,7 @@ interface Props {
   onClickTokenDetails: () => void
   onClickViewOnExplorer: () => void
   onClickHideToken: () => void
+  onClickEditToken?: () => void
 }
 
 export const AssetDetailsMenu = (props: Props) => {
@@ -27,7 +28,8 @@ export const AssetDetailsMenu = (props: Props) => {
     assetSymbol,
     onClickTokenDetails,
     onClickViewOnExplorer,
-    onClickHideToken
+    onClickHideToken,
+    onClickEditToken
   } = props
 
   return (
@@ -38,6 +40,14 @@ export const AssetDetailsMenu = (props: Props) => {
           {getLocale('braveWalletPortfolioTokenDetailsMenuLabel')}
         </PopupButtonText>
       </PopupButton>
+      {onClickEditToken && (
+        <PopupButton onClick={onClickEditToken}>
+          <ButtonIcon name='edit-pencil' />
+          <PopupButtonText>
+            {getLocale('braveWalletAllowSpendEditButton')}
+          </PopupButtonText>
+        </PopupButton>
+      )}
       <PopupButton onClick={onClickViewOnExplorer}>
         <ButtonIcon name='launch' />
         <PopupButtonText>

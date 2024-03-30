@@ -4,22 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 import Toggle from '@brave/leo/react/toggle'
 
 // Types
 import { WalletRoutes } from '../../../constants/types'
 
-// Actions
-import { WalletActions } from '../../../common/actions'
-
-// Selectors
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
-
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
 
 // Constants
 import {
@@ -40,46 +33,33 @@ export const PortfolioOverviewMenu = () => {
   const history = useHistory()
   const { pathname: walletLocation } = useLocation()
 
-  // Redux
-  const dispatch = useDispatch()
-
-  const hidePortfolioGraph = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioGraph
+  // Local-Storage
+  const [hidePortfolioBalances, setHidePortfolioBalances] =
+    useSyncedLocalStorage(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES, false)
+  const [hidePortfolioNFTsTab, setHidePortfolioNFTsTab] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
+    false
   )
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
-  )
-  const hidePortfolioNFTsTab = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioNFTsTab
+  const [hidePortfolioGraph, setHidePortfolioGraph] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
+    false
   )
 
   // Methods
   const onToggleHideGraph = React.useCallback(() => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
-      hidePortfolioGraph ? 'false' : 'true'
-    )
-    dispatch(WalletActions.setHidePortfolioGraph(!hidePortfolioGraph))
-  }, [hidePortfolioGraph])
+    setHidePortfolioGraph((prev) => !prev)
+  }, [setHidePortfolioGraph])
 
   const onToggleHideBalances = React.useCallback(() => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
-      hidePortfolioBalances ? 'false' : 'true'
-    )
-    dispatch(WalletActions.setHidePortfolioBalances(!hidePortfolioBalances))
-  }, [hidePortfolioBalances])
+    setHidePortfolioBalances((prev) => !prev)
+  }, [setHidePortfolioBalances])
 
   const onToggleHideNFTsTab = React.useCallback(() => {
     if (walletLocation.includes(WalletRoutes.PortfolioNFTs)) {
       history.push(WalletRoutes.PortfolioAssets)
     }
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
-      hidePortfolioNFTsTab ? 'false' : 'true'
-    )
-    dispatch(WalletActions.setHidePortfolioNFTsTab(!hidePortfolioNFTsTab))
-  }, [hidePortfolioNFTsTab, walletLocation])
+    setHidePortfolioNFTsTab((prev) => !prev)
+  }, [history, setHidePortfolioNFTsTab, walletLocation])
 
   return (
     <StyledWrapper yPosition={42}>

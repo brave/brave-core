@@ -87,8 +87,6 @@ export type PanelHeaderSizes = 'regular' | 'slim'
 
 export type PanelTypes =
   | 'accounts'
-  | 'addEthereumChain'
-  | 'allowReadingEncryptedMessage' // For grep: 'decryptRequest'
   | 'approveTransaction'
   | 'assets'
   | 'buy'
@@ -98,16 +96,13 @@ export type PanelTypes =
   | 'expanded'
   | 'main'
   | 'networks'
-  | 'provideEncryptionKey' // For grep: 'getEncryptionPublicKey'
   | 'send'
   | 'settings'
-  | 'showUnlock'
   | 'signData'
   | 'signTransaction'
   | 'signAllTransactions'
   | 'sitePermissions'
   | 'swap'
-  | 'switchEthereumChain'
   | 'transactionDetails'
   | 'activity' // Transactions
   | 'transactionStatus'
@@ -188,8 +183,6 @@ export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
-  collapsedPortfolioAccountIds: string[]
-  collapsedPortfolioNetworkKeys: string[]
 }
 
 export interface WalletState {
@@ -198,31 +191,13 @@ export interface WalletState {
   isZCashEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
-  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
-  fullTokenList: BraveWallet.BlockchainToken[]
   addUserAssetError: boolean
   activeOrigin: BraveWallet.OriginInfo
-  selectedNetworkFilter: NetworkFilterType
-  selectedAssetFilter: string
-  selectedGroupAssetsByItem: string
-  selectedAccountFilter: string
   allowedNewWalletAccountTypeNetworkIds: EntityId[]
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
   isNftPinningFeatureEnabled: boolean
   isAnkrBalancesFeatureEnabled: boolean
-  hidePortfolioGraph: boolean
-  hidePortfolioBalances: boolean
-  removedFungibleTokenIds: string[]
-  removedNonFungibleTokenIds: string[]
-  deletedNonFungibleTokenIds: string[]
-  hidePortfolioNFTsTab: boolean
-  removedNonFungibleTokens: BraveWallet.BlockchainToken[]
-  deletedNonFungibleTokens: BraveWallet.BlockchainToken[]
-  filteredOutPortfolioNetworkKeys: string[]
-  filteredOutPortfolioAccountIds: string[]
-  hidePortfolioSmallBalances: boolean
-  showNetworkLogoOnNfts: boolean
   isRefreshingNetworksAndTokens: boolean
 }
 
@@ -231,15 +206,9 @@ export interface PanelState {
   connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
   connectingAccounts: string[]
-  addChainRequest: BraveWallet.AddChainRequest
   signMessageData: BraveWallet.SignMessageRequest[]
   signTransactionRequests: BraveWallet.SignTransactionRequest[]
   signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]
-  getEncryptionPublicKeyRequest:
-    | BraveWallet.GetEncryptionPublicKeyRequest
-    | undefined
-  decryptRequest: BraveWallet.DecryptRequest | undefined
-  switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   selectedTransactionId?: string
   signMessageErrorData: BraveWallet.SignMessageError[]
@@ -922,15 +891,6 @@ export interface AccountButtonOptionsObjectType {
 
 export type StringWithAutocomplete<T> = T | (string & Record<never, never>)
 
-export const P3ASendTransactionTypes = [
-  BraveWallet.TransactionType.ETHSend,
-  BraveWallet.TransactionType.ERC20Transfer,
-  BraveWallet.TransactionType.SolanaSystemTransfer,
-  BraveWallet.TransactionType.SolanaSPLTokenTransfer,
-  BraveWallet.TransactionType
-    .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
-]
-
 export type SendPageTabHashes =
   (typeof SendPageTabHashes)[keyof typeof SendPageTabHashes]
 
@@ -978,12 +938,26 @@ export type ERC721Metadata = {
   image_url?: string
 }
 
+export enum AddressMessageInfoIds {
+  sameAddressError = 0,
+  invalidAddressError = 1,
+  invalidUnifiedAddressError = 2,
+  invalidChecksumError = 3,
+  missingChecksumWarning = 4,
+  contractAddressError = 5,
+  FEVMTranslationWarning = 6,
+  ensOffchainLookupWarning = 7,
+  hasNoDomainAddress = 8,
+  invalidDomainExtension = 9
+}
+
 export type AddressMessageInfo = {
   title: string
   description?: string
   placeholder?: string
   url?: string
-  type?: 'error' | 'warning'
+  type?: 'error' | 'warning' | 'info'
+  id: AddressMessageInfoIds
 }
 
 export type AlertType = 'danger' | 'warning' | 'info' | 'success'
@@ -1053,8 +1027,6 @@ export type SwapAndSend = {
   label: string
   name: string
 }
-
-export type TxSimulationOptInStatus = 'allowed' | 'denied' | 'unset'
 
 export enum SignDataSteps {
   SignRisk = 0,

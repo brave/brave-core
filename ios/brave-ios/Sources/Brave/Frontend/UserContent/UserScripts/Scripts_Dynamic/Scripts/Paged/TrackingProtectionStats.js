@@ -9,17 +9,17 @@ window.__firefox__.execute(function($) {
   const messageHandler = '$<message_handler>';
   let sendInfo = [];
   let sendInfoTimeout = null;
-  
+
   let sendMessage = $(function(urlString, resourceType) {
     // String is empty, null, undefined, ...
     if (!urlString) {
       return;
     }
-    
+
     let resourceURL = null;
     try {
       resourceURL = new URL(urlString, document.location.href);
-      
+
       // First party urls or invalid URLs are not blocked
       if (document.location.host === resourceURL.host) {
         return;
@@ -28,17 +28,17 @@ window.__firefox__.execute(function($) {
       console.error(error);
       return;
     }
-    
+
     sendInfo.push({
       resourceURL: resourceURL.href,
       sourceURL: document.location.href,
       resourceType: resourceType
     });
-    
+
     if (sendInfoTimeout) {
       return;
     }
-    
+
     // Send the URLs in batches every 200ms to avoid perf issues
     // from calling js-to-native too frequently.
     sendInfoTimeout = setTimeout($(() => {
@@ -46,12 +46,12 @@ window.__firefox__.execute(function($) {
       if (sendInfo.length == 0) {
         return;
       }
-      
+
       $.postNativeMessage(messageHandler, {
         "securityToken": SECURITY_TOKEN,
         "data": sendInfo
       });
-      
+
       sendInfo = [];
     }), 200);
   });
@@ -100,7 +100,7 @@ window.__firefox__.execute(function($) {
     // -------------------------------------------------
     const localURLProp = Symbol('url')
     const localErrorHandlerProp = Symbol('tpErrorHandler')
-    
+
     if (!originalXHROpen) {
       originalXHROpen = XMLHttpRequest.prototype.open;
       originalXHRSend = XMLHttpRequest.prototype.send;
@@ -131,21 +131,21 @@ window.__firefox__.execute(function($) {
         this[localErrorHandlerProp] = $(function() {
           sendMessage(url, "xmlhttprequest");
         });
-        
+
         this.addEventListener("error", this[localErrorHandlerProp]);
       }
       return originalXHRSend.apply(this, arguments);
     }, /*overrideToString=*/false);
-    
-    
-    
+
+
+
     // -------------------------------------------------
     // Send `fetch()` request URLs to the host application
     // -------------------------------------------------
     if (!originalFetch) {
       originalFetch = window.fetch;
     }
-    
+
     window.fetch = $(function(input, init) {
       if (typeof input === 'string') {
         sendMessage(input, 'xmlhttprequest');
@@ -162,14 +162,14 @@ window.__firefox__.execute(function($) {
     if (!originalImageSrc) {
       originalImageSrc = Object.getOwnPropertyDescriptor(Image.prototype, "src");
     }
-    
+
     delete Image.prototype.src;
-    
+
     Object.defineProperty(Image.prototype, "src", {
       get: $(function() {
         return originalImageSrc.get.call(this);
       }),
-      
+
       set: $(function(value) {
         // Only attach the `error` event listener once for this
         // Image instance.
@@ -179,7 +179,7 @@ window.__firefox__.execute(function($) {
           this[localErrorHandlerProp] = $(function() {
             sendMessage(this.src, "image");
           });
-          
+
           this.addEventListener("error", this[localErrorHandlerProp]);
         }
 
@@ -201,7 +201,7 @@ window.__firefox__.execute(function($) {
             sendMessage(node.src, "script");
             return;
           }
-          
+
           if (node.tagName === "IMG" && node.src) {
             sendMessage(node.src, "image");
             return;

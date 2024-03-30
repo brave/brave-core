@@ -7,16 +7,15 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -369,64 +368,23 @@ mojom::Result RewardsBrowserTestContribution::GetACStatus() {
   return ac_reconcile_status_;
 }
 
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-void RewardsBrowserTestContribution::SetUpGeminiWallet(
-    RewardsServiceImpl* rewards_service,
-    const double balance,
-    const mojom::WalletStatus status) {
-  if (!base::FeatureList::IsEnabled(features::kGeminiFeature)) {
-    return;
-  }
-  DCHECK(rewards_service);
-  browser_->profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
-                                             "gemini");
-  // we need brave wallet as well
-  test_util::CreateRewardsWallet(rewards_service_);
-
+void RewardsBrowserTestContribution::StartProcessWithBalance(double balance) {
   external_balance_ = balance;
 
-  base::Value::Dict wallet;
-  wallet.Set("token", "token");
-  wallet.Set("address", test_util::GetGeminiExternalAddress());
-  wallet.Set("status", static_cast<int>(status));
-  wallet.Set("user_name", "Brave Test");
+  test_util::StartProcessWithConnectedUser(browser_->profile());
 
-  std::string json;
-  base::JSONWriter::Write(wallet, &json);
-  auto encrypted = test_util::EncryptPrefString(rewards_service_, json);
-  ASSERT_TRUE(encrypted);
-  browser_->profile()->GetPrefs()->SetString(prefs::kWalletGemini, *encrypted);
-}
-#endif
-
-void RewardsBrowserTestContribution::SetUpUpholdWallet(
-    RewardsServiceImpl* rewards_service,
-    const double balance,
-    const mojom::WalletStatus status) {
-  DCHECK(rewards_service);
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-  if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
-    browser_->profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
-                                               "uphold");
+  {
+    // Verify that the balance is fetched correctly.
+    double user_balance = 0;
+    base::RunLoop run_loop;
+    rewards_service_->FetchBalance(
+        base::BindLambdaForTesting([&](mojom::BalancePtr balance) {
+          user_balance = balance->total;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    ASSERT_EQ(user_balance, external_balance_);
   }
-#endif
-  // we need brave wallet as well
-  test_util::CreateRewardsWallet(rewards_service_);
-
-  external_balance_ = balance;
-
-  base::Value::Dict wallet;
-  wallet.Set("token", "token");
-  wallet.Set("address", test_util::GetUpholdExternalAddress());
-  wallet.Set("status", static_cast<int>(status));
-  wallet.Set("user_name", "Brave Test");
-
-  std::string json;
-  base::JSONWriter::Write(wallet, &json);
-  auto encrypted = test_util::EncryptPrefString(rewards_service_, json);
-  ASSERT_TRUE(encrypted);
-
-  browser_->profile()->GetPrefs()->SetString(prefs::kWalletUphold, *encrypted);
 }
 
 double RewardsBrowserTestContribution::GetReconcileTipTotal() {

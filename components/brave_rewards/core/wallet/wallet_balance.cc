@@ -11,33 +11,20 @@
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal::wallet {
 
-WalletBalance::WalletBalance(RewardsEngineImpl& engine) : engine_(engine) {}
+WalletBalance::WalletBalance(RewardsEngine& engine) : engine_(engine) {}
 
 WalletBalance::~WalletBalance() = default;
 
 void WalletBalance::Fetch(FetchBalanceCallback callback) {
-  engine_->database()->GetSpendableUnblindedTokensByBatchTypes(
-      {mojom::CredsBatchType::PROMOTION},
-      base::BindOnce(&WalletBalance::OnGetUnblindedTokens,
-                     base::Unretained(this), std::move(callback)));
-}
-
-void WalletBalance::OnGetUnblindedTokens(
-    FetchBalanceCallback callback,
-    std::vector<mojom::UnblindedTokenPtr> tokens) {
-  double total = 0.0;
-  for (const auto& token : tokens) {
-    total += token->value;
-  }
-
   auto balance = mojom::Balance::New();
-  balance->total = total;
+  balance->total = 0;
   balance->wallets.emplace(constant::kWalletUnBlinded, balance->total);
 
   const auto wallet_type =

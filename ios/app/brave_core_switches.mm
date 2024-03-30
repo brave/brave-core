@@ -7,9 +7,11 @@
 
 #include "base/base_switches.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/p3a/switches.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/sync/base/command_line_switches.h"
+#include "components/variations/variations_switches.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -21,6 +23,8 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyVModule =
     base::SysUTF8ToNSString(switches::kVModule);
 const BraveCoreSwitchKey BraveCoreSwitchKeySyncURL =
     base::SysUTF8ToNSString(syncer::kSyncServiceURL);
+const BraveCoreSwitchKey BraveCoreSwitchKeyVariationsURL =
+    base::SysUTF8ToNSString(variations::switches::kVariationsServerURL);
 // There is no exposed switch for rewards
 const BraveCoreSwitchKey BraveCoreSwitchKeyRewardsFlags = @"rewards";
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AUploadIntervalSeconds =
@@ -53,6 +57,8 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyP3AStarRandomnessHost =
     base::SysUTF8ToNSString(p3a::switches::kP3AStarRandomnessHost);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AIgnoreServerErrors =
     base::SysUTF8ToNSString(p3a::switches::kP3AIgnoreServerErrors);
+const BraveCoreSwitchKey BraveCoreSwitchKeyUseDevGoUpdater =
+    base::SysUTF8ToNSString(brave_component_updater::kUseGoUpdateDev);
 
 @implementation BraveCoreSwitch
 - (instancetype)initWithKey:(BraveCoreSwitchKey)key {

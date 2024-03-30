@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import SDWebImage
@@ -62,7 +62,8 @@ public class PrivateCDNImageCoder: NSObject, SDImageCoder {
     guard let data = data else { return false }
     return PrivateCDN.payloadLength(for: data) != nil
   }
-  public func decodedImage(with data: Data?, options: [SDImageCoderOption: Any]? = nil) -> UIImage? {
+  public func decodedImage(with data: Data?, options: [SDImageCoderOption: Any]? = nil) -> UIImage?
+  {
     guard let paddedData = data, let unpaddedData = PrivateCDN.unpadded(data: paddedData) else {
       return nil
     }
@@ -71,7 +72,11 @@ public class PrivateCDNImageCoder: NSObject, SDImageCoder {
   public func canEncode(to format: SDImageFormat) -> Bool {
     return false
   }
-  public func encodedData(with image: UIImage?, format: SDImageFormat, options: [SDImageCoderOption: Any]? = nil) -> Data? {
+  public func encodedData(
+    with image: UIImage?,
+    format: SDImageFormat,
+    options: [SDImageCoderOption: Any]? = nil
+  ) -> Data? {
     SDImageCodersManager.shared.encodedData(with: image, format: format)
   }
 }

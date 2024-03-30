@@ -30,7 +30,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
-import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
 import org.chromium.chrome.browser.crypto_wallet.presenters.Amount;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
@@ -50,19 +50,19 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
     private ExecutorService mExecutor;
     private Handler mHandler;
     private WalletModel mWalletModel;
-    private WalletListItemModel mWalletListItemModel;
+    private AccountSelectorItemModel mAccountSelectorItemModel;
     private TransactionInfo mTxInfo;
     private ParsedTransaction mParsedTx;
 
     public static TransactionDetailsSheetFragment newInstance(
-            WalletListItemModel walletListItemModel) {
-        return new TransactionDetailsSheetFragment(walletListItemModel);
+            AccountSelectorItemModel accountSelectorItemModel) {
+        return new TransactionDetailsSheetFragment(accountSelectorItemModel);
     }
 
-    private TransactionDetailsSheetFragment(WalletListItemModel walletListItemModel) {
-        mWalletListItemModel = walletListItemModel;
-        mTxInfo = mWalletListItemModel.getTransactionInfo();
-        mParsedTx = mWalletListItemModel.getParsedTx();
+    private TransactionDetailsSheetFragment(AccountSelectorItemModel accountSelectorItemModel) {
+        mAccountSelectorItemModel = accountSelectorItemModel;
+        mTxInfo = mAccountSelectorItemModel.getTransactionInfo();
+        mParsedTx = mAccountSelectorItemModel.getParsedTx();
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
     }
@@ -110,7 +110,7 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
         if (JavaUtils.anyNull(mWalletModel)) return;
         ImageView icon = view.findViewById(R.id.account_picture);
         Utils.setBlockiesBitmapResourceFromAccount(
-                mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo(), true);
+                mExecutor, mHandler, icon, mAccountSelectorItemModel.getAccountInfo(), true);
         updateTxHeaderDetails(view);
         updateTxDetails(view);
     }
@@ -124,7 +124,7 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
         TextView amountAsset = view.findViewById(R.id.amount_asset);
 
         Utils.setBlockiesBitmapResourceFromAccount(
-                mExecutor, mHandler, icon, mWalletListItemModel.getAccountInfo(), true);
+                mExecutor, mHandler, icon, mAccountSelectorItemModel.getAccountInfo(), true);
 
         if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
             TextView domain = view.findViewById(R.id.domain);
@@ -161,7 +161,7 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
             amountAsset.setText(amountText);
         }
 
-        String accountName = mWalletListItemModel.getAccountInfo().name;
+        String accountName = mAccountSelectorItemModel.getAccountInfo().name;
         if (mParsedTx.getSender() != null
                 && !mParsedTx.getSender().equals(mParsedTx.getRecipient())) {
             String recipient =
@@ -201,16 +201,23 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
                 WalletUtils.timeDeltaToDateString(mParsedTx.getCreatedTime())));
         items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
         items.add(
-                new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.network_text),
-                        mWalletListItemModel.getAssetNetwork().chainName));
+                new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
+                        getString(R.string.network_text),
+                        mAccountSelectorItemModel.getAssetNetwork().chainName));
         items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
-        items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.status),
-                mWalletListItemModel.getTxStatus(), (title, subtitle) -> {
-                    subtitle.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            new BitmapDrawable(
-                                    getResources(), mWalletListItemModel.getTxStatusBitmap()),
-                            null, null, null);
-                }));
+        items.add(
+                new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
+                        getString(R.string.status),
+                        mAccountSelectorItemModel.getTxStatus(),
+                        (title, subtitle) -> {
+                            subtitle.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                    new BitmapDrawable(
+                                            getResources(),
+                                            mAccountSelectorItemModel.getTxStatusBitmap()),
+                                    null,
+                                    null,
+                                    null);
+                        }));
 
         txDetails.setAdapter(new TwoLineItemRecyclerViewAdapter(
                 items, TwoLineItemRecyclerViewAdapter.ADAPTER_VIEW_ORIENTATION.HORIZONTAL));

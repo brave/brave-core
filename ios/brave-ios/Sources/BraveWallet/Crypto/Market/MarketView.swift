@@ -1,14 +1,14 @@
-/* Copyright 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
-import BraveUI
 import BraveCore
-import SDWebImageSwiftUI
+import BraveUI
 import DesignSystem
+import Foundation
+import SDWebImageSwiftUI
+import SwiftUI
 
 struct MarketView: View {
   var cryptoStore: CryptoStore
@@ -20,7 +20,7 @@ struct MarketView: View {
 
   @State var allCoingeckoTokens: [BraveWallet.BlockchainToken] = []
   @State private var selectedCoinMarket: BraveWallet.CoinMarket?
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
 
   init(cryptoStore: CryptoStore, keyringStore: KeyringStore) {
@@ -28,7 +28,7 @@ struct MarketView: View {
     self.keyringStore = keyringStore
     self.marketStore = cryptoStore.marketStore
   }
-  
+
   private var emptyState: some View {
     VStack(alignment: .center, spacing: 10) {
       Text(Strings.Wallet.coinMarketEmptyMsg)
@@ -46,7 +46,7 @@ struct MarketView: View {
     .padding(.vertical, 60)
     .padding(.horizontal, 32)
   }
-  
+
   @ViewBuilder private var loadingTokenPlaceholder: some View {
     Circle()
       .aspectRatio(contentMode: .fit)
@@ -60,7 +60,7 @@ struct MarketView: View {
         .foregroundColor(Color(.secondaryBraveLabel))
     }
   }
-  
+
   @ViewBuilder private func tokenInfoView(_ coinMarket: BraveWallet.CoinMarket) -> some View {
     WebImage(url: URL(string: coinMarket.image))
       .resizable()
@@ -88,7 +88,7 @@ struct MarketView: View {
     }
     .font(.footnote)
   }
-  
+
   private var loadingView: some View {
     ForEach(0...10, id: \.self) { _ in
       HStack {
@@ -125,9 +125,9 @@ struct MarketView: View {
               .listRowBackground(Color.clear)
           } else {
             ForEach(marketStore.coins, id: \.uniqueId) { coinMarket in
-              Button(action: {
+              Button {
                 selectedCoinMarket = coinMarket
-              }) {
+              } label: {
                 HStack {
                   if sizeCategory.isAccessibilityCategory {
                     VStack(alignment: .leading, spacing: 8) {
@@ -138,22 +138,34 @@ struct MarketView: View {
                       tokenInfoView(coinMarket)
                     }
                   }
-                  
+
                   Spacer()
-                  
+
                   VStack(alignment: .trailing, spacing: 4) {
-                    Text(marketStore.priceFormatter.coinMarketPriceString(from: coinMarket.currentPrice) ?? "$0.00")
-                      .font(.footnote)
-                      .foregroundColor(Color(.braveLabel))
-                      .padding(.vertical, 8)
-                    HStack() {
-                      Image(systemName: coinMarket.priceChangePercentage24h > 0 ? "arrow.up" : "arrow.down")
-                        .imageScale(.small)
-                        .accessibilityHidden(true)
-                      Text("\(marketStore.priceChangeFormatter.string(from: NSNumber(value: abs(coinMarket.priceChangePercentage24h / 100))) ?? "")")
-                        .font(.caption)
+                    Text(
+                      marketStore.priceFormatter.coinMarketPriceString(
+                        from: coinMarket.currentPrice
+                      ) ?? "$0.00"
+                    )
+                    .font(.footnote)
+                    .foregroundColor(Color(.braveLabel))
+                    .padding(.vertical, 8)
+                    HStack {
+                      Image(
+                        systemName: coinMarket.priceChangePercentage24h > 0
+                          ? "arrow.up" : "arrow.down"
+                      )
+                      .imageScale(.small)
+                      .accessibilityHidden(true)
+                      Text(
+                        "\(marketStore.priceChangeFormatter.string(from: NSNumber(value: abs(coinMarket.priceChangePercentage24h / 100))) ?? "")"
+                      )
+                      .font(.caption)
                     }
-                    .foregroundColor(coinMarket.priceChangePercentage24h > 0 ? Color(.walletGreen) : Color(.walletRed))
+                    .foregroundColor(
+                      coinMarket.priceChangePercentage24h > 0
+                        ? Color(.walletGreen) : Color(.walletRed)
+                    )
                   }
                 }
               }
@@ -185,7 +197,8 @@ struct MarketView: View {
         },
         label: {
           EmptyView()
-        })
+        }
+      )
     )
     .onAppear {
       marketStore.update()

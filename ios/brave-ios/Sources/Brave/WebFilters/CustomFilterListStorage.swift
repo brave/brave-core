@@ -1,10 +1,10 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import Data
+import Foundation
 
 @MainActor class CustomFilterListStorage: ObservableObject {
   static let shared = CustomFilterListStorage(persistChanges: true)
@@ -12,19 +12,19 @@ import Data
   let persistChanges: Bool
   /// A list of filter list URLs and their enabled statuses
   @Published var filterListsURLs: [FilterListCustomURL]
-  
+
   init(persistChanges: Bool) {
     self.persistChanges = persistChanges
     self.filterListsURLs = []
   }
-  
+
   func loadCachedFilterLists() {
     let settings = CustomFilterListSetting.loadAllSettings(fromMemory: !persistChanges)
-    
+
     self.filterListsURLs = settings.map { setting in
       let resource = setting.resource
       let date = try? resource.creationDate()
-      
+
       if let date = date {
         return FilterListCustomURL(setting: setting, downloadStatus: .downloaded(date))
       } else {
@@ -32,7 +32,7 @@ import Data
       }
     }
   }
-  
+
   /// Ensures that the settings for a filter list are stored
   /// - Parameters:
   ///   - uuid: The uuid of the filter list to update
@@ -48,7 +48,7 @@ import Data
     guard let index = filterListsURLs.firstIndex(where: { $0.id == id }) else {
       return
     }
-    
+
     switch result {
     case .failure(let error):
       #if DEBUG
@@ -57,10 +57,20 @@ import Data
         "Failed to download resource \(externalURL): \(String(describing: error))"
       )
       #endif
-      
+
       filterListsURLs[index].downloadStatus = .failure
     case .success(let date):
       filterListsURLs[index].downloadStatus = .downloaded(date)
     }
+  }
+}
+
+extension CustomFilterListStorage {
+  /// Gives us source representations of all the enabled custom filter lists
+  @MainActor var enabledSources: [CachedAdBlockEngine.Source] {
+    return
+      filterListsURLs
+      .filter(\.setting.isEnabled)
+      .map(\.setting.engineSource)
   }
 }

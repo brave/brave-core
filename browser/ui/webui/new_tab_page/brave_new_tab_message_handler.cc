@@ -27,6 +27,7 @@
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -91,6 +92,9 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
+  pref_data.Set(
+      "showSearchBox",
+      prefs->GetBoolean(brave_search_conversion::prefs::kShowNTPSearchBox));
   return pref_data;
 }
 
@@ -136,7 +140,7 @@ void BraveNewTabMessageHandler::RecordInitialP3AValues(
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     content::WebUIDataSource* source,
     Profile* profile,
-    bool was_invisible_and_restored) {
+    bool was_restored) {
   //
   // Initial Values
   // Should only contain data that is static
@@ -160,15 +164,12 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     source->AddBoolean("isTor", profile->IsTor());
     source->AddBoolean("isQwant", brave::IsRegionForQwant(profile));
   }
-  return new BraveNewTabMessageHandler(profile, was_invisible_and_restored);
+  return new BraveNewTabMessageHandler(profile, was_restored);
 }
 
-BraveNewTabMessageHandler::BraveNewTabMessageHandler(
-    Profile* profile,
-    bool was_invisible_and_restored)
-    : profile_(profile),
-      was_invisible_and_restored_(was_invisible_and_restored),
-      weak_ptr_factory_(this) {
+BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile,
+                                                     bool was_restored)
+    : profile_(profile), was_restored_(was_restored), weak_ptr_factory_(this) {
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 }
 
@@ -280,6 +281,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       kNewTabPageShowSponsoredImagesBackgroundImage,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_search_conversion::prefs::kShowNTPSearchBox,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
@@ -431,6 +436,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageHideAllWidgets;
   } else if (settingsKeyInput == "showBraveTalk") {
     settingsKey = kNewTabPageShowBraveTalk;
+  } else if (settingsKeyInput == "showSearchBox") {
+    settingsKey = brave_search_conversion::prefs::kShowNTPSearchBox;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;
@@ -449,14 +456,15 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
   AllowJavascript();
 
   // Decrement original value only if there's actual branded content and we are
-  // not restoring invisible (hidden or occluded) browser tabs.
-  if (was_invisible_and_restored_) {
-    was_invisible_and_restored_ = false;
+  // not restoring browser tabs.
+  if (was_restored_) {
+    was_restored_ = false;
     return;
   }
 
-  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_))
+  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_)) {
     service->RegisterPageView();
+  }
 }
 
 void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
@@ -500,7 +508,8 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   }
 
   std::optional<base::Value::Dict> data =
-      service->GetCurrentWallpaperForDisplay();
+      was_restored_ ? service->GetNextWallpaperForDisplay()
+                    : service->GetCurrentWallpaperForDisplay();
 
   if (!data) {
     ResolveJavascriptCallback(args[0], wallpaper);

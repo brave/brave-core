@@ -9,7 +9,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/browser/filter_list_service.h"
+#include "brave/components/brave_shields/content/browser/filter_list_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"

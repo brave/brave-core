@@ -27,11 +27,12 @@ public class MarketStore: ObservableObject, WalletObserverStore {
   }
   /// Indicates `MarketStore` is loading coins in markets
   @Published var isLoading: Bool = false
-  
+
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
+  private let assetManager: WalletUserAssetManagerType
   private let assetsRequestLimit = 250
   let priceFormatter: NumberFormatter = .usdCurrencyFormatter
   let priceChangeFormatter = NumberFormatter().then {
@@ -40,19 +41,21 @@ public class MarketStore: ObservableObject, WalletObserverStore {
     $0.roundingMode = .up
   }
   var isObserving: Bool = false
-  
+
   init(
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     rpcService: BraveWalletJsonRpcService,
-    walletService: BraveWalletBraveWalletService
+    walletService: BraveWalletBraveWalletService,
+    assetManager: WalletUserAssetManagerType
   ) {
     self.assetRatioService = assetRatioService
     self.blockchainRegistry = blockchainRegistry
     self.rpcService = rpcService
     self.walletService = walletService
+    self.assetManager = assetManager
   }
-  
+
   private var updateTask: Task<Void, Never>?
   func update() {
     isLoading = true
@@ -60,14 +63,17 @@ public class MarketStore: ObservableObject, WalletObserverStore {
     updateTask = Task { @MainActor in
       // update market coins
       guard !Task.isCancelled else { return }
-      let (success, assets) = await assetRatioService.coinMarkets(priceFormatter.currencyCode, limit: UInt8(assetsRequestLimit))
+      let (success, assets) = await assetRatioService.coinMarkets(
+        vsAsset: priceFormatter.currencyCode,
+        limit: UInt8(assetsRequestLimit)
+      )
       if success {
         self.coins = assets
       }
       // update currency code
       guard !Task.isCancelled else { return }
       self.currencyCode = await walletService.defaultBaseCurrency()
-      
+
       self.isLoading = false
     }
   }
