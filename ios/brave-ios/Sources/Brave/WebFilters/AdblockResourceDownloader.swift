@@ -29,7 +29,6 @@ public actor AdblockResourceDownloader: Sendable {
   func loadCachedAndBundledDataIfNeeded(allowedModes: Set<ContentBlockerManager.BlockingMode>) async
   {
     guard !allowedModes.isEmpty else { return }
-    await loadCachedDataIfNeeded(allowedModes: allowedModes)
     await loadBundledDataIfNeeded(allowedModes: allowedModes)
   }
 
@@ -40,19 +39,10 @@ public actor AdblockResourceDownloader: Sendable {
     await ContentBlockerManager.GenericBlocklistType.allCases.asyncConcurrentForEach {
       genericType in
       let blocklistType = ContentBlockerManager.BlocklistType.generic(genericType)
-      let modes = await blocklistType.allowedModes.asyncFilter { mode in
-        guard allowedModes.contains(mode) else { return false }
-        // Non .blockAds can be recompiled safely because they are never replaced by downloaded files
-        if genericType != .blockAds { return true }
-
-        // .blockAds is special because it can be replaced by a downloaded file.
-        // Hence we need to first check if it already exists.
-        if await ContentBlockerManager.shared.hasRuleList(for: blocklistType, mode: mode) {
-          return false
-        } else {
-          return true
-        }
-      }
+      let modes = await ContentBlockerManager.shared.missingModes(
+        for: blocklistType,
+        version: genericType.version
+      )
 
       do {
         try await ContentBlockerManager.shared.compileBundledRuleList(
@@ -61,23 +51,6 @@ public actor AdblockResourceDownloader: Sendable {
         )
       } catch {
         assertionFailure("A bundled file should not fail to compile")
-      }
-    }
-  }
-
-  /// Load the cached data and await the results
-  private func loadCachedDataIfNeeded(allowedModes: Set<ContentBlockerManager.BlockingMode>) async {
-    // Here we load downloaded resources if we need to
-    await Self.handledResources.asyncConcurrentForEach { resource in
-      do {
-        // Check if we have cached results for the given resource
-        if let cachedResult = try resource.cachedResult() {
-          await self.handle(downloadResult: cachedResult, for: resource, allowedModes: allowedModes)
-        }
-      } catch {
-        ContentBlockerManager.log.error(
-          "Failed to load cached data for resource \(resource.cacheFileName): \(error)"
-        )
       }
     }
   }
@@ -139,31 +112,28 @@ public actor AdblockResourceDownloader: Sendable {
 
       if !downloadResult.isModified && !allowedModes.isEmpty {
         // If the download is not modified, only compile the missing modes for performance reasons
-        let missingModes = await ContentBlockerManager.shared.missingModes(for: blocklistType)
+        let missingModes = await ContentBlockerManager.shared.missingModes(
+          for: blocklistType,
+          version: downloadResult.version
+        )
         modes = missingModes.filter({ allowedModes.contains($0) })
       }
 
       // No modes are needed to be compiled
       guard !modes.isEmpty else { return }
 
-      do {
-        guard let fileURL = resource.downloadedFileURL else {
-          assertionFailure("This file was downloaded successfully so it should not be nil")
-          return
-        }
-
-        // try to compile
-        try await ContentBlockerManager.shared.compileRuleList(
-          at: fileURL,
-          for: blocklistType,
-          modes: modes
-        )
-      } catch {
-        ContentBlockerManager.log.error(
-          "Failed to compile rule lists for `\(blocklistType.debugDescription)`: \(error.localizedDescription)"
-        )
+      guard let fileURL = resource.downloadedFileURL else {
+        assertionFailure("This file was downloaded successfully so it should not be nil")
+        return
       }
 
+      // try to compile
+      await ContentBlockerManager.shared.compileRuleList(
+        at: fileURL,
+        for: blocklistType,
+        version: downloadResult.version,
+        modes: modes
+      )
     case .deprecatedGeneralCosmeticFilters:
       assertionFailure("Should not be handling this resource type")
     }

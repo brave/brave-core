@@ -9,7 +9,7 @@ import XCTest
 @testable import Brave
 
 class ContentBlockerManagerTests: XCTestCase {
-  private lazy var ruleStore: WKContentRuleListStore = {
+  @MainActor private lazy var ruleStore: WKContentRuleListStore = {
     let testBundle = Bundle.module
     let bundleURL = testBundle.bundleURL
     return WKContentRuleListStore(url: bundleURL)!
@@ -40,6 +40,7 @@ class ContentBlockerManagerTests: XCTestCase {
     try await manager.compile(
       encodedContentRuleList: encodedContentRuleList,
       for: filterListType,
+      version: "0",
       modes: filterListType.allowedModes
     )
     let customListType = ContentBlockerManager.BlocklistType.customFilterList(
@@ -48,6 +49,7 @@ class ContentBlockerManagerTests: XCTestCase {
     try await manager.compile(
       encodedContentRuleList: encodedContentRuleList,
       for: customListType,
+      version: "0",
       modes: customListType.allowedModes
     )
 
@@ -104,14 +106,18 @@ class ContentBlockerManagerTests: XCTestCase {
     }
     let manager = await makeManager()
 
-    try await manager.compileRuleList(
+    await manager.compileRuleList(
       at: filterListURL,
       for: .customFilterList(uuid: "iodkpdagapdfkphljnddpjlldadblomo"),
+      version: "0",
       modes: ContentBlockerManager.BlockingMode.allCases
     )
   }
 
   @MainActor private func makeManager() -> ContentBlockerManager {
-    return ContentBlockerManager(ruleStore: ruleStore)
+    return ContentBlockerManager(
+      ruleStore: ruleStore,
+      container: UserDefaults(suiteName: "tests") ?? .standard
+    )
   }
 }
