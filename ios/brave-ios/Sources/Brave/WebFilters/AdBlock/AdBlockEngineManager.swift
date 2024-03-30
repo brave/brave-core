@@ -238,17 +238,16 @@ import os
     for files: [AdBlockEngineManager.FileInfo],
     resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
   ) async throws {
-    let infosString = files.map({ " \($0.filterListInfo.debugDescription)" })
-      .joined(separator: "\n")
-    let count = files.count
-
-    ContentBlockerManager.log.debug(
-      "Compiling `\(self.cacheFolderName)` engine from \(count) sources:\n\(infosString)"
-    )
-
     let engineType = self.engineType
     let group = try combineRules(for: files)
     self.pendingGroup = group
+
+    ContentBlockerManager.log.debug(
+      """
+      Compiling `\(self.cacheFolderName)` engine from \(group.infos.count) sources:
+      \(group.debugDescription)"
+      """
+    )
 
     // 2. Compile the engine
     let groupedEngine = try await Task.detached(priority: .high) {
@@ -270,11 +269,12 @@ import os
   }
 
   private func set(engine: GroupedAdBlockEngine) {
-    let infosString = engine.group.infos.map({ " \($0.debugDescription)" }).joined(separator: "\n")
-    let fileTypeString = engine.group.fileType.debugDescription
-    let count = engine.group.infos.count
+    let group = engine.group
     ContentBlockerManager.log.debug(
-      "Set `\(self.cacheFolderName)` (\(fileTypeString)) engine from \(count) sources:\n\(infosString)"
+      """
+      Set `\(self.cacheFolderName)` (\(group.fileType.debugDescription)) engine from \(group.infos.count) sources:
+      \(group.debugDescription)"
+      """
     )
     self.engine = engine
   }

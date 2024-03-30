@@ -7,7 +7,7 @@ import BraveCore
 import Data
 import Foundation
 import Preferences
-import os
+import os.log
 
 /// An object that wraps around an `AdblockEngine` and caches some results
 /// and ensures information is always returned on the correct thread on the engine.
@@ -18,8 +18,8 @@ public actor GroupedAdBlockEngine {
 
     public var debugDescription: String {
       switch self {
-      case .filterList(let componentId, _): return "filterList(\(componentId))"
-      case .filterListURL(let uuid): return "filterListURL(\(uuid))"
+      case .filterList(let componentId, _): return componentId
+      case .filterListURL(let uuid): return uuid
       }
     }
   }
@@ -35,7 +35,7 @@ public actor GroupedAdBlockEngine {
     }
   }
 
-  public enum EngineType: Hashable, CaseIterable {
+  public enum EngineType: Hashable, CaseIterable, CustomDebugStringConvertible {
     case standard
     case aggressive
 
@@ -43,6 +43,13 @@ public actor GroupedAdBlockEngine {
       switch self {
       case .standard: return false
       case .aggressive: return true
+      }
+    }
+    
+    public var debugDescription: String {
+      switch self {
+      case .aggressive: return "aggressive"
+      case .standard: return "standard"
       }
     }
   }
@@ -62,7 +69,9 @@ public actor GroupedAdBlockEngine {
     let fileType: GroupedAdBlockEngine.FileType
 
     public var debugDescription: String {
-      return infos.map({ $0.debugDescription }).joined(separator: ", ")
+      return infos.enumerated()
+        .map({ " #\($0) \($1.debugDescription)" })
+        .joined(separator: "\n")
     }
   }
 
@@ -207,7 +216,7 @@ public actor GroupedAdBlockEngine {
     let state = Self.signpost.beginInterval(
       "compileEngine",
       id: signpostID,
-      "\(group.debugDescription)"
+      "\(type.debugDescription) (\(group.fileType.debugDescription)): \(group.debugDescription)"
     )
 
     do {
