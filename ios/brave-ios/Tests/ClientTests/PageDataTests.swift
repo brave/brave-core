@@ -126,6 +126,9 @@ final class PageDataTests: XCTestCase {
   }
 
   @MainActor private func makeContentBlockingManager() -> ContentBlockerManager {
-    return ContentBlockerManager(ruleStore: ruleStore)
+    return ContentBlockerManager(
+      ruleStore: ruleStore,
+      container: UserDefaults(suiteName: "tests") ?? .standard
+    )
   }
 }

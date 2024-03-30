@@ -241,15 +241,15 @@ import os
       return
     }
 
-    var modes = await contentBlockerManager.missingModes(for: blocklistType)
-
-    if manager.needsCompile(for: fileInfo.filterListInfo) {
-      modes = blocklistType.allowedModes
-    }
+    var modes = await contentBlockerManager.missingModes(
+      for: blocklistType,
+      version: fileInfo.filterListInfo.version
+    )
 
     await contentBlockerManager.compileRuleList(
       at: fileInfo.localFileURL,
       for: blocklistType,
+      version: fileInfo.filterListInfo.version,
       modes: modes
     )
   }

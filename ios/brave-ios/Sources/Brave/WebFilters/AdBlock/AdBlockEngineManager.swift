@@ -194,22 +194,6 @@ import os
     }
   }
 
-  func needsCompile(for filterListInfo: GroupedAdBlockEngine.FilterListInfo) -> Bool {
-    var infos = availableFiles.map(\.filterListInfo)
-    if let engineInfos = engine?.group.infos {
-      // This is an optimization because during launch we don't have file infos.
-      // But we will have an engine loaded from cache.
-      // So we also check the engine infos as well
-      infos.append(contentsOf: engineInfos)
-    }
-
-    guard let info = infos.first(where: { $0.source == filterListInfo.source }) else {
-      return true
-    }
-
-    return filterListInfo.version < info.version
-  }
-
   func checkHasAllInfo(for sources: [GroupedAdBlockEngine.Source]) -> Bool {
     let availableSources = compilableFiles(for: sources).map({ $0.filterListInfo.source })
     return sources.allSatisfy({ availableSources.contains($0) })
