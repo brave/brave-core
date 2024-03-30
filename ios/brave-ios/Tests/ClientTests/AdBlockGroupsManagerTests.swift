@@ -23,7 +23,7 @@ final class AdBlockGroupsManagerTests: XCTestCase {
   }()
 
   /// Testing engine compilations and filter list managment
-  func testCompilation() async throws {
+  @MainActor func testCompilation() async throws {
     AdblockEngine.setDomainResolver()
 
     // Given
@@ -44,16 +44,16 @@ final class AdBlockGroupsManagerTests: XCTestCase {
         localFileURL: Self.sampleFilterListURL
       ),
     ]
-    let sourceProvider = await TestSourceProvider(fileInfos: fileInfos)
-    let standardManager = await AdBlockEngineManager(
+    let sourceProvider = TestSourceProvider(fileInfos: fileInfos)
+    let standardManager = AdBlockEngineManager(
       engineType: .standard,
       cacheFolderName: "test_standard"
     )
-    let aggressiveManager = await AdBlockEngineManager(
+    let aggressiveManager = AdBlockEngineManager(
       engineType: .aggressive,
       cacheFolderName: "test_aggressive"
     )
-    let groupsManager = await AdBlockGroupsManager(
+    let groupsManager = AdBlockGroupsManager(
       standardManager: standardManager,
       aggressiveManager: aggressiveManager,
       contentBlockerManager: makeContentBlockingManager(),
@@ -66,19 +66,19 @@ final class AdBlockGroupsManagerTests: XCTestCase {
 
     // When
     // Adding file info and enabling sources for only one engine
-    await sourceProvider.set(
+    sourceProvider.set(
       source: fileInfos[0].filterListInfo.source,
       enabled: true
     )
-    await groupsManager.updateIfNeeded(resourcesInfo: resourcesInfo)
-    await groupsManager.update(fileInfo: fileInfos[1], engineType: .standard)
-    await groupsManager.update(fileInfos: fileInfos, engineType: .aggressive)
+    groupsManager.updateIfNeeded(resourcesInfo: resourcesInfo)
+    groupsManager.update(fileInfo: fileInfos[1], engineType: .standard)
+    groupsManager.update(fileInfos: fileInfos, engineType: .aggressive)
     await groupsManager.compileEnginesIfNeeded()
 
     // Then
     // Only one engine is created
-    var standardEngine = await standardManager.engine
-    var aggressiveEngine = await aggressiveManager.engine
+    var standardEngine = standardManager.engine
+    var aggressiveEngine = aggressiveManager.engine
     var standardGroup = await standardEngine?.group
     var aggressiveGroup = await aggressiveEngine?.group
     var standardResources = await standardEngine?.resourcesInfo
@@ -90,17 +90,17 @@ final class AdBlockGroupsManagerTests: XCTestCase {
 
     // When
     // We enable sources and recompile the engine
-    await sourceProvider.set(
+    sourceProvider.set(
       source: fileInfos[1].filterListInfo.source,
       enabled: true
     )
-    await groupsManager.updateIfNeeded(resourcesInfo: resourcesInfo)
+    groupsManager.updateIfNeeded(resourcesInfo: resourcesInfo)
     await groupsManager.compileEnginesIfNeeded()
 
     // Then
     // All engines are created
-    standardEngine = await standardManager.engine
-    aggressiveEngine = await aggressiveManager.engine
+    standardEngine = standardManager.engine
+    aggressiveEngine = aggressiveManager.engine
     standardGroup = await standardEngine?.group
     aggressiveGroup = await aggressiveEngine?.group
     standardResources = await standardEngine?.resourcesInfo

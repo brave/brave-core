@@ -135,21 +135,10 @@ import os
       manager.add(fileInfo: fileInfo)
     }
 
-    let sources = fileInfos.map({ $0.filterListInfo.source })
-
-    if manager.checkHasAllInfo(for: sources) {
-      Task {
-        await manager.compileImmediatelyIfNeeded(
-          for: enabledSources,
-          resourcesInfo: self.resourcesInfo
-        )
-      }
-    } else {
-      manager.compileDelayedIfNeeded(
-        for: enabledSources,
-        resourcesInfo: resourcesInfo
-      )
-    }
+    manager.compileDelayedIfNeeded(
+      for: enabledSources,
+      resourcesInfo: resourcesInfo
+    )
   }
 
   /// Handle updated filter list info
