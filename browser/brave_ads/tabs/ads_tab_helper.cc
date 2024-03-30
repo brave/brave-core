@@ -102,8 +102,8 @@ bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
 void AdsTabHelper::ProcessNavigation() {
   MaybeNotifyTabContentDidChange();
 
-  // Set `is_restoring_` to `false` so that we notify listeners of tab changes
-  // after the tab is restored.
+  // Set `is_restoring_` to `false` so that listeners are notified of tab
+  // changes after the tab is restored.
   is_restoring_ = false;
 }
 
@@ -159,8 +159,9 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
 }
 
 void AdsTabHelper::MaybeNotifyTabContentDidChange() {
-  if (is_restoring_ || is_error_page_) {
-    // Don't notify content changes for restored tabs or error pages.
+  if (is_restoring_ || redirect_chain_.empty() || is_error_page_) {
+    // Don't notify content changes for tabs that are either restored, have not
+    // finished loading, or are displaying error pages.
     return;
   }
 
@@ -169,10 +170,7 @@ void AdsTabHelper::MaybeNotifyTabContentDidChange() {
 }
 
 void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
-  if (redirect_chain_.empty()) {
-    // Don't notify content changes for tabs which did not finish loading.
-    return;
-  }
+  CHECK(!redirect_chain_.empty());
 
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       kSerializeDocumentToStringJavaScript,
@@ -191,12 +189,9 @@ void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
-  if (!UserHasJoinedBraveRewards()) {
-    return;
-  }
+  CHECK(!redirect_chain_.empty());
 
-  if (redirect_chain_.empty()) {
-    // Don't notify content changes for tabs which did not finish loading.
+  if (!UserHasJoinedBraveRewards()) {
     return;
   }
 
