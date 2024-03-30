@@ -23,8 +23,8 @@
 #include "components/prefs/scoped_user_pref_update.h"
 
 using brave_shields::features::kBraveAdblockCookieListDefault;
-using brave_shields::features::kBraveAdblockMobileNotificationsListDefault;
 using brave_shields::features::kBraveAdblockExperimentalListDefault;
+using brave_shields::features::kBraveAdblockMobileNotificationsListDefault;
 
 namespace brave_shields {
 
