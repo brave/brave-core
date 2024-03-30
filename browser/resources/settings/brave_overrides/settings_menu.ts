@@ -98,7 +98,7 @@ RegisterStyleOverride(
 
       @media (prefers-color-scheme: dark) {
         :host {
-          --settings-nav-item-color: #f4f4f4 !important;
+          --settings-nav-item-color: #F4F4F4 !important;
           border-color: transparent !important;
           background-color: #161719;
         }
@@ -122,7 +122,7 @@ RegisterStyleOverride(
       }
 
       a[href].iron-selected {
-        color: #db2f04;
+        color: #DB2F04;
         font-weight: 400 !important;
       }
 
