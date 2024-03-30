@@ -6,10 +6,10 @@
 /* Default/light theme button colors */
 :host(:not([style])) {
   --brave-text-color: #3b3e4f; /* grey800 */
-  --brave-brand-color: #ff7654; /* orange400 */
-  --brave-primary-hover: #ff977d; /* orange300 */
+  --brave-brand-color: #27a348; /* green */
+  --brave-primary-hover: #55d821; /* lightgreen */
   --brave-default-hover: rgba(255, 118, 84, 0.1); /* orange400 */
-  --brave-focus-outline: rgba(255, 118, 84, 0.4); /* orange400 */
+  --brave-focus-outline: rgba(84, 255, 121, 0.4); /* green */
   --ink-color: var(--brave-brand-color) !important;
   --text-color: var(--brave-text-color) !important;
   --text-color-action: white !important;

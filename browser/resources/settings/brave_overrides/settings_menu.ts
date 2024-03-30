@@ -85,7 +85,8 @@ RegisterStyleOverride(
       }
 
       .cr-nav-menu-item[selected] {
-        --iron-icon-fill-color: var(--leo-gradient-icons-active);
+        // --iron-icon-fill-color: var(--leo-gradient-icons-active);
+        --iron-icon-fill-color: #27a348;
 
         color: var(--cr-link-color) !important;
         background: transparent !important;
@@ -126,7 +127,7 @@ RegisterStyleOverride(
       }
 
       a:hover, iron-icon:hover {
-        color: #444DD0 !important;
+        color: #47d789 !important;
       }
 
       iron-icon, leo-icon {
@@ -144,7 +145,7 @@ RegisterStyleOverride(
         display: block;
         height: 32px;
         width: 4px;
-        background: linear-gradient(96.98deg, #E51D00 0%, #E5007B 78.13%);
+        background: linear-gradient(96.98deg, #27a348 0%, #27c5a1 78.13%);
         border-radius: 0px 2px 2px 0px;
       }
 
@@ -154,7 +155,7 @@ RegisterStyleOverride(
         }
 
         a:hover, iron-icon:hover {
-          color: #A6ABE9 !important;
+          color: #47d789 !important;
         }
       }
 
