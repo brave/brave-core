@@ -367,7 +367,7 @@ extension BrowserViewController {
       attributionManager: attributionManager,
       p3aUtilities: braveCore.p3aUtils
     )
-    let onboardingController = UIHostingController(rootView: welcomeView).then {
+    let onboardingController = FocusOnboardingHostingController(rootView: welcomeView).then {
       $0.modalPresentationStyle = .fullScreen
     }
 

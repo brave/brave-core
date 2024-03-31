@@ -35,6 +35,7 @@ public struct FocusOnboardingView: View {
         )
       }
     }
+    .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {
       withAnimation(.easeInOut(duration: 0.75).delay(1.5)) {
         isSplashViewPresented = false

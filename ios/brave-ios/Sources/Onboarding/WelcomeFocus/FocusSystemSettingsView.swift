@@ -18,88 +18,94 @@ struct FocusSystemSettingsView: View {
   var body: some View {
     NavigationView {
       VStack {
-        VStack(spacing: 10) {
-          Text(Strings.FocusOnboarding.defaultBrowserScreenTitle)
-            .font(
-              Font.custom("FlechaM-Medium", size: 32)
-            )
-            .dynamicTypeSize(dynamicTypeRange)
-            .fixedSize(horizontal: false, vertical: true)
-            .multilineTextAlignment(.center)
+        VStack {
+          VStack(spacing: 10) {
+            Text(Strings.FocusOnboarding.defaultBrowserScreenTitle)
+              .font(
+                Font.custom("FlechaM-Medium", size: 32)
+              )
+              .dynamicTypeSize(dynamicTypeRange)
+              .fixedSize(horizontal: false, vertical: true)
+              .multilineTextAlignment(.center)
 
-          Text(Strings.FocusOnboarding.defaultBrowserScreenDescription)
-            .font(
-              Font.custom("Poppins-Medium", size: 17)
-            )
-            .dynamicTypeSize(dynamicTypeRange)
-            .fixedSize(horizontal: false, vertical: true)
-            .multilineTextAlignment(.center)
-            .foregroundColor(Color(braveSystemName: .textTertiary))
-        }
-        .padding(.top, 25)
-        .padding(.vertical, 16)
+            Text(Strings.FocusOnboarding.defaultBrowserScreenDescription)
+              .font(
+                Font.custom("Poppins-Medium", size: 17)
+              )
+              .dynamicTypeSize(dynamicTypeRange)
+              .fixedSize(horizontal: false, vertical: true)
+              .multilineTextAlignment(.center)
+              .foregroundColor(Color(braveSystemName: .textTertiary))
+          }
+          .padding(.top, 25)
+          .padding(.vertical, 16)
 
-        LottieAnimationView(
-          name: colorScheme == .dark ? "browser-default-dark" : "browser-default-light",
-          bundle: .module
-        )
-        .loopMode(.loop)
-        .resizable()
-        .clipShape(RoundedRectangle(cornerRadius: 12.0))
-        .overlay(
-          RoundedRectangle(cornerRadius: 12.0)
-            .stroke(Color(braveSystemName: .textTertiary), lineWidth: 1)
-        )
+          LottieAnimationView(
+            name: colorScheme == .dark ? "browser-default-dark" : "browser-default-light",
+            bundle: .module
+          )
+          .loopMode(.loop)
+          .resizable()
+          //        .clipShape(RoundedRectangle(cornerRadius: 12.0))
+          //        .overlay(
+          //          RoundedRectangle(cornerRadius: 12.0)
+          //            .stroke(Color(braveSystemName: .textTertiary), lineWidth: 1)
+          //        )
 
-        Spacer()
+          Spacer()
 
-        VStack(spacing: 24) {
-          Button(
-            action: {
-              if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(settingsUrl)
+          VStack(spacing: 24) {
+            Button(
+              action: {
+                if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                  UIApplication.shared.open(settingsUrl)
+                }
+
+                Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
+                shouldDismiss = true
+              },
+              label: {
+                (Text("\(Strings.FocusOnboarding.systemSettingsButtonTitle) ")
+                  + Text(Image(systemName: "arrow.right")))
+                  .font(.body.weight(.semibold))
+                  .foregroundColor(Color(.white))
+                  .dynamicTypeSize(dynamicTypeRange)
+                  .padding()
+                  .foregroundStyle(.white)
+                  .frame(maxWidth: .infinity)
+                  .background(Color(braveSystemName: .buttonBackground))
               }
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 12.0))
+            .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
 
-              Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
-              shouldDismiss = true
-            },
-            label: {
-              (Text("\(Strings.FocusOnboarding.systemSettingsButtonTitle) ")
-                + Text(Image(systemName: "arrow.right")))
-                .font(.body.weight(.semibold))
-                .foregroundColor(Color(.white))
-                .dynamicTypeSize(dynamicTypeRange)
-                .padding()
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .background(Color(braveSystemName: .buttonBackground))
-            }
-          )
-          .clipShape(RoundedRectangle(cornerRadius: 12.0))
-          .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
+            Button(
+              action: {
+                Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
+                shouldDismiss = true
+              },
+              label: {
+                Text(Strings.FocusOnboarding.laterActionButtonTitle)
+                  .font(.subheadline.weight(.semibold))
+                  .foregroundColor(Color(braveSystemName: .textSecondary))
+                  .dynamicTypeSize(dynamicTypeRange)
+              }
+            )
+            .background(Color.clear)
+            .padding(.bottom, 8)
 
-          Button(
-            action: {
-              Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
-              shouldDismiss = true
-            },
-            label: {
-              Text(Strings.FocusOnboarding.laterActionButtonTitle)
-                .font(.subheadline.weight(.semibold))
-                .foregroundColor(Color(braveSystemName: .textSecondary))
-                .dynamicTypeSize(dynamicTypeRange)
-            }
-          )
-          .background(Color.clear)
-          .padding(.bottom, 8)
-
-          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
+            FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
+          }
+          .padding(.bottom, 20)
         }
-        .padding(.bottom, 20)
+        .frame(maxWidth: 400)
+        .padding(.horizontal, 20)
       }
-      .padding(.horizontal, 20)
+      .frame(maxWidth: 400)
+
       .background(Color(braveSystemName: .pageBackground))
     }
+    .navigationViewStyle(StackNavigationViewStyle())
     .navigationBarHidden(true)
   }
 }

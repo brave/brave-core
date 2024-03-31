@@ -159,6 +159,7 @@ struct FocusP3AScreenView: View {
         }
       )
     }
+    .navigationViewStyle(StackNavigationViewStyle())
     .navigationBarHidden(true)
   }
 
