@@ -66,6 +66,7 @@ void BodySnifferThrottle::WillProcessResponse(
       producer_->UpdateResponseHead(response_head);
     }
     handler = std::move(producer_);
+    *defer = true;
   }
 
   mojo::PendingRemote<network::mojom::URLLoader> new_remote;
