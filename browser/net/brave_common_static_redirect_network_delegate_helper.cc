@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/no_destructor.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/constants/network_constants.h"
@@ -25,7 +26,7 @@ bool RewriteBugReportingURL(const GURL& request_url, GURL* new_url) {
   base::StringPairs pairs;
   if (!base::SplitStringIntoKeyValuePairs(request_url.query(), '=', '&',
                                           &pairs) || pairs.size() != 3) {
-      return false;
+    return false;
   }
   for (const auto& pair : pairs) {
     if (pair.first == "comment") {
@@ -62,35 +63,35 @@ int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
   DCHECK(new_url);
 
   GURL::Replacements replacements;
-  static URLPattern chromecast_pattern(
+  static base::NoDestructor<URLPattern> chromecast_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kChromeCastPrefix);
-  static URLPattern clients4_pattern(
+  static base::NoDestructor<URLPattern> clients4_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kClients4Prefix);
-  static URLPattern bugsChromium_pattern(
+  static base::NoDestructor<URLPattern> bugsChromium_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
       "*://bugs.chromium.org/p/chromium/issues/entry?*");
 
-  if (chromecast_pattern.MatchesURL(request_url)) {
+  if (chromecast_pattern->MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr(kBraveRedirectorProxy);
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (clients4_pattern.MatchesHost(request_url)) {
+  if (clients4_pattern->MatchesHost(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr(kBraveClients4Proxy);
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (bugsChromium_pattern.MatchesURL(request_url)) {
-    if (RewriteBugReportingURL(request_url, new_url))
+  if (bugsChromium_pattern->MatchesURL(request_url)) {
+    if (RewriteBugReportingURL(request_url, new_url)) {
       return net::OK;
+    }
   }
 
   return net::OK;
 }
-
 
 }  // namespace brave

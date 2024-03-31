@@ -22,7 +22,6 @@ source_set("unittests") {
   deps = [
     "//base/test:test_support",
     "//brave/browser",
-    "//brave/browser/net",
     "//brave/common",
     "//brave/components/decentralized_dns/content",
     "//brave/components/decentralized_dns/core",

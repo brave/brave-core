@@ -537,7 +537,6 @@ source_set("ui") {
     "//brave/browser/brave_rewards:util",
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/browser/gcm_driver",
-    "//brave/browser/net",
     "//brave/browser/profiles",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/themes",
