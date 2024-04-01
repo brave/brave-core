@@ -30,7 +30,6 @@
       "pageset-repeat": 10,
       "stories": [
         "load:chrome:blank",
-        "browse:news:hackernews:2020",
       ]
     },
     {
