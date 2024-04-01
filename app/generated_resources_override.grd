@@ -149,6 +149,10 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not is_chromeos and not is_macosx and toolkit_views">
         </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="not is_android">
         <if expr="is_macosx">
           </if>

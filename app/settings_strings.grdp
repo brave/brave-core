@@ -1350,6 +1350,9 @@
   <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_TITLE" desc="Name of the standard preloading option for the Preload Pages settings page. This option enables preloading pages that Brave believes the user is likely to navigate to.">
     Standard preloading
   </message>
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_EXPAND_A11Y_LABEL" desc="This text is read by screenreaders and helps users find more info about the standard preloading option.">
+    More info about turning on standard preloading
+  </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_SUMMARY" desc="Short explanation of what the standard preloading mode does in the Preload Pages setting.">
     Some of the pages you visit are preloaded
   </message>
@@ -1361,6 +1364,9 @@
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_SUMMARY" desc="Subtitle for Preload Pages extended preloading mode. Informs the user about which preloading setting is being described on this page.">
     More pages are preloaded. Pages may be preloaded through Brave servers when requested by other sites.
+  </message>
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_EXPAND_A11Y_LABEL" desc="This text is read by screenreaders and helps users find more info about the extended preloading option.">
+    More info about turning on extended preloading
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_WHEN_ON_BULLET_ONE" desc="Bullet point in the extended preloading and when on column. Informs the user about what the extended preloading setting does.">
     Browsing and searching is faster than standard preloading
@@ -2554,7 +2560,7 @@
     Not allowed to automatically download multiple files
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTO_PICTURE_IN_PICTURE_DESCRIPTION" desc="Description of the auto-picture-in-picture content setting.">
-    Sites use this setting to enter picture-in-picture automatically. This lets you continue watching a video, while freeing up your screen for other tasks.
+    Sites use this feature to enter picture-in-picture automatically. This lets you continue watching a video, while freeing up your screen for other tasks.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTO_PICTURE_IN_PICTURE_ALLOWED" desc="Label for the enabled option of the auto-picture-in-picture content setting.">
     Sites can enter picture-in-picture automatically
@@ -2594,6 +2600,21 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_BLOCKED" desc="Label for the disabled option of the bluetooth devices site setting.">
     Don't allow sites to connect to Bluetooth devices
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_DESCRIPTION" desc="Description of the Captured Surface Control content setting.">
+    Sites use this feature to scroll and zoom shared tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_ALLOWED" desc="Label for the enabled option of the Captured Surface Control content setting.">
+    Sites can ask to scroll and zoom shared tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_BLOCKED" desc="Label for the disabled option of the Captured Surface Control content setting.">
+    Don't allow sites to scroll and zoom shared tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the Captured Surface Control content setting.">
+    Allowed to scroll and zoom shared tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the Captured Surface Control content setting.">
+    Not allowed to scroll and zoom shared tabs
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_DESCRIPTION" desc="Description of the camera content setting.">
     Sites usually use your video camera for communication features like video chatting
@@ -2686,7 +2707,7 @@
     Not allowed to use fonts installed on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_FULLSCREEN_DESCRIPTION" desc="Label explaining the automatic fullscreen content setting.">
-    Sites use this setting to offer immersive fullscreen experiences regardless of user gestures
+    Sites use this feature to offer immersive fullscreen experiences regardless of user gestures
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_FULLSCREEN_BLOCK" desc="Label explaining that automatic fullscreen is blocked by default, meaning a user gesture is required.">
     Entering fullscreen requires a user gesture by default
@@ -3763,6 +3784,9 @@
   </message>
   <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_TITLE" desc="Title of the personalize Brave services section. When clicked, takes the user to the Brave Activity Controls.">
     Control how your browsing history is used to personalize Search and more
+  </message>
+  <message name="IDS_SETTINGS_SIGNIN_CHROME_SIGNIN_OPTION_ALWAYS_ASK" translateable="false" desc="One of three options for the setting is called 'Sign in to Brave when you sign in to other Brave services'. When the user chooses this option, the user will be asked whether they want to sign in to Brave after they sign in to a Brave service (like Gmail) using Brave. The verb tense should be descriptive, not imperative.">
+    Ask me every time
   </message>
 
   <if expr="not is_chromeos">

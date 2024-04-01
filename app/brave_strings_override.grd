@@ -380,7 +380,7 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="not is_android">
         </if>
 
-      <if expr="enable_extensions and enable_supervised_users">
+      <if expr="enable_extensions">
         </if>
 
       <if expr="not chromeos_ash and not is_android">

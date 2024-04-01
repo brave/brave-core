@@ -1311,6 +1311,12 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CLEAR_BROWSING_DATA_BASIC_TAB_TITLE" desc="The title of the tab showing the basic clear browsing data options.">
         Basic
       </message>
+      <message name="IDS_ANDROID_APP_HISTORY_OPEN_FULL" desc="The informational message at the top of the history page letting users know that app-specific history may be missing some entries.">
+        Some of your web history might not show up here. To see a full web history, tap Open full Brave history.
+      </message>
+      <message name="IDS_ANDROID_APP_HISTORY_OPEN_FULL_OTHER_FORMS" desc="The informational message at the top of the history page letting users know that app-specific history may be missing some entries, followed by the info on the other forms of browing history.">
+        Some of your web history might not show up here. If needed, tap Open full Brave history. Also, Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
+      </message>
       <message name="IDS_ANDROID_HISTORY_OTHER_FORMS_OF_HISTORY" desc="The notification at the top of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity.">
         Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
@@ -2193,6 +2199,10 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_HISTORY" desc="Title for preference which enables sync'ing of history data. [CHAR_LIMIT=32]">
         History
       </message>
+      <!-- TODO(b/326574743): Revisit string and mark it as translatable.-->
+      <message name="IDS_SYNC_HISTORY_AND_TABS" desc="Title for preference which enables sync'ing of history data and open tabs. [CHAR_LIMIT=32]" translateable="false">
+        History and Tabs
+      </message>
       <message name="IDS_SYNC_PASSWORDS" desc="Title for preference which enables sync'ing of passwords. [CHAR_LIMIT=32]">
         Passwords
       </message>
@@ -2207,6 +2217,10 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SYNC_APPS" desc="Title for preference which enables sync'ing of WebAPKs. [CHAR_LIMIT=32]">
         Apps
+      </message>
+      <!-- TODO(b/326574743): Revisit string and mark it as translatable.-->
+      <message name="IDS_DATA_TYPES_SWITCHES_SUMMARY" desc="Message of Brave activity controls preference in signed in accounts settings screen" translateable="false">
+        When on, data is saved in your Brave sync chain. When off, data is saved only to this device.
       </message>
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Google Pay data for Autofill. 'Google Pay' should not be translated as it is the product name.">
         Payment methods, offers, and addresses using Google Pay
@@ -2330,6 +2344,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       <message name="IDS_HINT_CLIENT_OUT_OF_DATE" desc="Hint message to resolve sync protocol error for out-of-date client.">
         Update <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph> to start sync
       </message>
+      <message name="IDS_SYNC_ERROR_CARD_OUTDATED_GMS" desc="Error message to update Google Play services to continue syncing passwords.">
+        To save and use new passwords in your Brave sync chain, update Google Play services
+      </message>
 
       <!-- Sync error card button strings -->
       <message name="IDS_CLIENT_OUT_OF_DATE_ERROR_CARD_BUTTON" desc="Button text for client out of date error in sync error cards.">
@@ -2369,6 +2386,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       </message>
       <message name="IDS_WIPING_PROFILE_DATA_MESSAGE" desc="Message for the progress dialog shown while profile data is being wiped after signing out of an enterprise account">
         Please wait…
+      </message>
+      <message name="IDS_SYNC_ERROR_OUTDATED_GMS" desc="Sync error string for the Sync row in the main menu, and also the title for the sync error card, in case Google Play services needs to be updated to continue syncing passwords.">
+        Update Google Play services
       </message>
 
       <!-- Identity error card message strings -->
@@ -2567,7 +2587,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       <message name="IDS_PASSWORD_MANAGER_OUTDATED_GMS_DIALOG_DESCRIPTION" desc="Description text of the dialog appearing when the Google Play Services needs to be updated to use the Brave Password Manager. Dialog suggests to update the Google Play Services.">
         To manage your passwords, update Google Play services
       </message>
-      <message name="IDS_PASSWORD_MANAGER_OUTDATED_GMS_POSITIVE_BUTTON" desc="Label for the positive ('update') button of the dialog appearing when the Google Play Services needs to be updated to use the Brave Password Manager. Clicking on this button opens the Google Play services page in the Google Play Store.">
+      <message name="IDS_PASSWORD_MANAGER_OUTDATED_GMS_POSITIVE_BUTTON" desc="Label for the positive ('update') button of the dialog appearing when the Google Play Services needs to be updated to use the Brave Password Manager. This is also used in the corresponding sync error card. Clicking on this button opens the Google Play services page in the Google Play Store.">
         Update
       </message>
       <message name="IDS_PASSWORD_MANAGER_OUTDATED_GMS_NEGATIVE_BUTTON" desc="Label for the negative ('not now') button of the dialog appearing when the Google Play Services needs to be updated to use the Brave Password Manager. Clicking on this button dismisses the dialog without further actions.">
@@ -2732,9 +2752,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       </message>
       <message name="IDS_WEBAPK_INSTALL_FAILED_ACTION_OPEN" desc="The label of the button which upon click would open the site user was trying to install as PWA. ">
         Go back to site
-      </message>
-      <message name="IDS_IPH_PWA_INSTALL_AVAILABLE_TEXT" desc="The in-product-help message for PWAs that can be installed to the device.">
-        Install this app
       </message>
       <message name="IDS_IPH_MESSAGE_ADD_TO_HOME_SCREEN_TITLE" desc="The title of in-product-help message encouraging users to add a commonly visited webpage to the home screen.">
         Add to Home screen
@@ -5782,15 +5799,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       <message name="IDS_MANAGEMENT" desc="Title of the chrome://management page, which shows whether the account is managed.">
         Management
       </message>
-      <message name="IDS_MANAGEMENT_SUBTITLE" desc="The title of the chrome://management page when the browser runs in an environment managed by an unknown organization. (e.g. Employer owned device that has a managed Profile)">
-        Your browser is managed by your administrator
-      </message>
-      <message name="IDS_MANAGEMENT_SUBTITLE_MANAGED_BY" desc="The title of the chrome://management page when the browser runs in an environment managed by a known organization. (e.g. Employer owned device enrolled to CBCM)">
-        Your browser is managed by <ph name="DOMAIN">%1$s<ex>google.com</ex></ph>
-      </message>
-      <message name="IDS_MANAGEMENT_NOT_MANAGED_SUBTITLE" desc="The title of the chrome://management page when the browser runs in an environment which is not not managed by any organization. (e.g. A personal device bought at a store)">
-        Your browser is not managed
-      </message>
       <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="The descriptive text on chrome://management page that explains to the user the implications of browsing under a managed environment.">
         Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave.
       </message>
@@ -5987,9 +5995,49 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
         Passkey confirmation sheet closed
       </message>
 
+      <!-- Share with Summary Bottom Sheet -->
+      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_TITLE" desc="Title of a bottomsheet that appears when generating a summary to share along a web page.">
+        Summary
+      </message>
+      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_DESCRIPTION" desc="Accessibility string that describes a bottomsheet that appears when generating a summary to share along a web page." formatter_data="android_java" is_accessibility_with_no_ui="true">
+        Share with summary sheet
+      </message>
+      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_OPENED" desc="Accessibility string that describes opening a bottomsheet that appears when generating a summary to share along a web page." formatter_data="android_java" is_accessibility_with_no_ui="true">
+        Share with summary sheet opened
+      </message>
+      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_CLOSED" desc="Accessibility string that describes closing a bottomsheet that appears when generating a summary to share along a web page." formatter_data="android_java" is_accessibility_with_no_ui="true">
+        Share with summary sheet closed
+      </message>
+
       <!-- Data Sharing -->
       <message name="IDS_SHARED_IMAGE_TILES_COUNT" desc="The count string for number of tiles that overflows from shared image tiles. |COUNT_NUMBER| will be a number between 1 and 99 (it will be 1-2 digits at most). [CHAR_LIMIT=3]">
         +<ph name="COUNT_NUMBER">%1$s<ex>1</ex></ph>
+      </message>
+      <message name="IDS_DATA_SHARING_INVITATION_NOTIFICATION_TITLE" desc="The title of the notification shown to user when a data sharing invitation is received. |NAME| will be the name of the inviter.">
+        <ph name="NAME">%1$s<ex>Jane Doe</ex></ph> invited you to access a shared item.
+      </message>
+      <message name="IDS_DATA_SHARING_ORIGIN_FALLBACK" desc="The fallback inviter name of the data sharing service notification.">
+        Someone
+      </message>
+
+      <!-- Interstitial shown prior to making digital identity request to wallet -->
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_DIALOG_TITLE" translateable="false">
+        Caution
+      </message>
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_LOW_RISK_DIALOG_TEXT" translateable="false">
+        <ph name="WEBSITE_ORIGIN">%1$s<ex>www.cheapalcohol.com</ex></ph> would like to ask Android to give you options for sharing your identity information.
+      </message>
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_LOW_RISK_POSITIVE_BUTTON_TEXT" translateable="false">
+        Share
+      </message>
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_HIGH_RISK_DIALOG_TEXT" translateable="false">
+        <ph name="WEBSITE_ORIGIN">%1$s<ex>www.cheapalcohol.com</ex></ph> would like to ask Android for access to your identity. Brave cannot determine what privacy risks this may pose.
+      </message>
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_HIGH_RISK_POSITIVE_BUTTON_TEXT" translateable="false">
+        Share Anyway
+      </message>
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_NEGATIVE_BUTTON_TEXT" translateable="false">
+        Do Not Share
       </message>
     </messages>
   </release>
