@@ -165,8 +165,8 @@ source_set("test_support") {
   testonly = true
 
   sources = [
-    "//brave/browser/extensions/brave_base_local_data_files_browsertest.cc",
-    "//brave/browser/extensions/brave_base_local_data_files_browsertest.h",
+    "brave_base_local_data_files_browsertest.cc",
+    "brave_base_local_data_files_browsertest.h",
   ]
 
   deps = [
