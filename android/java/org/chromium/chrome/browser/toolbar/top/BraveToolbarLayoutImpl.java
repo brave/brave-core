@@ -508,7 +508,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 && mBraveRewardsNativeWorker.isSupported()) {
                             showOnBoarding();
                         }
-                        findMediaFiles(tab);
                     }
 
                     @Override
@@ -603,7 +602,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private void findMediaFiles(Tab tab) {
         if (mPlaylistService != null && isPlaylistEnabledByPrefsAndFlags()) {
             hidePlaylistButton();
-            mPlaylistService.findMediaFilesFromActiveTab((url, playlistItems) -> {});
+            mPlaylistService.findMediaFilesFromActiveTab();
         }
     }
 
@@ -1616,7 +1615,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {
-        if (items.length == 0) return;
         Tab currentTab = getToolbarDataProvider().getTab();
         if (currentTab == null || !pageUrl.url.equals(currentTab.getUrl().getSpec())) {
             return;
