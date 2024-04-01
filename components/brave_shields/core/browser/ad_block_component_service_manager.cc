@@ -23,6 +23,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 
 using brave_shields::features::kBraveAdblockCookieListDefault;
+using brave_shields::features::kBraveAdblockExperimentalListDefault;
 using brave_shields::features::kBraveAdblockMobileNotificationsListDefault;
 
 namespace brave_shields {
@@ -43,8 +44,14 @@ const ListDefaultOverrideConstants kMobileNotificationsListConstants{
         kBraveAdblockMobileNotificationsListDefault),
     .list_uuid = kMobileNotificationsListUuid};
 
-const ListDefaultOverrideConstants kOverrideConstants[2] = {
-    kCookieListConstants, kMobileNotificationsListConstants};
+const ListDefaultOverrideConstants kExperimentalListConstants{
+    .feature =
+        raw_ref<const base::Feature>(kBraveAdblockExperimentalListDefault),
+    .list_uuid = kExperimentalListUuid};
+
+const ListDefaultOverrideConstants kOverrideConstants[3] = {
+    kCookieListConstants, kMobileNotificationsListConstants,
+    kExperimentalListConstants};
 
 }  // namespace
 
