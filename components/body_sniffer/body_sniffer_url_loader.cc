@@ -295,7 +295,7 @@ void BodySnifferURLLoader::OnBodyReadable(MojoResult) {
           complete_handlers_.push_back(std::move(handler));
         }
       }
-      base::EraseIf(body_handlers, [](auto& handler) { return !handler; });
+      std::erase_if(body_handlers, [](auto& handler) { return !handler; });
       CompleteSniffing(false, std::move(buffered_body_));
       break;
   }
