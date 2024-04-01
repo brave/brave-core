@@ -129,8 +129,9 @@ struct FocusStepsView: View {
           dismiss()
         }
       }
-      .navigationBarHidden(true)
     }
+    .navigationBarHidden(true)
+    .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 

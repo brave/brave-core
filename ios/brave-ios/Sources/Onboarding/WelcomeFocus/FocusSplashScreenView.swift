@@ -55,10 +55,11 @@ struct FocusSplashScreenView: View {
       .background(
         LinearGradient(
           stops: [
-            Gradient.Stop(color: Color(UIColor(rgb: 0xFF5602)).opacity(0), location: 0.00),
-            Gradient.Stop(color: Color(UIColor(rgb: 0xFF5602)).opacity(0.25), location: 0.38),
-            Gradient.Stop(color: Color(UIColor(rgb: 0xFF2202)).opacity(0.25), location: 0.59),
-            Gradient.Stop(color: Color(UIColor(rgb: 0xFF2302)).opacity(0), location: 1.00),
+            Gradient.Stop(color: Color(UIColor(rgb: 0xFFFFFF)).opacity(0), location: 0.00),
+            Gradient.Stop(color: Color(UIColor(rgb: 0xFF471A)).opacity(0.25), location: 0.20),
+            Gradient.Stop(color: Color(UIColor(rgb: 0xE61987)).opacity(0.25), location: 0.51),
+            Gradient.Stop(color: Color(UIColor(rgb: 0x860AC2)).opacity(0.25), location: 0.80),
+            Gradient.Stop(color: Color(UIColor(rgb: 0xFFFFFF)).opacity(0), location: 1.00),
           ],
           startPoint: .init(x: 1.43, y: 0.07),
           endPoint: .init(x: 0.23, y: 1)
