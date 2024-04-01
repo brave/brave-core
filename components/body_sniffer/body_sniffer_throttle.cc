@@ -39,7 +39,7 @@ void BodySnifferThrottle::WillStartRequest(network::ResourceRequest* request,
       handler.reset();
     }
   }
-  base::EraseIf(body_handlers_, [](auto& h) { return !h; });
+  std::erase_if(body_handlers_, [](auto& h) { return !h; });
 }
 
 void BodySnifferThrottle::WillProcessResponse(
@@ -55,7 +55,7 @@ void BodySnifferThrottle::WillProcessResponse(
       handler->UpdateResponseHead(response_head);
     }
   }
-  base::EraseIf(body_handlers_, [](auto& h) { return !h; });
+  std::erase_if(body_handlers_, [](auto& h) { return !h; });
   if (body_handlers_.empty() && !producer_) {
     return;
   }
