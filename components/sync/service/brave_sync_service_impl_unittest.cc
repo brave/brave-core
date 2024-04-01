@@ -26,7 +26,7 @@
 #include "components/sync/model/type_entities_count.h"
 #include "components/sync/service/data_type_manager_impl.h"
 #include "components/sync/test/data_type_manager_mock.h"
-#include "components/sync/test/fake_data_type_controller.h"
+#include "components/sync/test/fake_model_type_controller.h"
 #include "components/sync/test/fake_sync_api_component_factory.h"
 #include "components/sync/test/fake_sync_engine.h"
 #include "components/sync/test/fake_sync_manager.h"
@@ -106,7 +106,7 @@ class BraveSyncServiceImplTest : public testing::Test {
       ModelTypeSet registered_types = ModelTypeSet({BOOKMARKS})) {
     ModelTypeController::TypeVector controllers;
     for (ModelType type : registered_types) {
-      controllers.push_back(std::make_unique<FakeDataTypeController>(type));
+      controllers.push_back(std::make_unique<FakeModelTypeController>(type));
     }
 
     std::unique_ptr<SyncClientMock> sync_client =
