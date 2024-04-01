@@ -1,0 +1,26 @@
+[package]
+name = "zip32"
+version = "0.1.1"
+authors = [
+    "Jack Grigg <jack@electriccoin.co>",
+    "Kris Nuttycombe <kris@electriccoin.co>",
+]
+description = "Common types for implementing shielded hierarchical deterministic wallets"
+documentation = "https://docs.rs/zip32/"
+homepage = "https://github.com/zcash/zip32"
+repository = "https://github.com/zcash/zip32"
+license = "MIT OR Apache-2.0"
+edition = "2021"
+rust-version = "1.60"
+
+[dependencies]
+blake2b_simd = "1"
+memuse = "0.2.1"
+subtle = "2.2.3"
+
+[dev-dependencies]
+assert_matches = "1.5"
+
+[features]
+default = ["std"]
+std = []
