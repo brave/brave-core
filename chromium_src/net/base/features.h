@@ -23,7 +23,6 @@ NET_EXPORT BASE_DECLARE_FEATURE(kBraveHttpsByDefault);
 NET_EXPORT BASE_DECLARE_FEATURE(kBraveFallbackDoHProvider);
 NET_EXPORT extern const base::FeatureParam<DohFallbackEndpointType>
     kBraveFallbackDoHProviderEndpoint;
-NET_EXPORT BASE_DECLARE_FEATURE(kBravePartitionBlobStorage);
 NET_EXPORT BASE_DECLARE_FEATURE(kBravePartitionHSTS);
 NET_EXPORT BASE_DECLARE_FEATURE(kBraveTorWindowsHttpsOnly);
 NET_EXPORT BASE_DECLARE_FEATURE(kBraveForgetFirstPartyStorage);
