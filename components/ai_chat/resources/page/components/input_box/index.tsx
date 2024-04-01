@@ -13,6 +13,8 @@ import Button from '@brave/leo/react/button'
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
 import getPageHandlerInstance from '../../api/page_handler'
+import ToolsButtonMenu from '../tools_button_menu'
+import ActionTypeLabel from '../action_type_label'
 
 function InputBox () {
   const context = React.useContext(DataContext)
@@ -43,6 +45,15 @@ function InputBox () {
 
   return (
     <form className={styles.form}>
+      {context.userActionType && (
+        <div className={styles.actionsLabelContainer}>
+         <ActionTypeLabel
+          removable={true}
+          actionType={context.userActionType}
+          onCloseClick={() => { context.setUserActionType(undefined) }}
+         />
+        </div>
+      )}
       <div
         className={(context.isMobile ? styles.growWrapMobile : styles.growWrap)}
         data-replicated-value={context.inputText}
@@ -73,6 +84,7 @@ function InputBox () {
           >
           <Icon name='microphone' />
         </Button>}
+        <ToolsButtonMenu />
         <Button
           kind="plain-faint"
           onClick={handleSubmit}

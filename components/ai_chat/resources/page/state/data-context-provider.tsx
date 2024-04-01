@@ -45,6 +45,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [showAgreementModal, setShowAgreementModal] = React.useState(false)
   const [shouldSendPageContents, setShouldSendPageContents] = React.useState(true)
   const [inputText, setInputText] = React.useState('')
+  const [userActionType, setUserActionType] = React.useState<mojom.ActionType | undefined>()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
