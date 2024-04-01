@@ -6,9 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_WAYBACK_MACHINE_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_WAYBACK_MACHINE_BUBBLE_VIEW_H_
 
-#include "content/public/browser/web_contents.h"
+#include "base/memory/weak_ptr.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 class Browser;
 
@@ -18,7 +22,7 @@ class WaybackMachineBubbleView : public views::BubbleDialogDelegateView {
  public:
   static void Show(Browser* browser, views::View* anchor);
 
-  WaybackMachineBubbleView(content::WebContents::Getter wc_getter,
+  WaybackMachineBubbleView(base::WeakPtr<content::WebContents> web_contents,
                            views::View* anchor);
   ~WaybackMachineBubbleView() override;
 
@@ -27,9 +31,8 @@ class WaybackMachineBubbleView : public views::BubbleDialogDelegateView {
 
  private:
   void OnAccepted();
-  content::WebContents* GetWebContents();
 
-  content::WebContents::Getter wc_getter_;
+  base::WeakPtr<content::WebContents> web_contents_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_WAYBACK_MACHINE_BUBBLE_VIEW_H_

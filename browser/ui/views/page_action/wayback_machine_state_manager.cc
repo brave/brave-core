@@ -49,6 +49,13 @@ void WaybackMachineStateManager::OnTabStripModelChanged(
         BraveWaybackMachineTabHelper::FromWebContents(selection.old_contents);
     CHECK(tab_helper);
     tab_helper->SetWaybackStateChangedCallback(base::NullCallback());
+
+    // Try to close if old tab had bubble.
+    if (auto* widget = views::Widget::GetWidgetForNativeWindow(
+            tab_helper->active_window())) {
+      widget->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+      tab_helper->set_active_window(nullptr);
+    }
   }
 
   if (selection.new_contents) {

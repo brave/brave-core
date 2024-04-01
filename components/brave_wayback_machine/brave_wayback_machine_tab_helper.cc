@@ -23,7 +23,6 @@
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
-#include "ui/views/widget/widget.h"
 
 // static
 void BraveWaybackMachineTabHelper::CreateIfNeeded(
@@ -49,7 +48,6 @@ BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
 
 BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() {
   CHECK(!wayback_state_changed_callback_);
-  CloseWindowIfPossible();
 }
 
 void BraveWaybackMachineTabHelper::FetchWaybackURL() {
@@ -92,6 +90,11 @@ void BraveWaybackMachineTabHelper::DidStartNavigation(
 
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInPrimaryMainFrame() ||
+      navigation_handle->IsSameDocument()) {
+    return;
+  }
+
   if (IsWaybackMachineDisabledFor(navigation_handle->GetURL())) {
     return;
   }
@@ -99,11 +102,6 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
   // Double check with user visible url to check user visible only schemes such
   // as "view-source:"
   if (IsWaybackMachineDisabledFor(web_contents()->GetLastCommittedURL())) {
-    return;
-  }
-
-  if (!navigation_handle->IsInMainFrame() ||
-      navigation_handle->IsSameDocument()) {
     return;
   }
 
@@ -166,13 +164,6 @@ bool BraveWaybackMachineTabHelper::ShouldCheckWaybackMachine(
   };
 
   return responses.find(response_code) != responses.end();
-}
-
-void BraveWaybackMachineTabHelper::CloseWindowIfPossible() {
-  if (auto* widget = views::Widget::GetWidgetForNativeWindow(active_window_)) {
-    widget->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
-    active_window_ = nullptr;
-  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWaybackMachineTabHelper);

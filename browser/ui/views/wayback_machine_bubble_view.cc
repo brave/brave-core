@@ -17,7 +17,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
-#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/box_layout.h"
@@ -57,23 +57,18 @@ void WaybackMachineBubbleView::Show(Browser* browser, views::View* anchor) {
     return;
   }
 
-  content::WebContents::Getter wc_getter(base::BindRepeating(
-      [](content::GlobalRenderFrameHostId rfh_id) {
-        return content::WebContents::FromRenderFrameHost(
-            content::RenderFrameHost::FromID(rfh_id));
-      },
-      web_contents->GetPrimaryMainFrame()->GetGlobalId()));
   views::Widget* const widget = views::BubbleDialogDelegateView::CreateBubble(
-      std::make_unique<WaybackMachineBubbleView>(std::move(wc_getter), anchor));
+      std::make_unique<WaybackMachineBubbleView>(web_contents->GetWeakPtr(),
+                                                 anchor));
   widget->Show();
   tab_helper->set_active_window(widget->GetNativeWindow());
 }
 
 WaybackMachineBubbleView::WaybackMachineBubbleView(
-    content::WebContents::Getter wc_getter,
+    base::WeakPtr<content::WebContents> web_contents,
     views::View* anchor)
     : BubbleDialogDelegateView(anchor, views::BubbleBorder::TOP_RIGHT),
-      wc_getter_(std::move(wc_getter)) {
+      web_contents_(web_contents) {
   SetShowCloseButton(true);
   set_fixed_width(360);
   set_should_ignore_snapping(true);
@@ -84,7 +79,7 @@ WaybackMachineBubbleView::WaybackMachineBubbleView(
       /*inside_border_insets*/ gfx::Insets(),
       /*between_child_spacing*/ 24));
 
-  auto* tab_helper = GetTabHelper(GetWebContents());
+  auto* tab_helper = GetTabHelper(web_contents_.get());
   CHECK(tab_helper);
   bool need_checking =
       tab_helper->wayback_state() == WaybackState::kNeedToCheck;
@@ -128,7 +123,7 @@ WaybackMachineBubbleView::WaybackMachineBubbleView(
 }
 
 WaybackMachineBubbleView::~WaybackMachineBubbleView() {
-  if (auto* tab_helper = GetTabHelper(GetWebContents())) {
+  if (auto* tab_helper = GetTabHelper(web_contents_.get())) {
     tab_helper->set_active_window(nullptr);
   }
 }
@@ -143,14 +138,9 @@ void WaybackMachineBubbleView::OnWidgetVisibilityChanged(views::Widget* widget,
 }
 
 void WaybackMachineBubbleView::OnAccepted() {
-  if (auto* tab_helper = GetTabHelper(GetWebContents())) {
+  if (auto* tab_helper = GetTabHelper(web_contents_.get())) {
     tab_helper->FetchWaybackURL();
   }
-}
-
-content::WebContents* WaybackMachineBubbleView::GetWebContents() {
-  CHECK(wc_getter_);
-  return wc_getter_.Run();
 }
 
 BEGIN_METADATA(WaybackMachineBubbleView)

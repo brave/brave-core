@@ -57,7 +57,6 @@ class BraveWaybackMachineTabHelper
 
   void SetWaybackState(WaybackState state);
   bool ShouldCheckWaybackMachine(int response_code) const;
-  void CloseWindowIfPossible();
 
   // Cache wayback url navigation handle.
   // It uses to check whether it's w
