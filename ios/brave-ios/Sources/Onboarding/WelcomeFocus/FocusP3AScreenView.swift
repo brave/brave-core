@@ -10,6 +10,10 @@ import SafariServices
 import SwiftUI
 
 struct FocusP3AScreenView: View {
+  @Environment(\.colorScheme) private var colorScheme
+  @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
+
   @State private var isP3AToggleOn = true
   @State private var isP3AHelpPresented = false
   @State private var isSystemSettingsViewPresented = false
@@ -18,6 +22,10 @@ struct FocusP3AScreenView: View {
 
   private let attributionManager: AttributionManager?
   private let p3aUtilities: BraveP3AUtils?
+
+  var shouldUseExtendedDesign: Bool {
+    return horizontalSizeClass == .regular && verticalSizeClass == .regular
+  }
 
   let dynamicTypeRange = (...DynamicTypeSize.xLarge)
 
@@ -33,134 +41,174 @@ struct FocusP3AScreenView: View {
 
   var body: some View {
     NavigationView {
-      VStack {
-        Image("focus-product-insight", bundle: .module)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .padding(.bottom, 24)
+      if shouldUseExtendedDesign {
+        VStack(spacing: 40) {
+          VStack {
+            consentp3aContentView
+              .background(colorScheme == .dark ? .black : .white)
+          }
+          .clipShape(RoundedRectangle(cornerRadius: 16.0))
+          .frame(maxWidth: 616, maxHeight: 895)
+          .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
+          .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
+          .overlay(alignment: .topTrailing) {
+            cancelButton
+              .frame(width: 32, height: 32)
+              .padding(24)
+          }
 
+          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(braveSystemName: .pageBackground))
+
+      } else {
         VStack {
-          VStack(spacing: 8) {
-            Text(Strings.FocusOnboarding.p3aScreenTitle)
-              .font(
-                Font.custom("FlechaM-Medium", size: 32)
-              )
-              .dynamicTypeSize(dynamicTypeRange)
-              .fixedSize(horizontal: false, vertical: true)
-              .opacity(0.9)
+          consentp3aContentView
+          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
+            .padding(.bottom, 20)
+        }
+        .overlay(alignment: .topTrailing) {
+          cancelButton
+            .frame(width: 32, height: 32)
+            .padding(.trailing, 24)
+        }
+        .background(Color(braveSystemName: .pageBackground))
+        .background {
+          NavigationLink("", isActive: $isSystemSettingsViewPresented) {
+            FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
+          }
+        }
+      }
+    }
 
-            Text(Strings.FocusOnboarding.p3aScreenDescription)
+    .navigationViewStyle(StackNavigationViewStyle())
+    .navigationBarHidden(true)
+  }
+
+  private var consentp3aContentView: some View {
+    VStack {
+      Image(
+        shouldUseExtendedDesign ? "focus-product-insight-largescreen" : "focus-product-insight",
+        bundle: .module
+      )
+      .resizable()
+      .frame(
+        width: shouldUseExtendedDesign ? 198 : 184,
+        height: shouldUseExtendedDesign ? 242 : 214
+      )
+      .aspectRatio(contentMode: .fit)
+      .padding(.bottom, 24)
+
+      VStack {
+        VStack(spacing: 8) {
+          Text(Strings.FocusOnboarding.p3aScreenTitle)
+            .font(
+              Font.custom("FlechaM-Medium", size: 32)
+            )
+            .dynamicTypeSize(dynamicTypeRange)
+            .fixedSize(horizontal: false, vertical: true)
+            .opacity(0.9)
+
+          Text(Strings.FocusOnboarding.p3aScreenDescription)
+            .font(
+              Font.custom("Poppins-Medium", size: 17)
+            )
+            .dynamicTypeSize(dynamicTypeRange)
+            .fixedSize(horizontal: false, vertical: true)
+            .multilineTextAlignment(.center)
+            .foregroundColor(Color(braveSystemName: .textTertiary))
+        }
+        .padding(.bottom, shouldUseExtendedDesign ? 46 : 16)
+
+        Toggle(isOn: $isP3AToggleOn) {
+          VStack(alignment: .leading, spacing: 8) {
+            Text(Strings.FocusOnboarding.p3aToggleTitle)
               .font(
                 Font.custom("Poppins-Medium", size: 17)
               )
               .dynamicTypeSize(dynamicTypeRange)
               .fixedSize(horizontal: false, vertical: true)
-              .multilineTextAlignment(.center)
+              .foregroundColor(Color(braveSystemName: .textPrimary))
+              .opacity(0.9)
+            Text(Strings.FocusOnboarding.p3aToggleDescription)
+              .font(
+                Font.custom("Poppins-Regular", size: 13)
+              )
+              .dynamicTypeSize(dynamicTypeRange)
+              .fixedSize(horizontal: false, vertical: true)
               .foregroundColor(Color(braveSystemName: .textTertiary))
           }
-          .padding(.bottom, 16)
-
-          Toggle(isOn: $isP3AToggleOn) {
-            VStack(alignment: .leading, spacing: 4) {
-              Text(Strings.FocusOnboarding.p3aToggleTitle)
-                .font(
-                  Font.custom("Poppins-Medium", size: 17)
-                )
-                .dynamicTypeSize(dynamicTypeRange)
-                .fixedSize(horizontal: false, vertical: true)
-                .foregroundColor(Color(braveSystemName: .textPrimary))
-                .padding(.bottom, 4)
-                .opacity(0.9)
-              Text(Strings.FocusOnboarding.p3aToggleDescription)
-                .font(
-                  Font.custom("Poppins-Regular", size: 13)
-                )
-                .dynamicTypeSize(dynamicTypeRange)
-                .fixedSize(horizontal: false, vertical: true)
-                .foregroundColor(Color(braveSystemName: .textTertiary))
-            }
-            .padding(16)
-            .padding(.horizontal, 4)
-          }
-          .padding(.bottom, 16)
-          .padding(.trailing, 20)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          .toggleStyle(SwitchToggleStyle(tint: Color(braveSystemName: .buttonBackground)))
-          .onChange(of: isP3AToggleOn) { newValue in
-            p3aUtilities?.isP3AEnabled = newValue
-          }
-
-          Text(Strings.FocusOnboarding.p3aInformationButtonTitle)
-            .font(
-              Font.custom("Poppins-Regular", size: 13)
-            )
-            .foregroundColor(Color(braveSystemName: .textInteractive))
-            .fixedSize(horizontal: false, vertical: true)
-            .dynamicTypeSize(dynamicTypeRange)
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 20)
-            .onTapGesture {
-              isP3AHelpPresented = true
-            }
-            .sheet(isPresented: $isP3AHelpPresented) {
-              FocusSafariControllerView(url: FocusOnboardingConstants.p3aHelpArticle)
-            }
+          .padding(16)
+          .padding(.horizontal, 4)
         }
-        .padding(.horizontal, 20)
+        .padding(.bottom, shouldUseExtendedDesign ? 20 : 16)
+        .padding(.trailing, 36)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        .toggleStyle(SwitchToggleStyle(tint: Color(braveSystemName: .buttonBackground)))
+        .onChange(of: isP3AToggleOn) { newValue in
+          p3aUtilities?.isP3AEnabled = newValue
+        }
 
-        Spacer()
-
-        VStack(spacing: 28) {
-          Button(
-            action: {
-              handleAdCampaignLookupAndDAUPing(isP3AEnabled: p3aUtilities?.isP3AEnabled ?? false)
-
-              isSystemSettingsViewPresented = true
-            },
-            label: {
-              Text(Strings.FocusOnboarding.continueButtonTitle)
-                .font(.body.weight(.semibold))
-                .foregroundColor(Color(.white))
-                .dynamicTypeSize(dynamicTypeRange)
-                .padding()
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .background(Color(braveSystemName: .buttonBackground))
-            }
+        Text(Strings.FocusOnboarding.p3aInformationButtonTitle)
+          .font(
+            Font.custom("Poppins-Regular", size: 13)
           )
-          .clipShape(RoundedRectangle(cornerRadius: 12.0))
-          .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
+          .fixedSize(horizontal: false, vertical: true)
+          .dynamicTypeSize(dynamicTypeRange)
+          .multilineTextAlignment(.center)
+          .padding(.horizontal, 20)
+          .padding(.bottom, 20)
+          .onTapGesture {
+            isP3AHelpPresented = true
+          }
+          .sheet(isPresented: $isP3AHelpPresented) {
+            FocusSafariControllerView(url: FocusOnboardingConstants.p3aHelpArticle)
+          }
+      }
+      .padding(.horizontal, shouldUseExtendedDesign ? 72 : 20)
 
-          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
-        }
-        .padding(.bottom, 20)
-      }
-      .padding(.horizontal, 20)
-      .background(Color(braveSystemName: .pageBackground))
-      .background {
-        NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
-        }
-      }
-    }
-    .overlay(alignment: .topTrailing) {
+      Spacer()
+
       Button(
         action: {
-          handleAdCampaignLookupAndDAUPing(isP3AEnabled: false)
+          handleAdCampaignLookupAndDAUPing(isP3AEnabled: p3aUtilities?.isP3AEnabled ?? false)
 
-          shouldDismiss = true
+          isSystemSettingsViewPresented = true
         },
         label: {
-          Image("focus-icon-close", bundle: .module)
-            .resizable()
-            .frame(width: 32, height: 32)
-            .padding(.trailing, 24)
+          Text(Strings.FocusOnboarding.continueButtonTitle)
+            .font(.body.weight(.semibold))
+            .foregroundColor(Color(.white))
+            .dynamicTypeSize(dynamicTypeRange)
+            .padding()
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .background(Color(braveSystemName: .buttonBackground))
         }
       )
+      .clipShape(RoundedRectangle(cornerRadius: 12.0))
+      .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
+      .padding(.bottom, 8)
     }
-    .navigationViewStyle(StackNavigationViewStyle())
-    .navigationBarHidden(true)
+    .padding(.vertical, shouldUseExtendedDesign ? 64 : 20)
+    .padding(.horizontal, shouldUseExtendedDesign ? 60 : 20)
+  }
+
+  private var cancelButton: some View {
+    Button(
+      action: {
+        handleAdCampaignLookupAndDAUPing(isP3AEnabled: false)
+
+        shouldDismiss = true
+      },
+      label: {
+        Image("focus-icon-close", bundle: .module)
+          .resizable()
+
+      }
+    )
   }
 
   private func handleAdCampaignLookupAndDAUPing(isP3AEnabled: Bool) {
