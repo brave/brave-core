@@ -70,7 +70,7 @@ base::Value ToPageGraphValue(ScriptState* script_state,
 
 template <>
 base::Value ToPageGraphValue(ScriptState* script_state,
-                             const ScriptPromise& script_promise) {
+                             const ScriptPromiseUntyped& script_promise) {
   return ToPageGraphValue(script_state, script_promise.AsScriptValue());
 }
 
