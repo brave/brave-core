@@ -204,11 +204,11 @@ base::Value ToPageGraphValue(ScriptState* script_state,
   return ToPageGraphValue(script_state, opt_value.value());
 }
 
-// Convert ScriptPromiseTyped<T> types.
+// Convert ScriptPromise<T> types.
 template <typename T>
 base::Value ToPageGraphValue(ScriptState* script_state,
-                             const ScriptPromiseTyped<T>& script_promise) {
-  return ToPageGraphValue<ScriptPromise>(script_state, script_promise);
+                             const ScriptPromise<T>& script_promise) {
+  return ToPageGraphValue<ScriptPromiseUntyped>(script_state, script_promise);
 }
 
 // Convert v8::Value.
@@ -227,11 +227,11 @@ CORE_EXPORT base::Value ToPageGraphValue<bindings::NativeValueTraitsAnyAdapter>(
     ScriptState* script_state,
     const bindings::NativeValueTraitsAnyAdapter& adapter);
 
-// Convert ScriptPromise.
+// Convert ScriptPromiseUntyped.
 template <>
-CORE_EXPORT base::Value ToPageGraphValue<ScriptPromise>(
+CORE_EXPORT base::Value ToPageGraphValue<ScriptPromiseUntyped>(
     ScriptState* script_state,
-    const ScriptPromise& script_promise);
+    const ScriptPromiseUntyped& script_promise);
 
 // Convert FlexibleArrayBufferView.
 template <>

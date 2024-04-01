@@ -12,7 +12,7 @@
 
 namespace blink {
 
-class ScriptPromise;
+class ScriptPromiseUntyped;
 class ScriptState;
 
 class MODULES_EXPORT Brave final : public ScriptWrappable,
@@ -29,7 +29,7 @@ class MODULES_EXPORT Brave final : public ScriptWrappable,
 
   void Trace(Visitor*) const override;
 
-  ScriptPromise isBrave(ScriptState*);
+  ScriptPromiseUntyped isBrave(ScriptState*);
 };
 
 }  // namespace blink
