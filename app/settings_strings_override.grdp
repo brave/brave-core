@@ -12,6 +12,14 @@
   <if expr="not chromeos_ash">
     </if>
   <if expr="_google_chrome">
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BETTER_WEB_YOU_CAN_CUSTOMIZE" desc="A paragraph that includes 3 bullets.       * Bullet 1: Brave supports many Brave services, but it's the user's choice whether they want to use those services, so we include &quot;for those who want it&quot;.">
+      You can customize Brave the way you want:
+      &lt;ul&gt;
+        &lt;li&gt;&lt;em&gt;The best of Brave&lt;/em&gt;, for those who want it. For example, you can choose Brave Search as Brave’s default search engine and use Brave Password Manager to get all your passwords on any device. &lt;/li&gt;
+        &lt;li&gt;&lt;em&gt;Meaningful choice&lt;/em&gt;: Brave offers you choice and control with settings, and information to help you make meaningful decisions.&lt;/li&gt;
+        &lt;li&gt;&lt;em&gt;Extensions&lt;/em&gt;: You can extend Brave functionality with over 100,000 extensions in the Web Store.&lt;/li&gt;
+      &lt;/ul&gt;
+    </message>
     </if>
   <if expr="is_macosx">
     </if>
@@ -52,6 +60,7 @@
   </message>
   <if expr="is_macosx">
     </if>
+
   <if expr="not chromeos_ash">
     </if>
   <if expr="chromeos_ash">
@@ -122,11 +131,6 @@
   <if expr="_google_chrome">
     </if>
 
-  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_EXTENSIONS" desc="This text describes that potentially harmful extensions need to be reviewed by the user. The placeholder will be a numeral.">
-    {NUM_EXTENSIONS, plural,
-     =1 {Review 1 extension that was taken down from the Web Store}
-     other {Review {NUM_EXTENSIONS} extensions that were taken down from the Web Store}}
-  </message>
   <if expr="_google_chrome">
     </if>
   <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Brave     Advanced Protection Program">

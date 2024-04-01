@@ -58,20 +58,55 @@
     <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME" desc="Section title for the 'Get the most out of Brave' page.">
       Get the most out of Brave
     </message>
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_DESCRIPTION" desc="Explanatory text for the link to the 'Get the most out of Brave' page.">
-      This guide helps you understand your choices, so that Brave works the way you want to
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BETTER_FOR_YOU" desc="Title of the 'Brave makes the web work better for you' section of the 'Get the most out of Brave' page.">
+      Brave makes the web work better for you
     </message>
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_INTRO" desc="Introduction to the 'Get the most out of Brave' page.">
-      This guide helps you understand important choices you have as you use Brave. And it helps you make those choices, so that Brave works the way you want it to.
-    </message>
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_MORE_THAN_A_BROWSER" desc="Title of the 'More than a browser' section of the 'Get the most out of Brave' page.">
-      More than a browser
-    </message>
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_YOUR_DATA_IN_CHROME" desc="Title of the 'Your data in Brave' section of the 'Get the most out of Brave' page.">
-      Your data in Brave
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_YOUR_DATA_IN_CHROME" desc="Title of the 'Your data as you browse' section of the 'Get the most out of Brave' page.">
+      Your data as you browse
     </message>
     <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BEYOND_COOKIES" desc="Title of the 'Beyond cookies' section of the 'Get the most out of Brave' page.">
       Beyond cookies
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_WORK_BETTER_FOR_YOU" desc="Prompt on the link to the 'Get the most out of Brave' page.">
+      How does data help Brave work better for you?
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_SEARCH_HISTORY" desc="Prompt on the link to the 'Get the most out of Brave' page.">
+      How are browsing and search history different?
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_THIRD_PARTY_COOKIES" desc="Prompt on the link to the 'Get the most out of Brave' page.">
+      Why is Brave moving beyond third-party cookies?
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BETTER_WEB_MAKING_THE_WEB" desc="A paragraph that includes 2 bullets.">
+      Making the web work better for you means:
+      &lt;ul&gt;
+        &lt;li&gt;Keeping you safe as you browse, and&lt;/li&gt;
+        &lt;li&gt;Supporting a thriving ecosystem that keeps the web safe, open, fast and free&lt;/li&gt;
+      &lt;/ul&gt;
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BETTER_WEB_SUB_TITLE_CHROME_GIVES_YOU_CHOICE" desc="A subtitle">
+      Brave gives you choice
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BETTER_WEB_YOU_CAN_CUSTOMIZE" desc="A paragraph that includes 3 bullets.       * Bullet 1: Brave supports many Brave services, but it's the user's choice whether they want to use those services, so we include &quot;for those who want it&quot;.">
+      You can customize Brave the way you want:
+      &lt;ul&gt;
+        &lt;li&gt;&lt;em&gt;The best of Brave&lt;/em&gt;, for those who want it. For example, you can choose Brave Search as Brave’s default search engine and use Brave Password Manager to get all your passwords on any device. &lt;/li&gt;
+        &lt;li&gt;&lt;em&gt;Meaningful choice&lt;/em&gt;: Brave offers you choice and control with settings, and information to help you make meaningful decisions.&lt;/li&gt;
+        &lt;li&gt;&lt;em&gt;Extensions&lt;/em&gt;: You can extend Brave functionality with over 100,000 extensions in the Web Store.&lt;/li&gt;
+      &lt;/ul&gt;
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BETTER_WEB_SUB_TITLE_CHROME_SUPPORTS_FREE_WEB" desc="A subtitle">
+      Brave supports a free web
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BETTER_WEB_ADS_CRITICAL" desc="A paragraph that includes 3 bullets.">
+      Ads are critical to many online businesses. They help keep content free online, which helps ensure that anyone can access content. Brave develops ways to let sites show you personalized ads while protecting your privacy.  Done well, advertising benefits everyone on the web because when you see an ad:
+      &lt;ul&gt;
+        &lt;li&gt;You might find something new or interesting&lt;/li&gt;
+        &lt;li&gt;The advertiser might find a new customer&lt;/li&gt;
+        &lt;li&gt;The site you visit earns money by hosting the ad&lt;/li&gt;
+      &lt;/ul&gt;
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BETTER_WEB_ADS_ALSO_SUPPORT" desc="A paragraph that explains how ads support the expense of many Brave services, like Brave, Gmail, maps, and YouTube.">
+      Ads revenue also supports Brave’s many free products and services, like Brave, Gmail, Maps, and YouTube.
     </message>
   </if>
   <if expr="is_macosx">
@@ -121,7 +156,7 @@
     Extract text from PDF
   </message>
   <message name="IDS_SETTINGS_PDF_OCR_SUBTITLE" desc="Subtitle for screen reader pdf ocr feature.">
-    Scan PDF to extract text for the screen reader. Only supported on Brave browser
+    Scan PDF to extract text for assistive technology
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_TITLE" desc="Name of the setting to enable Live Caption feature.">
     Live Caption
@@ -298,12 +333,6 @@
       Show warning before quitting with ⌘Q
     </message>
   </if>
-  <message name="IDS_SETTINGS_READER_MODE" desc="Label for a setting to enable/disable offers to show articles in reader mode">
-    Reader mode for web pages
-  </message>
-  <message name="IDS_SETTINGS_READER_MODE_DESCRIPTION" desc="Description for a setting to enable/disable offers to show articles in reader mode, which is a simplified view of the original page">
-    Offer to show articles in reader mode, when supported
-  </message>
 
   <!-- Common -->
   <message name="IDS_SETTINGS_ADVANCED" desc="Name of the settings page which displays advanced preferences.">
@@ -434,6 +463,9 @@
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_MORE_ACTIONS_FOR_CREDIT_CARD" desc="The (accessibility) title of a button, which brings up a menu of actions that can be taken on a stored credit card. The credit card is described by the credit card nickname or the credit card network and last 4 digits of the card number.">
     More actions for <ph name="CARD_DESCRIPTION">$1<ex>My main card</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_AUTOFILL_MORE_ACTIONS_FOR_CREDIT_CARD_WITH_CVC" desc="The (accessibility) title of a button, which brings up a menu of actions that can be taken on a stored credit card. The credit card is described by the credit card nickname or the credit card network and last 4 digits of the card number along with appending the CVC saved tag.">
+    More actions for <ph name="CARD_DESCRIPTION">$1<ex>My main card</ex></ph>, CVC saved
   </message>
   <message name="IDS_AUTOFILL_ADD_VIRTUAL_CARD" desc="The text shown in the secondary action menu button to enroll a card in the virtual card feature. Virtual cards are credit cards generated from the actual cards and provide extra security.">
     Turn on virtual card
@@ -1350,6 +1382,9 @@
   <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_TITLE" desc="Name of the standard preloading option for the Preload Pages settings page. This option enables preloading pages that Brave believes the user is likely to navigate to.">
     Standard preloading
   </message>
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_EXPAND_A11Y_LABEL" desc="This text is read by screenreaders and helps users find more info about the standard preloading option.">
+    More info about turning on standard preloading
+  </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_SUMMARY" desc="Short explanation of what the standard preloading mode does in the Preload Pages setting.">
     Some of the pages you visit are preloaded
   </message>
@@ -1361,6 +1396,9 @@
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_SUMMARY" desc="Subtitle for Preload Pages extended preloading mode. Informs the user about which preloading setting is being described on this page.">
     More pages are preloaded. Pages may be preloaded through Brave servers when requested by other sites.
+  </message>
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_EXPAND_A11Y_LABEL" desc="This text is read by screenreaders and helps users find more info about the extended preloading option.">
+    More info about turning on extended preloading
   </message>
   <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_WHEN_ON_BULLET_ONE" desc="Bullet point in the extended preloading and when on column. Informs the user about what the extended preloading setting does.">
     Browsing and searching is faster than standard preloading
@@ -1659,6 +1697,12 @@
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_PRIVACY_SANDBOX_LABEL" desc="Text of the Privacy Sandbox label in the completion card of the 'Privacy Guide'.">
     Ad privacy
   </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_TRACKING_PROTECTION_LABEL" desc="Text of the Tracking Protection label in the completion card of the 'Privacy Guide'." translateable="false">
+    Tracking Protection
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_TRACKING_PROTECTION_SUB_LABEL" desc="Text of the Tracking Protection sub-label in the completion card of the 'Privacy Guide'." translateable="false">
+    Manage your tracking protections to make your experience more private on the web
+  </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_WAA_LABEL" desc="Text of the Web and App Activity label in the completion card of the 'Privacy Guide'.">
     Web &amp; App Activity
   </message>
@@ -1922,8 +1966,8 @@
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_EXTENSIONS" desc="This text describes that potentially harmful extensions need to be reviewed by the user. The placeholder will be a numeral.">
     {NUM_EXTENSIONS, plural,
-     =1 {Review 1 extension that was taken down from the Web Store}
-     other {Review {NUM_EXTENSIONS} extensions that were taken down from the Web Store}}
+     =1 {Review 1 extension that may be unsafe}
+     other {Review {NUM_EXTENSIONS} extensions that may be unsafe}}
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_PRIMARY_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is the header of the module in the site settings notification page. The number represents the number of notification permissions to be reviewed.">
     {NUM_SITES, plural,
@@ -2554,7 +2598,7 @@
     Not allowed to automatically download multiple files
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTO_PICTURE_IN_PICTURE_DESCRIPTION" desc="Description of the auto-picture-in-picture content setting.">
-    Sites use this setting to enter picture-in-picture automatically. This lets you continue watching a video, while freeing up your screen for other tasks.
+    Sites use this feature to enter picture-in-picture automatically. This lets you continue watching a video, while freeing up your screen for other tasks.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTO_PICTURE_IN_PICTURE_ALLOWED" desc="Label for the enabled option of the auto-picture-in-picture content setting.">
     Sites can enter picture-in-picture automatically
@@ -2594,6 +2638,21 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_BLOCKED" desc="Label for the disabled option of the bluetooth devices site setting.">
     Don't allow sites to connect to Bluetooth devices
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_DESCRIPTION" desc="Description of the Captured Surface Control content setting.">
+    Sites use this feature to scroll and zoom shared tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_ALLOWED" desc="Label for the enabled option of the Captured Surface Control content setting.">
+    Sites can ask to scroll and zoom shared tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_BLOCKED" desc="Label for the disabled option of the Captured Surface Control content setting.">
+    Don't allow sites to scroll and zoom shared tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the Captured Surface Control content setting.">
+    Allowed to scroll and zoom shared tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAPTURED_SURFACE_CONTROL_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the Captured Surface Control content setting.">
+    Not allowed to scroll and zoom shared tabs
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_DESCRIPTION" desc="Description of the camera content setting.">
     Sites usually use your video camera for communication features like video chatting
@@ -2686,16 +2745,13 @@
     Not allowed to use fonts installed on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_FULLSCREEN_DESCRIPTION" desc="Label explaining the automatic fullscreen content setting.">
-    Sites use this setting to offer immersive fullscreen experiences regardless of user gestures
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_FULLSCREEN_BLOCK" desc="Label explaining that automatic fullscreen is blocked by default, meaning a user gesture is required.">
-    Entering fullscreen requires a user gesture by default
+    Sites use this feature to enter full screen automatically. Typically, entering full screen requires user interaction.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_FULLSCREEN_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the automatic fullscreen content setting.">
-    Allowed to enter fullscreen automatically
+    Allowed to enter full screen automatically
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_FULLSCREEN_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the automatic fullscreen content setting.">
-    Not allowed to enter fullscreen automatically
+    Not allowed to enter full screen automatically
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_DESCRIPTION" desc="Description of the hid devices site setting.">
     Sites usually connect to HID devices for features that use uncommon keyboards, game controllers, and other devices
@@ -2762,6 +2818,21 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_JIT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the JavaScript optimizer content setting.">
     Not allowed to use V8 optimizer
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_DESCRIPTION" desc="Description of the keyboard lock content setting.">
+    Sites use keyboard lock to capture keyboard input that would otherwise be handled by the browser or the operating system.
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_ALLOWED" desc="Label for the enabled option of the keyboard lock content setting.">
+    Sites can ask to lock your keyboard
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_BLOCKED" desc="Label for the disabled option of the keyboard lock content setting.">
+    Don't allow sites to lock your keyboard
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the keyboard lock content setting.">
+    Allowed to lock your keyboard
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the keyboard lock content setting.">
+    Not allowed to lock your keyboard
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_DESCRIPTION" desc="Description of the location content setting.">
     Sites usually use your location for relevant features or info, like local news or nearby shops
@@ -2888,6 +2959,21 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PDFS_ALLOWED" desc="Label for the enabled option of the pdfs content setting.">
     Download PDFs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_DESCRIPTION" desc="Description of the pointer lock content setting.">
+    Sites use pointer lock to hide the mouse pointer and prevent it from leaving the page.
+  </message>
+    <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_ALLOWED" desc="Label for the enabled option of the pointer lock content setting.">
+    Sites can ask to lock your mouse pointer
+  </message>
+    <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_BLOCKED" desc="Label for the disabled option of the pointer lock content setting.">
+    Don't allow sites to lock your pointer
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the pointer lock content setting.">
+    Allowed to lock your pointer
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the pointer lock content setting.">
+    Not allowed to lock your pointer
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_DESCRIPTION" desc="Description of the pop-ups content setting.">
     Sites might send pop-ups to show ads, or use redirects to lead you to websites you may not want to visit
@@ -3763,6 +3849,18 @@
   </message>
   <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_TITLE" desc="Title of the personalize Brave services section. When clicked, takes the user to the Brave Activity Controls.">
     Control how your browsing history is used to personalize Search and more
+  </message>
+  <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_TITLE_V2" desc="This is the title of a setting that directs users to other settings where they can control how Brave history can be used to personalize other Brave services. This title appears in Brave's Advanced Sync settings, before the 'To get personalization and other features' string.">
+    Control how browsing history is used with your other data across Brave services
+  </message>
+  <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_WAA_TITLE" desc="This string is found on a link in Brave's Advanced Sync settings. When the user taps it, the link takes the user to 'Web &amp; App Activity' in the Brave sync chain's Activity Controls. This text should match the branded term 'Web &amp; App Activity' in Glossary Manager: https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=77d3b75.">
+    Web &amp; App Activity
+  </message>
+  <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_LINKED_SERVICES_TITLE" desc="This string is found on a link in Brave's Advanced Sync settings. When the user taps it, the link takes the user to 'Linked Brave services' in the Brave sync chain's Data &amp; privacy settings. The link is on a setting that users see in Brave's Advanced Sync settings. This text should match the branded term 'linked Brave services' in Glossary Manager: https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=517bace2.">
+    Linked Brave services
+  </message>
+  <message name="IDS_SETTINGS_SIGNIN_CHROME_SIGNIN_OPTION_ALWAYS_ASK" translateable="false" desc="One of three options for the setting is called 'Sign in to Brave when you sign in to other Brave services'. When the user chooses this option, the user will be asked whether they want to sign in to Brave after they sign in to a Brave service (like Gmail) using Brave. The verb tense should be descriptive, not imperative.">
+    Ask me every time
   </message>
 
   <if expr="not is_chromeos">

@@ -14,6 +14,8 @@
   </if>
   <if expr="is_ios or is_android or enable_vr">
     </if>
+  <if expr="is_android">
+    </if>
   <if expr="use_titlecase">
     <then>
       </then>
