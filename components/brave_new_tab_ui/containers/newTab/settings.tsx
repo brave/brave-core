@@ -119,7 +119,7 @@ export default function Settings(props: Props) {
   // When the outside world tells us to update the active tab, do so.
   React.useEffect(() => {
     if (!props.setActiveTab || !allowedTabTypes.includes(props.setActiveTab)) return
-    setActiveTab(props.setActiveTab)
+    changeTab(props.setActiveTab)
   }, [props.setActiveTab])
 
   // Set the global listeners
