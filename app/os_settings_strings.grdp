@@ -641,11 +641,11 @@
   <message name="IDS_SETTINGS_SUGGESTIONS_MANAGE_PERSONAL_INFO" desc="The label for opening Brave's browser settings page for managing personal addresses">
     Manage personal information
   </message>
-  <message name="IDS_OS_SETTINGS_SUGGESTIONS_ORCA_TITLE" desc="The label for orca" translateable="false">
+  <message name="IDS_OS_SETTINGS_SUGGESTIONS_ORCA_TITLE" desc="The label for Help me write settings">
     Help me write
   </message>
-  <message name="IDS_OS_SETTINGS_SUGGESTIONS_ORCA_DESCRIPTION" desc="The description for orca" translateable="false">
-    Create a draft or refine existing work, powered by Google AI.
+  <message name="IDS_OS_SETTINGS_SUGGESTIONS_ORCA_DESCRIPTION" desc="The description for Help me write settings">
+    Right-click in a text box to create a draft or refine existing work, powered by Google AI. Currently has limited availability.
   </message>
   <message name="IDS_SETTINGS_SUGGESTIONS_EMOJI_SUGGESTION_TITLE" desc="The label for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
     Emoji suggestions
@@ -972,6 +972,9 @@
   <message name="IDS_OS_SETTINGS_PERSONALIZATION_MENU_ITEM_DESCRIPTION" desc="Description for the Personalization menu item in the left menu.">
     Dark theme, screen saver
   </message>
+  <message name="IDS_OS_SETTINGS_PERSONALIZATION_MENU_ITEM_DESCRIPTION_GUEST_MODE" desc="Description for the Personalization menu item in the left menu, for guest mode.">
+    Dark theme
+  </message>
   <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB" desc="Title for the link to open personalization hub.">
     Set your wallpaper &amp; style
   </message>
@@ -980,6 +983,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_OPEN_PERSONALIZATION_HUB_SUBTITLE" desc="Description for the link to open personalization hub.">
     Personalize wallpaper, screen saver, dark theme, and more
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_OPEN_PERSONALIZATION_HUB_SUBTITLE_GUEST_MODE" desc="Description for the link to open personalization hub in guest mode.">
+    Personalize wallpaper, dark theme, and more
   </message>
 
   <!-- Search and Assistant section. -->
@@ -4252,8 +4258,14 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_NO_NETWORKS" desc="Entry when there are no preferred networks or no networks of a particular type.">
     None
   </message>
-  <message name="IDS_SETTINGS_INTERNET" desc="Name of the settings page which displays internet preferences.">
+  <message name="IDS_SETTINGS_INTERNET_LEGACY" desc="Name of the settings page which displays internet preferences.">
     Network
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NO_TETHER_HOSTS" desc="Entry when there are no available tether hosts nearby.">
+    No available hotspots
+  </message>
+  <message name="IDS_SETTINGS_INTERNET" desc="Name of the settings page which displays internet preferences.">
+    Internet
   </message>
   <message name="IDS_SETTINGS_INTERNET_HOTSPOT" desc="Name of the settings page which displays hotspot preferences.">
     Hotspot
@@ -5619,6 +5631,12 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_DISPLAY_BRIGHTNESS_LABEL" desc="In Device Settings &gt; Displays, the label for setting the screen brightness of the selected display." translateable="false">
     Display brightness
   </message>
+  <message name="IDS_SETTINGS_DISPLAY_AUTO_BRIGHTNESS_TOGGLE_LABEL" desc="In Device Settings &gt; Displays, the label for toggling automatic display brightness for the selected display." translateable="false">
+    Automatically adjust display brightness
+  </message>
+  <message name="IDS_SETTINGS_DISPLAY_AUTO_BRIGHTNESS_TOGGLE_SUBTITLE" desc="In Device Settings &gt; Displays, the subtitle under the label for toggling automatic display brightness for the selected display." translateable="false">
+    Adjust brightness based on your environment
+  </message>
   <message name="IDS_SETTINGS_DISPLAY_MIRROR" desc="In Device Settings &gt; Displays, the label for the control for mirroring.">
     Mirror <ph name="DISPLAY_NAME">$1<ex>HP Z27n</ex></ph>
   </message>
@@ -6001,6 +6019,13 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_DISABLED" desc="In keyboard remap keys subpage, the dropdown list item for a disabled key.">
     Disabled
   </message>
+   <!-- TODO(b:329880993): Translate following strings before launch. -->
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_RIGHT_ALT" translateable="false" desc="In keyboard remap keys subpage, the dropdown list item for a right alt key.">
+    right alt
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_FUNCTION" translateable="false" desc="In keyboard remap keys subpage, the dropdown list item for a function key.">
+    function
+  </message>
   <message name="IDS_SETTINGS_PER_DEVICE_CONNECTED_A11Y_LABEL" desc="The message announced to screen readers when a device is connected.">
     <ph name="DEVICE_NAME">$1<ex>Internal Keyboard</ex></ph> has been connected
   </message>
@@ -6066,6 +6091,22 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_KEYBOARD_SEND_FUNCTION_KEYS" desc="In Device Settings, the checkbox label for interpreting the top-row keys as function keys instead.">
     Treat top-row keys as function keys
   </message>
+  <!-- TODO(b/329861823) Finalize and translate these strings -->
+  <message name="IDS_SETTINGS_KEYBOARD_COLORS" translateable="false" desc="In Device Settings, the direct link from Keyboard Settings to Personalization Hub's RGB keyboard control">
+    Keyboard Colors
+  </message>
+  <!-- TODO(b/329861823) Finalize and translate these strings -->
+  <message name="IDS_SETTINGS_KEYBOARD_BRIGHTNESS_LABEL" translateable="false" desc="The label for setting the keyboard brightness.">
+    Keyboard brightness
+  </message>
+  <!-- TODO(b/329861823) Finalize and translate these strings -->
+  <message name="IDS_SETTINGS_KEYBOARD_AUTO_BRIGHNTESS_ENABLE_LABEL" translateable="false" desc="The label for setting the keyboard auto brightness enabled.">
+    Automatically adjust brightness
+  </message>
+  <!-- TODO(b/329861823) Finalize and translate these strings -->
+  <message name="IDS_SETTINGS_KEYBOARD_AUTO_BRIGHNTESS_ENABLE_SUB_LABEL" translateable="false" desc="The sub-label for setting the keyboard auto brightness enabled.">
+    Adjust keyboard backlight based on surrounding light levels
+  </message>
   <message name="IDS_SETTINGS_KEYBOARD_AUTO_REPEAT_ENABLE" desc="The checkbox label for enabling keyboard auto-repeat.">
     Press and hold to automatically repeat the key
   </message>
@@ -6107,6 +6148,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_KEY_SEARCH" desc="In Device Settings, the label and dropdown list item for the Search key.">
     Search
+  </message>
+  <message name="IDS_SETTINGS_SPLIT_MODIFIER_KEYBOARD_SEND_FUNCTION_KEYS_LAYOUT_DESCRIPTION" translateable="false" desc="In split modifier keyboard, the label describing how to use the top-row keys' original actions when they are set to behave like function keys.">
+    Press the Fn key to switch the behavior of top-row keys
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_SEND_FUNCTION_KEYS_LAYOUT2_DESCRIPTION" desc="In Device Settings, when device uses 2017 keyboard layout, the label describing how to use the top-row keys' original actions when they are set to behave like function keys.">
     Hold the Launcher key to switch the behavior of the top-row keys
@@ -6246,6 +6290,12 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   </message>
   <message name="IDS_OS_SETTINGS_APP_LANGUAGE_DIALOG_UPDATE_BUTTON_TEXT" desc="The dialog confirm button to update app language with selected locale.">
     Update
+  </message>
+  <message name="IDS_OS_SETTINGS_APP_PARENTAL_CONTROLS_LABEL" desc="The label for the settings row that takes the user to a page for setting up on-device parental controls for apps.">
+    Parental controls
+  </message>
+  <message name="IDS_OS_SETTINGS_APP_PARENTAL_CONTROLS_SUBLABEL" desc="The sublabel that describes the feature where users can set up on-device parental controls to block or enable apps.">
+    Manage access and block apps on this Chromebook.
   </message>
 
    <!-- Apps > Manage your apps > Borealis -->
@@ -6405,6 +6455,12 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_OS_SETTINGS_REVAMP_ENABLE_SUGGESTED_CONTENT_DESCRIPTION" desc="The description of the checkbox to enable/disable Suggested Content in ChromeOS settings. Suggested Content includes app search recommendations and website recommendations which can show up in places such as the launcher search and suggestion chips.">
   See suggestions for new apps and web content in Launcher and search results. Sends statistics to improve suggestions only if you have chosen to send crash reports and diagnostics and usage data to ChromeOS.
   </message>
+  <message name="IDS_OS_SETTINGS_ENABLE_MAHI" desc="The label of the checkbox to enable/disable Mahi in ChromeOS settings." translateable="false">
+    Mahi
+  </message>
+  <message name="IDS_OS_SETTINGS_ENABLE_MAHI_DESCRIPTION" desc="The description of the checkbox to enable/disable Mahi in ChromeOS settings." translateable="false">
+    Use Mahi in ChromeOS.
+  </message>
   <message name="IDS_SETTINGS_ENABLE_CONTENT_PROTECTION_ATTESTATION" desc="description label for verified access about premium contents">
     Enable Verified Access
   </message>
@@ -6546,7 +6602,7 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_GEOLOCATION_ACCESS_LEVEL_ALLOWED" desc="In Geolocation setting subpage (under Privacy Controls), Dropdown list item to set system-wide geolocation access level. ">
     Allowed
   </message>
-    <message name="IDS_OS_SETTINGS_PRIVACY_HUB_GEOLOCATION_ACCESS_LEVEL_ONLY_ALLOWED_FOR_SYSTEM" desc="In Geolocation setting subpage (under Privacy Controls), Dropdown list item to set system-wide geolocation access level. Blocks access to all clients but system-services (such as PWAs or Android apps).">
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_GEOLOCATION_ACCESS_LEVEL_ONLY_ALLOWED_FOR_SYSTEM" desc="In Geolocation setting subpage (under Privacy Controls), Dropdown list item to set system-wide geolocation access level. Blocks access to all clients but system-services (such as PWAs or Android apps).">
     Only allowed for system services
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_GEOLOCATION_ACCESS_LEVEL_DISALLOWED" desc="In Geolocation setting subpage (under Privacy Controls), Dropdown list item to set system-wide geolocation access level. Blocks geolocation access to every geolocation client (including system services).">
