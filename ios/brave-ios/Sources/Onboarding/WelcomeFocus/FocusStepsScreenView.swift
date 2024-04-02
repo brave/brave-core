@@ -114,11 +114,23 @@ struct FocusStepsView: View {
 
   private var stepsContentView: some View {
     VStack {
-      Image("focus-icon-brave", bundle: .module)
-        .resizable()
-        .matchedGeometryEffect(id: "icon", in: namespace)
-        .frame(width: 78, height: 78)
+      if shouldUseExtendedDesign {
+        HStack {
+          Image("focus-icon-brave", bundle: .module)
+            .resizable()
+            .matchedGeometryEffect(id: "icon", in: namespace)
+            .frame(width: 78, height: 78)
 
+          Image("focus-brave-watermark", bundle: .module)
+            .resizable()
+            .frame(width: 111, height: 31)
+        }
+      } else {
+        Image("focus-icon-brave", bundle: .module)
+          .resizable()
+          .matchedGeometryEffect(id: "icon", in: namespace)
+          .frame(width: 78, height: 78)
+      }
       VStack(spacing: 0) {
         FocusStepsHeaderTitleView(activeIndex: $indicatorIndex)
           .padding(.bottom, 24)
