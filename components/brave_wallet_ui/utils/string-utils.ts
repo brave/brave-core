@@ -10,8 +10,14 @@ import { loadTimeData } from '../../common/loadTimeData'
 export const stripChromeImageURL = (url?: string) =>
   url?.replace('chrome://image?', '')
 
-export const stripERC20TokenImageURL = (url?: string) =>
-  url?.replace('chrome://erc-token-images/', '')
+export const stripERC20TokenImageURL = <T extends string | undefined>(
+  url?: T
+): T => {
+  if (url) {
+    return url.replace('chrome://erc-token-images/', '') as T
+  }
+  return undefined as T
+}
 
 export const toProperCase = (value: string) =>
   value.replace(

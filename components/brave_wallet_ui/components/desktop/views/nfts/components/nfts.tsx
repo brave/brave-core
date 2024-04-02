@@ -47,6 +47,7 @@ import { getAssetIdKey } from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
 import { makePortfolioAssetRoute } from '../../../../../utils/routes-utils'
 import {
+  selectAllVisibleUserNFTsFromQueryResult,
   selectHiddenNftsFromQueryResult //
 } from '../../../../../common/slices/entities/blockchain-token.entity'
 
@@ -137,8 +138,7 @@ export const Nfts = (props: Props) => {
   // hooks
   const history = useHistory()
   const dispatch = useDispatch()
-  const { nonFungibleTokens, isIpfsBannerVisible, onToggleShowIpfsBanner } =
-    useNftPin()
+  const { isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
   const urlSearchParams = useQuery()
   const tab = urlSearchParams.get('tab')
   const selectedTab: NftDropdownOptionId =
@@ -148,15 +148,14 @@ export const Nfts = (props: Props) => {
   const { data: isNftAutoDiscoveryEnabled } =
     useGetNftDiscoveryEnabledStatusQuery()
   const { data: simpleHashSpamNfts = [] } = useGetSimpleHashSpamNftsQuery()
-  const { userTokensRegistry, hiddenNfts } = useGetUserTokensRegistryQuery(
-    undefined,
-    {
+  const { userTokensRegistry, hiddenNfts, visibleNfts } =
+    useGetUserTokensRegistryQuery(undefined, {
       selectFromResult: (result) => ({
         userTokensRegistry: result.data,
+        visibleNfts: selectAllVisibleUserNFTsFromQueryResult(result),
         hiddenNfts: selectHiddenNftsFromQueryResult(result)
       })
-    }
-  )
+    })
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
@@ -477,7 +476,7 @@ export const Nfts = (props: Props) => {
     >
       {isNftPinningFeatureEnabled &&
       isIpfsBannerVisible &&
-      nonFungibleTokens.length > 0 ? (
+      visibleNfts.length > 0 ? (
         <Row
           justifyContent='center'
           alignItems='center'
@@ -528,7 +527,7 @@ export const Nfts = (props: Props) => {
               <PortfolioActionButton onClick={() => setShowSearchBar(true)}>
                 <ButtonIcon name='search' />
               </PortfolioActionButton>
-              {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 ? (
+              {isNftPinningFeatureEnabled && visibleNfts.length > 0 ? (
                 <PortfolioActionButton onClick={onClickIpfsButton}>
                   <ButtonIcon name='product-ipfs-outline' />
                 </PortfolioActionButton>
