@@ -39,7 +39,7 @@ export default function ToolsButtonMenu() {
       <div className={styles.menuSectionTitle}>Quick actions</div>
       <leo-menu-item
         onClick={() =>
-          context.setUserActionType(
+          context.handleActionTypeClick(
             mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG
           )
         }

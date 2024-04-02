@@ -45,12 +45,12 @@ function InputBox () {
 
   return (
     <form className={styles.form}>
-      {context.userActionType && (
+      {context.selectedActionType && (
         <div className={styles.actionsLabelContainer}>
          <ActionTypeLabel
           removable={true}
-          actionType={context.userActionType}
-          onCloseClick={() => { context.setUserActionType(undefined) }}
+          actionType={context.selectedActionType}
+          onCloseClick={context.resetActionType}
          />
         </div>
       )}

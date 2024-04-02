@@ -45,7 +45,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [showAgreementModal, setShowAgreementModal] = React.useState(false)
   const [shouldSendPageContents, setShouldSendPageContents] = React.useState(true)
   const [inputText, setInputText] = React.useState('')
-  const [userActionType, setUserActionType] = React.useState<mojom.ActionType | undefined>()
+  const [selectedActionType, setSelectedActionType] = React.useState<mojom.ActionType | undefined>()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -217,6 +217,14 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.retryAPIRequest()
   }
 
+  const resetActionType = () => {
+    setSelectedActionType(undefined)
+  }
+
+  const handleActionTypeClick = (actionType: mojom.ActionType) => {
+    setSelectedActionType(actionType)
+  }
+
   const submitInputTextToAPI = () => {
     if (!inputText) return
     if (isCharLimitExceeded) return
@@ -314,6 +322,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     isCharLimitExceeded,
     isCharLimitApproaching,
     inputTextCharCountDisplay,
+    selectedActionType,
     setCurrentModel,
     switchToBasicModel,
     goPremium,
@@ -329,6 +338,8 @@ function DataContextProvider (props: DataContextProviderProps) {
     handleMaybeLater,
     handleSwitchToBasicModelAndRetry,
     submitInputTextToAPI,
+    resetActionType,
+    handleActionTypeClick,
   }
 
   return (

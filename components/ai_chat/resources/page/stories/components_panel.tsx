@@ -215,10 +215,19 @@ export default {
       const shouldDisableUserInput = apiHasError || isGenerating
       const currentModel = MODELS.find(m => m.name === options.args.model)
       const [inputText, setInputText] = useState('')
+      const [selectedActionType, setSelectedActionType] = useState<mojom.ActionType | undefined>(undefined)
 
       const switchToBasicModel = () => {
         const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
         setArgs({ model: nonPremiumModel })
+      }
+
+      const resetActionType = () => {
+        setSelectedActionType(undefined)
+      }
+
+      const handleActionTypeClick = (actionType: mojom.ActionType) => {
+        setSelectedActionType(actionType)
       }
 
       const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
@@ -254,6 +263,9 @@ export default {
         isCharLimitExceeded,
         isCharLimitApproaching,
         inputTextCharCountDisplay,
+        selectedActionType,
+        resetActionType,
+        handleActionTypeClick,
       }
 
       return (
