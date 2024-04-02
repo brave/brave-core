@@ -64,7 +64,12 @@ struct FocusStepsView: View {
           FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(braveSystemName: .pageBackground))
+        .background {
+          Image("focus-background-large", bundle: .module)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .opacity(0.20)
+        }
         .background {
           NavigationLink("", isActive: $isP3AViewPresented) {
             FocusP3AScreenView(
