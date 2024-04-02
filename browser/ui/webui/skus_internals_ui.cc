@@ -98,14 +98,12 @@ void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
   auto* profile = Profile::FromWebUI(web_ui());
   if (!brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())) {
     dict.Set("Order", base::Value::Dict{});
-    return dict;
+  } else {
+    auto order_info = GetOrderInfo("vpn.");
+    order_info.Set(
+        "env", local_state_->GetString(brave_vpn::prefs::kBraveVPNEnvironment));
+    dict.Set("Order", order_info);
   }
-
-  auto order_info = GetOrderInfo("vpn.");
-  order_info.Set(
-      "env", local_state_->GetString(brave_vpn::prefs::kBraveVPNEnvironment));
-
-  dict.Set("Order", order_info);
 #endif
   std::string result;
   base::JSONWriter::Write(dict, &result);
