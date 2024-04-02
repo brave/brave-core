@@ -505,11 +505,14 @@ class NewTabPageViewController: UIViewController {
       self?.showAndFadeInCollectionView(animated: animated)
     }
     videoBackgroundController.playFinishedEvent = { [weak self] in
+      self?.reportSponsoredImageBackgroundEvent(.media100)
       self?.showAndFadeInCollectionView(animated: true)
     }
     videoBackgroundController.playStartedEvent = { [weak self] in
+      self?.reportSponsoredImageBackgroundEvent(.mediaPlay)
     }
     videoBackgroundController.played25PercentEvent = { [weak self] in
+      self?.reportSponsoredImageBackgroundEvent(.media25)
     }
   }
 
@@ -592,6 +595,9 @@ class NewTabPageViewController: UIViewController {
         switch event {
         case .clicked: return .tapped
         case .viewedImpression: return .viewed
+        case .mediaPlay: return .mediaPlay
+        case .media25: return .media25
+        case .media100: return .media100
         default: return nil
         }
       }()

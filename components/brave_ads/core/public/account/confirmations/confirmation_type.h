@@ -44,7 +44,16 @@ enum class ConfirmationType {
   kDislikedAd,
 
   // When the user converts on an ad.
-  kConversion
+  kConversion,
+
+  // When the user clicks on a new tab page video ad play button.
+  kMediaPlay,
+
+  // When the user viewed 25% of a new tab page video ad.
+  kMedia25,
+
+  // When the user viewed 100% of a new tab page video ad.
+  kMedia100,
 };
 
 // Returns a `ConfirmationType` value based on the string input.

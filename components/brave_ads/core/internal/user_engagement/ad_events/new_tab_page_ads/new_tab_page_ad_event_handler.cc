@@ -171,6 +171,21 @@ void NewTabPageAdEventHandler::NotifyDidFireNewTabPageAdEvent(
       delegate_->OnDidFireNewTabPageAdClickedEvent(ad);
       break;
     }
+
+    case mojom::NewTabPageAdEventType::kMediaPlay: {
+      delegate_->OnDidFireNewTabPageAdMediaPlayEvent(ad);
+      break;
+    }
+
+    case mojom::NewTabPageAdEventType::kMedia25: {
+      delegate_->OnDidFireNewTabPageAdMedia25Event(ad);
+      break;
+    }
+
+    case mojom::NewTabPageAdEventType::kMedia100: {
+      delegate_->OnDidFireNewTabPageAdMedia100Event(ad);
+      break;
+    }
   }
 }
 

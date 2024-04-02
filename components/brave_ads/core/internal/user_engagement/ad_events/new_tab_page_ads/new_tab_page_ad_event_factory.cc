@@ -6,6 +6,9 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_media_100.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_media_25.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_media_play.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_served.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
@@ -25,6 +28,18 @@ NewTabPageAdEventFactory::Build(const mojom::NewTabPageAdEventType event_type) {
 
     case mojom::NewTabPageAdEventType::kClicked: {
       return std::make_unique<NewTabPageAdEventClicked>();
+    }
+
+    case mojom::NewTabPageAdEventType::kMediaPlay: {
+      return std::make_unique<NewTabPageAdEventMediaPlay>();
+    }
+
+    case mojom::NewTabPageAdEventType::kMedia25: {
+      return std::make_unique<NewTabPageAdEventMedia25>();
+    }
+
+    case mojom::NewTabPageAdEventType::kMedia100: {
+      return std::make_unique<NewTabPageAdEventMedia100>();
     }
   }
 }

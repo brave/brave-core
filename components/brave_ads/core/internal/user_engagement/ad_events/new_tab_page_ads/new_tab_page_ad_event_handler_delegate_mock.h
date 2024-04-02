@@ -43,6 +43,10 @@ class NewTabPageAdEventHandlerDelegateMock
               (const NewTabPageAdInfo& ad));
 
   MOCK_METHOD(void,
+              OnDidFireNewTabPageAdMediaPlayEvent,
+              (const NewTabPageAdInfo& ad));
+
+  MOCK_METHOD(void,
               OnFailedToFireNewTabPageAdEvent,
               (const std::string& placement_id,
                const std::string& creative_instance_id,
