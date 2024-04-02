@@ -11,6 +11,7 @@ import android.content.res.ColorStateList;
 import androidx.annotation.ColorInt;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import org.chromium.chrome.browser.tab_ui.TabUiThemeUtils;
 import org.chromium.chrome.tab_ui.R;
 
 public class BraveTabUiThemeProvider {
@@ -31,7 +32,7 @@ public class BraveTabUiThemeProvider {
             return context.getColor(R.color.baseline_neutral_10);
         }
 
-        return TabUiThemeProvider.getTitleTextColor(context, isIncognito, isSelected);
+        return TabUiThemeUtils.getTitleTextColor(context, isIncognito, isSelected);
     }
 
     public static ColorStateList getActionButtonTintList(
@@ -50,6 +51,6 @@ public class BraveTabUiThemeProvider {
             return context.getColor(R.color.brave_tab_view_card_selected_bg);
         }
 
-        return TabUiThemeProvider.getCardViewBackgroundColor(context, isIncognito, isSelected);
+        return TabUiThemeUtils.getCardViewBackgroundColor(context, isIncognito, isSelected);
     }
 }

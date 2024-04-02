@@ -20,6 +20,7 @@ android_library("java") {
     "//chrome/browser/commerce/merchant_viewer/android:java",
     "//chrome/browser/flags:java",
     "//chrome/browser/preferences:java",
+    "//chrome/browser/tab_ui/android:java",
     "//chrome/browser/tabmodel:java",
     "//chrome/browser/ui/android/layouts:java",
     "//chrome/browser/ui/android/theme:java",

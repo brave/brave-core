@@ -10,19 +10,20 @@ import org.objectweb.asm.ClassVisitor;
 public class BraveTabUiThemeProviderClassAdapter extends BraveClassVisitor {
     static String sTabUiThemeProviderClassName =
             "org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider";
+    static String sTabUiThemeUtilsClassName = "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils";
     static String sBraveTabUiThemeProviderClassName =
             "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider";
 
     public BraveTabUiThemeProviderClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(sTabUiThemeProviderClassName, "getTitleTextColor",
-                sBraveTabUiThemeProviderClassName);
-
         changeMethodOwner(sTabUiThemeProviderClassName, "getActionButtonTintList",
                 sBraveTabUiThemeProviderClassName);
 
-        changeMethodOwner(sTabUiThemeProviderClassName, "getCardViewBackgroundColor",
+        changeMethodOwner(sTabUiThemeUtilsClassName, "getTitleTextColor",
+                sBraveTabUiThemeProviderClassName);
+
+        changeMethodOwner(sTabUiThemeUtilsClassName, "getCardViewBackgroundColor",
                 sBraveTabUiThemeProviderClassName);
     }
 }
