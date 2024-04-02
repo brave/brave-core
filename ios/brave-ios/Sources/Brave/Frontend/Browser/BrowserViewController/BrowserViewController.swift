@@ -361,7 +361,7 @@ public class BrowserViewController: UIViewController {
     }
 
     iapObserver = BraveVPN.iapObserver
-    ntpP3AHelper = .init(p3aUtils: braveCore.p3aUtils)
+    ntpP3AHelper = .init(p3aUtils: braveCore.p3aUtils, rewards: rewards)
 
     super.init(nibName: nil, bundle: nil)
     didInit()
