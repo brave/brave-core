@@ -33,7 +33,6 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/renderer/core/frame/navigator_language.h"
 
 using brave_shields::ControlType;
 using brave_shields::features::kBraveReduceLanguage;

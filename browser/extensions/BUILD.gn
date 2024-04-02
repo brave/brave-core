@@ -160,3 +160,26 @@ group("resources") {
     ]
   }
 }
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "brave_base_local_data_files_browsertest.cc",
+    "brave_base_local_data_files_browsertest.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/constants",
+    "//chrome/browser/extensions",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//net:test_support",
+  ]
+}
