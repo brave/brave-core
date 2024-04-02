@@ -112,8 +112,8 @@ void NewSplitViewForTab(Browser* browser,
 void CloseSplitViewForTab(Browser* browser,
                           std::optional<tabs::TabHandle> tab = std::nullopt);
 // In case |indices| empty, selected tabs will be used.
-void TileSelectedTabs(Browser* browser, const std::vector<int>& indices = {});
-void BreakSelectedTiles(Browser* browser, const std::vector<int>& indices = {});
+void TileTabs(Browser* browser, const std::vector<int>& indices = {});
+void BreakTiles(Browser* browser, const std::vector<int>& indices = {});
 bool IsTabsTiled(Browser* browser, const std::vector<int>& indices = {});
 bool CanTileTabs(Browser* browser, const std::vector<int>& indices = {});
 

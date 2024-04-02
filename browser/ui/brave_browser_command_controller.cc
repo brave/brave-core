@@ -645,10 +645,10 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::CloseSplitViewForTab(&*browser_);
       break;
     case IDC_TILE_TABS:
-      brave::TileSelectedTabs(&*browser_);
+      brave::TileTabs(&*browser_);
       break;
     case IDC_BREAK_TILE:
-      brave::BreakSelectedTiles(&*browser_);
+      brave::BreakTiles(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

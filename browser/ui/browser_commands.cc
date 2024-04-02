@@ -928,9 +928,9 @@ void CloseSplitViewForTab(Browser* browser,
                             CLOSE_USER_GESTURE);
 }
 
-void TileSelectedTabs(Browser* browser, const std::vector<int>& indices) {
+void TileTabs(Browser* browser, const std::vector<int>& indices) {
   if (indices.empty()) {
-    return TileSelectedTabs(browser, GetSelectedIndices(browser));
+    return TileTabs(browser, GetSelectedIndices(browser));
   }
 
   CHECK_LE(indices.size(), 2u);
@@ -942,7 +942,7 @@ void TileSelectedTabs(Browser* browser, const std::vector<int>& indices) {
     CHECK_NE(indices[0], active_tab_index);
     auto new_indices = indices;
     new_indices.push_back(active_tab_index);
-    return TileSelectedTabs(browser, new_indices);
+    return TileTabs(browser, new_indices);
   }
 
   auto* model = browser->tab_strip_model();
@@ -961,9 +961,9 @@ void TileSelectedTabs(Browser* browser, const std::vector<int>& indices) {
       std::make_pair(model->GetTabHandleAt(tab1), model->GetTabHandleAt(tab2)));
 }
 
-void BreakSelectedTiles(Browser* browser, const std::vector<int>& indices) {
+void BreakTiles(Browser* browser, const std::vector<int>& indices) {
   if (indices.empty()) {
-    return BreakSelectedTiles(browser, GetSelectedIndices(browser));
+    return BreakTiles(browser, GetSelectedIndices(browser));
   }
 
   auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);

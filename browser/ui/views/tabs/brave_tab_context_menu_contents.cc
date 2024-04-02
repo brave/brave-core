@@ -281,11 +281,11 @@ void BraveTabContextMenuContents::CloseSplitView() {
 }
 
 void BraveTabContextMenuContents::TileSelectedTabs() {
-  brave::TileSelectedTabs(browser_, GetTabIndicesForSplitViewCommand());
+  brave::TileTabs(browser_, GetTabIndicesForSplitViewCommand());
 }
 
 void BraveTabContextMenuContents::BreakSelectedTile() {
-  brave::BreakSelectedTiles(browser_, GetTabIndicesForSplitViewCommand());
+  brave::BreakTiles(browser_, GetTabIndicesForSplitViewCommand());
 }
 
 std::vector<int> BraveTabContextMenuContents::GetTabIndicesForSplitViewCommand()
