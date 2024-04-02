@@ -65,8 +65,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void OnInterceptedPageContentChanged() override;
 
   // This will be called when print preview has been composited into image per
-  // page.
-  void OnPreviewReady(const std::optional<std::vector<SkBitmap>>&);
+  // page and finish OCR.
+  void OnPreviewTextReady(std::string ocr_text);
+
+  uint32_t GetMaxPageContentLength();
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -121,8 +123,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void BindPageContentExtractorReceiver(
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
           receiver);
-
-  uint32_t GetMaxPageContentLength();
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 

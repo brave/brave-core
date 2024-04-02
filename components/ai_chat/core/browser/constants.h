@@ -17,7 +17,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings();
 extern const base::fixed_flat_set<std::string_view, 1>
     kPrintPreviewRetrievalHosts;
 
-constexpr uint8_t kMaxPreviewPages = 20;
+inline constexpr uint8_t kMaxPreviewPages = 20;
 
 }  // namespace ai_chat
 

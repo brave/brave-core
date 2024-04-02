@@ -18,9 +18,11 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/models.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/pdf/pdf_pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -37,6 +39,7 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
 #include "chrome/browser/printing/print_preview_data_service.h"
 #include "chrome/browser/printing/print_view_manager_common.h"
 #include "chrome/browser/printing/printing_service.h"
@@ -66,6 +69,107 @@ namespace ai_chat {
 using mojom::CharacterType;
 using mojom::ConversationTurn;
 using mojom::ConversationTurnVisibility;
+
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+class PreviewPageTextExtractor {
+ public:
+  PreviewPageTextExtractor(base::ReadOnlySharedMemoryRegion pdf_region,
+                           base::OnceCallback<void(std::string)> callback,
+                           uint32_t max_page_content_length,
+                           std::optional<bool> pdf_use_skia_renderer_enabled)
+      : pdf_region_(std::move(pdf_region)),
+        callback_(std::move(callback)),
+        max_page_content_length_(max_page_content_length) {
+    DCHECK(!pdf_to_bitmap_converter_.is_bound());
+    GetPrintingService()->BindPdfToBitmapConverter(
+        pdf_to_bitmap_converter_.BindNewPipeAndPassReceiver());
+    pdf_to_bitmap_converter_.set_disconnect_handler(
+        base::BindOnce(&PreviewPageTextExtractor::BitmapConverterDisconnected,
+                       base::Unretained(this)));
+    if (pdf_use_skia_renderer_enabled.has_value()) {
+      pdf_to_bitmap_converter_->SetUseSkiaRendererPolicy(
+          pdf_use_skia_renderer_enabled.value());
+    }
+  }
+
+  void StartExtract() {
+    pdf_to_bitmap_converter_->GetPdfPageCount(
+        pdf_region_.Duplicate(),
+        base::BindOnce(&PreviewPageTextExtractor::OnGetPageCount,
+                       base::Unretained(this)));
+  }
+
+  void ScheduleNextPageOrComplete() {
+    DCHECK_GT(total_page_count_, 0u);
+    if (current_page_index_ < total_page_count_) {
+      if (current_page_index_) {
+        preview_text_ << "\n";
+      }
+      pdf_to_bitmap_converter_->GetBitmap(
+          pdf_region_.Duplicate(), current_page_index_,
+          base::BindOnce(&PreviewPageTextExtractor::OnGetBitmap,
+                         base::Unretained(this)));
+    } else {
+      std::move(callback_).Run(preview_text_.str());
+    }
+  }
+
+  void OnGetPageCount(std::optional<uint32_t> page_count) {
+    if (!page_count.has_value() || !page_count.value()) {
+      std::move(callback_).Run("");
+      return;
+    }
+    total_page_count_ = page_count.value();
+    ScheduleNextPageOrComplete();
+  }
+
+  void OnGetBitmap(const SkBitmap& bitmap) {
+    if (bitmap.drawsNothing()) {
+      std::move(callback_).Run(preview_text_.str());
+      return;
+    }
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+    GetOCRText(bitmap,
+               base::BindOnce(&PreviewPageTextExtractor::OnGetTextFromImage,
+                              weak_ptr_factory_.GetWeakPtr()));
+#else
+    std::move(callback_).Run("");
+#endif
+  }
+
+  void BitmapConverterDisconnected() {
+    DLOG(ERROR) << __func__;
+    if (callback_) {
+      std::move(callback_).Run(preview_text_.str());
+    }
+  }
+
+  void OnGetTextFromImage(std::string page_content) {
+    VLOG(4) << "Page index(" << current_page_index_
+            << ") content: " << page_content;
+    preview_text_ << page_content;
+    // Stop processing if we have reached the maximum number of pages or the
+    // maximum length of the content
+    if (current_page_index_ + 1 >= kMaxPreviewPages ||
+        preview_text_.str().length() >= max_page_content_length_) {
+      std::move(callback_).Run(preview_text_.str());
+      return;
+    }
+    ++current_page_index_;
+    ScheduleNextPageOrComplete();
+  }
+
+ private:
+  std::stringstream preview_text_;
+  size_t current_page_index_ = 0;
+  size_t total_page_count_ = 0;
+  base::ReadOnlySharedMemoryRegion pdf_region_;
+  base::OnceCallback<void(std::string)> callback_;
+  const uint32_t max_page_content_length_;
+  mojo::Remote<printing::mojom::PdfToBitmapConverter> pdf_to_bitmap_converter_;
+  base::WeakPtrFactory<PreviewPageTextExtractor> weak_ptr_factory_{this};
+};
+#endif
 
 AIChatUIPageHandler::AIChatUIPageHandler(
     AIChatUI* owner,
@@ -474,19 +578,6 @@ void AIChatUIPageHandler::OnGetPremiumStatus(
 }
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-void AIChatUIPageHandler::BitmapConverterDisconnected() {
-  DLOG(ERROR) << __func__;
-  PreviewCleanup();
-}
-
-void AIChatUIPageHandler::OnGetBitmaps(
-    const std::optional<std::vector<SkBitmap>>& bitmaps) {
-  VLOG(3) << __func__ << ": bitmap size: " << (bitmaps ? bitmaps->size() : -1);
-  pdf_to_bitmap_converter_.reset();
-  active_chat_tab_helper_->OnPreviewReady(bitmaps);
-  PreviewCleanup();
-}
-
 void AIChatUIPageHandler::PreviewCleanup() {
   auto preview_ui_id = owner_->GetPreviewUIId();
   CHECK(preview_ui_id);
@@ -511,22 +602,25 @@ void AIChatUIPageHandler::OnPreviewReady() {
     return;
   }
   memcpy(pdf_region.mapping.memory(), data->data(), data->size());
-  DCHECK(!pdf_to_bitmap_converter_.is_bound());
-  GetPrintingService()->BindPdfToBitmapConverter(
-      pdf_to_bitmap_converter_.BindNewPipeAndPassReceiver());
-  pdf_to_bitmap_converter_.set_disconnect_handler(
-      base::BindOnce(&AIChatUIPageHandler::BitmapConverterDisconnected,
-                     base::Unretained(this)));
+  std::optional<bool> pdf_use_skia_renderer_enabled;
   auto* prefs = profile_->GetPrefs();
   if (prefs &&
       prefs->IsManagedPreference(::prefs::kPdfUseSkiaRendererEnabled)) {
-    pdf_to_bitmap_converter_->SetUseSkiaRendererPolicy(
-        prefs->GetBoolean(::prefs::kPdfUseSkiaRendererEnabled));
+    pdf_use_skia_renderer_enabled =
+        prefs->GetBoolean(::prefs::kPdfUseSkiaRendererEnabled);
   }
-  pdf_to_bitmap_converter_->GetBitmap(
-      std::move(pdf_region.region), kMaxPreviewPages,
-      base::BindOnce(&AIChatUIPageHandler::OnGetBitmaps,
-                     base::Unretained(this)));
+  preview_page_text_extractor_ = std::make_unique<PreviewPageTextExtractor>(
+      std::move(pdf_region.region),
+      base::BindOnce(&AIChatUIPageHandler::OnGetOCRResult,
+                     weak_ptr_factory_.GetWeakPtr()),
+      active_chat_tab_helper_->GetMaxPageContentLength(),
+      pdf_use_skia_renderer_enabled);
+  preview_page_text_extractor_->StartExtract();
+}
+
+void AIChatUIPageHandler::OnGetOCRResult(std::string text) {
+  active_chat_tab_helper_->OnPreviewTextReady(std::move(text));
+  PreviewCleanup();
 }
 
 void AIChatUIPageHandler::MaybeCreatePrintPreview() {

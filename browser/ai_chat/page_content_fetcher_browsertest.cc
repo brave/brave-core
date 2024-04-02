@@ -103,8 +103,7 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     ai_chat::FetchPageContent(
-        browser()->tab_strip_model()->GetActiveWebContents(), "", std::nullopt,
-        4096,
+        browser()->tab_strip_model()->GetActiveWebContents(), "",
         base::BindLambdaForTesting([&run_loop, &expected_text,
                                     &expected_is_video, &trim_whitespace](
                                        std::string text, bool is_video,

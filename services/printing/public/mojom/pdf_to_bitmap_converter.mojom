@@ -10,9 +10,11 @@ import "skia/public/mojom/bitmap.mojom";
 import "ui/gfx/geometry/mojom/geometry.mojom";
 
 interface PdfToBitmapConverter {
-  // If max_pages is provided, the converter will process at most max_pages
+  GetPdfPageCount(mojo_base.mojom.ReadOnlySharedMemoryRegion pdf_region)
+    => (uint32? page_count);
+
   GetBitmap(mojo_base.mojom.ReadOnlySharedMemoryRegion pdf_region,
-    uint8? max_pages) => (array<skia.mojom.BitmapN32>? bitmap);
+    uint32 page_index) => (skia.mojom.BitmapN32? bitmap);
 
   // Sets the status for enterprise policy `kPdfUseSkiaRendererEnabled`. It
   // should be called immediately once `mojom::PdfToBitmapConverter` remote

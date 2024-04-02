@@ -44,8 +44,4 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
-
-  if (enable_text_recognition) {
-    deps += [ "//brave/components/text_recognition/browser" ]
-  }
 }

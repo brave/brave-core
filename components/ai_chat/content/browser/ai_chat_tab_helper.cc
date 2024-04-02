@@ -37,7 +37,6 @@
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "pdf/buildflags.h"
-#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/accessibility/ax_mode.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -134,8 +133,7 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   DVLOG(3) << "PDF Loaded";
   is_pdf_a11y_info_loaded_ = true;
   if (pending_get_page_content_callback_) {
-    FetchPageContent(web_contents(), "", std::nullopt,
-                     GetMaxPageContentLength(),
+    FetchPageContent(web_contents(), "",
                      std::move(pending_get_page_content_callback_));
   }
   pdf_load_observer_.reset();
@@ -144,11 +142,10 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   }
 }
 
-void AIChatTabHelper::OnPreviewReady(
-    const std::optional<std::vector<SkBitmap>>& bitmaps) {
+void AIChatTabHelper::OnPreviewTextReady(std::string ocr_text) {
   if (pending_get_page_content_callback_) {
-    FetchPageContent(web_contents(), "", bitmaps, GetMaxPageContentLength(),
-                     std::move(pending_get_page_content_callback_));
+    std::move(pending_get_page_content_callback_)
+        .Run(std::move(ocr_text), false, "");
   }
 }
 
@@ -276,8 +273,7 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
                        GetPageURL().host_piece())) {
       pending_get_page_content_callback_ = std::move(callback);
     } else {
-      FetchPageContent(web_contents(), invalidation_token, std::nullopt,
-                       GetMaxPageContentLength(), std::move(callback));
+      FetchPageContent(web_contents(), invalidation_token, std::move(callback));
     }
   }
 }

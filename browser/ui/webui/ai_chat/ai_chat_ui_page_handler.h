@@ -28,7 +28,6 @@
 #include "printing/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-#include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
 #include "components/printing/common/print.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #endif
@@ -44,6 +43,9 @@ class FaviconService;
 class AIChatUI;
 class AIChatUIBrowserTest;
 namespace ai_chat {
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+class PreviewPageTextExtractor;
+#endif
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                             public AIChatTabHelper::Observer,
                             public content::WebContentsObserver {
@@ -104,9 +106,8 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   void OnPreviewReady();
-  void BitmapConverterDisconnected();
-  void OnGetBitmaps(const std::optional<std::vector<SkBitmap>>& bitmaps);
   void PreviewCleanup();
+  void OnGetOCRResult(std::string text);
 #endif
 
  private:
@@ -146,7 +147,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   int preview_request_id_ = -1;
-  mojo::Remote<printing::mojom::PdfToBitmapConverter> pdf_to_bitmap_converter_;
+  std::unique_ptr<PreviewPageTextExtractor> preview_page_text_extractor_;
   mojo::AssociatedRemote<printing::mojom::PrintRenderFrame> print_render_frame_;
 #endif
   mojo::Receiver<ai_chat::mojom::PageHandler> receiver_;
