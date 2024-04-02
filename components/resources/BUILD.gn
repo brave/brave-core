@@ -57,12 +57,14 @@ brave_grit("static_resources") {
 }
 
 repack("resources") {
-  deps = [ ":static_resources" ]
-  sources = [ "$root_gen_dir/components/brave_components_static.pak" ]
-
-  deps += [ "//brave/components/skus/browser/resources:generated_resources" ]
-
-  sources += [ "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak" ]
+  deps = [
+    ":static_resources",
+    "//brave/components/skus/browser/resources:generated_resources",
+  ]
+  sources = [
+    "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",
+    "$root_gen_dir/components/brave_components_static.pak",
+  ]
 
   if (!is_ios) {
     deps += [
