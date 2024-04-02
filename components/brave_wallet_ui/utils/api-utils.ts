@@ -2,9 +2,18 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import { mapLimit } from 'async'
+import { Store } from 'redux'
+
+// constants
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
-import WalletApiProxy from '../common/wallet_api_proxy'
+
+// actions
+import { PanelActions } from '../panel/actions'
+
+// types
+import type WalletApiProxy from '../common/wallet_api_proxy'
 import {
   BraveWallet,
   SupportedCoinTypes,
@@ -117,4 +126,20 @@ export async function getVisibleNetworksList(api: WalletApiProxy) {
   ).flat(1)
 
   return networks
+}
+
+export function navigateToConnectHardwareWallet(
+  panelHandler: BraveWallet.PanelHandlerRemote,
+  store: Pick<Store, 'dispatch' | 'getState'>
+) {
+  panelHandler.setCloseOnDeactivate(false)
+
+  const selectedPanel: string = store.getState()?.panel?.selectedPanel
+
+  if (selectedPanel === 'connectHardwareWallet') {
+    return
+  }
+
+  store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
+  store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
 }

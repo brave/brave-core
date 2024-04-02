@@ -16,7 +16,6 @@ export const mockPanelState: PanelState = {
   selectedPanel: 'main',
   connectingAccounts: [],
   signMessageData: [mockSignMessageRequest],
-  signAllTransactionsRequests: [],
   signTransactionRequests: [],
   hardwareWalletCode: undefined,
   selectedTransactionId: undefined,

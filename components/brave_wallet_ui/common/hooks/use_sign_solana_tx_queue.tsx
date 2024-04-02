@@ -16,35 +16,49 @@ import { PanelSelectors } from '../../panel/selectors'
 
 // hooks
 import { useUnsafePanelSelector } from './use-safe-selector'
-import { useGetNetworkQuery } from '../slices/api.slice'
+import {
+  useGetNetworkQuery,
+  useGetPendingSignAllTransactionsRequestsQuery,
+  useProcessSignAllTransactionsRequestHardwareMutation,
+  useProcessSignAllTransactionsRequestMutation
+} from '../slices/api.slice'
 import { useAccountQuery } from '../slices/api.slice.extra'
 
-export const useProcessSignSolanaTransaction = (props: {
-  signMode: 'signTx' | 'signAllTxs'
+export interface UseProcessSolTxProps {
   account?: BraveWallet.AccountInfo
+  signMode: 'signTx' | 'signAllTxs'
   request?:
     | BraveWallet.SignTransactionRequest
     | BraveWallet.SignAllTransactionsRequest
-}) => {
+}
+
+export const useProcessSignSolanaTransaction = (
+  props: UseProcessSolTxProps
+) => {
   // redux
   const dispatch = useDispatch()
 
+  // mutations
+  const [signAllTransactions] = useProcessSignAllTransactionsRequestMutation()
+  const [signAllTransactionsHardware] =
+    useProcessSignAllTransactionsRequestHardwareMutation()
+
   // methods
-  const cancelSign = React.useCallback(() => {
+  const cancelSign = React.useCallback(async () => {
     if (!props.request) {
       return
     }
 
     const payload = { approved: false, id: props.request.id }
 
-    dispatch(
-      props.signMode === 'signTx'
-        ? PanelActions.signTransactionProcessed(payload)
-        : PanelActions.signAllTransactionsProcessed(payload)
-    )
-  }, [dispatch, props.request, props.signMode])
+    if (props.signMode === 'signTx') {
+      dispatch(PanelActions.signTransactionProcessed(payload))
+    } else {
+      await signAllTransactions(payload).unwrap()
+    }
+  }, [dispatch, props.request, props.signMode, signAllTransactions])
 
-  const sign = React.useCallback(() => {
+  const sign = React.useCallback(async () => {
     if (!props.request || !props.account) {
       return
     }
@@ -73,22 +87,25 @@ export const useProcessSignSolanaTransaction = (props: {
 
     if (props.signMode === 'signAllTxs') {
       if (isHwAccount) {
-        dispatch(
-          PanelActions.signAllTransactionsHardware({
-            account: props.account,
-            request: props.request as BraveWallet.SignAllTransactionsRequest
-          })
-        )
+        await signAllTransactionsHardware({
+          account: props.account,
+          request: props.request as BraveWallet.SignAllTransactionsRequest
+        }).unwrap()
         return
       }
-      dispatch(
-        PanelActions.signAllTransactionsProcessed({
-          approved: true,
-          id: props.request.id
-        })
-      )
+      await signAllTransactions({
+        approved: true,
+        id: props.request.id
+      }).unwrap()
     }
-  }, [dispatch, props.account, props.request, props.signMode])
+  }, [
+    dispatch,
+    props.account,
+    props.request,
+    props.signMode,
+    signAllTransactions,
+    signAllTransactionsHardware
+  ])
 
   // render
   return {
@@ -104,9 +121,11 @@ export const useSignSolanaTransactionsQueue = (
   const signTransactionRequests = useUnsafePanelSelector(
     PanelSelectors.signTransactionRequests
   )
-  const signAllTransactionsRequests = useUnsafePanelSelector(
-    PanelSelectors.signAllTransactionsRequests
-  )
+
+  // queries
+  const { data: signAllTransactionsRequests } =
+    useGetPendingSignAllTransactionsRequestsQuery()
+
   const signTransactionQueue =
     signMode === 'signTx'
       ? signTransactionRequests
@@ -116,9 +135,11 @@ export const useSignSolanaTransactionsQueue = (
   const [queueNumber, setQueueNumber] = React.useState<number>(1)
 
   // computed
-  const queueLength = signTransactionQueue.length
+  const queueLength = signTransactionQueue?.length || 0
   const queueIndex = queueNumber - 1
-  const selectedQueueData = signTransactionQueue.at(queueIndex)
+  const selectedQueueData = signTransactionQueue
+    ? signTransactionQueue.at(queueIndex)
+    : undefined
 
   // force signing messages in-order
   const isDisabled = queueNumber !== 1

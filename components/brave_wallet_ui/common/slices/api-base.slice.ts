@@ -71,7 +71,8 @@ export function createWalletApiBase() {
       'PendingAddChainRequests',
       'PendingSwitchChainRequests',
       'PendingDecryptRequest',
-      'PendingEncryptRequest'
+      'PendingEncryptRequest',
+      'PendingSignAllTransactionsRequests'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

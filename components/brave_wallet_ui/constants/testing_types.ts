@@ -24,6 +24,7 @@ export interface WalletApiDataOverrides {
   simulationOptInStatus?: BraveWallet.BlowfishOptInStatus
   evmSimulationResponse?: BraveWallet.EVMSimulationResponse | null
   svmSimulationResponse?: BraveWallet.SolanaSimulationResponse | null
+  signAllTransactionsRequests?: BraveWallet.SignAllTransactionsRequest[]
 }
 
 export type BraveRewardsProxyOverrides = Partial<{

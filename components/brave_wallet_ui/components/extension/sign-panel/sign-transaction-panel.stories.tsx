@@ -39,14 +39,14 @@ export const _SignAllSolanaTxPanel = () => {
     <WalletPanelStory
       panelStateOverride={{
         selectedPanel: 'signTransaction',
-        signTransactionRequests: [mockSolDappSignTransactionRequest],
-        signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest]
+        signTransactionRequests: [mockSolDappSignTransactionRequest]
       }}
       uiStateOverride={{
         selectedPendingTransactionId:
           mockSolDappSignAndSendTransactionRequest.id
       }}
       walletApiDataOverrides={{
+        signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest],
         transactionInfos: [
           deserializeTransaction({
             ...mockSolDappSignAndSendTransactionRequest,
@@ -79,10 +79,10 @@ export const _SignSolanaTxPanel = () => {
     <WalletPanelStory
       panelStateOverride={{
         selectedPanel: 'signTransaction',
-        signTransactionRequests: [mockSolDappSignTransactionRequest],
-        signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest]
+        signTransactionRequests: [mockSolDappSignTransactionRequest]
       }}
       walletApiDataOverrides={{
+        signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest],
         transactionInfos: [
           deserializeTransaction(mockSolDappSignAndSendTransactionRequest)
         ]

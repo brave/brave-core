@@ -226,6 +226,9 @@ export class MockedWalletApiProxy {
     mockGetEncryptionPublicKeyRequest
   ]
 
+  private signAllTransactionsRequests =
+    [] as BraveWallet.SignAllTransactionsRequest[]
+
   constructor(overrides?: WalletApiDataOverrides | undefined) {
     this.applyOverrides(overrides)
   }
@@ -255,6 +258,8 @@ export class MockedWalletApiProxy {
       overrides.svmSimulationResponse ?? this.svmSimulationResponse
     this.txSimulationOptInStatus =
       overrides.simulationOptInStatus ?? this.txSimulationOptInStatus
+    this.signAllTransactionsRequests =
+      overrides.signAllTransactionsRequests ?? this.signAllTransactionsRequests
   }
 
   assetsRatioService: Partial<
@@ -439,6 +444,20 @@ export class MockedWalletApiProxy {
         this.pendingEncryptionPublicKeyRequests.filter(
           (req) => req.requestId !== requestId
         )
+    },
+    getPendingSignAllTransactionsRequests: async () => {
+      return {
+        requests: this.signAllTransactionsRequests
+      }
+    },
+    notifySignAllTransactionsRequestProcessed: (
+      approved,
+      id,
+      signatures,
+      error
+    ) => {
+      this.signAllTransactionsRequests =
+        this.signAllTransactionsRequests.filter((req) => req.id !== id)
     }
   }
 

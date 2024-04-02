@@ -34,13 +34,13 @@ const storyContextProps: WalletPanelStoryProps = {
     signTransactionRequests: [
       mockSolDappSignTransactionRequest,
       mockSolDappSignTransactionRequest
-    ],
-    signAllTransactionsRequests: [
-      mockSolDappSignAllTransactionsRequest,
-      mockSolDappSignAllTransactionsRequest
     ]
   },
   walletApiDataOverrides: {
+    signAllTransactionsRequests: [
+      mockSolDappSignAllTransactionsRequest,
+      mockSolDappSignAllTransactionsRequest
+    ],
     transactionInfos: [
       deserializeTransaction(mockSolDappSignAndSendTransactionRequest),
       deserializeTransaction({
