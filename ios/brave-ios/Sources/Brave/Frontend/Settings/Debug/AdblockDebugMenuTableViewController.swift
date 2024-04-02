@@ -92,25 +92,25 @@ class AdblockDebugMenuTableViewController: TableViewController {
     }
 
     var generalDateString = "-"
-    if let generalDate = Preferences.Debug.lastGeneralAdblockUpdate.value {
+    if let generalDate = Preferences.AdblockDebug.lastGeneralAdblockUpdate.value {
       generalDateString = dateFormatter.string(from: generalDate)
       rows.append(.init(text: "General blocklist", detailText: generalDateString))
     }
 
     var regionalDateString = "-"
-    if let regionalDate = Preferences.Debug.lastRegionalAdblockUpdate.value {
+    if let regionalDate = Preferences.AdblockDebug.lastRegionalAdblockUpdate.value {
       regionalDateString = dateFormatter.string(from: regionalDate)
       rows.append(.init(text: "Regional blocklist", detailText: regionalDateString))
     }
 
     var cosmeticFilterStylesDateString = "-"
-    if let stylesDate = Preferences.Debug.lastCosmeticFiltersCSSUpdate.value {
+    if let stylesDate = Preferences.AdblockDebug.lastCosmeticFiltersCSSUpdate.value {
       cosmeticFilterStylesDateString = dateFormatter.string(from: stylesDate)
       rows.append(.init(text: "Cosmetic Filters (CSS)", detailText: cosmeticFilterStylesDateString))
     }
 
     var cosmeticFilterScripletsDateString = "-"
-    if let scripletsDate = Preferences.Debug.lastCosmeticFiltersCSSUpdate.value {
+    if let scripletsDate = Preferences.AdblockDebug.lastCosmeticFiltersCSSUpdate.value {
       cosmeticFilterScripletsDateString = dateFormatter.string(from: scripletsDate)
       rows.append(
         .init(text: "Cosmetic Filters (Scriptlets)", detailText: cosmeticFilterScripletsDateString)
