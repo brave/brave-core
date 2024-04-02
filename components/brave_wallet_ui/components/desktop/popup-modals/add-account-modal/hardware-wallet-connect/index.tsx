@@ -326,22 +326,20 @@ export const HardwareWalletConnect = ({
 
   if (showAccountsList) {
     return (
-      <>
-        <HardwareWalletAccountsList
-          hardwareWallet={selectedHardwareWallet}
-          accounts={accounts}
-          preAddedHardwareWalletAccounts={preAddedHardwareWalletAccounts}
-          onLoadMore={onSubmit}
-          selectedDerivationPaths={selectedDerivationPaths}
-          setSelectedDerivationPaths={setSelectedDerivationPaths}
-          selectedDerivationScheme={selectedDerivationScheme}
-          setSelectedDerivationScheme={onChangeDerivationScheme}
-          onAddAccounts={onAddAccounts}
-          filecoinNetwork={filecoinNetwork}
-          onChangeFilecoinNetwork={onFilecoinNetworkChanged}
-          coin={selectedAccountType.coin}
-        />
-      </>
+      <HardwareWalletAccountsList
+        hardwareWallet={selectedHardwareWallet}
+        accounts={accounts}
+        preAddedHardwareWalletAccounts={preAddedHardwareWalletAccounts}
+        onLoadMore={onSubmit}
+        selectedDerivationPaths={selectedDerivationPaths}
+        setSelectedDerivationPaths={setSelectedDerivationPaths}
+        selectedDerivationScheme={selectedDerivationScheme}
+        setSelectedDerivationScheme={onChangeDerivationScheme}
+        onAddAccounts={onAddAccounts}
+        filecoinNetwork={filecoinNetwork}
+        onChangeFilecoinNetwork={onFilecoinNetworkChanged}
+        coin={selectedAccountType.coin}
+      />
     )
   }
 

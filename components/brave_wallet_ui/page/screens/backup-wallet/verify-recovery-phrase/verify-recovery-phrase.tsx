@@ -30,11 +30,11 @@ import { WalletPageActions } from '../../../actions'
 import Button from '@brave/leo/react/button'
 import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
 import { PhraseInput } from './components/phrase-input'
+import { VerificationProgress } from './components/verification-progress'
 
 // styles
 import { Title } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout.style'
 import { Column, Row, VerticalSpace } from '../../../../components/shared/style'
-import { VerificationProgress } from './components/verification-progress'
 import { BackButton } from './verify-recovery-phrase.style'
 import { ContinueButton } from '../../onboarding/onboarding.style'
 

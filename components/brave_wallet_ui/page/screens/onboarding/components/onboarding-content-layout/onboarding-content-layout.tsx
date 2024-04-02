@@ -79,11 +79,12 @@ export const OnboardingContentLayout = ({
           {typeof title === 'string' ? <Title>{title}</Title> : title}
 
           {subTitle ? (
-            <>
-              <VerticalSpace space='16px' />
+            <Row
+              justifyContent='center'
+              margin='16px 0 19px'
+            >
               <Subtitle>{subTitle}</Subtitle>
-              <VerticalSpace space='19px' />
-            </>
+            </Row>
           ) : null}
         </HeaderWrapper>
         <Content centerContent={centerContent}>{children}</Content>
