@@ -25,6 +25,7 @@ import {
 import { NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
 import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
 import { OnboardingCreatingWallet } from '../creating-wallet/onboarding-creating-wallet'
+import { CreatePassword } from '../create-password/components/create-password'
 
 // options
 import { autoLockOptions } from '../../../../options/auto-lock-options'
@@ -37,7 +38,6 @@ import {
   RecoveryPhraseContainer
 } from './restore-from-recovery-phrase.style'
 import { AlertWrapper, ContinueButton } from '../onboarding.style'
-import { CreatePassword } from '../create-password/components/create-password'
 
 type RestoreWalletSteps = 'phrase' | 'password'
 const VALID_PHRASE_LENGTHS = [12, 15, 18, 21, 24]
@@ -124,9 +124,9 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   )
 
   const onRecoveryPhraseLengthChange = React.useCallback(() => {
-    setRecoveryPhraseLength(alternateRecoveryPhraseLength)
+    setRecoveryPhraseLength((prev) => (prev === 12 ? 24 : 12))
     setPhraseWords([])
-  }, [alternateRecoveryPhraseLength])
+  }, [])
 
   const handlePasswordChange = React.useCallback(
     ({ isValid, password }: NewPasswordValues) => {

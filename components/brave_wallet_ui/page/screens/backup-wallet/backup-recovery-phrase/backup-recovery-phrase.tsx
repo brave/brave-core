@@ -27,6 +27,7 @@ import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 // components
 import { RecoveryPhrase } from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
+import { SkipWarningDialog } from '../explain-recovery-phrase/skip-warning-dialog'
 
 // styles
 import {
@@ -36,7 +37,6 @@ import {
   CopiedTick,
   CopyText
 } from '../explain-recovery-phrase/explain-recovery-phrase.style'
-import { SkipWarningDialog } from '../explain-recovery-phrase/skip-warning-dialog'
 
 import { VerticalSpace } from '../../../../components/shared/style'
 import {

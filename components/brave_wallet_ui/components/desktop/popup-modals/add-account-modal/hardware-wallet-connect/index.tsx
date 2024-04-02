@@ -238,9 +238,9 @@ export const HardwareWalletConnect = ({
         Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme
       )
       setSelectedHardwareWallet(vendor)
-      onSelectVendor?.(BraveWallet.LEDGER_HARDWARE_VENDOR)
+      if (selectedHardwareWallet) onSelectVendor?.(selectedHardwareWallet)
     },
-    [onSelectVendor]
+    [selectedHardwareWallet, onSelectVendor]
   )
 
   const onSelectLedger = React.useCallback(() => {
@@ -302,27 +302,6 @@ export const HardwareWalletConnect = ({
   }, [savedAccounts])
 
   // render
-  if (showAccountsList && selectedHardwareWallet) {
-    return (
-      <>
-        <HardwareWalletAccountsList
-          hardwareWallet={selectedHardwareWallet}
-          accounts={accounts}
-          preAddedHardwareWalletAccounts={preAddedHardwareWalletAccounts}
-          onLoadMore={onSubmit}
-          selectedDerivationPaths={selectedDerivationPaths}
-          setSelectedDerivationPaths={setSelectedDerivationPaths}
-          selectedDerivationScheme={selectedDerivationScheme}
-          setSelectedDerivationScheme={onChangeDerivationScheme}
-          onAddAccounts={onAddAccounts}
-          filecoinNetwork={filecoinNetwork}
-          onChangeFilecoinNetwork={onFilecoinNetworkChanged}
-          coin={selectedAccountType.coin}
-        />
-      </>
-    )
-  }
-
   if (!selectedHardwareWallet) {
     return (
       <>
@@ -344,38 +323,55 @@ export const HardwareWalletConnect = ({
       </>
     )
   }
+
+  if (showAccountsList) {
+    return (
+      <>
+        <HardwareWalletAccountsList
+          hardwareWallet={selectedHardwareWallet}
+          accounts={accounts}
+          preAddedHardwareWalletAccounts={preAddedHardwareWalletAccounts}
+          onLoadMore={onSubmit}
+          selectedDerivationPaths={selectedDerivationPaths}
+          setSelectedDerivationPaths={setSelectedDerivationPaths}
+          selectedDerivationScheme={selectedDerivationScheme}
+          setSelectedDerivationScheme={onChangeDerivationScheme}
+          onAddAccounts={onAddAccounts}
+          filecoinNetwork={filecoinNetwork}
+          onChangeFilecoinNetwork={onFilecoinNetworkChanged}
+          coin={selectedAccountType.coin}
+        />
+      </>
+    )
+  }
+
   return (
-    <>
-      {selectedHardwareWallet && (
-        <Column>
-          <HardwareWalletGraphic hardwareVendor={selectedHardwareWallet} />
-          <VerticalSpace space='32px' />
-          <Instructions mode={connectionError ? 'error' : 'info'}>
-            {connectionError
-              ? `${connectionError.error} ${connectionError?.userHint}`
-              : getLocale(
-                  'braveWalletConnectHardwareAuthorizationNeeded'
-                ).replace('$1', selectedHardwareWallet)}
-          </Instructions>
-          <VerticalSpace space='100px' />
-          {showAuthorizeDevice ? (
-            <AuthorizeHardwareDeviceIFrame
-              coinType={selectedAccountType.coin}
-            />
-          ) : (
-            <ContinueButton
-              onClick={onSubmit}
-              isLoading={isConnecting}
-            >
-              <div slot='loading'>
-                {getLocale('braveWalletConnectingHardwareWallet')}
-              </div>
-              {!isConnecting && getLocale('braveWalletAddAccountConnect')}
-            </ContinueButton>
-          )}
-        </Column>
+    <Column>
+      <HardwareWalletGraphic hardwareVendor={selectedHardwareWallet} />
+      <VerticalSpace space='32px' />
+      <Instructions mode={connectionError ? 'error' : 'info'}>
+        {connectionError
+          ? `${connectionError.error} ${connectionError?.userHint}`
+          : getLocale('braveWalletConnectHardwareAuthorizationNeeded').replace(
+              '$1',
+              selectedHardwareWallet
+            )}
+      </Instructions>
+      <VerticalSpace space='100px' />
+      {showAuthorizeDevice ? (
+        <AuthorizeHardwareDeviceIFrame coinType={selectedAccountType.coin} />
+      ) : (
+        <ContinueButton
+          onClick={onSubmit}
+          isLoading={isConnecting}
+        >
+          <div slot='loading'>
+            {getLocale('braveWalletConnectingHardwareWallet')}
+          </div>
+          {!isConnecting && getLocale('braveWalletAddAccountConnect')}
+        </ContinueButton>
       )}
-    </>
+    </Column>
   )
 }
 

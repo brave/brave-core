@@ -12,7 +12,6 @@ import { WalletRoutes } from '../../../../constants/types'
 
 // components
 import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
-import { Column, VerticalSpace } from '../../../../components/shared/style'
 
 // styles
 import {
@@ -21,6 +20,7 @@ import {
   HardwareGraphic
 } from './import-hardware-wallet-welcome.style'
 import { ContinueButton } from '../onboarding.style'
+import { Column, VerticalSpace } from '../../../../components/shared/style'
 
 export const OnboardingImportHardwareWalletWelcome = () => {
   const history = useHistory()
@@ -49,8 +49,7 @@ export const OnboardingImportHardwareWalletWelcome = () => {
         <Bold>{getLocale('braveWalletConnectHardwareTrezor')}</Bold>
         {afterTag}
       </Description>
-      <VerticalSpace space='117px' />
-      <Column margin='0 0 88px 0'>
+      <Column margin='117px 0 88px 0'>
         <ContinueButton onClick={onClickContinue}>
           {getLocale('braveWalletButtonContinue')}
         </ContinueButton>

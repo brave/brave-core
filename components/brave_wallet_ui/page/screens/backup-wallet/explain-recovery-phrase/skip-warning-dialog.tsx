@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { SkipDialog, WarningText } from './explain-recovery-phrase.style'
 import Button from '@brave/leo/react/button'
 
 // utils
@@ -12,6 +11,7 @@ import { getLocale } from '../../../../../common/locale'
 
 // styles
 import { ContinueButton } from '../../onboarding/onboarding.style'
+import { SkipDialog, WarningText } from './explain-recovery-phrase.style'
 
 interface SkipWarningDialogProps {
   isOpen: boolean

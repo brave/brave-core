@@ -26,7 +26,7 @@ export const HeaderWrapper = styled.div`
   padding: ${leo.spacing.xl};
   justify-content: center;
   align-items: center;
-  padding: 0px 40px 0 40px;
+  padding: 0px 40px;
 `
 
 export const ContentWrapper = styled.div`
