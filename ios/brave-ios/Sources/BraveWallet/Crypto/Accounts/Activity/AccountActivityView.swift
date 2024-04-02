@@ -134,14 +134,18 @@ struct AccountActivityView: View {
       Spacer().frame(height: 24)
       
       HStack(spacing: 24) {
-        PortfolioHeaderButton(style: .buy) {
-          buySendSwapDestination = .init(kind: .buy)
+        if store.isBuySupported {
+          PortfolioHeaderButton(style: .buy) {
+            buySendSwapDestination = .init(kind: .buy)
+          }
         }
         PortfolioHeaderButton(style: .send) {
           buySendSwapDestination = .init(kind: .send)
         }
-        PortfolioHeaderButton(style: .swap) {
-          buySendSwapDestination = .init(kind: .swap)
+        if store.isSwapSupported {
+          PortfolioHeaderButton(style: .swap) {
+            buySendSwapDestination = .init(kind: .swap)
+          }
         }
       }
     }
