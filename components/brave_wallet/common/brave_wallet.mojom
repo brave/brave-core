@@ -791,7 +791,7 @@ struct LifiToolError {
 
 struct LiFiError {
   string message;
-  LiFiErrorCode? code;
+  LiFiErrorCode code;
 };
 
 enum SwapDiscountCode {
