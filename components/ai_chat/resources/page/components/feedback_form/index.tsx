@@ -50,8 +50,8 @@ function FeedbackForm(props: FeedbackFormProps) {
     setFeedbackText(e.target.value)
   }
 
-  const handleCheckboxChange = (e: CustomEvent<{ checked: boolean; }>) => {
-    setShouldSendUrl(e.detail.checked)
+  const handleCheckboxChange = ({ checked }: { checked: boolean; }) => {
+    setShouldSendUrl(checked)
   }
 
   React.useEffect(() => {

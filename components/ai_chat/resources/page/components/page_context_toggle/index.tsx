@@ -17,8 +17,8 @@ function PageContextToggle() {
   const [showTooltip, setShowTooltip] = React.useState(false)
   const context = React.useContext(DataContext)
 
-  const handleToggleChange = (e: CustomEvent<any>) => {
-    context.updateShouldSendPageContents(e.detail.checked)
+  const handleToggleChange = ({ checked }: { checked: boolean }) => {
+    context.updateShouldSendPageContents(checked)
   }
 
   const handleInfoIconTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -39,7 +39,7 @@ function PageContextToggle() {
         checked={context.shouldSendPageContents}
         className={styles.toggle}
       >
-        <span slot="on-icon"/>
+        <span slot="on-icon" />
         <div className={styles.label}>
           <span>{getLocale('contextToggleLabel')}</span>
           <Tooltip visible={showTooltip}>

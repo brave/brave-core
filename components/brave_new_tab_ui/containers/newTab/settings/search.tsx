@@ -73,14 +73,14 @@ export default function SearchSettings() {
   return <Flex direction='column' gap={spacing.xl}>
     <SettingsRow>
       <SettingsText>Show search widget in new tabs</SettingsText>
-      <Toggle size='small' checked={showSearchBox} onChange={e => setShowSearchBox(e.detail.checked)} />
+      <Toggle size='small' checked={showSearchBox} onChange={e => setShowSearchBox(e.checked)} />
     </SettingsRow>
     <Hr />
     <EnginesContainer direction='column' gap={spacing.xl}>
       <div>Enabled search engines on the New Tab Page</div>
       <EnginesGrid>
         {engines.map(engine => <EngineCard key={engine.keyword}>
-          <EngineCheckbox checked={isSearchEngineEnabled(engine)} onChange={e => setEngineEnabled(engine, e.detail.checked)}>
+          <EngineCheckbox checked={isSearchEngineEnabled(engine)} onChange={e => setEngineEnabled(engine, e.checked)}>
             <CheckboxText>{engine.name}</CheckboxText>
             <MediumIcon src={engine.faviconUrl.url} />
           </EngineCheckbox>

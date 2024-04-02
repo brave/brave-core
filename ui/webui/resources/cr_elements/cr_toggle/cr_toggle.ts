@@ -45,9 +45,9 @@ export class CrToggleElement extends PolymerElement {
 
   // The Nala event looks a bit different to the Chromium one, so we need to
   // convert it.
-  private onChange_(e: CustomEvent<{ checked: boolean }>) {
-    this.checked = e.detail.checked
-    this.dispatchEvent(new CustomEvent('change', { detail: e.detail.checked }))
+  private onChange_(e: { checked: boolean }) {
+    this.checked = e.checked
+    this.dispatchEvent(new CustomEvent('change', { detail: e.checked }))
   }
 }
 

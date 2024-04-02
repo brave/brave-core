@@ -150,8 +150,8 @@ export default function Configure() {
         </CloseButton>
         {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveNewsTitle')}</HeaderText>
-          <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.detail.checked)} />
-          {defaultState.featureFlagBraveNewsFeedV2Enabled && <OpenArticlesDropdown size='small' value={openArticlesInNewTab ? 'true' : 'false'} onChange={e => setOpenArticlesInNewTab(e.detail.value === 'true')}>
+          <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.checked)} />
+          {defaultState.featureFlagBraveNewsFeedV2Enabled && <OpenArticlesDropdown size='small' value={openArticlesInNewTab ? 'true' : 'false'} onChange={e => setOpenArticlesInNewTab(e.value === 'true')}>
             <span slot="label">{getLocale('braveNewsOpenArticlesIn')}</span>
             <span slot='value'>
               {openArticlesInNewTab ? getLocale('braveNewsOpenArticlesInNewTab') : getLocale('braveNewsOpenArticlesInCurrentTab')}
