@@ -487,14 +487,20 @@
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
-    *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
-    *** getCardViewBackgroundColor(...);
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiThemeProvider {
-    *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
+}
+
+-keep class org.chromium.chrome.browser.tab_ui.TabUiThemeUtils {
+    *** getTitleTextColor(...);
+    *** getCardViewBackgroundColor(...);
+}
+
+-keep class org.chromium.chrome.browser.tab_ui.BraveTabUiThemeUtils {
+    *** getTitleTextColor(...);
     *** getCardViewBackgroundColor(...);
 }
 
