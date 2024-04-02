@@ -39,7 +39,7 @@ class BraveTabGroupHeader : public TabGroupHeader {
 
  private:
   bool ShouldShowVerticalTabs() const;
-  void LayoutTitleChipForVerticalTabs();
+  void LayoutTitleChipAndNTBForVerticalTabs();
   SkColor GetGroupColor() const;
   std::optional<SkColor> GetChipBackgroundColor() const;
 

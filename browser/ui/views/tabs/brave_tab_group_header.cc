@@ -69,6 +69,7 @@ void BraveTabGroupHeader::AddedToWidget() {
 
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
+  plus_icon_->SetVisible(ShouldShowVerticalTabs());
 
   if (!tabs::features::HorizontalTabsUpdateEnabled() &&
       !ShouldShowVerticalTabs()) {
@@ -94,7 +95,7 @@ void BraveTabGroupHeader::VisualsChanged() {
   }
 
   if (ShouldShowVerticalTabs()) {
-    LayoutTitleChipForVerticalTabs();
+    LayoutTitleChipAndNTBForVerticalTabs();
   }
 
   if (ShouldShowSyncIcon()) {
@@ -115,7 +116,7 @@ int BraveTabGroupHeader::GetDesiredWidth() const {
 void BraveTabGroupHeader::Layout(PassKey) {
   LayoutSuperclass<TabGroupHeader>(this);
   if (ShouldShowVerticalTabs()) {
-    LayoutTitleChipForVerticalTabs();
+    LayoutTitleChipAndNTBForVerticalTabs();
   }
 }
 
@@ -124,7 +125,7 @@ bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
       tab_slot_controller_->GetBrowser());
 }
 
-void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
+void BraveTabGroupHeader::LayoutTitleChipAndNTBForVerticalTabs() {
   auto title_bounds = GetContentsBounds();
   title_bounds.Inset(gfx::Insets(kPaddingForGroup));
   title_chip_->SetBoundsRect(title_bounds);
