@@ -4,76 +4,23 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { mapLimit } from 'async'
-import { EntityId } from '@reduxjs/toolkit'
 
 // types
-import {
-  BraveWallet,
-  ERC721Metadata,
-  NFTMetadataReturnType
-} from '../../../constants/types'
+import { BraveWallet, NFTMetadataReturnType } from '../../../constants/types'
 import {
   WalletApiEndpointBuilderParams,
   walletApiBase
 } from '../api-base.slice'
 
 // utils
-import {
-  GetBlockchainTokenIdArg,
-  getAssetIdKey
-} from '../../../utils/asset-utils'
-import { cacher } from '../../../utils/query-cache-utils'
-import {
-  getAllNetworksList,
-  getNetwork,
-  handleEndpointError
-} from '../../../utils/api-utils'
-
-// entities
-import { blockchainTokenEntityAdaptor } from '../entities/blockchain-token.entity'
-
-export interface CommonNftMetadata {
-  attributes?: any[]
-  description?: string
-  image?: string
-  image_url?: string
-  name?: string
-}
+import { getAssetIdKey } from '../../../utils/asset-utils'
+import { handleEndpointError } from '../../../utils/api-utils'
 
 export const nftsEndpoints = ({
   query,
   mutation
 }: WalletApiEndpointBuilderParams) => {
   return {
-    getERC721Metadata: query<
-      {
-        id: EntityId
-        metadata?: ERC721Metadata
-      },
-      GetBlockchainTokenIdArg
-    >({
-      queryFn: async (tokenArg, { endpoint }, _extraOptions, baseQuery) => {
-        try {
-          const { getErc721Metadata } = baseQuery(undefined).cache
-
-          const metadata: ERC721Metadata = await getErc721Metadata(tokenArg)
-
-          return {
-            data: {
-              id: blockchainTokenEntityAdaptor.selectId(tokenArg),
-              metadata
-            }
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Error fetching ERC-721 metadata',
-            error
-          )
-        }
-      },
-      providesTags: cacher.cacheByBlockchainTokenArg('ERC721Metadata')
-    }),
     getNftDiscoveryEnabledStatus: query<boolean, void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
@@ -117,67 +64,15 @@ export const nftsEndpoints = ({
     getNftMetadata: query<NFTMetadataReturnType, BraveWallet.BlockchainToken>({
       queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
-          const { data: api, cache } = baseQuery(undefined)
-          const { jsonRpcService } = api
-          const result =
-            arg.coin === BraveWallet.CoinType.ETH
-              ? await jsonRpcService.getERC721Metadata(
-                  arg.contractAddress,
-                  arg.tokenId,
-                  arg.chainId
-                )
-              : arg.coin === BraveWallet.CoinType.SOL
-              ? await jsonRpcService.getSolTokenMetadata(
-                  arg.chainId,
-                  arg.contractAddress
-                )
-              : undefined
+          const { cache } = baseQuery(undefined)
 
-          if (result?.error) throw new Error(result.errorMessage)
+          const nftMetadata = await cache.getNftMetadata(arg)
 
-          const response = result?.response
-            ? (JSON.parse(result.response) as CommonNftMetadata)
-            : undefined
-
-          const responseImageUrl = response?.image || response?.image_url
-          const imageURL = responseImageUrl?.startsWith('data:image/')
-            ? responseImageUrl
-            : await cache.getIpfsGatewayTranslatedNftUrl(responseImageUrl || '')
-
-          const attributes = Array.isArray(response?.attributes)
-            ? response?.attributes.map(
-                (attr: { trait_type: string; value: string }) => ({
-                  traitType: attr.trait_type,
-                  value: attr.value
-                })
-              )
-            : []
-          const tokenNetwork = await getNetwork(api, arg)
-          const nftMetadata: NFTMetadataReturnType = {
-            metadataUrl: result?.tokenUrl || '',
-            chainName: tokenNetwork?.chainName || '',
-            tokenType:
-              arg.coin === BraveWallet.CoinType.ETH
-                ? 'ERC721'
-                : arg.coin === BraveWallet.CoinType.SOL
-                ? 'SPL'
-                : '',
-            tokenID: arg.tokenId,
-            imageURL: imageURL || undefined,
-            imageMimeType: 'image/*',
-            floorFiatPrice: '',
-            floorCryptoPrice: '',
-            contractInformation: {
-              address: arg.contractAddress,
-              name: response?.name || '???',
-              description: response?.description || '???',
-              website: '',
-              facebook: '',
-              logo: '',
-              twitter: ''
-            },
-            attributes
-          }
+          nftMetadata.imageURL = nftMetadata.imageURL?.startsWith('data:image/')
+            ? nftMetadata.imageURL
+            : (await cache.getIpfsGatewayTranslatedNftUrl(
+                nftMetadata.imageURL || ''
+              )) || undefined
 
           return {
             data: nftMetadata
@@ -192,8 +87,8 @@ export const nftsEndpoints = ({
       },
       providesTags: (_result, err, arg) =>
         err
-          ? ['ERC721Metadata']
-          : [{ type: 'ERC721Metadata', id: getAssetIdKey(arg) }]
+          ? ['NftMetadata']
+          : [{ type: 'NftMetadata', id: getAssetIdKey(arg) }]
     }),
     getNftPinningStatus: query<
       BraveWallet.TokenPinStatus | undefined,
@@ -314,8 +209,11 @@ export const nftsEndpoints = ({
         try {
           const { data: api, cache } = baseQuery(undefined)
           const { braveWalletService } = api
-          const chainIds = (await getAllNetworksList(api)).map(
-            (network) => network.chainId
+
+          const networksRegistry = await cache.getNetworksRegistry()
+
+          const chainIds = networksRegistry.ids.map(
+            (network) => networksRegistry.entities[network]!.chainId
           )
 
           const { accounts } = await cache.getAllAccounts()

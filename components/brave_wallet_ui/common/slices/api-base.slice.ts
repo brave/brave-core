@@ -33,7 +33,7 @@ export function createWalletApiBase() {
       ...balancesTags,
       'AccountInfos',
       'DefaultFiatCurrency',
-      'ERC721Metadata',
+      'NftMetadata',
       'SolanaEstimatedFees',
       'GasEstimation1559',
       'KnownBlockchainTokens',
