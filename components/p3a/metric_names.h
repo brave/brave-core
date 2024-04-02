@@ -257,8 +257,8 @@ inline constexpr auto kCollectedExpressHistograms =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.AIChat.UsageDaily.2",
     "Brave.Core.UsageDaily",
-    "Brave.DayZero.Off.InstallTime",
-    "Brave.DayZero.On.InstallTime",
+    "Brave.DayZero.A.InstallTime",
+    "Brave.DayZero.B.InstallTime",
     "Brave.Rewards.EnabledInstallationTime",
     "Brave.Search.DefaultEngine.4",
     "Brave.Today.IsEnabled",
@@ -329,16 +329,16 @@ inline constexpr auto kEphemeralHistograms =
 inline constexpr auto kConstellationOnlyHistograms =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.Core.PrimaryLang",
-    "Brave.DayZero.Off.InstallTime",
-    "Brave.DayZero.On.InstallTime",
+    "Brave.DayZero.A.InstallTime",
+    "Brave.DayZero.B.InstallTime",
 });
 
 // List of metrics which will include the stored refcode when transmitted
 // via the STAR/Constellation protocol.
 inline constexpr auto kHistogramsWithRefcodeIncluded =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
-    "Brave.DayZero.Off.InstallTime",
-    "Brave.DayZero.On.InstallTime",
+    "Brave.DayZero.A.InstallTime",
+    "Brave.DayZero.B.InstallTime",
 });
 
 // clang-format on
