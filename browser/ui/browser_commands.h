@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
 #include <optional>
+#include <vector>
 
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
