@@ -12,6 +12,9 @@ import os.log
 struct FocusStepsView: View {
   var namespace: Namespace.ID
 
+  @Environment(\.colorScheme) private var colorScheme
+  @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
   @Environment(\.dismiss) private var dismiss
 
   @State private var indicatorIndex = 0
@@ -21,6 +24,10 @@ struct FocusStepsView: View {
 
   private let attributionManager: AttributionManager?
   private let p3aUtilities: BraveP3AUtils?
+
+  var shouldUseExtendedDesign: Bool {
+    return horizontalSizeClass == .regular && verticalSizeClass == .regular
+  }
 
   let dynamicTypeRange = (...DynamicTypeSize.xLarge)
 
@@ -38,93 +45,139 @@ struct FocusStepsView: View {
 
   var body: some View {
     NavigationView {
-      VStack {
-        Image("focus-icon-brave", bundle: .module)
-          .resizable()
-          .matchedGeometryEffect(id: "icon", in: namespace)
-          .frame(width: 78, height: 78)
-
-        VStack(spacing: 0) {
-          FocusStepsHeaderTitleView(activeIndex: $indicatorIndex)
-            .padding(.bottom, 24)
-
-          TabView(selection: $indicatorIndex) {
-            FocusAdTrackerSliderContentView()
-              .tag(0)
-            FocusVideoAdSliderContentView()
-              .tag(1)
+      if shouldUseExtendedDesign {
+        VStack(spacing: 40) {
+          VStack {
+            stepsContentView
+              .background(colorScheme == .dark ? .black : .white)
           }
-          .background(Color(braveSystemName: .pageBackground))
-          .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-          .animation(.easeInOut, value: indicatorIndex)
-          .transition(.slide)
-          .padding(.bottom, 24)
-
-          Spacer()
-
-          VStack(spacing: 28) {
-            Button(
-              action: {
-                if indicatorIndex > 0 {
-                  isP3AViewPresented = true
-                } else {
-                  indicatorIndex += 1
-                }
-              },
-              label: {
-                Text(Strings.FocusOnboarding.continueButtonTitle)
-                  .font(.body.weight(.semibold))
-                  .foregroundColor(Color(.white))
-                  .dynamicTypeSize(dynamicTypeRange)
-                  .padding()
-                  .foregroundStyle(.white)
-                  .frame(maxWidth: .infinity)
-                  .background(Color(braveSystemName: .buttonBackground))
-              }
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 12.0))
-            .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
-
-            FocusStepsPagingIndicator(totalPages: 4, activeIndex: $indicatorIndex)
-          }
-          .padding(.bottom, 20)
-        }
-        .opacity(opacity)
-        .onAppear {
-          withAnimation(.easeInOut(duration: 1.5).delay(1.25)) {
-            opacity = 1.0
-          }
-        }
-      }
-      .padding(.horizontal, 20)
-      .background(Color(braveSystemName: .pageBackground))
-      .background {
-        NavigationLink("", isActive: $isP3AViewPresented) {
-          FocusP3AScreenView(
-            attributionManager: attributionManager,
-            p3aUtilities: p3aUtilities,
-            shouldDismiss: $shouldDismiss
-          )
-        }
-      }
-      .overlay(alignment: .topTrailing) {
-        Button(
-          action: {
-            attributionManager?.pingDAUServer(p3aUtilities?.isP3AEnabled ?? false)
-
-            shouldDismiss = true
-          },
-          label: {
-            Image("focus-icon-close", bundle: .module)
-              .resizable()
+          .clipShape(RoundedRectangle(cornerRadius: 16.0))
+          .frame(maxWidth: 616, maxHeight: 895)
+          .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
+          .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
+          .overlay(alignment: .topTrailing) {
+            cancelButton
               .frame(width: 32, height: 32)
-              .padding(.trailing, 24)
+              .padding(24)
           }
-        )
+
+          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(braveSystemName: .pageBackground))
+        .background {
+          NavigationLink("", isActive: $isP3AViewPresented) {
+            FocusP3AScreenView(
+              attributionManager: attributionManager,
+              p3aUtilities: p3aUtilities,
+              shouldDismiss: $shouldDismiss
+            )
+          }
+        }
+      } else {
+        VStack {
+          stepsContentView
+          FocusStepsPagingIndicator(totalPages: 4, activeIndex: $indicatorIndex)
+            .opacity(opacity)
+            .onAppear {
+              withAnimation(.easeInOut(duration: 1.5).delay(1.25)) {
+                opacity = 1.0
+              }
+            }
+        }
+        .padding(.bottom, 20)
+        .background(Color(braveSystemName: .pageBackground))
+        .background {
+          NavigationLink("", isActive: $isP3AViewPresented) {
+            FocusP3AScreenView(
+              attributionManager: attributionManager,
+              p3aUtilities: p3aUtilities,
+              shouldDismiss: $shouldDismiss
+            )
+          }
+        }
+        .overlay(alignment: .topTrailing) {
+          cancelButton
+            .frame(width: 32, height: 32)
+            .padding(24)
+        }
       }
     }
     .navigationViewStyle(StackNavigationViewStyle())
     .navigationBarHidden(true)
+  }
+
+  private var stepsContentView: some View {
+    VStack {
+      Image("focus-icon-brave", bundle: .module)
+        .resizable()
+        .matchedGeometryEffect(id: "icon", in: namespace)
+        .frame(width: 78, height: 78)
+
+      VStack(spacing: 0) {
+        FocusStepsHeaderTitleView(activeIndex: $indicatorIndex)
+          .padding(.bottom, 24)
+
+        TabView(selection: $indicatorIndex) {
+          FocusAdTrackerSliderContentView()
+            .tag(0)
+          FocusVideoAdSliderContentView()
+            .tag(1)
+        }
+        .background(Color(braveSystemName: .pageBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 16.0))
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        .animation(.easeInOut, value: indicatorIndex)
+        .transition(.slide)
+        .padding(.bottom, 24)
+
+        Spacer()
+
+        Button(
+          action: {
+            if indicatorIndex > 0 {
+              isP3AViewPresented = true
+            } else {
+              indicatorIndex += 1
+            }
+          },
+          label: {
+            Text(Strings.FocusOnboarding.continueButtonTitle)
+              .font(.body.weight(.semibold))
+              .foregroundColor(Color(.white))
+              .dynamicTypeSize(dynamicTypeRange)
+              .padding()
+              .foregroundStyle(.white)
+              .frame(maxWidth: .infinity)
+              .background(Color(braveSystemName: .buttonBackground))
+          }
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 12.0))
+        .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
+      }
+      .opacity(opacity)
+      .onAppear {
+        withAnimation(.easeInOut(duration: 1.5).delay(1.25)) {
+          opacity = 1.0
+        }
+      }
+    }
+    .padding(.vertical, shouldUseExtendedDesign ? 64 : 20)
+    .padding(.horizontal, shouldUseExtendedDesign ? 60 : 20)
+  }
+
+  private var cancelButton: some View {
+    Button(
+      action: {
+        attributionManager?.pingDAUServer(p3aUtilities?.isP3AEnabled ?? false)
+
+        shouldDismiss = true
+      },
+      label: {
+        Image("focus-icon-close", bundle: .module)
+          .resizable()
+      }
+    )
   }
 }
 

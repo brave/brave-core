@@ -61,7 +61,11 @@ struct FocusP3AScreenView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(braveSystemName: .pageBackground))
-
+        .background {
+          NavigationLink("", isActive: $isSystemSettingsViewPresented) {
+            FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
+          }
+        }
       } else {
         VStack {
           consentp3aContentView
@@ -190,7 +194,6 @@ struct FocusP3AScreenView: View {
       )
       .clipShape(RoundedRectangle(cornerRadius: 12.0))
       .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
-      .padding(.bottom, 8)
     }
     .padding(.vertical, shouldUseExtendedDesign ? 64 : 20)
     .padding(.horizontal, shouldUseExtendedDesign ? 60 : 20)

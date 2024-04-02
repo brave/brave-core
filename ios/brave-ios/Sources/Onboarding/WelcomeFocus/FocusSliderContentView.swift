@@ -22,11 +22,10 @@ struct FocusAdTrackerSliderContentView: View {
           )
           .loopMode(.loop)
           .resizable()
-          .frame(maxWidth: .infinity)
         )
     } trailing: {
       Image("focus-website-noads", bundle: .module)
-        .frame(maxWidth: .infinity)
+        .aspectRatio(contentMode: .fit)
     }
     .frame(maxWidth: .infinity)
     .onAppear {
@@ -178,4 +177,5 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
 
 #Preview("VideoTracker") {
   FocusVideoAdSliderContentView()
+    .aspectRatio(contentMode: .fit)
 }
