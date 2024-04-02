@@ -50,7 +50,6 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
-import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.contextmenu.ContextMenuItemDelegate;
 import org.chromium.chrome.browser.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy;
@@ -74,12 +73,12 @@ import org.chromium.chrome.browser.ntp.NewTabPageUma;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
+import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
-import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteControllerProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
@@ -88,6 +87,7 @@ import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator.OverviewNtpCreator;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
@@ -1001,7 +1001,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator",
                         Context.class,
-                        AutocompleteControllerProvider.class,
                         AutocompleteDelegate.class,
                         UrlBarEditingTextStateProvider.class,
                         PropertyModel.class,
@@ -1013,7 +1012,9 @@ public class BytecodeTest {
                         Callback.class,
                         Supplier.class,
                         BookmarkState.class,
-                        OmniboxActionDelegate.class));
+                        OmniboxActionDelegate.class,
+                        ActivityLifecycleDispatcher.class,
+                        WindowAndroid.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/feed/FeedSurfaceMediator",
@@ -1037,12 +1038,21 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView",
                         Context.class,
                         AttributeSet.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
-                "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
-                Resources.class, UiConfig.class, ViewGroup.class, ViewStub.class,
-                TileRenderer.class, PropertyModel.class, boolean.class, boolean.class,
-                boolean.class, Runnable.class, Runnable.class, boolean.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                        "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
+                        Resources.class,
+                        UiConfig.class,
+                        ViewGroup.class,
+                        ViewStub.class,
+                        TileRenderer.class,
+                        PropertyModel.class,
+                        boolean.class,
+                        boolean.class,
+                        Runnable.class,
+                        Runnable.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
                         "org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager",
@@ -1095,7 +1105,7 @@ public class BytecodeTest {
                         BackPressManager.class,
                         OmniboxSuggestionsDropdownScrollListener.class,
                         ObservableSupplier.class,
-                        boolean.class,
+                        LocationBarEmbedderUiOverrides.class,
                         View.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1104,6 +1114,7 @@ public class BytecodeTest {
                         Context.class,
                         LocationBarLayout.class,
                         LocationBarDataProvider.class,
+                        LocationBarEmbedderUiOverrides.class,
                         ObservableSupplier.class,
                         BraveLocationBarMediator.getPrivacyPreferencesManagerClass(),
                         OverrideUrlLoadingDelegate.class,
