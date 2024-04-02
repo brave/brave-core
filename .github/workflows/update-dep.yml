@@ -24,7 +24,7 @@ permissions:
 
 jobs:
   dep-update:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-2-cores
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
