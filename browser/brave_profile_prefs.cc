@@ -205,11 +205,6 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2023-11
   brave_ads::RegisterProfilePrefsForMigration(registry);
-
-  // Added 2024-03
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
-#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -267,6 +262,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // WebTorrent
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   webtorrent::RegisterProfilePrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
 #endif
 
   brave_adaptive_captcha::BraveAdaptiveCaptchaService::RegisterProfilePrefs(

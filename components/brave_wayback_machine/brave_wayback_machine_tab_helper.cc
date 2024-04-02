@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
+#include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/brave_switches.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -72,7 +73,12 @@ void BraveWaybackMachineTabHelper::SetWaybackStateChangedCallback(
 // we don't want to clear wayback state.
 void BraveWaybackMachineTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!navigation_handle->IsInMainFrame() ||
+  if (!IsWaybackMachineEnabled()) {
+    SetWaybackState(WaybackState::kInitial);
+    return;
+  }
+
+  if (!navigation_handle->IsInPrimaryMainFrame() ||
       navigation_handle->IsSameDocument()) {
     return;
   }
@@ -90,6 +96,11 @@ void BraveWaybackMachineTabHelper::DidStartNavigation(
 
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
+  if (!IsWaybackMachineEnabled()) {
+    SetWaybackState(WaybackState::kInitial);
+    return;
+  }
+
   if (!navigation_handle->IsInPrimaryMainFrame() ||
       navigation_handle->IsSameDocument()) {
     return;
@@ -141,6 +152,10 @@ void BraveWaybackMachineTabHelper::SetWaybackState(WaybackState state) {
   if (wayback_state_changed_callback_) {
     wayback_state_changed_callback_.Run(wayback_state_);
   }
+}
+
+bool BraveWaybackMachineTabHelper::IsWaybackMachineEnabled() const {
+  return pref_service_->GetBoolean(kBraveWaybackMachineEnabled);
 }
 
 bool BraveWaybackMachineTabHelper::ShouldCheckWaybackMachine(

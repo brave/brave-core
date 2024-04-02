@@ -17,7 +17,6 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -68,10 +67,6 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/components/sidebar/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
 // This method should be periodically pruned of year+ old migrations.
@@ -175,11 +170,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 2024-01
   brave_tabs::MigrateBraveProfilePrefs(profile_prefs);
 #endif  // !BUILDFLAG(IS_ANDROID)
-
-  // Added 2024-03
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  profile_prefs->ClearPref(kBraveWaybackMachineEnabled);
-#endif
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

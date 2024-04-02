@@ -57,9 +57,12 @@ class BraveWaybackMachineTabHelper
 
   void SetWaybackState(WaybackState state);
   bool ShouldCheckWaybackMachine(int response_code) const;
+  bool IsWaybackMachineEnabled() const;
 
   // Cache wayback url navigation handle.
-  // It uses to check whether it's w
+  // It uses to check whether it's wayback url loading or not.
+  // If it's wayback url loading from previous navigation,
+  // we should not touch wayback state.
   base::WeakPtr<content::NavigationHandle> wayback_url_navigation_;
 
   // If not null, this tab has active window.
