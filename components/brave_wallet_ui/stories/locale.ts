@@ -189,7 +189,7 @@ provideStrings({
     'and that my recovery phrase is the ONLY way to regain access in the event of a ' +
     'lost password, stolen device, or similar circumstance.',
   braveWalletTermsOfServiceCheckboxText:
-    'I have read and agree to the $1Terms of use$2',
+    'I have read and agree to the $1Terms of use$2.',
 
   // Onboarding import or restore wallet page
   braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
