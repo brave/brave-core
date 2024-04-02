@@ -189,8 +189,6 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
 }
 
 void SkusInternalsUI::ResetSkusState() {
-  // TODO: Ask reset AIChat and VPN skus
-
   local_state_->ClearPref(skus::prefs::kSkusState);
 }
 
