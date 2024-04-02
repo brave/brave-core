@@ -1,0 +1,17 @@
+[package]
+name = "nonempty"
+version = "0.7.0"
+description = "Correct by construction non-empty vector"
+authors = ["Alexis Sellier <self@cloudhead.io>"]
+edition = "2018"
+license = "MIT"
+repository = "https://github.com/cloudhead/nonempty"
+
+[dependencies]
+serde = { features = ["serde_derive"], optional = true, version = "1" }
+
+[features]
+serialize = ["serde"]
+
+[dev-dependencies]
+serde_json = "1"

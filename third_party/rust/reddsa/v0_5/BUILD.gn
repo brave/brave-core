@@ -1,0 +1,79 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "reddsa"
+  epoch = "0.5"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/batch.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/constants.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/frost.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/frost/redjubjub.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/frost/redjubjub/keys/dkg.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/frost/redpallas.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/frost/redpallas/keys/dkg.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/hash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/messages.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/orchard.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/orchard/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/sapling.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/scalar_mul.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/scalar_mul/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/signature.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/signing_key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/verification_key.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/../README.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/frost/redjubjub/README.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/frost/redjubjub/dkg.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/frost/redpallas/README.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/reddsa-0.5.1/src/frost/redpallas/dkg.md",
+  ]
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.5.1"
+  cargo_pkg_authors = "Henry de Valence <hdevalence@hdevalence.ca>, Deirdre Connolly <durumcrustulum@gmail.com>, Chelsea Komlo <me@chelseakomlo.com>, Jack Grigg <jack@electriccoin.co>, Conrado Gouvea <conradoplg@gmail.com>"
+  cargo_pkg_name = "reddsa"
+  cargo_pkg_description =
+      "A standalone implementation of the RedDSA signature scheme."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/group/v0_13:lib",
+    "//brave/third_party/rust/hex/v0_4:lib",
+    "//brave/third_party/rust/jubjub/v0_10:lib",
+    "//brave/third_party/rust/pasta_curves/v0_5:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
+    "//brave/third_party/rust/serde/v1:lib",
+    "//brave/third_party/rust/thiserror/v1:lib",
+    "//brave/third_party/rust/zeroize/v1:lib",
+  ]
+  features = [
+    "alloc",
+    "hex",
+    "serde",
+    "std",
+    "thiserror",
+    "zeroize",
+  ]
+}

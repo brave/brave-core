@@ -1,0 +1,34 @@
+[package]
+name = "zcash_note_encryption"
+description = "Note encryption for Zcash transactions"
+version = "0.4.0"
+authors = [
+    "Jack Grigg <jack@electriccoin.co>",
+    "Kris Nuttycombe <kris@electriccoin.co>"
+]
+homepage = "https://github.com/zcash/librustzcash"
+repository = "https://github.com/zcash/librustzcash"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+edition = "2021"
+rust-version = "1.56.1"
+categories = ["cryptography::cryptocurrencies"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+cipher = { version = "0.4", default-features = false }
+chacha20 = { version = "0.9", default-features = false }
+chacha20poly1305 = { version = "0.10", default-features = false }
+rand_core = { version = "0.6", default-features = false }
+subtle = { version = "2.3", default-features = false }
+
+[features]
+default = ["alloc"]
+alloc = []
+pre-zip-212 = []
+
+[lib]
+bench = false

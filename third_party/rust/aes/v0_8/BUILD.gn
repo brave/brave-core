@@ -1,0 +1,60 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "aes"
+  epoch = "0.8"
+  crate_type = "rlib"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/armv8.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/armv8/encdec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/armv8/expand.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/armv8/hazmat.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/armv8/intrinsics.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/armv8/test_expand.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/autodetect.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/hazmat.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/ni.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/ni/aes128.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/ni/aes192.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/ni/aes256.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/ni/hazmat.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/ni/test_expand.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/ni/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/soft.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/soft/fixslice32.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/src/soft/fixslice64.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.8.4"
+  cargo_pkg_authors = "RustCrypto Developers"
+  cargo_pkg_name = "aes"
+  cargo_pkg_description = "Pure Rust implementation of the Advanced Encryption Standard (a.k.a. Rijndael)"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/cfg_if/v1:lib",
+    "//brave/third_party/rust/cipher/v0_4:lib",
+  ]
+  if (target_cpu == "x64" || target_cpu == "x86") {
+    deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+  }
+}

@@ -1,0 +1,100 @@
+[package]
+name = "halo2_proofs"
+version = "0.3.0"
+authors = [
+    "Sean Bowe <sean@electriccoin.co>",
+    "Ying Tong Lai <yingtong@electriccoin.co>",
+    "Daira Hopwood <daira@electriccoin.co>",
+    "Jack Grigg <jack@electriccoin.co>",
+]
+edition = "2021"
+rust-version = "1.59"
+description = """
+Fast PLONK-based zero-knowledge proving system with no trusted setup
+"""
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/zcash/halo2"
+documentation = "https://docs.rs/halo2_proofs"
+readme = "README.md"
+categories = ["cryptography"]
+keywords = ["halo", "proofs", "zkp", "zkSNARKs"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs", "--html-in-header", "katex-header.html"]
+
+[[bench]]
+name = "arithmetic"
+harness = false
+
+[[bench]]
+name = "hashtocurve"
+harness = false
+
+[[bench]]
+name = "plonk"
+harness = false
+
+[[bench]]
+name = "dev_lookup"
+harness = false
+
+[[bench]]
+name = "fft"
+harness = false
+
+[dependencies]
+backtrace = { version = "0.3", optional = true }
+ff = "0.13"
+group = "0.13"
+pasta_curves = "0.5"
+rand_core = { version = "0.6", default-features = false }
+tracing = "0.1"
+blake2b_simd = "1"
+maybe-rayon = {version = "0.1.0", default-features = false}
+
+# Developer tooling dependencies
+plotters = { version = "0.3.0", default-features = false, optional = true }
+tabbycat = { version = "0.1", features = ["attributes"], optional = true }
+
+# Legacy circuit compatibility
+halo2_legacy_pdqsort = { version = "0.1.0", optional = true }
+
+[dev-dependencies]
+assert_matches = "1.5"
+criterion = "0.3"
+gumdrop = "0.8"
+proptest = "1"
+rand_core = { version = "0.6", default-features = false, features = ["getrandom"] }
+
+[target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dev-dependencies]
+getrandom = { version = "0.2", features = ["js"] }
+
+[features]
+default = ["batch", "multicore"]
+multicore = ["maybe-rayon/threads"]
+dev-graph = ["plotters", "tabbycat"]
+test-dev-graph = [
+    "dev-graph",
+    "plotters/bitmap_backend",
+]
+gadget-traces = ["backtrace"]
+sanity-checks = []
+batch = ["rand_core/getrandom"]
+floor-planner-v1-legacy-pdqsort = ["halo2_legacy_pdqsort"]
+
+# In-development features
+# See https://zcash.github.io/halo2/dev/features.html
+beta = [
+]
+nightly = [
+    "beta",
+]
+# Add flags for in-development features above this line.
+
+[lib]
+bench = false
+
+[[example]]
+name = "circuit-layout"
+required-features = ["test-dev-graph"]
