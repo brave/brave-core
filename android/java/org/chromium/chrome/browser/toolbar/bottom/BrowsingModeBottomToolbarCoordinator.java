@@ -197,7 +197,9 @@ public class BrowsingModeBottomToolbarCoordinator {
         mSearchAccelerator.setThemeColorProvider(themeColorProvider);
         mSearchAccelerator.setIncognitoStateProvider(incognitoStateProvider);
         mSearchAccelerator.onTintChanged(
-                mThemeColorProvider.getTint(), mThemeColorProvider.getBrandedColorScheme());
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getBrandedColorScheme());
 
         if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
             mTabSwitcherButtonCoordinator.setTabSwitcherListener(tabSwitcherListener);
@@ -208,7 +210,9 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         mBookmarkButton.setThemeColorProvider(themeColorProvider);
         mBookmarkButton.onTintChanged(
-                mThemeColorProvider.getTint(), mThemeColorProvider.getBrandedColorScheme());
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getBrandedColorScheme());
 
         mThemeColorProvider.addTintObserver(mMenuButton);
 

@@ -16,6 +16,7 @@ import androidx.core.widget.ImageViewCompat;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.TintObserver;
 import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
+import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 
 /**
  * Brave's extension of HomeButton.
@@ -37,7 +38,10 @@ public class BraveHomeButton extends HomeButton implements TintObserver {
     }
 
     @Override
-    public void onTintChanged(ColorStateList tint, int brandedColorScheme) {
+    public void onTintChanged(
+            ColorStateList tint,
+            ColorStateList activityFocusTint,
+            @BrandedColorScheme int brandedColorScheme) {
         ImageViewCompat.setImageTintList(this, tint);
     }
 
