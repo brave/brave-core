@@ -425,6 +425,10 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
                                                std::to_address(browser_)));
   UpdateCommandEnabled(IDC_CLOSE_SPLIT_VIEW, !brave::CanOpenNewSplitViewForTab(
                                                  std::to_address(browser_)));
+  UpdateCommandEnabled(IDC_TILE_TABS,
+                       brave::CanTileTabs(std::to_address(browser_)));
+  UpdateCommandEnabled(IDC_BREAK_TILE,
+                       brave::IsTabsTiled(std::to_address(browser_)));
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
@@ -633,6 +637,18 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_WINDOW_BRING_ALL_TABS:
       brave::BringAllTabs(&*browser_);
+      break;
+    case IDC_NEW_SPLIT_VIEW:
+      brave::NewSplitViewForTab(&*browser_);
+      break;
+    case IDC_CLOSE_SPLIT_VIEW:
+      brave::CloseSplitViewForTab(&*browser_);
+      break;
+    case IDC_TILE_TABS:
+      brave::TileSelectedTabs(&*browser_);
+      break;
+    case IDC_BREAK_TILE:
+      brave::BreakSelectedTiles(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

@@ -142,8 +142,7 @@ void BraveTabMenuModel::BuildItemsForSplitView(
     if (brave::IsTabsTiled(browser, indices)) {
       InsertItemWithStringIdAt(++index, CommandCloseSplitView,
                                IDS_IDC_CLOSE_SPLIT_VIEW);
-      InsertItemWithStringIdAt(++index, CommandBreakTile,
-                               IDS_TAB_CXMENU_BREAK_TILE);
+      InsertItemWithStringIdAt(++index, CommandBreakTile, IDS_IDC_BREAK_TILE);
       return;
     }
 
@@ -153,13 +152,11 @@ void BraveTabMenuModel::BuildItemsForSplitView(
   }
 
   if (brave::CanTileTabs(browser, indices)) {
-    InsertItemWithStringIdAt(++index, CommandTileTabs,
-                             IDS_TAB_CXMENU_TILE_TABS);
+    InsertItemWithStringIdAt(++index, CommandTileTabs, IDS_IDC_TILE_TABS);
     return;
   }
 
   if (brave::IsTabsTiled(browser, indices)) {
-    InsertItemWithStringIdAt(++index, CommandBreakTile,
-                             IDS_TAB_CXMENU_BREAK_TILE);
+    InsertItemWithStringIdAt(++index, CommandBreakTile, IDS_IDC_BREAK_TILE);
   }
 }
