@@ -1,0 +1,132 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+brave_browser_net_sources = [
+  "//brave/browser/net/brave_ad_block_csp_network_delegate_helper.cc",
+  "//brave/browser/net/brave_ad_block_csp_network_delegate_helper.h",
+  "//brave/browser/net/brave_ad_block_tp_network_delegate_helper.cc",
+  "//brave/browser/net/brave_ad_block_tp_network_delegate_helper.h",
+  "//brave/browser/net/brave_ads_status_header_network_delegate_helper.cc",
+  "//brave/browser/net/brave_ads_status_header_network_delegate_helper.h",
+  "//brave/browser/net/brave_block_safebrowsing_urls.cc",
+  "//brave/browser/net/brave_block_safebrowsing_urls.h",
+  "//brave/browser/net/brave_common_static_redirect_network_delegate_helper.cc",
+  "//brave/browser/net/brave_common_static_redirect_network_delegate_helper.h",
+  "//brave/browser/net/brave_localhost_permission_network_delegate_helper.cc",
+  "//brave/browser/net/brave_localhost_permission_network_delegate_helper.h",
+  "//brave/browser/net/brave_proxying_url_loader_factory.cc",
+  "//brave/browser/net/brave_proxying_url_loader_factory.h",
+  "//brave/browser/net/brave_proxying_web_socket.cc",
+  "//brave/browser/net/brave_proxying_web_socket.h",
+  "//brave/browser/net/brave_reduce_language_network_delegate_helper.cc",
+  "//brave/browser/net/brave_reduce_language_network_delegate_helper.h",
+  "//brave/browser/net/brave_request_handler.cc",
+  "//brave/browser/net/brave_request_handler.h",
+  "//brave/browser/net/brave_service_key_network_delegate_helper.cc",
+  "//brave/browser/net/brave_service_key_network_delegate_helper.h",
+  "//brave/browser/net/brave_site_hacks_network_delegate_helper.cc",
+  "//brave/browser/net/brave_site_hacks_network_delegate_helper.h",
+  "//brave/browser/net/brave_static_redirect_network_delegate_helper.cc",
+  "//brave/browser/net/brave_static_redirect_network_delegate_helper.h",
+  "//brave/browser/net/brave_stp_util.cc",
+  "//brave/browser/net/brave_stp_util.h",
+  "//brave/browser/net/brave_system_request_handler.cc",
+  "//brave/browser/net/brave_system_request_handler.h",
+  "//brave/browser/net/decentralized_dns_network_delegate_helper.cc",
+  "//brave/browser/net/decentralized_dns_network_delegate_helper.h",
+  "//brave/browser/net/global_privacy_control_network_delegate_helper.cc",
+  "//brave/browser/net/global_privacy_control_network_delegate_helper.h",
+  "//brave/browser/net/resource_context_data.cc",
+  "//brave/browser/net/resource_context_data.h",
+  "//brave/browser/net/url_context.cc",
+  "//brave/browser/net/url_context.h",
+]
+
+brave_browser_net_deps = [
+  "//base",
+  "//brave/app:brave_generated_resources_grit",
+  "//brave/browser:browser_process",
+  "//brave/browser/brave_wallet",
+  "//brave/browser/net:geolocation",
+  "//brave/browser/profiles:util",
+  "//brave/browser/safebrowsing",
+  "//brave/common",
+  "//brave/components/brave_ads/browser",
+  "//brave/components/brave_component_updater/browser",
+  "//brave/components/brave_referrals/browser",
+  "//brave/components/brave_rewards/common",
+  "//brave/components/brave_search/common",
+  "//brave/components/brave_shields/adblock/rs:rust_lib",
+  "//brave/components/brave_shields/adblock/rs:rust_lib_cxx_generated_gen",
+  "//brave/components/brave_shields/content/browser",
+  "//brave/components/brave_shields/core/browser:browser",
+  "//brave/components/brave_shields/core/common",
+  "//brave/components/brave_wallet/browser",
+  "//brave/components/brave_wallet/common",
+  "//brave/components/brave_wallet/common:mojom",
+  "//brave/components/brave_webtorrent/browser/buildflags",
+  "//brave/components/constants",
+  "//brave/components/constants:brave_service_key_helper",
+  "//brave/components/decentralized_dns/content",
+  "//brave/components/decentralized_dns/core",
+  "//brave/components/ipfs/buildflags",
+  "//brave/components/localhost_permission",
+  "//brave/components/query_filter",
+  "//brave/components/update_client:buildflags",
+  "//brave/components/widevine:static_buildflags",
+  "//brave/extensions:common",
+  "//chrome/browser:browser_process",
+  "//chrome/browser/profiles",
+  "//components/content_settings/core/browser",
+  "//components/language/core/browser",
+  "//components/prefs",
+  "//components/proxy_config",
+  "//components/user_prefs",
+  "//content/public/browser",
+  "//content/public/common",
+  "//mojo/public/cpp/bindings",
+  "//mojo/public/cpp/system",
+  "//net",
+  "//services/network:network_service",
+  "//services/network/public/cpp",
+  "//services/network/public/mojom",
+  "//third_party/blink/public/common",
+  "//third_party/blink/public/mojom:mojom_platform_headers",
+  "//third_party/re2",
+  "//url",
+]
+
+if (enable_extensions) {
+  brave_browser_net_deps += [ "//extensions/common:common_constants" ]
+}
+
+if (enable_ipfs) {
+  brave_browser_net_sources += [
+    "//brave/browser/net/ipfs_redirect_network_delegate_helper.cc",
+    "//brave/browser/net/ipfs_redirect_network_delegate_helper.h",
+  ]
+  brave_browser_net_deps += [
+    "//brave/components/ipfs",
+    "//chrome/common:channel_info",
+  ]
+}
+
+if (enable_brave_webtorrent) {
+  brave_browser_net_sources += [
+    "//brave/browser/net/brave_torrent_redirect_network_delegate_helper.cc",
+    "//brave/browser/net/brave_torrent_redirect_network_delegate_helper.h",
+  ]
+
+  brave_browser_net_deps += [
+    "//brave/components/brave_webtorrent/browser/",
+    "//extensions/browser",
+  ]
+}
