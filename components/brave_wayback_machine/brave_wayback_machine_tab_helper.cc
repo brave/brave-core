@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 
-#include <string>
 #include <utility>
 
 #include "base/command_line.h"
@@ -45,13 +44,21 @@ BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
           this,
           contents->GetBrowserContext()
               ->GetDefaultStoragePartition()
-              ->GetURLLoaderFactoryForBrowserProcess()) {}
+              ->GetURLLoaderFactoryForBrowserProcess()) {
+  // Unretained() is safe as |wayback_enabled_| is owned by this class.
+  wayback_enabled_.Init(
+      kBraveWaybackMachineEnabled, &*pref_service_,
+      base::BindRepeating(
+          &BraveWaybackMachineTabHelper::OnWaybackEnabledChanged,
+          base::Unretained(this)));
+}
 
 BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() {
   CHECK(!wayback_state_changed_callback_);
 }
 
 void BraveWaybackMachineTabHelper::FetchWaybackURL() {
+  CHECK(wayback_enabled_.GetValue());
   SetWaybackState(WaybackState::kFetching);
   wayback_machine_url_fetcher_.Fetch(web_contents()->GetVisibleURL());
 }
@@ -71,9 +78,8 @@ void BraveWaybackMachineTabHelper::SetWaybackStateChangedCallback(
 
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!IsWaybackMachineEnabled()) {
-    wayback_url_navigation_id_ = std::nullopt;
-    SetWaybackState(WaybackState::kInitial);
+  if (!wayback_enabled_.GetValue()) {
+    ResetState();
     return;
   }
 
@@ -90,7 +96,7 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
     return;
   }
 
-  SetWaybackState(WaybackState::kInitial);
+  ResetState();
 
   if (IsWaybackMachineDisabledFor(navigation_handle->GetURL())) {
     return;
@@ -142,10 +148,6 @@ void BraveWaybackMachineTabHelper::SetWaybackState(WaybackState state) {
   }
 }
 
-bool BraveWaybackMachineTabHelper::IsWaybackMachineEnabled() const {
-  return pref_service_->GetBoolean(kBraveWaybackMachineEnabled);
-}
-
 bool BraveWaybackMachineTabHelper::ShouldCheckWaybackMachine(
     int response_code) const {
   static base::flat_set<int> responses = {
@@ -167,6 +169,19 @@ bool BraveWaybackMachineTabHelper::ShouldCheckWaybackMachine(
   };
 
   return responses.find(response_code) != responses.end();
+}
+
+void BraveWaybackMachineTabHelper::OnWaybackEnabledChanged(
+    const std::string& pref_name) {
+  // Back to initial state when user disables this feature.
+  if (!wayback_enabled_.GetValue()) {
+    ResetState();
+  }
+}
+
+void BraveWaybackMachineTabHelper::ResetState() {
+  wayback_url_navigation_id_ = std::nullopt;
+  SetWaybackState(WaybackState::kInitial);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWaybackMachineTabHelper);

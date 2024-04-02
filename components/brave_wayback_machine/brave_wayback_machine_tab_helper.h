@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_TAB_HELPER_H_
 
 #include <optional>
+#include <string>
 
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
@@ -14,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "brave/components/brave_wayback_machine/wayback_state.h"
+#include "components/prefs/pref_member.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "ui/gfx/native_widget_types.h"
@@ -57,7 +59,8 @@ class BraveWaybackMachineTabHelper
 
   void SetWaybackState(WaybackState state);
   bool ShouldCheckWaybackMachine(int response_code) const;
-  bool IsWaybackMachineEnabled() const;
+  void OnWaybackEnabledChanged(const std::string& pref_name);
+  void ResetState();
 
   // Cache wayback url navigation handle.
   // It uses to check whether it's wayback url loading or not.
@@ -71,6 +74,7 @@ class BraveWaybackMachineTabHelper
   WaybackStateChangedCallback wayback_state_changed_callback_;
   raw_ref<PrefService> pref_service_;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
+  BooleanPrefMember wayback_enabled_;
 
   friend WebContentsUserData;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
