@@ -840,17 +840,6 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   func numberOfSections(in tableView: UITableView) -> Int {
     return dataSource.availableSections.count
   }
-
-  func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-    guard let section = dataSource.availableSections[safe: indexPath.section] else {
-      return
-    }
-
-    if section == .openTabsAndHistoryAndBookmarks {
-      let suggestion = data[indexPath.item]
-      searchDelegate?.searchViewController(self, didHighlightText: suggestion.url, search: false)
-    }
-  }
 }
 
 // MARK: - SearchSuggestionDataSourceDelegate
