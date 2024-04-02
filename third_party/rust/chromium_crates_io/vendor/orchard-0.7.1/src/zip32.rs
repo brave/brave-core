@@ -122,7 +122,7 @@ impl KeyIndex {
 ///
 /// [orchardextendedkeys]: https://zips.z.cash/zip-0032#orchard-extended-keys
 #[derive(Debug, Clone)]
-pub(crate) struct ExtendedSpendingKey {
+pub struct ExtendedSpendingKey {
     depth: u8,
     parent_fvk_tag: FvkTag,
     child_index: KeyIndex,
@@ -165,7 +165,7 @@ impl ExtendedSpendingKey {
     /// # Panics
     ///
     /// Panics if the seed is shorter than 32 bytes or longer than 252 bytes.
-    fn master(seed: &[u8]) -> Result<Self, Error> {
+    pub fn master(seed: &[u8]) -> Result<Self, Error> {
         assert!(seed.len() >= 32 && seed.len() <= 252);
         // I := BLAKE2b-512("ZcashIP32Orchard", seed)
         let I: [u8; 64] = {
@@ -203,7 +203,7 @@ impl ExtendedSpendingKey {
     /// [orchardchildkey]: https://zips.z.cash/zip-0032#orchard-child-key-derivation
     ///
     /// Discards index if it results in an invalid sk
-    fn derive_child(&self, index: ChildIndex) -> Result<Self, Error> {
+    pub fn derive_child(&self, index: ChildIndex) -> Result<Self, Error> {
         // I := PRF^Expand(c_par, [0x81] || sk_par || I2LEOSP(i))
         let I: [u8; 64] = PrfExpand::ORCHARD_ZIP32_CHILD.with(
             self.chain_code.as_bytes(),
