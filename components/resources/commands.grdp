@@ -431,7 +431,7 @@
     Send tab to self
   </message>
   <message name="IDS_IDC_SHOW_WAYBACK_MACHINE_BUBBLE">
-    Show wayback machine bubble
+    Show Wayback Machine bubble
   </message>
 
   <!-- Commander composite commands -->
