@@ -17,7 +17,7 @@ struct FocusStepsView: View {
   @State private var indicatorIndex = 0
   @State private var opacity = 0.0
   @State private var isP3AViewPresented = false
-  @State private var shouldDismiss = false
+  @Binding var shouldDismiss: Bool
 
   private let attributionManager: AttributionManager?
   private let p3aUtilities: BraveP3AUtils?
@@ -27,11 +27,13 @@ struct FocusStepsView: View {
   public init(
     namespace: Namespace.ID,
     attributionManager: AttributionManager? = nil,
-    p3aUtilities: BraveP3AUtils? = nil
+    p3aUtilities: BraveP3AUtils? = nil,
+    shouldDismiss: Binding<Bool>
   ) {
     self.namespace = namespace
     self.attributionManager = attributionManager
     self.p3aUtilities = p3aUtilities
+    self._shouldDismiss = shouldDismiss
   }
 
   var body: some View {
@@ -89,7 +91,7 @@ struct FocusStepsView: View {
         }
         .opacity(opacity)
         .onAppear {
-          withAnimation(.easeInOut(duration: 1.5).delay(1.5)) {
+          withAnimation(.easeInOut(duration: 1.5).delay(1.25)) {
             opacity = 1.0
           }
         }
@@ -120,18 +122,9 @@ struct FocusStepsView: View {
           }
         )
       }
-      .onChange(of: shouldDismiss) { shouldDismiss in
-        if shouldDismiss {
-          Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-          Preferences.AppState.shouldDeferPromotedPurchase.value = false
-          Preferences.FocusOnboarding.focusOnboardingFinished.value = true
-
-          dismiss()
-        }
-      }
     }
-    .navigationBarHidden(true)
     .navigationViewStyle(StackNavigationViewStyle())
+    .navigationBarHidden(true)
   }
 }
 
@@ -195,6 +188,8 @@ struct FocusStepsView_Previews: PreviewProvider {
   @Namespace static var namespace
 
   static var previews: some View {
-    FocusStepsView(namespace: namespace)
+    @State var shouldDismiss: Bool = false
+
+    FocusStepsView(namespace: namespace, shouldDismiss: $shouldDismiss)
   }
 }

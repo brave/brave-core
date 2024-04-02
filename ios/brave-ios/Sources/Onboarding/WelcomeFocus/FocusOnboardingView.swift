@@ -8,12 +8,16 @@ import DesignSystem
 import Foundation
 import Growth
 import Introspect
+import Preferences
 import Strings
 import SwiftUI
 
 public struct FocusOnboardingView: View {
-  @State private var isSplashViewPresented = true
   @Namespace var namespace
+  @Environment(\.dismiss) private var dismiss
+
+  @State private var shouldDismiss = false
+  @State private var isSplashViewPresented = true
 
   private let attributionManager: AttributionManager?
   private let p3aUtilities: BraveP3AUtils?
@@ -24,22 +28,36 @@ public struct FocusOnboardingView: View {
   }
 
   public var body: some View {
-    VStack {
-      if isSplashViewPresented {
-        FocusSplashScreenView(namespace: namespace)
-      } else {
-        FocusStepsView(
-          namespace: namespace,
-          attributionManager: attributionManager,
-          p3aUtilities: p3aUtilities
-        )
+    NavigationView {
+      VStack {
+        if isSplashViewPresented {
+          FocusSplashScreenView(namespace: namespace)
+        } else {
+          FocusStepsView(
+            namespace: namespace,
+            attributionManager: attributionManager,
+            p3aUtilities: p3aUtilities,
+            shouldDismiss: $shouldDismiss
+          )
+        }
+      }
+      .onAppear {
+        withAnimation(.easeInOut(duration: 0.75).delay(1.0)) {
+          isSplashViewPresented = false
+        }
+      }
+      .onChange(of: shouldDismiss) { shouldDismiss in
+        if shouldDismiss {
+          Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+          Preferences.AppState.shouldDeferPromotedPurchase.value = false
+          Preferences.FocusOnboarding.focusOnboardingFinished.value = true
+
+          dismiss()
+        }
       }
     }
-    .onAppear {
-      withAnimation(.easeInOut(duration: 0.75).delay(1.5)) {
-        isSplashViewPresented = false
-      }
-    }
+    .navigationViewStyle(StackNavigationViewStyle())
+    .navigationBarHidden(true)
   }
 }
 
