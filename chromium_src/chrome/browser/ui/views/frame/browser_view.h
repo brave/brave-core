@@ -13,8 +13,6 @@
 #include "build/build_config.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
-class BraveContentsLayoutManager;
-
 #define BrowserViewLayoutDelegateImpl \
   BrowserViewLayoutDelegateImpl;      \
   friend class BraveBrowserView;      \
