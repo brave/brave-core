@@ -171,13 +171,13 @@ export const SelectTimelineWrapper = styled(Row)`
   }
 `
 
-export const ControlsRow = styled(Row)`
-  box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.02);
+export const ControlsRow = styled(Row)<{ controlsHidden?: boolean }>`
+  box-shadow: 0px -1px 1px ${leo.color.elevation.primary};
   border-radius: 16px 16px 0px 0px;
-  padding: 24px 16px;
+  padding: ${(p) => (p.controlsHidden ? '12px' : '24px 16px')};
   background-color: ${leo.color.container.background};
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: 16px;
+    padding: ${(p) => (p.controlsHidden ? '8px' : '16px')};
   }
 `
 
