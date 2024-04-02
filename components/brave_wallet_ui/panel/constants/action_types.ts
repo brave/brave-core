@@ -37,8 +37,3 @@ export type SignTransactionHardwarePayload = {
   request: BraveWallet.SignTransactionRequest
   account: BraveWallet.AccountInfo
 }
-
-export type SignAllTransactionsHardwarePayload = {
-  request: BraveWallet.SignAllTransactionsRequest
-  account: BraveWallet.AccountInfo
-}

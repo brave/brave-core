@@ -29,7 +29,6 @@ const PANEL_TYPES: PanelTypes[] = [
   'settings',
   'signData',
   'signTransaction',
-  'signAllTransactions',
   'sitePermissions',
   'swap',
   'transactionDetails',

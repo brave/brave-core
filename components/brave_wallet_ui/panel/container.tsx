@@ -47,6 +47,7 @@ import {
   useGetPendingDecryptRequestQuery,
   useGetPendingGetEncryptionPublicKeyRequestQuery,
   useGetPendingSwitchChainRequestQuery,
+  useGetPendingSignAllTransactionsRequestsQuery,
   useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
 import {
@@ -101,9 +102,6 @@ function Container() {
   const signTransactionRequests = useUnsafePanelSelector(
     PanelSelectors.signTransactionRequests
   )
-  const signAllTransactionsRequests = useUnsafePanelSelector(
-    PanelSelectors.signAllTransactionsRequests
-  )
 
   // queries & mutations
   const { accounts } = useAccountsQuery()
@@ -113,6 +111,8 @@ function Container() {
   const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
   const { data: getEncryptionPublicKeyRequest } =
     useGetPendingGetEncryptionPublicKeyRequestQuery()
+  const { data: signAllTransactionsRequests } =
+    useGetPendingSignAllTransactionsRequestsQuery()
   const { data: addTokenRequests = [] } =
     useGetPendingTokenSuggestionRequestsQuery()
 
@@ -175,7 +175,7 @@ function Container() {
     selectedAccount &&
     (selectedPendingTransaction ||
       signMessageData.length ||
-      signAllTransactionsRequests.length ||
+      signAllTransactionsRequests?.length ||
       signTransactionRequests.length) &&
     selectedPanel === 'connectHardwareWallet'
   ) {
@@ -288,21 +288,13 @@ function Container() {
     )
   }
 
-  if (
-    (signAllTransactionsRequests.length > 0 ||
-      signTransactionRequests.length > 0) &&
-    (selectedPanel === 'signTransaction' ||
-      selectedPanel === 'signAllTransactions')
-  ) {
+  if (signAllTransactionsRequests?.length || signTransactionRequests?.length) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <PendingSignatureRequestsPanel
             signMode={
-              signAllTransactionsRequests.length ||
-              selectedPanel === 'signAllTransactions'
-                ? 'signAllTxs'
-                : 'signTx'
+              signAllTransactionsRequests?.length ? 'signAllTxs' : 'signTx'
             }
           />
         </LongWrapper>
