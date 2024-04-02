@@ -20,9 +20,7 @@ WaybackMachineStateManager::WaybackMachineStateManager(
   browser_->tab_strip_model()->AddObserver(this);
 }
 
-WaybackMachineStateManager::~WaybackMachineStateManager() {
-  browser_->tab_strip_model()->RemoveObserver(this);
-}
+WaybackMachineStateManager::~WaybackMachineStateManager() = default;
 
 WaybackState WaybackMachineStateManager::GetActiveTabWaybackState() const {
   auto* active_contents = browser_->tab_strip_model()->GetActiveWebContents();
