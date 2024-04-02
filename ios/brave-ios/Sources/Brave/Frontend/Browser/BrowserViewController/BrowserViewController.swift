@@ -1013,8 +1013,11 @@ public class BrowserViewController: UIViewController {
           $0.body = Strings.DefaultBrowserCallout.notificationBody
         }
 
-        let timeToShow = AppConstants.buildChannel.isPublic ? 2.hours : 2.minutes
-        let timeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToShow, repeats: false)
+        let timeToShow = AppConstants.isOfficialBuild ? 2.hours : 2.minutes
+        let timeTrigger = UNTimeIntervalNotificationTrigger(
+          timeInterval: timeToShow,
+          repeats: false
+        )
 
         let request = UNNotificationRequest(
           identifier: Self.defaultBrowserNotificationId,
@@ -3105,8 +3108,10 @@ extension BrowserViewController: PreferencesObserver {
         state: selectedTab?.playlistItemState ?? .none,
         item: selectedTab?.playlistItem)
     case Preferences.PrivacyReports.captureShieldsData.key:
-      PrivacyReportsManager.scheduleProcessingBlockedRequests(isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing)
-      PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
+      PrivacyReportsManager.scheduleProcessingBlockedRequests(
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+      )
+      PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
     case Preferences.PrivacyReports.captureVPNAlerts.key:
       PrivacyReportsManager.scheduleVPNAlertsTask()
     case Preferences.Wallet.defaultEthWallet.key:

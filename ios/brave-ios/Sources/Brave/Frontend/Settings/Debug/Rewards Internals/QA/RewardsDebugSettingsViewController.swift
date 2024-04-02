@@ -148,7 +148,7 @@ class RewardsDebugSettingsViewController: TableViewController {
   }
 
   private func reloadSections() {
-    let isDefaultEnvironmentProd = AppConstants.buildChannel != .debug
+    let isDefaultEnvironmentProd = AppConstants.isOfficialBuild
 
     dataSource.sections = [
       Section(

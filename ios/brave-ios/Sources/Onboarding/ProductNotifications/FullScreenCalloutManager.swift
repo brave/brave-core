@@ -70,7 +70,9 @@ public struct FullScreenCalloutManager {
 
     let rightNow = Date()
 
-    let nextShowDate = appRetentionLaunchDate.addingTimeInterval(AppConstants.buildChannel.isPublic ? calloutType.period.days : calloutType.period.minutes)
+    let nextShowDate = appRetentionLaunchDate.addingTimeInterval(
+      AppConstants.isOfficialBuild ? calloutType.period.days : calloutType.period.minutes
+    )
 
     if rightNow > nextShowDate {
       calloutType.preferenceValue.value = true
