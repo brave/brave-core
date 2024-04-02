@@ -18,6 +18,7 @@ namespace brave_wallet {
 
 namespace {
 constexpr uint32_t kZip32Purpose = 32u;
+constexpr uint32_t kTestnetPurpose = 1u;
 }  // namespace
 
 ZCashKeyring::ZCashKeyring(bool testnet) : testnet_(testnet) {}
@@ -83,7 +84,7 @@ std::optional<std::string> ZCashKeyring::GetUnifiedAddress(
                           : esk->GetPublicDevirsifiedAddress(
                                 zcash_key_id.index, OrchardKind::External);
   if (!orchard_addr_bytes) {
-    return nullptr;
+    return std::nullopt;
   }
 
   auto transparent_pubkey_hash = GetPubkeyHash(transparent_key_id);
@@ -194,14 +195,19 @@ void ZCashKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
     }
 
     if (IsZCashShieldedEnabled()) {
-      // TODO(cypt4): Make this more presentable
-      orchard_key_ = HDKeyZip32::GenerateFromSeed(seed);
-      CHECK(orchard_key_);
-      orchard_key_ = orchard_key_->DeriveHardenedChild(kZip32Purpose);
-      CHECK(orchard_key_);
-      orchard_key_ = orchard_key_->DeriveHardenedChild(
-          testnet_ ? 1u : static_cast<uint32_t>(mojom::CoinType::ZEC));
-      CHECK(orchard_key_);
+      auto orchard_key = HDKeyZip32::GenerateFromSeed(seed);
+      if (!orchard_key) {
+        NOTREACHED();
+        return;
+      }
+      orchard_key = orchard_key->DeriveHardenedChild(kZip32Purpose);
+      if (!orchard_key) {
+        NOTREACHED();
+        return;
+      }
+      orchard_key_ = orchard_key->DeriveHardenedChild(
+          testnet_ ? kTestnetPurpose : static_cast<uint32_t>(mojom::CoinType::ZEC));
+      DCHECK(orchard_key_);
     }
   }
 }
