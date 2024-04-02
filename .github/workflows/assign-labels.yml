@@ -10,7 +10,7 @@ permissions:
 jobs:
   label:
     name: Assign labels
-    runs-on: ubuntu-latest-2-cores
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/labeler@ac9175f8a1f3625fd0d4fb234536d26811351594 # v4.3.0
       with:
