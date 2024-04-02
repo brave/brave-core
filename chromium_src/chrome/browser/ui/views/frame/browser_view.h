@@ -21,6 +21,7 @@
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
 #define BookmarkBarView BraveBookmarkBarView
+#define ContentsLayoutManager BraveContentsLayoutManager
 
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
@@ -53,6 +54,7 @@
 #undef GetTabStripVisible
 #undef UpdateDevToolsForContents
 #undef MaybeShowReadingListInSidePanelIPH
+#undef ContentsLayoutManager
 #undef BookmarkBarView
 #undef SidePanel
 #undef BrowserViewLayout

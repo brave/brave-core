@@ -36,6 +36,7 @@ class SplitViewBrowserDataUnitTest : public ::testing::Test {
     tab_strip_model_ =
         std::make_unique<TabStripModel>(delegate_.get(), &profile_);
     data_.reset(new SplitViewBrowserData(nullptr));
+    data_->is_testing_ = true;
   }
 
   void TearDown() override {

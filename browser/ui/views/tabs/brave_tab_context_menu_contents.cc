@@ -19,6 +19,7 @@
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/defaults.h"
@@ -27,6 +28,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
@@ -170,13 +172,20 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
       }
       return false;
     }
-    case BraveTabMenuModel::CommandShowVerticalTabs:
-      return true;
-    case BraveTabMenuModel::CommandBringAllTabsToThisWindow: {
-      return true;
-    }
     case BraveTabMenuModel::CommandCloseDuplicateTabs:
       return brave::HasDuplicateTabs(browser_);
+    case BraveTabMenuModel::CommandShowVerticalTabs:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandBringAllTabsToThisWindow:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandNewSplitView:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandCloseSplitView:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandTileTabs:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandBreakTile:
+      return true;
     default:
       NOTREACHED();
       break;
@@ -223,6 +232,18 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandCloseDuplicateTabs:
       brave::CloseDuplicateTabs(browser_);
       return;
+    case BraveTabMenuModel::CommandNewSplitView:
+      NewSplitView();
+      return;
+    case BraveTabMenuModel::CommandCloseSplitView:
+      CloseSplitView();
+      return;
+    case BraveTabMenuModel::CommandTileTabs:
+      TileSelectedTabs();
+      return;
+    case BraveTabMenuModel::CommandBreakTile:
+      BreakSelectedTile();
+      return;
     default:
       NOTREACHED();
       return;
@@ -245,4 +266,35 @@ bool BraveTabContextMenuContents::IsValidContextMenu() const {
 
 void BraveTabContextMenuContents::OnMenuClosed() {
   menu_closed_ = true;
+}
+
+void BraveTabContextMenuContents::NewSplitView() {
+  auto* model = browser_->tab_strip_model();
+  auto tab = model->GetTabHandleAt(tab_index_);
+  brave::NewSplitViewForTab(browser_, tab);
+}
+
+void BraveTabContextMenuContents::CloseSplitView() {
+  auto* model = browser_->tab_strip_model();
+  auto tab = model->GetTabHandleAt(tab_index_);
+  brave::CloseSplitViewForTab(browser_, tab);
+}
+
+void BraveTabContextMenuContents::TileSelectedTabs() {
+  brave::TileTabs(browser_, GetTabIndicesForSplitViewCommand());
+}
+
+void BraveTabContextMenuContents::BreakSelectedTile() {
+  brave::BreakTiles(browser_, GetTabIndicesForSplitViewCommand());
+}
+
+std::vector<int> BraveTabContextMenuContents::GetTabIndicesForSplitViewCommand()
+    const {
+  auto* model = static_cast<BraveTabStripModel*>(controller_->model());
+  auto selected_indices = model->GetTabIndicesForCommandAt(tab_index_);
+  if (base::Contains(selected_indices, tab_index_)) {
+    return selected_indices;
+  }
+
+  return {tab_index_};
 }

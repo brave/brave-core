@@ -11,11 +11,13 @@
 #include <utility>
 #include <vector>
 
+#include "base/observer_list.h"
 #include "base/types/pass_key.h"
 #include "chrome/browser/ui/browser_user_data.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 
 class SplitViewTabStripModelAdapter;
+class SplitViewBrowserDataObserver;
 
 class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
  public:
@@ -35,6 +37,9 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
 
   std::optional<Tile> GetTile(const tabs::TabHandle& tab) const;
   const std::vector<Tile> tiles(TilePassKey) const { return tiles_; }
+
+  void AddObserver(SplitViewBrowserDataObserver* observer);
+  void RemoveObserver(SplitViewBrowserDataObserver* observer);
 
  private:
   friend BrowserUserData;
@@ -59,6 +64,10 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   // As UI is likely to read more frequently than insert or delete, we cache
   // index for faster look up.
   base::flat_map<tabs::TabHandle, size_t> tile_index_for_tab_;
+
+  base::ObserverList<SplitViewBrowserDataObserver> observers_;
+
+  bool is_testing_ = false;
 
   BROWSER_USER_DATA_KEY_DECL();
 };

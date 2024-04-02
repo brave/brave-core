@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTEXT_MENU_CONTENTS_H_
 
 #include <memory>
+#include <vector>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
@@ -64,6 +65,13 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   bool IsBraveCommandId(int command_id) const;
   bool IsValidContextMenu() const;
   void OnMenuClosed();
+
+  void NewSplitView();
+  void CloseSplitView();
+  void TileSelectedTabs();
+  void BreakSelectedTile();
+
+  std::vector<int> GetTabIndicesForSplitViewCommand() const;
 
   std::unique_ptr<BraveTabMenuModel> model_;
   std::unique_ptr<views::MenuRunner> menu_runner_;
