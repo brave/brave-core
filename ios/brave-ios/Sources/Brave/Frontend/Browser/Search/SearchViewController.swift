@@ -508,11 +508,11 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     let footerHeight: CGFloat = 10.0
 
     switch searchSection {
-    case .quickBar, .aiChat, .searchSuggestions, .findInPage:
+    case .quickBar, .searchSuggestions, .findInPage, .openTabsAndHistoryAndBookmarks:
       return CGFloat.leastNormalMagnitude
     case .searchSuggestionsOptIn:
       return footerHeight
-    case .openTabsAndHistoryAndBookmarks:
+    case .aiChat:
       return footerHeight
     }
   }
