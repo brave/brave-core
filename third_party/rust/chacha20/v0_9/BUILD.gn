@@ -1,0 +1,49 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "chacha20"
+  epoch = "0.9"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/backends.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/backends/avx2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/backends/neon.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/backends/soft.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/backends/sse2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/legacy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/xchacha.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.9.1"
+  cargo_pkg_authors = "RustCrypto Developers"
+  cargo_pkg_name = "chacha20"
+  cargo_pkg_description = "The ChaCha20 stream cipher (RFC 8439) implemented in pure Rust using traits from the RustCrypto `cipher` crate, with optional architecture-specific hardware acceleration (AVX2, SSE2). Additionally provides the ChaCha8, ChaCha12, XChaCha20, XChaCha12 and XChaCha8 stream ciphers, and also optional rand_core-compatible RNGs based on those ciphers."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/cfg_if/v1:lib",
+    "//brave/third_party/rust/cipher/v0_4:lib",
+  ]
+  features = [ "zeroize" ]
+  if (target_cpu == "x64" || target_cpu == "x86") {
+    deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+  }
+}

@@ -1,0 +1,36 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "halo2_legacy_pdqsort"
+  epoch = "0.1"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/src/rust_slice.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/src/sort.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.1.0"
+  cargo_pkg_authors = "Daira Emma Hopwood <daira@jacaranda.org>, Sean Bowe <sean@electriccoin.co>, Jack Grigg <jack@electriccoin.co>, Kris Nuttycombe <kris@electriccoin.co>, Greg Pfeil <greg@electriccoin.co>"
+  cargo_pkg_name = "halo2_legacy_pdqsort"
+  cargo_pkg_description = "A copy of the core::slice::sort module from the Rust 1.56.1 standard library, modified to behave the same on 32-bit platforms as on 64-bit. This is intended to work around a determinism bug in the halo2_proofs crate."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+}

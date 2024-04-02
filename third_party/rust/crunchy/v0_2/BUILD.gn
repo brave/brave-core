@@ -30,7 +30,10 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
-  features = [ "limit_128" ]
+  features = [
+    "limit_128",
+    "std",
+  ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-0.2.2/build.rs"
   build_sources = [
     "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-0.2.2/build.rs",

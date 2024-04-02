@@ -1,0 +1,38 @@
+[package]
+name = "chacha20"
+version = "0.9.1"
+description = """
+The ChaCha20 stream cipher (RFC 8439) implemented in pure Rust using traits
+from the RustCrypto `cipher` crate, with optional architecture-specific
+hardware acceleration (AVX2, SSE2). Additionally provides the ChaCha8, ChaCha12,
+XChaCha20, XChaCha12 and XChaCha8 stream ciphers, and also optional
+rand_core-compatible RNGs based on those ciphers.
+"""
+authors = ["RustCrypto Developers"]
+license = "Apache-2.0 OR MIT"
+edition = "2021"
+rust-version = "1.56"
+readme = "README.md"
+documentation = "https://docs.rs/chacha20"
+repository = "https://github.com/RustCrypto/stream-ciphers"
+keywords = ["crypto", "stream-cipher", "chacha8", "chacha12", "xchacha20"]
+categories = ["cryptography", "no-std"]
+
+[dependencies]
+cfg-if = "1"
+cipher = "0.4.4"
+
+[target.'cfg(any(target_arch = "x86_64", target_arch = "x86"))'.dependencies]
+cpufeatures = "0.2"
+
+[dev-dependencies]
+cipher = { version = "0.4.4", features = ["dev"] }
+hex-literal = "0.3.3"
+
+[features]
+std = ["cipher/std"]
+zeroize = ["cipher/zeroize"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
