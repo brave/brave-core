@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
@@ -137,10 +138,8 @@ void BraveTabMenuModel::BuildItemsForSplitView(
   // In case only one tab is selected
   //  * if the tab is tiled, show "Close Split View" and "Break into Tabs"
   //  * else show "New Split View"
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
   if (indices.size() == 1u) {
-    auto tab_handle = tab_strip_model->GetTabHandleAt(indices.front());
-    if (split_view_data->IsTabTiled(tab_handle)) {
+    if (brave::IsTabsTiled(browser, indices)) {
       InsertItemWithStringIdAt(++index, CommandCloseSplitView,
                                IDS_IDC_CLOSE_SPLIT_VIEW);
       InsertItemWithStringIdAt(++index, CommandBreakTile,
@@ -153,22 +152,13 @@ void BraveTabMenuModel::BuildItemsForSplitView(
     return;
   }
 
-  // In case two tabs are selected:
-  if (indices.size() == 2) {
-    auto tab_handle1 = tab_strip_model->GetTabHandleAt(indices[0]);
-    auto tab_handle2 = tab_strip_model->GetTabHandleAt(indices[1]);
-    if (split_view_data->GetTile(tab_handle1) ==
-        split_view_data->GetTile(tab_handle2)) {
-      InsertItemWithStringIdAt(++index, CommandTileTabs,
-                               IDS_TAB_CXMENU_TILE_TABS);
-    }
+  if (brave::CanTileTabs(browser, indices)) {
+    InsertItemWithStringIdAt(++index, CommandTileTabs,
+                             IDS_TAB_CXMENU_TILE_TABS);
+    return;
   }
 
-  // Else cases, if there's any tiled tabs, show 'Break tile'
-  if (base::ranges::any_of(indices, [&](auto index) {
-        return split_view_data->IsTabTiled(
-            tab_strip_model->GetTabHandleAt(index));
-      })) {
+  if (brave::IsTabsTiled(browser, indices)) {
     InsertItemWithStringIdAt(++index, CommandBreakTile,
                              IDS_TAB_CXMENU_BREAK_TILE);
   }

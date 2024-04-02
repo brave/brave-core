@@ -421,12 +421,10 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
     split_view_browser_data_observation_.Observe(split_view_browser_data);
   }
 
-  UpdateCommandEnabled(
-      IDC_NEW_SPLIT_VIEW,
-      brave::CanOpenNewSplitViewForActiveTab(std::to_address(browser_)));
-  UpdateCommandEnabled(
-      IDC_CLOSE_SPLIT_VIEW,
-      !brave::CanOpenNewSplitViewForActiveTab(std::to_address(browser_)));
+  UpdateCommandEnabled(IDC_NEW_SPLIT_VIEW, brave::CanOpenNewSplitViewForTab(
+                                               std::to_address(browser_)));
+  UpdateCommandEnabled(IDC_CLOSE_SPLIT_VIEW, !brave::CanOpenNewSplitViewForTab(
+                                                 std::to_address(browser_)));
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {

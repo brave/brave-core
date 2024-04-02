@@ -270,63 +270,31 @@ void BraveTabContextMenuContents::OnMenuClosed() {
 
 void BraveTabContextMenuContents::NewSplitView() {
   auto* model = browser_->tab_strip_model();
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser_);
-  CHECK(!split_view_data->IsTabTiled(model->GetTabHandleAt(tab_index_)));
-  chrome::AddTabAt(browser_, GURL("chrome://newtab"), tab_index_ + 1,
-                   /*foreground*/ true);
-  split_view_data->TileTabs(
-      std::make_pair(model->GetTabHandleAt(tab_index_),
-                     model->GetTabHandleAt(tab_index_ + 1)));
+  auto tab = model->GetTabHandleAt(tab_index_);
+  brave::NewSplitViewForTab(browser_, tab);
 }
 
 void BraveTabContextMenuContents::CloseSplitView() {
   auto* model = browser_->tab_strip_model();
-  auto tab_handle = model->GetTabHandleAt(tab_index_);
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser_);
-  auto tile = split_view_data->GetTile(tab_handle);
-  if (!tile) {
-    return;
-  }
-
-  model->CloseWebContentsAt(model->GetIndexOfTab(tile->second), 0);
+  auto tab = model->GetTabHandleAt(tab_index_);
+  brave::CloseSplitViewForTab(browser_, tab);
 }
 
 void BraveTabContextMenuContents::TileSelectedTabs() {
-  auto* model = static_cast<BraveTabStripModel*>(browser_->tab_strip_model());
-  auto indices = model->GetTabIndicesForCommandAt(tab_index_);
-  CHECK_LE(indices.size(), 2u);
-  CHECK(!indices.empty());
-  if (indices.size() == 1) {
-    auto active_tab_index =
-        model->GetIndexOfWebContents(model->GetActiveWebContents());
-    CHECK_NE(indices[0], active_tab_index);
-    indices.push_back(active_tab_index);
-  }
-
-  auto tab1 = indices[0];
-  auto tab2 = indices[1];
-  if (tab2 < tab1) {
-    std::swap(tab1, tab2);
-  }
-
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser_);
-  CHECK(split_view_data);
-  split_view_data->TileTabs(
-      std::make_pair(model->GetTabHandleAt(tab1), model->GetTabHandleAt(tab2)));
+  brave::TileSelectedTabs(browser_, GetTabIndicesForSplitViewCommand());
 }
 
 void BraveTabContextMenuContents::BreakSelectedTile() {
-  auto* model = static_cast<BraveTabStripModel*>(browser_->tab_strip_model());
-  auto indices = model->GetTabIndicesForCommandAt(tab_index_);
+  brave::BreakSelectedTiles(browser_, GetTabIndicesForSplitViewCommand());
+}
 
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser_);
-  CHECK(split_view_data);
-
-  for (auto index : indices) {
-    // The tile could have already been broken from the earlier iteration.
-    if (auto tab_handle = model->GetTabHandleAt(index);
-        split_view_data->IsTabTiled(tab_handle)) {
-      split_view_data->BreakTile(tab_handle);
-    }
+std::vector<int> BraveTabContextMenuContents::GetTabIndicesForSplitViewCommand()
+    const {
+  auto* model = static_cast<BraveTabStripModel*>(controller_->model());
+  auto selected_indices = model->GetTabIndicesForCommandAt(tab_index_);
+  if (base::Contains(selected_indices, tab_index_)) {
+    return selected_indices;
   }
+
+  return {tab_index_};
 }
