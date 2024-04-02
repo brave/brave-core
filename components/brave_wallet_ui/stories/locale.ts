@@ -446,6 +446,7 @@ provideStrings({
   braveWalletAccountsExport: 'Export',
   braveWalletAccountsDeposit: 'Deposit',
   braveWalletAccountsRemove: 'Remove',
+  braveWalletAccountSettings: 'Account settings',
 
   // Empty Token List State
   braveWalletNoAvailableAssets: 'No available assets',
@@ -985,6 +986,7 @@ provideStrings({
   braveWalletShowNetworkLogoOnNftsDescription: 'Show network logo on NFTs',
   braveWalletShowSpamNftsTitle: 'Spam NFTs',
   braveWalletShowSpamNftsDescription: 'Show Spam NFTs',
+  braveWalletPortfolioSettings: 'Portfolio Settings',
 
   // Account Filter
   braveWalletAccountFilterAllAccounts: 'All accounts',
