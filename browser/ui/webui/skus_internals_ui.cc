@@ -97,7 +97,8 @@ void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
 #endif
   auto* profile = Profile::FromWebUI(web_ui());
   if (!brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())) {
-    dict.Set("Order", base::Value::Dict{});
+    base::Value::Dict empty;
+    dict.Set("Order", empty);
   } else {
     auto order_info = GetOrderInfo("vpn.");
     order_info.Set(
