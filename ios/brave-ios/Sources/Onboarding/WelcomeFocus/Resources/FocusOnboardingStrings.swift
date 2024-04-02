@@ -36,7 +36,7 @@ extension Strings {
       "focusOnboarding.noVideoAdsScreenTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Browse faster and use less data.",
+      value: "No more video ads.",
       comment: "The title of the screen that shows ads embeded in video are blocked"
     )
 

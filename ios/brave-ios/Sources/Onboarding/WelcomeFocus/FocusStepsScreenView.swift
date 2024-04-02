@@ -144,10 +144,11 @@ struct FocusStepsHeaderTitleView: View {
     let title =
       activeIndex == 0
       ? Strings.FocusOnboarding.movingAdsScreenTitle
-      : Strings.FocusOnboarding.movingAdsScreenDescription
+      : Strings.FocusOnboarding.noVideoAdsScreenTitle
+
     let description =
       activeIndex == 0
-      ? Strings.FocusOnboarding.noVideoAdsScreenTitle
+      ? Strings.FocusOnboarding.movingAdsScreenDescription
       : Strings.FocusOnboarding.noVideoAdsScreenDescription
 
     VStack(spacing: 10) {
@@ -166,7 +167,6 @@ struct FocusStepsHeaderTitleView: View {
         .dynamicTypeSize(dynamicTypeRange)
         .fixedSize(horizontal: false, vertical: true)
         .multilineTextAlignment(.center)
-        .fixedSize(horizontal: false, vertical: true)
         .foregroundColor(Color(braveSystemName: .textTertiary))
     }
   }
