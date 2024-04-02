@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.ThemeColorObserver;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.TintObserver;
 import org.chromium.chrome.browser.theme.ThemeUtils;
+import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.ui.widget.ChromeImageButton;
 
 /**
@@ -93,7 +94,10 @@ class BottomToolbarNewTabButton extends ChromeImageButton
     }
 
     @Override
-    public void onTintChanged(ColorStateList tint, int brandedColorScheme) {
+    public void onTintChanged(
+            ColorStateList tint,
+            ColorStateList activityFocusTint,
+            @BrandedColorScheme int brandedColorScheme) {
         ImageViewCompat.setImageTintList(this, tint);
         updateBackground();
     }
