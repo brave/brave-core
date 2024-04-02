@@ -116,10 +116,10 @@ TEST_F(SplitViewBrowserDataUnitTest, FindTile) {
   auto tab_2 = CreateTabModel();
   data().TileTabs(std::make_pair(tab_1.GetHandle(), tab_2.GetHandle()));
 
-  EXPECT_EQ(0u, std::distance(data().tiles_.cbegin(),
-                              data().FindTile(tab_1.GetHandle())));
-  EXPECT_EQ(0u, std::distance(data().tiles_.cbegin(),
-                              data().FindTile(tab_2.GetHandle())));
+  EXPECT_EQ(0, std::distance(data().tiles_.cbegin(),
+                             data().FindTile(tab_1.GetHandle())));
+  EXPECT_EQ(0, std::distance(data().tiles_.cbegin(),
+                             data().FindTile(tab_2.GetHandle())));
 
   data().BreakTile(tab_2.GetHandle());
   EXPECT_EQ(data().tiles_.end(), data().FindTile(tab_1.GetHandle()));
@@ -129,14 +129,14 @@ TEST_F(SplitViewBrowserDataUnitTest, FindTile) {
   auto tab_4 = CreateTabModel();
   data().TileTabs(std::make_pair(tab_1.GetHandle(), tab_2.GetHandle()));
   data().TileTabs(std::make_pair(tab_3.GetHandle(), tab_4.GetHandle()));
-  EXPECT_EQ(1u, std::distance(data().tiles_.cbegin(),
-                              data().FindTile(tab_3.GetHandle())));
-  EXPECT_EQ(1u, std::distance(data().tiles_.cbegin(),
-                              data().FindTile(tab_4.GetHandle())));
+  EXPECT_EQ(1, std::distance(data().tiles_.cbegin(),
+                             data().FindTile(tab_3.GetHandle())));
+  EXPECT_EQ(1, std::distance(data().tiles_.cbegin(),
+                             data().FindTile(tab_4.GetHandle())));
 
   data().BreakTile(tab_1.GetHandle());
-  EXPECT_EQ(0u, std::distance(data().tiles_.cbegin(),
-                              data().FindTile(tab_3.GetHandle())));
-  EXPECT_EQ(0u, std::distance(data().tiles_.cbegin(),
-                              data().FindTile(tab_4.GetHandle())));
+  EXPECT_EQ(0, std::distance(data().tiles_.cbegin(),
+                             data().FindTile(tab_3.GetHandle())));
+  EXPECT_EQ(0, std::distance(data().tiles_.cbegin(),
+                             data().FindTile(tab_4.GetHandle())));
 }
