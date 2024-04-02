@@ -29,6 +29,9 @@ export interface AIChatContext {
   shouldSendPageContents: boolean
   isMobile: boolean
   inputText: string
+  isCharLimitExceeded: boolean
+  isCharLimitApproaching: boolean
+  inputTextCharCountDisplay: string
   setCurrentModel: (model: mojom.Model) => void,
   switchToBasicModel: () => void,
   generateSuggestedQuestions: () => void
@@ -41,6 +44,9 @@ export interface AIChatContext {
   dismissLongConversationInfo: () => void
   updateShouldSendPageContents: (shouldSend: boolean) => void
   setInputText: (text: string) => void
+  handleMaybeLater: () => void
+  handleSwitchToBasicModelAndRetry: () => void
+  submitInputTextToAPI: () => void
 }
 
 export const defaultContext: AIChatContext = {
@@ -65,6 +71,9 @@ export const defaultContext: AIChatContext = {
   shouldSendPageContents: true,
   isMobile: false,
   inputText: '',
+  isCharLimitExceeded: false,
+  isCharLimitApproaching: false,
+  inputTextCharCountDisplay: '',
   setCurrentModel: () => {},
   switchToBasicModel: () => {},
   generateSuggestedQuestions: () => {},
@@ -76,7 +85,10 @@ export const defaultContext: AIChatContext = {
   userRefreshPremiumSession: () => {},
   dismissLongConversationInfo: () => {},
   updateShouldSendPageContents: () => {},
-  setInputText: () => {}
+  setInputText: () => {},
+  handleMaybeLater: () => {},
+  handleSwitchToBasicModelAndRetry: () => {},
+  submitInputTextToAPI: () => {},
 }
 
 export default React.createContext<AIChatContext>(defaultContext)

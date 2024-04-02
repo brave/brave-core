@@ -16,6 +16,9 @@ function toBlobURL(data: number[] | null) {
   return URL.createObjectURL(blob)
 }
 
+const MAX_INPUT_CHAR = 2000
+const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
+
 interface DataContextProviderProps {
   children: React.ReactNode
 }
@@ -67,6 +70,10 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const apiHasError = (currentError !== mojom.APIError.None)
   const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.access === mojom.ModelAccess.PREMIUM))
+
+  const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
+  const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
+  const inputTextCharCountDisplay = `${inputText.length} / ${MAX_INPUT_CHAR}`
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
@@ -199,6 +206,25 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.managePremium()
   }
 
+  const handleMaybeLater = () => {
+    getPageHandlerInstance().pageHandler.clearErrorAndGetFailedMessage()
+      .then((res) => { setInputText(res.turn.text) })
+  }
+
+  const handleSwitchToBasicModelAndRetry = () => {
+    switchToBasicModel()
+    getPageHandlerInstance().pageHandler.retryAPIRequest()
+  }
+
+  const submitInputTextToAPI = () => {
+    if (!inputText) return
+    if (isCharLimitExceeded) return
+    if (shouldDisableUserInput) return
+
+    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(inputText)
+    setInputText('')
+  }
+
   const initialiseForTargetTab = async () => {
     // Replace state from backend
     // TODO(petemill): Perhaps we need a simple GetState mojom function
@@ -284,6 +310,9 @@ function DataContextProvider (props: DataContextProviderProps) {
     shouldSendPageContents: shouldSendPageContents && siteInfo?.isContentAssociationPossible,
     isMobile,
     inputText,
+    isCharLimitExceeded,
+    isCharLimitApproaching,
+    inputTextCharCountDisplay,
     setCurrentModel,
     switchToBasicModel,
     goPremium,
@@ -295,7 +324,10 @@ function DataContextProvider (props: DataContextProviderProps) {
     userRefreshPremiumSession,
     dismissLongConversationInfo,
     updateShouldSendPageContents,
-    setInputText
+    setInputText,
+    handleMaybeLater,
+    handleSwitchToBasicModelAndRetry,
+    submitInputTextToAPI,
   }
 
   return (

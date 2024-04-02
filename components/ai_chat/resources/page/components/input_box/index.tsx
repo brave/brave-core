@@ -14,31 +14,16 @@ import styles from './style.module.scss'
 import DataContext from '../../state/context'
 import getPageHandlerInstance from '../../api/page_handler'
 
-const MAX_INPUT_CHAR = 2000
-const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
-
 function InputBox () {
   const context = React.useContext(DataContext)
-
-  const isCharLimitExceeded = context.inputText.length >= MAX_INPUT_CHAR
-  const isCharLimitApproaching = context.inputText.length >= CHAR_LIMIT_THRESHOLD
 
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     context.setInputText(e.target.value)
   }
 
-  const submitInputTextToAPI = () => {
-    if (!context.inputText) return
-    if (isCharLimitExceeded) return
-    if (context.shouldDisableUserInput) return
-
-    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(context.inputText)
-    context.setInputText('')
-  }
-
   const handleSubmit = (e: CustomEvent<any>) => {
     e.preventDefault()
-    submitInputTextToAPI()
+    context.submitInputTextToAPI()
   }
 
   const handleMic = (e: CustomEvent<any>) => {
@@ -49,7 +34,7 @@ function InputBox () {
   const onUserPressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       if (!e.repeat) {
-        submitInputTextToAPI()
+        context.submitInputTextToAPI()
       }
 
       e.preventDefault()
@@ -71,13 +56,13 @@ function InputBox () {
           rows={1}
         />
       </div>
-      {isCharLimitApproaching && (
+      {context.isCharLimitApproaching && (
         <div className={classnames({
           [styles.counterText]: true,
-          [styles.counterTextVisible]: isCharLimitApproaching,
-          [styles.counterTextError]: isCharLimitExceeded
+          [styles.counterTextVisible]: context.isCharLimitApproaching,
+          [styles.counterTextError]: context.isCharLimitExceeded
         })}>
-          {`${context.inputText.length} / ${MAX_INPUT_CHAR}`}
+          {context.inputTextCharCountDisplay}
         </div>
       )}
       <div className={styles.actions}>
