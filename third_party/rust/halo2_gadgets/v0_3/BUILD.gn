@@ -1,0 +1,100 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "halo2_gadgets"
+  epoch = "0.3"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/add.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/add_incomplete.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/constants.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/mul.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/mul/complete.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/mul/incomplete.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/mul/overflow.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/mul_fixed.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/mul_fixed/base_field_elem.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/mul_fixed/full_width.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/mul_fixed/short.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/ecc/chip/witness_point.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/poseidon.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/poseidon/pow5.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/poseidon/primitives.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/poseidon/primitives/fp.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/poseidon/primitives/fq.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/poseidon/primitives/grain.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/poseidon/primitives/mds.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/poseidon/primitives/p128pow5t3.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/poseidon/primitives/test_vectors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/compression.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/compression/compression_gates.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/compression/compression_util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/compression/subregion_digest.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/compression/subregion_initial.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/compression/subregion_main.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/gates.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/message_schedule.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/message_schedule/schedule_gates.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/message_schedule/schedule_util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/message_schedule/subregion1.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/message_schedule/subregion2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/message_schedule/subregion3.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/spread_table.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sha256/table16/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sinsemilla.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sinsemilla/chip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sinsemilla/chip/generator_table.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sinsemilla/chip/hash_to_point.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sinsemilla/merkle.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sinsemilla/merkle/chip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sinsemilla/message.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sinsemilla/primitives.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sinsemilla/primitives/addition.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/sinsemilla/primitives/sinsemilla_s.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/utilities.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/utilities/cond_swap.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/utilities/decompose_running_sum.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/src/utilities/lookup_range_check.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.3.0"
+  cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Jack Grigg <jack@electriccoin.co>, Daira Hopwood <daira@jacaranda.org>, Ying Tong Lai <yingtong@electriccoin.co>, Kris Nuttycombe <kris@electriccoin.co>"
+  cargo_pkg_name = "halo2_gadgets"
+  cargo_pkg_description = "Reusable gadgets and chip implementations for Halo 2"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/arrayvec/v0_7:lib",
+    "//brave/third_party/rust/bitvec/v1:lib",
+    "//brave/third_party/rust/ff/v0_13:lib",
+    "//brave/third_party/rust/group/v0_13:lib",
+    "//brave/third_party/rust/halo2_proofs/v0_3:lib",
+    "//brave/third_party/rust/lazy_static/v1:lib",
+    "//brave/third_party/rust/pasta_curves/v0_5:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/subtle/v2:lib",
+    "//brave/third_party/rust/uint/v0_9:lib",
+  ]
+}

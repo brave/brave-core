@@ -1,0 +1,106 @@
+name: CI checks
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: cargo test --verbose
+      - name: Verify working directory is clean
+        run: git diff --exit-code
+
+  build-latest:
+    name: Latest build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        id: toolchain
+      - run: rustup override set ${{steps.toolchain.outputs.name}}
+      - name: Remove lockfile to build with latest dependencies
+        run: rm Cargo.lock
+      - name: Build crate
+        run: cargo build --all-features --verbose
+      - name: Verify working directory is clean (excluding lockfile)
+        run: git diff --exit-code ':!Cargo.lock'
+
+  build-nodefault:
+    name: Build target ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - wasm32-wasi
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add target
+        run: rustup target add ${{ matrix.target }}
+      - run: cargo fetch
+      - name: Build for ${{ matrix.target }} target
+        run: cargo build --verbose --no-default-features --target ${{ matrix.target }}
+
+  bitrot:
+    name: Bitrot check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Build benchmarks to prevent bitrot
+      - name: Build benchmarks
+        run: cargo build --benches
+
+  book:
+    name: Book tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install mdbook
+        run: |
+          mkdir mdbook
+          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.35/mdbook-v0.4.35-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=./mdbook
+          echo `pwd`/mdbook >> $GITHUB_PATH
+      - name: Test Orchard book
+        run: mdbook test book/
+
+  codecov:
+    name: Code coverage
+    runs-on: ubuntu-latest
+    container:
+      image: xd009642/tarpaulin:develop-nightly
+      options: --security-opt seccomp=unconfined
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate coverage report
+        run: cargo tarpaulin --engine llvm --all-features --release --timeout 600 --out xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3.1.4
+
+  doc-links:
+    name: Intra-doc links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo fetch
+      # Requires #![deny(rustdoc::broken_intra_doc_links)] in crates.
+      - name: Check intra-doc links
+        run: cargo doc --all-features --document-private-items
+
+  fmt:
+    name: Rustfmt
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo fmt -- --check

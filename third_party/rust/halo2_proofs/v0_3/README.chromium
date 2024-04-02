@@ -1,0 +1,10 @@
+Name: halo2_proofs
+URL: https://crates.io/crates/halo2_proofs
+Description: Fast PLONK-based zero-knowledge proving system with no trusted setup
+
+Version: 0.3.0
+Security Critical: yes
+Shipped: yes
+License: Apache 2.0
+License File:
+Revision: 263356784042d7d4c1c17d357c94c1acaeb75ab5

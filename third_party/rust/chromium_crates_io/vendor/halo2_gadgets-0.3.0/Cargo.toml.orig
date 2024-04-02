@@ -1,0 +1,84 @@
+[package]
+name = "halo2_gadgets"
+version = "0.3.0"
+authors = [
+    "Sean Bowe <sean@electriccoin.co>",
+    "Jack Grigg <jack@electriccoin.co>",
+    "Daira Hopwood <daira@jacaranda.org>",
+    "Ying Tong Lai <yingtong@electriccoin.co>",
+    "Kris Nuttycombe <kris@electriccoin.co>",
+]
+edition = "2021"
+rust-version = "1.59"
+description = "Reusable gadgets and chip implementations for Halo 2"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/zcash/halo2"
+readme = "README.md"
+categories = ["cryptography"]
+keywords = ["halo", "proofs", "zcash", "zkp", "zkSNARKs"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs", "--html-in-header", "katex-header.html"]
+
+[dependencies]
+arrayvec = "0.7.0"
+bitvec = "1"
+ff = "0.13"
+group = "0.13"
+halo2_proofs = { version = "0.3", path = "../halo2_proofs", default-features = false }
+lazy_static = "1"
+pasta_curves = "0.5"
+proptest = { version = "1.0.0", optional = true }
+rand = "0.8"
+subtle = "2.3"
+uint = "0.9.2" # MSRV 1.56.1
+
+# Developer tooling dependencies
+plotters = { version = "0.3.0", default-features = false, optional = true }
+
+[dev-dependencies]
+criterion = "0.3"
+proptest = "1.0.0"
+
+[target.'cfg(unix)'.dev-dependencies]
+inferno = ">=0.11, <0.11.5" # MSRV 1.59
+pprof = { version = "0.8", features = ["criterion", "flamegraph"] } # MSRV 1.56
+
+[lib]
+bench = false
+
+[features]
+test-dev-graph = [
+    "halo2_proofs/dev-graph",
+    "plotters",
+    "plotters/bitmap_backend",
+    "plotters/bitmap_encoder",
+]
+test-dependencies = ["proptest"]
+
+# In-development features
+# See https://zcash.github.io/halo2/dev/features.html
+beta = [
+    "halo2_proofs/beta",
+]
+nightly = [
+    "beta",
+    "halo2_proofs/nightly",
+    "unstable-sha256-gadget",
+]
+unstable-sha256-gadget = []
+# Add flags for in-development features above this line.
+
+[[bench]]
+name = "primitives"
+harness = false
+
+[[bench]]
+name = "poseidon"
+harness = false
+
+[[bench]]
+name = "sha256"
+harness = false
+required-features = ["unstable-sha256-gadget"]

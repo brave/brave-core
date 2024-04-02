@@ -1,0 +1,63 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "pasta_curves"
+  epoch = "0.5"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/arithmetic.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/arithmetic/curves.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/arithmetic/fields.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/curves.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/fields.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/fields/fp.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/fields/fq.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/hashtocurve.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/pallas.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/serde_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/src/vesta.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.5.1"
+  cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Ying Tong Lai <yingtong@electriccoin.co>, Daira Hopwood <daira@electriccoin.co>, Jack Grigg <jack@electriccoin.co>"
+  cargo_pkg_name = "pasta_curves"
+  cargo_pkg_description =
+      "Implementation of the Pallas and Vesta (Pasta) curve cycle"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/ff/v0_13:lib",
+    "//brave/third_party/rust/group/v0_13:lib",
+    "//brave/third_party/rust/lazy_static/v1:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/static_assertions/v1:lib",
+    "//brave/third_party/rust/subtle/v2:lib",
+  ]
+  features = [
+    "alloc",
+    "bits",
+    "blake2b_simd",
+    "lazy_static",
+    "sqrt-table",
+  ]
+}
