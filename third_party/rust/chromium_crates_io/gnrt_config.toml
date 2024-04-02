@@ -197,3 +197,38 @@ if (is_ios) {
     deps += [ "//brave/third_party/rust/lifeguard/v0_6:lib" ]
   }
 '''}
+
+[crate.aes]
+extra_kv = { raw_gn = '''
+if (target_cpu == "x64" || target_cpu == "x86") {
+      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+''' }
+
+[crate.chacha20]
+extra_kv = { raw_gn = '''
+if (target_cpu == "x64" || target_cpu == "x86") {
+      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+''' }
+
+[crate.poly1305]
+extra_kv = { raw_gn = '''
+if (target_cpu == "x64" || target_cpu == "x86") {
+      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+''' }
+
+[crate.chacha20poly1305]
+extra_input_roots = [ "../README.md" ]
+
+[crate.reddsa]
+extra_input_roots = [ "../README.md" ]
+
+[crate.libm]
+extra_kv = { raw_gn = '''
+  features = [
+    "checked",
+  ]
+'''}
+
