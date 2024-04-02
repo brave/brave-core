@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_TAB_HELPER_H_
 
+#include <optional>
+
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
@@ -47,8 +49,6 @@ class BraveWaybackMachineTabHelper
   explicit BraveWaybackMachineTabHelper(content::WebContents* contents);
 
   // content::WebContentsObserver overrides:
-  void DidStartNavigation(
-      content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
@@ -63,7 +63,7 @@ class BraveWaybackMachineTabHelper
   // It uses to check whether it's wayback url loading or not.
   // If it's wayback url loading from previous navigation,
   // we should not touch wayback state.
-  base::WeakPtr<content::NavigationHandle> wayback_url_navigation_;
+  std::optional<int64_t> wayback_url_navigation_id_;
 
   // If not null, this tab has active window.
   gfx::NativeWindow active_window_ = nullptr;

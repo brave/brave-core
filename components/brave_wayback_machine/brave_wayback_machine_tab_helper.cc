@@ -69,11 +69,10 @@ void BraveWaybackMachineTabHelper::SetWaybackStateChangedCallback(
   wayback_state_changed_callback_ = std::move(callback);
 }
 
-// When wayback url is loaded via user action,
-// we don't want to clear wayback state.
-void BraveWaybackMachineTabHelper::DidStartNavigation(
+void BraveWaybackMachineTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!IsWaybackMachineEnabled()) {
+    wayback_url_navigation_id_ = std::nullopt;
     SetWaybackState(WaybackState::kInitial);
     return;
   }
@@ -85,26 +84,13 @@ void BraveWaybackMachineTabHelper::DidStartNavigation(
 
   // Don't reset current state if it's wayback url navigation.
   // Otherwise, we lost kLoaded state after loading it.
-  if (wayback_url_navigation_ &&
-      wayback_url_navigation_.get() == navigation_handle) {
+  if (wayback_url_navigation_id_ &&
+      wayback_url_navigation_id_ == navigation_handle->GetNavigationId()) {
+    wayback_url_navigation_id_ = std::nullopt;
     return;
   }
 
-  // Reset to initial state whenever new navigation starts.
   SetWaybackState(WaybackState::kInitial);
-}
-
-void BraveWaybackMachineTabHelper::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  if (!IsWaybackMachineEnabled()) {
-    SetWaybackState(WaybackState::kInitial);
-    return;
-  }
-
-  if (!navigation_handle->IsInPrimaryMainFrame() ||
-      navigation_handle->IsSameDocument()) {
-    return;
-  }
 
   if (IsWaybackMachineDisabledFor(navigation_handle->GetURL())) {
     return;
@@ -137,9 +123,11 @@ void BraveWaybackMachineTabHelper::OnWaybackURLFetched(
 
   SetWaybackState(WaybackState::kLoaded);
 
-  wayback_url_navigation_ = web_contents()->GetController().LoadURL(
-      latest_wayback_url, content::Referrer(), ui::PAGE_TRANSITION_LINK,
-      std::string());
+  if (auto navigation_handle = web_contents()->GetController().LoadURL(
+          latest_wayback_url, content::Referrer(), ui::PAGE_TRANSITION_LINK,
+          std::string())) {
+    wayback_url_navigation_id_ = navigation_handle->GetNavigationId();
+  }
 }
 
 void BraveWaybackMachineTabHelper::SetWaybackState(WaybackState state) {
