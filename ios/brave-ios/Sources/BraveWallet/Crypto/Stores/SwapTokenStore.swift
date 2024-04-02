@@ -979,9 +979,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.state = .error(Strings.Wallet.insufficientLiquidity)
       return
     } else if let lifiError = swapError.lifiError,
-      lifiError.codes.contains(
-        BraveWallet.LifiToolErrorCode.insufficientLiquidity.rawValue as NSNumber
-      )
+      lifiError.code == .notFoundError
     {
       self.state = .error(Strings.Wallet.insufficientLiquidity)
       return

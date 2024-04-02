@@ -715,9 +715,7 @@ class SwapStoreTests: XCTestCase {
       let errorUnion: BraveWallet.SwapErrorUnion = .init(
         lifiError: .init(
           message: "",
-          codes: [
-            BraveWallet.LifiToolErrorCode.insufficientLiquidity.rawValue as NSNumber
-          ]
+          code: .notFoundError
         )
       )
       completion(nil, nil, errorUnion, "")
