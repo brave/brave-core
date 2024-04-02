@@ -32,12 +32,12 @@ BraveTabMenuModel::BraveTabMenuModel(
     : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index),
       is_vertical_tab_(is_vertical_tab) {
   web_contents_ = tab_strip_model->GetWebContentsAt(index);
-  Browser* browser = nullptr;
-  if (web_contents_) {
-    browser = chrome::FindBrowserWithTab(web_contents_);
-    restore_service_ =
-        TabRestoreServiceFactory::GetForProfile(browser->profile());
-  }
+  CHECK(web_contents_);
+  Browser* browser = chrome::FindBrowserWithTab(web_contents_);
+  CHECK(browser);
+
+  restore_service_ =
+      TabRestoreServiceFactory::GetForProfile(browser->profile());
 
   auto indices = static_cast<BraveTabStripModel*>(tab_strip_model)
                      ->GetTabIndicesForCommandAt(index);
@@ -131,8 +131,6 @@ void BraveTabMenuModel::BuildItemsForSplitView(
     Browser* browser,
     TabStripModel* tab_strip_model,
     const std::vector<int>& indices) {
-  CHECK(browser);
-
   auto index = *GetIndexOfCommandId(TabStripModel::CommandReload);
 
   // In case only one tab is selected
