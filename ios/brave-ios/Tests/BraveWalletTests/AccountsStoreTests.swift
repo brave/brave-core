@@ -23,6 +23,8 @@ import XCTest
   let solAccount1: BraveWallet.AccountInfo = .mockSolAccount
   let filAccount1: BraveWallet.AccountInfo = .mockFilAccount
   let filTestnetAccount: BraveWallet.AccountInfo = .mockFilTestnetAccount
+  let btcAccount1: BraveWallet.AccountInfo = .mockBtcAccount
+  let btcTestnetAccount: BraveWallet.AccountInfo = .mockBtcTestnetAccount
 
   let mockETHBalanceAccount1: Double = 0.896
   let mockETHPrice: String = "3059.99"
@@ -74,6 +76,24 @@ import XCTest
     BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken
   ]
 
+  // TODO: Update balance test once bitcoin balance fetching is integrated
+  // https://github.com/brave/brave-browser/issues/36966
+  let mockBTCBalanceAccount1: Double = 0
+  let mockBTCTestnetBalanceAccount1: Double = 0
+  let mockBTCPrice: String = "65726.00"
+  lazy var mockBTCAssetPrice: BraveWallet.AssetPrice = .init(
+    fromAsset: "btc",
+    toAsset: "usd",
+    price: mockBTCPrice,
+    assetTimeframeChange: "-57.23"
+  )
+  let btcMainnetTokens: [BraveWallet.BlockchainToken] = [
+    BraveWallet.NetworkInfo.mockBitcoinMainnet.nativeToken
+  ]
+  let btcTestnetTokens: [BraveWallet.BlockchainToken] = [
+    BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken
+  ]
+
   let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
 
   func testUpdate() async {
@@ -109,6 +129,18 @@ import XCTest
         radix: .decimal,
         decimals: Int(BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken.decimals)
       ) ?? ""
+    let mockBtcBalanceInWei =
+      formatter.weiString(
+        from: mockBTCBalanceAccount1,
+        radix: .decimal,
+        decimals: Int(BraveWallet.NetworkInfo.mockBitcoinMainnet.nativeToken.decimals)
+      ) ?? ""
+    let mockBtcTestnetBalanceInWei =
+      formatter.weiString(
+        from: mockBTCTestnetBalanceAccount1,
+        radix: .decimal,
+        decimals: Int(BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken.decimals)
+      ) ?? ""
 
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -119,6 +151,7 @@ import XCTest
             self.ethAccount1, self.ethAccount2,
             self.solAccount1, self.filAccount1,
             self.filTestnetAccount,
+            self.btcAccount1, self.btcTestnetAccount,
           ],
           selectedAccount: self.ethAccount1,
           ethDappSelectedAccount: self.ethAccount1,
@@ -135,9 +168,13 @@ import XCTest
           .mockSolana,
           .mockFilecoinMainnet,
           .mockFilecoinTestnet,
+          .mockBitcoinMainnet,
+          .mockBitcoinTestnet,
         ].filter { $0.coin == coin }
       )
     }
+    // TODO: Update balance test once bitcoin balance fetching is integrated
+    // https://github.com/brave/brave-browser/issues/36966
     rpcService._balance = { accountAddress, coin, chainId, completion in
       if coin == .eth,
         chainId == BraveWallet.MainnetChainId,
@@ -154,6 +191,14 @@ import XCTest
         accountAddress == self.filTestnetAccount.address
       {
         completion(mockFilTestnetBalanceInWei, .success, "")
+      } else if coin == .btc,
+        chainId == BraveWallet.BitcoinMainnet
+      {
+        completion(mockBtcBalanceInWei, .success, "")
+      } else if coin == .btc,
+        chainId == BraveWallet.BitcoinTestnet
+      {
+        completion(mockBtcTestnetBalanceInWei, .success, "")
       } else {
         completion("", .internalError, "")
       }
@@ -189,6 +234,7 @@ import XCTest
           self.mockUSDCAssetPrice,
           self.mockSOLAssetPrice,
           self.mockFILAssetPrice,
+          self.mockBTCAssetPrice,
         ]
       )
     }
@@ -216,6 +262,16 @@ import XCTest
           tokens: self.filTestnetTokens,
           sortOrder: 3
         ),
+        NetworkAssets(
+          network: .mockBitcoinMainnet,
+          tokens: self.btcMainnetTokens,
+          sortOrder: 4
+        ),
+        NetworkAssets(
+          network: .mockBitcoinTestnet,
+          tokens: self.btcTestnetTokens,
+          sortOrder: 5
+        ),
       ].filter { networkAsset in
         networks.contains(where: { $0.chainId == networkAsset.network.chainId })
       }
@@ -239,7 +295,7 @@ import XCTest
           XCTFail("Expected account details models")
           return
         }
-        XCTAssertEqual(accountDetails.count, 5)
+        XCTAssertEqual(accountDetails.count, 7)
 
         XCTAssertEqual(accountDetails[safe: 0]?.account, self.ethAccount1)
         XCTAssertEqual(accountDetails[safe: 0]?.tokensWithBalance, self.ethMainnetTokens)
@@ -264,6 +320,14 @@ import XCTest
         XCTAssertEqual(accountDetails[safe: 4]?.account, self.filTestnetAccount)
         XCTAssertEqual(accountDetails[safe: 4]?.tokensWithBalance, self.filTestnetTokens)
         XCTAssertEqual(accountDetails[safe: 4]?.totalBalanceFiat, "$4.00")
+
+        XCTAssertEqual(accountDetails[safe: 5]?.account, self.btcAccount1)
+        XCTAssertEqual(accountDetails[safe: 5]?.tokensWithBalance, [])  // BTC 0 value
+        XCTAssertEqual(accountDetails[safe: 5]?.totalBalanceFiat, "$0.00")
+
+        XCTAssertEqual(accountDetails[safe: 6]?.account, self.btcTestnetAccount)
+        XCTAssertEqual(accountDetails[safe: 6]?.tokensWithBalance, [])  // BTC 0 value
+        XCTAssertEqual(accountDetails[safe: 6]?.totalBalanceFiat, "$0.00")
       }.store(in: &cancellables)
 
     store.update()

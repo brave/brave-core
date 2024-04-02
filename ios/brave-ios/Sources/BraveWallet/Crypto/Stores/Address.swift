@@ -11,6 +11,7 @@ extension String {
   var truncatedAddress: String {
     // All addresses should be at least 26 characters long but for the sake of this function, we will ensure
     // its at least the length of the string
+    guard !isEmpty else { return self }
     let prefixLength = hasPrefix("0x") ? 6 : 4
     return "\(prefix(prefixLength))…\(suffix(4))"
   }

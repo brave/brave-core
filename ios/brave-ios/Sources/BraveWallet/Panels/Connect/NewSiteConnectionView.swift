@@ -112,7 +112,11 @@ public struct NewSiteConnectionView: View {
             } label: {
               HStack {
                 AddressView(address: account.address) {
-                  AccountView(address: account.address, name: account.name)
+                  AccountView(
+                    address: account.address,
+                    seed: account.blockieSeed,
+                    name: account.name
+                  )
                 }
                 Spacer()
                 Group {

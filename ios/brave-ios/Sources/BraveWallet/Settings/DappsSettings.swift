@@ -253,6 +253,7 @@ private struct SiteConnectionDetailView: View {
         ForEach(siteConnection.connectedAddresses, id: \.self) { address in
           AccountView(
             address: address,
+            seed: address,
             name: siteConnectionStore.accountInfo(for: address)?.name ?? ""
           )
           .swipeActions(edge: .trailing) {

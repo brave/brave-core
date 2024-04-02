@@ -69,7 +69,7 @@ struct AssetDetailView: View {
   private func accontBalanceRow(_ viewModel: AccountAssetViewModel) -> some View {
     HStack {
       AddressView(address: viewModel.account.address) {
-        AccountView(address: viewModel.account.address, name: viewModel.account.name)
+        AccountView(account: viewModel.account)
       }
       let showFiatPlaceholder = viewModel.fiatBalance.isEmpty && assetDetailStore.isLoadingPrice
       let showBalancePlaceholder =

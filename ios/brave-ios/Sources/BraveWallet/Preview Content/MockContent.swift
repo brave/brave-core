@@ -154,6 +154,24 @@ extension BraveWallet.BlockchainToken {
     chainId: BraveWallet.FilecoinMainnet,
     coin: .fil
   )
+
+  static let mockBTCToken: BraveWallet.BlockchainToken = .init(
+    contractAddress: "",
+    name: "Bitcoin",
+    logo: "",
+    isErc20: false,
+    isErc721: false,
+    isErc1155: false,
+    isNft: false,
+    isSpam: false,
+    symbol: "BTC",
+    decimals: 8,
+    visible: false,
+    tokenId: "",
+    coingeckoId: "",
+    chainId: BraveWallet.BitcoinMainnet,
+    coin: .btc
+  )
 }
 
 extension BraveWallet.AccountInfo {

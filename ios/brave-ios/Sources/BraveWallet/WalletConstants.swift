@@ -75,6 +75,7 @@ public struct WalletConstants {
     BraveWallet.SolanaTestnet,
     BraveWallet.FilecoinTestnet,
     BraveWallet.FilecoinEthereumTestnetChainId,
+    BraveWallet.BitcoinTestnet,
   ]
 
   /// Primary network chain ids
@@ -82,6 +83,7 @@ public struct WalletConstants {
     BraveWallet.SolanaMainnet,
     BraveWallet.MainnetChainId,
     BraveWallet.FilecoinMainnet,
+    BraveWallet.BitcoinMainnet,
   ]
 
   public enum SupportedCoinTypesMode {
@@ -89,13 +91,35 @@ public struct WalletConstants {
     case dapps
   }
 
+  #if DEBUG
+  public static var isUnitTesting: Bool {
+    ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+  }
+  #endif
+
   /// The currently supported coin types in wallet
   public static func supportedCoinTypes(
     _ mode: SupportedCoinTypesMode = .general
   ) -> OrderedSet<BraveWallet.CoinType> {
     switch mode {
     case .general:
-      return [.eth, .sol, .fil]
+      #if DEBUG
+      // Only enable .btc for unit tests.
+      // Local Debug build need to
+      // 1. Remove this check
+      // 2. Enable bitcoin feature via build argument
+      if isUnitTesting {
+        return [.eth, .sol, .fil, .btc]
+      }
+      #endif
+      // Any non-debug build will check bitcoin feature flag from core
+      // TF public build can use BraveCore Switches in Browser Settings,
+      // Debug section in order to enable Bitcoin.
+      if FeatureList.kBraveWalletBitcoinFeature.enabled {
+        return [.eth, .sol, .fil, .btc]
+      } else {
+        return [.eth, .sol, .fil]
+      }
     case .dapps:
       return [.eth, .sol]
     }

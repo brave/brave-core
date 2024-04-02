@@ -494,6 +494,34 @@ extension BraveWallet.AccountInfo {
     name: "Filecoin Testnet 1",
     hardware: nil
   )
+
+  static let mockBtcAccount: BraveWallet.AccountInfo = .init(
+    accountId: .init(
+      coin: .btc,
+      keyringId: BraveWallet.KeyringId.bitcoin84,
+      kind: .derived,
+      address: "",
+      bitcoinAccountIndex: 0,
+      uniqueKey: "4_0_0_0"
+    ),
+    address: "",
+    name: "Bitcoin Account 1",
+    hardware: nil
+  )
+
+  static let mockBtcTestnetAccount: BraveWallet.AccountInfo = .init(
+    accountId: .init(
+      coin: .btc,
+      keyringId: BraveWallet.KeyringId.bitcoin84Testnet,
+      kind: .derived,
+      address: "",
+      bitcoinAccountIndex: 0,
+      uniqueKey: "5_0_0_0"
+    ),
+    address: "",
+    name: "Bitcoin Testnet 1",
+    hardware: nil
+  )
 }
 
 extension BraveWallet.AllAccountsInfo {

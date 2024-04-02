@@ -300,6 +300,14 @@ extension Strings {
       comment:
         "The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\")"
     )
+    public static let defaultBitcoinAccountName = NSLocalizedString(
+      "wallet.defaultBitcoinAccountName",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Bitcoin Account %lld",
+      comment:
+        "The default Bitcoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Bitcoin Account 3\")"
+    )
     public static let defaultSecondaryEthAccountName = NSLocalizedString(
       "wallet.defaultSecondaryEthAccountName",
       tableName: "BraveWallet",
@@ -470,6 +478,13 @@ extension Strings {
       bundle: .module,
       value: "Filecoin",
       comment: "A description of an Filecoin account, displayed in Accounts tab."
+    )
+    public static let btcAccountDescription = NSLocalizedString(
+      "wallet.btcAccountDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Bitcoin",
+      comment: "A description of an Bitcoin account, displayed in Accounts tab."
     )
     public static let exportButtonTitle = NSLocalizedString(
       "wallet.exportButtonTitle",
@@ -3389,6 +3404,13 @@ extension Strings {
       value: "Filecoin",
       comment: "One of the coin types for users to create an account to store FIL assets"
     )
+    public static let coinTypeBitcoin = NSLocalizedString(
+      "wallet.coinTypeBitcoin",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Bitcoin",
+      comment: "One of the coin types for users to create an account to store BTC assets"
+    )
     public static let coinTypeEthereumDescription = NSLocalizedString(
       "wallet.coinTypeEthereumDescription",
       tableName: "BraveWallet",
@@ -3410,6 +3432,13 @@ extension Strings {
       bundle: .module,
       value: "Store FIL asset",
       comment: "A description for Filecoin coin type."
+    )
+    public static let coinTypeBitcoinDescription = NSLocalizedString(
+      "wallet.coinTypeBitcoinDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Store BTC asset",
+      comment: "A description for Bitcoin coin type."
     )
     public static let coinTypeUnknown = NSLocalizedString(
       "wallet.coinTypeUnknown",

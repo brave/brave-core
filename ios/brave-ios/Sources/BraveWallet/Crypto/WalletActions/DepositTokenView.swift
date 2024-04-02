@@ -48,7 +48,10 @@ struct DepositTokenView: View {
       Group {
         if let prefilledAccount = depositTokenStore.prefilledAccount {
           DepositDetailsView(
-            type: .prefilledAccount(account: prefilledAccount),
+            type: .prefilledAccount(
+              account: prefilledAccount,
+              bitcoinAccounts: depositTokenStore.bitcoinAccounts
+            ),
             supportedNetworks: depositTokenStore.allNetworks.supportedNetworks(
               keyringId: prefilledAccount.keyringId
             )
@@ -59,7 +62,8 @@ struct DepositTokenView: View {
           DepositDetailsView(
             type: .prefilledToken(
               token: prefilledToken,
-              availableAccounts: availableAccounts(for: prefilledToken)
+              availableAccounts: availableAccounts(for: prefilledToken),
+              bitcoinAccounts: depositTokenStore.bitcoinAccounts
             ),
             supportedNetworks: depositTokenStore.allNetworks.supportedNetworks(
               keyringId: .keyringId(
@@ -181,7 +185,8 @@ struct DepositTokenView: View {
               DepositDetailsView(
                 type: .prefilledToken(
                   token: selectedTokenViewModel.token,
-                  availableAccounts: availableAccounts(for: selectedTokenViewModel.token)
+                  availableAccounts: availableAccounts(for: selectedTokenViewModel.token),
+                  bitcoinAccounts: depositTokenStore.bitcoinAccounts
                 ),
                 supportedNetworks: depositTokenStore.allNetworks.supportedNetworks(
                   keyringId: .keyringId(
@@ -236,10 +241,14 @@ private struct DepositDetailsView: View {
   @ScaledMetric private var avatarSize = 24.0
 
   enum DepositType {
-    case prefilledAccount(account: BraveWallet.AccountInfo)
+    case prefilledAccount(
+      account: BraveWallet.AccountInfo,
+      bitcoinAccounts: [String: BraveWallet.BitcoinAccountInfo]
+    )
     case prefilledToken(
       token: BraveWallet.BlockchainToken,
-      availableAccounts: [BraveWallet.AccountInfo]
+      availableAccounts: [BraveWallet.AccountInfo],
+      bitcoinAccounts: [String: BraveWallet.BitcoinAccountInfo]
     )
   }
 
@@ -249,14 +258,14 @@ private struct DepositDetailsView: View {
   ) {
     self.type = type
     self.supportedNetworks = supportedNetworks
-    if case .prefilledToken(_, let availableAccounts) = type {
+    if case .prefilledToken(_, let availableAccounts, _) = type {
       self._selectedAccount = State(initialValue: availableAccounts.first)
     }
   }
 
   private var accountPicker: some View {
     HStack(spacing: 16) {
-      Blockie(address: selectedAccount?.address ?? "")
+      Blockie(address: selectedAccount?.blockieSeed ?? "")
         .frame(width: avatarSize, height: avatarSize)
       Text(selectedAccount?.name ?? "")
         .fontWeight(.semibold)
@@ -297,7 +306,12 @@ private struct DepositDetailsView: View {
           .fontWeight(.semibold)
           .foregroundColor(Color(.bravePrimary))
         MultipleNetworkIconsView(networks: supportedNetworks)
-      case .zec, .btc:
+      case .btc:
+        Text(Strings.Wallet.btcAccountDescription)
+          .fontWeight(.semibold)
+          .foregroundColor(Color(.bravePrimary))
+        MultipleNetworkIconsView(networks: networks.filter({ $0.coin == .btc }))
+      case .zec:
         EmptyView()
       @unknown default:
         EmptyView()
@@ -305,14 +319,19 @@ private struct DepositDetailsView: View {
     }
   }
 
-  @ViewBuilder private func qrCodeView(_ account: BraveWallet.AccountInfo) -> some View {
+  private struct QRCodeViewModel {
+    let name: String
+    let address: String
+  }
+
+  @ViewBuilder private func qrCodeView(_ viewModel: QRCodeViewModel) -> some View {
     VStack(spacing: 12) {
       RoundedRectangle(cornerRadius: 20, style: .continuous)
         .stroke(Color(.secondaryButtonTint).opacity(0.5), lineWidth: 1)
         .frame(width: 184, height: 184)
         .overlay(
           Group {
-            if let image = account.qrCodeImage?.cgImage {
+            if let image = viewModel.address.qrCodeImage?.cgImage {
               Image(uiImage: UIImage(cgImage: image))
                 .resizable()
                 .interpolation(.none)
@@ -323,16 +342,16 @@ private struct DepositDetailsView: View {
           }
         )
         .padding(.bottom, 12)
-      Text(account.name)
+      Text(viewModel.name)
         .font(.callout.weight(.semibold))
         .multilineTextAlignment(.center)
-      Text(account.address)
+      Text(viewModel.address)
         .font(.subheadline)
         .foregroundColor(Color(.secondaryBraveLabel))
         .multilineTextAlignment(.center)
       HStack {
         Button {
-          UIPasteboard.general.string = account.address
+          UIPasteboard.general.string = viewModel.address
         } label: {
           HStack {
             Image(braveSystemName: "leo.copy")
@@ -343,7 +362,7 @@ private struct DepositDetailsView: View {
         }
         .buttonStyle(BraveOutlineButtonStyle(size: .normal))
         Button {
-          addressToShare = account.address
+          addressToShare = viewModel.address
         } label: {
           HStack {
             Image(braveSystemName: "leo.share.macos")
@@ -379,16 +398,16 @@ private struct DepositDetailsView: View {
     ScrollView {
       VStack(spacing: 24) {
         switch type {
-        case .prefilledAccount(let account):
+        case .prefilledAccount(let account, let bitcoinAccounts):
           depositHeader(
             coin: account.coin,
             networks: supportedNetworks
           )
-          qrCodeView(account)
+          qrCodeView(buildQRCodeViewModel(account: account, bitcoinAccounts: bitcoinAccounts))
           if account.coin == .eth {
             ethDisclosureView
           }
-        case .prefilledToken(let token, _):
+        case .prefilledToken(let token, _, let bitcoinAccounts):
           Button {
             isPresentingAccountPicker = true
           } label: {
@@ -399,7 +418,12 @@ private struct DepositDetailsView: View {
             networks: supportedNetworks
           )
           if let selectedAccount {
-            qrCodeView(selectedAccount)
+            qrCodeView(
+              buildQRCodeViewModel(
+                account: selectedAccount,
+                bitcoinAccounts: bitcoinAccounts
+              )
+            )
           }
           if token.coin == .eth {
             ethDisclosureView
@@ -409,7 +433,7 @@ private struct DepositDetailsView: View {
       .padding(.vertical, 32)
       .padding(.horizontal, 16)
       .sheet(isPresented: $isPresentingAccountPicker) {
-        if let selectedAccount, case .prefilledToken(_, let availableAccounts) = type {
+        if let selectedAccount, case .prefilledToken(_, let availableAccounts, _) = type {
           NavigationView {
             AccountSelectionRootView(
               navigationTitle: Strings.Wallet.selectAccountTitle,
@@ -439,6 +463,17 @@ private struct DepositDetailsView: View {
           )
         }
       }
+    }
+  }
+
+  private func buildQRCodeViewModel(
+    account: BraveWallet.AccountInfo,
+    bitcoinAccounts: [String: BraveWallet.BitcoinAccountInfo]
+  ) -> QRCodeViewModel {
+    if let bitcoinAccount = bitcoinAccounts[account.accountId.uniqueKey] {
+      return .init(name: account.name, address: bitcoinAccount.nextReceiveAddress.addressString)
+    } else {
+      return .init(name: account.name, address: account.address)
     }
   }
 }

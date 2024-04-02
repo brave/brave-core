@@ -20,11 +20,16 @@ struct AddressView<Content: View>: View {
   var body: some View {
     content()
       .contextMenu {
-        Text(address.zwspOutput)
-        Button {
-          UIPasteboard.general.string = address
-        } label: {
-          Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
+        if !address.isEmpty {
+          Text(address.zwspOutput)
+          Button {
+            UIPasteboard.general.string = address
+          } label: {
+            Label(
+              Strings.Wallet.copyAddressButtonTitle,
+              braveSystemImage: "leo.copy.plain-text"
+            )
+          }
         }
       }
   }

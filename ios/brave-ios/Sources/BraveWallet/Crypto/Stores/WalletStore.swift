@@ -73,7 +73,8 @@ public class WalletStore {
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
-    walletP3A: BraveWalletBraveWalletP3A
+    walletP3A: BraveWalletBraveWalletP3A,
+    bitcoinWalletService: BraveWalletBitcoinWalletService
   ) {
     self.keyringStore = .init(
       keyringService: keyringService,
@@ -92,7 +93,8 @@ public class WalletStore {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
-      walletP3A: walletP3A
+      walletP3A: walletP3A,
+      bitcoinWalletService: bitcoinWalletService
     )
   }
 
@@ -117,7 +119,8 @@ public class WalletStore {
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
-    walletP3A: BraveWalletBraveWalletP3A
+    walletP3A: BraveWalletBraveWalletP3A,
+    bitcoinWalletService: BraveWalletBitcoinWalletService
   ) {
     self.cancellable = self.keyringStore.$isWalletCreated
       .removeDuplicates()
@@ -141,6 +144,7 @@ public class WalletStore {
             solTxManagerProxy: solTxManagerProxy,
             ipfsApi: ipfsApi,
             walletP3A: walletP3A,
+            bitcoinWalletService: bitcoinWalletService,
             origin: self.origin
           )
           if let cryptoStore = self.cryptoStore {

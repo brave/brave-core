@@ -124,6 +124,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
   private let walletP3A: BraveWalletBraveWalletP3A
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let userAssetManager: WalletUserAssetManager
   private var isUpdatingUserAssets: Bool = false
   private var autoDiscoveredAssets: [BraveWallet.BlockchainToken] = []
@@ -145,6 +146,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
     walletP3A: BraveWalletBraveWalletP3A,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     origin: URLOrigin? = nil
   ) {
     self.keyringService = keyringService
@@ -158,6 +160,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
     self.walletP3A = walletP3A
+    self.bitcoinWalletService = bitcoinWalletService
     self.userAssetManager = WalletUserAssetManager(
       keyringService: keyringService,
       rpcService: rpcService,
@@ -400,6 +403,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: prefilledToken
     )
     buyTokenStore = store
@@ -467,7 +471,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       blockchainRegistry: blockchainRegistry,
       prefilledToken: prefilledToken,
       prefilledAccount: prefilledAccount,
-      userAssetManager: userAssetManager
+      userAssetManager: userAssetManager,
+      bitcoinWalletService: bitcoinWalletService
     )
     depositTokenStore = store
     return store
@@ -519,7 +524,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     observeAccountUpdates: Bool
   ) -> AccountActivityStore {
     if let store = accountActivityStore,
-      store.account.address == account.address,
+      store.account.id == account.id,
       store.observeAccountUpdates == observeAccountUpdates
     {
       return store
@@ -543,7 +548,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   }
 
   func closeAccountActivityStore(for account: BraveWallet.AccountInfo) {
-    if let store = accountActivityStore, store.account.address == account.address {
+    if let store = accountActivityStore, store.account.id == account.id {
       accountActivityStore?.tearDown()
       accountActivityStore = nil
     }

@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import CryptoKit
 import Foundation
+import UIKit
 
 extension String {
   private static let numberFormatterWithCurrentLocale = NumberFormatter().then {
@@ -59,5 +61,26 @@ extension String {
       }
     }
     return result
+  }
+
+  var sha256: String {
+    let data = Data(self.utf8)
+    let hash = SHA256.hash(data: data)
+    let hashString = hash.map { String(format: "%02hhx", $0) }.joined()
+    return hashString
+  }
+
+  var qrCodeImage: UIImage? {
+    guard let data = self.data(using: .utf8) else { return nil }
+    let context = CIContext()
+    let filter = CIFilter.qrCodeGenerator()
+    filter.message = data
+    filter.correctionLevel = "H"
+    if let image = filter.outputImage,
+      let cgImage = context.createCGImage(image, from: image.extent)
+    {
+      return UIImage(cgImage: cgImage)
+    }
+    return nil
   }
 }

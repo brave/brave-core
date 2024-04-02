@@ -71,10 +71,7 @@ struct SignInWithEthereumView: View {
   private var messageContainer: some View {
     VStack(alignment: .leading, spacing: 10) {
       AddressView(address: account.address) {
-        AccountView(
-          address: account.address,
-          name: account.name
-        )
+        AccountView(account: account)
       }
 
       // 'You are signing into xyz. Brave Wallet will share your wallet address with xyz.'

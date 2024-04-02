@@ -18,7 +18,8 @@ class BuyTokenStoreTests: XCTestCase {
   ) -> (
     BraveWallet.TestBlockchainRegistry, BraveWallet.TestKeyringService,
     BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService,
-    BraveWallet.TestAssetRatioService
+    BraveWallet.TestAssetRatioService,
+    BraveWallet.TestBitcoinWalletService
   ) {
     let mockTokenList: [BraveWallet.BlockchainToken] = [
       .init(
@@ -162,18 +163,28 @@ class BuyTokenStoreTests: XCTestCase {
       completion(buyURL, nil)
     }
 
-    return (blockchainRegistry, keyringService, rpcService, walletService, assetRatioService)
+    let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+
+    return (
+      blockchainRegistry, keyringService,
+      rpcService, walletService,
+      assetRatioService, bitcoinWalletService
+    )
   }
 
   @MainActor func testPrefilledToken() async {
-    let (blockchainRegistry, keyringService, rpcService, walletService, assetRatioService) =
-      setupServices()
+    let (
+      blockchainRegistry, keyringService,
+      rpcService, walletService,
+      assetRatioService, bitcoinWalletService
+    ) = setupServices()
     var store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: nil
     )
     XCTAssertNil(store.selectedBuyToken)
@@ -184,6 +195,7 @@ class BuyTokenStoreTests: XCTestCase {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: .previewToken
     )
 
@@ -197,8 +209,11 @@ class BuyTokenStoreTests: XCTestCase {
   /// Test that given a `prefilledToken` that is not on the current network, the `BuyTokenStore` will switch networks to the `chainId` of the token.
   @MainActor func testPrefilledTokenSwitchNetwork() async {
     var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
-    let (blockchainRegistry, keyringService, rpcService, walletService, assetRatioService) =
-      setupServices()
+    let (
+      blockchainRegistry, keyringService,
+      rpcService, walletService,
+      assetRatioService, bitcoinWalletService
+    ) = setupServices()
     rpcService._network = { coin, origin, completion in
       completion(selectedNetwork)
     }
@@ -219,6 +234,7 @@ class BuyTokenStoreTests: XCTestCase {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: .mockSolToken  // not on mainnet
     )
     await store.updateInfo()
@@ -229,14 +245,18 @@ class BuyTokenStoreTests: XCTestCase {
   }
 
   func testBuyDisabledForTestNetwork() {
-    let (blockchainRegistry, keyringService, rpcService, walletService, assetRatioService) =
-      setupServices(selectedNetwork: .mockGoerli)
+    let (
+      blockchainRegistry, keyringService,
+      rpcService, walletService,
+      assetRatioService, bitcoinWalletService
+    ) = setupServices(selectedNetwork: .mockGoerli)
     let store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: nil
     )
 
@@ -254,14 +274,18 @@ class BuyTokenStoreTests: XCTestCase {
   }
 
   func testBuyEnabledForNonTestNetwork() {
-    let (blockchainRegistry, keyringService, rpcService, walletService, assetRatioService) =
-      setupServices(selectedNetwork: .mockMainnet)
+    let (
+      blockchainRegistry, keyringService,
+      rpcService, walletService,
+      assetRatioService, bitcoinWalletService
+    ) = setupServices(selectedNetwork: .mockMainnet)
     let store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: nil
     )
 
@@ -280,7 +304,11 @@ class BuyTokenStoreTests: XCTestCase {
 
   @MainActor
   func testOrderedSupportedBuyOptions() async {
-    let (_, keyringService, rpcService, walletService, assetRatioService) = setupServices()
+    let (
+      _, keyringService,
+      rpcService, walletService,
+      assetRatioService, bitcoinWalletService
+    ) = setupServices()
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._buyTokens = {
       if $0 == .ramp {
@@ -305,6 +333,7 @@ class BuyTokenStoreTests: XCTestCase {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: nil
     )
 
@@ -331,9 +360,11 @@ class BuyTokenStoreTests: XCTestCase {
   @MainActor
   func testAllTokens() async {
     let selectedNetwork: BraveWallet.NetworkInfo = .mockSolana
-    let (_, keyringService, rpcService, walletService, assetRatioService) = setupServices(
-      selectedNetwork: selectedNetwork
-    )
+    let (
+      _, keyringService,
+      rpcService, walletService,
+      assetRatioService, bitcoinWalletService
+    ) = setupServices(selectedNetwork: selectedNetwork)
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._buyTokens = {
       if $0 == .ramp {
@@ -358,6 +389,7 @@ class BuyTokenStoreTests: XCTestCase {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: nil
     )
 
@@ -371,8 +403,11 @@ class BuyTokenStoreTests: XCTestCase {
 
   /// Test `supportedProviders` will only return supported `OnRampProvider`s for the `selectedCurrency`.
   @MainActor func testSupportedProvidersSelectedCurrency() async {
-    let (blockchainRegistry, keyringService, rpcService, walletService, assetRatioService) =
-      setupServices()
+    let (
+      blockchainRegistry, keyringService,
+      rpcService, walletService,
+      assetRatioService, bitcoinWalletService
+    ) = setupServices()
     blockchainRegistry._onRampCurrencies = {
       $0([.mockUSD, .mockCAD, .mockGBP, .mockEuro])
     }
@@ -383,6 +418,7 @@ class BuyTokenStoreTests: XCTestCase {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: nil
     )
     await store.updateInfo()
