@@ -13,10 +13,6 @@ class SplitViewBrowserDataObserver : public base::CheckedObserver {
  public:
   virtual void OnTileTabs(const SplitViewBrowserData::Tile& tile) = 0;
   virtual void OnWillBreakTile(const SplitViewBrowserData::Tile& tile) = 0;
-
- protected:
-  SplitViewBrowserDataObserver() = default;
-  ~SplitViewBrowserDataObserver() override = default;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_BROWSER_DATA_OBSERVER_H_
