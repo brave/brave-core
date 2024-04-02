@@ -16,6 +16,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
+import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
@@ -26,6 +27,7 @@ import org.chromium.chrome.browser.tabmodel.TabWindowManager;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -47,7 +49,6 @@ class BraveAutocompleteMediator extends AutocompleteMediator
 
     public BraveAutocompleteMediator(
             @NonNull Context context,
-            @NonNull AutocompleteControllerProvider controllerProvider,
             @NonNull AutocompleteDelegate delegate,
             @NonNull UrlBarEditingTextStateProvider textProvider,
             @NonNull PropertyModel listPropertyModel,
@@ -59,10 +60,11 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             @NonNull Callback<Tab> bringTabToFrontCallback,
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
             @NonNull BookmarkState bookmarkState,
-            @NonNull OmniboxActionDelegate omniboxActionDelegate) {
+            @NonNull OmniboxActionDelegate omniboxActionDelegate,
+            @NonNull ActivityLifecycleDispatcher lifecycleDispatcher,
+            WindowAndroid windowAndroid) {
         super(
                 context,
-                controllerProvider,
                 delegate,
                 textProvider,
                 listPropertyModel,
@@ -74,7 +76,10 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                 bringTabToFrontCallback,
                 tabWindowManagerSupplier,
                 bookmarkState,
-                omniboxActionDelegate);
+                omniboxActionDelegate,
+                lifecycleDispatcher,
+                windowAndroid);
+
         mContext = context;
         mDelegate = delegate;
     }
