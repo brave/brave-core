@@ -874,7 +874,7 @@ void ToggleAllBookmarksButtonVisibility(Browser* browser) {
 bool CanOpenNewSplitViewForTab(Browser* browser,
                                std::optional<tabs::TabHandle> tab) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
-  if (!browser->is_type_normal()) {
+  if (!browser->is_type_normal() || browser->tab_strip_model()->empty()) {
     return false;
   }
 
@@ -979,7 +979,7 @@ void BreakTiles(Browser* browser, const std::vector<int>& indices) {
 }
 
 bool IsTabsTiled(Browser* browser, const std::vector<int>& indices) {
-  if (!browser->is_type_normal()) {
+  if (!browser->is_type_normal() || browser->tab_strip_model()->empty()) {
     return false;
   }
 
@@ -998,7 +998,7 @@ bool IsTabsTiled(Browser* browser, const std::vector<int>& indices) {
 }
 
 bool CanTileTabs(Browser* browser, const std::vector<int>& indices) {
-  if (!browser->is_type_normal()) {
+  if (!browser->is_type_normal() || browser->tab_strip_model()->empty()) {
     return false;
   }
 
