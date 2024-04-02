@@ -5,6 +5,9 @@
 
 #include <optional>
 
+#include "base/containers/fixed_flat_map.h"
+#include "base/containers/fixed_flat_set.h"
+#include "base/strings/string_util.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -21,6 +24,7 @@
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
+#include "content/public/browser/web_contents.h"
 #include "net/base/filename_util.h"
 #include "ui/base/models/menu_separator_types.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -53,6 +57,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
+#include "third_party/re2/src/re2/re2.h"
 #endif
 
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
@@ -180,6 +185,158 @@ void OnGetImageForTextCopy(base::WeakPtr<content::WebContents> web_contents,
   brave::ShowTextRecognitionDialog(web_contents.get(), image);
 }
 #endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+constexpr char kAIChatRewriteDataKey[] = "ai_chat_rewrite_data";
+constexpr char kResponseTagPattern[] =
+    "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
+
+struct AIChatRewriteData : public base::SupportsUserData::Data {
+  bool has_data_received = false;
+};
+
+bool IsRewriteCommand(int command) {
+  static constexpr auto kRewriteCommands = base::MakeFixedFlatSet<int>(
+      {IDC_AI_CHAT_CONTEXT_PARAPHRASE, IDC_AI_CHAT_CONTEXT_IMPROVE,
+       IDC_AI_CHAT_CONTEXT_ACADEMICIZE, IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE,
+       IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE, IDC_AI_CHAT_CONTEXT_CASUALIZE,
+       IDC_AI_CHAT_CONTEXT_FUNNY_TONE, IDC_AI_CHAT_CONTEXT_SHORTEN,
+       IDC_AI_CHAT_CONTEXT_EXPAND});
+
+  return kRewriteCommands.contains(command);
+}
+
+std::pair<ai_chat::mojom::ActionType, ai_chat::ContextMenuAction>
+GetActionTypeAndP3A(int command) {
+  static constexpr auto kActionTypeMap = base::MakeFixedFlatMap<
+      int, std::pair<ai_chat::mojom::ActionType, ai_chat::ContextMenuAction>>(
+      {{IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT,
+        {ai_chat::mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+         ai_chat::ContextMenuAction::kSummarize}},
+       {IDC_AI_CHAT_CONTEXT_EXPLAIN,
+        {ai_chat::mojom::ActionType::EXPLAIN,
+         ai_chat::ContextMenuAction::kExplain}},
+       {IDC_AI_CHAT_CONTEXT_PARAPHRASE,
+        {ai_chat::mojom::ActionType::PARAPHRASE,
+         ai_chat::ContextMenuAction::kParaphrase}},
+       {IDC_AI_CHAT_CONTEXT_CREATE_TAGLINE,
+        {ai_chat::mojom::ActionType::CREATE_TAGLINE,
+         ai_chat::ContextMenuAction::kCreateTagline}},
+       {IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
+        {ai_chat::mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
+         ai_chat::ContextMenuAction::kCreateSocialMedia}},
+       {IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG,
+        {ai_chat::mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG,
+         ai_chat::ContextMenuAction::kCreateSocialMedia}},
+       {IDC_AI_CHAT_CONTEXT_IMPROVE,
+        {ai_chat::mojom::ActionType::IMPROVE,
+         ai_chat::ContextMenuAction::kImprove}},
+       {IDC_AI_CHAT_CONTEXT_ACADEMICIZE,
+        {ai_chat::mojom::ActionType::ACADEMICIZE,
+         ai_chat::ContextMenuAction::kChangeTone}},
+       {IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE,
+        {ai_chat::mojom::ActionType::PROFESSIONALIZE,
+         ai_chat::ContextMenuAction::kChangeTone}},
+       {IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE,
+        {ai_chat::mojom::ActionType::PERSUASIVE_TONE,
+         ai_chat::ContextMenuAction::kChangeTone}},
+       {IDC_AI_CHAT_CONTEXT_CASUALIZE,
+        {ai_chat::mojom::ActionType::CASUALIZE,
+         ai_chat::ContextMenuAction::kChangeTone}},
+       {IDC_AI_CHAT_CONTEXT_FUNNY_TONE,
+        {ai_chat::mojom::ActionType::FUNNY_TONE,
+         ai_chat::ContextMenuAction::kChangeTone}},
+       {IDC_AI_CHAT_CONTEXT_SHORTEN,
+        {ai_chat::mojom::ActionType::SHORTEN,
+         ai_chat::ContextMenuAction::kChangeLength}},
+       {IDC_AI_CHAT_CONTEXT_EXPAND,
+        {ai_chat::mojom::ActionType::EXPAND,
+         ai_chat::ContextMenuAction::kChangeLength}}});
+  CHECK(kActionTypeMap.contains(command));
+  return kActionTypeMap.at(command);
+}
+
+void OnRewriteSuggestionDataReceived(
+    base::WeakPtr<content::WebContents> web_contents,
+    std::string suggestion) {
+  if (!web_contents) {
+    return;
+  }
+
+  base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL, &suggestion);
+  if (suggestion.empty()) {
+    return;
+  }
+
+  // Avoid showing the ending tag.
+  if (RE2::PartialMatch(suggestion, kResponseTagPattern)) {
+    return;
+  }
+
+  auto* rewrite_data = static_cast<AIChatRewriteData*>(
+      web_contents->GetUserData(kAIChatRewriteDataKey));
+  if (!rewrite_data) {
+    return;
+  }
+
+  if (rewrite_data->has_data_received) {
+    // Subsequent data received, undo previous streaming result.
+    web_contents->Undo();
+  } else {
+    rewrite_data->has_data_received = true;
+  }
+
+  web_contents->Replace(base::UTF8ToUTF16(suggestion));
+}
+
+void OnRewriteSuggestionCompleted(
+    base::WeakPtr<content::WebContents> web_contents,
+    const std::string& selected_text,
+    ai_chat::mojom::ActionType action_type,
+    base::expected<std::string, ai_chat::mojom::APIError> result) {
+  if (!web_contents) {
+    return;
+  }
+
+  if (!result.has_value()) {
+    // If the content has been rewritten by previous streaming result, undo to
+    // get back to original text.
+    auto* rewrite_data = static_cast<AIChatRewriteData*>(
+        web_contents->GetUserData(kAIChatRewriteDataKey));
+    if (!rewrite_data) {
+      return;
+    }
+
+    if (rewrite_data->has_data_received) {
+      web_contents->Undo();
+    }
+
+    // Show the error in Leo side panel UI.
+    Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
+    if (!browser) {
+      return;
+    }
+
+    ai_chat::AIChatTabHelper* helper =
+        ai_chat::AIChatTabHelper::FromWebContents(web_contents.get());
+    if (!helper) {
+      return;
+    }
+    helper->MaybeUnlinkPageContent();
+
+    auto* sidebar_controller =
+        static_cast<BraveBrowser*>(browser)->sidebar_controller();
+    CHECK(sidebar_controller);
+    sidebar_controller->ActivatePanelItem(
+        sidebar::SidebarItem::BuiltInItemType::kChatUI);
+
+    helper->AddSubmitSelectedTextError(selected_text, action_type,
+                                       result.error());
+  }
+
+  web_contents->RemoveUserData(kAIChatRewriteDataKey);
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 }  // namespace
 
@@ -407,103 +564,56 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     return;
   }
 
-  // Before trying to activate the panel, unlink page content if needed.
-  // This needs to be called before activating the panel to check against the
-  // current state.
-  helper->MaybeUnlinkPageContent();
+  // To do rewrite in-place, the following conditions must be met:
+  // 1) Selected content is editable.
+  // 2) User has opted in to Leo.
+  // 3) Context menu rewrite in place feature is enabled.
+  // 4) SSE is enabled, it is required otherwise the UI update will be too slow.
+  // 5) The command is a rewrite command.
+  // 6) There's no in-progress in-place rewrite.
+  bool rewrite_in_place =
+      params_.is_editable &&
+      ai_chat::HasUserOptedIn(GetProfile()->GetPrefs()) &&
+      ai_chat::features::IsContextMenuRewriteInPlaceEnabled() &&
+      ai_chat::features::kAIChatSSE.Get() && IsRewriteCommand(command) &&
+      !source_web_contents_->GetUserData(kAIChatRewriteDataKey);
 
-  // Active the panel.
-  auto* sidebar_controller =
-      static_cast<BraveBrowser*>(browser)->sidebar_controller();
-  CHECK(sidebar_controller);
-  sidebar_controller->ActivatePanelItem(
-      sidebar::SidebarItem::BuiltInItemType::kChatUI);
+  if (!rewrite_in_place) {
+    // Before trying to activate the panel, unlink page content if needed.
+    // This needs to be called before activating the panel to check against the
+    // current state.
+    helper->MaybeUnlinkPageContent();
 
-  std::optional<ai_chat::ContextMenuAction> p3a_action;
-
-  switch (command) {
-    case IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT:
-      p3a_action = ai_chat::ContextMenuAction::kSummarize;
-      helper->SubmitSelectedText(
-          base::UTF16ToUTF8(params_.selection_text),
-          ai_chat::mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
-      break;
-    case IDC_AI_CHAT_CONTEXT_EXPLAIN:
-      p3a_action = ai_chat::ContextMenuAction::kExplain;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::EXPLAIN);
-      break;
-    case IDC_AI_CHAT_CONTEXT_PARAPHRASE:
-      p3a_action = ai_chat::ContextMenuAction::kParaphrase;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::PARAPHRASE);
-      break;
-    case IDC_AI_CHAT_CONTEXT_CREATE_TAGLINE:
-      p3a_action = ai_chat::ContextMenuAction::kCreateTagline;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::CREATE_TAGLINE);
-      break;
-    case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
-      p3a_action = ai_chat::ContextMenuAction::kCreateSocialMedia;
-      helper->SubmitSelectedText(
-          base::UTF16ToUTF8(params_.selection_text),
-          ai_chat::mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT);
-      break;
-    case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG:
-      p3a_action = ai_chat::ContextMenuAction::kCreateSocialMedia;
-      helper->SubmitSelectedText(
-          base::UTF16ToUTF8(params_.selection_text),
-          ai_chat::mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG);
-      break;
-    case IDC_AI_CHAT_CONTEXT_IMPROVE:
-      p3a_action = ai_chat::ContextMenuAction::kImprove;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::IMPROVE);
-      break;
-    case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
-      p3a_action = ai_chat::ContextMenuAction::kChangeTone;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::ACADEMICIZE);
-      break;
-    case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
-      p3a_action = ai_chat::ContextMenuAction::kChangeTone;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::PROFESSIONALIZE);
-      break;
-    case IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE:
-      p3a_action = ai_chat::ContextMenuAction::kChangeTone;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::PERSUASIVE_TONE);
-      break;
-    case IDC_AI_CHAT_CONTEXT_CASUALIZE:
-      p3a_action = ai_chat::ContextMenuAction::kChangeTone;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::CASUALIZE);
-      break;
-    case IDC_AI_CHAT_CONTEXT_FUNNY_TONE:
-      p3a_action = ai_chat::ContextMenuAction::kChangeTone;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::FUNNY_TONE);
-      break;
-    case IDC_AI_CHAT_CONTEXT_SHORTEN:
-      p3a_action = ai_chat::ContextMenuAction::kChangeLength;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::SHORTEN);
-      break;
-    case IDC_AI_CHAT_CONTEXT_EXPAND:
-      p3a_action = ai_chat::ContextMenuAction::kChangeLength;
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::EXPAND);
-      break;
-    default:
-      NOTREACHED_NORETURN();
+    // Active the panel.
+    auto* sidebar_controller =
+        static_cast<BraveBrowser*>(browser)->sidebar_controller();
+    CHECK(sidebar_controller);
+    sidebar_controller->ActivatePanelItem(
+        sidebar::SidebarItem::BuiltInItemType::kChatUI);
+  } else {
+    source_web_contents_->SetUserData(kAIChatRewriteDataKey,
+                                      std::make_unique<AIChatRewriteData>());
   }
 
-  if (p3a_action) {
-    g_brave_browser_process->process_misc_metrics()
-        ->ai_chat_metrics()
-        ->RecordContextMenuUsage(*p3a_action);
-  }
+  auto [action_type, p3a_action] = GetActionTypeAndP3A(command);
+  auto selected_text = base::UTF16ToUTF8(params_.selection_text);
+  auto data_received_callback =
+      rewrite_in_place ? base::BindRepeating(&OnRewriteSuggestionDataReceived,
+                                             source_web_contents_->GetWeakPtr())
+                       : base::NullCallback();
+  auto completed_callback =
+      rewrite_in_place ? base::BindOnce(&OnRewriteSuggestionCompleted,
+                                        source_web_contents_->GetWeakPtr(),
+                                        selected_text, action_type)
+                       : base::NullCallback();
+
+  helper->SubmitSelectedText(selected_text, action_type,
+                             std::move(data_received_callback),
+                             std::move(completed_callback));
+
+  g_brave_browser_process->process_misc_metrics()
+      ->ai_chat_metrics()
+      ->RecordContextMenuUsage(p3a_action);
 }
 
 void BraveRenderViewContextMenu::BuildAIChatMenu() {

@@ -56,6 +56,12 @@ class EngineConsumer {
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) = 0;
 
+  virtual void GenerateRewriteSuggestion(
+      std::string text,
+      const std::string& question,
+      GenerationDataCallback received_callback,
+      GenerationCompletedCallback completed_callback) {}
+
   // Prevent indirect prompt injections being sent to the AI model.
   // Include break-out strings contained in prompts, as well as the base
   // model command separators.
