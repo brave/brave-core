@@ -131,6 +131,7 @@ void BraveTabMenuModel::BuildItemsForSplitView(
     Browser* browser,
     TabStripModel* tab_strip_model,
     const std::vector<int>& indices) {
+  // The split view context menu items are added after the "reload" item.
   auto index = *GetIndexOfCommandId(TabStripModel::CommandReload);
 
   // In case only one tab is selected
