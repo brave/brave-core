@@ -15,9 +15,8 @@
 SplitViewTabStripModelAdapter::SplitViewTabStripModelAdapter(
     SplitViewBrowserData& split_view_browser_data,
     TabStripModel* model)
-    : split_view_browser_data_(split_view_browser_data), model_(model) {
+    : split_view_browser_data_(split_view_browser_data), model_(*model) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
-  CHECK(model);
 
   model_->AddObserver(this);
 }
@@ -25,7 +24,7 @@ SplitViewTabStripModelAdapter::SplitViewTabStripModelAdapter(
 SplitViewTabStripModelAdapter::~SplitViewTabStripModelAdapter() = default;
 
 void SplitViewTabStripModelAdapter::MakeTiledTabsAdjacent(
-    SplitViewBrowserData::Tile tile,
+    const SplitViewBrowserData::Tile& tile,
     bool move_right_tab) {
   auto [tab1, tab2] = tile;
   auto index1 = model_->GetIndexOfTab(tab1);
@@ -47,6 +46,10 @@ void SplitViewTabStripModelAdapter::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
+  if (split_view_browser_data_->tiles({}).empty()) {
+    return;
+  }
+
   switch (change.type()) {
     case TabStripModelChange::kInserted:
       OnTabInserted(change.GetInsert());
