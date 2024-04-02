@@ -63,10 +63,6 @@ BraveRendererUpdater::BraveRendererUpdater(
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kBraveWalletPrivateWindowsEnabled,
-      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
       de_amp::kDeAmpPrefEnabled,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
@@ -166,7 +162,6 @@ void BraveRendererUpdater::UpdateAllRenderers() {
 void BraveRendererUpdater::UpdateRenderer(
     mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
         renderer_configuration) {
-  is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile_);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(profile_);
