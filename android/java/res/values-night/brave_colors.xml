@@ -16,7 +16,6 @@
     <color name="modern_blue_600">@color/baseline_primary_30</color>
 
     <!-- Theme colors -->
-    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
     <color name="brave_link">#A0A5EB</color>
     <color name="brave_button_pressed">#575CA4</color>
 

@@ -279,6 +279,8 @@ public class BytecodeTest {
                         "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_ui/TabUiThemeUtils"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_ui/BraveTabUiThemeUtils"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider"));
         Assert.assertTrue(
@@ -527,28 +529,48 @@ public class BytecodeTest {
                         "setupContentSettingsPreference",
                         false,
                         null));
-        Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
-                "setContentSetting", false, null));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
-                        "getTitleTextColor", false, null));
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/Website",
+                        "setContentSetting",
+                        false,
+                        null));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
-                        "getActionButtonTintList", false, null));
+                methodExists(
+                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "getTitleTextColor",
+                        false,
+                        null));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
-                        "getCardViewBackgroundColor", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
-                "getTitleTextColor", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
-                "getActionButtonTintList", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPage",
-                "updateSearchProviderHasLogo", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
-                "getCardViewBackgroundColor", false, null));
+                methodExists(
+                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "getCardViewBackgroundColor",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "getTitleTextColor",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "getCardViewBackgroundColor",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
+                        "getActionButtonTintList",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPage",
+                        "updateSearchProviderHasLogo",
+                        false,
+                        null));
         Assert.assertTrue(
                 methodExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
                         "get", false, null));

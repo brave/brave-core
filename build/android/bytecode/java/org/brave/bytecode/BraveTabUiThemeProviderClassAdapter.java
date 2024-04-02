@@ -16,13 +16,7 @@ public class BraveTabUiThemeProviderClassAdapter extends BraveClassVisitor {
     public BraveTabUiThemeProviderClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(sTabUiThemeProviderClassName, "getTitleTextColor",
-                sBraveTabUiThemeProviderClassName);
-
         changeMethodOwner(sTabUiThemeProviderClassName, "getActionButtonTintList",
-                sBraveTabUiThemeProviderClassName);
-
-        changeMethodOwner(sTabUiThemeProviderClassName, "getCardViewBackgroundColor",
                 sBraveTabUiThemeProviderClassName);
     }
 }
