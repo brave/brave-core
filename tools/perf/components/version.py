@@ -103,7 +103,7 @@ class BraveVersion:
 
 
 def _FetchRevision(revision: str):
-  args = ['git', 'fetch', 'origin', revision]
+  args = ['git', 'fetch', 'origin', f'{revision}:{revision}']
   logging.debug('Try to fetch %s', revision)
   GetProcessOutput(args, cwd=path_util.GetBraveDir())
 

@@ -17,13 +17,6 @@
       ]
     },
     {
-      "name": "loading.desktop.brave.startup",
-      "pageset-repeat": 10,
-      "stories": [
-        "example.com_cold",
-      ]
-    },
-    {
       "name": "system_health.memory_desktop",
       "pageset-repeat": 20,
       "stories": [
@@ -36,12 +29,11 @@
       "pageset-repeat": 20,
       "stories": [
         "load:chrome:blank",
-        "browse:news:hackernews:2020",
       ]
     },
     {
       "name": "speedometer2",
-      "pageset-repeat": 50
+      "pageset-repeat": 10
     }
   ]
 }

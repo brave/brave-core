@@ -7,6 +7,7 @@ import logging
 import os
 import shutil
 import time
+import sys
 from copy import deepcopy
 from typing import List, Optional, Tuple, Set
 from lib.util import scoped_cwd
@@ -194,6 +195,14 @@ class RunableConfiguration:
     if len(benchmark_config.stories) > 0:
       for story in benchmark_config.stories:
         args.append(f'--story={story}')
+
+    # Optimize redownloading trace_processor_shell: if the file exists use it.
+    is_win = sys.platform == 'win32'
+    trace_processor_path = os.path.join(
+        path_util.GetChromiumPerfDir(), 'core', 'perfetto_binary_roller', 'bin',
+        'trace_processor_shell' + ('.exe' if is_win else ''))
+    if os.path.isfile(trace_processor_path):
+      args.append(f'--trace-processor-path={trace_processor_path}')
 
     extra_browser_args = deepcopy(config.extra_browser_args)
     extra_browser_args.extend(config.browser_type.extra_browser_args)
