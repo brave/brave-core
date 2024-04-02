@@ -115,7 +115,7 @@ void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
 void SkusInternalsUI::GetLeoState(GetLeoStateCallback callback) {
   base::Value::Dict dict;
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  IsAIChatEnabled dict.Set("Order", GetOrderInfo("leo."));
+  dict.Set("Order", GetOrderInfo("leo."));
 #endif
   std::string result;
   base::JSONWriter::Write(dict, &result);
