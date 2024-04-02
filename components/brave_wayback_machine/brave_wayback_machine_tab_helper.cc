@@ -121,6 +121,11 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 
 void BraveWaybackMachineTabHelper::OnWaybackURLFetched(
     const GURL& latest_wayback_url) {
+  // Ignore the result if disabled.
+  if (!wayback_enabled_.GetValue()) {
+    return;
+  }
+
   // wayback url is not available.
   if (latest_wayback_url.is_empty()) {
     SetWaybackState(WaybackState::kNotAvailable);
