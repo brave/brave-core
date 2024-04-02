@@ -11,7 +11,7 @@ import { WalletRoutes } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
 
 // components
-import { OnboardingContentLayout } from '../onboarding-content-layout/onboarding-content-layout'
+import { OnboardingContentLayout } from '../onboarding-content-layout'
 import { ImportTypeAction } from './components/import-type-action'
 
 // styles

@@ -19,7 +19,9 @@ import {
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // components
-import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
+import {
+  OnboardingContentLayout //
+} from '../components/onboarding-content-layout'
 
 // styles
 import { Column, VerticalSpace } from '../../../../components/shared/style'

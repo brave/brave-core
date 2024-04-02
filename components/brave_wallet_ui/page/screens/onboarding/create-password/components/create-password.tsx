@@ -9,7 +9,9 @@ import * as React from 'react'
 import NewPasswordInput, {
   NewPasswordValues
 } from '../../../../../components/shared/password-input/new-password-input'
-import { AutoLockSettings } from '../../components/auto-lock-settings/auto-lock-settings'
+import {
+  AutoLockSettings
+} from '../../components/auto-lock-settings/auto-lock-settings'
 
 // styles
 import { VerticalSpace } from '../../../../../components/shared/style'

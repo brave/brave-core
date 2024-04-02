@@ -22,16 +22,26 @@ import {
 } from '../../../../common/slices/api.slice'
 
 // components
-import { NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
-import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
-import { OnboardingCreatingWallet } from '../creating-wallet/onboarding-creating-wallet'
+import {
+  NewPasswordValues //
+} from '../../../../components/shared/password-input/new-password-input'
+import {
+  OnboardingContentLayout //
+} from '../components/onboarding-content-layout'
+import {
+  OnboardingCreatingWallet //
+} from '../creating-wallet/onboarding-creating-wallet'
 import { CreatePassword } from '../create-password/components/create-password'
 
 // options
 import { autoLockOptions } from '../../../../options/auto-lock-options'
 
 // styles
-import { Column, Row, VerticalSpace } from '../../../../components/shared/style'
+import {
+  Column,
+  Row,
+  VerticalSpace //
+} from '../../../../components/shared/style'
 import {
   CheckboxText,
   InfoAlert,

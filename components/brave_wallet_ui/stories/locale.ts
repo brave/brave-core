@@ -164,7 +164,8 @@ provideStrings({
   braveWalletWelcomeTitle: 'Browser-native. Self-custody. And multi-chain.',
   braveWalletWelcomeDescription:
     'Take control of your crypto and NFTs. ' +
-    'Brave Wallet supports Ethereum, EVM chains, Solana, Filecoin, Bitcoin, and more.',
+    'Brave Wallet supports Ethereum, EVM chains, ' +
+    'Solana, Filecoin, Bitcoin, and more.',
   braveWalletWelcomeNewWalletTitle: 'Need a new wallet?',
   braveWalletWelcomeNewWalletDescription:
     'Get started with Brave Wallet in minutes.',
@@ -184,9 +185,12 @@ provideStrings({
   braveWalletSelfCustodyDisclosureCheckboxText:
     'I understand that this is a self-custody wallet, ' +
     'and that I am solely responsible for any associated funds, assets, ' +
-    'or accounts—and for taking appropriate action to secure, protect, and back up my wallet. ' +
-    'I understand that Brave cannot access my wallet or reverse transactions on my behalf, ' +
-    'and that my recovery phrase is the ONLY way to regain access in the event of a ' +
+    'or accounts—and for taking appropriate action to ' +
+    'secure, protect, and back up my wallet. ' +
+    'I understand that Brave cannot access my wallet or ' +
+    'reverse transactions on my behalf, ' +
+    'and that my recovery phrase is the ONLY way to ' +
+    'regain access in the event of a ' +
     'lost password, stolen device, or similar circumstance.',
   braveWalletTermsOfServiceCheckboxText:
     'I have read and agree to the $1Terms of use$2.',
@@ -219,7 +223,8 @@ provideStrings({
     'Type your MetaMask 12-24 word recovery phrase.',
   braveWalletMetaMaskExtensionDetected: 'Import Metamask wallet',
   braveWalletMetaMaskExtensionImportDescription:
-    'You can easily import your MetaMask wallet just by inputting your password.',
+    'You can easily import your MetaMask wallet just by inputting ' +
+    'your password.',
   braveWalletRestoreMyBraveWalletInstructions:
     'You can paste your entire recovery phrase into any field.',
   braveWalletRecoveryPhraseLengthError:
@@ -239,9 +244,11 @@ provideStrings({
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle:
     'Save your recovery phrase',
   braveWalletOnboardingRecoveryPhraseBackupIntroDescription:
-    'Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.',
+    'Your recovery phrase is the key to access your wallet in case you ' +
+    'forget your password or lose your device.',
   braveWalletRecoveryPhraseBackupWarningImportant:
-    'Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.',
+    'Keep it in a secure place that is not accessible to others and avoid ' +
+    'sharing it with anyone.',
   braveWalletRecoveryWordInstructions:
     'Enter the word in position $1 from your recovery phrase.',
   braveWalletVerifyRecoveryPhraseGoBack: 'Forgot to save? Go back',
@@ -254,7 +261,8 @@ provideStrings({
   braveWalletCopiedToClipboard: 'Copied to clipboard',
   braveWalletClickToSeeRecoveryPhrase: 'Click to see your phrase',
   braveWalletSkipBackupWarning:
-    'You can skip this step now, but you still need to back up your recovery phrase to ensure account security.',
+    'You can skip this step now, but you still need to back up your recovery ' +
+    'phrase to ensure account security.',
   braveWalletSkipBackup: 'I’ll back up later',
   braveWalletGoBack: 'Go back',
 
@@ -268,7 +276,8 @@ provideStrings({
   // Recovery Phrase Backup - Intro
   braveWalletBackupIntroTitle: 'Back up your crypto wallet',
   braveWalletBackupIntroDescription:
-    'Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.',
+    'Keep it in a secure place that is not ' +
+    'accessible to others and avoid sharing it with anyone.',
   braveWalletBackupIntroTerms:
     'I understand that if I lose my recovery words, ' +
     'I will not be able to access my crypto wallet.',
@@ -441,7 +450,8 @@ provideStrings({
   braveWallectConnectHardwareDescription:
     'We currently support $1 and $2 devices.',
   braveWalletImportHardwareWalletDescription:
-    'Connect your hardware wallet to manage your assets directly from Brave Wallet',
+    'Connect your hardware wallet to manage your assets directly ' +
+    'from Brave Wallet',
   braveWalletConnectHardwareWalletSelectBlockchain:
     'Select a blockchain to import your hardware wallet',
 

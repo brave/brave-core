@@ -14,11 +14,16 @@ import {
   LoadingIcon
 } from './onboarding-creating-wallet.style'
 import { Column } from '../../../../components/shared/style'
-import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
+import {
+  OnboardingContentLayout //
+} from '../components/onboarding-content-layout'
 
 export const OnboardingCreatingWallet = () => {
   return (
-    <OnboardingContentLayout showBackButton={false} centerContent={true}>
+    <OnboardingContentLayout
+      showBackButton={false}
+      centerContent={true}
+    >
       <Column
         fullWidth={true}
         alignItems='center'

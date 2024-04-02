@@ -5,8 +5,12 @@
 
 import * as React from 'react'
 
-import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrapper'
-import { OnboardingImportHardwareWalletWelcome } from './import-hardware-wallet-welcome'
+import {
+  WalletPageStory //
+} from '../../../../stories/wrappers/wallet-page-story-wrapper'
+import {
+  OnboardingImportHardwareWalletWelcome //
+} from './import-hardware-wallet-welcome'
 
 export const _OnboardingImportOrRestoreWallet = () => {
   return (

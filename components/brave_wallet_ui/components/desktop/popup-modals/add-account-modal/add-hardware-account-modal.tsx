@@ -21,7 +21,7 @@ import {
 // components
 import { DividerLine } from '../../../extension/divider/index'
 import PopupModal from '..'
-import { HardwareWalletConnect } from './hardware-wallet-connect'
+import { HardwareWalletConnect } from '../../hardware-wallet-connect'
 import { SelectAccountType } from './select-account-type/select-account-type'
 
 // style

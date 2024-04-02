@@ -22,9 +22,15 @@ import { WalletSelectors } from '../../../../common/selectors'
 import { autoLockOptions } from '../../../../options/auto-lock-options'
 
 // components
-import { NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
-import { OnboardingCreatingWallet } from '../creating-wallet/onboarding-creating-wallet'
-import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
+import {
+  NewPasswordValues //
+} from '../../../../components/shared/password-input/new-password-input'
+import {
+  OnboardingCreatingWallet //
+} from '../creating-wallet/onboarding-creating-wallet'
+import {
+  OnboardingContentLayout //
+} from '../components/onboarding-content-layout'
 import { CreatePassword } from './components/create-password'
 
 // styles

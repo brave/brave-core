@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -11,15 +11,19 @@ import { onConnectHardwareWallet } from '../../../../../common/async/hardware'
 
 // components
 import { HardwareWalletAccountsList } from './accounts-list'
-import { AuthorizeHardwareDeviceIFrame } from '../../../../shared/authorize-hardware-device/authorize-hardware-device'
-import { HardwareButton } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button'
+import {
+  AuthorizeHardwareDeviceIFrame //
+} from '../../shared/authorize-hardware-device/authorize-hardware-device'
+import {
+  HardwareButton //
+} from '../popup-modals/add-account-modal/hardware-button/hardware-button'
 
 // Styled Components
-import { Instructions } from './style'
-import { Column, VerticalSpace } from '../../../../shared/style'
-import { Divider } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button.style'
-import { ContinueButton } from '../../../../../page/screens/onboarding/onboarding.style'
-import { HardwareWalletGraphic } from '../../../../../page/screens/onboarding/select-wallet-device/onboarding-select-wallet-device.style'
+import { HardwareWalletGraphic, Instructions, Divider } from './style'
+import { Column, VerticalSpace } from '../../shared/style'
+import {
+  ContinueButton //
+} from '../../../page/screens/onboarding/onboarding.style'
 
 // Custom types
 import { ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
@@ -28,20 +32,20 @@ import {
   LedgerDerivationPaths,
   DerivationBatchSize,
   SolDerivationPaths
-} from '../../../../../common/hardware/types'
-import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
+} from '../../../common/hardware/types'
+import { HardwareVendor } from '../../../common/api/hardware_keyrings'
 import {
   BraveWallet,
   CreateAccountOptionsType,
   FilecoinNetwork
-} from '../../../../../constants/types'
-import { LedgerError } from '../../../../../common/hardware/ledgerjs/ledger-messages'
+} from '../../../constants/types'
+import { LedgerError } from '../../../common/hardware/ledgerjs/ledger-messages'
 
 // hooks
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useImportHardwareAccountsMutation //
-} from '../../../../../common/slices/api.slice'
+} from '../../../common/slices/api.slice'
 
 export interface Props {
   selectedAccountType: CreateAccountOptionsType

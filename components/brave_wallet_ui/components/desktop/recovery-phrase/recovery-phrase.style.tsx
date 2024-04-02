@@ -6,7 +6,9 @@
 import styled from 'styled-components'
 import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css'
-import { layoutSmallWidth } from '../wallet-page-wrapper/wallet-page-wrapper.style'
+import {
+  layoutSmallWidth //
+} from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
   display: grid;
@@ -17,7 +19,7 @@ export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
   padding: 16px;
   width: 100%;
   height: 208px;
-  overflow-y: ${p => p.phraseLength > 12 ? 'auto' : 'hidden'};
+  overflow-y: ${(p) => (p.phraseLength > 12 ? 'auto' : 'hidden')};
 
   &::-webkit-scrollbar {
     width: 6px;

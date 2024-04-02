@@ -48,7 +48,9 @@ import { SearchBar } from '../../../../components/shared/search-bar'
 import {
   CreateNetworkIcon //
 } from '../../../../components/shared/create-network-icon'
-import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
+import {
+  OnboardingContentLayout //
+} from '../components/onboarding-content-layout'
 
 // styles
 import {

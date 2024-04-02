@@ -23,7 +23,9 @@ import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
 import { VerticalSpace } from '../../../../components/shared/style'
 import { NextButtonRow, ContinueButton } from '../onboarding.style'
 import { CheckboxText, TermsLink } from './disclosures.style'
-import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
+import {
+  OnboardingContentLayout //
+} from '../components/onboarding-content-layout'
 
 const TermsOfUseText: React.FC<{}> = () => {
   const text = getLocaleWithTag('braveWalletTermsOfServiceCheckboxText')

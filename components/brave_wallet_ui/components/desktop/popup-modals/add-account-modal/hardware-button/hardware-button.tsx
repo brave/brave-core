@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // styles
-import { Row, Column } from '../../../../../components/shared/style'
+import { Row, Column } from '../../../../shared/style'
 import {
   Container,
   Title,

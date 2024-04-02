@@ -26,7 +26,7 @@ import {
   HeaderWrapper,
   TitleSection,
   BackButtonWrapper
-} from './onboarding-content-layout.style'
+} from './style'
 
 interface Props {
   title?: string | React.ReactNode

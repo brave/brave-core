@@ -39,8 +39,12 @@ import {
   NewPasswordInput,
   NewPasswordValues
 } from '../../../../components/shared/password-input/new-password-input'
-import { OnboardingCreatingWallet } from '../creating-wallet/onboarding-creating-wallet'
-import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
+import {
+  OnboardingCreatingWallet //
+} from '../creating-wallet/onboarding-creating-wallet'
+import {
+  OnboardingContentLayout //
+} from '../components/onboarding-content-layout'
 
 // styles
 import { InputLabel } from './restore-from-recovery-phrase.style'

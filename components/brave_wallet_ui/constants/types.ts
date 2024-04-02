@@ -547,8 +547,8 @@ export enum WalletRoutes {
   OnboardingImportHardwareWalletWelcome = '/crypto/onboarding/hardware/welcome',
   OnboardingHardwareWalletTerms = '/crypto/onboarding/hardware/terms',
   OnboardingHardwareWalletConnect = '/crypto/onboarding/hardware/connect',
-  OnboardingHardwareWalletConnectSelectDevice = '/crypto/onboarding/hardware/select-device/' +
-    ':accountTypeName?',
+  OnboardingHardwareWalletConnectSelectDevice = '/crypto/onboarding/' +
+    'hardware/select-device/:accountTypeName?',
   OnboardingHardwareWalletNetworkSelection = '/crypto/onboarding/hardware' +
     '/networks',
   OnboardingHardwareWalletCreatePassword = '/crypto/onboarding/' +

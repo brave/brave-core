@@ -1,7 +1,8 @@
-// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { EntityId } from '@reduxjs/toolkit'
 import Dropdown from '@brave/leo/react/dropdown'
@@ -12,36 +13,41 @@ import {
   SolDerivationPaths,
   TrezorDerivationPath,
   TrezorDerivationPaths
-} from '../../../../../common/hardware/types'
-import { BraveWallet, FilecoinNetwork } from '../../../../../constants/types'
+} from '../../../common/hardware/types'
+import { BraveWallet, FilecoinNetwork } from '../../../constants/types'
 import {
   HardwareWalletDerivationPathLocaleMapping,
   HardwareWalletDerivationPathsMapping,
   SolHardwareWalletDerivationPathLocaleMapping
 } from './types'
-import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
+import { HardwareVendor } from '../../../common/api/hardware_keyrings'
 
 // Utils
-import { getLocale } from '../../../../../../common/locale'
-import { reduceAddress } from '../../../../../utils/reduce-address'
-import { useGetNetworksRegistryQuery } from '../../../../../common/slices/api.slice'
-import { useAddressOrb } from '../../../../../common/hooks/use-orb'
-import { makeNetworkAsset } from '../../../../../options/asset-options'
+import { getLocale } from '../../../../common/locale'
+import { reduceAddress } from '../../../utils/reduce-address'
+import {
+  useGetNetworksRegistryQuery //
+} from '../../../common/slices/api.slice'
+import { useAddressOrb } from '../../../common/hooks/use-orb'
+import { makeNetworkAsset } from '../../../options/asset-options'
 import {
   networkEntityAdapter //
-} from '../../../../../common/slices/entities/network.entity'
+} from '../../../common/slices/entities/network.entity'
 import {
   getPathForEthLedgerIndex,
   getPathForSolLedgerIndex,
   getPathForTrezorIndex
-} from '../../../../../utils/derivation_path_utils'
+} from '../../../utils/derivation_path_utils'
 
 // Components
-import { SearchBar } from '../../../../shared/search-bar/index'
-import { NetworkFilterSelector } from '../../../network-filter-selector'
+import { SearchBar } from '../../shared/search-bar/index'
+import { NetworkFilterSelector } from '../network-filter-selector'
 
 // Styles
-import { DisclaimerText, DisclaimerWrapper } from '../style'
+import {
+  DisclaimerText,
+  DisclaimerWrapper
+} from '../popup-modals/add-account-modal/style'
 import {
   ButtonsContainer,
   HardwareWalletAccountCircle,
@@ -61,8 +67,10 @@ import {
   DropdownLabel,
   HelpLink
 } from './style'
-import { ContinueButton } from '../../../../../page/screens/onboarding/onboarding.style'
-import { Row } from '../../../../shared/style'
+import {
+  ContinueButton //
+} from '../../../page/screens/onboarding/onboarding.style'
+import { Row } from '../../shared/style'
 
 interface Props {
   hardwareWallet: HardwareVendor

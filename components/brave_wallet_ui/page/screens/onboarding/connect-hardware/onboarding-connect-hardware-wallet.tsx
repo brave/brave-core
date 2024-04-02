@@ -1,7 +1,8 @@
-// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useHistory } from 'react-router'
 
@@ -12,11 +13,15 @@ import {
 } from '../../../../constants/types'
 
 // utils
-import { CreateAccountOptions } from '../../../../options/create-account-options'
+import {
+  CreateAccountOptions //
+} from '../../../../options/create-account-options'
 
 // components
 import { AccountType } from './components/account-type'
-import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
+import {
+  OnboardingContentLayout //
+} from '../components/onboarding-content-layout'
 
 // styles
 import { VerticalSpace } from '../../../../components/shared/style'
@@ -46,7 +51,9 @@ export const OnboardingConnectHardwareWallet = () => {
   )
 
   return (
-    <OnboardingContentLayout title={getLocale('braveWalletConnectHardwareWalletSelectBlockchain')}>
+    <OnboardingContentLayout
+      title={getLocale('braveWalletConnectHardwareWalletSelectBlockchain')}
+    >
       <VerticalSpace space='56px' />
       {accountOptions.map((option, index) => {
         return (

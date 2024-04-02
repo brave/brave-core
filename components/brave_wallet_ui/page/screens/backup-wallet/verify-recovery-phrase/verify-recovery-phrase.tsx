@@ -17,7 +17,9 @@ import {
 } from '../../../../common/slices/api.slice'
 
 // selectors
-import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
+import {
+  useSafePageSelector //
+} from '../../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../selectors'
 
 // routes
@@ -28,13 +30,21 @@ import { WalletPageActions } from '../../../actions'
 
 // components
 import Button from '@brave/leo/react/button'
-import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
+import {
+  OnboardingContentLayout //
+} from '../../onboarding/components/onboarding-content-layout'
 import { PhraseInput } from './components/phrase-input'
 import { VerificationProgress } from './components/verification-progress'
 
 // styles
-import { Title } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout.style'
-import { Column, Row, VerticalSpace } from '../../../../components/shared/style'
+import {
+  Title //
+} from '../../onboarding/components/onboarding-content-layout/style'
+import {
+  Column, //
+  Row, //
+  VerticalSpace //
+} from '../../../../components/shared/style'
 import { BackButton } from './verify-recovery-phrase.style'
 import { ContinueButton } from '../../onboarding/onboarding.style'
 

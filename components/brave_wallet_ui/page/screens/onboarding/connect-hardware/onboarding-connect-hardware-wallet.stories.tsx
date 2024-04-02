@@ -6,8 +6,12 @@
 import * as React from 'react'
 
 // components
-import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrapper'
-import { OnboardingConnectHardwareWallet } from './onboarding-connect-hardware-wallet'
+import {
+  WalletPageStory //
+} from '../../../../stories/wrappers/wallet-page-story-wrapper'
+import {
+  OnboardingConnectHardwareWallet //
+} from './onboarding-connect-hardware-wallet'
 
 export const _OnboardingConnectHardwareWallet = () => {
   return (

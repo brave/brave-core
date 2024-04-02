@@ -4,12 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { BraveWallet } from '../../../../../constants/types'
-import { mockHardwareAccounts } from '../../../../../stories/mock-data/mock-wallet-accounts'
+import { BraveWallet } from '../../../constants/types'
+import {
+  mockHardwareAccounts //
+} from '../../../stories/mock-data/mock-wallet-accounts'
 
 import {
   WalletPageStory //
-} from '../../../../../stories/wrappers/wallet-page-story-wrapper'
+} from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { HardwareWalletAccountsList } from './accounts-list'
 
 export const _HardwareAccountsList = () => {

@@ -8,12 +8,18 @@ import { Redirect, useHistory, useParams } from 'react-router'
 
 // utils
 import { WalletRoutes } from '../../../../constants/types'
-import { CreateAccountOptions } from '../../../../options/create-account-options'
+import {
+  CreateAccountOptions //
+} from '../../../../options/create-account-options'
 import { HardwareVendor } from '../../../../common/api/hardware_keyrings'
 
 // components
-import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
-import HardwareWalletConnect from '../../../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect'
+import {
+  OnboardingContentLayout //
+} from '../components/onboarding-content-layout'
+import {
+  HardwareWalletConnect //
+} from '../../../../components/desktop/hardware-wallet-connect'
 import { getLocale } from '../../../../../common/locale'
 
 interface Params {
@@ -50,7 +56,10 @@ export const OnboardingSelectWalletDevice = () => {
     : getLocale('braveWalletConnectHardwareTitle')
 
   return (
-    <OnboardingContentLayout title={pageTitle} centerContent={true}>
+    <OnboardingContentLayout
+      title={pageTitle}
+      centerContent={true}
+    >
       <HardwareWalletConnect
         selectedAccountType={selectedAccountType}
         onSelectVendor={setSelectedHardwareWallet}

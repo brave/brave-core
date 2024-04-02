@@ -21,13 +21,21 @@ import {
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // hooks
-import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-copy-to-clipboard'
+import {
+  useTemporaryCopyToClipboard //
+} from '../../../../common/hooks/use-copy-to-clipboard'
 import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 
 // components
-import { RecoveryPhrase } from '../../../../components/desktop/recovery-phrase/recovery-phrase'
-import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
-import { SkipWarningDialog } from '../explain-recovery-phrase/skip-warning-dialog'
+import {
+  RecoveryPhrase //
+} from '../../../../components/desktop/recovery-phrase/recovery-phrase'
+import {
+  OnboardingContentLayout //
+} from '../../onboarding/components/onboarding-content-layout'
+import {
+  SkipWarningDialog //
+} from '../explain-recovery-phrase/skip-warning-dialog'
 
 // styles
 import {
@@ -106,9 +114,7 @@ export const BackupRecoveryPhrase = () => {
 
         <PhraseCard>
           <PhraseCardBody>
-            <RecoveryPhrase
-              recoveryPhrase={recoveryPhrase}
-            />
+            <RecoveryPhrase recoveryPhrase={recoveryPhrase} />
           </PhraseCardBody>
 
           <VerticalSpace space='24px' />
