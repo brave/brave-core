@@ -36,11 +36,11 @@ class ActionGuard {
     if (this.isDirty()) {
       this.cleanupClosure()
     }
-    this.with(actionClosure)
+    this.run(actionClosure)
   }
 
   // Perform the requested action with a guard.
-  with(actionClosure) {
+  run(actionClosure) {
     fs.writeFileSync(this.guardFilePath, getGuardCallStack())
     actionClosure()
     fs.unlinkSync(this.guardFilePath)

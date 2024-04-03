@@ -85,7 +85,7 @@ function installDepotTools(options = config.defaultOptions) {
   if (enforcedDepotToolsRef !== readEnforcedDepotToolsRef()) {
     if (enforcedDepotToolsRef) {
       Log.progressScope(`switch depot_tools to ${enforcedDepotToolsRef}`, () => {
-        depotToolsGuard.with(() => {
+        depotToolsGuard.run(() => {
           util.fetchAndCheckoutRef(config.depotToolsDir, enforcedDepotToolsRef)
           // Write the enforced depot_tools ref to .disable_auto_update file.
           writeEnforcedDepotToolsRef(enforcedDepotToolsRef)
