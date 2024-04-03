@@ -100,7 +100,10 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void LocalDeviceAppeared();
 
   void UpdateP3AObjectsNumber();
-  void OnGotEntityCounts(const syncer::TypeEntitiesCount& entity_count);
+  void OnGotEntityCounts(const std::vector<TypeEntitiesCount>& entity_counts);
+  void GetEntityCountsForDebuggingBackport(
+      base::OnceCallback<void(const std::vector<TypeEntitiesCount>&)> callback)
+      const;
 
   brave_sync::Prefs brave_sync_prefs_;
 

@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/auto_reset.h"
+#include "base/barrier_closure.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/string_util.h"
@@ -349,31 +350,67 @@ void BraveSyncServiceImpl::OnSyncCycleCompleted(
 }
 
 void BraveSyncServiceImpl::UpdateP3AObjectsNumber() {
-  GetEntityCountsForDebugging(
+  GetEntityCountsForDebuggingBackport(
       BindRepeating(&BraveSyncServiceImpl::OnGotEntityCounts,
                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveSyncServiceImpl::OnGotEntityCounts(
-    const syncer::TypeEntitiesCount& entity_count) {
-  // int total_entities = 0;
-  // for (const syncer::TypeEntitiesCount& count : entity_counts) {
-  //   total_entities += count.non_tombstone_entities;
-  // }
+    const std::vector<TypeEntitiesCount>& entity_counts) {
+  int total_entities = 0;
+  for (const syncer::TypeEntitiesCount& count : entity_counts) {
+    total_entities += count.non_tombstone_entities;
+  }
 
-  // if (GetUserSettings()->GetSelectedTypes().Has(
-  //         syncer::UserSelectableType::kHistory)) {
-  //   // History stores info about synced objects in a different way than the
-  //   // others types. Issue a separate request to achieve this info
-  //   sync_service_impl_delegate_->GetKnownToSyncHistoryCount(base::BindOnce(
-  //       [](int total_entities, std::pair<bool, int> known_to_sync_count) {
-  //         brave_sync::p3a::RecordSyncedObjectsCount(total_entities +
-  //                                                   known_to_sync_count.second);
-  //       },
-  //       total_entities));
-  // } else {
-  //   brave_sync::p3a::RecordSyncedObjectsCount(total_entities);
-  // }
+  if (GetUserSettings()->GetSelectedTypes().Has(
+          syncer::UserSelectableType::kHistory)) {
+    // History stores info about synced objects in a different way than the
+    // others types. Issue a separate request to achieve this info
+    sync_service_impl_delegate_->GetKnownToSyncHistoryCount(base::BindOnce(
+        [](int total_entities, std::pair<bool, int> known_to_sync_count) {
+          brave_sync::p3a::RecordSyncedObjectsCount(total_entities +
+                                                    known_to_sync_count.second);
+        },
+        total_entities));
+  } else {
+    brave_sync::p3a::RecordSyncedObjectsCount(total_entities);
+  }
+}
+
+void BraveSyncServiceImpl::GetEntityCountsForDebuggingBackport(
+    base::OnceCallback<void(const std::vector<TypeEntitiesCount>&)> callback)
+    const {
+  // The method must respond with the TypeEntitiesCount of all data types, but
+  // each count request is async. The strategy is to use base::BarrierClosure()
+  // to only send the final response once all types are done.
+  using EntityCountsVector = std::vector<TypeEntitiesCount>;
+  auto all_types_counts = std::make_unique<EntityCountsVector>();
+  EntityCountsVector* all_types_counts_ptr = all_types_counts.get();
+  // |respond_all_counts_callback| owns |all_types_counts|.
+  auto respond_all_counts_callback = base::BindOnce(
+      [](base::OnceCallback<void(const EntityCountsVector&)> callback,
+         std::unique_ptr<EntityCountsVector> all_types_counts) {
+        std::move(callback).Run(*all_types_counts);
+      },
+      std::move(callback), std::move(all_types_counts));
+
+  // |all_types_done_barrier| runs |respond_all_counts_callback| once it's been
+  // called for all types.
+  base::RepeatingClosure all_types_done_barrier = base::BarrierClosure(
+      data_type_controllers_.size(), std::move(respond_all_counts_callback));
+
+  // Callbacks passed to the controllers get a non-owning reference to the
+  // counts vector, which they use to push the count for their individual type.
+  for (const auto& [type, controller] : data_type_controllers_) {
+    controller->GetTypeEntitiesCount(base::BindOnce(
+        [](const base::RepeatingClosure& all_types_done_barrier,
+           EntityCountsVector* all_types_counts_ptr,
+           const TypeEntitiesCount& count) {
+          all_types_counts_ptr->push_back(count);
+          all_types_done_barrier.Run();
+        },
+        all_types_done_barrier, all_types_counts_ptr));
+  }
 }
 
 void BraveSyncServiceImpl::OnSelectedTypesPrefChange() {
