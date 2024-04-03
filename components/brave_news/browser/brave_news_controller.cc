@@ -284,7 +284,6 @@ void BraveNewsController::GetChannels(GetChannelsCallback callback) {
 void BraveNewsController::AddChannelsListener(
     mojo::PendingRemote<mojom::ChannelsListener> listener) {
   auto id = channels_listeners_.Add(std::move(listener));
-  channels_listeners_.Get(id);
   GetChannels(base::BindOnce(
       [](mojo::RemoteSetElementId id,
          base::WeakPtr<BraveNewsController> controller, Channels channels) {
@@ -293,6 +292,10 @@ void BraveNewsController::AddChannelsListener(
         }
 
         auto* listener = controller->channels_listeners_.Get(id);
+        if (!listener) {
+          return;
+        }
+
         auto event = brave_news::mojom::ChannelsEvent::New();
         event->addedOrUpdated = std::move(channels);
         listener->Changed(std::move(event));
@@ -538,9 +541,13 @@ void BraveNewsController::SetConfiguration(
 }
 
 void BraveNewsController::AddConfigurationListener(
-    mojo::PendingRemote<mojom::ConfigurationListener> listener) {
-  auto id = configuration_listeners_.Add(std::move(listener));
-  configuration_listeners_.Get(id)->Changed(pref_manager_.GetConfig());
+    mojo::PendingRemote<mojom::ConfigurationListener> pending_listener) {
+  auto id = configuration_listeners_.Add(std::move(pending_listener));
+  auto* listener = configuration_listeners_.Get(id);
+  if (!listener) {
+    return;
+  }
+  listener->Changed(pref_manager_.GetConfig());
 }
 
 void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
