@@ -12,6 +12,7 @@ const config = require('./config')
 const util = require('./util')
 const path = require('path')
 const fs = require('fs-extra')
+const depotTools = require('./depotTools')
 const syncUtil = require('./syncUtils')
 const Log = require('./logging')
 
@@ -134,7 +135,7 @@ function buildChromiumRelease(buildOptions = {}) {
   if (chromiumConfig == undefined)
     throw Error(`${config.getTargetOS()} is unsupported`)
 
-  syncUtil.maybeInstallDepotTools()
+  depotTools.installDepotTools()
   syncUtil.buildDefaultGClientConfig(
     [config.getTargetOS()], [config.targetArch], true)
 
