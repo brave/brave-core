@@ -4,6 +4,7 @@
 
 import BraveCore
 import BraveWallet
+import CertificateUtilities
 import Data
 import Favicon
 import Foundation
@@ -101,7 +102,62 @@ class Tab: NSObject {
     return type.isPrivate
   }
 
-  var secureContentState: TabSecureContentState = .unknown
+  private(set) var lastKnownSecureContentState: TabSecureContentState = .unknown
+  func updateSecureContentState() async {
+    lastKnownSecureContentState = await secureContentState
+  }
+  @MainActor private var secureContentState: TabSecureContentState {
+    get async {
+      guard let webView = webView, let committedURL = self.committedURL else {
+        return .unknown
+      }
+      if let internalURL = InternalURL(committedURL), internalURL.isAboutHomeURL {
+        // New Tab Page is a special case, should be treated as `unknown` instead of `localhost`
+        return .unknown
+      }
+      if webView.url != committedURL {
+        // URL has not been committed yet, so we will not evaluate the secure status of the page yet
+        return lastKnownSecureContentState
+      }
+      if let internalURL = InternalURL(committedURL) {
+        if internalURL.isErrorPage, ErrorPageHelper.certificateError(for: committedURL) != 0 {
+          return .invalidCert
+        }
+        return .localhost
+      }
+      if committedURL.scheme?.lowercased() == "http" {
+        return .missingSSL
+      }
+      if let serverTrust = webView.serverTrust,
+        case let origin = committedURL.origin, !origin.isOpaque
+      {
+        let isMixedContent = !webView.hasOnlySecureContent
+        let result = await BraveCertificateUtils.verifyTrust(
+          serverTrust,
+          host: origin.host,
+          port: Int(origin.port)
+        )
+        switch result {
+        case 0:
+          // Cert is valid
+          return isMixedContent ? .mixedContent : .secure
+        case Int(Int32.min):
+          // Cert is valid but should be validated by the system
+          // Let the system handle it and we'll show an error if the system cannot validate it
+          do {
+            try await BraveCertificateUtils.evaluateTrust(serverTrust, for: origin.host)
+            return isMixedContent ? .mixedContent : .secure
+          } catch {
+            return .invalidCert
+          }
+        default:
+          return .invalidCert
+        }
+      }
+      return .unknown
+    }
+  }
+
   var sslPinningError: Error?
 
   private let _syncTab: BraveSyncTab?
