@@ -4,10 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import classnames from 'classnames'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
 
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
@@ -24,7 +21,11 @@ const data = [
   }
 ]
 
-export default function ToolsButtonMenu() {
+interface Props {
+  children: React.ReactNode
+}
+
+export default function ToolsButtonMenu(props: Props) {
   const context = React.useContext(DataContext)
 
   return (
@@ -32,21 +33,9 @@ export default function ToolsButtonMenu() {
       isOpen={context.isToolsMenuOpen}
       onClose={() => context.setIsToolsMenuOpen(false)}
     >
-      <Button
-        slot='anchor-content'
-        size='small'
-        kind='plain-faint'
-        onClick={() => context.setIsToolsMenuOpen(!context.isToolsMenuOpen)}
-      >
-        <div
-          className={classnames({
-            [styles.slashIcon]: true,
-            [styles.slashIconActive]: context.isToolsMenuOpen
-          })}
-        >
-          <Icon name='slash' />
-        </div>
-      </Button>
+      <div slot="anchor-content">
+        {props.children}
+      </div>
       {data.map((entry) => {
         return (
           <>

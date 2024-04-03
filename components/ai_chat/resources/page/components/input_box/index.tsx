@@ -13,7 +13,6 @@ import Button from '@brave/leo/react/button'
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
 import getPageHandlerInstance from '../../api/page_handler'
-import ToolsButtonMenu from '../tools_button_menu'
 import ActionTypeLabel from '../action_type_label'
 
 function InputBox() {
@@ -95,7 +94,19 @@ function InputBox() {
       )}
       <div className={styles.actions}>
         <div>
-          <ToolsButtonMenu />
+          <Button
+            kind='plain-faint'
+            onClick={() => context.setIsToolsMenuOpen(!context.isToolsMenuOpen)}
+          >
+          <div
+            className={classnames({
+              [styles.slashIcon]: true,
+              [styles.slashIconActive]: context.isToolsMenuOpen
+            })}
+          >
+            <Icon name='slash' />
+          </div>
+        </Button>
           {context.isMobile && (
             <Button
               kind='plain-faint'

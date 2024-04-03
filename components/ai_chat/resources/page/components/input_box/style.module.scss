@@ -112,3 +112,14 @@
 .actionsLabelContainer {
   padding: 10px var(--leo-spacing-xl) 0 var(--leo-spacing-xl);
 }
+
+.slashIcon {
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: 4px;
+}
+
+.slashIconActive {
+  --leo-icon-color: var(--leo-color-icon-interactive);
+  background-color: var(--leo-color-container-interactive);
+  border-color: var(--leo-color-divider-interactive);
+}
