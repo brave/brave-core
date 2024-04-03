@@ -224,7 +224,7 @@ std::optional<base::Value::Dict> EncodeStepAction(mojom::LiFiActionPtr action) {
 
   result.Set("fromAmount", action->from_amount);
 
-  if (auto token = EncodeToken(std::move(action->from_token))) {
+  if (auto token = EncodeToken(action->from_token)) {
     result.Set("fromToken", std::move(*token));
   } else {
     return std::nullopt;
@@ -240,7 +240,7 @@ std::optional<base::Value::Dict> EncodeStepAction(mojom::LiFiActionPtr action) {
     return std::nullopt;
   }
 
-  if (auto token = EncodeToken(std::move(action->to_token))) {
+  if (auto token = EncodeToken(action->to_token)) {
     result.Set("toToken", std::move(*token));
   } else {
     return std::nullopt;
@@ -293,7 +293,7 @@ std::optional<base::Value::Dict> EncodeStepEstimate(
     gas_cost_value.Set("price", "0");
     gas_cost_value.Set("amountUSD", "0");
 
-    if (auto token = EncodeToken(std::move(gas_cost->token))) {
+    if (auto token = EncodeToken(gas_cost->token)) {
       gas_cost_value.Set("token", std::move(*token));
     } else {
       return std::nullopt;
@@ -319,7 +319,7 @@ std::optional<base::Value::Dict> EncodeStepEstimate(
     // fake the USD amount value since it is not used by LiFi
     fee_cost_value.Set("amountUSD", "0");
 
-    if (auto token = EncodeToken(std::move(fee_cost->token))) {
+    if (auto token = EncodeToken(fee_cost->token)) {
       fee_cost_value.Set("token", std::move(*token));
     } else {
       return std::nullopt;
