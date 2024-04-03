@@ -30,9 +30,7 @@ import {
   ExampleRecoveryPhrase
 } from './explain-recovery-phrase.style'
 import { Column, VerticalSpace } from '../../../../components/shared/style'
-import {
-  OnboardingContentLayout
-} from '../../onboarding/components/onboarding-content-layout'
+import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/content-layout'
 
 export const RecoveryPhraseExplainer = () => {
   // state
@@ -94,17 +92,11 @@ export const RecoveryPhraseExplainer = () => {
         <BackupInstructions>
           {getLocale('braveWalletRecoveryPhraseBackupWarningImportant')}
         </BackupInstructions>
-        <VerticalSpace space='54px' />
-
         <ExampleRecoveryPhrase />
-
-        <VerticalSpace space='54px' />
-
-        <Column>
+        <Column gap='24px'>
           <ContinueButton onClick={onContinue}>
             {getLocale('braveWalletButtonVerifyPhrase')}
           </ContinueButton>
-          <VerticalSpace space='24px' />
           <Button
             kind='plain-faint'
             color={leo.color.text.secondary}

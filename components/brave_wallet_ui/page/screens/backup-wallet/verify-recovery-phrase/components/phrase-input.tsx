@@ -50,7 +50,7 @@ export const PhraseInput = ({
   )
 
   return (
-    <Column gap='25px'>
+    <Column margin='120px 0 18px' gap='25px'>
       <FormInput
         value={phrase}
         onInput={(event) => onChange(event.detail.value)}

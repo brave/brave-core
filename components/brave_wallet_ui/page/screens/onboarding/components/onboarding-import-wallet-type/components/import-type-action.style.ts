@@ -11,6 +11,7 @@ export const ActionWrapper = styled.button`
   display: flex;
   flex-direction: column;
   justify-content: start;
+  width: 100%;
   padding: 24px;
   border-radius: 8px;
   background-color: transparent;

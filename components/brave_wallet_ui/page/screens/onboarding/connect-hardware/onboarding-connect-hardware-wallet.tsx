@@ -21,10 +21,9 @@ import {
 import { AccountType } from './components/account-type'
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout'
+} from '../components/onboarding-content-layout/content-layout'
 
 // styles
-import { VerticalSpace } from '../../../../components/shared/style'
 import { Divider } from './components/account-type.style'
 import { getLocale } from '../../../../../common/locale'
 
@@ -53,8 +52,8 @@ export const OnboardingConnectHardwareWallet = () => {
   return (
     <OnboardingContentLayout
       title={getLocale('braveWalletConnectHardwareWalletSelectBlockchain')}
+      padding='56px 0 0'
     >
-      <VerticalSpace space='56px' />
       {accountOptions.map((option, index) => {
         return (
           <React.Fragment key={index}>

@@ -96,6 +96,7 @@ export const ExampleRecoveryPhrase = styled.img.attrs(() => ({
 }))`
   width: 100%;
   height: 208px;
+  margin: 54px 0;
 `
 
 export const SkipDialog = styled(Dialog).attrs({

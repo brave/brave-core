@@ -30,12 +30,12 @@ import {
 } from '../creating-wallet/onboarding-creating-wallet'
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout'
+} from '../components/onboarding-content-layout/content-layout'
 import { CreatePassword } from './components/create-password'
 
 // styles
 import { ContinueButton, NextButtonRow } from '../onboarding.style'
-import { VerticalSpace } from '../../../../components/shared/style'
+import { Row } from '../../../../components/shared/style'
 
 interface OnboardingCreatePasswordProps {
   onWalletCreated: () => void
@@ -104,16 +104,20 @@ export const OnboardingCreatePassword = ({
       title={getLocale('braveWalletCreatePasswordTitle')}
       subTitle={getLocale('braveWalletCreatePasswordDescription')}
     >
-      <VerticalSpace space='68px' />
-
-      <CreatePassword
-        autoLockDuration={autoLockDuration}
-        autoLockOptions={autoLockOptions}
-        onPasswordChange={handlePasswordChange}
-        onSubmit={nextStep}
-        onAutoLockDurationChange={setAutoLockDuration}
-      />
-      <VerticalSpace space='24px' />
+      <Row
+        width='100%'
+        justifyContent='center'
+        alignItems='center'
+        margin='68px 0 24px'
+      >
+        <CreatePassword
+          autoLockDuration={autoLockDuration}
+          autoLockOptions={autoLockOptions}
+          onPasswordChange={handlePasswordChange}
+          onSubmit={nextStep}
+          onAutoLockDurationChange={setAutoLockDuration}
+        />
+      </Row>
 
       <NextButtonRow>
         <ContinueButton

@@ -59,7 +59,10 @@ export const ContentWrapper = styled.div`
   }
 `
 
-export const Content = styled.div<{ centerContent?: boolean }>`
+export const Content = styled.div<{
+  centerContent?: boolean
+  padding?: string
+}>`
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -67,6 +70,7 @@ export const Content = styled.div<{ centerContent?: boolean }>`
   height: ${(p) => (p.centerContent ? '100%' : 'auto')};
   align-items: ${(p) => (p.centerContent ? 'center' : 'unset')};
   flex-grow: ${(p) => (p.centerContent ? 1 : 'unset')};
+  padding: ${(p) => p.padding || '0'};
 
   @media (min-width: 500px) {
     width: 450px;

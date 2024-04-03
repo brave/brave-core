@@ -14,7 +14,7 @@ import {
 } from '../../components/auto-lock-settings/auto-lock-settings'
 
 // styles
-import { VerticalSpace } from '../../../../../components/shared/style'
+import { Column } from '../../../../../components/shared/style'
 import { AutoLockOption } from '../../../../../constants/types'
 
 interface Props {
@@ -33,20 +33,18 @@ export function CreatePassword({
   onAutoLockDurationChange
 }: Props) {
   return (
-    <>
+    <Column justifyContent='center' alignItems='center' gap='68px'>
       <NewPasswordInput
         autoFocus={true}
         onSubmit={onSubmit}
         onChange={onPasswordChange}
       />
 
-      <VerticalSpace space='68px' />
-
       <AutoLockSettings
         options={autoLockOptions}
         value={autoLockDuration}
         onChange={onAutoLockDurationChange}
       />
-    </>
+    </Column>
   )
 }

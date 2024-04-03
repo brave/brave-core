@@ -44,7 +44,7 @@ import {
 } from '../creating-wallet/onboarding-creating-wallet'
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout'
+} from '../components/onboarding-content-layout/content-layout'
 
 // styles
 import { InputLabel } from './restore-from-recovery-phrase.style'
@@ -238,10 +238,9 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
 
       {!isCheckingExtensions && currentStep === 'currentPassword' && (
         <>
-          <VerticalSpace space='118px' />
           <Row
             justifyContent='flex-start'
-            padding='0px 4px'
+            padding='118px 0 0'
             marginBottom={4}
           >
             <InputLabel

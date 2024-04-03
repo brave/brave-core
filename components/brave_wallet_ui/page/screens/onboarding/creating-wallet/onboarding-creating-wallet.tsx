@@ -16,7 +16,7 @@ import {
 import { Column } from '../../../../components/shared/style'
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout'
+} from '../components/onboarding-content-layout/content-layout'
 
 export const OnboardingCreatingWallet = () => {
   return (

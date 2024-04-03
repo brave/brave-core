@@ -11,14 +11,11 @@ import { WalletRoutes } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
 
 // components
-import { OnboardingContentLayout } from '../onboarding-content-layout'
+import { OnboardingContentLayout } from '../onboarding-content-layout/content-layout'
 import { ImportTypeAction } from './components/import-type-action'
 
 // styles
-import {
-  VerticalDivider,
-  VerticalSpace
-} from '../../../../../components/shared/style'
+import { Column, VerticalDivider } from '../../../../../components/shared/style'
 
 const softwareWalletIcons = [
   'brave-icon-release-color',
@@ -34,25 +31,32 @@ export const OnboardingImportWalletType = () => {
     <OnboardingContentLayout
       title={getLocale('braveWalletImportWalletTypeTitle')}
     >
-      <VerticalSpace space='92px' />
-      <ImportTypeAction
-        title={getLocale('braveWalletImportWalletTypeHotWalletTitle')}
-        description={getLocale(
-          'braveWalletImportWalletTypeHotWalletDescription'
-        )}
-        icons={softwareWalletIcons}
-        onClick={() => history.push(WalletRoutes.OnboardingImportTerms)}
-      />
-      <VerticalDivider margin='8px 0' />
-      <ImportTypeAction
-        title={getLocale('braveWalletImportWalletTypeHardwareWalletTitle')}
-        description={getLocale(
-          'braveWalletImportWalletTypeHardwareWalletDescription'
-        )}
-        icons={hardwareWalletIcons}
-        onClick={() => history.push(WalletRoutes.OnboardingHardwareWalletTerms)}
-      />
-      <VerticalSpace space='165px' />
+      <Column
+        width='100%'
+        justifyContent='center'
+        alignItems='flex-start'
+        margin='92px 0 165px 0'
+      >
+        <ImportTypeAction
+          title={getLocale('braveWalletImportWalletTypeHotWalletTitle')}
+          description={getLocale(
+            'braveWalletImportWalletTypeHotWalletDescription'
+          )}
+          icons={softwareWalletIcons}
+          onClick={() => history.push(WalletRoutes.OnboardingImportTerms)}
+        />
+        <VerticalDivider margin='8px 0' />
+        <ImportTypeAction
+          title={getLocale('braveWalletImportWalletTypeHardwareWalletTitle')}
+          description={getLocale(
+            'braveWalletImportWalletTypeHardwareWalletDescription'
+          )}
+          icons={hardwareWalletIcons}
+          onClick={() =>
+            history.push(WalletRoutes.OnboardingHardwareWalletTerms)
+          }
+        />
+      </Column>
     </OnboardingContentLayout>
   )
 }

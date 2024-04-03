@@ -181,11 +181,7 @@ export const Instructions = styled.div<{ mode: 'info' | 'success' | 'error' }>`
       ? leo.color.systemfeedback.successText
       : leo.color.systemfeedback.errorText};
   text-align: center;
-  font-family: Poppins;
-  font-size: 16px;
-  font-style: noddrmal;
-  font-weight: 400;
-  line-height: 26px;
+  font: ${leo.font.large.regular};
   gap: 8px;
 `
 
@@ -215,11 +211,7 @@ export const AccountListHeader = styled.div`
   width: 100%;
 
   color: ${leo.color.text.tertiary};
-  font-family: Poppins;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 20px;
+  font: ${leo.font.small.semibold};
   border-bottom: 1px solid ${leo.color.divider.subtle};
   padding: 16px;
 `
@@ -236,19 +228,13 @@ export const AccountListContent = styled.div`
 
 export const DropdownLabel = styled.div`
   font-family: 'Poppins';
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 20px;
+  font: ${leo.font.small.semibold};
   color: ${leo.color.text.primary};
 `
 
 export const HelpLink = styled.a`
   font-family: Poppins;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 20px;
+  font: ${leo.font.small.semibold};
   color: ${leo.color.text.interactive};
   text-decoration: none;
 `

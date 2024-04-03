@@ -49,12 +49,7 @@ export const RecoveryBubble = styled.div`
   border-radius: 4px;
   border: 1px solid ${leo.color.divider.subtle};
 
-  font-family: Poppins;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 16px;
-
+  font: ${leo.font.small.semibold};
   color: ${leo.color.text.primary};
   background-color: ${leo.color.container.background};
 `

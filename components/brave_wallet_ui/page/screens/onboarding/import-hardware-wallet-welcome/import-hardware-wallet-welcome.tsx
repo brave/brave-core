@@ -13,7 +13,7 @@ import { WalletRoutes } from '../../../../constants/types'
 // components
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout'
+} from '../components/onboarding-content-layout/content-layout'
 
 // styles
 import {

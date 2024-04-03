@@ -50,7 +50,7 @@ import {
 } from '../../../../components/shared/create-network-icon'
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout'
+} from '../components/onboarding-content-layout/content-layout'
 
 // styles
 import {
@@ -306,8 +306,8 @@ export const OnboardingNetworkSelection = () => {
     <OnboardingContentLayout
       title={getLocale('braveWalletSupportedNetworks')}
       subTitle={getLocale('braveWalletChooseChainsToUse')}
+      padding='44px 0 0'
     >
-      <VerticalSpace space='44px' />
       <Column
         fullWidth
         alignItems='flex-start'

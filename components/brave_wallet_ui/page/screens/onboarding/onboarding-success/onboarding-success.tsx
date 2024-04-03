@@ -21,7 +21,7 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 // components
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout'
+} from '../components/onboarding-content-layout/content-layout'
 
 // styles
 import { Column, VerticalSpace } from '../../../../components/shared/style'
@@ -55,7 +55,10 @@ export const OnboardingSuccess = () => {
 
   // render
   return (
-    <OnboardingContentLayout showBackButton={false}>
+    <OnboardingContentLayout
+      showBackButton={false}
+      padding='0 0 100px 0'
+    >
       <IntroImg />
       <Title>{getLocale('braveWalletOnboardingSuccessTitle')}</Title>
       <VerticalSpace space='16px' />
@@ -68,7 +71,6 @@ export const OnboardingSuccess = () => {
           {getLocale('braveWalletOnboardingSuccessGoToPortfolio')}
         </ContinueButton>
       </Column>
-      <VerticalSpace space='100px' />
     </OnboardingContentLayout>
   )
 }

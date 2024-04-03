@@ -16,7 +16,7 @@ import { HardwareVendor } from '../../../../common/api/hardware_keyrings'
 // components
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout'
+} from '../components/onboarding-content-layout/content-layout'
 import {
   HardwareWalletConnect //
 } from '../../../../components/desktop/hardware-wallet-connect'

@@ -27,7 +27,7 @@ import {
 } from '../../../../components/shared/password-input/new-password-input'
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout'
+} from '../components/onboarding-content-layout/content-layout'
 import {
   OnboardingCreatingWallet //
 } from '../creating-wallet/onboarding-creating-wallet'

@@ -33,6 +33,7 @@ interface Props {
   subTitle?: string
   showBackButton?: boolean
   centerContent?: boolean
+  padding?: string
   children: React.ReactNode
 }
 
@@ -41,6 +42,7 @@ export const OnboardingContentLayout = ({
   subTitle,
   centerContent,
   showBackButton = true,
+  padding,
   children
 }: Props) => {
   // routing
@@ -87,7 +89,12 @@ export const OnboardingContentLayout = ({
             </Row>
           ) : null}
         </HeaderWrapper>
-        <Content centerContent={centerContent}>{children}</Content>
+        <Content
+          padding={padding}
+          centerContent={centerContent}
+        >
+          {children}
+        </Content>
       </ContentWrapper>
     </StyledWrapper>
   )

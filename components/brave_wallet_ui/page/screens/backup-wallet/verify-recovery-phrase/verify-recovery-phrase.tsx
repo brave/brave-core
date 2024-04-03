@@ -32,7 +32,7 @@ import { WalletPageActions } from '../../../actions'
 import Button from '@brave/leo/react/button'
 import {
   OnboardingContentLayout //
-} from '../../onboarding/components/onboarding-content-layout'
+} from '../../onboarding/components/onboarding-content-layout/content-layout'
 import { PhraseInput } from './components/phrase-input'
 import { VerificationProgress } from './components/verification-progress'
 
@@ -41,8 +41,8 @@ import {
   Title //
 } from '../../onboarding/components/onboarding-content-layout/style'
 import {
-  Column, //
-  Row, //
+  Column,
+  Row,
   VerticalSpace //
 } from '../../../../components/shared/style'
 import { BackButton } from './verify-recovery-phrase.style'
@@ -140,7 +140,6 @@ export const VerifyRecoveryPhrase = () => {
       }
       showBackButton={false}
     >
-      <VerticalSpace space='120px' />
       <PhraseInput
         phrase={enteredPhrase}
         showError={showError}
@@ -148,7 +147,6 @@ export const VerifyRecoveryPhrase = () => {
         onHideError={() => setShowError(false)}
         onChange={setEnteredPhrase}
       />
-      <VerticalSpace space='18px' />
       <BackButton
         onClick={() =>
           history.push(WalletRoutes.OnboardingBackupRecoveryPhrase)
@@ -158,14 +156,13 @@ export const VerifyRecoveryPhrase = () => {
       </BackButton>
       <VerticalSpace space='100px' />
 
-      <Column>
+      <Column gap='24px'>
         <ContinueButton
           isDisabled={enteredPhrase === ''}
           onClick={onContinue}
         >
           {getLocale('braveWalletButtonContinue')}
         </ContinueButton>
-        <VerticalSpace space='24px' />
         <Button
           kind='plain-faint'
           color={leo.color.text.secondary}
