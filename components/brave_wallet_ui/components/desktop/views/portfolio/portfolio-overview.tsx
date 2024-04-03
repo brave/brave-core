@@ -554,6 +554,7 @@ export const PortfolioOverview = () => {
                 ? '0'
                 : ''
             }
+            isGrouped={selectedGroupAssetsByItem !== NoneGroupByOption.id}
           />
         )}
       />

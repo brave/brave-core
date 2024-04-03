@@ -17,16 +17,21 @@ import {
   Row
 } from '../../shared/style'
 
-export const HoverArea = styled.div<{ isPanel?: boolean }>`
+export const HoverArea = styled.div<{
+  isPanel?: boolean
+  noHover?: boolean
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
   padding: 12px ${(p) => (p.isPanel ? 0 : 12)}px;
-  border-radius: 10px;
+  border-radius: var(--hover-area-border-radius);
+  transition: background-color 300ms ease-out;
   &:hover {
-    background-color: ${(p) => p.theme.color.background01}85;
+    background-color: ${(p) =>
+      p.noHover ? 'none' : leo.color.page.background};
   }
 `
 
@@ -131,10 +136,16 @@ export const AssetMenuButtonIcon = styled(Icon).attrs({
 
 export const Wrapper = styled(Column)<{
   showBorder?: boolean
+  isGrouped?: boolean
 }>`
   border-radius: ${(p) => (p.showBorder ? 16 : 0)}px;
   border: ${(p) =>
     p.showBorder ? `1px solid ${leo.color.divider.subtle}` : 'none'};
+  --hover-area-border-radius: ${(p) => (p.isGrouped ? '0px' : '10px')};
+  &:last-child {
+    --hover-area-border-radius: ${(p) =>
+      p.isGrouped ? '0px 0px 10px 10px' : '10px'};
+  }
 `
 
 export const InfoBar = styled(Row)`
