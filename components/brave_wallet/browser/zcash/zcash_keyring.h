@@ -36,7 +36,7 @@ class ZCashKeyring : public HDKeyring {
   std::optional<std::vector<uint8_t>> GetPubkeyHash(
       const mojom::ZCashKeyId& key_id);
 
-  std::optional<std::array<uint8_t, 43>> GetOrchardRawBytes(
+  std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
       const mojom::ZCashKeyId& key_id);
 
   std::optional<std::vector<uint8_t>> SignMessage(

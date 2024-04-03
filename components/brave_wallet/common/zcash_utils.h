@@ -15,6 +15,8 @@
 
 namespace brave_wallet {
 
+inline constexpr size_t kOrchardRawBytesSize = 43;
+
 // https://zips.z.cash/zip-0316#encoding-of-unified-addresses
 enum ZCashAddrType {
   kP2PKH = 0x00,
@@ -62,7 +64,7 @@ std::optional<std::string> GetOrchardUnifiedAddress(
     base::span<const uint8_t> orchard_part,
     bool testnet);
 
-std::optional<std::array<uint8_t, 43>> GetOrchardRawBytes(
+std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
     const std::string& unified_address,
     bool is_testnet);
 

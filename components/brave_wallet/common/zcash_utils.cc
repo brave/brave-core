@@ -57,7 +57,8 @@ std::optional<uint64_t> ReadCompactSize(base::span<const uint8_t>& data) {
   return value;
 }
 
-std::vector<uint8_t> SerializeUnifiedAddress(std::vector<ParsedAddress> parts) {
+std::vector<uint8_t> SerializeUnifiedAddress(
+    const std::vector<ParsedAddress>& parts) {
   std::vector<uint8_t> result;
   BtcLikeSerializerStream stream(&result);
   for (const auto& part : parts) {
@@ -242,7 +243,7 @@ std::optional<std::string> ExtractTransparentPart(
   return std::nullopt;
 }
 
-std::optional<std::array<uint8_t, 43>> GetOrchardRawBytes(
+std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
     const std::string& unified_address,
     bool is_testnet) {
   auto parts = ExtractParsedAddresses(unified_address, is_testnet);
@@ -253,10 +254,10 @@ std::optional<std::array<uint8_t, 43>> GetOrchardRawBytes(
 
   for (const auto& part : parts.value()) {
     if (part.first == ZCashAddrType::kOrchard) {
-      if (part.second.size() != 43) {
+      if (part.second.size() != kOrchardRawBytesSize) {
         return std::nullopt;
       }
-      std::array<uint8_t, 43> result;
+      std::array<uint8_t, kOrchardRawBytesSize> result;
       std::copy(part.second.begin(), part.second.end(), result.begin());
       return result;
     }
@@ -302,9 +303,8 @@ std::optional<std::string> GetMergedUnifiedAddress(
 
   std::string hrp = testnet ? kTestnetHRP : kMainnetHRP;
   std::vector<uint8_t> padded_hrp(kPaddedHrpSize, 0);
-  std::copy(reinterpret_cast<const uint8_t*>(hrp.c_str()),
-            reinterpret_cast<const uint8_t*>(hrp.c_str()) + hrp.length(),
-            padded_hrp.begin());
+  base::ranges::copy(base::make_span(hrp), padded_hrp.begin());
+
   bytes.insert(bytes.end(), padded_hrp.begin(), padded_hrp.end());
 
   auto jumbled = ApplyF4Jumble(bytes);

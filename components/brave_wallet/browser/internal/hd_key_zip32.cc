@@ -9,15 +9,12 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
-#include "base/strings/strcat.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 
 namespace brave_wallet {
 
-HDKeyZip32::HDKeyZip32(rust::Box<OrchardExtendedSpendingKeyResult> esk,
-                       const std::string& path)
-    : extended_spending_key_(std::move(esk)), path_(path) {}
+HDKeyZip32::HDKeyZip32(rust::Box<OrchardExtendedSpendingKeyResult> esk)
+    : extended_spending_key_(std::move(esk)) {}
 
 HDKeyZip32::~HDKeyZip32() {}
 
@@ -28,7 +25,7 @@ std::unique_ptr<HDKeyZip32> HDKeyZip32::GenerateFromSeed(
   auto mk = generate_orchard_extended_spending_key_from_seed(
       rust::Slice<const uint8_t>{seed.data(), seed.size()});
   if (mk->is_ok()) {
-    return std::make_unique<HDKeyZip32>(std::move(mk), "m'/");
+    return std::make_unique<HDKeyZip32>(std::move(mk));
   }
   return nullptr;
 #else
@@ -43,9 +40,7 @@ std::unique_ptr<HDKeyZip32> HDKeyZip32::DeriveHardenedChild(uint32_t index) {
 
   auto esk = extended_spending_key_->unwrap().derive(index);
   if (esk->is_ok()) {
-    return std::make_unique<HDKeyZip32>(
-        std::move(esk),
-        base::StrCat({path_, "/", base::NumberToString(index), "'"}));
+    return std::make_unique<HDKeyZip32>(std::move(esk));
   }
   return nullptr;
 #else
@@ -54,9 +49,8 @@ std::unique_ptr<HDKeyZip32> HDKeyZip32::DeriveHardenedChild(uint32_t index) {
 #endif
 }
 
-std::optional<std::array<uint8_t, 43>> HDKeyZip32::GetPublicDevirsifiedAddress(
-    uint32_t div_index,
-    OrchardKind kind) {
+std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
+HDKeyZip32::GetDiversifiedAddress(uint32_t div_index, OrchardKind kind) {
 #if BUILDFLAG(ENABLE_ORCHARD)
   CHECK(extended_spending_key_->is_ok());
   return kind == OrchardKind::External
