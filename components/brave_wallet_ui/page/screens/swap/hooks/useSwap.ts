@@ -849,10 +849,10 @@ export const useSwap = () => {
       // LiFi specific validations
       if (
         quoteErrorUnion?.lifiError?.code &&
-        quoteErrorUnion?.lifiError?.code !== BraveWallet.LiFiErrorCode.Success
+        quoteErrorUnion?.lifiError?.code !== BraveWallet.LiFiErrorCode.kSuccess
       ) {
         return quoteErrorUnion?.lifiError.code ===
-          BraveWallet.LiFiErrorCode.NotFoundError
+          BraveWallet.LiFiErrorCode.kNotFoundError
           ? 'insufficientLiquidity'
           : 'unknownError'
       }

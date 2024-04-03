@@ -650,47 +650,47 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
 mojom::LiFiErrorCode ParseLiFiErrorCode(
     const std::optional<std::string>& value) {
   if (!value) {
-    return mojom::LiFiErrorCode::Success;
+    return mojom::LiFiErrorCode::kSuccess;
   }
 
   if (value == "1000") {
-    return mojom::LiFiErrorCode::DefaultError;
+    return mojom::LiFiErrorCode::kDefaultError;
   }
   if (value == "1001") {
-    return mojom::LiFiErrorCode::FailedToBuildTransactionError;
+    return mojom::LiFiErrorCode::kFailedToBuildTransactionError;
   }
   if (value == "1002") {
-    return mojom::LiFiErrorCode::NoQuoteError;
+    return mojom::LiFiErrorCode::kNoQuoteError;
   }
   if (value == "1003") {
-    return mojom::LiFiErrorCode::NotFoundError;
+    return mojom::LiFiErrorCode::kNotFoundError;
   }
   if (value == "1004") {
-    return mojom::LiFiErrorCode::NotProcessableError;
+    return mojom::LiFiErrorCode::kNotProcessableError;
   }
   if (value == "1005") {
-    return mojom::LiFiErrorCode::RateLimitError;
+    return mojom::LiFiErrorCode::kRateLimitError;
   }
   if (value == "1006") {
-    return mojom::LiFiErrorCode::ServerError;
+    return mojom::LiFiErrorCode::kServerError;
   }
   if (value == "1007") {
-    return mojom::LiFiErrorCode::SlippageError;
+    return mojom::LiFiErrorCode::kSlippageError;
   }
   if (value == "1008") {
-    return mojom::LiFiErrorCode::ThirdPartyError;
+    return mojom::LiFiErrorCode::kThirdPartyError;
   }
   if (value == "1009") {
-    return mojom::LiFiErrorCode::TimeoutError;
+    return mojom::LiFiErrorCode::kTimeoutError;
   }
   if (value == "1010") {
-    return mojom::LiFiErrorCode::UnauthorizedError;
+    return mojom::LiFiErrorCode::kUnauthorizedError;
   }
   if (value == "1011") {
-    return mojom::LiFiErrorCode::ValidationError;
+    return mojom::LiFiErrorCode::kValidationError;
   }
 
-  return mojom::LiFiErrorCode::DefaultError;
+  return mojom::LiFiErrorCode::kDefaultError;
 }
 
 mojom::LifiToolErrorCode ParseLiFiToolErrorCode(const std::string& value) {
@@ -731,8 +731,8 @@ mojom::LifiToolErrorCode ParseLiFiToolErrorCode(const std::string& value) {
 
   // The fees are higher than the initial amount -- this would result in
   // negative resulting token.
-  if (value == "FEES_HGHER_THAN_AMOUNT") {
-    return mojom::LifiToolErrorCode::FEES_HGHER_THAN_AMOUNT;
+  if (value == "FEES_HIGHER_THAN_AMOUNT" || value == "FEES_HGHER_THAN_AMOUNT") {
+    return mojom::LifiToolErrorCode::FEES_HIGHER_THAN_AMOUNT;
   }
 
   // This tool does not support different recipient addresses.

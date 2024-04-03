@@ -526,7 +526,7 @@ void SwapService::OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
   if (auto quote = lifi::ParseQuoteResponse(api_request_result.value_body())) {
     if (quote->routes.empty()) {
       auto error_response = mojom::LiFiError::New();
-      error_response->code = mojom::LiFiErrorCode::NotFoundError;
+      error_response->code = mojom::LiFiErrorCode::kNotFoundError;
       error_response->message = "No Routes found";
 
       std::move(callback).Run(
