@@ -31,6 +31,17 @@ class OnionLocationView;
 class IPFSLocationView;
 #endif
 
+namespace playlist {
+FORWARD_DECLARE_TEST(PlaylistBrowserTest, AddItemsToList);
+FORWARD_DECLARE_TEST(PlaylistBrowserTestWithSitesUsingMediaSource,
+                     MediaShouldBeExtractedFromBackground_SucceedInExtracting);
+FORWARD_DECLARE_TEST(PlaylistBrowserTestWithSitesUsingMediaSource,
+                     MediaShouldBeExtractedFromBackground_FailToExtract);
+FORWARD_DECLARE_TEST(
+    PlaylistBrowserTestWithSitesUsingMediaSource,
+    MediaShouldBeExtractedFromBackground_DynamicallyAddedMedia);
+}  // namespace playlist
+
 namespace policy {
 FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
 }
@@ -86,16 +97,17 @@ class BraveLocationBarView : public LocationBarView {
   void ShowPlaylistBubble();
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, AddItemsToList);
+  FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, AddItemsToList);
   FRIEND_TEST_ALL_PREFIXES(
-      PlaylistBrowserTestWithSitesUsingMediaSource,
+      playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
       MediaShouldBeExtractedFromBackground_SucceedInExtracting);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTestWithSitesUsingMediaSource,
-                           MediaShouldBeExtractedFromBackground_FailToExtract);
   FRIEND_TEST_ALL_PREFIXES(
-      PlaylistBrowserTestWithSitesUsingMediaSource,
+      playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
+      MediaShouldBeExtractedFromBackground_FailToExtract);
+  FRIEND_TEST_ALL_PREFIXES(
+      playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
       MediaShouldBeExtractedFromBackground_DynamicallyAddedMedia);
+  FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 
