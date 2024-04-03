@@ -117,7 +117,7 @@ class IPFSLocationButtonView : public views::LabelButton {
     content::OpenURLParams open_ipfs(ipfs_location_, content::Referrer(),
                                      WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                      ui::PAGE_TRANSITION_TYPED, false);
-    browser->OpenURL(open_ipfs);
+    browser->OpenURL(open_ipfs, /*navigation_handle_callback=*/{});
   }
 
   GURL ipfs_location_;

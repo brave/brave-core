@@ -257,7 +257,7 @@ void IPFSTabHelper::LoadUrl(const GURL& gurl) {
                                 WindowOpenDisposition::CURRENT_TAB,
                                 ui::PAGE_TRANSITION_LINK, false);
   params.should_replace_current_entry = true;
-  web_contents()->OpenURL(params);
+  web_contents()->OpenURL(params, /*navigation_handle_callback=*/{});
 }
 
 #if !BUILDFLAG(IS_ANDROID)

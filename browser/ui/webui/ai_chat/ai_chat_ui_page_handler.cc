@@ -192,9 +192,10 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
   if (auto* browser = chrome::FindBrowserWithTab(contents_to_navigate)) {
     ShowSingletonTab(browser, url);
   } else {
-    contents_to_navigate->OpenURL({url, content::Referrer(),
-                                   WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                                   ui::PAGE_TRANSITION_LINK, false});
+    contents_to_navigate->OpenURL(
+        {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+         ui::PAGE_TRANSITION_LINK, false},
+        /*navigation_handle_callback=*/{});
   }
 #else
   ai_chat::ShowBraveLeoSettings(contents_to_navigate);
@@ -211,9 +212,10 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
-  contents_to_navigate->OpenURL({url, content::Referrer(),
-                                 WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                                 ui::PAGE_TRANSITION_LINK, false});
+  contents_to_navigate->OpenURL(
+      {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+       ui::PAGE_TRANSITION_LINK, false},
+      /*navigation_handle_callback=*/{});
 #else
   // We handle open link different on Android as we need to close the chat
   // window because it's always full screen

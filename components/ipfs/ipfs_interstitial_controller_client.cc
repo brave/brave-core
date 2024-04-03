@@ -53,7 +53,7 @@ void IPFSInterstitialControllerClient::Proceed() {
   content::OpenURLParams params(url, content::Referrer(),
                                 WindowOpenDisposition::CURRENT_TAB,
                                 ui::PAGE_TRANSITION_LINK, false);
-  web_contents_->OpenURL(params);
+  web_contents_->OpenURL(params, /*navigation_handle_callback=*/{});
 }
 
 }  // namespace ipfs

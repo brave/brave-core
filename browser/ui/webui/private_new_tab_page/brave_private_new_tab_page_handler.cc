@@ -114,9 +114,11 @@ void BravePrivateNewTabPageHandler::GoToBraveSearch(const std::string& input,
     window_open_disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
   }
 
-  web_contents_->OpenURL(content::OpenURLParams(
-      url, content::Referrer(), window_open_disposition,
-      ui::PageTransition::PAGE_TRANSITION_FORM_SUBMIT, false));
+  web_contents_->OpenURL(
+      content::OpenURLParams(url, content::Referrer(), window_open_disposition,
+                             ui::PageTransition::PAGE_TRANSITION_FORM_SUBMIT,
+                             false),
+      /*navigation_handle_callback=*/{});
 }
 
 void BravePrivateNewTabPageHandler::GoToBraveSupport() {
@@ -135,10 +137,12 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
   if (!web_contents)
     web_contents = web_contents_;
 
-  web_contents->OpenURL(content::OpenURLParams(
-      GURL("https://support.brave.com/"), content::Referrer(),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui::PageTransition::PAGE_TRANSITION_LINK, false));
+  web_contents->OpenURL(
+      content::OpenURLParams(GURL("https://support.brave.com/"),
+                             content::Referrer(),
+                             WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                             ui::PageTransition::PAGE_TRANSITION_LINK, false),
+      /*navigation_handle_callback=*/{});
 }
 
 void BravePrivateNewTabPageHandler::OnTorCircuitEstablished(bool result) {
