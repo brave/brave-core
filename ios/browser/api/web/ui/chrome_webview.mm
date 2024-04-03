@@ -7,6 +7,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "components/profile_metrics/browser_profile_type.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
@@ -15,6 +16,7 @@
 #import "ios/web/public/browser_state.h"
 #import "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/thread/web_thread.h"
+#include "ios/web/public/ui/java_script_dialog_presenter.h"
 #import "ios/web/public/web_state.h"
 #import "ios/web/public/web_state_delegate_bridge.h"
 #import "ios/web/public/web_state_observer_bridge.h"
@@ -27,14 +29,146 @@
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
-#include "components/profile_metrics/browser_profile_type.h"
+@class ChromeWebViewController;
+
+@protocol ChromeWebControllerUIDelegate <NSObject>
+@optional
+- (void)webController:(ChromeWebViewController*)controller
+    runJavaScriptAlertPanelWithMessage:(NSString*)message
+                               pageURL:(NSURL*)URL
+                     completionHandler:(void (^)(void))completionHandler;
+
+- (void)webController:(ChromeWebViewController*)controller
+    runJavaScriptConfirmPanelWithMessage:(NSString*)message
+                                 pageURL:(NSURL*)URL
+                       completionHandler:(void (^)(BOOL))completionHandler;
+
+- (void)webController:(ChromeWebViewController*)controller
+    runJavaScriptTextInputPanelWithPrompt:(NSString*)prompt
+                              defaultText:(NSString*)defaultText
+                                  pageURL:(NSURL*)URL
+                        completionHandler:
+                            (void (^)(NSString* _Nullable))completionHandler;
+@end
+
+namespace {
+class WebViewJavaScriptDialogPresenter final
+    : public web::JavaScriptDialogPresenter {
+ public:
+  WebViewJavaScriptDialogPresenter(ChromeWebViewController* controller);
+
+  WebViewJavaScriptDialogPresenter(const WebViewJavaScriptDialogPresenter&) =
+      delete;
+  WebViewJavaScriptDialogPresenter& operator=(
+      const WebViewJavaScriptDialogPresenter&) = delete;
+
+  ~WebViewJavaScriptDialogPresenter() override;
+
+  void SetUIDelegate(id<ChromeWebControllerUIDelegate> ui_delegate);
+
+  // web::JavaScriptDialogPresenter overrides:
+  void RunJavaScriptAlertDialog(web::WebState* web_state,
+                                const GURL& origin_url,
+                                NSString* message_text,
+                                base::OnceClosure callback) override;
+  void RunJavaScriptConfirmDialog(
+      web::WebState* web_state,
+      const GURL& origin_url,
+      NSString* message_text,
+      base::OnceCallback<void(bool success)> callback) override;
+  void RunJavaScriptPromptDialog(
+      web::WebState* web_state,
+      const GURL& origin_url,
+      NSString* message_text,
+      NSString* default_prompt_text,
+      base::OnceCallback<void(NSString* user_input)> callback) override;
+  void CancelDialogs(web::WebState* web_state) override;
+
+ private:
+  __weak ChromeWebViewController* controller_ = nil;
+  __weak id<ChromeWebControllerUIDelegate> ui_delegate_ = nil;
+};
+
+WebViewJavaScriptDialogPresenter::WebViewJavaScriptDialogPresenter(
+    ChromeWebViewController* controller)
+    : controller_(controller), ui_delegate_(nullptr) {}
+
+WebViewJavaScriptDialogPresenter::~WebViewJavaScriptDialogPresenter() = default;
+
+void WebViewJavaScriptDialogPresenter::RunJavaScriptAlertDialog(
+    web::WebState* web_state,
+    const GURL& origin_url,
+    NSString* message_text,
+    base::OnceClosure callback) {
+  SEL delegate_method = @selector(webController:
+             runJavaScriptAlertPanelWithMessage:pageURL:completionHandler:);
+  if (![ui_delegate_ respondsToSelector:delegate_method]) {
+    std::move(callback).Run();
+    return;
+  }
+  [ui_delegate_ webController:controller_
+      runJavaScriptAlertPanelWithMessage:message_text
+                                 pageURL:net::NSURLWithGURL(origin_url)
+                       completionHandler:base::CallbackToBlock(
+                                             std::move(callback))];
+}
+
+void WebViewJavaScriptDialogPresenter::RunJavaScriptConfirmDialog(
+    web::WebState* web_state,
+    const GURL& origin_url,
+    NSString* message_text,
+    base::OnceCallback<void(bool success)> callback) {
+  SEL delegate_method = @selector(webController:
+           runJavaScriptConfirmPanelWithMessage:pageURL:completionHandler:);
+  if (![ui_delegate_ respondsToSelector:delegate_method]) {
+    std::move(callback).Run(false);
+    return;
+  }
+  [ui_delegate_ webController:controller_
+      runJavaScriptConfirmPanelWithMessage:message_text
+                                   pageURL:net::NSURLWithGURL(origin_url)
+                         completionHandler:base::CallbackToBlock(
+                                               std::move(callback))];
+}
+
+void WebViewJavaScriptDialogPresenter::RunJavaScriptPromptDialog(
+    web::WebState* web_state,
+    const GURL& origin_url,
+    NSString* message_text,
+    NSString* default_prompt_text,
+    base::OnceCallback<void(NSString* user_input)> callback) {
+  SEL delegate_method = @selector(webController:
+          runJavaScriptTextInputPanelWithPrompt:defaultText:pageURL
+                                               :completionHandler:);
+  if (![ui_delegate_ respondsToSelector:delegate_method]) {
+    std::move(callback).Run(nil);
+    return;
+  }
+  [ui_delegate_ webController:controller_
+      runJavaScriptTextInputPanelWithPrompt:message_text
+                                defaultText:default_prompt_text
+                                    pageURL:net::NSURLWithGURL(origin_url)
+                          completionHandler:base::CallbackToBlock(
+                                                std::move(callback))];
+}
+
+void WebViewJavaScriptDialogPresenter::CancelDialogs(web::WebState* web_state) {
+}
+
+void WebViewJavaScriptDialogPresenter::SetUIDelegate(
+    id<ChromeWebControllerUIDelegate> ui_delegate) {
+  ui_delegate_ = ui_delegate;
+}
+}  // namespace
 
 @interface ChromeWebViewController () <CRWWebStateDelegate,
-                                       CRWWebStateObserver> {
+                                       CRWWebStateObserver,
+                                       ChromeWebControllerUIDelegate> {
   raw_ptr<ChromeBrowserState> browser_state_;
   std::unique_ptr<web::WebState> web_state_;
   std::unique_ptr<web::WebStateObserverBridge> web_state_observer_;
   std::unique_ptr<web::WebStateDelegateBridge> web_state_delegate_;
+  std::unique_ptr<WebViewJavaScriptDialogPresenter> dialog_presenter_;
 
   WKWebView* web_view_;
   CRWWebController* web_controller_;
@@ -63,6 +197,10 @@
     web_state_delegate_ = std::make_unique<web::WebStateDelegateBridge>(self);
     web_state_->SetDelegate(web_state_delegate_.get());
 
+    dialog_presenter_ =
+        std::make_unique<WebViewJavaScriptDialogPresenter>(self);
+    dialog_presenter_->SetUIDelegate(self);
+
     web_controller_ =
         static_cast<web::WebStateImpl*>(web_state_.get())->GetWebController();
     web_view_ = [web_controller_ ensureWebViewCreated];
@@ -78,6 +216,7 @@
   web_state_observer_.reset();
   web_state_delegate_.reset();
   web_state_.reset();
+  dialog_presenter_.reset();
   browser_state_ = nullptr;
 }
 
@@ -129,5 +268,87 @@
   // is unregistered before the WebState is destroyed, so this event should
   // never happen.
   NOTREACHED();
+}
+
+// MARK: - CRWWebStateDelegate implementation
+
+- (web::JavaScriptDialogPresenter*)javaScriptDialogPresenterForWebState:
+    (web::WebState*)webState {
+  return dialog_presenter_.get();
+}
+
+// MARK: - ChromeWebControllerUIDelegate implementation
+
+- (void)webController:(ChromeWebViewController*)controller
+    runJavaScriptAlertPanelWithMessage:(NSString*)message
+                               pageURL:(NSURL*)URL
+                     completionHandler:(void (^)(void))handler {
+  UIAlertController* alert =
+      [UIAlertController alertControllerWithTitle:nil
+                                          message:message
+                                   preferredStyle:UIAlertControllerStyleAlert];
+
+  [alert addAction:[UIAlertAction actionWithTitle:@"Ok"
+                                            style:UIAlertActionStyleDefault
+                                          handler:^(UIAlertAction* action) {
+                                            handler();
+                                          }]];
+
+  [controller presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)webController:(ChromeWebViewController*)controller
+    runJavaScriptConfirmPanelWithMessage:(NSString*)message
+                                 pageURL:(NSURL*)URL
+                       completionHandler:(void (^)(BOOL))handler {
+  UIAlertController* alert =
+      [UIAlertController alertControllerWithTitle:nil
+                                          message:message
+                                   preferredStyle:UIAlertControllerStyleAlert];
+
+  [alert addAction:[UIAlertAction actionWithTitle:@"Ok"
+                                            style:UIAlertActionStyleDefault
+                                          handler:^(UIAlertAction* action) {
+                                            handler(YES);
+                                          }]];
+  [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                            style:UIAlertActionStyleCancel
+                                          handler:^(UIAlertAction* action) {
+                                            handler(NO);
+                                          }]];
+
+  [controller presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)webController:(ChromeWebViewController*)controller
+    runJavaScriptTextInputPanelWithPrompt:(NSString*)prompt
+                              defaultText:(NSString*)defaultText
+                                  pageURL:(NSURL*)URL
+                        completionHandler:(void (^)(NSString*))handler {
+  UIAlertController* alert =
+      [UIAlertController alertControllerWithTitle:nil
+                                          message:prompt
+                                   preferredStyle:UIAlertControllerStyleAlert];
+
+  [alert addTextFieldWithConfigurationHandler:^(UITextField* textField) {
+    textField.text = defaultText;
+  }];
+
+  __weak UIAlertController* weakAlert = alert;
+  [alert addAction:[UIAlertAction
+                       actionWithTitle:@"Ok"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction* action) {
+                                 NSString* textInput =
+                                     weakAlert.textFields.firstObject.text;
+                                 handler(textInput);
+                               }]];
+  [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                            style:UIAlertActionStyleCancel
+                                          handler:^(UIAlertAction* action) {
+                                            handler(nil);
+                                          }]];
+
+  [controller presentViewController:alert animated:YES completion:nil];
 }
 @end
