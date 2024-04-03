@@ -18,9 +18,10 @@ import {
   SupportedTestNetworks,
   SupportedOnRampNetworks,
   SupportedOffRampNetworks,
-  ERC721Metadata,
   BraveRewardsInfo,
-  WalletStatus
+  WalletStatus,
+  NFTMetadataReturnType,
+  CommonNftMetadata
 } from '../../constants/types'
 
 // entities
@@ -78,7 +79,7 @@ export class BaseQueryCache {
   private _nftImageIpfsGateWayUrlRegistry: Record<string, string | null> = {}
   private _extractedIPFSUrlRegistry: Record<string, string | undefined> = {}
   private _enabledCoinTypes: number[]
-  private _erc721MetadataRegistry: Record<string, ERC721Metadata> = {}
+  private _nftMetadataRegistry: Record<string, NFTMetadataReturnType> = {}
   public rewardsInfo: BraveRewardsInfo | undefined = undefined
 
   getWalletInfo = async () => {
@@ -332,32 +333,96 @@ export class BaseQueryCache {
     return this._enabledCoinTypes
   }
 
-  getErc721Metadata = async (tokenArg: GetBlockchainTokenIdArg) => {
-    if (!tokenArg.isErc721) {
-      throw new Error('Cannot fetch erc-721 metadata for non erc-721 token')
+  getNftMetadata = async (tokenArg: GetBlockchainTokenIdArg) => {
+    if (!tokenArg.isErc721 && !tokenArg.isNft) {
+      throw new Error('Only NFTs are supported for metadata lookups')
+    }
+
+    if (
+      tokenArg.coin !== BraveWallet.CoinType.ETH &&
+      tokenArg.coin !== BraveWallet.CoinType.SOL
+    ) {
+      throw new Error(
+        `Unsupported coin type for NFT metadata lookup ${tokenArg.coin}`
+      )
     }
 
     const tokenId = blockchainTokenEntityAdaptor.selectId(tokenArg)
 
-    if (!this._erc721MetadataRegistry[tokenId]) {
+    if (!this._nftMetadataRegistry[tokenId]) {
       const { jsonRpcService } = getAPIProxy()
 
-      const result = await jsonRpcService.getERC721Metadata(
-        tokenArg.contractAddress,
-        tokenArg.tokenId,
-        tokenArg.chainId
-      )
+      const result =
+        tokenArg.coin === BraveWallet.CoinType.ETH
+          ? tokenArg.isErc721
+            ? await jsonRpcService.getERC721Metadata(
+                tokenArg.contractAddress,
+                tokenArg.tokenId,
+                tokenArg.chainId
+              )
+            : await jsonRpcService.getERC1155Metadata(
+                tokenArg.contractAddress,
+                tokenArg.tokenId,
+                tokenArg.chainId
+              )
+          : await jsonRpcService.getSolTokenMetadata(
+              tokenArg.chainId,
+              tokenArg.contractAddress
+            )
 
       if (result.error || result.errorMessage) {
         throw new Error(result.errorMessage)
       }
 
-      const metadata: ERC721Metadata = JSON.parse(result.response)
+      if (!result?.response) {
+        throw new Error(`Failed to get NFT metadata for token: ${tokenId}`)
+      }
 
-      this._erc721MetadataRegistry[tokenId] = metadata
+      const metadata: CommonNftMetadata = JSON.parse(result.response)
+
+      const attributes = Array.isArray(metadata?.attributes)
+        ? metadata?.attributes.map(
+            (attr: { trait_type: string; value: string }) => ({
+              traitType: attr.trait_type,
+              value: attr.value
+            })
+          )
+        : []
+
+      const tokenNetwork = (await cache.getNetworksRegistry()).entities[
+        networkEntityAdapter.selectId(tokenArg)
+      ]
+
+      const nftMetadata: NFTMetadataReturnType = {
+        metadataUrl: result?.tokenUrl || '',
+        chainName: tokenNetwork?.chainName || '',
+        tokenType:
+          tokenArg.coin === BraveWallet.CoinType.ETH
+            ? 'ERC721'
+            : tokenArg.coin === BraveWallet.CoinType.SOL
+            ? 'SPL'
+            : '',
+        tokenID: tokenArg.tokenId,
+        imageURL: metadata?.image || metadata?.image_url || undefined,
+        imageMimeType: 'image/*',
+        floorFiatPrice: '',
+        floorCryptoPrice: '',
+        contractInformation: {
+          address: tokenArg.contractAddress,
+          name: metadata?.name || '???',
+          description: metadata?.description || '???',
+          website: '',
+          facebook: '',
+          logo: '',
+          twitter: ''
+        },
+        attributes
+      }
+
+      this._nftMetadataRegistry[tokenId] = nftMetadata
     }
 
-    return this._erc721MetadataRegistry[tokenId]
+    return this._nftMetadataRegistry[tokenId]
   }
 
   // Brave Rewards

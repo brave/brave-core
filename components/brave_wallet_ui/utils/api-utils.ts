@@ -84,33 +84,6 @@ export async function getEnabledCoinTypes(api: WalletApiProxy) {
   })
 }
 
-export async function getAllNetworksList(api: WalletApiProxy) {
-  const { jsonRpcService } = api
-
-  const enabledCoinTypes = await getEnabledCoinTypes(api)
-
-  // Get All Networks
-  const networks = (
-    await mapLimit(enabledCoinTypes, 10, async (coin: number) => {
-      const { networks } = await jsonRpcService.getAllNetworks(coin)
-      return networks
-    })
-  ).flat(1)
-
-  return networks
-}
-
-export async function getNetwork(
-  api: WalletApiProxy,
-  arg: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
-): Promise<BraveWallet.NetworkInfo | undefined> {
-  const networksList = await getAllNetworksList(api)
-
-  return networksList.find(
-    (n) => n.chainId === arg.chainId && n.coin === arg.coin
-  )
-}
-
 export async function getVisibleNetworksList(api: WalletApiProxy) {
   const { jsonRpcService } = api
 

@@ -930,10 +930,12 @@ export enum TokenStandards {
   ERC1155 = 'ERC1155',
   SPL = 'SPL'
 }
-
-export type ERC721Metadata = {
+export interface CommonNftMetadata {
+  attributes?: any[]
+  description?: string
   image?: string
   image_url?: string
+  name?: string
 }
 
 export enum AddressMessageInfoIds {

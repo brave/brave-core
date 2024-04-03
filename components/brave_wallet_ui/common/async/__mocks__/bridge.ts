@@ -11,7 +11,7 @@ import { createStore, combineReducers } from 'redux'
 import { createWalletReducer } from '../../slices/wallet.slice'
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, CommonNftMetadata } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
@@ -54,7 +54,6 @@ import {
 } from '../../../stories/mock-data/mock-transaction-info'
 import { blockchainTokenEntityAdaptor } from '../../slices/entities/blockchain-token.entity'
 import { findAccountByUniqueKey } from '../../../utils/account-utils'
-import { CommonNftMetadata } from '../../slices/endpoints/nfts.endpoints'
 import { mockNFTMetadata } from '../../../stories/mock-data/mock-nft-metadata'
 import {
   coinMarketMockData //
