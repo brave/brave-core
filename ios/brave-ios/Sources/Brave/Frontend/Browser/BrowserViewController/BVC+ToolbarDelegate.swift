@@ -1059,7 +1059,7 @@ extension BrowserViewController: ToolbarDelegate {
       (tab.webView?.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url))) != nil
     let pageSecurityView = PageSecurityView(
       displayURL: urlBar.locationView.urlDisplayLabel.text ?? url.absoluteDisplayString,
-      secureState: tab.secureContentState,
+      secureState: tab.lastKnownSecureContentState,
       hasCertificate: hasCertificate,
       presentCertificateViewer: { [weak self] in
         self?.dismiss(animated: true)

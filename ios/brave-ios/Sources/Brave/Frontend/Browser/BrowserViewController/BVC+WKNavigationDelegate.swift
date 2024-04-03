@@ -870,7 +870,6 @@ extension BrowserViewController: WKNavigationDelegate {
     // However, WebKit does NOT trigger the `serverTrust` observer when the URL changes, but the trust has not.
     // WebKit also does NOT trigger the `serverTrust` observer when the page is actually insecure (non-https).
     // So manually trigger it with the current trust.
-    logSecureContentState(tab: tab, details: "ObserveValue trigger in didCommit")
 
     observeValue(
       forKeyPath: KVOConstants.serverTrust.keyPath,

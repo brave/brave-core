@@ -82,7 +82,7 @@ extension BrowserViewController {
 
     // Toogle Reader Mode Activity
     // If the reader mode button is occluded due to a secure content state warning add it as an activity
-    if let tab = tabManager.selectedTab, tab.secureContentState.shouldDisplayWarning {
+    if let tab = tabManager.selectedTab, tab.lastKnownSecureContentState.shouldDisplayWarning {
       if tab.readerModeAvailableOrActive {
         activities.append(
           BasicMenuActivity(
@@ -292,10 +292,6 @@ extension BrowserViewController {
       tabManager.selectedTab?.webView?.serverTrust != nil
         || ErrorPageHelper.hasCertificates(for: tabURL)
     {
-      if let selectedTab = tabManager.selectedTab {
-        logSecureContentState(tab: selectedTab, details: "Display Certificate Activity Settings")
-      }
-
       activities.append(
         BasicMenuActivity(
           activityType: .displaySecurityCertificate
