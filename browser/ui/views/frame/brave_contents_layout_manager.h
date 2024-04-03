@@ -34,8 +34,9 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
     show_main_web_contents_at_tail_ = tail;
   }
 
+ protected:
   // ContentsLayoutManager:
-  void Layout(views::View* host) override;
+  void LayoutImpl() override;
 
  private:
   friend class BraveContentsLayoutManagerUnitTest;
