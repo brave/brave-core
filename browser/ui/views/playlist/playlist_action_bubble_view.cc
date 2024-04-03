@@ -35,13 +35,9 @@
 
 namespace {
 
-PlaylistActionBubbleView* g_bubble = nullptr;
+views::BubbleDialogDelegateView* g_bubble = nullptr;
 
-template <class ActionBubbleView,
-          typename std::enable_if_t<
-              std::is_base_of_v<PlaylistActionBubbleView, ActionBubbleView>>* =
-              nullptr>
-void ShowBubble(std::unique_ptr<ActionBubbleView> bubble) {
+void ShowBubble(std::unique_ptr<views::BubbleDialogDelegateView> bubble) {
   DCHECK(!g_bubble);
 
   g_bubble = bubble.release();
@@ -489,14 +485,12 @@ void PlaylistActionBubbleView::ShowBubble(
     Browser* browser,
     PlaylistActionIconView* anchor,
     playlist::PlaylistTabHelper* playlist_tab_helper) {
-  if (playlist_tab_helper->saved_items().size()) {
+  if (!playlist_tab_helper->saved_items().empty()) {
     ::ShowBubble(
         std::make_unique<ConfirmBubble>(browser, anchor, playlist_tab_helper));
-  } else if (playlist_tab_helper->found_items().size()) {
+  } else if (!playlist_tab_helper->found_items().empty()) {
     ::ShowBubble(std::make_unique<PlaylistActionAddBubble>(
         browser, anchor, playlist_tab_helper));
-  } else {
-    NOTREACHED() << "Caller should filter this case";
   }
 }
 
@@ -512,7 +506,7 @@ void PlaylistActionBubbleView::CloseBubble() {
 }
 
 // static
-PlaylistActionBubbleView* PlaylistActionBubbleView::GetBubble() {
+views::BubbleDialogDelegateView* PlaylistActionBubbleView::GetBubble() {
   return g_bubble;
 }
 

@@ -44,7 +44,7 @@ class PlaylistActionIconView : public PageActionIconView,
 
   playlist::PlaylistTabHelper* GetPlaylistTabHelper();
 
-  void UpdateState(bool has_saved, bool found_items);
+  void UpdateState();
   void UpdateVisibilityPerState();
 
   // PlaylistTabHelperObserver:

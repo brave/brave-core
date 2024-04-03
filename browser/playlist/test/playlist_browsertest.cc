@@ -179,7 +179,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
 
   // Show up bubble and add all found items.
   location_bar_view->ShowPlaylistBubble();
-  PlaylistActionBubbleView* action_bubble = nullptr;
+  views::BubbleDialogDelegateView* action_bubble = nullptr;
   WaitUntil(base::BindLambdaForTesting([&]() {
     action_bubble = PlaylistActionBubbleView::GetBubble();
     return !!action_bubble;
