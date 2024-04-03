@@ -38,7 +38,7 @@ open class FileAccessor {
     let path = URL(fileURLWithPath: rootPath).appendingPathComponent(relativePath).path
     let files = try fileManager.contentsOfDirectory(atPath: path)
     for file in files {
-      try remove(URL(fileURLWithPath: relativePath).appendingPathComponent(file).path)
+      try remove((relativePath as NSString).appendingPathComponent(file))
     }
     return
   }
