@@ -15,7 +15,7 @@
   "braveShields": {
     "channel": "stable",
     "dependencies": [],
-    "contexts": ["blessed_extension"],
+    "contexts": ["privileged_extension"],
     "allowlist": [
       "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"
     ]
@@ -24,7 +24,7 @@
     {
       "channel": "stable",
       "dependencies": [],
-      "contexts": ["blessed_extension"],
+      "contexts": ["privileged_extension"],
       "allowlist": [
         "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64", // braveRewards
         "21070F3D60711361C1210B870439BE49B5D995F4"  // braveWallet
@@ -45,7 +45,7 @@
   "rewardsNotifications": [{
     "channel": "stable",
     "dependencies": [],
-    "contexts": ["blessed_extension"],
+    "contexts": ["privileged_extension"],
     "allowlist": [
       "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"
     ]
@@ -58,7 +58,7 @@
   }],
   "braveTheme": [{
     "channel": "stable",
-    "contexts": ["blessed_extension"],
+    "contexts": ["privileged_extension"],
     "allowlist": [
       "A321D47A2B4CA86898167A55CA8B2E02385EA7CD",  // braveShields
       "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64",  // braveRewards
@@ -81,7 +81,7 @@
   }],
   "greaselion": [{
     "channel": "stable",
-    "contexts": ["blessed_extension"],
+    "contexts": ["privileged_extension"],
     "allowlist": [
       "A321D47A2B4CA86898167A55CA8B2E02385EA7CD",  // braveShields
       "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"   // braveRewards
