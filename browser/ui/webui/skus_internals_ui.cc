@@ -97,13 +97,12 @@ void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
 #endif
   auto* profile = Profile::FromWebUI(web_ui());
   if (!brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())) {
-    base::Value::Dict empty;
-    dict.Set("Order", empty);
+    dict.Set("Order", base::Value::Dict());
   } else {
     auto order_info = GetOrderInfo("vpn.");
     order_info.Set(
         "env", local_state_->GetString(brave_vpn::prefs::kBraveVPNEnvironment));
-    dict.Set("Order", order_info);
+    dict.Set("Order", std::move(order_info));
   }
 #endif
   std::string result;
@@ -123,7 +122,8 @@ void SkusInternalsUI::GetLeoState(GetLeoStateCallback callback) {
 
 base::Value::Dict SkusInternalsUI::GetOrderInfo(
     const std::string& location) const {
-  base::Value::Dict dict const auto& skus_state =
+  base::Value::Dict dict;
+  const auto& skus_state =
       local_state_->GetDict(skus::prefs::kSkusState);
   for (const auto kv : skus_state) {
     if (!base::StartsWith(kv.first, "skus:")) {
