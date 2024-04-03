@@ -16,7 +16,7 @@ import getPageHandlerInstance from '../../api/page_handler'
 import ToolsButtonMenu from '../tools_button_menu'
 import ActionTypeLabel from '../action_type_label'
 
-function InputBox () {
+function InputBox() {
   const context = React.useContext(DataContext)
 
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -33,7 +33,7 @@ function InputBox () {
     getPageHandlerInstance().pageHandler.handleVoiceRecognition()
   }
 
-  const onUserPressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       if (!e.repeat) {
         context.submitInputTextToAPI()
@@ -41,58 +41,81 @@ function InputBox () {
 
       e.preventDefault()
     }
+
+    if (
+      e.key === 'Backspace' &&
+      context.inputText === '' &&
+      context.selectedActionType
+    ) {
+      context.resetSelectedActionType()
+    }
+  }
+
+  const handleFocus = (node: HTMLTextAreaElement | null) => {
+    if (node && context.selectedActionType) {
+      node.focus()
+    }
   }
 
   return (
     <form className={styles.form}>
       {context.selectedActionType && (
         <div className={styles.actionsLabelContainer}>
-         <ActionTypeLabel
-          removable={true}
-          actionType={context.selectedActionType}
-          onCloseClick={context.resetActionType}
-         />
+          <ActionTypeLabel
+            removable={true}
+            actionType={context.selectedActionType}
+            onCloseClick={context.resetSelectedActionType}
+          />
         </div>
       )}
       <div
-        className={(context.isMobile ? styles.growWrapMobile : styles.growWrap)}
+        className={styles.growWrap}
         data-replicated-value={context.inputText}
       >
         <textarea
+          ref={handleFocus}
           placeholder={getLocale('placeholderLabel')}
           onChange={onInputChange}
-          onKeyDown={onUserPressEnter}
+          onKeyDown={handleOnKeyDown}
           value={context.inputText}
           autoFocus
           rows={1}
         />
       </div>
       {context.isCharLimitApproaching && (
-        <div className={classnames({
-          [styles.counterText]: true,
-          [styles.counterTextVisible]: context.isCharLimitApproaching,
-          [styles.counterTextError]: context.isCharLimitExceeded
-        })}>
+        <div
+          className={classnames({
+            [styles.counterText]: true,
+            [styles.counterTextVisible]: context.isCharLimitApproaching,
+            [styles.counterTextError]: context.isCharLimitExceeded
+          })}
+        >
           {context.inputTextCharCountDisplay}
         </div>
       )}
       <div className={styles.actions}>
-        {context.isMobile && <Button
-          kind="plain-faint"
-          onClick={handleMic}
-          disabled={context.shouldDisableUserInput}
+        <div>
+          <ToolsButtonMenu />
+          {context.isMobile && (
+            <Button
+              kind='plain-faint'
+              onClick={handleMic}
+              disabled={context.shouldDisableUserInput}
+            >
+              <Icon name='microphone' />
+            </Button>
+          )}
+        </div>
+        <div>
+          <Button
+            kind='plain-faint'
+            onClick={handleSubmit}
+            disabled={context.shouldDisableUserInput}
+            title={getLocale('sendChatButtonLabel')}
           >
-          <Icon name='microphone' />
-        </Button>}
-        <ToolsButtonMenu />
-        <Button
-          kind="plain-faint"
-          onClick={handleSubmit}
-          disabled={context.shouldDisableUserInput}
-          title={getLocale('sendChatButtonLabel')}
-          >
-          <Icon name='send' />
-        </Button>
+            <Icon name='send' />
+          </Button>
+        </div>
       </div>
     </form>
   )

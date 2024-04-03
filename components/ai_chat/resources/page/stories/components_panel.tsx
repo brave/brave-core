@@ -214,20 +214,31 @@ export default {
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
       const currentModel = MODELS.find(m => m.name === options.args.model)
-      const [inputText, setInputText] = useState('')
+      const [inputText, setInputText_] = useState('')
       const [selectedActionType, setSelectedActionType] = useState<mojom.ActionType | undefined>(undefined)
+      const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false)
 
       const switchToBasicModel = () => {
         const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
         setArgs({ model: nonPremiumModel })
       }
 
-      const resetActionType = () => {
+      const resetSelectedActionType = () => {
         setSelectedActionType(undefined)
       }
 
       const handleActionTypeClick = (actionType: mojom.ActionType) => {
         setSelectedActionType(actionType)
+      }
+
+      const setInputText = (text: string) => {
+        setInputText_(text)
+
+        if (selectedActionType === undefined && text.startsWith('/')) {
+          setIsToolsMenuOpen(true)
+        } else {
+          setIsToolsMenuOpen(false)
+        }
       }
 
       const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
@@ -264,8 +275,10 @@ export default {
         isCharLimitApproaching,
         inputTextCharCountDisplay,
         selectedActionType,
-        resetActionType,
+        resetSelectedActionType,
         handleActionTypeClick,
+        isToolsMenuOpen,
+        setIsToolsMenuOpen,
       }
 
       return (

@@ -24,7 +24,7 @@
 
 .growWrap {
   display: grid;
-  grid-template-columns: calc(100% - 20px);
+  grid-template-columns: 1fr;
   max-height: 300px;
   overflow-y: auto;
 
@@ -47,7 +47,7 @@
 
   textarea,
   &::after {
-    padding: 10px var(--leo-spacing-xl);
+    padding: 12px var(--leo-spacing-xl) 8px var(--leo-spacing-xl);
     grid-area: 1 / 1 / 2 / 2;
   }
 
@@ -59,11 +59,6 @@
     background: var(--leo-color-gray-20);
     border-radius: var(--leo-spacing-m);
   }
-}
-
-.growWrapMobile {
-  @extend .growWrap;
-  grid-template-columns: calc(100% - 60px);
 }
 
 .buttonAgree {
@@ -107,11 +102,11 @@
 }
 
 .actions {
-  position: absolute;
-  top: 2px;
-  inset-inline-end: var(--leo-spacing-m);
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
+  padding: 0 var(--leo-spacing-xl);
 }
 
 .actionsLabelContainer {

@@ -379,6 +379,7 @@ leo_icons = [
   "aurora-color.svg",
   "sol-color.svg",
   "filecoin-color.svg",
+  "slash.svg",
 ]
 
 if (enable_brave_vpn_panel) {

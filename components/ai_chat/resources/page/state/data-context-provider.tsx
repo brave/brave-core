@@ -44,8 +44,9 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
   const [showAgreementModal, setShowAgreementModal] = React.useState(false)
   const [shouldSendPageContents, setShouldSendPageContents] = React.useState(true)
-  const [inputText, setInputText] = React.useState('')
+  const [inputText, setInputText_] = React.useState('')
   const [selectedActionType, setSelectedActionType] = React.useState<mojom.ActionType | undefined>()
+  const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -207,6 +208,16 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.managePremium()
   }
 
+  const setInputText = (text: string) => {
+    setInputText_(text)
+
+    if (selectedActionType === undefined && text.startsWith('/')) {
+      setIsToolsMenuOpen(true)
+    } else {
+      setIsToolsMenuOpen(false)
+    }
+  }
+
   const handleMaybeLater = () => {
     getPageHandlerInstance().pageHandler.clearErrorAndGetFailedMessage()
       .then((res) => { setInputText(res.turn.text) })
@@ -217,7 +228,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.retryAPIRequest()
   }
 
-  const resetActionType = () => {
+  const resetSelectedActionType = () => {
     setSelectedActionType(undefined)
   }
 
@@ -323,6 +334,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     isCharLimitApproaching,
     inputTextCharCountDisplay,
     selectedActionType,
+    isToolsMenuOpen,
     setCurrentModel,
     switchToBasicModel,
     goPremium,
@@ -338,8 +350,9 @@ function DataContextProvider (props: DataContextProviderProps) {
     handleMaybeLater,
     handleSwitchToBasicModelAndRetry,
     submitInputTextToAPI,
-    resetActionType,
+    resetSelectedActionType,
     handleActionTypeClick,
+    setIsToolsMenuOpen,
   }
 
   return (

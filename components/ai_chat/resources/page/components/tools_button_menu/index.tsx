@@ -8,47 +8,59 @@ import classnames from 'classnames'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import { getLocale } from '$web-common/locale'
 
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
 import * as mojom from '../../api/page_handler'
 
+const data = [
+  {
+    category: 'Quick actions',
+    actions: [
+      { label: 'Explain', type: mojom.ActionType.EXPLAIN },
+      { label: 'Paraphrase', type: mojom.ActionType.PARAPHRASE },
+      { label: 'Improve', type: mojom.ActionType.IMPROVE }
+    ]
+  }
+]
+
 export default function ToolsButtonMenu() {
   const context = React.useContext(DataContext)
-  const [isMenuOpen, setIsMenuClose] = React.useState(false)
 
   return (
     <ButtonMenu
-      isOpen={isMenuOpen}
-      onClose={() => setIsMenuClose(false)}
+      isOpen={context.isToolsMenuOpen}
+      onClose={() => context.setIsToolsMenuOpen(false)}
     >
       <Button
         slot='anchor-content'
         size='small'
         kind='plain-faint'
-        onClick={() => setIsMenuClose(!isMenuOpen)}
+        onClick={() => context.setIsToolsMenuOpen(!context.isToolsMenuOpen)}
       >
-        <div className={classnames({
-          [styles.slashIcon]: true,
-          [styles.slashIconActive]: isMenuOpen
-        })}>
+        <div
+          className={classnames({
+            [styles.slashIcon]: true,
+            [styles.slashIconActive]: context.isToolsMenuOpen
+          })}
+        >
           <Icon name='slash' />
         </div>
       </Button>
-      <div className={styles.menuSectionTitle}>Quick actions</div>
-      <leo-menu-item
-        onClick={() =>
-          context.handleActionTypeClick(
-            mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG
-          )
-        }
-      >
-        {getLocale('actionsSummarize')}
-      </leo-menu-item>
-      <leo-menu-item>{getLocale('actionsExplain')}</leo-menu-item>
-      <leo-menu-item>{getLocale('actionsParaphrase')}</leo-menu-item>
-      <leo-menu-item>{getLocale('actionsImprove')}</leo-menu-item>
+      {data.map((entry) => {
+        return (
+          <>
+            <div className={styles.menuSectionTitle}>{entry.category}</div>
+            {entry.actions.map((action) => (
+              <leo-menu-item
+                onClick={() => context.handleActionTypeClick(action.type)}
+              >
+                {action.label}
+              </leo-menu-item>
+            ))}
+          </>
+        )
+      })}
     </ButtonMenu>
   )
 }

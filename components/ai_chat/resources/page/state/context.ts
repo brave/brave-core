@@ -33,6 +33,7 @@ export interface AIChatContext {
   isCharLimitApproaching: boolean
   inputTextCharCountDisplay: string
   selectedActionType: mojom.ActionType | undefined
+  isToolsMenuOpen: boolean
   setCurrentModel: (model: mojom.Model) => void,
   switchToBasicModel: () => void,
   generateSuggestedQuestions: () => void
@@ -48,8 +49,9 @@ export interface AIChatContext {
   handleMaybeLater: () => void
   handleSwitchToBasicModelAndRetry: () => void
   submitInputTextToAPI: () => void
-  resetActionType: () => void
+  resetSelectedActionType: () => void
   handleActionTypeClick: (actionType: mojom.ActionType) => void
+  setIsToolsMenuOpen: (isOpen: boolean) => void
 }
 
 export const defaultContext: AIChatContext = {
@@ -78,6 +80,7 @@ export const defaultContext: AIChatContext = {
   isCharLimitApproaching: false,
   inputTextCharCountDisplay: '',
   selectedActionType: undefined,
+  isToolsMenuOpen: false,
   setCurrentModel: () => {},
   switchToBasicModel: () => {},
   generateSuggestedQuestions: () => {},
@@ -93,8 +96,9 @@ export const defaultContext: AIChatContext = {
   handleMaybeLater: () => {},
   handleSwitchToBasicModelAndRetry: () => {},
   submitInputTextToAPI: () => {},
-  resetActionType: () => {},
+  resetSelectedActionType: () => {},
   handleActionTypeClick: () => {},
+  setIsToolsMenuOpen: () => {},
 }
 
 export default React.createContext<AIChatContext>(defaultContext)
