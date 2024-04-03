@@ -7,13 +7,14 @@ import * as React from 'react'
 import { ViewType, Scenes } from './component_types'
 import { BrowserProfile } from '../api/welcome_browser_proxy'
 
-interface Store {
+export interface Store {
   setViewType: (viewType: ViewType) => void
   setCurrentSelectedBrowser: (currentSelection: string) => void
   incrementCount: () => void
   setScenes: React.Dispatch<React.SetStateAction<Scenes | undefined>>
   currentSelectedBrowser: string | undefined
   browserProfiles: BrowserProfile[] | undefined
+  currentSelectedBrowserProfiles: BrowserProfile[] | undefined
   viewType: ViewType | undefined
   scenes: Scenes | undefined
 }
@@ -25,8 +26,10 @@ const defaultStore = {
   setScenes: () => {},
   currentSelectedBrowser: undefined,
   browserProfiles: undefined,
+  currentSelectedBrowserProfiles: undefined,
   viewType: undefined,
-  scenes: undefined
+  scenes: undefined,
+  countryString: undefined,
 }
 
 const DataContext = React.createContext<Store>(defaultStore)

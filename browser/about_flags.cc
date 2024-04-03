@@ -44,7 +44,7 @@
 #include "components/flags_ui/feature_entry.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
-#include "components/history//core/browser/features.h"
+#include "components/history/core/browser/features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
@@ -490,6 +490,15 @@
                    kOsMac | kOsWin | kOsLinux | kOsAndroid,                  \
                    FEATURE_VALUE_TYPE(brave_player::features::kBravePlayer), \
                }))
+
+#define BRAVE_WELCOME_PAGE_FEATURE_ENTRIES                          \
+  EXPAND_FEATURE_ENTRIES({                                          \
+      "brave-show-help-wdp-in-welcome-page",                        \
+      "Show Help WDP in Welcome Page",                              \
+      "Show Help WDP in Welcome Page regardless of country code",   \
+      kOsWin | kOsLinux | kOsMac,                                   \
+      FEATURE_VALUE_TYPE(features::kBraveShowHelpWDPInWelcomePage), \
+  })
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
@@ -1024,6 +1033,7 @@
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
+  BRAVE_WELCOME_PAGE_FEATURE_ENTRIES                                           \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {
