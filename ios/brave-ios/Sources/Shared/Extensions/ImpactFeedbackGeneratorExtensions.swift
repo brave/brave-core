@@ -6,7 +6,7 @@ import UIKit
 
 extension UIImpactFeedbackGenerator {
   @discardableResult
-  public func bzzt() -> Self {
+  public func vibrate() -> Self {
     self.prepare()
     self.impactOccurred()
     // Returned in case wanted for retaining to re-impact

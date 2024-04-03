@@ -4,8 +4,10 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
+import CoreHaptics
 import Lottie
 import SwiftUI
+import os.log
 
 struct FocusAdTrackerSliderContentView: View {
   @Environment(\.colorScheme) private var colorScheme
@@ -65,10 +67,23 @@ struct FocusVideoAdSliderContentView: View {
 struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
   @Environment(\.layoutDirection) private var layoutDirection
 
+  private enum HapticsLevel: Float {
+    case none = 0
+    case low = 0.20
+    case medium = 0.50
+    case high = 0.70
+    case intense = 1.0
+  }
+  
   @GestureState private var initialProgress: CGFloat?
 
   @Binding var progress: CGFloat
 
+  // CoreHaptics Engine and Player for slider progress value
+  @State private var hapticsEngine: CHHapticEngine?
+  @State private var hapticsPlayer: CHHapticPatternPlayer?
+  @State private var hapticsLevel: HapticsLevel = .high
+  
   var leading: Leading
   var trailing: Trailing
 
@@ -118,6 +133,13 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
           }
         }
     }
+    .onAppear(perform: prepareSliderHaptics)
+    .onChange(of: progress) { newValue in
+      hapticsLevel = determineHapticIntensityLevel(from: newValue)
+    }
+    .onChange(of: hapticsLevel) { newValue in
+      createContinousHapticFeedback(intensity: newValue)
+    }
     .overlay {
       // Fake "grabber"/splitter
       GeometryReader { proxy in
@@ -163,6 +185,68 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
       }
     }
     .padding()
+  }
+
+  private func prepareSliderHaptics() {
+    // Check Hardware is capable
+    guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
+
+    // Create Haptics Engine
+    do {
+      hapticsEngine = try CHHapticEngine()
+      try hapticsEngine?.start()
+    } catch {
+      Logger.module.debug(
+        "[Focus Onboarding] - There was an error creating the engine: \(error.localizedDescription)"
+      )
+    }
+
+    // Create Initial Continous Feedback
+    createContinousHapticFeedback(intensity: hapticsLevel)
+  }
+
+  private func createContinousHapticFeedback(intensity: HapticsLevel) {
+    do {
+      try hapticsPlayer?.cancel()
+
+      let continuousPattern = try CHHapticPattern(
+        events: [
+          CHHapticEvent(
+            eventType: .hapticContinuous,
+            parameters: [
+              CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity.rawValue),
+              CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5),
+            ],
+            relativeTime: 0,
+            duration: 1
+          )
+        ],
+        parameters: []
+      )
+
+      // Create pattern player
+      hapticsPlayer = try hapticsEngine?.makePlayer(with: continuousPattern)
+      try hapticsPlayer?.start(atTime: CHHapticTimeImmediate)
+    } catch let error {
+      Logger.module.debug(
+        "[Focus Onboarding] - Error creating haptic pattern: \(error.localizedDescription)"
+      )
+    }
+  }
+  
+  private func determineHapticIntensityLevel(from progress: CGFloat) -> HapticsLevel {
+    switch progress {
+    case 0:
+      return .none
+    case 1..<21:
+      return .low
+    case 21..<71:
+      return .medium
+    case 71..<100:
+      return .high
+    default:
+      return .medium
+    }
   }
 }
 

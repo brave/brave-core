@@ -151,7 +151,7 @@ struct PasswordEntryView: View {
       DispatchQueue.main.async {
         if let entryError = entryError {
           self.error = entryError
-          UIImpactFeedbackGenerator(style: .medium).bzzt()
+          UIImpactFeedbackGenerator(style: .medium).vibrate()
         } else {
           presentationMode.dismiss()
         }

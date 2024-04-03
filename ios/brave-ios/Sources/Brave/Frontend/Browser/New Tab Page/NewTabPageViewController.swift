@@ -1024,7 +1024,7 @@ class NewTabPageViewController: UIViewController {
         }
       )
 
-      UIImpactFeedbackGenerator(style: .medium).bzzt()
+      UIImpactFeedbackGenerator(style: .medium).vibrate()
       present(alert, animated: true, completion: nil)
     }
   }
@@ -1085,7 +1085,7 @@ class NewTabPageViewController: UIViewController {
   }
 
   private func tappedSponsorButton(_ logo: NTPSponsoredImageLogo) {
-    UIImpactFeedbackGenerator(style: .medium).bzzt()
+    UIImpactFeedbackGenerator(style: .medium).vibrate()
     if let url = logo.destinationURL {
       delegate?.navigateToInput(url.absoluteString, inNewTab: false, switchingToPrivateMode: false)
     }
@@ -1133,7 +1133,7 @@ class NewTabPageViewController: UIViewController {
     alert.popoverPresentationController?.permittedArrowDirections = [.down, .up]
     alert.addAction(UIAlertAction(title: Strings.close, style: .cancel, handler: nil))
 
-    UIImpactFeedbackGenerator(style: .medium).bzzt()
+    UIImpactFeedbackGenerator(style: .medium).vibrate()
     present(alert, animated: true, completion: nil)
   }
 

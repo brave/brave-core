@@ -34,7 +34,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
           return
         }
         // Dismiss popover
-        UIImpactFeedbackGenerator(style: .medium).bzzt()
+        UIImpactFeedbackGenerator(style: .medium).vibrate()
 
         self.dismiss(animated: true) {
           switch action {
@@ -150,7 +150,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
 
               if didAddItem {
                 self.showPlaylistToast(tab: tab, state: .existingItem, item: item)
-                UIImpactFeedbackGenerator(style: .medium).bzzt()
+                UIImpactFeedbackGenerator(style: .medium).vibrate()
               }
             }
           } else {
@@ -161,7 +161,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
         // Item was added to playlist by the user, so ask them if they want to view it there
         case .newItem, .existingItem:
           if buttonPressed {
-            UIImpactFeedbackGenerator(style: .medium).bzzt()
+            UIImpactFeedbackGenerator(style: .medium).vibrate()
 
             DispatchQueue.main.async {
               if let webView = tab?.webView {
@@ -209,7 +209,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
           self.addToPlaylist(item: item) { [weak self] addedToPlaylist in
             guard let self = self else { return }
 
-            UIImpactFeedbackGenerator(style: .medium).bzzt()
+            UIImpactFeedbackGenerator(style: .medium).vibrate()
 
             if addedToPlaylist {
               self.showPlaylistToast(tab: tab, state: .existingItem, item: item)

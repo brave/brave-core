@@ -27,7 +27,7 @@ extension TabTrayController: UICollectionViewDragDelegate {
   ) -> [UIDragItem] {
     guard let tab = dataSource.itemIdentifier(for: indexPath) else { return [] }
 
-    UIImpactFeedbackGenerator(style: .medium).bzzt()
+    UIImpactFeedbackGenerator(style: .medium).vibrate()
 
     let dragItem = UIDragItem(itemProvider: NSItemProvider())
     dragItem.localObject = tab

@@ -47,7 +47,7 @@ struct UnlockWalletView: View {
       keyringStore.unlock(password: password) { unlocked in
         if !unlocked {
           unlockError = .incorrectPassword
-          UIImpactFeedbackGenerator(style: .medium).bzzt()
+          UIImpactFeedbackGenerator(style: .medium).vibrate()
         }
       }
     }

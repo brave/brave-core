@@ -7,7 +7,6 @@ import BraveCore
 import Growth
 import Preferences
 import SwiftUI
-import os.log
 
 struct FocusStepsView: View {
   var namespace: Namespace.ID
@@ -176,6 +175,13 @@ struct FocusStepsView: View {
       .onAppear {
         withAnimation(.easeInOut(duration: 1.5).delay(1.25)) {
           opacity = 1.0
+        }
+      }
+      .onChange(of: indicatorIndex) { newValue in
+        if indicatorIndex == 1 {
+          Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { _ in
+            UIImpactFeedbackGenerator(style: .medium).vibrate()
+          }
         }
       }
     }
