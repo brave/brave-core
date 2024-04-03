@@ -13,7 +13,7 @@ const util = require('./util')
 // This guard is used to ensure that we don't have a partial or broken checkout
 // of depot_tools.
 const depotToolsGuard = new ActionGuard(
-  path.join(config.rootDir, 'depot_tools_install.guard'),
+  path.join(path.dirname(config.depotToolsDir), `${path.basename(config.depotToolsDir)}_install.guard`),
   () => {
     if (fs.existsSync(config.depotToolsDir)) {
       Log.status('detected incomplete depot_tools install. Cleaning up...')
