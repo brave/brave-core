@@ -7,7 +7,7 @@
   NotifyPermissionSetInternal(                                                            \
       request_data.id, request_data.requesting_origin,                                    \
       request_data.embedding_origin, std::move(callback), /*persist=*/true,               \
-      CONTENT_SETTING_BLOCK, RequestOutcome::kDeniedByFirstPartySet);                     \
+      CONTENT_SETTING_BLOCK, RequestOutcome::kDeniedByPrerequisites);                     \
   return;
 
 #include "src/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc"
