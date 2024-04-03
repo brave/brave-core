@@ -203,8 +203,7 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
   fee_cost->included = true;
   fee_cost->token = from_token.Clone();
 
-  if (!quote->routes[0]->steps[0]->estimate->fee_costs) {
-  } else {
+  if (quote->routes[0]->steps[0]->estimate->fee_costs) {
     quote->routes[0]->steps[0]->estimate->fee_costs->push_back(
         fee_cost.Clone());
   }
@@ -272,8 +271,7 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
       ->included_steps->at(0)
       ->estimate->execution_duration = "500.298";
 
-  if (!quote->routes[0]->steps[0]->included_steps->at(0)->estimate->fee_costs) {
-  } else {
+  if (quote->routes[0]->steps[0]->included_steps->at(0)->estimate->fee_costs) {
     quote->routes[0]
         ->steps[0]
         ->included_steps->at(0)
