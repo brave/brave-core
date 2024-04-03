@@ -86,7 +86,7 @@ void AIChatResourceSnifferURLLoader::OnBodyWritable(MojoResult r) {
 }
 
 void AIChatResourceSnifferURLLoader::CompleteLoading(std::string body) {
-  if (!body.empty()) {
+  if (!body.empty() && delegate_) {
     auto content = std::make_unique<
         AIChatResourceSnifferThrottleDelegate::InterceptedContent>();
     content->type = AIChatResourceSnifferThrottleDelegate::
