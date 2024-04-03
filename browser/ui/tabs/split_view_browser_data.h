@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/observer_list.h"
-#include "base/types/pass_key.h"
 #include "chrome/browser/ui/browser_user_data.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 
@@ -21,8 +20,6 @@ class SplitViewBrowserDataObserver;
 
 class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
  public:
-  using TilePassKey = base::PassKey<SplitViewTabStripModelAdapter>;
-
   using Tile = std::pair<tabs::TabHandle, tabs::TabHandle>;
 
   ~SplitViewBrowserData() override;
@@ -36,7 +33,8 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   bool IsTabTiled(const tabs::TabHandle& tab) const;
 
   std::optional<Tile> GetTile(const tabs::TabHandle& tab) const;
-  const std::vector<Tile> tiles(TilePassKey) const { return tiles_; }
+
+  const std::vector<Tile>& tiles() const { return tiles_; }
 
   void AddObserver(SplitViewBrowserDataObserver* observer);
   void RemoveObserver(SplitViewBrowserDataObserver* observer);

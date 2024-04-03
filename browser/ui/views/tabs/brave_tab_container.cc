@@ -13,12 +13,17 @@
 
 #include "base/check_is_test.h"
 #include "base/containers/flat_map.h"
+#include "base/feature_list.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -26,7 +31,9 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 #include "chrome/grit/theme_resources.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/paint_recorder.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/image_skia_operations.h"
@@ -256,6 +263,38 @@ void BraveTabContainer::UpdateLayoutOrientation() {
   InvalidateLayout();
 }
 
+void BraveTabContainer::PaintBoundingBoxForTiles(gfx::Canvas& canvas) {
+  auto* split_view_data =
+      SplitViewBrowserData::FromBrowser(tab_slot_controller_->GetBrowser());
+  base::ranges::for_each(split_view_data->tiles(), [&](const auto& tile) {
+    PaintBoundingBoxForTile(canvas, tile);
+  });
+}
+
+void BraveTabContainer::PaintBoundingBoxForTile(
+    gfx::Canvas& canvas,
+    const SplitViewBrowserData::Tile& tile) {
+  auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
+  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first);
+  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second);
+  CHECK(controller_->IsValidModelIndex(tab1_index));
+  CHECK(controller_->IsValidModelIndex(tab2_index));
+
+  gfx::Rect bounding_rects;
+  for (auto i : {tab1_index, tab2_index}) {
+    bounding_rects.Union(GetTabAtModelIndex(i)->bounds());
+  }
+  // TODO(sko) This might need fine tune with layout adjustments.
+  bounding_rects.Inset(gfx::Insets::VH(1, 0));
+
+  constexpr auto kRadius = 12.f;  // same value with --leo-radius-l
+
+  cc::PaintFlags flags;
+  auto* cp = GetColorProvider();
+  flags.setColor(cp->GetColor(kColorBraveSplitViewTileBackground));
+  canvas.DrawRoundRect(bounding_rects, kRadius, flags);
+}
+
 void BraveTabContainer::OnUnlockLayout() {
   layout_locked_ = false;
 
@@ -293,6 +332,14 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
   }
 
   std::stable_sort(orderable_children.begin(), orderable_children.end());
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+    ui::PaintRecorder recorder(paint_info.context(),
+                               paint_info.paint_recording_size(),
+                               paint_info.paint_recording_scale_x(),
+                               paint_info.paint_recording_scale_y(), nullptr);
+    PaintBoundingBoxForTiles(*recorder.canvas());
+  }
 
   for (const ZOrderableTabContainerElement& child : orderable_children) {
     child.view()->Paint(paint_info);

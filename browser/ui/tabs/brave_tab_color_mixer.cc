@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/tabs/brave_vertical_tab_color_mixer.h"
+#include "brave/browser/ui/tabs/brave_tab_color_mixer.h"
 
 #include "base/containers/fixed_flat_map.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -63,8 +63,8 @@ ui::ColorTransform GetCustomColorOrDefaultColor(
 
 namespace tabs {
 
-void AddBraveVerticalTabLightThemeColorMixer(ui::ColorProvider* provider,
-                                             const ui::ColorProviderKey& key) {
+void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
+                                     const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
   static const auto kDefaultColorMap =
@@ -80,6 +80,7 @@ void AddBraveVerticalTabLightThemeColorMixer(ui::ColorProvider* provider,
           {kColorBraveVerticalTabNTBTextColor, SkColorSetRGB(0x6B, 0x70, 0x84)},
           {kColorBraveVerticalTabNTBShortcutTextColor,
            SkColorSetRGB(0x85, 0x89, 0x89)},
+          {kColorBraveSplitViewTileBackground, SkColorSetRGB(0xDA, 0xDF, 0xD1)},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
     mixer[color_id] =
@@ -87,8 +88,8 @@ void AddBraveVerticalTabLightThemeColorMixer(ui::ColorProvider* provider,
   }
 }
 
-void AddBraveVerticalTabDarkThemeColorMixer(ui::ColorProvider* provider,
-                                            const ui::ColorProviderKey& key) {
+void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
+                                    const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
   static const auto kDefaultColorMap =
@@ -104,6 +105,7 @@ void AddBraveVerticalTabDarkThemeColorMixer(ui::ColorProvider* provider,
           {kColorBraveVerticalTabNTBTextColor, SkColorSetRGB(0x8C, 0x90, 0xA1)},
           {kColorBraveVerticalTabNTBShortcutTextColor,
            SkColorSetRGB(0x68, 0x6D, 0x7D)},
+          {kColorBraveSplitViewTileBackground, SkColorSetRGB(0x21, 0x27, 0x2A)},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
     auto color =
