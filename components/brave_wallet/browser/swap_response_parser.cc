@@ -471,22 +471,18 @@ mojom::LiFiStepEstimatePtr ParseEstimate(
     result->gas_costs.push_back(std::move(gas_cost));
   }
 
-  if (!value.fee_costs) {
-    return result;
+  if (value.fee_costs) {
+    for (const auto& fee_cost_value : *value.fee_costs) {
+      auto fee_cost = mojom::LiFiFeeCost::New();
+      fee_cost->name = fee_cost_value.name;
+      fee_cost->description = fee_cost_value.description;
+      fee_cost->percentage = fee_cost_value.percentage;
+      fee_cost->token = ParseToken(fee_cost_value.token);
+      fee_cost->amount = fee_cost_value.amount;
+      fee_cost->included = fee_cost_value.included;
+      result->fee_costs->push_back(std::move(fee_cost));
+    }
   }
-
-  std::vector<mojom::LiFiFeeCostPtr> fee_costs = {};
-  for (const auto& fee_cost_value : *value.fee_costs) {
-    auto fee_cost = mojom::LiFiFeeCost::New();
-    fee_cost->name = fee_cost_value.name;
-    fee_cost->description = fee_cost_value.description;
-    fee_cost->percentage = fee_cost_value.percentage;
-    fee_cost->token = ParseToken(fee_cost_value.token);
-    fee_cost->amount = fee_cost_value.amount;
-    fee_cost->included = fee_cost_value.included;
-    fee_costs.push_back(std::move(fee_cost));
-  }
-  result->fee_costs = std::move(fee_costs);
 
   return result;
 }
