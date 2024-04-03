@@ -1452,20 +1452,19 @@ TEST_F(SwapServiceUnitTest, GetLiFiTransaction) {
 TEST_F(SwapServiceUnitTest, GetLiFiQuoteError) {
   std::string error = R"(
     {
-      "message": "Invalid request"
+      "message": "Invalid request",
+      "code": "1000"
     })";
   SetErrorInterceptor(error);
 
   base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
 
-  auto lifi_error = mojom::LiFiError::New();
-  lifi_error->message = "Invalid request";
-
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
-                            EqualsMojo(mojom::SwapFeesPtr()),
-                            EqualsMojo(mojom::SwapErrorUnion::NewLifiError(
-                                std::move(lifi_error))),
-                            ""));
+  EXPECT_CALL(
+      callback,
+      Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
+          EqualsMojo(mojom::SwapFeesPtr()),
+          EqualsMojo(mojom::LiFiError::New(
+              "Invalid request", mojom::LiFiErrorCode::kDefaultError))));
 
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(mojom::CoinType::ETH,
@@ -1479,19 +1478,18 @@ TEST_F(SwapServiceUnitTest, GetLiFiQuoteError) {
 TEST_F(SwapServiceUnitTest, GetLiFiTransactionError) {
   std::string error = R"(
     {
-      "message": "Invalid request"
+      "message": "Invalid request",
+      "code": "1000"
     })";
   SetErrorInterceptor(error);
 
   base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
 
-  auto lifi_error = mojom::LiFiError::New();
-  lifi_error->message = "Invalid request";
-
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
-                            EqualsMojo(mojom::SwapErrorUnion::NewLifiError(
-                                std::move(lifi_error))),
-                            ""));
+  EXPECT_CALL(
+      callback,
+      Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
+          EqualsMojo(mojom::LiFiError::New(
+              "Invalid request", mojom::LiFiErrorCode::kDefaultError))));
 
   auto quote = GetCannedLiFiQuote();
   swap_service_->GetTransaction(
