@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/sync/service/brave_sync_service_impl.h"
+
 #include <utility>
 
 #include "base/base64.h"
@@ -14,7 +16,6 @@
 #include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/history/core/browser/sync/brave_history_delete_directives_model_type_controller.h"
 #include "brave/components/history/core/browser/sync/brave_history_model_type_controller.h"
-#include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "brave/components/sync/test/brave_mock_sync_engine.h"
 #include "build/build_config.h"
@@ -111,7 +112,7 @@ class BraveSyncServiceImplTest : public testing::Test {
 
     std::unique_ptr<SyncClientMock> sync_client =
         sync_service_impl_bundle_.CreateSyncClientMock();
-    ON_CALL(*sync_client, CreateDataTypeControllers(_))
+    ON_CALL(*sync_client, CreateModelTypeControllers(_))
         .WillByDefault(Return(ByMove(std::move(controllers))));
 
     auto sync_service_delegate(std::make_unique<SyncServiceImplDelegateMock>());
