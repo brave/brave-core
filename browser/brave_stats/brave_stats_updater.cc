@@ -109,11 +109,14 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
     usage_server_ = BUILDFLAG(BRAVE_USAGE_SERVER);
   }
 
+  std::optional<std::string> day_zero_variant;
+  if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+    day_zero_variant = features::kBraveDayZeroExperimentVariant.Get();
+  }
   general_browser_usage_p3a_ =
       std::make_unique<misc_metrics::GeneralBrowserUsage>(
-          pref_service,
-          base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment),
-          first_run::IsChromeFirstRun(), GetFirstRunTime(pref_service));
+          pref_service, day_zero_variant, first_run::IsChromeFirstRun(),
+          GetFirstRunTime(pref_service));
 
   if (profile_manager != nullptr) {
     g_browser_process->profile_manager()->AddObserver(this);
