@@ -1293,7 +1293,7 @@ public class BraveRewardsPanel
         NoUnderlineClickableSpan resetClickableSpan =
                 new NoUnderlineClickableSpan(
                         mActivity,
-                        R.color.brave_blue_tint_color,
+                        R.color.rewards_panel_notification_secondary_text_color,
                         (textView) -> {
                             mBraveRewardsNativeWorker.resetTheWholeState();
                         });
