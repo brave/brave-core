@@ -69,7 +69,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/browser/infobars/brave_wayback_machine_delegate_impl.h"
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -157,7 +157,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  BraveWaybackMachineDelegateImpl::AttachTabHelperIfNeeded(web_contents);
+  BraveWaybackMachineTabHelper::CreateIfNeeded(web_contents);
 #endif
 
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(

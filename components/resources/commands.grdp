@@ -430,6 +430,9 @@
   <message name="IDS_IDC_BRAVE_SEND_TAB_TO_SELF">
     Send tab to self
   </message>
+  <message name="IDS_IDC_SHOW_WAYBACK_MACHINE_BUBBLE">
+    Show Wayback Machine bubble
+  </message>
 
   <!-- Commander composite commands -->
   <message name="IDS_COMMANDER_OPEN_BOOKMARK" desc="Text for the command to begin opening a bookmark">

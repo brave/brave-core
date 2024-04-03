@@ -24,6 +24,7 @@
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -221,6 +222,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForSidebar();
   UpdateCommandForBraveVPN();
   UpdateCommandForPlaylist();
+  UpdateCommandForWaybackMachine();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(browser_->profile())) {
     brave_vpn_pref_change_registrar_.Init(browser_->profile()->GetPrefs());
@@ -365,6 +367,12 @@ void BraveBrowserCommandController::UpdateCommandForPlaylist() {
         IDC_SHOW_PLAYLIST_BUBBLE,
         browser_->is_type_normal() && !browser_->profile()->IsOffTheRecord());
   }
+#endif
+}
+
+void BraveBrowserCommandController::UpdateCommandForWaybackMachine() {
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  UpdateCommandEnabled(IDC_SHOW_WAYBACK_MACHINE_BUBBLE, true);
 #endif
 }
 
@@ -559,6 +567,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ShowPlaylistBubble(&*browser_);
 #else
       NOTREACHED() << " This command shouldn't be enabled";
+#endif
+      break;
+    case IDC_SHOW_WAYBACK_MACHINE_BUBBLE:
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+      brave::ShowWaybackMachineBubble(&*browser_);
 #endif
       break;
     case IDC_GROUP_TABS_ON_CURRENT_ORIGIN:
