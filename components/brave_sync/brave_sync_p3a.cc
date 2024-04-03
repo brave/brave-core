@@ -27,7 +27,7 @@ void RecordEnabledTypes(bool sync_everything_enabled,
       selected_types.HasAll(all_brave_supported_types)) {
     // Sync All
     sample = EnabledTypesAnswer::kAllTypes;
-  } else if (selected_types.Empty() ||
+  } else if (selected_types.empty() ||
              selected_types ==
                  UserSelectableTypeSet({UserSelectableType::kBookmarks})) {
     // Bookmarks or no types

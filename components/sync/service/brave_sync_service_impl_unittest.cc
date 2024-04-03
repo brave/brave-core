@@ -592,7 +592,7 @@ TEST_F(BraveSyncServiceImplTest, OnlyBookmarksAfterSetup) {
       brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
   auto selected_types =
       brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes();
-  EXPECT_EQ(selected_types.Size(), 1u);
+  EXPECT_EQ(selected_types.size(), 1u);
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
 
   OSCryptMocker::TearDown();
