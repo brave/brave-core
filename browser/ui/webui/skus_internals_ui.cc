@@ -123,8 +123,7 @@ void SkusInternalsUI::GetLeoState(GetLeoStateCallback callback) {
 base::Value::Dict SkusInternalsUI::GetOrderInfo(
     const std::string& location) const {
   base::Value::Dict dict;
-  const auto& skus_state =
-      local_state_->GetDict(skus::prefs::kSkusState);
+  const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
   for (const auto kv : skus_state) {
     if (!base::StartsWith(kv.first, "skus:")) {
       continue;
