@@ -13,7 +13,10 @@ const util = require('./util')
 // This guard is used to ensure that we don't have a partial or broken checkout
 // of depot_tools.
 const depotToolsGuard = new ActionGuard(
-  path.join(path.dirname(config.depotToolsDir), `${path.basename(config.depotToolsDir)}_install.guard`),
+  path.join(
+    path.dirname(config.depotToolsDir),
+    `${path.basename(config.depotToolsDir)}_install.guard`
+  ),
   () => {
     if (fs.existsSync(config.depotToolsDir)) {
       Log.status('detected incomplete depot_tools install. Cleaning up...')
@@ -40,7 +43,7 @@ function readEnforcedDepotToolsRef() {
     return null
   }
   const ref = fs.readFileSync(disableAutoUpdateFilePath, 'utf8').trim()
-  const isRefValid = /^[a-f0-9]{40}$|^refs\/tags\/.*$|^origin\/.*$/.test(ref);
+  const isRefValid = /^[a-f0-9]{40}$|^refs\/tags\/.*$|^origin\/.*$/.test(ref)
   return isRefValid ? ref : null
 }
 
@@ -61,11 +64,13 @@ function installDepotTools(options = config.defaultOptions) {
 
   // If we're modifying depot_tools reference, it's important to ensure a clean
   // checkout to re-bootstrap CIPD, Python and other dependencies.
-  if (enforcedDepotToolsRef !== readEnforcedDepotToolsRef() &&
-      fs.existsSync(config.depotToolsDir)) {
+  if (
+    enforcedDepotToolsRef !== readEnforcedDepotToolsRef() &&
+    fs.existsSync(config.depotToolsDir)
+  ) {
     Log.status(
       'depot_tools ref is updated. Removing existing checkout to ' +
-      're-bootstrap all dependencies.'
+        're-bootstrap all dependencies.'
     )
     fs.rmSync(config.depotToolsDir, { recursive: true })
   }
@@ -84,27 +89,45 @@ function installDepotTools(options = config.defaultOptions) {
 
   if (enforcedDepotToolsRef !== readEnforcedDepotToolsRef()) {
     if (enforcedDepotToolsRef) {
-      Log.progressScope(`switch depot_tools to ${enforcedDepotToolsRef}`, () => {
-        depotToolsGuard.run(() => {
-          util.fetchAndCheckoutRef(config.depotToolsDir, enforcedDepotToolsRef)
-          // Write the enforced depot_tools ref to .disable_auto_update file.
-          writeEnforcedDepotToolsRef(enforcedDepotToolsRef)
-          // Bootstrap CIPD, Python and other dependencies manually.
-          if (process.platform === 'win32') {
-            util.run(path.join(config.depotToolsDir, 'cipd_bin_setup.bat'), [], options)
-            util.run(path.join(config.depotToolsDir, 'bootstrap', 'win_tools.bat'), [], options)
-          } else {
-            util.run(path.join(config.depotToolsDir, 'ensure_bootstrap'), [], options)
-          }
-        })
-      })
+      Log.progressScope(
+        `switch depot_tools to ${enforcedDepotToolsRef}`,
+        () => {
+          depotToolsGuard.run(() => {
+            util.fetchAndCheckoutRef(
+              config.depotToolsDir,
+              enforcedDepotToolsRef
+            )
+            // Write the enforced depot_tools ref to .disable_auto_update file.
+            writeEnforcedDepotToolsRef(enforcedDepotToolsRef)
+            // Bootstrap CIPD, Python and other dependencies manually.
+            if (process.platform === 'win32') {
+              util.run(
+                path.join(config.depotToolsDir, 'cipd_bin_setup.bat'),
+                [],
+                options
+              )
+              util.run(
+                path.join(config.depotToolsDir, 'bootstrap', 'win_tools.bat'),
+                [],
+                options
+              )
+            } else {
+              util.run(
+                path.join(config.depotToolsDir, 'ensure_bootstrap'),
+                [],
+                options
+              )
+            }
+          })
+        }
+      )
     } else {
       // Remove the .disable_auto_update file to re-enable auto-updates.
       writeEnforcedDepotToolsRef(null)
     }
   }
 
-  const ninjaLogCfgPath = path.join(config.depotToolsDir, 'ninjalog.cfg');
+  const ninjaLogCfgPath = path.join(config.depotToolsDir, 'ninjalog.cfg')
   if (!fs.existsSync(ninjaLogCfgPath)) {
     // Create a ninja config to prevent autoninja from calling "cipd auth-info"
     // each time. See for details:
@@ -113,13 +136,12 @@ function installDepotTools(options = config.defaultOptions) {
       'is-googler': false,
       'version': 3,
       'countdown': 10,
-      'opt-in': false,
-    };
+      'opt-in': false
+    }
     fs.writeFileSync(ninjaLogCfgPath, JSON.stringify(ninjaLogCfgConfig))
   }
 }
 
-
 module.exports = {
-  installDepotTools,
+  installDepotTools
 }
