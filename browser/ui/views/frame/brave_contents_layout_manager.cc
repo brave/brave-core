@@ -12,11 +12,11 @@
 
 BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
 
-void BraveContentsLayoutManager::Layout(views::View* contents_container) {
+void BraveContentsLayoutManager::LayoutImpl() {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) ||
       !secondary_contents_view_ || !devtools_view_ ||
       !secondary_contents_view_->GetVisible()) {
-    ContentsLayoutManager::Layout(contents_container);
+    ContentsLayoutManager::LayoutImpl();
     return;
   }
 
@@ -37,7 +37,7 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
     devtools_view->SetBoundsRect(new_devtools_bounds);
   };
 
-  gfx::Rect bounds = contents_container->GetLocalBounds();
+  gfx::Rect bounds = host_view()->GetLocalBounds();
   bounds.set_width(bounds.width() / 2);
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
@@ -49,7 +49,7 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   // In case of odd width, give the remaining
   // width to the secondary contents view.
   bounds.set_x(bounds.width());
-  bounds.set_width(contents_container->width() - bounds.width());
+  bounds.set_width(host_view()->width() - bounds.width());
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, contents_view_, devtools_view_);
   } else {
