@@ -16,6 +16,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
@@ -73,7 +74,8 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             BottomControlsContentDelegate contentDelegate,
             TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
-            ObservableSupplier<Integer> constraintsSupplier) {
+            ObservableSupplier<Integer> constraintsSupplier,
+            Supplier<Boolean> readAloudRestoringSupplier) {
         super(
                 activity,
                 windowAndroid,
@@ -86,7 +88,8 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
                 contentDelegate,
                 tabObscuringHandler,
                 overlayPanelVisibilitySupplier,
-                constraintsSupplier);
+                constraintsSupplier,
+                readAloudRestoringSupplier);
 
         mTabSwitcherLongclickListener = tabSwitcherLongclickListener;
         mTabProvider = tabProvider;
