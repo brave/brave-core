@@ -1,0 +1,41 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/config/features.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("skus") {
+  sources = [
+    "skus_internals_ui.h",
+    "skus_internals_ui.mm",
+  ]
+
+  deps = [
+    "//brave/components/constants",
+    "//brave/components/l10n/common",
+    "//brave/components/resources:static_resources",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/browser/resources:generated_resources",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//brave/ios/browser/skus",
+    "//components/prefs",
+    "//components/resources",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/ui/util:util",
+    "//ios/web",
+    "//ios/web:resources",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+    "//ios/web/public/webui",
+    "//ios/web/webui",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/js:resources",
+    "//ui/base",
+    "//ui/base/clipboard",
+  ]
+}
