@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
-import { WalletButton } from '../../shared/style'
+import { WalletButton, Row } from '../../shared/style'
 import {
   layoutPanelWidth,
   layoutSmallWidth
@@ -15,12 +15,13 @@ import {
 export const StyledWrapper = styled.div<{
   yPosition?: number
   right?: number
+  padding?: string
 }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8px 8px 0px 8px;
+  padding: ${(p) => p.padding ?? '8px 8px 0px 8px'};
   background-color: ${leo.color.container.background};
   border-radius: 8px;
   border: 1px solid ${leo.color.divider.subtle};
@@ -47,6 +48,7 @@ export const PopupButton = styled(WalletButton)<{
   padding: 12px 8px;
   margin: 0px 0px 8px 0px;
   background-color: transparent;
+  width: 100%;
   &:hover {
     background-color: ${leo.color.divider.subtle};
   }
@@ -98,4 +100,12 @@ export const LineChartButton = styled(PopupButton)`
   &:hover {
     background-color: ${leo.color.page.background};
   }
+`
+
+export const SectionLabel = styled(Row)`
+  background-color: ${leo.color.page.background};
+  padding: 4px 8px;
+  font: ${leo.font.components.label};
+  text-transform: capitalize;
+  color: ${leo.color.text.tertiary};
 `
