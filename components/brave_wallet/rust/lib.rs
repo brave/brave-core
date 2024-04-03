@@ -18,7 +18,7 @@ use bech32::FromBase32;
 use ffi::{Bech32DecodeVariant};
 use bech32::Error as Bech32Error;
 
-use zip32::ChildIndex as OrchardChildIndex;
+use orchard::zip32::ChildIndex as OrchardChildIndex;
 use orchard::keys::Scope as OrchardScope;
 use orchard::keys::FullViewingKey as OrchardFVK;
 use orchard::zip32::Error as Zip32Error;
@@ -253,7 +253,7 @@ fn generate_orchard_extended_spending_key_from_seed(
     bytes: &[u8]
 ) -> Box<OrchardExtendedSpendingKeyResult> {
   Box::new(OrchardExtendedSpendingKeyResult::from(
-    ExtendedSpendingKey::master(&bytes).map_err(|err| Error::from(err)))
+    ExtendedSpendingKey::master(&bytes).map_err(Error::from))
   )
 }
 
@@ -381,7 +381,7 @@ impl OrchardExtendedSpendingKey {
         Box::new(OrchardExtendedSpendingKeyResult::from(
             self.0.derive_child(
                 OrchardChildIndex::hardened(index))
-                .map_err(|err| Error::from(err))))
+                .map_err(Error::from)))
     }
 
     fn external_address(

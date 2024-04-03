@@ -23,7 +23,7 @@ constexpr uint32_t kTestnetPurpose = 1u;
 
 ZCashKeyring::ZCashKeyring(bool testnet) : testnet_(testnet) {}
 
-ZCashKeyring::~ZCashKeyring() {}
+ZCashKeyring::~ZCashKeyring() = default;
 
 mojom::ZCashAddressPtr ZCashKeyring::GetTransparentAddress(
     const mojom::ZCashKeyId& key_id) {
@@ -50,10 +50,10 @@ mojom::ZCashAddressPtr ZCashKeyring::GetShieldedAddress(
     return nullptr;
   }
 
-  auto addr_bytes = key_id.change ? esk->GetPublicDevirsifiedAddress(
-                                        key_id.index, OrchardKind::Internal)
-                                  : esk->GetPublicDevirsifiedAddress(
-                                        key_id.index, OrchardKind::External);
+  auto addr_bytes =
+      key_id.change
+          ? esk->GetDiversifiedAddress(key_id.index, OrchardKind::Internal)
+          : esk->GetDiversifiedAddress(key_id.index, OrchardKind::External);
   if (!addr_bytes) {
     return nullptr;
   }
@@ -79,10 +79,10 @@ std::optional<std::string> ZCashKeyring::GetUnifiedAddress(
   }
 
   auto orchard_addr_bytes =
-      zcash_key_id.change ? esk->GetPublicDevirsifiedAddress(
-                                zcash_key_id.index, OrchardKind::Internal)
-                          : esk->GetPublicDevirsifiedAddress(
-                                zcash_key_id.index, OrchardKind::External);
+      zcash_key_id.change ? esk->GetDiversifiedAddress(zcash_key_id.index,
+                                                       OrchardKind::Internal)
+                          : esk->GetDiversifiedAddress(zcash_key_id.index,
+                                                       OrchardKind::External);
   if (!orchard_addr_bytes) {
     return std::nullopt;
   }
@@ -121,8 +121,8 @@ std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkeyHash(
   return Hash160(hd_key_base->GetPublicKeyBytes());
 }
 
-std::optional<std::array<uint8_t, 43>> ZCashKeyring::GetOrchardRawBytes(
-    const mojom::ZCashKeyId& key_id) {
+std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
+ZCashKeyring::GetOrchardRawBytes(const mojom::ZCashKeyId& key_id) {
   if (!orchard_key_) {
     NOTREACHED();
     return std::nullopt;
@@ -133,11 +133,10 @@ std::optional<std::array<uint8_t, 43>> ZCashKeyring::GetOrchardRawBytes(
     return std::nullopt;
   }
 
-  auto orchard_addr_bytes = key_id.change
-                                ? esk->GetPublicDevirsifiedAddress(
-                                      key_id.index, OrchardKind::Internal)
-                                : esk->GetPublicDevirsifiedAddress(
-                                      key_id.index, OrchardKind::External);
+  auto orchard_addr_bytes =
+      key_id.change
+          ? esk->GetDiversifiedAddress(key_id.index, OrchardKind::Internal)
+          : esk->GetDiversifiedAddress(key_id.index, OrchardKind::External);
   return orchard_addr_bytes;
 }
 
@@ -189,26 +188,23 @@ std::optional<std::vector<uint8_t>> ZCashKeyring::SignMessage(
 
 void ZCashKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                       const std::string& hd_path) {
-  if (!seed.empty()) {
-    if (auto master_key = HDKey::GenerateFromSeed(seed)) {
-      root_ = master_key->DeriveChildFromPath(hd_path);
-    }
+  HDKeyring::ConstructRootHDKey(seed, hd_path);
 
-    if (IsZCashShieldedEnabled()) {
-      auto orchard_key = HDKeyZip32::GenerateFromSeed(seed);
-      if (!orchard_key) {
-        NOTREACHED();
-        return;
-      }
-      orchard_key = orchard_key->DeriveHardenedChild(kZip32Purpose);
-      if (!orchard_key) {
-        NOTREACHED();
-        return;
-      }
-      orchard_key_ = orchard_key->DeriveHardenedChild(
-          testnet_ ? kTestnetPurpose : static_cast<uint32_t>(mojom::CoinType::ZEC));
-      DCHECK(orchard_key_);
+  if (!seed.empty() && IsZCashShieldedEnabled()) {
+    auto orchard_key = HDKeyZip32::GenerateFromSeed(seed);
+    if (!orchard_key) {
+      NOTREACHED();
+      return;
     }
+    orchard_key = orchard_key->DeriveHardenedChild(kZip32Purpose);
+    if (!orchard_key) {
+      NOTREACHED();
+      return;
+    }
+    orchard_key_ = orchard_key->DeriveHardenedChild(
+        testnet_ ? kTestnetPurpose
+                 : static_cast<uint32_t>(mojom::CoinType::ZEC));
+    DCHECK(orchard_key_);
   }
 }
 
