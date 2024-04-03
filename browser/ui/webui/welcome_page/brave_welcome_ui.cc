@@ -90,7 +90,7 @@ void OpenJapanWelcomePage(Profile* profile) {
         GURL("https://brave.com/ja/desktop-ntp-tutorial"), content::Referrer(),
         WindowOpenDisposition::NEW_BACKGROUND_TAB,
         ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
-    browser->OpenURL(open_params);
+    browser->OpenURL(open_params, /*navigation_handle_callback=*/{});
   }
 }
 

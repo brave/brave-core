@@ -289,7 +289,8 @@ void DomainBlockNavigationThrottle::RestartNavigation(const GURL& url) {
                        if (!web_contents) {
                          return;
                        }
-                       web_contents->OpenURL(params);
+                       web_contents->OpenURL(params,
+                                             /*navigation_handle_callback=*/{});
                      },
                      contents->GetWeakPtr(), std::move(params)));
 }
