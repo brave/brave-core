@@ -26,14 +26,25 @@
       var context = canvas.getContext('2d');
       context.font = '30px Arial';
       context.fillText('This is the way.', 50, 100);
+
       // leave page 2 empty
+
       canvas = document.getElementById('page3');
       context = canvas.getContext('2d');
       context.font = '30px Arial';
       context.fillText('I have spoken.', 50, 100);
+
+      // smaller text with higher DPI
       canvas = document.getElementById('page4');
+      const dpr = 2;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
       context = canvas.getContext('2d');
-      context.font = '30px Arial';
+      context.scale(dpr, dpr);
+      context.font = '15px Arial';
       context.fillText('Wherever I Go, He Goes.', 50, 100);
     </script>
 </body>

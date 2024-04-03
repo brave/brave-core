@@ -8,4 +8,7 @@ brave_services_printing_sources = [
   "//brave/services/printing/pdf_to_bitmap_converter.h",
 ]
 
-brave_services_printing_deps = [ "//components/discardable_memory/client" ]
+brave_services_printing_deps = [
+  "//components/discardable_memory/client",
+  "//printing:printing_base",
+]
