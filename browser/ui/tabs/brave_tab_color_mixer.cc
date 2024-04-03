@@ -34,6 +34,8 @@ ChromeColorIds GetMappedChromeColorId(BraveColorIds brave_color_id) {
                kColorTabForegroundInactiveFrameActive},
               {kColorBraveVerticalTabNTBShortcutTextColor,
                kColorTabForegroundInactiveFrameActive},
+              {kColorBraveSplitViewTileBackground,
+               kColorTabBackgroundInactiveFrameActive},
           });
   return kChromiumColorMap.at(brave_color_id);
 }
