@@ -234,7 +234,7 @@ RegisterPolymerTemplateModifications({
     // Add Content item
     const contentEl = createMenuElement(
       loadTimeData.getString('contentSettingsContentSection'),
-      '/brave-content',
+      '/braveContent',
       'content-big',
       'content',
     )
