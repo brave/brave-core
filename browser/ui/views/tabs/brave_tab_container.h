@@ -9,9 +9,11 @@
 #include <memory>
 #include <optional>
 
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_context.h"
+#include "ui/gfx/canvas.h"
 
 class BraveTabContainer : public TabContainerImpl {
   METADATA_HEADER(BraveTabContainer, TabContainerImpl)
@@ -94,6 +96,10 @@ class BraveTabContainer : public TabContainerImpl {
   };
 
   void UpdateLayoutOrientation();
+
+  void PaintBoundingBoxForTiles(gfx::Canvas& canvas);
+  void PaintBoundingBoxForTile(gfx::Canvas& canvas,
+                               const SplitViewBrowserData::Tile& tile);
 
   static gfx::ImageSkia* GetDropArrowImage(
       BraveTabContainer::DropArrow::Position pos,

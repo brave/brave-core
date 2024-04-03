@@ -46,7 +46,7 @@ void SplitViewTabStripModelAdapter::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  if (split_view_browser_data_->tiles({}).empty()) {
+  if (split_view_browser_data_->tiles().empty()) {
     return;
   }
 
@@ -84,7 +84,7 @@ void SplitViewTabStripModelAdapter::OnTabInserted(
 
   // Find tiles that need to be broken
   std::vector<tabs::TabHandle> tiles_to_break;
-  for (const auto& [tab1, tab2] : split_view_browser_data_->tiles({})) {
+  for (const auto& [tab1, tab2] : split_view_browser_data_->tiles()) {
     auto lower_index = model_->GetIndexOfTab(tab1);
     auto higher_index = model_->GetIndexOfTab(tab2);
     CHECK_LT(lower_index, higher_index);

@@ -119,6 +119,9 @@
     E_CPONLY(kColorBraveVerticalTabNTBTextColor)        \
     E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
 
+#define BRAVE_SPLIT_VIEW_COLOR_IDS \
+    E_CPONLY(kColorBraveSplitViewTileBackground)
+
 #define BRAVE_PLAYLIST_COLOR_IDS                                      \
     E_CPONLY(kColorBravePlaylistAddedIcon)                            \
     E_CPONLY(kColorBravePlaylistCheckedIcon)                          \
@@ -140,6 +143,7 @@
     BRAVE_SPEEDREADER_COLOR_IDS       \
     BRAVE_VPN_COLOR_IDS               \
     BRAVE_VERTICAL_TAB_COLOR_IDS      \
+    BRAVE_SPLIT_VIEW_COLOR_IDS        \
     BRAVE_PLAYLIST_COLOR_IDS          \
     BRAVE_OMNIBOX_COLOR_IDS           \
     BRAVE_WAYBACK_MACHINE_COLOR_IDS
