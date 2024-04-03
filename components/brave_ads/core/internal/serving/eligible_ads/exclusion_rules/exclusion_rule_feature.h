@@ -17,34 +17,40 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kExclusionRulesFeature);
 
-inline constexpr base::FeatureParam<bool> kShouldExcludeAdIfConverted{
-    &kExclusionRulesFeature, "should_exclude_ad_if_converted", true};
-
-// Set to 0 to never exclude a dismissed ad.
+// Set to 0 to never exclude an ad if dismissed within the time window.
 inline constexpr base::FeatureParam<base::TimeDelta>
     kShouldExcludeAdIfDismissedWithinTimeWindow{
         &kExclusionRulesFeature,
         "should_exclude_ad_if_dismissed_within_time_window", base::Hours(0)};
 
-// Set to 0 to never exclude a landed ad.
+// Set to 0 to never exclude an ad if landed within the time window.
 inline constexpr base::FeatureParam<base::TimeDelta>
     kShouldExcludeAdIfLandedOnPageWithinTimeWindow{
         &kExclusionRulesFeature,
         "should_exclude_ad_if_landed_on_page_within_time_window",
         base::Hours(0)};
 
-// Set to 0 to never exclude a creative instance.
+// Set to 0 to never exclude an ad if the creative instance was shown within the
+// time window.
 inline constexpr base::FeatureParam<base::TimeDelta>
     kShouldExcludeAdIfCreativeInstanceWithinTimeWindow{
         &kExclusionRulesFeature,
         "should_exclude_ad_if_creative_instance_within_time_window",
         base::Hours(1)};
 
-// Set to 0 to never exceed the per hour cap for a creative instance.
+// Set to 0 to never exclude an ad if the creative instance exceeds the per hour
+// cap.
 inline constexpr base::FeatureParam<int>
     kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap{
         &kExclusionRulesFeature,
         "should_exclude_ad_if_creative_instance_exceeds_per_hour_cap", 1};
+
+// Set to 0 to never exclude an ad if the creative set exceeds the conversion
+// cap.
+inline constexpr base::FeatureParam<int>
+    kShouldExcludeAdIfCreativeSetExceedsConversionCap{
+        &kExclusionRulesFeature,
+        "should_exclude_ad_if_creative_set_exceeds_conversion_cap", 1};
 
 }  // namespace brave_ads
 

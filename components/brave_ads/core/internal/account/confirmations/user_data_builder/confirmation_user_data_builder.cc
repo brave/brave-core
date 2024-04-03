@@ -14,39 +14,16 @@
 
 namespace brave_ads {
 
-namespace {
-
-void BuildFixedUserDataCallback(base::Value::Dict user_data,
-                                base::Value::Dict dynamic_user_data,
-                                BuildConfirmationUserDataCallback callback,
-                                base::Value::Dict fixed_user_data) {
+UserDataInfo BuildConfirmationUserData(const TransactionInfo& transaction,
+                                       base::Value::Dict user_data) {
   UserDataInfo confirmation_user_data;
 
-  confirmation_user_data.dynamic = std::move(dynamic_user_data);
-  confirmation_user_data.fixed = std::move(fixed_user_data);
+  confirmation_user_data.dynamic = BuildDynamicUserData();
+
+  confirmation_user_data.fixed = BuildFixedUserData(transaction);
   confirmation_user_data.fixed.Merge(std::move(user_data));
 
-  std::move(callback).Run(confirmation_user_data);
-}
-
-void BuildDynamicUserDataCallback(const TransactionInfo& transaction,
-                                  base::Value::Dict user_data,
-                                  BuildConfirmationUserDataCallback callback,
-                                  base::Value::Dict dynamic_user_data) {
-  BuildFixedUserData(
-      transaction,
-      base::BindOnce(&BuildFixedUserDataCallback, std::move(user_data),
-                     std::move(dynamic_user_data), std::move(callback)));
-}
-
-}  // namespace
-
-void BuildConfirmationUserData(const TransactionInfo& transaction,
-                               base::Value::Dict user_data,
-                               BuildConfirmationUserDataCallback callback) {
-  BuildDynamicUserData(base::BindOnce(&BuildDynamicUserDataCallback,
-                                      transaction, std::move(user_data),
-                                      std::move(callback)));
+  return confirmation_user_data;
 }
 
 }  // namespace brave_ads

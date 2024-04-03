@@ -88,7 +88,7 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr wallet,
 
 void AdsImpl::Shutdown(ShutdownCallback callback) {
   if (!is_initialized_) {
-    BLOG(0, "Shutdown failed as not initialized");
+    BLOG(0, "Shutdown % failed as not initialized");
     return std::move(callback).Run(/*success=*/false);
   }
 

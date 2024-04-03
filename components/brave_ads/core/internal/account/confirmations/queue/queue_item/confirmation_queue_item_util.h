@@ -6,19 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_QUEUE_ITEM_CONFIRMATION_QUEUE_ITEM_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_QUEUE_ITEM_CONFIRMATION_QUEUE_ITEM_UTIL_H_
 
-#include "base/functional/callback.h"
-
 namespace base {
 class TimeDelta;
 }  // namespace base
 
 namespace brave_ads {
 
+struct ConfirmationInfo;
 struct ConfirmationQueueItemInfo;
-
-using RebuildConfirmationQueueItemDynamicUserDataCallback =
-    base::OnceCallback<void(
-        const ConfirmationQueueItemInfo& confirmation_queue_item)>;
 
 base::TimeDelta CalculateDelayBeforeProcessingConfirmationQueueItem(
     const ConfirmationQueueItemInfo& confirmation_queue_item);
@@ -31,9 +26,11 @@ class ScopedDelayBeforeProcessingConfirmationQueueItemForTesting final {
   ~ScopedDelayBeforeProcessingConfirmationQueueItemForTesting();
 };
 
-void RebuildConfirmationQueueItemDynamicUserData(
-    const ConfirmationQueueItemInfo& confirmation,
-    RebuildConfirmationQueueItemDynamicUserDataCallback callback);
+ConfirmationInfo RebuildConfirmationWithoutDynamicUserData(
+    const ConfirmationInfo& confirmation);
+
+ConfirmationInfo RebuildConfirmationDynamicUserData(
+    const ConfirmationInfo& confirmation);
 
 }  // namespace brave_ads
 

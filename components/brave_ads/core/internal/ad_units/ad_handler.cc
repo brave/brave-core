@@ -8,10 +8,13 @@
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data.h"
 #include "brave/components/brave_ads/core/internal/ad_units/user_data/page_land_user_data.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
@@ -124,8 +127,17 @@ void AdHandler::TriggerSearchResultAdEvent(
 void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {
   CHECK(conversion.IsValid());
 
-  account_->Deposit(conversion.creative_instance_id, conversion.segment,
-                    conversion.ad_type, ConfirmationType::kConversion);
+  BLOG(1, "Converted " << ToString(conversion.action_type) << " "
+                       << ConversionTypeToString(conversion) << " for "
+                       << conversion.ad_type << " with creative instance id "
+                       << conversion.creative_instance_id
+                       << ", creative set id " << conversion.creative_set_id
+                       << ", campaign id " << conversion.campaign_id
+                       << " and advertiser id " << conversion.advertiser_id);
+
+  account_->DepositWithUserData(
+      conversion.creative_instance_id, conversion.segment, conversion.ad_type,
+      ConfirmationType::kConversion, BuildConversionUserData(conversion));
 }
 
 void AdHandler::OnMaybeLandOnPage(const AdInfo& ad,

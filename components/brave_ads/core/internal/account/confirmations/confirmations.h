@@ -18,7 +18,6 @@ namespace brave_ads {
 
 class TokenGeneratorInterface;
 struct TransactionInfo;
-struct UserDataInfo;
 
 class Confirmations final : public ConfirmationQueueDelegate,
                             public RedeemConfirmationDelegate {
@@ -41,9 +40,6 @@ class Confirmations final : public ConfirmationQueueDelegate,
   void Confirm(const TransactionInfo& transaction, base::Value::Dict user_data);
 
  private:
-  void ConfirmCallback(const TransactionInfo& transaction,
-                       const UserDataInfo& user_data);
-
   void NotifyDidConfirm(const ConfirmationInfo& confirmation) const;
   void NotifyFailedToConfirm(const ConfirmationInfo& confirmation) const;
 

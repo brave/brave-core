@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_USER_DATA_BUILDER_FIXED_CONFIRMATION_FIXED_USER_DATA_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_USER_DATA_BUILDER_FIXED_CONFIRMATION_FIXED_USER_DATA_BUILDER_H_
 
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
+#include "base/values.h"
 
 namespace brave_ads {
 
-void BuildFixedUserData(const TransactionInfo& transaction,
-                        BuildUserDataCallback callback);
+struct TransactionInfo;
+
+base::Value::Dict BuildFixedUserData(const TransactionInfo& transaction);
 
 }  // namespace brave_ads
 

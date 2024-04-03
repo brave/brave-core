@@ -81,6 +81,14 @@ bool AdsTabHelper::IsVisible() const {
   return is_web_contents_visible_ && is_browser_active_;
 }
 
+bool AdsTabHelper::IsNewNavigation(
+    content::NavigationHandle* navigation_handle) {
+  CHECK(navigation_handle);
+
+  return ui::PageTransitionIsNewNavigation(
+      navigation_handle->GetPageTransition());
+}
+
 bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
   CHECK(navigation_handle);
 
@@ -149,8 +157,9 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
     return;
   }
 
-  if (is_restoring_) {
-    // Don't notify changes for restored tabs.
+  if (is_restoring_ || !is_new_navigation_) {
+    // Don't notify content changes if the tab was restored or was a previously
+    // committed navigation.
     return;
   }
 
@@ -159,9 +168,11 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
 }
 
 void AdsTabHelper::MaybeNotifyTabContentDidChange() {
-  if (is_restoring_ || redirect_chain_.empty() || is_error_page_) {
-    // Don't notify content changes for tabs that are either restored, have not
-    // finished loading, or are displaying error pages.
+  if (is_restoring_ || !is_new_navigation_ || redirect_chain_.empty() ||
+      is_error_page_) {
+    // Don't notify content changes if the tab was restored, was a previously
+    // committed navigation, the web contents are still loading, or an error
+    // page was displayed.
     return;
   }
 
@@ -237,6 +248,8 @@ void AdsTabHelper::DidStartNavigation(
 
   is_restoring_ =
       navigation_handle->GetRestoreType() == content::RestoreType::kRestored;
+
+  is_new_navigation_ = IsNewNavigation(navigation_handle);
 
   redirect_chain_.clear();
 

@@ -26,6 +26,32 @@ TEST(BraveAdsConfirmationsFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kConfirmationsFeature));
 }
 
+TEST(BraveAdsConfirmationsFeatureTest, ProcessConversionConfirmationAfter) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kConfirmationsFeature, {{"process_conversion_after", "3h"}});
+
+  // Act & Assert
+  EXPECT_EQ(base::Hours(3), kProcessConversionConfirmationAfter.Get());
+}
+
+TEST(BraveAdsConfirmationsFeatureTest,
+     DefaultProcessConversionConfirmationAfter) {
+  // Act & Assert
+  EXPECT_EQ(base::Days(1), kProcessConversionConfirmationAfter.Get());
+}
+
+TEST(BraveAdsConfirmationsFeatureTest,
+     DefaultProcessConversionConfirmationAfterWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kConfirmationsFeature);
+
+  // Act & Assert
+  EXPECT_EQ(base::Days(1), kProcessConversionConfirmationAfter.Get());
+}
+
 TEST(BraveAdsConfirmationsFeatureTest, ProcessConfirmationAfter) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;

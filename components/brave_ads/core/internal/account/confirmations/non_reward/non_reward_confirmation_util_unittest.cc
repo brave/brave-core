@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 
-#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_unittest_util.h"
@@ -29,8 +28,6 @@ class BraveAdsNonRewardConfirmationUtilTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     MockConfirmationUserData();
-
-    AdvanceClockTo(TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
   }
 };
 
@@ -43,21 +40,15 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
-  base::MockCallback<BuildConfirmationUserDataCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([&transaction](const UserDataInfo& user_data) {
-        ConfirmationInfo expected_confirmation;
-        expected_confirmation.transaction_id = kTransactionId;
-        expected_confirmation.creative_instance_id = kCreativeInstanceId;
-        expected_confirmation.type = ConfirmationType::kViewedImpression;
-        expected_confirmation.ad_type = AdType::kNotificationAd;
-        expected_confirmation.created_at = Now();
+  ConfirmationInfo expected_confirmation;
+  expected_confirmation.transaction_id = kTransactionId;
+  expected_confirmation.creative_instance_id = kCreativeInstanceId;
+  expected_confirmation.type = ConfirmationType::kViewedImpression;
+  expected_confirmation.ad_type = AdType::kNotificationAd;
+  expected_confirmation.created_at = Now();
 
-        EXPECT_EQ(expected_confirmation,
-                  BuildNonRewardConfirmation(transaction, user_data));
-      });
-
-  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
+  EXPECT_EQ(expected_confirmation,
+            BuildNonRewardConfirmation(transaction, /*user_data=*/{}));
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,

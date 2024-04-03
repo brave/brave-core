@@ -14,6 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
@@ -153,6 +154,8 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
   bool is_integration_test_ = false;
 
   brave_l10n::test::ScopedDefaultLocale scoped_default_locale_;
+
+  ScopedBrowserVersionSetterForTesting scoped_browser_version_setter_;
 
   std::unique_ptr<Database> database_;
 

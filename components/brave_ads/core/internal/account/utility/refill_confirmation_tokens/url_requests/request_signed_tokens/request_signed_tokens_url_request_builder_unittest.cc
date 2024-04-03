@@ -43,7 +43,7 @@ TEST_F(BraveAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
       R"({"blindedTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q=","shDzMRNpQKrQAfRctVm4l0Ulaoek0spX8iabH1+Vx00=","kMI3fgomSSNcT1N8d3b+AlZXybqA3st3Ks6XhwaSRF4="]})";
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-  EXPECT_EQ(url_request, expected_url_request);
+  EXPECT_EQ(expected_url_request, url_request);
 }
 
 }  // namespace brave_ads

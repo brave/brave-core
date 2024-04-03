@@ -52,8 +52,6 @@ class ConfirmationQueue final : public AdsClientNotifierObserver,
       const ConfirmationQueueItemInfo& confirmation_queue_item);
   void ProcessQueueItem(
       const ConfirmationQueueItemInfo& confirmation_queue_item);
-  void ProcessQueueItemCallback(
-      const ConfirmationQueueItemInfo& confirmation_queue_item);
 
   void SuccessfullyProcessedQueueItem(const ConfirmationInfo& confirmation);
   void SuccessfullyProcessedQueueItemCallback(
