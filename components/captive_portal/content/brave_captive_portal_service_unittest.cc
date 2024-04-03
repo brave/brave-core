@@ -163,7 +163,8 @@ class CaptivePortalServiceTest : public testing::Test,
     ASSERT_TRUE(FetchingURL());
     EXPECT_FALSE(TimerRunning());
 
-    CompleteURLFetch(net_error, status_code, response_headers);
+    CompleteURLFetch(net_error, status_code, /*content_length=*/0,
+                     response_headers);
 
     EXPECT_FALSE(FetchingURL());
     EXPECT_FALSE(TimerRunning());
