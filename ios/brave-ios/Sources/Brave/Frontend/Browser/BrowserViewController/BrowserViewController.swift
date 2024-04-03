@@ -1783,7 +1783,7 @@ public class BrowserViewController: UIViewController {
         // If navigation will start from NTP, tab display url will be nil until
         // didCommit is called and it will cause url bar be empty in that period
         // To fix this when tab display url is empty, webview url is used
-        if tab.url?.displayURL == nil {
+        if tab === tabManager.selectedTab, tab.url?.displayURL == nil {
           if let url = webView.url, !url.isLocal, !InternalURL.isValid(url: url) {
             updateToolbarCurrentURL(url.displayURL)
           }
@@ -1807,6 +1807,13 @@ public class BrowserViewController: UIViewController {
          !InternalURL.isValid(url: url), webView.estimatedProgress > 0 {
         topToolbar.updateProgressBar(Float(webView.estimatedProgress))
       }
+
+      Task {
+        await tab.updateSecureContentState()
+        if self.tabManager.selectedTab === tab {
+          self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
+        }
+      }
     case .title:
       // Ensure that the tab title *actually* changed to prevent repeated calls
       // to navigateInTab(tab:).
@@ -1828,149 +1835,18 @@ public class BrowserViewController: UIViewController {
 
       navigationToolbar.updateForwardStatus(canGoForward)
     case .hasOnlySecureContent:
-      guard let tab = tabManager[webView] else {
-        break
-      }
-
-      if tab.secureContentState == .secure, !webView.hasOnlySecureContent,
-         tab.url?.origin == tab.webView?.url?.origin {
-        if let url = tab.webView?.url, url.isReaderModeURL {
-          break
+      Task {
+        await tab.updateSecureContentState()
+        if tabManager.selectedTab === tab {
+          self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
-        
-        tab.secureContentState = .mixedContent
-      }
-      
-      if let url = tab.webView?.url,
-         InternalURL.isValid(url: url),
-         let internalUrl = InternalURL(url) {
-        
-        if internalUrl.isErrorPage {
-          if ErrorPageHelper.certificateError(for: url) != 0 {
-            // Cert validation takes precedence over all other errors
-            tab.secureContentState = .invalidCert
-          } else if NetworkErrorPageHandler.isNetworkError(errorCode: ErrorPageHelper.errorCode(for: url)) {
-            // Network error takes precedence over missing cert
-            // Because we cannot determine if a cert is missing yet, if we cannot connect to the server
-            // Our network interstitial page shows
-            tab.secureContentState = .localhost
-          } else {
-            // Since it's not a cert error explicitly, and it's not a network error, and the cert is missing (no serverTrust),
-            // then we display .missingSSL
-            tab.secureContentState = .missingSSL
-          }
-        } else if url.isReaderModeURL || InternalURL.isValid(url: url) {
-          tab.secureContentState = .localhost
-        }
-      }
-      
-      if tabManager.selectedTab === tab {
-        updateToolbarSecureContentState(tab.secureContentState)
       }
     case .serverTrust:
-      guard let tab = tabManager[webView] else {
-        break
-      }
-
-      tab.secureContentState = .unknown
-
-      guard let url = webView.url,
-        let serverTrust = webView.serverTrust
-      else {
-        if let url = webView.url {
-          if InternalURL.isValid(url: url),
-            let internalUrl = InternalURL(url),
-            (internalUrl.isAboutURL || internalUrl.isAboutHomeURL) {
-
-            tab.secureContentState = .localhost
-            if tabManager.selectedTab === tab {
-              updateToolbarSecureContentState(.localhost)
-            }
-            break
-          }
-
-          if InternalURL.isValid(url: url),
-            let internalUrl = InternalURL(url),
-            internalUrl.isErrorPage {
-
-            if ErrorPageHelper.certificateError(for: url) != 0 {
-              // Cert validation takes precedence over all other errors
-              tab.secureContentState = .invalidCert
-            } else if NetworkErrorPageHandler.isNetworkError(errorCode: ErrorPageHelper.errorCode(for: url)) {
-              // Network error takes precedence over missing cert
-              // Because we cannot determine if a cert is missing yet, if we cannot connect to the server
-              // Our network interstitial page shows
-              tab.secureContentState = .localhost
-            } else {
-              // Since it's not a cert error explicitly, and it's not a network error, and the cert is missing (no serverTrust),
-              // then we display .missingSSL
-              tab.secureContentState = .missingSSL
-            }
-            
-            if tabManager.selectedTab === tab {
-              updateToolbarSecureContentState(tab.secureContentState)
-            }
-            break
-          }
-
-          if url.isReaderModeURL || InternalURL.isValid(url: url) {
-            tab.secureContentState = .localhost
-            if tabManager.selectedTab === tab {
-              updateToolbarSecureContentState(.localhost)
-            }
-            break
-          }
-
-          // All our checks failed, we show the page as insecure
-          tab.secureContentState = .missingSSL
-        } else {
-          // When there is no URL, it's likely a new tab.
-          tab.secureContentState = .localhost
+      Task {
+        await tab.updateSecureContentState()
+        if self.tabManager.selectedTab === tab {
+          self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
-
-        if tabManager.selectedTab === tab {
-          updateToolbarSecureContentState(tab.secureContentState)
-        }
-        break
-      }
-
-      guard let scheme = url.scheme,
-        let host = url.host
-      else {
-        tab.secureContentState = .unknown
-        self.updateURLBar()
-        return
-      }
-      
-      let port: Int
-      if let urlPort = url.port {
-        port = urlPort
-      } else if scheme == "https" {
-        port = 443
-      } else {
-        port = 80
-      }
-      
-      Task { @MainActor in
-        do {
-          let result = await BraveCertificateUtils.verifyTrust(serverTrust, host: host, port: port)
-          
-          // Cert is valid!
-          if result == 0 {
-            tab.secureContentState = .secure
-          } else if result == Int32.min {
-            // Cert is valid but should be validated by the system
-            // Let the system handle it and we'll show an error if the system cannot validate it
-            try await BraveCertificateUtils.evaluateTrust(serverTrust, for: host)
-            tab.secureContentState = .secure
-          } else {
-            tab.secureContentState = .invalidCert
-          }
-        } catch {
-          tab.secureContentState = .invalidCert
-        }
-        
-        self.updateURLBar()
       }
     case ._sampledPageTopColor:
       updateStatusBarOverlayColor()
@@ -2026,7 +1902,7 @@ public class BrowserViewController: UIViewController {
 
     updateToolbarCurrentURL(tab.url?.displayURL)
     if tabManager.selectedTab === tab {
-      updateToolbarSecureContentState(tab.secureContentState)
+      self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
     }
 
     let isPage = tab.url?.isWebPage() ?? false
@@ -3028,7 +2904,6 @@ extension BrowserViewController: NewTabPageDelegate {
       guard let self = self else { return }
 
       let viewRect = CGRect(origin: self.view.center, size: .zero)
-
       self.presentActivityViewController(
         url, sourceView: self.view, sourceRect: viewRect,
         arrowDirection: .any)
