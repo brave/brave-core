@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
@@ -106,6 +107,11 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             }
         }
         super.initDefaultProcessors();
+    }
+
+    @Override
+    public boolean isLeoEnabled() {
+        return BraveLeoPrefUtils.isLeoEnabled();
     }
 
     @Override
