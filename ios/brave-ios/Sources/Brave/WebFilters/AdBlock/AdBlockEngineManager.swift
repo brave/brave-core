@@ -13,7 +13,7 @@ import os
 @MainActor class AdBlockEngineManager {
   /// The directory to which we should store the unified list into
   private static var cacheFolderDirectory: FileManager.SearchPathDirectory {
-    return FileManager.SearchPathDirectory.applicationSupportDirectory
+    return FileManager.SearchPathDirectory.cachesDirectory
   }
 
   public struct FileInfo: Hashable, Equatable {
