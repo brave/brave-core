@@ -108,25 +108,28 @@ class Tab: NSObject {
   }
   @MainActor private var secureContentState: TabSecureContentState {
     get async {
-      guard let webView = webView, let url = webView.url else {
+      guard let webView = webView, let committedURL = self.committedURL else {
         return .unknown
       }
-      if let internalURL = InternalURL(url) {
-        if internalURL.isErrorPage, ErrorPageHelper.certificateError(for: url) != 0 {
+      if let internalURL = InternalURL(committedURL), internalURL.isAboutHomeURL {
+        // New Tab Page is a special case, should be treated as `unknown` instead of `localhost`
+        return .unknown
+      }
+      if webView.url != committedURL {
+        // URL has not been committed yet, so we will not evaluate the secure status of the page yet
+        return lastKnownSecureContentState
+      }
+      if let internalURL = InternalURL(committedURL) {
+        if internalURL.isErrorPage, ErrorPageHelper.certificateError(for: committedURL) != 0 {
           return .invalidCert
         }
         return .localhost
       }
-      if let tabURL = self.url, url.baseDomain != tabURL.baseDomain {
-        // If the web view is loading a new base domain the tab url wont match up until the load
-        // is committed.
-        return .unknown
-      }
-      if url.scheme?.lowercased() == "http" {
+      if committedURL.scheme?.lowercased() == "http" {
         return .missingSSL
       }
       if let serverTrust = webView.serverTrust,
-        case let origin = url.origin, !origin.isOpaque
+        case let origin = committedURL.origin, !origin.isOpaque
       {
         let isMixedContent = !webView.hasOnlySecureContent
         let result = await BraveCertificateUtils.verifyTrust(
