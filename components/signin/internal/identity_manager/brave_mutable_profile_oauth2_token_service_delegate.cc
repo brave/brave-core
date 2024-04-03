@@ -42,11 +42,11 @@ BraveMutableProfileOAuth2TokenServiceDelegate::
 BraveMutableProfileOAuth2TokenServiceDelegate::
     ~BraveMutableProfileOAuth2TokenServiceDelegate() = default;
 
-void BraveMutableProfileOAuth2TokenServiceDelegate::LoadCredentials(
+void BraveMutableProfileOAuth2TokenServiceDelegate::LoadCredentialsInternal(
     const CoreAccountId& primary_account_id,
     bool is_syncing) {
   if (!account_tracker_service_->GetAccounts().size())
     return;
-  MutableProfileOAuth2TokenServiceDelegate::LoadCredentials(primary_account_id,
-                                                            is_syncing);
+  MutableProfileOAuth2TokenServiceDelegate::LoadCredentialsInternal(
+      primary_account_id, is_syncing);
 }
