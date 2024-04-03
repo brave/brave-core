@@ -21,4 +21,8 @@ BlockDecodeResult DecodeBlockContent(const uint64_t& offset,
   return ipfs::decode_block_content(offset, data); 
 }
 
+MurMur3Result MurMur3_x64_128(const std::vector<uint8_t>& data) {
+  return ipfs::murmur3_x64_128(data);
+}
+
 }  // namespace ipfs::ipld

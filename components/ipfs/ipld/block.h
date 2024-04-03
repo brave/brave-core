@@ -34,6 +34,7 @@ class Block {
   bool IsMetadata() const;
   bool IsMultiblockFile() const;
   bool IsFolder() const;
+  bool IskShardFolder() const;
 
   bool IsContent() const;
   absl::optional<bool> IsVerified() const;

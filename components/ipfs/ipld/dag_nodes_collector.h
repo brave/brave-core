@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPLD_DAG_NODES_COLLECTOR_H_
 #define BRAVE_COMPONENTS_IPFS_IPLD_DAG_NODES_COLLECTOR_H_
 
+#include <cstddef>
 #include <unordered_map>
 #include "brave/components/ipfs/ipld/trustless_client_types.h"
 
@@ -28,6 +29,7 @@ class DagNodesCollector {
   Block* GetBlockByCid(const std::string& cid) const;
   bool IsEmpty() const;
   void Clear();
+  size_t Size() const;
   void Debug() const;
  private:
   BlockCollectorMap dag_nodes_;

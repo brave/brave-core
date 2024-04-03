@@ -46,6 +46,10 @@ bool DagNodesCollector::IsEmpty() const {
   return dag_nodes_.empty();
 }
 
+size_t DagNodesCollector::Size() const {
+  return dag_nodes_.size();
+}
+
 void DagNodesCollector::Debug() const {
 
   std::stringstream ss;

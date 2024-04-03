@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipld/ipld_utils.h"
 #include <cstdint>
+#include <iterator>
 #include <string>
 
 #include "base/containers/contains.h"
@@ -156,13 +157,17 @@ const std::vector<
          660,
          714,
          {}}};
-}  // namespace
 
-class IpldUtilsUnitTest : public testing::Test {
- public:
-  IpldUtilsUnitTest() = default;
-  ~IpldUtilsUnitTest() override = default;
-};
+const struct {
+  std::string test_name;
+  std::string source_data;
+  std::vector<uint8_t> expected_data;
+} kMurMur3TestData[]{
+    {"SimpleMurMurCalculation",
+     "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+     {0x6F, 0x5C, 0xB0, 0x2C, 0xFD, 0x5E, 0xDC, 0x6F, 0xE6, 0x9D, 0xF0, 0xFF,
+      0x60, 0x41, 0x70, 0x46}}};
+
 void TestBlockDecoding(const std::string& test_name,
                        const std::vector<uint8_t>& block,
                        const std::string& block_cid,
@@ -195,6 +200,23 @@ void TestBlockDecoding(const std::string& test_name,
                            content.begin(), content.end())) << "Test:" << test_name;
   }
 }
+
+void TestMurMur3(const std::string& test_name, const std::string& source_data, const std::vector<uint8_t>& expected_data) {
+  const std::vector<uint8_t> source_ddata(std::begin(source_data), std::end(source_data));
+  auto result = ipfs::ipld::MurMur3_x64_128(source_ddata);
+  ASSERT_EQ(result.error.error.length(), 0UL) << test_name;
+  ASSERT_EQ(result.error.error_code, 0) << test_name;
+  LOG(INFO) << "[IPFS] result.hash.size():" << result.hash.size() << " expected_data.size():" << expected_data.size();
+  ASSERT_TRUE(std::equal(result.hash.begin(), result.hash.end(),
+                           expected_data.begin(), expected_data.end())) << test_name;
+}
+}  // namespace
+
+class IpldUtilsUnitTest : public testing::Test {
+ public:
+  IpldUtilsUnitTest() = default;
+  ~IpldUtilsUnitTest() override = default;
+};
 
 TEST_F(IpldUtilsUnitTest, DecodeCarv1Header) {
   // Valid CAR_V1 header
@@ -282,4 +304,10 @@ TEST_F(IpldUtilsUnitTest, FailedBlockDecode) {
               << "\r\ndata_offset:" << result.data_offset
               << "\r\nresult.data:" << result.meta_data.c_str();
   }
+}
+
+TEST_F(IpldUtilsUnitTest, CalculateMurMur3) {
+  for(const auto& [test_name, source_data, expected_data] : kMurMur3TestData) {
+    TestMurMur3(test_name, source_data, expected_data);
+  }  
 }

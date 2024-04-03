@@ -16,6 +16,8 @@ CarV2HeaderResult DecodeCarv2Header(const std::vector<uint8_t>& data);
 
 BlockDecodeResult DecodeBlockContent(const uint64_t& offset,
                                     const std::vector<uint8_t>& data);
+
+MurMur3Result MurMur3_x64_128(const std::vector<uint8_t>& data);
 }  // namespace ipfs::ipld
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPLD_IPLD_UTILS_H_

@@ -156,6 +156,10 @@ bool Block::IsFolder() const {
   return IsMetadata() && djdata_ && djdata_->type == DjDataType::kDirectory;
 }
 
+bool Block::IskShardFolder() const {
+  return IsMetadata() && djdata_ && djdata_->type == DjDataType::kHAMTShard;
+}
+
 bool Block::IsContent() const {
   return IsContentPackedAsRaw() || IsContentPackedInsideOfData();
 }

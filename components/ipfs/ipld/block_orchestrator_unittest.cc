@@ -185,6 +185,7 @@ class BlockOrchestratorUnitTest : public testing::Test {
 
           response_head->headers->ReplaceStatusLine("HTTP/1.1 200 OK");
           const auto cids_to_car_map_iter = cids_to_car_map.find(*current_cid);
+          LOG(INFO) << "[IPFS] current_cid:" << *current_cid;
           EXPECT_NE(cids_to_car_map_iter, cids_to_car_map.end()) << test_name;
           current_cid_file_test_data_ptr = &cids_to_car_map_iter->second;
 
@@ -251,11 +252,20 @@ TEST_F(BlockOrchestratorUnitTest, RequestCarContent) {
       });
 }
 
-// TEST_F(BlockOrchestratorUnitTest, RequestMultiblockFile) {
-//   TestGetCarFileByIpfsCid(
-//       "ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa",
-//       kSubDirWithMixedBlockFiles, "subdir_multiblock.txt", 1026);
-// }
+TEST_F(BlockOrchestratorUnitTest, ShardingRequestFile) {
+  std::map<std::string, CarFileTestData> item_cases = {
+      {"bafybeihn2f7lhumh4grizksi2fl233cyszqadkn424ptjajfenykpsaiw4",
+       {"wiki_sharding_root.car", "", 0}
+       },
+       {"bafybeiff3a2xsr3sijmrauisyhhqztld5njl4z52k62zsjlqewiqwxyaie", {"wiki_sharding_A0_0.car", "", 0}},
+       {"bafybeibrz7jl56wvr6hsrvygysnhuj2hzoscudleo24xhd37uc2b3qcwim", {"wiki_sharding_A0_1.car", "", 0}},
+       {"bafybeihau4ajtl6l2v6teqxneyc7j3xefubh5rzdye6e7xkhitj5j5tbaq", {"wiki_sharding_A0_2.car", "", 0}},
+       {"bafkreibpn742ynyqzjdabdsydshwb6jcv32nzbiggxyuftxdtvg5pxa2qm", {"wiki_sharding_A0_3.car", "wiki_sharding_A0_3.txt", 30593}}};
+  TestGetCarFileByIpfsCid(
+      "DirectoryHamSharding",
+      "ipfs://bafybeihn2f7lhumh4grizksi2fl233cyszqadkn424ptjajfenykpsaiw4",
+      item_cases);
+}
 
 // TEST_F(BlockOrchestratorUnitTest, RequestFolderGetIndexFile) {
 //   const auto* test = &kOneFileExtractInputData[0];

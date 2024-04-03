@@ -41,7 +41,7 @@ class BlockOrchestrator {
   FRIEND_TEST_ALL_PREFIXES(BlockOrchestratorUnitTest, RequestFolderGetIndexFile);
   friend class BlockOrchestratorUnitTest;
 
-  void OnBlockRead(std::unique_ptr<Block> block, const bool is_completed, const int& error_code);
+  void OnBlockRead(std::unique_ptr<Block> block, const bool is_completed, const int& error_code, const bool is_block_broken, const std::string& x_ipfs_roots);
   void Reset();
 
   void SendRequest(const GURL& url);

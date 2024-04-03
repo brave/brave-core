@@ -26,7 +26,7 @@ class BlockFactory;
 class BlockReader {
  public:
   using BlockReaderCallback =
-      base::RepeatingCallback<void(std::unique_ptr<Block>, const bool, const int&)>;
+      base::RepeatingCallback<void(std::unique_ptr<Block>, const bool, const int&, const bool, const std::string&)>;
 
   virtual ~BlockReader();
 
@@ -42,7 +42,8 @@ class BlockReader {
   virtual void OnRequestDataReceived(BlockReaderCallback callback,
                                      std::unique_ptr<std::vector<uint8_t>> data,
                                      const bool is_completed,
-                                     const int& error_code) = 0;
+                                     const int& error_code,
+                                     const std::string& x_ipfs_roots) = 0;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BlockReaderUnitTest, BasicTestSteps);
@@ -50,7 +51,7 @@ class BlockReader {
   friend class BlockReaderUnitTest;
 
   base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>,
-                               const bool, const int&)>
+                               const bool, const int&, const std::string&)>
   GetReadCallbackForTests(BlockReaderCallback callback);
 
   std::unique_ptr<BlockFactory> block_factory_{

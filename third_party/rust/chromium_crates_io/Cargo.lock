@@ -1137,6 +1137,7 @@ dependencies = [
  "libipld-core",
  "libipld-json",
  "libipld-pb",
+ "murmur3",
  "quick-protobuf",
  "thiserror",
 ]
@@ -1466,6 +1467,11 @@ dependencies = [
  "syn 1.0.109",
  "synstructure",
 ]
+
+[[package]]
+name = "murmur3"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "new_debug_unreachable"

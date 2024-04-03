@@ -12,6 +12,9 @@ use crate::block_decoder::{decode_block_content};
 
 //use std::error::Error;
 use std::fmt;
+use std::io::Cursor;
+use cxx::CxxVector;
+//use murmur3;
 
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = ipfs)]
@@ -20,8 +23,8 @@ mod ffi {
     extern "Rust" {
         fn decode_carv1_header(data: &CxxVector<u8>) -> CarV1HeaderResult;
         fn decode_carv2_header(data: &CxxVector<u8>) -> CarV2HeaderResult;
-//        fn decode_block_info(offset: usize, data: &CxxVector<u8>) -> BlockDecodeResult;
         fn decode_block_content(offset: usize, data: &CxxVector<u8>) -> BlockDecodeResult;
+        fn murmur3_x64_128(data: &CxxVector<u8>) -> MurMur3Result;
     }
     #[derive(Debug)]
     pub struct CarV1Header {
@@ -72,15 +75,10 @@ mod ffi {
         error: ErrorData
     }
 
-
-    // #[derive(Debug)]
-    // pub struct BlockContentDecodeResult {
-    //     data_offset: usize,
-    //     cid: String,
-    //     data: Vec<u8>,
-    //     verified: bool,
-    //     error: ErrorData
-    // }
+    pub struct MurMur3Result {
+        hash: Vec<u8>,
+        error: ErrorData
+    }
 }
 
 impl std::error::Error for ffi::ErrorData {}
@@ -103,4 +101,27 @@ impl Default for ffi::BlockDecodeResult {
             error: ffi::ErrorData { error: String::new(), error_code: 0 },
         }
     }
+}
+
+impl Default for ffi::MurMur3Result {
+    fn default() -> ffi::MurMur3Result {
+        ffi::MurMur3Result {
+            hash: Vec::new(),
+            error: ffi::ErrorData { error: String::new(), error_code: 0 },
+        }
+    }
+}
+
+pub fn murmur3_x64_128(data: &CxxVector<u8>) -> ffi::MurMur3Result {
+    let mut hash_result: ffi::MurMur3Result = Default::default();
+    println!("len:{:?} data:{:?}", data.len(), data.as_slice());
+    let mut data_cursor = Cursor::new(data.as_slice());
+    match murmur3::murmur3_x64_128(&mut data_cursor, 0) {
+        Ok(res) => { hash_result.hash = res.to_le_bytes().to_vec(); },
+        Err(err) => {
+            hash_result.error = ffi::ErrorData { error: format!("Could not calculate murmur3_x64_128. Error: {}", err), error_code: 200u16 };
+            return hash_result; 
+        }
+    };
+    hash_result
 }

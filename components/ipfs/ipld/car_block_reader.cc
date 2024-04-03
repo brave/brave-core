@@ -26,9 +26,11 @@
 
 namespace {
 
-uint64_t DecodeBlockLength(base::span<const uint8_t>& buffer) {
+uint64_t DecodeBlockLength(base::span<const uint8_t>& buffer, size_t& bytes_used_for_length) {
   int64_t length = 0;
+  bytes_used_for_length = buffer.size();
   buffer = ipfs::DecodeVarInt(buffer, &length);
+  bytes_used_for_length-=buffer.size();
   return static_cast<uint64_t>(length);
 }
 
@@ -65,12 +67,12 @@ bool ProcessHeader(const std::vector<uint8_t>& block_data,
   base::Value::List roots_items;
   base::ranges::for_each(
       carv1_header_result.data.roots,
-      [&roots_items](auto& item) { roots_items.Append(item.c_str()); });
+      [&roots_items](auto& item) { roots_items.Append(item.c_str());});
   base::Value::Dict roots_dict;
   roots_dict.Set("roots", std::move(roots_items));
-
+LOG(INFO) << "[IPFS] roots_dict:" << roots_dict;
   callback.Run(block_factory->CreateCarBlock(
-      "", base::Value(std::move(roots_dict)), nullptr, absl::nullopt), false, error_code);
+      "", base::Value(std::move(roots_dict)), nullptr, absl::nullopt), false, error_code, false, "");
   return true;
 }
 }  // namespace
@@ -92,11 +94,26 @@ void CarBlockReader::OnRequestDataReceived(
     BlockReaderCallback callback,
     std::unique_ptr<std::vector<uint8_t>> data,
     const bool is_completed,
-    const int& error_code) {
+    const int& error_code,
+    const std::string& x_ipfs_roots) {
   if (is_completed && !data) {
+    base::span<const uint8_t> buffer_span(buffer_);
+    size_t bytes_used_for_length(0);
+    const uint64_t current_block_size = DecodeBlockLength(buffer_span, bytes_used_for_length);
+    bool not_all_data_received = buffer_.size() < (current_block_size + bytes_used_for_length); // TODO decide what the error should be here(when is_completed is true but not all content received)
+    // TODO sometines gateway returns not all bytes for the last block, I suspect we have to ignore such bocks
+    
+//    if(item == "bafkqaaa")
+    
+LOG(INFO) << "[IPFS] OnRequestDataReceived "
+<< "\r\nnot_all_data_received:" << not_all_data_received
+<< "\r\nbuffer_.size():" << buffer_.size()
+<< "\r\ncurrent_block_size:" << current_block_size
+<< "\r\nbytes_used_for_length:" << bytes_used_for_length
+;
     is_header_retrieved_ = false;
     buffer_.clear();
-    callback.Run(nullptr, true, error_code);
+    callback.Run(nullptr, true, error_code, not_all_data_received, x_ipfs_roots);
     return;
   }
 
@@ -107,17 +124,26 @@ void CarBlockReader::OnRequestDataReceived(
   base::span<const uint8_t> buffer_span(buffer_);
 
   while (!buffer_span.empty()) {
-    uint64_t received_buffer_size = buffer_span.size();
+    const uint64_t received_buffer_size = buffer_span.size();
     if (received_buffer_size < sizeof(uint64_t)) {
       return;
     }
 
-    const uint64_t current_block_size = DecodeBlockLength(buffer_span);
-    if (received_buffer_size < current_block_size) {
+    size_t bytes_used_for_length(0);
+    const uint64_t current_block_size = DecodeBlockLength(buffer_span, bytes_used_for_length);
+LOG(INFO) << "[IPFS] OnRequestDataReceived \r\nreceived_buffer_size:" << received_buffer_size 
+<< "\r\ncurrent_block_size:" << current_block_size 
+<< "\r\nbuffer_span.size:" << buffer_span.size()
+<< "\r\nbytes_used_for_length:" << bytes_used_for_length
+;  
+    if (received_buffer_size < (current_block_size+bytes_used_for_length)) {
       return;
     }
     const size_t block_length_bytes = buffer_.size() - buffer_span.size();
-
+LOG(INFO) << "[IPFS] OnRequestDataReceived \r\nbuffer_span.size:" << buffer_span.size() 
+<< "\r\ncurrent_block_size:" << current_block_size
+<< "\r\nblock_length_bytes:" << block_length_bytes
+;
     base::span block_span = buffer_span.subspan(0, current_block_size);
     buffer_span = buffer_span.subspan(current_block_size);
 
@@ -130,10 +156,13 @@ void CarBlockReader::OnRequestDataReceived(
     if (!is_header_retrieved_) {
       if (!ProcessHeader(block_data, is_header_retrieved_, callback,
                          GetBlockFactory(), error_code)) {
+      LOG(INFO) << "[IPFS] could not get header";
         return;
       }
+      LOG(INFO) << "[IPFS] header received";
       continue;
     }
+    LOG(INFO) << "[IPFS] try to decode block";
 
 //     auto block_info_result = DecodeBlockInfo(0, block_data);
 //     DCHECK(block_info_result.error.error_code == 0) << block_info_result.error.error.c_str();
@@ -154,11 +183,12 @@ void CarBlockReader::OnRequestDataReceived(
     auto block_content = DecodeBlockContent(0, block_data);
     DCHECK(block_content.error.error_code == 0) << block_content.error.error.c_str();
     if (block_content.error.error_code != 0) {
+      LOG(INFO) << "[IPFS] Could not decode: " << block_content.error.error.c_str();
       return;
     }
 
     absl::optional<base::Value> json_value;
-
+LOG(INFO) << "[IPFS] block_content.cid:" << block_content.cid.c_str() << " block_content.meta_data: " << block_content.meta_data.c_str();
     if (!block_content.meta_data.empty()) {
       json_value = ParseJsonHelper(block_content.meta_data.c_str(),
                                    base::Value::Type::DICT);
@@ -169,7 +199,7 @@ void CarBlockReader::OnRequestDataReceived(
         block_content.cid.c_str(), json_value.has_value() ? std::move(json_value) : base::Value(),
         std::make_unique<std::vector<uint8_t>>(block_content.content_data.begin(),
                                                block_content.content_data.end()),
-        verified), false, error_code);
+        verified), false, error_code, false, x_ipfs_roots);
   }
 }
 

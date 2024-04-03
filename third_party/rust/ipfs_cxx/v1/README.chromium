@@ -1,0 +1,8 @@
+Name: ipfs-cxx
+URL: https://crates.io/crates/ipfs-cxx
+Description: IPFS trustless blocks verification
+Version: 1.0.0
+Security Critical: yes
+Shipped: yes
+License: Mozilla Public License 2.0
+License File:

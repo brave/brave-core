@@ -1,0 +1,37 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "murmur3"
+  epoch = "0.5"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/murmur3-0.5.2/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/murmur3-0.5.2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/murmur3-0.5.2/src/murmur3_32.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/murmur3-0.5.2/src/murmur3_x64_128.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/murmur3-0.5.2/src/murmur3_x86_128.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "0.5.2"
+  cargo_pkg_authors = "Stu Small <stuart.alan.small@gmail.com>"
+  cargo_pkg_name = "murmur3"
+  cargo_pkg_description = "A rust implementation of Murmur3 hash"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+}

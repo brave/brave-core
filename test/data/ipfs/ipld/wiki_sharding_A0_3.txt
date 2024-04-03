@@ -1,0 +1,229 @@
+<!DOCTYPE html><html class="client-js"><head>
+  <meta charset="UTF-8">
+  <title>Tonight We Ride</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    function importScript() { return 1 } // this is to avoid the error from site.js
+  </script>
+  <script>let articleId = 'Tonight_We_Ride'</script>
+  <link rel="canonical" href="https://en.wikipedia.org/wiki/Tonight_We_Ride">
+  <link href="../../-/mw/ext.cite.ux-enhancements.css" rel="stylesheet" type="text/css">
+<link href="../../-/mw/ext.cite.styles.css" rel="stylesheet" type="text/css">
+<link href="../../-/mw/skins.minerva.base.reset|skins.minerva.content.styles|ext.cite.style|site.styles|mobile.app.pagestyles.android|mediawiki.page.gallery.styles|mediawiki.skinning.content.parsoid.css" rel="stylesheet" type="text/css">
+  <link href="../../-/style.css" rel="stylesheet" type="text/css"><link href="../../-/content.parsoid.css" rel="stylesheet" type="text/css"><link href="../../-/inserted_style.css" rel="stylesheet" type="text/css">
+  <script src="../../-/script.js"></script><script src="../../-/masonry.min.js"></script><script src="../../-/article_list_home.js"></script><script src="../../-/images_loaded.min.js"></script><script src="../../-/node_module/details-element-polyfill/dist/details-element-polyfill.js"></script>
+</head>
+
+<body class="mediawiki mw-hide-empty-elt ns-0 ns-subject stable skin-minerva action-view animations">
+  <div id="mw-mf-viewport" class="feature-header-v2">
+    <div id="mw-mf-page-center">
+      <div id="content" class="mw-body">
+        <a id="top"></a>
+        <div id="bodyContent" class="content mw-parser-output">
+          
+          <div id="mw-content-text" style="direction: ltr;"><h1 class="section-heading" tabindex="0" aria-haspopup="true" data-section-id="0">
+  <span class="mw-headline" id="title_0"><i>Tonight We Ride</i></span>
+</h1>
+<div id="mf-section-0" class="mf-section-0" aria-pressed="true" aria-expanded="true">
+  <p><i><b>Tonight We Ride</b></i> is the twelfth album by American singer-songwriter <a href="../Michael_Martin_Murphey" title="Michael Martin Murphey">Michael Martin Murphey</a> and his first for <a href="../Warner_Bros._Records" title="Warner Bros. Records" class="mw-redirect">Warner Bros. Records</a>. Released in 1986, the album was produced by <a href="../Jim_Ed_Norman" title="Jim Ed Norman">Jim Ed Norman</a> and contains guest performances by <a href="../Pam_Tillis" title="Pam Tillis">Pam Tillis</a>, <a href="../Reggie_Young" title="Reggie Young">Reggie Young</a>, <a href="../Mark_O&apos;Connor" title="Mark O&apos;Connor">Mark O&apos;Connor</a>, <a href="../Charlie_McCoy" title="Charlie McCoy">Charlie McCoy</a>, and <a href="../J.D._Souther" title="J.D. Souther" class="mw-redirect">J.D. Souther</a>. The album&apos;s title track was also its first single. The album peaked at number 46 on the <i><a href="../Billboard_(magazine)" title="Billboard (magazine)">Billboard</a></i> Top Country Albums chart.<span class="mw-ref reference" id="cite_ref-allmusic_2-0"><a href="../#cite_note-allmusic-2" style="counter-reset: mw-Ref 2;"><span class="mw-reflink-text">[2]</span></a></span><span class="mw-ref reference" id="cite_ref-discogs_3-0"><a href="../#cite_note-discogs-3" style="counter-reset: mw-Ref 3;"><span class="mw-reflink-text">[3]</span></a></span></p>
+
+<table class="infobox vevent haudio" style="width:22em"><tbody><tr><th colspan="2" class="summary album" style="text-align:center;font-size:125%;font-weight:bold;font-style: italic; background-color: lightsteelblue">Tonight We Ride</th></tr><tr><td colspan="2" style="text-align:center"><span class="mw-default-size"><img src="../../I/Tonight_We_Ride.jpg.webp" data-file-width="314" data-file-height="316" data-file-type="bitmap" height="221" width="220" loading="lazy"></span></td></tr><tr><th colspan="2" class="description" style="text-align:center;background-color: lightsteelblue"><a href="../Album" title="Album">Studio album</a><span> </span>by <div class="contributor" style="display:inline"><a href="../Michael_Martin_Murphey" title="Michael Martin Murphey">Michael Martin Murphey</a></div></th></tr><tr><th scope="row">Released</th><td class="published">1986</td></tr><tr><th scope="row"><a href="../Music_genre" title="Music genre">Genre</a></th><td class="category hlist"><a href="../Country_music" title="Country music">Country</a>, <a href="../Popular_Music" title="Popular Music" class="mw-redirect">popular</a></td></tr><tr><th scope="row">Length</th><td><span class="duration"><span class="min">40</span>:<span class="s">54</span></span></td></tr><tr><th scope="row"><a href="../Record_label" title="Record label">Label</a></th><td class="hlist"><a href="../Warner_Bros._Records" title="Warner Bros. Records" class="mw-redirect">Warner Bros. Records</a></td></tr><tr><th scope="row"><a href="../Record_producer" title="Record producer">Producer</a></th><td class="hlist"><a href="../Jim_Ed_Norman" title="Jim Ed Norman">Jim Ed Norman</a></td></tr><tr><th colspan="2" class="description" style="text-align:center;background-color: lightsteelblue"><a href="../Michael_Martin_Murphey" title="Michael Martin Murphey">Michael Martin Murphey</a> chronology</th></tr><tr><td colspan="2" style="text-align:center">
+<table style="background: transparent; width: 100%; min-width: 100%; border-collapse: collapse">
+<tbody><tr style="line-height: 1.4em;">
+<td style="width: 33%; text-align: center; vertical-align: top; padding: .2em .1em .2em 0"><i><a href="../The_Heart_Never_Lies_(album)" title="The Heart Never Lies (album)">The Heart Never Lies</a></i><br>(1983)</td>
+<td style="width: 33%; text-align: center; vertical-align: top; padding: .2em .1em"><i><b>Tonight We Ride</b></i><br>(1986)</td>
+<td style="width: 33%; text-align: center; vertical-align: top; padding: .2em 0 .2em .1em"><i><a href="../Americana_(Michael_Martin_Murphey_album)" title="Americana (Michael Martin Murphey album)">Americana</a></i><br>(1987)</td></tr>
+</tbody></table></td></tr><tr><td colspan="2" style="text-align:center"></td></tr><tr><th colspan="2" style="text-align:center;background: lightsteelblue"><a href="../Single_(music)" title="Single (music)">Singles</a> from <i>Tonight We Ride</i></th></tr><tr><td colspan="2" style="text-align:center"><div style="text-align:left">
+<ol><li><span class="item"><span class="fn">&quot;<a href="../Rollin&apos;_Nowhere" title="Rollin&apos; Nowhere">Rollin&apos; Nowhere</a>&quot;</span><br>Released: May 12, 1986</span></li>
+<li><span class="item"><span class="fn">&quot;<a href="../Fiddlin&apos;_Man" title="Fiddlin&apos; Man">Fiddlin&apos; Man</a>&quot;</span><br>Released: August 30, 1986</span></li></ol>
+</div></td></tr><tr style="display:none"><td colspan="2">
+</td></tr></tbody></table><span>
+</span><meta property="mw:PageProp/displaytitle" content="Tonight We Ride">
+<table class="wikitable floatright" style="float:right;clear:right;width:24.2em;font-size:80%;text-align:center;margin:0.5em 0 0.5em 1em;padding:0;border-spacing:0"><caption style="font-size:120%">Professional ratings</caption><tbody><tr><th scope="col" colspan="2" style="text-align:center;background:#d1dbdf;font-size:120%">Review scores</th></tr><tr><th scope="col">Source</th><th scope="col">Rating</th></tr><tr><td style="text-align:center;vertical-align:middle"><a href="../Allmusic" title="Allmusic" class="mw-redirect">Allmusic</a></td><td style="text-align:center;vertical-align:middle"><span role="img" style="white-space:nowrap"><span><span><img src="../../I/Star_full.svg.png.webp" data-file-width="108" data-file-height="110" data-file-type="drawing" height="11" width="11" loading="lazy"></span></span><span><span><img src="../../I/Star_full.svg.png.webp" data-file-width="108" data-file-height="110" data-file-type="drawing" height="11" width="11" loading="lazy"></span></span><span><span><img src="../../I/Star_half.svg.png.webp" data-file-width="108" data-file-height="110" data-file-type="drawing" height="11" width="11" loading="lazy"></span></span><span><span><img src="../../I/Star_empty.svg.png.webp" data-file-width="108" data-file-height="110" data-file-type="drawing" height="11" width="11" loading="lazy"></span></span><span><span><img src="../../I/Star_empty.svg.png.webp" data-file-width="108" data-file-height="110" data-file-type="drawing" height="11" width="11" loading="lazy"></span></span></span><span class="mw-ref reference" id="cite_ref-1"><a href="../#cite_note-1" style="counter-reset: mw-Ref 1;"><span class="mw-reflink-text">[1]</span></a></span></td></tr></tbody></table>
+
+</div><details data-level="2" open>
+    <summary class="section-heading"><h2 id="Track_listing">Track listing</h2></summary>
+    
+<ol><li>&quot;Tonight We Ride&quot; (Michael Martin Murphey, <a href="../Jim_Ed_Norman" title="Jim Ed Norman">Jim Ed Norman</a>) &#x2013; 3:42</li>
+<li>&quot;<a href="../Rollin&apos;_Nowhere" title="Rollin&apos; Nowhere">Rollin&apos; Nowhere</a>&quot; (Murphey) &#x2013; 2:53</li>
+<li>&quot;Innocent Hearts&quot; (Murphey) &#x2013; 4:18</li>
+<li>&quot;Close to My Heart&quot; (Murphey) &#x2013; 3:40</li>
+<li>&quot;Face to Face with the Night&quot; (Murphey) &#x2013; 4:05</li>
+<li>&quot;Building Bridges&quot; (Murphey, Rains) &#x2013; 3:10</li>
+<li>&quot;<a href="../Fiddlin&apos;_Man" title="Fiddlin&apos; Man">Fiddlin&apos; Man</a>&quot; (Murphey) &#x2013; 4:44</li>
+<li>&quot;I&apos;ll Break Out Again Tonight&quot; (Owens, Shaffer) &#x2013; 3:28</li>
+<li>&quot;The One That Got Away&quot; (Murphey, Hoffner, <a href="../Sonny_Throckmorton" title="Sonny Throckmorton">Sonny Throckmorton</a>) &#x2013; 3:51</li>
+<li>&quot;Santa Fe Cantina&quot; (Murphey, Chick Rains) &#x2013; 3:52</li>
+<li>&quot;Ghost Town (Message from the Ghost Ranch)&quot; (Murphey) &#x2013; 3:11</li></ol>
+
+
+    
+</details><details data-level="2" open>
+    <summary class="section-heading"><h2 id="Credits">Credits</h2></summary>
+    
+<p><b>Music</b></p>
+<ul><li><a href="../Michael_Martin_Murphey" title="Michael Martin Murphey">Michael Martin Murphey</a> &#x2013; lead vocals, guitar, banjo</li>
+<li><a href="../Fred_Carter_Jr." title="Fred Carter Jr.">Fred Carter Jr.</a> &#x2013; guitar</li>
+<li><a href="../Paul_Worley" title="Paul Worley">Paul Worley</a> &#x2013; guitar</li>
+<li>Steve Gibson &#x2013; guitar</li>
+<li><a href="../Reggie_Young" title="Reggie Young">Reggie Young</a> &#x2013; electric guitar</li>
+<li>Josh Leo &#x2013; guitar, mandolin</li>
+<li>Sonny Garrish &#x2013; steel guitar</li>
+<li>Carmen Acciaioli &#x2013; steel guitar</li>
+<li><a href="../Buddy_Emmons" title="Buddy Emmons">Buddy Emmons</a> &#x2013; steel guitar</li>
+<li>Mitch Humphries &#x2013; piano, synthesizer</li>
+<li><a href="../Barry_Beckett" title="Barry Beckett">Barry Beckett</a> &#x2013; piano</li>
+<li>Dennis Burnside &#x2013; piano, synthesizer</li>
+<li>John Jarvis &#x2013; piano, synthesizer</li>
+<li>David Hoffner &#x2013; synthesizer, piano</li>
+<li><a href="../Mark_O&apos;Connor" title="Mark O&apos;Connor">Mark O&apos;Connor</a> &#x2013; fiddle</li>
+<li><a href="../Charlie_McCoy" title="Charlie McCoy">Charlie McCoy</a> &#x2013; harmonica</li>
+<li><a href="../Michael_Rhodes_(musician)" title="Michael Rhodes (musician)">Michael Rhodes</a> &#x2013; bass</li>
+<li>Michael Bowden &#x2013; bass</li>
+<li><a href="../Eddie_Bayers" title="Eddie Bayers">Eddie Bayers</a> &#x2013; drums</li>
+<li><a href="../Pam_Tillis" title="Pam Tillis">Pam Tillis</a> &#x2013; vocals</li>
+<li><a href="../J.D._Souther" title="J.D. Souther" class="mw-redirect">J.D. Souther</a> &#x2013; background vocals</li>
+<li>Gary Pigg &#x2013; background vocals</li>
+<li>Robb Strandlund &#x2013; background vocals</li>
+<li>Thomas Flora &#x2013; background vocals</li>
+<li>Sonny Throckmorton &#x2013; background vocals</li>
+<li>Michael Lund &#x2013; background vocals</li></ul>
+
+<p><b>Production</b></p>
+<ul><li>Nick DeCaro &#x2013; arranger</li>
+<li>Bergen White &#x2013; arranger</li>
+<li>Scott Hendricks &#x2013; engineer</li>
+<li>Chris Hammond &#x2013; assistant engineer</li>
+<li>Eric Prestidge &#x2013; engineer, mastering, mixing</li>
+<li>Lee Groizsch &#x2013; assistant engineer, mixing assistant</li>
+<li>Glenn Meadows &#x2013; mastering</li>
+<li>Kurt Markus &#x2013; photography</li>
+<li>W.C. Matthews &#x2013; design<span class="mw-ref reference" id="cite_ref-allmusic_2-1"><a href="../#cite_note-allmusic-2" style="counter-reset: mw-Ref 2;"><span class="mw-reflink-text">[2]</span></a></span><span class="mw-ref reference" id="cite_ref-discogs_3-1"><a href="../#cite_note-discogs-3" style="counter-reset: mw-Ref 3;"><span class="mw-reflink-text">[3]</span></a></span></li></ul>
+
+
+    
+</details><details data-level="2" open>
+    <summary class="section-heading"><h2 id="Chart_performance">Chart performance</h2></summary>
+    
+<table class="wikitable">
+<tbody><tr><th>Chart (1986)</th>
+<th>Peak<br>position</th></tr>
+<tr>
+<td>U.S. <i>Billboard</i> Top Country Albums</td>
+<td align="center">46</td></tr>
+</tbody></table>
+
+
+    
+</details><details data-level="2" open>
+    <summary class="section-heading"><h2 id="References">References</h2></summary>
+    
+<div class="reflist " style=" list-style-type: decimal;">
+<div class="mw-references-wrap"><ol class="mw-references references"><li id="cite_note-1"> <span id="mw-reference-text-cite_note-1" class="mw-reference-text"><a href="https://www.allmusic.com/album/r93272" class="external text external">Allmusic review</a></span></li><li id="cite_note-allmusic-2"> <span id="mw-reference-text-cite_note-allmusic-2" class="mw-reference-text"><cite id="CITEREFJurek" class="citation web cs1">Jurek, Thom. <a href="http://www.allmusic.com/album/tonight-we-ride-r93272" class="external text external">&quot;Tonight We Ride&quot;</a>. <i>Allmusic</i><span class="reference-accessdate">. Retrieved <span class="nowrap">May 24,</span> 2012</span>.</cite></span></li><li id="cite_note-discogs-3"> <span id="mw-reference-text-cite_note-discogs-3" class="mw-reference-text"><cite class="citation web cs1"><a href="http://www.discogs.com/Michael-Martin-Murphey-Tonight-We-Ride/master/354236" class="external text external">&quot;Tonight We Ride&quot;</a>. Discogs<span class="reference-accessdate">. Retrieved <span class="nowrap">May 24,</span> 2012</span>.</cite></span></li></ol></div></div>
+
+
+    
+</details><details data-level="2" open>
+    <summary class="section-heading"><h2 id="External_links">External links</h2></summary>
+    
+<ul><li><a href="http://www.michaelmartinmurphey.com" class="external text external">Michael Martin Murphey&apos;s Official Website</a></li></ul>
+
+<div role="navigation" class="navbox" aria-labelledby="Michael_Martin_Murphey" style="padding:3px"><table class="nowraplinks vcard mw-collapsible autocollapse navbox-inner" style="border-spacing:0;background:transparent;color:inherit"><tbody><tr><th scope="col" class="navbox-title" colspan="2" style="background: #f0e68c;"><style data-mw-deduplicate="TemplateStyles:r992953826">.mw-parser-output .navbar{display:inline;font-size:88%;font-weight:normal}.mw-parser-output .navbar-collapse{float:left;text-align:left}.mw-parser-output .navbar-boxtext{word-spacing:0}.mw-parser-output .navbar ul{display:inline-block;white-space:nowrap;line-height:inherit}.mw-parser-output .navbar-brackets::before{margin-right:-0.125em;content:"[ "}.mw-parser-output .navbar-brackets::after{margin-left:-0.125em;content:" ]"}.mw-parser-output .navbar li{word-spacing:-0.125em}.mw-parser-output .navbar-mini abbr{font-variant:small-caps;border-bottom:none;text-decoration:none;cursor:inherit}.mw-parser-output .navbar-ct-full{font-size:114%;margin:0 7em}.mw-parser-output .navbar-ct-mini{font-size:114%;margin:0 4em}.mw-parser-output .infobox .navbar{font-size:100%}.mw-parser-output .navbox .navbar{display:block;font-size:100%}.mw-parser-output .navbox-title .navbar{float:left;text-align:left;margin-right:0.5em}</style><div id="Michael_Martin_Murphey" class="fn" style="font-size:114%;margin:0 4em"><a href="../Michael_Martin_Murphey" title="Michael Martin Murphey">Michael Martin Murphey</a></div></th></tr><tr><th scope="row" class="navbox-group" style="width:1%;background: #EEEEEE;">1970s albums</th><td class="navbox-list navbox-odd hlist" style="text-align:left;border-left-width:2px;border-left-style:solid;width:100%;padding:0px"><div style="padding:0em 0.25em">
+<ul><li><i><a href="../Geronimo&apos;s_Cadillac_(album)" title="Geronimo&apos;s Cadillac (album)">Geronimo&apos;s Cadillac</a></i> (1972)</li>
+<li><i><a href="../Cosmic_Cowboy_Souvenir" title="Cosmic Cowboy Souvenir">Cosmic Cowboy Souvenir</a></i> (1973)</li>
+<li><i><a href="../Michael_Murphey_(album)" title="Michael Murphey (album)">Michael Murphey</a></i> (1974)</li>
+<li><i><a href="../Blue_Sky_%E2%80%93_Night_Thunder" title="Blue Sky &#x2013; Night Thunder">Blue Sky &#x2013; Night Thunder</a></i> (1975)</li>
+<li><i><a href="../Swans_Against_the_Sun" title="Swans Against the Sun">Swans Against the Sun</a></i> (1976)</li>
+<li><i><a href="../Flowing_Free_Forever" title="Flowing Free Forever">Flowing Free Forever</a></i> (1976)</li>
+<li><i><a href="../Lone_Wolf_(Michael_Martin_Murphey_album)" title="Lone Wolf (Michael Martin Murphey album)">Lone Wolf</a></i> (1978)</li>
+<li><i><a href="../Peaks%2C_Valleys%2C_Honky_Tonks_%26_Alleys" title="Peaks, Valleys, Honky Tonks &amp; Alleys">Peaks, Valleys, Honky Tonks &amp; Alleys</a></i> (1979)</li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%;background: #EEEEEE;">1980s albums</th><td class="navbox-list navbox-even hlist" style="text-align:left;border-left-width:2px;border-left-style:solid;width:100%;padding:0px"><div style="padding:0em 0.25em">
+<ul><li><i><a href="../Hard_Country_(album)" title="Hard Country (album)">Hard Country</a></i> (1981)</li>
+<li><i><a href="../Michael_Martin_Murphey_(album)" title="Michael Martin Murphey (album)">Michael Martin Murphey</a></i> (1982)</li>
+<li><i><a href="../The_Heart_Never_Lies_(album)" title="The Heart Never Lies (album)">The Heart Never Lies</a></i> (1983)</li>
+<li><i><a href="../Tonight_We_Ride" title="Tonight We Ride">Tonight We Ride</a></i> (1986)</li>
+<li><i><a href="../Americana_(Michael_Martin_Murphey_album)" title="Americana (Michael Martin Murphey album)">Americana</a></i> (1987)</li>
+<li><i><a href="../River_of_Time_(Michael_Martin_Murphey_album)" title="River of Time (Michael Martin Murphey album)">River of Time</a></i> (1988)</li>
+<li><i><a href="../Land_of_Enchantment_(album)" title="Land of Enchantment (album)">Land of Enchantment</a></i> (1989)</li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%;background: #EEEEEE;">1990s albums</th><td class="navbox-list navbox-odd hlist" style="text-align:left;border-left-width:2px;border-left-style:solid;width:100%;padding:0px"><div style="padding:0em 0.25em">
+<ul><li><i><a href="../Cowboy_Songs_(Michael_Martin_Murphey_album)" title="Cowboy Songs (Michael Martin Murphey album)">Cowboy Songs</a></i> (1990)</li>
+<li><i><a href="../Cowboy_Christmas%3A_Cowboy_Songs_II" title="Cowboy Christmas: Cowboy Songs II">Cowboy Christmas: Cowboy Songs II</a></i> (1991)</li>
+<li><i><a href="../Cowboy_Songs_III" title="Cowboy Songs III">Cowboy Songs III</a></i> (1993)</li>
+<li><i><a href="../Sagebrush_Symphony" title="Sagebrush Symphony">Sagebrush Symphony</a></i> (1995)</li>
+<li><i><a href="../The_Horse_Legends" title="The Horse Legends">The Horse Legends</a></i> (1997)</li>
+<li><i><a href="../Cowboy_Songs_Four" title="Cowboy Songs Four">Cowboy Songs Four</a></i> (1998)</li>
+<li><i><a href="../Acoustic_Christmas_Carols%3A_Cowboy_Christmas_II" title="Acoustic Christmas Carols: Cowboy Christmas II">Acoustic Christmas Carols: Cowboy Christmas II</a></i> (1999)</li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%;background: #EEEEEE;">2000s albums</th><td class="navbox-list navbox-even hlist" style="text-align:left;border-left-width:2px;border-left-style:solid;width:100%;padding:0px"><div style="padding:0em 0.25em">
+<ul><li><i><a href="../Playing_Favorites" title="Playing Favorites">Playing Favorites</a></i> (2001)</li>
+<li><i><a href="../Cowboy_Classics%3A_Playing_Favorites_II" title="Cowboy Classics: Playing Favorites II">Cowboy Classics: Playing Favorites II</a></i> (2002)</li>
+<li><i><a href="../Cowboy_Christmas_III" title="Cowboy Christmas III">Cowboy Christmas III</a></i> (2002)</li>
+<li><i><a href="../Live_at_Billy_Bob&apos;s_Texas_(Michael_Martin_Murphey_album)" title="Live at Billy Bob&apos;s Texas (Michael Martin Murphey album)">Live at Billy Bob&apos;s Texas</a></i> (2004)</li>
+<li><i><a href="../Heartland_Cowboy%3A_Cowboy_Songs%2C_Vol._5" title="Heartland Cowboy: Cowboy Songs, Vol. 5">Heartland Cowboy: Cowboy Songs, Vol. 5</a></i> (2006)</li>
+<li><i><a href="../Buckaroo_Blue_Grass" title="Buckaroo Blue Grass">Buckaroo Blue Grass</a></i> (2009)</li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%;background: #EEEEEE;">2010s albums</th><td class="navbox-list navbox-odd hlist" style="text-align:left;border-left-width:2px;border-left-style:solid;width:100%;padding:0px"><div style="padding:0em 0.25em">
+<ul><li><i><a href="../Lone_Cowboy" title="Lone Cowboy">Lone Cowboy</a></i> (2010)</li>
+<li><i><a href="../Buckaroo_Blue_Grass_II" title="Buckaroo Blue Grass II">Buckaroo Blue Grass II</a></i> (2010)</li>
+<li><i><a href="../Tall_Grass_%26_Cool_Water" title="Tall Grass &amp; Cool Water">Tall Grass &amp; Cool Water</a></i> (2011)</li>
+<li><i><a href="../Campfire_on_the_Road" title="Campfire on the Road">Campfire on the Road</a></i> (2012)</li>
+<li><i><a href="../Red_River_Drifter" title="Red River Drifter">Red River Drifter</a></i> (2013)</li>
+<li><i><a href="../High_Stakes_(album)" title="High Stakes (album)">High Stakes</a></i> (2016)</li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%;background: #EEEEEE;">Notable singles</th><td class="navbox-list navbox-even hlist" style="text-align:left;border-left-width:2px;border-left-style:solid;width:100%;padding:0px"><div style="padding:0em 0.25em">
+<ul><li>&quot;<a href="../Geronimo&apos;s_Cadillac_(Michael_Martin_Murphey_song)" title="Geronimo&apos;s Cadillac (Michael Martin Murphey song)">Geronimo&apos;s Cadillac</a>&quot;</li>
+<li>&quot;<a href="../Wildfire_(Michael_Martin_Murphey_song)" title="Wildfire (Michael Martin Murphey song)">Wildfire</a>&quot;</li>
+<li>&quot;<a href="../A_Mansion_on_the_Hill" title="A Mansion on the Hill">Mansion on the Hill</a>&quot;</li>
+<li>&quot;<a href="../Cherokee_Fiddle" title="Cherokee Fiddle">Cherokee Fiddle</a>&quot;</li>
+<li>&quot;<a href="../What&apos;s_Forever_For" title="What&apos;s Forever For">What&apos;s Forever For</a>&quot;</li>
+<li>&quot;<a href="../Still_Taking_Chances" title="Still Taking Chances">Still Taking Chances</a>&quot;</li>
+<li>&quot;<a href="../Love_Affairs" title="Love Affairs">Love Affairs</a>&quot;</li>
+<li>&quot;<a href="../Don&apos;t_Count_the_Rainy_Days" title="Don&apos;t Count the Rainy Days">Don&apos;t Count the Rainy Days</a>&quot;</li>
+<li>&quot;<a href="../Will_It_Be_Love_by_Morning" title="Will It Be Love by Morning">Will It Be Love by Morning</a>&quot;</li>
+<li>&quot;<a href="../Disenchanted" title="Disenchanted">Disenchanted</a>&quot;</li>
+<li>&quot;<a href="../Radio_Land" title="Radio Land">Radio Land</a>&quot;</li>
+<li>&quot;<a href="../What_She_Wants" title="What She Wants">What She Wants</a>&quot;</li>
+<li>&quot;<a href="../Carolina_in_the_Pines" title="Carolina in the Pines">Carolina in the Pines</a>&quot;</li>
+<li>&quot;<a href="../Rollin&apos;_Nowhere" title="Rollin&apos; Nowhere">Rollin&apos; Nowhere</a>&quot;</li>
+<li>&quot;<a href="../Fiddlin&apos;_Man" title="Fiddlin&apos; Man">Fiddlin&apos; Man</a>&quot;</li>
+<li>&quot;<a href="../A_Face_in_the_Crowd_(Michael_Martin_Murphey_and_Holly_Dunn_song)" title="A Face in the Crowd (Michael Martin Murphey and Holly Dunn song)">A Face in the Crowd</a>&quot; <span style="font-size:85%;">(with <a href="../Holly_Dunn" title="Holly Dunn">Holly Dunn</a>)</span></li>
+<li>&quot;<a href="../A_Long_Line_of_Love" title="A Long Line of Love">A Long Line of Love</a>&quot;</li>
+<li>&quot;<a href="../I&apos;m_Gonna_Miss_You%2C_Girl" title="I&apos;m Gonna Miss You, Girl">I&apos;m Gonna Miss You, Girl</a>&quot;</li>
+<li>&quot;<a href="../Talkin&apos;_to_the_Wrong_Man" title="Talkin&apos; to the Wrong Man">Talkin&apos; to the Wrong Man</a>&quot; <span style="font-size:85%;">(with <a href="../Ryan_Murphey" title="Ryan Murphey">Ryan Murphey</a>)</span></li>
+<li>&quot;<a href="../Pilgrims_on_the_Way_(Matthew&apos;s_Song)" title="Pilgrims on the Way (Matthew&apos;s Song)">Pilgrims on the Way (Matthew&apos;s Song)</a>&quot;</li>
+<li>&quot;<a href="../From_the_Word_Go_(song)" title="From the Word Go (song)">From the Word Go</a>&quot;</li>
+<li>&quot;<a href="../Never_Givin&apos;_Up_on_Love" title="Never Givin&apos; Up on Love">Never Givin&apos; Up on Love</a>&quot;</li>
+<li>&quot;<a href="../(Get_Your_Kicks_on)_Route_66" title="(Get Your Kicks on) Route 66">Route 66</a>&quot;</li>
+<li>&quot;<a href="../Big_Iron" title="Big Iron">Big Iron</a>&quot;</li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%;background: #EEEEEE;">Related articles</th><td class="navbox-list navbox-odd hlist" style="text-align:left;border-left-width:2px;border-left-style:solid;width:100%;padding:0px"><div style="padding:0em 0.25em">
+<ul><li><a href="../Michael_Martin_Murphey_discography" title="Michael Martin Murphey discography">Discography</a></li>
+<li><a href="../Ryan_Murphey" title="Ryan Murphey">Ryan Murphey</a></li>
+<li><a href="../Rio_Grande_Band" title="Rio Grande Band">Rio Grande Band</a></li>
+<li><a href="../Pat_Flynn_(musician)" title="Pat Flynn (musician)">Pat Flynn</a></li></ul>
+</div></td></tr><tr><td class="navbox-abovebelow" colspan="2" style="background: #EEEEEE;"><div><b><span><span><img src="../../I/Symbol_book_class2.svg.png.webp" data-file-width="180" data-file-height="185" data-file-type="drawing" height="16" width="16" loading="lazy"></span></span> Book:Michael Martin Murphey</b></div></td></tr></tbody></table></div>
+
+<div role="navigation" class="navbox authority-control" aria-labelledby="Authority_control_frameless_&amp;#124;text-top_&amp;#124;10px_&amp;#124;alt=Edit_this_at_Wikidata_&amp;#124;link=https&amp;#58;//www.wikidata.org/wiki/Q7821466#identifiers&amp;#124;Edit_this_at_Wikidata" style="padding:3px"><table class="nowraplinks hlist navbox-inner" style="border-spacing:0;background:transparent;color:inherit"><tbody><tr><th id="Authority_control_frameless_&amp;#124;text-top_&amp;#124;10px_&amp;#124;alt=Edit_this_at_Wikidata_&amp;#124;link=https&amp;#58;//www.wikidata.org/wiki/Q7821466#identifiers&amp;#124;Edit_this_at_Wikidata" scope="row" class="navbox-group" style="width:1%">Authority control <span class="mw-valign-text-top"><img src="../../I/OOjs_UI_icon_edit-ltr-progressive.svg.png.webp" data-file-width="20" data-file-height="20" data-file-type="drawing" height="10" width="10" loading="lazy"></span></th><td class="navbox-list navbox-odd" style="text-align:left;border-left-width:2px;border-left-style:solid;width:100%;padding:0px"><div style="padding:0em 0.25em">
+<ul><li><span class="nowrap"><a href="../MBRG_(identifier)" title="MBRG (identifier)" class="mw-redirect">MBRG</a>: <span class="uid"><a href="https://musicbrainz.org/release-group/e2dca948-d8f4-3a20-a38d-c48f9625d087" class="external text external">e2dca948-d8f4-3a20-a38d-c48f9625d087</a></span></span></li></ul>
+
+</div></td></tr></tbody></table></div>
+
+
+
+
+<style data-mw-deduplicate="TemplateStyles:r999302996">.mw-parser-output cite.citation{font-style:inherit}.mw-parser-output .citation q{quotes:"\"""\"""'""'"}.mw-parser-output .id-lock-free a,.mw-parser-output .citation .cs1-lock-free a{background:linear-gradient(transparent,transparent),url("//upload.wikimedia.org/wikipedia/commons/6/65/Lock-green.svg")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-limited a,.mw-parser-output .id-lock-registration a,.mw-parser-output .citation .cs1-lock-limited a,.mw-parser-output .citation .cs1-lock-registration a{background:linear-gradient(transparent,transparent),url("//upload.wikimedia.org/wikipedia/commons/d/d6/Lock-gray-alt-2.svg")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-subscription a,.mw-parser-output .citation .cs1-lock-subscription a{background:linear-gradient(transparent,transparent),url("//upload.wikimedia.org/wikipedia/commons/a/aa/Lock-red-alt-2.svg")right 0.1em center/9px no-repeat}.mw-parser-output .cs1-subscription,.mw-parser-output .cs1-registration{color:#555}.mw-parser-output .cs1-subscription span,.mw-parser-output .cs1-registration span{border-bottom:1px dotted;cursor:help}.mw-parser-output .cs1-ws-icon a{background:linear-gradient(transparent,transparent),url("//upload.wikimedia.org/wikipedia/commons/4/4c/Wikisource-logo.svg")right 0.1em center/12px no-repeat}.mw-parser-output code.cs1-code{color:inherit;background:inherit;border:none;padding:inherit}.mw-parser-output .cs1-hidden-error{display:none;font-size:100%}.mw-parser-output .cs1-visible-error{font-size:100%}.mw-parser-output .cs1-maint{display:none;color:#33aa33;margin-left:0.3em}.mw-parser-output .cs1-format{font-size:95%}.mw-parser-output .cs1-kern-left,.mw-parser-output .cs1-kern-wl-left{padding-left:0.2em}.mw-parser-output .cs1-kern-right,.mw-parser-output .cs1-kern-wl-right{padding-right:0.2em}.mw-parser-output .citation .mw-selflink{font-weight:inherit}</style>
+    
+</details><!--htdig_noindex--><div><div style="clear:both; background-image:linear-gradient(180deg, #E8E8E8, white); border-top: dashed 2px #AAAAAA; padding: 0.5em 0.5em 0.5em 0.5em; margin-top: 1em; direction: ltr;">
+    This article is issued from <a class="external text" title="Last edited on 2021-01-25" href="https://en.wikipedia.org/wiki/?title=Tonight_We_Ride&amp;oldid=1002610973">Wikipedia</a>. The text is licensed under <a class="external text" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons - Attribution - Sharealike</a>. Additional terms may apply for the media files.
+</div>
+</div><!--/htdig_noindex--></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../../-/mw/jsConfigVars.js"></script>
+  <script src="../../-/mw/startup.js"></script>
+<script src="../../-/mw/jquery.js"></script>
+<script src="../../-/mw/mediawiki.js"></script>
+<script src="../../-/mw/site.js"></script>
+<script src="../../-/mw/ext.cite.ux-enhancements.js"></script>
+
+
+
+</body></html>

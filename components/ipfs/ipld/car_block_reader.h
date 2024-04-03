@@ -22,7 +22,8 @@ class CarBlockReader : public BlockReader {
   void OnRequestDataReceived(BlockReaderCallback callback,
                              std::unique_ptr<std::vector<uint8_t>> data,
                              const bool is_completed,
-                             const int& error_code) override;
+                             const int& error_code,
+                             const std::string& x_ipfs_roots) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BlockReaderUnitTest, ReceiveBlocksByChunks);

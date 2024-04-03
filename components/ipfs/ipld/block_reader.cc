@@ -36,7 +36,7 @@ void BlockReader::Reset(const GURL& new_url) {
   content_requester_->Reset(new_url);
 }
 
-base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>, const bool, const int&)>
+base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>, const bool, const int&, const std::string&)>
 BlockReader::GetReadCallbackForTests(BlockReaderCallback callback) {
   return base::BindRepeating(&BlockReader::OnRequestDataReceived,
                              weak_ptr_factory_.GetWeakPtr(),

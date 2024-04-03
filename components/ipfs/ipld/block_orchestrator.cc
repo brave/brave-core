@@ -6,20 +6,26 @@
 #include "brave/components/ipfs/ipld/block_orchestrator.h"
 
 #include <cstdint>
+#include <iomanip>
+#include <iterator>
 #include <memory>
+#include <sstream>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "absl/types/optional.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/ipld/block_reader.h"
 #include "brave/components/ipfs/ipld/dag_nodes_collector.h"
+#include "brave/components/ipfs/ipld/ipld_utils.h"
 #include "net/http/http_status_code.h"
 
 namespace {
@@ -82,18 +88,61 @@ void EnumerateBlocksFromCid(
 
 }
 
-absl::optional<std::string> GetRootCid(const ipfs::ipld::Block* root_block) {
-  DCHECK(root_block);
-  if (!root_block) {
-    return absl::nullopt;
-  }
-  const auto* root_cids_list = root_block->Meta().FindList("roots");
+// absl::optional<std::string> GetRootCid(const ipfs::ipld::Block* root_block) {
+//   DCHECK(root_block);
+//   if (!root_block) {
+//     return absl::nullopt;
+//   }
+//   const auto* root_cids_list = root_block->Meta().FindList("roots");
 
-  if (!root_cids_list || root_cids_list->empty()) {
-    return absl::nullopt;
-  }
+//   if (!root_cids_list || root_cids_list->empty()) {
+//     return absl::nullopt;
+//   }
 
-  return root_cids_list->front().GetString();
+//   return root_cids_list->front().GetString();
+// }
+
+std::string GetLastRootCid(const std::string& header) {
+    std::vector<std::string> output;
+    std::istringstream iss(header);
+    std::string token;
+
+    // Loop through the tokens and add each one to the vector
+    while (std::getline(iss, token, ',')) {
+        // Convert the token to an integer and add it to the vector
+        output.push_back(token);
+    }
+
+    return output.empty() ? "" : output[output.size()-1];
+}
+
+absl::optional<std::string> GetShardingPrefix(const std::string& name_to_find, ipfs::ipld::Block const* block) {
+    if(!block || !block->GetData()){
+      return absl::nullopt;
+    }
+    LOG(INFO) << "[IPFS] GetShardingName hash_type:" << block->GetData()->hash_type;
+    const std::vector<uint8_t> name_to_find_bytes(std::begin(name_to_find), std::end(name_to_find));
+    auto murmur_result = ipfs::ipld::MurMur3_x64_128(name_to_find_bytes);
+    if (murmur_result.error.error_code != 0 || murmur_result.hash.size() != 128/8) {
+      return absl::nullopt;
+    }
+    std::stringstream ss;
+    std::ranges::for_each(murmur_result.hash, [&ss](const uint8_t& c) { ss << static_cast<int>(c) << " "; });
+    LOG(INFO) << "[IPFS] murmur3 for the '" << name_to_find << "': " <<  ss.str();
+
+    const auto bits_to_take(log2(static_cast<double>(block->GetData()->fanout)));
+
+    LOG(INFO) << "[IPFS] bits_to_take:" << bits_to_take << " bytes to take:" << bits_to_take/8;
+
+    std::stringstream result;
+    const auto bytes_to_take(static_cast<uint8_t>(bits_to_take/8));
+    LOG(INFO) << "[IPFS] bytes_to_take:" << static_cast<int>(bytes_to_take);
+    for(int index(7); index >= (8 - bytes_to_take); index--) {
+      result << std::format("{:X}", murmur_result.hash[index]);
+    }
+    //result << name_to_find;
+
+    return result.str();
 }
 
 }  // namespace
@@ -116,6 +165,7 @@ void BlockOrchestrator::BuildResponse(
 
   request_callback_ = std::move(callback);
   request_ = std::move(request);
+
   SendRequest(request_->url);
 }
 
@@ -139,10 +189,15 @@ void BlockOrchestrator::SendRequest(const GURL& url) {
 
 void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
                                     const bool is_completed,
-                                    const int& error_code) {
-  LOG(INFO) << "[IPFS] OnBlockRead is_completed:" << is_completed
-            << " Cid:" << (block ? block->Cid() : "n/a")
-            << " error_code:" << error_code;
+                                    const int& error_code,
+                                    const bool is_block_broken,
+                                    const std::string& x_ipfs_roots) {
+  LOG(INFO) << "[IPFS] OnBlockRead \r\nis_completed:" << is_completed
+            << "\r\nCid:" << (block ? block->Cid() : "n/a")
+            << "\r\nerror_code:" << error_code
+            << "\r\nis_block_broken:" << is_block_broken
+            << "\r\nx_ipfs_roots:" << x_ipfs_roots
+            ;
 
   if (!is_completed) {
     LOG(INFO) << "[IPFS] OnBlockRead Not Completed, Collected block cid:"
@@ -163,7 +218,11 @@ void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
     return;
   }
 
-  if (!block) {
+  if (!block || is_block_broken) {
+    if(is_block_broken) {
+      LOG(INFO) << "[IPFS] OnBlockRead Completed, but block is broken, skip it";
+    }
+
     LOG(INFO)
         << "[IPFS] OnBlockRead Block collecting "
            "finished Root CID:"
@@ -172,13 +231,16 @@ void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
                 : "N/A");
 
     // Here is where we finished to collect all blocks
-    auto root_cid = GetRootCid(dag_nodes_collector_->GetRootBlock());
-    DCHECK(root_cid);
-    if (!root_cid || root_cid->empty()) {
-      return;
-    }
+    // auto root_cid = GetRootCid(dag_nodes_collector_->GetRootBlock());
+    // if (!root_cid || root_cid->empty()) {
+    //   return;
+    // }
 
-    ProcessBlock(*root_cid);
+    //ProcessBlock(*root_cid);
+
+    auto rc = GetLastRootCid(x_ipfs_roots);
+
+    ProcessBlock(rc); // TODO added this as we have root cids as header in response and can use them instead, but sometimes x-ipfs-roots contains several cids, but we need only one, may be last one
     return;
   }
 
@@ -199,7 +261,10 @@ void BlockOrchestrator::ProcessBlock(const std::string& cid) {
     return;
   }
 
-  LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock cid:" << block->Cid() << " Block Meta:" << block->Meta().DebugString();
+  LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock cid:" << block->Cid() 
+  << "\r\nData.Type:" << (block->GetData()?base::ToString(block->GetData()->type):"n/a")
+  //<< "\r\nBlock Meta:" << block->Meta().DebugString()
+  ;
   if (block->IsContent()) {
     LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Content";
     std::string_view vontent_view((const char*)block->GetContentData()->data(),
@@ -235,6 +300,28 @@ void BlockOrchestrator::ProcessBlock(const std::string& cid) {
       LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Found index name:"
                 << index_item->name << " hash:" << index_item->hash;
       ProcessBlock(index_item->hash);
+    }
+  } else if (block->IskShardFolder()) {
+    const auto sharding_prefix = GetShardingPrefix(kDefaultHtmlPageName, block);
+    LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Shard Folder"
+    << "\r\nfanout:" << block->GetData()->fanout
+    << "\r\nsharding_prefix:" << sharding_prefix.value_or("N/A")
+    ;
+    if (!sharding_prefix) {
+      return;
+    }
+
+    auto index_item =
+        base::ranges::find_if(*block->GetLinks(), [&](const auto& item) { 
+          return base::StartsWith(item.name, *sharding_prefix);
+        });
+
+    if (index_item != block->GetLinks()->end()) {
+      LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Found Sharded index name:"
+                << index_item->name << " hash:" << index_item->hash;
+      ProcessBlock(index_item->hash);
+    } else {
+      LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock NOT Found";
     }
   } else {
     LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock NOT Found in the "

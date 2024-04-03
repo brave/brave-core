@@ -24,7 +24,7 @@ class ContentRequester : public network::SimpleURLLoaderStreamConsumer {
  public:
   using ContentRequestBufferCallback =
       base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>,
-                                   const bool, const int&)>;
+                                   const bool, const int&, const std::string& x_ipfs_root)>;
 
   ~ContentRequester() override;
 

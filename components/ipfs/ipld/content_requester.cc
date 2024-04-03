@@ -80,9 +80,9 @@ GURL ContentRequester::GetGatewayRequestUrl() const {
 
   GURL url_res(url_);
   if (!IsPublicGatewayLink(url_, prefs_)) {
-    std::string cid;
-    std::string ipfs_path;
-    ParseCIDAndPathFromIPFSUrl(url_, &cid, &ipfs_path);
+    // std::string cid;
+    // std::string ipfs_path;
+    // ParseCIDAndPathFromIPFSUrl(url_, &cid, &ipfs_path);
     url_res = ipfs::ToPublicGatewayURL(url_, prefs_);
   }
 
@@ -97,7 +97,7 @@ void ContentRequester::OnDataReceived(base::StringPiece string_piece,
   LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data->size();
 
   if (buffer_ready_callback_) {
-    buffer_ready_callback_.Run(std::move(data), false, net::HTTP_OK);
+    buffer_ready_callback_.Run(std::move(data), false, net::HTTP_OK, "");
   }
 
   if (!resume) {
@@ -119,15 +119,17 @@ void ContentRequester::OnComplete(bool success) {
   // << "\r\n url_loader_->ResponseInfo()->headers:" << (url_loader_ != nullptr && url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
   ;
 
+  std::string x_ipfs_root;
   int response_code = url_loader_ ? url_loader_->NetError() : net::Error::ERR_HTTP_RESPONSE_CODE_FAILURE;
   if (url_loader_ && url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers) {
     response_code = url_loader_->ResponseInfo()->headers->response_code();
-
+    url_loader_->ResponseInfo()->headers->GetNormalizedHeader("x-ipfs-roots", &x_ipfs_root);
     LOG(INFO) << "[IPFS] OnComplete response_code:" << response_code;
   }
+  LOG(INFO) << "[IPFS] OnComplete x-ipfs-roots:" << x_ipfs_root;
 
   if (buffer_ready_callback_) {
-    buffer_ready_callback_.Run(nullptr, true, response_code);
+    buffer_ready_callback_.Run(nullptr, true, response_code, x_ipfs_root);
   }
 
   is_started_ = false;

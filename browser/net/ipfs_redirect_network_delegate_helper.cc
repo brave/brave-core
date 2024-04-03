@@ -20,12 +20,12 @@
 
 namespace {
 
-bool IsResolveMethod(PrefService* pref_service, const ipfs::IPFSResolveMethodTypes& resolution_method) {
-  auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
-      pref_service->GetInteger(kIPFSResolveMethod));
+// bool IsResolveMethod(PrefService* pref_service, const ipfs::IPFSResolveMethodTypes& resolution_method) {
+//   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
+//       pref_service->GetInteger(kIPFSResolveMethod));
     
-  return resolve_method == resolution_method;
-}
+//   return resolve_method == resolution_method;
+// }
 
 }  // namespace
 namespace ipfs {
@@ -90,7 +90,7 @@ int OnBeforeURLRequest_IPFSRedirectWork(
         (IsLocalGatewayURL(new_url) && IsLocalGatewayURL(ctx->initiator_url)) ||
         (IsDefaultGatewayURL(new_url, prefs) &&
          IsDefaultGatewayURL(ctx->initiator_url, prefs)) ||
-         (has_ipfs_scheme && IsResolveMethod(prefs, ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY))) //  TODO may be move this condition to separate function
+         (has_ipfs_scheme /*&& IsResolveMethod(prefs, ipfs::IPFSResolveMethodTypes::IPFS_DISABLED)*/)) //  TODO may be move this condition to separate function
     {
       ctx->new_url_spec = new_url.spec();
     } else {
