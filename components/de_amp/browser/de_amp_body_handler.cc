@@ -238,7 +238,8 @@ bool DeAmpBodyHandler::OpenCanonicalURL(const GURL& new_url) {
                        if (!web_contents) {
                          return;
                        }
-                       web_contents->OpenURL(params);
+                       web_contents->OpenURL(params,
+                                             /*navigation_handle_callback=*/{});
                      },
                      contents->GetWeakPtr(), std::move(params)));
   return true;
