@@ -146,7 +146,8 @@ platform :ios do
       code_coverage: true,
       output_types: "junit",
       output_files: "junit.xml",
-      derived_data_path: "../../../out/DerivedData"
+      derived_data_path: "../../../out/DerivedData",
+      number_of_retries: 1
     }
   end
 
