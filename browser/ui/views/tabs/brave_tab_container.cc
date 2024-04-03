@@ -291,6 +291,7 @@ void BraveTabContainer::PaintBoundingBoxForTile(
 
   cc::PaintFlags flags;
   auto* cp = GetColorProvider();
+  CHECK(cp);
   flags.setColor(cp->GetColor(kColorBraveSplitViewTileBackground));
   canvas.DrawRoundRect(bounding_rects, kRadius, flags);
 }
