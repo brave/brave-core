@@ -97,6 +97,7 @@ class ConversationDriver {
   bool GetShouldSendPageContents();
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
+  mojom::ConversationTurnPtr ClearErrorAndGetFailedMessage();
   void GetPremiumStatus(
       mojom::PageHandler::GetPremiumStatusCallback callback);
   bool GetCanShowPremium();
@@ -224,6 +225,7 @@ class ConversationDriver {
 
   // TODO(nullhook): Abstract the data model
   std::string model_key_;
+  // TODO(nullhook): Change this to mojo::StructPtr
   std::vector<mojom::ConversationTurn> chat_history_;
   bool is_conversation_active_ = false;
 

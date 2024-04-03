@@ -330,4 +330,7 @@
   <message name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST" desc="The text label of submenu for creating social media posts using selected text">
     Social media
   </message>
+  <message name="IDS_AI_CHAT_MAYBE_LATER_LABEL" desc="The button label that dismisses an error prompt">
+    Maybe later
+  </message>
 </grit-part>

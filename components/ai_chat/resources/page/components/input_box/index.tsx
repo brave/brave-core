@@ -14,32 +14,16 @@ import styles from './style.module.scss'
 import DataContext from '../../state/context'
 import getPageHandlerInstance from '../../api/page_handler'
 
-const MAX_INPUT_CHAR = 2000
-const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
-
 function InputBox () {
-  const [inputText, setInputText] = React.useState('')
   const context = React.useContext(DataContext)
 
-  const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
-  const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
-
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputText(e.target.value)
-  }
-
-  const submitInputTextToAPI = () => {
-    if (!inputText) return
-    if (isCharLimitExceeded) return
-    if (context.shouldDisableUserInput) return
-
-    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(inputText)
-    setInputText('')
+    context.setInputText(e.target.value)
   }
 
   const handleSubmit = (e: CustomEvent<any>) => {
     e.preventDefault()
-    submitInputTextToAPI()
+    context.submitInputTextToAPI()
   }
 
   const handleMic = (e: CustomEvent<any>) => {
@@ -50,7 +34,7 @@ function InputBox () {
   const onUserPressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       if (!e.repeat) {
-        submitInputTextToAPI()
+        context.submitInputTextToAPI()
       }
 
       e.preventDefault()
@@ -61,24 +45,24 @@ function InputBox () {
     <form className={styles.form}>
       <div
         className={(context.isMobile ? styles.growWrapMobile : styles.growWrap)}
-        data-replicated-value={inputText}
+        data-replicated-value={context.inputText}
       >
         <textarea
           placeholder={getLocale('placeholderLabel')}
           onChange={onInputChange}
           onKeyDown={onUserPressEnter}
-          value={inputText}
+          value={context.inputText}
           autoFocus
           rows={1}
         />
       </div>
-      {isCharLimitApproaching && (
+      {context.isCharLimitApproaching && (
         <div className={classnames({
           [styles.counterText]: true,
-          [styles.counterTextVisible]: isCharLimitApproaching,
-          [styles.counterTextError]: isCharLimitExceeded
+          [styles.counterTextVisible]: context.isCharLimitApproaching,
+          [styles.counterTextError]: context.isCharLimitExceeded
         })}>
-          {`${inputText.length} / ${MAX_INPUT_CHAR}`}
+          {context.inputTextCharCountDisplay}
         </div>
       )}
       <div className={styles.actions}>

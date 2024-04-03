@@ -17,7 +17,10 @@ import AIChatDataContext, {
   AIChatContext,
   defaultContext
 } from '../state/context'
-import { useArgs } from '@storybook/addons'
+import { useArgs, useState } from '@storybook/addons'
+
+const MAX_INPUT_CHAR = 2000
+const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
 
 const HISTORY: mojom.ConversationTurn[] = [
   {
@@ -210,11 +213,16 @@ export default {
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
       const currentModel = MODELS.find(m => m.name === options.args.model)
+      const [inputText, setInputText] = useState('')
 
       const switchToBasicModel = () => {
         const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
         setArgs({ model: nonPremiumModel })
       }
+
+      const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
+      const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
+      const inputTextCharCountDisplay = `${inputText.length} / ${MAX_INPUT_CHAR}`
 
       const store: AIChatContext = {
         // Don't error when new properties are added
@@ -239,7 +247,12 @@ export default {
         isMobile: options.args.isMobile,
         switchToBasicModel,
         shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
-        shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo
+        shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
+        setInputText,
+        inputText,
+        isCharLimitExceeded,
+        isCharLimitApproaching,
+        inputTextCharCountDisplay,
       }
 
       return (
