@@ -1072,4 +1072,5 @@
   <message name="IDS_BRAVE_WALLET_PROCEED_BUTTON" desc="Proceed action button text">Proceed</message>
   <message name="IDS_BRAVE_WALLET_FOUND_ISSUES" desc="Notice that a number of issues were found">We found <ph name="VALUE">$1<ex>2</ex></ph> issues.</message>
   <message name="IDS_BRAVE_WALLET_NO_ROUTES_FOUND" desc="Error message for when no swap routes could be found">No routes found</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_NAME_TOO_LONG_ERROR" desc="An error that appears when the user enters an account name that is too long">Account name must be 30 characters or less</message>
 </grit-part>

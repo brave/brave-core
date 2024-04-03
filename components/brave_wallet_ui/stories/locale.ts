@@ -402,6 +402,8 @@ provideStrings({
     '(ERC-20, ERC-721, ERC-1551, ERC-1155)',
   braveWalletCreateAccountSolanaDescription:
     'Supports SPL compatible assets on the Solana blockchain',
+  braveWalletCreateAccountBitcoinDescription: 'Store BTC assets',
+  braveWalletCreateAccountZCashDescription: 'Store ZEC assets',
   braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
   braveWalletFilecoinPrivateKeyProtocol: 'Private key $1',
 
@@ -488,6 +490,8 @@ provideStrings({
   braveWalletAccountsDeposit: 'Deposit',
   braveWalletAccountsRemove: 'Remove',
   braveWalletAccountSettings: 'Account settings',
+  braveWalletAccountNameTooLongError:
+    'Account name must be 30 characters or less',
 
   // Empty Token List State
   braveWalletNoAvailableAssets: 'No available assets',

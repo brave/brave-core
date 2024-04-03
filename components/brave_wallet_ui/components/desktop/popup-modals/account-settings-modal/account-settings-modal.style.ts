@@ -13,46 +13,16 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 20px 15px 20px 15px;
+  width: 250px;
+  padding: 20px 0px;
   height: 100%;
-  min-height: 320px;
+  min-height: 200px;
 `
 
-export const Input = styled.input`
-  outline: none;
-  width: 250px;
-  background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
-  box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  padding: 10px;
-  margin-bottom: 16px;
-  color: ${(p) => p.theme.color.text01};
-  ::placeholder {
-    font-family: Poppins;
-    font-style: normal;
-    font-size: 12px;
-    letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
-  }
-  :focus {
-    outline: none;
-  }
-  ::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  ::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+export const EditWrapper = styled(StyledWrapper)`
+  gap: 14px;
+  & > * {
+    width: 250px;
   }
 `
 
@@ -94,11 +64,8 @@ export const AddressButton = styled(WalletButton)`
 `
 
 export const ButtonRow = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
 `
 
 export const CopyIcon = styled.div`
