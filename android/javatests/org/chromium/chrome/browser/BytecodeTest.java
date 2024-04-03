@@ -834,7 +834,8 @@ public class BytecodeTest {
                         TabObscuringHandler.class,
                         int.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl",
@@ -1362,14 +1363,25 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
                         "mFragmentManager"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
                         "mMediator"));
-        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
-                "mBottomControlsCoordinatorSupplier"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mCallbackController"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBrowserControlsSizer"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mBottomControlsCoordinatorSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mReadAloudControllerSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mCallbackController"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mBrowserControlsSizer"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mFullscreenManager"));
         Assert.assertTrue(fieldExists(

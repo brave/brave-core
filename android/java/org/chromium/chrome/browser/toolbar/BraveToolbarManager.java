@@ -113,6 +113,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabObscuringHandler mTabObscuringHandler;
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private LayoutStateProvider mLayoutStateProvider;
+    private ObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
 
     // Own members.
     private boolean mIsBottomToolbarVisible;
@@ -311,7 +312,11 @@ public class BraveToolbarManager extends ToolbarManager {
                             mTabGroupUi,
                             mTabObscuringHandler,
                             mOverlayPanelVisibilitySupplier,
-                            getConstraintsProxy()));
+                            getConstraintsProxy(),
+                            /* readAloudRestoringSupplier= */ () -> {
+                                final var readAloud = mReadAloudControllerSupplier.get();
+                                return readAloud != null && readAloud.isRestoringPlayer();
+                            }));
             mBottomControls.setBottomControlsCoordinatorSupplier(
                     mBottomControlsCoordinatorSupplier);
             updateBottomToolbarVisibility();

@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.toolbar.bottom;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
@@ -36,7 +37,8 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
             TabObscuringHandler tabObscuringHandler,
             int bottomControlsHeight,
             ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
-            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            Supplier<Boolean> readAloudRestoringSupplier) {
         super(
                 windowAndroid,
                 model,
@@ -45,7 +47,8 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
                 tabObscuringHandler,
                 bottomControlsHeight,
                 overlayPanelVisibilitySupplier,
-                edgeToEdgeControllerSupplier);
+                edgeToEdgeControllerSupplier,
+                readAloudRestoringSupplier);
 
         mTabGroupUiVisibleSupplier.set(false);
         mBottomToolbarVisibleSupplier.set(false);
