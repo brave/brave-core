@@ -390,7 +390,7 @@ mojom::BlockchainTokenPtr ParseToken(const swap_responses::LiFiToken& value) {
   auto result = mojom::BlockchainToken::New();
   result->name = value.name;
   result->symbol = value.symbol;
-  result->logo = value.logo_uri.has_value() ? value.logo_uri.value() : "";
+  result->logo = value.logo_uri.value_or("");
   result->contract_address =
       value.address == kLiFiNativeEVMAssetContractAddress ||
               value.address == kLiFiNativeSVMAssetContractAddress
