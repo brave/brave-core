@@ -24,17 +24,17 @@ public struct FaviconImage: View {
   let url: URL?
   private let isPrivateBrowsing: Bool
   @StateObject private var faviconLoader = FaviconHelper()
-  
+
   public init(url: String?, isPrivateBrowsing: Bool) {
     self.isPrivateBrowsing = isPrivateBrowsing
-    
+
     if let url = url {
       self.url = URL(string: url)
     } else {
       self.url = nil
     }
   }
-  
+
   public var body: some View {
     Image(uiImage: faviconLoader.image ?? Favicon.defaultImage)
       .resizable()
