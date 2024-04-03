@@ -28,8 +28,12 @@ SimpleCommandSource::~SimpleCommandSource() = default;
 CommandSource::CommandResults SimpleCommandSource::GetCommands(
     const std::u16string& input,
     Browser* browser) const {
-  auto commands = commands::GetCommands();
   CommandSource::CommandResults results;
+  if (!browser || !browser->command_controller()) {
+    return results;
+  }
+
+  auto commands = commands::GetCommands();
   FuzzyFinder finder(input);
   std::vector<gfx::Range> ranges;
 
