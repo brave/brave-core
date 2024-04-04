@@ -10,16 +10,42 @@ import Icon from '@brave/leo/react/icon'
 import { WalletButton, Text, Row } from '../../shared/style'
 import { layoutPanelWidth } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.div<{
+  isRewardsAccount: boolean
+}>`
+  cursor: ${(p) => (p.isRewardsAccount ? 'default' : 'pointer')};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  padding: 8px;
+  padding-right: 8px;
   border-radius: 12px;
   border: 1px solid ${leo.color.divider.subtle};
   margin-bottom: 8px;
+  transition: background-color 300ms ease-out;
+  &:hover {
+    background-color: ${(p) =>
+      p.isRewardsAccount ? 'transparent' : leo.color.page.background};
+  }
+`
+
+export const AccountButton = styled(WalletButton)`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  outline: none;
+  background: none;
+  border: none;
+  color: none;
+  margin: 0px;
+  padding: 8px 0px 8px 8px;
+  &:disabled {
+    cursor: default;
+  }
 `
 
 export const NameAndIcon = styled.div`
