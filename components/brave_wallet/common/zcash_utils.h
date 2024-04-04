@@ -16,6 +16,8 @@
 namespace brave_wallet {
 
 inline constexpr size_t kOrchardRawBytesSize = 43;
+inline constexpr uint32_t kZip32Purpose = 32u;
+inline constexpr uint32_t kTestnetCoinType = 1u;
 
 // https://zips.z.cash/zip-0316#encoding-of-unified-addresses
 enum ZCashAddrType {

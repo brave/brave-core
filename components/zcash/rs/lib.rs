@@ -82,7 +82,7 @@ mod ffi {
             self: &OrchardExtendedSpendingKey,
             diversifier_index: u32
         ) -> [u8; 43];  // Array size should match kOrchardRawBytesSize
-    }    
+    }
 }
 
 #[derive(Debug)]
