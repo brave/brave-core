@@ -86,10 +86,6 @@ package = "aho-corasick"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/anyhow-1.0.81"
 package = "anyhow"
 
-[patch.crates-io.autocfg_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/autocfg-1.1.0"
-package = "autocfg"
-
 [patch.crates-io.base64_v0_13]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-0.13.1"
 package = "base64"
