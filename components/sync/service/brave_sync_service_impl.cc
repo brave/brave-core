@@ -397,11 +397,11 @@ void BraveSyncServiceImpl::GetEntityCountsForDebuggingBackport(
   // |all_types_done_barrier| runs |respond_all_counts_callback| once it's been
   // called for all types.
   base::RepeatingClosure all_types_done_barrier = base::BarrierClosure(
-      data_type_controllers_.size(), std::move(respond_all_counts_callback));
+      model_type_controllers_.size(), std::move(respond_all_counts_callback));
 
   // Callbacks passed to the controllers get a non-owning reference to the
   // counts vector, which they use to push the count for their individual type.
-  for (const auto& [type, controller] : data_type_controllers_) {
+  for (const auto& [type, controller] : model_type_controllers_) {
     controller->GetTypeEntitiesCount(base::BindOnce(
         [](const base::RepeatingClosure& all_types_done_barrier,
            EntityCountsVector* all_types_counts_ptr,
