@@ -84,6 +84,7 @@ class FieldTrialConfig:
   filename: str
   revision: str
 
+
 class FieldTrialsMode(Enum):
   NO_TRIALS = 1
   GRIFFIN = 2
@@ -245,8 +246,13 @@ def _MakeTestingFieldTrials(artifacts_dir: str, version: BraveVersion,
   GetProcessOutput(args, cwd=variations_repo_dir, check=True)
 
   get_rev_args = [
-      'git', 'rev-list', '-n', '1', '--first-parent',
-      f'--before={version.commit_date}', f'origin/{branch}',
+      'git',
+      'rev-list',
+      '-n',
+      '1',
+      '--first-parent',
+      f'--before={version.commit_date}',
+      f'origin/{branch}',
   ]
   _, rev = GetProcessOutput(get_rev_args, cwd=variations_repo_dir, check=True)
   rev = rev.rstrip()
