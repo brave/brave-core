@@ -144,7 +144,7 @@ provideStrings({
   braveWalletButtonContinue: 'Continue',
   braveWalletContinueWithXItems: 'Continue with $1 $2',
   braveWalletButtonNext: 'Next',
-  braveWalletButtonVerifyPhrase: 'View my recovery phrase',
+  braveWalletButtonVerifyPhrase: 'Show my recovery phrase',
   braveWalletButtonCopy: 'Copy',
   braveWalletButtonCopied: 'Copied!',
   braveWalletButtonVerify: 'Verify',
@@ -174,7 +174,7 @@ provideStrings({
   braveWalletWelcomeWatchOnlyTitle: 'I need a watch-only wallet',
   braveWalletCopyright:
     '©2023 Brave Software Inc. Brave and the Brave logo are registered ' +
-    'trademarks of Brave. Other product names and logos may be trademarks ' +
+    'trademarks of Brave Software, Inc. Other product names and logos may be trademarks ' +
     'of their respective companies. All rights reserved.',
   braveWalletWelcomeDividerText: 'or',
 
@@ -185,7 +185,7 @@ provideStrings({
   braveWalletSelfCustodyDisclosureCheckboxText:
     'I understand that this is a self-custody wallet, ' +
     'and that I am solely responsible for any associated funds, assets, ' +
-    'or accounts—and for taking appropriate action to ' +
+    'or accounts, and for taking any appropriate action to ' +
     'secure, protect, and back up my wallet. ' +
     'I understand that Brave cannot access my wallet or ' +
     'reverse transactions on my behalf, ' +

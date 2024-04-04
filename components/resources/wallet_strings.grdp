@@ -131,7 +131,7 @@
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_NO" desc="Create Account Tab No Button">No</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_CONTINUE" desc="General Continue button">Continue</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_NEXT" desc="General Next button">Next</message>
-  <message name="IDS_BRAVE_WALLET_BUTTON_GOT_IT" desc="Acknowledgement Next button">View my recovery phrase</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_GOT_IT" desc="Acknowledgement Next button">Show my recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_COPY" desc="General Copy button">Copy</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_COPIED" desc="Confirmation that text has been copied to clipboard">Copied!</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_VERIFY" desc="General Verify button">Verify</message>
@@ -145,7 +145,7 @@
   <message name="IDS_BRAVE_WALLET_WELCOME_NEW_WALLET_DESCRIPTION" desc="Onboarding welcome screen, new wallet action description">Get started with Brave Wallet in minutes.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_IMPORT_WALLET_TITLE" desc="Onboarding welcome screen, import wallet action title">Already have a wallet?</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_WATCH_ONLY_TITLE" desc="Onboarding welcome screen, create watch only wallet">I need a watch-only wallet</message>
-  <message name="IDS_BRAVE_WALLET_WELCOME_COPYRIGHT" desc="Onboarding welcome screen copyright">©2023 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave. Other product names and logos may be trademarks of their respective companies. All rights reserved.</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_COPYRIGHT" desc="Onboarding welcome screen copyright">©2023 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_DIVIDER_TEXT" desc="Wallet onboarding welcome divider text">or</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_IMPORT_WALLET_DESCRIPTION" desc="Onboarding welcome screen, import wallet action description">Already have a wallet?</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title">Back up your crypto wallet</message>
@@ -833,7 +833,7 @@
   <message name="IDS_BRAVE_WALLET_LEARN_ABOUT_MY_WALLET" desc="Link to an article explaining crypto wallets">Learn more about my new wallet</message>
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_TITLE" desc="Title text for Wallet Disclosures page">Before we begin</message>
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_DESCRIPTION" desc="Description text for Wallet Disclosures page">We require that you acknowledge the items below</message>
-  <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand that this is a self-custody wallet, and that I am solely responsible for any associated funds, assets, or accounts—and for taking appropriate action to secure, protect, and back up my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.</message>
+  <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand that this is a self-custody wallet, and that I am solely responsible for any associated funds, assets, or accounts, and for taking any appropriate action to secure, protect, and back up my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.</message>
   <message name="IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT" desc="Wallet Terms of use acknowledgement text">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Terms of use<ph name="LINK_AFTER">$2</ph>.</message>
   <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON" desc="Buy crypto button text">Buy crypto</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON" desc="Deposit Crypto button text">Deposit</message>
