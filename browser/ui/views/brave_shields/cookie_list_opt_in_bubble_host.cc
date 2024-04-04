@@ -88,10 +88,12 @@ void ShowBubbleOnSessionRestore(base::WeakPtr<Browser> browser, Profile*, int) {
 class BubbleManager : public WebUIBubbleManagerImpl<CookieListOptInUI> {
  public:
   BubbleManager(views::View* anchor_view, Profile* profile)
-      : WebUIBubbleManagerImpl<CookieListOptInUI>(anchor_view,
-                                                  profile,
-                                                  GURL(kCookieListOptInURL),
-                                                  IDS_BRAVE_SHIELDS) {}
+      : WebUIBubbleManagerImpl<CookieListOptInUI>(
+            anchor_view,
+            profile,
+            GURL(kCookieListOptInURL),
+            IDS_BRAVE_SHIELDS,
+            /*force_load_on_create=*/false) {}
 
   ~BubbleManager() override = default;
 
