@@ -13,7 +13,7 @@
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #if BUILDFLAG(ENABLE_ORCHARD)
-#include "brave/components/brave_wallet/rust/lib.rs.h"
+#include "brave/components/zcash/rs/lib.rs.h"
 #endif
 
 namespace brave_wallet {
@@ -22,7 +22,12 @@ enum class OrchardKind { External, Internal };
 
 class HDKeyZip32 {
  public:
-  explicit HDKeyZip32(rust::Box<OrchardExtendedSpendingKeyResult> esk);
+#if BUILDFLAG(ENABLE_ORCHARD)
+  explicit HDKeyZip32(rust::Box<zcash::OrchardExtendedSpendingKeyResult> esk);
+#else
+  HDKeyZip32();
+#endif
+
   ~HDKeyZip32();
 
   static std::unique_ptr<HDKeyZip32> GenerateFromSeed(
@@ -35,7 +40,7 @@ class HDKeyZip32 {
 
  private:
 #if BUILDFLAG(ENABLE_ORCHARD)
-  rust::Box<OrchardExtendedSpendingKeyResult> extended_spending_key_;
+  rust::Box<zcash::OrchardExtendedSpendingKeyResult> extended_spending_key_;
 #endif
 };
 
