@@ -91,8 +91,14 @@ export const GridRow = styled.div<{ templateColumns: string }>`
   display: grid;
   grid-template-columns: ${({ templateColumns }) => templateColumns};
   gap: 5px;
-  padding-top: 16px;
+  margin-top: 16px;
+  padding: 6px;
   cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 300ms ease-out;
+  &:hover {
+    background-color: ${leo.color.page.background};
+  }
 `
 
 export const Cell = styled.div<{
