@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import AlertReact from '@brave/leo/react/alert'
 
 import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.svg'
 import { WalletButton } from '../../../shared/style'
@@ -87,31 +88,6 @@ export const PrivateKeyWrapper = styled.div`
   height: 100%;
 `
 
-export const WarningWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  background-color: ${(p) => p.theme.color.warningBackground};
-  border-radius: 16px;
-  padding: 10px;
-  margin-bottom: 40px;
-`
-
-export const WarningText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  text-align: center;
-  color: ${(p) => p.theme.color.text02};
-  a {
-    color: inherit;
-    text-decoration: underline;
-  }
-`
-
 export const PrivateKeyBubble = styled(WalletButton)`
   cursor: pointer;
   display: flex;
@@ -136,10 +112,15 @@ export const PrivateKeyBubble = styled(WalletButton)`
 
 export const ButtonWrapper = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: 40px;
+
+  & > * {
+    width: 100%;
+  }
 `
 
 export const ErrorText = styled.span`
@@ -183,4 +164,12 @@ export const AccountName = styled.span`
   letter-spacing: 0.01em;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
+`
+
+export const Alert = styled(AlertReact)`
+  margin-bottom: 15px;
+
+  &:first-of-type {
+    margin: 15px 0px;
+  }
 `

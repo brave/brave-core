@@ -239,6 +239,10 @@ export const CreateAccountModal = () => {
               value={filecoinNetwork}
               onChange={onChangeFilecoinNetwork}
             >
+              <div slot='label'>
+                {getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
+              </div>
+
               <div slot='value'>
                 {FilecoinNetworkLocaleMapping[filecoinNetwork]}
               </div>
@@ -261,6 +265,10 @@ export const CreateAccountModal = () => {
               value={bitcoinNetwork}
               onChange={onChangeBitcoinNetwork}
             >
+              <div slot='label'>
+                {getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
+              </div>
+
               <div slot='value'>
                 {BitcoinNetworkLocaleMapping[bitcoinNetwork]}
               </div>
@@ -283,6 +291,10 @@ export const CreateAccountModal = () => {
               value={zcashNetwork}
               onChange={onChangeZCashNetwork}
             >
+              <div slot='label'>
+                {getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
+              </div>
+
               <div slot='value'>{ZCashNetworkLocaleMapping[zcashNetwork]}</div>
 
               {ZCashNetworkTypes.map((network) => {
@@ -305,9 +317,11 @@ export const CreateAccountModal = () => {
             onKeyDown={handleKeyDown}
             showErrors={isDisabled}
             maxlength={30}
-            size='large'
           >
-            {getLocale('braveWalletAddAccountPlaceholder')}
+            {
+              // Label
+              getLocale('braveWalletAddAccountPlaceholder')
+            }
             <div slot='errors'>
               <ErrorText>
                 {isAccountNameTooLong

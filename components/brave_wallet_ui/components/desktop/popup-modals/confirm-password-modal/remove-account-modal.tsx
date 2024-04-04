@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,20 +17,21 @@ import { getLocale } from '../../../../../common/locale'
 import { BraveWallet } from '../../../../constants/types'
 
 // hooks
-import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
+import {
+  usePasswordAttempts //
+} from '../../../../common/hooks/use-password-attempts'
 import { useRemoveAccountMutation } from '../../../../common/slices/api.slice'
 
 // components
-import { PopupModal } from '../../popup-modals/index'
-import { NavButton } from '../../../extension/buttons/nav-button/index'
+import { PopupModal } from '../index'
 import { PasswordInput } from '../../../shared/password-input/index'
 
 // style
-import { Row, VerticalSpace } from '../../../shared/style'
+import { LeoSquaredButton, Row } from '../../../shared/style'
 import { Title } from '../style'
-import { modalWidth, StyledWrapper } from './confirm-password-modal.style'
+import { modalWidth, StyledWrapper } from './remove-account-modal.style'
 
-export const ConfirmPasswordModal = () => {
+export const RemoveAccountModal = () => {
   // redux
   const dispatch = useDispatch()
 
@@ -107,16 +108,13 @@ export const ConfirmPasswordModal = () => {
     [onSubmit]
   )
 
-  // memos
-  const title = React.useMemo(() => {
-    if (!accountToRemove) {
-      return
-    }
-    return getLocale('braveWalletRemoveAccountModalTitle').replace(
-      '$1',
-      accountToRemove.name ?? accountToRemove.accountId.address
-    )
-  }, [accountToRemove])
+  // computed
+  const title = accountToRemove
+    ? getLocale('braveWalletRemoveAccountModalTitle').replace(
+        '$1',
+        accountToRemove.name ?? accountToRemove.accountId.address
+      )
+    : undefined
 
   // render
   return (
@@ -127,18 +125,15 @@ export const ConfirmPasswordModal = () => {
     >
       <StyledWrapper>
         {title && (
-          <>
-            <Row
-              alignItems={'flex-start'}
-              justifyContent={'flex-start'}
-            >
-              <Title>{title}</Title>
-            </Row>
-            <VerticalSpace space='24px' />
-          </>
+          <Row
+            alignItems={'flex-start'}
+            justifyContent={'flex-start'}
+            marginBottom={'24px'}
+          >
+            <Title>{title}</Title>
+          </Row>
         )}
-
-        <Row>
+        <Row marginBottom={'24px'}>
           <PasswordInput
             placeholder={getLocale('braveWalletEnterYourPassword')}
             onChange={onPasswordChange}
@@ -150,15 +145,14 @@ export const ConfirmPasswordModal = () => {
           />
         </Row>
 
-        <VerticalSpace space='24px' />
-
         <Row>
-          <NavButton
-            onSubmit={onSubmit}
-            text={getLocale('braveWalletButtonContinue')}
-            buttonType='primary'
-            disabled={password ? !isCorrectPassword : true}
-          />
+          <LeoSquaredButton
+            onClick={onSubmit}
+            kind='filled'
+            isDisabled={password ? !isCorrectPassword : true}
+          >
+            {getLocale('braveWalletButtonContinue')}
+          </LeoSquaredButton>
         </Row>
       </StyledWrapper>
     </PopupModal>

@@ -406,6 +406,11 @@ provideStrings({
   braveWalletCreateAccountZCashDescription: 'Store ZEC assets',
   braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
   braveWalletFilecoinPrivateKeyProtocol: 'Private key $1',
+  braveWalletImportJsonPassword: 'Origin password',
+  braveWalletPrivateKeyImportType: 'Import type',
+  braveWalletFilImportPrivateKeyFormatDescription:
+    'NOTE: Private key must be provided as a hex-encoded JSON that contains ' +
+    'private key and protocol information. $1Learn more$2.',
 
   // Import Account
   braveWalletImportAccountDisclaimer:

@@ -30,7 +30,6 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 import { BraveWallet } from '../../../../constants/types'
 
 // components
-import { NavButton } from '../../../extension/buttons/nav-button/index'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import PopupModal from '../index'
 import PasswordInput from '../../../shared/password-input/index'
@@ -56,8 +55,6 @@ import {
   ButtonRow,
   CopyIcon,
   PrivateKeyWrapper,
-  WarningText,
-  WarningWrapper,
   PrivateKeyBubble,
   ButtonWrapper,
   ErrorText,
@@ -66,7 +63,8 @@ import {
   AccountCircle,
   AccountName,
   QRCodeImage,
-  EditWrapper
+  EditWrapper,
+  Alert
 } from './account-settings-modal.style'
 import { LeoSquaredButton, VerticalSpacer } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
@@ -323,28 +321,24 @@ export const AccountSettingsModal = () => {
         )}
         {accountModalType === 'privateKey' && (
           <PrivateKeyWrapper>
-            <WarningWrapper>
-              <WarningText>
-                {getLocale('braveWalletAccountSettingsDisclaimer')}
-              </WarningText>
-            </WarningWrapper>
+            <Alert type='warning'>
+              {getLocale('braveWalletAccountSettingsDisclaimer')}
+            </Alert>
             {privateKey ? (
               <>
                 {selectedAccount?.accountId.coin ===
                   BraveWallet.CoinType.FIL && (
-                  <WarningWrapper>
-                    <WarningText>
-                      {filPrivateKeyFormatDescriptionTextParts.beforeTag}
-                      <a
-                        target='_blank'
-                        href={FILECOIN_FORMAT_DESCRIPTION_URL}
-                        rel='noopener noreferrer'
-                      >
-                        {filPrivateKeyFormatDescriptionTextParts.duringTag}
-                      </a>
-                      {filPrivateKeyFormatDescriptionTextParts.afterTag}
-                    </WarningText>
-                  </WarningWrapper>
+                  <Alert type='warning'>
+                    {filPrivateKeyFormatDescriptionTextParts.beforeTag}
+                    <a
+                      target='_blank'
+                      href={FILECOIN_FORMAT_DESCRIPTION_URL}
+                      rel='noopener noreferrer'
+                    >
+                      {filPrivateKeyFormatDescriptionTextParts.duringTag}
+                    </a>
+                    {filPrivateKeyFormatDescriptionTextParts.afterTag}
+                  </Alert>
                 )}
                 <CopyTooltip text={privateKey}>
                   <PrivateKeyBubble>{privateKey}</PrivateKeyBubble>
@@ -364,18 +358,19 @@ export const AccountSettingsModal = () => {
               />
             )}
             <ButtonWrapper>
-              <NavButton
-                onSubmit={!privateKey ? onShowPrivateKey : onHidePrivateKey}
-                text={getLocale(
+              <LeoSquaredButton
+                onClick={!privateKey ? onShowPrivateKey : onHidePrivateKey}
+                kind='filled'
+                isDisabled={
+                  privateKey ? false : password ? !isCorrectPassword : true
+                }
+              >
+                {getLocale(
                   !privateKey
                     ? 'braveWalletAccountSettingsShowKey'
                     : 'braveWalletAccountSettingsHideKey'
                 )}
-                buttonType='primary'
-                disabled={
-                  privateKey ? false : password ? !isCorrectPassword : true
-                }
-              />
+              </LeoSquaredButton>
             </ButtonWrapper>
           </PrivateKeyWrapper>
         )}
