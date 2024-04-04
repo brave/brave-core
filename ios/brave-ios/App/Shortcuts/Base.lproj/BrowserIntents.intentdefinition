@@ -9,11 +9,11 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>Zn4yv3</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>20E232</string>
+	<string>23C71</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>12E262</string>
+	<string>15C500b</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>12.5</string>
+	<string>15.2</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -338,7 +338,7 @@
 				<array>
 					<dict>
 						<key>INIntentResponseCodeConciseFormatString</key>
-						<string>This will open ${websiteURL}from Bookmarks.</string>
+						<string>This will open ${websiteURL} from Bookmarks.</string>
 						<key>INIntentResponseCodeConciseFormatStringID</key>
 						<string>pvi3Ug</string>
 						<key>INIntentResponseCodeFormatString</key>
