@@ -2193,8 +2193,8 @@ extension Strings {
         "settings.youtube",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Youtube",
-        comment: "Header for the Youtube settings section"
+        value: "YouTube",
+        comment: "Header for the YouTube settings section"
       )
 
     public static let openYouTubeInBrave =
@@ -3364,14 +3364,14 @@ extension Strings {
     "YoutubeMediaQualitySettingsTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Youtube Playback Quality",
+    value: "YouTube Playback Quality",
     comment: "Title for youtube playback quality settings"
   )
   public static let youtubeMediaQuality = NSLocalizedString(
     "YoutubeMediaQuality",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Enable High-Quality Youtube Videos",
+    value: "Enable High-Quality YouTube Videos",
     comment: "Setting to enable high quality youtube videos"
   )
   public static let youtubeMediaQualityDetails = NSLocalizedString(
