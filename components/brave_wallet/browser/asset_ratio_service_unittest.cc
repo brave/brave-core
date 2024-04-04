@@ -9,10 +9,14 @@
 #include <optional>
 #include <utility>
 
+#include "base/containers/contains.h"
+#include "base/functional/callback_forward.h"
+#include "base/ranges/algorithm.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "gtest/gtest.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -128,6 +132,34 @@ class AssetRatioServiceUnitTest : public testing::Test {
                 const std::optional<std::string>& error) {
               EXPECT_EQ(url, expected_url);
               EXPECT_EQ(error, expected_error);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TestGetServiceProvider(
+      const std::string& content,
+      const std::string& countries,
+      const std::string& from_assets,
+      const std::string& to_assets,
+      const std::string& payment_methods,
+      base::OnceCallback<void(std::vector<mojom::ServiceProviderPtr> sps,
+                              const std::optional<std::string>& error)>
+          callback,
+      const bool error_interceptor = false) {
+    if(!error_interceptor) {
+      SetInterceptor(content);
+    } else {
+      SetErrorInterceptor("error");
+    }
+    base::RunLoop run_loop;
+    asset_ratio_service_->GetServiceProviders(
+        countries, from_assets, to_assets, payment_methods,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::ServiceProviderPtr> sps,
+                const std::optional<std::string>& error) {
+              LOG(INFO) << "[MELD] Received SPS sps.size():" << sps.size();
+              std::move(callback).Run(std::move(sps), error);
               run_loop.Quit();
             }));
     run_loop.Run();
@@ -511,6 +543,66 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
       "22FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv%22%2C%22assets%22%3A%5B%"
       "22SOL%22%5D%2C%22blockchains%22%3A%5B%22solana%22%5D%7D%5D",
       std::nullopt);
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
+  TestGetServiceProvider(
+    R"([
+  {
+    "serviceProvider": "BANXA",
+    "name": "Banxa",
+    "status": "LIVE",
+    "categories": [
+      "CRYPTO_ONRAMP"
+    ],
+    "categoryStatuses": {
+      "CRYPTO_ONRAMP": "LIVE"
+    },
+    "websiteUrl": "http://www.banxa.com",
+    "logos": {
+      "dark": "https://images-serviceprovider.meld.io/BANXA/logo_dark.png",
+      "light": "https://images-serviceprovider.meld.io/BANXA/logo_light.png",
+      "darkShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
+      "lightShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_light.png"
+    }
+  },
+  {
+    "serviceProvider": "BLOCKCHAINDOTCOM",
+    "name": "Blockchain.com",
+    "status": "LIVE",
+    "categories": [
+      "CRYPTO_ONRAMP"
+    ],
+    "categoryStatuses": {
+      "CRYPTO_ONRAMP": "LIVE"
+    },
+    "websiteUrl": "https://www.blockchain.com",
+    "logos": {
+      "dark": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/logo_dark.png",
+      "light": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/logo_light.png",
+      "darkShort": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_dark.png",
+      "lightShort": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_light.png"
+    }
+  }])", "US", "USD", "ETH", "",
+      base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
+                                     const std::optional<std::string>& error) {
+        EXPECT_FALSE(error.has_value());
+        EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){return item->name == "Banxa" && !item->logo_images.empty();}), 1);
+        EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){return item->name == "Blockchain.com" && !item->logo_images.empty();}), 1);
+      }));
+
+  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "",
+      base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
+                                     const std::optional<std::string>& error) {
+        EXPECT_TRUE(error.has_value());
+        EXPECT_EQ(*error, "PARSING_ERROR");
+      }));
+  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "",
+      base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
+                                     const std::optional<std::string>& error) {
+        EXPECT_TRUE(error.has_value());
+        EXPECT_EQ(*error, "INTERNAL_SERVICE_ERROR");
+      }), true);
 }
 
 }  // namespace brave_wallet

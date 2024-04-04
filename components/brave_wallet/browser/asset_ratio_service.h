@@ -103,6 +103,13 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                            const std::string& payment_methods,
                            GetServiceProvidersCallback callback) override;
 
+  void GetCryptoQuotes(const std::string& countries,
+                       const std::string& from_assets,
+                       const std::string& to_assets,
+                       double source_amount,
+                       const std::string& account,
+                       GetCryptoQuotesCallback callback) override;
+
  private:
   friend class AssetRatioServiceUnitTest;
   FRIEND_TEST_ALL_PREFIXES(AssetRatioServiceUnitTest, GetStripeBuyURL);

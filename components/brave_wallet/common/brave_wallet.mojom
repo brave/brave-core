@@ -454,8 +454,19 @@ struct AssetPrice {
 
 struct ServiceProvider {
   string name;
-  string logo_image;
-  // TODO add quote: Exchange rate, price, fees; Accepted payment methods list
+  string id;
+  array<string> logo_images;
+};
+
+struct CryptoQuote {
+  string transaction_type;
+  string exchange_rate;
+  double source_amount;
+  double source_amount_without_fee;
+  double total_fee;
+  string payment_method;
+  double destination_amount;
+  string service_provider_id;
 };
 
 struct CoinMarket {
@@ -1158,6 +1169,8 @@ interface AssetRatioService {
   GetCoinMarkets(string vs_asset, uint8 limit) => (bool success, array<CoinMarket> values);
 
   GetServiceProviders(string countries, string from_assets, string to_assets, string payment_methods) => (array<ServiceProvider> service_providers, string? error);
+
+  GetCryptoQuotes(string countries, string from_assets, string to_assets, double source_amount, string account) => (array<CryptoQuote> crypto_quotes, string? error);
 };
 
 // Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs

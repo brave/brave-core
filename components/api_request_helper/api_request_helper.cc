@@ -404,11 +404,11 @@ void APIRequestHelper::URLLoaderHandler::send_sse_data_for_testing(
 void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
     std::string json,
     base::OnceCallback<void(ValueOrError)> callback) {
+
   if (base::FeatureList::IsEnabled(kUseBraveRustJSONSanitizer)) {
     ParseJsonUsingRust(std::move(json), std::move(callback), task_runner_);
     return;
   }
-
   if (!data_decoder_) {
     VLOG(1) << "Creating DataDecoder for APIRequestHelper";
     data_decoder_ = std::make_unique<data_decoder::DataDecoder>();

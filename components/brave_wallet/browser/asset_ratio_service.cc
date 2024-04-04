@@ -613,7 +613,8 @@ void AssetRatioService::GetServiceProviders(
     const std::string& from_assets,
     const std::string& to_assets,
     const std::string& payment_methods,
-    GetServiceProvidersCallback callback) {
+    GetServiceProvidersCallback callback) 
+{ 
   auto internal_callback =
       base::BindOnce(&AssetRatioService::OnGetServiceProviders,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -631,15 +632,19 @@ void AssetRatioService::OnGetServiceProviders(GetServiceProvidersCallback callba
     std::move(callback).Run({}, "INTERNAL_SERVICE_ERROR");
     return;
   }
-
   std::vector<mojom::ServiceProviderPtr> service_providers;
-  auto values = ParseServiceProviders(api_request_result.value_body(), &service_providers);
-  if (!values) {
+  if (!ParseServiceProviders(api_request_result.value_body(), &service_providers)) {
     std::move(callback).Run({}, "PARSING_ERROR");
     return;
   }
-
-  std::move(callback).Run(std::move(service_providers), nullptr);
+  std::move(callback).Run(std::move(service_providers), std::nullopt);
 }
+
+void AssetRatioService::GetCryptoQuotes(const std::string& countries,
+                                        const std::string& from_assets,
+                                        const std::string& to_assets,
+                                        double source_amount,
+                                        const std::string& account,
+                                        GetCryptoQuotesCallback callback) {}
 
 }  // namespace brave_wallet

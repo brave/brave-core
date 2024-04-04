@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -217,7 +218,30 @@ std::optional<std::string> ParseStripeBuyURL(const base::Value& json_value) {
   return stripe_buy_url_response->url;
 }
 
-bool ParseServiceProviders(const base::Value& json_value, std::vector<mojom::ServiceProviderPtr>* service_providers) {
+bool ParseServiceProviders(
+    const base::Value& json_value,
+    std::vector<mojom::ServiceProviderPtr>* service_providers) {
+  // Parses results like this:
+  // {
+  //    "categories": [ "CRYPTO_ONRAMP" ],
+  //    "categoryStatuses": {
+  //       "CRYPTO_ONRAMP": "LIVE"
+  //    },
+  //    "logos": {
+  //       "dark": "https://images-serviceprovider.meld.io/BANXA/logo_dark.png",
+  //       "darkShort":
+  //       "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
+  //       "light":
+  //       "https://images-serviceprovider.meld.io/BANXA/logo_light.png",
+  //       "lightShort":
+  //       "https://images-serviceprovider.meld.io/BANXA/short_logo_light.png"
+  //    },
+  //    "name": "Banxa",
+  //    "serviceProvider": "BANXA",
+  //    "status": "LIVE",
+  //    "websiteUrl": "http://www.banxa.com"
+  // }
+
   DCHECK(service_providers);
 
   if (!json_value.is_list()) {
@@ -225,10 +249,44 @@ bool ParseServiceProviders(const base::Value& json_value, std::vector<mojom::Ser
     return false;
   }
 
-  LOG(INFO) << "[MELD] json_value:" << json_value.DebugString();
+  for (const auto& sp_item : json_value.GetList()) {
+    if (!sp_item.is_dict()) {
+      LOG(ERROR)
+          << "Invalid response, could not parse JSON, JSON is not a dict";
+      return false;
+    }
 
-  for(const auto& sp_item : json_value.GetList()) {
-    LOG(INFO) << "[MELD] sp_item:" << sp_item.DebugString();
+    auto sp = mojom::ServiceProvider::New();
+    const std::string* sp_name = sp_item.GetDict().FindString("name");
+    if (!sp_name) {
+      return false;
+    }
+    sp->name = *sp_name;
+
+    const std::string* sp_id = sp_item.GetDict().FindString("serviceProvider");
+    if (!sp_id) {
+      return false;
+    }
+    sp->id = *sp_id;
+
+    const auto* logos = sp_item.GetDict().FindDict("logos");
+    if (!logos) {
+      return false;
+    }
+    if (const auto* dark_logo = logos->FindString("dark")) {
+      sp->logo_images.push_back(*dark_logo);
+    }
+    if (const auto* dark_short_logo = logos->FindString("darkShort")) {
+      sp->logo_images.push_back(*dark_short_logo);
+    }
+    if (const auto* light_logo = logos->FindString("light")) {
+      sp->logo_images.push_back(*light_logo);
+    }
+    if (const auto* light_short_logo = logos->FindString("lightShort")) {
+      sp->logo_images.push_back(*light_short_logo);
+    }
+
+    service_providers->push_back(std::move(sp));
   }
 
   return true;
