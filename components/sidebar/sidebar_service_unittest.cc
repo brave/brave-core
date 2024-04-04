@@ -249,6 +249,8 @@ class SidebarServiceTest : public testing::Test {
     if (!ai_chat::features::IsAIChatEnabled()) {
       item_count -= 1;
     }
+#else
+    item_count -= 1;
 #endif
     return item_count;
   }
@@ -522,6 +524,10 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
         if (!ai_chat::features::IsAIChatEnabled() &&
             built_in_type == SidebarItem::BuiltInItemType::kChatUI) {
+          return false;
+        }
+#else
+        if (built_in_type == SidebarItem::BuiltInItemType::kChatUI) {
           return false;
         }
 #endif
