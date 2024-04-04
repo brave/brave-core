@@ -13,5 +13,7 @@ import org.chromium.content_public.browser.WebContents;
 public interface BraveLeoAutocompleteDelegate {
     boolean isLeoEnabled();
 
+    boolean isAutoCompleteEnabled(WebContents webContents);
+
     void openLeoQuery(WebContents webContents, String query);
 }
