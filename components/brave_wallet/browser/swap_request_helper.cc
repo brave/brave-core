@@ -164,10 +164,7 @@ base::Value::Dict EncodeToolDetails(
   base::Value::Dict result;
   result.Set("key", tool_details->key);
   result.Set("name", tool_details->name);
-
-  // fake the logo value since it is not used by LiFi
-  result.Set("logoURI", "");
-
+  result.Set("logoURI", tool_details->logo);
   return result;
 }
 

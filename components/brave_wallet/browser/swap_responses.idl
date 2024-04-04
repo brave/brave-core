@@ -208,24 +208,9 @@ namespace swap_responses {
     DOMString[] tags;
   };
 
-  dictionary LiFiFilteredOutRoute {
-    DOMString overallPath;
-    DOMString reason;
-  };
-
-  dictionary LiFiFailedRoute {
-    DOMString overallPath;
-  };
-
-  dictionary LifiUnavailableRoutes {
-    LiFiFailedRoute[] failed;
-    LiFiFilteredOutRoute[] filteredOut;
-  };
-
   // Docs: https://apidocs.li.fi/reference/post_advanced-routes
   dictionary LiFiQuoteResponse {
     LiFiRoute[] routes;
-    LifiUnavailableRoutes unavailableRoutes;
   };
 
   // Docs: https://apidocs.li.fi/reference/post_advanced-steptransaction
