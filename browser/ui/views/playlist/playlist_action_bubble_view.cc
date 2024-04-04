@@ -50,7 +50,6 @@ void ShowBubble(std::unique_ptr<views::BubbleDialogDelegateView> bubble) {
 class LoadingSpinner : public views::View, public gfx::AnimationDelegate {
   METADATA_HEADER(LoadingSpinner, views::View)
  public:
-
   LoadingSpinner() {
     animation_.SetSlideDuration(base::Milliseconds(2500));
     animation_.SetTweenType(gfx::Tween::LINEAR);
@@ -105,7 +104,6 @@ class ConfirmBubble : public PlaylistActionBubbleView,
                       public playlist::PlaylistTabHelperObserver {
   METADATA_HEADER(ConfirmBubble, PlaylistActionBubbleView)
  public:
-
   ConfirmBubble(Browser* browser,
                 PlaylistActionIconView* anchor,
                 playlist::PlaylistTabHelper* playlist_tab_helper);
@@ -337,15 +335,7 @@ void ConfirmBubble::MoreMediaInContents() {
       // |Browser| outlives TabHelper so it's okay to bind raw ptr here
       browser_.get(), icon_view_->GetWeakPtr());
 
-  SetCloseCallback(
-      // WindowClosingImpl should be called first to clean up data before
-      // showing up new bubble. This callback is called by itself, it's okay to
-      // pass Unretained().
-      base::BindOnce(&PlaylistActionBubbleView::WindowClosingImpl,
-                     base::Unretained(this))
-          .Then(std::move(show_add_bubble)));
-
-  GetWidget()->Close();
+  CloseAndRun(std::move(show_add_bubble));
 }
 
 BEGIN_METADATA(ConfirmBubble)
@@ -372,6 +362,7 @@ PlaylistActionAddBubble::PlaylistActionAddBubble(
     : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper),
       thumbnail_provider_(
           std::make_unique<ThumbnailProvider>(playlist_tab_helper)) {
+  playlist_tab_helper_observation_.Observe(playlist_tab_helper_);
   // What this look like
   // https://user-images.githubusercontent.com/5474642/243532255-f82fc740-eea0-4c52-b43a-378ab703d229.png
   SetTitle(l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_TO_PLAYLIST));
@@ -405,12 +396,35 @@ PlaylistActionAddBubble::PlaylistActionAddBubble(
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
 
-  // TODO(sszaloki): https://github.com/brave/brave-browser/issues/36846
-  // UI needs to accommodate the architectural changes
-  OnMediaExtracted(true);
+  if (!playlist_tab_helper->is_adding_items()) {
+    OnMediaExtracted(true);
+  }
 }
 
 PlaylistActionAddBubble::~PlaylistActionAddBubble() = default;
+
+void PlaylistActionAddBubble::PlaylistTabHelperWillBeDestroyed() {
+  playlist_tab_helper_observation_.Reset();
+}
+
+void PlaylistActionAddBubble::OnSavedItemsChanged(
+    const std::vector<playlist::mojom::PlaylistItemPtr>&) {
+  auto show_confirm_bubble = base::BindOnce(
+      [](base::WeakPtr<playlist::PlaylistTabHelper> tab_helper,
+         Browser* browser, base::WeakPtr<PlaylistActionIconView> anchor) {
+        if (!tab_helper || !anchor) {
+          return;
+        }
+
+        ::ShowBubble(std::make_unique<ConfirmBubble>(browser, anchor.get(),
+                                                     tab_helper.get()));
+      },
+      playlist_tab_helper_->GetWeakPtr(),
+      // |Browser| outlives TabHelper so it's okay to bind raw ptr here
+      browser_.get(), icon_view_->GetWeakPtr());
+
+  CloseAndRun(std::move(show_confirm_bubble));
+}
 
 void PlaylistActionAddBubble::OnMediaExtracted(bool result) {
   if (result) {
@@ -436,12 +450,8 @@ void PlaylistActionAddBubble::InitListView() {
                           base::Unretained(this))));
   list_view_->SetSelected(playlist_tab_helper_->found_items());
 
-  // This callback is called by itself, it's okay to pass Unretained(this).
-  SetAcceptCallback(
-      base::BindOnce(&PlaylistActionBubbleView::WindowClosingImpl,
-                     base::Unretained(this))
-          .Then(base::BindOnce(&PlaylistActionAddBubble::AddSelected,
-                               base::Unretained(this))));
+  SetAcceptCallbackWithClose(base::BindRepeating(
+      &PlaylistActionAddBubble::AddSelected, base::Unretained(this)));
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, true);
 
   scroll_view_->SetPreferredSize(
@@ -451,13 +461,17 @@ void PlaylistActionAddBubble::InitListView() {
   }
 }
 
-void PlaylistActionAddBubble::AddSelected() {
+bool PlaylistActionAddBubble::AddSelected() {
   CHECK(playlist_tab_helper_);
 
   if (playlist_tab_helper_->is_adding_items()) {
     // Don't do anything when already adding
-    return;
+    return false;
   }
+
+  SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
+  scroll_view_->SetVisible(false);
+  loading_spinner_->SetVisible(true);
 
   std::vector<playlist::mojom::PlaylistItemPtr> items =
       list_view_->GetSelected();
@@ -468,6 +482,8 @@ void PlaylistActionAddBubble::AddSelected() {
       FROM_HERE,
       base::BindOnce(&playlist::PlaylistTabHelper::AddItems,
                      playlist_tab_helper_->GetWeakPtr(), std::move(items)));
+
+  return false;
 }
 
 void PlaylistActionAddBubble::OnSelectionChanged() {
@@ -525,6 +541,18 @@ void PlaylistActionBubbleView::WindowClosing() {
   BubbleDialogDelegateView::WindowClosing();
 
   WindowClosingImpl();
+}
+
+void PlaylistActionBubbleView::CloseAndRun(base::OnceClosure callback) {
+  SetCloseCallback(
+      // WindowClosingImpl should be called first to clean up data before
+      // showing up new bubble. This callback is called by itself, it's okay to
+      // pass Unretained().
+      base::BindOnce(&PlaylistActionBubbleView::WindowClosingImpl,
+                     base::Unretained(this))
+          .Then(std::move(callback)));
+
+  GetWidget()->Close();
 }
 
 void PlaylistActionBubbleView::WindowClosingImpl() {

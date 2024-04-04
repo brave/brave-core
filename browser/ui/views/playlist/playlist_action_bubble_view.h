@@ -9,7 +9,9 @@
 #include <memory>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "brave/browser/ui/views/playlist/selectable_list_view.h"
+#include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 class Browser;
@@ -23,7 +25,6 @@ class PlaylistTabHelper;
 class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   METADATA_HEADER(PlaylistActionBubbleView, views::BubbleDialogDelegateView)
  public:
-
   static void ShowBubble(Browser* browser,
                          PlaylistActionIconView* anchor,
                          playlist::PlaylistTabHelper* playlist_tab_helper);
@@ -32,6 +33,8 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   static views::BubbleDialogDelegateView* GetBubble();
 
   ~PlaylistActionBubbleView() override;
+
+  void CloseAndRun(base::OnceClosure callback);
 
   void WindowClosingImpl();
 
@@ -54,10 +57,10 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
 // PlaylistActionAddBubble
 //  * Shows when users try adding items found from the current contents.
 //  * Shows a list of found items and users can select which one to add.
-class PlaylistActionAddBubble : public PlaylistActionBubbleView {
+class PlaylistActionAddBubble : public PlaylistActionBubbleView,
+                                public playlist::PlaylistTabHelperObserver {
   METADATA_HEADER(PlaylistActionAddBubble, PlaylistActionBubbleView)
  public:
-
   static constexpr int kWidth = 288;
 
   PlaylistActionAddBubble(Browser* browser,
@@ -73,10 +76,19 @@ class PlaylistActionAddBubble : public PlaylistActionBubbleView {
  private:
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, AddItemsToList);
 
+  // PlaylistTabHelperObserver:
+  void PlaylistTabHelperWillBeDestroyed() override;
+  void OnSavedItemsChanged(
+      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
+  void OnFoundItemsChanged(
+      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
+  void OnAddedItemFromTabHelper(
+      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
+
   void OnMediaExtracted(bool result);
   void InitListView();
 
-  void AddSelected();
+  bool AddSelected();
   void OnSelectionChanged();
 
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
@@ -84,6 +96,10 @@ class PlaylistActionAddBubble : public PlaylistActionBubbleView {
   raw_ptr<views::View> loading_spinner_ = nullptr;
 
   std::unique_ptr<ThumbnailProvider> thumbnail_provider_;
+
+  base::ScopedObservation<playlist::PlaylistTabHelper,
+                          playlist::PlaylistTabHelperObserver>
+      playlist_tab_helper_observation_{this};
 
   base::WeakPtrFactory<PlaylistActionAddBubble> weak_ptr_factory_{this};
 };
