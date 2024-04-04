@@ -8,7 +8,6 @@
 
 #include <memory>
 #include <utility>
-#include <vector>
 
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
@@ -47,8 +46,6 @@ class PageMetrics {
 
   void IncrementPagesLoadedCount(bool is_reload);
 
-  void RecordAllowedHTTPRequest();
-
  private:
   void InitStorage();
 
@@ -60,6 +57,9 @@ class PageMetrics {
   void OnHttpsNavigationEvent(const char* histogram_name,
                               uint64_t name_hash,
                               base::HistogramBase::Sample sample);
+  void OnInterstitialDecisionEvent(const char* histogram_name,
+                                   uint64_t name_hash,
+                                   base::HistogramBase::Sample sample);
 
   void OnDomainDiversityResult(
       std::pair<history::DomainDiversityResults,
@@ -67,7 +67,7 @@ class PageMetrics {
 
   std::unique_ptr<WeeklyStorage> pages_loaded_storage_;
   std::unique_ptr<WeeklyStorage> pages_reloaded_storage_;
-  std::unique_ptr<WeeklyStorage> http_allowed_pages_loaded_storage_;
+  std::unique_ptr<WeeklyStorage> interstitial_allow_decisions_storage_;
   std::unique_ptr<WeeklyStorage> failed_https_upgrades_storage_;
 
   base::CancelableTaskTracker history_service_task_tracker_;
@@ -77,6 +77,8 @@ class PageMetrics {
 
   std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>
       https_navigation_event_observer_;
+  std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>
+      interstitial_decision_observer_;
 
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
