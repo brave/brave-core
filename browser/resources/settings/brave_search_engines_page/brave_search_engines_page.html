@@ -9,15 +9,18 @@
     </settings-dropdown-menu>
   </div>
 </template>
-<template is="dom-if" if="[[shouldShowSearchSuggestToggle_()]]" restamp>
+<!-- <template is="dom-if" if="[[shouldShowSearchSuggestToggle_()]]" restamp>
   <settings-toggle-button id="searchSuggestToggle"
       class="hr"
       pref="{{prefs.search.suggest_enabled}}"
       label="$i18n{searchSuggestPref}"
       sub-label="$i18n{searchSuggestPrefDesc}">
   </settings-toggle-button>
-</template>
-<if expr="enable_extensions">
+</template> -->
+
+<!-- commented the html structure code for the search engine page of the settings page. -->
+
+<!-- <if expr="enable_extensions">
 <settings-toggle-button id="webDiscoveryEnabled"
     class="cr-row"
     pref="{{prefs.brave.web_discovery_enabled}}"
@@ -25,10 +28,10 @@
     sub-label="$i18n{braveWebDiscoverySubLabel}"
     learn-more-url="$i18n{webDiscoveryLearnMoreURL}">
 </settings-toggle-button>
-</if>
-<settings-toggle-button id="otherSearchEnginesEnabled"
+</if>-->
+<!--<settings-toggle-button id="otherSearchEnginesEnabled"
     class="cr-row"
     pref="{{prefs.brave.other_search_engines_enabled}}"
     label="$i18n{otherSearchEnginesControlLabel}"
     sub-label="$i18n{otherSearchEnginesControlDesc}">
-</settings-toggle-button>
+</settings-toggle-button> -->
