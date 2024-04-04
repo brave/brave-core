@@ -86,7 +86,7 @@ function createNestedSectionElement (
   // This needs to be inside a template so that our components do not get created immediately.
   // Otherwise the polymer bindings won't be setup correctly at first.
   return html`
-    <settings-section page-title="${loadTimeData.getString(titleName)}" section="${sectionName}" nest-under-section="${nestedUnder}">
+    <settings-section id='${sectionName}-section' page-title="${loadTimeData.getString(titleName)}" section="${sectionName}" nest-under-section="${nestedUnder}">
       <${childName}
         ${childAttributesString}
       >
