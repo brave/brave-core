@@ -105,13 +105,6 @@ export const onConnectHardwareWallet = (
   })
 }
 
-export async function isTokenPinningSupported(
-  token: BraveWallet.BlockchainToken
-) {
-  const { braveWalletPinService } = getAPIProxy()
-  return await braveWalletPinService.isTokenSupported(token)
-}
-
 // Checks whether set of urls have ipfs:// scheme or are gateway-like urls
 export const areSupportedForPinning = async (urls: string[]) => {
   const results = (

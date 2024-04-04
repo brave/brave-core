@@ -3,18 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { mapLimit } from 'async'
+import { filterLimit, mapLimit } from 'async'
 
 // types
 import { BraveWallet, NFTMetadataReturnType } from '../../../constants/types'
-import {
-  WalletApiEndpointBuilderParams,
-  walletApiBase
-} from '../api-base.slice'
+import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // utils
 import { getAssetIdKey } from '../../../utils/asset-utils'
 import { handleEndpointError } from '../../../utils/api-utils'
+import { BaseQueryCache } from '../../async/base-query-cache'
+import {
+  IPFS_PROTOCOL,
+  stripERC20TokenImageURL
+} from '../../../utils/string-utils'
 
 export const nftsEndpoints = ({
   query,
@@ -308,37 +310,6 @@ export const nftsEndpoints = ({
       },
       providesTags: ['NFTSPinningStatus']
     }),
-    updateNftsPinningStatus: mutation<
-      boolean,
-      {
-        token: BraveWallet.BlockchainToken
-        status: BraveWallet.TokenPinStatus
-      }
-    >({
-      queryFn: () => ({ data: true }),
-      async onQueryStarted({ token, status }, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          walletApiBaseUtils.updateQueryData(
-            'getNftsPinningStatus',
-            undefined,
-            (nftsPinningStatus: {}) => {
-              Object.assign(nftsPinningStatus, {
-                ...nftsPinningStatus,
-                [getAssetIdKey(token)]: {
-                  code: status?.code,
-                  error: status?.error
-                }
-              })
-            }
-          )
-        )
-        try {
-          await queryFulfilled
-        } catch {
-          patchResult.undo()
-        }
-      }
-    }),
     getLocalIpfsNodeStatus: query<boolean, void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
@@ -359,11 +330,93 @@ export const nftsEndpoints = ({
         }
       },
       providesTags: ['LocalIPFSNodeStatus']
+    }),
+    getPinnableVisibleNftIds: query<string[], void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const {
+            data: { walletHandler, braveWalletPinService },
+            cache
+          } = baseQuery(undefined)
+
+          const {
+            walletInfo: { isNftPinningFeatureEnabled }
+          } = await walletHandler.getWalletInfo()
+
+          if (!isNftPinningFeatureEnabled) {
+            throw new Error('Pinning service is not enabled')
+          }
+
+          const userTokensRegistry = await cache.getUserTokensRegistry()
+          const userVisibleNftIds =
+            userTokensRegistry.nonFungibleVisibleTokenIds
+
+          const pinnableNftIds = await filterLimit(
+            userVisibleNftIds,
+            10,
+            async (id) => {
+              const token = userTokensRegistry.entities[id]
+              if (!token) {
+                return false
+              }
+
+              // try to check metadata image
+              let logo = token.logo
+              try {
+                logo =
+                  (await cache.getNftMetadata(token)).imageURL || token.logo
+              } catch (error) {
+                console.log(`Failed to get NFT metadata for token ${id}`)
+                console.error(error)
+              }
+
+              return isTokenSupportedForPinning({
+                cache,
+                braveWalletPinService,
+                token: { ...token, logo }
+              })
+            }
+          )
+
+          return {
+            data: pinnableNftIds
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to get pinnable visible NFT ids',
+            error
+          )
+        }
+      },
+      providesTags: ['PinnableNftIds']
     })
   }
 }
 
-const walletApiBaseUtils = walletApiBase.injectEndpoints({
-  endpoints: nftsEndpoints,
-  overrideExisting: false
-}).util
+// Internals
+export const isTokenSupportedForPinning = async ({
+  cache,
+  braveWalletPinService,
+  token
+}: {
+  braveWalletPinService: BraveWallet.WalletPinServiceRemote
+  cache: BaseQueryCache
+  token: BraveWallet.BlockchainToken
+}) => {
+  const { result: isSupported } = await braveWalletPinService.isTokenSupported(
+    token
+  )
+
+  if (!isSupported) {
+    return false
+  }
+
+  const ipfsUrl = await cache.getExtractedIPFSUrlFromGatewayLikeUrl(
+    stripERC20TokenImageURL(token.logo)
+  )
+
+  const isIpfsUrl = ipfsUrl && ipfsUrl.startsWith(IPFS_PROTOCOL)
+
+  return isIpfsUrl
+}

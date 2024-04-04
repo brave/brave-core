@@ -35,9 +35,3 @@ export const onConnectHardwareWallet = (
 export const translateToNftGateway = async (url: string | undefined) => {
   return url
 }
-
-export async function isTokenPinningSupported(
-  token: BraveWallet.BlockchainToken
-) {
-  return token.logo.includes('ipfs')
-}
