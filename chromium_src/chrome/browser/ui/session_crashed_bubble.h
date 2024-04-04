@@ -6,8 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_SESSION_CRASHED_BUBBLE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_SESSION_CRASHED_BUBBLE_H_
 
-#define ShowIfNotOffTheRecordProfile                                           \
-  ShowIfNotOffTheRecordProfileBrave(Browser* browser, bool skip_tab_checking); \
+#define ShowIfNotOffTheRecordProfile                                 \
+  ShowIfNotOffTheRecordProfile_ChromiumImpl(Browser* browser,        \
+                                            bool skip_tab_checking); \
+  static bool ShouldShowCrashReportPermissionAskDialog();            \
   static void ShowIfNotOffTheRecordProfile
 
 #include "src/chrome/browser/ui/session_crashed_bubble.h"  // IWYU pragma: export

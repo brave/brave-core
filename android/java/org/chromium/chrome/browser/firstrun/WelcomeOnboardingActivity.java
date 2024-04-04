@@ -331,28 +331,17 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 mBtnNegative.setVisibility(View.VISIBLE);
             }
 
-            if (PackageUtils.isFirstInstall(this)
-                    && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
-                if (mCheckboxCrash != null) {
-                    mCheckboxCrash.setChecked(true);
-                }
-                UmaSessionStats.changeMetricsReportingConsent(
-                        true, ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
-                OnboardingPrefManager.getInstance().setP3aCrashReportingMessageShown(true);
-            } else {
-                boolean isCrashReporting = false;
-                try {
-                    isCrashReporting = PrivacyPreferencesManagerImpl.getInstance()
-                                               .isUsageAndCrashReportingPermittedByUser();
-
-                } catch (Exception e) {
-                    Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
-                }
-                if (mCheckboxCrash != null) {
-                    mCheckboxCrash.setChecked(isCrashReporting);
-                }
+            boolean isCrashReportingEnabled = false;
+            if (PackageUtils.isFirstInstall(this))
+                isCrashReportingEnabled = !BraveFirstRunUtils.isMetricsReportingOptIn();
+            else {
+              try {
+                  isCrashReportingEnabled = PrivacyPreferencesManagerImpl.getInstance()
+                                              .isUsageAndCrashReportingPermittedByUser();
+              } catch (Exception e) {
+                  Log.e(TAG, "isCrashReportingEnabledOnboarding: " + e.getMessage());
+              }
             }
-
             if (mCheckboxCrash != null) {
                 mCheckboxCrash.setOnCheckedChangeListener(
                         new CompoundButton.OnCheckedChangeListener() {
@@ -367,6 +356,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                                 }
                             }
                         });
+                mCheckboxCrash.setChecked(isCrashReportingEnabled);
             }
 
             boolean isP3aEnabled = true;

@@ -5,13 +5,13 @@
 
 #include "brave/browser/ui/views/crash_report_permission_ask_dialog_view.h"
 
-#include <utility>
+#include <memory>
 
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/metrics/pref_names.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
@@ -35,7 +35,6 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/layout/fill_layout.h"
 
 namespace brave {
 
@@ -242,7 +241,8 @@ void CrashReportPermissionAskDialogView::OnAcceptButtonClicked() {
 
 void CrashReportPermissionAskDialogView::OnWindowClosing() {
   g_browser_process->local_state()->SetBoolean(
-      kDontAskForCrashReporting, dont_ask_again_checkbox_->GetChecked());
+      metrics::prefs::kDontAskForCrashReporting,
+      dont_ask_again_checkbox_->GetChecked());
 
   // On macOS, this dialog is not destroyed properly when session crashed bubble
   // is launched directly.

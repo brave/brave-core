@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 include_rules = [
+  "+brave/browser/metrics",
   "+brave/browser/ui/views",
   "+chrome/browser/ui/views",
 ]
