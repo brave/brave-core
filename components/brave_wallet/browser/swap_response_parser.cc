@@ -459,19 +459,9 @@ mojom::LiFiStepEstimatePtr ParseEstimate(
   result->to_amount = value.to_amount;
   result->to_amount_min = value.to_amount_min;
   result->approval_address = value.approval_address;
-  result->execution_duration = value.execution_duration;
-
-  for (const auto& gas_cost_value : value.gas_costs) {
-    auto gas_cost = mojom::LiFiGasCost::New();
-    gas_cost->type = gas_cost_value.type;
-    gas_cost->estimate = gas_cost_value.estimate;
-    gas_cost->limit = gas_cost_value.limit;
-    gas_cost->amount = gas_cost_value.amount;
-    gas_cost->token = ParseToken(gas_cost_value.token);
-    result->gas_costs.push_back(std::move(gas_cost));
-  }
 
   if (value.fee_costs) {
+    result->fee_costs.emplace(std::vector<mojom::LiFiFeeCostPtr>());
     for (const auto& fee_cost_value : *value.fee_costs) {
       auto fee_cost = mojom::LiFiFeeCost::New();
       fee_cost->name = fee_cost_value.name;
@@ -483,6 +473,18 @@ mojom::LiFiStepEstimatePtr ParseEstimate(
       result->fee_costs->push_back(std::move(fee_cost));
     }
   }
+
+  for (const auto& gas_cost_value : value.gas_costs) {
+    auto gas_cost = mojom::LiFiGasCost::New();
+    gas_cost->type = gas_cost_value.type;
+    gas_cost->estimate = gas_cost_value.estimate;
+    gas_cost->limit = gas_cost_value.limit;
+    gas_cost->amount = gas_cost_value.amount;
+    gas_cost->token = ParseToken(gas_cost_value.token);
+    result->gas_costs.push_back(std::move(gas_cost));
+  }
+
+  result->execution_duration = value.execution_duration;
 
   return result;
 }
@@ -618,7 +620,7 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
       value->transaction_request.gas_limit->empty() ||
 
       !value->transaction_request.chain_id ||
-      !value->transaction_request.chain_id.has_value()) {
+      value->transaction_request.chain_id->empty()) {
     return nullptr;
   }
 
@@ -630,9 +632,8 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
   evm_transaction->gas_price = value->transaction_request.gas_price.value();
   evm_transaction->gas_limit = value->transaction_request.gas_limit.value();
 
-  if (value->transaction_request.chain_id.has_value()) {
-    auto chain_id = ChainIdToHex(
-        base::NumberToString(value->transaction_request.chain_id.value()));
+  if (value->transaction_request.chain_id) {
+    auto chain_id = ChainIdToHex(value->transaction_request.chain_id.value());
     if (!chain_id) {
       return nullptr;
     }

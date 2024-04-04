@@ -360,7 +360,11 @@ const char* GetLiFiQuoteTemplate() {
             "FASTEST"
           ]
         }
-      ]
+      ],
+      "unavailableRoutes": {
+        "filteredOut": [],
+        "failed": []
+      }
     }
   )";
 }
@@ -666,7 +670,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   // OK: Jupiter transaction params with feeAccount
   auto expected_params_value = ParseJson(expected_params);
   ASSERT_NE(encoded_params, std::nullopt);
-  ASSERT_EQ(*encoded_params, GetJSON(expected_params_value));
+  ASSERT_EQ(ParseJson(*encoded_params), expected_params_value);
 
   // OK: Jupiter transaction params WITHOUT feeAccount
   params.quote->platform_fee = nullptr;
@@ -716,7 +720,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
     })";
   expected_params_value = ParseJson(expected_params);
   ASSERT_NE(encoded_params, std::nullopt);
-  ASSERT_EQ(*encoded_params, GetJSON(expected_params_value));
+  ASSERT_EQ(ParseJson(*encoded_params), expected_params_value);
 
   // KO: invalid output mint
   params.quote->output_mint = "invalid output mint";
@@ -765,7 +769,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiQuoteParams) {
       "toTokenAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
     }
   )");
-  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
 }
 
 TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
@@ -977,7 +981,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
       "integrator": "jumper.exchange"
     }
   )");
-  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
 
   // OK: EVM -> SOL bridge quotes are correctly handled
   quote = lifi::ParseQuoteResponse(ParseJson(GetLiFiEvmToSolQuoteTemplate()));
@@ -1133,7 +1137,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
       ]
     }
   )";
-  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
 }
 
 }  // namespace brave_wallet

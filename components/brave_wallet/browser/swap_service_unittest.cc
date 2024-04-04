@@ -203,10 +203,9 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
   fee_cost->included = true;
   fee_cost->token = from_token.Clone();
 
-  if (quote->routes[0]->steps[0]->estimate->fee_costs) {
-    quote->routes[0]->steps[0]->estimate->fee_costs->push_back(
-        fee_cost.Clone());
-  }
+  quote->routes[0]->steps[0]->estimate->fee_costs.emplace(
+      std::vector<mojom::LiFiFeeCostPtr>());
+  quote->routes[0]->steps[0]->estimate->fee_costs->push_back(fee_cost.Clone());
 
   auto gas_cost = mojom::LiFiGasCost::New();
   gas_cost->type = "SEND";
@@ -271,12 +270,14 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
       ->included_steps->at(0)
       ->estimate->execution_duration = "500.298";
 
-  if (quote->routes[0]->steps[0]->included_steps->at(0)->estimate->fee_costs) {
-    quote->routes[0]
-        ->steps[0]
-        ->included_steps->at(0)
-        ->estimate->fee_costs->push_back(fee_cost.Clone());
-  }
+  quote->routes[0]
+      ->steps[0]
+      ->included_steps->at(0)
+      ->estimate->fee_costs.emplace(std::vector<mojom::LiFiFeeCostPtr>());
+  quote->routes[0]
+      ->steps[0]
+      ->included_steps->at(0)
+      ->estimate->fee_costs->push_back(fee_cost.Clone());
 
   quote->routes[0]
       ->steps[0]
@@ -1463,8 +1464,9 @@ TEST_F(SwapServiceUnitTest, GetLiFiQuoteError) {
       callback,
       Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
           EqualsMojo(mojom::SwapFeesPtr()),
-          EqualsMojo(mojom::LiFiError::New(
-              "Invalid request", mojom::LiFiErrorCode::kDefaultError))));
+          EqualsMojo(mojom::SwapErrorUnion::NewLifiError(mojom::LiFiError::New(
+              "Invalid request", mojom::LiFiErrorCode::kDefaultError))),
+          ""));
 
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(mojom::CoinType::ETH,
@@ -1488,8 +1490,9 @@ TEST_F(SwapServiceUnitTest, GetLiFiTransactionError) {
   EXPECT_CALL(
       callback,
       Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
-          EqualsMojo(mojom::LiFiError::New(
-              "Invalid request", mojom::LiFiErrorCode::kDefaultError))));
+          EqualsMojo(mojom::SwapErrorUnion::NewLifiError(mojom::LiFiError::New(
+              "Invalid request", mojom::LiFiErrorCode::kDefaultError))),
+          ""));
 
   auto quote = GetCannedLiFiQuote();
   swap_service_->GetTransaction(

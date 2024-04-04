@@ -281,6 +281,30 @@ std::optional<base::Value::Dict> EncodeStepEstimate(
     return std::nullopt;
   }
 
+  if (estimate->fee_costs) {
+    base::Value::List fee_costs_value;
+    for (const auto& fee_cost : *estimate->fee_costs) {
+      base::Value::Dict fee_cost_value;
+      fee_cost_value.Set("name", fee_cost->name);
+      fee_cost_value.Set("description", fee_cost->description);
+      fee_cost_value.Set("amount", fee_cost->amount);
+      fee_cost_value.Set("percentage", fee_cost->percentage);
+      fee_cost_value.Set("included", fee_cost->included);
+
+      // fake the USD amount value since it is not used by LiFi
+      fee_cost_value.Set("amountUSD", "0");
+
+      if (auto token = EncodeToken(fee_cost->token)) {
+        fee_cost_value.Set("token", std::move(*token));
+      } else {
+        return std::nullopt;
+      }
+
+      fee_costs_value.Append(std::move(fee_cost_value));
+    }
+    result.Set("feeCosts", std::move(fee_costs_value));
+  }
+
   base::Value::List gas_costs_value;
   for (const auto& gas_cost : estimate->gas_costs) {
     base::Value::Dict gas_cost_value;
@@ -302,32 +326,6 @@ std::optional<base::Value::Dict> EncodeStepEstimate(
     gas_costs_value.Append(std::move(gas_cost_value));
   }
   result.Set("gasCosts", std::move(gas_costs_value));
-
-  if (!estimate->fee_costs) {
-    return result;
-  }
-
-  base::Value::List fee_costs_value;
-  for (const auto& fee_cost : *estimate->fee_costs) {
-    base::Value::Dict fee_cost_value;
-    fee_cost_value.Set("name", fee_cost->name);
-    fee_cost_value.Set("description", fee_cost->description);
-    fee_cost_value.Set("amount", fee_cost->amount);
-    fee_cost_value.Set("percentage", fee_cost->percentage);
-    fee_cost_value.Set("included", fee_cost->included);
-
-    // fake the USD amount value since it is not used by LiFi
-    fee_cost_value.Set("amountUSD", "0");
-
-    if (auto token = EncodeToken(fee_cost->token)) {
-      fee_cost_value.Set("token", std::move(*token));
-    } else {
-      return std::nullopt;
-    }
-
-    fee_costs_value.Append(std::move(fee_cost_value));
-  }
-  result.Set("feeCosts", std::move(fee_costs_value));
 
   return result;
 }

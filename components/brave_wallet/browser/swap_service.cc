@@ -510,11 +510,16 @@ void SwapService::OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
                                  GetQuoteCallback callback,
                                  APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(
-        nullptr, nullptr,
-        mojom::SwapErrorUnion::NewLifiError(
-            lifi::ParseErrorResponse(api_request_result.value_body())),
-        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    if (auto error_response =
+            lifi::ParseErrorResponse(api_request_result.value_body())) {
+      std::move(callback).Run(
+          nullptr, nullptr,
+          mojom::SwapErrorUnion::NewLifiError(std::move(error_response)), "");
+    } else {
+      std::move(callback).Run(
+          nullptr, nullptr, nullptr,
+          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    }
     return;
   }
 
