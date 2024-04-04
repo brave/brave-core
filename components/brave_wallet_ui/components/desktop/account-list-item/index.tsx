@@ -58,7 +58,6 @@ import {
 import { AccountButtonOptions } from '../../../options/account-list-button-options'
 
 // components
-import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 import {
   AccountActionsMenu //
 } from '../wallet-menus/account-actions-menu'
@@ -79,22 +78,17 @@ import {
   AccountMenuIcon,
   AccountBalanceText,
   AccountDescription,
-  AccountNameWrapper
+  AccountNameWrapper,
+  AccountButton
 } from './style'
-
-import {
-  AccountAddressButton,
-  AccountAndAddress,
-  AccountNameButton,
-  AddressAndButtonRow,
-  CopyIcon
-} from '../portfolio-account-item/style'
 
 import {
   HorizontalSpace,
   Row,
   BraveRewardsIndicator,
-  VerticalSpacer
+  VerticalSpacer,
+  Text,
+  Column
 } from '../../shared/style'
 
 interface Props {
@@ -310,111 +304,125 @@ export const AccountListItem = ({
 
   // render
   return (
-    <StyledWrapper>
+    <StyledWrapper isRewardsAccount={isRewardsAccount}>
       <Row justifyContent='space-between'>
-        <NameAndIcon>
-          <CreateAccountIcon
-            size='huge'
-            account={account}
-            marginRight={16}
-            externalProvider={externalProvider}
-          />
-          <AccountAndAddress>
-            <AccountNameWrapper width='unset'>
-              <AccountNameButton
-                onClick={onSelectAccount}
-                disabled={isRewardsAccount}
-              >
-                {account.name}
-              </AccountNameButton>
-              {isRewardsAccount && (
-                <>
-                  <VerticalSpacer space='4px' />
-                  <BraveRewardsIndicator>
-                    {getLocale('braveWalletBraveRewardsTitle')}
-                  </BraveRewardsIndicator>
-                  <VerticalSpacer space='4px' />
-                </>
-              )}
-            </AccountNameWrapper>
-            {account.address && !isRewardsAccount && (
-              <AddressAndButtonRow>
-                <AccountAddressButton onClick={onSelectAccount}>
+        <AccountButton
+          onClick={onSelectAccount}
+          disabled={isRewardsAccount}
+        >
+          <NameAndIcon>
+            <CreateAccountIcon
+              size='huge'
+              account={account}
+              marginRight={16}
+              externalProvider={externalProvider}
+            />
+            <Column
+              alignItems='flex-start'
+              justifyContent='center'
+            >
+              <AccountNameWrapper width='unset'>
+                <Text
+                  textSize='14px'
+                  isBold={true}
+                  textColor='primary'
+                  textAlign='left'
+                >
+                  {account.name}
+                </Text>
+                <HorizontalSpace space='8px' />
+                {isRewardsAccount && (
+                  <>
+                    <VerticalSpacer space='4px' />
+                    <BraveRewardsIndicator>
+                      {getLocale('braveWalletBraveRewardsTitle')}
+                    </BraveRewardsIndicator>
+                    <VerticalSpacer space='4px' />
+                  </>
+                )}
+              </AccountNameWrapper>
+              {account.address && !isRewardsAccount && (
+                <Text
+                  textSize='12px'
+                  isBold={false}
+                  textColor='primary'
+                  textAlign='left'
+                >
                   {reduceAddress(account.address)}
-                </AccountAddressButton>
-                <CopyTooltip text={account.address}>
-                  <CopyIcon />
-                </CopyTooltip>
-              </AddressAndButtonRow>
-            )}
-            <AccountDescription>
-              {isRewardsAccount
-                ? getRewardsTokenDescription(externalProvider ?? null)
-                : getAccountTypeDescription(account.accountId)}
-            </AccountDescription>
-          </AccountAndAddress>
-        </NameAndIcon>
-        {!isDisconnectedRewardsAccount && (
-          <Row width='unset'>
-            {!isPanel && !accountsFiatValue.isZero() ? (
-              tokensWithBalances.length ? (
-                <TokenIconsStack tokens={tokensWithBalances} />
-              ) : (
+                </Text>
+              )}
+              <AccountDescription>
+                {isRewardsAccount
+                  ? getRewardsTokenDescription(externalProvider ?? null)
+                  : getAccountTypeDescription(account.accountId)}
+              </AccountDescription>
+            </Column>
+          </NameAndIcon>
+
+          {!isDisconnectedRewardsAccount && (
+            <Row width='unset'>
+              {!isPanel && !accountsFiatValue.isZero() ? (
+                tokensWithBalances.length ? (
+                  <TokenIconsStack tokens={tokensWithBalances} />
+                ) : (
+                  <>
+                    <LoadingSkeleton
+                      width={60}
+                      height={14}
+                    />
+                    <HorizontalSpace space='26px' />
+                  </>
+                )
+              ) : null}
+
+              {accountsFiatValue.isUndefined() ? (
                 <>
                   <LoadingSkeleton
                     width={60}
                     height={14}
                   />
-                  <HorizontalSpace space='26px' />
+                  <HorizontalSpace space='12px' />
                 </>
-              )
-            ) : null}
-
-            {accountsFiatValue.isUndefined() ? (
-              <>
-                <LoadingSkeleton
-                  width={60}
-                  height={14}
-                />
-                <HorizontalSpace space='12px' />
-              </>
-            ) : (
-              <>
-                <AccountBalanceText
-                  textSize='14px'
-                  isBold={true}
-                >
-                  {accountsFiatValue.formatAsFiat(defaultFiatCurrency)}
-                </AccountBalanceText>
-              </>
-            )}
-            <AccountMenuWrapper ref={accountMenuRef}>
-              <AccountMenuButton
-                onClick={() => setShowAccountMenu((prev) => !prev)}
-              >
-                <AccountMenuIcon />
-              </AccountMenuButton>
-              {showAccountMenu && (
+              ) : (
                 <>
-                  {isRewardsAccount ? (
-                    <RewardsMenu />
-                  ) : (
-                    <AccountActionsMenu
-                      onClick={onClickButtonOption}
-                      options={buttonOptions}
-                    />
-                  )}
+                  <AccountBalanceText
+                    textSize='14px'
+                    isBold={true}
+                  >
+                    {accountsFiatValue.formatAsFiat(defaultFiatCurrency)}
+                  </AccountBalanceText>
                 </>
               )}
-            </AccountMenuWrapper>
-          </Row>
+            </Row>
+          )}
+        </AccountButton>
+
+        {!isDisconnectedRewardsAccount && (
+          <AccountMenuWrapper ref={accountMenuRef}>
+            <AccountMenuButton
+              onClick={() => setShowAccountMenu((prev) => !prev)}
+            >
+              <AccountMenuIcon />
+            </AccountMenuButton>
+            {showAccountMenu && (
+              <>
+                {isRewardsAccount ? (
+                  <RewardsMenu />
+                ) : (
+                  <AccountActionsMenu
+                    onClick={onClickButtonOption}
+                    options={buttonOptions}
+                  />
+                )}
+              </>
+            )}
+          </AccountMenuWrapper>
         )}
       </Row>
       {isDisconnectedRewardsAccount && (
-        <>
-          <VerticalSpacer space='12px' />
+        <Row padding='0px 0px 8px 8px'>
           <RewardsLogin provider={provider} />
-        </>
+        </Row>
       )}
     </StyledWrapper>
   )
