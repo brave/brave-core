@@ -8,8 +8,7 @@ import * as React from 'react'
 import '../../../../components/brave_new_tab_ui/stories/default/data/mockBraveNewsController'
 
 import { shallow } from 'enzyme'
-import { SettingsMenu } from '../../../../components/brave_new_tab_ui/components/default'
-import Settings, { Props } from '../../../../components/brave_new_tab_ui/containers/newTab/settings'
+import Settings, { Props, SettingsDialog } from '../../../../components/brave_new_tab_ui/containers/newTab/settings'
 
 describe('settings component tests', () => {
   const mockProps: Props = {
@@ -51,7 +50,8 @@ describe('settings component tests', () => {
         allowBackgroundCustomization={mockProps.allowBackgroundCustomization}
         showRewards={mockProps.showRewards}
       />)
-    expect(wrapper.find(SettingsMenu)).toHaveLength(0)
+
+    expect(wrapper.find(SettingsDialog).prop('isOpen')).toBe(false)
   })
 
   it('should render the setting menu properly', () => {
@@ -74,6 +74,7 @@ describe('settings component tests', () => {
         allowBackgroundCustomization={mockProps.allowBackgroundCustomization}
         showRewards={mockProps.showRewards}
       />)
-    expect(wrapper.find(SettingsMenu)).toHaveLength(1)
-  })
+
+      expect(wrapper.find(SettingsDialog).prop('isOpen')).toBe(true)
+    })
 })
