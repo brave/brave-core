@@ -123,6 +123,17 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         List<DropdownItemViewInfo> viewInfoList =
                 super.buildDropdownViewInfoList(autocompleteResult);
 
+        // We want to show Leo auto suggestion even if the whole auto complete feature
+        // is disabled
+        Tab tab = mActivityTabSupplier.get();
+        boolean autocompleteEnabled =
+                tab != null
+                        ? mLeoAutocompleteDelegate.isAutoCompleteEnabled(tab.getWebContents())
+                        : true;
+        if (!autocompleteEnabled) {
+            viewInfoList.clear();
+        }
+
         if (isBraveLeoEnabled()
                 && !mUrlBarEditingTextProvider.getTextWithoutAutocomplete().isEmpty()) {
             final PropertyModel leoModel = mBraveLeoSuggestionProcessor.createModel();
@@ -148,11 +159,12 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                     tileNavSuggestPosition,
                     new DropdownItemViewInfo(mBraveLeoSuggestionProcessor, leoModel, config));
         }
-        if (isBraveSearchPromoBanner()) {
+        if (isBraveSearchPromoBanner() && autocompleteEnabled) {
             final PropertyModel model = mBraveSearchBannerProcessor.createModel();
             mBraveSearchBannerProcessor.populateModel(model);
-            viewInfoList.add(new DropdownItemViewInfo(
-                    mBraveSearchBannerProcessor, model, GroupConfig.getDefaultInstance()));
+            viewInfoList.add(
+                    new DropdownItemViewInfo(
+                            mBraveSearchBannerProcessor, model, GroupConfig.getDefaultInstance()));
         }
 
         return viewInfoList;

@@ -70,17 +70,6 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     }
 
     @Override
-    public void onTextChanged(String textWithoutAutocomplete) {
-        if (ProfileManager.isInitialized()
-                && !UserPrefs.get(Profile.getLastUsedRegularProfile())
-                            .getBoolean(AUTOCOMPLETE_ENABLED)) {
-            return;
-        }
-
-        super.onTextChanged(textWithoutAutocomplete);
-    }
-
-    @Override
     public void onOmniboxSessionStateChange(boolean activated) {
         if (!mNativeInitialized) return;
 
@@ -107,6 +96,17 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             }
         }
         super.initDefaultProcessors();
+    }
+
+    @Override
+    public boolean isAutoCompleteEnabled(WebContents webContents) {
+        if (ProfileManager.isInitialized()
+                && !UserPrefs.get(Profile.fromWebContents(webContents))
+                        .getBoolean(AUTOCOMPLETE_ENABLED)) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
