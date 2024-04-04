@@ -74,7 +74,7 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
     case high = 0.70
     case intense = 1.0
   }
-  
+
   @GestureState private var initialProgress: CGFloat?
 
   @Binding var progress: CGFloat
@@ -83,7 +83,7 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
   @State private var hapticsEngine: CHHapticEngine?
   @State private var hapticsPlayer: CHHapticPatternPlayer?
   @State private var hapticsLevel: HapticsLevel = .high
-  
+
   var leading: Leading
   var trailing: Trailing
 
@@ -233,7 +233,7 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
       )
     }
   }
-  
+
   private func determineHapticIntensityLevel(from progress: CGFloat) -> HapticsLevel {
     switch progress {
     case 0:

@@ -193,9 +193,7 @@ struct FocusStepsView: View {
   private var cancelButton: some View {
     Button(
       action: {
-        attributionManager?.pingDAUServer(p3aUtilities?.isP3AEnabled ?? false)
-
-        shouldDismiss = true
+        isP3AViewPresented = true
       },
       label: {
         Image("focus-icon-close", bundle: .module)

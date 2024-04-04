@@ -51,12 +51,6 @@ struct FocusP3AScreenView: View {
           .frame(maxWidth: 616, maxHeight: 895)
           .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
           .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
-          .overlay(alignment: .topTrailing) {
-            cancelButton
-              .frame(width: 32, height: 32)
-              .padding(24)
-          }
-
           FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -71,11 +65,6 @@ struct FocusP3AScreenView: View {
           consentp3aContentView
           FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
             .padding(.bottom, 20)
-        }
-        .overlay(alignment: .topTrailing) {
-          cancelButton
-            .frame(width: 32, height: 32)
-            .padding(.trailing, 24)
         }
         .background(Color(braveSystemName: .pageBackground))
         .background {
@@ -197,21 +186,6 @@ struct FocusP3AScreenView: View {
     }
     .padding(.vertical, shouldUseExtendedDesign ? 64 : 20)
     .padding(.horizontal, shouldUseExtendedDesign ? 60 : 20)
-  }
-
-  private var cancelButton: some View {
-    Button(
-      action: {
-        handleAdCampaignLookupAndDAUPing(isP3AEnabled: false)
-
-        shouldDismiss = true
-      },
-      label: {
-        Image("focus-icon-close", bundle: .module)
-          .resizable()
-
-      }
-    )
   }
 
   private func handleAdCampaignLookupAndDAUPing(isP3AEnabled: Bool) {
