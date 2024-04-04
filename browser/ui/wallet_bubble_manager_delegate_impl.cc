@@ -64,11 +64,13 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
   WalletWebUIBubbleManager(views::View* anchor_view,
                            Browser* browser,
                            const GURL& webui_url,
-                           int task_manager_string_id)
+                           int task_manager_string_id,
+                           bool force_load_on_create)
       : WebUIBubbleManagerImpl(anchor_view,
                                browser->profile(),
                                webui_url,
-                               task_manager_string_id),
+                               task_manager_string_id,
+                               force_load_on_create),
         browser_(browser),
         anchor_view_(anchor_view) {}
 
@@ -203,7 +205,8 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
 
   DCHECK(anchor_view);
   webui_bubble_manager_ = std::make_unique<WalletWebUIBubbleManager>(
-      anchor_view, browser, webui_url_, IDS_ACCNAME_BRAVE_WALLET_BUTTON);
+      anchor_view, browser, webui_url_, IDS_ACCNAME_BRAVE_WALLET_BUTTON,
+      /*force_load_on_create=*/false);
 }
 
 WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() {
