@@ -313,6 +313,7 @@ extension BrowserViewController: TopToolbarDelegate {
       "histograms",
       "local-state",
       "version",
+      "skus-internals",
     ]
     guard let host = url.host, supportedPages.contains(host) else {
       return false
