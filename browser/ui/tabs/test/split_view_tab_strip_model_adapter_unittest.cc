@@ -103,7 +103,7 @@ TEST_F(SplitViewTabStripModelAdapterUnitTest, TilingTabsMakesTabsAdjacent) {
 }
 
 TEST_F(SplitViewTabStripModelAdapterUnitTest,
-       OnTabInserted_BreaksTilesWhenInsertedBetweenTile) {
+       OnTabInserted_MoveTabWhenInsertedBetweenTile) {
   // Given that two tabs are tiled
   model().AppendWebContents(CreateWebContents(), /*foreground*/ true);
   model().AppendWebContents(CreateWebContents(), /*foreground*/ true);
@@ -114,12 +114,19 @@ TEST_F(SplitViewTabStripModelAdapterUnitTest,
   ASSERT_TRUE(data().IsTabTiled(tab2));
 
   // When inserting a tab in the middle of the tile,
-  model().InsertWebContentsAt(/*index*/ 1, CreateWebContents(),
+  auto new_contents = CreateWebContents();
+  auto* new_contents_ptr = new_contents.get();
+  model().InsertWebContentsAt(/*index*/ 1, std::move(new_contents),
                               /*add_type*/ 0);
+  base::RunLoop().RunUntilIdle();
 
-  // Then the tile should be broken.
-  EXPECT_FALSE(data().IsTabTiled(tab1));
-  EXPECT_FALSE(data().IsTabTiled(tab2));
+  // Then the tile should stay.
+  EXPECT_TRUE(data().IsTabTiled(tab1));
+  EXPECT_TRUE(data().IsTabTiled(tab2));
+
+  EXPECT_EQ(tab1, model().GetTabHandleAt(0));
+  EXPECT_EQ(tab2, model().GetTabHandleAt(1));
+  EXPECT_EQ(new_contents_ptr, model().GetWebContentsAt(2));
 }
 
 TEST_F(SplitViewTabStripModelAdapterUnitTest, OnTabMoved_MovesTiledTab) {

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
 
+#include "base/compiler_specific.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -67,8 +68,8 @@ void SplitViewTabStripModelAdapter::OnTabStripModelChanged(
 
 void SplitViewTabStripModelAdapter::OnTabInserted(
     const TabStripModelChange::Insert* insert) {
-  // For simplicity, we just break tiles in case tabs are inserted between tiled
-  // tabs.
+  // When tabs are inserted between tiles, we'll move it after the tile.
+  // This can happen when the inserted tabs were created from tile.first.
 
   // Indices of tabs are at the time of insertion, so we need to adjust them.
   std::vector<int> inserted_indices;
@@ -82,8 +83,7 @@ void SplitViewTabStripModelAdapter::OnTabInserted(
     inserted_indices.push_back(contents_with_index.index);
   }
 
-  // Find tiles that need to be broken
-  std::vector<tabs::TabHandle> tiles_to_break;
+  std::vector<int> indices_to_be_moved;
   for (const auto& [tab1, tab2] : split_view_browser_data_->tiles()) {
     auto lower_index = model_->GetIndexOfTab(tab1);
     auto higher_index = model_->GetIndexOfTab(tab2);
@@ -91,14 +91,32 @@ void SplitViewTabStripModelAdapter::OnTabInserted(
 
     for (auto inserted_index : inserted_indices) {
       if (lower_index < inserted_index && inserted_index < higher_index) {
-        tiles_to_break.emplace_back(tab1);
+        indices_to_be_moved.push_back(inserted_index);
         break;
       }
     }
   }
 
-  for (const auto& tab : tiles_to_break) {
-    split_view_browser_data_->BreakTile(tab);
+  for (auto index : indices_to_be_moved) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            [](base::WeakPtr<SplitViewTabStripModelAdapter> adapter,
+               tabs::TabHandle tab, int index) {
+              if (!adapter) {
+                return;
+              }
+
+              if (UNLIKELY(index != adapter->model_->GetIndexOfTab(tab))) {
+                // Index changed. Cancel the move.
+                return;
+              }
+
+              adapter->model_->MoveWebContentsAt(index, index + 1,
+                                                 /*select_after_move*/ false);
+            },
+            weak_ptr_factory_.GetWeakPtr(), model_->GetTabHandleAt(index),
+            index));
   }
 
   // TODO(sko) There're a few more things to consider
