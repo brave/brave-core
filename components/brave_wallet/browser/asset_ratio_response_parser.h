@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -28,6 +29,8 @@ std::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
     const base::Value& json_value);
 
 std::optional<std::string> ParseStripeBuyURL(const base::Value& json_value);
+
+bool ParseServiceProviders(const base::Value& json_value, std::vector<mojom::ServiceProviderPtr>* service_providers);
 
 }  // namespace brave_wallet
 

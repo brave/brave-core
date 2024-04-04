@@ -91,6 +91,18 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   void EnableDummyPricesForTesting();
 
+  static GURL GetServiceProviderURL(const std::string& countries,
+                                    const std::string& fiat_currencies,
+                                    const std::string& crypto_currencies,
+                                    const std::string& payment_methods,
+                                    const std::string& statuses);
+
+  void GetServiceProviders(const std::string& countries,
+                           const std::string& from_assets,
+                           const std::string& to_assets,
+                           const std::string& payment_methods,
+                           GetServiceProvidersCallback callback) override;
+
  private:
   friend class AssetRatioServiceUnitTest;
   FRIEND_TEST_ALL_PREFIXES(AssetRatioServiceUnitTest, GetStripeBuyURL);
@@ -121,6 +133,9 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
 
   void OnGetCoinMarkets(GetCoinMarketsCallback callback,
                         APIRequestResult api_request_result);
+
+  void OnGetServiceProviders(GetServiceProvidersCallback callback,
+                             APIRequestResult api_request_result);
 
   mojo::ReceiverSet<mojom::AssetRatioService> receivers_;
 

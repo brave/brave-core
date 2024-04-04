@@ -4,6 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
+#include <optional>
+#include <vector>
 
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
@@ -11,6 +13,8 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/api/asset_ratio.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -211,6 +215,23 @@ std::optional<std::string> ParseStripeBuyURL(const base::Value& json_value) {
   }
 
   return stripe_buy_url_response->url;
+}
+
+bool ParseServiceProviders(const base::Value& json_value, std::vector<mojom::ServiceProviderPtr>* service_providers) {
+  DCHECK(service_providers);
+
+  if (!json_value.is_list()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
+    return false;
+  }
+
+  LOG(INFO) << "[MELD] json_value:" << json_value.DebugString();
+
+  for(const auto& sp_item : json_value.GetList()) {
+    LOG(INFO) << "[MELD] sp_item:" << sp_item.DebugString();
+  }
+
+  return true;
 }
 
 }  // namespace brave_wallet

@@ -452,6 +452,12 @@ struct AssetPrice {
   string asset_timeframe_change;
 };
 
+struct ServiceProvider {
+  string name;
+  string logo_image;
+  // TODO add quote: Exchange rate, price, fees; Accepted payment methods list
+};
+
 struct CoinMarket {
   string id;
   string symbol;
@@ -1150,6 +1156,8 @@ interface AssetRatioService {
 
   // Obtain list of top currencies and their market data
   GetCoinMarkets(string vs_asset, uint8 limit) => (bool success, array<CoinMarket> values);
+
+  GetServiceProviders(string countries, string from_assets, string to_assets, string payment_methods) => (array<ServiceProvider> service_providers, string? error);
 };
 
 // Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs

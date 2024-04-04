@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/base/load_flags.h"
@@ -123,6 +124,19 @@ base::flat_map<std::string, std::string> MakeBraveServicesKeyHeader() {
 
   return request_headers;
 }
+
+base::flat_map<std::string, std::string> MakeMeldServicesKeyHeader() {
+  base::flat_map<std::string, std::string> request_headers;
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  std::string meld_api_key("API_KEY");// TODO here we have to get value from environment config
+  // if (env->HasVar("MELD_API_KEY")) {
+  //   env->GetVar("MELD_API_KEY", &meld_api_key);
+  // }
+  request_headers["Authorization"] = std::move(meld_api_key);
+
+  return request_headers;
+}
+constexpr char kDefaultMeldServiceProviderStatuses[] = "LIVE,RECENTLY_ADDED";
 
 }  // namespace
 
@@ -559,6 +573,73 @@ void AssetRatioService::OnGetCoinMarkets(GetCoinMarketsCallback callback,
   }
 
   std::move(callback).Run(true, std::move(*values));
+}
+
+
+// static
+GURL AssetRatioService::GetServiceProviderURL(const std::string& countries,
+                                    const std::string& fiat_currencies,
+                                    const std::string& crypto_currencies,
+                                    const std::string& payment_methods,
+                                    const std::string& statuses) {
+  GURL url = GURL(base::StringPrintf("%s/service-providers",
+                                     base_url_for_test_.is_empty()
+                                         ? GetMeldAssetRatioBaseURL().c_str()
+                                         : base_url_for_test_.spec().c_str()));
+  if (!statuses.empty()) {
+    url = net::AppendQueryParameter(url, "statuses", statuses);
+  } else {
+    url = net::AppendQueryParameter(url, "statuses", kDefaultMeldServiceProviderStatuses);    
+  }
+
+  if (!countries.empty()) {
+    url = net::AppendQueryParameter(url, "countries", countries);
+  }
+  if (!fiat_currencies.empty()) {
+    url = net::AppendQueryParameter(url, "fiatCurrencies", countries);
+  }
+  if (!crypto_currencies.empty()) {
+    url = net::AppendQueryParameter(url, "cryptoCurrencies", crypto_currencies);
+  }
+  if (!payment_methods.empty()) {
+    url = net::AppendQueryParameter(url, "paymentMethodTypes", payment_methods);
+  }
+  
+  return url;
+}
+
+void AssetRatioService::GetServiceProviders(
+    const std::string& countries,
+    const std::string& from_assets,
+    const std::string& to_assets,
+    const std::string& payment_methods,
+    GetServiceProvidersCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetServiceProviders,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_->Request(
+      "GET", GetServiceProviderURL(countries, from_assets, to_assets,
+                                   payment_methods, ""), "", "",
+                                   std::move(internal_callback),MakeMeldServicesKeyHeader(),
+                                   {.auto_retry_on_network_change = true, .enable_cache = true});
+}
+
+void AssetRatioService::OnGetServiceProviders(GetServiceProvidersCallback callback,
+                                         APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run({}, "INTERNAL_SERVICE_ERROR");
+    return;
+  }
+
+  std::vector<mojom::ServiceProviderPtr> service_providers;
+  auto values = ParseServiceProviders(api_request_result.value_body(), &service_providers);
+  if (!values) {
+    std::move(callback).Run({}, "PARSING_ERROR");
+    return;
+  }
+
+  std::move(callback).Run(std::move(service_providers), nullptr);
 }
 
 }  // namespace brave_wallet

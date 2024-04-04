@@ -14,6 +14,7 @@ inline constexpr char kDevWalletPassword[] = "dev-wallet-password";
 
 // Ratios service dev URL
 inline constexpr char kAssetRatioDevUrl[] = "asset-ratio-dev-url";
+inline constexpr char kMeldAssetRatioDevUrl[] = "meld-asset-ratio-dev-url";
 
 // ZCash rpc mainnet endpoint.
 inline constexpr char kZCashMainnetRpcUrl[] = "zcash-mainnet-rpc-url";
