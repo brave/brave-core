@@ -33,7 +33,7 @@ constexpr uint32_t kConsensusBranchId = 0xC2D6D0B4;
 std::string GetTxHashPersonalizer() {
   std::string personalizer(kTxHashPersonalizerPrefix);
 
-  personalizer.append('\0', sizeof(kConsensusBranchId));
+  personalizer.append(sizeof(kConsensusBranchId), '\0');
   base::as_writable_byte_span(personalizer)
       .subspan<std::string(kTxHashPersonalizerPrefix).size(),
                sizeof(kConsensusBranchId)>()
