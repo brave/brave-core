@@ -6,11 +6,13 @@
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
 
 #include "base/memory/weak_ptr.h"
+#include "base/ranges/algorithm.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/tab_groups/tab_group_id.h"
+#include "ui/gfx/range/range.h"
 
 SplitViewTabStripModelAdapter::SplitViewTabStripModelAdapter(
     SplitViewBrowserData& split_view_browser_data,
@@ -40,6 +42,41 @@ void SplitViewTabStripModelAdapter::MakeTiledTabsAdjacent(
   } else {
     model_->MoveWebContentsAt(index1, index2 - 1, /*select_after_move*/ false);
   }
+}
+
+void SplitViewTabStripModelAdapter::TabDragStarted() {
+  if (split_view_browser_data_->tiles().empty() || is_in_tab_dragging()) {
+    return;
+  }
+
+  is_in_tab_dragging_ = true;
+}
+
+void SplitViewTabStripModelAdapter::TabDragEnded() {
+  if (split_view_browser_data_->tiles().empty() || !is_in_tab_dragging()) {
+    return;
+  }
+
+  // Check if any tiles are separated after drag and drop session. Then break
+  // the tiles.
+  std::vector<SplitViewBrowserData::Tile> tiles_to_break;
+  for (const auto& tile : split_view_browser_data_->tiles()) {
+    auto [tab1, tab2] = tile;
+    int index1 = model_->GetIndexOfTab(tab1);
+    int index2 = model_->GetIndexOfTab(tab2);
+    if (index2 - index1 == 1) {
+      return;
+    }
+
+    tiles_to_break.push_back(tile);
+  }
+
+  while (!tiles_to_break.empty()) {
+    split_view_browser_data_->BreakTile(tiles_to_break.back().first);
+    tiles_to_break.pop_back();
+  }
+
+  is_in_tab_dragging_ = false;
 }
 
 void SplitViewTabStripModelAdapter::OnTabStripModelChanged(
@@ -125,9 +162,6 @@ void SplitViewTabStripModelAdapter::OnTabMoved(
       FROM_HERE,
       base::BindOnce(&SplitViewTabStripModelAdapter::MakeTiledTabsAdjacent,
                      weak_ptr_factory_.GetWeakPtr(), *tile, move_right_tab));
-
-  // TODO(sko) We should make sure that tab isn't moved between tiled tabs.
-  // Or we should break the tile when it happens.
 }
 
 void SplitViewTabStripModelAdapter::OnTabWillBeRemoved(
