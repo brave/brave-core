@@ -28,17 +28,25 @@ import os
   @Published var cookieConsentBlocking: Bool {
     didSet {
       FilterListStorage.shared.ensureFilterList(
-        for: FilterList.cookieConsentNoticesComponentID,
+        for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID,
         isEnabled: cookieConsentBlocking
       )
+
+      Task {
+        await AdBlockGroupsManager.shared.compileEnginesIfNeeded()
+      }
     }
   }
   @Published var blockMobileAnnoyances: Bool {
     didSet {
       FilterListStorage.shared.ensureFilterList(
-        for: FilterList.mobileAnnoyancesComponentID,
+        for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID,
         isEnabled: blockMobileAnnoyances
       )
+
+      Task {
+        await AdBlockGroupsManager.shared.compileEnginesIfNeeded()
+      }
     }
   }
   @Published var isP3AEnabled: Bool {
@@ -101,11 +109,11 @@ import os
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
 
     cookieConsentBlocking = FilterListStorage.shared.isEnabled(
-      for: FilterList.cookieConsentNoticesComponentID
+      for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID
     )
 
     blockMobileAnnoyances = FilterListStorage.shared.isEnabled(
-      for: FilterList.mobileAnnoyancesComponentID
+      for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID
     )
 
     var clearableSettings = [
@@ -232,11 +240,11 @@ import os
       .sink { filterLists in
         for filterList in filterLists {
           switch filterList.entry.componentId {
-          case FilterList.cookieConsentNoticesComponentID:
+          case AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID:
             if filterList.isEnabled != self.cookieConsentBlocking {
               self.cookieConsentBlocking = filterList.isEnabled
             }
-          case FilterList.mobileAnnoyancesComponentID:
+          case AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID:
             if filterList.isEnabled != self.blockMobileAnnoyances {
               self.blockMobileAnnoyances = filterList.isEnabled
             }

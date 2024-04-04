@@ -63,55 +63,22 @@ actor FilterListCustomURLDownloader: ObservableObject {
     }
   }
 
-  /// Handle the download results of a custom filter list. This will process the download by compiling iOS rule lists and adding the rule list to the `AdblockEngineManager`.
+  /// Handle the download results of a custom filter list. This will process the download by compiling iOS rule lists and adding the rule list to the `AdBlockEngineManager`.
   private func handle(
     downloadResult: ResourceDownloader<DownloadResource>.DownloadResult,
     for filterListCustomURL: FilterListCustomURL
   ) async {
-    let uuid = await filterListCustomURL.setting.uuid
-
-    // Add/remove the resource depending on if it is enabled/disabled
-    guard let resourcesInfo = await AdBlockStats.shared.resourcesInfo else {
-      assertionFailure("This should not have been called if the resources are not ready")
-      return
-    }
-
     let source = await filterListCustomURL.setting.engineSource
     let version = fileVersionDateFormatter.string(from: downloadResult.date)
-    let filterListInfo = CachedAdBlockEngine.FilterListInfo(
-      source: .filterListURL(uuid: uuid),
-      localFileURL: downloadResult.fileURL,
-      version: version,
-      fileType: .text
-    )
-    let lazyInfo = AdBlockStats.LazyFilterListInfo(
-      filterListInfo: filterListInfo,
-      isAlwaysAggressive: true
+
+    let fileInfo = AdBlockEngineManager.FileInfo(
+      filterListInfo: GroupedAdBlockEngine.FilterListInfo(source: source, version: version),
+      localFileURL: downloadResult.fileURL
     )
 
-    guard await AdBlockStats.shared.isEnabled(source: source) else {
-      await AdBlockStats.shared.updateIfNeeded(
-        filterListInfo: filterListInfo,
-        isAlwaysAggressive: true
-      )
-
-      // To free some space, remove any rule lists that are not needed
-      if let blocklistType = lazyInfo.blocklistType {
-        do {
-          try await ContentBlockerManager.shared.removeRuleLists(for: blocklistType)
-        } catch {
-          ContentBlockerManager.log.error(
-            "Failed to remove rule lists for \(filterListInfo.debugDescription)"
-          )
-        }
-      }
-      return
-    }
-
-    await AdBlockStats.shared.compile(
-      lazyInfo: lazyInfo,
-      resourcesInfo: resourcesInfo,
-      compileContentBlockers: true
+    await AdBlockGroupsManager.shared.update(
+      fileInfo: fileInfo,
+      engineType: .aggressive
     )
   }
 
@@ -175,6 +142,11 @@ actor FilterListCustomURLDownloader: ObservableObject {
     let resource = await filterListCustomURL.setting.resource
     fetchTasks[resource]?.cancel()
     fetchTasks.removeValue(forKey: resource)
+
+    await AdBlockGroupsManager.shared.removeFileInfo(
+      for: filterListCustomURL.setting.engineSource,
+      engineType: .aggressive
+    )
   }
 }
 

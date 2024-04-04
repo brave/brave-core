@@ -16,9 +16,6 @@ struct FilterListsView: View {
   @ObservedObject private var customFilterListStorage = CustomFilterListStorage.shared
   @Environment(\.editMode) private var editMode
   @State private var showingAddSheet = false
-  @State private var expectedEnabledSources: Set<CachedAdBlockEngine.Source> = Set(
-    AdBlockStats.shared.enabledSources
-  )
   private let dateFormatter = RelativeDateTimeFormatter()
 
   var body: some View {
@@ -67,14 +64,30 @@ struct FilterListsView: View {
       )
     }
     .onDisappear {
-      Task.detached {
-        await AdBlockStats.shared.removeDisabledEngines()
-        await AdBlockStats.shared.ensureEnabledEngines()
+      Task {
+        await AdBlockGroupsManager.shared.compileEnginesIfNeeded()
       }
     }
   }
 
   @ViewBuilder private var filterListView: some View {
+    #if DEBUG
+    let allEnabled = Binding {
+      filterListStorage.filterLists.allSatisfy({ $0.isEnabled })
+    } set: { isEnabled in
+      filterListStorage.filterLists.enumerated().forEach { index, filterList in
+        let isEnabled = filterList.entry.hidden ? filterList.entry.defaultEnabled : isEnabled
+        filterListStorage.filterLists[index].isEnabled = isEnabled
+      }
+    }
+
+    Toggle(isOn: allEnabled) {
+      VStack(alignment: .leading) {
+        Text("All").foregroundColor(Color(.bravePrimary))
+      }
+    }
+    #endif
+
     ForEach($filterListStorage.filterLists) { $filterList in
       if !filterList.isHidden {
         Toggle(isOn: $filterList.isEnabled) {
@@ -84,13 +97,6 @@ struct FilterListsView: View {
             Text(filterList.entry.desc)
               .font(.caption)
               .foregroundColor(Color(.secondaryBraveLabel))
-          }
-        }
-        .onChange(of: filterList.isEnabled) { isEnabled in
-          if isEnabled {
-            expectedEnabledSources.insert(filterList.engineSource)
-          } else {
-            expectedEnabledSources.remove(filterList.engineSource)
           }
         }
       }
@@ -129,12 +135,6 @@ struct FilterListsView: View {
           }
         }
         .onChange(of: filterListURL.setting.isEnabled) { isEnabled in
-          if isEnabled {
-            expectedEnabledSources.insert(filterListURL.setting.engineSource)
-          } else {
-            expectedEnabledSources.remove(filterListURL.setting.engineSource)
-          }
-
           Task {
             CustomFilterListSetting.save(inMemory: !customFilterListStorage.persistChanges)
           }

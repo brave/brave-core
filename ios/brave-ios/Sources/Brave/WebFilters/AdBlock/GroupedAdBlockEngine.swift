@@ -1,4 +1,4 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -7,24 +7,24 @@ import BraveCore
 import Data
 import Foundation
 import Preferences
-import os
+import os.log
 
 /// An object that wraps around an `AdblockEngine` and caches some results
 /// and ensures information is always returned on the correct thread on the engine.
-public actor CachedAdBlockEngine {
-  public enum Source: Hashable, CustomDebugStringConvertible {
+public actor GroupedAdBlockEngine {
+  public enum Source: Codable, Hashable, CustomDebugStringConvertible {
     case filterList(componentId: String, uuid: String)
     case filterListURL(uuid: String)
 
     public var debugDescription: String {
       switch self {
-      case .filterList(let componentId, _): return "filterList(\(componentId))"
-      case .filterListURL(let uuid): return "filterListURL(\(uuid))"
+      case .filterList(let componentId, _): return componentId
+      case .filterListURL(let uuid): return uuid
       }
     }
   }
 
-  public enum FileType: Hashable, CustomDebugStringConvertible {
+  public enum FileType: Codable, Hashable, CustomDebugStringConvertible {
     case text, data
 
     public var debugDescription: String {
@@ -35,14 +35,43 @@ public actor CachedAdBlockEngine {
     }
   }
 
-  public struct FilterListInfo: Hashable, Equatable, CustomDebugStringConvertible {
-    let source: Source
-    let localFileURL: URL
+  public enum EngineType: Hashable, CaseIterable, CustomDebugStringConvertible {
+    case standard
+    case aggressive
+
+    var isAlwaysAggressive: Bool {
+      switch self {
+      case .standard: return false
+      case .aggressive: return true
+      }
+    }
+    
+    public var debugDescription: String {
+      switch self {
+      case .aggressive: return "aggressive"
+      case .standard: return "standard"
+      }
+    }
+  }
+
+  public struct FilterListInfo: Codable, Hashable, Equatable, CustomDebugStringConvertible {
+    let source: GroupedAdBlockEngine.Source
     let version: String
-    let fileType: FileType
 
     public var debugDescription: String {
-      return "`\(source.debugDescription)` v\(version) (\(fileType.debugDescription))"
+      return "`\(source.debugDescription)` v\(version)"
+    }
+  }
+
+  public struct FilterListGroup: Hashable, Equatable, CustomDebugStringConvertible {
+    let infos: [FilterListInfo]
+    let localFileURL: URL
+    let fileType: GroupedAdBlockEngine.FileType
+
+    public var debugDescription: String {
+      return infos.enumerated()
+        .map({ " #\($0) \($1.debugDescription)" })
+        .joined(separator: "\n")
     }
   }
 
@@ -61,20 +90,14 @@ public actor CachedAdBlockEngine {
 
   private let engine: AdblockEngine
 
-  let isAlwaysAggressive: Bool
-  let filterListInfo: FilterListInfo
-  let resourcesInfo: ResourcesInfo
+  let type: EngineType
+  let group: FilterListGroup
+  private(set) var resourcesInfo: ResourcesInfo?
 
-  init(
-    engine: AdblockEngine,
-    filterListInfo: FilterListInfo,
-    resourcesInfo: ResourcesInfo,
-    isAlwaysAggressive: Bool
-  ) {
+  init(engine: AdblockEngine, group: FilterListGroup, type: EngineType) {
     self.engine = engine
-    self.filterListInfo = filterListInfo
-    self.resourcesInfo = resourcesInfo
-    self.isAlwaysAggressive = isAlwaysAggressive
+    self.group = group
+    self.type = type
   }
 
   /// Return the selectors that need to be hidden given the frameURL, ids and classes
@@ -129,7 +152,7 @@ public actor CachedAdBlockEngine {
       requestURL: requestURL,
       sourceURL: sourceURL,
       resourceType: resourceType,
-      isAggressive: isAggressiveMode || self.isAlwaysAggressive
+      isAggressive: isAggressiveMode || self.type.isAlwaysAggressive
     )
 
     cachedShouldBlockResult.addElement(shouldBlock, forKey: key)
@@ -140,7 +163,6 @@ public actor CachedAdBlockEngine {
   func makeEngineScriptTypes(
     frameURL: URL,
     isMainFrame: Bool,
-    domain: Domain,
     isDeAmpEnabled: Bool,
     index: Int
   ) throws -> Set<UserScriptType> {
@@ -175,6 +197,11 @@ public actor CachedAdBlockEngine {
     cachedFrameScriptTypes = FifoDict()
   }
 
+  func useResources(from info: ResourcesInfo) throws {
+    try engine.useResources(fromFileURL: info.localFileURL)
+    resourcesInfo = info
+  }
+
   /// Serialize the engine into data to be later loaded from cache
   public func serialize() throws -> Data {
     return try engine.serialize()
@@ -182,40 +209,32 @@ public actor CachedAdBlockEngine {
 
   /// Create an engine from the given resources
   public static func compile(
-    filterListInfo: FilterListInfo,
-    resourcesInfo: ResourcesInfo,
-    isAlwaysAggressive: Bool
-  ) throws -> CachedAdBlockEngine {
+    group: FilterListGroup,
+    type: EngineType
+  ) throws -> GroupedAdBlockEngine {
     let signpostID = Self.signpost.makeSignpostID()
     let state = Self.signpost.beginInterval(
       "compileEngine",
       id: signpostID,
-      "\(filterListInfo.debugDescription)"
+      "\(type.debugDescription) (\(group.fileType.debugDescription)): \(group.debugDescription)"
     )
 
     do {
-      let engine = try makeEngine(from: filterListInfo)
-      try engine.useResources(fromFileURL: resourcesInfo.localFileURL)
+      let engine = try makeEngine(from: group)
       Self.signpost.endInterval("compileEngine", state)
-
-      return CachedAdBlockEngine(
-        engine: engine,
-        filterListInfo: filterListInfo,
-        resourcesInfo: resourcesInfo,
-        isAlwaysAggressive: isAlwaysAggressive
-      )
+      return GroupedAdBlockEngine(engine: engine, group: group, type: type)
     } catch {
       Self.signpost.endInterval("compileEngine", state, "\(error.localizedDescription)")
       throw error
     }
   }
 
-  private static func makeEngine(from filterListInfo: FilterListInfo) throws -> AdblockEngine {
-    switch filterListInfo.fileType {
+  private static func makeEngine(from group: FilterListGroup) throws -> AdblockEngine {
+    switch group.fileType {
     case .data:
-      return try AdblockEngine(serializedData: Data(contentsOf: filterListInfo.localFileURL))
+      return try AdblockEngine(serializedData: Data(contentsOf: group.localFileURL))
     case .text:
-      return try AdblockEngine(rules: String(contentsOf: filterListInfo.localFileURL))
+      return try AdblockEngine(rules: String(contentsOf: group.localFileURL))
     }
   }
 }
