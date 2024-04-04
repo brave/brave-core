@@ -68,7 +68,7 @@ void GetOrdinalsTask::MaybeSendRequests() {
   pending_outpoints_ = std::move(requested_outpoints);
 
   if (pending_outpoints_.empty()) {
-    result_ = OrdinalsMap();
+    result_ = std::move(ordinals_);
     ScheduleWorkOnTask();
     return;
   }

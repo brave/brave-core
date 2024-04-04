@@ -30,6 +30,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -509,12 +510,17 @@ void CreateTransactionTask::WorkOnTask() {
     return;
   }
 
-  if (!ordinals_map_.has_value()) {
-    bitcoin_wallet_service_->GetOrdinals(
-        account_id_.Clone(), GetOutpointsFromUtxos(*utxo_map_),
-        base::BindOnce(&CreateTransactionTask::OnGetOrdinals,
-                       weak_ptr_factory_.GetWeakPtr()));
-    return;
+  if (base::FeatureList::IsEnabled(
+          features::kBraveWalletBitcoinOrdinalsFeature)) {
+    if (!ordinals_map_.has_value()) {
+      bitcoin_wallet_service_->GetOrdinals(
+          account_id_.Clone(), GetOutpointsFromUtxos(*utxo_map_),
+          base::BindOnce(&CreateTransactionTask::OnGetOrdinals,
+                         weak_ptr_factory_.GetWeakPtr()));
+      return;
+    }
+  } else {
+    ordinals_map_.emplace();
   }
 
   if (!change_address_) {
@@ -1240,12 +1246,6 @@ bool BitcoinWalletService::SignTransactionInternal(
   }
 
   return true;
-}
-
-void BitcoinWalletService::SetUrlLoaderFactoryForTesting(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  bitcoin_rpc_->SetUrlLoaderFactoryForTesting(  // IN-TEST
-      std::move(url_loader_factory));
 }
 
 void BitcoinWalletService::SetArrangeTransactionsForTesting(bool arrange) {

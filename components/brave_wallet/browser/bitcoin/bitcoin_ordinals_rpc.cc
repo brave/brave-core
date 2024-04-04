@@ -18,7 +18,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/switches.h"
 #include "components/grit/brave_components_strings.h"
@@ -85,9 +84,10 @@ const GURL MakeOutpointInfoUrl(const std::string& chain_id,
   }
 
   GURL::Replacements replacements;
-  std::string path =
-      base::StrCat({base_url.path(),
-                    base::JoinString({"output", outpoint.ToString()}, "/")});
+  std::string path = base::StrCat(
+      {base_url.path(),
+       base::JoinString({"output", base::ToLowerASCII(outpoint.ToString())},
+                        "/")});
   replacements.SetPathStr(path);
 
   return base_url.ReplaceComponents(replacements);

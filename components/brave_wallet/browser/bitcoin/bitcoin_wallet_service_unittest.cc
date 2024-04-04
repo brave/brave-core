@@ -18,6 +18,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
+#include "brave/components/brave_wallet/browser/bitcoin_ordinals_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -27,6 +28,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: keep
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -61,9 +63,16 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     bitcoin_test_rpc_server_ =
         std::make_unique<BitcoinTestRpcServer>(keyring_service_.get(), &prefs_);
+    bitcoin_ordinals_test_rpc_server_ =
+        std::make_unique<BitcoinOrdinalsTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         keyring_service_.get(), &prefs_,
+        url_loader_factory_.GetSafeWeakWrapper().get());
+    bitcoin_wallet_service_->bitcoin_rpc().SetUrlLoaderFactoryForTesting(
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
+    bitcoin_wallet_service_->bitcoin_ordinals_rpc()
+        .SetUrlLoaderFactoryForTesting(
+            bitcoin_ordinals_test_rpc_server_->GetURLLoaderFactory());
     bitcoin_wallet_service_->SetArrangeTransactionsForTesting(true);
 
     keyring_service_->CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
@@ -95,7 +104,10 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
 
+  network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
+  std::unique_ptr<BitcoinOrdinalsTestRpcServer>
+      bitcoin_ordinals_test_rpc_server_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
@@ -365,6 +377,94 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
   EXPECT_EQ(output_1.amount, 50000u + 5000u - 48000u - 4879u);
   EXPECT_EQ(base::HexEncode(output_1.script_pubkey),
             "00142DAF8BA8858A8D65B8C6107ECE99DA1FAEF0B944");
+}
+
+TEST_F(BitcoinWalletServiceUnitTest, CreateTransactionWithOrdinals) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletBitcoinOrdinalsFeature};
+
+  using CreateTransactionResult =
+      base::expected<BitcoinTransaction, std::string>;
+  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
+
+  BitcoinTransaction actual_tx;
+  auto capture_transaction = Truly([&](const CreateTransactionResult& arg) {
+    EXPECT_TRUE(arg.has_value());
+    actual_tx = arg.value();
+    return true;
+  });
+
+  // Outpoints not registered in ordinals server, so ordinals usage will be
+  // 'unknown'.
+  EXPECT_CALL(callback, Run(capture_transaction));
+  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
+                                             48000, false, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  EXPECT_EQ(actual_tx.inputs().size(), 2u);
+  auto input_0 = actual_tx.inputs().at(0);
+  EXPECT_EQ(base::HexEncode(input_0.utxo_outpoint.txid),
+            base::ToUpperASCII(kMockBtcTxid1));
+  EXPECT_EQ(input_0.utxo_outpoint.index, 1u);
+
+  auto input_1 = actual_tx.inputs().at(1);
+  EXPECT_EQ(base::HexEncode(input_1.utxo_outpoint.txid),
+            base::ToUpperASCII(kMockBtcTxid2));
+  EXPECT_EQ(input_1.utxo_outpoint.index, 7u);
+
+  EXPECT_EQ(mojom::BitcoinOrdinalsUsage::kUnknown,
+            actual_tx.GetOrdinalsUsage());
+
+  // Register one outpoint in ordinals server, ordinals usage is still
+  // 'unknown'.
+  bitcoin_ordinals_rpc::OutpointInfo info_0;
+  bitcoin_ordinals_test_rpc_server_->SetOutpointInfo(input_0.utxo_outpoint,
+                                                     info_0.Clone());
+  EXPECT_CALL(callback, Run(capture_transaction));
+  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
+                                             48000, false, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_EQ(mojom::BitcoinOrdinalsUsage::kUnknown,
+            actual_tx.GetOrdinalsUsage());
+
+  // Register another outpoint in ordinals server, ordinals usage becomes 'not
+  // used'.
+  bitcoin_ordinals_rpc::OutpointInfo info_1;
+  bitcoin_ordinals_test_rpc_server_->SetOutpointInfo(input_1.utxo_outpoint,
+                                                     info_1.Clone());
+
+  EXPECT_CALL(callback, Run(capture_transaction));
+  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
+                                             48000, false, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_EQ(mojom::BitcoinOrdinalsUsage::kNotUsed,
+            actual_tx.GetOrdinalsUsage());
+
+  // Mark one outpoint as having an inscription, but cached value is used(which
+  // is ok for production). Usage is still 'not used'.
+  info_1.inscriptions.push_back("123");
+  bitcoin_ordinals_test_rpc_server_->SetOutpointInfo(input_1.utxo_outpoint,
+                                                     info_1.Clone());
+  EXPECT_CALL(callback, Run(capture_transaction));
+  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
+                                             48000, false, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_EQ(mojom::BitcoinOrdinalsUsage::kNotUsed,
+            actual_tx.GetOrdinalsUsage());
+
+  // Reset ordinals cache. Transaction is now marked as using ordinals as there
+  // is on outpoint with attached inscription.
+  bitcoin_wallet_service_->ordinals_cache().clear();
+  EXPECT_CALL(callback, Run(capture_transaction));
+  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
+                                             48000, false, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_EQ(mojom::BitcoinOrdinalsUsage::kUsed, actual_tx.GetOrdinalsUsage());
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {

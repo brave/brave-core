@@ -116,8 +116,6 @@ class BitcoinWalletService : public KeyedService,
   KeyringService* keyring_service() { return keyring_service_; }
   OrdinalsMap& ordinals_cache() { return ordinals_cache_; }
 
-  void SetUrlLoaderFactoryForTesting(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   void SetArrangeTransactionsForTesting(bool arrange);
 
  private:

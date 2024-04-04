@@ -10,9 +10,12 @@
 #include <string>
 #include <vector>
 
+#include "base/test/scoped_command_line.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
+#include "brave/components/brave_wallet/browser/bitcoin_ordinals_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "services/network/test/test_url_loader_factory.h"
 
 namespace brave_wallet {
@@ -80,9 +83,29 @@ class BitcoinTestRpcServer {
   mojom::AccountIdPtr account_id_;
 
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   raw_ptr<KeyringService> keyring_service_;
   raw_ptr<PrefService> prefs_;
+};
+
+class BitcoinOrdinalsTestRpcServer {
+ public:
+  BitcoinOrdinalsTestRpcServer();
+  ~BitcoinOrdinalsTestRpcServer();
+
+  scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory();
+  void SetOutpointInfo(const BitcoinOutpoint& outpoint,
+                       bitcoin_ordinals_rpc::OutpointInfo info);
+
+ protected:
+  void RequestInterceptor(const network::ResourceRequest& request);
+
+ private:
+  base::test::ScopedCommandLine command_line_;
+  std::string mainnet_rpc_url_ = "https://btc-ordinals-mainnet.com/";
+  std::string testnet_rpc_url_ = "https://btc-ordinals-testnet.com/";
+  std::map<std::string, bitcoin_ordinals_rpc::OutpointInfo> outpoints_map_;
+
+  network::TestURLLoaderFactory url_loader_factory_;
 };
 
 }  // namespace brave_wallet
