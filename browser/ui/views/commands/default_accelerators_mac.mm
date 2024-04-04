@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/commands/default_accelerators_mac.h"
 
 #import <Cocoa/Cocoa.h>
+#include <optional>
 
 #include "base/check.h"
 #include "base/containers/contains.h"
@@ -46,10 +47,11 @@ bool CanConvertToAcceleratorMapping(NSMenuItem* item) {
   }
 
   NSString* keyEquivalent = item.keyEquivalent;
-  return keyEquivalent != nil && [keyEquivalent length] > 0;
+  return keyEquivalent != nil && [keyEquivalent length] > 0 &&
+         [[keyEquivalent uppercaseString] length] > 0;
 }
 
-AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
+std::optional<AcceleratorMapping> ToAcceleratorMapping(NSMenuItem* item) {
   bool keyEquivalentLocalizationEnabled = NO;
   bool keyEquivalentMirroringEnabled = NO;
 
@@ -67,6 +69,16 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
       // https://developer.apple.com/documentation/appkit/nsmenuitem/3787554-allowsautomatickeyequivalentloca?language=objc
       item.allowsAutomaticKeyEquivalentLocalization = NO;
     }
+  }
+
+  if (!CanConvertToAcceleratorMapping(item)) {
+    if (@available(macos 12.0, *)) {
+      item.allowsAutomaticKeyEquivalentLocalization =
+          keyEquivalentLocalizationEnabled;
+      item.allowsAutomaticKeyEquivalentMirroring =
+          keyEquivalentMirroringEnabled;
+    }
+    return std::nullopt;
   }
 
   NSString* keyEquivalent = item.keyEquivalent;
@@ -128,9 +140,9 @@ AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
     item.allowsAutomaticKeyEquivalentMirroring = keyEquivalentMirroringEnabled;
   }
 
-  return {.keycode = ui::KeyboardCodeFromNSEvent(keyEvent),
-          .modifiers = modifiers,
-          .command_id = command_id};
+  return AcceleratorMapping{.keycode = ui::KeyboardCodeFromNSEvent(keyEvent),
+                            .modifiers = modifiers,
+                            .command_id = command_id};
 }
 
 AcceleratorMapping ToAcceleratorMapping(const KeyboardShortcutData& data) {
@@ -167,9 +179,8 @@ void AccumulateAcceleratorsRecursively(
   CHECK(menu);
 
   for (NSMenuItem* item in [menu itemArray]) {
-    if (CanConvertToAcceleratorMapping(item)) {
-      (*accelerators)[static_cast<int>(item.tag)].push_back(
-          ToAcceleratorMapping(item));
+    if (auto mapping = ToAcceleratorMapping(item)) {
+      (*accelerators)[static_cast<int>(item.tag)].push_back(*mapping);
     }
 
     if (NSMenu* submenu = [item submenu];
