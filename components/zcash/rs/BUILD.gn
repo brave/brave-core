@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_wallet/common/config.gni")
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("rust_lib") {
@@ -12,8 +11,6 @@ rust_static_library("rust_lib") {
   allow_unsafe = true
   sources = [ "lib.rs" ]
   cxx_bindings = [ "lib.rs" ]
-
-  features = [ "enable_orchard" ]
 
   deps = [
     "//brave/third_party/rust/orchard/v0_7:lib",

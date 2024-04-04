@@ -16,11 +16,6 @@
 
 namespace brave_wallet {
 
-namespace {
-constexpr uint32_t kZip32Purpose = 32u;
-constexpr uint32_t kTestnetPurpose = 1u;
-}  // namespace
-
 ZCashKeyring::ZCashKeyring(bool testnet) : testnet_(testnet) {}
 
 ZCashKeyring::~ZCashKeyring() = default;
@@ -202,7 +197,7 @@ void ZCashKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
       return;
     }
     orchard_key_ = orchard_key->DeriveHardenedChild(
-        testnet_ ? kTestnetPurpose
+        testnet_ ? kTestnetCoinType
                  : static_cast<uint32_t>(mojom::CoinType::ZEC));
     DCHECK(orchard_key_);
   }

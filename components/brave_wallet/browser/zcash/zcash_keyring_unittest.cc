@@ -41,7 +41,7 @@ TEST(ZCashKeyringUnitTest, GetPubKey) {
       "02F464FA6B80AAC09328B3E1E09B5CA10C46AD1F404BCCB897200EC9A149C5DBB5");
 }
 
-TEST(ZCashKeyringUnitTest, GetAddress) {
+TEST(ZCashKeyringUnitTest, GetTransparentAddress) {
   {
     ZCashKeyring keyring(false);
     keyring.ConstructRootHDKey(*MnemonicToSeed(kBip84TestMnemonic, ""),
@@ -202,47 +202,37 @@ TEST(ZCashKeyringUnitTest, GetPubkey) {
 #if BUILDFLAG(ENABLE_ORCHARD)
 
 TEST(ZCashKeyringUnitTest, GetShieldedAddress) {
+  ZCashKeyring keyring(false);
+  keyring.ConstructRootHDKey(
+      {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
+       0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
+       0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f},
+      "m/44'/133'");
+
   // Shielded address
   // https://github.com/zcash/librustzcash/blob/zcash_address-0.3.1/components/zcash_address/src/kind/unified/address/test_vectors.rs#L524
-  {
-    ZCashKeyring keyring(false);
-    keyring.ConstructRootHDKey(
-        {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
-         0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
-         0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f},
-        "m/44'/133'");
-    auto sh_addr = keyring.GetShieldedAddress(ZCashKeyId(9, 0, 0));
-    EXPECT_EQ(sh_addr->address_string,
-              "u1ddnjsdcpm36r6aq79n3s68shjweksnmwtdltrh046s8m6xcws9ygyawalxx8n6"
-              "hg6vegk0wh8zjnafxgh6msppjsljvyt0ynece3lvm0");
-  }
+  EXPECT_EQ(keyring.GetShieldedAddress(ZCashKeyId(9, 0, 0))->address_string,
+            "u1ddnjsdcpm36r6aq79n3s68shjweksnmwtdltrh046s8m6xcws9ygyawalxx8n6"
+            "hg6vegk0wh8zjnafxgh6msppjsljvyt0ynece3lvm0");
 
   // Diversifier index
   // https://github.com/zcash/librustzcash/blob/zcash_address-0.3.1/components/zcash_address/src/kind/unified/address/test_vectors.rs#L540
-  {
-    ZCashKeyring keyring(false);
-    keyring.ConstructRootHDKey(
-        {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
-         0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
-         0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f},
-        "m/44'/133'");
-    auto addr = keyring.GetShieldedAddress(ZCashKeyId(9, 0, 1));
-    EXPECT_EQ(addr->address_string,
-              "u1nztelxna9h7w0vtpd2xjhxt4lpu8s9cmdl8n8vcr7actf2ny45nd07cy8cyuhu"
-              "vw3axcp545y0ktq9cezuzx84jyhex8dk4tdvwhu4dl");
-  }
+  EXPECT_EQ(keyring.GetShieldedAddress(ZCashKeyId(9, 0, 1))->address_string,
+            "u1nztelxna9h7w0vtpd2xjhxt4lpu8s9cmdl8n8vcr7actf2ny45nd07cy8cyuhu"
+            "vw3axcp545y0ktq9cezuzx84jyhex8dk4tdvwhu4dl");
 }
 
 TEST(ZCashKeyringUnitTest, GetUnifiedAddress) {
+  ZCashKeyring keyring(false);
+  keyring.ConstructRootHDKey(
+      {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
+       0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
+       0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f},
+      "m/44'/133'");
+
   // Merged address
   // https://github.com/zcash/librustzcash/blob/zcash_address-0.3.1/components/zcash_address/src/kind/unified/address/test_vectors.rs#L472
   {
-    ZCashKeyring keyring(false);
-    keyring.ConstructRootHDKey(
-        {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
-         0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
-         0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f},
-        "m/44'/133'");
     auto addr =
         keyring.GetUnifiedAddress(ZCashKeyId(8, 0, 0), ZCashKeyId(8, 0, 0));
     constexpr std::array<uint8_t, kOrchardRawBytesSize> expected_raw_bytes = {
@@ -266,12 +256,6 @@ TEST(ZCashKeyringUnitTest, GetUnifiedAddress) {
 
   // https://github.com/zcash/librustzcash/blob/zcash_address-0.3.1/components/zcash_address/src/kind/unified/address/test_vectors.rs#L196
   {
-    ZCashKeyring keyring(false);
-    keyring.ConstructRootHDKey(
-        {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
-         0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
-         0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f},
-        "m/44'/133'");
     auto addr =
         keyring.GetUnifiedAddress(ZCashKeyId(3, 0, 0), ZCashKeyId(3, 0, 0));
     constexpr std::array<uint8_t, kOrchardRawBytesSize> expected_raw_bytes = {
@@ -294,12 +278,6 @@ TEST(ZCashKeyringUnitTest, GetUnifiedAddress) {
   // Diversifier used
   // https://github.com/zcash/librustzcash/blob/zcash_address-0.3.1/components/zcash_address/src/kind/unified/address/test_vectors.rs#L232
   {
-    ZCashKeyring keyring(false);
-    keyring.ConstructRootHDKey(
-        {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
-         0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
-         0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f},
-        "m/44'/133'");
     auto addr =
         keyring.GetUnifiedAddress(ZCashKeyId(3, 0, 2), ZCashKeyId(3, 0, 2));
     constexpr std::array<uint8_t, kOrchardRawBytesSize> expected_raw_bytes = {
