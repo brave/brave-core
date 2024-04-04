@@ -138,6 +138,8 @@ class FakeDownloadDisplay : public DownloadDisplay {
   void OpenSecuritySubpage(
       const offline_items_collection::ContentId&) override {}
 
+  void AnnounceAccessibleAlertNow(const std::u16string& alert_text) override {}
+
  private:
   bool shown_ = false;
   bool enabled_ = false;
