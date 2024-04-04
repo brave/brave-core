@@ -72,7 +72,7 @@
         }
       },
       "depot_tools": {
-        "dir": "src/brave/vendor/depot_tools",
+        "dir": "vendor/depot_tools",
         "repository": {
           "url": "https://chromium.googlesource.com/chromium/tools/depot_tools.git"
         }
