@@ -97,8 +97,9 @@ void SidebarModel::AddItem(const SidebarItem& item,
   }
 
   // Web type uses site favicon as button's image.
-  if (sidebar::IsWebType(item))
+  if (item.IsWebType()) {
     FetchFavicon(item);
+  }
 }
 
 void SidebarModel::OnItemAdded(const SidebarItem& item, size_t index) {
@@ -144,6 +145,10 @@ void SidebarModel::OnItemUpdated(const SidebarItem& item,
 void SidebarModel::OnWillRemoveItem(const SidebarItem& item, size_t index) {
   if (index == active_index_)
     UpdateActiveIndexAndNotify(std::nullopt);
+
+  for (Observer& obs : observers_) {
+    obs.OnWillRemoveItem(item);
+  }
 }
 
 void SidebarModel::OnItemRemoved(const SidebarItem& item, size_t index) {
@@ -155,8 +160,9 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
                                 const history::VisitRow& new_visit) {
   for (const auto& item : GetAllSidebarItems()) {
     // Don't try to update builtin items image. It uses bundled one.
-    if (IsBuiltInType(item))
+    if (item.IsBuiltInType()) {
       continue;
+    }
 
     // If same url is added to history service, try to fetch favicon to update
     // for item.
@@ -199,7 +205,7 @@ bool SidebarModel::IsSidebarHasAllBuiltInItems() const {
 }
 
 std::optional<size_t> SidebarModel::GetIndexOf(const SidebarItem& item) const {
-  const auto items = GetAllSidebarItems();
+  const auto& items = GetAllSidebarItems();
   const auto iter = base::ranges::find_if(items, [&item](const auto& i) {
     return (item.built_in_item_type == i.built_in_item_type &&
             item.url == i.url);
@@ -212,9 +218,9 @@ std::optional<size_t> SidebarModel::GetIndexOf(const SidebarItem& item) const {
 
 std::optional<size_t> SidebarModel::GetIndexOf(
     SidebarItem::BuiltInItemType type) const {
-  const auto items = GetAllSidebarItems();
+  const auto& items = GetAllSidebarItems();
   const auto iter = base::ranges::find_if(items, [&type](const auto& i) {
-    return IsBuiltInType(i) && (type == i.built_in_item_type);
+    return i.IsBuiltInType() && (type == i.built_in_item_type);
   });
   if (iter == items.end()) {
     return std::nullopt;

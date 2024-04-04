@@ -16,6 +16,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
+#include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -67,8 +68,8 @@ bool SidebarController::IsActiveIndex(std::optional<size_t> index) const {
 bool SidebarController::DoesBrowserHaveOpenedTabForItem(
     const SidebarItem& item) const {
   // This method is only for builtin item's icon state updating.
-  DCHECK(sidebar::IsBuiltInType(item));
-  DCHECK(!item.open_in_panel);
+  DCHECK(item.IsBuiltInType());
+  DCHECK(!item.CanOpenInPanel());
 
   const std::vector<Browser*> browsers =
       chrome::FindAllTabbedBrowsersWithProfile(browser_->profile());
@@ -94,7 +95,7 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 
   const auto& item = sidebar_model_->GetAllSidebarItems()[*index];
   // Only an item for panel can get activated.
-  if (item.open_in_panel) {
+  if (item.CanOpenInPanel()) {
     sidebar_model_->SetActiveIndex(index);
 
     if (sidebar::features::kOpenOneShotLeoPanel.Get() &&
@@ -116,7 +117,7 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
   }
 
   // Iterate whenever builtin shortcut type item icon clicks.
-  if (IsBuiltInType(item)) {
+  if (item.IsBuiltInType()) {
     IterateOrLoadAtActiveTab(item.url);
     return;
   }
@@ -137,6 +138,21 @@ void SidebarController::ActivatePanelItem(
   }
 
   panel_ui->Show(sidebar::SidePanelIdFromSideBarItemType(panel_item));
+}
+
+void SidebarController::ActivatePanelItem(const SidebarItem& item) {
+  CHECK(item.CanOpenInPanel());
+
+  if (item.IsMobileViewItem()) {
+    if (auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser_)) {
+      panel_ui->Show(SidePanelEntryKey(SidePanelEntryId::kMobileView,
+                                       sidebar::MobileViewId(item.url.spec())));
+    }
+    return;
+  }
+
+  CHECK_NE(SidebarItem::BuiltInItemType::kNone, item.built_in_item_type);
+  ActivatePanelItem(item.built_in_item_type);
 }
 
 void SidebarController::DeactivateCurrentPanel() {
@@ -217,9 +233,14 @@ void SidebarController::AddItemWithCurrentTab() {
   DCHECK(active_contents);
   const GURL url = active_contents->GetVisibleURL();
   const std::u16string title = active_contents->GetTitle();
-  GetSidebarService(browser_)->AddItem(
-      SidebarItem::Create(url, title, SidebarItem::Type::kTypeWeb,
-                          SidebarItem::BuiltInItemType::kNone, false));
+
+  auto item = SidebarItem::Create(url, title, SidebarItem::Type::kTypeWeb,
+                                  SidebarItem::BuiltInItemType::kNone, false);
+  if (base::FeatureList::IsEnabled(sidebar::features::kSidebarMobileView)) {
+    // TODO(simonhong): This should be chosen via UI.
+    item.mobile_view = true;
+  }
+  GetSidebarService(browser_)->AddItem(item);
 }
 
 void SidebarController::SetSidebar(Sidebar* sidebar) {

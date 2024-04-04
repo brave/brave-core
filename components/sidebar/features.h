@@ -17,6 +17,8 @@ BASE_DECLARE_FEATURE(kSidebarShowAlwaysOnStable);
 // Whether to open the Leo panel only once.
 extern const base::FeatureParam<bool> kOpenOneShotLeoPanel;
 
+BASE_DECLARE_FEATURE(kSidebarMobileView);
+
 }  // namespace sidebar::features
 
 #endif  // BRAVE_COMPONENTS_SIDEBAR_FEATURES_H_

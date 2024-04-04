@@ -49,6 +49,12 @@ struct SidebarItem {
   SidebarItem& operator=(SidebarItem&&);
   ~SidebarItem();
 
+  bool CanOpenInPanel() const;
+  bool IsBuiltInType() const;
+  bool IsWebType() const;
+  bool IsValidItem() const;
+  bool IsMobileViewItem() const;
+
   bool operator==(const SidebarItem& item) const;
 
   GURL url;
@@ -57,11 +63,12 @@ struct SidebarItem {
   std::u16string title;
   // Set false to open this item in new tab.
   bool open_in_panel = false;
-};
 
-bool IsBuiltInType(const SidebarItem& item);
-bool IsWebType(const SidebarItem& item);
-bool IsValidItem(const SidebarItem& item);
+  // TODO(simonhong): Remove this and migrate to |open_in_panel|.
+  // As mobile view feature can be toggled, |open_in_panel| flag
+  // should be preserved till this feature flag is removed.
+  bool mobile_view = false;
+};
 
 }  // namespace sidebar
 

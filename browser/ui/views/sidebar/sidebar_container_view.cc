@@ -29,6 +29,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -729,13 +730,26 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
   auto* controller = browser_->sidebar_controller();
 
   // Handling if |entry| is managed one.
-  for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
-    if (!item.open_in_panel) {
+  const auto& items = sidebar_model_->GetAllSidebarItems();
+  const auto items_count = items.size();
+  for (size_t index = 0; index < items_count; ++index) {
+    const auto& item = items[index];
+    if (!item.CanOpenInPanel()) {
       continue;
     }
+
+    if (item.IsMobileViewItem() && entry->key().mobile_view_id() ==
+                                       sidebar::MobileViewId(item.url.spec())) {
+      controller->ActivateItemAt(index);
+      return;
+    }
+
+    if (!item.IsBuiltInType()) {
+      continue;
+    }
+
     if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
-      const auto sidebar_index = sidebar_model_->GetIndexOf(item);
-      controller->ActivateItemAt(sidebar_index);
+      controller->ActivateItemAt(index);
       return;
     }
   }
@@ -761,19 +775,40 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   auto* controller = browser_->sidebar_controller();
 
   // Handling if |entry| is managed one.
-  for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
-    if (!item.open_in_panel) {
+  const auto& items = sidebar_model_->GetAllSidebarItems();
+  const auto items_count = items.size();
+  for (size_t index = 0; index < items_count; ++index) {
+    const auto& item = items[index];
+    if (!item.CanOpenInPanel()) {
       continue;
     }
 
-    if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
-      const auto sidebar_index = sidebar_model_->GetIndexOf(item);
+    if (item.IsMobileViewItem() && entry->key().mobile_view_id() ==
+                                       sidebar::MobileViewId(item.url.spec())) {
       // Only deactivate sidebar item for hidden |entry| when it was active
       // and it's not active one now.
       // It can happen when shown & hidden entries have same sidebar item(ex,
       // different tab uses ai-chat). In this case, don't need to deactivate
       // item because same item should be activated.
-      if (controller->IsActiveIndex(sidebar_index) &&
+      if (controller->IsActiveIndex(index) &&
+          side_panel_coordinator_->GetCurrentEntryId() != entry->key().id()) {
+        controller->ActivateItemAt(std::nullopt);
+        return;
+      }
+      continue;
+    }
+
+    if (!item.IsBuiltInType()) {
+      continue;
+    }
+
+    if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
+      // Only deactivate sidebar item for hidden |entry| when it was active
+      // and it's not active one now.
+      // It can happen when shown & hidden entries have same sidebar item(ex,
+      // different tab uses ai-chat). In this case, don't need to deactivate
+      // item because same item should be activated.
+      if (controller->IsActiveIndex(index) &&
           side_panel_coordinator_->GetCurrentEntryId() != entry->key().id()) {
         controller->ActivateItemAt(std::nullopt);
         return;

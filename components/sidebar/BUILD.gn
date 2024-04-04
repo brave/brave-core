@@ -14,6 +14,7 @@ static_library("sidebar") {
     "constants.h",
     "features.cc",
     "features.h",
+    "mobile_view_id.h",
     "pref_names.h",
     "sidebar_item.cc",
     "sidebar_item.h",

@@ -55,6 +55,7 @@ class SidebarController : public SidebarService::Observer {
 
   // Ask panel item activation state change to SidePanelUI.
   void ActivatePanelItem(SidebarItem::BuiltInItemType panel_item);
+  void ActivatePanelItem(const SidebarItem& item);
   void DeactivateCurrentPanel();
 
   // If current browser doesn't have a tab for |url|, active tab will load

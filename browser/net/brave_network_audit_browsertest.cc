@@ -344,7 +344,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   for (int i = 0; i < item_num; ++i) {
     auto item = all_items[i];
     // Load all builtin panel items.
-    if (sidebar::IsBuiltInType(item) && item.open_in_panel) {
+    if (item.IsBuiltInType() && item.open_in_panel) {
       builtin_panel_item_count++;
       sidebar_controller->ActivateItemAt(i);
       WaitForTimeout(kMaxTimeoutPerLoadedURL);

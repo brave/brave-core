@@ -18,8 +18,8 @@ namespace flags {
 
 bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
                    const char* internal_name) {
-#if BUILDFLAG(ENABLE_PLAYLIST) && BUILDFLAG(IS_ANDROID)
   version_info::Channel channel = chrome::GetChannel();
+#if BUILDFLAG(ENABLE_PLAYLIST) && BUILDFLAG(IS_ANDROID)
   // Enable playlist feature only for nightly/development.
   if ((base::EqualsCaseInsensitiveASCII(kPlaylistFeatureInternalName,
                                         internal_name) ||
@@ -37,6 +37,13 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
 
   if (base::EqualsCaseInsensitiveASCII(flag_descriptions::kChromeRefresh2023Id,
                                        internal_name)) {
+    return true;
+  }
+
+  if (base::EqualsCaseInsensitiveASCII(kMobileViewSidePanelFeatureInternalName,
+                                       internal_name) &&
+      (channel == version_info::Channel::STABLE ||
+       channel == version_info::Channel::BETA)) {
     return true;
   }
 

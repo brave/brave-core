@@ -36,6 +36,7 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/sidebar/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -480,6 +481,19 @@
           kOsWin | kOsLinux | kOsMac | kOsAndroid,                            \
           FEATURE_VALUE_TYPE(history::kHistoryMoreSearchResults),             \
       })
+
+#if !BUILDFLAG(IS_ANDROID)
+#define MOBILE_VIEW_SIDE_PANEL_FEATURE_ENTRIES                   \
+  EXPAND_FEATURE_ENTRIES({                                       \
+      kMobileViewSidePanelFeatureInternalName,                   \
+      "Mobile view side panel",                                  \
+      "Enable mobile view side panel",                           \
+      kOsWin | kOsLinux | kOsMac,                                \
+      FEATURE_VALUE_TYPE(sidebar::features::kSidebarMobileView), \
+  })
+#else
+#define MOBILE_VIEW_SIDE_PANEL_FEATURE_ENTRIES
+#endif
 
 #define BRAVE_PLAYER_FEATURE_ENTRIES                                         \
   IF_BUILDFLAG(ENABLE_BRAVE_PLAYER,                                          \
@@ -1032,6 +1046,7 @@
   BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE                                  \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
+  MOBILE_VIEW_SIDE_PANEL_FEATURE_ENTRIES                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_WELCOME_PAGE_FEATURE_ENTRIES                                           \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.

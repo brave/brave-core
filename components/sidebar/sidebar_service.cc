@@ -277,8 +277,8 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
 }
 
 void SidebarService::AddItem(const SidebarItem& item) {
-  DCHECK(IsValidItem(item));
-  if (IsWebType(item)) {
+  DCHECK(item.IsValidItem());
+  if (item.IsWebType()) {
     items_.push_back(item);
     for (Observer& obs : observers_) {
       // Index starts at zero.
@@ -381,6 +381,7 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
       dict.Set(kSidebarItemTitleKey, base::UTF16ToUTF8(item.title));
       dict.Set(kSidebarItemOpenInPanelKey, item.open_in_panel);
     }
+    dict.Set(kSidebarItemMobileViewKey, item.mobile_view);
     items.Append(std::move(dict));
   }
   prefs_->SetList(kSidebarItems, std::move(items));
@@ -425,8 +426,9 @@ std::vector<SidebarItem::BuiltInItemType>
 SidebarService::GetCurrentlyPresentBuiltInTypes() const {
   std::vector<SidebarItem::BuiltInItemType> items;
   base::ranges::for_each(items_, [&items](const auto& item) {
-    if (IsBuiltInType(item))
+    if (item.IsBuiltInType()) {
       items.push_back(item.built_in_item_type);
+    }
   });
   return items;
 }
@@ -451,7 +453,7 @@ std::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
         base::ranges::find(items_, type, &SidebarItem::built_in_item_type);
     if (found_item_iter != items_.end()) {
       default_item = *found_item_iter;
-      DCHECK_EQ(default_item->open_in_panel, true);
+      DCHECK_EQ(default_item->CanOpenInPanel(), true);
       break;
     }
   }
@@ -460,7 +462,7 @@ std::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
 
 bool SidebarService::IsEditableItemAt(size_t index) const {
   DCHECK(index < items_.size());
-  return sidebar::IsWebType(items_[index]);
+  return items_[index].IsWebType();
 }
 
 void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
@@ -476,10 +478,10 @@ void SidebarService::LoadSidebarItems() {
   if (!preference->IsDefaultValue()) {
     const auto& items = preference->GetValue()->GetList();
     for (const auto& entry : items) {
-      const auto& item = entry.GetDict();
-      DVLOG(2) << "load: " << item.DebugString();
+      const auto& item_value = entry.GetDict();
+      DVLOG(2) << "load: " << item_value.DebugString();
       SidebarItem::Type type;
-      if (const auto type_value = item.FindInt(kSidebarItemTypeKey)) {
+      if (const auto type_value = item_value.FindInt(kSidebarItemTypeKey)) {
         type = static_cast<SidebarItem::Type>(*type_value);
       } else {
         continue;
@@ -487,10 +489,10 @@ void SidebarService::LoadSidebarItems() {
       // Always use latest properties for built-in type item.
       if (type == SidebarItem::Type::kTypeBuiltIn) {
         const auto built_in_type_value =
-            item.FindInt(kSidebarItemBuiltInItemTypeKey);
+            item_value.FindInt(kSidebarItemBuiltInItemTypeKey);
         if (!built_in_type_value.has_value()) {
           VLOG(1) << "built-in item did not have a type: "
-                  << item.DebugString();
+                  << item_value.DebugString();
           continue;
         }
         auto id =
@@ -499,7 +501,7 @@ void SidebarService::LoadSidebarItems() {
                                        &SidebarItem::built_in_item_type);
         // It might be an item which is no longer is offered as built-in
         if (iter == default_items_to_add.end()) {
-          VLOG(1) << "item not found: " << item.DebugString();
+          VLOG(1) << "item not found: " << item_value.DebugString();
           continue;
         }
         // Valid built-in item, add it
@@ -509,20 +511,29 @@ void SidebarService::LoadSidebarItems() {
       }
       // Deserialize custom item
       std::string url;
-      if (const auto* value = item.FindString(kSidebarItemURLKey)) {
+      if (const auto* value = item_value.FindString(kSidebarItemURLKey)) {
         url = *value;
       } else {
         continue;
       }
-      // Open in panel for custom items is not yet supported
+
       bool open_in_panel = false;
+      if (const auto value = item_value.FindBool(kSidebarItemOpenInPanelKey);
+          value.has_value()) {
+        open_in_panel = *value;
+      }
       std::string title;
-      if (const auto* value = item.FindString(kSidebarItemTitleKey)) {
+      if (const auto* value = item_value.FindString(kSidebarItemTitleKey)) {
         title = *value;
       }
-      items_.push_back(SidebarItem::Create(
-          GURL(url), base::UTF8ToUTF16(title), type,
-          SidebarItem::BuiltInItemType::kNone, open_in_panel));
+      auto item = SidebarItem::Create(GURL(url), base::UTF8ToUTF16(title), type,
+                                      SidebarItem::BuiltInItemType::kNone,
+                                      open_in_panel);
+      if (const auto value = item_value.FindBool(kSidebarItemMobileViewKey);
+          value.has_value()) {
+        item.mobile_view = *value;
+      }
+      items_.push_back(item);
     }
   }
 
@@ -713,7 +724,7 @@ size_t SidebarService::GetBuiltInItemIndexToInsert(
   auto find_prev_builtin_in_items = [&]() {
     return std::find_if(items.cbegin(), items.cend(),
                         [&prev_builtin_item](const SidebarItem& item) {
-                          return IsBuiltInType(item) &&
+                          return item.IsBuiltInType() &&
                                  item.built_in_item_type == prev_builtin_item;
                         });
   };
