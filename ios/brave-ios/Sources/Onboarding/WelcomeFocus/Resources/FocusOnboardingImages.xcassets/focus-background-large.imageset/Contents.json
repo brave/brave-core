@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "_Gradient background.svg",
+      "filename" : "gradient-bg-light.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "gradient-bg-dark.svg",
       "idiom" : "universal"
     }
   ],

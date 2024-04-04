@@ -145,6 +145,7 @@ struct FocusStepsView: View {
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .animation(.easeInOut, value: indicatorIndex)
         .transition(.slide)
+        .disabled(indicatorIndex > 0)
         .padding(.bottom, 24)
 
         Spacer()
