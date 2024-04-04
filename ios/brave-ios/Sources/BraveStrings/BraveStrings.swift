@@ -7611,8 +7611,8 @@ extension Strings {
         "vpn.contactFormAppStoreReceipt",
         tableName: "BraveShared",
         bundle: .module,
-        value: "AppStore Receipt",
-        comment: "AppStore Receipt field for customer support contact form."
+        value: "App Store Receipt",
+        comment: "App Store Receipt field for customer support contact form."
       )
 
     public static let contactFormAppVersion =
@@ -9347,7 +9347,7 @@ extension Strings {
       "today.rateBraveCardActionSheetTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Rate Brave in AppStore",
+      value: "Rate Brave in App Store",
       comment: "Title for long press action sheet list which has item for rate / hide"
     )
     public static let rateBraveCardTitle = NSLocalizedString(
