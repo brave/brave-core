@@ -1170,7 +1170,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bytes",
  "fnv",
- "itoa 1.0.10",
+ "itoa 1.0.11",
 ]
 
 [[package]]
@@ -1253,7 +1253,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "itoa"
-version = "1.0.10"
+version = "1.0.11"
 
 [[package]]
 name = "js-sys"
@@ -1448,7 +1448,7 @@ dependencies = [
 
 [[package]]
 name = "memchr"
-version = "2.7.1"
+version = "2.7.2"
 
 [[package]]
 name = "memuse"
@@ -1997,7 +1997,7 @@ dependencies = [
 
 [[package]]
 name = "regex-syntax"
-version = "0.8.2"
+version = "0.8.3"
 
 [[package]]
 name = "ripemd"
@@ -2138,9 +2138,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.114"
+version = "1.0.115"
 dependencies = [
- "itoa 1.0.10",
+ "itoa 1.0.11",
  "ryu",
  "serde",
 ]
@@ -2481,7 +2481,7 @@ name = "time"
 version = "0.3.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "itoa 1.0.10",
+ "itoa 1.0.11",
  "serde",
  "time-core",
  "time-macros",
