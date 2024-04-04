@@ -90,6 +90,10 @@ import os
     let manager = getManager(for: engineType)
 
     if await !manager.loadFromCache(resourcesInfo: self.resourcesInfo) {
+      // This migration will add ~24s on an iPhone 8 (~8s on an iPhone 14)
+      // Even though its a one time thing, let's skip it.
+      // We never waited for the aggressive engines to be ready before anyways
+      guard engineType == .standard else { return }
       for fileInfo in sourceProvider.legacyCacheFiles(for: engineType) {
         manager.add(fileInfo: fileInfo)
       }
