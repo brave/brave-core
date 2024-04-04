@@ -45,8 +45,6 @@ import {
   CopiedTick,
   CopyText
 } from '../explain-recovery-phrase/explain-recovery-phrase.style'
-
-import { VerticalSpace } from '../../../../components/shared/style'
 import {
   ContinueButton,
   NextButtonRow,
@@ -106,18 +104,14 @@ export const BackupRecoveryPhrase = () => {
             'braveWalletOnboardingRecoveryPhraseBackupIntroDescription'
           )}
         </Subtitle>
-        <VerticalSpace space='14px' />
         <BackupInstructions>
           {getLocale('braveWalletRecoveryPhraseBackupWarningImportant')}
         </BackupInstructions>
-        <VerticalSpace space='54px' />
 
         <PhraseCard>
           <PhraseCardBody>
             <RecoveryPhrase recoveryPhrase={recoveryPhrase} />
           </PhraseCardBody>
-
-          <VerticalSpace space='24px' />
 
           <PhraseCardBottomRow>
             <CopyButton
@@ -139,8 +133,6 @@ export const BackupRecoveryPhrase = () => {
             </CopyButton>
           </PhraseCardBottomRow>
         </PhraseCard>
-
-        <VerticalSpace space='24px' />
 
         <NextButtonRow>
           <ContinueButton

@@ -109,6 +109,7 @@ export const PhraseCard = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
+  margin: 54px 0 24px 0;
 `
 
 export const PhraseCardTopRow = styled.div`
@@ -128,6 +129,7 @@ export const PhraseCardBody = styled.div`
   border-width: 1px;
   border-color: ${leo.color.divider.subtle};
   border-radius: 8px;
+  margin-bottom: 24px;
 `
 
 export const PhraseCardBottomRow = styled(PhraseCardTopRow)<{

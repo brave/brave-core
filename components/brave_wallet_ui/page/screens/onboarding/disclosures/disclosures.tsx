@@ -72,8 +72,8 @@ export const OnboardingDisclosures = () => {
     <OnboardingContentLayout
       title={getLocale('braveWalletDisclosuresTitle')}
       subTitle={getLocale('braveWalletDisclosuresDescription')}
+      padding='22px 0 36px'
     >
-      <VerticalSpace space='55px' />
       <Checkbox
         isChecked={isResponsibilityCheckboxChecked}
         onChange={setIsResponsibilityCheckboxChecked}
@@ -115,7 +115,6 @@ export const OnboardingDisclosures = () => {
           {getLocale('braveWalletButtonContinue')}
         </ContinueButton>
       </NextButtonRow>
-      <VerticalSpace space='36px' />
     </OnboardingContentLayout>
   )
 }

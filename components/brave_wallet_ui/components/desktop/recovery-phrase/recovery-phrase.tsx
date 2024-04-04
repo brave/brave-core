@@ -15,7 +15,8 @@ import {
   FrostedGlass,
   HiddenPhraseContainer,
   EyeOffIcon,
-  IconWrapper
+  IconWrapper,
+  WordPos
 } from './recovery-phrase.style'
 
 export interface SelectedPhraseWord {
@@ -69,7 +70,7 @@ export const RecoveryPhrase: React.FC<Props> = ({
           {FAKE_PHRASE_WORDS.map((word, index) => (
             <RecoveryBubble key={index}>
               <span>
-                {index + 1}. {word}
+                #{index + 1}. {word}
               </span>
             </RecoveryBubble>
           ))}
@@ -86,7 +87,8 @@ export const RecoveryPhrase: React.FC<Props> = ({
       {phraseWordsToDisplay.map((word) => (
         <RecoveryBubble key={`${word.index}-${word.value}`}>
           <span>
-            {word.index + 1}. {word.value}
+            <WordPos>#{word.index + 1}.</WordPos>
+            {word.value}
           </span>
         </RecoveryBubble>
       ))}

@@ -42,6 +42,7 @@ export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
 
 export const RecoveryBubble = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
@@ -52,6 +53,11 @@ export const RecoveryBubble = styled.div`
   font: ${leo.font.small.semibold};
   color: ${leo.color.text.primary};
   background-color: ${leo.color.container.background};
+`
+
+export const WordPos = styled.span`
+  color: ${leo.color.text.tertiary};
+  margin-right: 9px;
 `
 
 export const RecoveryBubbleBadge = styled.p`

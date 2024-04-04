@@ -69,10 +69,7 @@ export const WarningCircle = styled.div`
 export const Subtitle = styled.p`
   color: ${leo.color.text.secondary};
   text-align: left;
-  font-family: Poppins;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
+  font: ${leo.font.large.regular};
   margin: 0;
   padding: 16px 0 0 0;
   line-height: 26px;
@@ -80,13 +77,9 @@ export const Subtitle = styled.p`
 
 export const BackupInstructions = styled.p`
   color: ${leo.color.text.primary};
-  font-family: Poppins;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 26px;
+  font: ${leo.font.large.semibold};
   padding: 0;
-  margin: 0;
+  margin: 14px 0 0;
 `
 
 export const ExampleRecoveryPhrase = styled.img.attrs(() => ({
@@ -113,11 +106,7 @@ export const SkipDialog = styled(Dialog).attrs({
 
 export const WarningText = styled.p`
   color: --leo-color-text-primary;
-  font-family: Poppins;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 28px;
+  font: ${leo.font.large.regular};
   padding: 0;
   margin: 0;
 `
