@@ -36,6 +36,12 @@ const disableAutoUpdateFilePath = path.join(
   '.disable_auto_update'
 )
 
+function isDepotToolsRefValid(ref) {
+  // Only support git revision enforcement, because tags and branches may
+  // require fetch and checkout on each sync which we don't really want to do.
+  return /^[a-f0-9]{40}$/.test(ref)
+}
+
 // Reads the enforced depot_tools ref from .disable_auto_update file. If the
 // file does not exist or the ref is not valid, returns null.
 function readEnforcedDepotToolsRef() {
@@ -43,8 +49,7 @@ function readEnforcedDepotToolsRef() {
     return null
   }
   const ref = fs.readFileSync(disableAutoUpdateFilePath, 'utf8').trim()
-  const isRefValid = /^[a-f0-9]{40}$|^refs\/tags\/.*$|^origin\/.*$/.test(ref)
-  return isRefValid ? ref : null
+  return isDepotToolsRefValid(ref) ? ref : null
 }
 
 // Writes the enforced depot_tools ref to .disable_auto_update file. If ref is a
@@ -61,6 +66,13 @@ function installDepotTools(options = config.defaultOptions) {
   options.cwd = config.braveCoreDir
 
   const enforcedDepotToolsRef = config.getProjectRef('depot_tools', null)
+  if (enforcedDepotToolsRef && !isDepotToolsRefValid(enforcedDepotToolsRef)) {
+    Log.error(
+      `Invalid depot_tools ref: ${enforcedDepotToolsRef}. ` +
+        'Only full git revision is supported.'
+    )
+    process.exit(1)
+  }
 
   // If we're modifying depot_tools reference, it's important to ensure a clean
   // checkout to re-bootstrap CIPD, Python and other dependencies.
