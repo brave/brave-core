@@ -28,14 +28,15 @@ export const PortfolioTransactionItemWrapper = styled.div<{
   width: 100%;
   margin-bottom: 16px;
   position: relative;
+  transition: background-color 300ms ease-out;
   background-color: ${(p) =>
-    p.isFocused ? `${leo.color.container.highlight}` : 'none'};
+    p.isFocused ? `${leo.color.page.background}` : 'none'};
   padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid ${leo.color.divider.subtle};
   cursor: pointer;
   &:hover {
-    background-color: ${leo.color.container.highlight};
+    background-color: ${leo.color.page.background};
   }
 `
 
