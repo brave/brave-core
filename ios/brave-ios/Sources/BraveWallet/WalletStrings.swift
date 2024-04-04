@@ -3807,7 +3807,7 @@ extension Strings {
       "wallet.solanaWithdrawNonceAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Withdraw Nonce Account",
+      value: "Withdraw From Nonce Account",
       comment:
         "The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details."
     )

@@ -2193,8 +2193,8 @@ extension Strings {
         "settings.youtube",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Youtube",
-        comment: "Header for the Youtube settings section"
+        value: "YouTube",
+        comment: "Header for the YouTube settings section"
       )
 
     public static let openYouTubeInBrave =
@@ -3364,14 +3364,14 @@ extension Strings {
     "YoutubeMediaQualitySettingsTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Youtube Playback Quality",
+    value: "YouTube Playback Quality",
     comment: "Title for youtube playback quality settings"
   )
   public static let youtubeMediaQuality = NSLocalizedString(
     "YoutubeMediaQuality",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Enable High-Quality Youtube Videos",
+    value: "Enable High-Quality YouTube Videos",
     comment: "Setting to enable high quality youtube videos"
   )
   public static let youtubeMediaQualityDetails = NSLocalizedString(
@@ -7611,8 +7611,8 @@ extension Strings {
         "vpn.contactFormAppStoreReceipt",
         tableName: "BraveShared",
         bundle: .module,
-        value: "AppStore Receipt",
-        comment: "AppStore Receipt field for customer support contact form."
+        value: "App Store Receipt",
+        comment: "App Store Receipt field for customer support contact form."
       )
 
     public static let contactFormAppVersion =
@@ -9347,7 +9347,7 @@ extension Strings {
       "today.rateBraveCardActionSheetTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Rate Brave in AppStore",
+      value: "Rate Brave in App Store",
       comment: "Title for long press action sheet list which has item for rate / hide"
     )
     public static let rateBraveCardTitle = NSLocalizedString(

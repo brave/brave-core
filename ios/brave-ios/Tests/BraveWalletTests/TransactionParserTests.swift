@@ -1072,7 +1072,7 @@ class TransactionParserTests: XCTestCase {
       )
     )
     let expectedParsedWithdrawNonceAccount = SolanaTxDetails.ParsedSolanaInstruction(
-      name: "System Program - Withdraw Nonce Account",
+      name: "System Program - Withdraw From Nonce Account",
       details: [
         .init(key: "Nonce Account", value: fromPubkey),
         .init(key: "To Account", value: toPubkey),

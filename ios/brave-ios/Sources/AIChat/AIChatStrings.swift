@@ -504,7 +504,7 @@ extension Strings {
       "aichat.advancedSettingsLinkPurchaseActionSubTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Link your Appstore purchase to your Brave account to use Leo on other devices.",
+      value: "Link your App Store purchase to your Brave account to use Leo on other devices.",
       comment: "The subtitle for the button which links purchase to Brave Account"
     )
     public static let advancedSettingsSubscriptionHeaderTitle = NSLocalizedString(
@@ -519,14 +519,14 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value: "App Store Error",
-      comment: "The title for the error showing there is an erro from Appstore"
+      comment: "The title for the error showing there is an error from App Store"
     )
     public static let appStoreErrorSubTitle = NSLocalizedString(
       "aichat.appStoreErrorSubTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Could not connect to Appstore, please try again later.",
-      comment: "The subtitle for the error showing there is an erro from Appstore"
+      value: "Could not connect to App Store, please try again later.",
+      comment: "The subtitle for the error showing there is an error from App Store"
     )
     public static let resetLeoDataActionTitle = NSLocalizedString(
       "aichat.resetLeoDataActionTitle",
