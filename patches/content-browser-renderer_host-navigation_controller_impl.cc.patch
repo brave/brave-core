@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/navigation_controller_impl.cc b/content/browser/renderer_host/navigation_controller_impl.cc
-index e2b45b5fb7858c316a14ac43ad334d25630fbeca..7cbabe03f2b572756ccdf7736f4b27f27a23231e 100644
+index b400f90310324b173aad9013bab410a082be19f9..dba853850081e96ba1c94a5ca4183614ab70e415 100644
 --- a/content/browser/renderer_host/navigation_controller_impl.cc
 +++ b/content/browser/renderer_host/navigation_controller_impl.cc
 @@ -3630,16 +3630,17 @@ base::WeakPtr<NavigationHandle> NavigationControllerImpl::NavigateWithoutEntry(

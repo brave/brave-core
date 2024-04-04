@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine/model_type_worker.h b/components/sync/engine/model_type_worker.h
-index 73d3f56962be4cde829a0cc3d664d084cf3e402a..338314779a1c6274702b36d875ddf150ae97eb85 100644
+index d14aa2e11bddeadf0b5e8a9f513f0fb83a6f0257..eac1e0e21089961d415114aec7ded9beb8310766 100644
 --- a/components/sync/engine/model_type_worker.h
 +++ b/components/sync/engine/model_type_worker.h
-@@ -207,6 +207,7 @@ class ModelTypeWorker : public UpdateHandler,
+@@ -203,6 +203,7 @@ class ModelTypeWorker : public UpdateHandler,
  
    static constexpr size_t kMaxPendingInvalidations = 10u;
  

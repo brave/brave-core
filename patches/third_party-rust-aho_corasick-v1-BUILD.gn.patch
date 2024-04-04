@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/aho_corasick/v1/BUILD.gn b/third_party/rust/aho_corasick/v1/BUILD.gn
-index a3d2da9d1d5769a8907f10edae7d48f667894774..2e55dcce398669428d7b908810d073496f9fc6b4 100644
+index dbefb3252e0628b4a8f462b566472518dbe395c6..955facd589527a00549886deaa2eac429bbfdce0 100644
 --- a/third_party/rust/aho_corasick/v1/BUILD.gn
 +++ b/third_party/rust/aho_corasick/v1/BUILD.gn
 @@ -71,5 +71,4 @@ cargo_crate("lib") {

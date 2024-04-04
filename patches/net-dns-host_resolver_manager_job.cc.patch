@@ -1,5 +1,5 @@
 diff --git a/net/dns/host_resolver_manager_job.cc b/net/dns/host_resolver_manager_job.cc
-index b32e44dd33d3786258eb60f4c3fd45f290514ea9..2e3c38d2f92335fc0cdb3a922ed1ae69a907ae25 100644
+index 3cb4e408d6d10168c007d5cf0f9c23adacf480a3..0e0cde027499b85a98af3259c5aab7a21ce4ce9f 100644
 --- a/net/dns/host_resolver_manager_job.cc
 +++ b/net/dns/host_resolver_manager_job.cc
 @@ -955,6 +955,7 @@ void HostResolverManager::Job::CompleteRequests(

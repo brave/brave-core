@@ -12,7 +12,7 @@ index 3b6a1acc7deefa79f90d3413a6862bd5b94ed416..6ac8ff77e0590e6257f52b3907587369
    "chrome/app/google_chrome_strings.grd": {
      "messages": [800],
    },
-@@ -293,7 +296,7 @@
+@@ -300,7 +303,7 @@
      "includes": [3220],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
@@ -21,7 +21,7 @@ index 3b6a1acc7deefa79f90d3413a6862bd5b94ed416..6ac8ff77e0590e6257f52b3907587369
      "includes": [3240],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/identity_internals/resources.grd": {
-@@ -436,7 +439,7 @@
+@@ -443,7 +446,7 @@
      "includes": [3900],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
