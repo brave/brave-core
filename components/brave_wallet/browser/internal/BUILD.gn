@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/config.gni")
+
 source_set("hd_key") {
   sources = [
     "hd_key.cc",
@@ -31,4 +33,7 @@ source_set("hd_key") {
   ]
 
   public_deps = [ "//brave/components/brave_wallet/rust:rust_lib" ]
+  if (enable_orchard_crate) {
+    deps += [ "//brave/components/zcash/rs:rust_lib" ]
+  }
 }
