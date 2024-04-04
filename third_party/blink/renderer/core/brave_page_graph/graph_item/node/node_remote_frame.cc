@@ -29,7 +29,7 @@ ItemDesc NodeRemoteFrame::GetItemDesc() const {
 void NodeRemoteFrame::AddGraphMLAttributes(xmlDocPtr doc,
                                            xmlNodePtr parent_node) const {
   GraphNode::AddGraphMLAttributes(doc, parent_node);
-  GraphMLAttrDefForType(kGraphMLAttrDefFrameId)
+  GraphMLAttrDefForType(kGraphMLAttrDefNodeFrameId)
       ->AddValueNode(doc, parent_node, frame_id_);
 }
 

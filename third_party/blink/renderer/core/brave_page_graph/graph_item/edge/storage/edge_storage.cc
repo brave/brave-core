@@ -15,8 +15,9 @@ namespace brave_page_graph {
 EdgeStorage::EdgeStorage(GraphItemContext* context,
                          GraphNode* out_node,
                          GraphNode* in_node,
+                         const FrameId& frame_id,
                          const String& key)
-    : GraphEdge(context, out_node, in_node), key_(key) {}
+    : GraphEdge(context, out_node, in_node), frame_id_(frame_id), key_(key) {}
 
 EdgeStorage::~EdgeStorage() = default;
 
@@ -36,6 +37,8 @@ void EdgeStorage::AddGraphMLAttributes(xmlDocPtr doc,
   GraphEdge::AddGraphMLAttributes(doc, parent_node);
   GraphMLAttrDefForType(kGraphMLAttrDefKey)
       ->AddValueNode(doc, parent_node, key_);
+  GraphMLAttrDefForType(kGraphMLAttrDefEdgeFrameId)
+      ->AddValueNode(doc, parent_node, frame_id_);
 }
 
 bool EdgeStorage::IsEdgeStorage() const {

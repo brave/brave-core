@@ -95,7 +95,6 @@ void NodeHTMLElement::PlaceChildNodeAfterSiblingNode(NodeHTML* child,
   // If this node has no current children, then this is easy, just add
   // the provided child as the only child.
   if (child_nodes_.size() == 0) {
-    CHECK(sibling == nullptr);
     child_nodes_.push_back(child);
     return;
   }

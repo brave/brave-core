@@ -20,6 +20,7 @@ class EdgeAttribute : public GraphEdge {
   EdgeAttribute(GraphItemContext* context,
                 NodeActor* out_node,
                 NodeHTMLElement* in_node,
+                const FrameId& frame_id,
                 const String& name,
                 const bool is_style = false);
   ~EdgeAttribute() override;
@@ -38,6 +39,7 @@ class EdgeAttribute : public GraphEdge {
   virtual bool IsEdgeAttributeSet() const;
 
  private:
+  const FrameId frame_id_;
   const String name_;
   const bool is_style_;
 };

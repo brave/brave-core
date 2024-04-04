@@ -20,6 +20,7 @@ class EdgeAttributeSet final : public EdgeAttribute {
   EdgeAttributeSet(GraphItemContext* context,
                    NodeActor* out_node,
                    NodeHTMLElement* in_node,
+                   const FrameId& frame_id,
                    const String& name,
                    const String& value,
                    const bool is_style = false);
