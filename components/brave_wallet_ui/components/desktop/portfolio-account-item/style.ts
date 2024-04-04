@@ -7,92 +7,24 @@ import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton } from '../../shared/style'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.div<{
+  isRewardsAccount: boolean
+}>`
+  cursor: ${(p) => (p.isRewardsAccount ? 'default' : 'pointer')};
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
   margin-bottom: 8px;
-  padding: 8px;
+  padding-right: 8px;
   position: relative;
-`
-
-export const NameAndIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-`
-
-export const AccountAndAddress = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-`
-
-export const AccountNameButton = styled(WalletButton)`
-  cursor: pointer;
-  outline: none;
-  background: none;
-  border: none;
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 600;
-  color: ${leo.color.text.primary};
-  margin: 0px 8px 0px 0px;
-  padding: 0px;
-  text-align: left;
-  &:disabled {
-    cursor: default;
+  border-radius: 12px;
+  transition: background-color 300ms ease-out;
+  &:hover {
+    background-color: ${(p) =>
+      p.isRewardsAccount ? 'transparent' : leo.color.page.background};
   }
-`
-
-export const AccountAddressButton = styled(AccountNameButton)`
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 400;
-  margin-right: 6px;
-`
-
-export const AddressAndButtonRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: row;
-`
-
-export const BalanceColumn = styled.div`
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex-direction: column;
-  margin-right: 12px;
-`
-
-export const RightSide = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-`
-
-export const FiatBalanceText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 400;
-  color: ${leo.color.text.secondary};
-`
-
-export const AssetBalanceText = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 24px;
-  font-weight: 600;
-  color: ${leo.color.text.primary};
 `
 
 export const AccountMenuWrapper = styled.div`
@@ -117,10 +49,20 @@ export const AccountMenuIcon = styled(Icon).attrs({
   color: ${leo.color.icon.default};
 `
 
-export const CopyIcon = styled(Icon).attrs({
-  name: 'copy'
-})`
+export const AccountButton = styled(WalletButton)`
   cursor: pointer;
-  --leo-icon-size: 14px;
-  color: ${leo.color.icon.default};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  outline: none;
+  background: none;
+  border: none;
+  color: none;
+  margin: 0px;
+  padding: 8px 0px 8px 8px;
+  &:disabled {
+    cursor: default;
+  }
 `

@@ -74,7 +74,7 @@ interface DepositModalProps {
   selectedAccount: BraveWallet.AccountInfo
 }
 
-const DepositModal = ({ selectedAccount }: DepositModalProps) => {
+export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
   const orb = useAccountOrb(selectedAccount)
 
   // queries
