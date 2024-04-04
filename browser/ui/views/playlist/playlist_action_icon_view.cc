@@ -48,7 +48,7 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
   }
 
   auto* playlist_tab_helper = GetPlaylistTabHelper();
-  if (!playlist_tab_helper || playlist_tab_helper->is_adding_items()) {
+  if (!playlist_tab_helper) {
     return;
   }
 
