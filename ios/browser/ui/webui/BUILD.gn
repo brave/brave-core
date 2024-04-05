@@ -19,6 +19,7 @@ source_set("webui") {
   deps = [
     "//brave/components/constants",
     "//brave/components/webui",
+    "//brave/ios/browser/ui/webui/skus",
     "//components/prefs",
     "//components/profile_metrics",
     "//components/resources",
