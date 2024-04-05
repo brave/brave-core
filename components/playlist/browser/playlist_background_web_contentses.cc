@@ -12,6 +12,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/no_destructor.h"
 #include "brave/components/playlist/browser/playlist_background_web_contents_helper.h"
 #include "brave/components/playlist/common/features.h"
 #include "content/public/browser/navigation_controller.h"
@@ -32,10 +33,10 @@ const char* GetUserAgentOverride(const GURL& url) {
     return kUserAgentOverride;
   }
 
-  static const base::flat_set<net::SchemefulSite> kSites = {
-      net::SchemefulSite(GURL("https://ted.com"))};
+  static const base::NoDestructor<base::flat_set<net::SchemefulSite>> kSites{
+      {net::SchemefulSite(GURL("https://ted.com"))}};
 
-  return kSites.contains(net::SchemefulSite(url)) ? kUserAgentOverride
+  return kSites->contains(net::SchemefulSite(url)) ? kUserAgentOverride
                                                   : nullptr;
 }
 }  // namespace
