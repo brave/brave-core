@@ -85,15 +85,10 @@
 }
 
 .logoTitle {
-  font-family: Poppins, sans-serif;
-  font-weight: 600;
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
   font-size: 19px;
   line-height: 1;
-  color: var(--leo-color-text-secondary);
-
-  span {
-    color: var(--leo-color-text-primary);
-  }
 }
 
 .promptContainer {
