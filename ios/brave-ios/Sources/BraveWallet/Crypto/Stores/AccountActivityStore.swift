@@ -328,6 +328,21 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     }
   }
 
+  @MainActor func handleTransactionAction(
+    _ action: TransactionAction,
+    transaction: BraveWallet.TransactionInfo
+  ) async -> String? {
+    guard
+      let errorMessage = await txService.handleTransactionAction(
+        action,
+        transaction: transaction
+      )
+    else {
+      return nil
+    }
+    return errorMessage
+  }
+
   private func buildAssetsAndNFTs(
     userNetworkAssets: [NetworkAssets],
     tokenBalances: [String: Double],

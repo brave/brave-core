@@ -18,12 +18,14 @@ struct TransactionsActivityView: View {
     TransactionsListView(
       transactionSections: store.transactionSections,
       query: $store.query,
+      errorMessage: $store.errorMessage,
       filtersButtonTapped: {
         isPresentingNetworkFilter = true
       },
       transactionTapped: {
         transactionDetails = store.transactionDetailsStore(for: $0)
-      }
+      },
+      transactionActionTapped: store.handleTransactionAction
     )
     .onAppear {
       store.update()

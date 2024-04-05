@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveUI
+import DesignSystem
 import Foundation
 import Strings
 import Swift
@@ -14,8 +15,11 @@ struct TransactionDetailsView: View {
 
   @ObservedObject var transactionDetailsStore: TransactionDetailsStore
   @ObservedObject var networkStore: NetworkStore
+  @State private var errorMessage: String?
 
+  @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.openURL) private var openWalletURL
+  @Environment(\.dismiss) private var dismiss
 
   var body: some View {
     ScrollView {
@@ -124,14 +128,84 @@ struct TransactionDetailsView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
           }
+
+          if transactionDetailsStore.isRetryAvailable {
+            Divider()
+
+            WalletLoadingButton(
+              isLoading: transactionDetailsStore.isLoadingTransactionAction,
+              action: {
+                handleTransactionAction(.retry)
+              },
+              label: {
+                Label(
+                  TransactionAction.retry.buttonTitle,
+                  braveSystemImage: TransactionAction.retry.braveSystemImage
+                )
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+              }
+            )
+            .buttonStyle(
+              BraveOutlineButtonStyle(
+                size: .large,
+                enabledTextColor: .braveBlurple,
+                enabledOutlineColor: .braveBlurpleTint
+              )
+            )
+          }
+          if transactionDetailsStore.isCancelOrSpeedupAvailable {
+            Divider()
+
+            WalletLoadingButton(
+              isLoading: transactionDetailsStore.isLoadingTransactionAction,
+              action: {
+                handleTransactionAction(.speedUp)
+              },
+              label: {
+                Label(
+                  TransactionAction.speedUp.buttonTitle,
+                  braveSystemImage: TransactionAction.speedUp.braveSystemImage
+                )
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+              }
+            )
+            .buttonStyle(BraveFilledButtonStyle(size: .large))
+
+            WalletLoadingButton(
+              isLoading: transactionDetailsStore.isLoadingTransactionAction,
+              action: {
+                handleTransactionAction(.cancel)
+              },
+              label: {
+                Text(TransactionAction.cancel.buttonTitle)
+                  .multilineTextAlignment(.center)
+                  .foregroundColor(Color(.braveBlurple))
+                  .font(BraveButtonSize.large.font)
+                  .frame(maxWidth: .infinity)
+              }
+            )
+          }
         }
       }
       .padding(.vertical, 24)
       .padding(.horizontal, 16)
     }
     .background(Color(braveSystemName: .containerBackground))
+    .errorAlert(errorMessage: $errorMessage)
     .onAppear {
       transactionDetailsStore.update()
+    }
+  }
+
+  private func handleTransactionAction(_ action: TransactionAction) {
+    Task { @MainActor in
+      guard let errorMessage = await transactionDetailsStore.handleTransactionAction(action) else {
+        dismiss()
+        return
+      }
+      self.errorMessage = errorMessage
     }
   }
 

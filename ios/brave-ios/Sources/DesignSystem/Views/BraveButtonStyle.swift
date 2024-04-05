@@ -63,21 +63,29 @@ public struct BraveOutlineButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
 
   public var size: BraveButtonSize
+  public var enabledTextColor: UIColor
+  public var enabledOutlineColor: UIColor
 
-  public init(size: BraveButtonSize) {
+  public init(
+    size: BraveButtonSize,
+    enabledTextColor: UIColor = .braveLabel,
+    enabledOutlineColor: UIColor = .secondaryButtonTint
+  ) {
     self.size = size
+    self.enabledTextColor = enabledTextColor
+    self.enabledOutlineColor = enabledOutlineColor
   }
 
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .opacity(configuration.isPressed ? 0.7 : 1.0)
       .font(size.font)
-      .foregroundColor(isEnabled ? Color(.braveLabel) : Color(.braveDisabled))
+      .foregroundColor(isEnabled ? Color(enabledTextColor) : Color(.braveDisabled))
       .padding(size.padding)
       .background(
         Group {
           if isEnabled {
-            Color(.secondaryButtonTint).opacity(configuration.isPressed ? 0.7 : 1.0)
+            Color(enabledOutlineColor).opacity(configuration.isPressed ? 0.7 : 1.0)
           } else {
             Color(.braveDisabled)
           }

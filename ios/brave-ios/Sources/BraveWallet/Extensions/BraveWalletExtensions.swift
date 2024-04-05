@@ -121,6 +121,18 @@ extension BraveWallet.TransactionInfo {
     //    }
     txDataUnion.ethTxData1559?.baseData.nonce ?? ""
   }
+
+  /// Returns true if `RetryTransaction` is supported for the transaction
+  var isRetryTransactionSupported: Bool {
+    // Currently only supported by `EthTxManager`
+    coin == .eth && txStatus == .error
+  }
+
+  /// Returns true if `CancelOrSpeedUpTransaction` is supported for the transaction
+  var isCancelOrSpeedUpTransactionSupported: Bool {
+    // Currently only supported by `EthTxManager`
+    coin == .eth && (txStatus == .approved || txStatus == .submitted)
+  }
 }
 
 extension BraveWallet.OriginInfo {
