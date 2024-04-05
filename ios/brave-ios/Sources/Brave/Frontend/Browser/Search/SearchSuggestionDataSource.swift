@@ -22,11 +22,11 @@ class SearchSuggestionDataSource {
   
   enum SearchListSection: Int, CaseIterable {
     case quickBar
-    case aiChat
     case searchSuggestionsOptIn
     case searchSuggestions
     case findInPage
     case openTabsAndHistoryAndBookmarks
+    case aiChat
   }
 
   let tabType: TabType
@@ -68,13 +68,7 @@ class SearchSuggestionDataSource {
     var sections = [SearchListSection]()
     sections.append(.quickBar)
 
-    if !tabType.isPrivate &&
-        Preferences.AIChat.autocompleteSuggestionsEnabled.value {
-      sections.append(.aiChat)
-    }
-        
-    if !tabType.isPrivate &&
-        searchEngines?.shouldShowSearchSuggestionsOptIn == true {
+    if !tabType.isPrivate && searchEngines?.shouldShowSearchSuggestionsOptIn == true {
       sections.append(.searchSuggestionsOptIn)
     }
 
@@ -87,7 +81,11 @@ class SearchSuggestionDataSource {
     if searchEngines?.shouldShowBrowserSuggestions == true {
       sections.append(.openTabsAndHistoryAndBookmarks)
     }
-    
+
+    if !tabType.isPrivate && Preferences.AIChat.autocompleteSuggestionsEnabled.value {
+      sections.append(.aiChat)
+    }
+
     return sections
   }
   
