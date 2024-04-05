@@ -1,11 +1,12 @@
-/* Copyright 2016 The Brave Authors. All rights reserved.
+/* Copyright (c) 2016 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_GREASELION_BROWSER_GREASELION_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_GREASELION_BROWSER_GREASELION_SERVICE_IMPL_H_
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
@@ -27,7 +28,6 @@ class SequencedTaskRunner;
 namespace extensions {
 class Extension;
 class ExtensionRegistry;
-class ExtensionService;
 class ExtensionSystem;
 }  // namespace extensions
 
@@ -50,8 +50,7 @@ class GreaselionServiceImpl : public GreaselionService,
   void Shutdown() override;
 
   // GreaselionService overrides
-  void SetExtensionService(
-      extensions::ExtensionService* extension_service) override;
+  void SetDelegate(std::unique_ptr<Delegate> delegate) override;
   void SetFeatureEnabled(GreaselionFeature feature, bool enabled) override;
   void UpdateInstalledExtensions() override;
   bool IsGreaselionExtension(const std::string& id) override;
@@ -98,8 +97,7 @@ class GreaselionServiceImpl : public GreaselionService,
   std::vector<extensions::ExtensionId> greaselion_extensions_;
   std::vector<base::FilePath> extension_dirs_;
   base::Version browser_version_;
-  raw_ptr<extensions::ExtensionService> extension_service_ =
-      nullptr;  // NOT OWNED
+  std::unique_ptr<Delegate> delegate_;
   base::WeakPtrFactory<GreaselionServiceImpl> weak_factory_;
 };
 

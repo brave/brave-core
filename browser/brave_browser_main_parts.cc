@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_browser_main_parts.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/command_line.h"
@@ -73,6 +74,34 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_system.h"
+#endif
+
+#if BUILDFLAG(ENABLE_GREASELION)
+namespace {
+
+class GreaselionServiceDelegateImpl
+    : public greaselion::GreaselionService::Delegate {
+ public:
+  explicit GreaselionServiceDelegateImpl(
+      extensions::ExtensionService* extension_service)
+      : extension_service_(extension_service) {
+    DCHECK(extension_service_);
+  }
+
+  void AddExtension(extensions::Extension* extension) override {
+    extension_service_->AddExtension(extension);
+  }
+
+  void UnloadExtension(const std::string& extension_id) override {
+    extension_service_->UnloadExtension(
+        extension_id, extensions::UnloadedExtensionReason::UPDATE);
+  }
+
+ private:
+  raw_ptr<extensions::ExtensionService> extension_service_;  // Not owned
+};
+
+}  // namespace
 #endif
 
 void BraveBrowserMainParts::PreBrowserStart() {
@@ -197,7 +226,8 @@ void BraveBrowserMainParts::PostProfileInit(Profile* profile,
     extensions::ExtensionService* extension_service =
         extensions::ExtensionSystem::Get(profile)->extension_service();
     DCHECK(extension_service);
-    greaselion_service->SetExtensionService(extension_service);
+    greaselion_service->SetDelegate(
+        std::make_unique<GreaselionServiceDelegateImpl>(extension_service));
   }
 #endif
 

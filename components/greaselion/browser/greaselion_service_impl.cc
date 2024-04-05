@@ -34,7 +34,6 @@
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/update_client/buildflags.h"
 #include "brave/components/version_info//version_info.h"
-#include "chrome/browser/extensions/extension_service.h"
 #include "components/version_info/version_info.h"
 #include "crypto/sha2.h"
 #include "extensions/browser/computed_hashes.h"
@@ -252,11 +251,10 @@ void GreaselionServiceImpl::Shutdown() {
                          base::BindOnce(&DeleteExtensionDirs, extension_dirs_));
 }
 
-void GreaselionServiceImpl::SetExtensionService(
-    extensions::ExtensionService* extension_service) {
-  DCHECK(extension_service);
-  DCHECK(!extension_service_);
-  extension_service_ = extension_service;
+void GreaselionServiceImpl::SetDelegate(std::unique_ptr<Delegate> delegate) {
+  DCHECK(delegate);
+  DCHECK(!delegate_);
+  delegate_ = std::move(delegate);
 }
 
 bool GreaselionServiceImpl::IsGreaselionExtension(const std::string& id) {
@@ -289,8 +287,8 @@ void GreaselionServiceImpl::UpdateInstalledExtensions() {
     // installed. OnExtensionUnloaded will be called on each extension, where we
     // will update the greaselion_extensions_ set. Once it's empty, that
     // callback will call CreateAndInstallExtensions().
-    extension_service_->UnloadExtension(
-        id, extensions::UnloadedExtensionReason::UPDATE);
+    delegate_->UnloadExtension(id);
+    // , extensions::UnloadedExtensionReason::UPDATE
   }
 }
 
@@ -356,7 +354,7 @@ void GreaselionServiceImpl::PostConvert(
 
 void GreaselionServiceImpl::Install(
     scoped_refptr<extensions::Extension> extension) {
-  extension_service_->AddExtension(extension.get());
+  delegate_->AddExtension(extension.get());
 }
 
 void GreaselionServiceImpl::OnExtensionReady(
