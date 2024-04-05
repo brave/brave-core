@@ -176,7 +176,7 @@ extension BrowserViewController {
 
     if educationPermitted {
       tabManager.addTab(
-        PrivilegedRequest(url: url) as URLRequest,
+        URLRequest(url: url),
         afterTab: self.tabManager.selectedTab,
         isPrivate: privateBrowsingManager.isPrivateBrowsing
       )

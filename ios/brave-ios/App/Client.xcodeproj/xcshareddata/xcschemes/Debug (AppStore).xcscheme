@@ -109,15 +109,15 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-BRSkipOnboarding YES"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-BRSkipEduPopups YES"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-BRSkipAppLaunchPopups YES"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <EnvironmentVariables>

@@ -51,7 +51,7 @@ public class FocusNTPOnboardingViewController: UIViewController, PopoverContentC
   private let textLabel = UILabel().then {
     $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
-    $0.font = UIFont.preferredFont(forTextStyle: .footnote)
+    $0.font = .preferredFont(forTextStyle: .footnote)
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.setContentHuggingPriority(.defaultLow, for: .vertical)
