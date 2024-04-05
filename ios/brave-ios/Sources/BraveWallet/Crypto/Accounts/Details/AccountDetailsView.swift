@@ -41,7 +41,7 @@ struct AccountDetailsView: View {
     NavigationView {
       List {
         Section {
-          AccountDetailsHeaderView(address: account.address)
+          AccountDetailsHeaderView(account: account)
             .frame(maxWidth: .infinity)
             .listRowInsets(.zero)
             .listRowBackground(Color(.braveGroupedBackground))
@@ -130,21 +130,8 @@ struct AccountDetailsView: View {
   }
 }
 
-private struct AccountDetailsHeaderView: View {
-  var address: String
-
-  private var qrCodeImage: UIImage? {
-    guard let addressData = address.data(using: .utf8) else { return nil }
-    let context = CIContext()
-    let filter = CIFilter.qrCodeGenerator()
-    filter.message = addressData
-    filter.correctionLevel = "H"
-    if let image = filter.outputImage,
-      let cgImage = context.createCGImage(image, from: image.extent) {
-      return UIImage(cgImage: cgImage)
-    }
-    return nil
-  }
+struct AccountDetailsHeaderView: View {
+  var account: BraveWallet.AccountInfo
 
   var body: some View {
     VStack(spacing: 12) {
@@ -153,7 +140,7 @@ private struct AccountDetailsHeaderView: View {
         .frame(width: 220, height: 220)
         .overlay(
           Group {
-            if let image = qrCodeImage?.cgImage {
+            if let image = account.qrCodeImage?.cgImage {
               Image(uiImage: UIImage(cgImage: image))
                 .resizable()
                 .interpolation(.none)
@@ -163,9 +150,11 @@ private struct AccountDetailsHeaderView: View {
             }
           }
         )
-      Button(action: { UIPasteboard.general.string = address }) {
+      Button {
+        UIPasteboard.general.string = account.address
+      } label: {
         HStack {
-          Text(address)
+          Text(account.address)
             .foregroundColor(Color(.secondaryBraveLabel))
           Label(Strings.Wallet.copyToPasteboard, braveSystemImage: "leo.copy.plain-text")
             .labelStyle(.iconOnly)

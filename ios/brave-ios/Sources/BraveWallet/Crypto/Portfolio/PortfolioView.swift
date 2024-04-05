@@ -20,10 +20,10 @@ struct PortfolioView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var portfolioStore: PortfolioStore
-  
-  @Environment(\.buySendSwapDestination)
-  private var buySendSwapDestination: Binding<BuySendSwapDestination?>
-  
+
+  @Environment(\.walletActionDestination)
+  private var walletActionDestination: Binding<WalletActionDestination?>
+
   @State private var selectedContent: PortfolioSegmentedControl.Item = .assets
   @ObservedObject private var isShowingNFTsTab = Preferences.Wallet.isShowingNFTsTab
   
@@ -37,7 +37,7 @@ struct PortfolioView: View {
       VStack(spacing: 0) {
         PortfolioHeaderView(
           keyringStore: keyringStore,
-          buySendSwapDestination: buySendSwapDestination,
+          walletActionDestination: walletActionDestination,
           selectedDateRange: $portfolioStore.timeframe,
           balance: portfolioStore.balance,
           balanceDifference: portfolioStore.balanceDifference,

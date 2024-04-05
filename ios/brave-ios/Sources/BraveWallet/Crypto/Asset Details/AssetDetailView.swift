@@ -24,15 +24,15 @@ struct AssetDetailView: View {
   @State private var isShowingAuroraBridgeAlert: Bool = false
   @State private var isPresentingAddAccount: Bool = false
   @State private var isPresentingAddAccountConfirmation: Bool = false
-  @State private var savedBSSDestination: BuySendSwapDestination?
+  @State private var savedWalletActionestination: WalletActionDestination?
   @State private var isShowingMoreActionSheet: Bool = false
   
   @Environment(\.sizeCategory) private var sizeCategory
   /// Reference to the collection view used to back the `List` on iOS 16+
   @State private var collectionViewRef: WeakRef<UICollectionView>?
 
-  @Environment(\.buySendSwapDestination)
-  @Binding private var buySendSwapDestination: BuySendSwapDestination?
+  @Environment(\.walletActionDestination)
+  @Binding private var walletActionDestination: WalletActionDestination?
 
   @Environment(\.openURL) private var openWalletURL
   @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
@@ -118,6 +118,25 @@ struct AssetDetailView: View {
   
   @ViewBuilder private func coinMarketInfoView(_ coinMarket: BraveWallet.CoinMarket) -> some View {
     VStack(spacing: 16) {
+      HStack(alignment: .top, spacing: 40) {
+        if case .coinMarket(let coinMarket) = assetDetailStore.assetDetailType,
+          assetDetailStore.convertCoinMarketToDepositableToken(
+            symbol: coinMarket.symbol
+          ) != nil
+        {
+          PortfolioHeaderButton(style: .deposit) {
+            let destination = WalletActionDestination(
+              kind: .deposit(query: coinMarket.symbol)
+            )
+            if assetDetailStore.allAccountsForToken.isEmpty {
+              onAccountCreationNeeded(destination)
+            } else {
+              walletActionDestination = destination
+            }
+          }
+        }
+      }
+      .padding(.horizontal, 16)
       VStack(spacing: 12) {
         Text(Strings.Wallet.coinMarketInformation)
           .foregroundColor(Color(braveSystemName: .textPrimary))
@@ -188,46 +207,60 @@ struct AssetDetailView: View {
     HStack(alignment: .top, spacing: 40) {
       if assetDetailStore.isBuySupported {
         PortfolioHeaderButton(style: .buy) {
-          let destination = BuySendSwapDestination(
+          let destination = WalletActionDestination(
             kind: .buy,
             initialToken: assetDetailStore.assetDetailToken
           )
           if assetDetailStore.allAccountsForToken.isEmpty {
             onAccountCreationNeeded(destination)
           } else {
-            buySendSwapDestination = destination
+            walletActionDestination = destination
           }
         }
       }
       if assetDetailStore.isSendSupported {
         PortfolioHeaderButton(style: .send) {
-          let destination = BuySendSwapDestination(
+          let destination = WalletActionDestination(
             kind: .send,
             initialToken: assetDetailStore.assetDetailToken
           )
           if assetDetailStore.allAccountsForToken.isEmpty {
             onAccountCreationNeeded(destination)
           } else {
-            buySendSwapDestination = destination
+            walletActionDestination = destination
           }
         }
       }
       if assetDetailStore.isSwapSupported {
         PortfolioHeaderButton(style: .swap) {
-          let destination = BuySendSwapDestination(
+          let destination = WalletActionDestination(
             kind: .swap,
             initialToken: assetDetailStore.assetDetailToken
           )
           if assetDetailStore.allAccountsForToken.isEmpty {
             onAccountCreationNeeded(destination)
           } else {
-            buySendSwapDestination = destination
+            walletActionDestination = destination
           }
         }
       }
-      if case let .blockchainToken(token) = assetDetailStore.assetDetailType, token.isAuroraSupportedToken {
-        PortfolioHeaderButton(style: .more) {
-          isShowingMoreActionSheet = true
+      if case .blockchainToken(let token) = assetDetailStore.assetDetailType {
+        if token.isAuroraSupportedToken {
+          PortfolioHeaderButton(style: .more) {
+            isShowingMoreActionSheet = true
+          }
+        } else {
+          PortfolioHeaderButton(style: .deposit) {
+            let destination = WalletActionDestination(
+              kind: .deposit(query: nil),
+              initialToken: assetDetailStore.assetDetailToken
+            )
+            if assetDetailStore.allAccountsForToken.isEmpty {
+              onAccountCreationNeeded(destination)
+            } else {
+              walletActionDestination = destination
+            }
+          }
         }
       }
     }
@@ -334,6 +367,20 @@ struct AssetDetailView: View {
         title: Text("\(assetDetailStore.assetDetailToken.name) (\(assetDetailStore.assetDetailToken.symbol))"),
         buttons: [
           .cancel(),
+          .default(
+            Text(Strings.Wallet.deposit),
+            action: {
+              let destination = WalletActionDestination(
+                kind: .deposit(query: nil),
+                initialToken: assetDetailStore.assetDetailToken
+              )
+              if assetDetailStore.allAccountsForToken.isEmpty {
+                onAccountCreationNeeded(destination)
+              } else {
+                walletActionDestination = destination
+              }
+            }
+          ),
           .default(
             Text(Strings.Wallet.auroraBridgeButtonTitle),
             action: {
@@ -457,19 +504,19 @@ struct AssetDetailView: View {
       onAddAccountDismissed: {
         Task { @MainActor in
           if await assetDetailStore.handleDismissAddAccount() {
-            if let savedBSSDestination {
-              buySendSwapDestination = savedBSSDestination
-              self.savedBSSDestination = nil
+            if let savedWalletActionestination {
+              walletActionDestination = savedWalletActionestination
+              self.savedWalletActionestination = nil
             }
           }
         }
       }
     )
   }
-  
-  private func onAccountCreationNeeded(_ destination: BuySendSwapDestination) {
+
+  private func onAccountCreationNeeded(_ destination: WalletActionDestination) {
     isPresentingAddAccountConfirmation = true
-    savedBSSDestination = destination
+    savedWalletActionestination = destination
   }
 }
 

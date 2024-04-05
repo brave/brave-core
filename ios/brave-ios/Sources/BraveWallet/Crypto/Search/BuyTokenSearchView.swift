@@ -14,11 +14,19 @@ struct BuyTokenSearchView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
 
   var body: some View {
-    TokenList(tokens: buyTokenStore.allTokens) { token in
-      Button(action: {
+    TokenList(
+      tokens: buyTokenStore.allTokens
+    ) { query, token in
+      let symbolMatch = token.symbol.localizedCaseInsensitiveContains(query)
+      let nameMatch = token.name.localizedCaseInsensitiveContains(query)
+      return symbolMatch || nameMatch
+    } header: {
+      TokenListHeaderView(title: Strings.Wallet.assetsTitle)
+    } content: { token in
+      Button {
         buyTokenStore.selectedBuyToken = token
         presentationMode.dismiss()
-      }) {
+      } label: {
         TokenView(
           token: token,
           network: network

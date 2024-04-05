@@ -143,7 +143,7 @@ public struct CryptoView: View {
                 }
               }
               .navigationViewStyle(.stack)
-            case .buySendSwap(let destination):
+            case .walletAction(let destination):
               switch destination.kind {
               case .buy:
                 BuyTokenView(
@@ -151,7 +151,7 @@ public struct CryptoView: View {
                   networkStore: store.networkStore,
                   buyTokenStore: store.openBuyTokenStore(destination.initialToken),
                   onDismiss: {
-                    store.closeBSSStores()
+                    store.closeWalletActionStores()
                     dismissAction()
                   }
                 )
@@ -162,12 +162,12 @@ public struct CryptoView: View {
                   sendTokenStore: store.openSendTokenStore(destination.initialToken),
                   completion: { success in
                     if success {
-                      store.closeBSSStores()
+                      store.closeWalletActionStores()
                       dismissAction()
                     }
                   },
                   onDismiss: {
-                    store.closeBSSStores()
+                    store.closeWalletActionStores()
                     dismissAction()
                   }
                 )
@@ -178,12 +178,26 @@ public struct CryptoView: View {
                   swapTokensStore: store.openSwapTokenStore(destination.initialToken),
                   completion: { success in
                     if success {
-                      store.closeBSSStores()
+                      store.closeWalletActionStores()
                       dismissAction()
                     }
                   },
                   onDismiss: {
-                    store.closeBSSStores()
+                    store.closeWalletActionStores()
+                    dismissAction()
+                  }
+                )
+              case .deposit(let query):
+                DepositTokenView(
+                  keyringStore: keyringStore,
+                  networkStore: store.networkStore,
+                  depositTokenStore: store.openDepositTokenStore(
+                    prefilledToken: destination.initialToken,
+                    prefilledAccount: destination.initialAccount
+                  ),
+                  prefilledQuery: query,
+                  onDismiss: {
+                    store.closeWalletActionStores()
                     dismissAction()
                   }
                 )
@@ -317,28 +331,39 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
     )
     .background(
       Color.clear
-        .sheet(item: $cryptoStore.buySendSwapDestination) { action in
+        .sheet(item: $cryptoStore.walletActionDestination) { action in
           switch action.kind {
           case .buy:
             BuyTokenView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
               buyTokenStore: cryptoStore.openBuyTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.buySendSwapDestination = nil }
+              onDismiss: { cryptoStore.walletActionDestination = nil }
             )
           case .send:
             SendTokenView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
               sendTokenStore: cryptoStore.openSendTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.buySendSwapDestination = nil }
+              onDismiss: { cryptoStore.walletActionDestination = nil }
             )
           case .swap:
             SwapCryptoView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
               swapTokensStore: cryptoStore.openSwapTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.buySendSwapDestination = nil }
+              onDismiss: { cryptoStore.walletActionDestination = nil }
+            )
+          case .deposit(let query):
+            DepositTokenView(
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore,
+              depositTokenStore: cryptoStore.openDepositTokenStore(
+                prefilledToken: action.initialToken,
+                prefilledAccount: action.initialAccount
+              ),
+              prefilledQuery: query,
+              onDismiss: { cryptoStore.walletActionDestination = nil }
             )
           }
         }
@@ -362,17 +387,17 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
         }
     )
     .environment(
-      \.buySendSwapDestination,
-       Binding(
-        get: { [weak cryptoStore] in cryptoStore?.buySendSwapDestination },
+      \.walletActionDestination,
+      Binding(
+        get: { [weak cryptoStore] in cryptoStore?.walletActionDestination },
         set: { [weak cryptoStore] destination in
           if cryptoStore?.isPresentingAssetSearch == true {
             cryptoStore?.isPresentingAssetSearch = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-              cryptoStore?.buySendSwapDestination = destination
+              cryptoStore?.walletActionDestination = destination
             }
           } else {
-            cryptoStore?.buySendSwapDestination = destination
+            cryptoStore?.walletActionDestination = destination
           }
         })
     )

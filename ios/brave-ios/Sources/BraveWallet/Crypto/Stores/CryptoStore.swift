@@ -68,11 +68,11 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   let transactionsActivityStore: TransactionsActivityStore
   let accountsStore: AccountsStore
   let marketStore: MarketStore
-  
-  @Published var buySendSwapDestination: BuySendSwapDestination? {
+
+  @Published var walletActionDestination: WalletActionDestination? {
     didSet {
-      if buySendSwapDestination == nil {
-        closeBSSStores()
+      if walletActionDestination == nil {
+        closeWalletActionStores()
       }
     }
   }
@@ -211,7 +211,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      assetManager: userAssetManager
     )
     
     setupObservers()
@@ -437,14 +438,40 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     swapTokenStore = store
     return store
   }
-  
-  func closeBSSStores() {
+
+  private var depositTokenStore: DepositTokenStore?
+  func openDepositTokenStore(
+    prefilledToken: BraveWallet.BlockchainToken?,
+    prefilledAccount: BraveWallet.AccountInfo?
+  ) -> DepositTokenStore {
+    if let store = depositTokenStore,
+      prefilledToken?.id == store.prefilledToken?.id,
+      prefilledAccount?.accountId == store.prefilledAccount?.accountId
+    {
+      return store
+    }
+    let store = DepositTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      blockchainRegistry: blockchainRegistry,
+      prefilledToken: prefilledToken,
+      prefilledAccount: prefilledAccount,
+      userAssetManager: userAssetManager
+    )
+    depositTokenStore = store
+    return store
+  }
+
+  func closeWalletActionStores() {
     buyTokenStore?.tearDown()
     sendTokenStore?.tearDown()
     swapTokenStore?.tearDown()
+    depositTokenStore?.tearDown()
     buyTokenStore = nil
     sendTokenStore = nil
     swapTokenStore = nil
+    depositTokenStore = nil
   }
   
   private var assetDetailStore: AssetDetailStore?
@@ -640,9 +667,9 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       // `pendingRequest` because re-assigning the same request could cause
       // present of a previously dismissed / ignored pending request (#6750).
       guard newPendingRequest?.id != self.pendingRequest?.id else { return }
-      if self.buySendSwapDestination != nil && newPendingRequest != nil {
-        // Dismiss any buy send swap open to show the newPendingRequest
-        self.buySendSwapDestination = nil
+      if self.walletActionDestination != nil && newPendingRequest != nil {
+        // Dismiss any buy send swap deposit open to show the newPendingRequest
+        self.walletActionDestination = nil
       }
       self.pendingRequest = newPendingRequest
     }

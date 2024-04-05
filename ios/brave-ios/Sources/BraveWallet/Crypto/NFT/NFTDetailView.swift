@@ -12,7 +12,8 @@ import SDWebImageSwiftUI
 struct NFTDetailView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var nftDetailStore: NFTDetailStore
-  @Binding var buySendSwapDestination: BuySendSwapDestination? 
+  @Binding var walletActionDestination: WalletActionDestination?
+
   var onNFTMetadataRefreshed: ((NFTMetadata) -> Void)?
   var onNFTStatusUpdated: (() -> Void)?
   
@@ -216,12 +217,12 @@ struct NFTDetailView: View {
       ToolbarItemGroup(placement: .navigationBarTrailing) {
         Menu {
           if nftDetailStore.nft.visible {
-            Button(action: {
-              buySendSwapDestination = BuySendSwapDestination(
+            Button {
+              walletActionDestination = WalletActionDestination(
                 kind: .send,
                 initialToken: nftDetailStore.nft
               )
-            }) {
+            } label: {
               Label(Strings.Wallet.nftDetailSendNFTButtonTitle, braveSystemImage: "leo.send")
             }
             .buttonStyle(BraveFilledButtonStyle(size: .large))

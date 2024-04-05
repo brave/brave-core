@@ -20,10 +20,9 @@ struct AccountsView: View {
   @State private var selectedAccountForEdit: BraveWallet.AccountInfo?
   /// When populated, private key export is presented modally for the given account.
   @State private var selectedAccountForExport: BraveWallet.AccountInfo?
-  
-  @Environment(\.buySendSwapDestination)
-  private var buySendSwapDestination: Binding<BuySendSwapDestination?>
-  
+
+  @Binding var walletActionDestination: WalletActionDestination?
+
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 16) {
@@ -89,7 +88,7 @@ struct AccountsView: View {
               ),
               cryptoStore: cryptoStore,
               keyringStore: keyringStore,
-              buySendSwapDestination: buySendSwapDestination
+              walletActionDestination: $walletActionDestination
             )
           }
         },
@@ -154,7 +153,11 @@ struct AccountsView: View {
     case .exportAccount:
       selectedAccountForExport = account
     case .depositToAccount:
-      break
+      walletActionDestination = WalletActionDestination(
+        kind: .deposit(query: nil),
+        initialToken: nil,
+        initialAccount: account
+      )
     }
   }
 }
@@ -166,7 +169,8 @@ struct AccountsViewController_Previews: PreviewProvider {
       AccountsView(
         store: .previewStore,
         cryptoStore: .previewStore,
-        keyringStore: .previewStoreWithWalletCreated
+        keyringStore: .previewStoreWithWalletCreated,
+        walletActionDestination: Binding(projectedValue: .constant(nil))
       )
     }
     .previewLayout(.sizeThatFits)
@@ -263,14 +267,11 @@ private struct AccountCardView: View {
         }) {
           Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
         }
-        /*
-         TODO: Account Deposit UI #8639
-        Button(action: {
+        Button {
           action(.depositToAccount)
-        }) {
-          Label("Deposit", braveSystemImage: "leo.qr.code")
+        } label: {
+          Label(Strings.Wallet.deposit, braveSystemImage: "leo.qr.code")
         }
-        */
       } label: {
         RoundedRectangle(cornerRadius: 8)
           .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: 1)

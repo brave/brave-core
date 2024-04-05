@@ -73,7 +73,7 @@ extension Preferences {
       case .sol:
         Preferences.Wallet.defaultSolWallet.reset()
         Preferences.Wallet.allowSolProviderAccess.reset()
-      case .fil, .btc:
+      case .fil, .btc, .zec:
         // not supported
         fallthrough
       @unknown default:
