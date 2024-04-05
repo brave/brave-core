@@ -1001,4 +1001,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEnableForSite) {
 
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
+
+  // Go to home page.
+  NavigateToPageSynchronously("/", WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
+      tab_helper()->PageDistillState()));
 }
