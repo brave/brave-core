@@ -259,45 +259,92 @@ extension BrowserViewController: TopToolbarDelegate {
   ) async -> Bool {
     if let url = URL(string: text), url.isIPFSScheme {
       return handleIPFSSchemeURL(url)
-    } else if let fixupURL = URIFixup.getURL(text) {
-      // Do not allow users to enter URLs with the following schemes.
-      // Instead, submit them to the search engine like Chrome-iOS does.
-      if !["file"].contains(fixupURL.scheme) {
-        // check text is decentralized DNS supported domain
-        if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
-          topToolbar.leaveOverlayMode()
-          updateToolbarCurrentURL(fixupURL)
-          topToolbar.locationView.loading = true
-          let result = await decentralizedDNSHelper.lookup(
-            domain: fixupURL.schemelessAbsoluteDisplayString
-          )
-          topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
-          guard !Task.isCancelled else { return true }  // user pressed stop, or typed new url
-          switch result {
-          case .loadInterstitial(let service):
-            showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
-            return true
-          case .load(let resolvedURL):
-            if resolvedURL.isIPFSScheme {
-              return handleIPFSSchemeURL(resolvedURL)
-            } else {
-              finishEditingAndSubmit(resolvedURL)
-              return true
-            }
-          case .none:
-            break
-          }
-        }
+    }
 
-        // The user entered a URL, so use it.
-        // Determine if url navigation is done from favourites or bookmarks
-        // To handle bookmarklets properly
-        finishEditingAndSubmit(fixupURL, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
-        return true
+    if let url = URL(string: text), url.scheme == "brave" {
+      topToolbar.leaveOverlayMode()
+      return handleChromiumWebUIURL(url)
+    }
+
+    guard let fixupURL = URIFixup.getURL(text) else {
+      return false
+    }
+    // Do not allow users to enter URLs with the following schemes.
+    // Instead, submit them to the search engine like Chrome-iOS does.
+    if !["file"].contains(fixupURL.scheme) {
+      // check text is decentralized DNS supported domain
+      if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
+        topToolbar.leaveOverlayMode()
+        updateToolbarCurrentURL(fixupURL)
+        topToolbar.locationView.loading = true
+        let result = await decentralizedDNSHelper.lookup(
+          domain: fixupURL.schemelessAbsoluteDisplayString
+        )
+        topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+        guard !Task.isCancelled else { return true }  // user pressed stop, or typed new url
+        switch result {
+        case .loadInterstitial(let service):
+          showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
+          return true
+        case .load(let resolvedURL):
+          if resolvedURL.isIPFSScheme {
+            return handleIPFSSchemeURL(resolvedURL)
+          } else {
+            finishEditingAndSubmit(resolvedURL)
+            return true
+          }
+        case .none:
+          break
+        }
       }
     }
 
-    return false
+    // The user entered a URL, so use it.
+    // Determine if url navigation is done from favourites or bookmarks
+    // To handle bookmarklets properly
+    finishEditingAndSubmit(fixupURL, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
+    return true
+  }
+
+  /// Handles displaying a Chromium web view for brave:// url that would display WebUI
+  func handleChromiumWebUIURL(_ url: URL) -> Bool {
+    let supportedPages = [
+      "flags",
+      "histograms",
+      "local-state",
+      "version",
+    ]
+    guard let host = url.host, supportedPages.contains(host) else {
+      return false
+    }
+    let controller = ChromeWebViewController(privateBrowsing: false)
+    controller.loadURL(url.absoluteString)
+    controller.title = url.host
+    if #available(iOS 16.0, *) {
+      let webView = controller.webView
+      webView.isFindInteractionEnabled = true
+      controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
+        systemItem: .search,
+        primaryAction: .init { [weak webView] _ in
+          guard let findInteraction = webView?.findInteraction,
+            !findInteraction.isFindNavigatorVisible
+          else {
+            return
+          }
+          findInteraction.searchText = ""
+          findInteraction.presentFindNavigator(showingReplace: false)
+        }
+      )
+    }
+    let container = UINavigationController(rootViewController: controller)
+    controller.navigationItem.leftBarButtonItem = .init(
+      systemItem: .done,
+      primaryAction: .init { [unowned container] _ in
+        container.dismiss(animated: true)
+      }
+    )
+    self.present(container, animated: true)
+    return true
   }
 
   @discardableResult
