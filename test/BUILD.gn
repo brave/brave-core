@@ -846,6 +846,7 @@ test("brave_browser_tests") {
     "//brave/browser/script_injector:browser_tests",
     "//brave/browser/sessions:browser_tests",
     "//brave/browser/skus/test:browser_tests",
+    "//brave/browser/storage_access_api:browser_tests",
     "//brave/browser/test:browser_tests",
     "//brave/browser/themes",
     "//brave/browser/ui:browser_tests",
@@ -1127,7 +1128,6 @@ test("brave_browser_tests") {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/sharing_hub:browser_tests",
-      "//brave/browser/storage_access_api:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/components/brave_wallet/browser:test_support",
       "//chrome/browser/apps/app_service:app_service",
@@ -1190,6 +1190,7 @@ test("brave_browser_tests") {
       "$root_gen_dir/components/dev_ui_components_resources.pak",
       "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
       "//brave/test/data",
+      "//chrome/test/data",
     ]
 
     deps -= android_test_exception_deps

@@ -9,17 +9,14 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_piece.h"
-#include "chrome/browser/policy/policy_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/permissions/test/permission_request_observer.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/common/content_paths.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -75,14 +72,14 @@ std::string CookieAttributes(std::string_view domain) {
 }  // namespace
 
 // The test is based on Chromium's StorageAccessAPIBrowserTest.
-class StorageAccessAPIBrowserTest : public policy::PolicyTest {
+class StorageAccessAPIBrowserTest : public PlatformBrowserTest {
  public:
   StorageAccessAPIBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpOnMainThread() override {
     host_resolver()->AddRule("*", "127.0.0.1");
-    base::FilePath path = base::PathService::CheckedGet(content::DIR_TEST_DATA);
+    base::FilePath path = GetChromeTestDataDir();
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromDirectory(path);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
@@ -100,44 +97,49 @@ class StorageAccessAPIBrowserTest : public policy::PolicyTest {
     EnsureUserInteractionOn(kHostB);
   }
 
+  base::FilePath GetChromeTestDataDir() const {
+    return base::FilePath(FILE_PATH_LITERAL("chrome/test/data"));
+  }
+
+  content::WebContents* web_contents() {
+    return chrome_test_utils::GetActiveWebContents(this);
+  }
+
+  Profile* profile() { return chrome_test_utils::GetProfile(this); }
+
   void SetCrossSiteCookieOnDomain(std::string_view domain) {
     GURL domain_url = GetURL(domain);
     std::string cookie = base::StrCat({"cross-site=", domain});
-    content::SetCookie(browser()->profile(), domain_url,
+    content::SetCookie(profile(), domain_url,
                        base::StrCat({cookie, CookieAttributes(domain)}));
-    ASSERT_THAT(content::GetCookies(browser()->profile(), domain_url),
+    ASSERT_THAT(content::GetCookies(profile(), domain_url),
                 testing::HasSubstr(cookie));
   }
 
   GURL GetURL(std::string_view host) { return https_server_.GetURL(host, "/"); }
 
   void EnsureUserInteractionOn(std::string_view host) {
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(
-        browser(), https_server_.GetURL(host, "/empty.html")));
+    ASSERT_TRUE(content::NavigateToURL(
+        web_contents(), https_server_.GetURL(host, "/empty.html")));
     // ExecJs runs with a synthetic user interaction (by default), which is all
     // we need, so our script is a no-op.
-    ASSERT_TRUE(content::ExecJs(
-        browser()->tab_strip_model()->GetActiveWebContents(), ""));
+    ASSERT_TRUE(content::ExecJs(web_contents(), ""));
   }
 
   void SetBlockThirdPartyCookies() {
-    browser()->profile()->GetPrefs()->SetInteger(
+    profile()->GetPrefs()->SetInteger(
         prefs::kCookieControlsMode,
         static_cast<int>(
             content_settings::CookieControlsMode::kBlockThirdParty));
   }
 
-  void NavigateToPageWithFrame(const std::string& host,
-                               Browser* browser_ptr = nullptr) {
+  void NavigateToPageWithFrame(const std::string& host) {
     GURL main_url(https_server_.GetURL(host, "/iframe.html"));
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(
-        browser_ptr ? browser_ptr : browser(), main_url));
+    ASSERT_TRUE(content::NavigateToURL(web_contents(), main_url));
   }
 
   void NavigateFrameTo(const GURL& url) {
-    content::WebContents* web_contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    EXPECT_TRUE(NavigateIframeToURL(web_contents, "test", url));
+    EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", url));
   }
 
   GURL EchoCookiesURL(std::string_view host) {
@@ -149,9 +151,7 @@ class StorageAccessAPIBrowserTest : public policy::PolicyTest {
   }
 
   content::RenderFrameHost* GetPrimaryMainFrame() {
-    content::WebContents* web_contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    return web_contents->GetPrimaryMainFrame();
+    return web_contents()->GetPrimaryMainFrame();
   }
 
  private:
@@ -165,8 +165,7 @@ IN_PROC_BROWSER_TEST_F(StorageAccessAPIBrowserTest, EnsureNoPrompt) {
 
   // Because we set storage-access content setting to be CONTENT_SETTING_BLOCK
   // by default, we should not see a prompt.
-  permissions::PermissionRequestObserver pre_observer(
-      browser()->tab_strip_model()->GetActiveWebContents());
+  permissions::PermissionRequestObserver pre_observer(web_contents());
   ASSERT_FALSE(pre_observer.request_shown());
   ASSERT_FALSE(content::ExecJs(GetFrame(), "document.requestStorageAccess()"));
   ASSERT_FALSE(pre_observer.request_shown());

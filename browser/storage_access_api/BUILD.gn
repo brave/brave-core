@@ -4,8 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 source_set("browser_tests") {
-  assert(!is_android)
-
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
@@ -14,9 +12,15 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//chrome/browser",
-    "//chrome/browser/policy:test_support",
-    "//chrome/browser/ui",
-    "//chrome/test:test_support_ui",
+    "//chrome/test:test_support",
+    "//components/content_settings/core/browser",
     "//components/permissions:test_support",
+    "//net:test_support",
   ]
+
+  if (is_android) {
+    deps += [ "//chrome/test:test_support_ui_android" ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui" ]
+  }
 }
