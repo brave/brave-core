@@ -98,10 +98,12 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
     const std::string& origin,
     Profile* profile) {
   static constexpr ContentSettingsType extra_types[] = {
-      ContentSettingsType::AUTOPLAY, ContentSettingsType::BRAVE_ETHEREUM,
+      ContentSettingsType::AUTOPLAY,
+      ContentSettingsType::BRAVE_ETHEREUM,
       ContentSettingsType::BRAVE_SOLANA,
       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
-      ContentSettingsType::BRAVE_LOCALHOST_ACCESS};
+      ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
+  };
 
   auto types = GetVisiblePermissionCategories_ChromiumImpl(origin, profile);
 
