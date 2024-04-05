@@ -20,6 +20,8 @@ class StorageEstimate : public StorageEstimate_ChromiumImpl {
 
   using StorageEstimate_ChromiumImpl::StorageEstimate_ChromiumImpl;
 
+  // See https://github.com/brave/brave-core/pull/22320 for the original
+  // implementation and details.
   void setQuota(uint64_t quota) {
     quota = 2147483648;
     StorageEstimate_ChromiumImpl::setQuota(quota);
