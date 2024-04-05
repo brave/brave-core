@@ -11,48 +11,10 @@ use orchard::{
     zip32::Error as Zip32Error,
     zip32::ExtendedSpendingKey};
 
-macro_rules! impl_result {
-    ($t:ident, $r:ident, $f:ident) => {
-        impl $r {
-            fn error_message(self: &$r) -> String {
-                match &self.0 {
-                    Err(e) => e.to_string(),
-                    Ok(_) => "".to_string(),
-                }
-            }
-
-            fn is_ok(self: &$r) -> bool {
-                match &self.0 {
-                    Err(_) => false,
-                    Ok(_) => true,
-                }
-            }
-
-            fn unwrap(self: &$r) -> &$t {
-                self.0.as_ref().expect("Unhandled error before unwrap call")
-            }
-        }
-
-        impl From<Result<$f, Error>> for $r {
-            fn from(result: Result<$f, Error>) -> Self {
-                match result {
-                    Ok(v) => Self(Ok($t(v))),
-                    Err(e) => Self(Err(e)),
-                }
-            }
-        }
-    };
-}
-
-macro_rules! impl_error {
-    ($t:ident, $n:ident) => {
-        impl From<$t> for Error {
-            fn from(err: $t) -> Self {
-                Self::$n(err)
-            }
-        }
-    };
-}
+use brave_wallet_cxx::{
+  impl_result,
+  impl_error
+};
 
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = zcash)]

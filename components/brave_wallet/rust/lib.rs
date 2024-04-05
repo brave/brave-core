@@ -18,6 +18,7 @@ use bech32::FromBase32;
 use ffi::{Bech32DecodeVariant};
 use bech32::Error as Bech32Error;
 
+#[macro_export]
 macro_rules! impl_result {
     ($t:ident, $r:ident, $f:ident) => {
         impl $r {
@@ -51,6 +52,7 @@ macro_rules! impl_result {
     };
 }
 
+#[macro_export]
 macro_rules! impl_error {
     ($t:ident, $n:ident) => {
         impl From<$t> for Error {

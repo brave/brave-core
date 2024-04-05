@@ -5,8 +5,8 @@ edition = "2021"
 license = "MPL-2.0"
 
 [dependencies]
+cxx = { version = "1.0", features = [ "alloc", "std" ] }
 orchard = { version = "0.7.1",  default-features = false }
-zip32 = { version = "0.1.1" }
 
 [lib]
 name = "brave_wallet_cxx"
