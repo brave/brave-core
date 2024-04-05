@@ -249,14 +249,9 @@ EXISTING_TRANSLATIONS = {
         "IDS_OPEN_GUEST_PROFILE", # &amp;Open Guest profile
     "IDC_OPEN_IN_CHROME": "IDS_OPEN_IN_CHROME", # &amp;Open in Brave
     "IDC_OPTIONS": "IDS_OPTIONS", # &amp;Options
-    "IDC_PASTE_AND_GO": \
-        # Pa&amp;ste and go to
-        # <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
-
-
-
-
-        "IDS_PASTE_AND_GO",
+    # Pa&amp;ste and go to
+    # <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
+    "IDC_PASTE_AND_GO": "IDS_PASTE_AND_GO",
     "IDC_PASTE": "IDS_PASTE", # &amp;Paste
     "IDC_RESTORE_TAB": "IDS_RESTORE_TAB", # R&amp;eopen closed tab
     "IDC_SAVE_PAGE": "IDS_SAVE_PAGE", # Save page &amp;as...
