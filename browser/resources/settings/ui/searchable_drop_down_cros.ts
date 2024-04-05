@@ -39,16 +39,16 @@ import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.m
 
 import {getTemplate} from './searchable_drop_down_cros.html.js';
 
-export interface SearchableDropDownCrosElement {
+export interface SearchableDropDownElement {
   $: {
     search: CrInputElement,
     dropdown: IronDropdownElement,
   };
 }
 
-export class SearchableDropDownCrosElement extends PolymerElement {
+export class SearchableDropDownElement extends PolymerElement {
   static get is() {
-    return 'searchable-drop-down-cros';
+    return 'searchable-drop-down';
   }
 
   static get template() {
@@ -488,9 +488,9 @@ export class SearchableDropDownCrosElement extends PolymerElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'searchable-drop-down-cros': SearchableDropDownCrosElement;
+    'searchable-drop-down': SearchableDropDownElement;
   }
 }
 
 customElements.define(
-    SearchableDropDownCrosElement.is, SearchableDropDownCrosElement);
+    SearchableDropDownElement.is, SearchableDropDownElement);
