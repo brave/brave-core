@@ -70,6 +70,12 @@
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
+      },
+      "depot_tools": {
+        "dir": "vendor/depot_tools",
+        "repository": {
+          "url": "https://chromium.googlesource.com/chromium/tools/depot_tools.git"
+        }
       }
     }
   },

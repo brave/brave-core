@@ -876,6 +876,12 @@ const util = {
     const excludeFileName = util.getGitInfoExcludeFileName(repoDir, true)
     fs.appendFileSync(excludeFileName, '\n' + exclusion)
   },
+
+  fetchAndCheckoutRef: (repoDir, ref) => {
+    const options = { cwd: repoDir, stdio: 'inherit' }
+    util.run('git', ['fetch', 'origin', ref.replace(/^origin\//, '')], options)
+    util.run('git', ['-c', 'advice.detachedHead=false', 'checkout', 'FETCH_HEAD'], options)
+  },
 }
 
 module.exports = util
