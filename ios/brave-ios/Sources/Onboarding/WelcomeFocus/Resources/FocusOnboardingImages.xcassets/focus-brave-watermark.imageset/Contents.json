@@ -1,17 +1,50 @@
 {
   "images" : [
     {
+      "filename" : "brave_watermark_dark.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "brave_watermark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "brave_watermark_dark@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "brave_watermark@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "brave_watermak@3x.png",
+      "filename" : "brave_watermak-dark@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "brave_watermark@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
