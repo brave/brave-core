@@ -37,7 +37,7 @@ const char* GetUserAgentOverride(const GURL& url) {
       {net::SchemefulSite(GURL("https://ted.com"))}};
 
   return kSites->contains(net::SchemefulSite(url)) ? kUserAgentOverride
-                                                  : nullptr;
+                                                   : nullptr;
 }
 }  // namespace
 
