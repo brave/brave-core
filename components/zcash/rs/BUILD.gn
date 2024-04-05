@@ -13,7 +13,7 @@ rust_static_library("rust_lib") {
   cxx_bindings = [ "lib.rs" ]
 
   deps = [
+    "//brave/components/brave_wallet/rust:rust_lib",
     "//brave/third_party/rust/orchard/v0_7:lib",
-    "//brave/third_party/rust/zip32/v0_1:lib",
   ]
 }
