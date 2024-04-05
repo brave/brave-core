@@ -50,15 +50,14 @@ const Container = styled.div`
   --leo-control-radius: ${radius.m};
 
   /* If we have search results, don't add a radius to the bottom of the search box */
-  &:has(+ div) {
+  &:has(+ .search-results) {
     --leo-control-radius: ${radius.m} ${radius.m} 0 0;
   }
 
   border-radius: var(--leo-control-radius);
-  position: relative;
 `
 
-const Backdrop = styled.div`
+export const Backdrop = styled.div`
   z-index: -1;
   position: absolute;
   inset: 0;
@@ -72,7 +71,6 @@ export default function SearchBox() {
     : 'Search the web'
   const searchInput = React.useRef<HTMLElement>()
   return <Container>
-    <Backdrop />
     <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.value)} placeholder={placeholderText}>
       <Flex slot="left-icon">
         <EnginePicker positionStrategy='fixed' value={searchEngine?.keyword} onChange={e => {

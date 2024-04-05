@@ -12,7 +12,6 @@ import { omniboxController, search, useSearchContext } from './SearchContext'
 import { braveSearchHost } from './config'
 
 const Container = styled.div`
-  backdrop-filter: blur(64px);
   background: rgba(255,255,255,0.1);
 
   color: ${color.white};
@@ -121,7 +120,7 @@ export default function SearchResults() {
       document.removeEventListener('keydown', handler)
     }
   }, [result, selectedMatch, query, searchEngine])
-  return result && result?.matches.length ? <Container data-theme="dark">
+  return result && result?.matches.length ? <Container data-theme="dark" className='search-results'>
     {result?.matches.map((r, i) => <SearchResult key={i} selected={i === selectedMatch} line={i} match={r} />)}
   </Container> : null
 }

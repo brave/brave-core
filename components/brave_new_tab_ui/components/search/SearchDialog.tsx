@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components'
-import SearchBox from './SearchBox';
+import SearchBox, { Backdrop } from './SearchBox';
 import SearchResults from './SearchResults';
-import { color, spacing } from '@brave/leo/tokens/css';
+import { color, radius, spacing } from '@brave/leo/tokens/css';
 import { createPortal } from 'react-dom';
 
 interface Props {
@@ -63,6 +63,7 @@ const Dialog = styled.dialog<{ offsetY: number }>`
 
   outline: none;
   border: none;
+  border-radius: ${radius.m};
   background: transparent;
   margin-top: var(--margin-top);
   padding: 2px;
@@ -137,6 +138,7 @@ export default function Component(props: Props) {
       doClose()
     }
   }}>
+    <Backdrop />
     <SearchBox />
     <SearchResults />
   </Dialog>, document.body)
