@@ -816,6 +816,11 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="use_titlecase">
         </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
       <if expr="is_win or is_macosx or is_linux">
         </if>
       <if expr="chromeos_lacros">
