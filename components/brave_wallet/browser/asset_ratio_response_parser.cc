@@ -21,6 +21,30 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
+namespace {
+
+bool ParseMeldLogos(const base::Value::Dict* logos, std::vector<std::string>& logo_images) {
+    if (!logos) {
+      return false;
+    }
+    if (const auto* dark_logo = logos->FindString("dark")) {
+      logo_images.push_back(*dark_logo);
+    }
+    if (const auto* dark_short_logo = logos->FindString("darkShort")) {
+      logo_images.push_back(*dark_short_logo);
+    }
+    if (const auto* light_logo = logos->FindString("light")) {
+      logo_images.push_back(*light_logo);
+    }
+    if (const auto* light_short_logo = logos->FindString("lightShort")) {
+      logo_images.push_back(*light_short_logo);
+    }
+
+    return true;
+}
+
+} //  namespace
+
 namespace brave_wallet {
 
 std::optional<std::string> ParseSardineAuthToken(
@@ -270,21 +294,9 @@ bool ParseServiceProviders(
     }
     sp->id = *sp_id;
 
-    const auto* logos = sp_item.GetDict().FindDict("logos");
-    if (!logos) {
+    if (const auto* logos = sp_item.GetDict().FindDict("logos");
+        !ParseMeldLogos(logos, sp->logo_images)) {
       return false;
-    }
-    if (const auto* dark_logo = logos->FindString("dark")) {
-      sp->logo_images.push_back(*dark_logo);
-    }
-    if (const auto* dark_short_logo = logos->FindString("darkShort")) {
-      sp->logo_images.push_back(*dark_short_logo);
-    }
-    if (const auto* light_logo = logos->FindString("light")) {
-      sp->logo_images.push_back(*light_logo);
-    }
-    if (const auto* light_short_logo = logos->FindString("lightShort")) {
-      sp->logo_images.push_back(*light_short_logo);
     }
 
     service_providers->emplace_back(std::move(sp));
@@ -431,6 +443,66 @@ bool ParseCryptoQuotes(const base::Value& json_value,
     quote->service_provider_id = *quote_sp;
     
     quotes->emplace_back(std::move(quote));
+  }
+
+  return true;
+}
+
+bool ParsePaymentMethods(
+    const base::Value& json_value,
+    std::vector<mojom::PaymentMethodPtr>* payment_methods) {
+// Parses results like this:
+// [
+//   {
+//     "paymentMethod": "ACH",
+//     "name": "ACH",
+//     "paymentType": "BANK_TRANSFER",
+//     "logos": {
+//       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
+//       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
+//     }
+//   }
+// ]
+  DCHECK(payment_methods);
+
+  if (!json_value.is_list()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
+    return false;
+  }
+
+  for (const auto& pm_item : json_value.GetList()) {
+    if (!pm_item.is_dict()) {
+      LOG(ERROR)
+          << "Invalid response, could not parse JSON, JSON is not a dict";
+      return false;
+    }
+
+    auto pm = mojom::PaymentMethod::New();
+    const std::string* pm_name = pm_item.GetDict().FindString("name");
+    if (!pm_name) {
+      return false;
+    }
+    pm->name = *pm_name;
+
+    const std::string* pm_payment_method = pm_item.GetDict().FindString("paymentMethod");
+    if (!pm_payment_method) {
+      return false;
+    }
+    pm->payment_method = *pm_payment_method;
+
+    const std::string* pm_payment_type = pm_item.GetDict().FindString("paymentType");
+    if (!pm_payment_type) {
+      return false;
+    }
+    pm->payment_type = *pm_payment_type;
+    
+    if (const auto* logos = pm_item.GetDict().FindDict("logos");
+        !ParseMeldLogos(logos, pm->logo_images)) {
+      return false;
+    }
+
+
+    payment_methods->emplace_back(std::move(pm));
   }
 
   return true;

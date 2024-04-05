@@ -138,7 +138,7 @@ base::flat_map<std::string, std::string> MakeMeldServicesKeyHeader() {
 
   return request_headers;
 }
-constexpr char kDefaultMeldServiceProviderStatuses[] = "LIVE,RECENTLY_ADDED";
+constexpr char kDefaultMeldStatuses[] = "LIVE,RECENTLY_ADDED";
 
 }  // namespace
 
@@ -582,7 +582,7 @@ void AssetRatioService::OnGetCoinMarkets(GetCoinMarketsCallback callback,
 GURL AssetRatioService::GetServiceProviderURL(const std::string& countries,
                                     const std::string& fiat_currencies,
                                     const std::string& crypto_currencies,
-                                    const std::string& payment_methods,
+                                    const std::string& payment_method_types,
                                     const std::string& statuses) {
   auto url = GURL(base::StringPrintf("%s/service-providers",
                                      base_url_for_test_.is_empty()
@@ -591,20 +591,20 @@ GURL AssetRatioService::GetServiceProviderURL(const std::string& countries,
   if (!statuses.empty()) {
     url = net::AppendQueryParameter(url, "statuses", statuses);
   } else {
-    url = net::AppendQueryParameter(url, "statuses", kDefaultMeldServiceProviderStatuses);    
+    url = net::AppendQueryParameter(url, "statuses", kDefaultMeldStatuses);    
   }
 
   if (!countries.empty()) {
     url = net::AppendQueryParameter(url, "countries", countries);
   }
   if (!fiat_currencies.empty()) {
-    url = net::AppendQueryParameter(url, "fiatCurrencies", countries);
+    url = net::AppendQueryParameter(url, "fiatCurrencies", fiat_currencies);
   }
   if (!crypto_currencies.empty()) {
     url = net::AppendQueryParameter(url, "cryptoCurrencies", crypto_currencies);
   }
-  if (!payment_methods.empty()) {
-    url = net::AppendQueryParameter(url, "paymentMethodTypes", payment_methods);
+  if (!payment_method_types.empty()) {
+    url = net::AppendQueryParameter(url, "paymentMethodTypes", payment_method_types);
   }
   
   return url;
@@ -615,6 +615,7 @@ void AssetRatioService::GetServiceProviders(
     const std::string& from_assets,
     const std::string& to_assets,
     const std::string& payment_methods,
+    const std::string& statuses,
     GetServiceProvidersCallback callback) 
 { 
   auto internal_callback =
@@ -623,7 +624,7 @@ void AssetRatioService::GetServiceProviders(
 
   api_request_helper_->Request(
       "GET", GetServiceProviderURL(countries, from_assets, to_assets,
-                                   payment_methods, ""), "", "",
+                                   payment_methods, statuses), "", "",
                                    std::move(internal_callback),MakeMeldServicesKeyHeader(),
                                    {.auto_retry_on_network_change = true, .enable_cache = true});
 }
@@ -708,6 +709,81 @@ void AssetRatioService::OnGetCryptoQuotes(GetCryptoQuotesCallback callback,
   }
 
   std::move(callback).Run(std::move(quotes), errors);
+}
+
+// static
+GURL AssetRatioService::GetGetPaymentMethodsURL(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses) {
+  auto url = GURL(base::StringPrintf("%s/service-providers/properties/payment-methods",
+                                     base_url_for_test_.is_empty()
+                                         ? GetMeldAssetRatioBaseURL().c_str()
+                                         : base_url_for_test_.spec().c_str()));
+  if (!statuses.empty()) {
+    url = net::AppendQueryParameter(url, "statuses", statuses);
+  } else {
+    url = net::AppendQueryParameter(url, "statuses", kDefaultMeldStatuses);    
+  }
+
+  if (!countries.empty()) {
+    url = net::AppendQueryParameter(url, "countries", countries);
+  }
+  if (!fiat_currencies.empty()) {
+    url = net::AppendQueryParameter(url, "fiatCurrencies", fiat_currencies);
+  }
+  if (!crypto_currencies.empty()) {
+    url = net::AppendQueryParameter(url, "cryptoCurrencies", crypto_currencies);
+  }
+  if (!service_providers.empty()) {
+    url = net::AppendQueryParameter(url, "serviceProviders", service_providers);
+  }
+  if (!payment_method_types.empty()) {
+    url = net::AppendQueryParameter(url, "paymentMethodTypes", payment_method_types);
+  }
+  
+  return url;
+}
+void AssetRatioService::GetPaymentMethods(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses,
+                         GetPaymentMethodsCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetPaymentMethods,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_->Request(
+      "GET", GetGetPaymentMethodsURL(countries, fiat_currencies, crypto_currencies, service_providers,
+                                   payment_method_types, statuses), "", "",
+                                   std::move(internal_callback),MakeMeldServicesKeyHeader(),
+                                   {.auto_retry_on_network_change = true, .enable_cache = true});
+}
+
+void AssetRatioService::OnGetPaymentMethods(GetPaymentMethodsCallback callback,
+                             APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run({}, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    return;
+  }
+
+  if (std::vector<std::string> errors; ParseMeldErrorResponse(api_request_result.value_body(), &errors)) {
+    std::move(callback).Run({}, errors);
+    return;
+  }
+  
+  std::vector<mojom::PaymentMethodPtr> payment_methods;
+  if (!ParsePaymentMethods(api_request_result.value_body(), &payment_methods)) {
+    std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
+    return;
+  }
+  
+  std::move(callback).Run(std::move(payment_methods), std::nullopt);
+
 }
 
 }  // namespace brave_wallet

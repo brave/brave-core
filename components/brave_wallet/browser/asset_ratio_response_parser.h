@@ -37,6 +37,9 @@ bool ParseServiceProviders(
 bool ParseCryptoQuotes(const base::Value& json_value,
                        std::vector<mojom::CryptoQuotePtr>* quotes,
                        std::string* error);
+bool ParsePaymentMethods(
+    const base::Value& json_value,
+    std::vector<mojom::PaymentMethodPtr>* payment_methods);
 
 }  // namespace brave_wallet
 

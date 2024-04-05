@@ -94,13 +94,14 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   static GURL GetServiceProviderURL(const std::string& countries,
                                     const std::string& fiat_currencies,
                                     const std::string& crypto_currencies,
-                                    const std::string& payment_methods,
+                                    const std::string& payment_method_types,
                                     const std::string& statuses);
 
   void GetServiceProviders(const std::string& countries,
                            const std::string& from_assets,
                            const std::string& to_assets,
                            const std::string& payment_methods,
+                           const std::string& statuses,
                            GetServiceProvidersCallback callback) override;
 
   void GetCryptoQuotes(const std::string& country,
@@ -109,6 +110,21 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                        const double source_amount,
                        const std::string& account,
                        GetCryptoQuotesCallback callback) override;
+
+  static GURL GetGetPaymentMethodsURL(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses);
+
+  void GetPaymentMethods(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses,
+                         GetPaymentMethodsCallback callback) override;
 
  private:
   friend class AssetRatioServiceUnitTest;
@@ -145,6 +161,9 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                              APIRequestResult api_request_result);
 
   void OnGetCryptoQuotes(GetCryptoQuotesCallback callback,
+                             APIRequestResult api_request_result);
+
+  void OnGetPaymentMethods(GetPaymentMethodsCallback callback,
                              APIRequestResult api_request_result);
 
   mojo::ReceiverSet<mojom::AssetRatioService> receivers_;

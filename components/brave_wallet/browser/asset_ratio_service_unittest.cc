@@ -143,6 +143,7 @@ class AssetRatioServiceUnitTest : public testing::Test {
       const std::string& from_assets,
       const std::string& to_assets,
       const std::string& payment_methods,
+      const std::string& statuses,
       AssetRatioService::GetServiceProvidersCallback callback,
       const bool error_interceptor = false) {
     if(!error_interceptor) {
@@ -152,7 +153,7 @@ class AssetRatioServiceUnitTest : public testing::Test {
     }
     base::RunLoop run_loop;
     asset_ratio_service_->GetServiceProviders(
-        countries, from_assets, to_assets, payment_methods,
+        countries, from_assets, to_assets, payment_methods, statuses,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::ServiceProviderPtr> sps,
                 const std::optional<std::vector<std::string>>& errors) {
@@ -186,6 +187,33 @@ class AssetRatioServiceUnitTest : public testing::Test {
               run_loop.Quit();
             }));
     run_loop.Run();    
+  }
+
+  void TestGetPaymentMethods(const std::string& content,
+                             const std::string& countries,
+                             const std::string& fiat_currencies,
+                             const std::string& crypto_currencies,
+                             const std::string& service_providers,
+                             const std::string& payment_method_types,
+                             const std::string& statuses,
+                             AssetRatioService::GetPaymentMethodsCallback callback,
+                             const bool error_interceptor = false) {
+    if (!error_interceptor) {
+      SetInterceptor(content);
+    } else {
+      SetErrorInterceptor("error");
+    }
+    base::RunLoop run_loop;
+    asset_ratio_service_->GetPaymentMethods(
+        countries, fiat_currencies, crypto_currencies, service_providers, payment_method_types, statuses,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::PaymentMethodPtr> payment_methods, const std::optional<std::vector<std::string>>& errors) {
+              LOG(INFO) << "[MELD] Received Payment Methods payment_methods.size():" << payment_methods.size();
+              std::move(callback).Run(std::move(payment_methods), errors);
+              run_loop.Quit();
+            }));
+    run_loop.Run();    
+
   }
 
  protected:
@@ -606,7 +634,7 @@ TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
       "darkShort": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_dark.png",
       "lightShort": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_light.png"
     }
-  }])", "US", "USD", "ETH", "",
+  }])", "US", "USD", "ETH", "", "",
       base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
                                      const std::optional<std::vector<std::string>>& errors) {
         EXPECT_FALSE(errors.has_value());
@@ -614,13 +642,13 @@ TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
         EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){return item->name == "Blockchain.com" && !item->logo_images.empty();}), 1);
       }));
 
-  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "",
+  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "", "",
       base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
                                      const std::optional<std::vector<std::string>>& errors) {
         EXPECT_TRUE(errors.has_value());
         EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
       }));
-  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "",
+  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "", "",
       base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
                                      const std::optional<std::vector<std::string>>& errors) {
         EXPECT_TRUE(errors.has_value());
@@ -636,7 +664,7 @@ TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
     ],
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
-  })", "US", "USD", "ETH", "",
+  })", "US", "USD", "ETH", "", "",
   base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
                                   const std::optional<std::vector<std::string>>& errors) {
     EXPECT_TRUE(errors.has_value());
@@ -774,6 +802,71 @@ TestGetCryptoQuotes(R"({
       std::vector<std::string>({"[sourceAmount] must not be null", "[sourceCurrencyCode] must not be blank"})
     );
   }), false);
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetPaymentMethods) {
+  TestGetPaymentMethods(R"([
+  {
+    "paymentMethod": "ACH",
+    "name": "ACH",
+    "paymentType": "BANK_TRANSFER",
+    "logos": {
+      "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
+      "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
+    }
+  }
+  ])", "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+        base::BindLambdaForTesting(
+          [](std::vector<mojom::PaymentMethodPtr> payment_methods,
+             const std::optional<std::vector<std::string>>& errors){
+              EXPECT_FALSE(errors.has_value());
+              EXPECT_EQ(base::ranges::count_if(
+                          payment_methods,
+                          [](const auto& item) {
+                            return item->payment_method == "ACH" &&
+                              item->name == "ACH" &&
+                              item->payment_type == "BANK_TRANSFER" &&
+                              !item->logo_images.empty();  
+                          }),
+                      1);
+
+             }));
+
+  TestGetPaymentMethods("some wrong data",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [](std::vector<mojom::PaymentMethodPtr> payment_methods,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
+          }));
+
+  TestGetPaymentMethods("some wrong data",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [](std::vector<mojom::PaymentMethodPtr> payment_methods,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+          }), true);
+
+  TestGetPaymentMethods(R"({
+    "code": "BAD_REQUEST",
+    "message": "Bad request",
+    "errors": [
+      "[sourceAmount] must not be null",
+      "[sourceCurrencyCode] must not be blank"
+    ],
+    "requestId": "356dd2b40fa55037bfe9d190b6438f59",
+    "timestamp": "2024-04-05T07:54:01.318455Z"
+  })", "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+  base::BindLambdaForTesting([&](std::vector<mojom::PaymentMethodPtr> payment_methods,
+                                  const std::optional<std::vector<std::string>>& errors) {
+    EXPECT_TRUE(errors.has_value());
+    EXPECT_EQ(*errors, 
+      std::vector<std::string>({"[sourceAmount] must not be null", "[sourceCurrencyCode] must not be blank"})
+    );
+  }), false);          
 }
 
 }  // namespace brave_wallet
