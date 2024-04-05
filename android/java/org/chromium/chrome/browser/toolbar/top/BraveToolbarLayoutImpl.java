@@ -58,7 +58,6 @@ import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
@@ -1391,11 +1390,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void onCompleteReset(boolean success) {
         if (success) {
             BraveRewardsHelper.resetRewards();
-            try {
-                BraveRelaunchUtils.askForRelaunch(BraveActivity.getBraveActivity());
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "onCompleteReset " + e);
-            }
         }
     }
 
