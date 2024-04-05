@@ -41,7 +41,8 @@ class GreaselionServiceImpl : public GreaselionService,
       const base::FilePath& install_directory,
       extensions::ExtensionSystem* extension_system,
       extensions::ExtensionRegistry* extension_registry,
-      scoped_refptr<base::SequencedTaskRunner> task_runner);
+      scoped_refptr<base::SequencedTaskRunner> task_runner,
+      std::unique_ptr<Delegate> delegate);
   GreaselionServiceImpl(const GreaselionServiceImpl&) = delete;
   GreaselionServiceImpl& operator=(const GreaselionServiceImpl&) = delete;
   ~GreaselionServiceImpl() override;
@@ -50,7 +51,6 @@ class GreaselionServiceImpl : public GreaselionService,
   void Shutdown() override;
 
   // GreaselionService overrides
-  void SetDelegate(std::unique_ptr<Delegate> delegate) override;
   void SetFeatureEnabled(GreaselionFeature feature, bool enabled) override;
   void UpdateInstalledExtensions() override;
   bool IsGreaselionExtension(const std::string& id) override;

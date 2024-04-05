@@ -53,7 +53,6 @@ class GreaselionService : public KeyedService,
   // KeyedService
   void Shutdown() override {}
 
-  virtual void SetDelegate(std::unique_ptr<Delegate> delegate) = 0;
   virtual void SetFeatureEnabled(GreaselionFeature feature, bool enabled) = 0;
   virtual void UpdateInstalledExtensions() = 0;
   virtual bool IsGreaselionExtension(const std::string& id) = 0;

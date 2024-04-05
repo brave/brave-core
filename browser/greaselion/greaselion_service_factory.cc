@@ -13,6 +13,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "brave/components/greaselion/browser/greaselion_service_impl.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -24,6 +25,40 @@
 #include "extensions/browser/extensions_browser_client.h"
 
 namespace greaselion {
+
+namespace {
+
+class GreaselionServiceDelegateImpl
+    : public greaselion::GreaselionService::Delegate {
+ public:
+  explicit GreaselionServiceDelegateImpl(
+      content::BrowserContext* browser_context)
+      : browser_context_(browser_context) {
+    DCHECK(browser_context_);
+  }
+
+  void AddExtension(extensions::Extension* extension) override {
+    if (auto* extension_service =
+            extensions::ExtensionSystem::Get(browser_context_)
+                ->extension_service()) {
+      extension_service->AddExtension(extension);
+    }
+  }
+
+  void UnloadExtension(const std::string& extension_id) override {
+    if (auto* extension_service =
+            extensions::ExtensionSystem::Get(browser_context_)
+                ->extension_service()) {
+      extension_service->UnloadExtension(
+          extension_id, extensions::UnloadedExtensionReason::UPDATE);
+    }
+  }
+
+ private:
+  raw_ptr<content::BrowserContext> browser_context_;  // Not owned
+};
+
+}  // namespace
 
 // static
 GreaselionServiceFactory* GreaselionServiceFactory::GetInstance() {
@@ -68,9 +103,10 @@ KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
   if (g_brave_browser_process)
     download_service = g_brave_browser_process->greaselion_download_service();
   std::unique_ptr<GreaselionServiceImpl> greaselion_service(
-      new GreaselionServiceImpl(download_service, GetInstallDirectory(),
-                                extension_system, extension_registry,
-                                task_runner));
+      new GreaselionServiceImpl(
+          download_service, GetInstallDirectory(), extension_system,
+          extension_registry, task_runner,
+          std::make_unique<GreaselionServiceDelegateImpl>(context)));
   return greaselion_service.release();
 }
 

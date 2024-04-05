@@ -16,7 +16,6 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
@@ -65,43 +64,10 @@
 #include "chrome/browser/browser_process.h"
 #endif
 
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/browser/greaselion/greaselion_service_factory.h"
-#include "brave/components/greaselion/browser/greaselion_service.h"
-#endif
-
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_system.h"
-#endif
-
-#if BUILDFLAG(ENABLE_GREASELION)
-namespace {
-
-class GreaselionServiceDelegateImpl
-    : public greaselion::GreaselionService::Delegate {
- public:
-  explicit GreaselionServiceDelegateImpl(
-      extensions::ExtensionService* extension_service)
-      : extension_service_(extension_service) {
-    DCHECK(extension_service_);
-  }
-
-  void AddExtension(extensions::Extension* extension) override {
-    extension_service_->AddExtension(extension);
-  }
-
-  void UnloadExtension(const std::string& extension_id) override {
-    extension_service_->UnloadExtension(
-        extension_id, extensions::UnloadedExtensionReason::UPDATE);
-  }
-
- private:
-  raw_ptr<extensions::ExtensionService> extension_service_;  // Not owned
-};
-
-}  // namespace
 #endif
 
 void BraveBrowserMainParts::PreBrowserStart() {
@@ -217,17 +183,6 @@ void BraveBrowserMainParts::PostProfileInit(Profile* profile,
     content::RenderFrameHost::AllowInjectingJavaScript();
     auto* command_line = base::CommandLine::ForCurrentProcess();
     command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_GREASELION)
-  if (auto* greaselion_service =
-          greaselion::GreaselionServiceFactory::GetForBrowserContext(profile)) {
-    extensions::ExtensionService* extension_service =
-        extensions::ExtensionSystem::Get(profile)->extension_service();
-    DCHECK(extension_service);
-    greaselion_service->SetDelegate(
-        std::make_unique<GreaselionServiceDelegateImpl>(extension_service));
   }
 #endif
 
