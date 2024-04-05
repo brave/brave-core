@@ -927,6 +927,22 @@ mojom::BlowfishSolanaStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
     raw_info->data = mojom::BlowfishSolanaStateChangeRawInfoDataUnion::
         NewSolStakeAuthorityChangeData(std::move(data));
+  } else if (value.kind ==
+             simulation_responses::SolanaRawInfoKind::kUserAccountOwnerChange) {
+    auto data_value =
+        simulation_responses::SolanaUserAccountOwnerChangeData::FromValue(
+            value.data.GetDict());
+    if (!data_value) {
+      return nullptr;
+    }
+
+    auto data = mojom::BlowfishSolanaUserAccountOwnerChangeData::New();
+    data->account = data_value->account;
+    data->current_owner = data_value->current_owner;
+    data->future_owner = data_value->future_owner;
+
+    raw_info->data = mojom::BlowfishSolanaStateChangeRawInfoDataUnion::
+        NewUserAccountOwnerChangeData(std::move(data));
   } else {
     return nullptr;
   }
@@ -941,8 +957,11 @@ mojom::BlowfishSuggestedColor ParseSuggestedColor(
       return mojom::BlowfishSuggestedColor::kCredit;
 
     case simulation_responses::SuggestedColor::kDebit:
-    default:
       return mojom::BlowfishSuggestedColor::kDebit;
+
+    case simulation_responses::SuggestedColor::kInfo:
+    default:
+      return mojom::BlowfishSuggestedColor::kInfo;
   }
 }
 

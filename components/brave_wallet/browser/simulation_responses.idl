@@ -106,7 +106,8 @@ namespace simulation_responses {
 
   enum SuggestedColor {
     CREDIT,
-    DEBIT
+    DEBIT,
+    INFO
   };
 
   dictionary Price {
@@ -393,6 +394,12 @@ namespace simulation_responses {
     DOMString solStaked;
   };
 
+  dictionary SolanaUserAccountOwnerChangeData {
+    DOMString account;
+    DOMString currentOwner;
+    DOMString futureOwner;
+  };
+
   dictionary SolanaStateChangeRawInfo {
     SolanaRawInfoKind kind;
 
@@ -401,8 +408,11 @@ namespace simulation_responses {
     //   - SPLTransferData
     //   - SPLApprovalData
     //   - SOLStakeAuthorityChangeData
-    //   - BFPLoaderAuthorityChangeData
-    //   - CompressedNFTTransferData
+    //   - SolanaUserAccountOwnerChangeData
+    //   - TODO(onyb): add BFPLoaderAuthorityChangeData
+    //   - TODO(onyb): add CompressedNFTTransferData
+    //   - TODO(onyb): add SOLStakeAccountDeposit
+    //   - TODO(onyb): add SOLStakeAccountWithdrawal
     any data;
   };
 

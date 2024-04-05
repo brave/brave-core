@@ -2793,7 +2793,8 @@ enum BlowfishSolanaErrorKind {
 
 enum BlowfishSuggestedColor {
   kCredit,
-  kDebit
+  kDebit,
+  kInfo
 };
 
 enum BlowfishOptInStatus {
@@ -3011,11 +3012,18 @@ struct BlowfishSOLStakeAuthorityChangeData {
   uint64 sol_staked;
 };
 
+struct BlowfishSolanaUserAccountOwnerChangeData {
+  string account;
+  string current_owner;
+  string future_owner;
+};
+
 union BlowfishSolanaStateChangeRawInfoDataUnion {
   BlowfishSOLTransferData sol_transfer_data;
   BlowfishSPLTransferData spl_transfer_data;
   BlowfishSPLApprovalData spl_approval_data;
   BlowfishSOLStakeAuthorityChangeData sol_stake_authority_change_data;
+  BlowfishSolanaUserAccountOwnerChangeData user_account_owner_change_data;
 };
 
 struct BlowfishSolanaStateChangeRawInfo {

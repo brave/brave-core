@@ -1480,6 +1480,19 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
                   "solStaked": "228895995552"
                 }
               }
+            },
+            {
+              "humanReadableDiff": "Program owner for 8eekKf..AtXzrT changed to BUfrp4..dJA75E",
+              "suggestedColor": "INFO",
+              "rawInfo": {
+                "kind": "USER_ACCOUNT_OWNER_CHANGE",
+                "data": {
+                  "account": "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT",
+                  "lamports": "1024632398",
+                  "currentOwner": "11111111111111111111111111111111",
+                  "futureOwner": "BUfrp43eBVbhc5RPsg52CDMAQKHXAj87MnZM5BdJA75E"
+                }
+              }
             }
           ]
         },
@@ -1495,7 +1508,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
   EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kNone);
   EXPECT_EQ(simulation_response->warnings.size(), 0u);
   EXPECT_FALSE(simulation_response->error);
-  ASSERT_EQ(simulation_response->expected_state_changes.size(), 5u);
+  ASSERT_EQ(simulation_response->expected_state_changes.size(), 6u);
 
   const auto& state_change_0 =
       simulation_response->expected_state_changes.at(0);
@@ -1642,6 +1655,25 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
   EXPECT_EQ(state_change_4_raw_info->asset->price->dollar_value_per_token,
             "100.92");
   EXPECT_EQ(state_change_4_raw_info->sol_staked, 228895995552ULL);
+
+  const auto& state_change_5 =
+      simulation_response->expected_state_changes.at(5);
+  EXPECT_EQ(state_change_5->human_readable_diff,
+            "Program owner for 8eekKf..AtXzrT changed to BUfrp4..dJA75E");
+  EXPECT_EQ(state_change_5->suggested_color,
+            mojom::BlowfishSuggestedColor::kInfo);
+  EXPECT_EQ(state_change_5->raw_info->kind,
+            mojom::BlowfishSolanaRawInfoKind::kUserAccountOwnerChange);
+  ASSERT_TRUE(
+      state_change_5->raw_info->data->is_user_account_owner_change_data());
+  const auto& state_change_5_raw_info =
+      state_change_5->raw_info->data->get_user_account_owner_change_data();
+  EXPECT_EQ(state_change_5_raw_info->account,
+            "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
+  EXPECT_EQ(state_change_5_raw_info->current_owner,
+            "11111111111111111111111111111111");
+  EXPECT_EQ(state_change_5_raw_info->future_owner,
+            "BUfrp43eBVbhc5RPsg52CDMAQKHXAj87MnZM5BdJA75E");
 }
 
 // Example adapted from
