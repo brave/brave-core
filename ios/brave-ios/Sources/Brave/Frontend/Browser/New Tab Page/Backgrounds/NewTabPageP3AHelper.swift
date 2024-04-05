@@ -9,30 +9,22 @@ import Growth
 import OSLog
 import Preferences
 
-protocol NewTabPageP3AHelperDataSource: AnyObject {
-  /// Whether or not Brave Rewards is enabled for the user.
-  ///
-  /// When Rewards/Ads is enabled, the Ads library will handle reporting NTP SI events as usual
-  var isRewardsEnabled: Bool { get }
-  /// The associated tab's active URL.
-  ///
-  /// Used to determine landing status of a clicked SI logo
-  var currentTabURL: URL? { get }
-}
-
 /// A P3A helper that will handle reporting dynamic P3A metrics around NTP SI interactions
 ///
 /// A data source must be set in order to record events
 final class NewTabPageP3AHelper {
 
   private let p3aUtils: BraveP3AUtils
+  private let rewards: BraveRewards
 
   private var registrations: [P3ACallbackRegistration?] = []
 
-  weak var dataSource: NewTabPageP3AHelperDataSource?
-
-  init(p3aUtils: BraveP3AUtils) {
+  init(
+    p3aUtils: BraveP3AUtils,
+    rewards: BraveRewards
+  ) {
     self.p3aUtils = p3aUtils
+    self.rewards = rewards
 
     self.registrations.append(contentsOf: [
       self.p3aUtils.registerRotationCallback { [weak self] type, isConstellation in
@@ -52,10 +44,10 @@ final class NewTabPageP3AHelper {
   /// Records an NTP SI event which will be used to generate dynamic P3A metrics
   func recordEvent(
     _ event: EventType,
-    on sponsoredImage: NTPSponsoredImageBackground
+    on tab: Tab,
+    for sponsoredImage: NTPSponsoredImageBackground
   ) {
-    assert(dataSource != nil, "You must set a data source to record events")
-    if !p3aUtils.isP3AEnabled || dataSource!.isRewardsEnabled == true {
+    if !p3aUtils.isP3AEnabled || rewards.isEnabled {
       return
     }
     let creativeInstanceId = sponsoredImage.creativeInstanceId
@@ -63,12 +55,13 @@ final class NewTabPageP3AHelper {
     if event == .tapped {
       expectedLandingURL = sponsoredImage.logo.destinationURL
       landingTimer?.invalidate()
-      landingTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
-        guard let self = self, let dataSource = self.dataSource else { return }
+      landingTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) {
+        [weak self, weak tab] _ in
+        guard let self = self, let tab = tab else { return }
         if let expectedURL = self.expectedLandingURL, expectedURL.isWebPage(),
-          dataSource.currentTabURL?.host == expectedURL.host
+          tab.url?.host == expectedURL.host
         {
-          self.recordEvent(.landed, on: sponsoredImage)
+          self.recordEvent(.landed, on: tab, for: sponsoredImage)
         }
       }
     }
@@ -160,7 +153,7 @@ final class NewTabPageP3AHelper {
     ).histogramName
     // Always send the creative total if ads are disabled (as per spec),
     // or send the total if there were outstanding events sent
-    if dataSource?.isRewardsEnabled == false || totalActiveCreatives > 0 {
+    if !rewards.isEnabled || totalActiveCreatives > 0 {
       p3aUtils.registerDynamicMetric(creativeTotalHistogramName, logType: .express)
       UmaHistogramRecordValueToBucket(
         creativeTotalHistogramName,

@@ -165,8 +165,6 @@ class NewTabPageViewController: UIViewController {
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
     super.init(nibName: nil, bundle: nil)
 
-    self.p3aHelper.dataSource = self
-
     Preferences.NewTabPage.showNewTabPrivacyHub.observe(from: self)
     Preferences.NewTabPage.showNewTabFavourites.observe(from: self)
 
@@ -509,7 +507,7 @@ class NewTabPageViewController: UIViewController {
     _ event: BraveAds.NewTabPageAdEventType,
     completion: ((_ success: Bool) -> Void)? = nil
   ) {
-    if case .sponsoredImage(let sponsoredBackground) = background.currentBackground {
+    if let tab = tab, case .sponsoredImage(let sponsoredBackground) = background.currentBackground {
       let eventType: NewTabPageP3AHelper.EventType? = {
         switch event {
         case .clicked: return .tapped
@@ -518,7 +516,7 @@ class NewTabPageViewController: UIViewController {
         }
       }()
       if let eventType {
-        p3aHelper.recordEvent(eventType, on: sponsoredBackground)
+        p3aHelper.recordEvent(eventType, on: tab, for: sponsoredBackground)
       }
       rewards.ads.triggerNewTabPageAdEvent(
         background.wallpaperId.uuidString,
@@ -1230,16 +1228,6 @@ extension NewTabPageViewController {
         value: sponsoredPercent
       )
     }
-  }
-}
-
-// MARK: - NewTabPageP3AHelperDataSource
-extension NewTabPageViewController: NewTabPageP3AHelperDataSource {
-  var currentTabURL: URL? {
-    tab?.url
-  }
-  var isRewardsEnabled: Bool {
-    rewards.isEnabled
   }
 }
 
