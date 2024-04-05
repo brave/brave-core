@@ -126,6 +126,21 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                          const std::string& statuses,
                          GetPaymentMethodsCallback callback) override;
 
+  static GURL GetFiatCurrenciesURL(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses);
+
+  void GetFiatCurrencies(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses,
+                         GetFiatCurrenciesCallback callback) override;
+
  private:
   friend class AssetRatioServiceUnitTest;
   FRIEND_TEST_ALL_PREFIXES(AssetRatioServiceUnitTest, GetStripeBuyURL);
@@ -164,6 +179,9 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                              APIRequestResult api_request_result);
 
   void OnGetPaymentMethods(GetPaymentMethodsCallback callback,
+                             APIRequestResult api_request_result);
+
+  void OnGetFiatCurrencies(GetFiatCurrenciesCallback callback,
                              APIRequestResult api_request_result);
 
   mojo::ReceiverSet<mojom::AssetRatioService> receivers_;

@@ -41,6 +41,10 @@ bool ParsePaymentMethods(
     const base::Value& json_value,
     std::vector<mojom::PaymentMethodPtr>* payment_methods);
 
+bool ParseFiatCurrencies(
+    const base::Value& json_value,
+    std::vector<mojom::FiatCurrencyPtr>* payment_methods);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_RESPONSE_PARSER_H_

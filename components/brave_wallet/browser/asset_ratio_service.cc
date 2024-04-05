@@ -746,6 +746,7 @@ GURL AssetRatioService::GetGetPaymentMethodsURL(const std::string& countries,
   
   return url;
 }
+
 void AssetRatioService::GetPaymentMethods(const std::string& countries,
                          const std::string& fiat_currencies,
                          const std::string& crypto_currencies,
@@ -781,9 +782,84 @@ void AssetRatioService::OnGetPaymentMethods(GetPaymentMethodsCallback callback,
     std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
-  
-  std::move(callback).Run(std::move(payment_methods), std::nullopt);
 
+  std::move(callback).Run(std::move(payment_methods), std::nullopt);
+}
+
+// static
+GURL AssetRatioService::GetFiatCurrenciesURL(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses) {
+  auto url = GURL(base::StringPrintf("%s/service-providers/properties/fiat-currencies",
+                                     base_url_for_test_.is_empty()
+                                         ? GetMeldAssetRatioBaseURL().c_str()
+                                         : base_url_for_test_.spec().c_str()));
+  if (!statuses.empty()) {
+    url = net::AppendQueryParameter(url, "statuses", statuses);
+  } else {
+    url = net::AppendQueryParameter(url, "statuses", kDefaultMeldStatuses);    
+  }
+
+  if (!countries.empty()) {
+    url = net::AppendQueryParameter(url, "countries", countries);
+  }
+  if (!fiat_currencies.empty()) {
+    url = net::AppendQueryParameter(url, "fiatCurrencies", fiat_currencies);
+  }
+  if (!crypto_currencies.empty()) {
+    url = net::AppendQueryParameter(url, "cryptoCurrencies", crypto_currencies);
+  }
+  if (!service_providers.empty()) {
+    url = net::AppendQueryParameter(url, "serviceProviders", service_providers);
+  }
+  if (!payment_method_types.empty()) {
+    url = net::AppendQueryParameter(url, "paymentMethodTypes", payment_method_types);
+  }
+  
+  return url;
+}
+
+void AssetRatioService::GetFiatCurrencies(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses,
+                         GetFiatCurrenciesCallback callback){
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetFiatCurrencies,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_->Request(
+      "GET", GetFiatCurrenciesURL(countries, fiat_currencies, crypto_currencies, service_providers,
+                                   payment_method_types, statuses), "", "",
+                                   std::move(internal_callback),MakeMeldServicesKeyHeader(),
+                                   {.auto_retry_on_network_change = true, .enable_cache = true});
+
+}
+
+void AssetRatioService::OnGetFiatCurrencies(GetFiatCurrenciesCallback callback,
+                             APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run({}, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    return;
+  }
+
+  if (std::vector<std::string> errors; ParseMeldErrorResponse(api_request_result.value_body(), &errors)) {
+    std::move(callback).Run({}, errors);
+    return;
+  }
+
+  std::vector<mojom::FiatCurrencyPtr> fiat_currencies;
+  if (!ParseFiatCurrencies(api_request_result.value_body(), &fiat_currencies)) {
+    std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
+    return;
+  }
+
+  std::move(callback).Run(std::move(fiat_currencies), std::nullopt);
 }
 
 }  // namespace brave_wallet

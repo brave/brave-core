@@ -216,6 +216,33 @@ class AssetRatioServiceUnitTest : public testing::Test {
 
   }
 
+  void TestGetFiatCurrencies(const std::string& content,
+                             const std::string& countries,
+                             const std::string& fiat_currencies,
+                             const std::string& crypto_currencies,
+                             const std::string& service_providers,
+                             const std::string& payment_method_types,
+                             const std::string& statuses,
+                             AssetRatioService::GetFiatCurrenciesCallback callback,
+                             const bool error_interceptor = false) {
+    if (!error_interceptor) {
+      SetInterceptor(content);
+    } else {
+      SetErrorInterceptor("error");
+    }
+    base::RunLoop run_loop;
+    asset_ratio_service_->GetFiatCurrencies(
+        countries, fiat_currencies, crypto_currencies, service_providers, payment_method_types, statuses,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::FiatCurrencyPtr> fiat_currencies, const std::optional<std::vector<std::string>>& errors) {
+              LOG(INFO) << "[MELD] Received GetFiatCurrencies fiat_currencies.size():" << fiat_currencies.size();
+              std::move(callback).Run(std::move(fiat_currencies), errors);
+              run_loop.Quit();
+            }));
+    run_loop.Run();    
+
+  }
+
  protected:
   std::unique_ptr<AssetRatioService> asset_ratio_service_;
   base::test::TaskEnvironment task_environment_;
@@ -867,6 +894,93 @@ TEST_F(AssetRatioServiceUnitTest, GetPaymentMethods) {
       std::vector<std::string>({"[sourceAmount] must not be null", "[sourceCurrencyCode] must not be blank"})
     );
   }), false);          
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetFiatCurrencies) {
+  TestGetFiatCurrencies(
+      R"([
+  {
+    "currencyCode": "AFN",
+    "name": "Afghani",
+    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+  },
+  {
+    "currencyCode": "DZD",
+    "name": "Algerian Dinar",
+    "symbolImageUrl": "https://images-currency.meld.io/fiat/DZD/symbol.png"
+  }])",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [](std::vector<mojom::FiatCurrencyPtr> fiat_currencies,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_FALSE(errors.has_value());
+            EXPECT_EQ(base::ranges::count_if(
+                          fiat_currencies,
+                          [](const auto& item) {
+                            return item->currency_code == "AFN" &&
+                                   item->name == "Afghani" &&
+                                   item->symbol_image_url ==
+                                       "https://images-currency.meld.io/fiat/"
+                                       "AFN/symbol.png";
+                          }),
+                      1);
+            EXPECT_EQ(base::ranges::count_if(
+                          fiat_currencies,
+                          [](const auto& item) {
+                            return item->currency_code == "DZD" &&
+                                   item->name == "Algerian Dinar" &&
+                                   item->symbol_image_url ==
+                                       "https://images-currency.meld.io/fiat/"
+                                       "DZD/symbol.png";
+                          }),
+                      1);
+          }));
+
+  TestGetFiatCurrencies(
+      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
+      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [](std::vector<mojom::FiatCurrencyPtr> fiat_currencies,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
+          }));
+
+  TestGetFiatCurrencies(
+      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
+      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [](std::vector<mojom::FiatCurrencyPtr> fiat_currencies,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+          }),
+      true);
+
+  TestGetFiatCurrencies(
+      R"({
+    "code": "BAD_REQUEST",
+    "message": "Bad request",
+    "errors": [
+      "[sourceAmount] must not be null",
+      "[sourceCurrencyCode] must not be blank"
+    ],
+    "requestId": "356dd2b40fa55037bfe9d190b6438f59",
+    "timestamp": "2024-04-05T07:54:01.318455Z"
+  })",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::FiatCurrencyPtr> fiat_currencies,
+              const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>(
+                                   {"[sourceAmount] must not be null",
+                                    "[sourceCurrencyCode] must not be blank"}));
+          }),
+      false);
 }
 
 }  // namespace brave_wallet

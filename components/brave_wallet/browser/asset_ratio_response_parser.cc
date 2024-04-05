@@ -500,9 +500,56 @@ bool ParsePaymentMethods(
         !ParseMeldLogos(logos, pm->logo_images)) {
       return false;
     }
-
-
     payment_methods->emplace_back(std::move(pm));
+  }
+
+  return true;
+}
+
+bool ParseFiatCurrencies(
+    const base::Value& json_value,
+    std::vector<mojom::FiatCurrencyPtr>* fiat_currencies) {
+// Parses results like this:
+// [
+//   {
+//     "currencyCode": "AFN",
+//     "name": "Afghani",
+//     "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+//   }
+// ]
+
+  DCHECK(fiat_currencies);
+
+  if (!json_value.is_list()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
+    return false;
+  }
+  for (const auto& fc_item : json_value.GetList()) {
+    if (!fc_item.is_dict()) {
+      LOG(ERROR)
+          << "Invalid response, could not parse JSON, JSON is not a dict";
+      return false;
+    }
+    auto fc = mojom::FiatCurrency::New();
+    const std::string* fc_name = fc_item.GetDict().FindString("name");
+    if (!fc_name) {
+      return false;
+    }
+    fc->name = *fc_name;
+
+    const std::string* fc_currency_code = fc_item.GetDict().FindString("currencyCode");
+    if (!fc_currency_code) {
+      return false;
+    }
+    fc->currency_code = *fc_currency_code;
+
+    const std::string* fc_img_url = fc_item.GetDict().FindString("symbolImageUrl");
+    if (!fc_img_url) {
+      return false;
+    }
+    fc->symbol_image_url = *fc_img_url;
+
+    fiat_currencies->emplace_back(std::move(fc));
   }
 
   return true;
