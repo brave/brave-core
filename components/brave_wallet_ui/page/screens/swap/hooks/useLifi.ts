@@ -143,7 +143,6 @@ export function useLifi({
       generateSwapTransaction,
       sendEvmTransaction,
       sendSolanaSerializedTransaction,
-      slippageTolerance,
       toAccountId,
       toToken
     ]
