@@ -395,9 +395,10 @@ PlaylistActionAddBubble::PlaylistActionAddBubble(
   SetButtonLabel(ui::DialogButton::DIALOG_BUTTON_OK,
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
+  SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, false);
 
   if (!playlist_tab_helper->is_adding_items()) {
-    OnMediaExtracted(true);
+    InitListView();
   }
 }
 
@@ -407,8 +408,16 @@ void PlaylistActionAddBubble::PlaylistTabHelperWillBeDestroyed() {
   playlist_tab_helper_observation_.Reset();
 }
 
-void PlaylistActionAddBubble::OnSavedItemsChanged(
-    const std::vector<playlist::mojom::PlaylistItemPtr>&) {
+void PlaylistActionAddBubble::OnAddedItemFromTabHelper(
+    const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
+  if (items.empty()) {
+    AddChildView(std::make_unique<views::Label>(
+        l10n_util::GetStringUTF16(IDS_PLAYLIST_MEDIA_NOT_FOUND_IN_THIS_PAGE)));
+    loading_spinner_->SetVisible(false);
+    SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, true);
+    return SizeToContents();
+  }
+
   auto show_confirm_bubble = base::BindOnce(
       [](base::WeakPtr<playlist::PlaylistTabHelper> tab_helper,
          Browser* browser, base::WeakPtr<PlaylistActionIconView> anchor) {
@@ -426,19 +435,6 @@ void PlaylistActionAddBubble::OnSavedItemsChanged(
   CloseAndRun(std::move(show_confirm_bubble));
 }
 
-void PlaylistActionAddBubble::OnMediaExtracted(bool result) {
-  if (result) {
-    InitListView();
-  } else {
-    AddChildView(std::make_unique<views::Label>(
-        l10n_util::GetStringUTF16(IDS_PLAYLIST_MEDIA_NOT_FOUND_IN_THIS_PAGE)));
-    loading_spinner_->SetVisible(false);
-    if (GetWidget()) {
-      SizeToContents();
-    }
-  }
-}
-
 void PlaylistActionAddBubble::InitListView() {
   CHECK(scroll_view_);
   CHECK(!list_view_);
@@ -453,6 +449,7 @@ void PlaylistActionAddBubble::InitListView() {
   SetAcceptCallbackWithClose(base::BindRepeating(
       &PlaylistActionAddBubble::AddSelected, base::Unretained(this)));
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, true);
+  SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, true);
 
   scroll_view_->SetPreferredSize(
       gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));
@@ -470,8 +467,10 @@ bool PlaylistActionAddBubble::AddSelected() {
   }
 
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
+  SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, false);
   scroll_view_->SetVisible(false);
   loading_spinner_->SetVisible(true);
+  SizeToContents();
 
   std::vector<playlist::mojom::PlaylistItemPtr> items =
       list_view_->GetSelected();
