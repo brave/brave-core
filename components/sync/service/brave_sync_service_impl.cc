@@ -23,6 +23,13 @@
 
 namespace syncer {
 
+void BraveSyncServiceImpl::SyncedObjectsCountContext::Reset(
+    size_t types_requested_init) {
+  types_requested = types_requested_init;
+  types_responed = 0;
+  total_objects_count = 0;
+}
+
 BraveSyncServiceImpl::BraveSyncServiceImpl(
     InitParams init_params,
     std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate)
@@ -349,31 +356,48 @@ void BraveSyncServiceImpl::OnSyncCycleCompleted(
 }
 
 void BraveSyncServiceImpl::UpdateP3AObjectsNumber() {
-  GetEntityCountsForDebugging(
-      BindRepeating(&BraveSyncServiceImpl::OnGotEntityCounts,
-                    weak_ptr_factory_.GetWeakPtr()));
+  synced_objects_context_.Reset(GetUserSettings()->GetSelectedTypes().size());
+
+  for (UserSelectableType user_selected_type :
+       GetUserSettings()->GetSelectedTypes()) {
+    ModelType model_type =
+        UserSelectableTypeToCanonicalModelType(user_selected_type);
+
+    ModelTypeController::TypeMap::const_iterator it =
+        model_type_controllers_.find(model_type);
+    DCHECK(it != model_type_controllers_.end())
+        << "Missing controller for type " << ModelTypeToDebugString(model_type);
+    if (it != model_type_controllers_.end()) {
+      ModelTypeController* controller = it->second.get();
+
+      controller->GetTypeEntitiesCount(
+          base::BindOnce(&BraveSyncServiceImpl::OnGetTypeEntitiesCount,
+                         weak_ptr_factory_.GetWeakPtr()));
+    }
+  }
 }
 
-void BraveSyncServiceImpl::OnGotEntityCounts(
-    const syncer::TypeEntitiesCount& entity_count) {
-  // int total_entities = 0;
-  // for (const syncer::TypeEntitiesCount& count : entity_counts) {
-  //   total_entities += count.non_tombstone_entities;
-  // }
-
-  // if (GetUserSettings()->GetSelectedTypes().Has(
-  //         syncer::UserSelectableType::kHistory)) {
-  //   // History stores info about synced objects in a different way than the
-  //   // others types. Issue a separate request to achieve this info
-  //   sync_service_impl_delegate_->GetKnownToSyncHistoryCount(base::BindOnce(
-  //       [](int total_entities, std::pair<bool, int> known_to_sync_count) {
-  //         brave_sync::p3a::RecordSyncedObjectsCount(total_entities +
-  //                                                   known_to_sync_count.second);
-  //       },
-  //       total_entities));
-  // } else {
-  //   brave_sync::p3a::RecordSyncedObjectsCount(total_entities);
-  // }
+void BraveSyncServiceImpl::OnGetTypeEntitiesCount(
+    const TypeEntitiesCount& count) {
+  ++synced_objects_context_.types_responed;
+  synced_objects_context_.total_objects_count += count.non_tombstone_entities;
+  if (synced_objects_context_.types_responed ==
+      synced_objects_context_.types_requested) {
+    if (GetUserSettings()->GetSelectedTypes().Has(
+            syncer::UserSelectableType::kHistory)) {
+      // History stores info about synced objects in a different way than the
+      // others types. Issue a separate request to achieve this info
+      sync_service_impl_delegate_->GetKnownToSyncHistoryCount(base::BindOnce(
+          [](int total_entities, std::pair<bool, int> known_to_sync_count) {
+            brave_sync::p3a::RecordSyncedObjectsCount(
+                total_entities + known_to_sync_count.second);
+          },
+          synced_objects_context_.total_objects_count));
+    } else {
+      brave_sync::p3a::RecordSyncedObjectsCount(
+          synced_objects_context_.total_objects_count);
+    }
+  }
 }
 
 void BraveSyncServiceImpl::OnSelectedTypesPrefChange() {
