@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//components/gcm_driver/config.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 source_set("profiles") {
@@ -25,7 +24,6 @@ source_set("profiles") {
 
   deps = [
     "//base",
-    "//brave/browser/gcm_driver",
     "//brave/common",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",
@@ -48,10 +46,6 @@ source_set("profiles") {
 
   if (enable_extensions) {
     deps += [ "//extensions/common" ]
-  }
-
-  if (use_gcm_from_platform) {
-    deps += [ "//brave/browser/gcm_driver" ]
   }
 
   if (enable_tor) {
