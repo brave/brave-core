@@ -6,15 +6,18 @@
 package org.chromium.chrome.browser.download;
 
 import org.jni_zero.CalledByNative;
+import org.jni_zero.JniType;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 
 public class BraveMimeUtils {
     @CalledByNative
-    public static boolean canAutoOpenMimeType(String mimeType) {
-        if (ContextUtils.getAppSharedPreferences().getBoolean(
-                    BravePreferenceKeys.BRAVE_DOWNLOADS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE, true)) {
+    public static boolean canAutoOpenMimeType(@JniType("std::string") String mimeType) {
+        if (ContextUtils.getAppSharedPreferences()
+                .getBoolean(
+                        BravePreferenceKeys.BRAVE_DOWNLOADS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE,
+                        true)) {
             return MimeUtils.canAutoOpenMimeType(mimeType);
         }
 
