@@ -1051,8 +1051,7 @@ public class BytecodeTest {
                         boolean.class,
                         boolean.class,
                         Runnable.class,
-                        Runnable.class,
-                        boolean.class));
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
                         "org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager",

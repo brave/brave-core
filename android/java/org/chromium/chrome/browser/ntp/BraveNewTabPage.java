@@ -149,7 +149,6 @@ public class BraveNewTabPage extends NewTabPage {
                         isInNightMode,
                         this,
                         profile,
-                        /* isPlaceholderShownInitially= */ false,
                         mBottomSheetController,
                         shareDelegateSupplier,
                         /* externalScrollableContainerDelegate= */ null,

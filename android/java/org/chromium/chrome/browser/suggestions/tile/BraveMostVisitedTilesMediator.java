@@ -28,8 +28,7 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
             boolean isScrollableMVTEnabled,
             boolean isTablet,
             @Nullable Runnable snapshotTileGridChangedRunnable,
-            @Nullable Runnable tileCountChangedRunnable,
-            boolean isNtpAsHomeSurfaceEnabled) {
+            @Nullable Runnable tileCountChangedRunnable) {
         super(
                 resources,
                 uiConfig,
@@ -40,8 +39,7 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
                 isScrollableMVTEnabled,
                 isTablet,
                 snapshotTileGridChangedRunnable,
-                tileCountChangedRunnable,
-                isNtpAsHomeSurfaceEnabled);
+                tileCountChangedRunnable);
     }
 
     protected void updateTilePlaceholderVisibility() {
