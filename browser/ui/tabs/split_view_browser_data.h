@@ -58,7 +58,7 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
 
     base::WeakPtr<SplitViewBrowserData> data_;
 
-    std::unique_ptr<base::ScopedClosureRunner> closure_;
+    base::ScopedClosureRunner closure_;
   };
   [[nodiscard]] OnTabDragEndedClosure TabDragStarted();
 

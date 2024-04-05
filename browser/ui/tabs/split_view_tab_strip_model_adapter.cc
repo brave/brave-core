@@ -12,7 +12,6 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/tab_groups/tab_group_id.h"
-#include "ui/gfx/range/range.h"
 
 SplitViewTabStripModelAdapter::SplitViewTabStripModelAdapter(
     SplitViewBrowserData& split_view_browser_data,
@@ -53,10 +52,6 @@ void SplitViewTabStripModelAdapter::TabDragStarted() {
 }
 
 void SplitViewTabStripModelAdapter::TabDragEnded() {
-  if (split_view_browser_data_->tiles().empty() || !is_in_tab_dragging()) {
-    return;
-  }
-
   // Check if any tiles are separated after drag and drop session. Then break
   // the tiles.
   std::vector<SplitViewBrowserData::Tile> tiles_to_break;

@@ -113,9 +113,7 @@ SplitViewBrowserData::OnTabDragEndedClosure::OnTabDragEndedClosure() = default;
 SplitViewBrowserData::OnTabDragEndedClosure::OnTabDragEndedClosure(
     base::WeakPtr<SplitViewBrowserData> data,
     base::OnceClosure closure)
-    : data_(data),
-      closure_(
-          std::make_unique<base::ScopedClosureRunner>(std::move(closure))) {
+    : data_(data), closure_(std::move(closure)) {
   CHECK(data_);
 }
 
@@ -133,30 +131,31 @@ SplitViewBrowserData::OnTabDragEndedClosure::operator=(
 
 void SplitViewBrowserData::OnTabDragEndedClosure::RunAndReset() {
   if (closure_) {
-    this->closure_->RunAndReset();
+    closure_.RunAndReset();
   }
   data_.reset();
 }
 
 void SplitViewBrowserData::OnTabDragEndedClosure::
     RunCurrentClosureIfNeededAndReplaceWith(OnTabDragEndedClosure&& other) {
-  if (this->data_.get() == other.data_.get()) {
+  if (data_.get() == other.data_.get()) {
     // In case |this| and |other| are pointing at the same |data_|, just discard
     // the old one. This means we've got the callback from the same Browser
     // instance.
-    if (this->closure_) {
-      this->closure_->Release().Reset();
+    if (closure_) {
+      closure_.Release().Reset();
     }
   } else {
     // Target Browser was changed, so we need to run the callback for the old
     // target browser.
-    if (this->closure_) {
-      this->closure_->RunAndReset();
+    if (closure_) {
+      closure_.RunAndReset();
     }
   }
 
-  std::swap(this->data_, other.data_);
-  std::swap(this->closure_, other.closure_);
+  data_.reset();
+  std::swap(data_, other.data_);
+  std::swap(closure_, other.closure_);
 }
 
 SplitViewBrowserData::OnTabDragEndedClosure::~OnTabDragEndedClosure() = default;
