@@ -15,6 +15,8 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/conversion_queue.h"
+#include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/conversion_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
@@ -28,7 +30,8 @@ class ConversionsObserver;
 struct ConversionInfo;
 struct VerifiableConversionInfo;
 
-class Conversions final : public TabManagerObserver {
+class Conversions final : public ConversionQueueDelegate,
+                          public TabManagerObserver {
  public:
   Conversions();
 
@@ -83,6 +86,9 @@ class Conversions final : public TabManagerObserver {
   void NotifyDidConvertAd(const ConversionInfo& conversion) const;
   void NotifyFailedToConvertAd(const std::string& creative_instance_id) const;
 
+  // ConversionQueueDelegate:
+  void OnDidProcessConversionQueue(const ConversionInfo& conversion) override;
+
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
@@ -91,6 +97,10 @@ class Conversions final : public TabManagerObserver {
   base::ObserverList<ConversionsObserver> observers_;
 
   ConversionResource resource_;
+
+  // Transition legacy conversions. This is a no-op for new conversions.
+  // `ConversionQueue` should be removed after several browser releases.
+  ConversionQueue queue_;
 
   const database::table::CreativeSetConversions
       creative_set_conversions_database_table_;

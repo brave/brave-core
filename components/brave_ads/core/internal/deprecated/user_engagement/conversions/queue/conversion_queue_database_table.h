@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_QUEUE_CONVERSION_QUEUE_DATABASE_TABLE_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_QUEUE_CONVERSION_QUEUE_DATABASE_TABLE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_USER_ENGAGEMENT_CONVERSIONS_QUEUE_CONVERSION_QUEUE_DATABASE_TABLE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_USER_ENGAGEMENT_CONVERSIONS_QUEUE_CONVERSION_QUEUE_DATABASE_TABLE_H_
 
 #include <string>
 
 #include "base/check_op.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_info.h"
+#include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/queue_item/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 
@@ -69,4 +69,4 @@ class ConversionQueue final : public TableInterface {
 
 }  // namespace brave_ads::database::table
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_QUEUE_CONVERSION_QUEUE_DATABASE_TABLE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_USER_ENGAGEMENT_CONVERSIONS_QUEUE_CONVERSION_QUEUE_DATABASE_TABLE_H_
