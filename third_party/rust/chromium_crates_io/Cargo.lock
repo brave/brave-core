@@ -317,7 +317,6 @@ dependencies = [
  "brave-wallet-cxx",
  "challenge-bypass-ristretto-cxx",
  "constellation-cxx",
- "cxx",
  "filecoin-cxx",
  "json-cxx",
  "skus-cxx",
