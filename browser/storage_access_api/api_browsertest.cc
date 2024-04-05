@@ -79,7 +79,7 @@ class StorageAccessAPIBrowserTest : public PlatformBrowserTest {
 
   void SetUpOnMainThread() override {
     host_resolver()->AddRule("*", "127.0.0.1");
-    base::FilePath path = base::PathService::CheckedGet(content::DIR_TEST_DATA);
+    base::FilePath path = GetChromeTestDataDir();
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromDirectory(path);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
