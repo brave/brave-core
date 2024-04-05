@@ -103,10 +103,10 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                            const std::string& payment_methods,
                            GetServiceProvidersCallback callback) override;
 
-  void GetCryptoQuotes(const std::string& countries,
-                       const std::string& from_assets,
-                       const std::string& to_assets,
-                       double source_amount,
+  void GetCryptoQuotes(const std::string& country,
+                       const std::string& from_asset,
+                       const std::string& to_asset,
+                       const double source_amount,
                        const std::string& account,
                        GetCryptoQuotesCallback callback) override;
 
@@ -142,6 +142,9 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                         APIRequestResult api_request_result);
 
   void OnGetServiceProviders(GetServiceProvidersCallback callback,
+                             APIRequestResult api_request_result);
+
+  void OnGetCryptoQuotes(GetCryptoQuotesCallback callback,
                              APIRequestResult api_request_result);
 
   mojo::ReceiverSet<mojom::AssetRatioService> receivers_;

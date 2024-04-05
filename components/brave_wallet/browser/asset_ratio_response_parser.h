@@ -30,7 +30,13 @@ std::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
 
 std::optional<std::string> ParseStripeBuyURL(const base::Value& json_value);
 
-bool ParseServiceProviders(const base::Value& json_value, std::vector<mojom::ServiceProviderPtr>* service_providers);
+bool ParseMeldErrorResponse(const base::Value& json_value, std::vector<std::string>* errors);
+bool ParseServiceProviders(
+    const base::Value& json_value,
+    std::vector<mojom::ServiceProviderPtr>* service_providers);
+bool ParseCryptoQuotes(const base::Value& json_value,
+                       std::vector<mojom::CryptoQuotePtr>* quotes,
+                       std::string* error);
 
 }  // namespace brave_wallet
 

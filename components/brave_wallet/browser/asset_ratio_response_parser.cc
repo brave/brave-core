@@ -7,6 +7,7 @@
 #include <optional>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/logging.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
@@ -286,7 +287,150 @@ bool ParseServiceProviders(
       sp->logo_images.push_back(*light_short_logo);
     }
 
-    service_providers->push_back(std::move(sp));
+    service_providers->emplace_back(std::move(sp));
+  }
+
+  return true;
+}
+
+bool ParseMeldErrorResponse(const base::Value& json_value,
+                            std::vector<std::string>* errors) {
+  // Parses results like this:
+  // {
+  //     "code": "BAD_REQUEST",
+  //     "message": "Bad request",
+  //     "errors": [
+  //         "[amount] Must be a decimal value greater than zero"
+  //     ],
+  //     "requestId": "eb6aaa76bd7103cf6c5b090610c31913",
+  //     "timestamp": "2022-01-19T20:32:30.784928Z"
+  // }
+  DCHECK(errors);
+  if (!json_value.is_dict()) {
+    return false;
+  }
+
+  const auto& response_error_dict = json_value.GetDict();
+
+  if (const auto* response_errors = response_error_dict.FindList("errors");
+      response_errors) {
+    for (const auto& err : *response_errors) {
+      errors->emplace_back(err.GetString());
+    }
+  }
+
+  if (const auto* response_error_message =
+          response_error_dict.FindString("message");
+      response_error_message && errors->empty()) {
+    errors->emplace_back(*response_error_message);
+  }
+
+  return !errors->empty();
+}
+
+bool ParseCryptoQuotes(const base::Value& json_value,
+                       std::vector<mojom::CryptoQuotePtr>* quotes,
+                       std::string* error) {
+// Parses results like this:
+// {
+//   "quotes": [
+//     {
+//       "transactionType": "CRYPTO_PURCHASE",
+//       "sourceAmount": 50,
+//       "sourceAmountWithoutFees": 43.97,
+//       "fiatAmountWithoutFees": 43.97,
+//       "destinationAmountWithoutFees": null,
+//       "sourceCurrencyCode": "USD",
+//       "countryCode": "US",
+//       "totalFee": 6.03,
+//       "networkFee": 3.53,
+//       "transactionFee": 2,
+//       "destinationAmount": 0.00066413,
+//       "destinationCurrencyCode": "BTC",
+//       "exchangeRate": 75286,
+//       "paymentMethodType": "APPLE_PAY",
+//       "customerScore": 20,
+//       "serviceProvider": "TRANSAK"
+//     }
+//   ],
+//   "message": null,
+//   "error": null
+// }
+  DCHECK(quotes);
+  DCHECK(error);
+
+  if (!json_value.is_dict()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
+    return false;
+  }
+
+  const auto& response_dict = json_value.GetDict();
+  if (const auto* response_error = response_dict.FindString("error")) {
+    *error = *response_error;
+  }
+
+  const auto* response_quotes = response_dict.FindList("quotes");
+  if (!response_quotes) {
+    return false;
+  }
+
+  for(const auto& item : *response_quotes) {
+    if (!item.is_dict()) {
+      LOG(ERROR)
+          << "Invalid response, could not parse JSON, JSON is not a dict";
+      return false;
+    }
+
+    auto quote = mojom::CryptoQuote::New();
+    const std::string* quote_tt = item.GetDict().FindString("transactionType");
+    if (!quote_tt) {
+      return false;
+    }
+    quote->transaction_type = *quote_tt;
+
+    auto quote_er = item.GetDict().FindDouble("exchangeRate");
+    if (!quote_er) {
+      return false;
+    }
+    quote->exchange_rate = *quote_er;
+
+    auto quote_amount = item.GetDict().FindDouble("sourceAmount");
+    if (!quote_amount) {
+      return false;
+    }
+    quote->source_amount = *quote_amount;
+
+    auto quote_amount_without_fee = item.GetDict().FindDouble("sourceAmountWithoutFees");
+    if (!quote_amount_without_fee) {
+      return false;
+    }
+    quote->source_amount_without_fee = *quote_amount_without_fee;
+
+    auto quote_total_fee = item.GetDict().FindDouble("totalFee");
+    if (!quote_total_fee) {
+      return false;
+    }
+    quote->total_fee = *quote_total_fee;
+
+    const std::string* quote_pp = item.GetDict().FindString("paymentMethodType");
+    if (!quote_pp) {
+      return false;
+    }
+    quote->payment_method = *quote_pp;
+
+    auto quote_dest_amount = item.GetDict().FindDouble("destinationAmount");
+    if (!quote_dest_amount) {
+      return false;
+    }
+    quote->destination_amount = *quote_dest_amount;
+    
+    const std::string* quote_sp = item.GetDict().FindString("serviceProvider");
+    if (!quote_sp) {
+      return false;
+    }
+    quote->service_provider_id = *quote_sp;
+    
+    quotes->emplace_back(std::move(quote));
   }
 
   return true;

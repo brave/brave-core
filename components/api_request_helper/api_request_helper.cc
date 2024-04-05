@@ -197,7 +197,7 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const APIRequestOptions& request_options,
     ResponseConversionCallback conversion_callback) {
 
-LOG(INFO) << "[NFT] APIRequestHelper::Request Method: " << method << " URL: " << url.spec() << " payload: " << payload
+LOG(INFO) << "[MELD] APIRequestHelper::Request Method: " << method << " URL: " << url.spec() << " payload: " << payload
 << " Headers: " << MapToString<std::string, std::string>(headers)
 ;
 
@@ -486,7 +486,7 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
     raw_body = converted_body.value();
   }
 
-LOG(INFO) << "[NFT] APIRequestHelper::OnResponse Response URL: " << result.final_url() <<  " response_code:" << result.response_code() << " ErrCode: " << result.error_code() << " Body: " << raw_body
+LOG(INFO) << "[MELD] APIRequestHelper::OnResponse Response URL: " << result.final_url() <<  " response_code:" << result.response_code() << " ErrCode: " << result.error_code() << " Body: " << raw_body
 << " Headers: " << MapToString<std::string, std::string>(result.headers())
 ;
 

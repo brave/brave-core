@@ -143,9 +143,7 @@ class AssetRatioServiceUnitTest : public testing::Test {
       const std::string& from_assets,
       const std::string& to_assets,
       const std::string& payment_methods,
-      base::OnceCallback<void(std::vector<mojom::ServiceProviderPtr> sps,
-                              const std::optional<std::string>& error)>
-          callback,
+      AssetRatioService::GetServiceProvidersCallback callback,
       const bool error_interceptor = false) {
     if(!error_interceptor) {
       SetInterceptor(content);
@@ -157,12 +155,37 @@ class AssetRatioServiceUnitTest : public testing::Test {
         countries, from_assets, to_assets, payment_methods,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::ServiceProviderPtr> sps,
-                const std::optional<std::string>& error) {
+                const std::optional<std::vector<std::string>>& errors) {
               LOG(INFO) << "[MELD] Received SPS sps.size():" << sps.size();
-              std::move(callback).Run(std::move(sps), error);
+              std::move(callback).Run(std::move(sps), errors);
               run_loop.Quit();
             }));
     run_loop.Run();
+  }
+
+  void TestGetCryptoQuotes(const std::string& content,
+                           const std::string& country,
+                           const std::string& from_asset,
+                           const std::string& to_asset,
+                           const double source_amount,
+                           const std::string& account,
+                           AssetRatioService::GetCryptoQuotesCallback callback,
+                           const bool error_interceptor = false) {
+    if (!error_interceptor) {
+      SetInterceptor(content);
+    } else {
+      SetErrorInterceptor("error");
+    }
+    base::RunLoop run_loop;
+    asset_ratio_service_->GetCryptoQuotes(
+        country, from_asset, to_asset, source_amount, account,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::CryptoQuotePtr> quotes, const std::optional<std::vector<std::string>>& errors) {
+              LOG(INFO) << "[MELD] Received Quotes quotes.size():" << quotes.size();
+              std::move(callback).Run(std::move(quotes), errors);
+              run_loop.Quit();
+            }));
+    run_loop.Run();    
   }
 
  protected:
@@ -585,24 +608,172 @@ TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
     }
   }])", "US", "USD", "ETH", "",
       base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
-                                     const std::optional<std::string>& error) {
-        EXPECT_FALSE(error.has_value());
+                                     const std::optional<std::vector<std::string>>& errors) {
+        EXPECT_FALSE(errors.has_value());
         EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){return item->name == "Banxa" && !item->logo_images.empty();}), 1);
         EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){return item->name == "Blockchain.com" && !item->logo_images.empty();}), 1);
       }));
 
   TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "",
       base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
-                                     const std::optional<std::string>& error) {
-        EXPECT_TRUE(error.has_value());
-        EXPECT_EQ(*error, "PARSING_ERROR");
+                                     const std::optional<std::vector<std::string>>& errors) {
+        EXPECT_TRUE(errors.has_value());
+        EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
       }));
   TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "",
       base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
-                                     const std::optional<std::string>& error) {
-        EXPECT_TRUE(error.has_value());
-        EXPECT_EQ(*error, "INTERNAL_SERVICE_ERROR");
+                                     const std::optional<std::vector<std::string>>& errors) {
+        EXPECT_TRUE(errors.has_value());
+        EXPECT_EQ(*errors, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
       }), true);
+
+  TestGetServiceProvider(R"({
+    "code": "BAD_REQUEST",
+    "message": "Bad request",
+    "errors": [
+      "[sourceAmount] must not be null",
+      "[sourceCurrencyCode] must not be blank"
+    ],
+    "requestId": "356dd2b40fa55037bfe9d190b6438f59",
+    "timestamp": "2024-04-05T07:54:01.318455Z"
+  })", "US", "USD", "ETH", "",
+  base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
+                                  const std::optional<std::vector<std::string>>& errors) {
+    EXPECT_TRUE(errors.has_value());
+    EXPECT_EQ(*errors, 
+      std::vector<std::string>({"[sourceAmount] must not be null", "[sourceCurrencyCode] must not be blank"})
+    );
+  }), false);
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetCryptoQuotes) {
+  TestGetCryptoQuotes(
+      R"({
+  "quotes": [
+    {
+      "transactionType": "CRYPTO_PURCHASE",
+      "sourceAmount": 50,
+      "sourceAmountWithoutFees": 43.97,
+      "fiatAmountWithoutFees": 43.97,
+      "destinationAmountWithoutFees": null,
+      "sourceCurrencyCode": "USD",
+      "countryCode": "US",
+      "totalFee": 6.03,
+      "networkFee": 3.53,
+      "transactionFee": 2,
+      "destinationAmount": 0.00066413,
+      "destinationCurrencyCode": "BTC",
+      "exchangeRate": 75286,
+      "paymentMethodType": "APPLE_PAY",
+      "customerScore": 20,
+      "serviceProvider": "TRANSAK"
+    }
+  ],
+  "message": null,
+  "error": null
+})",
+      "US", "USD", "BTC", 50, "btc account address",
+      base::BindLambdaForTesting(
+          [](std::vector<mojom::CryptoQuotePtr> quotes,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_FALSE(errors.has_value());
+            EXPECT_EQ(base::ranges::count_if(
+                          quotes,
+                          [](const auto& item) {
+                            return item->transaction_type == "CRYPTO_PURCHASE" &&
+                              item->exchange_rate == 75286 &&
+                              item->source_amount == 50 &&
+                              item->source_amount_without_fee == 43.97 &&
+                              item->total_fee == 6.03 &&
+                              item->payment_method == "APPLE_PAY" &&
+                              item->destination_amount == 0.00066413 &&
+                              item->service_provider_id == "TRANSAK";  
+                          }),
+                      1);
+          }));
+
+  TestGetCryptoQuotes("some wrong data",
+      "US", "USD", "BTC", 50, "btc account address",
+      base::BindLambdaForTesting(
+          [](std::vector<mojom::CryptoQuotePtr> quotes,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
+          }));
+
+  TestGetCryptoQuotes("some wrong data",
+      "US", "USD", "BTC", 50, "btc account address",
+      base::BindLambdaForTesting(
+          [](std::vector<mojom::CryptoQuotePtr> quotes,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+          }), true);
+
+  TestGetCryptoQuotes(
+      R"({
+  "quotes": [
+    {
+      "transactionType": "CRYPTO_PURCHASE",
+      "sourceAmount": 50,
+      "sourceAmountWithoutFees": 43.97,
+      "fiatAmountWithoutFees": 43.97,
+      "destinationAmountWithoutFees": null,
+      "sourceCurrencyCode": "USD",
+      "countryCode": "US",
+      "totalFee": 6.03,
+      "networkFee": 3.53,
+      "transactionFee": 2,
+      "destinationAmount": 0.00066413,
+      "destinationCurrencyCode": "BTC",
+      "exchangeRate": 75286,
+      "paymentMethodType": "APPLE_PAY",
+      "customerScore": 20,
+      "serviceProvider": "TRANSAK"
+    }
+  ],
+  "message": null,
+  "error": "error description"
+})",
+      "US", "USD", "BTC", 50, "btc account address",
+      base::BindLambdaForTesting(
+          [](std::vector<mojom::CryptoQuotePtr> quotes,
+             const std::optional<std::vector<std::string>>& errors) {
+            LOG(INFO) << "[MELD] test err descr ";
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>{"error description"});
+            EXPECT_EQ(base::ranges::count_if(
+                          quotes,
+                          [](const auto& item) {
+                            return item->transaction_type == "CRYPTO_PURCHASE" &&
+                              item->exchange_rate == 75286 &&
+                              item->source_amount == 50 &&
+                              item->source_amount_without_fee == 43.97 &&
+                              item->total_fee == 6.03 &&
+                              item->payment_method == "APPLE_PAY" &&
+                              item->destination_amount == 0.00066413 &&
+                              item->service_provider_id == "TRANSAK";  
+                          }),
+                      1);
+          }));
+
+TestGetCryptoQuotes(R"({
+    "code": "BAD_REQUEST",
+    "message": "Bad request",
+    "errors": [
+      "[sourceAmount] must not be null",
+      "[sourceCurrencyCode] must not be blank"
+    ],
+    "requestId": "356dd2b40fa55037bfe9d190b6438f59",
+    "timestamp": "2024-04-05T07:54:01.318455Z"
+  })", "US", "USD", "BTC", 50, "btc account address",
+  base::BindLambdaForTesting([&](std::vector<mojom::CryptoQuotePtr> quotes,
+                                  const std::optional<std::vector<std::string>>& errors) {
+    EXPECT_TRUE(errors.has_value());
+    EXPECT_EQ(*errors, 
+      std::vector<std::string>({"[sourceAmount] must not be null", "[sourceCurrencyCode] must not be blank"})
+    );
+  }), false);
 }
 
 }  // namespace brave_wallet

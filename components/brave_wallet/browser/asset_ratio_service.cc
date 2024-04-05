@@ -10,10 +10,12 @@
 #include <optional>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/base64.h"
 #include "base/environment.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
@@ -582,7 +584,7 @@ GURL AssetRatioService::GetServiceProviderURL(const std::string& countries,
                                     const std::string& crypto_currencies,
                                     const std::string& payment_methods,
                                     const std::string& statuses) {
-  GURL url = GURL(base::StringPrintf("%s/service-providers",
+  auto url = GURL(base::StringPrintf("%s/service-providers",
                                      base_url_for_test_.is_empty()
                                          ? GetMeldAssetRatioBaseURL().c_str()
                                          : base_url_for_test_.spec().c_str()));
@@ -629,22 +631,83 @@ void AssetRatioService::GetServiceProviders(
 void AssetRatioService::OnGetServiceProviders(GetServiceProvidersCallback callback,
                                          APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run({}, "INTERNAL_SERVICE_ERROR");
+    std::move(callback).Run({}, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
     return;
   }
+
+  if (std::vector<std::string> errors; ParseMeldErrorResponse(api_request_result.value_body(), &errors)) {
+    std::move(callback).Run({}, errors);
+    return;
+  }
+
   std::vector<mojom::ServiceProviderPtr> service_providers;
   if (!ParseServiceProviders(api_request_result.value_body(), &service_providers)) {
-    std::move(callback).Run({}, "PARSING_ERROR");
+    std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
   std::move(callback).Run(std::move(service_providers), std::nullopt);
 }
 
-void AssetRatioService::GetCryptoQuotes(const std::string& countries,
-                                        const std::string& from_assets,
-                                        const std::string& to_assets,
-                                        double source_amount,
+
+void AssetRatioService::GetCryptoQuotes(const std::string& country,
+                                        const std::string& from_asset,
+                                        const std::string& to_asset,
+                                        const double source_amount,
                                         const std::string& account,
-                                        GetCryptoQuotesCallback callback) {}
+                                        GetCryptoQuotesCallback callback) {
+  base::Value::Dict payload;
+  AddKeyIfNotEmpty(&payload, "countryCode", country);
+  AddKeyIfNotEmpty(&payload, "sourceCurrencyCode", from_asset);
+  AddKeyIfNotEmpty(&payload, "sourceAmount", base::NumberToString(source_amount));
+  AddKeyIfNotEmpty(&payload, "destinationCurrencyCode", to_asset);
+  AddKeyIfNotEmpty(&payload, "walletAddress", account);
+
+  const std::string json_payload = GetJSON(payload);
+
+  auto url = GURL(base::StringPrintf("%s/payments/crypto/quote",
+                                     base_url_for_test_.is_empty()
+                                         ? GetMeldAssetRatioBaseURL().c_str()
+                                         : base_url_for_test_.spec().c_str()));
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetCryptoQuotes,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_->Request(
+      "POST", url, json_payload, "application/json",
+      std::move(internal_callback), MakeMeldServicesKeyHeader(),
+      {.auto_retry_on_network_change = true, .enable_cache = false});
+
+}
+
+void AssetRatioService::OnGetCryptoQuotes(GetCryptoQuotesCallback callback,
+                                          APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run({},
+                            std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    return;
+  }
+
+  if (std::vector<std::string> errors;
+      ParseMeldErrorResponse(api_request_result.value_body(), &errors)) {
+    std::move(callback).Run({}, errors);
+    return;
+  }
+
+  absl::optional<std::vector<std::string>> errors;
+  std::string error;
+  std::vector<mojom::CryptoQuotePtr> quotes;
+  if (!ParseCryptoQuotes(api_request_result.value_body(), &quotes, &error)) {
+    errors = std::vector<std::string>{"PARSING_ERROR"};
+    std::move(callback).Run({}, errors);
+    return;
+  }
+
+  if (!error.empty()) {
+    errors = std::vector<std::string>{error};
+    LOG(INFO) << "[MELD] errord detected error:" << error;
+  }
+
+  std::move(callback).Run(std::move(quotes), errors);
+}
 
 }  // namespace brave_wallet
