@@ -62,6 +62,19 @@ function writeEnforcedDepotToolsRef(ref) {
   }
 }
 
+function bootstrapDepotTools(options) {
+  if (process.platform === 'win32') {
+    util.run(path.join(config.depotToolsDir, 'cipd_bin_setup.bat'), [], options)
+    util.run(
+      path.join(config.depotToolsDir, 'bootstrap', 'win_tools.bat'),
+      [],
+      options
+    )
+  } else {
+    util.run(path.join(config.depotToolsDir, 'ensure_bootstrap'), [], options)
+  }
+}
+
 function installDepotTools(options = config.defaultOptions) {
   options.cwd = config.braveCoreDir
 
@@ -89,8 +102,8 @@ function installDepotTools(options = config.defaultOptions) {
   }
 
   if (!fs.existsSync(config.depotToolsDir) || depotToolsGuard.isDirty()) {
-    Log.progressScope('install depot_tools', () => {
-      depotToolsGuard.ensureClean(() => {
+    depotToolsGuard.ensureClean(() => {
+      Log.progressScope('install depot_tools', () => {
         util.run(
           'git',
           ['clone', config.depotToolsRepo, config.depotToolsDir],
@@ -114,24 +127,7 @@ function installDepotTools(options = config.defaultOptions) {
               enforcedDepotToolsRef
             )
             // Bootstrap CIPD, Python and other dependencies manually.
-            if (process.platform === 'win32') {
-              util.run(
-                path.join(config.depotToolsDir, 'cipd_bin_setup.bat'),
-                [],
-                options
-              )
-              util.run(
-                path.join(config.depotToolsDir, 'bootstrap', 'win_tools.bat'),
-                [],
-                options
-              )
-            } else {
-              util.run(
-                path.join(config.depotToolsDir, 'ensure_bootstrap'),
-                [],
-                options
-              )
-            }
+            bootstrapDepotTools(options)
           }
         )
       }
