@@ -36,6 +36,8 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -79,7 +81,9 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/speedreader_body_distiller.h"
+#include "brave/components/speedreader/speedreader_distilled_page_producer.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -127,6 +131,11 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
+#include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
+#endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_service_factory.h"
@@ -183,18 +192,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/components/speedreader/speedreader_body_distiller.h"
-#include "brave/components/speedreader/speedreader_distilled_page_producer.h"
-#include "brave/components/speedreader/speedreader_util.h"
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
-#include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
-#endif
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -574,7 +571,6 @@ void BraveContentBrowserClient::
       },
       &render_frame_host));
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   associated_registry.AddInterface<speedreader::mojom::SpeedreaderHost>(
       base::BindRepeating(
           [](content::RenderFrameHost* render_frame_host,
@@ -584,7 +580,6 @@ void BraveContentBrowserClient::
                 std::move(receiver), render_frame_host);
           },
           &render_frame_host));
-#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // AI Chat page content extraction renderer -> browser interface
@@ -851,7 +846,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 #endif
 
-#if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   content::RegisterWebUIControllerInterfaceBinder<
       speedreader::mojom::ToolbarFactory, SpeedreaderToolbarUI>(map);
 #endif
@@ -943,7 +938,6 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
             base::SingleThreadTaskRunner::GetCurrentDefault());
 
     // Speedreader
-#if BUILDFLAG(ENABLE_SPEEDREADER)
     auto* tab_helper =
         speedreader::SpeedreaderTabHelper::FromWebContents(contents);
     if (tab_helper && isMainFrame) {
@@ -965,7 +959,6 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         body_sniffer_throttle->AddHandler(std::move(handler));
       }
     }
-#endif  // ENABLE_SPEEDREADER
 
     if (isMainFrame) {
       // De-AMP

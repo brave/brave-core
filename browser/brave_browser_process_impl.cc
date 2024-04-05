@@ -44,6 +44,7 @@
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "build/build_config.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
@@ -75,10 +76,6 @@
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/speedreader_rewriter_service.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -233,9 +230,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr_component_installer();
 #endif
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader_rewriter_service();
-#endif
   URLSanitizerComponentInstaller();
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
@@ -472,7 +467,6 @@ BraveBrowserProcessImpl::notification_platform_bridge() {
   return BrowserProcessImpl::notification_platform_bridge();
 }
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
 speedreader::SpeedreaderRewriterService*
 BraveBrowserProcessImpl::speedreader_rewriter_service() {
   if (!speedreader_rewriter_service_) {
@@ -481,7 +475,6 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
   }
   return speedreader_rewriter_service_.get();
 }
-#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 #if BUILDFLAG(ENABLE_IPFS)
 ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {

@@ -17,6 +17,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
+#include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -30,7 +32,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/query_filter/utils.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "chrome/browser/browser_process.h"
@@ -61,12 +63,6 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/components/speedreader/speedreader_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -160,7 +156,6 @@ void NewTorConnectionForSite(Browser* browser) {
 }
 
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
   if (!contents) {
     return;
@@ -169,7 +164,6 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
           speedreader::SpeedreaderTabHelper::FromWebContents(contents)) {
     tab_helper->ProcessIconClick();
   }
-#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 }
 
 void ShowBraveVPNBubble(Browser* browser) {

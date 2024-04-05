@@ -53,10 +53,7 @@ source_set("tor") {
   # Most of the case comes from including brave_browser_process_impl.h`
   # headers. That header includes some buildflags but sometimes they are
   # not generated before evaluating tor target.
-  deps += [
-    "//brave/components/greaselion/browser/buildflags",
-    "//brave/components/speedreader/common/buildflags",
-  ]
+  deps += [ "//brave/components/greaselion/browser/buildflags" ]
 }
 
 source_set("unit_tests") {

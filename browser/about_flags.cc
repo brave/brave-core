@@ -37,7 +37,7 @@
 #include "brave/components/psst/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
@@ -58,9 +58,6 @@
 #include "brave/components/brave_vpn/common/features.h"
 #endif
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/common/features.h"
-#endif
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/features.h"
@@ -150,16 +147,14 @@
       FEATURE_VALUE_TYPE(skus::features::kSkusFeature), \
   })
 
-#define SPEEDREADER_FEATURE_ENTRIES                                        \
-  IF_BUILDFLAG(                                                            \
-      ENABLE_SPEEDREADER,                                                  \
-      EXPAND_FEATURE_ENTRIES({                                             \
-          "brave-speedreader",                                             \
-          "Enable SpeedReader",                                            \
-          "Enables faster loading of simplified article-style web pages.", \
-          kOsDesktop | kOsAndroid,                                         \
-          FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
-      }))
+#define SPEEDREADER_FEATURE_ENTRIES                                    \
+  EXPAND_FEATURE_ENTRIES({                                             \
+      "brave-speedreader",                                             \
+      "Enable SpeedReader",                                            \
+      "Enables faster loading of simplified article-style web pages.", \
+      kOsDesktop | kOsAndroid,                                         \
+      FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
+  })
 
 #define REQUEST_OTR_FEATURE_ENTRIES                                           \
   IF_BUILDFLAG(                                                               \

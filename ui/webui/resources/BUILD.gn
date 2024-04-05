@@ -5,7 +5,6 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
-import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/css_to_wrapper.gni")
 import("//tools/polymer/html_to_wrapper.gni")
@@ -166,6 +165,7 @@ leo_icons = [
   "carat-down.svg",
   "carat-left.svg",
   "carat-right.svg",
+  "characters.svg",
   "check-circle-filled.svg",
   "check-circle-outline.svg",
   "check-normal.svg",
@@ -214,11 +214,13 @@ leo_icons = [
   "font-size-off.svg",
   "font-size.svg",
   "forward-15.svg",
+  "forward-outline.svg",
   "fullscreen-on.svg",
   "google-color.svg",
   "graph.svg",
   "grid04.svg",
   "hamburger-menu.svg",
+  "headphones.svg",
   "help-outline.svg",
   "history.svg",
   "idea.svg",
@@ -252,6 +254,7 @@ leo_icons = [
   "message-bubble-text.svg",
   "microphone-off.svg",
   "microphone.svg",
+  "minus.svg",
   "money-bag-coins.svg",
   "more-horizontal.svg",
   "more-vertical.svg",
@@ -285,8 +288,10 @@ leo_icons = [
   "notification-off.svg",
   "notification.svg",
   "pause-filled.svg",
+  "pause-outline.svg",
   "picture-in-picture.svg",
   "play-filled.svg",
+  "play-outline.svg",
   "plus-add-circle.svg",
   "plus-add.svg",
   "previous-outline.svg",
@@ -297,6 +302,7 @@ leo_icons = [
   "product-ipfs-outline.svg",
   "product-playlist-bold-add-color.svg",
   "product-playlist.svg",
+  "product-speedreader.svg",
   "product-sync.svg",
   "product-translate.svg",
   "protocol-handler-off.svg",
@@ -304,9 +310,16 @@ leo_icons = [
   "qr-code.svg",
   "radio-checked.svg",
   "radio-unchecked.svg",
+  "readermode-column-default.svg",
+  "readermode-column-wide.svg",
+  "readermode-dislexyc.svg",
+  "readermode-mono.svg",
+  "readermode-sans.svg",
+  "readermode-serif.svg",
   "refresh.svg",
   "remove-circle-outline.svg",
   "rewind-15.svg",
+  "rewind-outline.svg",
   "rocket.svg",
   "safe.svg",
   "search-fuel-tank.svg",
@@ -331,10 +344,12 @@ leo_icons = [
   "sort-desc.svg",
   "sparkles-off.svg",
   "sparkles.svg",
+  "speed.svg",
   "stack.svg",
   "star-outline.svg",
   "swap-horizontal.svg",
   "swap-vertical.svg",
+  "theme-system.svg",
   "thumb-down.svg",
   "thumb-up.svg",
   "trash.svg",
@@ -385,27 +400,6 @@ if (enable_brave_vpn_panel) {
     "country-se.svg",
     "country-sg.svg",
     "country-us.svg",
-  ]
-}
-
-if (enable_speedreader) {
-  leo_icons += [
-    "characters.svg",
-    "forward-outline.svg",
-    "headphones.svg",
-    "minus.svg",
-    "pause-outline.svg",
-    "play-outline.svg",
-    "product-speedreader.svg",
-    "readermode-column-default.svg",
-    "readermode-column-wide.svg",
-    "readermode-dislexyc.svg",
-    "readermode-mono.svg",
-    "readermode-sans.svg",
-    "readermode-serif.svg",
-    "rewind-outline.svg",
-    "speed.svg",
-    "theme-system.svg",
   ]
 }
 

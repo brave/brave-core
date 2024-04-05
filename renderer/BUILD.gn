@@ -5,7 +5,6 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("renderer") {
@@ -24,13 +23,10 @@ source_set("renderer") {
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_wallet/renderer",
     "//brave/components/cosmetic_filters/renderer",
+    "//brave/components/speedreader/renderer",
     "//brave/renderer/brave_wallet/",
     "//v8",
   ]
-
-  if (enable_speedreader) {
-    deps += [ "//brave/components/speedreader/renderer" ]
-  }
 
   if (is_android && (enable_brave_vpn || enable_ai_chat)) {
     deps += [ "//brave/components/brave_mobile_subscription/renderer/android" ]

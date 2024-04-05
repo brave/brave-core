@@ -14,7 +14,6 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
@@ -72,7 +71,6 @@ bool HasCustomToolbarColor(const ui::ColorProviderKey& key) {
                                     &custom_toolbar_color);
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_SPEEDREADER)
 SkColor PickSimilarColorToToolbar(const ui::ColorProviderKey& key,
                                   const ui::ColorMixer& mixer,
                                   SkColor light_theme_color,
@@ -89,7 +87,6 @@ SkColor PickSimilarColorToToolbar(const ui::ColorProviderKey& key,
   return color_utils::IsDark(toolbar_color) ? dark_theme_color
                                             : light_theme_color;
 }
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void AddBraveVpnColorMixer(ui::ColorProvider* provider,
@@ -145,7 +142,6 @@ void AddBraveVpnColorMixer(ui::ColorProvider* provider,
 }
 #endif
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
 void AddBraveSpeedreaderColorMixer(ui::ColorProvider* provider,
                                    const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
@@ -182,7 +178,6 @@ void AddBraveSpeedreaderColorMixer(ui::ColorProvider* provider,
       leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight),
       leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark))};
 }
-#endif
 
 void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
                                    const ui::ColorProviderKey& key) {
@@ -633,9 +628,7 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   AddBraveVpnColorMixer(provider, key);
 #endif
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   AddBraveSpeedreaderColorMixer(provider, key);
-#endif
 }
 
 void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,

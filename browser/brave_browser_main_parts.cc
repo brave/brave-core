@@ -16,23 +16,19 @@
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/speedreader_extended_info_handler.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_service.h"
+#include "components/sessions/content/content_serialized_navigation_driver.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_language_list.h"
 #include "content/public/browser/render_frame_host.h"
 #include "extensions/buildflags/buildflags.h"
 #include "media/base/media_switches.h"
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/speedreader_extended_info_handler.h"
-#include "components/sessions/content/content_serialized_navigation_driver.h"
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include <string>
@@ -76,7 +72,6 @@
 #endif
 
 void BraveBrowserMainParts::PreBrowserStart() {
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   // Register() must be called after the SerializedNavigationDriver is
   // initialized, but before any calls to
   // ContentSerializedNavigationBuilder::ToNavigationEntries()
@@ -84,7 +79,6 @@ void BraveBrowserMainParts::PreBrowserStart() {
   // TODO(keur): Can we DCHECK the latter condition?
   DCHECK(sessions::ContentSerializedNavigationDriver::GetInstance());
   speedreader::SpeedreaderExtendedInfoHandler::Register();
-#endif
   ChromeBrowserMainParts::PreBrowserStart();
 }
 

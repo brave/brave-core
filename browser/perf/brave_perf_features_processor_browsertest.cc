@@ -11,17 +11,13 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/components/speedreader/speedreader_service.h"
-#endif
 
 namespace {
 class TestRewardsServiceObserver
@@ -56,14 +52,12 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
         perf::switches::kEnableBraveFeaturesForPerfTesting);
   }
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   bool SpeedreaderIsEnabled() {
     auto* speedreader_service =
         speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
             browser()->profile());
     return speedreader_service->IsEnabledForAllSites();
   }
-#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
   bool BraveNewsAreEnabled() {
     return brave_news::GetIsEnabled(browser()->profile()->GetPrefs());
@@ -87,9 +81,7 @@ IN_PROC_BROWSER_TEST_F(BraveSpeedFeatureProcessorBrowserTest, PRE_Default) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSpeedFeatureProcessorBrowserTest, Default) {
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   EXPECT_TRUE(SpeedreaderIsEnabled());
-#endif
   EXPECT_TRUE(HasOptedInToNotificationAds());
   EXPECT_TRUE(BraveNewsAreEnabled());
   WaitForRewardsServiceInitialized();

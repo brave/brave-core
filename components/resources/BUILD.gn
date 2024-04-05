@@ -10,7 +10,6 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//build/config/locales.gni")
@@ -50,7 +49,6 @@ brave_grit("static_resources") {
     "enable_ipfs=$enable_ipfs",
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_playlist=$enable_playlist",
-    "enable_speedreader=$enable_speedreader",
   ]
 
   output_dir = "$root_gen_dir/components"
@@ -170,7 +168,6 @@ brave_grit("strings") {
   outputs = [ "grit/brave_components_strings.h" ]
 
   defines = [
-    "enable_speedreader=$enable_speedreader",
     "enable_ipfs=$enable_ipfs",
     "enable_ipfs_internals_webui=$enable_ipfs_internals_webui",
     "ethereum_remote_client_enabled=$ethereum_remote_client_enabled",

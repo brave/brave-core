@@ -199,7 +199,8 @@ brave_chrome_browser_deps = [
   "//brave/components/resources",
   "//brave/components/skus/browser",
   "//brave/components/skus/common",
-  "//brave/components/speedreader/common/buildflags",
+  "//brave/components/speedreader/common",
+  "//brave/components/speedreader/common:mojom",
   "//brave/components/tor/buildflags",
   "//brave/components/version_info",
   "//brave/services/network/public/cpp",
@@ -285,13 +286,6 @@ if (enable_sparkle) {
     "//brave/browser/mac/sparkle_glue.h",
     "//brave/browser/mac/sparkle_glue.mm",
     "//brave/browser/mac/su_updater.h",
-  ]
-}
-
-if (enable_speedreader) {
-  brave_chrome_browser_deps += [
-    "//brave/components/speedreader/common",
-    "//brave/components/speedreader/common:mojom",
   ]
 }
 
