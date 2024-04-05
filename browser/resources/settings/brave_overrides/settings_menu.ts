@@ -249,7 +249,7 @@ RegisterPolymerTemplateModifications({
       'window-tab-new',
       'newTab'
     )
-    appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
+    // appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
     // Add Shields item
     const shieldsEl = createMenuElement(
       loadTimeData.getString('braveShieldsTitle'),
@@ -361,8 +361,8 @@ RegisterPolymerTemplateModifications({
     const graphicsEl = document.createElement('div')
     graphicsEl.setAttribute('class', 'brave-about-graphic')
 
-    const icon = document.createElement('leo-icon')
-    icon.setAttribute('name', 'brave-icon-release-color')
+    // const icon = document.createElement('leo-icon')
+    // icon.setAttribute('name', 'brave-icon-release-color')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')
@@ -377,7 +377,7 @@ RegisterPolymerTemplateModifications({
 
     parent.appendChild(newAboutEl)
     newAboutEl.appendChild(graphicsEl)
-    graphicsEl.appendChild(icon)
+    // graphicsEl.appendChild(icon)
     newAboutEl.appendChild(metaEl)
     metaEl.appendChild(menuLink)
     metaEl.appendChild(versionEl)
