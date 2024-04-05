@@ -79,13 +79,12 @@ class PlaylistActionAddBubble : public PlaylistActionBubbleView,
   // PlaylistTabHelperObserver:
   void PlaylistTabHelperWillBeDestroyed() override;
   void OnSavedItemsChanged(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
+      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
   void OnFoundItemsChanged(
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
   void OnAddedItemFromTabHelper(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
+      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
 
-  void OnMediaExtracted(bool result);
   void InitListView();
 
   bool AddSelected();
