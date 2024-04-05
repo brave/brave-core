@@ -39,7 +39,7 @@ struct ShortcutAmountGrid: View {
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
             .foregroundColor(Color(.secondaryBraveLabel))
-            .background(BuySendSwapGridBackgroundView())
+            .background(WalletActionsGridBackgroundView())
             .padding(.top, 8)
         }
       }
@@ -95,7 +95,7 @@ struct SlippageGrid: View {
               Color(isPredefinedOptionSelected(option.id) ? .white : .secondaryBraveLabel)
             )
             .background(
-              BuySendSwapGridBackgroundView(
+              WalletActionsGridBackgroundView(
                 backgroundColor: Color(
                   isSelected ? .braveBlurpleTint : .secondaryBraveGroupedBackground
                 )
@@ -128,7 +128,7 @@ struct SlippageGrid: View {
         .accentColor(customSlippage != nil ? .white : nil)
         .foregroundColor(Color(customSlippage != nil ? .white : .secondaryBraveLabel))
         .background(
-          BuySendSwapGridBackgroundView(
+          WalletActionsGridBackgroundView(
             backgroundColor: Color(
               customSlippage != nil ? .braveBlurpleTint : .secondaryBraveGroupedBackground
             )

@@ -11,7 +11,7 @@ import SwiftUI
 struct PortfolioHeaderView: View {
 
   @ObservedObject var keyringStore: KeyringStore
-  @Binding var buySendSwapDestination: BuySendSwapDestination?
+  @Binding var walletActionDestination: WalletActionDestination?
   @Binding var selectedDateRange: BraveWallet.AssetPriceTimeframe
   var balance: String
   var balanceDifference: BalanceDifference?
@@ -47,7 +47,7 @@ struct PortfolioHeaderView: View {
 
       Spacer().frame(height: 24)
 
-      buySendSwapButtons
+      buySendSwapDepositButtons
 
       Spacer().frame(height: 24)
 
@@ -124,16 +124,19 @@ struct PortfolioHeaderView: View {
     }
   }
 
-  private var buySendSwapButtons: some View {
+  private var buySendSwapDepositButtons: some View {
     HStack(spacing: 24) {
       PortfolioHeaderButton(style: .buy) {
-        buySendSwapDestination = BuySendSwapDestination(kind: .buy)
+        walletActionDestination = WalletActionDestination(kind: .buy)
       }
       PortfolioHeaderButton(style: .send) {
-        buySendSwapDestination = BuySendSwapDestination(kind: .send)
+        walletActionDestination = WalletActionDestination(kind: .send)
       }
       PortfolioHeaderButton(style: .swap) {
-        buySendSwapDestination = BuySendSwapDestination(kind: .swap)
+        walletActionDestination = WalletActionDestination(kind: .swap)
+      }
+      PortfolioHeaderButton(style: .deposit) {
+        walletActionDestination = WalletActionDestination(kind: .deposit(query: nil))
       }
     }
     .padding(.horizontal, 30)
@@ -172,13 +175,14 @@ struct PortfolioHeaderView: View {
 struct PortfolioHeaderButton: View {
 
   enum Style: String, Equatable {
-    case buy, send, swap, more
+    case buy, send, swap, deposit, more
 
     var label: String {
       switch self {
       case .buy: return Strings.Wallet.buy
       case .send: return Strings.Wallet.send
       case .swap: return Strings.Wallet.swap
+      case .deposit: return Strings.Wallet.deposit
       case .more: return Strings.Wallet.more
       }
     }
@@ -189,6 +193,7 @@ struct PortfolioHeaderButton: View {
       case .send: return "leo.send"
       case .swap: return "leo.currency.exchange"
       case .more: return "leo.more.horizontal"
+      case .deposit: return "leo.money.bag-coins"
       }
     }
   }

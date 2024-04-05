@@ -126,6 +126,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
 
   // All account info that has the same coin type as this asset's
   var allAccountsForToken: [BraveWallet.AccountInfo] = []
+  private var depositableTokens: [BraveWallet.BlockchainToken] = []
 
   init(
     assetRatioService: BraveWalletAssetRatioService,
@@ -343,10 +344,32 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           for: coinMarket.symbol
         )
 
+        let allNetworks = await rpcService.allNetworksForSupportedCoins()
+        let allUserAssets = assetManager.getAllUserAssetsInNetworkAssets(
+          networks: allNetworks,
+          includingUserDeleted: false
+        )
+        let allUserTokens = allUserAssets.flatMap(\.tokens)
+        let allBlockchainTokens = await blockchainRegistry.allTokens(in: allNetworks)
+          .flatMap(\.tokens)
+        self.depositableTokens = allUserTokens + allBlockchainTokens
+
+        // fetch accounts if this coinMarket is depositable
+        if let depositableToken = convertCoinMarketToDepositableToken(symbol: coinMarket.symbol) {
+          let depositableTokenKeyringId = BraveWallet.KeyringId.keyringId(
+            for: depositableToken.coin,
+            on: depositableToken.chainId
+          )
+          self.allAccountsForToken = allAccounts.accounts.filter {
+            $0.keyringId == depositableTokenKeyringId
+          }
+        } else {
+          self.allAccountsForToken = []
+        }
+
         // below is all not supported from Market tab
         self.isSendSupported = false
         self.isSwapSupported = false
-        self.allAccountsForToken = []
         self.nonZeroBalanceAccounts = []
         self.transactionSections = []
       }
@@ -367,6 +390,13 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     let buyTokens = allBuyTokensAllOptions.flatMap { $0.value }
     return buyTokens.first(where: { $0.symbol.caseInsensitiveCompare(symbol) == .orderedSame })
       != nil
+  }
+
+  func convertCoinMarketToDepositableToken(symbol: String) -> BraveWallet.BlockchainToken? {
+    let token = depositableTokens.first {
+      $0.symbol.caseInsensitiveCompare(symbol) == .orderedSame
+    }
+    return token
   }
 
   // Return given token's asset prices, btc ratio and price history
