@@ -10,10 +10,10 @@ import {
   // IconButtonContainer,
   // IconButtonSideText,
   IconLink,
-  Label,
-  Link,
+  // Label,
+  // Link,
   Navigation,
-  PhotoName
+  // PhotoName
 } from '..'
 import * as S from '../page'
 
@@ -40,17 +40,17 @@ export interface Props {
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
   render () {
-    const {
-      // textDirection,
-      // supportsBraveTalk,
-      backgroundImageInfo,
-      showPhotoInfo,
-      // onClickSettings
-    } = this.props
+    // const {
+    //   // textDirection,
+    //   // supportsBraveTalk,
+    //   backgroundImageInfo,
+    //   showPhotoInfo,
+    //   // onClickSettings
+    // } = this.props
 
     return (
       <>
-        { showPhotoInfo && backgroundImageInfo?.type === 'brave' &&
+        {/* { showPhotoInfo && backgroundImageInfo?.type === 'brave' &&
           <S.GridItemCredits>
             <PhotoName>
               {`${getLocale('photoBy')} `}
@@ -62,7 +62,7 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
               }
             </PhotoName>
           </S.GridItemCredits>
-        }
+        } */}
         <S.GridItemNavigation>
           <Navigation>
             {/* <IconButtonContainer textDirection={textDirection}>
