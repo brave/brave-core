@@ -7,6 +7,7 @@
 
 namespace tor::prefs {
 
+//Tor disabled by default. originally "tor.tor_disabled"
 const char kTorDisabled[] = "false";
 
 const char kAutoOnionRedirect[] = "tor.auto_onion_location";
