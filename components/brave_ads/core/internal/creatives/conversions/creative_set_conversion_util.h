@@ -34,9 +34,9 @@ CreativeSetConversionBucketMap SortCreativeSetConversionsIntoBuckets(
     const CreativeSetConversionList& creative_set_conversions);
 
 void FilterCreativeSetConversionBucketsThatExceedTheCap(
-    CreativeSetConversionBucketMap& creative_set_conversion_buckets,
     const std::map<std::string, size_t>& creative_set_conversion_counts,
-    size_t creative_set_conversion_cap);
+    size_t creative_set_conversion_cap,
+    CreativeSetConversionBucketMap& creative_set_conversion_buckets);
 
 CreativeSetConversionList GetCreativeSetConversionsWithinObservationWindow(
     const CreativeSetConversionList& creative_set_conversions,

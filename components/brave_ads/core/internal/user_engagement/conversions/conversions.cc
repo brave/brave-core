@@ -120,33 +120,30 @@ void Conversions::CheckForConversions(
     return BLOG(1, "There are no matching creative set conversions");
   }
 
-  const size_t creative_set_conversion_cap = kCreativeSetConversionCap.Get();
-
   CreativeSetConversionCountMap creative_set_conversion_counts =
       GetCreativeSetConversionCounts(ad_events);
 
+  const size_t creative_set_conversion_cap = kCreativeSetConversionCap.Get();
+
   CreativeSetConversionBucketMap creative_set_conversion_buckets =
       SortCreativeSetConversionsIntoBuckets(matching_creative_set_conversions);
+
   FilterCreativeSetConversionBucketsThatExceedTheCap(
-      creative_set_conversion_buckets, creative_set_conversion_counts,
-      creative_set_conversion_cap);
+      creative_set_conversion_counts, creative_set_conversion_cap,
+      creative_set_conversion_buckets);
 
   BLOG(1, matching_creative_set_conversions.size()
               << " out of " << creative_set_conversions.size()
               << " matching creative set conversions are sorted into "
               << creative_set_conversion_buckets.size() << " buckets");
 
-  bool did_convert = false;
-
   // Click-through conversions should take priority over view-through
   // conversions. Ad events are ordered in chronological order by `created_at`;
   // click events are guaranteed to occur after view impression events.
   // Conversions are based on the last touch attribution model.
-  for (const auto& ad_event : base::Reversed(ad_events)) {
-    if (!CanConvertAdEvent(ad_event)) {
-      continue;
-    }
+  bool did_convert = false;
 
+  for (const auto& ad_event : base::Reversed(ad_events)) {
     // Do we have creative set conversions for this ad event?
     const auto iter =
         creative_set_conversion_buckets.find(ad_event.creative_set_id);
@@ -156,8 +153,14 @@ void Conversions::CheckForConversions(
     }
     const auto& [creative_set_id, creative_set_conversion_bucket] = *iter;
 
-    // Yes, so convert creative set conversions that fall within the observation
-    // window for the ad event.
+    // Yes, so can we convert this ad event?
+    if (!CanConvertAdEvent(ad_event)) {
+      // No, so skip this ad event.
+      continue;
+    }
+
+    // Yes, so convert the ad event where it occurs within the observation
+    // window for the set of creative conversions.
     for (const auto& creative_set_conversion :
          GetCreativeSetConversionsWithinObservationWindow(
              creative_set_conversion_bucket, ad_event)) {
@@ -167,9 +170,9 @@ void Conversions::CheckForConversions(
 
       did_convert = true;
 
-      // Did we exceed the creative set conversion cap?
+      // Have we exceeded the limit for creative set conversions?
       if (creative_set_conversion_cap == 0) {
-        // No cap.
+        // There is no limit, so continue converting.
         continue;
       }
 
@@ -183,25 +186,19 @@ void Conversions::CheckForConversions(
 
     if (did_convert) {
       // Remove the bucket for this creative set so that we debounce conversions
-      // for the remainder of this session.
+      // for the remainder of the ad events.
       creative_set_conversion_buckets.erase(creative_set_id);
     }
   }
 
   if (!did_convert) {
-    BLOG(1, "There are no matching conversions");
+    BLOG(1, "There are no conversions");
   }
 }
 
 void Conversions::Convert(
     const AdEventInfo& ad_event,
     const std::optional<VerifiableConversionInfo>& verifiable_conversion) {
-  BLOG(1, "Conversion for " << ad_event.type << " with creative instance id "
-                            << ad_event.creative_instance_id
-                            << ", creative set id " << ad_event.creative_set_id
-                            << ", campaign id " << ad_event.campaign_id
-                            << " and advertiser id " << ad_event.advertiser_id);
-
   RecordAdEvent(
       RebuildAdEvent(ad_event, ConfirmationType::kConversion,
                      /*created_at=*/base::Time::Now()),
@@ -238,8 +235,9 @@ void Conversions::NotifyFailedToConvertAd(
 
 void Conversions::OnDidProcessConversionQueue(
     const ConversionInfo& conversion) {
-  // Transition legacy conversions. This is a no-op for new conversions.
-  // `ConversionQueueDelegate` should be removed after several browser releases.
+  // TODO(https://github.com/brave/brave-browser/issues/37375): Transition
+  // legacy conversions. `ConversionQueueDelegate` should be removed after
+  // several browser releases. This is a no-op for new conversions.
   NotifyDidConvertAd(conversion);
 }
 

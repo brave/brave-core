@@ -59,9 +59,9 @@ CreativeSetConversionBucketMap SortCreativeSetConversionsIntoBuckets(
 }
 
 void FilterCreativeSetConversionBucketsThatExceedTheCap(
-    CreativeSetConversionBucketMap& creative_set_conversion_buckets,
     const std::map<std::string, size_t>& creative_set_conversion_counts,
-    const size_t creative_set_conversion_cap) {
+    const size_t creative_set_conversion_cap,
+    CreativeSetConversionBucketMap& creative_set_conversion_buckets) {
   if (creative_set_conversion_cap == 0) {
     // No cap.
     return;
