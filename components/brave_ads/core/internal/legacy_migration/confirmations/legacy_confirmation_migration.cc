@@ -71,7 +71,8 @@ void MigrateConfirmationState(InitializeCallback callback) {
              ConfirmationQueueItemList confirmation_queue_items;
              for (const auto& confirmation : *confirmations) {
                const ConfirmationQueueItemInfo confirmation_queue_item =
-                   BuildConfirmationQueueItem(confirmation, base::Time::Now());
+                   BuildConfirmationQueueItem(confirmation,
+                                              /*process_at=*/base::Time::Now());
                confirmation_queue_items.push_back(confirmation_queue_item);
              }
 

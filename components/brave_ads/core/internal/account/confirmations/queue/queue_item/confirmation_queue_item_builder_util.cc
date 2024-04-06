@@ -14,25 +14,8 @@
 namespace brave_ads {
 
 namespace {
-
-constexpr base::TimeDelta kDebugProcessAfter = base::Minutes(1);
-
 constexpr base::TimeDelta kDebugRetryProcessingAfter = base::Seconds(5);
-
 }  // namespace
-
-base::Time ProcessConfirmationAt(const ConfirmationType confirmation_type) {
-  base::Time process_at = base::Time::Now();
-
-  if (confirmation_type == ConfirmationType::kConversion) {
-    process_at +=
-        ShouldDebug()
-            ? kDebugProcessAfter
-            : RandTimeDelta(kProcessConversionConfirmationAfter.Get());
-  }
-
-  return process_at;
-}
 
 base::TimeDelta RetryProcessingConfirmationAfter() {
   return ShouldDebug() ? kDebugRetryProcessingAfter
