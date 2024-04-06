@@ -13,8 +13,28 @@
 
 namespace brave_ads {
 
+namespace {
+
+bool g_browser_version_for_testing = false;
+
+const char kBrowserVersionForTesting[] = "1.2.3.4";
+
+}  // namespace
+
 std::string GetBrowserVersionNumber() {
+  if (g_browser_version_for_testing) {
+    return kBrowserVersionForTesting;
+  }
+
   return version_info::GetBraveChromiumVersionNumber();
+}
+
+ScopedBrowserVersionSetterForTesting::ScopedBrowserVersionSetterForTesting() {
+  g_browser_version_for_testing = true;
+}
+
+ScopedBrowserVersionSetterForTesting::~ScopedBrowserVersionSetterForTesting() {
+  g_browser_version_for_testing = false;
 }
 
 bool WasBrowserUpgraded() {

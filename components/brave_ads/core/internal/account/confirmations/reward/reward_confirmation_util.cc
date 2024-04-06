@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/base64url.h"
@@ -15,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_credential_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
@@ -89,7 +91,7 @@ std::optional<std::string> BuildRewardCredential(
           confirmation.reward,
           json::writer::WriteConfirmationPayload(confirmation));
   if (!reward_credential) {
-    BLOG(0, "Failed to create reward credential");
+    BLOG(0, "Failed to build reward credential");
     return std::nullopt;
   }
 
@@ -103,7 +105,7 @@ std::optional<std::string> BuildRewardCredential(
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
     TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction,
-    const UserDataInfo& user_data) {
+    base::Value::Dict user_data) {
   CHECK(token_generator);
   CHECK(transaction.IsValid());
   CHECK(UserHasJoinedBraveRewards());
@@ -114,12 +116,13 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
   confirmation.type = transaction.confirmation_type;
   confirmation.ad_type = transaction.ad_type;
   confirmation.created_at = transaction.created_at;
-  confirmation.user_data = user_data;
+  confirmation.user_data =
+      BuildConfirmationUserData(transaction, std::move(user_data));
 
   const std::optional<RewardInfo> reward =
       BuildReward(token_generator, confirmation);
   if (!reward) {
-    BLOG(0, "Failed to create reward");
+    BLOG(0, "Failed to build reward");
     return std::nullopt;
   }
   confirmation.reward = reward;

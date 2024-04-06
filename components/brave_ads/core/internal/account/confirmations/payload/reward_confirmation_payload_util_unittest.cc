@@ -39,12 +39,12 @@ TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
-              {
-                "blindedPaymentTokens": [
-                  "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="
-                ],
-                "publicKey": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="
-              })"),
+                    {
+                      "blindedPaymentTokens": [
+                        "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="
+                      ],
+                      "publicKey": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="
+                    })"),
             BuildRewardConfirmationPayload(test::BuildReward(*confirmation)));
 }
 

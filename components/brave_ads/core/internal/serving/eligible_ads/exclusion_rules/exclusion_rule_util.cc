@@ -44,6 +44,14 @@ bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
   return count < cap;
 }
 
+bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
+                            const AdEventList& ad_events,
+                            const ConfirmationType confirmation_type,
+                            const size_t cap) {
+  return DoesRespectCampaignCap(creative_ad, ad_events, confirmation_type,
+                                base::TimeDelta::FiniteMax(), cap);
+}
+
 bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
                                const AdEventList& ad_events,
                                const ConfirmationType confirmation_type,
@@ -66,6 +74,14 @@ bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
       cap);
 
   return count < cap;
+}
+
+bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
+                               const AdEventList& ad_events,
+                               const ConfirmationType confirmation_type,
+                               const size_t cap) {
+  return DoesRespectCreativeSetCap(creative_ad, ad_events, confirmation_type,
+                                   base::TimeDelta::FiniteMax(), cap);
 }
 
 bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
@@ -91,6 +107,14 @@ bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
       cap);
 
   return count < cap;
+}
+
+bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
+                            const AdEventList& ad_events,
+                            const ConfirmationType confirmation_type,
+                            const size_t cap) {
+  return DoesRespectCreativeCap(creative_ad, ad_events, confirmation_type,
+                                base::TimeDelta::FiniteMax(), cap);
 }
 
 }  // namespace brave_ads

@@ -94,7 +94,7 @@ void GetCallback(GetConversionsCallback callback,
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative set conversions");
     return std::move(callback).Run(/*success=*/false,
-                                   /*conversion_queue_items=*/{});
+                                   /*conversion_set_conversions=*/{});
   }
 
   CHECK(command_response->result);

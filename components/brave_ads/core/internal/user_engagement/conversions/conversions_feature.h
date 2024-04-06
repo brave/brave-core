@@ -30,6 +30,10 @@ inline constexpr base::FeatureParam<std::string>
 inline constexpr base::FeatureParam<base::TimeDelta> kProcessConversionAfter{
     &kConversionsFeature, "process_after", base::Days(1)};
 
+// Set to 0 to never cap creative set conversions.
+inline constexpr base::FeatureParam<int> kCreativeSetConversionCap{
+    &kConversionsFeature, "creative_set_conversion_cap", 1};
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_FEATURE_H_

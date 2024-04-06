@@ -12,6 +12,13 @@ namespace brave_ads {
 
 std::string GetBrowserVersionNumber();
 
+class ScopedBrowserVersionSetterForTesting final {
+ public:
+  ScopedBrowserVersionSetterForTesting();
+
+  ~ScopedBrowserVersionSetterForTesting();
+};
+
 bool WasBrowserUpgraded();
 
 }  // namespace brave_ads

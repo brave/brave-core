@@ -16,6 +16,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
@@ -73,55 +74,42 @@ size_t BindParameters(
 
   int index = 0;
   for (const auto& confirmation_queue_item : confirmation_queue_items) {
-    BindString(command, index++,
-               confirmation_queue_item.confirmation.transaction_id);
+    // The queue does not store dynamic user data for a confirmation due to the
+    // token redemption process which rebuilds the confirmation. Hence, we must
+    // regenerate the confirmation without the dynamic user data.
+    const ConfirmationInfo confirmation =
+        RebuildConfirmationWithoutDynamicUserData(
+            confirmation_queue_item.confirmation);
 
-    BindString(command, index++,
-               confirmation_queue_item.confirmation.creative_instance_id);
+    BindString(command, index++, confirmation.transaction_id);
 
-    BindString(command, index++,
-               ToString(confirmation_queue_item.confirmation.type));
+    BindString(command, index++, confirmation.creative_instance_id);
 
-    BindString(command, index++,
-               ToString(confirmation_queue_item.confirmation.ad_type));
+    BindString(command, index++, ToString(confirmation.type));
+
+    BindString(command, index++, ToString(confirmation.ad_type));
 
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(
-                  confirmation_queue_item.confirmation.created_at));
+              ToChromeTimestampFromTime(confirmation.created_at));
 
-    if (confirmation_queue_item.confirmation.reward) {
-      BindString(
-          command, index++,
-          confirmation_queue_item.confirmation.reward->token.EncodeBase64()
-              .value_or(""));
-
+    if (confirmation.reward) {
       BindString(command, index++,
-                 confirmation_queue_item.confirmation.reward->blinded_token
-                     .EncodeBase64()
-                     .value_or(""));
-
-      BindString(command, index++,
-                 confirmation_queue_item.confirmation.reward->unblinded_token
-                     .EncodeBase64()
-                     .value_or(""));
+                 confirmation.reward->token.EncodeBase64().value_or(""));
 
       BindString(
           command, index++,
-          confirmation_queue_item.confirmation.reward->public_key.EncodeBase64()
-              .value_or(""));
+          confirmation.reward->blinded_token.EncodeBase64().value_or(""));
+
+      BindString(
+          command, index++,
+          confirmation.reward->unblinded_token.EncodeBase64().value_or(""));
 
       BindString(command, index++,
-                 confirmation_queue_item.confirmation.reward->signature);
+                 confirmation.reward->public_key.EncodeBase64().value_or(""));
 
-      // Dynamic user data is not persisted for a confirmation because it is
-      // rebuilt when redeeming the confirmation token, so we must build a new
-      // credential excluding the dynamic user data.
-      ConfirmationInfo mutable_confirmation(
-          confirmation_queue_item.confirmation);
-      mutable_confirmation.user_data.dynamic = {};
-      const std::optional<std::string> reward_credential_base64url =
-          BuildRewardCredential(mutable_confirmation);
-      BindString(command, index++, reward_credential_base64url.value_or(""));
+      BindString(command, index++, confirmation.reward->signature);
+
+      BindString(command, index++, confirmation.reward->credential_base64url);
     } else {
       BindString(command, index++, "");
       BindString(command, index++, "");
@@ -132,8 +120,8 @@ size_t BindParameters(
     }
 
     std::string user_data_json;
-    CHECK(base::JSONWriter::Write(
-        confirmation_queue_item.confirmation.user_data.fixed, &user_data_json));
+    CHECK(
+        base::JSONWriter::Write(confirmation.user_data.fixed, &user_data_json));
     BindString(command, index++, user_data_json);
 
     BindInt64(command, index++,

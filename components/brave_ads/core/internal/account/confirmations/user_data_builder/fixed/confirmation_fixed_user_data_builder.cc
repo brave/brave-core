@@ -5,14 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/fixed/confirmation_fixed_user_data_builder.h"
 
-#include <utility>
-
-#include "base/functional/bind.h"
-#include "base/values.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/build_channel_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/catalog_user_data.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/created_at_timestamp_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/locale_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/platform_user_data.h"
@@ -21,15 +15,12 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/studies_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/top_segment_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
 
-namespace {
+base::Value::Dict BuildFixedUserData(const TransactionInfo& transaction) {
+  base::Value::Dict user_data;
 
-void BuildFixedUserDataCallback(const TransactionInfo& transaction,
-                                BuildUserDataCallback callback,
-                                base::Value::Dict user_data) {
   user_data.Merge(BuildBuildChannelUserData());
   user_data.Merge(BuildCatalogUserData());
   user_data.Merge(BuildCreatedAtTimestampUserData(transaction));
@@ -41,21 +32,7 @@ void BuildFixedUserDataCallback(const TransactionInfo& transaction,
   user_data.Merge(BuildTopSegmentUserData(transaction));
   user_data.Merge(BuildVersionNumberUserData());
 
-  std::move(callback).Run(std::move(user_data));
-}
-
-}  // namespace
-
-void BuildFixedUserData(const TransactionInfo& transaction,
-                        BuildUserDataCallback callback) {
-  if (transaction.confirmation_type != ConfirmationType::kConversion) {
-    return BuildFixedUserDataCallback(transaction, std::move(callback),
-                                      /*user_data=*/{});
-  }
-
-  BuildConversionUserData(transaction.creative_instance_id,
-                          base::BindOnce(&BuildFixedUserDataCallback,
-                                         transaction, std::move(callback)));
+  return user_data;
 }
 
 }  // namespace brave_ads

@@ -15,11 +15,11 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/conversion_queue.h"
+#include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/conversion_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource.h"
 
 class GURL;
@@ -87,15 +87,7 @@ class Conversions final : public ConversionQueueDelegate,
   void NotifyFailedToConvertAd(const std::string& creative_instance_id) const;
 
   // ConversionQueueDelegate:
-  void OnDidAddConversionToQueue(const ConversionInfo& conversion) override;
-  void OnFailedToAddConversionToQueue(
-      const ConversionInfo& conversion) override;
-  void OnWillProcessConversionQueue(const ConversionInfo& conversion,
-                                    base::Time process_at) override;
   void OnDidProcessConversionQueue(const ConversionInfo& conversion) override;
-  void OnFailedToProcessConversionQueue(
-      const ConversionInfo& conversion) override;
-  void OnDidExhaustConversionQueue() override;
 
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,
@@ -106,6 +98,8 @@ class Conversions final : public ConversionQueueDelegate,
 
   ConversionResource resource_;
 
+  // Transition legacy conversions. This is a no-op for new conversions.
+  // `ConversionQueue` should be removed after several browser releases.
   ConversionQueue queue_;
 
   const database::table::CreativeSetConversions
