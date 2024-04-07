@@ -101,7 +101,7 @@ export const ExploreWeb3View = () => {
         actions={controls}
         onSearchValueChange={setSearchValue}
         searchValue={searchValue}
-        title={getLocale('braveWalletTopNavMarket')}
+        title={getLocale('braveWalletWeb3')}
       />
 
       <DividerLine />
