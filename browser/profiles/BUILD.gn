@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/tor/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 source_set("profiles") {
@@ -46,10 +45,6 @@ source_set("profiles") {
 
   if (enable_extensions) {
     deps += [ "//extensions/common" ]
-  }
-
-  if (enable_tor) {
-    deps += [ "//brave/browser/tor" ]
   }
 }
 
