@@ -28,6 +28,7 @@ export interface TextProps {
     | 'warning'
     | 'primary'
     | 'secondary'
+    | 'tertiary'
     | 'info'
   maintainHeight?: boolean
   textAlign?: 'left' | 'right'

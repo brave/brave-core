@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from '@brave/react-virtualized-auto-sizer'
-import { color } from '@brave/leo/tokens/css'
 
 // types
 import { BraveWallet } from '../../../../constants/types'
@@ -84,7 +83,7 @@ const DappListItem = React.forwardRef<
         <TextWithOverflowEllipsis
           textSize='12px'
           textAlign='left'
-          color={color.text.tertiary}
+          textColor='tertiary'
           maxLines={1}
         >
           {dapp.description}
