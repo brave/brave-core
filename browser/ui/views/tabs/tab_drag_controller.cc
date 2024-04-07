@@ -336,8 +336,15 @@ gfx::Rect TabDragController::CalculateDraggedBrowserBounds(
     return TabDragControllerChromium::ContinueDragging(point_in_screen);
   }
 
+  auto weak = weak_factory_.GetWeakPtr();
   const auto liveness =
       TabDragControllerChromium::ContinueDragging(point_in_screen);
+
+  if (!weak) {
+    // In DragBrowserToNewTabStrip() could delete itself, so we need to check
+    // it's still alive first.
+    return liveness;
+  }
 
   if (!attached_context_) {
     // This is when drag session ends.

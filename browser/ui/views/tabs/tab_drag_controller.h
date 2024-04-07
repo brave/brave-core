@@ -66,6 +66,8 @@ class TabDragController : public TabDragControllerChromium {
   VerticalTabStripRegionView::ScopedStateResetter vertical_tab_state_resetter_;
 
   SplitViewBrowserData::OnTabDragEndedClosure on_tab_drag_ended_closure_;
+
+  base::WeakPtrFactory<TabDragController> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_TAB_DRAG_CONTROLLER_H_
