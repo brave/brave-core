@@ -13,14 +13,11 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
-#include "chrome/grit/generated_resources.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/background.h"
@@ -29,24 +26,7 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
-BraveTabGroupHeader::BraveTabGroupHeader(TabSlotController& tab_slot_controller,
-                                         const tab_groups::TabGroupId& group,
-                                         const TabGroupStyle& style)
-    : TabGroupHeader(tab_slot_controller, group, style),
-      plus_icon_(AddChildView(views::ImageButton::CreateIconButton(
-          base::BindRepeating(&BraveTabGroupHeader::AddNewTab,
-                              base::Unretained(this)),
-          kLeoPlusAddIcon,
-          l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB),
-          views::ImageButton::MaterialIconStyle::kSmall,
-          gfx::Insets()))) {}
-
 BraveTabGroupHeader::~BraveTabGroupHeader() = default;
-
-void BraveTabGroupHeader::AddNewTab() {
-  chrome::AddTabAt(const_cast<Browser*>(tab_slot_controller_->GetBrowser()),
-                   GURL(), -1, true, group());
-}
 
 void BraveTabGroupHeader::AddedToWidget() {
   TabGroupHeader::AddedToWidget();
@@ -69,7 +49,6 @@ void BraveTabGroupHeader::AddedToWidget() {
 
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
-  plus_icon_->SetVisible(ShouldShowVerticalTabs());
 
   if (!tabs::features::HorizontalTabsUpdateEnabled() &&
       !ShouldShowVerticalTabs()) {
@@ -95,7 +74,7 @@ void BraveTabGroupHeader::VisualsChanged() {
   }
 
   if (ShouldShowVerticalTabs()) {
-    LayoutTitleChipAndNTBForVerticalTabs();
+    LayoutTitleChipForVerticalTabs();
   }
 
   if (ShouldShowSyncIcon()) {
@@ -116,7 +95,7 @@ int BraveTabGroupHeader::GetDesiredWidth() const {
 void BraveTabGroupHeader::Layout(PassKey) {
   LayoutSuperclass<TabGroupHeader>(this);
   if (ShouldShowVerticalTabs()) {
-    LayoutTitleChipAndNTBForVerticalTabs();
+    LayoutTitleChipForVerticalTabs();
   }
 }
 
@@ -125,19 +104,14 @@ bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
       tab_slot_controller_->GetBrowser());
 }
 
-void BraveTabGroupHeader::LayoutTitleChipAndNTBForVerticalTabs() {
+void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
   auto title_bounds = GetContentsBounds();
   title_bounds.Inset(gfx::Insets(kPaddingForGroup));
   title_chip_->SetBoundsRect(title_bounds);
 
   // |title_| is a child view of |title_chip_| and there could be |sync_icon_|
-  // before |title_| and |plus_icon_| after |title_|. So expand |title_|'s width
-  // considering that.
-  const int title_width = title_bounds.width() - title_->x() - kIconSize;
-
-  title_->SetSize({title_width, title_->height()});
-  plus_icon_->SetBoundsRect(
-      {title_->bounds().right(), title_bounds.y(), kIconSize, kIconSize});
+  // before |title_|. So expand |title_|'s width considering that.
+  title_->SetSize({title_bounds.width() - title_->x(), title_->height()});
 }
 
 SkColor BraveTabGroupHeader::GetGroupColor() const {

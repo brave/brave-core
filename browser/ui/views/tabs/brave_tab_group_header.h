@@ -19,14 +19,8 @@ class BraveTabGroupHeader : public TabGroupHeader {
  public:
 
   constexpr static int kPaddingForGroup = 4;
-  constexpr static int kIconSize = 16;
 
-  BraveTabGroupHeader(TabSlotController& tab_slot_controller,
-                      const tab_groups::TabGroupId& group,
-                      const TabGroupStyle& style);
-  BraveTabGroupHeader(const BraveTabGroupHeader&) = delete;
-  BraveTabGroupHeader& operator=(const BraveTabGroupHeader&) = delete;
-
+  using TabGroupHeader::TabGroupHeader;
   ~BraveTabGroupHeader() override;
 
   // TabGroupHeader:
@@ -35,15 +29,11 @@ class BraveTabGroupHeader : public TabGroupHeader {
   int GetDesiredWidth() const override;
   void Layout(PassKey) override;
 
-  void AddNewTab();
-
  private:
   bool ShouldShowVerticalTabs() const;
-  void LayoutTitleChipAndNTBForVerticalTabs();
+  void LayoutTitleChipForVerticalTabs();
   SkColor GetGroupColor() const;
   std::optional<SkColor> GetChipBackgroundColor() const;
-
-  raw_ptr<views::ImageButton> plus_icon_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_
