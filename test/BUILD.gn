@@ -1059,7 +1059,6 @@ test("brave_browser_tests") {
   if (is_win || is_linux) {
     sources += [ "//brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer_browsertest.cc" ]
     deps += [
-      "//brave/browser/renderer_context_menu",
       "//components/language/core/browser",
       "//components/spellcheck/common",
     ]
