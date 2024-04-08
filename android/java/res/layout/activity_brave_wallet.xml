@@ -4,28 +4,14 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/wallet_bg"
-    tools:context=".BraveWalletActivity">
-
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/crypto_onboarding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/wallet_bg"
-        android:fadeScrollbars="false"
-        android:fillViewport="true"
-        android:scrollbars="vertical">
+        android:background="@color/wallet_bg">
 
-        <FrameLayout
-            android:id="@+id/crypto_wallet_onboarding_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/crypto_wallet_onboarding_viewpager"
@@ -53,7 +39,4 @@
                 app:tint="@color/brave_wallet_onboarding_item_background_color"
                 app:srcCompat="@drawable/ic_baseline_close_24"
                 android:visibility="gone"/>
-        </FrameLayout>
-
-    </androidx.core.widget.NestedScrollView>
-</FrameLayout>
+    </FrameLayout>
