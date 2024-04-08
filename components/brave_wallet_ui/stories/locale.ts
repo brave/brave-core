@@ -904,7 +904,7 @@ provideStrings({
   braveWalletSimulationWarningBulkApprovalsRequest:
     'This requests permission to transfer many tokens, ' +
     'which is usually an attempt at theft.',
-  braveWalletSimulationWarningCopyCatDomain: 'This site may be a fake',
+  braveWalletSimulationWarningCopyCatDomain: 'This site may be a fake.',
   braveWalletSimulationWarningDanglingApproval:
     'This DApp will be able to move tokens from your account later on.',
   braveWalletSimulationWarningKnownMalicious:

@@ -1115,7 +1115,7 @@
   <message name="IDS_BRAVE_WALLET_WITHDRAWER" desc="The address that is withdrawing funds">Withdrawer</message>
   <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_APPROVAL_TO_EOA" desc="Warning that token transfer permission is being given to someone else">You’re giving someone else permission to transfer tokens on your behalf.</message>
   <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_BULK_APPROVALS_REQUEST" desc="Warning that many tokens will be allowed to be transfered">This requests permission to transfer many tokens, which is usually an attempt at theft.</message>
-  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_COPY_CAT_DOMAIN" desc="Warning that the dapp may be a malicious copy">This site may be a fake</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_COPY_CAT_DOMAIN" desc="Warning that the dapp may be a malicious copy">This site may be a fake.</message>
   <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_DANGLING_APPROVAL" desc="Warning that the dapp may be able to move tokens in the future">This DApp will be able to move tokens from your account later on.</message>
   <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_KNOWN_MALICIOUS" desc="Warning that the dapp is flagged">This site is flagged as high risk and will likely attempt to steal your funds.</message>
   <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_NEW_DOMAIN" desc="Warning that a dapp domain has not been verified yet">This domain hasn’t been verified yet. Continue only if you trust the site.</message>
