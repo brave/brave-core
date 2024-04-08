@@ -29,8 +29,14 @@ class NewTabPageVideoBackgroundController: UIViewController {
   private var playerLayer = AVPlayerLayer()
   private var playStarted = false
   private var previewAutoplayFinished: Bool = false
+  private var isViewDidAppearOnce: Bool = false
+  private var isLoadFinished: Bool = false
   private var timeObserver: Any?
   private var playerObserver: NSKeyValueObservation?
+
+  private var stopFrame: Int?
+  private var duration: CMTime?
+  private var frameRate: Float?
 
   private var videoButtonsView = NewTabPageVideoButtonsView()
 
@@ -93,6 +99,16 @@ class NewTabPageVideoBackgroundController: UIViewController {
     updatePlayerVisibility()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    if !isViewDidAppearOnce {
+      isViewDidAppearOnce = true
+
+      maybeStartAutoplay()
+    }
+  }
+
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
 
@@ -102,7 +118,7 @@ class NewTabPageVideoBackgroundController: UIViewController {
 
   func startVideoPlayback() {
     if !previewAutoplayFinished {
-      autoplayFinished()
+      autoplayFinished(animated: false)
     }
 
     self.videoButtonsView.isHidden = false
@@ -129,31 +145,29 @@ class NewTabPageVideoBackgroundController: UIViewController {
   }
 
   private func setupPlayer(backgroundVideoPath: URL) {
-    self.view.backgroundColor = parseColorFromFilename(
+    view.backgroundColor = parseColorFromFilename(
       filename: backgroundVideoPath.lastPathComponent
     )
-    let stopFrame = parseStopFrameFromFilename(filename: backgroundVideoPath.lastPathComponent)
+    stopFrame = parseStopFrameFromFilename(filename: backgroundVideoPath.lastPathComponent)
     let resizeToFill = shouldResizeToFill(filename: backgroundVideoPath.lastPathComponent)
 
     let asset: AVURLAsset = AVURLAsset(url: backgroundVideoPath)
     loadVideoTrackParams(
       asset: asset,
-      stopFrame: stopFrame,
       resizeToFill: resizeToFill
     )
   }
 
-  private func loadVideoTrackParams(asset: AVURLAsset, stopFrame: Int?, resizeToFill: Bool) {
-    Task {
+  private func loadVideoTrackParams(asset: AVURLAsset, resizeToFill: Bool) {
+    Task { @MainActor in
       let isPlayable = try? await asset.load(.isPlayable)
-      let duration = try? await asset.load(.duration)
-      var frameRate: Float?
+      duration = try? await asset.load(.duration)
       if let videoTrack = try? await asset.loadTracks(withMediaType: .video).first {
         frameRate = try? await videoTrack.load(.nominalFrameRate)
       }
 
-      guard let duration = duration,
-        let isPlayable = isPlayable
+      guard let isPlayable = isPlayable,
+        duration != nil
       else {
         videoLoaded(succeeded: false)
         return
@@ -162,26 +176,20 @@ class NewTabPageVideoBackgroundController: UIViewController {
 
       setupPlayerLayer(
         asset: asset,
-        resizeToFill: resizeToFill,
-        duration: duration,
-        frameRate: frameRate,
-        stopFrame: stopFrame
+        resizeToFill: resizeToFill
       )
     }
   }
 
   private func setupPlayerLayer(
     asset: AVURLAsset,
-    resizeToFill: Bool,
-    duration: CMTime,
-    frameRate: Float?,
-    stopFrame: Int?
+    resizeToFill: Bool
   ) {
     let item = AVPlayerItem(asset: asset)
     let player = AVPlayer(playerItem: item)
     playerLayer.player = player
 
-    if resizeToFill {
+    if resizeToFill && UIDevice.isPhone {
       playerLayer.videoGravity = .resizeAspectFill
     } else {
       playerLayer.videoGravity = .resizeAspect
@@ -194,16 +202,27 @@ class NewTabPageVideoBackgroundController: UIViewController {
         name: .AVPlayerItemDidPlayToEndTime,
         object: playerLayer.player?.currentItem
       )
+  }
+
+  private func maybeStartAutoplay() {
+    if !isLoadFinished || !isViewDidAppearOnce || previewAutoplayFinished {
+      return
+    }
 
     // Do not start autoplay in landscape mode on Phone.
     if shouldShowVideoBackground() {
-      startAutoplay(duration: duration, frameRate: frameRate, stopFrame: stopFrame)
+      startAutoplay()
     } else {
       autoplayFinished()
     }
   }
 
-  private func startAutoplay(duration: CMTime, frameRate: Float?, stopFrame: Int?) {
+  private func startAutoplay() {
+    guard let duration = duration else {
+      autoplayFinished()
+      return
+    }
+
     var autoplayLengthSeconds: Float64 = self.kMaxAutoplayDuration
     if let frameRate = frameRate,
       let stopFrame = stopFrame
@@ -308,10 +327,15 @@ class NewTabPageVideoBackgroundController: UIViewController {
   }
 
   private func videoLoaded(succeeded: Bool) {
+    isLoadFinished = true
     videoLoadedEvent?(succeeded)
+
     if !succeeded {
       autoplayFinished()
+      return
     }
+
+    maybeStartAutoplay()
   }
 
   private func autoplayFinished(animated: Bool = true) {

@@ -478,19 +478,26 @@ class NewTabPageViewController: UIViewController {
   }
 
   func setupBackgroundVideo() {
-    backgroundButtonsView.tappedPlayButton = { [weak self] in
-      self?.fadeOutAndHideCollectionView()
+    backgroundButtonsView.tappedPlayButton = { [weak self] animated in
+      if animated {
+        self?.fadeOutAndHideCollectionView()
+      } else {
+        self?.collectionView.isHidden = true
+      }
       self?.videoBackgroundController.startVideoPlayback()
     }
 
     videoBackgroundController.videoLoadedEvent = { [weak self] succeeded in
       if succeeded {
-        self?.backgroundButtonsView.addPlayButton()
-        self?.backgroundButtonsView.isHidden = true
+        self?.backgroundButtonsView.autoplayStarted()
       }
     }
     videoBackgroundController.autoplayFinishedEvent = { [weak self] animated in
-      self?.backgroundButtonsView.isHidden = false
+      self?.backgroundButtonsView.autoplayFinished()
+      if case .sponsoredImage(let background) = self?.background.currentBackground {
+        self?.backgroundButtonsView.activeButton = .brandLogo(background.logo)
+      }
+
       if animated {
         self?.backgroundButtonsView.alpha = 0
         UIView.animate(
@@ -513,6 +520,10 @@ class NewTabPageViewController: UIViewController {
     }
     videoBackgroundController.played25PercentEvent = { [weak self] in
       self?.reportSponsoredImageBackgroundEvent(.media25)
+    }
+
+    if background.backgroundVideoPath != nil {
+      backgroundButtonsView.activeButton = .none
     }
   }
 

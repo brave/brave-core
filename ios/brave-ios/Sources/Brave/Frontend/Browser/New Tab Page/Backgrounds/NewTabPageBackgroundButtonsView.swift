@@ -57,7 +57,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
       activeView?.isHidden = false
     }
   }
-  var tappedPlayButton: (() -> Void)?
+  var tappedPlayButton: ((Bool) -> Void)?
 
   private let imageCreditButton = ImageCreditButton().then {
     $0.isHidden = true
@@ -72,6 +72,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     $0.isHidden = true
   }
   private var playButtonAdded = false
+  private var playButtonGestureRecognizer: UITapGestureRecognizer?
 
   /// The parent safe area insets (since UICollectionView doesn't feed down
   /// proper `safeAreaInsets` when the `contentInsetAdjustmentBehavior` is set
@@ -104,7 +105,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     }
 
     addSubview(playButton)
-    playButton.addTarget(self, action: #selector(tappedVideoPlayButton(_:)), for: .touchUpInside)
+    playButton.addTarget(self, action: #selector(tappedVideoPlayButton), for: .touchUpInside)
   }
 
   @available(*, unavailable)
@@ -156,27 +157,50 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
       $0.centerX.equalToSuperview()
       $0.centerY.equalToSuperview().offset(20)
     }
-    // Hide the play button if the video is in landscape mode on a phone
-    if isLandscape && UIDevice.isPhone {
-      playButton.isHidden = true
-    } else {
-      playButton.isHidden = !playButtonAdded
-    }
+
+    updatePlayButtonVisibility()
   }
 
   @objc private func tappedButton(_ sender: UIControl) {
     tappedActiveButton?(sender)
   }
 
-  @objc private func tappedVideoPlayButton(_ sender: UIControl) {
-    tappedPlayButton?()
+  @objc private func tappedVideoPlayButton() {
+    tappedPlayButton?(true)
   }
 
-  func addPlayButton() {
+  @objc private func tappedVideDuringAutoplay() {
+    tappedPlayButton?(false)
+  }
+
+  func autoplayStarted() {
+    let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(
+      target: self,
+      action: #selector(self.tappedVideDuringAutoplay)
+    )
+    tapGesture.numberOfTapsRequired = 1
+    addGestureRecognizer(tapGesture)
+    playButtonGestureRecognizer = tapGesture
+  }
+
+  func autoplayFinished() {
     playButtonAdded = true
-    // Hide the play button if the video is in landscape mode on a phone
+    updatePlayButtonVisibility()
+
+    if let playButtonGestureRecognizer = playButtonGestureRecognizer {
+      removeGestureRecognizer(playButtonGestureRecognizer)
+    }
+  }
+
+  private func updatePlayButtonVisibility() {
     let isLandscape = frame.width > frame.height
-    playButton.isHidden = isLandscape && UIDevice.isPhone
+
+    // Hide the play button if the video is in landscape mode on a phone
+    if isLandscape && UIDevice.isPhone {
+      playButton.isHidden = true
+    } else {
+      playButton.isHidden = !playButtonAdded
+    }
   }
 
   func preferencesDidChange(for key: String) {
