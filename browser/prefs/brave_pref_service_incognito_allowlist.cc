@@ -8,6 +8,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
@@ -30,6 +31,7 @@ const std::vector<const char*>& GetBravePersistentPrefNames() {
   static base::NoDestructor<std::vector<const char*>> brave_allowlist({
       kBraveAutofillPrivateWindows,
 #if !BUILDFLAG(IS_ANDROID)
+      kShowWalletIconOnToolbar,
       prefs::kSidePanelHorizontalAlignment,
       kTabMuteIndicatorNotClickable,
       brave_tabs::kVerticalTabsExpandedWidth,

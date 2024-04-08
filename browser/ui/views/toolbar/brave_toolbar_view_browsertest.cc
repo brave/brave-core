@@ -244,17 +244,35 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        WalletButtonCanBeToggledWithPrefInPrivateTabs) {
   auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
-  auto* prefs = incognito_browser->profile()->GetPrefs();
+  auto* incognito_prefs = incognito_browser->profile()->GetPrefs();
+  auto* normal_prefs = browser()->profile()->GetPrefs();
 
-  // By default, the button should be shown.
-  EXPECT_FALSE(prefs->GetBoolean(kBraveWalletPrivateWindowsEnabled));
+  // By default, the button in normal window should be shown.
+  EXPECT_TRUE(is_wallet_button_shown(browser()));
+
+  // By default, the button in private window should be hidden.
+  EXPECT_FALSE(incognito_prefs->GetBoolean(kBraveWalletPrivateWindowsEnabled));
   EXPECT_FALSE(is_wallet_button_shown(incognito_browser));
 
-  // Turn on brave wallet in private tabs should reveal the button.
-  prefs->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
+  // Turn on brave wallet in private tabs should reveal the button in private
+  // window.
+  incognito_prefs->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
+  EXPECT_TRUE(is_wallet_button_shown(incognito_browser));
+
+  // Turning off wallet icon should hide icon on both windows.
+  normal_prefs->SetBoolean(kShowWalletIconOnToolbar, false);
+  EXPECT_FALSE(is_wallet_button_shown(browser()));
+  EXPECT_FALSE(is_wallet_button_shown(incognito_browser));
+
+  // Turn on wallet icon should show icons on both windows.
+  incognito_prefs->SetBoolean(kShowWalletIconOnToolbar, true);
+  EXPECT_TRUE(is_wallet_button_shown(browser()));
   EXPECT_TRUE(is_wallet_button_shown(incognito_browser));
 
   // Turning off brave wallet in private tabs should hide it again.
-  prefs->SetBoolean(kBraveWalletPrivateWindowsEnabled, false);
+  incognito_prefs->SetBoolean(kBraveWalletPrivateWindowsEnabled, false);
   EXPECT_FALSE(is_wallet_button_shown(incognito_browser));
+
+  // Normal winwow still has visible button.
+  EXPECT_TRUE(is_wallet_button_shown(browser()));
 }
