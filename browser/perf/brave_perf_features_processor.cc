@@ -19,10 +19,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/prefs/pref_service.h"
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_pref_names.h"
-#endif
 
 namespace {
 void FakeCallback(brave_rewards::mojom::CreateRewardsWalletResult) {}
@@ -73,10 +70,8 @@ void MaybeEnableBraveFeatureForPerfTesting(Profile* profile) {
                                   true);
   profile->GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   // Speedreader
   profile->GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefEnabled, true);
-#endif
 
   // Adblock
   EnableAdblockCookieList(profile->GetWeakPtr());

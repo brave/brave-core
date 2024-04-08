@@ -32,6 +32,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -43,7 +44,6 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -100,10 +100,6 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/speedreader/speedreader_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
@@ -215,9 +211,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   sidebar::SidebarServiceFactory::GetInstance();
 #endif
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderServiceFactory::GetInstance();
-#endif
 
 #if !BUILDFLAG(IS_ANDROID)
   BraveGlobalInfobarServiceFactory::GetInstance();

@@ -6,7 +6,6 @@
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
@@ -32,7 +31,8 @@ brave_chrome_renderer_deps = [
   "//brave/components/script_injector/renderer",
   "//brave/components/skus/common",
   "//brave/components/skus/renderer",
-  "//brave/components/speedreader/common/buildflags",
+  "//brave/components/speedreader/common",
+  "//brave/components/speedreader/renderer",
   "//brave/components/tor/buildflags",
   "//brave/renderer/brave_wallet",
   "//mojo/public/cpp/bindings",
@@ -42,13 +42,6 @@ brave_chrome_renderer_deps = [
 
 if (enable_tor) {
   brave_chrome_renderer_deps += [ "//brave/components/tor/renderer" ]
-}
-
-if (enable_speedreader) {
-  brave_chrome_renderer_deps += [
-    "//brave/components/speedreader/common",
-    "//brave/components/speedreader/renderer",
-  ]
 }
 
 if (enable_ai_chat) {

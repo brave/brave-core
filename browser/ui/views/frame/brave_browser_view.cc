@@ -19,6 +19,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
@@ -41,6 +42,7 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -49,7 +51,6 @@
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -83,11 +84,6 @@
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/views/update_recommended_message_box_mac.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
@@ -513,8 +509,6 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
   }
 }
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-
 speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
     speedreader::SpeedreaderTabHelper* tab_helper,
     speedreader::SpeedreaderBubbleLocation location) {
@@ -567,7 +561,6 @@ void BraveBrowserView::HideReaderModeToolbar() {
     DeprecatedLayoutImmediately();
   }
 }
-#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 void BraveBrowserView::ShowUpdateChromeDialog() {
 #if BUILDFLAG(ENABLE_SPARKLE)

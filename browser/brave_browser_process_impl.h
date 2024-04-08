@@ -14,7 +14,6 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
@@ -142,10 +141,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
   brave_ads::ResourceComponent* resource_component() override;
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
-#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
 #endif
@@ -213,10 +210,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       ntp_background_images_service_;
   std::unique_ptr<brave_ads::ResourceComponent> resource_component_;
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   std::unique_ptr<speedreader::SpeedreaderRewriterService>
       speedreader_rewriter_service_;
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   std::unique_ptr<brave_vpn::BraveVPNConnectionManager>

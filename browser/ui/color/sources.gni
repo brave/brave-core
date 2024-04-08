@@ -23,7 +23,6 @@ if (!is_android) {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/playlist/common",
-    "//brave/components/speedreader/common/buildflags",
     "//skia",
     "//ui/color",
     "//ui/gfx",

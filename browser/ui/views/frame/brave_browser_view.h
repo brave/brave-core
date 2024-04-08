@@ -19,6 +19,7 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
@@ -33,17 +34,11 @@
 #include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
 #endif
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
 namespace speedreader {
 class SpeedreaderBubbleView;
 class SpeedreaderTabHelper;
 enum class SpeedreaderBubbleLocation : int;
 }  // namespace speedreader
-#endif
 
 namespace content {
 class WebContents;
@@ -84,13 +79,11 @@ class BraveBrowserView : public BrowserView,
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
       speedreader::SpeedreaderBubbleLocation location) override;
   void ShowReaderModeToolbar() override;
   void HideReaderModeToolbar() override;
-#endif
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)
   bool GetSupportsTitle() const override;
@@ -201,9 +194,7 @@ class BraveBrowserView : public BrowserView,
   BraveVPNPanelController vpn_panel_controller_{this};
 #endif
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   std::unique_ptr<ReaderModeToolbarView> reader_mode_toolbar_view_;
-#endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   std::unique_ptr<ViewShadow> contents_shadow_;

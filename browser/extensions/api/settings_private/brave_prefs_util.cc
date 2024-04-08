@@ -26,7 +26,7 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/pref_names.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -61,10 +61,6 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/components/sidebar/browser/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/speedreader_pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -178,10 +174,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[sidebar::kSidebarShowOption] =
       settings_api::PrefType::kNumber;
 #endif
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   (*s_brave_allowlist)[speedreader::kSpeedreaderPrefEnabled] =
       settings_api::PrefType::kBoolean;
-#endif
   // De-AMP feature
   (*s_brave_allowlist)[de_amp::kDeAmpPrefEnabled] =
       settings_api::PrefType::kBoolean;

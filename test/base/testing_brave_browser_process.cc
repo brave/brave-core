@@ -153,13 +153,11 @@ TestingBraveBrowserProcess::ntp_background_images_service() {
   return nullptr;
 }
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
 speedreader::SpeedreaderRewriterService*
 TestingBraveBrowserProcess::speedreader_rewriter_service() {
   NOTREACHED();
   return nullptr;
 }
-#endif
 
 brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
   NOTREACHED();

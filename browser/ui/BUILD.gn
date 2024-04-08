@@ -15,7 +15,6 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -769,7 +768,7 @@ source_set("ui") {
     }
   }
 
-  if (enable_speedreader && !is_android) {
+  if (!is_android) {
     deps += [ "//brave/components/speedreader" ]
 
     sources += [

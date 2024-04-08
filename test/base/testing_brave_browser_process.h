@@ -80,10 +80,8 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   brave_ads::BraveStatsHelper* ads_brave_stats_helper() override;
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
-#if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
-#endif
   brave_ads::ResourceComponent* resource_component() override;
   brave::BraveFarblingService* brave_farbling_service() override;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
