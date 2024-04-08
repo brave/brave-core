@@ -12,8 +12,11 @@ import {
   IconTitle,
   ModalTitle,
   TextSection,
-  InfoText
+  InfoText,
+  CloseIcon
 } from './basic'
+
+import { closeDialog } from '../browser_proxy'
 
 // Localization data
 import { getLocale } from '../../../common/locale'
@@ -29,6 +32,7 @@ export default class ConfirmationView extends React.PureComponent<{}, {}> {
         <IconTitle>
           <SuccessIcon />
           <ModalTitle>{getLocale('thankYou')}</ModalTitle>
+          <CloseIcon onClick={closeDialog} />
         </IconTitle>
         <TextSection>
           <InfoText>{getLocale('confirmationNotice')}</InfoText>
