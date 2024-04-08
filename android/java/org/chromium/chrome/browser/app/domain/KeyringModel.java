@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.app.domain;
 
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringDef;
@@ -44,7 +43,6 @@ public class KeyringModel implements KeyringServiceObserver {
     private static final String TAG = "KeyringModel";
     private final Object mLock = new Object();
 
-    private Context mContext;
     private KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
     private final MutableLiveData<AccountInfo> _mSelectedAccount;
@@ -55,9 +53,10 @@ public class KeyringModel implements KeyringServiceObserver {
     public LiveData<AccountInfo> mSelectedAccount;
     public LiveData<AllAccountsInfo> mAllAccountsInfo;
 
-    public KeyringModel(Context context, KeyringService keyringService,
-            BraveWalletService braveWalletService, CryptoSharedActions cryptoSharedActions) {
-        mContext = context;
+    public KeyringModel(
+            KeyringService keyringService,
+            BraveWalletService braveWalletService,
+            CryptoSharedActions cryptoSharedActions) {
         mKeyringService = keyringService;
         mBraveWalletService = braveWalletService;
         mCryptoSharedActions = cryptoSharedActions;
@@ -108,10 +107,8 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
-    public void resetService(
-            Context context, KeyringService keyringService, BraveWalletService braveWalletService) {
+    public void resetService(KeyringService keyringService, BraveWalletService braveWalletService) {
         synchronized (mLock) {
-            mContext = context;
             mKeyringService = keyringService;
             mBraveWalletService = braveWalletService;
         }
@@ -133,8 +130,13 @@ public class KeyringModel implements KeyringServiceObserver {
             @KeyringId.EnumType int keyringId,
             String accountName,
             Callbacks.Callback1<Boolean> callback) {
-        mKeyringService.addAccount(coinType, keyringId, accountName,
-                result -> { handleAddAccountResult(result, callback); });
+        mKeyringService.addAccount(
+                coinType,
+                keyringId,
+                accountName,
+                result -> {
+                    handleAddAccountResult(result, callback);
+                });
     }
 
     public void addAccount(@CoinType.EnumType int coinType, String chainId, String accountName,
@@ -142,12 +144,16 @@ public class KeyringModel implements KeyringServiceObserver {
         @KeyringId.EnumType
         int keyringId = AssetUtils.getKeyring(coinType, chainId);
         if (accountName == null) {
-            LiveDataUtil.observeOnce(mAccountInfos, accounts -> {
-                addAccountInternal(coinType, keyringId,
-                        WalletUtils.generateUniqueAccountName(
-                                mContext, coinType, accounts.toArray(new AccountInfo[0])),
-                        callback);
-            });
+            LiveDataUtil.observeOnce(
+                    mAccountInfos,
+                    accounts -> {
+                        addAccountInternal(
+                                coinType,
+                                keyringId,
+                                WalletUtils.generateUniqueAccountName(
+                                        coinType, accounts.toArray(new AccountInfo[0])),
+                                callback);
+                    });
         } else {
             addAccountInternal(coinType, keyringId, accountName, callback);
         }
@@ -187,7 +193,6 @@ public class KeyringModel implements KeyringServiceObserver {
      * @param availableNetworks All available networks.
      * @param selectedNetworks Collection of selected networks that will be shown.
      * @param jsonRpcService JSON RPC service used to add and hide the networks.
-     * @param context Android context required to generate account unique names.
      * @param callback Callback fired once creation terminates passing a string containing the
      *     recovery phrases.
      */
@@ -196,7 +201,6 @@ public class KeyringModel implements KeyringServiceObserver {
             @NonNull final Set<NetworkInfo> availableNetworks,
             @NonNull final Set<NetworkInfo> selectedNetworks,
             @NonNull final JsonRpcService jsonRpcService,
-            @NonNull final Context context,
             @NonNull final Callbacks.Callback1<String> callback) {
         final Set<NetworkInfo> removeHiddenNetworks = new HashSet<>();
         final Set<NetworkInfo> addHiddenNetworks = new HashSet<>();
@@ -227,8 +231,7 @@ public class KeyringModel implements KeyringServiceObserver {
                             removeHiddenNetworksDone.set(true);
 
                             if (addHiddenNetworksDone.get()) {
-                                finalizeWalletCreation(
-                                        password, selectedNetworks, context, callback);
+                                finalizeWalletCreation(password, selectedNetworks, callback);
                             }
                         }
                     }
@@ -243,8 +246,7 @@ public class KeyringModel implements KeyringServiceObserver {
                             addHiddenNetworksDone.set(true);
 
                             if (removeHiddenNetworksDone.get()) {
-                                finalizeWalletCreation(
-                                        password, selectedNetworks, context, callback);
+                                finalizeWalletCreation(password, selectedNetworks, callback);
                             }
                         }
                     }
@@ -290,7 +292,6 @@ public class KeyringModel implements KeyringServiceObserver {
     private void finalizeWalletCreation(
             @NonNull final String password,
             @NonNull final Set<NetworkInfo> selectedNetworks,
-            @NonNull final Context context,
             @NonNull final Callbacks.Callback1<String> callback) {
         mKeyringService.createWallet(
                 password,
@@ -327,7 +328,6 @@ public class KeyringModel implements KeyringServiceObserver {
                                     for (NetworkInfo networkInfo : createAccounts) {
                                         String accountName =
                                                 WalletUtils.generateUniqueAccountName(
-                                                        context,
                                                         networkInfo.coin,
                                                         accounts.toArray(new AccountInfo[0]));
                                         mKeyringService.addAccount(

@@ -211,6 +211,7 @@ public class CryptoModel {
 
     /**
      * Initialise the account observable via setter (to avoid dependency cycle)
+     *
      * @param accountInfosFromKeyRingModel from the keyrin model
      */
     public void setAccountInfosFromKeyRingModel(

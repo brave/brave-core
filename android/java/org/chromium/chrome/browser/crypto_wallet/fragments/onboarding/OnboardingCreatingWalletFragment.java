@@ -63,7 +63,6 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                                                 availableNetworks,
                                                 selectedNetworks,
                                                 jsonRpcService,
-                                                requireContext(),
                                                 recoveryPhrases -> {
                                                     if (braveWalletP3A != null) {
                                                         braveWalletP3A.reportOnboardingAction(

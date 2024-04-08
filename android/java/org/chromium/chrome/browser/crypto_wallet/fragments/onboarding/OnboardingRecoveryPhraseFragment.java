@@ -88,15 +88,16 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                     }
                 });
         CheckBox recoveryPhraseCheckbox = view.findViewById(R.id.recovery_phrase_checkbox);
-        recoveryPhraseCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                recoveryPhraseButton.setEnabled(true);
-                recoveryPhraseButton.setAlpha(1.0f);
-            } else {
-                recoveryPhraseButton.setEnabled(false);
-                recoveryPhraseButton.setAlpha(0.5f);
-            }
-        });
+        recoveryPhraseCheckbox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    if (isChecked) {
+                        recoveryPhraseButton.setEnabled(true);
+                        recoveryPhraseButton.setAlpha(1.0f);
+                    } else {
+                        recoveryPhraseButton.setEnabled(false);
+                        recoveryPhraseButton.setAlpha(0.5f);
+                    }
+                });
         TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_recovery_phrase_skip);
         recoveryPhraseSkipButton.setOnClickListener(v -> {
             BraveWalletP3a braveWalletP3A = getBraveWalletP3A();

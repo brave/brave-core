@@ -164,12 +164,17 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             return;
         }
 
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
-        LiveDataUtil.observeOnce(mWalletModel.getKeyringModel().mAccountInfos, accounts -> {
-            mAddAccountText.setText(WalletUtils.generateUniqueAccountName(
-                    this, mCoinForNewAccount, accounts.toArray(new AccountInfo[0])));
-        });
+        getWindow()
+                .setFlags(
+                        WindowManager.LayoutParams.FLAG_SECURE,
+                        WindowManager.LayoutParams.FLAG_SECURE);
+        LiveDataUtil.observeOnce(
+                mWalletModel.getKeyringModel().mAccountInfos,
+                accounts -> {
+                    mAddAccountText.setText(
+                            WalletUtils.generateUniqueAccountName(
+                                    mCoinForNewAccount, accounts.toArray(new AccountInfo[0])));
+                });
     }
 
     @Override
