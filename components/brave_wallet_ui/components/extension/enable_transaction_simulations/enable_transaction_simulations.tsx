@@ -21,12 +21,7 @@ import {
 import { LoadingPanel } from '../loading_panel/loading_panel'
 
 // styles
-import {
-  LeoSquaredButton,
-  Row,
-  VerticalDivider,
-  VerticalSpacer
-} from '../../shared/style'
+import { LeoSquaredButton, Row, VerticalDivider } from '../../shared/style'
 import { Backdrop, Background, FloatingCard } from '../shared-panel-styles'
 import {
   BulletPoints,
@@ -87,9 +82,7 @@ export const EnableTransactionSimulations: React.FC = () => {
 
               <BulletPoints>{TX_SIMULATION_FEATURE_BULLETS}</BulletPoints>
 
-              <VerticalSpacer space={4} />
-              <VerticalDivider />
-              <VerticalSpacer space={8} />
+              <VerticalDivider margin='4px 0px 8px 0px' />
 
               <TermsText>
                 {getLocale('braveWalletTransactionSimulationTerms')}{' '}
