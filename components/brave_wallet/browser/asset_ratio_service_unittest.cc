@@ -158,7 +158,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
         base::BindLambdaForTesting(
             [&](std::vector<mojom::ServiceProviderPtr> sps,
                 const std::optional<std::vector<std::string>>& errors) {
-              LOG(INFO) << "[MELD] Received SPS sps.size():" << sps.size();
               std::move(callback).Run(std::move(sps), errors);
               run_loop.Quit();
             }));
@@ -183,7 +182,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
         country, from_asset, to_asset, source_amount, account,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::CryptoQuotePtr> quotes, const std::optional<std::vector<std::string>>& errors) {
-              LOG(INFO) << "[MELD] Received Quotes quotes.size():" << quotes.size();
               std::move(callback).Run(std::move(quotes), errors);
               run_loop.Quit();
             }));
@@ -209,7 +207,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
         countries, fiat_currencies, crypto_currencies, service_providers, payment_method_types, statuses,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::PaymentMethodPtr> payment_methods, const std::optional<std::vector<std::string>>& errors) {
-              LOG(INFO) << "[MELD] Received Payment Methods payment_methods.size():" << payment_methods.size();
               std::move(callback).Run(std::move(payment_methods), errors);
               run_loop.Quit();
             }));
@@ -236,7 +233,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
         countries, fiat_currencies, crypto_currencies, service_providers, payment_method_types, statuses,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::FiatCurrencyPtr> fiat_currencies, const std::optional<std::vector<std::string>>& errors) {
-              LOG(INFO) << "[MELD] Received GetFiatCurrencies fiat_currencies.size():" << fiat_currencies.size();
               std::move(callback).Run(std::move(fiat_currencies), errors);
               run_loop.Quit();
             }));
@@ -293,8 +289,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
         base::BindLambdaForTesting(
             [&](std::vector<mojom::CountryPtr> countries,
                 const std::optional<std::vector<std::string>>& errors) {
-              LOG(INFO) << "[MELD] Received GetCountries countries.size():"
-                        << countries.size();
               std::move(callback).Run(std::move(countries), errors);
               run_loop.Quit();
             }));
@@ -683,12 +677,12 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
 
 TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
   const auto url = AssetRatioService::GetServiceProviderURL(
-      "US,CA", "USD,EUR", "BTC,ETH", "MOBILE_WALLET,BANK_TRANSFER", "", "");
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "");
   EXPECT_EQ(url.path(), "/service-providers");
   EXPECT_EQ(url.query(),
             "accountFilter=false&statuses=LIVE%2CRECENTLY_ADDED&countries=US%"
             "2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies=BTC%2CETH&"
-            "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
+            "serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
 
   TestGetServiceProvider(
     R"([
@@ -735,12 +729,14 @@ TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
           return item->name == "Banxa" && 
             item->service_provider == "BANXA" &&
             item->status == "LIVE" &&
+            item->web_site_url == "http://www.banxa.com" &&
             !item->logo_images.empty();
         }), 1);
         EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){
           return item->name == "Blockchain.com" && 
           item->service_provider == "BLOCKCHAINDOTCOM" &&
           item->status == "LIVE" &&
+            item->web_site_url == "https://www.blockchain.com" &&
           !item->logo_images.empty();}), 1);
       }));
 
@@ -869,7 +865,6 @@ TEST_F(AssetRatioServiceUnitTest, GetCryptoQuotes) {
       base::BindLambdaForTesting(
           [](std::vector<mojom::CryptoQuotePtr> quotes,
              const std::optional<std::vector<std::string>>& errors) {
-            LOG(INFO) << "[MELD] test err descr ";
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"error description"});
             EXPECT_EQ(base::ranges::count_if(

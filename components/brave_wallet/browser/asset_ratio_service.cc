@@ -712,7 +712,6 @@ void AssetRatioService::OnGetCryptoQuotes(GetCryptoQuotesCallback callback,
 
   if (!error.empty()) {
     errors = std::vector<std::string>{error};
-    LOG(INFO) << "[MELD] errord detected error:" << error;
   }
 
   std::move(callback).Run(std::move(quotes), errors);

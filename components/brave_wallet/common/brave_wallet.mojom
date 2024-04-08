@@ -456,6 +456,7 @@ struct ServiceProvider {
   string name;
   string service_provider;
   string status;
+  string web_site_url;
   array<string> logo_images;
 };
 

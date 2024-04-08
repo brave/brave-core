@@ -288,11 +288,23 @@ bool ParseServiceProviders(
     }
     sp->name = *sp_name;
 
+    const std::string* sp_status = sp_item.GetDict().FindString("status");
+    if (!sp_status) {
+      return false;
+    }
+    sp->status = *sp_status;
+
     const std::string* sp_service_provider = sp_item.GetDict().FindString("serviceProvider");
     if (!sp_service_provider) {
       return false;
     }
     sp->service_provider = *sp_service_provider;
+
+    const std::string* sp_site_url = sp_item.GetDict().FindString("websiteUrl");
+    if (!sp_site_url) {
+      return false;
+    }
+    sp->web_site_url = *sp_site_url;
 
     if (const auto* logos = sp_item.GetDict().FindDict("logos");
         !ParseMeldLogos(logos, sp->logo_images)) {
