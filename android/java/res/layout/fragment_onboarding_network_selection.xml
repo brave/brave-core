@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/setup_wallet_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/BraveWalletOnboarding">
+
+        <TextView
+            android:id="@+id/supported_networks"
+            style="@style/BraveWalletTextViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="18dp"
+            android:text="@string/supported_networks"
+            android:textColor="@color/wallet_text_color"
+            android:lineSpacingExtra="2sp"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/choose_blockchains"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="44dp"
+            android:layout_below="@+id/supported_networks"
+            android:layout_alignParentStart="true"
+            android:text="@string/choose_blockchains"
+            android:textColor="@color/wallet_onboarding_secondary_text_color"
+            android:lineSpacingExtra="4sp"
+            android:textSize="14sp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/BraveWalletInputLayout"
+            android:id="@+id/network_search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="16dp"
+            android:layout_below="@+id/choose_blockchains"
+            android:hint="@string/search_networks"
+            app:startIconDrawable="@drawable/ic_search"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_search_networks_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textFilter"
+                android:lines="1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/show_testnets"
+            style="@style/BraveWalletCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/network_search_layout"
+            android:text="@string/show_testnets"
+            android:textColor="@color/wallet_text_color"
+            android:lineSpacingExtra="4sp"
+            android:textSize="14sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_networks"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/show_testnets"
+        android:layout_above="@+id/continue_button"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:overScrollMode="never"
+        android:nestedScrollingEnabled="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/continue_button"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_above="@+id/add_networks"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            style="@style/BraveWalletOnboardingButton"/>
+
+        <TextView
+            android:id="@+id/add_networks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/add_networks"
+            android:textColor="@color/wallet_tertiary_layout_text_color"
+            android:lineSpacingExtra="2sp"
+            android:textSize="12sp"/>
+</RelativeLayout>
