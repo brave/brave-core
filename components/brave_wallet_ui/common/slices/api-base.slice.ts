@@ -72,6 +72,7 @@ export function createWalletApiBase() {
       'PendingSwitchChainRequests',
       'PendingDecryptRequest',
       'PendingEncryptRequest',
+      'PendingSignTransactionRequests',
       'PendingSignAllTransactionsRequests',
       'PinnableNftIds'
     ],

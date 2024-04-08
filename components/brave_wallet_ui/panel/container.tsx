@@ -48,7 +48,8 @@ import {
   useGetPendingGetEncryptionPublicKeyRequestQuery,
   useGetPendingSwitchChainRequestQuery,
   useGetPendingSignAllTransactionsRequestsQuery,
-  useGetPendingTokenSuggestionRequestsQuery
+  useGetPendingTokenSuggestionRequestsQuery,
+  useGetPendingSignTransactionRequestsQuery
 } from '../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -99,9 +100,6 @@ function Container() {
   const signMessageErrorData = useUnsafePanelSelector(
     PanelSelectors.signMessageErrorData
   )
-  const signTransactionRequests = useUnsafePanelSelector(
-    PanelSelectors.signTransactionRequests
-  )
 
   // queries & mutations
   const { accounts } = useAccountsQuery()
@@ -111,6 +109,8 @@ function Container() {
   const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
   const { data: getEncryptionPublicKeyRequest } =
     useGetPendingGetEncryptionPublicKeyRequestQuery()
+  const { data: signTransactionRequests } =
+    useGetPendingSignTransactionRequestsQuery()
   const { data: signAllTransactionsRequests } =
     useGetPendingSignAllTransactionsRequestsQuery()
   const { data: addTokenRequests = [] } =
@@ -176,7 +176,7 @@ function Container() {
     (selectedPendingTransaction ||
       signMessageData.length ||
       signAllTransactionsRequests?.length ||
-      signTransactionRequests.length) &&
+      signTransactionRequests?.length) &&
     selectedPanel === 'connectHardwareWallet'
   ) {
     return (
