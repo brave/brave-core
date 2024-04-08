@@ -46,15 +46,12 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
 
 void MigrateProfilePrefs(PrefService* profile_prefs) {
   profile_prefs->ClearPref(kObseleteBraveChatAutoGenerateQuestions);
-  auto* pfs = profile_prefs->FindPreference(kDefaultModelKey);
-  LOG(ERROR) << pfs->GetValue()->DebugString();
 
   // migrate model key from "chat-default" to "chat-basic"
   static const std::string kDefaultModelBasicFrom = "chat-default";
   static const std::string kDefaultModelBasicTo = "chat-basic";
   if (auto* default_model_value =
           profile_prefs->GetUserPrefValue(kDefaultModelKey)) {
-    LOG(ERROR) << default_model_value;
     if (base::EqualsCaseInsensitiveASCII(default_model_value->GetString(),
                                          kDefaultModelBasicFrom)) {
       profile_prefs->SetString(kDefaultModelKey, kDefaultModelBasicTo);
