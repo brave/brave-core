@@ -23,6 +23,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
@@ -31,6 +32,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.UnlockWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingBackupWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingCreatingWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingInitWalletFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingNetworkSelectionFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingRecoveryPhraseFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingRestoreWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingSecurePasswordFragment;
@@ -239,6 +241,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             final OnboardingTermsOfUseFragment onboardingTermsOfUseFragment =
                     OnboardingTermsOfUseFragment.newInstance();
             navigationFragments.add(onboardingTermsOfUseFragment);
+            final OnboardingNetworkSelectionFragment onboardingNetworkSelectionFragment =
+                    OnboardingNetworkSelectionFragment.newInstance();
+            navigationFragments.add(onboardingNetworkSelectionFragment);
         }
 
         if (walletAction == WalletAction.ONBOARDING_RESTORE
@@ -393,7 +398,11 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         setNavigationFragments(WalletAction.UNLOCK);
     }
 
-    private NetworkModel getNetworkModel() {
+    public NetworkModel getNetworkModel() {
         return mWalletModel.getNetworkModel();
+    }
+
+    public KeyringModel getKeyringModel() {
+        return mWalletModel.getKeyringModel();
     }
 }
