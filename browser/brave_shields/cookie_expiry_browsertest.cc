@@ -6,10 +6,9 @@
 #include <string>
 
 #include "base/functional/bind.h"
-#include "base/test/bind.h"
-
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/bind.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
