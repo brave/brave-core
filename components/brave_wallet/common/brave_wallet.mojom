@@ -482,6 +482,22 @@ struct FiatCurrency {
   string symbol_image_url;
 };
 
+struct CryptoCurrency {
+  string currency_code;
+  string name;
+  string chain_code;
+  string chain_name;
+  string chain_id;
+  string contract_address;
+  string symbol_image_url;
+};
+
+struct Country {
+  string country_code;
+  string name;
+  string flag_image_url;
+};
+
 struct CoinMarket {
   string id;
   string symbol;
@@ -1188,6 +1204,10 @@ interface AssetRatioService {
   GetPaymentMethods(string countries, string fiat_currencies, string crypto_currencies, string service_providers, string payment_method_types, string statuses) => (array<PaymentMethod> payment_methods, array<string>? error);
 
   GetFiatCurrencies(string countries, string fiat_currencies, string crypto_currencies, string service_providers, string payment_method_types, string statuses) => (array<FiatCurrency> fiat_currencies, array<string>? error);
+
+  GetCryptoCurrencies(string countries, string fiat_currencies, string crypto_currencies, string service_providers, string payment_method_types, string statuses)  => (array<CryptoCurrency> fiat_currencies, array<string>? error);
+
+  GetCountries(string countries, string fiat_currencies, string crypto_currencies, string service_providers, string payment_method_types, string statuses)  => (array<Country> countries, array<string>? error);
 };
 
 // Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs

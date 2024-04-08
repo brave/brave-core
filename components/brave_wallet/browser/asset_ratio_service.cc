@@ -127,7 +127,7 @@ base::flat_map<std::string, std::string> MakeBraveServicesKeyHeader() {
   return request_headers;
 }
 
-base::flat_map<std::string, std::string> MakeMeldServicesKeyHeader() {
+base::flat_map<std::string, std::string> MakeMeldApiHeaders() {
   base::flat_map<std::string, std::string> request_headers;
   std::unique_ptr<base::Environment> env(base::Environment::Create());
   std::string meld_api_key("API_KEY");// TODO here we have to get value from environment config
@@ -135,6 +135,7 @@ base::flat_map<std::string, std::string> MakeMeldServicesKeyHeader() {
   //   env->GetVar("MELD_API_KEY", &meld_api_key);
   // }
   request_headers["Authorization"] = std::move(meld_api_key);
+  request_headers["accept"] = "application/json";
 
   return request_headers;
 }
@@ -588,6 +589,7 @@ GURL AssetRatioService::GetServiceProviderURL(const std::string& countries,
                                      base_url_for_test_.is_empty()
                                          ? GetMeldAssetRatioBaseURL().c_str()
                                          : base_url_for_test_.spec().c_str()));
+  url = net::AppendQueryParameter(url, "accountFilter", "false");
   if (!statuses.empty()) {
     url = net::AppendQueryParameter(url, "statuses", statuses);
   } else {
@@ -625,7 +627,7 @@ void AssetRatioService::GetServiceProviders(
   api_request_helper_->Request(
       "GET", GetServiceProviderURL(countries, from_assets, to_assets,
                                    payment_methods, statuses), "", "",
-                                   std::move(internal_callback),MakeMeldServicesKeyHeader(),
+                                   std::move(internal_callback),MakeMeldApiHeaders(),
                                    {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
@@ -675,7 +677,7 @@ void AssetRatioService::GetCryptoQuotes(const std::string& country,
 
   api_request_helper_->Request(
       "POST", url, json_payload, "application/json",
-      std::move(internal_callback), MakeMeldServicesKeyHeader(),
+      std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = false});
 
 }
@@ -722,6 +724,7 @@ GURL AssetRatioService::GetGetPaymentMethodsURL(const std::string& countries,
                                      base_url_for_test_.is_empty()
                                          ? GetMeldAssetRatioBaseURL().c_str()
                                          : base_url_for_test_.spec().c_str()));
+  url = net::AppendQueryParameter(url, "includeServiceProviderDetails", "false");
   if (!statuses.empty()) {
     url = net::AppendQueryParameter(url, "statuses", statuses);
   } else {
@@ -761,7 +764,7 @@ void AssetRatioService::GetPaymentMethods(const std::string& countries,
   api_request_helper_->Request(
       "GET", GetGetPaymentMethodsURL(countries, fiat_currencies, crypto_currencies, service_providers,
                                    payment_method_types, statuses), "", "",
-                                   std::move(internal_callback),MakeMeldServicesKeyHeader(),
+                                   std::move(internal_callback),MakeMeldApiHeaders(),
                                    {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
@@ -797,6 +800,7 @@ GURL AssetRatioService::GetFiatCurrenciesURL(const std::string& countries,
                                      base_url_for_test_.is_empty()
                                          ? GetMeldAssetRatioBaseURL().c_str()
                                          : base_url_for_test_.spec().c_str()));
+  url = net::AppendQueryParameter(url, "includeServiceProviderDetails", "false");
   if (!statuses.empty()) {
     url = net::AppendQueryParameter(url, "statuses", statuses);
   } else {
@@ -836,7 +840,7 @@ void AssetRatioService::GetFiatCurrencies(const std::string& countries,
   api_request_helper_->Request(
       "GET", GetFiatCurrenciesURL(countries, fiat_currencies, crypto_currencies, service_providers,
                                    payment_method_types, statuses), "", "",
-                                   std::move(internal_callback),MakeMeldServicesKeyHeader(),
+                                   std::move(internal_callback),MakeMeldApiHeaders(),
                                    {.auto_retry_on_network_change = true, .enable_cache = true});
 
 }
@@ -860,6 +864,165 @@ void AssetRatioService::OnGetFiatCurrencies(GetFiatCurrenciesCallback callback,
   }
 
   std::move(callback).Run(std::move(fiat_currencies), std::nullopt);
+}
+
+// static
+GURL AssetRatioService::GetCryptoCurrenciesURL(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses) {
+  auto url = GURL(base::StringPrintf("%s/service-providers/properties/crypto-currencies",
+                                     base_url_for_test_.is_empty()
+                                         ? GetMeldAssetRatioBaseURL().c_str()
+                                         : base_url_for_test_.spec().c_str()));
+  
+  url = net::AppendQueryParameter(url, "includeServiceProviderDetails", "false");
+
+  if (!statuses.empty()) {
+    url = net::AppendQueryParameter(url, "statuses", statuses);
+  } else {
+    url = net::AppendQueryParameter(url, "statuses", kDefaultMeldStatuses);    
+  }
+
+  if (!countries.empty()) {
+    url = net::AppendQueryParameter(url, "countries", countries);
+  }
+  if (!fiat_currencies.empty()) {
+    url = net::AppendQueryParameter(url, "fiatCurrencies", fiat_currencies);
+  }
+  if (!crypto_currencies.empty()) {
+    url = net::AppendQueryParameter(url, "cryptoCurrencies", crypto_currencies);
+  }
+  if (!service_providers.empty()) {
+    url = net::AppendQueryParameter(url, "serviceProviders", service_providers);
+  }
+  if (!payment_method_types.empty()) {
+    url = net::AppendQueryParameter(url, "paymentMethodTypes", payment_method_types);
+  }
+  
+  return url;
+}
+
+void AssetRatioService::GetCryptoCurrencies(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses,
+                         GetCryptoCurrenciesCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetCryptoCurrencies,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_->Request(
+      "GET", GetCryptoCurrenciesURL(countries, fiat_currencies, crypto_currencies, service_providers,
+                                   payment_method_types, statuses), "", "",
+                                   std::move(internal_callback),MakeMeldApiHeaders(),
+                                   {.auto_retry_on_network_change = true, .enable_cache = true});
+
+}
+
+void AssetRatioService::OnGetCryptoCurrencies(GetCryptoCurrenciesCallback callback,
+                             APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run({}, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    return;
+  }
+
+  if (std::vector<std::string> errors; ParseMeldErrorResponse(api_request_result.value_body(), &errors)) {
+    std::move(callback).Run({}, errors);
+    return;
+  }
+
+  std::vector<mojom::CryptoCurrencyPtr> crypto_currencies;
+  if (!ParseCryptoCurrencies(api_request_result.value_body(), &crypto_currencies)) {
+    std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
+    return;
+  }
+
+  std::move(callback).Run(std::move(crypto_currencies), std::nullopt);
+}
+
+// static
+GURL AssetRatioService::GetCountriesURL(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses){
+  auto url = GURL(base::StringPrintf("%s/service-providers/properties/countries",
+                                     base_url_for_test_.is_empty()
+                                         ? GetMeldAssetRatioBaseURL().c_str()
+                                         : base_url_for_test_.spec().c_str()));
+  
+  url = net::AppendQueryParameter(url, "includeServiceProviderDetails", "false");
+
+  if (!statuses.empty()) {
+    url = net::AppendQueryParameter(url, "statuses", statuses);
+  } else {
+    url = net::AppendQueryParameter(url, "statuses", kDefaultMeldStatuses);    
+  }
+
+  if (!countries.empty()) {
+    url = net::AppendQueryParameter(url, "countries", countries);
+  }
+  if (!fiat_currencies.empty()) {
+    url = net::AppendQueryParameter(url, "fiatCurrencies", fiat_currencies);
+  }
+  if (!crypto_currencies.empty()) {
+    url = net::AppendQueryParameter(url, "cryptoCurrencies", crypto_currencies);
+  }
+  if (!service_providers.empty()) {
+    url = net::AppendQueryParameter(url, "serviceProviders", service_providers);
+  }
+  if (!payment_method_types.empty()) {
+    url = net::AppendQueryParameter(url, "paymentMethodTypes", payment_method_types);
+  }
+  
+  return url;
+}
+
+void AssetRatioService::GetCountries(const std::string& countries,
+                    const std::string& fiat_currencies,
+                    const std::string& crypto_currencies,
+                    const std::string& service_providers,
+                    const std::string& payment_method_types,
+                    const std::string& statuses,
+                    GetCountriesCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetCountries,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_->Request(
+      "GET", GetCountriesURL(countries, fiat_currencies, crypto_currencies, service_providers,
+                                   payment_method_types, statuses), "", "",
+                                   std::move(internal_callback),MakeMeldApiHeaders(),
+                                   {.auto_retry_on_network_change = true, .enable_cache = true});
+
+}
+
+void AssetRatioService::OnGetCountries(GetCountriesCallback callback,
+                             APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run({}, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    return;
+  }
+
+  if (std::vector<std::string> errors; ParseMeldErrorResponse(api_request_result.value_body(), &errors)) {
+    std::move(callback).Run({}, errors);
+    return;
+  }
+
+  std::vector<mojom::CountryPtr> crypto_currencies;
+  if (!ParseCountries(api_request_result.value_body(), &crypto_currencies)) {
+    std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
+    return;
+  }
+
+  std::move(callback).Run(std::move(crypto_currencies), std::nullopt);
+
 }
 
 }  // namespace brave_wallet

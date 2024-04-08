@@ -141,6 +141,36 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                          const std::string& statuses,
                          GetFiatCurrenciesCallback callback) override;
 
+  static GURL GetCryptoCurrenciesURL(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses);
+
+  void GetCryptoCurrencies(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses,
+                         GetCryptoCurrenciesCallback callback) override;
+
+  static GURL GetCountriesURL(const std::string& countries,
+                         const std::string& fiat_currencies,
+                         const std::string& crypto_currencies,
+                         const std::string& service_providers,
+                         const std::string& payment_method_types,
+                         const std::string& statuses);
+
+  void GetCountries(const std::string& countries,
+                    const std::string& fiat_currencies,
+                    const std::string& crypto_currencies,
+                    const std::string& service_providers,
+                    const std::string& payment_method_types,
+                    const std::string& statuses,
+                    GetCountriesCallback callback) override;
+
  private:
   friend class AssetRatioServiceUnitTest;
   FRIEND_TEST_ALL_PREFIXES(AssetRatioServiceUnitTest, GetStripeBuyURL);
@@ -182,6 +212,12 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                              APIRequestResult api_request_result);
 
   void OnGetFiatCurrencies(GetFiatCurrenciesCallback callback,
+                             APIRequestResult api_request_result);
+
+  void OnGetCryptoCurrencies(GetCryptoCurrenciesCallback callback,
+                             APIRequestResult api_request_result);
+
+  void OnGetCountries(GetCountriesCallback callback,
                              APIRequestResult api_request_result);
 
   mojo::ReceiverSet<mojom::AssetRatioService> receivers_;

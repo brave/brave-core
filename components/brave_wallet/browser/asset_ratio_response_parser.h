@@ -43,7 +43,15 @@ bool ParsePaymentMethods(
 
 bool ParseFiatCurrencies(
     const base::Value& json_value,
-    std::vector<mojom::FiatCurrencyPtr>* payment_methods);
+    std::vector<mojom::FiatCurrencyPtr>* fiat_currencies);
+
+bool ParseCryptoCurrencies(
+    const base::Value& json_value,
+    std::vector<mojom::CryptoCurrencyPtr>* crypto_currencies);
+
+bool ParseCountries(
+    const base::Value& json_value,
+    std::vector<mojom::CountryPtr>* countries);
 
 }  // namespace brave_wallet
 

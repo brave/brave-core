@@ -555,4 +555,146 @@ bool ParseFiatCurrencies(
   return true;
 }
 
+bool ParseCryptoCurrencies(
+    const base::Value& json_value,
+    std::vector<mojom::CryptoCurrencyPtr>* crypto_currencies) {
+// Parses results like this:
+// [
+//   {
+//     "currencyCode": "USDT_KCC",
+//     "name": "#REF!",
+//     "chainCode": "KCC",
+//     "chainName": "KuCoin Community Chain",
+//     "chainId": null,
+//     "contractAddress": null,
+//     "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+//   },
+//   {
+//     "currencyCode": "00",
+//     "name": "00 Token",
+//     "chainCode": "ETH",
+//     "chainName": "Ethereum",
+//     "chainId": "1",
+//     "contractAddress": null,
+//     "symbolImageUrl": "https://images-currency.meld.io/crypto/00/symbol.png"
+//   }
+// ]
+  DCHECK(crypto_currencies);
+
+  if (!json_value.is_list()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
+    return false;
+  }
+  for (const auto& cc_item : json_value.GetList()) {
+    if (!cc_item.is_dict()) {
+      LOG(ERROR)
+          << "Invalid response, could not parse JSON, JSON is not a dict";
+      return false;
+    }
+
+    auto cc = mojom::CryptoCurrency::New();
+    const std::string* cc_name = cc_item.GetDict().FindString("name");
+    if (!cc_name) {
+      return false;
+    }
+    cc->name = *cc_name;
+
+    const std::string* cc_code = cc_item.GetDict().FindString("currencyCode");
+    if (!cc_code) {
+      return false;
+    }
+    cc->currency_code = *cc_code;
+
+    const std::string* cc_chain_name = cc_item.GetDict().FindString("chainName");
+    if (!cc_chain_name) {
+      return false;
+    }
+    cc->chain_name = *cc_chain_name;
+
+    const std::string* cc_chain_code = cc_item.GetDict().FindString("chainCode");
+    if (!cc_chain_code) {
+      return false;
+    }
+    cc->chain_code = *cc_chain_code;
+
+    const std::string* cc_chain_id = cc_item.GetDict().FindString("chainId");
+    if (!cc_chain_id) {
+      return false;
+    }
+    cc->chain_id = *cc_chain_id;
+
+    const std::string* cc_contract_addr = cc_item.GetDict().FindString("contractAddress");
+    if (!cc_contract_addr) {
+      return false;
+    }
+    cc->contract_address = *cc_contract_addr;
+
+    const std::string* cc_img_url = cc_item.GetDict().FindString("symbolImageUrl");
+    if (!cc_img_url) {
+      return false;
+    }
+    cc->symbol_image_url = *cc_img_url;
+
+    crypto_currencies->emplace_back(std::move(cc));
+  }
+  
+  return true;
+}
+
+bool ParseCountries(
+    const base::Value& json_value,
+    std::vector<mojom::CountryPtr>* countries) {
+// Parses results like this:
+// [
+//   {
+//     "countryCode": "AF",
+//     "name": "Afghanistan",
+//     "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
+//     "regions": null
+//   },
+//   {
+//     "countryCode": "AL",
+//     "name": "Albania",
+//     "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
+//     "regions": null
+//   }
+// ]
+  DCHECK(countries);
+
+  if (!json_value.is_list()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
+    return false;
+  }
+  for (const auto& country_item : json_value.GetList()) {
+    if (!country_item.is_dict()) {
+      LOG(ERROR)
+          << "Invalid response, could not parse JSON, JSON is not a dict";
+      return false;
+    }
+
+    auto country = mojom::Country::New();
+    const std::string* cc_name = country_item.GetDict().FindString("name");
+    if (!cc_name) {
+      return false;
+    }
+    country->name = *cc_name;
+
+    const std::string* cc_code = country_item.GetDict().FindString("countryCode");
+    if (!cc_code) {
+      return false;
+    }
+    country->country_code = *cc_code;
+
+    const std::string* cc_img_url = country_item.GetDict().FindString("flagImageUrl");
+    if (!cc_img_url) {
+      return false;
+    }
+    country->flag_image_url = *cc_img_url;
+
+    countries->emplace_back(std::move(country));
+  }
+  
+  return true;
+}
+
 }  // namespace brave_wallet
