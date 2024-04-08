@@ -218,7 +218,7 @@ FingerprintMode BraveShieldsDataController::GetFingerprintMode() {
   if (control_type == ControlType::ALLOW) {
     return FingerprintMode::ALLOW;
   } else if (control_type == ControlType::BLOCK) {
-    return FingerprintMode::STRICT;
+    return FingerprintMode::STRICT_MODE;
   } else {
     return FingerprintMode::STANDARD;
   }
@@ -252,7 +252,7 @@ HttpsUpgradeMode BraveShieldsDataController::GetHttpsUpgradeMode() {
   if (control_type == ControlType::ALLOW) {
     return HttpsUpgradeMode::DISABLED;
   } else if (control_type == ControlType::BLOCK) {
-    return HttpsUpgradeMode::STRICT;
+    return HttpsUpgradeMode::STRICT_MODE;
   } else if (control_type == ControlType::BLOCK_THIRD_PARTY) {
     return HttpsUpgradeMode::STANDARD;
   } else {
@@ -314,7 +314,7 @@ void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
 
   if (mode == FingerprintMode::ALLOW) {
     control_type = ControlType::ALLOW;
-  } else if (mode == FingerprintMode::STRICT) {
+  } else if (mode == FingerprintMode::STRICT_MODE) {
     control_type = ControlType::BLOCK;
   } else {
     control_type = ControlType::DEFAULT;  // STANDARD
@@ -358,7 +358,7 @@ void BraveShieldsDataController::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
   ControlType control_type;
   if (mode == HttpsUpgradeMode::DISABLED) {
     control_type = ControlType::ALLOW;
-  } else if (mode == HttpsUpgradeMode::STRICT) {
+  } else if (mode == HttpsUpgradeMode::STRICT_MODE) {
     control_type = ControlType::BLOCK;
   } else if (mode == HttpsUpgradeMode::STANDARD) {
     control_type = ControlType::BLOCK_THIRD_PARTY;

@@ -26,13 +26,13 @@ const cookieBlockModeOptions = [
 ]
 
 const fingerprintModeOptions = [
-  { value: FingerprintMode.STRICT, text: getLocale('braveShieldsFingerprintingBlockedAgg') },
+  { value: FingerprintMode.STRICT_MODE, text: getLocale('braveShieldsFingerprintingBlockedAgg') },
   { value: FingerprintMode.STANDARD, text: getLocale('braveShieldsFingerprintingBlockedStd') },
   { value: FingerprintMode.ALLOW, text: getLocale('braveShieldsFingerprintingAllowAll') }
 ]
 
 const httpsUpgradeModeOptions = [
-  { value: HttpsUpgradeMode.STRICT, text: getLocale('braveShieldsHttpsUpgradeModeStrict') },
+  { value: HttpsUpgradeMode.STRICT_MODE, text: getLocale('braveShieldsHttpsUpgradeModeStrict') },
   { value: HttpsUpgradeMode.STANDARD, text: getLocale('braveShieldsHttpsUpgradeModeStandard') },
   { value: HttpsUpgradeMode.DISABLED, text: getLocale('braveShieldsHttpsUpgradeModeDisabled') }
 ]
