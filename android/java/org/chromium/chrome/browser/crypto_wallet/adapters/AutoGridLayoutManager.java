@@ -6,12 +6,11 @@
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.content.Context;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * Extension to {@link GridLayoutManager} which adapts its columns to recycler view size.
- */
+/** Extension to {@link GridLayoutManager} which adapts its columns to recycler view size. */
 public class AutoGridLayoutManager extends GridLayoutManager {
 
     private final int mMinColumns;

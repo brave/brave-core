@@ -77,14 +77,21 @@ public class CryptoModel {
         mCryptoSharedActions = cryptoSharedActions;
         mSharedData = new CryptoSharedDataImpl();
         mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
-        mNetworkModel = new NetworkModel(
-                mBraveWalletService, mJsonRpcService, mSharedData, mCryptoSharedActions);
+        mNetworkModel =
+                new NetworkModel(
+                        mBraveWalletService, mJsonRpcService, mSharedData, mCryptoSharedActions);
     }
 
-    public void resetServices(Context context, TxService mTxService, KeyringService mKeyringService,
-            BlockchainRegistry mBlockchainRegistry, JsonRpcService mJsonRpcService,
-            EthTxManagerProxy mEthTxManagerProxy, SolanaTxManagerProxy mSolanaTxManagerProxy,
-            BraveWalletService mBraveWalletService, AssetRatioService mAssetRatioService) {
+    public void resetServices(
+            Context context,
+            TxService mTxService,
+            KeyringService mKeyringService,
+            BlockchainRegistry mBlockchainRegistry,
+            JsonRpcService mJsonRpcService,
+            EthTxManagerProxy mEthTxManagerProxy,
+            SolanaTxManagerProxy mSolanaTxManagerProxy,
+            BraveWalletService mBraveWalletService,
+            AssetRatioService mAssetRatioService) {
         synchronized (mLock) {
             mContext = context;
             this.mTxService = mTxService;
@@ -188,18 +195,18 @@ public class CryptoModel {
     }
 
     public void updateCoinType() {
-        mKeyringService.getAllAccounts(allAccounts -> {
-            @CoinType.EnumType
-            int coin = CoinType.ETH;
+        mKeyringService.getAllAccounts(
+                allAccounts -> {
+                    @CoinType.EnumType int coin = CoinType.ETH;
 
-            // null selectedAccount may happen in tests.
-            if (allAccounts.selectedAccount != null) {
-                // Current coin is the coin of selected account.
-                coin = allAccounts.selectedAccount.accountId.coin;
-            }
+                    // null selectedAccount may happen in tests.
+                    if (allAccounts.selectedAccount != null) {
+                        // Current coin is the coin of selected account.
+                        coin = allAccounts.selectedAccount.accountId.coin;
+                    }
 
-            _mCoinTypeMutableLiveData.postValue(coin);
-        });
+                    _mCoinTypeMutableLiveData.postValue(coin);
+                });
     }
 
     /**

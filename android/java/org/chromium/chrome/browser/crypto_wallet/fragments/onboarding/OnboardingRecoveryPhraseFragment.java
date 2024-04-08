@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +23,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
-import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -61,29 +58,35 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
 
         KeyringService keyringService = getKeyringService();
         if (keyringService != null) {
-            keyringService.getMnemonicForDefaultKeyring(mOnboardingViewModel.getPassword(), result -> {
-                recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
-                setupRecoveryPhraseRecyclerView(view);
-                TextView copyButton = view.findViewById(R.id.btn_copy);
-                assert getActivity() != null;
-                copyButton.setOnClickListener(v -> {
-                    Utils.saveTextToClipboard(getActivity(),
-                            Utils.getRecoveryPhraseFromList(recoveryPhrases),
-                            R.string.text_has_been_copied, true);
-                });
-            });
+            keyringService.getMnemonicForDefaultKeyring(
+                    mOnboardingViewModel.getPassword(),
+                    result -> {
+                        recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
+                        setupRecoveryPhraseRecyclerView(view);
+                        TextView copyButton = view.findViewById(R.id.btn_copy);
+                        assert getActivity() != null;
+                        copyButton.setOnClickListener(
+                                v -> {
+                                    Utils.saveTextToClipboard(
+                                            getActivity(),
+                                            Utils.getRecoveryPhraseFromList(recoveryPhrases),
+                                            R.string.text_has_been_copied,
+                                            true);
+                                });
+                    });
         }
 
         Button recoveryPhraseButton = view.findViewById(R.id.btn_recovery_phrase_continue);
-        recoveryPhraseButton.setOnClickListener(v -> {
-            BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-            if (braveWalletP3A != null && mIsOnboarding) {
-                braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
-            }
-            if (mOnNextPage != null) {
-                mOnNextPage.gotoNextPage();
-            }
-        });
+        recoveryPhraseButton.setOnClickListener(
+                v -> {
+                    BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                    if (braveWalletP3A != null && mIsOnboarding) {
+                        braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
+                    }
+                    if (mOnNextPage != null) {
+                        mOnNextPage.gotoNextPage();
+                    }
+                });
         CheckBox recoveryPhraseCheckbox = view.findViewById(R.id.recovery_phrase_checkbox);
         recoveryPhraseCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {

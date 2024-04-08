@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 
 public class NetworkUtils {
 
-    public static Comparator<NetworkInfo> sSortNetworkByPriority = Comparator.comparingInt(c -> getCoinRank(c.coin));
+    public static Comparator<NetworkInfo> sSortNetworkByPriority =
+            Comparator.comparingInt(c -> getCoinRank(c.coin));
 
     // Solana first
     private static int getCoinRank(@CoinType.EnumType int coin) {

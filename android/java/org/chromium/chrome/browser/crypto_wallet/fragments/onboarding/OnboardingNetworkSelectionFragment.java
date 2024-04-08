@@ -34,7 +34,8 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.OnboardingNetworkSelec
 
 /** Onboarding fragment showing networks to include before using Brave Wallet. */
 public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFragment
-        implements CompoundButton.OnCheckedChangeListener, OnboardingNetworkSelectorGridAdapter.OnNetworkSelectionListener {
+        implements CompoundButton.OnCheckedChangeListener,
+                OnboardingNetworkSelectorGridAdapter.OnNetworkSelectionListener {
 
     private MaterialCheckBox mShowTestnets;
     private AppCompatButton mContinueButton;
@@ -80,39 +81,54 @@ public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFrag
 
         final NetworkModel.NetworkLists networkLists = getNetworkLists();
         if (networkLists != null) {
-            mOnboardingNetworkSelectorGridAdapter = new OnboardingNetworkSelectorGridAdapter(requireContext(), mShowTestnets.isChecked(), networkLists, this);
+            mOnboardingNetworkSelectorGridAdapter =
+                    new OnboardingNetworkSelectorGridAdapter(
+                            requireContext(), mShowTestnets.isChecked(), networkLists, this);
             mNetworks.setAdapter(mOnboardingNetworkSelectorGridAdapter);
 
-            AutoGridLayoutManager layoutManager = new AutoGridLayoutManager(requireContext(), 3, (int) getResources().getDimension(R.dimen.onboarding_network_selection_item_width));
-            layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    int type = mOnboardingNetworkSelectorGridAdapter.getItemViewType(position);
-                    if (type == NETWORK_ITEM_VIEW_TYPE) {
-                        return 1;
-                    } else {
-                        return layoutManager.calculateSpanCount();
-                    }
-                }
-            });
+            AutoGridLayoutManager layoutManager =
+                    new AutoGridLayoutManager(
+                            requireContext(),
+                            3,
+                            (int)
+                                    getResources()
+                                            .getDimension(
+                                                    R.dimen
+                                                            .onboarding_network_selection_item_width));
+            layoutManager.setSpanSizeLookup(
+                    new GridLayoutManager.SpanSizeLookup() {
+                        @Override
+                        public int getSpanSize(int position) {
+                            int type =
+                                    mOnboardingNetworkSelectorGridAdapter.getItemViewType(position);
+                            if (type == NETWORK_ITEM_VIEW_TYPE) {
+                                return 1;
+                            } else {
+                                return layoutManager.calculateSpanCount();
+                            }
+                        }
+                    });
             mNetworks.setLayoutManager(layoutManager);
 
-            mEditText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    /* Not used. */
-                }
+            mEditText.addTextChangedListener(
+                    new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(
+                                CharSequence s, int start, int count, int after) {
+                            /* Not used. */
+                        }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mOnboardingNetworkSelectorGridAdapter.filter(s.toString());
-                }
+                        @Override
+                        public void onTextChanged(
+                                CharSequence s, int start, int before, int count) {
+                            mOnboardingNetworkSelectorGridAdapter.filter(s.toString());
+                        }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    /* Not used. */
-                }
-            });
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            /* Not used. */
+                        }
+                    });
         }
 
         mContinueButton = view.findViewById(R.id.continue_button);
@@ -124,7 +140,9 @@ public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFrag
                     }
                     mContinueButtonClicked = true;
 
-                    mOnboardingViewModel.setSelectedNetworks(mOnboardingNetworkSelectorGridAdapter.getSelectedNetworks(), mOnboardingNetworkSelectorGridAdapter.getAvailableNetworks());
+                    mOnboardingViewModel.setSelectedNetworks(
+                            mOnboardingNetworkSelectorGridAdapter.getSelectedNetworks(),
+                            mOnboardingNetworkSelectorGridAdapter.getAvailableNetworks());
 
                     if (mOnNextPage != null) {
                         mOnNextPage.gotoNextPage();
@@ -133,8 +151,10 @@ public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFrag
     }
 
     private void updateSelectedNetworksButton() {
-        String continueWithSelectedNetworks = String.format(
-                getResources().getString(R.string.continue_with_networks), mSelectedNetworks);
+        String continueWithSelectedNetworks =
+                String.format(
+                        getResources().getString(R.string.continue_with_networks),
+                        mSelectedNetworks);
         mContinueButton.setText(continueWithSelectedNetworks);
     }
 

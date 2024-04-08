@@ -45,8 +45,9 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
-                .get(OnboardingViewModel.class);
+        mOnboardingViewModel =
+                new ViewModelProvider((ViewModelStoreOwner) requireActivity())
+                        .get(OnboardingViewModel.class);
     }
 
     @Override

@@ -15,15 +15,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class OnboardingViewModel extends ViewModel {
-    @Nullable
-    private String mPassword;
+    @Nullable private String mPassword;
 
-    @NonNull
-    final Set<NetworkInfo> mSelectedNetworks = new HashSet<>();
-    @NonNull
-    final Set<NetworkInfo> mAvailableNetworks = new HashSet<>();
-
-
+    @NonNull final Set<NetworkInfo> mSelectedNetworks = new HashSet<>();
+    @NonNull final Set<NetworkInfo> mAvailableNetworks = new HashSet<>();
 
     public void setPassword(@NonNull final String password) {
         mPassword = password;
@@ -37,7 +32,9 @@ public class OnboardingViewModel extends ViewModel {
         return mPassword;
     }
 
-    public void setSelectedNetworks(@NonNull final Set<NetworkInfo> selectedNetworks, @NonNull final Set<NetworkInfo> availableNetworks) {
+    public void setSelectedNetworks(
+            @NonNull final Set<NetworkInfo> selectedNetworks,
+            @NonNull final Set<NetworkInfo> availableNetworks) {
         mSelectedNetworks.clear();
         mSelectedNetworks.addAll(selectedNetworks);
 

@@ -69,8 +69,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
     public final LiveData<NetworkLists> mNetworkLists;
 
-    public NetworkModel(BraveWalletService braveWalletService, @NonNull JsonRpcService jsonRpcService,
-            CryptoSharedData sharedData, CryptoSharedActions cryptoSharedActions) {
+    public NetworkModel(
+            BraveWalletService braveWalletService,
+            @NonNull JsonRpcService jsonRpcService,
+            CryptoSharedData sharedData,
+            CryptoSharedActions cryptoSharedActions) {
         mBraveWalletService = braveWalletService;
         mJsonRpcService = jsonRpcService;
         mSharedData = sharedData;
@@ -279,20 +282,21 @@ public class NetworkModel implements JsonRpcServiceObserver {
             }
 
             getAllNetworks(
-                    mJsonRpcService, mSharedData.getSupportedCryptoCoins(), cryptoNetworks -> {
+                    mJsonRpcService,
+                    mSharedData.getSupportedCryptoCoins(),
+                    cryptoNetworks -> {
                         _mCryptoNetworks.postValue(cryptoNetworks);
 
                         List<NetworkInfo> primary = new ArrayList<>();
                         List<NetworkInfo> secondary = new ArrayList<>();
                         List<NetworkInfo> test = new ArrayList<>();
-                        NetworkLists networkLists =
-                                new NetworkLists(primary, secondary, test);
+                        NetworkLists networkLists = new NetworkLists(primary, secondary, test);
                         for (NetworkInfo networkInfo : cryptoNetworks) {
                             if (WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
-                                        networkInfo.chainId)) {
+                                    networkInfo.chainId)) {
                                 primary.add(networkInfo);
                             } else if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
-                                               networkInfo.chainId)) {
+                                    networkInfo.chainId)) {
                                 test.add(networkInfo);
                             } else {
                                 secondary.add(networkInfo);
@@ -388,7 +392,10 @@ public class NetworkModel implements JsonRpcServiceObserver {
         updateChainId();
     }
 
-    public enum Mode { PANEL_MODE, WALLET_MODE }
+    public enum Mode {
+        PANEL_MODE,
+        WALLET_MODE
+    }
 
     public static class NetworkLists {
         public List<NetworkInfo> mPrimaryNetworkList;
@@ -400,8 +407,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
             mSecondaryNetworkList = Collections.emptyList();
             mTestNetworkList = Collections.emptyList();
         }
-        public NetworkLists(List<NetworkInfo> mPrimaryNetworkList,
-                List<NetworkInfo> mSecondaryNetworkList, List<NetworkInfo> mTestNetworkList) {
+
+        public NetworkLists(
+                List<NetworkInfo> mPrimaryNetworkList,
+                List<NetworkInfo> mSecondaryNetworkList,
+                List<NetworkInfo> mTestNetworkList) {
             this.mPrimaryNetworkList = mPrimaryNetworkList;
             this.mSecondaryNetworkList = mSecondaryNetworkList;
             this.mTestNetworkList = mTestNetworkList;

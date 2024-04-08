@@ -88,14 +88,19 @@ public class AssetUtils {
                 return KeyringId.SOLANA;
             case CoinType.FIL:
                 throw new IllegalArgumentException(
-                        "Keyring Id for Filecoin cannot be obtained by coin type. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
+                        "Keyring Id for Filecoin cannot be obtained by coin type. Consider using"
+                            + " the method \"AssetUtils.getKeyring(coinType, chainId)\".");
             case CoinType.BTC:
                 throw new IllegalArgumentException(
-                        "Keyring Id for Bitcoin cannot be obtained by coin type. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
+                        "Keyring Id for Bitcoin cannot be obtained by coin type. Consider using the"
+                            + " method \"AssetUtils.getKeyring(coinType, chainId)\".");
             default:
-                Log.e(TAG,
-                        String.format(Locale.ENGLISH,
-                                "Keyring Id for coin type %d cannot be found. Returning default keyring Id.",
+                Log.e(
+                        TAG,
+                        String.format(
+                                Locale.ENGLISH,
+                                "Keyring Id for coin type %d cannot be found. Returning default"
+                                    + " keyring Id.",
                                 coinType));
                 return KeyringId.DEFAULT;
         }

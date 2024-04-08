@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +23,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
-import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
@@ -73,53 +70,63 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecoveryPhraseButton = view.findViewById(R.id.btn_verify_recovery_phrase_continue);
-        mRecoveryPhraseButton.setOnClickListener(v -> {
-            if (mRecoveryPhrasesToVerifyAdapter != null
-                    && mRecoveryPhrasesToVerifyAdapter.getRecoveryPhraseList().size() > 0) {
-                KeyringService keyringService = getKeyringService();
-                BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-                if (keyringService != null) {
-                    keyringService.getMnemonicForDefaultKeyring(mOnboardingViewModel.getPassword(), result -> {
-                        String recoveryPhraseToVerify = Utils.getRecoveryPhraseFromList(
-                                mRecoveryPhrasesToVerifyAdapter.getRecoveryPhraseList());
-                        if (result.equals(recoveryPhraseToVerify)) {
-                            if (braveWalletP3A != null && mIsOnboarding) {
-                                braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE);
-                            }
-                            keyringService.notifyWalletBackupComplete();
-                            if (mOnNextPage != null) {
-                                mOnNextPage.onboardingCompleted();
-                            }
+        mRecoveryPhraseButton.setOnClickListener(
+                v -> {
+                    if (mRecoveryPhrasesToVerifyAdapter != null
+                            && mRecoveryPhrasesToVerifyAdapter.getRecoveryPhraseList().size() > 0) {
+                        KeyringService keyringService = getKeyringService();
+                        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                        if (keyringService != null) {
+                            keyringService.getMnemonicForDefaultKeyring(
+                                    mOnboardingViewModel.getPassword(),
+                                    result -> {
+                                        String recoveryPhraseToVerify =
+                                                Utils.getRecoveryPhraseFromList(
+                                                        mRecoveryPhrasesToVerifyAdapter
+                                                                .getRecoveryPhraseList());
+                                        if (result.equals(recoveryPhraseToVerify)) {
+                                            if (braveWalletP3A != null && mIsOnboarding) {
+                                                braveWalletP3A.reportOnboardingAction(
+                                                        OnboardingAction.COMPLETE);
+                                            }
+                                            keyringService.notifyWalletBackupComplete();
+                                            if (mOnNextPage != null) {
+                                                mOnNextPage.onboardingCompleted();
+                                            }
+                                        } else {
+                                            phraseNotMatch();
+                                        }
+                                    });
                         } else {
                             phraseNotMatch();
                         }
-                    });
-                } else {
-                    phraseNotMatch();
-                }
-            } else {
-                phraseNotMatch();
-            }
-        });
+                    } else {
+                        phraseNotMatch();
+                    }
+                });
         TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_verify_recovery_phrase_skip);
-        recoveryPhraseSkipButton.setOnClickListener(v -> {
-            BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-            if (braveWalletP3A != null && mIsOnboarding) {
-                braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
-            }
-            if (mOnNextPage != null) {
-                mOnNextPage.onboardingCompleted();
-            }
-        });
+        recoveryPhraseSkipButton.setOnClickListener(
+                v -> {
+                    BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                    if (braveWalletP3A != null && mIsOnboarding) {
+                        braveWalletP3A.reportOnboardingAction(
+                                OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
+                    }
+                    if (mOnNextPage != null) {
+                        mOnNextPage.onboardingCompleted();
+                    }
+                });
 
         KeyringService keyringService = getKeyringService();
         if (keyringService != null) {
-            keyringService.getMnemonicForDefaultKeyring(mOnboardingViewModel.getPassword(), result -> {
-                mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);
-                Collections.shuffle(mRecoveryPhrases);
-                setupRecoveryPhraseRecyclerView(view);
-                setupSelectedRecoveryPhraseRecyclerView(view);
-            });
+            keyringService.getMnemonicForDefaultKeyring(
+                    mOnboardingViewModel.getPassword(),
+                    result -> {
+                        mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);
+                        Collections.shuffle(mRecoveryPhrases);
+                        setupRecoveryPhraseRecyclerView(view);
+                        setupSelectedRecoveryPhraseRecyclerView(view);
+                    });
         }
     }
 

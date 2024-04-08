@@ -18,8 +18,7 @@ import java.util.List;
 
 /**
  * NetworkSelectorModel handles the selector of network for either global or local network
- * selection.
- * Global selection can be observed via {@link NetworkModel#mDefaultNetwork}
+ * selection. Global selection can be observed via {@link NetworkModel#mDefaultNetwork}
  */
 public class NetworkSelectorModel {
     private final NetworkModel mNetworkModel;
@@ -37,12 +36,15 @@ public class NetworkSelectorModel {
     }
 
     public void init() {
-        mNetworkListsLd = Transformations.map(mNetworkModel.mNetworkLists, networkLists -> {
-            if (networkLists == null) {
-                return new NetworkModel.NetworkLists();
-            }
-            return new NetworkModel.NetworkLists(networkLists);
-        });
+        mNetworkListsLd =
+                Transformations.map(
+                        mNetworkModel.mNetworkLists,
+                        networkLists -> {
+                            if (networkLists == null) {
+                                return new NetworkModel.NetworkLists();
+                            }
+                            return new NetworkModel.NetworkLists(networkLists);
+                        });
     }
 
     public void setNetworkWithAccountCheck(
@@ -65,5 +67,8 @@ public class NetworkSelectorModel {
         return mSelectionMode;
     }
 
-    public enum SelectionMode { SINGLE, MULTI }
+    public enum SelectionMode {
+        SINGLE,
+        MULTI
+    }
 }

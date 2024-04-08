@@ -128,8 +128,10 @@ public class KeyringModel implements KeyringServiceObserver {
         mKeyringService.isWalletCreated(callback);
     }
 
-    private void addAccountInternal(@CoinType.EnumType int coinType,
-            @KeyringId.EnumType int keyringId, String accountName,
+    private void addAccountInternal(
+            @CoinType.EnumType int coinType,
+            @KeyringId.EnumType int keyringId,
+            String accountName,
             Callbacks.Callback1<Boolean> callback) {
         mKeyringService.addAccount(coinType, keyringId, accountName,
                 result -> { handleAddAccountResult(result, callback); });
@@ -168,30 +170,34 @@ public class KeyringModel implements KeyringServiceObserver {
         return null;
     }
 
-    private void handleAddAccountResult(AccountInfo result, @NonNull final Callbacks.Callback1<Boolean> callback) {
+    private void handleAddAccountResult(
+            AccountInfo result, @NonNull final Callbacks.Callback1<Boolean> callback) {
         mCryptoSharedActions.updateCoinType();
         mCryptoSharedActions.onNewAccountAdded();
         callback.call(result != null);
     }
 
     /**
-     * Creates a new Brave Wallet with a given password, showing only the collection of selected networks.
-     * One Ethereum and one Solana account will be created by default; Bitcoin account and Filecoin
-     * account will be created only if selected among available networks.
-     * Once the creation finishes the callback is notified with a string containing the recovery phrases.
+     * Creates a new Brave Wallet with a given password, showing only the collection of selected
+     * networks. One Ethereum and one Solana account will be created by default; Bitcoin account and
+     * Filecoin account will be created only if selected among available networks. Once the creation
+     * finishes the callback is notified with a string containing the recovery phrases.
+     *
      * @param password Given password used to create the new Brave Wallet.
      * @param availableNetworks All available networks.
      * @param selectedNetworks Collection of selected networks that will be shown.
      * @param jsonRpcService JSON RPC service used to add and hide the networks.
      * @param context Android context required to generate account unique names.
-     * @param callback Callback fired once creation terminates passing a string containing the recovery phrases.
+     * @param callback Callback fired once creation terminates passing a string containing the
+     *     recovery phrases.
      */
-    public void createWallet(@NonNull final String password,
-                             @NonNull final Set<NetworkInfo> availableNetworks,
-                             @NonNull final Set<NetworkInfo> selectedNetworks,
-                             @NonNull final JsonRpcService jsonRpcService,
-                             @NonNull final Context context,
-                             @NonNull final Callbacks.Callback1<String> callback) {
+    public void createWallet(
+            @NonNull final String password,
+            @NonNull final Set<NetworkInfo> availableNetworks,
+            @NonNull final Set<NetworkInfo> selectedNetworks,
+            @NonNull final JsonRpcService jsonRpcService,
+            @NonNull final Context context,
+            @NonNull final Callbacks.Callback1<String> callback) {
         final Set<NetworkInfo> removeHiddenNetworks = new HashSet<>();
         final Set<NetworkInfo> addHiddenNetworks = new HashSet<>();
 
@@ -212,55 +218,80 @@ public class KeyringModel implements KeyringServiceObserver {
             }
         }
 
-        removeHiddenNetworksLiveData.observeForever(new Observer<>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if (integer == removeHiddenNetworks.size()) {
-                    removeHiddenNetworksLiveData.removeObserver(this);
-                    removeHiddenNetworksDone.set(true);
+        removeHiddenNetworksLiveData.observeForever(
+                new Observer<>() {
+                    @Override
+                    public void onChanged(Integer integer) {
+                        if (integer == removeHiddenNetworks.size()) {
+                            removeHiddenNetworksLiveData.removeObserver(this);
+                            removeHiddenNetworksDone.set(true);
 
-                    if (addHiddenNetworksDone.get()) {
-                        finalizeWalletCreation(password, selectedNetworks, context, callback);
+                            if (addHiddenNetworksDone.get()) {
+                                finalizeWalletCreation(
+                                        password, selectedNetworks, context, callback);
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
 
-        addHiddenNetworksLiveData.observeForever(new Observer<>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if (integer == addHiddenNetworks.size()) {
-                    addHiddenNetworksLiveData.removeObserver(this);
-                    addHiddenNetworksDone.set(true);
+        addHiddenNetworksLiveData.observeForever(
+                new Observer<>() {
+                    @Override
+                    public void onChanged(Integer integer) {
+                        if (integer == addHiddenNetworks.size()) {
+                            addHiddenNetworksLiveData.removeObserver(this);
+                            addHiddenNetworksDone.set(true);
 
-                    if (removeHiddenNetworksDone.get()) {
-                        finalizeWalletCreation(password, selectedNetworks, context, callback);
+                            if (removeHiddenNetworksDone.get()) {
+                                finalizeWalletCreation(
+                                        password, selectedNetworks, context, callback);
+                            }
+                        }
                     }
-                }
-            }
-        });
-
+                });
 
         for (NetworkInfo networkInfo : removeHiddenNetworks) {
-            jsonRpcService.removeHiddenNetwork(networkInfo.coin, networkInfo.chainId, success -> {
-                if (!success) {
-                    Log.w(TAG, String.format(Locale.ENGLISH, "Unable to remove network %s from hidden networks.", networkInfo.chainName));
-                }
-                removeHiddenNetworksLiveData.setValue(countRemovedHiddenNetworks.incrementAndGet());
-            });
+            jsonRpcService.removeHiddenNetwork(
+                    networkInfo.coin,
+                    networkInfo.chainId,
+                    success -> {
+                        if (!success) {
+                            Log.w(
+                                    TAG,
+                                    String.format(
+                                            Locale.ENGLISH,
+                                            "Unable to remove network %s from hidden networks.",
+                                            networkInfo.chainName));
+                        }
+                        removeHiddenNetworksLiveData.setValue(
+                                countRemovedHiddenNetworks.incrementAndGet());
+                    });
         }
 
         for (NetworkInfo networkInfo : addHiddenNetworks) {
-            jsonRpcService.addHiddenNetwork(networkInfo.coin, networkInfo.chainId, success -> {
-                if (!success) {
-                    Log.w(TAG, String.format(Locale.ENGLISH, "Unable to add network %s to hidden networks.", networkInfo.chainName));
-                }
-                addHiddenNetworksLiveData.setValue(countAddedHiddenNetworks.incrementAndGet());
-            });
+            jsonRpcService.addHiddenNetwork(
+                    networkInfo.coin,
+                    networkInfo.chainId,
+                    success -> {
+                        if (!success) {
+                            Log.w(
+                                    TAG,
+                                    String.format(
+                                            Locale.ENGLISH,
+                                            "Unable to add network %s to hidden networks.",
+                                            networkInfo.chainName));
+                        }
+                        addHiddenNetworksLiveData.setValue(
+                                countAddedHiddenNetworks.incrementAndGet());
+                    });
         }
     }
 
-    private void finalizeWalletCreation(@NonNull final String password, @NonNull final Set<NetworkInfo> selectedNetworks, @NonNull final Context context, @NonNull final Callbacks.Callback1<String> callback) {
+    private void finalizeWalletCreation(
+            @NonNull final String password,
+            @NonNull final Set<NetworkInfo> selectedNetworks,
+            @NonNull final Context context,
+            @NonNull final Callbacks.Callback1<String> callback) {
         mKeyringService.createWallet(
                 password,
                 recoveryPhrases -> {
@@ -275,28 +306,41 @@ public class KeyringModel implements KeyringServiceObserver {
                     if (createAccounts.isEmpty()) {
                         callback.call(recoveryPhrases);
                     } else {
-                        final MutableLiveData<Integer> createAccountsLiveData = new MutableLiveData<>();
+                        final MutableLiveData<Integer> createAccountsLiveData =
+                                new MutableLiveData<>();
                         AtomicInteger countCreatedAccounts = new AtomicInteger(0);
 
-                        createAccountsLiveData.observeForever(new Observer<>() {
-                            @Override
-                            public void onChanged(Integer integer) {
-                                if (integer == createAccounts.size()) {
-                                    createAccountsLiveData.removeObserver(this);
-                                    callback.call(recoveryPhrases);
-                                }
-                            }
-                        });
-
-                        LiveDataUtil.observeOnce(mAccountInfos, accounts -> {
-                            for (NetworkInfo networkInfo : createAccounts) {
-                                String accountName = WalletUtils.generateUniqueAccountName(
-                                        context, networkInfo.coin, accounts.toArray(new AccountInfo[0]));
-                                mKeyringService.addAccount(networkInfo.coin, AssetUtils.getKeyring(networkInfo.coin, networkInfo.chainId), accountName, accountInfo -> {
-                                    createAccountsLiveData.setValue(countCreatedAccounts.incrementAndGet());
+                        createAccountsLiveData.observeForever(
+                                new Observer<>() {
+                                    @Override
+                                    public void onChanged(Integer integer) {
+                                        if (integer == createAccounts.size()) {
+                                            createAccountsLiveData.removeObserver(this);
+                                            callback.call(recoveryPhrases);
+                                        }
+                                    }
                                 });
-                            }
-                        });
+
+                        LiveDataUtil.observeOnce(
+                                mAccountInfos,
+                                accounts -> {
+                                    for (NetworkInfo networkInfo : createAccounts) {
+                                        String accountName =
+                                                WalletUtils.generateUniqueAccountName(
+                                                        context,
+                                                        networkInfo.coin,
+                                                        accounts.toArray(new AccountInfo[0]));
+                                        mKeyringService.addAccount(
+                                                networkInfo.coin,
+                                                AssetUtils.getKeyring(
+                                                        networkInfo.coin, networkInfo.chainId),
+                                                accountName,
+                                                accountInfo -> {
+                                                    createAccountsLiveData.setValue(
+                                                            countCreatedAccounts.incrementAndGet());
+                                                });
+                                    }
+                                });
                     }
                 });
     }
