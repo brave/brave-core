@@ -132,11 +132,13 @@ public class OnboardingNetworkSelectorGridAdapter
         mListener = listener;
 
         mSelectedNetworks = new HashSet<>();
-        // Pre-select default networks.
+        // Pre-select primary networks.
         for (NetworkInfo networkInfo : mPrimaryNetworks) {
-            if (ALWAYS_SELECTED_CHAIN_IDS.contains(networkInfo.chainId)) {
-                mSelectedNetworks.add(networkInfo.hashCode());
-            }
+            mSelectedNetworks.add(networkInfo.hashCode());
+        }
+        // Pre-select secondary networks.
+        for (NetworkInfo networkInfo : mSecondaryNetworks) {
+            mSelectedNetworks.add(networkInfo.hashCode());
         }
 
         mFeaturedNetworks = context.getString(R.string.wallet_featured);
