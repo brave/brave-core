@@ -125,7 +125,7 @@ guard let apiKey = ProcessInfo.processInfo.environment["PASSWORD"] else {
 
 let languageCodes = [
   "fr", "pl", "ru", "de", "zh", "zh_TW", "id_ID", "it", "ja", "ko_KR", "ms", "pt_BR", "es", "uk",
-  "nb", "sv", "tr", "ca",
+  "nb", "sv", "tr", "ca", "nl",
 ]
 let resourceURLs: [String: URL] = await {
   var urls: [String: URL] = [:]

@@ -502,8 +502,7 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Kopiera appinformation till urklipp.";
 
-/* Copy app info to clipboard action sheet action.
-   View all version info action sheet action. */
+/* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Kopiera information om appstorlek till urklipp.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -1034,12 +1033,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "mån.";
 
-/* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Tryck för att göra anspråk på dina gratis tokens.";
-
-/* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
-
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Tryck här för att läsa mer.";
 
@@ -1459,9 +1452,6 @@
 
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Fortsätt";
-
-/* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Anonymiserad P3A-info hjälper Brave att uppskatta den totala användningen och se till att vi förbättrar populära funktioner.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Tillåt integritetsbevarande produktanalys (P3A)";
@@ -2340,12 +2330,6 @@
 "RewardsInternalsBalanceInfoHeader" = "Saldoinformation";
 
 /* No comment provided by engineer. */
-"RewardsInternalsClaimedAt" = "Anspråk gjordes den";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClaimID" = "Anspråks-ID";
-
-/* No comment provided by engineer. */
 "RewardsInternalsClearLogsConfirmation" = "Är du säker på att du vill rensa alla belöningsloggar?";
 
 /* No comment provided by engineer. */
@@ -2423,9 +2407,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Nyckelinfo-frö";
 
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyPromotion" = "Äldre marknadsföring";
-
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d loggar visas";
 
@@ -2440,24 +2421,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsProcessor" = "Behandlare";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusActive" = "Aktiv";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusAttested" = "Intygad";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusCorrupted" = "Skadad";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusFinished" = "Slutförd";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusOver" = "Över";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionsTitle" = "Kampanjer";
 
 /* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Utgivare";
@@ -2494,9 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableLogsDescription" = "Belöningsspecifik loggning";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharablePromotionsDescription" = "Alla BAT-kampanjer som du har gjort anspråk på eller har väntande från annonser eller anslag";
 
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Dela";
@@ -2705,14 +2665,8 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Kvalitetsinställningar";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Den här anonyma pingen låter Brave uppskatta antalet aktiva användare.";
-
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Skicka daglig användningsping till Brave automatiskt";
-
-/* Header for the Youtube settings section */
-"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Kunde inte ladda sidan.";
@@ -3485,9 +3439,6 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Marknadsfört";
 
-/* Title for long press action sheet list which has item for rate / hide */
-"today.rateBraveCardActionSheetTitle" = "Betygsätt Brave i AppStore";
-
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Dölj";
 
@@ -3634,9 +3585,6 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Blixtsnabbt, upp till 100 Mbps";
-
-/* AppStore Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "AppStore-kvitto";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "App-version";
@@ -4058,9 +4006,6 @@
 /* History tableview section header */
 "Yesterday" = "Igår";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Aktivera Youtube-videor med hög kvalitet";
-
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Om du aktiverar den här experimentella funktionen spelas video upp med maximal tillgänglig kvalitet och ytterligare data används.";
 
@@ -4069,9 +4014,6 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "På";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Youtube-uppspelningskvalitet";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Tillåt över Wi-Fi";
