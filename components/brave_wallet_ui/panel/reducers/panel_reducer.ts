@@ -35,7 +35,6 @@ const defaultState: PanelState = {
   selectedPanel,
   connectingAccounts: [],
   signMessageData: [],
-  signTransactionRequests: [],
   hardwareWalletCode: undefined,
   selectedTransactionId: undefined,
   signMessageErrorData: []
@@ -70,19 +69,6 @@ export const createPanelReducer = (initialState: PanelState) => {
       return {
         ...state,
         signMessageData: payload
-      }
-    }
-  )
-
-  reducer.on(
-    PanelActions.signTransaction.type,
-    (
-      state: PanelState,
-      payload: BraveWallet.SignTransactionRequest[]
-    ): PanelState => {
-      return {
-        ...state,
-        signTransactionRequests: payload
       }
     }
   )

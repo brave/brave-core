@@ -7,7 +7,6 @@ import { createAction } from '@reduxjs/toolkit'
 import {
   ShowConnectToSitePayload,
   SignMessageProcessedPayload,
-  SignTransactionHardwarePayload,
   SignMessageHardwarePayload
 } from '../constants/action_types'
 import { BraveWallet, PanelTypes } from '../../constants/types'
@@ -38,12 +37,6 @@ export const cancelConnectHardwareWallet =
 export const setSelectedTransactionId = createAction<string | undefined>(
   'setSelectedTransactionId'
 )
-export const signTransaction =
-  createAction<BraveWallet.SignTransactionRequest[]>('signTransaction')
-export const signTransactionHardware =
-  createAction<SignTransactionHardwarePayload>('signTransactionHardware')
-export const signTransactionProcessed =
-  createAction<SignMessageProcessedPayload>('signTransactionProcessed')
 export const setCloseOnDeactivate = createAction<boolean>(
   'setCloseOnDeactivate'
 )

@@ -65,6 +65,13 @@ import {
 import { getLocale } from '../../../../common/locale'
 import { toByteArrayStringUnion } from '../../../utils/mojo-utils'
 
+interface ProcessSignTransactionRequestPayload {
+  approved: boolean
+  id: number
+  signature?: BraveWallet.ByteArrayStringUnion | null
+  error?: string | null
+}
+
 export const transactionEndpoints = ({
   mutation,
   query
@@ -340,6 +347,31 @@ export const transactionEndpoints = ({
       }
     }),
 
+    getPendingSignTransactionRequests: query<
+      BraveWallet.SignTransactionRequest[],
+      void
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+
+          const { requests } =
+            await api.braveWalletService.getPendingSignTransactionRequests()
+
+          return {
+            data: requests
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to get pending Sign-Transaction Requests',
+            error
+          )
+        }
+      },
+      providesTags: ['PendingSignTransactionRequests']
+    }),
+
     getPendingSignAllTransactionsRequests: query<
       BraveWallet.SignAllTransactionsRequest[],
       void
@@ -363,6 +395,144 @@ export const transactionEndpoints = ({
         }
       },
       providesTags: ['PendingSignAllTransactionsRequests']
+    }),
+
+    processSignTransactionRequest: mutation<
+      /** success */
+      true,
+      ProcessSignTransactionRequestPayload
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+
+          await processSignTransactionRequest(
+            api.braveWalletService,
+            arg,
+            api.panelHandler
+          )
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to process Sign-Transaction request',
+            error
+          )
+        }
+      },
+      invalidatesTags: ['PendingSignTransactionRequests']
+    }),
+
+    processSignTransactionRequestHardware: mutation<
+      { success: boolean; errorCode?: string | number },
+      {
+        request: BraveWallet.SignTransactionRequest
+        account: BraveWallet.AccountInfo
+      }
+    >({
+      queryFn: async (arg, { endpoint, ...store }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { braveWalletService, panelHandler } = api
+
+          if (!isHardwareAccount(arg.account.accountId)) {
+            const errorString = getLocale('braveWalletHardwareAccountNotFound')
+
+            braveWalletService.notifySignTransactionRequestProcessed(
+              false,
+              arg.request.id,
+              null,
+              errorString
+            )
+
+            const { requests } =
+              await braveWalletService.getPendingSignTransactionRequests()
+
+            if (!requests.length) {
+              panelHandler?.closeUI()
+            }
+
+            return {
+              data: {
+                success: false,
+                errorCode: errorString
+              }
+            }
+          }
+
+          const info = arg.account.hardware
+
+          if (!info) {
+            throw new Error('No hardware account info')
+          }
+
+          if (panelHandler) {
+            navigateToConnectHardwareWallet(panelHandler, store)
+          }
+
+          const signed = await signRawTransactionWithHardwareKeyring(
+            info.vendor as unknown as HardwareVendor,
+            info.path,
+            arg.request.rawMessage,
+            arg.account.accountId.coin,
+            () => {
+              // dismiss hardware connect screen
+              store.dispatch(PanelActions.navigateToMain())
+            }
+          )
+
+          if (signed?.code === 'unauthorized') {
+            store.dispatch(
+              PanelActions.setHardwareWalletInteractionError(signed.code)
+            )
+            return {
+              data: {
+                success: false,
+                errorCode: signed.code
+              }
+            }
+          }
+
+          processSignTransactionRequest(
+            api.braveWalletService,
+            signed.success
+              ? {
+                  approved: signed.success,
+                  id: arg.request.id,
+                  signature:
+                    arg.account.accountId.coin === BraveWallet.CoinType.SOL
+                      ? toByteArrayStringUnion({
+                          bytes: [...(signed.payload as Buffer)]
+                        })
+                      : toByteArrayStringUnion({
+                          str: signed.payload as string
+                        })
+                }
+              : {
+                  approved: signed.success,
+                  id: arg.request.id,
+                  error: (signed.error || undefined) as string | undefined
+                },
+            api.panelHandler
+          )
+
+          return {
+            data: {
+              success: true
+            }
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to Sign-All-Transactions (Hardware)',
+            error
+          )
+        }
+      },
+      invalidatesTags: ['PendingSignTransactionRequests']
     }),
 
     processSignAllTransactionsRequest: mutation<
@@ -1660,6 +1830,26 @@ async function sendEvmTransaction({
 
   return {
     data: { success }
+  }
+}
+
+async function processSignTransactionRequest(
+  braveWalletService: BraveWallet.BraveWalletServiceRemote,
+  arg: ProcessSignTransactionRequestPayload,
+  panelHandler: BraveWallet.PanelHandlerRemote | undefined
+) {
+  braveWalletService.notifySignTransactionRequestProcessed(
+    arg.approved,
+    arg.id,
+    arg.signature || null,
+    arg.error || null
+  )
+
+  const { requests } =
+    await braveWalletService.getPendingSignTransactionRequests()
+
+  if (!requests.length) {
+    panelHandler?.closeUI()
   }
 }
 
