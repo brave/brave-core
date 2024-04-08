@@ -50,7 +50,7 @@ public class NetworkResponsesCollector {
 
                 mNetworks.addAll(Arrays.asList(getNetworkResponseContext.networkInfos));
             }
-            Collections.sort(mNetworks, NetworkUtils.sSortNetworkByPriority);
+            mNetworks.sort(NetworkUtils.sSortNetworkByPriority);
             runWhenDone.call(mNetworks);
         });
     }
