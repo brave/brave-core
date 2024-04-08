@@ -39,6 +39,7 @@ public class AssetUtils {
         if (coinType == CoinType.FIL) {
             switch (chainId) {
                 case BraveWalletConstants.FILECOIN_MAINNET:
+                case BraveWalletConstants.LOCALHOST_CHAIN_ID:
                     return KeyringId.FILECOIN;
 
                 case BraveWalletConstants.FILECOIN_TESTNET:
@@ -48,6 +49,15 @@ public class AssetUtils {
                     throw new IllegalStateException(
                             String.format("No Filecoin keyring found for chain Id %s.", chainId));
             }
+        } else if (coinType == CoinType.BTC) {
+            if (BraveWalletConstants.BITCOIN_MAINNET.equals(chainId)) {
+                return KeyringId.BITCOIN84;
+            }
+            if (BraveWalletConstants.BITCOIN_TESTNET.equals(chainId)) {
+                return KeyringId.BITCOIN84_TESTNET;
+            }
+            throw new IllegalStateException(
+                    String.format("No Bitcoin keyring found for chain Id %s.", chainId));
         } else {
             return getKeyringForEthOrSolOnly(coinType);
         }
@@ -79,6 +89,9 @@ public class AssetUtils {
             case CoinType.FIL:
                 throw new IllegalArgumentException(
                         "Keyring Id for Filecoin cannot be obtained by coin type. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
+            case CoinType.BTC:
+                throw new IllegalArgumentException(
+                        "Keyring Id for Bitcoin cannot be obtained by coin type. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
             default:
                 Log.e(TAG,
                         String.format(Locale.ENGLISH,
