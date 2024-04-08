@@ -8,6 +8,7 @@ import BraveUI
 import DesignSystem
 import Strings
 import SwiftUI
+import Preferences
 
 struct AddAccountView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -419,8 +420,14 @@ struct AddAccountView: View {
 
   private var isKeyringSelectionRequired: Bool {
     guard !selectedCoinNetworks.isEmpty else { return false }
-    return (selectedCoin == .fil || selectedCoin == .btc)
-      || (preSelectedCoin == .fil || preSelectedCoin == .btc)
+    if selectedCoin == .fil || preSelectedCoin == .fil {
+      return true
+    } else if (selectedCoin == .btc || preSelectedCoin == .btc)
+      && Preferences.Wallet.isBitcoinTestnetEnabled.value
+    {
+      return true
+    }
+    return false
   }
 }
 

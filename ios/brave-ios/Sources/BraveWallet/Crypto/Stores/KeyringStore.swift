@@ -194,6 +194,9 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     self.keychain = keychain
 
     setupObservers()
+
+    Preferences.Wallet.isBitcoinTestnetEnabled.observe(from: self)
+
     updateInfo()
 
     Task { @MainActor in
@@ -653,5 +656,25 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   /// it to the keychain
   func retrievePasswordFromKeychain() -> String? {
     keychain.getPasswordFromKeychain(key: Self.passwordKeychainKey)
+  }
+}
+
+extension KeyringStore: PreferencesObserver {
+  public func preferencesDidChange(for key: String) {
+    if Preferences.Wallet.isBitcoinTestnetEnabled.value == false {
+      // user disabled Bitcoin Testnet
+      Task { @MainActor in
+        let allAccounts = await keyringService.allAccounts()
+        if let currentlySelectedAccount = allAccounts.selectedAccount,
+          currentlySelectedAccount.keyringId == .bitcoin84Testnet,
+          let firstAvailableAccount = allAccounts.accounts.first(where: {
+            $0.keyringId != currentlySelectedAccount.keyringId
+          })
+        {
+          // we need to switch to the first available account
+          setSelectedAccount(to: firstAvailableAccount)
+        }
+      }
+    }
   }
 }

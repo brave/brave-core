@@ -293,7 +293,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       let isLocked = await keyringService.isLocked()
       guard !isLocked else { return }  // `update() will be called after unlock`
 
-      self.allAccounts = await keyringService.allAccounts().accounts
+      self.allAccounts = await keyringService.allAccounts(checkBTCTestnet: true)
         .filter { account in
           WalletConstants.supportedCoinTypes().contains(account.coin)
         }

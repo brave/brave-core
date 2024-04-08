@@ -113,9 +113,7 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
           accounts: allAccounts.filter({ $0.coin == .btc })
         )
       }
-      self.allNetworks = await rpcService.allNetworksForSupportedCoins(
-        respectTestnetPreference: true
-      )
+      self.allNetworks = await rpcService.allNetworksForSupportedCoins()
       self.update()
     }
   }

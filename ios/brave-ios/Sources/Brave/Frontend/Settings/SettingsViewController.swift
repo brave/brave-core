@@ -98,6 +98,9 @@ class SettingsViewController: TableViewController {
     self.cryptoStore = cryptoStore
     self.ipfsAPI = braveCore.ipfsAPI
 
+    self.keyringStore?.setupObservers()
+    self.cryptoStore?.setupObservers()
+
     super.init(style: .insetGrouped)
 
     UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor =
@@ -159,6 +162,13 @@ class SettingsViewController: TableViewController {
   private func displayBraveSearchDebugMenu() {
     let hostingController =
       UIHostingController(rootView: BraveSearchDebugMenu(logging: BraveSearchLogEntry.shared))
+
+    navigationController?.pushViewController(hostingController, animated: true)
+  }
+
+  private func displayBraveWalletDebugMenu() {
+    let hostingController =
+      UIHostingController(rootView: BraveWalletDebugMenu())
 
     navigationController?.pushViewController(hostingController, animated: true)
   }
@@ -1058,6 +1068,14 @@ class SettingsViewController: TableViewController {
           text: "View Brave Search Debug Menu",
           selection: { [unowned self] in
             self.displayBraveSearchDebugMenu()
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
+          text: "View Brave Wallet Debug Menu",
+          selection: { [unowned self] in
+            self.displayBraveWalletDebugMenu()
           },
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self
