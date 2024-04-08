@@ -854,6 +854,9 @@ public class Utils {
             case BraveWalletConstants.BITCOIN_TESTNET:
                 logo = "btc.png";
                 break;
+            case BraveWalletConstants.NEON_EVM_MAINNET_CHAIN_ID:
+                logo = "neon.png";
+                break;
             default:
                 logo = "";
         }
