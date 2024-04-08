@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
-import static org.chromium.chrome.browser.app.domain.NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
 
@@ -41,53 +40,27 @@ import java.util.List;
 
 public class NetworkSelectorActivity
         extends BraveWalletBaseActivity implements NetworkSelectorAdapter.NetworkClickListener {
-    public static String NETWORK_SELECTOR_MODE = "network_selector_mode";
     public static String NETWORK_SELECTOR_TYPE = "network_selector_type";
-    public static String NETWORK_SELECTOR_KEY = "network_selector_key";
     private static final String TAG = "NetworkSelector";
-    private NetworkSelectorModel.Mode mMode;
     private NetworkSelectorModel.SelectionMode mSelectionMode;
     private RecyclerView mRVNetworkSelector;
     private NetworkSelectorAdapter mNetworkSelectorAdapter;
     private MaterialToolbar mToolbar;
     private String mSelectedNetwork;
     private SettingsLauncher mSettingsLauncher;
-    private String mKey;
     private WalletModel mWalletModel;
     private NetworkSelectorModel mNetworkSelectorModel;
-
-    /**
-     * Create and return an Intent object to open network selector activity to change default wallet
-     * network.
-     * @param context Intent source
-     * @return Intent object to open NetworkSelectorActivity in global/default wallet selection mode
-     * <b>Note:</b>: It should only be called if the wallet is set up and unlocked
-     */
-    public static Intent createIntent(@NonNull Context context) {
-        return createIntent(context, DEFAULT_WALLET_NETWORK, null);
-    }
 
     /**
      * Create and return an Intent object to open network selector activity with key as an
      * identifier to show the previously selected local network (if available otherwise All Networks
      * as default) on {@link NetworkSelectorActivity}.
-     * @param mode Whether to open network selection for default/global network mode or
-     *          in local network selection mode i.e.
-     *          View <=> NetworkSelection state only with All Networks option.
-     * @param key as identifier to bind local state of NetworkSelection with the view. If null then
-     *         use global/default network selection mode.
      * @return Intent object to open NetworkSelectorActivity in given mode
      * <b>Note:</b>: It should only be called if the wallet is set up and unlocked
      */
-    public static Intent createIntent(
-            @NonNull Context context, NetworkSelectorModel.Mode mode, @NonNull String key) {
+    public static Intent createIntent(@NonNull Context context) {
         Intent braveNetworkSelectionIntent = new Intent(context, NetworkSelectorActivity.class);
         braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        // Either in global or local network selection mode
-        braveNetworkSelectionIntent.putExtra(NETWORK_SELECTOR_MODE, mode);
-        // To bind selection between the caller and NetworkSelection Activity for local state of
-        // network selection
-        braveNetworkSelectionIntent.putExtra(NETWORK_SELECTOR_KEY, key);
         return braveNetworkSelectionIntent;
     }
 
@@ -104,14 +77,6 @@ public class NetworkSelectorActivity
             }
             return true;
         });
-
-        Intent intent = getIntent();
-        mMode = JavaUtils.safeVal(
-                (NetworkSelectorModel.Mode) intent.getSerializableExtra(NETWORK_SELECTOR_MODE),
-                NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK);
-        // Key acts as a binding contract between the caller and network selection activity to share
-        // local network selection actions in LOCAL_NETWORK_FILTER mode
-        mKey = intent.getStringExtra(NETWORK_SELECTOR_KEY);
         mRVNetworkSelector = findViewById(R.id.rv_network_activity);
         onInitialLayoutInflationComplete();
     }
@@ -131,13 +96,8 @@ public class NetworkSelectorActivity
         }
 
         mSettingsLauncher = new BraveSettingsLauncherImpl();
-        // Provide single selection type if key is null. Ideally caller should provide the selection
-        // type while creating network selection model.
-        NetworkSelectorModel.SelectionMode selectionMode =
-                TextUtils.isEmpty(mKey) ? NetworkSelectorModel.SelectionMode.SINGLE : null;
-        mNetworkSelectorModel =
-                mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(
-                        mKey, mMode, selectionMode, null);
+        NetworkSelectorModel.SelectionMode selectionMode = NetworkSelectorModel.SelectionMode.SINGLE;
+        mNetworkSelectorModel = new NetworkSelectorModel(selectionMode, mWalletModel.getCryptoModel().getNetworkModel());
         mSelectionMode = mNetworkSelectorModel.getSelectionType();
         mNetworkSelectorAdapter =
                 new NetworkSelectorAdapter(this, new ArrayList<>(), mSelectionMode);
@@ -165,7 +125,7 @@ public class NetworkSelectorActivity
                     networkInfoList -> { updateNetworkSelection(networkInfoList); });
             return;
         }
-        mNetworkSelectorModel.getSelectedNetwork().observe(this, networkInfoList -> {
+        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observe(this, networkInfoList -> {
             updateNetworkSelection(Collections.singletonList(networkInfoList));
         });
     }
