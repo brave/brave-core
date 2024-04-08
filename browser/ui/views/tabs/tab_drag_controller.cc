@@ -9,13 +9,16 @@
 #include <set>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
+#include "chrome/browser/ui/views/tabs/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/window_finder.h"
 #include "ui/views/view_utils.h"
 
@@ -325,6 +328,46 @@ gfx::Rect TabDragController::CalculateDraggedBrowserBounds(
   }
 
   return bounds;
+}
+
+[[nodiscard]] TabDragController::Liveness TabDragController::ContinueDragging(
+    const gfx::Point& point_in_screen) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+    return TabDragControllerChromium::ContinueDragging(point_in_screen);
+  }
+
+  auto weak = weak_factory_.GetWeakPtr();
+  const auto liveness =
+      TabDragControllerChromium::ContinueDragging(point_in_screen);
+
+  if (!weak) {
+    // In DragBrowserToNewTabStrip() could delete itself, so we need to check
+    // it's still alive first.
+    return liveness;
+  }
+
+  if (!attached_context_) {
+    // This is when drag session ends.
+    on_tab_drag_ended_closure_.RunAndReset();
+    return liveness;
+  }
+
+  auto* browser_widget = GetAttachedBrowserWidget();
+  auto* browser = BrowserView::GetBrowserViewForNativeWindow(
+                      browser_widget->GetNativeWindow())
+                      ->browser();
+  SplitViewBrowserData* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(browser);
+  const bool is_dragging_tabs = current_state_ == DragState::kDraggingTabs;
+  if (is_dragging_tabs) {
+    on_tab_drag_ended_closure_ = split_view_browser_data->TabDragStarted();
+  } else {
+    // This is a case where tabs are detached into new window and enters.
+    // Notifies that drag session ended to the old browser.
+    on_tab_drag_ended_closure_.RunAndReset();
+  }
+
+  return liveness;
 }
 
 gfx::Vector2d TabDragController::GetVerticalTabStripWidgetOffset() {

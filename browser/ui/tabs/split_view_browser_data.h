@@ -11,6 +11,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "chrome/browser/ui/browser_user_data.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -39,6 +42,26 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   void AddObserver(SplitViewBrowserDataObserver* observer);
   void RemoveObserver(SplitViewBrowserDataObserver* observer);
 
+  class OnTabDragEndedClosure {
+   public:
+    OnTabDragEndedClosure();
+    OnTabDragEndedClosure(base::WeakPtr<SplitViewBrowserData> data,
+                          base::OnceClosure closure);
+    OnTabDragEndedClosure(OnTabDragEndedClosure&& other) noexcept;
+    OnTabDragEndedClosure& operator=(OnTabDragEndedClosure&& other) noexcept;
+    ~OnTabDragEndedClosure();
+
+    void RunAndReset();
+
+   private:
+    void RunCurrentClosureIfNeededAndReplaceWith(OnTabDragEndedClosure&& other);
+
+    base::WeakPtr<SplitViewBrowserData> data_;
+
+    base::ScopedClosureRunner closure_;
+  };
+  [[nodiscard]] OnTabDragEndedClosure TabDragStarted();
+
  private:
   friend BrowserUserData;
   friend class SplitViewBrowserDataUnitTest;
@@ -66,6 +89,8 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   base::ObserverList<SplitViewBrowserDataObserver> observers_;
 
   bool is_testing_ = false;
+
+  base::WeakPtrFactory<SplitViewBrowserData> weak_ptr_factory_{this};
 
   BROWSER_USER_DATA_KEY_DECL();
 };

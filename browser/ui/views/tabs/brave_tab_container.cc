@@ -99,6 +99,15 @@ base::OnceClosure BraveTabContainer::LockLayout() {
                         base::Unretained(this));
 }
 
+void BraveTabContainer::AddedToWidget() {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+    auto* split_view_data = SplitViewBrowserData::FromBrowser(
+        const_cast<Browser*>(tab_slot_controller_->GetBrowser()));
+    CHECK(split_view_data);
+    split_view_data_observation_.Observe(split_view_data);
+  }
+}
+
 gfx::Size BraveTabContainer::CalculatePreferredSize() const {
   // Note that we check this before checking currently we're in vertical tab
   // strip mode. We might be in the middle of changing orientation.
@@ -493,6 +502,14 @@ void BraveTabContainer::HandleDragExited() {
     return;
   }
   SetDropArrow({});
+}
+
+void BraveTabContainer::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
+  SchedulePaint();
+}
+
+void BraveTabContainer::OnDidBreakTile(const SplitViewBrowserData::Tile& tile) {
+  SchedulePaint();
 }
 
 gfx::Rect BraveTabContainer::GetDropBounds(int drop_index,

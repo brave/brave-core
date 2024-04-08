@@ -9,6 +9,7 @@
 #include <optional>
 #include <vector>
 
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 
@@ -52,6 +53,8 @@ class TabDragController : public TabDragControllerChromium {
       TabDragContext* source,
       const gfx::Point& point_in_screen,
       std::vector<gfx::Rect>* drag_bounds) override;
+  [[nodiscard]] Liveness ContinueDragging(
+      const gfx::Point& point_in_screen) override;
 
   void InitDragData(TabSlotView* view, TabDragData* drag_data) override;
 
@@ -61,6 +64,10 @@ class TabDragController : public TabDragControllerChromium {
   bool is_showing_vertical_tabs_ = false;
 
   VerticalTabStripRegionView::ScopedStateResetter vertical_tab_state_resetter_;
+
+  SplitViewBrowserData::OnTabDragEndedClosure on_tab_drag_ended_closure_;
+
+  base::WeakPtrFactory<TabDragController> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_TAB_DRAG_CONTROLLER_H_

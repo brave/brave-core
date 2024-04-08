@@ -10,12 +10,14 @@
 #include <optional>
 
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_context.h"
 #include "ui/gfx/canvas.h"
 
-class BraveTabContainer : public TabContainerImpl {
+class BraveTabContainer : public TabContainerImpl,
+                          public SplitViewBrowserDataObserver {
   METADATA_HEADER(BraveTabContainer, TabContainerImpl)
  public:
 
@@ -34,6 +36,7 @@ class BraveTabContainer : public TabContainerImpl {
   base::OnceClosure LockLayout();
 
   // TabContainerImpl:
+  void AddedToWidget() override;
   gfx::Size CalculatePreferredSize() const override;
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
   gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
@@ -53,6 +56,10 @@ class BraveTabContainer : public TabContainerImpl {
   void HandleDragUpdate(
       const std::optional<BrowserRootView::DropIndex>& index) override;
   void HandleDragExited() override;
+
+  // SplitViewBrowserDataObserver:
+  void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
+  void OnDidBreakTile(const SplitViewBrowserData::Tile& tile) override;
 
  private:
   class DropArrow : public views::WidgetObserver {
@@ -129,6 +136,9 @@ class BraveTabContainer : public TabContainerImpl {
   BooleanPrefMember vertical_tabs_collapsed_;
 
   bool layout_locked_ = false;
+
+  base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
+      split_view_data_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
