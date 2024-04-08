@@ -80,6 +80,7 @@ import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownEmbedder;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -1014,6 +1015,7 @@ public class BytecodeTest {
                         BookmarkState.class,
                         OmniboxActionDelegate.class,
                         ActivityLifecycleDispatcher.class,
+                        OmniboxSuggestionsDropdownEmbedder.class,
                         WindowAndroid.class));
         Assert.assertTrue(
                 constructorsMatch(
