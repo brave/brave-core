@@ -129,11 +129,6 @@ WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
                    // already shows a panel on click
       prefs_(profile->GetPrefs()),
       backup_anchor_view_(backup_anchor_view) {
-  pref_change_registrar_.Init(prefs_);
-  pref_change_registrar_.Add(
-      kShowWalletIconOnToolbar,
-      base::BindRepeating(&WalletButton::OnPreferenceChanged,
-                          base::Unretained(this)));
   SetTooltipText(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_TOOLTIP_WALLET));
 
@@ -146,8 +141,6 @@ WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
   menu_button_controller_ = menu_button_controller.get();
   SetButtonController(std::move(menu_button_controller));
-
-  UpdateVisibility();
 
   notification_source_ =
       std::make_unique<brave::WalletButtonNotificationSource>(
@@ -243,14 +236,6 @@ void WalletButton::UpdateImageAndText(bool activated) {
   SetImageModel(views::Button::STATE_NORMAL,
                 ui::ImageModel::FromImageSkia(
                     gfx::ImageSkia(std::move(image_source), preferred_size)));
-}
-
-void WalletButton::UpdateVisibility() {
-  SetVisible(prefs_->GetBoolean(kShowWalletIconOnToolbar));
-}
-
-void WalletButton ::OnPreferenceChanged() {
-  UpdateVisibility();
 }
 
 void WalletButton::ShowWalletBubble() {
