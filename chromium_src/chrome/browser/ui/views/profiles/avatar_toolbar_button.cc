@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
+
 #include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button_delegate.h"
 
 #define AvatarToolbarButtonDelegate BraveAvatarToolbarButtonDelegate
