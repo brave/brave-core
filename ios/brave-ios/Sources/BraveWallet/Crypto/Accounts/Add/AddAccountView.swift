@@ -6,9 +6,9 @@
 import BraveCore
 import BraveUI
 import DesignSystem
+import Preferences
 import Strings
 import SwiftUI
-import Preferences
 
 struct AddAccountView: View {
   @ObservedObject var keyringStore: KeyringStore

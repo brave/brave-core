@@ -383,8 +383,9 @@ extension Array where Element == BraveWallet.NetworkInfo {
   /// Returns the known test networks in Self.
   var testNetworks: [BraveWallet.NetworkInfo] {
     filter {
-      if !Preferences.Wallet.isBitcoinTestnetEnabled.value &&
-          $0.chainId == BraveWallet.BitcoinTestnet {
+      if !Preferences.Wallet.isBitcoinTestnetEnabled.value
+        && $0.chainId == BraveWallet.BitcoinTestnet
+      {
         return false
       }
       return WalletConstants.supportedTestNetworkChainIds.contains($0.chainId)
