@@ -63,6 +63,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             @NonNull BookmarkState bookmarkState,
             @NonNull OmniboxActionDelegate omniboxActionDelegate,
             @NonNull ActivityLifecycleDispatcher lifecycleDispatcher,
+            @NonNull OmniboxSuggestionsDropdownEmbedder embedder,
             WindowAndroid windowAndroid) {
         super(
                 context,
@@ -79,6 +80,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                 bookmarkState,
                 omniboxActionDelegate,
                 lifecycleDispatcher,
+                embedder,
                 windowAndroid);
 
         mContext = context;
