@@ -87,12 +87,22 @@ export const Heading = styled.h1`
   font: ${leo.font.heading.display1};
   color: ${leo.color.text.primary};
   margin: 0;
-  padding-bottom: 64px;
+  padding-bottom: 16px;
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     font-size: 36px;
     line-height: 48px;
   }
+`
+
+export const SubHeading = styled.h3`
+  color: ${leo.color.text.tertiary};
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  margin: 0;
+  padding: 0 0 48px 0;
 `
 
 export const ActionsContainer = styled.div`

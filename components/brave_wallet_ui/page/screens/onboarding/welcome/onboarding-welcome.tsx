@@ -34,7 +34,8 @@ import {
   Title,
   Heading,
   ActionsContainer,
-  Footer
+  Footer,
+  SubHeading
 } from './onboarding-welcome.style'
 
 const walletIcons = [
@@ -80,6 +81,7 @@ export const OnboardingWelcome = () => {
             <Title>{getLocale('braveWalletTitle')}</Title>
           </Row>
           <Heading>{getLocale('braveWalletWelcomeTitle')}</Heading>
+          <SubHeading>{getLocale('braveWalletWelcomeDescription')}</SubHeading>
 
           <ActionsContainer>
             <WelcomeAction
