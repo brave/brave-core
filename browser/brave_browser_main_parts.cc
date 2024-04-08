@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_browser_main_parts.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/command_line.h"
@@ -15,7 +16,6 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
@@ -62,11 +62,6 @@
 
 #if BUILDFLAG(ENABLE_TOR) || !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/browser_process.h"
-#endif
-
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/browser/greaselion/greaselion_service_factory.h"
-#include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
@@ -188,16 +183,6 @@ void BraveBrowserMainParts::PostProfileInit(Profile* profile,
     content::RenderFrameHost::AllowInjectingJavaScript();
     auto* command_line = base::CommandLine::ForCurrentProcess();
     command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_GREASELION)
-  if (auto* greaselion_service =
-          greaselion::GreaselionServiceFactory::GetForBrowserContext(profile)) {
-    extensions::ExtensionService* extension_service =
-        extensions::ExtensionSystem::Get(profile)->extension_service();
-    DCHECK(extension_service);
-    greaselion_service->SetExtensionService(extension_service);
   }
 #endif
 

@@ -34,7 +34,6 @@
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/update_client/buildflags.h"
 #include "brave/components/version_info//version_info.h"
-#include "chrome/browser/extensions/extension_service.h"
 #include "components/version_info/version_info.h"
 #include "crypto/sha2.h"
 #include "extensions/browser/computed_hashes.h"
@@ -222,7 +221,8 @@ GreaselionServiceImpl::GreaselionServiceImpl(
     const base::FilePath& install_directory,
     extensions::ExtensionSystem* extension_system,
     extensions::ExtensionRegistry* extension_registry,
-    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
+    std::unique_ptr<Delegate> delegate)
     : download_service_(download_service),
       install_directory_(install_directory),
       extension_system_(extension_system),
@@ -234,6 +234,7 @@ GreaselionServiceImpl::GreaselionServiceImpl(
       task_runner_(std::move(task_runner)),
       browser_version_(
           version_info::GetBraveVersionWithoutChromiumMajorVersion()),
+      delegate_(std::move(delegate)),
       weak_factory_(this) {
   download_service_->AddObserver(this);
   extension_registry_->AddObserver(this);
@@ -250,13 +251,6 @@ void GreaselionServiceImpl::Shutdown() {
   extension_registry_->RemoveObserver(this);
   task_runner_->PostTask(FROM_HERE,
                          base::BindOnce(&DeleteExtensionDirs, extension_dirs_));
-}
-
-void GreaselionServiceImpl::SetExtensionService(
-    extensions::ExtensionService* extension_service) {
-  DCHECK(extension_service);
-  DCHECK(!extension_service_);
-  extension_service_ = extension_service;
 }
 
 bool GreaselionServiceImpl::IsGreaselionExtension(const std::string& id) {
@@ -289,8 +283,7 @@ void GreaselionServiceImpl::UpdateInstalledExtensions() {
     // installed. OnExtensionUnloaded will be called on each extension, where we
     // will update the greaselion_extensions_ set. Once it's empty, that
     // callback will call CreateAndInstallExtensions().
-    extension_service_->UnloadExtension(
-        id, extensions::UnloadedExtensionReason::UPDATE);
+    delegate_->UnloadExtension(id);
   }
 }
 
@@ -356,7 +349,7 @@ void GreaselionServiceImpl::PostConvert(
 
 void GreaselionServiceImpl::Install(
     scoped_refptr<extensions::Extension> extension) {
-  extension_service_->AddExtension(extension.get());
+  delegate_->AddExtension(extension.get());
 }
 
 void GreaselionServiceImpl::OnExtensionReady(
