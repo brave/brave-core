@@ -885,6 +885,7 @@ provideStrings({
   braveWalletEstimatedBalanceChange: 'Estimated balance change',
   braveWalletApprovalDetails: 'Approval details',
   braveWalletAuthorityChange: 'Authority change',
+  braveWalletOwnershipChange: 'Account ownership change',
 
   // Transaction Simulation Events
   braveWalletReceive: 'Receive',

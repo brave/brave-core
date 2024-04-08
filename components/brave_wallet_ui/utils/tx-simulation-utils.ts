@@ -21,6 +21,7 @@ interface GroupedSVMStateChanges {
   solStakeAuthorityChanges: BraveWallet.BlowfishSolanaStateChange[]
   splApprovals: BraveWallet.BlowfishSolanaStateChange[]
   svmTransfers: BraveWallet.BlowfishSolanaStateChange[]
+  accountOwnerChangeData: BraveWallet.BlowfishSolanaStateChange[]
 }
 
 export const groupSimulatedEVMStateChanges = (
@@ -64,7 +65,8 @@ export const decodeSimulatedSVMStateChanges = (
   const changes: GroupedSVMStateChanges = {
     solStakeAuthorityChanges: [],
     splApprovals: [],
-    svmTransfers: []
+    svmTransfers: [],
+    accountOwnerChangeData: []
   }
 
   for (const stateChange of stateChanges) {
@@ -83,6 +85,11 @@ export const decodeSimulatedSVMStateChanges = (
     // transfers
     if (data.solTransferData || data.splTransferData) {
       changes.svmTransfers.push(stateChange)
+    }
+
+    // account ownership changes
+    if (data.userAccountOwnerChangeData) {
+      changes.accountOwnerChangeData.push(stateChange)
     }
   }
 

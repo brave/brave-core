@@ -20,6 +20,7 @@ import {
 } from './common/evm_state_changes'
 import {
   getComponentForSvmTransfer,
+  SolAccountOwnershipChange,
   SolStakingAuthChange,
   SPLTokenApproval
 } from './common/svm_state_changes'
@@ -79,6 +80,10 @@ export const TransactionSimulationInfo = ({
   }, [simulationType, expectedStateChanges])
 
   // computed
+  const hasAccountOwnershipChanges = Boolean(
+    svmChanges?.accountOwnerChangeData.length
+  )
+
   const hasApprovals = Boolean(
     evmChanges?.evmApprovals.length || svmChanges?.splApprovals.length
   )
@@ -92,8 +97,12 @@ export const TransactionSimulationInfo = ({
   )
 
   const hasMultipleCategories =
-    [hasApprovals, hasTransfers, hasSolStakingAuthChanges].filter(Boolean)
-      .length > 1
+    [
+      hasApprovals,
+      hasTransfers,
+      hasSolStakingAuthChanges,
+      hasAccountOwnershipChanges
+    ].filter(Boolean).length > 1
 
   // state
   const [isTransfersSectionOpen, setTransfersSectionOpen] = React.useState(true)
@@ -103,7 +112,28 @@ export const TransactionSimulationInfo = ({
   const [isSolStakingAuthSectionOpen, setIsSolStakingAuthSectionOpen] =
     React.useState(!hasMultipleCategories)
 
+  const [
+    isSolAccountOwnershipSectionOpen,
+    setIsSolAccountOwnershipSectionOpen
+  ] = React.useState(!hasMultipleCategories)
+
   // methods
+  const onToggleOwnerChangeSection = React.useCallback(() => {
+    if (!hasMultipleCategories) {
+      return
+    }
+
+    if (isSolAccountOwnershipSectionOpen) {
+      setIsSolAccountOwnershipSectionOpen(false)
+      return
+    }
+
+    setIsSolAccountOwnershipSectionOpen(true)
+    setTransfersSectionOpen(false)
+    setIsApprovalsSectionOpen(false)
+    setIsSolStakingAuthSectionOpen(false)
+  }, [hasMultipleCategories, isSolAccountOwnershipSectionOpen])
+
   const onToggleTransfersSection = React.useCallback(() => {
     if (!hasMultipleCategories) {
       return
@@ -117,6 +147,7 @@ export const TransactionSimulationInfo = ({
     setTransfersSectionOpen(true)
     setIsApprovalsSectionOpen(false)
     setIsSolStakingAuthSectionOpen(false)
+    setIsSolAccountOwnershipSectionOpen(false)
   }, [hasMultipleCategories, isTransfersSectionOpen])
 
   const onToggleApprovalsSection = React.useCallback(() => {
@@ -133,6 +164,7 @@ export const TransactionSimulationInfo = ({
 
     setTransfersSectionOpen(false)
     setIsSolStakingAuthSectionOpen(false)
+    setIsSolAccountOwnershipSectionOpen(false)
   }, [hasMultipleCategories, isApprovalsSectionOpen])
 
   const onToggleSolStakingAuthSection = React.useCallback(() => {
@@ -149,6 +181,7 @@ export const TransactionSimulationInfo = ({
 
     setTransfersSectionOpen(false)
     setIsApprovalsSectionOpen(false)
+    setIsSolAccountOwnershipSectionOpen(false)
   }, [hasMultipleCategories, isSolStakingAuthSectionOpen])
 
   // render
@@ -156,6 +189,36 @@ export const TransactionSimulationInfo = ({
     <TransactionChangeCollapseContainer
       hasMultipleCategories={hasMultipleCategories}
     >
+      {/* Account ownership changes */}
+      {hasAccountOwnershipChanges && (
+        <TransactionChangeCollapse
+          onToggle={onToggleOwnerChangeSection}
+          hasMultipleCategories={hasMultipleCategories}
+          isOpen={isSolAccountOwnershipSectionOpen}
+          key='SOL-account-ownership-changes'
+        >
+          <TransactionChangeCollapseTitle slot='title'>
+            {getLocale('braveWalletOwnershipChange')}
+          </TransactionChangeCollapseTitle>
+          <TransactionChangeCollapseContent>
+            <CollapseHeaderDivider key={'SolAccountOwnershipChanges-Divider'} />
+            {svmChanges?.accountOwnerChangeData.map((approval, i, arr) =>
+              approval.rawInfo.data.userAccountOwnerChangeData ? (
+                <React.Fragment key={'SolAccountOwnershipChanges-' + i}>
+                  <SolAccountOwnershipChange
+                    ownerChange={
+                      approval.rawInfo.data.userAccountOwnerChangeData
+                    }
+                    network={network}
+                  />
+                  {i < arr.length - 1 ? <Divider /> : null}
+                </React.Fragment>
+              ) : null
+            )}
+          </TransactionChangeCollapseContent>
+        </TransactionChangeCollapse>
+      )}
+
       {/* Transferred Assets */}
       {hasTransfers ? (
         <TransactionChangeCollapse
@@ -256,24 +319,27 @@ export const TransactionSimulationInfo = ({
       )}
 
       {/* No Changes */}
-      {!hasTransfers && !hasApprovals && !hasSolStakingAuthChanges && (
-        <TransactionChangeCollapse
-          onToggle={onToggleSolStakingAuthSection}
-          hasMultipleCategories={hasMultipleCategories}
-          isOpen={isSolStakingAuthSectionOpen}
-          key='SOL-staking-changes'
-        >
-          <TransactionChangeCollapseTitle slot='title'>
-            {getLocale('braveWalletNoChanges')}
-          </TransactionChangeCollapseTitle>
-          <TransactionChangeCollapseContent>
-            <CollapseHeaderDivider key={'NoChanges-Divider'} />
-            <StateChangeText>
-              {getLocale('braveWalletNoChangesDetected')}
-            </StateChangeText>
-          </TransactionChangeCollapseContent>
-        </TransactionChangeCollapse>
-      )}
+      {!hasTransfers &&
+        !hasApprovals &&
+        !hasSolStakingAuthChanges &&
+        !hasAccountOwnershipChanges && (
+          <TransactionChangeCollapse
+            onToggle={onToggleSolStakingAuthSection}
+            hasMultipleCategories={hasMultipleCategories}
+            isOpen={isSolStakingAuthSectionOpen}
+            key='SOL-staking-changes'
+          >
+            <TransactionChangeCollapseTitle slot='title'>
+              {getLocale('braveWalletNoChanges')}
+            </TransactionChangeCollapseTitle>
+            <TransactionChangeCollapseContent>
+              <CollapseHeaderDivider key={'NoChanges-Divider'} />
+              <StateChangeText>
+                {getLocale('braveWalletNoChangesDetected')}
+              </StateChangeText>
+            </TransactionChangeCollapseContent>
+          </TransactionChangeCollapse>
+        )}
     </TransactionChangeCollapseContainer>
   )
 }

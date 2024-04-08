@@ -1133,4 +1133,5 @@
   <message name="IDS_BRAVE_WALLET_SIMULATION_UNEXPECTED_ERROR" desc="Generic error explaining that the transaction simulation failed">Unexpected error with transaction preview. Approving may be unsafe.</message>
   <message name="IDS_BRAVE_WALLET_NO_CHANGES" desc="Heading text that is displayed when no changes were detected during transaction simulation">No changes</message>
   <message name="IDS_BRAVE_WALLET_NO_CHANGES_DETECTED" desc="Text to display when no changes were detected during transaction simulation">No changes detected</message>
+  <message name="IDS_BRAVE_WALLET_OWNERSHIP_CHANGE" desc="Grouping header for estimated account ownership changes">Account ownership change</message>
 </grit-part>

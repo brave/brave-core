@@ -435,6 +435,35 @@ export const SolStakingAuthChange = ({
   )
 }
 
+export const SolAccountOwnershipChange = ({
+  ownerChange,
+  network
+}: {
+  ownerChange: BraveWallet.BlowfishSolanaUserAccountOwnerChangeData
+  network: BlockchainInfo
+}) => {
+  // render
+  return (
+    <Column
+      margin={'0px 0px 6px 0px'}
+      alignItems='flex-start'
+      justifyContent='center'
+    >
+      <Row
+        alignItems='center'
+        justifyContent='flex-start'
+      >
+        <StateChangeText>{getLocale('braveWalletOwner')}</StateChangeText>
+      </Row>
+      <AddressChange
+        fromAddress={ownerChange.currentOwner}
+        toAddress={ownerChange.futureOwner}
+        network={network}
+      />
+    </Column>
+  )
+}
+
 export function getComponentForSvmTransfer(
   transfer: BraveWallet.BlowfishSolanaStateChange,
   network: ChainInfo
