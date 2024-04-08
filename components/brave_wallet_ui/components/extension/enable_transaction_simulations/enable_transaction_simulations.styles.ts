@@ -92,9 +92,10 @@ export const TermsText = styled.p`
   }
 `
 
-export const LearnMoreLink = styled.a`
+export const LearnMoreLink = styled.span`
+  cursor: pointer;
   line-height: 16px;
-  text-decoration: none;
+  text-decoration: underline;
   color: ${leo.color.text.interactive};
   font: ${leo.font.xSmall.regular};
 `

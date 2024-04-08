@@ -35,6 +35,7 @@ import {
   TermsText,
   errorIconColor
 } from './enable_transaction_simulations.styles'
+import { openTab } from '../../../utils/routes-utils'
 
 const CHANGE_IN_SETTINGS_TEXT = getLocaleWithTag(
   'braveWalletChangeAnytimeInSettings'
@@ -48,6 +49,8 @@ const TX_SIMULATION_FEATURE_BULLETS = [
 
 const TX_SIMULATION_TERMS_LINK =
   'https://github.com/brave/brave-browser/wiki/Transaction-Simulation'
+
+const openTxSimulationTermsUrl = () => openTab(TX_SIMULATION_TERMS_LINK)
 
 export const EnableTransactionSimulations: React.FC = () => {
   // mutations
@@ -86,10 +89,7 @@ export const EnableTransactionSimulations: React.FC = () => {
 
               <TermsText>
                 {getLocale('braveWalletTransactionSimulationTerms')}{' '}
-                <LearnMoreLink
-                  href={TX_SIMULATION_TERMS_LINK}
-                  rel='noopener noreferrer'
-                >
+                <LearnMoreLink onClick={openTxSimulationTermsUrl}>
                   {getLocale('braveWalletLearnMore')}
                 </LearnMoreLink>
               </TermsText>
