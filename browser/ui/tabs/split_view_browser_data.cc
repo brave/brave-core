@@ -53,8 +53,9 @@ void SplitViewBrowserData::TileTabs(const Tile& tile) {
 
 void SplitViewBrowserData::BreakTile(const tabs::TabHandle& tab) {
   if (auto iter = FindTile(tab); iter != tiles_.end()) {
+    auto tile_to_break = *iter;
     for (auto& observer : observers_) {
-      observer.OnWillBreakTile(*iter);
+      observer.OnWillBreakTile(tile_to_break);
     }
 
     auto index = tile_index_for_tab_[iter->first];
@@ -67,6 +68,10 @@ void SplitViewBrowserData::BreakTile(const tabs::TabHandle& tab) {
     }
 
     tiles_.erase(iter);
+
+    for (auto& observer : observers_) {
+      observer.OnDidBreakTile(tile_to_break);
+    }
   } else {
     NOTREACHED() << "Tile doesn't exist";
   }
