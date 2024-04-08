@@ -288,11 +288,11 @@ bool ParseServiceProviders(
     }
     sp->name = *sp_name;
 
-    const std::string* sp_id = sp_item.GetDict().FindString("serviceProvider");
-    if (!sp_id) {
+    const std::string* sp_service_provider = sp_item.GetDict().FindString("serviceProvider");
+    if (!sp_service_provider) {
       return false;
     }
-    sp->id = *sp_id;
+    sp->service_provider = *sp_service_provider;
 
     if (const auto* logos = sp_item.GetDict().FindDict("logos");
         !ParseMeldLogos(logos, sp->logo_images)) {

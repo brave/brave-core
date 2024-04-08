@@ -142,7 +142,8 @@ class AssetRatioServiceUnitTest : public testing::Test {
       const std::string& countries,
       const std::string& from_assets,
       const std::string& to_assets,
-      const std::string& payment_methods,
+      const std::string& service_providers,
+      const std::string& payment_method_types,
       const std::string& statuses,
       AssetRatioService::GetServiceProvidersCallback callback,
       const bool error_interceptor = false) {
@@ -153,7 +154,7 @@ class AssetRatioServiceUnitTest : public testing::Test {
     }
     base::RunLoop run_loop;
     asset_ratio_service_->GetServiceProviders(
-        countries, from_assets, to_assets, payment_methods, statuses,
+        countries, from_assets, to_assets, service_providers, payment_method_types, statuses,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::ServiceProviderPtr> sps,
                 const std::optional<std::vector<std::string>>& errors) {
@@ -682,7 +683,7 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
 
 TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
   const auto url = AssetRatioService::GetServiceProviderURL(
-      "US,CA", "USD,EUR", "BTC,ETH", "MOBILE_WALLET,BANK_TRANSFER", "");
+      "US,CA", "USD,EUR", "BTC,ETH", "MOBILE_WALLET,BANK_TRANSFER", "", "");
   EXPECT_EQ(url.path(), "/service-providers");
   EXPECT_EQ(url.query(),
             "accountFilter=false&statuses=LIVE%2CRECENTLY_ADDED&countries=US%"
@@ -726,21 +727,30 @@ TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
       "darkShort": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_dark.png",
       "lightShort": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_light.png"
     }
-  }])", "US", "USD", "ETH", "", "",
+  }])", "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
                                      const std::optional<std::vector<std::string>>& errors) {
         EXPECT_FALSE(errors.has_value());
-        EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){return item->name == "Banxa" && !item->logo_images.empty();}), 1);
-        EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){return item->name == "Blockchain.com" && !item->logo_images.empty();}), 1);
+        EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){
+          return item->name == "Banxa" && 
+            item->service_provider == "BANXA" &&
+            item->status == "LIVE" &&
+            !item->logo_images.empty();
+        }), 1);
+        EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){
+          return item->name == "Blockchain.com" && 
+          item->service_provider == "BLOCKCHAINDOTCOM" &&
+          item->status == "LIVE" &&
+          !item->logo_images.empty();}), 1);
       }));
 
-  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "", "",
+  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
                                      const std::optional<std::vector<std::string>>& errors) {
         EXPECT_TRUE(errors.has_value());
         EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
       }));
-  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "", "",
+  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
                                      const std::optional<std::vector<std::string>>& errors) {
         EXPECT_TRUE(errors.has_value());
@@ -756,7 +766,7 @@ TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
     ],
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
-  })", "US", "USD", "ETH", "", "",
+  })", "US", "USD", "ETH", "", "", "",
   base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
                                   const std::optional<std::vector<std::string>>& errors) {
     EXPECT_TRUE(errors.has_value());

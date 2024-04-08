@@ -94,19 +94,21 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   static GURL GetServiceProviderURL(const std::string& countries,
                                     const std::string& fiat_currencies,
                                     const std::string& crypto_currencies,
+                                    const std::string& service_providers,
                                     const std::string& payment_method_types,
                                     const std::string& statuses);
 
   void GetServiceProviders(const std::string& countries,
-                           const std::string& from_assets,
-                           const std::string& to_assets,
-                           const std::string& payment_methods,
+                           const std::string& fiat_currencies,
+                           const std::string& crypto_currencies,
+                           const std::string& service_providers,
+                           const std::string& payment_method_types,
                            const std::string& statuses,
                            GetServiceProvidersCallback callback) override;
 
   void GetCryptoQuotes(const std::string& country,
-                       const std::string& from_asset,
-                       const std::string& to_asset,
+                       const std::string& source_currency_code,
+                       const std::string& destination_currency_code,
                        const double source_amount,
                        const std::string& account,
                        GetCryptoQuotesCallback callback) override;

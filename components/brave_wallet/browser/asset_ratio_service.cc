@@ -583,6 +583,7 @@ void AssetRatioService::OnGetCoinMarkets(GetCoinMarketsCallback callback,
 GURL AssetRatioService::GetServiceProviderURL(const std::string& countries,
                                     const std::string& fiat_currencies,
                                     const std::string& crypto_currencies,
+                                    const std::string& service_providers,
                                     const std::string& payment_method_types,
                                     const std::string& statuses) {
   auto url = GURL(base::StringPrintf("%s/service-providers",
@@ -605,6 +606,9 @@ GURL AssetRatioService::GetServiceProviderURL(const std::string& countries,
   if (!crypto_currencies.empty()) {
     url = net::AppendQueryParameter(url, "cryptoCurrencies", crypto_currencies);
   }
+  if (!service_providers.empty()) {
+    url = net::AppendQueryParameter(url, "serviceProviders", service_providers);
+  }  
   if (!payment_method_types.empty()) {
     url = net::AppendQueryParameter(url, "paymentMethodTypes", payment_method_types);
   }
@@ -614,9 +618,10 @@ GURL AssetRatioService::GetServiceProviderURL(const std::string& countries,
 
 void AssetRatioService::GetServiceProviders(
     const std::string& countries,
-    const std::string& from_assets,
-    const std::string& to_assets,
-    const std::string& payment_methods,
+    const std::string& fiat_currencies,
+    const std::string& crypto_currencies,
+    const std::string& service_providers,
+    const std::string& payment_method_types,
     const std::string& statuses,
     GetServiceProvidersCallback callback) 
 { 
@@ -625,8 +630,8 @@ void AssetRatioService::GetServiceProviders(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper_->Request(
-      "GET", GetServiceProviderURL(countries, from_assets, to_assets,
-                                   payment_methods, statuses), "", "",
+      "GET", GetServiceProviderURL(countries, fiat_currencies, crypto_currencies, service_providers,
+                                   payment_method_types, statuses), "", "",
                                    std::move(internal_callback),MakeMeldApiHeaders(),
                                    {.auto_retry_on_network_change = true, .enable_cache = true});
 }
@@ -653,16 +658,16 @@ void AssetRatioService::OnGetServiceProviders(GetServiceProvidersCallback callba
 
 
 void AssetRatioService::GetCryptoQuotes(const std::string& country,
-                                        const std::string& from_asset,
-                                        const std::string& to_asset,
+                                        const std::string& source_currency_code,
+                                        const std::string& destination_currency_code,
                                         const double source_amount,
                                         const std::string& account,
                                         GetCryptoQuotesCallback callback) {
   base::Value::Dict payload;
   AddKeyIfNotEmpty(&payload, "countryCode", country);
-  AddKeyIfNotEmpty(&payload, "sourceCurrencyCode", from_asset);
+  AddKeyIfNotEmpty(&payload, "sourceCurrencyCode", source_currency_code);
   AddKeyIfNotEmpty(&payload, "sourceAmount", base::NumberToString(source_amount));
-  AddKeyIfNotEmpty(&payload, "destinationCurrencyCode", to_asset);
+  AddKeyIfNotEmpty(&payload, "destinationCurrencyCode", destination_currency_code);
   AddKeyIfNotEmpty(&payload, "walletAddress", account);
 
   const std::string json_payload = GetJSON(payload);
