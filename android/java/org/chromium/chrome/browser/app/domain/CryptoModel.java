@@ -32,8 +32,8 @@ import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CryptoModel {
     private TxService mTxService;
@@ -47,15 +47,15 @@ public class CryptoModel {
     private AssetRatioService mAssetRatioService;
     private SwapService mSwapService;
     private CryptoSharedActions mCryptoSharedActions;
-    private CryptoSharedData mSharedData;
+    private final CryptoSharedData mSharedData;
     private final MutableLiveData<Integer> _mCoinTypeMutableLiveData =
             new MutableLiveData<>(CoinType.ETH);
-    public final LiveData<Integer> mCoinTypeMutableLiveData = _mCoinTypeMutableLiveData;
+    private final LiveData<Integer> mCoinTypeMutableLiveData = _mCoinTypeMutableLiveData;
 
     private final Object mLock = new Object();
     private Context mContext;
 
-    private NetworkModel mNetworkModel;
+    private final NetworkModel mNetworkModel;
 
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
 
@@ -78,7 +78,7 @@ public class CryptoModel {
         mSharedData = new CryptoSharedDataImpl();
         mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
         mNetworkModel = new NetworkModel(
-                mBraveWalletService, mJsonRpcService, mSharedData, mCryptoSharedActions, context);
+                mBraveWalletService, mJsonRpcService, mSharedData, mCryptoSharedActions);
     }
 
     public void resetServices(Context context, TxService mTxService, KeyringService mKeyringService,
@@ -147,14 +147,6 @@ public class CryptoModel {
                 allAccounts -> mPendingTxHelper.setAccountInfos(allAccounts.accounts));
     }
 
-    public LiveData<TransactionInfo> getSelectedPendingRequest() {
-        return mPendingTxHelper.mSelectedPendingRequest;
-    }
-
-    public LiveData<List<TransactionInfo>> getPendingTransactions() {
-        return mPendingTxHelper.mPendingTransactionInfoLd;
-    }
-
     public LiveData<List<TransactionInfo>> getAllTransactions() {
         return mPendingTxHelper.mTransactionInfoLd;
     }
@@ -196,21 +188,6 @@ public class CryptoModel {
     }
 
     public void updateCoinType() {
-        updateCoinType(null, null);
-    }
-
-    public void updateCoinType(Integer coin, Callback1<Integer> callback) {
-        if (coin == null) {
-            updateCoinType(null);
-        } else {
-            _mCoinTypeMutableLiveData.postValue(coin);
-            if (callback != null) {
-                callback.call(coin);
-            }
-        }
-    }
-
-    public void updateCoinType(Callback1<Integer> callback) {
         mKeyringService.getAllAccounts(allAccounts -> {
             @CoinType.EnumType
             int coin = CoinType.ETH;
@@ -222,9 +199,6 @@ public class CryptoModel {
             }
 
             _mCoinTypeMutableLiveData.postValue(coin);
-            if (callback != null) {
-                callback.call(coin);
-            }
         });
     }
 
@@ -286,10 +260,7 @@ public class CryptoModel {
 
         @Override
         public List<Integer> getSupportedCryptoCoins() {
-            return getSupportedCryptoAccountTypes()
-                    .stream()
-                    .map(CryptoAccountTypeInfo::getCoinType)
-                    .collect(Collectors.toList());
+            return Arrays.asList(CoinType.ETH, CoinType.SOL, CoinType.FIL, CoinType.BTC);
         }
 
         @Override
