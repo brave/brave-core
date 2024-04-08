@@ -22,7 +22,7 @@ TEST_F(BraveAdsPageLandUserDataTest,
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
-                      "httpResponseStatusKey": "errorPage"
+                      "httpResponseStatus": "errorPage"
                     })"),
             BuildPageLandUserData(
                 TabInfo{/*id=*/1,

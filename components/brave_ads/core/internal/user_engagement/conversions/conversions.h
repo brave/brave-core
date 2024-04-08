@@ -98,8 +98,9 @@ class Conversions final : public ConversionQueueDelegate,
 
   ConversionResource resource_;
 
-  // Transition legacy conversions. This is a no-op for new conversions.
-  // `ConversionQueue` should be removed after several browser releases.
+  // TODO(https://github.com/brave/brave-browser/issues/37375): Transition
+  // legacy conversions. `ConversionQueue` should be removed after several
+  // browser releases. This is a no-op for new conversions.
   ConversionQueue queue_;
 
   const database::table::CreativeSetConversions

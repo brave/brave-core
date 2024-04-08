@@ -163,16 +163,16 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   creative_set_conversions.push_back(creative_set_conversion_2);
   creative_set_conversions.push_back(creative_set_conversion_2);
 
-  CreativeSetConversionBucketMap creative_set_conversion_buckets =
-      SortCreativeSetConversionsIntoBuckets(creative_set_conversions);
-
   const CreativeSetConversionCountMap creative_set_conversion_counts = {
       {creative_set_conversion_1.id, 1}, {creative_set_conversion_2.id, 2}};
 
+  CreativeSetConversionBucketMap creative_set_conversion_buckets =
+      SortCreativeSetConversionsIntoBuckets(creative_set_conversions);
+
   // Act
   FilterCreativeSetConversionBucketsThatExceedTheCap(
-      creative_set_conversion_buckets, creative_set_conversion_counts,
-      /*creative_set_conversion_cap*/ 2);
+      creative_set_conversion_counts, /*creative_set_conversion_cap*/ 2,
+      creative_set_conversion_buckets);
 
   // Assert
   CreativeSetConversionBucketMap expected_creative_set_conversion_buckets = {
@@ -201,16 +201,16 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   creative_set_conversions.push_back(creative_set_conversion_2);
   creative_set_conversions.push_back(creative_set_conversion_2);
 
-  CreativeSetConversionBucketMap creative_set_conversion_buckets =
-      SortCreativeSetConversionsIntoBuckets(creative_set_conversions);
-
   const CreativeSetConversionCountMap creative_set_conversion_counts = {
       {creative_set_conversion_1.id, 1}, {creative_set_conversion_2.id, 2}};
 
+  CreativeSetConversionBucketMap creative_set_conversion_buckets =
+      SortCreativeSetConversionsIntoBuckets(creative_set_conversions);
+
   // Act
   FilterCreativeSetConversionBucketsThatExceedTheCap(
-      creative_set_conversion_buckets, creative_set_conversion_counts,
-      /*creative_set_conversion_cap*/ 0);
+      creative_set_conversion_counts, /*creative_set_conversion_cap*/ 0,
+      creative_set_conversion_buckets);
 
   // Assert
   CreativeSetConversionBucketMap expected_creative_set_conversion_buckets = {
