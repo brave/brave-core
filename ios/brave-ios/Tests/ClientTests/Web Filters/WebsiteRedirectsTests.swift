@@ -45,6 +45,7 @@ class WebsiteRedirectsTests: XCTestCase {
 
   func testExcludedHosts() throws {
     XCTAssertNil(WebsiteRedirects.redirect(for: try url("https://new.reddit.com/r/brave")))
+    XCTAssertNil(WebsiteRedirects.redirect(for: try url("https://sh.reddit.com/r/brave")))
     XCTAssertNil(WebsiteRedirects.redirect(for: try url("https://account.npr.org/login")))
   }
 
@@ -119,6 +120,17 @@ class WebsiteRedirectsTests: XCTestCase {
       try url("https://old.reddit.com/r/brave")
     )
 
+    XCTAssertEqual(
+      WebsiteRedirects.redirect(
+        for: try url(
+          "https://www.reddit.com/r/BurlingtonON/comments/1aq8v6s/looking_for_a_burlington_resident/"
+        )
+      ),
+      try url(
+        "https://old.reddit.com/r/BurlingtonON/comments/1aq8v6s/looking_for_a_burlington_resident/"
+      )
+    )
+
     // Skip media redirect
 
     XCTAssertNil(
@@ -126,6 +138,29 @@ class WebsiteRedirectsTests: XCTestCase {
         for: try url("https://reddit.com/media?url=https%3A%2F%2Fi.redd.it%2Fimageid.jpg")
       )
     )
+  }
+
+  func testRedditExcludedPaths() throws {
+    let excludedPaths = [
+      "https://reddit.com/media/12345",
+      "https://reddit.com/poll/12345",
+      "https://reddit.com/rpan/12345",
+      "https://reddit.com/settings/12345",
+      "https://www.reddit.com/topics/12345",
+      "https://reddit.com/community-points",
+      "https://www.reddit.com/r/example/s/TjDGhcl22d",
+      "https://www.reddit.com/r/BurlingtonON/s/vqQEjKLKDm",
+      "https://www.reddit.com/appeal",
+      "https://reddit.com/r/example/appeals",
+      "https://www.reddit.com/r/example/s/anotherExample",
+    ]
+
+    for path in excludedPaths {
+      XCTAssertNil(
+        WebsiteRedirects.redirect(for: try url(path)),
+        "Expected no redirection for URL with excluded path: \(path)"
+      )
+    }
   }
 
   func testNpr() throws {
