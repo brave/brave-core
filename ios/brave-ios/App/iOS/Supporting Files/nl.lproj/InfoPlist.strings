@@ -1,27 +1,27 @@
 /* (No Comment) */
-"1Password Fill Browser Action" = "Remplir les mots de passe avec 1Password";
+"1Password Fill Browser Action" = "1Password-gegevens in browser";
 
 /* Privacy - NFC Scan Usage Description */
-"NFCReaderUsageDescription" = "L'application doit accéder à la fonction NFC pour communiquer avec votre YubiKey.";
+"NFCReaderUsageDescription" = "De app heeft toegang nodig tot de NFC-lezer om met je Yubikey te communiceren.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Cette option vous permet de prendre des photos et de les importer.";
+"NSCameraUsageDescription" = "Hiermee kun je foto's maken en uploaden.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Authentifie votre accès à Brave";
+"NSFaceIDUsageDescription" = "Hiermee wordt je toegang tot Brave geauthenticeerd";
 
 /* Privacy - Location When In Use Usage Description */
-"NSLocationWhenInUseUsageDescription" = "Les sites Web que vous consultez peuvent demander votre position.";
+"NSLocationWhenInUseUsageDescription" = "Websites die je bezoekt, vragen mogelijk je locatie.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Ce paramètre autorise l'utilisation de votre microphone lorsque vous utilisez Brave.";
+"NSMicrophoneUsageDescription" = "Hiermee sta je toe dat Brave je microfoon gebruikt.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Cette option vous permet d'enregistrer des photos.";
+"NSPhotoLibraryAddUsageDescription" = "Hiermee kun je foto's bewaren.";
 
 /* Privacy - Speech Recognition Usage Description */
-"NSSpeechRecognitionUsageDescription" = "Cette autorisation sert à activer la reconnaissance vocale avancée d'Apple. En cas de refus, la reconnaissance intégrée à l'appareil sera utilisée et les recherches seront entièrement privée. Brave n'enregistre pas et ne partage pas vos recherches vocales.";
+"NSSpeechRecognitionUsageDescription" = "Met dit recht wordt de geavanceerde spraakherkenning van Apple ingeschakeld. Als dit recht niet wordt verleend, wordt herkenning 'op het apparaat' gebruikt en blijven zoekopdrachten volledig privé. Brave bewaart of deelt geen gesproken zoekopdrachten.";
 
 /* (No Comment) */
-"OPML File" = "Fichier OPML";
+"OPML File" = "OPML-bestand";
 
