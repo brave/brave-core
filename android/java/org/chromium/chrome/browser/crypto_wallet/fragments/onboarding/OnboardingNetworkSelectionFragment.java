@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -86,15 +87,13 @@ public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFrag
                             requireContext(), mShowTestnets.isChecked(), networkLists, this);
             mNetworks.setAdapter(mOnboardingNetworkSelectorGridAdapter);
 
+            @IntegerRes
+            int itemWidth =
+                    (int)
+                            getResources()
+                                    .getDimension(R.dimen.onboarding_network_selection_item_width);
             AutoGridLayoutManager layoutManager =
-                    new AutoGridLayoutManager(
-                            requireContext(),
-                            3,
-                            (int)
-                                    getResources()
-                                            .getDimension(
-                                                    R.dimen
-                                                            .onboarding_network_selection_item_width));
+                    new AutoGridLayoutManager(requireContext(), 3, itemWidth);
             layoutManager.setSpanSizeLookup(
                     new GridLayoutManager.SpanSizeLookup() {
                         @Override

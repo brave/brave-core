@@ -140,7 +140,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
         if (mRecoveryPhrasesAdapter != null && mRecoveryPhrasesRecyclerView != null) {
             mRecoveryPhrasesAdapter = new RecoveryPhraseAdapter();
             mRecoveryPhrasesAdapter.setRecoveryPhraseList(mRecoveryPhrases);
-            mRecoveryPhrasesAdapter.setOnRecoveryPhraseSelectedListener(onRecoveryPhraseSelected);
+            mRecoveryPhrasesAdapter.setOnRecoveryPhraseSelectedListener(mOnRecoveryPhraseSelected);
             mRecoveryPhrasesRecyclerView.setAdapter(mRecoveryPhrasesAdapter);
         }
         if (mRecoveryPhrasesToVerifyAdapter != null) {
@@ -159,7 +159,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
 
         mRecoveryPhrasesAdapter = new RecoveryPhraseAdapter();
         mRecoveryPhrasesAdapter.setRecoveryPhraseList(mRecoveryPhrases);
-        mRecoveryPhrasesAdapter.setOnRecoveryPhraseSelectedListener(onRecoveryPhraseSelected);
+        mRecoveryPhrasesAdapter.setOnRecoveryPhraseSelectedListener(mOnRecoveryPhraseSelected);
         mRecoveryPhrasesRecyclerView.setAdapter(mRecoveryPhrasesAdapter);
     }
 
@@ -175,57 +175,63 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
         mRecoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(
                 mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
         mRecoveryPhrasesToVerifyAdapter.setOnRecoveryPhraseSelectedListener(
-                onSelectedRecoveryPhraseSelected);
+                mOnSelectedRecoveryPhraseSelected);
         mRecoveryPhrasesToVerifyAdapter.setSelectedRecoveryPhrase(true);
         mSelectedPhraseRecyclerView.setAdapter(mRecoveryPhrasesToVerifyAdapter);
     }
 
-    OnRecoveryPhraseSelected onRecoveryPhraseSelected = new OnRecoveryPhraseSelected() {
-        @Override
-        @SuppressLint("NotifyDataSetChanged")
-        public void onSelectedRecoveryPhrase(String phrase) {
-            if (mRecoveryPhrasesAdapter != null) {
-                mRecoveryPhrasesAdapter.notifyDataSetChanged();
-            }
+    OnRecoveryPhraseSelected mOnRecoveryPhraseSelected =
+            new OnRecoveryPhraseSelected() {
+                @Override
+                @SuppressLint("NotifyDataSetChanged")
+                public void onSelectedRecoveryPhrase(String phrase) {
+                    if (mRecoveryPhrasesAdapter != null) {
+                        mRecoveryPhrasesAdapter.notifyDataSetChanged();
+                    }
 
-            if (mRecoveryPhrasesAdapter != null && mRecoveryPhrasesToVerifyAdapter != null) {
-                List<String> newList =
-                        new ArrayList<>(mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
-                mRecoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(newList);
-                mRecoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
-            }
+                    if (mRecoveryPhrasesAdapter != null
+                            && mRecoveryPhrasesToVerifyAdapter != null) {
+                        List<String> newList =
+                                new ArrayList<>(
+                                        mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
+                        mRecoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(newList);
+                        mRecoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
+                    }
 
-            if (mRecoveryPhrasesAdapter != null
-                    && mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList().size()
-                            == mRecoveryPhrases.size()) {
-                mRecoveryPhraseButton.setAlpha(1f);
-                mRecoveryPhraseButton.setEnabled(true);
-            }
-        }
-    };
+                    if (mRecoveryPhrasesAdapter != null
+                            && mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList().size()
+                                    == mRecoveryPhrases.size()) {
+                        mRecoveryPhraseButton.setAlpha(1f);
+                        mRecoveryPhraseButton.setEnabled(true);
+                    }
+                }
+            };
 
-    OnRecoveryPhraseSelected onSelectedRecoveryPhraseSelected = new OnRecoveryPhraseSelected() {
-        @Override
-        @SuppressLint("NotifyDataSetChanged")
-        public void onSelectedRecoveryPhrase(String phrase) {
-            if (mRecoveryPhrasesAdapter != null) {
-                mRecoveryPhrasesAdapter.addPhraseAtPosition(mRecoveryPhrases.indexOf(phrase), phrase);
-                mRecoveryPhrasesAdapter.removeSelectedPhrase(phrase);
-                mRecoveryPhrasesAdapter.notifyDataSetChanged();
-            }
+    OnRecoveryPhraseSelected mOnSelectedRecoveryPhraseSelected =
+            new OnRecoveryPhraseSelected() {
+                @Override
+                @SuppressLint("NotifyDataSetChanged")
+                public void onSelectedRecoveryPhrase(String phrase) {
+                    if (mRecoveryPhrasesAdapter != null) {
+                        mRecoveryPhrasesAdapter.addPhraseAtPosition(
+                                mRecoveryPhrases.indexOf(phrase), phrase);
+                        mRecoveryPhrasesAdapter.removeSelectedPhrase(phrase);
+                        mRecoveryPhrasesAdapter.notifyDataSetChanged();
+                    }
 
-            if (mRecoveryPhrasesAdapter != null && mRecoveryPhrasesToVerifyAdapter != null) {
-                mRecoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(
-                        mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
-                mRecoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
-            }
+                    if (mRecoveryPhrasesAdapter != null
+                            && mRecoveryPhrasesToVerifyAdapter != null) {
+                        mRecoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(
+                                mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
+                        mRecoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
+                    }
 
-            if (mRecoveryPhrasesAdapter != null
-                    && mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList().size()
-                            == mRecoveryPhrases.size()) {
-                mRecoveryPhraseButton.setAlpha(1f);
-                mRecoveryPhraseButton.setEnabled(true);
-            }
-        }
-    };
+                    if (mRecoveryPhrasesAdapter != null
+                            && mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList().size()
+                                    == mRecoveryPhrases.size()) {
+                        mRecoveryPhraseButton.setAlpha(1f);
+                        mRecoveryPhraseButton.setEnabled(true);
+                    }
+                }
+            };
 }

@@ -53,9 +53,19 @@ public class WalletModel {
         mSwapService = swapService;
         // Do not change the object initialisation order without discussion
         mCryptoActions = new CryptoActions();
-        mCryptoModel = new CryptoModel(mContext, mTxService, mKeyringService, mBlockchainRegistry,
-                mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
-                mAssetRatioService, mCryptoActions, mSwapService);
+        mCryptoModel =
+                new CryptoModel(
+                        mContext,
+                        mTxService,
+                        mKeyringService,
+                        mBlockchainRegistry,
+                        mJsonRpcService,
+                        mEthTxManagerProxy,
+                        mSolanaTxManagerProxy,
+                        mBraveWalletService,
+                        mAssetRatioService,
+                        mCryptoActions,
+                        mSwapService);
         mDappsModel =
                 new DappsModel(
                         mJsonRpcService,

@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.app.domain;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.StringDef;
 import androidx.lifecycle.LiveData;
@@ -139,10 +138,12 @@ public class KeyringModel implements KeyringServiceObserver {
                 });
     }
 
-    public void addAccount(@CoinType.EnumType int coinType, String chainId, String accountName,
+    public void addAccount(
+            @CoinType.EnumType int coinType,
+            String chainId,
+            String accountName,
             Callbacks.Callback1<Boolean> callback) {
-        @KeyringId.EnumType
-        int keyringId = AssetUtils.getKeyring(coinType, chainId);
+        @KeyringId.EnumType int keyringId = AssetUtils.getKeyring(coinType, chainId);
         if (accountName == null) {
             LiveDataUtil.observeOnce(
                     mAccountInfos,

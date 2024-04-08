@@ -68,8 +68,11 @@ public class WalletUtils {
                         .collect(Collectors.toCollection(HashSet::new));
 
         for (int number = 1; number < 1000; ++number) {
-            String accountName = context.getString(R.string.new_account_prefix,
-                    getNewAccountPrefixForCoin(coinType), String.valueOf(number));
+            String accountName =
+                    context.getString(
+                            R.string.new_account_prefix,
+                            getNewAccountPrefixForCoin(coinType),
+                            String.valueOf(number));
 
             if (!allNames.contains(accountName)) {
                 return accountName;

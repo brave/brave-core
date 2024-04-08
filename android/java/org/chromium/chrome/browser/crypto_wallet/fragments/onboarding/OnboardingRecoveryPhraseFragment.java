@@ -31,7 +31,7 @@ import java.util.List;
 public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragment {
     private static final String IS_ONBOARDING_ARG = "isOnboarding";
 
-    private List<String> recoveryPhrases;
+    private List<String> mRecoveryPhrases;
     private boolean mIsOnboarding;
 
     @NonNull
@@ -61,7 +61,7 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
             keyringService.getMnemonicForDefaultKeyring(
                     mOnboardingViewModel.getPassword(),
                     result -> {
-                        recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
+                        mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);
                         setupRecoveryPhraseRecyclerView(view);
                         TextView copyButton = view.findViewById(R.id.btn_copy);
                         assert getActivity() != null;
@@ -69,7 +69,7 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                                 v -> {
                                     Utils.saveTextToClipboard(
                                             getActivity(),
-                                            Utils.getRecoveryPhraseFromList(recoveryPhrases),
+                                            Utils.getRecoveryPhraseFromList(mRecoveryPhrases),
                                             R.string.text_has_been_copied,
                                             true);
                                 });
@@ -99,15 +99,17 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                     }
                 });
         TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_recovery_phrase_skip);
-        recoveryPhraseSkipButton.setOnClickListener(v -> {
-            BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-            if (braveWalletP3A != null && mIsOnboarding) {
-                braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
-            }
-            if (mOnNextPage != null) {
-                mOnNextPage.onboardingCompleted();
-            }
-        });
+        recoveryPhraseSkipButton.setOnClickListener(
+                v -> {
+                    BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                    if (braveWalletP3A != null && mIsOnboarding) {
+                        braveWalletP3A.reportOnboardingAction(
+                                OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
+                    }
+                    if (mOnNextPage != null) {
+                        mOnNextPage.onboardingCompleted();
+                    }
+                });
     }
 
     private void setupRecoveryPhraseRecyclerView(@NonNull View view) {
@@ -119,7 +121,7 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
         recyclerView.setLayoutManager(layoutManager);
 
         RecoveryPhraseAdapter recoveryPhraseAdapter = new RecoveryPhraseAdapter();
-        recoveryPhraseAdapter.setRecoveryPhraseList(recoveryPhrases);
+        recoveryPhraseAdapter.setRecoveryPhraseList(mRecoveryPhrases);
         recyclerView.setAdapter(recoveryPhraseAdapter);
     }
 }
