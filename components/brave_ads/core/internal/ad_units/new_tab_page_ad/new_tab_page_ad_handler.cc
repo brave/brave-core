@@ -208,7 +208,7 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdMediaPlayEvent(
     const NewTabPageAdInfo& ad) {
-  BLOG(3, "Clicked play button of the new tab page video ad with placement id "
+  BLOG(3, "Started playing new tab page video ad with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
@@ -220,7 +220,7 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdMediaPlayEvent(
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdMedia25Event(
     const NewTabPageAdInfo& ad) {
-  BLOG(3, "Viewed 25\% of the new tab page video ad with placement id "
+  BLOG(3, R"(Played 25% of new tab page video ad with placement id )"
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
@@ -232,7 +232,7 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdMedia25Event(
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdMedia100Event(
     const NewTabPageAdInfo& ad) {
-  BLOG(3, "Viewed 100\% of the new tab page video ad with placement id "
+  BLOG(3, R"(Played 100% of new tab page video ad with placement id )"
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 

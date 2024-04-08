@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveUI
+import DesignSystem
 import Preferences
 import Shared
 import SnapKit
@@ -71,7 +72,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
   private let playButton = PlayButton().then {
     $0.isHidden = true
   }
-  private var playButtonAdded = false
+  private var shouldShowPlayButton = false
   private var playButtonGestureRecognizer: UITapGestureRecognizer?
 
   /// The parent safe area insets (since UICollectionView doesn't feed down
@@ -106,6 +107,11 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
 
     addSubview(playButton)
     playButton.addTarget(self, action: #selector(tappedVideoPlayButton), for: .touchUpInside)
+
+    playButton.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.centerY.equalToSuperview().offset(20)
+    }
   }
 
   @available(*, unavailable)
@@ -153,11 +159,6 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
       }
     }
 
-    playButton.snp.remakeConstraints {
-      $0.centerX.equalToSuperview()
-      $0.centerY.equalToSuperview().offset(20)
-    }
-
     updatePlayButtonVisibility()
   }
 
@@ -173,7 +174,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     tappedPlayButton?(false)
   }
 
-  func autoplayStarted() {
+  func videoAutoplayStarted() {
     let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(
       target: self,
       action: #selector(self.tappedVideDuringAutoplay)
@@ -183,8 +184,8 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     playButtonGestureRecognizer = tapGesture
   }
 
-  func autoplayFinished() {
-    playButtonAdded = true
+  func videoAutoplayFinished() {
+    shouldShowPlayButton = true
     updatePlayButtonVisibility()
 
     if let playButtonGestureRecognizer = playButtonGestureRecognizer {
@@ -199,7 +200,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     if isLandscape && UIDevice.isPhone {
       playButton.isHidden = true
     } else {
-      playButton.isHidden = !playButtonAdded
+      playButton.isHidden = !shouldShowPlayButton
     }
   }
 
@@ -278,8 +279,11 @@ extension NewTabPageBackgroundButtonsView {
   }
   private class PlayButton: SpringButton {
     let imageView = UIImageView(
-      image: UIImage(named: "ntt_play_button", in: .module, compatibleWith: nil)!
-    )
+      image: UIImage(braveSystemNamed: "leo.play.circle", compatibleWith: nil)!
+    ).then {
+      $0.tintColor = .white
+      $0.contentMode = .scaleAspectFit
+    }
 
     private let backgroundView = UIVisualEffectView(
       effect: UIBlurEffect(style: .systemUltraThinMaterialDark)

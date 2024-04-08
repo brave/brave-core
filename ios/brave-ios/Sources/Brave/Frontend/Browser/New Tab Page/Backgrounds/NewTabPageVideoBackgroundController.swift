@@ -26,7 +26,7 @@ class NewTabPageVideoBackgroundController: UIViewController {
   private let kMaxAutoplayDuration = 6.0
 
   private let background: NewTabPageBackground
-  private var playerLayer = AVPlayerLayer()
+  private let playerLayer = AVPlayerLayer()
   private var playStarted = false
   private var previewAutoplayFinished: Bool = false
   private var isViewDidAppearOnce: Bool = false
@@ -35,7 +35,6 @@ class NewTabPageVideoBackgroundController: UIViewController {
   private var playerObserver: NSKeyValueObservation?
 
   private var stopFrame: Int?
-  private var duration: CMTime?
   private var frameRate: Float?
 
   private var videoButtonsView = NewTabPageVideoButtonsView()
@@ -69,7 +68,7 @@ class NewTabPageVideoBackgroundController: UIViewController {
     view.addSubview(videoButtonsView)
     videoButtonsView.isHidden = true
 
-    videoButtonsView.tappedBackground = { [weak self] in
+    videoButtonsView.tappedVideoBackground = { [weak self] in
       guard let isVideoInProgress = self?.isVideoInProgress() else {
         return false
       }
@@ -161,14 +160,11 @@ class NewTabPageVideoBackgroundController: UIViewController {
   private func loadVideoTrackParams(asset: AVURLAsset, resizeToFill: Bool) {
     Task { @MainActor in
       let isPlayable = try? await asset.load(.isPlayable)
-      duration = try? await asset.load(.duration)
       if let videoTrack = try? await asset.loadTracks(withMediaType: .video).first {
         frameRate = try? await videoTrack.load(.nominalFrameRate)
       }
 
-      guard let isPlayable = isPlayable,
-        duration != nil
-      else {
+      guard let isPlayable = isPlayable else {
         videoLoaded(succeeded: false)
         return
       }
@@ -218,7 +214,7 @@ class NewTabPageVideoBackgroundController: UIViewController {
   }
 
   private func startAutoplay() {
-    guard let duration = duration else {
+    guard let duration = playerLayer.player?.currentItem?.duration else {
       autoplayFinished()
       return
     }

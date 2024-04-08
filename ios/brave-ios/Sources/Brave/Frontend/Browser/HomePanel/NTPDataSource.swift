@@ -14,16 +14,10 @@ enum NTPWallpaper {
   case superReferral(NTPSponsoredImageBackground, code: String)
 
   var backgroundVideoPath: URL? {
-    let videoPath: URL?
-    switch self {
-    case .image:
-      videoPath = nil
-    case .superReferral:
-      videoPath = nil
-    case .sponsoredImage(let background):
-      videoPath = isSponsoredVideo(background) ? background.imagePath : nil
+    if case .sponsoredImage(let background) = self {
+      return background.isVideoFile ? background.imagePath : nil
     }
-    return videoPath
+    return nil
   }
 
   var backgroundImage: UIImage? {
@@ -256,4 +250,10 @@ extension NTPBackgroundImage {
     author: "Corwin Prescott",
     link: URL(string: "https://www.brave.com")!
   )
+}
+
+extension NTPSponsoredImageBackground {
+  var isVideoFile: Bool {
+    imagePath.pathExtension == "mp4"
+  }
 }

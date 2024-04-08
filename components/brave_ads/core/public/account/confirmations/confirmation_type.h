@@ -46,13 +46,13 @@ enum class ConfirmationType {
   // When the user converts on an ad.
   kConversion,
 
-  // When the user clicks on a new tab page video ad play button.
+  // When a new tab page video ad started playing.
   kMediaPlay,
 
-  // When the user viewed 25% of a new tab page video ad.
+  // When played 25% of a new tab page video ad.
   kMedia25,
 
-  // When the user viewed 100% of a new tab page video ad.
+  // When played 100% of a new tab page video ad.
   kMedia100,
 };
 

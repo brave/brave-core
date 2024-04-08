@@ -489,11 +489,11 @@ class NewTabPageViewController: UIViewController {
 
     videoBackgroundController.videoLoadedEvent = { [weak self] succeeded in
       if succeeded {
-        self?.backgroundButtonsView.autoplayStarted()
+        self?.backgroundButtonsView.videoAutoplayStarted()
       }
     }
     videoBackgroundController.autoplayFinishedEvent = { [weak self] animated in
-      self?.backgroundButtonsView.autoplayFinished()
+      self?.backgroundButtonsView.videoAutoplayFinished()
       if case .sponsoredImage(let background) = self?.background.currentBackground {
         self?.backgroundButtonsView.activeButton = .brandLogo(background.logo)
       }

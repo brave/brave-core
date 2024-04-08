@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveUI
+import DesignSystem
 import Preferences
 import Shared
 import SnapKit
@@ -13,22 +14,14 @@ import UIKit
 /// The foreground view of the New Tab Page video player. It contains the cancel
 /// button and handles user tap gestures to play/pause the video.
 class NewTabPageVideoButtonsView: UIView {
-  var tappedBackground: (() -> Bool)?
+  var tappedVideoBackground: (() -> Bool)?
   var tappedCancelButton: (() -> Void)?
 
-  private let playButtonImage = BluredImageView(imageName: "ntt_play_button").then {
-    $0.isHidden = true
+  private let playPauseButtonImage = BluredImageView().then {
     $0.alpha = 0
   }
 
-  private let pauseButtonImage = BluredImageView(imageName: "ntt_pause_button").then {
-    $0.isHidden = true
-    $0.alpha = 0
-  }
-
-  private let cancelButton = CancelButton().then {
-    $0.isHidden = false
-  }
+  private let cancelButton = CancelButton()
 
   init() {
     super.init(frame: .zero)
@@ -37,40 +30,51 @@ class NewTabPageVideoButtonsView: UIView {
 
     addSubview(cancelButton)
 
-    addSubview(playButtonImage)
-    addSubview(pauseButtonImage)
+    addSubview(playPauseButtonImage)
 
     let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(
       target: self,
-      action: #selector(self.videoTapped(sender:))
+      action: #selector(self.videoBackgroundTapped(sender:))
     )
     tapGesture.numberOfTapsRequired = 1
     addGestureRecognizer(tapGesture)
+
+    playPauseButtonImage.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.centerY.equalToSuperview().offset(20)
+    }
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    cancelButton.snp.remakeConstraints {
+      $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(20)
+      $0.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20)
+    }
   }
 
   private func tappedVideoCancelButton() {
     tappedCancelButton?()
   }
 
-  @objc private func videoTapped(sender: UITapGestureRecognizer) {
+  @objc private func videoBackgroundTapped(sender: UITapGestureRecognizer) {
     let location = sender.location(in: self)
     if let view = super.hitTest(location, with: nil), view == cancelButton {
       tappedVideoCancelButton()
       return
     }
 
-    guard let playStarted = tappedBackground?() else {
+    guard let playStarted = tappedVideoBackground?() else {
       return
     }
 
     if playStarted {
-      playButtonImage.isHidden = false
-      pauseButtonImage.isHidden = true
-      showAndFadeOutImage(imageView: playButtonImage)
+      playPauseButtonImage.setImage(imageName: "leo.play.circle")
+      showAndFadeOutImage(imageView: playPauseButtonImage)
     } else {
-      pauseButtonImage.isHidden = false
-      playButtonImage.isHidden = true
-      showAndFadeOutImage(imageView: pauseButtonImage)
+      playPauseButtonImage.setImage(imageName: "leo.pause.circle")
+      showAndFadeOutImage(imageView: playPauseButtonImage)
     }
   }
 
@@ -97,32 +101,16 @@ class NewTabPageVideoButtonsView: UIView {
   required init(coder: NSCoder) {
     fatalError()
   }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
-    cancelButton.snp.remakeConstraints {
-      $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(20)
-      $0.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20)
-    }
-
-    playButtonImage.snp.remakeConstraints {
-      $0.centerX.equalToSuperview()
-      $0.centerY.equalToSuperview().offset(20)
-    }
-
-    pauseButtonImage.snp.remakeConstraints {
-      $0.centerX.equalToSuperview()
-      $0.centerY.equalToSuperview().offset(20)
-    }
-  }
 }
 
 extension NewTabPageVideoButtonsView {
   private class CancelButton: SpringButton {
     let imageView = UIImageView(
-      image: UIImage(named: "ntt_cancel_button", in: .module, compatibleWith: nil)!
-    )
+      image: UIImage(braveSystemNamed: "leo.close", compatibleWith: nil)!
+    ).then {
+      $0.tintColor = .white
+      $0.contentMode = .scaleAspectFit
+    }
 
     private let backgroundView = UIVisualEffectView(
       effect: UIBlurEffect(style: .systemThinMaterialDark)
@@ -163,15 +151,15 @@ extension NewTabPageVideoButtonsView {
       $0.clipsToBounds = true
       $0.isUserInteractionEnabled = false
     }
+    private var imageView = UIImageView().then {
+      $0.tintColor = .white
+      $0.contentMode = .scaleAspectFit
+    }
 
-    init(imageName: String) {
+    init() {
       super.init(frame: .zero)
 
       clipsToBounds = true
-
-      let imageView = UIImageView(
-        image: UIImage(named: imageName, in: .module, compatibleWith: nil)!
-      )
 
       addSubview(backgroundView)
 
@@ -189,6 +177,10 @@ extension NewTabPageVideoButtonsView {
     override func layoutSubviews() {
       super.layoutSubviews()
       layer.cornerRadius = bounds.height / 2.0
+    }
+
+    func setImage(imageName: String) {
+      imageView.image = UIImage(braveSystemNamed: imageName, compatibleWith: nil)!
     }
 
     @available(*, unavailable)
