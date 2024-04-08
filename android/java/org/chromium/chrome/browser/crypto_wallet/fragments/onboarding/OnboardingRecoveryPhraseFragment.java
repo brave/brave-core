@@ -36,7 +36,6 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
 
     private List<String> recoveryPhrases;
     private boolean mIsOnboarding;
-    private OnboardingViewModel mOnboardingViewModel;
 
     @NonNull
     public static OnboardingRecoveryPhraseFragment newInstance(final boolean isOnboarding) {
@@ -59,27 +58,21 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
-                .get(OnboardingViewModel.class);
-        mOnboardingViewModel.getPassword().observe(getViewLifecycleOwner(), password -> {
-            if (password == null) {
-                return;
-            }
-            KeyringService keyringService = getKeyringService();
-            if (keyringService != null) {
-                keyringService.getMnemonicForDefaultKeyring(password, result -> {
-                    recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
-                    setupRecoveryPhraseRecyclerView(view);
-                    TextView copyButton = view.findViewById(R.id.btn_copy);
-                    assert getActivity() != null;
-                    copyButton.setOnClickListener(v -> {
-                        Utils.saveTextToClipboard(getActivity(),
-                                Utils.getRecoveryPhraseFromList(recoveryPhrases),
-                                R.string.text_has_been_copied, true);
-                    });
+
+        KeyringService keyringService = getKeyringService();
+        if (keyringService != null) {
+            keyringService.getMnemonicForDefaultKeyring(mOnboardingViewModel.getPassword(), result -> {
+                recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
+                setupRecoveryPhraseRecyclerView(view);
+                TextView copyButton = view.findViewById(R.id.btn_copy);
+                assert getActivity() != null;
+                copyButton.setOnClickListener(v -> {
+                    Utils.saveTextToClipboard(getActivity(),
+                            Utils.getRecoveryPhraseFromList(recoveryPhrases),
+                            R.string.text_has_been_copied, true);
                 });
-            }
-        });
+            });
+        }
 
         Button recoveryPhraseButton = view.findViewById(R.id.btn_recovery_phrase_continue);
         recoveryPhraseButton.setOnClickListener(v -> {

@@ -51,7 +51,6 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
     private Button mBackupWalletButton;
     private String mPasswordFromBiometric;
     private boolean mBiometricExecuted;
-    private OnboardingViewModel mOnboardingViewModel;
 
     @NonNull
     public static OnboardingBackupWalletFragment newInstance(final boolean isOnboarding) {
@@ -80,8 +79,6 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
         mBiometricBackupWalletImage = view.findViewById(R.id.iv_biometric_unlock_wallet);
         mBackupWalletButton = view.findViewById(R.id.btn_backup_wallet_continue);
         mBackupWalletCheckbox = view.findViewById(R.id.backup_wallet_checkbox);
-        mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
-                                       .get(OnboardingViewModel.class);
 
         mBackupWalletPassword.addTextChangedListener(new FilterTextWatcherPassword());
         mBackupWalletButton.setOnClickListener(v -> {

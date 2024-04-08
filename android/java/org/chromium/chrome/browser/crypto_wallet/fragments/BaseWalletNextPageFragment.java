@@ -13,7 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.chrome.browser.app.domain.KeyringModel;
+import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 
@@ -44,10 +47,40 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
     }
 
     @Nullable
+    protected NetworkModel getNetworkModel() {
+        Activity activity = requireActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getNetworkModel();
+        }
+
+        return null;
+    }
+
+    @Nullable
+    protected KeyringModel getKeyringModel() {
+        Activity activity = requireActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringModel();
+        }
+
+        return null;
+    }
+
+    @Nullable
     protected KeyringService getKeyringService() {
         Activity activity = requireActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getKeyringService();
+        }
+
+        return null;
+    }
+
+    @Nullable
+    protected JsonRpcService getJsonRpcService() {
+        Activity activity = requireActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getJsonRpcService();
         }
 
         return null;

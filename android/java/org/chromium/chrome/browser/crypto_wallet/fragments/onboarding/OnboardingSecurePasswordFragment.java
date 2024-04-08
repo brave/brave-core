@@ -37,7 +37,6 @@ import java.util.concurrent.Executor;
 
 public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragment {
     private boolean mCreateWalletClicked;
-    private OnboardingViewModel mOnboardingViewModel;
     private PasswordStrengthMeterView mPasswordStrengthMeterView;
     private AppCompatButton mContinueButton;
     private TextInputEditText mRetypePasswordEditText;
@@ -52,9 +51,6 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
-                                       .get(OnboardingViewModel.class);
-
         mRetypePasswordEditText = view.findViewById(R.id.text_input_retype_edit_text);
         mContinueButton = view.findViewById(R.id.btn_secure_crypto_continue);
         mContinueButton.setOnClickListener(
