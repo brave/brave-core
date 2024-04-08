@@ -11,6 +11,7 @@
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_search_conversion/p3a.h"
@@ -82,6 +83,8 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 #endif
 
   MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs, profile_path);
+
+  ai_chat::prefs::MigrateProfilePrefs(profile_prefs);
 
   brave_sync::MigrateBraveSyncPrefs(profile_prefs);
 
