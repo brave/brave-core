@@ -55,6 +55,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.features.start_surface.StartSurface;
+import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
@@ -267,18 +268,22 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             menu.findItem(R.id.set_default_browser).setVisible(false);
         }
 
+        Tab currentTab = mActivityTabProvider.get();
+
         // Replace info item with share
         MenuItem shareItem = menu.findItem(R.id.info_menu_id);
         if (shareItem != null) {
             shareItem.setTitle(mContext.getString(R.string.share));
             shareItem.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.share_icon));
+            if (currentTab != null && UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
+                shareItem.setEnabled(false);
+            }
         }
 
         // By this we forcibly initialize BookmarkBridge
         MenuItem bookmarkItem = menu.findItem(R.id.bookmark_this_page_id);
-        Tab currentTab = mActivityTabProvider.get();
         if (bookmarkItem != null && currentTab != null) {
-            updateBookmarkMenuItemShortcut(bookmarkItem, currentTab, /*fromCCT=*/false);
+            updateBookmarkMenuItemShortcut(bookmarkItem, currentTab, /* fromCCT= */ false);
         }
 
         // Remove unused dividers. This needs to be done after the visibility of all the items is
@@ -348,6 +353,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             shareButton.setImageDrawable(
                     AppCompatResources.getDrawable(mContext, R.drawable.share_icon));
             shareButton.setContentDescription(mContext.getString(R.string.share));
+            Tab currentTab = mActivityTabProvider.get();
+            if (currentTab != null && UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
+                shareButton.setEnabled(false);
+            }
         }
     }
 
