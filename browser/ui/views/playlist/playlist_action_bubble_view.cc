@@ -18,30 +18,22 @@
 #include "ui/views/bubble/bubble_border.h"
 #include "ui/views/widget/widget.h"
 
+namespace playlist {
 namespace {
 views::BubbleDialogDelegateView* g_bubble = nullptr;
 }  // namespace
-
-void ShowBubble(std::unique_ptr<views::BubbleDialogDelegateView> bubble) {
-  DCHECK(!g_bubble);
-
-  g_bubble = bubble.release();
-
-  auto* widget = views::BubbleDialogDelegateView::CreateBubble(g_bubble);
-  widget->Show();
-}
 
 // static
 void PlaylistActionBubbleView::ShowBubble(
     Browser* browser,
     PlaylistActionIconView* anchor,
-    playlist::PlaylistTabHelper* playlist_tab_helper) {
+    PlaylistTabHelper* playlist_tab_helper) {
   if (!playlist_tab_helper->saved_items().empty()) {
-    ::ShowBubble(
-        std::make_unique<ConfirmBubble>(browser, anchor, playlist_tab_helper));
+    ShowBubble(std::make_unique<PlaylistConfirmBubble>(browser, anchor,
+                                                       playlist_tab_helper));
   } else if (!playlist_tab_helper->found_items().empty()) {
-    ::ShowBubble(std::make_unique<PlaylistAddBubble>(browser, anchor,
-                                                     playlist_tab_helper));
+    ShowBubble(std::make_unique<PlaylistAddBubble>(browser, anchor,
+                                                   playlist_tab_helper));
   }
 }
 
@@ -61,10 +53,21 @@ views::BubbleDialogDelegateView* PlaylistActionBubbleView::GetBubble() {
   return g_bubble;
 }
 
+// static
+void PlaylistActionBubbleView::ShowBubble(
+    std::unique_ptr<views::BubbleDialogDelegateView> bubble) {
+  DCHECK(!g_bubble);
+
+  g_bubble = bubble.release();
+
+  auto* widget = views::BubbleDialogDelegateView::CreateBubble(g_bubble);
+  widget->Show();
+}
+
 PlaylistActionBubbleView::PlaylistActionBubbleView(
     Browser* browser,
     PlaylistActionIconView* anchor,
-    playlist::PlaylistTabHelper* playlist_tab_helper)
+    PlaylistTabHelper* playlist_tab_helper)
     : BubbleDialogDelegateView(anchor, views::BubbleBorder::Arrow::TOP_RIGHT),
       browser_(browser),
       playlist_tab_helper_(playlist_tab_helper),
@@ -101,3 +104,4 @@ void PlaylistActionBubbleView::WindowClosingImpl() {
 
 BEGIN_METADATA(PlaylistActionBubbleView)
 END_METADATA
+}  // namespace playlist

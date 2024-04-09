@@ -39,6 +39,7 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/window/dialog_delegate.h"
 
+namespace playlist {
 namespace {
 class Row : public views::LabelButton {
   METADATA_HEADER(Row, views::LabelButton)
@@ -69,9 +70,10 @@ BEGIN_METADATA(Row)
 END_METADATA
 }  // namespace
 
-ConfirmBubble::ConfirmBubble(Browser* browser,
-                             PlaylistActionIconView* anchor,
-                             playlist::PlaylistTabHelper* playlist_tab_helper)
+PlaylistConfirmBubble::PlaylistConfirmBubble(
+    Browser* browser,
+    PlaylistActionIconView* anchor,
+    PlaylistTabHelper* playlist_tab_helper)
     : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper) {
   // What this looks like:
   // https://user-images.githubusercontent.com/5474642/243532057-4bbbe779-47a1-4c3a-bd34-ce1334cf1d1d.png
@@ -88,14 +90,14 @@ ConfirmBubble::ConfirmBubble(Browser* browser,
   playlist_tab_helper_observation_.Observe(playlist_tab_helper_);
 }
 
-ConfirmBubble::~ConfirmBubble() = default;
+PlaylistConfirmBubble::~PlaylistConfirmBubble() = default;
 
-void ConfirmBubble::PlaylistTabHelperWillBeDestroyed() {
+void PlaylistConfirmBubble::PlaylistTabHelperWillBeDestroyed() {
   playlist_tab_helper_observation_.Reset();
 }
 
-void ConfirmBubble::OnSavedItemsChanged(
-    const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
+void PlaylistConfirmBubble::OnSavedItemsChanged(
+    const std::vector<mojom::PlaylistItemPtr>& items) {
   if (auto* widget = GetWidget(); !widget || widget->IsClosed()) {
     return;
   }
@@ -104,7 +106,7 @@ void ConfirmBubble::OnSavedItemsChanged(
   SizeToContents();
 }
 
-void ConfirmBubble::ResetChildViews() {
+void PlaylistConfirmBubble::ResetChildViews() {
   RemoveAllChildViews();
 
   constexpr int kIconSize = 16;
@@ -134,7 +136,7 @@ void ConfirmBubble::ResetChildViews() {
         l10n_util::GetStringUTF16(IDS_PLAYLIST_OPEN_IN_PLAYLIST),
         ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
                                        ui::kColorMenuIcon, kIconSize),
-        base::BindRepeating(&ConfirmBubble::OpenInPlaylist,
+        base::BindRepeating(&PlaylistConfirmBubble::OpenInPlaylist,
                             base::Unretained(this))));
   }
 
@@ -144,7 +146,7 @@ void ConfirmBubble::ResetChildViews() {
         l10n_util::GetStringUTF16(IDS_PLAYLIST_CHANGE_FOLDER),
         ui::ImageModel::FromVectorIcon(kLeoFolderExchangeIcon,
                                        ui::kColorMenuIcon, kIconSize),
-        base::BindRepeating(&ConfirmBubble::ChangeFolder,
+        base::BindRepeating(&PlaylistConfirmBubble::ChangeFolder,
                             base::Unretained(this))));
   }
 
@@ -156,7 +158,7 @@ void ConfirmBubble::ResetChildViews() {
         l10n_util::GetStringUTF16(IDS_PLAYLIST_REMOVE_FROM_PLAYLIST),
         ui::ImageModel::FromVectorIcon(kLeoTrashIcon, ui::kColorMenuIcon,
                                        kIconSize),
-        base::BindRepeating(&ConfirmBubble::RemoveFromPlaylist,
+        base::BindRepeating(&PlaylistConfirmBubble::RemoveFromPlaylist,
                             base::Unretained(this))));
   }
 
@@ -166,12 +168,12 @@ void ConfirmBubble::ResetChildViews() {
         l10n_util::GetStringUTF16(IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE),
         ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
                                        ui::kColorMenuIcon, kIconSize),
-        base::BindRepeating(&ConfirmBubble::MoreMediaInContents,
+        base::BindRepeating(&PlaylistConfirmBubble::MoreMediaInContents,
                             base::Unretained(this))));
   }
 }
 
-void ConfirmBubble::OpenInPlaylist() {
+void PlaylistConfirmBubble::OpenInPlaylist() {
   // Technically, the saved items could belong to multiple playlists
   // at the same time and their parent playlists could be different from each
   // other's. But for simplicity, we just open the first one assuming that most
@@ -198,17 +200,17 @@ void ConfirmBubble::OpenInPlaylist() {
   GetWidget()->Close();
 }
 
-void ConfirmBubble::ChangeFolder() {
+void PlaylistConfirmBubble::ChangeFolder() {
   PlaylistActionDialog::Show<PlaylistMoveDialog>(
       static_cast<BrowserView*>(browser_->window()), playlist_tab_helper_);
 }
 
-void ConfirmBubble::RemoveFromPlaylist() {
+void PlaylistConfirmBubble::RemoveFromPlaylist() {
   CHECK(playlist_tab_helper_);
   const auto& saved_items = playlist_tab_helper_->saved_items();
   CHECK(saved_items.size());
 
-  std::vector<playlist::mojom::PlaylistItemPtr> items;
+  std::vector<mojom::PlaylistItemPtr> items;
   base::ranges::transform(saved_items, std::back_inserter(items),
                           [](const auto& item) { return item->Clone(); });
 
@@ -219,10 +221,10 @@ void ConfirmBubble::RemoveFromPlaylist() {
   GetWidget()->Close();
 }
 
-void ConfirmBubble::MoreMediaInContents() {
+void PlaylistConfirmBubble::MoreMediaInContents() {
   auto show_add_bubble = base::BindOnce(
-      [](base::WeakPtr<playlist::PlaylistTabHelper> tab_helper,
-         Browser* browser, base::WeakPtr<PlaylistActionIconView> anchor) {
+      [](base::WeakPtr<PlaylistTabHelper> tab_helper, Browser* browser,
+         base::WeakPtr<PlaylistActionIconView> anchor) {
         if (!tab_helper || !anchor) {
           return;
         }
@@ -231,7 +233,7 @@ void ConfirmBubble::MoreMediaInContents() {
           return;
         }
 
-        ::ShowBubble(std::make_unique<PlaylistAddBubble>(
+        ShowBubble(std::make_unique<PlaylistAddBubble>(
             browser, anchor.get(), tab_helper.get(),
             tab_helper->GetUnsavedItems()));
       },
@@ -242,5 +244,6 @@ void ConfirmBubble::MoreMediaInContents() {
   CloseAndRun(std::move(show_add_bubble));
 }
 
-BEGIN_METADATA(ConfirmBubble)
+BEGIN_METADATA(PlaylistConfirmBubble)
 END_METADATA
+}  // namespace playlist

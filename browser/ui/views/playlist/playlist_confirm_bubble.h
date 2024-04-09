@@ -17,25 +17,26 @@
 class Browser;
 class PlaylistActionIconView;
 
+namespace playlist {
 // Shows when items were added to the current page.
 // Contains actions to manipulate items.
-class ConfirmBubble : public PlaylistActionBubbleView,
-                      public playlist::PlaylistTabHelperObserver {
-  METADATA_HEADER(ConfirmBubble, PlaylistActionBubbleView)
+class PlaylistConfirmBubble : public PlaylistActionBubbleView,
+                              public PlaylistTabHelperObserver {
+  METADATA_HEADER(PlaylistConfirmBubble, PlaylistActionBubbleView)
  public:
-  ConfirmBubble(Browser* browser,
-                PlaylistActionIconView* anchor,
-                playlist::PlaylistTabHelper* playlist_tab_helper);
-  ~ConfirmBubble() override;
+  PlaylistConfirmBubble(Browser* browser,
+                        PlaylistActionIconView* anchor,
+                        PlaylistTabHelper* playlist_tab_helper);
+  ~PlaylistConfirmBubble() override;
 
   // PlaylistTabHelperObserver:
   void PlaylistTabHelperWillBeDestroyed() override;
   void OnSavedItemsChanged(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
+      const std::vector<mojom::PlaylistItemPtr>& items) override;
   void OnFoundItemsChanged(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
+      const std::vector<mojom::PlaylistItemPtr>& items) override {}
   void OnAddedItemFromTabHelper(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
+      const std::vector<mojom::PlaylistItemPtr>& items) override {}
 
  private:
   void ResetChildViews();
@@ -45,9 +46,9 @@ class ConfirmBubble : public PlaylistActionBubbleView,
   void RemoveFromPlaylist();
   void MoreMediaInContents();
 
-  base::ScopedObservation<playlist::PlaylistTabHelper,
-                          playlist::PlaylistTabHelperObserver>
+  base::ScopedObservation<PlaylistTabHelper, PlaylistTabHelperObserver>
       playlist_tab_helper_observation_{this};
 };
+}  // namespace playlist
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_CONFIRM_BUBBLE_H_

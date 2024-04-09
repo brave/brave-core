@@ -48,6 +48,7 @@ namespace gfx {
 class Canvas;
 }
 
+namespace playlist {
 namespace {
 // LoadingSpinner represents the loading animation for the 'Add bubble'
 class LoadingSpinner : public views::View, public gfx::AnimationDelegate {
@@ -101,10 +102,9 @@ BEGIN_METADATA(LoadingSpinner)
 END_METADATA
 }  // namespace
 
-PlaylistAddBubble::PlaylistAddBubble(
-    Browser* browser,
-    PlaylistActionIconView* anchor,
-    playlist::PlaylistTabHelper* playlist_tab_helper)
+PlaylistAddBubble::PlaylistAddBubble(Browser* browser,
+                                     PlaylistActionIconView* anchor,
+                                     PlaylistTabHelper* playlist_tab_helper)
     : PlaylistAddBubble(browser,
                         anchor,
                         playlist_tab_helper,
@@ -113,8 +113,8 @@ PlaylistAddBubble::PlaylistAddBubble(
 PlaylistAddBubble::PlaylistAddBubble(
     Browser* browser,
     PlaylistActionIconView* anchor,
-    playlist::PlaylistTabHelper* playlist_tab_helper,
-    const std::vector<playlist::mojom::PlaylistItemPtr>& items)
+    PlaylistTabHelper* playlist_tab_helper,
+    const std::vector<mojom::PlaylistItemPtr>& items)
     : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper),
       thumbnail_provider_(
           std::make_unique<ThumbnailProvider>(playlist_tab_helper)) {
@@ -165,7 +165,7 @@ void PlaylistAddBubble::PlaylistTabHelperWillBeDestroyed() {
 }
 
 void PlaylistAddBubble::OnAddedItemFromTabHelper(
-    const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
+    const std::vector<mojom::PlaylistItemPtr>& items) {
   if (items.empty()) {
     AddChildView(std::make_unique<views::Label>(
         l10n_util::GetStringUTF16(IDS_PLAYLIST_MEDIA_NOT_FOUND_IN_THIS_PAGE)));
@@ -175,14 +175,14 @@ void PlaylistAddBubble::OnAddedItemFromTabHelper(
   }
 
   auto show_confirm_bubble = base::BindOnce(
-      [](base::WeakPtr<playlist::PlaylistTabHelper> tab_helper,
-         Browser* browser, base::WeakPtr<PlaylistActionIconView> anchor) {
+      [](base::WeakPtr<PlaylistTabHelper> tab_helper, Browser* browser,
+         base::WeakPtr<PlaylistActionIconView> anchor) {
         if (!tab_helper || !anchor) {
           return;
         }
 
-        ::ShowBubble(std::make_unique<ConfirmBubble>(browser, anchor.get(),
-                                                     tab_helper.get()));
+        ShowBubble(std::make_unique<PlaylistConfirmBubble>(
+            browser, anchor.get(), tab_helper.get()));
       },
       playlist_tab_helper_->GetWeakPtr(),
       // |Browser| outlives TabHelper so it's okay to bind raw ptr here
@@ -228,14 +228,13 @@ bool PlaylistAddBubble::AddSelected() {
   loading_spinner_->SetVisible(true);
   SizeToContents();
 
-  std::vector<playlist::mojom::PlaylistItemPtr> items =
-      list_view_->GetSelected();
+  std::vector<mojom::PlaylistItemPtr> items = list_view_->GetSelected();
   CHECK(items.size())
       << "The button should be disabled when nothing is selected.";
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
-      base::BindOnce(&playlist::PlaylistTabHelper::AddItems,
+      base::BindOnce(&PlaylistTabHelper::AddItems,
                      playlist_tab_helper_->GetWeakPtr(), std::move(items)));
 
   return false;
@@ -250,3 +249,4 @@ void PlaylistAddBubble::OnSelectionChanged() {
 
 BEGIN_METADATA(PlaylistAddBubble)
 END_METADATA
+}  // namespace playlist

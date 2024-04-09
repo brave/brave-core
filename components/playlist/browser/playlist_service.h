@@ -41,7 +41,6 @@ class WebContents;
 }  // namespace content
 
 class CosmeticFilteringPlaylistFlagEnabledTest;
-class PlaylistBrowserTest;
 class PlaylistMediaDiscoveryBrowserTest;
 class PrefService;
 
@@ -220,7 +219,7 @@ class PlaylistService : public KeyedService,
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
-  friend class ::PlaylistBrowserTest;
+  friend class PlaylistBrowserTest;
   friend class ::PlaylistMediaDiscoveryBrowserTest;
 
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylist);

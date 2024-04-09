@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
+#include "brave/browser/ui/views/playlist/playlist_add_bubble.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
@@ -41,6 +42,7 @@
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/view_utils.h"
 
+namespace playlist {
 class PlaylistBrowserTest : public PlatformBrowserTest {
  public:
   PlaylistBrowserTest() {
@@ -186,7 +188,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
     return !!action_bubble;
   }));
 
-  auto* add_bubble = views::AsViewClass<PlaylistActionAddBubble>(action_bubble);
+  auto* add_bubble = views::AsViewClass<PlaylistAddBubble>(action_bubble);
   ASSERT_TRUE(add_bubble);
   // As we don't have to extract media from background web contents, spinner
   // shouldn't appear and items should be visible right away.
@@ -423,14 +425,14 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
   playlist_action_icon_view->ShowPlaylistBubble();
-  auto* add_bubble = views::AsViewClass<PlaylistActionAddBubble>(
+  auto* add_bubble = views::AsViewClass<PlaylistAddBubble>(
       PlaylistActionBubbleView::GetBubble());
   EXPECT_TRUE(add_bubble);
   add_bubble->Accept();
 
   WaitUntil(base::BindRepeating([] {
     auto* bubble = PlaylistActionBubbleView::GetBubble();
-    return bubble && !views::IsViewClass<PlaylistActionAddBubble>(bubble);
+    return bubble && !views::IsViewClass<PlaylistAddBubble>(bubble);
   }));
 
   EXPECT_EQ(playlist_tab_helper->saved_items().size(), 1u);
@@ -473,17 +475,17 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
   playlist_action_icon_view->ShowPlaylistBubble();
-  auto* add_bubble = views::AsViewClass<PlaylistActionAddBubble>(
+  auto* add_bubble = views::AsViewClass<PlaylistAddBubble>(
       PlaylistActionBubbleView::GetBubble());
   EXPECT_TRUE(add_bubble);
   add_bubble->Accept();
 
   WaitUntil(base::BindLambdaForTesting([&] {
     auto* bubble = PlaylistActionBubbleView::GetBubble();
-    return views::IsViewClass<PlaylistActionAddBubble>(bubble) &&
+    return views::IsViewClass<PlaylistAddBubble>(bubble) &&
            // TODO(sszaloki): that's a hack until we adjust the UI to the new
            // architecture (utilizes the fact that we swap the
-           // `PlaylistActionAddBubble`)
+           // `PlaylistAddBubble`)
            bubble != add_bubble;
   }));
 
@@ -531,14 +533,14 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
   playlist_action_icon_view->ShowPlaylistBubble();
-  auto* add_bubble = views::AsViewClass<PlaylistActionAddBubble>(
+  auto* add_bubble = views::AsViewClass<PlaylistAddBubble>(
       PlaylistActionBubbleView::GetBubble());
   EXPECT_TRUE(add_bubble);
   add_bubble->Accept();
 
   WaitUntil(base::BindRepeating([] {
     auto* bubble = PlaylistActionBubbleView::GetBubble();
-    return bubble && !views::IsViewClass<PlaylistActionAddBubble>(bubble);
+    return bubble && !views::IsViewClass<PlaylistAddBubble>(bubble);
   }));
 
   EXPECT_EQ(playlist_tab_helper->saved_items().size(), 1u);
@@ -652,3 +654,4 @@ IN_PROC_BROWSER_TEST_F(
 
   run_loop.Run();
 }
+}  // namespace playlist
