@@ -33,32 +33,27 @@ mojom::ZCashAddressPtr ZCashKeyring::GetTransparentAddress(
                                   key_id.Clone());
 }
 
-mojom::ZCashAddressPtr ZCashKeyring::GetShieldedAddress(
+std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkey(
     const mojom::ZCashKeyId& key_id) {
-  if (!orchard_key_) {
-    NOTREACHED();
-    return nullptr;
+  auto hd_key_base = DeriveKey(key_id);
+  if (!hd_key_base) {
+    return std::nullopt;
   }
 
-  auto esk = orchard_key_->DeriveHardenedChild(key_id.account);
-  if (!esk) {
-    return nullptr;
-  }
-
-  auto addr_bytes =
-      key_id.change
-          ? esk->GetDiversifiedAddress(key_id.index, OrchardKind::Internal)
-          : esk->GetDiversifiedAddress(key_id.index, OrchardKind::External);
-  if (!addr_bytes) {
-    return nullptr;
-  }
-
-  auto addr_str = GetOrchardUnifiedAddress(addr_bytes.value(), testnet_);
-  if (!addr_str) {
-    return nullptr;
-  }
-  return mojom::ZCashAddress::New(addr_str.value(), key_id.Clone());
+  return hd_key_base->GetPublicKeyBytes();
 }
+
+std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkeyHash(
+    const mojom::ZCashKeyId& key_id) {
+  auto hd_key_base = DeriveKey(key_id);
+  if (!hd_key_base) {
+    return std::nullopt;
+  }
+
+  return Hash160(hd_key_base->GetPublicKeyBytes());
+}
+
+#if BUILDFLAG(ENABLE_ORCHARD)
 
 std::optional<std::string> ZCashKeyring::GetUnifiedAddress(
     const mojom::ZCashKeyId& transparent_key_id,
@@ -96,24 +91,31 @@ std::optional<std::string> ZCashKeyring::GetUnifiedAddress(
       testnet_);
 }
 
-std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkey(
+mojom::ZCashAddressPtr ZCashKeyring::GetShieldedAddress(
     const mojom::ZCashKeyId& key_id) {
-  auto hd_key_base = DeriveKey(key_id);
-  if (!hd_key_base) {
-    return std::nullopt;
+  if (!orchard_key_) {
+    NOTREACHED();
+    return nullptr;
   }
 
-  return hd_key_base->GetPublicKeyBytes();
-}
-
-std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkeyHash(
-    const mojom::ZCashKeyId& key_id) {
-  auto hd_key_base = DeriveKey(key_id);
-  if (!hd_key_base) {
-    return std::nullopt;
+  auto esk = orchard_key_->DeriveHardenedChild(key_id.account);
+  if (!esk) {
+    return nullptr;
   }
 
-  return Hash160(hd_key_base->GetPublicKeyBytes());
+  auto addr_bytes =
+      key_id.change
+          ? esk->GetDiversifiedAddress(key_id.index, OrchardKind::Internal)
+          : esk->GetDiversifiedAddress(key_id.index, OrchardKind::External);
+  if (!addr_bytes) {
+    return nullptr;
+  }
+
+  auto addr_str = GetOrchardUnifiedAddress(addr_bytes.value(), testnet_);
+  if (!addr_str) {
+    return nullptr;
+  }
+  return mojom::ZCashAddress::New(addr_str.value(), key_id.Clone());
 }
 
 std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
@@ -134,6 +136,7 @@ ZCashKeyring::GetOrchardRawBytes(const mojom::ZCashKeyId& key_id) {
           : esk->GetDiversifiedAddress(key_id.index, OrchardKind::External);
   return orchard_addr_bytes;
 }
+#endif
 
 std::string ZCashKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   if (!hd_key_base) {
@@ -185,6 +188,7 @@ void ZCashKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                       const std::string& hd_path) {
   HDKeyring::ConstructRootHDKey(seed, hd_path);
 
+#if BUILDFLAG(ENABLE_ORCHARD)
   if (!seed.empty() && IsZCashShieldedEnabled()) {
     auto orchard_key = HDKeyZip32::GenerateFromSeed(seed);
     if (!orchard_key) {
@@ -201,6 +205,7 @@ void ZCashKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
                  : static_cast<uint32_t>(mojom::CoinType::ZEC));
     DCHECK(orchard_key_);
   }
+#endif
 }
 
 }  // namespace brave_wallet

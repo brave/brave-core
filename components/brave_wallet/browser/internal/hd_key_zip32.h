@@ -12,9 +12,9 @@
 
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
-#if BUILDFLAG(ENABLE_ORCHARD)
 #include "brave/components/zcash/rs/lib.rs.h"
-#endif
+
+static_assert(BUILDFLAG(ENABLE_ORCHARD));
 
 namespace brave_wallet {
 
@@ -22,11 +22,7 @@ enum class OrchardKind { External, Internal };
 
 class HDKeyZip32 {
  public:
-#if BUILDFLAG(ENABLE_ORCHARD)
   explicit HDKeyZip32(rust::Box<zcash::OrchardExtendedSpendingKeyResult> esk);
-#else
-  HDKeyZip32();
-#endif
 
   ~HDKeyZip32();
 
@@ -39,9 +35,7 @@ class HDKeyZip32 {
   GetDiversifiedAddress(uint32_t div_index, OrchardKind kind);
 
  private:
-#if BUILDFLAG(ENABLE_ORCHARD)
   rust::Box<zcash::OrchardExtendedSpendingKeyResult> extended_spending_key_;
-#endif
 };
 
 }  // namespace brave_wallet
