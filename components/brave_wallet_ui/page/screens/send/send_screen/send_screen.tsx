@@ -79,8 +79,8 @@ import {
 import { ComposerControls } from '../../composer_ui/composer_controls/composer_controls'
 import { FromAsset } from '../../composer_ui/from_asset/from_asset'
 import {
-  DefaultPanelHeader //
-} from '../../../../components/desktop/card-headers/default-panel-header'
+  PanelActionHeader //
+} from '../../../../components/desktop/card-headers/panel-action-header'
 import {
   OrdinalsWarningMessage //
 } from '../components/ordinals-warning-message/ordinals-warning-message'
@@ -468,13 +468,13 @@ export const SendScreen = React.memo((props: Props) => {
       <WalletPageWrapper
         wrapContentInBox={true}
         noCardPadding={true}
-        hideNav={isAndroid}
+        hideNav={isAndroid || isPanel}
         hideHeader={isAndroid}
         noMinCardHeight={true}
         hideDivider={true}
         cardHeader={
           isPanel ? (
-            <DefaultPanelHeader
+            <PanelActionHeader
               title={getLocale('braveWalletSend')}
               expandRoute={WalletRoutes.Send}
             />
