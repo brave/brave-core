@@ -50,7 +50,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
@@ -199,19 +199,22 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ImageViewCompat.setImageTintList(
                         imageCreditViewHolder.superReferralLogo,
                         ColorStateList.valueOf(mActivity.getColor(floatingButtonIconColor)));
-                imageCreditViewHolder.superReferralLogo.setOnClickListener(view -> {
-                    QRCodeShareDialogFragment qRCodeShareDialogFragment =
-                            new QRCodeShareDialogFragment();
-                    qRCodeShareDialogFragment.setQRCodeText(BraveConstants.BRAVE_REF_URL
-                            + mNTPBackgroundImagesBridge.getSuperReferralCode());
-                    qRCodeShareDialogFragment.show(
-                            ((BraveActivity) mActivity).getSupportFragmentManager(),
-                            "QRCodeShareDialogFragment");
-                });
+                imageCreditViewHolder.superReferralLogo.setOnClickListener(
+                        view -> {
+                            QRCodeShareDialogFragment qRCodeShareDialogFragment =
+                                    new QRCodeShareDialogFragment();
+                            qRCodeShareDialogFragment.setQRCodeText(
+                                    BraveConstants.BRAVE_REF_URL
+                                            + mNTPBackgroundImagesBridge.getSuperReferralCode());
+                            qRCodeShareDialogFragment.show(
+                                    ((BraveActivity) mActivity).getSupportFragmentManager(),
+                                    "QRCodeShareDialogFragment");
+                        });
 
-            } else if (UserPrefs.get(Profile.getLastUsedRegularProfile())
-                               .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
-                    && mSponsoredTab != null && NTPUtil.shouldEnableNTPFeature()) {
+            } else if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
+                    && mSponsoredTab != null
+                    && NTPUtil.shouldEnableNTPFeature()) {
                 if (mNtpImage instanceof BackgroundImage) {
                     BackgroundImage backgroundImage = (BackgroundImage) mNtpImage;
                     imageCreditViewHolder.sponsoredLogo.setVisibility(View.GONE);

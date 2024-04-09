@@ -23,6 +23,7 @@
 #include "components/undo/bookmark_undo_service.h"
 #include "components/undo/undo_manager.h"
 #include "components/user_prefs/user_prefs.h"
+#include "ios/chrome/browser/bookmarks/model/legacy_bookmark_model.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
@@ -637,9 +638,9 @@
         bookmarks::QueryFields queryFields;
         queryFields.word_phrase_query.reset(
             new std::u16string(base::SysNSStringToUTF16(query)));
-        std::vector<const bookmarks::BookmarkNode*> results;
-        GetBookmarksMatchingProperties(bookmarks_api->bookmark_model_,
-                                       queryFields, maxCount, &results);
+        std::vector<const bookmarks::BookmarkNode*> results =
+            GetBookmarksMatchingProperties(bookmarks_api->bookmark_model_,
+                                           queryFields, maxCount);
 
         NSMutableArray<IOSBookmarkNode*>* nodes = [[NSMutableArray alloc] init];
         for (const bookmarks::BookmarkNode* bookmark : results) {

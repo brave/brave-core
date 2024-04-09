@@ -85,23 +85,23 @@ void ShowBubbleOnSessionRestore(base::WeakPtr<Browser> browser, Profile*, int) {
   bubble_host->ShowBubble();
 }
 
-class BubbleManager : public WebUIBubbleManagerT<CookieListOptInUI> {
+class BubbleManager : public WebUIBubbleManagerImpl<CookieListOptInUI> {
  public:
   BubbleManager(views::View* anchor_view, Profile* profile)
-      : WebUIBubbleManagerT<CookieListOptInUI>(anchor_view,
-                                               profile,
-                                               GURL(kCookieListOptInURL),
-                                               IDS_BRAVE_SHIELDS) {}
+      : WebUIBubbleManagerImpl<CookieListOptInUI>(anchor_view,
+                                                  profile,
+                                                  GURL(kCookieListOptInURL),
+                                                  IDS_BRAVE_SHIELDS) {}
 
   ~BubbleManager() override = default;
 
-  // WebUIBubbleManagerT<CookieListOptInUI>:
+  // WebUIBubbleManagerImpl<CookieListOptInUI>:
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
       const std::optional<gfx::Rect>& anchor,
       views::BubbleBorder::Arrow arrow) override {
     auto dialog_view =
-        WebUIBubbleManagerT<CookieListOptInUI>::CreateWebUIBubbleDialog(anchor,
-                                                                        arrow);
+        WebUIBubbleManagerImpl<CookieListOptInUI>::CreateWebUIBubbleDialog(
+            anchor, arrow);
     DCHECK(dialog_view);
     dialog_view->set_close_on_deactivate(false);
     return dialog_view;

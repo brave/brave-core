@@ -10,5 +10,4 @@
 #undef RevokeSyncConsent
 
 void PrimaryAccountManager::RevokeSyncConsent(
-    signin_metrics::ProfileSignout source_metric,
-    signin_metrics::SignoutDelete delete_metric) {}
+    signin_metrics::ProfileSignout source_metric) {}

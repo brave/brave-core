@@ -59,8 +59,9 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   // BrowserRootView::DropTarget
   BrowserRootView::DropTarget* GetDropTarget(
       gfx::Point loc_in_local_coords) override;
-  BrowserRootView::DropIndex GetDropIndex(
-      const ui::DropTargetEvent& event) override;
+  std::optional<BrowserRootView::DropIndex> GetDropIndex(
+      const ui::DropTargetEvent& event,
+      bool allow_replacement) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);

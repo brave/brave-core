@@ -371,8 +371,9 @@ static bool CustomLogHandler(int severity,
 - (BraveBookmarksAPI*)bookmarksAPI {
   if (!_bookmarksAPI) {
     bookmarks::BookmarkModel* bookmark_model_ =
-        ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-            _mainBrowserState);
+        ios::LocalOrSyncableBookmarkModelFactory::
+            GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
+                _mainBrowserState);
     BookmarkUndoService* bookmark_undo_service_ =
         ios::BookmarkUndoServiceFactory::GetForBrowserState(_mainBrowserState);
 

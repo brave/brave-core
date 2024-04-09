@@ -23,6 +23,7 @@
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "net/base/features.h"
 
 // Cache active Browser instance's TabStripModel to give

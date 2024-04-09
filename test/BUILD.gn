@@ -638,12 +638,14 @@ static_library("browser_test_support") {
   deps = [
     "//chrome/browser",
     "//chrome/browser/ui",
+    "//chrome/test:chrome_test_launcher",
   ]
 }
 
 static_library("browser_tests_runner") {
   testonly = true
   deps = [
+    "//chrome/test:chrome_test_launcher",
     "//chrome/test:test_support",
     "//ui/compositor",
   ]
@@ -678,6 +680,7 @@ if (!is_android) {
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
+      "//chrome/test:chrome_test_launcher",
       "//chrome/test:test_support_ui",
       "//components/prefs",
       "//content/public/browser",
@@ -843,6 +846,7 @@ test("brave_browser_tests") {
     "//brave/browser/script_injector:browser_tests",
     "//brave/browser/sessions:browser_tests",
     "//brave/browser/skus/test:browser_tests",
+    "//brave/browser/storage_access_api:browser_tests",
     "//brave/browser/test:browser_tests",
     "//brave/browser/themes",
     "//brave/browser/ui:browser_tests",
@@ -916,6 +920,7 @@ test("brave_browser_tests") {
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/web_applications",
+    "//chrome/test:chrome_test_launcher",
     "//chrome/test:test_support_ui",
     "//components/bookmarks/browser",
     "//components/commerce/core:feature_list",
@@ -1185,6 +1190,7 @@ test("brave_browser_tests") {
       "$root_gen_dir/components/dev_ui_components_resources.pak",
       "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
       "//brave/test/data",
+      "//chrome/test/data",
     ]
 
     deps -= android_test_exception_deps
@@ -1243,7 +1249,6 @@ if (is_android) {
       "//base:base_shared_preferences_java",
       "//brave/components/brave_wallet/common:mojom_java",
       "//cc:cc_java",
-      "//chrome/android:chrome_apk_pak_assets",
       "//chrome/browser/android/browserservices/intents:java",
       "//chrome/browser/android/lifecycle:java",
       "//chrome/browser/back_press/android:java",

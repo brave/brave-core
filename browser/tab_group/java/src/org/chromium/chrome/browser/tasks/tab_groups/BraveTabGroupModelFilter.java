@@ -4,8 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.tasks.tab_groups;
 
-import android.util.Pair;
-
 import androidx.annotation.NonNull;
 
 import org.chromium.base.BravePreferenceKeys;
@@ -16,15 +14,12 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelFilter;
-import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 
-/**
- * Brave's super class for {@link TabGroupModelFilter}
- */
+/** Brave's super class for {@link TabGroupModelFilter} */
 public abstract class BraveTabGroupModelFilter extends TabModelFilter {
     /**
-     * This variable will be used instead of {@link
-     * TabGroupModelFilter}'s variable, that will be deleted in bytecode.
+     * This variable will be used instead of {@link TabGroupModelFilter}'s variable, that will be
+     * deleted in bytecode.
      */
     protected boolean mIsResetting;
 
@@ -33,26 +28,21 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
     }
 
     /** Call from {@link TabGroupModelFilter} will be redirected here via bytrcode. */
-    public Pair<Integer, Token> getParentIds(Tab tab) {
+    public boolean shouldUseParentIds(Tab tab) {
         if (linkClicked(tab.getLaunchType())
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true)
                 && isTabModelRestored()
                 && !mIsResetting) {
-            Tab parentTab = TabModelUtils.getTabById(getTabModel(), tab.getParentId());
-            if (parentTab != null) {
-                return new Pair<>(parentTab.getRootId(), getOrCreateTabGroupId(parentTab));
-            }
+            return true;
         }
         // Otherwise just call parent.
-        return (Pair<Integer, Token>)
+        return (boolean)
                 BraveReflectionUtil.InvokeMethod(
-                        TabGroupModelFilter.class, this, "getParentIds", Tab.class, tab);
+                        TabGroupModelFilter.class, this, "shouldUseParentIds", Tab.class, tab);
     }
 
-    /**
-     * Determine if a launch type is the result of linked being clicked.
-     */
+    /** Determine if a launch type is the result of linked being clicked. */
     private boolean linkClicked(@TabLaunchType int type) {
         return type == TabLaunchType.FROM_LINK || type == TabLaunchType.FROM_LONGPRESS_FOREGROUND;
     }

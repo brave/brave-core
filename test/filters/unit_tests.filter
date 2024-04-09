@@ -8,6 +8,7 @@
 # These tests crash due to TestingBraveBrowserProcess::greaselion_download_service()
 # having NOTREACHED which causes an immediate crash
 # https://github.com/brave/brave-browser/issues/25726
+-AddressBubblesControllerTest.*
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Disabled
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Enabled
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_SaveStateToDB
@@ -27,10 +28,12 @@
 -All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibility_PolicyInstalled/*
 -All/ExtensionContextMenuModelWithUserHostControlsTest.PolicyInstalledEntryVisibilityBasedOnSiteSettings/*
 -All/ExtensionContextMenuModelWithUserHostControlsTest.TestClickingPageAccessPermissionsPage/*
+-All/ExtensionContextMenuModelWithUserHostControlsTest.UninstallEntryVisibility/*
 -All/HighEfficiencyBubbleViewMemorySavingsImprovementsTest.ShowsCorrectLabelsForDifferentSavings/*
 -All/ManagedUserProfileNoticeHandleProceedTest.HandleProceed/*
 -All/MemorySaverBubbleViewMemorySavingsImprovementsTest.ShowsCorrectLabelsForDifferentSavings/*
 -All/MemorySaverBubbleViewTest.ShowsCorrectLabelsForDifferentSavings/*
+-All/OidcAuthResponseCaptureNavigationThrottleTest.*
 -All/PageInfoCookiesContentView3pcdCookieToggleTest.*
 -All/PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -All/PageInfoCookiesContentViewTest.*
@@ -90,6 +93,7 @@
 -DownloadToolbarButtonViewTest.*
 -EditAddressProfileDialogControllerImplTest.*
 -EnterpriseProfileWelcomeHandleTest.*
+-ExplicitBrowserSigninPeopleHandlerSignoutTest.Signout
 -ExpsRegistrationSuccessObserverTest.IPHNotShownForChromeUrls
 -ExtensionActionViewControllerFeatureUnitTest.*
 -ExtensionActionViewControllerFeatureWithPermittedSitesUnitTest.GetHoverCardStatus
@@ -119,6 +123,7 @@
 -MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesAcceptCallback
 -MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCancelCallback
 -MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCloseCallback
+-MediaViewControllerBaseTest/MediaViewControllerBaseTestParameterized.*
 -MediaViewControllerBaseTest.OnDeviceListChanged_*
 -MediaViewControllerBaseTest.UpdateComboboxEnabledStateTest
 -MemorySaverBubbleViewMemorySavingsImprovementsTest.*
@@ -153,6 +158,7 @@
 -ProfileTokenNavigationThrottleTest.*
 -ProfileTokenWebSigninInterceptorTest.*
 -ReadAnythingCoordinatorScreen2xDataCollectionModeTest.OnBrowserSetLastActive_SidePanelIsVisible
+-SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.*
 -SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.Metrics_*
 -SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.Upload_OnSave_HideIconAndBubbleAfterUpload
 -SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.VisibilityChange_*
@@ -172,6 +178,7 @@
 -UserNotesPageHandlerTest.CurrentTabUrlChangedWithTabStripModelChanged
 -VideoStreamCoordinatorTest.ChooseTheClosetFormat
 -VideoStreamCoordinatorTest.ConnectToFrameHandlerAndReceiveFrames
+-VirtualCardEnrollBubbleControllerImplBubbleViewTest.Metric_CloseConfirmationBubble_CardNotEnrolled
 -VirtualCardEnrollBubbleControllerImplBubbleViewTest.ShowBubble*
 
 # These tests crash due to unregistered pref
@@ -377,6 +384,7 @@
 -PermissionPromptBubbleTwoOriginsViewTest.DiesIfPermissionNotAllowed
 -PermissionPromptBubbleTwoOriginsViewTest.LinkIsPresent
 -PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsTwoOriginsAndPermission
+-SavedTabGroupBar/SavedTabGroupBarUnitTest.*
 -SavedTabGroupKeyedServiceUnitTest.*
 -TabLifecycleUnitTest.CannotDiscardPictureInPictureWindow
 -TabOrganizationServiceTest.*
@@ -412,6 +420,7 @@
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
 -EnclaveManagerTest.PrimaryUserChange
+-PeopleHandlerDiceTest.StoredAccountsList
 -PeopleHandlerDiceUnifiedConsentTest.StoredAccountsList
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed
@@ -462,7 +471,10 @@
 -ClientSideDetectionHostTest.*
 -DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -EnhancedProtectionDownloadTest.*
+-ImmediateDeepScanTest.ESBRequestScan
+-ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
+-SafeBrowsingServiceTest.WhenUserIsInEPNormallyReturnsFalse
 -SafetyHubHandlerTest.HandleGetSafeBrowsingCardData_EnabledEnhanced
 -SafetyHubHandlerTest.HandleGetSafeBrowsingState_EnabledEnhanced
 
@@ -524,9 +536,6 @@
 # This test times out because we Disable "Use a prediction service to load
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref)
 -NavigationPredictorUserInteractionsTest.ProcessPointerEventUsingMLModel
-
-# This test fails because we disable kPartitionedCookies
--ExtensionCookiesTest.PartitionKeySerialization
 
 # These tests fail a CalledOnValidSequence check when calling FindPreference
 -BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedDefaultValue
@@ -605,6 +614,20 @@
 -All/OpaqueBrowserFrameViewLayoutTest.WindowButtonsOnLeft/Maximized
 -All/OpaqueBrowserFrameViewLayoutTest.WindowWithTitleAndIcon/Maximized
 -DownloadBubbleRowViewInfoTest.InterruptedInfo
+
+# This test crashes because brave.sidebar.side_panel_width isn't registered by
+# SidebarService for the test.
+-ExtensionsToolbarButtonFeatureUnitTest.UpdateState
+-MemorySaverChipViewTest.MoreThan2GbMemorySavings
+
+# These tests fail because we disable kPermissionStorageAccessAPI
+-PageInfoTest.NonFactoryDefaultAndRecentlyChangedPermissionsShown
+-PageInfoTest.OnPermissionsChanged
+-PageInfoTest.ShowAutograntedRWSPermissions
+-PageInfoTest.StorageAccessGrantsAreFiltered
+-PageInfoTest.StorageAccessGrantsDisplayedWhenDefaultBlocked
+-StorageAccessAPIServiceImplTest.PermissionDenial_NotRenewed
+-StorageAccessAPIServiceImplTest.RenewPermissionGrant
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

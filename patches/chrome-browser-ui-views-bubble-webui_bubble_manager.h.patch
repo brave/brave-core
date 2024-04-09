@@ -1,12 +1,24 @@
 diff --git a/chrome/browser/ui/views/bubble/webui_bubble_manager.h b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-index 69ea403a3a306b4d8bb50265c5a1d8ca4db05e26..c5afb3857893a356ccd15a5a0b236d96c1d44ea1 100644
+index ea2b2c5f0e7127677cbeb1a500ca778b544c7709..4b7659c8869acf513e5481fcf8b0546f2c46a4df 100644
 --- a/chrome/browser/ui/views/bubble/webui_bubble_manager.h
 +++ b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-@@ -202,6 +202,7 @@ class WebUIBubbleManagerT : public WebUIBubbleManager {
+@@ -149,9 +149,11 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
+  private:
+   void MaybeInitPersistentRenderer() override;
  
-     auto bubble_view = std::make_unique<WebUIBubbleDialogView>(
-         anchor_view_, contents_wrapper->GetWeakPtr(), anchor, arrow);
++ protected:
+   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
+       const std::optional<gfx::Rect>& anchor,
+       views::BubbleBorder::Arrow arrow) override;
++ private:
+ 
+   const raw_ptr<views::View> anchor_view_;
+   const raw_ptr<Profile, DanglingUntriaged> profile_;
+@@ -231,6 +233,7 @@ WebUIBubbleManagerImpl<T>::CreateWebUIBubbleDialog(
+ 
+   auto bubble_view = std::make_unique<WebUIBubbleDialogView>(
+       anchor_view_, contents_wrapper->GetWeakPtr(), anchor, arrow);
 +    BRAVE_WEBUI_BUBBLE_MANAGER_T_CREATE_WEB_UI_BUBBLE_DIALOG
  
-     // Register callback to emit histogram when the widget is created
-     if (bubble_init_start_time_) {
+   if (!widget_initialization_callback_.is_null()) {
+     bubble_view->RegisterWidgetInitializedCallback(

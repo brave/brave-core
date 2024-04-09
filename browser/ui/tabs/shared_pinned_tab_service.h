@@ -102,7 +102,9 @@ class SharedPinnedTabService : public KeyedService,
   void SynchronizeNewBrowser(Browser* browser);
 
   void MoveSharedWebContentsToActiveBrowser(int index);
-  void MoveSharedWebContentsToBrowser(Browser* browser, int index);
+  void MoveSharedWebContentsToBrowser(Browser* browser,
+                                      int index,
+                                      bool is_last_closing_browser = false);
 
   std::unique_ptr<content::WebContents> CreateDummyWebContents(
       content::WebContents* shared_contents);

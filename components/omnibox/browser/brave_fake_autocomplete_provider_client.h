@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/scoped_refptr.h"
+#include "components/bookmarks/browser/bookmark_model.h"
 #include "components/omnibox/browser/mock_autocomplete_provider_client.h"
 #include "components/omnibox/browser/shortcuts_backend.h"
 #include "components/prefs/testing_pref_service.h"
@@ -23,6 +24,7 @@ class BraveFakeAutocompleteProviderClient
       const BraveFakeAutocompleteProviderClient&) = delete;
   ~BraveFakeAutocompleteProviderClient() override;
   PrefService* GetPrefs() const override;
+  bookmarks::BookmarkModel* GetBookmarkModel() override;
 
   void set_shortcuts_backend(
       scoped_refptr<ShortcutsBackend> shortcuts_backend) {
@@ -33,6 +35,7 @@ class BraveFakeAutocompleteProviderClient
   scoped_refptr<ShortcutsBackend> GetShortcutsBackendIfExists() override;
 
  private:
+  std::unique_ptr<bookmarks::BookmarkModel> bookmark_model_;
   std::unique_ptr<TestingPrefServiceSimple> pref_service_;
   scoped_refptr<ShortcutsBackend> shortcuts_backend_;
 };

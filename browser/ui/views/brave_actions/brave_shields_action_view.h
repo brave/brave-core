@@ -11,7 +11,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
-#include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -67,7 +66,7 @@ class BraveShieldsActionView
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
   raw_ref<Profile> profile_;
   raw_ref<TabStripModel> tab_strip_model_;
-  std::unique_ptr<WebUIBubbleManagerT<ShieldsPanelUI>> webui_bubble_manager_;
+  std::unique_ptr<WebUIBubbleManager> webui_bubble_manager_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_SHIELDS_ACTION_VIEW_H_

@@ -140,6 +140,7 @@
     *** mTabCreatorManager;
     *** mSnackbarManager;
     *** mTabObscuringHandler;
+    *** mReadAloudControllerSupplier;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);

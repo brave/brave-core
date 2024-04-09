@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/log/v0_4/BUILD.gn b/third_party/rust/log/v0_4/BUILD.gn
-index f53bea46d97605bc74ef8b2fb6e348bb7fe3798a..04d29e9c80e9e18df866dac72af928e96e4d0bf0 100644
+index dbf08e71afa0896093d07658f69bf0247e3a81de..852f326e5b0fe1b0832db3f0dbe1502b3ede97d9 100644
 --- a/third_party/rust/log/v0_4/BUILD.gn
 +++ b/third_party/rust/log/v0_4/BUILD.gn
 @@ -39,5 +39,4 @@ cargo_crate("lib") {
