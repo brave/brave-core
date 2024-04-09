@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -27,7 +28,7 @@ public class BraveSearchEngineUtils {
         // so do it after TemplateUrlService is loaded to get it if it isn't loaded yet.
         // Init on regular profile only, leave the rest to listener, since
         // user shouldn't be able to go directly into a private tab on first run.
-        final Profile profile = Profile.getLastUsedRegularProfile();
+        final Profile profile = ProfileManager.getLastUsedRegularProfile();
         initializeBraveSearchEngineStates(profile);
     }
 

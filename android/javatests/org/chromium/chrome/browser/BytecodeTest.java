@@ -13,7 +13,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +83,6 @@ import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteControllerPro
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
-import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
@@ -712,9 +710,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
-                        "getParentIds",
+                        "shouldUseParentIds",
                         true,
-                        Pair.class,
+                        boolean.class,
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
@@ -754,7 +752,6 @@ public class BytecodeTest {
                         View.class,
                         AppMenuDelegate.class,
                         OneshotSupplier.class,
-                        OneshotSupplier.class,
                         ObservableSupplier.class,
                         WebFeedSnackbarController.FeedLauncher.class,
                         ModalDialogManager.class,
@@ -782,6 +779,7 @@ public class BytecodeTest {
                         AppCompatActivity.class,
                         BrowserControlsSizer.class,
                         FullscreenManager.class,
+                        ObservableSupplier.class,
                         ToolbarControlContainer.class,
                         CompositorViewHolder.class,
                         Callback.class,
@@ -822,37 +820,66 @@ public class BytecodeTest {
                         Supplier.class,
                         boolean.class,
                         BackPressManager.class,
-                        OpenHistoryClustersDelegate.class,
-                        BooleanSupplier.class,
-                        View.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
-                "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
-                WindowAndroid.class, PropertyModel.class, BrowserControlsSizer.class,
-                FullscreenManager.class, TabObscuringHandler.class, int.class,
-                ObservableSupplier.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl",
-                "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
-                Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
-                TabModelSelector.class, ToolbarManager.class, View.class, OneshotSupplier.class,
-                OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                Supplier.class));
+                        ObservableSupplier.class,
+                        View.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
-                constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
+                constructorsMatch(
+                        "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                        "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
+                        WindowAndroid.class,
+                        PropertyModel.class,
+                        BrowserControlsSizer.class,
+                        FullscreenManager.class,
+                        TabObscuringHandler.class,
+                        int.class,
+                        ObservableSupplier.class,
+                        ObservableSupplier.class,
+                        Supplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl",
+                        "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
+                        Context.class,
+                        ActivityTabProvider.class,
+                        MultiWindowModeStateDispatcher.class,
+                        TabModelSelector.class,
+                        ToolbarManager.class,
+                        View.class,
+                        OneshotSupplier.class,
+                        ObservableSupplier.class,
+                        OneshotSupplier.class,
+                        Supplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/settings/SettingsLauncherImpl",
                         "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator",
-                Activity.class, ViewGroup.class, BrowserControlsStateProvider.class,
-                IncognitoStateProvider.class, ScrimCoordinator.class, ObservableSupplier.class,
-                BottomSheetController.class, ActivityLifecycleDispatcher.class, Supplier.class,
-                TabModelSelector.class, TabContentManager.class, ViewGroup.class, Supplier.class,
-                TabCreatorManager.class, OneshotSupplier.class, SnackbarManager.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
-                "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate",
-                Context.class, Profile.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
+                        "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator",
+                        Activity.class,
+                        ViewGroup.class,
+                        BrowserControlsStateProvider.class,
+                        IncognitoStateProvider.class,
+                        ScrimCoordinator.class,
+                        ObservableSupplier.class,
+                        BottomSheetController.class,
+                        ActivityLifecycleDispatcher.class,
+                        Supplier.class,
+                        TabModelSelector.class,
+                        TabContentManager.class,
+                        ViewGroup.class,
+                        Supplier.class,
+                        TabCreatorManager.class,
+                        OneshotSupplier.class,
+                        SnackbarManager.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
+                        "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate",
+                        Context.class,
+                        Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/browser_ui/notifications/NotificationManagerProxyImpl",
@@ -929,7 +956,6 @@ public class BytecodeTest {
                         OfflineDownloader.class,
                         boolean.class,
                         Callback.class,
-                        boolean.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
@@ -965,8 +991,7 @@ public class BytecodeTest {
                         Callback.class,
                         Supplier.class,
                         BookmarkState.class,
-                        OmniboxActionDelegate.class,
-                        OpenHistoryClustersDelegate.class));
+                        OmniboxActionDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/feed/FeedSurfaceMediator",
@@ -1008,8 +1033,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
                         Supplier.class,
-                        BookmarkState.class,
-                        OpenHistoryClustersDelegate.class));
+                        BookmarkState.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
@@ -1048,7 +1072,6 @@ public class BytecodeTest {
                         Callback.class,
                         BackPressManager.class,
                         OmniboxSuggestionsDropdownScrollListener.class,
-                        OpenHistoryClustersDelegate.class,
                         ObservableSupplier.class,
                         boolean.class,
                         View.class));
@@ -1165,7 +1188,7 @@ public class BytecodeTest {
                         BackPressManager.class,
                         Bundle.class,
                         MultiInstanceManager.class,
-                        BooleanSupplier.class,
+                        ObservableSupplier.class,
                         View.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1340,131 +1363,217 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
                         "mFragmentManager"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
                         "mMediator"));
-        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
-                "mBottomControlsCoordinatorSupplier"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mCallbackController"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBrowserControlsSizer"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mFullscreenManager"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mActivityTabProvider"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mAppThemeColorProvider"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mScrimCoordinator"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mShowStartSurfaceSupplier"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mMenuButtonCoordinator"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mToolbarTabController"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mLocationBar"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mActionModeController"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mLocationBarModel"));
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mBottomControlsCoordinatorSupplier"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mToolbar"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBookmarkModelSupplier"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mLayoutManager"));
-        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
-                "mOverlayPanelVisibilitySupplier"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabModelSelector"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mIncognitoStateProvider"));
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mReadAloudControllerSupplier"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabGroupUi"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBottomSheetController"));
-        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
-                "mActivityLifecycleDispatcher"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mIsWarmOnResumeSupplier"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabContentManager"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCreatorManager"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabObscuringHandler"));
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mCallbackController"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
-                        "mTabSwitcherModeCoordinator"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
-                        "mOptionalButtonController"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
-                        "mToolbarColorObserverManager"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator",
-                        "mActiveTabSwitcherToolbar"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mNewTabViewButton"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mNewTabImageButton"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mShouldShowNewTabVariation"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mIsIncognito"));
-        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/app/ChromeActivity",
-                "mBrowserControlsManagerSupplier"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
-                        "mBottomControlsHeight"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator", "mModel"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mBrowserControlsSizer"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/IncognitoToggleTabLayout",
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mFullscreenManager"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mActivityTabProvider"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mAppThemeColorProvider"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mScrimCoordinator"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mShowStartSurfaceSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mMenuButtonCoordinator"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mToolbarTabController"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mLocationBar"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mActionModeController"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mLocationBarModel"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mToolbar"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mBookmarkModelSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mLayoutManager"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mOverlayPanelVisibilitySupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabModelSelector"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mIncognitoStateProvider"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabGroupUi"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mBottomSheetController"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mActivityLifecycleDispatcher"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mIsWarmOnResumeSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mTabContentManager"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mTabCreatorManager"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mTabObscuringHandler"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
+                        "mTabSwitcherModeCoordinator"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
+                        "mOptionalButtonController"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
+                        "mToolbarColorObserverManager"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator",
+                        "mActiveTabSwitcherToolbar"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
+                        "mNewTabViewButton"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
+                        "mNewTabImageButton"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
+                        "mShouldShowNewTabVariation"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
+                        "mIsIncognito"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/app/ChromeActivity",
+                        "mBrowserControlsManagerSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                        "mBottomControlsHeight"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                        "mModel"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                        "mBrowserControlsSizer"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/IncognitoToggleTabLayout",
                         "mIncognitoButtonIcon"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
-                "mToolbarView"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
-                "mProfile"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
-                "mProfile"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
-                "mSearchEngineAdapter"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                "mCategory", true, SiteSettingsCategory.class));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings", "mSite",
-                true, Website.class));
         Assert.assertTrue(
-                fieldExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
-                        "sLock", true, Object.class));
+                fieldExists(
+                        "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
+                        "mToolbarView"));
         Assert.assertTrue(
-                fieldExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
-                        "DEFAULT_VARIATIONS_SERVER_URL", true, String.class));
+                fieldExists(
+                        "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                        "mProfile"));
         Assert.assertTrue(
-                fieldExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
-                        "DEFAULT_FAST_VARIATIONS_SERVER_URL", true, String.class));
+                fieldExists(
+                        "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
+                        "mProfile"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
-                        "mNativeInitialized", true, boolean.class));
+                fieldExists(
+                        "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
+                        "mSearchEngineAdapter"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
+                fieldExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                        "mCategory",
+                        true,
+                        SiteSettingsCategory.class));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "mSite",
+                        true,
+                        Website.class));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/components/variations/firstrun/VariationsSeedFetcher",
+                        "sLock",
+                        true,
+                        Object.class));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/components/variations/firstrun/VariationsSeedFetcher",
+                        "DEFAULT_VARIATIONS_SERVER_URL",
+                        true,
+                        String.class));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/components/variations/firstrun/VariationsSeedFetcher",
+                        "DEFAULT_FAST_VARIATIONS_SERVER_URL",
+                        true,
+                        String.class));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
+                        "mNativeInitialized",
+                        true,
+                        boolean.class));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "mDropdownViewInfoListManager"));
         Assert.assertTrue(
                 fieldExists(

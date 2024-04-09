@@ -52,6 +52,7 @@
 #include "net/test/test_data_directory.h"
 #include "services/network/host_resolver.h"
 
+#include "chrome/browser/ui/browser.h"
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/browser/playlist_service.h"

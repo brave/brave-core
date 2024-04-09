@@ -12,7 +12,7 @@ import android.text.TextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.content_public.browser.BrowserStartupController;
 
@@ -65,14 +65,15 @@ public class BraveIntentHandler {
         }
 
         try {
-            return ThreadUtils.runOnUiThreadBlocking(new Callable<String>() {
-                @Override
-                public String call() {
-                    return TemplateUrlServiceFactory
-                            .getForProfile(Profile.getLastUsedRegularProfile())
-                            .getUrlForSearchQuery(query);
-                }
-            });
+            return ThreadUtils.runOnUiThreadBlocking(
+                    new Callable<String>() {
+                        @Override
+                        public String call() {
+                            return TemplateUrlServiceFactory.getForProfile(
+                                            ProfileManager.getLastUsedRegularProfile())
+                                    .getUrlForSearchQuery(query);
+                        }
+                    });
         } catch (ExecutionException e) {
             Log.e(TAG, "Could not retrieve search query: " + e);
         }

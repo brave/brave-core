@@ -10,6 +10,8 @@
 
 #include "chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h"
 
+namespace tab_groups {
+
 // A replacement for `SavedTabGroupButton` that matches the styling of Brave's
 // tab group headers.
 class BraveSavedTabGroupButton : public SavedTabGroupButton {
@@ -30,5 +32,7 @@ class BraveSavedTabGroupButton : public SavedTabGroupButton {
   void Initialize();
   void UpdateButtonLayout() override;
 };
+
+}  // namespace tab_groups
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_SAVED_TAB_GROUPS_BRAVE_SAVED_TAB_GROUP_BUTTON_H_

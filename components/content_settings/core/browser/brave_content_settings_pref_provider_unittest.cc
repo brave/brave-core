@@ -64,7 +64,7 @@ base::Value::Dict* InitializeCommonSettingsAndGetPerResourceDictionary(
                         base::NumberToString(last_modified_time_in_ms));
   dict->SetByDottedPath(
       kSessionModelPath,
-      static_cast<int>(content_settings::SessionModel::Durable));
+      static_cast<int>(content_settings::mojom::SessionModel::DURABLE));
 
   return dict->EnsureDict(kPerResourcePath);
 }
@@ -116,7 +116,7 @@ void CheckMigrationFromResourceIdentifierForDictionary(
   EXPECT_EQ(base::ValueToTime(settings_dict->Find(kLastModifiedPath)),
             expected_last_modified);
   EXPECT_EQ(GetSessionModelFromDictionary(*settings_dict, kSessionModelPath),
-            content_settings::SessionModel::Durable);
+            content_settings::mojom::SessionModel::DURABLE);
   EXPECT_EQ(actual_value, expected_setting_value);
 }
 

@@ -32,12 +32,12 @@ RegisterPolymerComponentReplacement(
 RegisterPolymerTemplateModifications({
   'settings-clear-browsing-data-dialog': (templateContent: HTMLTemplateElement) => {
     // Append On exit tab page.
-    const tabsElement = templateContent.querySelector('#tabs')
-    if (!tabsElement) {
-      console.error(`[Brave Settings Overrides] cannot find #tabs in clear-browsing-data-dialog`)
+    const pagesElement = templateContent.querySelector('#pages')
+    if (!pagesElement) {
+      console.error(`[Brave Settings Overrides] cannot find #pages in clear-browsing-data-dialog`)
       return
     }
-    tabsElement.insertAdjacentHTML(
+    pagesElement.insertAdjacentHTML(
       'beforeend',
       getTrustedHTML`
         <settings-brave-clear-browsing-data-on-exit-page

@@ -27,6 +27,7 @@ class BraveConfirmInfoBarDelegate : public ConfirmInfoBarDelegate {
   virtual bool InterceptClosing();
   virtual std::vector<int> GetButtonsOrder() const;
   virtual bool IsProminent(int id) const;
+  virtual bool ExtraButtonPressed();
 
   int GetButtons() const override;
 

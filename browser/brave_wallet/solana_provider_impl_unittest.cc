@@ -9,7 +9,6 @@
 #include <optional>
 #include <vector>
 
-#include "base/containers/cxx20_erase_vector.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"

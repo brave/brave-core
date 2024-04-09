@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
@@ -17,10 +17,10 @@
 #define resizeTo resizeTo_ChromiumImpl
 #define moveTo moveTo_ChromiumImpl
 
-#define BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS                        \
-  if (WebContentSettingsClient* settings_client =                         \
-          GetFrame()->GetContentSettingsClient()) {                       \
-    script_enabled = settings_client->AllowScript(allow_script_renderer); \
+#define BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS                 \
+  if (WebContentSettingsClient* settings_client =                  \
+          GetFrame()->GetContentSettingsClient()) {                \
+    script_enabled = settings_client->AllowScript(script_enabled); \
   }
 
 #include "src/third_party/blink/renderer/core/frame/local_dom_window.cc"

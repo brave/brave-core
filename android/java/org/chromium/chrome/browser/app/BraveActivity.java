@@ -143,6 +143,7 @@ import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
@@ -687,8 +688,8 @@ public abstract class BraveActivity extends ChromeActivity
                             BraveReflectionUtil.getField(
                                     ChromeTabbedActivity.class, "mLayoutManager", this);
             if (layoutManager != null
-                    && layoutManager.getOverviewLayout() != null
-                    && !layoutManager.getOverviewLayout().isActive()
+                    && layoutManager.getTabSwitcherLayoutForTesting() != null
+                    && !layoutManager.getTabSwitcherLayoutForTesting().isActive()
                     && mMiscAndroidMetrics != null) {
                 mMiscAndroidMetrics.recordAppMenuNewTab();
             }
@@ -788,8 +789,11 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         if (isClearBrowsingDataOnExit()) {
-            List<Integer> dataTypes = Arrays.asList(
-                    BrowsingDataType.HISTORY, BrowsingDataType.COOKIES, BrowsingDataType.CACHE);
+            List<Integer> dataTypes =
+                    Arrays.asList(
+                            BrowsingDataType.HISTORY,
+                            BrowsingDataType.SITE_DATA,
+                            BrowsingDataType.CACHE);
 
             int[] dataTypesArray = CollectionUtil.integerCollectionToIntArray(dataTypes);
 
@@ -900,12 +904,15 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onPreferenceChange() {
-        String captchaID = UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                   .getString(BravePref.SCHEDULED_CAPTCHA_ID);
-        String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                   .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
+        String captchaID =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getString(BravePref.SCHEDULED_CAPTCHA_ID);
+        String paymentID =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
         if (BraveQAPreferences.shouldVlogRewards()) {
-            Log.e(AdaptiveCaptchaHelper.TAG,
+            Log.e(
+                    AdaptiveCaptchaHelper.TAG,
                     "captchaID : " + captchaID + " Payment ID : " + paymentID);
         }
         maybeSolveAdaptiveCaptcha();
@@ -927,11 +934,14 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void maybeSolveAdaptiveCaptcha() {
-        String captchaID = UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                   .getString(BravePref.SCHEDULED_CAPTCHA_ID);
-        String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                   .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
-        if (!TextUtils.isEmpty(captchaID) && !TextUtils.isEmpty(paymentID)
+        String captchaID =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getString(BravePref.SCHEDULED_CAPTCHA_ID);
+        String paymentID =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
+        if (!TextUtils.isEmpty(captchaID)
+                && !TextUtils.isEmpty(paymentID)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             AdaptiveCaptchaHelper.startAttestation(captchaID, paymentID);
         }
@@ -953,21 +963,22 @@ public abstract class BraveActivity extends ChromeActivity
         PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar();
         mPrefChangeRegistrar.addObserver(BravePref.SCHEDULED_CAPTCHA_ID, this);
 
-        if (UserPrefs.get(Profile.getLastUsedRegularProfile())
+        if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                         .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
                 >= MAX_FAILED_CAPTCHA_ATTEMPTS) {
-            UserPrefs.get(Profile.getLastUsedRegularProfile())
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED, true);
         }
 
         if (BraveQAPreferences.shouldVlogRewards()) {
-            Log.e(AdaptiveCaptchaHelper.TAG,
+            Log.e(
+                    AdaptiveCaptchaHelper.TAG,
                     "Failed attempts : "
-                            + UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                      .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
+                            + UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                                    .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
         }
-        if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
-                        .getBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED)) {
+        if (!UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                .getBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED)) {
             maybeSolveAdaptiveCaptcha();
         }
 
@@ -1369,13 +1380,19 @@ public abstract class BraveActivity extends ChromeActivity
                     ChromeSharedPreferences.getInstance()
                             .readBoolean(BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION, true);
             if (value) {
-                BraveShieldsContentSettings.setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.setShieldsValue(
+                        ProfileManager.getLastUsedRegularProfile(),
+                        "",
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
-                        BraveShieldsContentSettings.DEFAULT, false);
+                        BraveShieldsContentSettings.DEFAULT,
+                        false);
             } else {
-                BraveShieldsContentSettings.setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.setShieldsValue(
+                        ProfileManager.getLastUsedRegularProfile(),
+                        "",
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
-                        BraveShieldsContentSettings.ALLOW_RESOURCE, false);
+                        BraveShieldsContentSettings.ALLOW_RESOURCE,
+                        false);
             }
         }
     }
@@ -1444,12 +1461,14 @@ public abstract class BraveActivity extends ChromeActivity
     private void checkForYandexSE() {
         String countryCode = Locale.getDefault().getCountry();
         if (sYandexRegions.contains(countryCode)) {
-            Profile lastUsedRegularProfile = Profile.getLastUsedRegularProfile();
-            TemplateUrl yandexTemplateUrl = BraveSearchEngineUtils.getTemplateUrlByShortName(
-                    lastUsedRegularProfile, OnboardingPrefManager.YANDEX);
+            Profile lastUsedRegularProfile = ProfileManager.getLastUsedRegularProfile();
+            TemplateUrl yandexTemplateUrl =
+                    BraveSearchEngineUtils.getTemplateUrlByShortName(
+                            lastUsedRegularProfile, OnboardingPrefManager.YANDEX);
             if (yandexTemplateUrl != null) {
                 BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, lastUsedRegularProfile);
-                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl,
+                BraveSearchEngineUtils.setDSEPrefs(
+                        yandexTemplateUrl,
                         lastUsedRegularProfile.getPrimaryOTRProfile(/* createIfNeeded= */ true));
             }
         }
@@ -1610,7 +1629,7 @@ public abstract class BraveActivity extends ChromeActivity
     public Profile getCurrentProfile() {
         Tab tab = getActivityTab();
         if (tab == null) {
-            return Profile.getLastUsedRegularProfile();
+            return ProfileManager.getLastUsedRegularProfile();
         }
 
         return Profile.fromWebContents(tab.getWebContents());

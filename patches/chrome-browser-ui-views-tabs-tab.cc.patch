@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 5059a0ed03ccf2e098e9d36fe9e10c71df93683a..5d2afa6d94c580af0f0fe2462ef05231b982f7bb 100644
+index 444832f1c6e5fb98cef09887796e8d4cdaba6550..bf3d597c4cb0e2151ed33023d26b46b15f4a3430 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -420,6 +420,7 @@ void Tab::Layout(PassKey) {
+@@ -324,6 +324,7 @@ void Tab::Layout(PassKey) {
+     // Height should go to the bottom of the tab for the crashed tab animation
+     // to pop out of the bottom.
+     favicon_bounds.set_y(contents_rect.y() +
++                         BRAVE_TAB_LAYOUT
+                          Center(gfx::kFaviconSize, gfx::kFaviconSize));
+     if (center_icon_) {
+       // When centering the favicon, the favicon is allowed to escape the normal
+@@ -420,6 +421,7 @@ void Tab::Layout(PassKey) {
      int title_right = contents_rect.right();
      if (showing_alert_indicator_) {
        title_right = alert_indicator_button_->x() - after_title_padding;
@@ -10,7 +18,7 @@ index 5059a0ed03ccf2e098e9d36fe9e10c71df93683a..5d2afa6d94c580af0f0fe2462ef05231
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
-@@ -1088,6 +1089,7 @@ void Tab::UpdateIconVisibility() {
+@@ -1088,6 +1090,7 @@ void Tab::UpdateIconVisibility() {
      }
  
      showing_close_button_ = large_enough_for_close_button;

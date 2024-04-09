@@ -1,9 +1,9 @@
 /*
-  Copyright (c) 2022 The Brave Authors. All rights reserved.
-  This Source Code Form is subject to the terms of the Mozilla Public
-  License, v. 2.0. If a copy of the MPL was not distributed with this file,
-  You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ Copyright (c) 2022 The Brave Authors. All rights reserved.
+ This Source Code Form is subject to the terms of the Mozilla Public
+ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ You can obtain one at https://mozilla.org/MPL/2.0/.
+*/
 
 package org.chromium.chrome.browser.widget.quickactionsearchandbookmark;
 
@@ -47,11 +47,14 @@ import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.init.EmptyBrowserParts;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
+import org.chromium.chrome.browser.searchwidget.SearchActivityUtils;
+import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.suggestions.tile.Tile;
 import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
-import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityConstants;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager.SearchActivityPreferences;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -289,12 +292,15 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static void setDefaultSearchEngineString(RemoteViews views) {
-        final Profile profile = Profile.getLastUsedRegularProfile();
-        TemplateUrl templateUrl = BraveSearchEngineUtils.getTemplateUrlByShortName(
-                profile, BraveSearchEngineUtils.getDSEShortName(profile, false));
+        final Profile profile = ProfileManager.getLastUsedRegularProfile();
+        TemplateUrl templateUrl =
+                BraveSearchEngineUtils.getTemplateUrlByShortName(
+                        profile, BraveSearchEngineUtils.getDSEShortName(profile, false));
         if (templateUrl != null) {
-            String searchWithDefaultSearchEngine = ContextUtils.getApplicationContext().getString(
-                    R.string.search_with_search_engine, templateUrl.getShortName());
+            String searchWithDefaultSearchEngine =
+                    ContextUtils.getApplicationContext()
+                            .getString(
+                                    R.string.search_with_search_engine, templateUrl.getShortName());
             views.setTextViewText(R.id.tvSearchWithBrave, searchWithDefaultSearchEngine);
         }
     }
@@ -341,18 +347,24 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static void fetchGurlIcon(final int imageViewId, GURL gurl) {
-        LargeIconBridge largeIconBridge = new LargeIconBridge(Profile.getLastUsedRegularProfile());
-        LargeIconCallback callback = new LargeIconCallback() {
-            @Override
-            public void onLargeIconAvailable(Bitmap icon, int fallbackColor,
-                    boolean isFallbackColorDefault, @IconType int iconType) {
-                if (icon == null)
-                    updateTileIcon(imageViewId,
-                            getTileIconFromColor(gurl, fallbackColor, isFallbackColorDefault));
-                else
-                    updateTileIcon(imageViewId, getRoundedTileIconFromBitmap(icon));
-            }
-        };
+        LargeIconBridge largeIconBridge =
+                new LargeIconBridge(ProfileManager.getLastUsedRegularProfile());
+        LargeIconCallback callback =
+                new LargeIconCallback() {
+                    @Override
+                    public void onLargeIconAvailable(
+                            Bitmap icon,
+                            int fallbackColor,
+                            boolean isFallbackColorDefault,
+                            @IconType int iconType) {
+                        if (icon == null)
+                            updateTileIcon(
+                                    imageViewId,
+                                    getTileIconFromColor(
+                                            gurl, fallbackColor, isFallbackColorDefault));
+                        else updateTileIcon(imageViewId, getRoundedTileIconFromBitmap(icon));
+                    }
+                };
         largeIconBridge.getLargeIconForUrl(gurl, DESIRED_ICON_SIZE, callback);
     }
 
@@ -420,13 +432,19 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static PendingIntent createIntent(@NonNull Context context, boolean startVoiceSearch) {
+        SearchActivityClient client = new SearchActivityUtils();
         Intent searchIntent =
-                new Intent(startVoiceSearch ? SearchActivityConstants.ACTION_START_VOICE_SEARCH
-                                            : SearchActivityConstants.ACTION_START_TEXT_SEARCH);
+                client.createIntent(
+                        context,
+                        SearchActivityClient.IntentOrigin.SEARCH_WIDGET,
+                        null,
+                        startVoiceSearch
+                                ? SearchActivityClient.SearchType.VOICE
+                                : SearchActivityClient.SearchType.TEXT);
+
+        searchIntent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
         searchIntent.setComponent(new ComponentName(context, SearchActivity.class));
         searchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        searchIntent.putExtra(
-                SearchActivityConstants.EXTRA_BOOLEAN_FROM_QUICK_ACTION_SEARCH_WIDGET, true);
         return createPendingIntent(context, searchIntent);
     }
 
@@ -436,8 +454,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         trustedIncognitoIntent.putExtra(IntentHandler.EXTRA_INVOKED_FROM_APP_WIDGET, true);
         trustedIncognitoIntent.addFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        trustedIncognitoIntent.putExtra(
-                SearchActivityConstants.EXTRA_BOOLEAN_FROM_QUICK_ACTION_SEARCH_WIDGET, true);
+        trustedIncognitoIntent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
         return createPendingIntent(context, trustedIncognitoIntent);
     }
 

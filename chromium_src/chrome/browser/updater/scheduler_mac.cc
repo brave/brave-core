@@ -55,7 +55,7 @@ void DoPeriodicTasks(base::OnceClosure callback) {
   // The agent can be in one of four places depending on the age and mode of
   // Keystone.
   for (UpdaterScope scope : {UpdaterScope::kSystem, UpdaterScope::kUser}) {
-    absl::optional<base::FilePath> keystone_path = GetKeystoneFolderPath(scope);
+    std::optional<base::FilePath> keystone_path = GetKeystoneFolderPath(scope);
     if (!keystone_path) {
       continue;
     }

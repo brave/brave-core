@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_PICTURE_IN_PICTURE_VIDEO_PICTURE_IN_PICTURE_WINDOW_CONTROLLER_IMPL_H_
 
 #include "content/public/browser/video_picture_in_picture_window_controller.h"
+#include "services/media_session/public/mojom/media_session.mojom.h"
 
 #define NextSlide                             \
   SeekTo(base::TimeDelta seek_time) override; \
