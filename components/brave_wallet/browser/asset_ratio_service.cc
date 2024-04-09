@@ -10,7 +10,6 @@
 #include <optional>
 #include <utility>
 
-#include "absl/types/optional.h"
 #include "base/base64.h"
 #include "base/environment.h"
 #include "base/json/json_writer.h"
@@ -711,7 +710,7 @@ void AssetRatioService::OnGetCryptoQuotes(GetCryptoQuotesCallback callback,
     return;
   }
 
-  absl::optional<std::vector<std::string>> errors;
+  std::optional<std::vector<std::string>> errors;
   std::string error;
   std::vector<mojom::CryptoQuotePtr> quotes;
   if (!ParseCryptoQuotes(api_request_result.value_body(), &quotes, &error)) {

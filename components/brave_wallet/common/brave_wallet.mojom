@@ -1201,27 +1201,45 @@ interface AssetRatioService {
 
   // Obtains the list of Setvice Providers
   // All parameters are optional
-  GetServiceProviders(string countries, string fiat_currencies, string crypto_currencies, string service_providers, string payment_method_types, string statuses) => (array<ServiceProvider> service_providers, array<string>? error);
+  GetServiceProviders(string countries, string fiat_currencies,
+    string crypto_currencies, string service_providers,
+    string payment_method_types, string statuses)
+    => (array<ServiceProvider> service_providers, array<string>? error);
 
   // Obtains the crypto quotes
-  // Note that next parameters are mandatory: destination_currency_code, country, source_amount, source_currency_code
-  GetCryptoQuotes(string country, string source_currency_code, string destination_currency_code, double source_amount, string account) => (array<CryptoQuote> crypto_quotes, array<string>? error);
+  // Note that next parameters are mandatory:
+  // destination_currency_code, country, source_amount, source_currency_code
+  GetCryptoQuotes(string country, string source_currency_code,
+    string destination_currency_code, double source_amount, string account)
+    => (array<CryptoQuote> crypto_quotes, array<string>? error);
 
   // Obtains the list of payment methods
   // All parameters are optional
-  GetPaymentMethods(string countries, string fiat_currencies, string crypto_currencies, string service_providers, string payment_method_types, string statuses) => (array<PaymentMethod> payment_methods, array<string>? error);
+  GetPaymentMethods(string countries, string fiat_currencies,
+    string crypto_currencies, string service_providers,
+    string payment_method_types, string statuses)
+    => (array<PaymentMethod> payment_methods, array<string>? error);
 
   // Obtains the list of fiat currencies
   // All parameters are optional
-  GetFiatCurrencies(string countries, string fiat_currencies, string crypto_currencies, string service_providers, string payment_method_types, string statuses) => (array<FiatCurrency> fiat_currencies, array<string>? error);
+  GetFiatCurrencies(string countries, string fiat_currencies,
+    string crypto_currencies, string service_providers,
+    string payment_method_types, string statuses)
+    => (array<FiatCurrency> fiat_currencies, array<string>? error);
 
   // Obtains the list of crypto currencies
   // All parameters are optional
-  GetCryptoCurrencies(string countries, string fiat_currencies, string crypto_currencies, string service_providers, string payment_method_types, string statuses)  => (array<CryptoCurrency> fiat_currencies, array<string>? error);
-  
-  // Obtains the list of countries  
+  GetCryptoCurrencies(string countries, string fiat_currencies,
+    string crypto_currencies, string service_providers,
+    string payment_method_types, string statuses)
+    => (array<CryptoCurrency> fiat_currencies, array<string>? error);
+
+  // Obtains the list of countries
   // All parameters are optional
-  GetCountries(string countries, string fiat_currencies, string crypto_currencies, string service_providers, string payment_method_types, string statuses)  => (array<Country> countries, array<string>? error);
+  GetCountries(string countries, string fiat_currencies,
+    string crypto_currencies, string service_providers,
+    string payment_method_types, string statuses)
+    => (array<Country> countries, array<string>? error);
 };
 
 // Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs
