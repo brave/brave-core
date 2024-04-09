@@ -393,7 +393,7 @@ provideStrings({
   braveWalletAddAccountImportHardware: 'Import from hardware wallet',
   braveWalletAddAccountHardware: 'Hardware',
   braveWalletAddAccountConnect: 'Connect',
-  braveWalletAddAccountPlaceholder: 'Account name',
+  braveWalletAddAccountPlaceholder: 'Name this account',
   braveWalletCreateAccountButton: 'Create account',
   braveWalletCreateAccountImportAccount: 'Import $1 account',
   braveWalletCreateAccountTitle: 'Select one of the following account types',
@@ -406,7 +406,7 @@ provideStrings({
   braveWalletCreateAccountZCashDescription: 'Store ZEC assets',
   braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
   braveWalletFilecoinPrivateKeyProtocol: 'Private key $1',
-  braveWalletImportJsonPassword: 'Origin password',
+  braveWalletEnterPasswordIfApplicable: 'Enter password (if applicable)',
   braveWalletPrivateKeyImportType: 'Import type',
   braveWalletFilImportPrivateKeyFormatDescription:
     'NOTE: Private key must be provided as a hex-encoded JSON that contains ' +

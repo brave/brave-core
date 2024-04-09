@@ -428,7 +428,7 @@ export const ImportAccountModal = () => {
                   onClick={onClickFileUpload}
                 />
                 <Input
-                  placeholder={getLocale('braveWalletImportJsonPassword')}
+                  placeholder={getLocale('braveWalletInputLabelPassword')}
                   onInput={handlePasswordChanged}
                   onKeyDown={handleKeyDown}
                   onBlur={clearClipboard}
@@ -437,7 +437,7 @@ export const ImportAccountModal = () => {
                 >
                   {
                     // Label
-                    getLocale('braveWalletImportJsonPassword')
+                    getLocale('braveWalletEnterPasswordIfApplicable')
                   }
                 </Input>
               </>
