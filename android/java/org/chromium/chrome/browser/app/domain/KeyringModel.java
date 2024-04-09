@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.app.domain;
 
+import static org.chromium.base.ThreadUtils.assertOnUiThread;
+
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringDef;
 import androidx.lifecycle.LiveData;
@@ -35,8 +38,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class KeyringModel implements KeyringServiceObserver {
     private static final String TAG = "KeyringModel";
@@ -190,6 +191,8 @@ public class KeyringModel implements KeyringServiceObserver {
      * Filecoin account will be created only if selected among available networks. Once the creation
      * finishes the callback is notified with a string containing the recovery phrases.
      *
+     * <b>Note:</b> This method must be always called from main UI thread.
+     *
      * @param password Given password used to create the new Brave Wallet.
      * @param availableNetworks All available networks.
      * @param selectedNetworks Collection of selected networks that will be shown.
@@ -197,23 +200,19 @@ public class KeyringModel implements KeyringServiceObserver {
      * @param callback Callback fired once creation terminates passing a string containing the
      *     recovery phrases.
      */
+    @MainThread
     public void createWallet(
             @NonNull final String password,
             @NonNull final Set<NetworkInfo> availableNetworks,
             @NonNull final Set<NetworkInfo> selectedNetworks,
             @NonNull final JsonRpcService jsonRpcService,
             @NonNull final Callbacks.Callback1<String> callback) {
+        assertOnUiThread();
         final Set<NetworkInfo> removeHiddenNetworks = new HashSet<>();
         final Set<NetworkInfo> addHiddenNetworks = new HashSet<>();
 
-        MutableLiveData<Integer> removeHiddenNetworksLiveData = new MutableLiveData<>();
-        MutableLiveData<Integer> addHiddenNetworksLiveData = new MutableLiveData<>();
-
-        AtomicInteger countRemovedHiddenNetworks = new AtomicInteger(0);
-        AtomicInteger countAddedHiddenNetworks = new AtomicInteger(0);
-
-        AtomicBoolean removeHiddenNetworksDone = new AtomicBoolean(false);
-        AtomicBoolean addHiddenNetworksDone = new AtomicBoolean(false);
+        MutableLiveData<Boolean> removeHiddenNetworksLiveData = new MutableLiveData<>();
+        MutableLiveData<Boolean> addHiddenNetworksLiveData = new MutableLiveData<>();
 
         for (NetworkInfo networkInfo : availableNetworks) {
             if (selectedNetworks.contains(networkInfo)) {
@@ -225,13 +224,14 @@ public class KeyringModel implements KeyringServiceObserver {
 
         removeHiddenNetworksLiveData.observeForever(
                 new Observer<>() {
+                    int countRemovedHiddenNetworks;
                     @Override
-                    public void onChanged(Integer integer) {
-                        if (integer == removeHiddenNetworks.size()) {
+                    public void onChanged(Boolean success) {
+                        countRemovedHiddenNetworks++;
+                        if (countRemovedHiddenNetworks == removeHiddenNetworks.size()) {
                             removeHiddenNetworksLiveData.removeObserver(this);
-                            removeHiddenNetworksDone.set(true);
 
-                            if (addHiddenNetworksDone.get()) {
+                            if (!addHiddenNetworksLiveData.hasActiveObservers()) {
                                 finalizeWalletCreation(password, selectedNetworks, callback);
                             }
                         }
@@ -240,13 +240,14 @@ public class KeyringModel implements KeyringServiceObserver {
 
         addHiddenNetworksLiveData.observeForever(
                 new Observer<>() {
+                    int countAddedHiddenNetworks;
                     @Override
-                    public void onChanged(Integer integer) {
-                        if (integer == addHiddenNetworks.size()) {
+                    public void onChanged(Boolean success) {
+                        countAddedHiddenNetworks++;
+                        if (countAddedHiddenNetworks == addHiddenNetworks.size()) {
                             addHiddenNetworksLiveData.removeObserver(this);
-                            addHiddenNetworksDone.set(true);
 
-                            if (removeHiddenNetworksDone.get()) {
+                            if (!removeHiddenNetworksLiveData.hasActiveObservers()) {
                                 finalizeWalletCreation(password, selectedNetworks, callback);
                             }
                         }
@@ -266,8 +267,7 @@ public class KeyringModel implements KeyringServiceObserver {
                                             "Unable to remove network %s from hidden networks.",
                                             networkInfo.chainName));
                         }
-                        removeHiddenNetworksLiveData.setValue(
-                                countRemovedHiddenNetworks.incrementAndGet());
+                        removeHiddenNetworksLiveData.setValue(success);
                     });
         }
 
@@ -284,8 +284,7 @@ public class KeyringModel implements KeyringServiceObserver {
                                             "Unable to add network %s to hidden networks.",
                                             networkInfo.chainName));
                         }
-                        addHiddenNetworksLiveData.setValue(
-                                countAddedHiddenNetworks.incrementAndGet());
+                        addHiddenNetworksLiveData.setValue(success);
                     });
         }
     }
@@ -294,12 +293,14 @@ public class KeyringModel implements KeyringServiceObserver {
             @NonNull final String password,
             @NonNull final Set<NetworkInfo> selectedNetworks,
             @NonNull final Callbacks.Callback1<String> callback) {
+        assertOnUiThread();
         mKeyringService.createWallet(
                 password,
                 recoveryPhrases -> {
                     final Set<NetworkInfo> createAccounts = new HashSet<>();
 
                     for (NetworkInfo networkInfo : selectedNetworks) {
+                        // Create Bitcoin and Filecoin accounts if they have been selected.
                         if (networkInfo.coin == CoinType.BTC || networkInfo.coin == CoinType.FIL) {
                             createAccounts.add(networkInfo);
                         }
@@ -308,15 +309,16 @@ public class KeyringModel implements KeyringServiceObserver {
                     if (createAccounts.isEmpty()) {
                         callback.call(recoveryPhrases);
                     } else {
-                        final MutableLiveData<Integer> createAccountsLiveData =
+                        final MutableLiveData<Boolean> createAccountsLiveData =
                                 new MutableLiveData<>();
-                        AtomicInteger countCreatedAccounts = new AtomicInteger(0);
 
                         createAccountsLiveData.observeForever(
                                 new Observer<>() {
+                                    int countCreatedAccounts;
                                     @Override
-                                    public void onChanged(Integer integer) {
-                                        if (integer == createAccounts.size()) {
+                                    public void onChanged(Boolean success) {
+                                        countCreatedAccounts++;
+                                        if (countCreatedAccounts == createAccounts.size()) {
                                             createAccountsLiveData.removeObserver(this);
                                             callback.call(recoveryPhrases);
                                         }
@@ -336,10 +338,7 @@ public class KeyringModel implements KeyringServiceObserver {
                                                 AssetUtils.getKeyring(
                                                         networkInfo.coin, networkInfo.chainId),
                                                 accountName,
-                                                accountInfo -> {
-                                                    createAccountsLiveData.setValue(
-                                                            countCreatedAccounts.incrementAndGet());
-                                                });
+                                                accountInfo -> createAccountsLiveData.setValue(true));
                                     }
                                 });
                     }
