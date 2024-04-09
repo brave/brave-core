@@ -44,42 +44,42 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
         KeyringModel keyringModel = getKeyringModel();
         if (keyringModel != null) {
             // Check if a wallet is already present and skip if that's the case.
-            getKeyringModel()
-                    .isWalletCreated(
-                            isCreated -> {
-                                if (isCreated) {
-                                    requireActivity().finish();
-                                } else {
-                                    BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-                                    JsonRpcService jsonRpcService = getJsonRpcService();
+            keyringModel.isWalletCreated(
+                    isCreated -> {
+                        if (isCreated) {
+                            requireActivity().finish();
+                            return;
+                        }
 
-                                    if (jsonRpcService != null) {
-                                        Set<NetworkInfo> availableNetworks =
-                                                mOnboardingViewModel.getAvailableNetworks();
-                                        Set<NetworkInfo> selectedNetworks =
-                                                mOnboardingViewModel.getSelectedNetworks();
-                                        keyringModel.createWallet(
-                                                mOnboardingViewModel.getPassword(),
-                                                availableNetworks,
-                                                selectedNetworks,
-                                                jsonRpcService,
-                                                recoveryPhrases -> {
-                                                    if (braveWalletP3A != null) {
-                                                        braveWalletP3A.reportOnboardingAction(
-                                                                OnboardingAction.RECOVERY_SETUP);
-                                                    }
+                        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                        JsonRpcService jsonRpcService = getJsonRpcService();
 
-                                                    Utils.setCryptoOnboarding(false);
+                        if (jsonRpcService != null) {
+                            Set<NetworkInfo> availableNetworks =
+                                    mOnboardingViewModel.getAvailableNetworks();
+                            Set<NetworkInfo> selectedNetworks =
+                                    mOnboardingViewModel.getSelectedNetworks();
+                            keyringModel.createWallet(
+                                    mOnboardingViewModel.getPassword(),
+                                    availableNetworks,
+                                    selectedNetworks,
+                                    jsonRpcService,
+                                    recoveryPhrases -> {
+                                        if (braveWalletP3A != null) {
+                                            braveWalletP3A.reportOnboardingAction(
+                                                    OnboardingAction.RECOVERY_SETUP);
+                                        }
 
-                                                    // Go to the next page after wallet creation is
-                                                    // done
-                                                    if (mOnNextPage != null) {
-                                                        mOnNextPage.gotoNextPage();
-                                                    }
-                                                });
-                                    }
-                                }
-                            });
+                                        Utils.setCryptoOnboarding(false);
+
+                                        // Go to the next page after wallet creation is
+                                        // done
+                                        if (mOnNextPage != null) {
+                                            mOnNextPage.gotoNextPage();
+                                        }
+                                    });
+                        }
+                    });
         }
     }
 
