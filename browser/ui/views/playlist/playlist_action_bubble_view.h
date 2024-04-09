@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
@@ -29,13 +28,6 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   static void CloseBubble();
   static views::BubbleDialogDelegateView* GetBubble();
 
-  ~PlaylistActionBubbleView() override;
-
-  void WindowClosingImpl();
-
-  // views::BubbleDialogDelegateView:
-  void WindowClosing() override;
-
  protected:
   static void ShowBubble(
       std::unique_ptr<views::BubbleDialogDelegateView> bubble);
@@ -44,7 +36,10 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
                            PlaylistActionIconView* anchor,
                            PlaylistTabHelper* playlist_tab_helper);
 
-  void CloseAndRun(base::OnceClosure callback);
+  ~PlaylistActionBubbleView() override;
+
+  // views::BubbleDialogDelegateView:
+  void WindowClosing() override;
 
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<PlaylistTabHelper> playlist_tab_helper_ = nullptr;

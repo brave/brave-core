@@ -89,6 +89,7 @@ class LoadingSpinner : public views::View, public gfx::AnimationDelegate {
   void AnimationProgressed(const gfx::Animation* animation) override {
     SchedulePaint();
   }
+
   void AnimationEnded(const gfx::Animation* animation) override {
     animation_.Reset();
     animation_.Show();
@@ -174,21 +175,12 @@ void PlaylistAddBubble::OnAddedItemFromTabHelper(
     return SizeToContents();
   }
 
-  auto show_confirm_bubble = base::BindOnce(
-      [](base::WeakPtr<PlaylistTabHelper> tab_helper, Browser* browser,
-         base::WeakPtr<PlaylistActionIconView> anchor) {
-        if (!tab_helper || !anchor) {
-          return;
-        }
+  if (!icon_view_->GetWeakPtr() || !playlist_tab_helper_->GetWeakPtr()) {
+    return;
+  }
 
-        ShowBubble(std::make_unique<PlaylistConfirmBubble>(
-            browser, anchor.get(), tab_helper.get()));
-      },
-      playlist_tab_helper_->GetWeakPtr(),
-      // |Browser| outlives TabHelper so it's okay to bind raw ptr here
-      browser_.get(), icon_view_->GetWeakPtr());
-
-  CloseAndRun(std::move(show_confirm_bubble));
+  ShowBubble(std::make_unique<PlaylistConfirmBubble>(
+      browser_.get(), icon_view_.get(), playlist_tab_helper_.get()));
 }
 
 void PlaylistAddBubble::InitListView() {
