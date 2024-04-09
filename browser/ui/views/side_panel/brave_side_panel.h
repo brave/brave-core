@@ -48,10 +48,13 @@ class BraveSidePanel : public views::View,
   ~BraveSidePanel() override;
 
   void SetPanelWidth(int width);
+  double GetAnimationValue() const;
   void SetHorizontalAlignment(HorizontalAlignment alignment);
   HorizontalAlignment GetHorizontalAlignment();
   bool IsRightAligned();
   gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
+  bool IsClosing();
+  void DisableAnimationsForTesting() {}
 
   void set_fixed_contents_width(std::optional<int> fixed_width) {
     fixed_contents_width_ = fixed_width;
