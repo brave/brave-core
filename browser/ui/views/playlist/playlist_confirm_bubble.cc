@@ -222,26 +222,14 @@ void PlaylistConfirmBubble::RemoveFromPlaylist() {
 }
 
 void PlaylistConfirmBubble::MoreMediaInContents() {
-  auto show_add_bubble = base::BindOnce(
-      [](base::WeakPtr<PlaylistTabHelper> tab_helper, Browser* browser,
-         base::WeakPtr<PlaylistActionIconView> anchor) {
-        if (!tab_helper || !anchor) {
-          return;
-        }
+  if (!icon_view_->GetWeakPtr() || !playlist_tab_helper_->GetWeakPtr() ||
+      !playlist_tab_helper_->found_items().size()) {
+    return;
+  }
 
-        if (!tab_helper->found_items().size()) {
-          return;
-        }
-
-        ShowBubble(std::make_unique<PlaylistAddBubble>(
-            browser, anchor.get(), tab_helper.get(),
-            tab_helper->GetUnsavedItems()));
-      },
-      playlist_tab_helper_->GetWeakPtr(),
-      // |Browser| outlives TabHelper so it's okay to bind raw ptr here
-      browser_.get(), icon_view_->GetWeakPtr());
-
-  CloseAndRun(std::move(show_add_bubble));
+  ShowBubble(std::make_unique<PlaylistAddBubble>(
+      browser_.get(), icon_view_.get(), playlist_tab_helper_.get(),
+      playlist_tab_helper_->GetUnsavedItems()));
 }
 
 BEGIN_METADATA(PlaylistConfirmBubble)
