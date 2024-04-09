@@ -3,9 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-check_includes = false
-
 source_set("keystone_glue") {
+  check_includes = false
+
   sources = [
     "keystone_glue.h",
     "keystone_glue.mm",
