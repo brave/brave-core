@@ -363,7 +363,8 @@ interface PanelHandlerFactory {
                      pending_receiver<WalletAutoPinService>
                          brave_wallet_auto_pin_service,
                      pending_receiver<IpfsService>
-                         brave_wallet_ipfs_service_receiver);
+                         brave_wallet_ipfs_service_receiver,
+                     pending_receiver<BuyAndSellService> buy_and_sell_service);
 };
 
 interface PageHandlerFactory {
@@ -387,7 +388,8 @@ interface PageHandlerFactory {
                     pending_receiver<WalletPinService> brave_wallet_pin_service,
                     pending_receiver<WalletAutoPinService>
                         brave_wallet_auto_pin_service,
-                    pending_receiver<IpfsService> brave_wallet_ipfs_service);
+                    pending_receiver<IpfsService> brave_wallet_ipfs_service,
+                    pending_receiver<BuyAndSellService> buy_and_sell_service);
 };
 
 // Lifetime option in sync with CreatePermissionLifetimeOptions()
@@ -1198,7 +1200,9 @@ interface AssetRatioService {
 
   // Obtain list of top currencies and their market data
   GetCoinMarkets(string vs_asset, uint8 limit) => (bool success, array<CoinMarket> values);
+};
 
+interface BuyAndSellService {
   // Obtains the list of Setvice Providers
   // All parameters are optional
   GetServiceProviders(string countries, string fiat_currencies,

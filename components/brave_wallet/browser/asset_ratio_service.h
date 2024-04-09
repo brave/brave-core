@@ -91,88 +91,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   void EnableDummyPricesForTesting();
 
-  static GURL GetServiceProviderURL(const std::string& countries,
-                                    const std::string& fiat_currencies,
-                                    const std::string& crypto_currencies,
-                                    const std::string& service_providers,
-                                    const std::string& payment_method_types,
-                                    const std::string& statuses);
-
-  void GetServiceProviders(const std::string& countries,
-                           const std::string& fiat_currencies,
-                           const std::string& crypto_currencies,
-                           const std::string& service_providers,
-                           const std::string& payment_method_types,
-                           const std::string& statuses,
-                           GetServiceProvidersCallback callback) override;
-
-  void GetCryptoQuotes(const std::string& country,
-                       const std::string& source_currency_code,
-                       const std::string& destination_currency_code,
-                       const double source_amount,
-                       const std::string& account,
-                       GetCryptoQuotesCallback callback) override;
-
-  static GURL GetGetPaymentMethodsURL(const std::string& countries,
-                                      const std::string& fiat_currencies,
-                                      const std::string& crypto_currencies,
-                                      const std::string& service_providers,
-                                      const std::string& payment_method_types,
-                                      const std::string& statuses);
-
-  void GetPaymentMethods(const std::string& countries,
-                         const std::string& fiat_currencies,
-                         const std::string& crypto_currencies,
-                         const std::string& service_providers,
-                         const std::string& payment_method_types,
-                         const std::string& statuses,
-                         GetPaymentMethodsCallback callback) override;
-
-  static GURL GetFiatCurrenciesURL(const std::string& countries,
-                                   const std::string& fiat_currencies,
-                                   const std::string& crypto_currencies,
-                                   const std::string& service_providers,
-                                   const std::string& payment_method_types,
-                                   const std::string& statuses);
-
-  void GetFiatCurrencies(const std::string& countries,
-                         const std::string& fiat_currencies,
-                         const std::string& crypto_currencies,
-                         const std::string& service_providers,
-                         const std::string& payment_method_types,
-                         const std::string& statuses,
-                         GetFiatCurrenciesCallback callback) override;
-
-  static GURL GetCryptoCurrenciesURL(const std::string& countries,
-                                     const std::string& fiat_currencies,
-                                     const std::string& crypto_currencies,
-                                     const std::string& service_providers,
-                                     const std::string& payment_method_types,
-                                     const std::string& statuses);
-
-  void GetCryptoCurrencies(const std::string& countries,
-                           const std::string& fiat_currencies,
-                           const std::string& crypto_currencies,
-                           const std::string& service_providers,
-                           const std::string& payment_method_types,
-                           const std::string& statuses,
-                           GetCryptoCurrenciesCallback callback) override;
-
-  static GURL GetCountriesURL(const std::string& countries,
-                              const std::string& fiat_currencies,
-                              const std::string& crypto_currencies,
-                              const std::string& service_providers,
-                              const std::string& payment_method_types,
-                              const std::string& statuses);
-
-  void GetCountries(const std::string& countries,
-                    const std::string& fiat_currencies,
-                    const std::string& crypto_currencies,
-                    const std::string& service_providers,
-                    const std::string& payment_method_types,
-                    const std::string& statuses,
-                    GetCountriesCallback callback) override;
-
  private:
   friend class AssetRatioServiceUnitTest;
   FRIEND_TEST_ALL_PREFIXES(AssetRatioServiceUnitTest, GetStripeBuyURL);
@@ -203,24 +121,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
 
   void OnGetCoinMarkets(GetCoinMarketsCallback callback,
                         APIRequestResult api_request_result);
-
-  void OnGetServiceProviders(GetServiceProvidersCallback callback,
-                             APIRequestResult api_request_result);
-
-  void OnGetCryptoQuotes(GetCryptoQuotesCallback callback,
-                         APIRequestResult api_request_result);
-
-  void OnGetPaymentMethods(GetPaymentMethodsCallback callback,
-                           APIRequestResult api_request_result);
-
-  void OnGetFiatCurrencies(GetFiatCurrenciesCallback callback,
-                           APIRequestResult api_request_result);
-
-  void OnGetCryptoCurrencies(GetCryptoCurrenciesCallback callback,
-                             APIRequestResult api_request_result);
-
-  void OnGetCountries(GetCountriesCallback callback,
-                      APIRequestResult api_request_result);
 
   mojo::ReceiverSet<mojom::AssetRatioService> receivers_;
 

@@ -28,28 +28,6 @@ std::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
     const base::Value& json_value);
 
 std::optional<std::string> ParseStripeBuyURL(const base::Value& json_value);
-
-bool ParseMeldErrorResponse(const base::Value& json_value,
-                            std::vector<std::string>* errors);
-bool ParseServiceProviders(
-    const base::Value& json_value,
-    std::vector<mojom::ServiceProviderPtr>* service_providers);
-bool ParseCryptoQuotes(const base::Value& json_value,
-                       std::vector<mojom::CryptoQuotePtr>* quotes,
-                       std::string* error);
-bool ParsePaymentMethods(const base::Value& json_value,
-                         std::vector<mojom::PaymentMethodPtr>* payment_methods);
-
-bool ParseFiatCurrencies(const base::Value& json_value,
-                         std::vector<mojom::FiatCurrencyPtr>* fiat_currencies);
-
-bool ParseCryptoCurrencies(
-    const base::Value& json_value,
-    std::vector<mojom::CryptoCurrencyPtr>* crypto_currencies);
-
-bool ParseCountries(const base::Value& json_value,
-                    std::vector<mojom::CountryPtr>* countries);
-
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_RESPONSE_PARSER_H_

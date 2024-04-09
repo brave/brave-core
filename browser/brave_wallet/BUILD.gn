@@ -22,6 +22,8 @@ source_set("brave_wallet") {
     "brave_wallet_ipfs_service_factory.h",
     "brave_wallet_service_factory.cc",
     "brave_wallet_service_factory.h",
+    "buy_and_sell_service_factory.cc",
+    "buy_and_sell_service_factory.h",
     "json_rpc_service_factory.cc",
     "json_rpc_service_factory.h",
     "keyring_service_factory.cc",
