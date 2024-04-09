@@ -23,27 +23,28 @@
 
 namespace {
 
-bool ParseMeldLogos(const base::Value::Dict* logos, std::vector<std::string>& logo_images) {
-    if (!logos) {
-      return false;
-    }
-    if (const auto* dark_logo = logos->FindString("dark")) {
-      logo_images.push_back(*dark_logo);
-    }
-    if (const auto* dark_short_logo = logos->FindString("darkShort")) {
-      logo_images.push_back(*dark_short_logo);
-    }
-    if (const auto* light_logo = logos->FindString("light")) {
-      logo_images.push_back(*light_logo);
-    }
-    if (const auto* light_short_logo = logos->FindString("lightShort")) {
-      logo_images.push_back(*light_short_logo);
-    }
+bool ParseMeldLogos(const base::Value::Dict* logos,
+                    std::vector<std::string>& logo_images) {
+  if (!logos) {
+    return false;
+  }
+  if (const auto* dark_logo = logos->FindString("dark")) {
+    logo_images.push_back(*dark_logo);
+  }
+  if (const auto* dark_short_logo = logos->FindString("darkShort")) {
+    logo_images.push_back(*dark_short_logo);
+  }
+  if (const auto* light_logo = logos->FindString("light")) {
+    logo_images.push_back(*light_logo);
+  }
+  if (const auto* light_short_logo = logos->FindString("lightShort")) {
+    logo_images.push_back(*light_short_logo);
+  }
 
-    return true;
+  return true;
 }
 
-} //  namespace
+}  //  namespace
 
 namespace brave_wallet {
 
@@ -294,7 +295,8 @@ bool ParseServiceProviders(
     }
     sp->status = *sp_status;
 
-    const std::string* sp_service_provider = sp_item.GetDict().FindString("serviceProvider");
+    const std::string* sp_service_provider =
+        sp_item.GetDict().FindString("serviceProvider");
     if (!sp_service_provider) {
       return false;
     }
@@ -355,31 +357,31 @@ bool ParseMeldErrorResponse(const base::Value& json_value,
 bool ParseCryptoQuotes(const base::Value& json_value,
                        std::vector<mojom::CryptoQuotePtr>* quotes,
                        std::string* error) {
-// Parses results like this:
-// {
-//   "quotes": [
-//     {
-//       "transactionType": "CRYPTO_PURCHASE",
-//       "sourceAmount": 50,
-//       "sourceAmountWithoutFees": 43.97,
-//       "fiatAmountWithoutFees": 43.97,
-//       "destinationAmountWithoutFees": null,
-//       "sourceCurrencyCode": "USD",
-//       "countryCode": "US",
-//       "totalFee": 6.03,
-//       "networkFee": 3.53,
-//       "transactionFee": 2,
-//       "destinationAmount": 0.00066413,
-//       "destinationCurrencyCode": "BTC",
-//       "exchangeRate": 75286,
-//       "paymentMethodType": "APPLE_PAY",
-//       "customerScore": 20,
-//       "serviceProvider": "TRANSAK"
-//     }
-//   ],
-//   "message": null,
-//   "error": null
-// }
+  // Parses results like this:
+  // {
+  //   "quotes": [
+  //     {
+  //       "transactionType": "CRYPTO_PURCHASE",
+  //       "sourceAmount": 50,
+  //       "sourceAmountWithoutFees": 43.97,
+  //       "fiatAmountWithoutFees": 43.97,
+  //       "destinationAmountWithoutFees": null,
+  //       "sourceCurrencyCode": "USD",
+  //       "countryCode": "US",
+  //       "totalFee": 6.03,
+  //       "networkFee": 3.53,
+  //       "transactionFee": 2,
+  //       "destinationAmount": 0.00066413,
+  //       "destinationCurrencyCode": "BTC",
+  //       "exchangeRate": 75286,
+  //       "paymentMethodType": "APPLE_PAY",
+  //       "customerScore": 20,
+  //       "serviceProvider": "TRANSAK"
+  //     }
+  //   ],
+  //   "message": null,
+  //   "error": null
+  // }
   DCHECK(quotes);
   DCHECK(error);
 
@@ -398,7 +400,7 @@ bool ParseCryptoQuotes(const base::Value& json_value,
     return false;
   }
 
-  for(const auto& item : *response_quotes) {
+  for (const auto& item : *response_quotes) {
     if (!item.is_dict()) {
       LOG(ERROR)
           << "Invalid response, could not parse JSON, JSON is not a dict";
@@ -424,7 +426,8 @@ bool ParseCryptoQuotes(const base::Value& json_value,
     }
     quote->source_amount = *quote_amount;
 
-    auto quote_amount_without_fee = item.GetDict().FindDouble("sourceAmountWithoutFees");
+    auto quote_amount_without_fee =
+        item.GetDict().FindDouble("sourceAmountWithoutFees");
     if (!quote_amount_without_fee) {
       return false;
     }
@@ -436,7 +439,8 @@ bool ParseCryptoQuotes(const base::Value& json_value,
     }
     quote->total_fee = *quote_total_fee;
 
-    const std::string* quote_pp = item.GetDict().FindString("paymentMethodType");
+    const std::string* quote_pp =
+        item.GetDict().FindString("paymentMethodType");
     if (!quote_pp) {
       return false;
     }
@@ -447,13 +451,13 @@ bool ParseCryptoQuotes(const base::Value& json_value,
       return false;
     }
     quote->destination_amount = *quote_dest_amount;
-    
+
     const std::string* quote_sp = item.GetDict().FindString("serviceProvider");
     if (!quote_sp) {
       return false;
     }
     quote->service_provider_id = *quote_sp;
-    
+
     quotes->emplace_back(std::move(quote));
   }
 
@@ -463,18 +467,18 @@ bool ParseCryptoQuotes(const base::Value& json_value,
 bool ParsePaymentMethods(
     const base::Value& json_value,
     std::vector<mojom::PaymentMethodPtr>* payment_methods) {
-// Parses results like this:
-// [
-//   {
-//     "paymentMethod": "ACH",
-//     "name": "ACH",
-//     "paymentType": "BANK_TRANSFER",
-//     "logos": {
-//       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
-//       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
-//     }
-//   }
-// ]
+  // Parses results like this:
+  // [
+  //   {
+  //     "paymentMethod": "ACH",
+  //     "name": "ACH",
+  //     "paymentType": "BANK_TRANSFER",
+  //     "logos": {
+  //       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
+  //       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
+  //     }
+  //   }
+  // ]
   DCHECK(payment_methods);
 
   if (!json_value.is_list()) {
@@ -496,18 +500,20 @@ bool ParsePaymentMethods(
     }
     pm->name = *pm_name;
 
-    const std::string* pm_payment_method = pm_item.GetDict().FindString("paymentMethod");
+    const std::string* pm_payment_method =
+        pm_item.GetDict().FindString("paymentMethod");
     if (!pm_payment_method) {
       return false;
     }
     pm->payment_method = *pm_payment_method;
 
-    const std::string* pm_payment_type = pm_item.GetDict().FindString("paymentType");
+    const std::string* pm_payment_type =
+        pm_item.GetDict().FindString("paymentType");
     if (!pm_payment_type) {
       return false;
     }
     pm->payment_type = *pm_payment_type;
-    
+
     if (const auto* logos = pm_item.GetDict().FindDict("logos");
         !ParseMeldLogos(logos, pm->logo_images)) {
       return false;
@@ -518,17 +524,16 @@ bool ParsePaymentMethods(
   return true;
 }
 
-bool ParseFiatCurrencies(
-    const base::Value& json_value,
-    std::vector<mojom::FiatCurrencyPtr>* fiat_currencies) {
-// Parses results like this:
-// [
-//   {
-//     "currencyCode": "AFN",
-//     "name": "Afghani",
-//     "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-//   }
-// ]
+bool ParseFiatCurrencies(const base::Value& json_value,
+                         std::vector<mojom::FiatCurrencyPtr>* fiat_currencies) {
+  // Parses results like this:
+  // [
+  //   {
+  //     "currencyCode": "AFN",
+  //     "name": "Afghani",
+  //     "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+  //   }
+  // ]
 
   DCHECK(fiat_currencies);
 
@@ -549,13 +554,15 @@ bool ParseFiatCurrencies(
     }
     fc->name = *fc_name;
 
-    const std::string* fc_currency_code = fc_item.GetDict().FindString("currencyCode");
+    const std::string* fc_currency_code =
+        fc_item.GetDict().FindString("currencyCode");
     if (!fc_currency_code) {
       return false;
     }
     fc->currency_code = *fc_currency_code;
 
-    const std::string* fc_img_url = fc_item.GetDict().FindString("symbolImageUrl");
+    const std::string* fc_img_url =
+        fc_item.GetDict().FindString("symbolImageUrl");
     if (!fc_img_url) {
       return false;
     }
@@ -570,27 +577,29 @@ bool ParseFiatCurrencies(
 bool ParseCryptoCurrencies(
     const base::Value& json_value,
     std::vector<mojom::CryptoCurrencyPtr>* crypto_currencies) {
-// Parses results like this:
-// [
-//   {
-//     "currencyCode": "USDT_KCC",
-//     "name": "#REF!",
-//     "chainCode": "KCC",
-//     "chainName": "KuCoin Community Chain",
-//     "chainId": null,
-//     "contractAddress": null,
-//     "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-//   },
-//   {
-//     "currencyCode": "00",
-//     "name": "00 Token",
-//     "chainCode": "ETH",
-//     "chainName": "Ethereum",
-//     "chainId": "1",
-//     "contractAddress": null,
-//     "symbolImageUrl": "https://images-currency.meld.io/crypto/00/symbol.png"
-//   }
-// ]
+  // Parses results like this:
+  // [
+  //   {
+  //     "currencyCode": "USDT_KCC",
+  //     "name": "#REF!",
+  //     "chainCode": "KCC",
+  //     "chainName": "KuCoin Community Chain",
+  //     "chainId": null,
+  //     "contractAddress": null,
+  //     "symbolImageUrl":
+  //     "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+  //   },
+  //   {
+  //     "currencyCode": "00",
+  //     "name": "00 Token",
+  //     "chainCode": "ETH",
+  //     "chainName": "Ethereum",
+  //     "chainId": "1",
+  //     "contractAddress": null,
+  //     "symbolImageUrl":
+  //     "https://images-currency.meld.io/crypto/00/symbol.png"
+  //   }
+  // ]
   DCHECK(crypto_currencies);
 
   if (!json_value.is_list()) {
@@ -617,13 +626,15 @@ bool ParseCryptoCurrencies(
     }
     cc->currency_code = *cc_code;
 
-    const std::string* cc_chain_name = cc_item.GetDict().FindString("chainName");
+    const std::string* cc_chain_name =
+        cc_item.GetDict().FindString("chainName");
     if (!cc_chain_name) {
       return false;
     }
     cc->chain_name = *cc_chain_name;
 
-    const std::string* cc_chain_code = cc_item.GetDict().FindString("chainCode");
+    const std::string* cc_chain_code =
+        cc_item.GetDict().FindString("chainCode");
     if (!cc_chain_code) {
       return false;
     }
@@ -635,13 +646,15 @@ bool ParseCryptoCurrencies(
     }
     cc->chain_id = *cc_chain_id;
 
-    const std::string* cc_contract_addr = cc_item.GetDict().FindString("contractAddress");
+    const std::string* cc_contract_addr =
+        cc_item.GetDict().FindString("contractAddress");
     if (!cc_contract_addr) {
       return false;
     }
     cc->contract_address = *cc_contract_addr;
 
-    const std::string* cc_img_url = cc_item.GetDict().FindString("symbolImageUrl");
+    const std::string* cc_img_url =
+        cc_item.GetDict().FindString("symbolImageUrl");
     if (!cc_img_url) {
       return false;
     }
@@ -649,28 +662,27 @@ bool ParseCryptoCurrencies(
 
     crypto_currencies->emplace_back(std::move(cc));
   }
-  
+
   return true;
 }
 
-bool ParseCountries(
-    const base::Value& json_value,
-    std::vector<mojom::CountryPtr>* countries) {
-// Parses results like this:
-// [
-//   {
-//     "countryCode": "AF",
-//     "name": "Afghanistan",
-//     "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
-//     "regions": null
-//   },
-//   {
-//     "countryCode": "AL",
-//     "name": "Albania",
-//     "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
-//     "regions": null
-//   }
-// ]
+bool ParseCountries(const base::Value& json_value,
+                    std::vector<mojom::CountryPtr>* countries) {
+  // Parses results like this:
+  // [
+  //   {
+  //     "countryCode": "AF",
+  //     "name": "Afghanistan",
+  //     "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
+  //     "regions": null
+  //   },
+  //   {
+  //     "countryCode": "AL",
+  //     "name": "Albania",
+  //     "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
+  //     "regions": null
+  //   }
+  // ]
   DCHECK(countries);
 
   if (!json_value.is_list()) {
@@ -691,13 +703,15 @@ bool ParseCountries(
     }
     country->name = *cc_name;
 
-    const std::string* cc_code = country_item.GetDict().FindString("countryCode");
+    const std::string* cc_code =
+        country_item.GetDict().FindString("countryCode");
     if (!cc_code) {
       return false;
     }
     country->country_code = *cc_code;
 
-    const std::string* cc_img_url = country_item.GetDict().FindString("flagImageUrl");
+    const std::string* cc_img_url =
+        country_item.GetDict().FindString("flagImageUrl");
     if (!cc_img_url) {
       return false;
     }
@@ -705,7 +719,7 @@ bool ParseCountries(
 
     countries->emplace_back(std::move(country));
   }
-  
+
   return true;
 }
 

@@ -136,7 +136,7 @@ const std::string GetMeldAssetRatioBaseURL() {
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
           switches::kMeldAssetRatioDevUrl);
   if (ratios_url.empty()) {
-    ratios_url = "https://api.meld.io"; // TODO here we have to load value from venvironment
+    ratios_url = "https://api.meld.io";
   }
 
   return ratios_url;

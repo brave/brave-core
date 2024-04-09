@@ -114,11 +114,11 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                        GetCryptoQuotesCallback callback) override;
 
   static GURL GetGetPaymentMethodsURL(const std::string& countries,
-                         const std::string& fiat_currencies,
-                         const std::string& crypto_currencies,
-                         const std::string& service_providers,
-                         const std::string& payment_method_types,
-                         const std::string& statuses);
+                                      const std::string& fiat_currencies,
+                                      const std::string& crypto_currencies,
+                                      const std::string& service_providers,
+                                      const std::string& payment_method_types,
+                                      const std::string& statuses);
 
   void GetPaymentMethods(const std::string& countries,
                          const std::string& fiat_currencies,
@@ -129,11 +129,11 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                          GetPaymentMethodsCallback callback) override;
 
   static GURL GetFiatCurrenciesURL(const std::string& countries,
-                         const std::string& fiat_currencies,
-                         const std::string& crypto_currencies,
-                         const std::string& service_providers,
-                         const std::string& payment_method_types,
-                         const std::string& statuses);
+                                   const std::string& fiat_currencies,
+                                   const std::string& crypto_currencies,
+                                   const std::string& service_providers,
+                                   const std::string& payment_method_types,
+                                   const std::string& statuses);
 
   void GetFiatCurrencies(const std::string& countries,
                          const std::string& fiat_currencies,
@@ -144,26 +144,26 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                          GetFiatCurrenciesCallback callback) override;
 
   static GURL GetCryptoCurrenciesURL(const std::string& countries,
-                         const std::string& fiat_currencies,
-                         const std::string& crypto_currencies,
-                         const std::string& service_providers,
-                         const std::string& payment_method_types,
-                         const std::string& statuses);
+                                     const std::string& fiat_currencies,
+                                     const std::string& crypto_currencies,
+                                     const std::string& service_providers,
+                                     const std::string& payment_method_types,
+                                     const std::string& statuses);
 
   void GetCryptoCurrencies(const std::string& countries,
-                         const std::string& fiat_currencies,
-                         const std::string& crypto_currencies,
-                         const std::string& service_providers,
-                         const std::string& payment_method_types,
-                         const std::string& statuses,
-                         GetCryptoCurrenciesCallback callback) override;
+                           const std::string& fiat_currencies,
+                           const std::string& crypto_currencies,
+                           const std::string& service_providers,
+                           const std::string& payment_method_types,
+                           const std::string& statuses,
+                           GetCryptoCurrenciesCallback callback) override;
 
   static GURL GetCountriesURL(const std::string& countries,
-                         const std::string& fiat_currencies,
-                         const std::string& crypto_currencies,
-                         const std::string& service_providers,
-                         const std::string& payment_method_types,
-                         const std::string& statuses);
+                              const std::string& fiat_currencies,
+                              const std::string& crypto_currencies,
+                              const std::string& service_providers,
+                              const std::string& payment_method_types,
+                              const std::string& statuses);
 
   void GetCountries(const std::string& countries,
                     const std::string& fiat_currencies,
@@ -208,19 +208,19 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                              APIRequestResult api_request_result);
 
   void OnGetCryptoQuotes(GetCryptoQuotesCallback callback,
-                             APIRequestResult api_request_result);
+                         APIRequestResult api_request_result);
 
   void OnGetPaymentMethods(GetPaymentMethodsCallback callback,
-                             APIRequestResult api_request_result);
+                           APIRequestResult api_request_result);
 
   void OnGetFiatCurrencies(GetFiatCurrenciesCallback callback,
-                             APIRequestResult api_request_result);
+                           APIRequestResult api_request_result);
 
   void OnGetCryptoCurrencies(GetCryptoCurrenciesCallback callback,
                              APIRequestResult api_request_result);
 
   void OnGetCountries(GetCountriesCallback callback,
-                             APIRequestResult api_request_result);
+                      APIRequestResult api_request_result);
 
   mojo::ReceiverSet<mojom::AssetRatioService> receivers_;
 

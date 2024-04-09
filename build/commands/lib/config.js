@@ -255,6 +255,7 @@ const Config = function () {
   this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
   this.brave_services_key_id = getEnvConfig(['brave_services_key_id']) || ''
   this.service_key_aichat = getEnvConfig(['service_key_aichat']) || ''
+  this.meldApiKey = getEnvConfig(['meld_api_key']) || ''
   this.braveIOSDeveloperOptionsCode = getEnvConfig(['brave_ios_developer_options_code']) || ''
 }
 
@@ -431,6 +432,7 @@ Config.prototype.buildArgs = function () {
     enable_dangling_raw_ptr_feature_flag: false,
     brave_services_key_id: this.brave_services_key_id,
     service_key_aichat: this.service_key_aichat,
+    meld_api_key: this.meldApiKey,
     ...this.extraGnArgs,
   }
 

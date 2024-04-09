@@ -197,10 +197,6 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const APIRequestOptions& request_options,
     ResponseConversionCallback conversion_callback) {
 
-LOG(INFO) << "[MELD] APIRequestHelper::Request Method: " << method << " URL: " << url.spec() << " payload: " << payload
-<< " Headers: " << MapToString<std::string, std::string>(headers)
-;
-
   auto iter = CreateRequestURLLoaderHandler(
       method, url, payload, payload_content_type, request_options, headers,
       std::move(callback));
@@ -485,10 +481,6 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
     }
     raw_body = converted_body.value();
   }
-
-LOG(INFO) << "[MELD] APIRequestHelper::OnResponse Response URL: " << result.final_url() <<  " response_code:" << result.response_code() << " ErrCode: " << result.error_code() << " Body: " << raw_body
-<< " Headers: " << MapToString<std::string, std::string>(result.headers())
-;
 
   ParseJsonImpl(
       std::move(raw_body),

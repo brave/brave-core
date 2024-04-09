@@ -147,14 +147,15 @@ class AssetRatioServiceUnitTest : public testing::Test {
       const std::string& statuses,
       AssetRatioService::GetServiceProvidersCallback callback,
       const bool error_interceptor = false) {
-    if(!error_interceptor) {
+    if (!error_interceptor) {
       SetInterceptor(content);
     } else {
       SetErrorInterceptor("error");
     }
     base::RunLoop run_loop;
     asset_ratio_service_->GetServiceProviders(
-        countries, from_assets, to_assets, service_providers, payment_method_types, statuses,
+        countries, from_assets, to_assets, service_providers,
+        payment_method_types, statuses,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::ServiceProviderPtr> sps,
                 const std::optional<std::vector<std::string>>& errors) {
@@ -181,22 +182,24 @@ class AssetRatioServiceUnitTest : public testing::Test {
     asset_ratio_service_->GetCryptoQuotes(
         country, from_asset, to_asset, source_amount, account,
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::CryptoQuotePtr> quotes, const std::optional<std::vector<std::string>>& errors) {
+            [&](std::vector<mojom::CryptoQuotePtr> quotes,
+                const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(quotes), errors);
               run_loop.Quit();
             }));
-    run_loop.Run();    
+    run_loop.Run();
   }
 
-  void TestGetPaymentMethods(const std::string& content,
-                             const std::string& countries,
-                             const std::string& fiat_currencies,
-                             const std::string& crypto_currencies,
-                             const std::string& service_providers,
-                             const std::string& payment_method_types,
-                             const std::string& statuses,
-                             AssetRatioService::GetPaymentMethodsCallback callback,
-                             const bool error_interceptor = false) {
+  void TestGetPaymentMethods(
+      const std::string& content,
+      const std::string& countries,
+      const std::string& fiat_currencies,
+      const std::string& crypto_currencies,
+      const std::string& service_providers,
+      const std::string& payment_method_types,
+      const std::string& statuses,
+      AssetRatioService::GetPaymentMethodsCallback callback,
+      const bool error_interceptor = false) {
     if (!error_interceptor) {
       SetInterceptor(content);
     } else {
@@ -204,25 +207,27 @@ class AssetRatioServiceUnitTest : public testing::Test {
     }
     base::RunLoop run_loop;
     asset_ratio_service_->GetPaymentMethods(
-        countries, fiat_currencies, crypto_currencies, service_providers, payment_method_types, statuses,
+        countries, fiat_currencies, crypto_currencies, service_providers,
+        payment_method_types, statuses,
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::PaymentMethodPtr> payment_methods, const std::optional<std::vector<std::string>>& errors) {
+            [&](std::vector<mojom::PaymentMethodPtr> payment_methods,
+                const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(payment_methods), errors);
               run_loop.Quit();
             }));
-    run_loop.Run();    
-
+    run_loop.Run();
   }
 
-  void TestGetFiatCurrencies(const std::string& content,
-                             const std::string& countries,
-                             const std::string& fiat_currencies,
-                             const std::string& crypto_currencies,
-                             const std::string& service_providers,
-                             const std::string& payment_method_types,
-                             const std::string& statuses,
-                             AssetRatioService::GetFiatCurrenciesCallback callback,
-                             const bool error_interceptor = false) {
+  void TestGetFiatCurrencies(
+      const std::string& content,
+      const std::string& countries,
+      const std::string& fiat_currencies,
+      const std::string& crypto_currencies,
+      const std::string& service_providers,
+      const std::string& payment_method_types,
+      const std::string& statuses,
+      AssetRatioService::GetFiatCurrenciesCallback callback,
+      const bool error_interceptor = false) {
     if (!error_interceptor) {
       SetInterceptor(content);
     } else {
@@ -230,14 +235,15 @@ class AssetRatioServiceUnitTest : public testing::Test {
     }
     base::RunLoop run_loop;
     asset_ratio_service_->GetFiatCurrencies(
-        countries, fiat_currencies, crypto_currencies, service_providers, payment_method_types, statuses,
+        countries, fiat_currencies, crypto_currencies, service_providers,
+        payment_method_types, statuses,
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::FiatCurrencyPtr> fiat_currencies, const std::optional<std::vector<std::string>>& errors) {
+            [&](std::vector<mojom::FiatCurrencyPtr> fiat_currencies,
+                const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(fiat_currencies), errors);
               run_loop.Quit();
             }));
-    run_loop.Run();    
-
+    run_loop.Run();
   }
 
   void TestGetCryptoCurrencies(
@@ -677,15 +683,17 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Coinbase) {
 
 TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
   const auto url = AssetRatioService::GetServiceProviderURL(
-      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "");
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "");
   EXPECT_EQ(url.path(), "/service-providers");
   EXPECT_EQ(url.query(),
             "accountFilter=false&statuses=LIVE%2CRECENTLY_ADDED&countries=US%"
             "2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies=BTC%2CETH&"
-            "serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
+            "serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&paymentMethodTypes="
+            "MOBILE_WALLET%2CBANK_TRANSFER");
 
   TestGetServiceProvider(
-    R"([
+      R"([
   {
     "serviceProvider": "BANXA",
     "name": "Banxa",
@@ -721,39 +729,58 @@ TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
       "darkShort": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_dark.png",
       "lightShort": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_light.png"
     }
-  }])", "US", "USD", "ETH", "", "", "",
-      base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
-                                     const std::optional<std::vector<std::string>>& errors) {
-        EXPECT_FALSE(errors.has_value());
-        EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){
-          return item->name == "Banxa" && 
-            item->service_provider == "BANXA" &&
-            item->status == "LIVE" &&
-            item->web_site_url == "http://www.banxa.com" &&
-            !item->logo_images.empty();
-        }), 1);
-        EXPECT_EQ(base::ranges::count_if(sps, [](const auto& item){
-          return item->name == "Blockchain.com" && 
-          item->service_provider == "BLOCKCHAINDOTCOM" &&
-          item->status == "LIVE" &&
-            item->web_site_url == "https://www.blockchain.com" &&
-          !item->logo_images.empty();}), 1);
-      }));
+  }])",
+      "US", "USD", "ETH", "", "", "",
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::ServiceProviderPtr> sps,
+              const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_FALSE(errors.has_value());
+            EXPECT_EQ(base::ranges::count_if(
+                          sps,
+                          [](const auto& item) {
+                            return item->name == "Banxa" &&
+                                   item->service_provider == "BANXA" &&
+                                   item->status == "LIVE" &&
+                                   item->web_site_url ==
+                                       "http://www.banxa.com" &&
+                                   !item->logo_images.empty();
+                          }),
+                      1);
+            EXPECT_EQ(base::ranges::count_if(
+                          sps,
+                          [](const auto& item) {
+                            return item->name == "Blockchain.com" &&
+                                   item->service_provider ==
+                                       "BLOCKCHAINDOTCOM" &&
+                                   item->status == "LIVE" &&
+                                   item->web_site_url ==
+                                       "https://www.blockchain.com" &&
+                                   !item->logo_images.empty();
+                          }),
+                      1);
+          }));
 
-  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "", "", "",
-      base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
-                                     const std::optional<std::vector<std::string>>& errors) {
-        EXPECT_TRUE(errors.has_value());
-        EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
-      }));
-  TestGetServiceProvider("some wrone data", "US", "USD", "ETH", "", "", "",
-      base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
-                                     const std::optional<std::vector<std::string>>& errors) {
-        EXPECT_TRUE(errors.has_value());
-        EXPECT_EQ(*errors, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
-      }), true);
+  TestGetServiceProvider(
+      "some wrone data", "US", "USD", "ETH", "", "", "",
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::ServiceProviderPtr> sps,
+              const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
+          }));
+  TestGetServiceProvider(
+      "some wrone data", "US", "USD", "ETH", "", "", "",
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::ServiceProviderPtr> sps,
+              const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+          }),
+      true);
 
-  TestGetServiceProvider(R"({
+  TestGetServiceProvider(
+      R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
     "errors": [
@@ -762,14 +789,17 @@ TEST_F(AssetRatioServiceUnitTest, GetServiceProviders) {
     ],
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
-  })", "US", "USD", "ETH", "", "", "",
-  base::BindLambdaForTesting([&](std::vector<mojom::ServiceProviderPtr> sps,
-                                  const std::optional<std::vector<std::string>>& errors) {
-    EXPECT_TRUE(errors.has_value());
-    EXPECT_EQ(*errors, 
-      std::vector<std::string>({"[sourceAmount] must not be null", "[sourceCurrencyCode] must not be blank"})
-    );
-  }), false);
+  })",
+      "US", "USD", "ETH", "", "", "",
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::ServiceProviderPtr> sps,
+              const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>(
+                                   {"[sourceAmount] must not be null",
+                                    "[sourceCurrencyCode] must not be blank"}));
+          }),
+      false);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetCryptoQuotes) {
@@ -806,20 +836,21 @@ TEST_F(AssetRatioServiceUnitTest, GetCryptoQuotes) {
             EXPECT_EQ(base::ranges::count_if(
                           quotes,
                           [](const auto& item) {
-                            return item->transaction_type == "CRYPTO_PURCHASE" &&
-                              item->exchange_rate == 75286 &&
-                              item->source_amount == 50 &&
-                              item->source_amount_without_fee == 43.97 &&
-                              item->total_fee == 6.03 &&
-                              item->payment_method == "APPLE_PAY" &&
-                              item->destination_amount == 0.00066413 &&
-                              item->service_provider_id == "TRANSAK";  
+                            return item->transaction_type ==
+                                       "CRYPTO_PURCHASE" &&
+                                   item->exchange_rate == 75286 &&
+                                   item->source_amount == 50 &&
+                                   item->source_amount_without_fee == 43.97 &&
+                                   item->total_fee == 6.03 &&
+                                   item->payment_method == "APPLE_PAY" &&
+                                   item->destination_amount == 0.00066413 &&
+                                   item->service_provider_id == "TRANSAK";
                           }),
                       1);
           }));
 
-  TestGetCryptoQuotes("some wrong data",
-      "US", "USD", "BTC", 50, "btc account address",
+  TestGetCryptoQuotes(
+      "some wrong data", "US", "USD", "BTC", 50, "btc account address",
       base::BindLambdaForTesting(
           [](std::vector<mojom::CryptoQuotePtr> quotes,
              const std::optional<std::vector<std::string>>& errors) {
@@ -827,14 +858,16 @@ TEST_F(AssetRatioServiceUnitTest, GetCryptoQuotes) {
             EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
           }));
 
-  TestGetCryptoQuotes("some wrong data",
-      "US", "USD", "BTC", 50, "btc account address",
+  TestGetCryptoQuotes(
+      "some wrong data", "US", "USD", "BTC", 50, "btc account address",
       base::BindLambdaForTesting(
           [](std::vector<mojom::CryptoQuotePtr> quotes,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
-          }), true);
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+          }),
+      true);
 
   TestGetCryptoQuotes(
       R"({
@@ -870,19 +903,21 @@ TEST_F(AssetRatioServiceUnitTest, GetCryptoQuotes) {
             EXPECT_EQ(base::ranges::count_if(
                           quotes,
                           [](const auto& item) {
-                            return item->transaction_type == "CRYPTO_PURCHASE" &&
-                              item->exchange_rate == 75286 &&
-                              item->source_amount == 50 &&
-                              item->source_amount_without_fee == 43.97 &&
-                              item->total_fee == 6.03 &&
-                              item->payment_method == "APPLE_PAY" &&
-                              item->destination_amount == 0.00066413 &&
-                              item->service_provider_id == "TRANSAK";  
+                            return item->transaction_type ==
+                                       "CRYPTO_PURCHASE" &&
+                                   item->exchange_rate == 75286 &&
+                                   item->source_amount == 50 &&
+                                   item->source_amount_without_fee == 43.97 &&
+                                   item->total_fee == 6.03 &&
+                                   item->payment_method == "APPLE_PAY" &&
+                                   item->destination_amount == 0.00066413 &&
+                                   item->service_provider_id == "TRANSAK";
                           }),
                       1);
           }));
 
-TestGetCryptoQuotes(R"({
+  TestGetCryptoQuotes(
+      R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
     "errors": [
@@ -891,14 +926,17 @@ TestGetCryptoQuotes(R"({
     ],
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
-  })", "US", "USD", "BTC", 50, "btc account address",
-  base::BindLambdaForTesting([&](std::vector<mojom::CryptoQuotePtr> quotes,
-                                  const std::optional<std::vector<std::string>>& errors) {
-    EXPECT_TRUE(errors.has_value());
-    EXPECT_EQ(*errors, 
-      std::vector<std::string>({"[sourceAmount] must not be null", "[sourceCurrencyCode] must not be blank"})
-    );
-  }), false);
+  })",
+      "US", "USD", "BTC", 50, "btc account address",
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::CryptoQuotePtr> quotes,
+              const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>(
+                                   {"[sourceAmount] must not be null",
+                                    "[sourceCurrencyCode] must not be blank"}));
+          }),
+      false);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPaymentMethods) {
@@ -912,7 +950,8 @@ TEST_F(AssetRatioServiceUnitTest, GetPaymentMethods) {
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
 
-  TestGetPaymentMethods(R"([
+  TestGetPaymentMethods(
+      R"([
   {
     "paymentMethod": "ACH",
     "name": "ACH",
@@ -922,25 +961,27 @@ TEST_F(AssetRatioServiceUnitTest, GetPaymentMethods) {
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   }
-  ])", "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
-        base::BindLambdaForTesting(
+  ])",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
           [](std::vector<mojom::PaymentMethodPtr> payment_methods,
-             const std::optional<std::vector<std::string>>& errors){
-              EXPECT_FALSE(errors.has_value());
-              EXPECT_EQ(base::ranges::count_if(
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_FALSE(errors.has_value());
+            EXPECT_EQ(base::ranges::count_if(
                           payment_methods,
                           [](const auto& item) {
                             return item->payment_method == "ACH" &&
-                              item->name == "ACH" &&
-                              item->payment_type == "BANK_TRANSFER" &&
-                              !item->logo_images.empty();  
+                                   item->name == "ACH" &&
+                                   item->payment_type == "BANK_TRANSFER" &&
+                                   !item->logo_images.empty();
                           }),
                       1);
+          }));
 
-             }));
-
-  TestGetPaymentMethods("some wrong data",
-      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+  TestGetPaymentMethods(
+      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
+      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
           [](std::vector<mojom::PaymentMethodPtr> payment_methods,
              const std::optional<std::vector<std::string>>& errors) {
@@ -948,16 +989,20 @@ TEST_F(AssetRatioServiceUnitTest, GetPaymentMethods) {
             EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
           }));
 
-  TestGetPaymentMethods("some wrong data",
-      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+  TestGetPaymentMethods(
+      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
+      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
           [](std::vector<mojom::PaymentMethodPtr> payment_methods,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
-          }), true);
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+          }),
+      true);
 
-  TestGetPaymentMethods(R"({
+  TestGetPaymentMethods(
+      R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
     "errors": [
@@ -966,14 +1011,18 @@ TEST_F(AssetRatioServiceUnitTest, GetPaymentMethods) {
     ],
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
-  })", "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
-  base::BindLambdaForTesting([&](std::vector<mojom::PaymentMethodPtr> payment_methods,
-                                  const std::optional<std::vector<std::string>>& errors) {
-    EXPECT_TRUE(errors.has_value());
-    EXPECT_EQ(*errors, 
-      std::vector<std::string>({"[sourceAmount] must not be null", "[sourceCurrencyCode] must not be blank"})
-    );
-  }), false);          
+  })",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::PaymentMethodPtr> payment_methods,
+              const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>(
+                                   {"[sourceAmount] must not be null",
+                                    "[sourceCurrencyCode] must not be blank"}));
+          }),
+      false);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetFiatCurrencies) {
@@ -1109,33 +1158,39 @@ TEST_F(AssetRatioServiceUnitTest, GetCryptoCurrencies) {
       base::BindLambdaForTesting(
           [](std::vector<mojom::CryptoCurrencyPtr> crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());            
-            EXPECT_EQ(base::ranges::count_if(
-                          crypto_currencies,
-                          [](const auto& item) {
-                            return item->currency_code == "USDT_KCC" &&
-                                   item->name == "#REF!" &&
-                                   item->chain_code == "KCC" &&
-                                   item->chain_name == "KuCoin Community Chain" &&
-                                   item->chain_id == "0" &&
-                                   item->contract_address == "0xe41d2489571d322189246dafa5ebde1f4699f498" &&
-                                   item->symbol_image_url ==
-                                       "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png";
-                          }),
-                      1);
-            EXPECT_EQ(base::ranges::count_if(
-                          crypto_currencies,
-                          [](const auto& item) {
-                            return item->currency_code == "00" &&
-                                   item->name == "00 Token" &&
-                                   item->chain_code == "ETH" &&
-                                   item->chain_name == "Ethereum" &&
-                                   item->chain_id == "1" &&
-                                   item->contract_address == "0x111111111117dc0aa78b770fa6a738034120c302" &&
-                                   item->symbol_image_url ==
-                                       "https://images-currency.meld.io/crypto/00/symbol.png";
-                          }),
-                      1);
+            EXPECT_FALSE(errors.has_value());
+            EXPECT_EQ(
+                base::ranges::count_if(
+                    crypto_currencies,
+                    [](const auto& item) {
+                      return item->currency_code == "USDT_KCC" &&
+                             item->name == "#REF!" &&
+                             item->chain_code == "KCC" &&
+                             item->chain_name == "KuCoin Community Chain" &&
+                             item->chain_id == "0" &&
+                             item->contract_address ==
+                                 "0xe41d2489571d322189246dafa5ebde1f4699f498" &&
+                             item->symbol_image_url ==
+                                 "https://images-currency.meld.io/crypto/"
+                                 "USDT_KCC/symbol.png";
+                    }),
+                1);
+            EXPECT_EQ(
+                base::ranges::count_if(
+                    crypto_currencies,
+                    [](const auto& item) {
+                      return item->currency_code == "00" &&
+                             item->name == "00 Token" &&
+                             item->chain_code == "ETH" &&
+                             item->chain_name == "Ethereum" &&
+                             item->chain_id == "1" &&
+                             item->contract_address ==
+                                 "0x111111111117dc0aa78b770fa6a738034120c302" &&
+                             item->symbol_image_url ==
+                                 "https://images-currency.meld.io/crypto/00/"
+                                 "symbol.png";
+                    }),
+                1);
           }));
   TestGetCryptoCurrencies(
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
@@ -1213,25 +1268,27 @@ TEST_F(AssetRatioServiceUnitTest, GetCountries) {
       base::BindLambdaForTesting(
           [](std::vector<mojom::CountryPtr> countries,
              const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());            
-            EXPECT_EQ(base::ranges::count_if(
-                          countries,
-                          [](const auto& item) {
-                            return item->country_code == "AF" &&
-                                   item->name == "Afghanistan" &&
-                                   item->flag_image_url ==
-                                       "https://images-country.meld.io/AF/flag.svg";
-                          }),
-                      1);
-            EXPECT_EQ(base::ranges::count_if(
-                          countries,
-                          [](const auto& item) {
-                            return item->country_code == "AL" &&
-                                   item->name == "Albania" &&
-                                   item->flag_image_url ==
-                                       "https://images-country.meld.io/AL/flag.svg";
-                          }),
-                      1);
+            EXPECT_FALSE(errors.has_value());
+            EXPECT_EQ(
+                base::ranges::count_if(
+                    countries,
+                    [](const auto& item) {
+                      return item->country_code == "AF" &&
+                             item->name == "Afghanistan" &&
+                             item->flag_image_url ==
+                                 "https://images-country.meld.io/AF/flag.svg";
+                    }),
+                1);
+            EXPECT_EQ(
+                base::ranges::count_if(
+                    countries,
+                    [](const auto& item) {
+                      return item->country_code == "AL" &&
+                             item->name == "Albania" &&
+                             item->flag_image_url ==
+                                 "https://images-country.meld.io/AL/flag.svg";
+                    }),
+                1);
           }));
   TestGetCountries(
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
@@ -1277,7 +1334,6 @@ TEST_F(AssetRatioServiceUnitTest, GetCountries) {
                                     "[sourceCurrencyCode] must not be blank"}));
           }),
       false);
-
 }
 
 }  // namespace brave_wallet
