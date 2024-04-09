@@ -9,10 +9,10 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Utils
 import {
+  addLogoToToken,
   getUniqueAssets,
   sortNativeAndAndBatAssetsToTop
 } from '../../../utils/asset-utils'
-import { addLogoToToken } from '../../async/lib'
 import { mapLimit } from 'async'
 import { handleEndpointError } from '../../../utils/api-utils'
 
@@ -32,7 +32,8 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
       queryFn: async (_arg, _store, _extraOptions, baseQuery) => {
         try {
           const {
-            data: { blockchainRegistry }
+            data: { blockchainRegistry },
+            cache
           } = baseQuery(undefined)
           const { kRamp, kSardine, kTransak, kStripe, kCoinbase } =
             BraveWallet.OnRampProvider
@@ -71,45 +72,45 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
               await blockchainRegistry.getBuyTokens(kCoinbase, chainId)
           )
 
+          const updateLogo = async (token: BraveWallet.BlockchainToken) => {
+            const tokenLogo = await cache.getTokenLogo(token)
+            return addLogoToToken(token, tokenLogo)
+          }
+
           // add token logos
           const rampAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
               rampAssets.flatMap((p) => p.tokens),
               10,
-              async (token: BraveWallet.BlockchainToken) =>
-                await addLogoToToken(token)
+              updateLogo
             )
 
           const sardineAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
               sardineAssets.flatMap((p) => p.tokens),
               10,
-              async (token: BraveWallet.BlockchainToken) =>
-                await addLogoToToken(token)
+              updateLogo
             )
 
           const transakAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
               transakAssets.flatMap((p) => p.tokens),
               10,
-              async (token: BraveWallet.BlockchainToken) =>
-                await addLogoToToken(token)
+              updateLogo
             )
 
           const stripeAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
               stripeAssets.flatMap((p) => p.tokens),
               10,
-              async (token: BraveWallet.BlockchainToken) =>
-                await addLogoToToken(token)
+              updateLogo
             )
 
           const coinbaseAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
               coinbaseAssets.flatMap((p) => p.tokens),
               10,
-              async (token: BraveWallet.BlockchainToken) =>
-                await addLogoToToken(token)
+              updateLogo
             )
 
           // sort lists
