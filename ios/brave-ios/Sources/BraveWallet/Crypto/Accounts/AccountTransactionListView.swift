@@ -35,10 +35,10 @@ struct AccountTransactionListView: View {
       transactionTapped: { transaction in
         self.transactionDetails = activityStore.transactionDetailsStore(for: transaction)
       },
-      transactionActionTapped: { action, transaction in
+      transactionFollowUpActionTapped: { action, transaction in
         Task { @MainActor in
           guard
-            let errorMessage = await activityStore.handleTransactionAction(
+            let errorMessage = await activityStore.handleTransactionFollowUpAction(
               action,
               transaction: transaction
             )

@@ -77,8 +77,8 @@ extension BraveWalletTxService {
   }
 
   /// Handles the `TransactionAction` for a given transaction, returning error message if failed.
-  @MainActor func handleTransactionAction(
-    _ action: TransactionAction,
+  @MainActor func handleTransactionFollowUpAction(
+    _ action: TransactionFollowUpAction,
     transaction: BraveWallet.TransactionInfo
   ) async -> String? {
     switch action {

@@ -13,7 +13,7 @@ struct TransactionSection: Equatable, Identifiable {
   let transactions: [ParsedTransaction]
 }
 
-enum TransactionAction {
+enum TransactionFollowUpAction {
   case retry
   case cancel
   case speedUp
@@ -58,7 +58,8 @@ struct TransactionsListView: View {
   /// Called when a transaction is tapped.
   let transactionTapped: (BraveWallet.TransactionInfo) -> Void
   /// Called when retry transaction is tapped from context menu.
-  let transactionActionTapped: (TransactionAction, BraveWallet.TransactionInfo) -> Void
+  let transactionFollowUpActionTapped:
+    (TransactionFollowUpAction, BraveWallet.TransactionInfo) -> Void
 
   /// Returns `transactionSections` filtered using the `filter` value.
   var filteredTransactionSections: [TransactionSection] {
@@ -102,7 +103,7 @@ struct TransactionsListView: View {
                         .contextMenu(menuItems: {
                           if parsedTransaction.transaction.isRetryTransactionSupported {
                             Button {
-                              transactionActionTapped(.retry, parsedTransaction.transaction)
+                              transactionFollowUpActionTapped(.retry, parsedTransaction.transaction)
                             } label: {
                               Label(
                                 Strings.Wallet.retryTransactionButtonTitle,
@@ -112,19 +113,25 @@ struct TransactionsListView: View {
                           }
                           if parsedTransaction.transaction.isCancelOrSpeedUpTransactionSupported {
                             Button {
-                              transactionActionTapped(.cancel, parsedTransaction.transaction)
+                              transactionFollowUpActionTapped(
+                                .cancel,
+                                parsedTransaction.transaction
+                              )
                             } label: {
                               Label(
-                                TransactionAction.cancel.buttonTitle,
-                                braveSystemImage: TransactionAction.cancel.braveSystemImage
+                                TransactionFollowUpAction.cancel.buttonTitle,
+                                braveSystemImage: TransactionFollowUpAction.cancel.braveSystemImage
                               )
                             }
                             Button {
-                              transactionActionTapped(.speedUp, parsedTransaction.transaction)
+                              transactionFollowUpActionTapped(
+                                .speedUp,
+                                parsedTransaction.transaction
+                              )
                             } label: {
                               Label(
-                                TransactionAction.speedUp.buttonTitle,
-                                braveSystemImage: TransactionAction.speedUp.braveSystemImage
+                                TransactionFollowUpAction.speedUp.buttonTitle,
+                                braveSystemImage: TransactionFollowUpAction.speedUp.braveSystemImage
                               )
                             }
                           }
@@ -206,7 +213,7 @@ struct TransactionsListView_Previews: PreviewProvider {
       errorMessage: .constant(nil),
       filtersButtonTapped: {},
       transactionTapped: { _ in },
-      transactionActionTapped: { _, _ in }
+      transactionFollowUpActionTapped: { _, _ in }
     )
   }
 }

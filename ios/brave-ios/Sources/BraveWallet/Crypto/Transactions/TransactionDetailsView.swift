@@ -135,12 +135,12 @@ struct TransactionDetailsView: View {
             WalletLoadingButton(
               isLoading: transactionDetailsStore.isLoadingTransactionAction,
               action: {
-                handleTransactionAction(.retry)
+                handleTransactionFollowUpAction(.retry)
               },
               label: {
                 Label(
-                  TransactionAction.retry.buttonTitle,
-                  braveSystemImage: TransactionAction.retry.braveSystemImage
+                  TransactionFollowUpAction.retry.buttonTitle,
+                  braveSystemImage: TransactionFollowUpAction.retry.braveSystemImage
                 )
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
@@ -160,12 +160,12 @@ struct TransactionDetailsView: View {
             WalletLoadingButton(
               isLoading: transactionDetailsStore.isLoadingTransactionAction,
               action: {
-                handleTransactionAction(.speedUp)
+                handleTransactionFollowUpAction(.speedUp)
               },
               label: {
                 Label(
-                  TransactionAction.speedUp.buttonTitle,
-                  braveSystemImage: TransactionAction.speedUp.braveSystemImage
+                  TransactionFollowUpAction.speedUp.buttonTitle,
+                  braveSystemImage: TransactionFollowUpAction.speedUp.braveSystemImage
                 )
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
@@ -176,10 +176,10 @@ struct TransactionDetailsView: View {
             WalletLoadingButton(
               isLoading: transactionDetailsStore.isLoadingTransactionAction,
               action: {
-                handleTransactionAction(.cancel)
+                handleTransactionFollowUpAction(.cancel)
               },
               label: {
-                Text(TransactionAction.cancel.buttonTitle)
+                Text(TransactionFollowUpAction.cancel.buttonTitle)
                   .multilineTextAlignment(.center)
                   .foregroundColor(Color(.braveBlurple))
                   .font(BraveButtonSize.large.font)
@@ -199,9 +199,10 @@ struct TransactionDetailsView: View {
     }
   }
 
-  private func handleTransactionAction(_ action: TransactionAction) {
+  private func handleTransactionFollowUpAction(_ action: TransactionFollowUpAction) {
     Task { @MainActor in
-      guard let errorMessage = await transactionDetailsStore.handleTransactionAction(action) else {
+      guard let errorMessage = await transactionDetailsStore.handleTransactionFollowUpAction(action)
+      else {
         dismiss()
         return
       }

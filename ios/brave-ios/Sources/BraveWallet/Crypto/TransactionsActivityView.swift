@@ -25,7 +25,7 @@ struct TransactionsActivityView: View {
       transactionTapped: {
         transactionDetails = store.transactionDetailsStore(for: $0)
       },
-      transactionActionTapped: store.handleTransactionAction
+      transactionFollowUpActionTapped: store.handleTransactionFollowUpAction
     )
     .onAppear {
       store.update()

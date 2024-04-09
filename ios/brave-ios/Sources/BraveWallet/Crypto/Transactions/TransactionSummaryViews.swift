@@ -611,12 +611,6 @@ private struct TransactionStatusBubble: View {
         if status.shouldShowLoadingAnimation {
           ProgressView()
             .progressViewStyle(.braveCircular(size: .mini))
-        } else {
-          Image(braveSystemName: "leo.loading.spinner")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .foregroundColor(Color(braveSystemName: .textDisabled))
-            .padding(2)
         }
       }
   }
@@ -636,7 +630,7 @@ extension BraveWallet.TransactionStatus {
   /// If we should show transaction status as loading
   fileprivate var shouldShowLoadingAnimation: Bool {
     switch self {
-    case .unapproved, .submitted:
+    case .unapproved, .approved, .submitted:
       return true
     default:
       return false

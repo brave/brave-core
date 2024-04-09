@@ -257,8 +257,8 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  @MainActor func handleTransactionAction(
-    _ action: TransactionAction
+  @MainActor func handleTransactionFollowUpAction(
+    _ action: TransactionFollowUpAction
   ) async -> String? {
     guard !isLoadingTransactionAction else {
       return nil
@@ -266,7 +266,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
     self.isLoadingTransactionAction = true
     defer { self.isLoadingTransactionAction = false }
     guard
-      let errorMessage = await txService.handleTransactionAction(
+      let errorMessage = await txService.handleTransactionFollowUpAction(
         action,
         transaction: transaction
       )

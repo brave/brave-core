@@ -248,13 +248,13 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  func handleTransactionAction(
-    _ action: TransactionAction,
+  func handleTransactionFollowUpAction(
+    _ action: TransactionFollowUpAction,
     transaction: BraveWallet.TransactionInfo
   ) {
     Task { @MainActor in
       guard
-        let errorMessage = await txService.handleTransactionAction(
+        let errorMessage = await txService.handleTransactionFollowUpAction(
           action,
           transaction: transaction
         )

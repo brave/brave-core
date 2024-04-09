@@ -316,10 +316,10 @@ struct AssetDetailView: View {
             transactionTapped: { tx in
               self.transactionDetails = assetDetailStore.transactionDetailsStore(for: tx)
             },
-            transactionActionTapped: { action, tx in
+            transactionFollowUpActionTapped: { action, tx in
               Task { @MainActor in
                 guard
-                  let errorMessage = await assetDetailStore.handleTransactionAction(
+                  let errorMessage = await assetDetailStore.handleTransactionFollowUpAction(
                     action,
                     transaction: tx
                   )
