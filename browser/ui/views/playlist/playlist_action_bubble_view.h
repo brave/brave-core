@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
@@ -22,30 +23,28 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   METADATA_HEADER(PlaylistActionBubbleView, views::BubbleDialogDelegateView)
  public:
   static void ShowBubble(Browser* browser,
-                         PlaylistActionIconView* anchor,
-                         PlaylistTabHelper* playlist_tab_helper);
+                         base::WeakPtr<PlaylistActionIconView> anchor,
+                         base::WeakPtr<PlaylistTabHelper> playlist_tab_helper);
   static bool IsShowingBubble();
   static void CloseBubble();
   static views::BubbleDialogDelegateView* GetBubble();
 
- protected:
-  static void ShowBubble(
-      std::unique_ptr<views::BubbleDialogDelegateView> bubble);
-
-  PlaylistActionBubbleView(Browser* browser,
-                           PlaylistActionIconView* anchor,
-                           PlaylistTabHelper* playlist_tab_helper);
-
   ~PlaylistActionBubbleView() override;
+
+ protected:
+  static void ShowBubble(std::unique_ptr<PlaylistActionBubbleView> bubble);
+
+  PlaylistActionBubbleView(
+      Browser* browser,
+      base::WeakPtr<PlaylistActionIconView> anchor,
+      base::WeakPtr<PlaylistTabHelper> playlist_tab_helper);
 
   // views::BubbleDialogDelegateView:
   void WindowClosing() override;
 
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<PlaylistTabHelper> playlist_tab_helper_ = nullptr;
-
-  // Our anchor.
-  raw_ptr<PlaylistActionIconView> icon_view_ = nullptr;
+  base::WeakPtr<PlaylistActionIconView> icon_view_;  // Our anchor.
+  base::WeakPtr<PlaylistTabHelper> playlist_tab_helper_;
 };
 }  // namespace playlist
 

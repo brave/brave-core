@@ -72,9 +72,11 @@ END_METADATA
 
 PlaylistConfirmBubble::PlaylistConfirmBubble(
     Browser* browser,
-    PlaylistActionIconView* anchor,
-    PlaylistTabHelper* playlist_tab_helper)
-    : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper) {
+    base::WeakPtr<PlaylistActionIconView> anchor,
+    base::WeakPtr<PlaylistTabHelper> playlist_tab_helper)
+    : PlaylistActionBubbleView(browser,
+                               std::move(anchor),
+                               std::move(playlist_tab_helper)) {
   // What this looks like:
   // https://user-images.githubusercontent.com/5474642/243532057-4bbbe779-47a1-4c3a-bd34-ce1334cf1d1d.png
   set_margins({});
@@ -87,7 +89,7 @@ PlaylistConfirmBubble::PlaylistConfirmBubble(
           views::BoxLayout::CrossAxisAlignment::kStretch);
   ResetChildViews();
 
-  playlist_tab_helper_observation_.Observe(playlist_tab_helper_);
+  playlist_tab_helper_observation_.Observe(playlist_tab_helper_.get());
 }
 
 PlaylistConfirmBubble::~PlaylistConfirmBubble() = default;
@@ -202,7 +204,8 @@ void PlaylistConfirmBubble::OpenInPlaylist() {
 
 void PlaylistConfirmBubble::ChangeFolder() {
   PlaylistActionDialog::Show<PlaylistMoveDialog>(
-      static_cast<BrowserView*>(browser_->window()), playlist_tab_helper_);
+      static_cast<BrowserView*>(browser_->window()),
+      playlist_tab_helper_.get());
 }
 
 void PlaylistConfirmBubble::RemoveFromPlaylist() {
@@ -222,13 +225,13 @@ void PlaylistConfirmBubble::RemoveFromPlaylist() {
 }
 
 void PlaylistConfirmBubble::MoreMediaInContents() {
-  if (!icon_view_->GetWeakPtr() || !playlist_tab_helper_->GetWeakPtr() ||
+  if (!icon_view_ || !playlist_tab_helper_ ||
       !playlist_tab_helper_->found_items().size()) {
     return;
   }
 
   ShowBubble(std::make_unique<PlaylistAddBubble>(
-      browser_.get(), icon_view_.get(), playlist_tab_helper_.get(),
+      browser_, icon_view_, playlist_tab_helper_,
       playlist_tab_helper_->GetUnsavedItems()));
 }
 
