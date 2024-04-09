@@ -29,6 +29,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 #include "chrome/grit/theme_resources.h"
 #include "third_party/skia/include/core/SkColor.h"
@@ -100,11 +101,19 @@ base::OnceClosure BraveTabContainer::LockLayout() {
 }
 
 void BraveTabContainer::AddedToWidget() {
+  TabContainerImpl::AddedToWidget();
+
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
     auto* split_view_data = SplitViewBrowserData::FromBrowser(
         const_cast<Browser*>(tab_slot_controller_->GetBrowser()));
-    CHECK(split_view_data);
-    split_view_data_observation_.Observe(split_view_data);
+    if (!split_view_data) {
+      // Can be null if browser isn't normal type browser.
+      return;
+    }
+
+    if (!split_view_data_observation_.IsObserving()) {
+      split_view_data_observation_.Observe(split_view_data);
+    }
   }
 }
 
