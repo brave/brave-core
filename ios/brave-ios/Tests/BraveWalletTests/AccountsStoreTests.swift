@@ -102,7 +102,7 @@ import XCTest
 
   let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
 
-  func testUpdate(with bitcoinTestnetEnabled: Bool) async {
+  func updateHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.showTestNetworks.value = true
     Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let ethBalanceWei =
@@ -346,7 +346,10 @@ import XCTest
   }
 
   func testUpdate() async {
-    await testUpdate(with: false)
-    await testUpdate(with: true)
+    await updateHelper(bitcoinTestnetEnabled: false)
+  }
+
+  func testUpdateBitcoinTestnet() async {
+    await updateHelper(bitcoinTestnetEnabled: true)
   }
 }

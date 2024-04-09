@@ -618,7 +618,7 @@ import XCTest
   }
 
   /// Test `assetGroups` will be sorted to from smallest to highest fiat value when `sortOrder` filter is `valueAsc`.
-  func testFilterSort(with bitcoinTestnetEnabled: Bool) async {
+  func filterSortHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.showTestNetworks.value = true
     Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
@@ -743,8 +743,11 @@ import XCTest
   }
 
   func testFilterSort() async {
-    await testFilterSort(with: false)
-    await testFilterSort(with: true)
+    await filterSortHelper(bitcoinTestnetEnabled: false)
+  }
+
+  func testFilterSortBitcoinTestnet() async {
+    await filterSortHelper(bitcoinTestnetEnabled: true)
   }
 
   /// Test `assetGroups` will be filtered to remove small balances when `hideSmallBalances` filter is true.
@@ -835,9 +838,10 @@ import XCTest
   }
 
   /// Test `assetGroups` will be filtered by accounts when `accounts` filter is has de-selected accounts.
-  func testFilterAccounts(with bitcoinTesnetEnabled: Bool) async {
+  func filterAccountsHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.showTestNetworks.value = true
-    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTesnetEnabled
+    // test without bitcoin testnet enabled
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
     let accountsExpectation = expectation(description: "update-accounts")
     store.$assetGroups
@@ -856,8 +860,8 @@ import XCTest
           return
         }
         // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Goerli, FIL on mainnet and testnet, BTC on mainnet and testnet
-        let assetGroupNumber = bitcoinTesnetEnabled ? 8 : 7
-        XCTAssertEqual(group.assets.count, bitcoinTesnetEnabled)
+        let assetGroupNumber: Int = bitcoinTestnetEnabled ? 8 : 7
+        XCTAssertEqual(group.assets.count, assetGroupNumber)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
           group.assets[safe: 0]?.token.symbol,
@@ -908,14 +912,14 @@ import XCTest
           group.assets[safe: 5]?.token.symbol,
           self.btcMainnet.nativeToken.symbol
         )
-        var goerliOffset = 6
-        if bitcoinTesnetEnabled {
+        var goerliOffset: Int = 6
+        if bitcoinTestnetEnabled {
           // BTC testnet (value = $0)
           XCTAssertEqual(
             group.assets[safe: 6]?.token.symbol,
             self.btcMainnet.nativeToken.symbol
           )
-          var goerliOffset = 7
+          goerliOffset = 7
         }
         // ETH Goerli (value = $0)
         XCTAssertEqual(
@@ -950,8 +954,11 @@ import XCTest
   }
 
   func testFilterAccounts() async {
-    await testFilterSort(with: false)
-    await testFilterSort(with: true)
+    await filterAccountsHelper(bitcoinTestnetEnabled: false)
+  }
+
+  func testFilterAccountsWithBitcoinTestnet() async {
+    await filterAccountsHelper(bitcoinTestnetEnabled: true)
   }
 
   /// Test `assetGroups` will be filtered by network when `networks` filter is has de-selected networks.
@@ -1056,7 +1063,7 @@ import XCTest
 
   /// Test `assetGroups` will be grouped by account when `GroupBy` filter is assigned `.account`.
   /// Additionally, test de-selecting/hiding one of the available accounts.
-  func testGroupByAccounts(with bitcoinTestnetEnabled: Bool) async {
+  func groupByAccountsHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.showTestNetworks.value = true
     Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
@@ -1370,13 +1377,16 @@ import XCTest
   }
 
   func testGroupByAccounts() async {
-    await testGroupByAccounts(with: false)
-    await testGroupByAccounts(with: true)
+    await groupByAccountsHelper(bitcoinTestnetEnabled: false)
+  }
+
+  func testGroupByAccountsBitcoinTestnet() async {
+    await groupByAccountsHelper(bitcoinTestnetEnabled: true)
   }
 
   /// Test `assetGroups` will be grouped by network when `GroupBy` filter is assigned `.network`.
   /// Additionally, test de-selecting/hiding one of the available networks.
-  func testGroupByNetworks(with bitcoinTestnetEnabled: Bool) async {
+  func groupByNetworksHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.showTestNetworks.value = true
     Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
@@ -1619,8 +1629,11 @@ import XCTest
   }
 
   func testGroupByNetworks() async {
-    await testGroupByNetworks(with: false)
-    await testGroupByNetworks(with: true)
+    await groupByNetworksHelper(bitcoinTestnetEnabled: false)
+  }
+
+  func testGroupByNetworkBitcoinTestnet() async {
+    await groupByNetworksHelper(bitcoinTestnetEnabled: true)
   }
 }
 
