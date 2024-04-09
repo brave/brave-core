@@ -52,8 +52,9 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
     return;
   }
 
-  playlist::PlaylistActionBubbleView::ShowBubble(browser_, this,
-                                                 playlist_tab_helper);
+  playlist::PlaylistActionBubbleView::ShowBubble(
+      browser_, weak_ptr_factory_.GetWeakPtr(),
+      playlist_tab_helper->GetWeakPtr());
 }
 
 base::WeakPtr<PlaylistActionIconView> PlaylistActionIconView::GetWeakPtr() {

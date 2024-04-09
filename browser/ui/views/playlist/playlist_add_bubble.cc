@@ -103,23 +103,26 @@ BEGIN_METADATA(LoadingSpinner)
 END_METADATA
 }  // namespace
 
-PlaylistAddBubble::PlaylistAddBubble(Browser* browser,
-                                     PlaylistActionIconView* anchor,
-                                     PlaylistTabHelper* playlist_tab_helper)
+PlaylistAddBubble::PlaylistAddBubble(
+    Browser* browser,
+    base::WeakPtr<PlaylistActionIconView> anchor,
+    base::WeakPtr<PlaylistTabHelper> playlist_tab_helper)
     : PlaylistAddBubble(browser,
-                        anchor,
+                        std::move(anchor),
                         playlist_tab_helper,
                         playlist_tab_helper->found_items()) {}
 
 PlaylistAddBubble::PlaylistAddBubble(
     Browser* browser,
-    PlaylistActionIconView* anchor,
-    PlaylistTabHelper* playlist_tab_helper,
+    base::WeakPtr<PlaylistActionIconView> anchor,
+    base::WeakPtr<PlaylistTabHelper> playlist_tab_helper,
     const std::vector<mojom::PlaylistItemPtr>& items)
-    : PlaylistActionBubbleView(browser, anchor, playlist_tab_helper),
+    : PlaylistActionBubbleView(browser,
+                               std::move(anchor),
+                               std::move(playlist_tab_helper)),
       thumbnail_provider_(
-          std::make_unique<ThumbnailProvider>(playlist_tab_helper)) {
-  playlist_tab_helper_observation_.Observe(playlist_tab_helper_);
+          std::make_unique<ThumbnailProvider>(playlist_tab_helper_.get())) {
+  playlist_tab_helper_observation_.Observe(playlist_tab_helper_.get());
   // What this looks like:
   // https://user-images.githubusercontent.com/5474642/243532255-f82fc740-eea0-4c52-b43a-378ab703d229.png
   SetTitle(l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_TO_PLAYLIST));
@@ -154,7 +157,7 @@ PlaylistAddBubble::PlaylistAddBubble(
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
   SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, false);
 
-  if (!playlist_tab_helper->is_adding_items()) {
+  if (!playlist_tab_helper_->is_adding_items()) {
     InitListView();
   }
 }
@@ -175,12 +178,13 @@ void PlaylistAddBubble::OnAddedItemFromTabHelper(
     return SizeToContents();
   }
 
-  if (!icon_view_->GetWeakPtr() || !playlist_tab_helper_->GetWeakPtr()) {
+  CHECK(playlist_tab_helper_);
+  if (!icon_view_) {
     return;
   }
 
-  ShowBubble(std::make_unique<PlaylistConfirmBubble>(
-      browser_.get(), icon_view_.get(), playlist_tab_helper_.get()));
+  ShowBubble(std::make_unique<PlaylistConfirmBubble>(browser_, icon_view_,
+                                                     playlist_tab_helper_));
 }
 
 void PlaylistAddBubble::InitListView() {

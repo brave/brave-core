@@ -23,14 +23,14 @@ views::BubbleDialogDelegateView* g_bubble = nullptr;
 // static
 void PlaylistActionBubbleView::ShowBubble(
     Browser* browser,
-    PlaylistActionIconView* anchor,
-    PlaylistTabHelper* playlist_tab_helper) {
+    base::WeakPtr<PlaylistActionIconView> anchor,
+    base::WeakPtr<PlaylistTabHelper> playlist_tab_helper) {
   if (!playlist_tab_helper->saved_items().empty()) {
-    ShowBubble(std::make_unique<PlaylistConfirmBubble>(browser, anchor,
-                                                       playlist_tab_helper));
+    ShowBubble(std::make_unique<PlaylistConfirmBubble>(
+        browser, std::move(anchor), std::move(playlist_tab_helper)));
   } else if (!playlist_tab_helper->found_items().empty()) {
-    ShowBubble(std::make_unique<PlaylistAddBubble>(browser, anchor,
-                                                   playlist_tab_helper));
+    ShowBubble(std::make_unique<PlaylistAddBubble>(
+        browser, std::move(anchor), std::move(playlist_tab_helper)));
   }
 }
 
@@ -52,7 +52,7 @@ views::BubbleDialogDelegateView* PlaylistActionBubbleView::GetBubble() {
 
 // static
 void PlaylistActionBubbleView::ShowBubble(
-    std::unique_ptr<views::BubbleDialogDelegateView> bubble) {
+    std::unique_ptr<PlaylistActionBubbleView> bubble) {
   if (g_bubble) {
     g_bubble->GetWidget()->Close();
   }
@@ -65,12 +65,15 @@ void PlaylistActionBubbleView::ShowBubble(
 
 PlaylistActionBubbleView::PlaylistActionBubbleView(
     Browser* browser,
-    PlaylistActionIconView* anchor,
-    PlaylistTabHelper* playlist_tab_helper)
-    : BubbleDialogDelegateView(anchor, views::BubbleBorder::Arrow::TOP_RIGHT),
+    base::WeakPtr<PlaylistActionIconView> anchor,
+    base::WeakPtr<PlaylistTabHelper> playlist_tab_helper)
+    : BubbleDialogDelegateView(anchor.get(),
+                               views::BubbleBorder::Arrow::TOP_RIGHT),
       browser_(browser),
-      playlist_tab_helper_(playlist_tab_helper),
-      icon_view_(anchor) {}
+      icon_view_(std::move(anchor)),
+      playlist_tab_helper_(std::move(playlist_tab_helper)) {
+  CHECK(browser_ && icon_view_ && playlist_tab_helper_);
+}
 
 PlaylistActionBubbleView::~PlaylistActionBubbleView() = default;
 

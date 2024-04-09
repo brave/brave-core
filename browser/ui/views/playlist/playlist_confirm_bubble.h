@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
@@ -25,8 +26,8 @@ class PlaylistConfirmBubble : public PlaylistActionBubbleView,
   METADATA_HEADER(PlaylistConfirmBubble, PlaylistActionBubbleView)
  public:
   PlaylistConfirmBubble(Browser* browser,
-                        PlaylistActionIconView* anchor,
-                        PlaylistTabHelper* playlist_tab_helper);
+                        base::WeakPtr<PlaylistActionIconView> anchor,
+                        base::WeakPtr<PlaylistTabHelper> playlist_tab_helper);
   ~PlaylistConfirmBubble() override;
 
   // PlaylistTabHelperObserver:
