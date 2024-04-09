@@ -34,8 +34,8 @@ public class AccountSelectorActivity extends BraveWalletBaseActivity
         implements AccountSelectorItemListener {
     private static final String TAG = "AccountSelector";
 
-    private static final List<Integer> SUPPORTED_COIN_TYPES =
-            Arrays.asList(CoinType.ETH, CoinType.SOL, CoinType.FIL);
+    private static final List<Integer> SUPPORTED_COIN_TYPES_ON_DAPPS =
+            Arrays.asList(CoinType.ETH, CoinType.SOL);
 
     private KeyringModel mKeyringModel;
     private RecyclerView mRVNetworkSelector;
@@ -109,7 +109,7 @@ public class AccountSelectorActivity extends BraveWalletBaseActivity
                                     // TODO(apaymyshev): Why I'm not allowed to select imported
                                     // account?
                                     if (accountInfo.accountId.kind != AccountKind.IMPORTED
-                                            && SUPPORTED_COIN_TYPES.contains(
+                                            && SUPPORTED_COIN_TYPES_ON_DAPPS.contains(
                                                     accountInfo.accountId.coin)) {
                                         accountSelectorItemModelList.add(
                                                 AccountSelectorItemModel.makeForAccountInfo(
