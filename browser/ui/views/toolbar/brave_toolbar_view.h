@@ -46,7 +46,6 @@ class BraveToolbarView : public ToolbarView,
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
   void OnShowBookmarksButtonChanged();
-  void OnShowWalletButtonChanged();
   void ShowBookmarkBubble(const GURL& url, bool already_bookmarked) override;
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
@@ -75,8 +74,6 @@ class BraveToolbarView : public ToolbarView,
 #endif
 
   BooleanPrefMember show_bookmarks_button_;
-
-  BooleanPrefMember show_wallet_button_;
 
   BooleanPrefMember location_bar_is_wide_;
 
