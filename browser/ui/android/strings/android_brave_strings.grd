@@ -3089,9 +3089,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_DESCRIPTION" desc="Add account modal create account Filecoin description">
       Store FIL asset
     </message>
-    <!-- <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_BITCOIN_DESCRIPTION" desc="Add account modal create account Bitcoin description">
-      Store BTC assets
-    </message> -->
     <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_DESCRIPTION" desc="Create Account Tab Description">
       You don’t yet have a <ph name="ACCOUNT_TYPE"><ex>Solana</ex>%1$s</ph> account. Create one now?
     </message>
@@ -3110,9 +3107,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_FIL_NAME" desc="Name of FIL cointype" translateable="false">
       Filecoin
     </message>
-    <!-- <message name="IDS_WALLET_BTC_NAME" desc="Name of BTC cointype" translateable="false">
-      Bitcoin
-    </message> -->
     <message name="IDS_WALLET_FILECOIN_MAINNET" desc="Name of Filecoin Mainnet" translateable="false">
       Filecoin Mainnet
     </message>
