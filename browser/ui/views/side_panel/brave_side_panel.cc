@@ -101,6 +101,10 @@ gfx::Size BraveSidePanel::GetMinimumSize() const {
   return gfx::Size(sidebar::kDefaultSidePanelWidth, 0);
 }
 
+bool BraveSidePanel::IsClosing() {
+  return false;
+}
+
 void BraveSidePanel::AddedToWidget() {
   resize_widget_ = std::make_unique<SidePanelResizeWidget>(
       this, static_cast<BraveBrowserView*>(browser_view_), this);
@@ -122,6 +126,10 @@ void BraveSidePanel::Layout(PassKey) {
   }
 
   children()[0]->SetBoundsRect(GetContentsBounds());
+}
+
+double BraveSidePanel::GetAnimationValue() const {
+  return 1;
 }
 
 void BraveSidePanel::SetPanelWidth(int width) {
