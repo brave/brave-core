@@ -32,7 +32,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined
   },
   {
-    text: 'The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a hummingbird both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and piranhas both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.',
+    text: 'The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.',
     characterType: mojom.CharacterType.ASSISTANT,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
     actionType: mojom.ActionType.UNSPECIFIED,
@@ -46,7 +46,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined
   },
   {
-    text: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
+    text: `## How We Created an Accessible, Scalable Color Palette\n\nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor communication between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product design needs.`,
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
