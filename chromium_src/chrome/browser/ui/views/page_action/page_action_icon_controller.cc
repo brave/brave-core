@@ -34,26 +34,26 @@ constexpr bool kSupportsSpeedreaderActionIconView = false;
 // Circumvent creation of CookieControlsIconView in
 // PageActionIconController::Init's switch statement by injecting a case
 // with a non-existent value created above.
-#define kCookieControls                                                       \
-  kCookieControls:                                                            \
-  break;                                                                      \
-  case brave::kPlaylistPageActionIconType:                                    \
-    if constexpr (kSupportsPlaylistActionIconView) {                          \
-      playlist_action_icon_view_ = add_page_action_icon(                      \
-          type, std::make_unique<PlaylistActionIconView>(                     \
-                    params.command_updater, params.browser,                   \
-                    params.icon_label_bubble_delegate,                        \
-                    params.page_action_icon_delegate));                       \
-    }                                                                         \
-    break;                                                                    \
-  case brave::kBravePlayerPageActionIconType:                                 \
-    if constexpr (kSupportsBravePlayerActionIconView) {                       \
-      add_page_action_icon(type, std::make_unique<BravePlayerActionIconView>( \
-                                     params.command_updater, *params.browser, \
-                                     params.icon_label_bubble_delegate,       \
-                                     params.page_action_icon_delegate));      \
-    }                                                                         \
-    break;                                                                    \
+#define kCookieControls                                                        \
+  kCookieControls:                                                             \
+  break;                                                                       \
+  case brave::kPlaylistPageActionIconType:                                     \
+    if constexpr (kSupportsPlaylistActionIconView) {                           \
+      playlist_action_icon_view_ = add_page_action_icon(                       \
+          type, std::make_unique<PlaylistActionIconView>(                      \
+                    params.command_updater, params.browser,                    \
+                    params.icon_label_bubble_delegate,                         \
+                    params.page_action_icon_delegate));                        \
+    }                                                                          \
+    break;                                                                     \
+  case brave::kBravePlayerPageActionIconType:                                  \
+    if constexpr (kSupportsBravePlayerActionIconView) {                        \
+      add_page_action_icon(type, std::make_unique<BravePlayerActionIconView>(  \
+                                     params.command_updater, *params.browser,  \
+                                     params.icon_label_bubble_delegate,        \
+                                     params.page_action_icon_delegate));       \
+    }                                                                          \
+    break;                                                                     \
   case brave::kSpeedreaderPageActionIconType:                                  \
     if constexpr (kSupportsSpeedreaderActionIconView) {                        \
       add_page_action_icon(                                                    \
