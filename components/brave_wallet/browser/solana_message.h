@@ -82,19 +82,38 @@ class SolanaMessage {
     return instructions_;
   }
 
+  const std::vector<SolanaAddress>& static_account_keys() const {
+    return static_account_keys_;
+  }
+
   mojom::SolanaMessageVersion version() const { return version_; }
 
   // Returns true if transaction begins with a valid advance nonce instruction.
   // https://docs.rs/solana-sdk/1.18.9/src/solana_sdk/transaction/versioned/mod.rs.html#192
   bool UsesDurableNonce() const;
 
+  // Returns whether the priority fee was added.
+  bool AddPriorityFee(uint32_t compute_units, uint64_t fee_per_compute_unit);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);
+  FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, AddPriorityFee);
+  FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, UsesPriorityFee);
 
   static void GetUniqueAccountMetas(
       const std::string& fee_payer,
       const std::vector<SolanaInstruction>& instructions,
       std::vector<SolanaAccountMeta>* unique_account_metas);
+
+  static bool ProcessAccountMetas(
+      const std::vector<SolanaAccountMeta>& unique_account_metas,
+      std::vector<SolanaAddress>& static_accounts,
+      uint16_t& num_required_signatures,
+      uint16_t& num_readonly_signed_accounts,
+      uint16_t& num_readonly_unsigned_accounts);
+
+  // Returns true if transaction begins with a valid advance nonce instruction.
+  bool UsesPriorityFee() const;
 
   mojom::SolanaMessageVersion version_;
   std::string recent_blockhash_;

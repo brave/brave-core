@@ -51,6 +51,10 @@ std::optional<bool> ParseIsBlockhashValid(const base::Value& json_value);
 std::optional<std::vector<mojom::SPLTokenAmountPtr>> ParseGetSPLTokenBalances(
     const base::Value& json_value);
 
+std::optional<uint64_t> ParseSimulateTransaction(const base::Value& json_value);
+std::optional<std::vector<std::pair<uint64_t, uint64_t>>>
+ParseGetSolanaPrioritizationFees(const base::Value& json_value);
+
 base::OnceCallback<std::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo();
 base::OnceCallback<std::optional<std::string>(const std::string& raw_response)>

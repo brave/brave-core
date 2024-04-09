@@ -1299,6 +1299,7 @@ const string kSolanaEd25519SigVerifyProgramId =
   "Ed25519SigVerify111111111111111111111111111";
 const string kSolanaKeccakSecp256kProgramId =
   "KeccakSecp256k11111111111111111111111111111";
+const string kSolanaComputeBudgetProgramId = "ComputeBudget111111111111111111111111111111";
 
 // It is required to keep these chain IDs lowercase ASCII
 const string kMainnetChainId = "0x1";
@@ -1944,8 +1945,8 @@ interface SolanaTxManagerProxy {
       uint8 decimals)
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
 
-  GetEstimatedTxFee(string chain_id, string tx_meta_id)
-    => (uint64 fee, SolanaProviderError error, string error_message);
+  GetSolanaTxFeeEstimation(string chain_id, string tx_meta_id)
+    => (SolanaFeeEstimation fee, SolanaProviderError error, string error_message);
 
   // Get transaction data from transaction bytes encoded in base64 format.
   //
@@ -2409,6 +2410,15 @@ enum SolanaTokenInstruction {
   kInitializeMint2 = 20,
 };
 
+// https://docs.rs/solana-sdk/1.18.14/src/solana_sdk/compute_budget.rs.html#25-39
+enum SolanaComputeBudgetInstruction {
+  kUnused = 0,
+  kRequestHeapFrame = 1,
+  kSetComputeUnitLimit = 2,
+  kSetComputeUnitPrice = 3,
+  kSetLoadedAccountsDataSizeLimit = 4,
+};
+
 // Solana instruction parameter names shared between C++ backend and UI.
 // Note: UI can add names they need here, and please update
 // solana_instruction_data_decoder.cc to use the same constant.
@@ -2479,6 +2489,17 @@ struct SolanaMessageHeader {
   uint8 num_readonly_unsigned_accounts;
 };
 
+// https://github.com/solana-labs/solana/blob/ced8f6a512c61e0dd5308095ae8457add4a39e94/program-runtime/src/prioritization_fee.rs#L1-L2C41
+const uint64 kMicroLamportsPerLamport = 1000000;
+
+struct SolanaFeeEstimation {
+  uint64 base_fee;
+
+  // Priority fee = compute units * fee_per_compute_unit
+  uint32 compute_units;
+  uint64 fee_per_compute_unit;
+};
+
 struct SolanaTxData {
   string recent_blockhash;
   uint64 last_valid_block_height;
@@ -2502,6 +2523,8 @@ struct SolanaTxData {
   // signAllTransactions provider APIs, which includes serialized message and
   // signatures from partial_sign.
   SolanaSignTransactionParam? sign_transaction_param;
+
+  SolanaFeeEstimation? fee_estimation;
 };
 
 // This is used by BraveWalletProviderDelegate::RequestPermissions for us to

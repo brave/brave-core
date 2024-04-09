@@ -305,8 +305,13 @@ extension BraveWallet.TestSolanaTxManagerProxy {
     solTxManagerProxy._makeTokenProgramTransferTxData = { _, _, _, _, _, _, completion in
       completion(.init(), .success, "")
     }
-    solTxManagerProxy._estimatedTxFee = { _, _, completion in
-      completion(UInt64(0), .success, "")
+    solTxManagerProxy._solanaTxFeeEstimation = { _, _, completion in
+      let feeEstimation = BraveWallet.SolanaFeeEstimation(
+        baseFee: UInt64(0),
+        computeUnits: UInt32(0),
+        feePerComputeUnit: UInt64(0)
+      )
+      completion(feeEstimation, .success, "")
     }
 
     return solTxManagerProxy

@@ -998,11 +998,15 @@ export class MockedWalletApiProxy {
   solanaTxManagerProxy: Partial<
     InstanceType<typeof BraveWallet.SolanaTxManagerProxyInterface>
   > = {
-    getEstimatedTxFee: async (chainId, txMetaId) => {
+    getSolanaTxFeeEstimation: async (chainId, txMetaId) => {
       return {
         error: 0,
         errorMessage: '',
-        fee: BigInt(100)
+        fee: {
+          baseFee: BigInt(0),
+          computeUnits: 0,
+          feePerComputeUnit: BigInt(0),
+        }
       }
     }
   }

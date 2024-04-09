@@ -144,7 +144,17 @@ class TransactionsActivityStoreTests: XCTestCase {
     }
 
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    solTxManagerProxy._estimatedTxFee = { $2(UInt64(1), .success, "") }
+    solTxManagerProxy._solanaTxFeeEstimation = { _, _, completion in
+      completion(
+        BraveWallet.SolanaFeeEstimation(
+          baseFee: UInt64(1),
+          computeUnits: UInt32(0),
+          feePerComputeUnit: UInt64(0)
+        ),
+        .success,
+        ""
+      )
+    }
 
     let mockUserManager = TestableWalletUserAssetManager()
     mockUserManager._getAllUserAssetsInNetworkAssets = { [weak self] networks, _ in

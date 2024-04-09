@@ -219,10 +219,10 @@ class TxService : public KeyedService,
       const mojom::TransactionType tx_type,
       mojom::SolanaSendTransactionOptionsPtr send_options,
       MakeTxDataFromBase64EncodedTransactionCallback callback) override;
-
-  void GetEstimatedTxFee(const std::string& chain_id,
-                         const std::string& tx_meta_id,
-                         GetEstimatedTxFeeCallback callback) override;
+  void GetSolanaTxFeeEstimation(
+      const std::string& chain_id,
+      const std::string& tx_meta_id,
+      GetSolanaTxFeeEstimationCallback callback) override;
   void ProcessSolanaHardwareSignature(
       const std::string& chain_id,
       const std::string& tx_meta_id,

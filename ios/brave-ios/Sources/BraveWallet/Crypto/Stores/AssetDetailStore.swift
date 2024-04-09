@@ -540,7 +540,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   @MainActor private func updateSolEstimatedTxFeesCache(
     _ solTransactions: [BraveWallet.TransactionInfo]
   ) async {
-    let fees = await solTxManagerProxy.estimatedTxFees(for: solTransactions)
+    let fees = await solTxManagerProxy.solanaTxFeeEstimations(for: solTransactions)
     for (key, value) in fees {  // update cached values
       self.solEstimatedTxFeesCache[key] = value
     }

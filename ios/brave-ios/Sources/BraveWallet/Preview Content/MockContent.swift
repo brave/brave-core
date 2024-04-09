@@ -390,7 +390,8 @@ extension BraveWallet.TransactionInfo {
           staticAccountKeys: [],
           addressTableLookups: [],
           send: nil,
-          signTransactionParam: nil
+          signTransactionParam: nil,
+          feeEstimation: nil
         )
       ),
       txStatus: .confirmed,
@@ -429,7 +430,8 @@ extension BraveWallet.TransactionInfo {
           staticAccountKeys: [],
           addressTableLookups: [],
           send: nil,
-          signTransactionParam: nil
+          signTransactionParam: nil,
+          feeEstimation: nil
         )
       ),
       txStatus: .confirmed,

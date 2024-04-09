@@ -7,8 +7,8 @@ import BraveCore
 
 extension BraveWalletSolanaTxManagerProxy {
 
-  /// Fetches the estimatedTxFee for an array of transactions
-  @MainActor func estimatedTxFees(
+  /// Fetches the solanaTxFeeEstimation for an array of transactions
+  @MainActor func solanaTxFeeEstimations(
     for transactions: [BraveWallet.TransactionInfo]
   ) async -> [String: UInt64] {
     return await withTaskGroup(
@@ -16,8 +16,11 @@ extension BraveWalletSolanaTxManagerProxy {
       body: { @MainActor group in
         for tx in transactions {
           group.addTask { @MainActor in
-            let (fee, _, _) = await self.estimatedTxFee(chainId: tx.chainId, txMetaId: tx.id)
-            return [tx.id: fee]
+            let (fee, _, _) = await self.solanaTxFeeEstimation(chainId: tx.chainId, txMetaId: tx.id)
+            let priorityFee =
+              UInt64(fee.computeUnits) * fee.feePerComputeUnit * BraveWallet.MicroLamportsPerLamport
+            let totalFee = fee.baseFee + priorityFee
+            return [tx.id: totalFee]
           }
         }
         var estimatedFees: [String: UInt64] = [:]

@@ -31,6 +31,8 @@ std::string getTokenAccountsByOwner(const std::string& pubkey,
                                     const std::string& program_id);
 std::string isBlockhashValid(const std::string& blockhash,
                              const std::optional<std::string>& commitment);
+std::string simulateTransaction(const std::string& unsigned_tx);
+std::string getRecentPrioritizationFees();
 
 }  // namespace solana
 

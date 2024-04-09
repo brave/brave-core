@@ -411,6 +411,63 @@ std::optional<bool> ParseIsBlockhashValid(const base::Value& json_value) {
   return *is_valid;
 }
 
+std::optional<uint64_t> ParseSimulateTransaction(
+    const base::Value& json_value) {
+  auto result = ParseResultDict(json_value);
+  if (!result) {
+    return std::nullopt;
+  }
+
+  const auto* value = result->FindDict("value");
+  if (!value) {
+    return std::nullopt;
+  }
+
+  auto* err = value->FindString("err");
+  if (err) {
+    return std::nullopt;
+  }
+
+  uint64_t units_consumed;
+  if (!GetUint64FromDictValue(*value, "unitsConsumed", false,
+                              &units_consumed)) {
+    return std::nullopt;
+  }
+
+  return units_consumed;
+}
+
+std::optional<std::vector<std::pair<uint64_t, uint64_t>>>
+ParseGetSolanaPrioritizationFees(const base::Value& json_value) {
+  std::vector<std::pair<uint64_t, uint64_t>> fees;
+  auto result = ParseResultList(json_value);
+  if (!result) {
+    return std::nullopt;
+  }
+
+  for (const auto& item : *result) {
+    const auto* fee_value = item.GetIfDict();
+    if (!fee_value) {
+      return std::nullopt;
+    }
+
+    uint64_t slot;
+    if (!GetUint64FromDictValue(*fee_value, "slot", false, &slot)) {
+      return std::nullopt;
+    }
+
+    uint64_t prioritizationFee;
+    if (!GetUint64FromDictValue(*fee_value, "prioritizationFee", false,
+                                &prioritizationFee)) {
+      return std::nullopt;
+    }
+
+    fees.push_back(std::make_pair(slot, prioritizationFee));
+  }
+
+  return fees;
+}
+
 base::OnceCallback<std::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo() {
   return base::BindOnce(&ConvertMultiUint64ToString,
