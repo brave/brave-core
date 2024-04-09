@@ -109,7 +109,6 @@ void ImmersiveModeControllerAura::SetEnabled(bool enabled) {
 
     // Move top chrome to the overlay view.
     browser_view_->OnImmersiveRevealStarted();
-    browser_view_->InvalidateLayout();
 
     browser_view_->GetWidget()->GetFocusManager()->AddFocusChangeListener(this);
     // Set up a root FocusTraversable that handles focus cycles between overlay
@@ -298,11 +297,6 @@ void ImmersiveModeControllerAura::OnViewBoundsChanged(
     return;
   }
   browser_view_->overlay_widget()->SetBounds(bounds);
-#if 0
-  if (auto* window = GetNSWindowMojo()) {
-    window->OnTopContainerViewBoundsChanged(bounds);
-  }
-#endif
 }
 
 void ImmersiveModeControllerAura::OnWidgetDestroying(views::Widget* widget) {

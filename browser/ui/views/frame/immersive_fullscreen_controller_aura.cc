@@ -274,6 +274,9 @@ void ImmersiveFullscreenControllerAura::LockRevealedState(
   ++revealed_lock_count_;
   Animate animate =
       (animate_reveal == ANIMATE_REVEAL_YES) ? ANIMATE_FAST : ANIMATE_NO;
+
+  // TODO(simonhong): Revisit here. Reveal is not started with ANIMATE_YES.
+  animate = ANIMATE_NO;
   MaybeStartReveal(animate);
 }
 
