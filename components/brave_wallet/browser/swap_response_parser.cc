@@ -693,61 +693,61 @@ mojom::LiFiErrorCode ParseLiFiErrorCode(
 mojom::LifiToolErrorCode ParseLiFiToolErrorCode(const std::string& value) {
   // No route was found for this action.
   if (value == "NO_POSSIBLE_ROUTE") {
-    return mojom::LifiToolErrorCode::NO_POSSIBLE_ROUTE;
+    return mojom::LifiToolErrorCode::kNoPossibleRoute;
   }
 
   // The tool's liquidity is insufficient.
   if (value == "INSUFFICIENT_LIQUIDITY") {
-    return mojom::LifiToolErrorCode::INSUFFICIENT_LIQUIDITY;
+    return mojom::LifiToolErrorCode::kInsufficientLiquidity;
   }
 
   // The third-party tool timed out.
   if (value == "TOOL_TIMEOUT") {
-    return mojom::LifiToolErrorCode::TOOL_TIMEOUT;
+    return mojom::LifiToolErrorCode::kToolTimeout;
   }
 
   // An unknown error occurred.
   if (value == "UNKNOWN_ERROR") {
-    return mojom::LifiToolErrorCode::UNKNOWN_ERROR;
+    return mojom::LifiToolErrorCode::kUnknownError;
   }
 
   // There was a problem getting on-chain data. Please try again later.
   if (value == "RPC_ERROR") {
-    return mojom::LifiToolErrorCode::RPC_ERROR;
+    return mojom::LifiToolErrorCode::kRpcError;
   }
 
   // The initial amount is too low to transfer using this tool.
   if (value == "AMOUNT_TOO_LOW") {
-    return mojom::LifiToolErrorCode::AMOUNT_TOO_LOW;
+    return mojom::LifiToolErrorCode::kAmountTooLow;
   }
 
   // The initial amount is too high to transfer using this tool.
   if (value == "AMOUNT_TOO_HIGH") {
-    return mojom::LifiToolErrorCode::AMOUNT_TOO_HIGH;
+    return mojom::LifiToolErrorCode::kAmountTooHigh;
   }
 
   // The fees are higher than the initial amount -- this would result in
   // negative resulting token.
   if (value == "FEES_HIGHER_THAN_AMOUNT" || value == "FEES_HGHER_THAN_AMOUNT") {
-    return mojom::LifiToolErrorCode::FEES_HIGHER_THAN_AMOUNT;
+    return mojom::LifiToolErrorCode::kFeesHigherThanAmount;
   }
 
   // This tool does not support different recipient addresses.
   if (value == "DIFFERENT_RECIPIENT_NOT_SUPPORTED") {
-    return mojom::LifiToolErrorCode::DIFFERENT_RECIPIENT_NOT_SUPPORTED;
+    return mojom::LifiToolErrorCode::kDifferentRecipientNotSupported;
   }
 
   // The third-party tool returned an error.
   if (value == "TOOL_SPECIFIC_ERROR") {
-    return mojom::LifiToolErrorCode::TOOL_SPECIFIC_ERROR;
+    return mojom::LifiToolErrorCode::kToolSpecificError;
   }
 
   // The tool cannot guarantee that the minimum amount will be met.
   if (value == "CANNOT_GUARANTEE_MIN_AMOUNT") {
-    return mojom::LifiToolErrorCode::CANNOT_GUARANTEE_MIN_AMOUNT;
+    return mojom::LifiToolErrorCode::kCannotGuaranteeMinAmount;
   }
 
-  return mojom::LifiToolErrorCode::UNKNOWN_ERROR;
+  return mojom::LifiToolErrorCode::kUnknownError;
 }
 
 mojom::LiFiErrorPtr ParseErrorResponse(const base::Value& json_value) {

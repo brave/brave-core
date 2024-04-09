@@ -741,28 +741,28 @@ struct LiFiEVMTransaction {
 
 enum LifiToolErrorCode {
   // No route was found for this action.
-  NO_POSSIBLE_ROUTE = 0,
+  kNoPossibleRoute = 0,
   // The tool's liquidity is insufficient.
-  INSUFFICIENT_LIQUIDITY = 1,
+  kInsufficientLiquidity = 1,
   // The third-party tool timed out.
-  TOOL_TIMEOUT = 2,
+  kToolTimeout = 2,
   // An unknown error occurred.
-  UNKNOWN_ERROR = 3,
+  kUnknownError = 3,
   // There was a problem getting on-chain data. Please try again later.
-  RPC_ERROR = 3,
+  kRpcError = 3,
   // he initial amount is too low to transfer using this tool.
-  AMOUNT_TOO_LOW = 4,
+  kAmountTooLow = 4,
   // The initial amount is too high to transfer using this tool.
-  AMOUNT_TOO_HIGH = 5,
+  kAmountTooHigh = 5,
   // The fees are higher than the initial amount.
   // This would result in negative resulting token.
-  FEES_HIGHER_THAN_AMOUNT = 6,
+  kFeesHigherThanAmount = 6,
   // This tool does not support different recipient addresses.
-  DIFFERENT_RECIPIENT_NOT_SUPPORTED = 7,
+  kDifferentRecipientNotSupported = 7,
   // The third-party tool returned an error.
-  TOOL_SPECIFIC_ERROR = 8,
+  kToolSpecificError = 8,
   // The tool cannot guarantee that the minimum amount will be met.
-  CANNOT_GUARANTEE_MIN_AMOUNT = 9
+  kCannotGuaranteeMinAmount = 9
 };
 
 // https://github.com/lifinance/types/blob/main/src/errors.ts
@@ -783,7 +783,7 @@ enum LiFiErrorCode {
 };
 
 struct LifiToolError {
-  string errorType;
+  string error_type;
   string code;
   string tool;
   string message;
