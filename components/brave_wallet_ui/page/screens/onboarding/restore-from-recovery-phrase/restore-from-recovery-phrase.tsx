@@ -115,7 +115,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
         setPhraseWords((prev) => {
           const newValues = [...prev]
           words.forEach((word, i) => {
-            if (i < recoveryPhraseLength) {
+            if (i < recoveryPhraseLength && !newValues[i]) {
               newValues[i] = word
             }
           })

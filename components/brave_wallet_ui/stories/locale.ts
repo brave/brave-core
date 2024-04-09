@@ -299,7 +299,7 @@ provideStrings({
   braveWalletVerifyRecoveryTitle: 'Verify recovery phrase',
   braveWalletVerifyRecoveryDescription:
     'Select the words in your recovery phrase in their correct order.',
-  braveWalletVerifyError: 'Recovery phrase doesn’t match.',
+  braveWalletVerifyError: 'Recovery phrase did not match, please try again.',
 
   // Create Password
   braveWalletCreatePasswordTitle: 'Create a new password',
@@ -309,7 +309,7 @@ provideStrings({
   braveWalletConfirmPasswordInput: 'Re-enter password',
   braveWalletCreatePasswordError: "Password criteria doesn't match.",
   braveWalletConfirmPasswordError: 'Passwords do not match',
-  braveWalletPasswordMatch: 'Match!',
+  braveWalletPasswordMatch: 'Passwords match',
   braveWalletPasswordIsStrong: 'Strong!',
   braveWalletPasswordIsMediumStrength: 'Medium',
   braveWalletPasswordIsWeak: 'Weak',

@@ -108,6 +108,13 @@ export const VerifyRecoveryPhrase = () => {
     }
   }
 
+  const onChangePhrase = (value: string) => {
+    // reset error state
+    if (showError) setShowError(false)
+
+    setEnteredPhrase(value)
+  }
+
   // memos
   const recoveryPhrase = React.useMemo(() => {
     return (mnemonic || '').split(' ')
@@ -145,7 +152,7 @@ export const VerifyRecoveryPhrase = () => {
         showError={showError}
         wordPosition={wordPosition}
         onHideError={() => setShowError(false)}
-        onChange={setEnteredPhrase}
+        onChange={onChangePhrase}
       />
       <BackButton
         onClick={() =>

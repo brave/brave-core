@@ -21,8 +21,8 @@ import { Row } from '../../shared/style'
 import { Column, VerticalSpace } from '../style'
 import {
   PasswordMatchRow,
-  PasswordMatchText,
-  PasswordMatchCheckmark,
+  PasswordValidationText,
+  PasswordValidationIcon,
   TooltipWrapper
 } from './new-password-input.styles'
 import { Asterisk, InputLabel } from './password-input-v2.style'
@@ -154,15 +154,26 @@ export const NewPasswordInput = ({
             value={confirmedPassword}
           >
             <PasswordMatchRow>
-              {passwordsMatch ? (
+              {confirmedPassword ? (
                 <>
-                  <PasswordMatchCheckmark />
-                  <PasswordMatchText>
-                    {getLocale('braveWalletPasswordMatch')}
-                  </PasswordMatchText>
+                  <PasswordValidationIcon
+                    isMatch={passwordsMatch}
+                    name={
+                      passwordsMatch
+                        ? 'check-circle-filled'
+                        : 'warning-triangle-outline'
+                    }
+                  />
+                  <PasswordValidationText isMatch={passwordsMatch}>
+                    {getLocale(
+                      passwordsMatch
+                        ? 'braveWalletPasswordMatch'
+                        : 'braveWalletConfirmPasswordError'
+                    )}
+                  </PasswordValidationText>
                 </>
               ) : (
-                <VerticalSpace space='44px' />
+                <VerticalSpace space={'20px'} />
               )}
             </PasswordMatchRow>
           </PasswordInput>
