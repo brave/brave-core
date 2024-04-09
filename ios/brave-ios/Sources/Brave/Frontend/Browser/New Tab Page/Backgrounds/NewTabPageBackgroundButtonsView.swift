@@ -58,7 +58,8 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
       activeView?.isHidden = false
     }
   }
-  var tappedPlayButton: ((Bool) -> Void)?
+  var tappedPlayButton: (() -> Void)?
+  var tappedBackgroundDuringAutoplay: (() -> Void)?
 
   private let imageCreditButton = ImageCreditButton().then {
     $0.isHidden = true
@@ -167,15 +168,15 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
   }
 
   @objc private func tappedVideoPlayButton() {
-    tappedPlayButton?(true)
+    tappedPlayButton?()
   }
 
   @objc private func tappedVideDuringAutoplay() {
-    tappedPlayButton?(false)
+    tappedBackgroundDuringAutoplay?()
   }
 
   func videoAutoplayStarted() {
-    let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(
+    let tapGesture = UITapGestureRecognizer(
       target: self,
       action: #selector(self.tappedVideDuringAutoplay)
     )
@@ -191,12 +192,13 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     if let playButtonGestureRecognizer = playButtonGestureRecognizer {
       removeGestureRecognizer(playButtonGestureRecognizer)
     }
+    playButtonGestureRecognizer = nil
   }
 
   private func updatePlayButtonVisibility() {
     let isLandscape = frame.width > frame.height
 
-    // Hide the play button if the video is in landscape mode on a phone
+    // Hide the play button if the video is in landscape mode on iPhone
     if isLandscape && UIDevice.isPhone {
       playButton.isHidden = true
     } else {

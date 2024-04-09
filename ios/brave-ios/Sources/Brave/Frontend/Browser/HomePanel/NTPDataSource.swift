@@ -26,7 +26,7 @@ enum NTPWallpaper {
     case .image(let background):
       imagePath = background.imagePath
     case .sponsoredImage(let background):
-      if isSponsoredVideo(background) {
+      if background.isVideoFile {
         return nil
       }
       imagePath = background.imagePath
@@ -58,10 +58,6 @@ enum NTPWallpaper {
     case .superReferral(let background, _):
       return background.focalPoint
     }
-  }
-
-  private func isSponsoredVideo(_ background: NTPSponsoredImageBackground) -> Bool {
-    return background.imagePath.pathExtension == "mp4"
   }
 }
 

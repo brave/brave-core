@@ -16,20 +16,19 @@ import UIKit
 /// playback on the New Tab Page. It handles events such as play finished,
 /// played 25 percent, autoplay finished, play cancelled, and video loaded.
 class NewTabPageVideoPlayer {
-  var autoplayFinishedEvent: ((Bool) -> Void)?
-  var videoLoadedEvent: ((Bool) -> Void)?
+  var autoplayFinishedEvent: (() -> Void)?
+  var autoplayStartedEvent: (() -> Void)?
   var playFinishedEvent: (() -> Void)?
   var playStartedEvent: (() -> Void)?
   var played25PercentEvent: (() -> Void)?
-  var playCancelledEvent: ((Bool) -> Void)?
+  var playCancelledEvent: (() -> Void)?
 
   var player: AVPlayer?
 
-  private var playStarted = false
-  private var previewAutoplayFinished = false
+  private var isPlayStarted = false
   private var isLoadFinished = false
-  private var isAutoplayStartedOnce = false
-  private var shouldStartAutoplayAfterLoad = false
+  private var isAutoplayRequestedOnce = false
+  private var isAutoplayFinished = false
   private var timeObserver: Any?
   private var playerObserver: NSKeyValueObservation?
 
@@ -38,24 +37,16 @@ class NewTabPageVideoPlayer {
   private var stopFrame: Int?
   private var frameRate: Float?
 
-  init(_ backgroundVideoPath: URL) {
-    let asset: AVURLAsset = AVURLAsset(url: backgroundVideoPath)
-    let item = AVPlayerItem(asset: asset)
-    player = AVPlayer(playerItem: item)
+  init(backgroundVideoPath: URL, videoInitiallyVisible: Bool) {
+    // Do not start autoplay if video is not initially visible
+    if !videoInitiallyVisible {
+      isAutoplayRequestedOnce = true
+      isAutoplayFinished = true
+    }
 
     stopFrame = parseStopFrameFromFilename(filename: backgroundVideoPath.lastPathComponent)
-
-    loadVideoTrackParams(
-      asset: asset
-    )
-
-    NotificationCenter.default
-      .addObserver(
-        self,
-        selector: #selector(self.playerDidFinishPlaying),
-        name: .AVPlayerItemDidPlayToEndTime,
-        object: item
-      )
+    resetPlayer(backgroundVideoPath)
+    loadVideoTrackParams(backgroundVideoPath)
   }
 
   deinit {
@@ -82,8 +73,8 @@ class NewTabPageVideoPlayer {
   }
 
   func startVideoPlayback() {
-    if !previewAutoplayFinished {
-      autoplayFinished(animated: false)
+    if !isAutoplayFinished {
+      autoplayFinished()
     }
 
     player?.isMuted = false
@@ -102,27 +93,27 @@ class NewTabPageVideoPlayer {
       }
 
     player?.play()
-    playStarted = true
+    isPlayStarted = true
 
     playStartedEvent?()
   }
 
-  func maybeCancelPlay(animated: Bool) {
-    if !previewAutoplayFinished && isLoadFinished {
-      autoplayFinished(animated: false)
+  func maybeCancelPlay() {
+    if !isAutoplayFinished && isLoadFinished {
+      autoplayFinished()
       player?.pause()
     }
 
-    if playStarted {
+    if isPlayStarted {
       player?.pause()
       if let timeObserver = timeObserver {
         player?.removeTimeObserver(timeObserver)
       }
       timeObserver = nil
 
-      playCancelledEvent?(animated)
+      playCancelledEvent?()
     }
-    playStarted = false
+    isPlayStarted = false
   }
 
   func togglePlay() -> Bool {
@@ -137,17 +128,32 @@ class NewTabPageVideoPlayer {
     return !isVideoInProgress
   }
 
-  private func loadVideoTrackParams(asset: AVURLAsset) {
+  func maybeStartAutoplay() {
+    // Start autoplay only once.
+    if isAutoplayRequestedOnce {
+      return
+    }
+    isAutoplayRequestedOnce = true
+
+    // Start autoplay after video is loaded
+    if !isLoadFinished {
+      return
+    }
+
+    startAutoplay()
+  }
+
+  private func loadVideoTrackParams(_ backgroundVideoPath: URL) {
     Task {
-      var loadedFrameRate: Float?
+      var frameRate: Float?
+      let asset: AVURLAsset = AVURLAsset(url: backgroundVideoPath)
       let isPlayable = try? await asset.load(.isPlayable)
       if let isPlayable = isPlayable,
         isPlayable,
         let videoTrack = try? await asset.loadTracks(withMediaType: .video).first
       {
-        loadedFrameRate = try? await videoTrack.load(.nominalFrameRate)
+        frameRate = try? await videoTrack.load(.nominalFrameRate)
       }
-      let frameRate = loadedFrameRate
 
       finishPlayerSetup(isPlayable: isPlayable, frameRate: frameRate)
     }
@@ -155,48 +161,33 @@ class NewTabPageVideoPlayer {
 
   private func finishPlayerSetup(isPlayable: Bool?, frameRate: Float?) {
     DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
+
       guard let isPlayable = isPlayable else {
-        self?.videoLoaded(succeeded: false)
+        self.videoLoaded(succeeded: false)
         return
       }
-      self?.videoLoaded(succeeded: isPlayable)
+      self.frameRate = frameRate
+      self.videoLoaded(succeeded: isPlayable)
     }
   }
 
-  func maybeStartAutoplay(shouldShowVideoBackground: Bool) {
-    if isAutoplayStartedOnce {
-      return
-    }
-    isAutoplayStartedOnce = true
-
-    if !shouldShowVideoBackground {
+  private func startAutoplay() {
+    if isAutoplayFinished {
       autoplayFinished()
       return
     }
 
-    if previewAutoplayFinished {
-      return
-    }
-
-    if !isLoadFinished {
-      shouldStartAutoplayAfterLoad = true
-      return
-    }
-
-    startAutoplay()
-  }
-
-  private func startAutoplay() {
     guard let duration = player?.currentItem?.duration else {
       autoplayFinished()
       return
     }
 
-    var autoplayLengthSeconds: Float64 = self.kMaxAutoplayDuration
+    var autoplayLengthSeconds = self.kMaxAutoplayDuration
     if let frameRate = frameRate,
       let stopFrame = stopFrame
     {
-      let stopFrameTime = Float64(stopFrame) / Float64(frameRate)
+      let stopFrameTime = Double(stopFrame) / Double(frameRate)
       if stopFrameTime < autoplayLengthSeconds {
         autoplayLengthSeconds = stopFrameTime
       }
@@ -215,13 +206,16 @@ class NewTabPageVideoPlayer {
     // event if needed.
     playerObserver = player?.observe(\.timeControlStatus, options: [.new, .old]) {
       [weak self] (player, change) in
-      if player.timeControlStatus == .paused && self?.previewAutoplayFinished == false {
-        self?.autoplayFinished()
+      guard let self = self else { return }
+      if player.timeControlStatus == .paused && !self.isAutoplayFinished {
+        self.autoplayFinished()
       }
     }
 
     player?.isMuted = true
     player?.play()
+
+    autoplayStartedEvent?()
   }
 
   private func isVideoInProgress() -> Bool {
@@ -229,13 +223,13 @@ class NewTabPageVideoPlayer {
   }
 
   @objc private func playerDidFinishPlaying(note: NSNotification) {
-    if !previewAutoplayFinished {
+    if !isAutoplayFinished {
       autoplayFinished()
       return
     }
 
     playFinishedEvent?()
-    playStarted = false
+    isPlayStarted = false
   }
 
   private func checkPlayPercentage() {
@@ -260,21 +254,21 @@ class NewTabPageVideoPlayer {
 
   private func videoLoaded(succeeded: Bool) {
     isLoadFinished = true
-    videoLoadedEvent?(succeeded)
 
     if !succeeded {
       autoplayFinished()
       return
     }
 
-    if shouldStartAutoplayAfterLoad {
+    // Autoplay didn't start before because the video wasn't loaded
+    if isAutoplayRequestedOnce {
       startAutoplay()
     }
   }
 
-  private func autoplayFinished(animated: Bool = true) {
-    previewAutoplayFinished = true
-    autoplayFinishedEvent?(animated)
+  private func autoplayFinished() {
+    isAutoplayFinished = true
+    autoplayFinishedEvent?()
   }
 
   private func cleanupObservers() {

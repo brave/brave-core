@@ -29,16 +29,19 @@ class NewTabPageVideoButtonsView: UIView {
     backgroundColor = .clear
 
     addSubview(cancelButton)
-
     addSubview(playPauseButtonImage)
 
-    let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(
+    let tapGesture = UITapGestureRecognizer(
       target: self,
       action: #selector(self.videoBackgroundTapped(sender:))
     )
     tapGesture.numberOfTapsRequired = 1
     addGestureRecognizer(tapGesture)
 
+    cancelButton.snp.makeConstraints {
+      $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(20)
+      $0.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20)
+    }
     playPauseButtonImage.snp.makeConstraints {
       $0.centerX.equalToSuperview()
       $0.centerY.equalToSuperview().offset(20)
