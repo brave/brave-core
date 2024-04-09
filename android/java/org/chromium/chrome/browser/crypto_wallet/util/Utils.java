@@ -872,9 +872,6 @@ public class Utils {
                 case CoinType.FIL:
                     logo = "fil.png";
                     break;
-                case CoinType.BTC:
-                    logo = "btc.png";
-                    break;
                 default: // Do nothing
             }
         }
