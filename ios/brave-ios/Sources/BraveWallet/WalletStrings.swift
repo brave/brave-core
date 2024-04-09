@@ -191,9 +191,9 @@ extension Strings {
       "wallet.accountNameLengthError",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Account name must be at most 30 characters long",
+      value: "Account name must be %lld characters or less",
       comment:
-        "The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters."
+        "The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example \"Account name must be at 30 characters or less\")"
     )
     public static let accountPrivateKey = NSLocalizedString(
       "wallet.accountPrivateKey",
