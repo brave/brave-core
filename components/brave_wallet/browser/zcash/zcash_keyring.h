@@ -12,8 +12,12 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key_zip32.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+#include "brave/components/brave_wallet/browser/internal/hd_key_zip32.h"
+#endif
 
 namespace brave_wallet {
 
@@ -25,10 +29,6 @@ class ZCashKeyring : public HDKeyring {
   ZCashKeyring& operator=(const ZCashKeyring&) = delete;
 
   mojom::ZCashAddressPtr GetTransparentAddress(const mojom::ZCashKeyId& key_id);
-  mojom::ZCashAddressPtr GetShieldedAddress(const mojom::ZCashKeyId& key_id);
-  std::optional<std::string> GetUnifiedAddress(
-      const mojom::ZCashKeyId& transparent_key_id,
-      const mojom::ZCashKeyId& zcash_key_id);
 
   std::optional<std::vector<uint8_t>> GetPubkey(
       const mojom::ZCashKeyId& key_id);
@@ -36,8 +36,14 @@ class ZCashKeyring : public HDKeyring {
   std::optional<std::vector<uint8_t>> GetPubkeyHash(
       const mojom::ZCashKeyId& key_id);
 
+#if BUILDFLAG(ENABLE_ORCHARD)
+  std::optional<std::string> GetUnifiedAddress(
+      const mojom::ZCashKeyId& transparent_key_id,
+      const mojom::ZCashKeyId& zcash_key_id);
+  mojom::ZCashAddressPtr GetShieldedAddress(const mojom::ZCashKeyId& key_id);
   std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
       const mojom::ZCashKeyId& key_id);
+#endif
 
   std::optional<std::vector<uint8_t>> SignMessage(
       const mojom::ZCashKeyId& key_id,
@@ -51,7 +57,9 @@ class ZCashKeyring : public HDKeyring {
   std::unique_ptr<HDKeyBase> DeriveAccount(uint32_t index) const override;
   std::unique_ptr<HDKeyBase> DeriveKey(const mojom::ZCashKeyId& key_id);
 
+#if BUILDFLAG(ENABLE_ORCHARD)
   std::unique_ptr<HDKeyZip32> orchard_key_;
+#endif
 
   bool testnet_ = false;
 };

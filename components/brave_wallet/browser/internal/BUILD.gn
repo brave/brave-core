@@ -12,8 +12,6 @@ source_set("hd_key") {
     "hd_key_base.h",
     "hd_key_ed25519.cc",
     "hd_key_ed25519.h",
-    "hd_key_zip32.cc",
-    "hd_key_zip32.h",
   ]
 
   visibility = [
@@ -24,7 +22,6 @@ source_set("hd_key") {
   deps = [
     "//base",
     "//brave/components/brave_wallet/common",
-    "//brave/components/brave_wallet/common:buildflags",
     "//brave/third_party/bitcoin-core",
     "//brave/third_party/bitcoin-core:secp256k1",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
@@ -34,6 +31,13 @@ source_set("hd_key") {
 
   public_deps = [ "//brave/components/brave_wallet/rust:rust_lib" ]
   if (enable_orchard_crate) {
-    deps += [ "//brave/components/zcash/rs:rust_lib" ]
+    sources += [
+      "hd_key_zip32.cc",
+      "hd_key_zip32.h",
+    ]
+    deps += [
+      "//brave/components/brave_wallet/common:buildflags",
+      "//brave/components/zcash/rs:rust_lib",
+    ]
   }
 }
