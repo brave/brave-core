@@ -51,6 +51,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/app_mode/app_mode_utils.h"
+#include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -406,6 +407,8 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
     }
 
     secondary_contents_web_view_->SetVisible(true);
+    UpdateSecondaryDevtoolsLayoutAndVisibility(contents);
+
     auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
         contents_container()->GetLayoutManager());
     contents_layout_manager->show_main_web_contents_at_tail(
@@ -413,9 +416,33 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
   } else {
     secondary_contents_web_view_->SetWebContents(nullptr);
     secondary_contents_web_view_->SetVisible(false);
+    secondary_devtools_web_view_->SetVisible(false);
   }
 
   contents_container()->DeprecatedLayoutImmediately();
+}
+
+void BraveBrowserView::UpdateSecondaryDevtoolsLayoutAndVisibility(
+    content::WebContents* inspected_contents) {
+  DevToolsContentsResizingStrategy strategy;
+  content::WebContents* devtools =
+      DevToolsWindow::GetInTabWebContents(inspected_contents, &strategy);
+  if (secondary_devtools_web_view_->web_contents() != devtools) {
+    secondary_devtools_web_view_->SetWebContents(devtools);
+  }
+
+  if (secondary_devtools_web_view_->web_contents() != devtools) {
+    secondary_devtools_web_view_->SetWebContents(devtools);
+  }
+
+  if (devtools) {
+    secondary_devtools_web_view_->SetVisible(true);
+    GetContentsLayoutManager()->SetSecondaryContentsResizingStrategy(strategy);
+  } else {
+    secondary_devtools_web_view_->SetVisible(false);
+    GetContentsLayoutManager()->SetSecondaryContentsResizingStrategy(
+        DevToolsContentsResizingStrategy());
+  }
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
@@ -840,8 +867,22 @@ void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
 void BraveBrowserView::UpdateDevToolsForContents(
     content::WebContents* web_contents,
     bool update_devtools_web_contents) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
+      browser()->is_type_normal()) {
+    secondary_devtools_web_view_->SetWebContents(nullptr);
+  }
+
   BrowserView::UpdateDevToolsForContents(web_contents,
                                          update_devtools_web_contents);
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
+      browser()->is_type_normal() &&
+      secondary_contents_web_view_->GetVisible()) {
+    UpdateSecondaryDevtoolsLayoutAndVisibility(
+        secondary_contents_web_view_->web_contents());
+
+    contents_container_->DeprecatedLayoutImmediately();
+  }
+
   UpdateWebViewRoundedCorners();
 }
 
