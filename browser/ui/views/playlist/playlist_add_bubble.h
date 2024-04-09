@@ -23,30 +23,29 @@ class Browser;
 class PlaylistActionIconView;
 class ThumbnailProvider;
 
-namespace playlist {
-class PlaylistTabHelper;
-}  // namespace playlist
-
 namespace views {
 class ScrollView;
 class View;
 }  // namespace views
 
+namespace playlist {
+class PlaylistTabHelper;
+
 // Shows when users try adding items found from the current contents.
 // Shows a list of found items and users can select which one to add.
 class PlaylistAddBubble : public PlaylistActionBubbleView,
-                          public playlist::PlaylistTabHelperObserver {
+                          public PlaylistTabHelperObserver {
   METADATA_HEADER(PlaylistAddBubble, PlaylistActionBubbleView)
  public:
   static constexpr int kWidth = 288;
 
   PlaylistAddBubble(Browser* browser,
                     PlaylistActionIconView* anchor,
-                    playlist::PlaylistTabHelper* playlist_tab_helper);
+                    PlaylistTabHelper* playlist_tab_helper);
   PlaylistAddBubble(Browser* browser,
                     PlaylistActionIconView* anchor,
-                    playlist::PlaylistTabHelper* playlist_tab_helper,
-                    const std::vector<playlist::mojom::PlaylistItemPtr>& items);
+                    PlaylistTabHelper* playlist_tab_helper,
+                    const std::vector<mojom::PlaylistItemPtr>& items);
   ~PlaylistAddBubble() override;
 
  private:
@@ -55,11 +54,11 @@ class PlaylistAddBubble : public PlaylistActionBubbleView,
   // PlaylistTabHelperObserver:
   void PlaylistTabHelperWillBeDestroyed() override;
   void OnSavedItemsChanged(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
+      const std::vector<mojom::PlaylistItemPtr>& items) override {}
   void OnFoundItemsChanged(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
+      const std::vector<mojom::PlaylistItemPtr>& items) override {}
   void OnAddedItemFromTabHelper(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
+      const std::vector<mojom::PlaylistItemPtr>& items) override;
 
   void InitListView();
 
@@ -72,11 +71,11 @@ class PlaylistAddBubble : public PlaylistActionBubbleView,
 
   std::unique_ptr<ThumbnailProvider> thumbnail_provider_;
 
-  base::ScopedObservation<playlist::PlaylistTabHelper,
-                          playlist::PlaylistTabHelperObserver>
+  base::ScopedObservation<PlaylistTabHelper, PlaylistTabHelperObserver>
       playlist_tab_helper_observation_{this};
 
   base::WeakPtrFactory<PlaylistAddBubble> weak_ptr_factory_{this};
 };
+}  // namespace playlist
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ADD_BUBBLE_H_

@@ -18,16 +18,13 @@ class PlaylistActionIconView;
 
 namespace playlist {
 class PlaylistTabHelper;
-}  // namespace playlist
-
-void ShowBubble(std::unique_ptr<views::BubbleDialogDelegateView> bubble);
 
 class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   METADATA_HEADER(PlaylistActionBubbleView, views::BubbleDialogDelegateView)
  public:
   static void ShowBubble(Browser* browser,
                          PlaylistActionIconView* anchor,
-                         playlist::PlaylistTabHelper* playlist_tab_helper);
+                         PlaylistTabHelper* playlist_tab_helper);
   static bool IsShowingBubble();
   static void CloseBubble();
   static views::BubbleDialogDelegateView* GetBubble();
@@ -40,17 +37,21 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   void WindowClosing() override;
 
  protected:
+  static void ShowBubble(
+      std::unique_ptr<views::BubbleDialogDelegateView> bubble);
+
   PlaylistActionBubbleView(Browser* browser,
                            PlaylistActionIconView* anchor,
-                           playlist::PlaylistTabHelper* playlist_tab_helper);
+                           PlaylistTabHelper* playlist_tab_helper);
 
   void CloseAndRun(base::OnceClosure callback);
 
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<playlist::PlaylistTabHelper> playlist_tab_helper_ = nullptr;
+  raw_ptr<PlaylistTabHelper> playlist_tab_helper_ = nullptr;
 
   // Our anchor.
   raw_ptr<PlaylistActionIconView> icon_view_ = nullptr;
 };
+}  // namespace playlist
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_BUBBLE_VIEW_H_

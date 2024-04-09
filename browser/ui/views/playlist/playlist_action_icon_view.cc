@@ -34,7 +34,7 @@ PlaylistActionIconView::PlaylistActionIconView(
 PlaylistActionIconView::~PlaylistActionIconView() = default;
 
 views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {
-  return PlaylistActionBubbleView::GetBubble();
+  return playlist::PlaylistActionBubbleView::GetBubble();
 }
 
 void PlaylistActionIconView::ShowPlaylistBubble() {
@@ -43,7 +43,7 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
     return;
   }
 
-  if (PlaylistActionBubbleView::IsShowingBubble()) {
+  if (playlist::PlaylistActionBubbleView::IsShowingBubble()) {
     return;
   }
 
@@ -52,7 +52,8 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
     return;
   }
 
-  PlaylistActionBubbleView::ShowBubble(browser_, this, playlist_tab_helper);
+  playlist::PlaylistActionBubbleView::ShowBubble(browser_, this,
+                                                 playlist_tab_helper);
 }
 
 base::WeakPtr<PlaylistActionIconView> PlaylistActionIconView::GetWeakPtr() {
@@ -69,8 +70,8 @@ void PlaylistActionIconView::UpdateImpl() {
     return;
   }
 
-  if (PlaylistActionBubbleView::IsShowingBubble()) {
-    PlaylistActionBubbleView::CloseBubble();
+  if (playlist::PlaylistActionBubbleView::IsShowingBubble()) {
+    playlist::PlaylistActionBubbleView::CloseBubble();
   }
 
   playlist_tab_helper_observation_.Reset();
@@ -136,7 +137,7 @@ void PlaylistActionIconView::OnAddedItemFromTabHelper(
   DVLOG(2) << __FUNCTION__;
   // When this callback is invoked to this by a tab helper, it means that this
   // view is now bound to the tab helper. So we don't have to check it again.
-  if (!PlaylistActionBubbleView::IsShowingBubble()) {
+  if (!playlist::PlaylistActionBubbleView::IsShowingBubble()) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&PlaylistActionIconView::ShowPlaylistBubble,
                                   weak_ptr_factory_.GetWeakPtr()));
