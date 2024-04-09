@@ -9,12 +9,6 @@ import Shared
 import os.log
 
 public final class FilterListSetting: NSManagedObject, CRUD {
-  /// The directory to which we should store all the dowloaded files into
-  private static var filterListBaseFolderURL: URL? {
-    let location = FileManager.SearchPathDirectory.applicationSupportDirectory
-    return FileManager.default.urls(for: location, in: .userDomainMask).first
-  }
-
   @MainActor @NSManaged public var uuid: String
   @MainActor @NSManaged public var componentId: String?
   @MainActor @NSManaged public var isEnabled: Bool
@@ -22,7 +16,7 @@ public final class FilterListSetting: NSManagedObject, CRUD {
   @MainActor @NSManaged public var isAlwaysAggressive: Bool
   @MainActor @NSManaged public var isDefaultEnabled: Bool
   @MainActor @NSManaged public var order: NSNumber?
-  @MainActor @NSManaged private var folderPath: String?
+  @MainActor @NSManaged public var folderPath: String?
 
   /// Tells us which filter lists should be compiled during launch.
   ///
@@ -33,16 +27,6 @@ public final class FilterListSetting: NSManagedObject, CRUD {
   /// These are not available when using the regional catalog (i.e. `regional_catalog.json`).
   @MainActor public var isEagerlyLoaded: Bool {
     return isEnabled && isHidden
-  }
-
-  @MainActor public var folderURL: URL? {
-    get {
-      return Self.makeFolderURL(forComponentFolderPath: folderPath)
-    }
-    set {
-      // We need to extract the path. We don't want to store the full URL
-      self.folderPath = Self.extractFolderPath(fromComponentFolderURL: newValue)
-    }
   }
 
   /// Load all the flter list settings
@@ -124,29 +108,5 @@ public final class FilterListSetting: NSManagedObject, CRUD {
   // Currently required, because not `syncable`
   @MainActor private static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
     return NSEntityDescription.entity(forEntityName: "FilterListSetting", in: context)!
-  }
-
-  /// Since the folder changes upon relaunches we cannot store the whole folder but the path.
-  /// Here we re-construct the actual folder
-  public static func makeFolderURL(forComponentFolderPath folderPath: String?) -> URL? {
-    // Combine the path with the base URL
-    guard let folderPath = folderPath else { return nil }
-    return filterListBaseFolderURL?.appendingPathComponent(folderPath)
-  }
-
-  /// Since the folder changes upon relaunches we cannot store the whole folder but the path.
-  /// Here we extract the path from the folder URL for storage
-  public static func extractFolderPath(fromComponentFolderURL folderURL: URL?) -> String? {
-    guard let baseURL = filterListBaseFolderURL, let folderURL = folderURL else {
-      return nil
-    }
-
-    // We take the path after the base url
-    if let range = folderURL.path.range(of: [baseURL.path, "/"].joined()) {
-      let folderPath = folderURL.path[range.upperBound...]
-      return String(folderPath)
-    } else {
-      return nil
-    }
   }
 }
