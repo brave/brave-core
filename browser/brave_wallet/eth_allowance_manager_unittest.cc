@@ -241,7 +241,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
         json_rpc_service_, tx_service_, nullptr, nullptr, GetPrefs(),
-        GetLocalState(), false /* is_private_window_ */);
+        GetLocalState());
     eth_allowance_manager_ = std::make_unique<EthAllowanceManager>(
         json_rpc_service_, keyring_service_, GetPrefs());
   }

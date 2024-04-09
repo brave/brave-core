@@ -5,13 +5,10 @@
 
 #include <string_view>
 
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/common/webui_url_constants.h"
-#include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
 #include "url/gurl.h"
 
 namespace {
@@ -24,24 +21,12 @@ void UpdateBraveScheme(NavigateParams* params) {
   }
 }
 
-bool IsURLAllowedInIncognitoBraveImpl(
-    const GURL& url,
-    content::BrowserContext* browser_context) {
-  std::string scheme = url.scheme();
-  std::string_view host = url.host_piece();
-  if (scheme != content::kChromeUIScheme) {
-    return true;
-  }
-
-  if (host == kRewardsPageHost || host == chrome::kChromeUISyncInternalsHost ||
+bool IsHostAllowedInIncognitoBraveImpl(const std::string_view host) {
+  if (host == kWalletPageHost || host == kWalletPanelHost ||
+      host == kRewardsPageHost || host == chrome::kChromeUISyncInternalsHost ||
       host == chrome::kChromeUISyncHost || host == kAdblockHost ||
       host == kWelcomeHost) {
     return false;
-  }
-
-  if (host == kWalletPageHost || host == kWalletPanelHost) {
-    return user_prefs::UserPrefs::Get(browser_context)
-        ->GetBoolean(kBraveWalletPrivateWindowsEnabled);
   }
 
   return true;
@@ -49,10 +34,10 @@ bool IsURLAllowedInIncognitoBraveImpl(
 
 }  // namespace
 
-#define BRAVE_IS_URL_ALLOWED_IN_INCOGNITO                      \
-  if (!IsURLAllowedInIncognitoBraveImpl(url, browser_context)) \
+#define BRAVE_IS_HOST_ALLOWED_IN_INCOGNITO      \
+  if (!IsHostAllowedInIncognitoBraveImpl(host)) \
     return false;
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateBraveScheme(params);
 #include "src/chrome/browser/ui/browser_navigator.cc"
 #undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
-#undef BRAVE_IS_URL_ALLOWED_IN_INCOGNITO
+#undef BRAVE_IS_HOST_ALLOWED_IN_INCOGNITO

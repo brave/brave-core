@@ -46,28 +46,6 @@ export const sitePermissionEndpoints = ({
       providesTags: ['ConnectedAccounts']
     }),
 
-    getIsPrivateWindow: query<boolean, void>({
-      queryFn: async (_, { endpoint }, extraOptions, baseQuery) => {
-        try {
-          const { data: api } = baseQuery(undefined)
-          const { braveWalletService } = api
-
-          const { isPrivateWindow } = await braveWalletService.isPrivateWindow()
-
-          return {
-            data: isPrivateWindow
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Failed to get private window status',
-            error
-          )
-        }
-      },
-      providesTags: ['IsPrivateWindow']
-    }),
-
     connectToSite: mutation<
       true,
       {

@@ -8,15 +8,12 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
-#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -86,35 +83,6 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
     EXPECT_FALSE(prefs()->GetBoolean(brave_wallet::prefs::kDisabledByPolicy));
     EXPECT_TRUE(brave_wallet::IsAllowed(prefs()));
     EXPECT_TRUE(brave_wallet::IsAllowedForContext(profile()));
-
-    auto* profile = browser()->profile();
-    auto* incognito_profile = CreateIncognitoBrowser(profile)->profile();
-    ui_test_utils::BrowserChangeObserver browser_creation_observer(
-        nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
-    profiles::SwitchToGuestProfile();
-    Browser* guest_browser = browser_creation_observer.Wait();
-    DCHECK(guest_browser);
-    auto* guest_profile = guest_browser->profile();
-    ASSERT_TRUE(guest_profile->IsGuestSession());
-
-    ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
-        nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
-    brave::NewOffTheRecordWindowTor(browser());
-    Browser* tor_browser = tor_browser_creation_observer.Wait();
-    DCHECK(tor_browser);
-    auto* tor_profile = tor_browser->profile();
-    ASSERT_TRUE(tor_profile->IsTor());
-
-    // By default the wallet should not be allowed for private, guest, or tor.
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(incognito_profile));
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(tor_profile));
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(guest_profile));
-
-    // Setting pref should allow it for incognito, but not for guest, or tor.
-    prefs()->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
-    EXPECT_TRUE(brave_wallet::IsAllowedForContext(incognito_profile));
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(tor_profile));
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(guest_profile));
   }
 }
 
