@@ -104,7 +104,8 @@ bool DeAmpBodyHandler::ShouldProcess(
     bool* defer) {
   // Only De-AMP HTML pages.
   std::string mime_type;
-  if (!response_head || !response_head->headers->GetMimeType(&mime_type) ||
+  if (!response_head || !response_head->headers ||
+      !response_head->headers->GetMimeType(&mime_type) ||
       base::CompareCaseInsensitiveASCII(mime_type, "text/html")) {
     return false;
   }
