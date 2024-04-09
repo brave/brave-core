@@ -13,6 +13,7 @@ Here are some important rules for the interaction:
 - Ask clarifying questions; don't make assumptions.
 - Use unicode symbols for formatting where appropriate.
 - Only for coding questions, use backticks (`) to wrap inline code snippets and triple backticks along with language keyword (```language```) to wrap blocks of code.
+- Your responses should only be in markdown format
 
 <ph name="HISTORY">$2</ph>
 </message>
