@@ -15,6 +15,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -716,6 +717,69 @@ bool SolanaMessage::UsesDurableNonce() const {
     return false;
   }
 
+  return true;
+}
+
+bool SolanaMessage::AddPriorityFee(uint32_t compute_units,
+                                   uint64_t fee_per_compute_unit) {
+  SolanaInstruction modify_compute_units_instruction =
+      solana::compute_budget_program::SetComputeUnitLimit(compute_units);
+  SolanaInstruction add_priority_fee_instruction =
+      solana::compute_budget_program::SetComputeUnitPrice(fee_per_compute_unit);
+
+  // If the message uses a durable nonce, the first instruction should remain
+  // the advance nonce instruction.
+  // https://solana.com/developers/guides/advanced/how-to-use-priority-fees#special-considerations
+  if (UsesDurableNonce()) {
+    instructions_.insert(
+        instructions_.begin() + 1,
+        {modify_compute_units_instruction, add_priority_fee_instruction});
+  } else {
+    instructions_.insert(
+        instructions_.begin(),
+        {modify_compute_units_instruction, add_priority_fee_instruction});
+  }
+
+  // Rearrange the static account keys and generate a new SolanaMessageHeader
+  uint16_t num_required_signatures = 0;
+  uint16_t num_readonly_signed_accounts = 0;
+  uint16_t num_readonly_unsigned_accounts = 0;
+  std::vector<SolanaAccountMeta> unique_account_metas;
+  GetUniqueAccountMetas(fee_payer_, instructions_, &unique_account_metas);
+  std::vector<SolanaAddress> static_accounts;
+  for (const auto& meta : unique_account_metas) {
+    if (meta.address_table_lookup_index) {  // Not legacy.
+      return false;
+    }
+
+    auto addr = SolanaAddress::FromBase58(meta.pubkey);
+    if (!addr) {
+      return false;
+    }
+
+    if (meta.is_signer) {
+      num_required_signatures++;
+    }
+    if (meta.is_signer && !meta.is_writable) {
+      num_readonly_signed_accounts++;
+    }
+    if (!meta.is_signer && !meta.is_writable) {
+      num_readonly_unsigned_accounts++;
+    }
+
+    if (num_required_signatures > UINT8_MAX ||
+        num_readonly_signed_accounts > UINT8_MAX ||
+        num_readonly_unsigned_accounts > UINT8_MAX ||
+        static_accounts.size() == UINT8_MAX) {
+      return false;
+    }
+    static_accounts.emplace_back(*addr);
+  }
+  static_account_keys_ = static_accounts;
+
+  message_header_ =
+      SolanaMessageHeader(num_required_signatures, num_readonly_signed_accounts,
+                          num_readonly_unsigned_accounts);
   return true;
 }
 

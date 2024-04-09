@@ -171,7 +171,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
           std::vector<std::string>(
               {from_account, to_account, mojom::kSolanaSystemProgramId}),
           std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
-          nullptr));
+          nullptr, nullptr));
 }
 
 TEST(SolanaTxMetaUnitTest, ToValue) {

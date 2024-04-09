@@ -81,6 +81,9 @@ class SolanaTransaction {
       const mojom::AccountIdPtr& selected_account,
       const std::vector<uint8_t>* selected_account_signature = nullptr) const;
 
+  // https://docs.rs/solana-sdk/latest/src/solana_sdk/transaction/mod.rs.html#271-276
+  std::string GetUnsignedTransaction() const;
+
   // Serialize and encode the message in Base64.
   std::string GetBase64EncodedMessage() const;
 
@@ -127,9 +130,14 @@ class SolanaTransaction {
   void set_sign_tx_param(mojom::SolanaSignTransactionParamPtr sign_tx_param) {
     sign_tx_param_ = std::move(sign_tx_param);
   }
+  void set_gas_estimation(mojom::SolanaGasEstimationPtr estimation) {
+    gas_estimation_ = std::move(estimation);
+  }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTransactionUnitTest, GetBase64EncodedMessage);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTransactionUnitTest, FromToValue);
+
   SolanaMessage message_;
   // Value will be assigned when FromSignedTransactionBytes is called.
   std::vector<uint8_t> raw_signatures_;
@@ -155,6 +163,9 @@ class SolanaTransaction {
   // Currently might be specified by solana.signAndSendTransaction provider
   // API as the options to be passed to sendTransaction RPC call.
   std::optional<SendOptions> send_options_;
+
+  // Gas estimation result
+  mojom::SolanaGasEstimationPtr gas_estimation_;
 };
 
 }  // namespace brave_wallet

@@ -1604,6 +1604,26 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestSimulateSolanaTransaction(
+      const std::string& chain_id,
+      uint64_t expected_compute_units,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message,
+      const std::string& unsigned_tx = "unsigned_tx") {
+    base::RunLoop run_loop;
+    json_rpc_service_->SimulateSolanaTransaction(
+        chain_id, unsigned_tx,
+        base::BindLambdaForTesting([&](uint64_t compute_units,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(compute_units, expected_compute_units);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   void TestGetSolanaLatestBlockhash(const std::string& chain_id,
                                     const std::string& expected_hash,
                                     uint64_t expected_last_valid_block_height,
@@ -1765,6 +1785,26 @@ class JsonRpcServiceUnitTest : public testing::Test {
               }
               EXPECT_EQ(error, expected_error);
               EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TestGetRecentSolanaPrioritizationFees(
+      const std::string& chain_id,
+      std::vector<std::pair<uint64_t, uint64_t>> expected_recent_fees,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetRecentSolanaPrioritizationFees(
+        chain_id,
+        base::BindLambdaForTesting(
+            [&](std::vector<std::pair<uint64_t, uint64_t>> recent_fees,
+                mojom::SolanaProviderError error,
+                const std::string& error_message) {
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              EXPECT_EQ(expected_recent_fees, recent_fees);
               run_loop.Quit();
             }));
     run_loop.Run();
@@ -7493,6 +7533,188 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
             run_loop_4.Quit();
           }));
   run_loop_4.Run();
+}
+
+TEST_F(JsonRpcServiceUnitTest, SimulateSolanaTransaction) {
+  auto network_url = GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  std::string response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.17.25",
+        "slot": 259225005
+      },
+      "value": {
+        "accounts": null,
+        "err": null,
+        "logs": [
+          "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY invoke [1]",
+          "Program log: Instruction: Transfer",
+          "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV invoke [2]",
+          "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV consumed 39 of 183791 compute units",
+          "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV success",
+          "Program cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK invoke [2]",
+          "Program log: Instruction: ReplaceLeaf",
+          "Program log: Attempting to fill in proof",
+          "Program consumption: 148976 units remaining",
+          "Program log: Active Index: 4",
+          "Program log: Rightmost Index: 1479308",
+          "Program log: Buffer Size: 64",
+          "Program log: Leaf Index: 885106",
+          "Program log: Fast-forwarding proof, starting index 4",
+          "Program consumption: 145902 units remaining",
+          "Program consumption: 145795 units remaining",
+          "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV invoke [3]",
+          "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV consumed 39 of 133311 compute units",
+          "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV success",
+          "Program cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK consumed 36402 of 168927 compute units",
+          "Program cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK success",
+          "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY consumed 69017 of 200000 compute units",
+          "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY success"
+        ],
+        "returnData": null,
+        "unitsConsumed": 69017
+      }
+    },
+    "id": 1
+  })";
+  SetInterceptor(network_url, "simulateTransaction", "", response);
+
+  std::string unsigned_tx =
+      "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAABABQW0qRsWXfjlgUXGikeWwQm8ZhvoEZaaW/+f2M8hZyOVaPeEaMwRa/"
+      "ntPIOUTuZUG+"
+      "233GjInRCSJMvjEVnTUA2XJiLgOt5NShpsiR0X1ndv4omWMoT3GiBISY1HK4HwaWlXTw1rOH"
+      "ZZSszaaIcQw8DSQbT5Dk/vJvdaTs82R3WlKw5oza/"
+      "dIQQnbrLBE0ro4WobxFz63JhHxSYoXFdBnr8HAu8D8C7R8ovdMQRLpSrE8+"
+      "jxjTl3BfqywPNGiPNfnh8CSoT7pXEHLoIpn9axn6N9+"
+      "HaEWJeHWQTf49PI4MDfxQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFZriz9cqG"
+      "7ncyWk3NoVgUFNPBtKBW0hZD0D9FCBCTtNJpQnicLfSzvrX7Br48P/"
+      "ZMGaVfdQGRUHsoGTnXbJXlgD1UzPsMgShnFapFr9GUoEao0Nvwn+q7wOeAY/"
+      "Vh4EzpGeT7ixNgNzp/0VMm2ZuEW6dY9ZgcncM7HQav//I1nFwsSZ/G/rcr/"
+      "VDo9AFUD+hO9+imHhTdb2hBiVlHoiCURtij4YPnRU3WpgKsa+"
+      "ViLQxH2dPlNk7uSwYkoyl0c28Hajqcg9qD6/"
+      "VVX+F8t1Ne8DLT1OGUnKu3dOcUdHAA+"
+      "rJvpjy53GgRVfYyS8FPYdNssfB4MwZ92vgahRwqOCC2QWHb4dgByf9IVJCoo967jKkpRpYMp"
+      "u3OID2q4kQZYF3rlbfOQLvf/xS/"
+      "e0MhBSvspOpa4rxTDusZFthC4GOnXXK8c8lpL+clYNhILh/"
+      "cRDO7PSNa3EW0TzYrdGPJBLBvsIyESQfm9oLIC6sva2t1nulbK1eaBtCM0N9GHg5J+"
+      "bllJf2XfYG4KPifiMdA1Lxqr3iFlORL5IQH58avGp2DWQeFdSapFKPoddJebMNdYuaEOlpIb"
+      "YgTjqw6ayYBsU0L5890Zgdz79JDhGR611qL7xrPxeDjdts3/"
+      "mLEAfhY25LgECFgMAAAQBBQYHCAkKCwwNDg8QERITFBV0ozTI54wDRbq6gQFB2K1sjf5AoZI"
+      "WIIcn/ggqiOkH4DCmRb3I8YEnSAdR4jJg0uOr8Vzks/1mRB7l/1DROEG/"
+      "OVH1spxGhwpmbBo8lR88h07WViRXVLm+"
+      "zv3LglUVevUb0oCVh4ORWgNygQ0AAAAAAHKBDQA=";
+  TestSimulateSolanaTransaction(mojom::kSolanaMainnet, 69017,
+                                mojom::SolanaProviderError::kSuccess, "",
+                                unsigned_tx);
+
+  // Response parsing error
+  response = R"({"jsonrpc":"2.0","id":1,"result":0})";
+  SetInterceptor(network_url, "simulateTransaction", "", response);
+  TestSimulateSolanaTransaction(
+      mojom::kSolanaMainnet, 0, mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), unsigned_tx);
+
+  // JSON RPC Error
+  response = R"({
+    "jsonrpc": "2.0",
+    "id": 1,
+    "error": {
+      "code": -32601,
+      "message": "method does not exist"
+    }
+  })";
+  SetInterceptor(network_url, "simulateTransaction", "", response);
+  TestSimulateSolanaTransaction(mojom::kSolanaMainnet, 0,
+                                mojom::SolanaProviderError::kMethodNotFound,
+                                "method does not exist", unsigned_tx);
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestSimulateSolanaTransaction(
+      mojom::kSolanaMainnet, 0, mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), unsigned_tx);
+
+  // Blockhash not found error
+  response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.18.11",
+        "slot": 262367830
+      },
+      "value": {
+        "accounts": null,
+        "err": "BlockhashNotFound",
+        "innerInstructions": null,
+        "logs": [],
+        "returnData": null,
+        "unitsConsumed": 0
+      }
+    },
+    "id": 1
+  })";
+  SetInterceptor(network_url, "simulateTransaction", "", response);
+  TestSimulateSolanaTransaction(
+      mojom::kSolanaMainnet, 0, mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), unsigned_tx);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetRecentSolanaPrioritizationFees) {
+  auto network_url = GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+
+  // Successful response
+  std::string response = R"({
+    "jsonrpc": "2.0",
+    "result": [
+      {
+        "prioritizationFee": 100,
+        "slot": 293251906
+      },
+      {
+        "prioritizationFee": 200,
+        "slot": 293251906
+      },
+      {
+        "prioritizationFee": 0,
+        "slot": 293251805
+      }
+    ],
+    "id": 1
+  })";
+  SetInterceptor(network_url, "getRecentPrioritizationFees", "", response);
+  TestGetRecentSolanaPrioritizationFees(
+      mojom::kSolanaMainnet,
+      {{293251906, 100}, {293251906, 200}, {293251805, 0}},
+      mojom::SolanaProviderError::kSuccess, "");
+
+  // Response parsing error
+  response = R"({"jsonrpc":"2.0","id":1,"result":0})";
+  SetInterceptor(network_url, "getRecentPrioritizationFees", "", response);
+  TestGetRecentSolanaPrioritizationFees(
+      mojom::kSolanaMainnet, {}, mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC Error
+  response = R"({
+    "jsonrpc": "2.0",
+    "id": 1,
+    "error": {
+      "code": -32601,
+      "message": "method does not exist"
+    }
+  })";
+  SetInterceptor(network_url, "getRecentPrioritizationFees", "", response);
+  TestGetRecentSolanaPrioritizationFees(
+      mojom::kSolanaMainnet, {}, mojom::SolanaProviderError::kMethodNotFound,
+      "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetRecentSolanaPrioritizationFees(
+      mojom::kSolanaMainnet, {}, mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet

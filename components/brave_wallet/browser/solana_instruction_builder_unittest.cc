@@ -119,6 +119,18 @@ TEST(SolanaInstructionBuilderUnitTest, CreateAssociatedTokenAccount) {
 
 }  // namespace spl_associated_token_account_program
 
+namespace compute_budget_program {
+
+TEST(SolanaInstructionBuilderUnitTest, SetComputeUnitLimit) {
+  // TODO(nvonpentz)
+}
+
+TEST(SolanaInstructionBuilderUnitTest, SetComputeUnitPrice) {
+  // TODO(nvonpentz)
+}
+
+}  // namespace compute_budget_program
+
 }  // namespace solana
 
 }  // namespace brave_wallet

@@ -529,6 +529,22 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::vector<std::string>& chain_ids,
                               AnkrGetAccountBalancesCallback callback) override;
 
+  using SimulateSolanaTransactionCallback =
+      base::OnceCallback<void(uint64_t compute_units_consumed,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  void SimulateSolanaTransaction(const std::string& chain_id,
+                                 const std::string& unsigned_tx,
+                                 SimulateSolanaTransactionCallback callback);
+
+  using GetRecentSolanaPrioritizationFeesCallback = base::OnceCallback<void(
+      std::vector<std::pair<uint64_t, uint64_t>> recent_fees,
+      mojom::SolanaProviderError error,
+      const std::string& error_message)>;
+  void GetRecentSolanaPrioritizationFees(
+      const std::string& chain_id,
+      GetRecentSolanaPrioritizationFeesCallback callback);
+
  private:
   void FireNetworkChanged(mojom::CoinType coin,
                           const std::string& chain_id,
@@ -710,6 +726,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void OnAnkrGetAccountBalances(AnkrGetAccountBalancesCallback callback,
                                 APIRequestResult api_request_result);
+
+  void OnSimulateSolanaTransaction(SimulateSolanaTransactionCallback callback,
+                                   APIRequestResult api_request_result);
+
+  void OnGetRecentSolanaPrioritizationFees(
+      GetRecentSolanaPrioritizationFeesCallback callback,
+      APIRequestResult api_request_result);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;

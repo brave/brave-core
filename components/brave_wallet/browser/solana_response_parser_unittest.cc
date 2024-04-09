@@ -725,6 +725,174 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProgramAccounts) {
   EXPECT_EQ(ParseJson(*json_converted), ParseJson(json_expected));
 }
 
+TEST(SolanaResponseParserUnitTest, ParseSimulateTransaction) {
+  // Test with a valid JSON string that includes a unitsConsumed field.
+  std::string json_valid = R"(
+    {
+      "jsonrpc": "2.0",
+      "result": {
+        "context": {
+          "apiVersion": "1.17.25",
+          "slot": 259225005
+        },
+        "value": {
+          "accounts": null,
+          "err": null,
+          "logs": [
+            "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY invoke [1]",
+            "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV consumed 39 of 183791 compute units",
+            "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV success"
+          ],
+          "returnData": null,
+          "unitsConsumed": 69017
+        }
+      },
+      "id": 1
+    }
+  )";
+
+  auto parsed_units_valid = ParseSimulateTransaction(ParseJson(json_valid));
+  ASSERT_TRUE(parsed_units_valid.has_value());
+  EXPECT_EQ(*parsed_units_valid, 69017u);
+
+  // Test with a JSON string that lacks the unitsConsumed field.
+  std::string json_no_units = R"(
+    {
+      "jsonrpc": "2.0",
+      "result": {
+        "context": {
+          "apiVersion": "1.17.25",
+          "slot": 259225005
+        },
+        "value": {
+          "accounts": null,
+          "err": null,
+          "logs": [
+            "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY invoke [1]",
+            "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV consumed 39 of 183791 compute units",
+            "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV success"
+          ],
+          "returnData": null
+        }
+      },
+      "id": 1
+    }
+  )";
+
+  auto parsed_no_units = ParseSimulateTransaction(ParseJson(json_no_units));
+  EXPECT_FALSE(parsed_no_units.has_value());
+
+  // Test with invalid JSON (e.g., missing result).
+  std::string json_invalid = R"(
+    {
+      "jsonrpc": "2.0",
+      "id": 1
+    }
+  )";
+
+  auto parsed_invalid = ParseSimulateTransaction(ParseJson(json_invalid));
+  EXPECT_FALSE(parsed_invalid.has_value());
+
+  // Test with blockhash not found error
+  std::string json_blockhash_err = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.18.11",
+        "slot": 262367830
+      },
+      "value": {
+        "accounts": null,
+        "err": "BlockhashNotFound",
+        "innerInstructions": null,
+        "logs": [],
+        "returnData": null,
+        "unitsConsumed": 0
+      }
+    },
+    "id": 1
+  })";
+  auto parsed_blockhash_err =
+      ParseSimulateTransaction(ParseJson(json_blockhash_err));
+  EXPECT_FALSE(parsed_blockhash_err.has_value());
+}
+
+TEST(SolanaResponseParserUnitTest, ParseGetSolanaPrioritizationFees) {
+  // Parsing valid JSON with prioritization fees
+  std::string json = R"({
+      "jsonrpc": "2.0",
+      "result": [
+        {
+          "slot": 348125,
+          "prioritizationFee": 0
+        },
+        {
+          "slot": 348126,
+          "prioritizationFee": 1000
+        },
+        {
+          "slot": 348127,
+          "prioritizationFee": 500
+        },
+        {
+          "slot": 348128,
+          "prioritizationFee": 0
+        },
+        {
+          "slot": 348129,
+          "prioritizationFee": 1234
+        }
+      ],
+      "id": 1
+    })";
+
+  std::optional<std::vector<std::pair<uint64_t, uint64_t>>> fees =
+      ParseGetSolanaPrioritizationFees(ParseJson(json));
+  ASSERT_TRUE(fees.has_value());
+
+  std::vector<std::pair<uint64_t, uint64_t>> expected_fees = {
+      {348125, 0}, {348126, 1000}, {348127, 500}, {348128, 0}, {348129, 1234}};
+
+  EXPECT_EQ(*fees, expected_fees);
+
+  // Testing invalid JSON without 'result' key
+  std::string invalid_json = R"(
+    {
+      "jsonrpc": "2.0",
+      "id": 1
+    }
+  )";
+
+  fees = ParseGetSolanaPrioritizationFees(ParseJson(invalid_json));
+  EXPECT_FALSE(fees.has_value());
+
+  // Testing JSON with an empty 'result' array
+  std::string empty_result_json = R"({
+    "jsonrpc": "2.0",
+    "result": [],
+    "id": 1
+  })";
+
+  fees = ParseGetSolanaPrioritizationFees(ParseJson(empty_result_json));
+  EXPECT_TRUE(fees.has_value());
+  EXPECT_TRUE(fees->empty());
+
+  // Testing JSON with wrong data types for 'slot' and 'prioritizationFee'
+  std::string wrong_types_json = R"({
+    "jsonrpc": "2.0",
+    "result": [
+      {
+        "slot": "348125",
+        "prioritizationFee": "1000"
+      }
+    ],
+    "id": 1
+  })";
+
+  fees = ParseGetSolanaPrioritizationFees(ParseJson(wrong_types_json));
+  EXPECT_FALSE(fees.has_value());
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

@@ -222,6 +222,9 @@ class TxService : public KeyedService,
   void GetEstimatedTxFee(const std::string& chain_id,
                          const std::string& tx_meta_id,
                          GetEstimatedTxFeeCallback callback) override;
+  void GetSolanaGasEstimation(const std::string& chain_id,
+                              const std::string& tx_meta_id,
+                              GetSolanaGasEstimationCallback callback) override;
   void ProcessSolanaHardwareSignature(
       const std::string& chain_id,
       const std::string& tx_meta_id,

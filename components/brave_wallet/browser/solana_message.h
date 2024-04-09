@@ -88,8 +88,11 @@ class SolanaMessage {
   // https://docs.rs/solana-sdk/1.18.9/src/solana_sdk/transaction/versioned/mod.rs.html#192
   bool UsesDurableNonce() const;
 
+  bool AddPriorityFee(uint32_t compute_units, uint64_t fee_per_compute_unit);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);
+  FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, AddPriorityFee);
 
   static void GetUniqueAccountMetas(
       const std::string& fee_payer,

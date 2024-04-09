@@ -192,7 +192,8 @@ bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
          to_wallet_address_ == tx.to_wallet_address_ &&
          spl_token_mint_address_ == tx.spl_token_mint_address_ &&
          tx_type_ == tx.tx_type_ && lamports_ == tx.lamports_ &&
-         amount_ == tx.amount_ && send_options_ == tx.send_options_;
+         amount_ == tx.amount_ && send_options_ == tx.send_options_ &&
+         tx.gas_estimation_ == gas_estimation_;
 }
 
 bool SolanaTransaction::operator!=(const SolanaTransaction& tx) const {
@@ -331,6 +332,36 @@ std::string SolanaTransaction::GetSignedTransaction(
   return base::Base64Encode(*transaction_bytes);
 }
 
+std::string SolanaTransaction::GetUnsignedTransaction() const {
+  auto message_signers_pair = GetSerializedMessage();
+  if (!message_signers_pair) {
+    return "";
+  }
+
+  auto& message_bytes = message_signers_pair->first;
+  auto& signers = message_signers_pair->second;
+
+  std::vector<uint8_t> transaction_bytes;
+
+  CompactU16Encode(signers.size(), &transaction_bytes);
+
+  // Insert an empty (default) signature for each signer.
+  std::vector<uint8_t> empty_signature(kSolanaSignatureSize, 0);
+  for (size_t i = 0; i < signers.size(); ++i) {
+    transaction_bytes.insert(transaction_bytes.end(), empty_signature.begin(),
+                             empty_signature.end());
+  }
+
+  transaction_bytes.insert(transaction_bytes.end(), message_bytes.begin(),
+                           message_bytes.end());
+
+  if (transaction_bytes.size() > kSolanaMaxTxSize) {
+    return "";
+  }
+
+  return base::Base64Encode(transaction_bytes);
+}
+
 std::string SolanaTransaction::GetBase64EncodedMessage() const {
   auto message_signers_pair = GetSerializedMessage();
   if (!message_signers_pair) {
@@ -347,6 +378,7 @@ mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
   solana_tx_data->tx_type = tx_type_;
   solana_tx_data->lamports = lamports_;
   solana_tx_data->amount = amount_;
+  solana_tx_data->gas_estimation = gas_estimation_.Clone();
 
   if (send_options_) {
     solana_tx_data->send_options = send_options_->ToMojomSendOptions();
@@ -362,7 +394,6 @@ mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
 base::Value::Dict SolanaTransaction::ToValue() const {
   base::Value::Dict dict;
   dict.Set("message", message_.ToValue());
-
   dict.Set("to_wallet_address", to_wallet_address_);
   dict.Set("spl_token_mint_address", spl_token_mint_address_);
   dict.Set("tx_type", static_cast<int>(tx_type_));
@@ -385,12 +416,22 @@ base::Value::Dict SolanaTransaction::ToValue() const {
         signature_dict.Set(kSignature,
                            base::Base64Encode(*signature->signature));
       }
-
       signatures_list.Append(std::move(signature_dict));
     }
     sign_tx_param_dict.Set(kSignatures, std::move(signatures_list));
-
     dict.Set(kSignTxParam, std::move(sign_tx_param_dict));
+  }
+
+  if (gas_estimation_) {
+    base::Value::Dict gas_estimation_dict;
+    gas_estimation_dict.Set("base_fee",
+                            base::NumberToString(gas_estimation_->base_fee));
+    gas_estimation_dict.Set(
+        "compute_units", base::NumberToString(gas_estimation_->compute_units));
+    gas_estimation_dict.Set(
+        "fee_per_compute_unit",
+        base::NumberToString(gas_estimation_->fee_per_compute_unit));
+    dict.Set("gas_estimation", std::move(gas_estimation_dict));
   }
 
   return dict;
@@ -497,6 +538,39 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
     }
     sign_tx_param->signatures = std::move(signatures);
     tx->set_sign_tx_param(std::move(sign_tx_param));
+  }
+
+  const base::Value::Dict* gas_estimation_dict =
+      value.FindDict("gas_estimation");
+  if (gas_estimation_dict) {
+    auto gas_estimation = mojom::SolanaGasEstimation::New();
+    const auto* base_fee_string = gas_estimation_dict->FindString("base_fee");
+    uint64_t base_fee = 0;
+    if (base_fee_string && base::StringToUint64(*base_fee_string, &base_fee)) {
+      gas_estimation->base_fee = base_fee;
+    }
+
+    const auto* compute_units_string =
+        gas_estimation_dict->FindString("compute_units");
+    uint32_t compute_units = 0;
+    if (compute_units_string &&
+        base::StringToUint(*compute_units_string, &compute_units)) {
+      gas_estimation->compute_units = compute_units;
+    }
+
+    const auto* fee_per_compute_unit_string =
+        gas_estimation_dict->FindString("fee_per_compute_unit");
+    uint64_t fee_per_compute_unit = 0;
+    if (fee_per_compute_unit_string &&
+        base::StringToUint64(*fee_per_compute_unit_string,
+                             &fee_per_compute_unit)) {
+      gas_estimation->fee_per_compute_unit = fee_per_compute_unit;
+    }
+
+    if (gas_estimation->base_fee != 0 || gas_estimation->compute_units != 0 ||
+        gas_estimation->fee_per_compute_unit != 0) {
+      tx->set_gas_estimation(std::move(gas_estimation));
+    }
   }
 
   return tx;

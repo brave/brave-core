@@ -52,7 +52,7 @@ namespace system_program {
 // Account references:
 //   0. Funding account [signer, writable].
 //   1. Recipient account [non-signer, writable].
-// Insturction data: u32 instruction index and u64 lamport.
+// Instruction data: u32 instruction index and u64 lamport.
 std::optional<SolanaInstruction> Transfer(const std::string& from_pubkey,
                                           const std::string& to_pubkey,
                                           uint64_t lamport) {
@@ -95,7 +95,7 @@ namespace spl_token_program {
 //   2. Authority account (source account's multisignature owner/delegate)
 //      [non-signer, readonly]
 //   3~3+M. M signer accounts [signer, readonly].
-// Insturction data: u8 instruction index and u64 amount.
+// Instruction data: u8 instruction index and u64 amount.
 std::optional<SolanaInstruction> Transfer(
     const std::string& token_program_id,
     const std::string& source_pubkey,
@@ -174,6 +174,40 @@ std::optional<SolanaInstruction> CreateAssociatedTokenAccount(
 }
 
 }  // namespace spl_associated_token_account_program
+
+namespace compute_budget_program {
+
+SolanaInstruction SetComputeUnitLimit(uint32_t units) {
+  // TODO(nvonpentz) Confirm u8 is the correct type for the instruction
+  // discriminator
+  std::vector<uint8_t> instruction_data = {static_cast<uint8_t>(
+      mojom::SolanaComputeBudgetInstruction::kSetComputeUnitLimit)};
+
+  std::vector<uint8_t> units_bytes;
+  UintToLEBytes(units, &units_bytes);
+  instruction_data.insert(instruction_data.end(), units_bytes.begin(),
+                          units_bytes.end());
+
+  return SolanaInstruction(mojom::kSolanaComputeBudgetProgramId, {},
+                           instruction_data);
+}
+
+SolanaInstruction SetComputeUnitPrice(uint64_t price) {
+  // TODO(nvonpentz) Confirm u8 is the correct type for the instruction
+  // discriminator
+  std::vector<uint8_t> instruction_data = {static_cast<uint8_t>(
+      mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice)};
+
+  std::vector<uint8_t> price_bytes;
+  UintToLEBytes(price, &price_bytes);
+  instruction_data.insert(instruction_data.end(), price_bytes.begin(),
+                          price_bytes.end());
+
+  return SolanaInstruction(mojom::kSolanaComputeBudgetProgramId, {},
+                           instruction_data);
+}
+
+}  // namespace compute_budget_program
 
 }  // namespace solana
 

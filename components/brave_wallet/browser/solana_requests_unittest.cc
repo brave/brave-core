@@ -172,6 +172,34 @@ TEST(SolanaRequestsUnitTest, isBlockhashValid) {
   EXPECT_CHECK_DEATH(isBlockhashValid(kBlockhash, "invalid_commitment"));
 }
 
+TEST(SolanaRequestsUnitTest, simulateTransaction) {
+  EXPECT_EQ(base::test::ParseJsonDict(simulateTransaction("unsigned tx")),
+            base::test::ParseJsonDict(
+                R"({
+                  "id": 1,
+                  "jsonrpc": "2.0",
+                  "method": "simulateTransaction",
+                  "params": [
+                    "unsigned tx",
+                    {
+                      "commitment": "confirmed",
+                      "encoding": "base64"
+                    }
+                  ]
+                })"));
+}
+
+TEST(SolanaRequestsUnitTest, getRecentPrioritizationFees) {
+  EXPECT_EQ(base::test::ParseJsonDict(getRecentPrioritizationFees()),
+            base::test::ParseJsonDict(
+                R"({
+                "id": 1,
+                "jsonrpc": "2.0",
+                "method": "getRecentPrioritizationFees",
+                "params": []
+              })"));
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

@@ -483,6 +483,14 @@ void TxService::GetEstimatedTxFee(const std::string& chain_id,
   GetSolanaTxManager()->GetEstimatedTxFee(tx_meta_id, std::move(callback));
 }
 
+void TxService::GetSolanaGasEstimation(
+    const std::string& chain_id,
+    const std::string& tx_meta_id,
+    GetSolanaGasEstimationCallback callback) {
+  GetSolanaTxManager()->GetSolanaGasEstimation(chain_id, tx_meta_id,
+                                               std::move(callback));
+}
+
 void TxService::ProcessSolanaHardwareSignature(
     const std::string& chain_id,
     const std::string& tx_meta_id,

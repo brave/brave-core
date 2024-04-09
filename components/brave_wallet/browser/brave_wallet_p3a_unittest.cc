@@ -182,6 +182,75 @@ class BraveWalletP3AUnitTest : public testing::Test {
                 request.url.spec(),
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + tx_hash +
                     "\"}");
+          } else if (*method == "simulateTransaction") {
+            url_loader_factory_.AddResponse(request.url.spec(), R"({
+              "jsonrpc": "2.0",
+              "result": {
+                "context": {
+                  "apiVersion": "1.17.25",
+                  "slot": 259225005
+                },
+                "value": {
+                  "accounts": null,
+                  "err": null,
+                  "logs": [
+                    "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY invoke [1]",
+                    "Program log: Instruction: Transfer",
+                    "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV invoke [2]",
+                    "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV consumed 39 of 183791 compute units",
+                    "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV success",
+                    "Program cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK invoke [2]",
+                    "Program log: Instruction: ReplaceLeaf",
+                    "Program log: Attempting to fill in proof",
+                    "Program consumption: 148976 units remaining",
+                    "Program log: Active Index: 4",
+                    "Program log: Rightmost Index: 1479308",
+                    "Program log: Buffer Size: 64",
+                    "Program log: Leaf Index: 885106",
+                    "Program log: Fast-forwarding proof, starting index 4",
+                    "Program consumption: 145902 units remaining",
+                    "Program consumption: 145795 units remaining",
+                    "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV invoke [3]",
+                    "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV consumed 39 of 133311 compute units",
+                    "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV success",
+                    "Program cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK consumed 36402 of 168927 compute units",
+                    "Program cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK success",
+                    "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY consumed 69017 of 200000 compute units",
+                    "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY success"
+                  ],
+                  "returnData": null,
+                  "unitsConsumed": 69017
+                }
+              },
+              "id": 1
+            })");
+          } else if (*method == "getRecentPrioritizationFees") {
+            url_loader_factory_.AddResponse(request.url.spec(), R"({
+              "jsonrpc": "2.0",
+              "result": [
+                {
+                  "prioritizationFee": 100,
+                  "slot": 293251906
+                },
+                {
+                  "prioritizationFee": 200,
+                  "slot": 293251906
+                },
+                {
+                  "prioritizationFee": 0,
+                  "slot": 293251805
+                }
+              ],
+              "id": 1
+            })");
+          } else if (*method == "getFeeForMessage") {
+            url_loader_factory_.AddResponse(request.url.spec(), R"({
+              "jsonrpc":"2.0","id":1,
+              "result": {
+                "context":{"slot":123065869},
+                "value": 5000
+              }
+            })");
           }
         }));
   }
@@ -647,12 +716,7 @@ TEST_F(BraveWalletP3AUnitTest, SolTransactionSentObservation) {
       std::vector<std::string>(
           {from_account_address, to_account, mojom::kSolanaSystemProgramId}),
       std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
-      nullptr);
-
-  std::string tx_meta_id;
-  EXPECT_TRUE(AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data)),
-      mojom::kSolanaMainnet, sol_from(), &tx_meta_id));
+      nullptr, nullptr);
 
   std::string tx_hash1 =
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpR"
@@ -662,6 +726,11 @@ TEST_F(BraveWalletP3AUnitTest, SolTransactionSentObservation) {
 
   SetSolInterceptor(latest_blockhash1, last_valid_block_height1, tx_hash1,
                     last_valid_block_height1);
+
+  std::string tx_meta_id;
+  EXPECT_TRUE(AddUnapprovedTransaction(
+      mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data)),
+      mojom::kSolanaMainnet, sol_from(), &tx_meta_id));
 
   // Approve the SOL transaction
   EXPECT_TRUE(ApproveTransaction(mojom::CoinType::SOL, mojom::kSolanaMainnet,

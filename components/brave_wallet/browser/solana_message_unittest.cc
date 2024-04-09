@@ -566,4 +566,70 @@ TEST(SolanaMessageUnitTest, UsesDurableNonce) {
   }
 }
 
+TEST(SolanaMessageUnitTest, AddPriorityFee) {
+  auto legacy_message = GetTestLegacyMessage();
+  auto static_account_keys_before = legacy_message.static_account_keys_;
+  auto legacy_message_header_before = legacy_message.message_header_;
+  auto instructions_size_before = legacy_message.instructions().size();
+  ASSERT_TRUE(legacy_message.AddPriorityFee(300, 1000));
+
+  // Should have two more instrucitons, one to modify compute units, one to
+  // specify the priority fee.
+  EXPECT_EQ(instructions_size_before + 2, legacy_message.instructions().size());
+  EXPECT_EQ(legacy_message.instructions()[0].GetProgramId(),
+            mojom::kSolanaComputeBudgetProgramId);
+  EXPECT_EQ(legacy_message.instructions()[1].GetProgramId(),
+            mojom::kSolanaComputeBudgetProgramId);
+  EXPECT_EQ(static_account_keys_before.size() + 1,
+            legacy_message.static_account_keys_.size());
+
+  // Compute budget program ID should only be found in the new static account
+  // keys
+  bool found_compute_budge_program_id = false;
+  for (const auto& key : legacy_message.static_account_keys_) {
+    if (key.ToBase58() == mojom::kSolanaComputeBudgetProgramId) {
+      found_compute_budge_program_id = true;
+      break;
+    }
+  }
+  EXPECT_TRUE(found_compute_budge_program_id);
+
+  found_compute_budge_program_id = false;
+  for (const auto& key : static_account_keys_before) {
+    if (key.ToBase58() == mojom::kSolanaComputeBudgetProgramId) {
+      found_compute_budge_program_id = true;
+      break;
+    }
+  }
+  EXPECT_FALSE(found_compute_budge_program_id);
+
+  // Header should the same except for the number of readnly unsigned accounts.
+  EXPECT_EQ(legacy_message_header_before.num_required_signatures,
+            legacy_message.message_header_.num_required_signatures);
+  EXPECT_EQ(legacy_message_header_before.num_readonly_signed_accounts,
+            legacy_message.message_header_.num_readonly_signed_accounts);
+  EXPECT_EQ(legacy_message_header_before.num_readonly_unsigned_accounts + 1,
+            legacy_message.message_header_.num_readonly_unsigned_accounts);
+
+  auto legacy_message_with_durable_nonce = GetTestLegacyMessage();
+  SolanaInstruction instruction = GetAdvanceNonceAccountInstruction();
+  std::vector<SolanaInstruction> vec;
+  vec.emplace_back(instruction);
+  vec.emplace_back(legacy_message_with_durable_nonce.instructions()[0]);
+  legacy_message_with_durable_nonce.SetInstructionsForTesting(vec);
+  instructions_size_before =
+      legacy_message_with_durable_nonce.instructions().size();
+  ASSERT_TRUE(legacy_message_with_durable_nonce.AddPriorityFee(300, 1000));
+  EXPECT_EQ(instructions_size_before + 2,
+            legacy_message_with_durable_nonce.instructions().size());
+  EXPECT_EQ(instructions_size_before + 2,
+            legacy_message_with_durable_nonce.instructions().size());
+  EXPECT_EQ(legacy_message_with_durable_nonce.instructions()[0].GetProgramId(),
+            mojom::kSolanaSystemProgramId);  // Nonce instruction
+  EXPECT_EQ(legacy_message_with_durable_nonce.instructions()[1].GetProgramId(),
+            mojom::kSolanaComputeBudgetProgramId);
+  EXPECT_EQ(legacy_message_with_durable_nonce.instructions()[2].GetProgramId(),
+            mojom::kSolanaComputeBudgetProgramId);
+}
+
 }  // namespace brave_wallet

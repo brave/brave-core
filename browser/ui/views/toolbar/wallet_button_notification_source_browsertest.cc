@@ -270,7 +270,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::SolanaMessageHeader::New(0, 0, 0),
         std::vector<std::string>(),
         std::vector<brave_wallet::mojom::SolanaMessageAddressTableLookupPtr>(),
-        nullptr, nullptr);
+        nullptr, nullptr, nullptr);
 
     tx_service()->AddUnapprovedTransaction(
         brave_wallet::mojom::TxDataUnion::NewSolanaTxData(std::move(tx_data)),

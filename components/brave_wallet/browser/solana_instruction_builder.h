@@ -47,6 +47,14 @@ std::optional<SolanaInstruction> CreateAssociatedTokenAccount(
 
 }  // namespace spl_associated_token_account_program
 
+namespace compute_budget_program {
+
+SolanaInstruction SetComputeUnitLimit(uint32_t units);
+
+SolanaInstruction SetComputeUnitPrice(uint64_t price);
+
+}  // namespace compute_budget_program
+
 }  // namespace solana
 
 }  // namespace brave_wallet
