@@ -527,7 +527,8 @@ void SwapService::OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
     if (quote->routes.empty()) {
       auto error_response = mojom::LiFiError::New();
       error_response->code = mojom::LiFiErrorCode::kNotFoundError;
-      error_response->message = "No Routes found";
+      error_response->message =
+          l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_NO_ROUTES_FOUND);
 
       std::move(callback).Run(
           nullptr, nullptr,

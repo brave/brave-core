@@ -536,6 +536,7 @@ provideStrings({
   braveWalletSwapReviewReceive: "You'll receive",
   braveWalletSwapReviewHeader: 'Confirm order',
   braveWalletSolanaSwap: 'Solana Swap',
+  braveWalletNoRoutesFound: 'No routes found',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',
