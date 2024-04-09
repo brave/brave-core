@@ -12,9 +12,11 @@ struct FocusStepsView: View {
   var namespace: Namespace.ID
 
   @Environment(\.colorScheme) private var colorScheme
-  @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
-  @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
+  @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
+  @Environment(\.horizontalSizeClass) private var horizontalSizeClass: UserInterfaceSizeClass?
   @Environment(\.dismiss) private var dismiss
+
+  @ScaledMetric private var iconSize: CGFloat = 32.0
 
   @State private var indicatorIndex = 0
   @State private var opacity = 0.0
@@ -24,11 +26,11 @@ struct FocusStepsView: View {
   private let attributionManager: AttributionManager?
   private let p3aUtilities: BraveP3AUtils?
 
-  var shouldUseExtendedDesign: Bool {
+  private var shouldUseExtendedDesign: Bool {
     return horizontalSizeClass == .regular && verticalSizeClass == .regular
   }
 
-  let dynamicTypeRange = (...DynamicTypeSize.xLarge)
+  private let dynamicTypeRange = (...DynamicTypeSize.xLarge)
 
   public init(
     namespace: Namespace.ID,
@@ -43,72 +45,68 @@ struct FocusStepsView: View {
   }
 
   var body: some View {
-    NavigationView {
-      if shouldUseExtendedDesign {
-        VStack(spacing: 40) {
-          VStack {
-            stepsContentView
-              .background(colorScheme == .dark ? .black : .white)
-          }
-          .clipShape(RoundedRectangle(cornerRadius: 16.0))
-          .frame(maxWidth: 616, maxHeight: 895)
-          .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
-          .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
-          .overlay(alignment: .topTrailing) {
-            cancelButton
-              .frame(width: 32, height: 32)
-              .padding(24)
-          }
-
-          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background {
-          Image("focus-background-large", bundle: .module)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .opacity(0.20)
-        }
-        .background {
-          NavigationLink("", isActive: $isP3AViewPresented) {
-            FocusP3AScreenView(
-              attributionManager: attributionManager,
-              p3aUtilities: p3aUtilities,
-              shouldDismiss: $shouldDismiss
-            )
-          }
-        }
-      } else {
+    if shouldUseExtendedDesign {
+      VStack(spacing: 40) {
         VStack {
           stepsContentView
-          FocusStepsPagingIndicator(totalPages: 4, activeIndex: $indicatorIndex)
-            .opacity(opacity)
-            .onAppear {
-              withAnimation(.easeInOut(duration: 1.5).delay(1.25)) {
-                opacity = 1.0
-              }
-            }
+            .background(colorScheme == .dark ? .black : .white)
         }
-        .padding(.bottom, 20)
-        .background(Color(braveSystemName: .pageBackground))
-        .background {
-          NavigationLink("", isActive: $isP3AViewPresented) {
-            FocusP3AScreenView(
-              attributionManager: attributionManager,
-              p3aUtilities: p3aUtilities,
-              shouldDismiss: $shouldDismiss
-            )
-          }
-        }
+        .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
+        .frame(maxWidth: 616, maxHeight: 895)
+        .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
+        .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
         .overlay(alignment: .topTrailing) {
           cancelButton
-            .frame(width: 32, height: 32)
+            .frame(width: iconSize, height: iconSize)
             .padding(24)
         }
+
+        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background {
+        Image("focus-background-large", bundle: .module)
+          .resizable()
+          .aspectRatio(contentMode: .fill)
+          .opacity(0.20)
+      }
+      .background {
+        NavigationLink("", isActive: $isP3AViewPresented) {
+          FocusP3AScreenView(
+            attributionManager: attributionManager,
+            p3aUtilities: p3aUtilities,
+            shouldDismiss: $shouldDismiss
+          )
+        }
+      }
+    } else {
+      VStack {
+        stepsContentView
+        FocusStepsPagingIndicator(totalPages: 4, activeIndex: $indicatorIndex)
+          .opacity(opacity)
+          .onAppear {
+            withAnimation(.easeInOut(duration: 1.5).delay(1.25)) {
+              opacity = 1.0
+            }
+          }
+      }
+      .padding(.bottom, 20)
+      .background(Color(braveSystemName: .pageBackground))
+      .background {
+        NavigationLink("", isActive: $isP3AViewPresented) {
+          FocusP3AScreenView(
+            attributionManager: attributionManager,
+            p3aUtilities: p3aUtilities,
+            shouldDismiss: $shouldDismiss
+          )
+        }
+      }
+      .overlay(alignment: .topTrailing) {
+        cancelButton
+          .frame(width: 32, height: 32)
+          .padding(24)
       }
     }
-    .navigationViewStyle(StackNavigationViewStyle())
-    .navigationBarHidden(true)
   }
 
   private var stepsContentView: some View {
@@ -141,10 +139,9 @@ struct FocusStepsView: View {
             .tag(1)
         }
         .background(Color(braveSystemName: .pageBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 16.0))
+        .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .animation(.easeInOut, value: indicatorIndex)
-        .transition(.slide)
         .disabled(indicatorIndex > 0)
         .padding(.bottom, 24)
 
@@ -164,13 +161,16 @@ struct FocusStepsView: View {
               .foregroundColor(Color(.white))
               .dynamicTypeSize(dynamicTypeRange)
               .padding()
-              .foregroundStyle(.white)
               .frame(maxWidth: .infinity)
               .background(Color(braveSystemName: .buttonBackground))
           }
         )
-        .clipShape(RoundedRectangle(cornerRadius: 12.0))
-        .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
+        .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
+        .overlay(
+          RoundedRectangle(cornerRadius: 12.0, style: .continuous).strokeBorder(
+            Color.black.opacity(0.2)
+          )
+        )
       }
       .opacity(opacity)
       .onAppear {
@@ -203,7 +203,7 @@ struct FocusStepsView: View {
   }
 }
 
-struct FocusStepsHeaderTitleView: View {
+private struct FocusStepsHeaderTitleView: View {
   @Binding var activeIndex: Int
 
   let dynamicTypeRange = (...DynamicTypeSize.large)
@@ -224,19 +224,16 @@ struct FocusStepsHeaderTitleView: View {
         .font(
           Font.custom("FlechaM-Medium", size: 32)
         )
-        .dynamicTypeSize(dynamicTypeRange)
-        .fixedSize(horizontal: false, vertical: true)
         .opacity(0.9)
-
       Text(description)
         .font(
           Font.custom("Poppins-Medium", size: 17)
         )
-        .dynamicTypeSize(dynamicTypeRange)
-        .fixedSize(horizontal: false, vertical: true)
         .multilineTextAlignment(.center)
         .foregroundColor(Color(braveSystemName: .textTertiary))
     }
+    .dynamicTypeSize(dynamicTypeRange)
+    .fixedSize(horizontal: false, vertical: true)
   }
 }
 
@@ -259,6 +256,7 @@ struct FocusStepsPagingIndicator: View {
   }
 }
 
+#if DEBUG
 struct FocusStepsView_Previews: PreviewProvider {
   @Namespace static var namespace
 
@@ -268,3 +266,4 @@ struct FocusStepsView_Previews: PreviewProvider {
     FocusStepsView(namespace: namespace, shouldDismiss: $shouldDismiss)
   }
 }
+#endif

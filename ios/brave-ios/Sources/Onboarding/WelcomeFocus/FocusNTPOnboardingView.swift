@@ -89,9 +89,9 @@ public class FocusNTPOnboardingViewController: UIViewController, PopoverContentC
 extension UIColor {
   fileprivate static let urlBarIndicatorBackground = UIColor(dynamicProvider: { traits in
     if traits.userInterfaceStyle == .light {
-      return UIColor(rgb: 0xFFFFFF)
+      return .white
     } else {
-      return UIColor(rgb: 0x0D1214)
+      return UIColor(braveSystemName: .primitiveGray100)
     }
   })
 }

@@ -11,38 +11,34 @@ struct FocusSplashScreenView: View {
   @State private var isShimmering = false
 
   var body: some View {
-    NavigationView {
-      GeometryReader { geometry in
-        ZStack {
-          braveLogo
-            .scaleEffect(isShimmering ? 1.015 : 1.0)
-            .overlay(
-              self.linearGradientView
-                .frame(width: geometry.size.width, height: 2 * geometry.size.height)
-                .position(
-                  x: geometry.size.width / 2,
-                  y: isShimmering ? 2 * geometry.size.height : -geometry.size.height
-                )
-                .scaleEffect(isShimmering ? 1.015 : 1.0)
-                .mask(
-                  braveLogo
-                )
-            )
-          Image("focus-icon-brave", bundle: .module)
-            .resizable()
-            .matchedGeometryEffect(id: "icon", in: namespace)
-            .frame(width: 146, height: 146)
-        }
-        .background(Color(braveSystemName: .pageBackground))
-        .onAppear {
-          withAnimation(.linear(duration: 1.25)) {
-            self.isShimmering = true
-          }
+    GeometryReader { geometry in
+      ZStack {
+        braveLogo
+          .scaleEffect(isShimmering ? 1.015 : 1.0)
+          .overlay(
+            self.linearGradientView
+              .frame(width: geometry.size.width, height: 2 * geometry.size.height)
+              .position(
+                x: geometry.size.width / 2,
+                y: isShimmering ? 2 * geometry.size.height : -geometry.size.height
+              )
+              .scaleEffect(isShimmering ? 1.015 : 1.0)
+              .mask(
+                braveLogo
+              )
+          )
+        Image("focus-icon-brave", bundle: .module)
+          .resizable()
+          .matchedGeometryEffect(id: "icon", in: namespace)
+          .frame(width: 146, height: 146)
+      }
+      .background(Color(braveSystemName: .pageBackground))
+      .onAppear {
+        withAnimation(.linear(duration: 1.25)) {
+          self.isShimmering = true
         }
       }
     }
-    .navigationViewStyle(StackNavigationViewStyle())
-    .navigationBarHidden(true)
   }
 
   private var braveLogo: some View {
@@ -72,6 +68,7 @@ struct FocusSplashScreenView: View {
   }
 }
 
+#if DEBUG
 struct FocusSplashScreenView_Previews: PreviewProvider {
   @Namespace static var namespace
 
@@ -79,3 +76,4 @@ struct FocusSplashScreenView_Previews: PreviewProvider {
     FocusSplashScreenView(namespace: namespace)
   }
 }
+#endif

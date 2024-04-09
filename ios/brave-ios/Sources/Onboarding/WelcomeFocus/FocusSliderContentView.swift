@@ -250,6 +250,7 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
   }
 }
 
+#if DEBUG
 #Preview("AdTrackerLTR") {
   FocusAdTrackerSliderContentView()
 }
@@ -263,3 +264,4 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
   FocusVideoAdSliderContentView()
     .aspectRatio(contentMode: .fit)
 }
+#endif

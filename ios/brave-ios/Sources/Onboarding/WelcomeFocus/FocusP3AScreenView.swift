@@ -11,10 +11,9 @@ import SwiftUI
 
 struct FocusP3AScreenView: View {
   @Environment(\.colorScheme) private var colorScheme
-  @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
-  @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
+  @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
+  @Environment(\.horizontalSizeClass) private var horizontalSizeClass: UserInterfaceSizeClass?
 
-  @State private var isP3AToggleOn = true
   @State private var isP3AHelpPresented = false
   @State private var isSystemSettingsViewPresented = false
 
@@ -23,13 +22,13 @@ struct FocusP3AScreenView: View {
   private let attributionManager: AttributionManager?
   private let p3aUtilities: BraveP3AUtils?
 
-  var shouldUseExtendedDesign: Bool {
+  private var shouldUseExtendedDesign: Bool {
     return horizontalSizeClass == .regular && verticalSizeClass == .regular
   }
 
-  let dynamicTypeRange = (...DynamicTypeSize.xLarge)
+  private let dynamicTypeRange = (...DynamicTypeSize.xLarge)
 
-  public init(
+  init(
     attributionManager: AttributionManager? = nil,
     p3aUtilities: BraveP3AUtils? = nil,
     shouldDismiss: Binding<Bool>
@@ -40,43 +39,39 @@ struct FocusP3AScreenView: View {
   }
 
   var body: some View {
-    NavigationView {
-      if shouldUseExtendedDesign {
-        VStack(spacing: 40) {
-          VStack {
-            consentp3aContentView
-              .background(colorScheme == .dark ? .black : .white)
-          }
-          .clipShape(RoundedRectangle(cornerRadius: 16.0))
+    if shouldUseExtendedDesign {
+      VStack(spacing: 40) {
+        consentp3aContentView
+          .background(colorScheme == .dark ? .black : .white)
+          .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
           .frame(maxWidth: 616, maxHeight: 895)
           .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
           .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
-          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(braveSystemName: .pageBackground))
-        .background {
-          NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-            FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
-          }
-        }
-      } else {
-        VStack {
-          consentp3aContentView
-          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
-            .padding(.bottom, 20)
-        }
-        .background(Color(braveSystemName: .pageBackground))
-        .background {
-          NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-            FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
-          }
+        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(Color(braveSystemName: .pageBackground))
+      .background {
+        NavigationLink("", isActive: $isSystemSettingsViewPresented) {
+          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
         }
       }
-    }
+      .navigationBarHidden(true)
 
-    .navigationViewStyle(StackNavigationViewStyle())
-    .navigationBarHidden(true)
+    } else {
+      VStack {
+        consentp3aContentView
+        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
+          .padding(.bottom, 20)
+      }
+      .background(Color(braveSystemName: .pageBackground))
+      .background {
+        NavigationLink("", isActive: $isSystemSettingsViewPresented) {
+          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
+        }
+      }
+      .navigationBarHidden(true)
+    }
   }
 
   private var consentp3aContentView: some View {
@@ -99,66 +94,65 @@ struct FocusP3AScreenView: View {
             .font(
               Font.custom("FlechaM-Medium", size: 32)
             )
-            .dynamicTypeSize(dynamicTypeRange)
-            .fixedSize(horizontal: false, vertical: true)
             .opacity(0.9)
-
           Text(Strings.FocusOnboarding.p3aScreenDescription)
             .font(
               Font.custom("Poppins-Medium", size: 17)
             )
-            .dynamicTypeSize(dynamicTypeRange)
-            .fixedSize(horizontal: false, vertical: true)
             .multilineTextAlignment(.center)
             .foregroundColor(Color(braveSystemName: .textTertiary))
         }
+        .fixedSize(horizontal: false, vertical: true)
+        .dynamicTypeSize(dynamicTypeRange)
         .padding(.bottom, shouldUseExtendedDesign ? 46 : 16)
 
-        Toggle(isOn: $isP3AToggleOn) {
+        Toggle(
+          isOn: Binding(
+            get: { p3aUtilities?.isP3AEnabled ?? true },
+            set: { newValue in p3aUtilities?.isP3AEnabled = newValue }
+          )
+        ) {
           VStack(alignment: .leading, spacing: 8) {
             Text(Strings.FocusOnboarding.p3aToggleTitle)
               .font(
                 Font.custom("Poppins-Medium", size: 17)
               )
-              .dynamicTypeSize(dynamicTypeRange)
-              .fixedSize(horizontal: false, vertical: true)
               .foregroundColor(Color(braveSystemName: .textPrimary))
               .opacity(0.9)
             Text(Strings.FocusOnboarding.p3aToggleDescription)
               .font(
                 Font.custom("Poppins-Regular", size: 13)
               )
-              .dynamicTypeSize(dynamicTypeRange)
-              .fixedSize(horizontal: false, vertical: true)
               .foregroundColor(Color(braveSystemName: .textTertiary))
           }
-          .padding(16)
-          .padding(.horizontal, 4)
+          .fixedSize(horizontal: false, vertical: true)
+          .dynamicTypeSize(dynamicTypeRange)
+          .padding(.vertical, 16)
+          .padding(.horizontal, 20)
         }
         .padding(.bottom, shouldUseExtendedDesign ? 20 : 16)
         .padding(.trailing, 36)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .toggleStyle(SwitchToggleStyle(tint: Color(braveSystemName: .buttonBackground)))
-        .onChange(of: isP3AToggleOn) { newValue in
-          p3aUtilities?.isP3AEnabled = newValue
-        }
-
-        Text(Strings.FocusOnboarding.p3aInformationButtonTitle)
-          .font(
-            Font.custom("Poppins-Regular", size: 13)
-          )
-          .foregroundColor(Color(braveSystemName: .textInteractive))
-          .fixedSize(horizontal: false, vertical: true)
-          .dynamicTypeSize(dynamicTypeRange)
-          .multilineTextAlignment(.center)
-          .padding(.horizontal, 20)
-          .padding(.bottom, 20)
-          .onTapGesture {
+        Button(
+          action: {
             isP3AHelpPresented = true
+          },
+          label: {
+            Text(Strings.FocusOnboarding.p3aInformationButtonTitle)
+              .font(
+                Font.custom("Poppins-Regular", size: 13)
+              )
+              .foregroundColor(Color(braveSystemName: .textInteractive))
+              .fixedSize(horizontal: false, vertical: true)
+              .dynamicTypeSize(dynamicTypeRange)
+              .multilineTextAlignment(.center)
           }
-          .sheet(isPresented: $isP3AHelpPresented) {
-            FocusSafariControllerView(url: FocusOnboardingConstants.p3aHelpArticle)
-          }
+        )
+        .padding(.horizontal, 20)
+        .padding(.bottom, 20)
+        .sheet(isPresented: $isP3AHelpPresented) {
+          FocusSafariControllerView(url: FocusOnboardingConstants.p3aHelpArticle)
+        }
       }
       .padding(.horizontal, shouldUseExtendedDesign ? 72 : 20)
 
@@ -176,13 +170,16 @@ struct FocusP3AScreenView: View {
             .foregroundColor(Color(.white))
             .dynamicTypeSize(dynamicTypeRange)
             .padding()
-            .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
             .background(Color(braveSystemName: .buttonBackground))
         }
       )
-      .clipShape(RoundedRectangle(cornerRadius: 12.0))
-      .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
+      .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
+      .overlay(
+        RoundedRectangle(cornerRadius: 12.0, style: .continuous).strokeBorder(
+          Color.black.opacity(0.2)
+        )
+      )
     }
     .padding(.vertical, shouldUseExtendedDesign ? 64 : 20)
     .padding(.horizontal, shouldUseExtendedDesign ? 60 : 20)
@@ -196,17 +193,17 @@ struct FocusP3AScreenView: View {
   }
 }
 
-struct FocusSafariControllerView: UIViewControllerRepresentable {
+private struct FocusSafariControllerView: UIViewControllerRepresentable {
   let url: URL
 
   func makeUIViewController(context: Context) -> SFSafariViewController {
-    let safariViewController = SFSafariViewController(url: url)
-    return safariViewController
+    return SFSafariViewController(url: url)
   }
 
   func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {}
 }
 
+#if DEBUG
 struct FocusP3AScreenView_Previews: PreviewProvider {
   static var previews: some View {
     @State var shouldDismiss: Bool = false
@@ -214,3 +211,4 @@ struct FocusP3AScreenView_Previews: PreviewProvider {
     FocusP3AScreenView(shouldDismiss: $shouldDismiss)
   }
 }
+#endif
