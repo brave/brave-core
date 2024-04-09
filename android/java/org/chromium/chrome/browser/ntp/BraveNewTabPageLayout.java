@@ -125,6 +125,7 @@ public class BraveNewTabPageLayout
     private static final String TAG = "BraveNewTabPage";
 
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
+    private static final int HOUR_MS = 3_600_000;
 
     // To delete in bytecode, parent variable will be used instead.
     private ViewGroup mMvTilesContainerLayout;
@@ -182,7 +183,7 @@ public class BraveNewTabPageLayout
     private boolean mIsBraveStatsEnabled;
     private boolean mIsDisplayNewsFeed;
     private boolean mIsDisplayNewsOptin;
-    private boolean mNewsFeedViewedOnce;
+    private long mNewsFeedLastViewTime;
 
     private Supplier<Tab> mTabProvider;
 
@@ -482,11 +483,13 @@ public class BraveNewTabPageLayout
                         }
                         if (mIsDisplayNewsFeed
                                 && firstVisibleItemPosition >= newsFeedPosition - 1) {
-                            if (!mNewsFeedViewedOnce && mBraveNewsController != null) {
+                            long nowMillis = System.currentTimeMillis();
+                            if ((nowMillis - HOUR_MS) > mNewsFeedLastViewTime
+                                    && mBraveNewsController != null) {
                                 // Brave News interaction started
                                 mBraveNewsController.onInteractionSessionStarted();
-                                mNewsFeedViewedOnce = true;
                             }
+                            mNewsFeedLastViewTime = nowMillis;
                             if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                                 mEndCardViewTime = System.currentTimeMillis();
                                 long timeDiff = mEndCardViewTime - mStartCardViewTime;
