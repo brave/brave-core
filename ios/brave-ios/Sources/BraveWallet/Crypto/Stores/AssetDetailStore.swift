@@ -427,6 +427,21 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     return (assetPrices, btcRatio, priceHistory)
   }
 
+  @MainActor func handleTransactionFollowUpAction(
+    _ action: TransactionFollowUpAction,
+    transaction: BraveWallet.TransactionInfo
+  ) async -> String? {
+    guard
+      let errorMessage = await txService.handleTransactionFollowUpAction(
+        action,
+        transaction: transaction
+      )
+    else {
+      return nil
+    }
+    return errorMessage
+  }
+
   @MainActor private func fetchAccountBalances(
     _ accountAssetViewModels: [AccountAssetViewModel],
     network: BraveWallet.NetworkInfo

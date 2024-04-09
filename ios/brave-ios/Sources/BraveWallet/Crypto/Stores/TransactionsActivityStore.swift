@@ -12,6 +12,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   @Published var transactionSections: [TransactionSection] = []
   /// Filter query to filter the transactions by.
   @Published var query: String = ""
+  @Published var errorMessage: String?
   /// Selected networks to show transactions for.
   @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
     didSet {
@@ -244,6 +245,23 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         nftMetadata: metadataCache,
         solEstimatedTxFees: solEstimatedTxFeesCache
       )
+    }
+  }
+
+  func handleTransactionFollowUpAction(
+    _ action: TransactionFollowUpAction,
+    transaction: BraveWallet.TransactionInfo
+  ) {
+    Task { @MainActor in
+      guard
+        let errorMessage = await txService.handleTransactionFollowUpAction(
+          action,
+          transaction: transaction
+        )
+      else {
+        return
+      }
+      self.errorMessage = errorMessage
     }
   }
 

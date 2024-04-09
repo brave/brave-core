@@ -75,4 +75,40 @@ extension BraveWalletTxService {
       }
     )
   }
+
+  /// Handles the `TransactionAction` for a given transaction, returning error message if failed.
+  @MainActor func handleTransactionFollowUpAction(
+    _ action: TransactionFollowUpAction,
+    transaction: BraveWallet.TransactionInfo
+  ) async -> String? {
+    switch action {
+    case .retry:
+      guard transaction.isRetryTransactionSupported else {
+        return Strings.Wallet.unknownError
+      }
+      let (success, _, error) = await retryTransaction(
+        coinType: transaction.coin,
+        chainId: transaction.chainId,
+        txMetaId: transaction.id
+      )
+      if success {
+        return nil
+      }
+      return error
+    case .cancel, .speedUp:
+      guard transaction.isCancelOrSpeedUpTransactionSupported else {
+        return Strings.Wallet.unknownError
+      }
+      let (success, _, error) = await speedupOrCancelTransaction(
+        coinType: transaction.coin,
+        chainId: transaction.chainId,
+        txMetaId: transaction.id,
+        cancel: action == .cancel
+      )
+      if success {
+        return nil
+      }
+      return error
+    }
+  }
 }

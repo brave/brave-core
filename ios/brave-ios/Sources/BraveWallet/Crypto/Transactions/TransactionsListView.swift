@@ -13,6 +13,34 @@ struct TransactionSection: Equatable, Identifiable {
   let transactions: [ParsedTransaction]
 }
 
+enum TransactionFollowUpAction {
+  case retry
+  case cancel
+  case speedUp
+
+  var buttonTitle: String {
+    switch self {
+    case .retry:
+      return Strings.Wallet.retryTransactionButtonTitle
+    case .cancel:
+      return Strings.Wallet.cancelTransactionButtonTitle
+    case .speedUp:
+      return Strings.Wallet.speedUpTransactionButtonTitle
+    }
+  }
+
+  var braveSystemImage: String {
+    switch self {
+    case .retry:
+      return "leo.refresh"
+    case .cancel:
+      return "leo.close"
+    case .speedUp:
+      return "leo.network.speed-fast"
+    }
+  }
+}
+
 /// List of transactions separated by date with a search bar and filter button.
 /// Used in Activity tab, Asset Details (#8137), etc.
 struct TransactionsListView: View {
@@ -21,12 +49,17 @@ struct TransactionsListView: View {
   let transactionSections: [TransactionSection]
   /// Query displayed in the search bar above the transactions.
   @Binding var query: String
+  /// Error message to display in an alert
+  @Binding var errorMessage: String?
   /// Whether to display the filter button
   var showFilter: Bool = true
   /// Called when the filters button beside the search bar is tapped/
   let filtersButtonTapped: () -> Void
   /// Called when a transaction is tapped.
   let transactionTapped: (BraveWallet.TransactionInfo) -> Void
+  /// Called when retry transaction is tapped from context menu.
+  let transactionFollowUpActionTapped:
+    (TransactionFollowUpAction, BraveWallet.TransactionInfo) -> Void
 
   /// Returns `transactionSections` filtered using the `filter` value.
   var filteredTransactionSections: [TransactionSection] {
@@ -67,7 +100,42 @@ struct TransactionsListView: View {
                             parsedTransaction: parsedTransaction
                           )
                         }
-                        .listRowInsets(.zero)
+                        .contextMenu(menuItems: {
+                          if parsedTransaction.transaction.isRetryTransactionSupported {
+                            Button {
+                              transactionFollowUpActionTapped(.retry, parsedTransaction.transaction)
+                            } label: {
+                              Label(
+                                Strings.Wallet.retryTransactionButtonTitle,
+                                braveSystemImage: "leo.refresh"
+                              )
+                            }
+                          }
+                          if parsedTransaction.transaction.isCancelOrSpeedUpTransactionSupported {
+                            Button {
+                              transactionFollowUpActionTapped(
+                                .cancel,
+                                parsedTransaction.transaction
+                              )
+                            } label: {
+                              Label(
+                                TransactionFollowUpAction.cancel.buttonTitle,
+                                braveSystemImage: TransactionFollowUpAction.cancel.braveSystemImage
+                              )
+                            }
+                            Button {
+                              transactionFollowUpActionTapped(
+                                .speedUp,
+                                parsedTransaction.transaction
+                              )
+                            } label: {
+                              Label(
+                                TransactionFollowUpAction.speedUp.buttonTitle,
+                                braveSystemImage: TransactionFollowUpAction.speedUp.braveSystemImage
+                              )
+                            }
+                          }
+                        })
                       }
                     },
                     header: {
@@ -89,6 +157,7 @@ struct TransactionsListView: View {
       }
     }
     .background(Color(braveSystemName: .containerBackground))
+    .errorAlert(errorMessage: $errorMessage)
   }
 
   private var searchBarAndFiltersContainer: some View {
@@ -141,8 +210,10 @@ struct TransactionsListView_Previews: PreviewProvider {
         )
       ],
       query: $query,
+      errorMessage: .constant(nil),
       filtersButtonTapped: {},
-      transactionTapped: { _ in }
+      transactionTapped: { _ in },
+      transactionFollowUpActionTapped: { _, _ in }
     )
   }
 }

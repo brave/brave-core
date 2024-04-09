@@ -137,4 +137,21 @@ extension View {
         }
     )
   }
+
+  func errorAlert(errorMessage: Binding<String?>) -> some View {
+    alert(
+      isPresented: Binding(
+        get: { errorMessage.wrappedValue != nil },
+        set: { _, _ in
+          errorMessage.wrappedValue = nil
+        }
+      )
+    ) {
+      Alert(
+        title: Text(Strings.Wallet.errorAlertTitle),
+        message: Text(errorMessage.wrappedValue ?? Strings.Wallet.unknownError),
+        dismissButton: .default(Text(Strings.OKString))
+      )
+    }
+  }
 }

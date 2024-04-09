@@ -11,6 +11,9 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   var transaction: BraveWallet.TransactionInfo
   @Published private(set) var parsedTransaction: ParsedTransaction?
   @Published private(set) var network: BraveWallet.NetworkInfo?
+  @Published private(set) var isLoadingTransactionAction: Bool = false
+  @Published private(set) var isRetryAvailable: Bool = false
+  @Published private(set) var isCancelOrSpeedupAvailable: Bool = false
 
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
@@ -147,6 +150,13 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         }
       }
 
+      if transaction.isRetryTransactionSupported {
+        self.isRetryAvailable = true
+      }
+      if transaction.isCancelOrSpeedUpTransactionSupported {
+        self.isCancelOrSpeedupAvailable = true
+      }
+
       let allAccounts = await keyringService.allAccounts().accounts
       guard
         let parsedTransaction = transaction.parsedTransaction(
@@ -245,5 +255,25 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       }
       self.parsedTransaction = parsedTransaction
     }
+  }
+
+  @MainActor func handleTransactionFollowUpAction(
+    _ action: TransactionFollowUpAction
+  ) async -> String? {
+    guard !isLoadingTransactionAction else {
+      return nil
+    }
+    self.isLoadingTransactionAction = true
+    defer { self.isLoadingTransactionAction = false }
+    guard
+      let errorMessage = await txService.handleTransactionFollowUpAction(
+        action,
+        transaction: transaction
+      )
+    else {
+      // success
+      return nil
+    }
+    return errorMessage
   }
 }

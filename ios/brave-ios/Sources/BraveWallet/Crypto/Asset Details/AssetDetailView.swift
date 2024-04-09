@@ -40,6 +40,8 @@ struct AssetDetailView: View {
   @State private var selectedContent: AssetDetailSegmentedControl.Item = .accounts
   /// Query displayed in the search bar above the transactions.
   @State private var query: String = ""
+  /// Error message displayed in alert for transaction list
+  @State private var errorMessage: String?
   @State private var isDoNotShowCheckboxChecked: Bool = false
 
   private var accountsBalanceHeader: some View {
@@ -308,10 +310,22 @@ struct AssetDetailView: View {
           TransactionsListView(
             transactionSections: assetDetailStore.transactionSections,
             query: $query,
+            errorMessage: $errorMessage,
             showFilter: false,
             filtersButtonTapped: {},
             transactionTapped: { tx in
               self.transactionDetails = assetDetailStore.transactionDetailsStore(for: tx)
+            },
+            transactionFollowUpActionTapped: { action, tx in
+              Task { @MainActor in
+                guard
+                  let errorMessage = await assetDetailStore.handleTransactionFollowUpAction(
+                    action,
+                    transaction: tx
+                  )
+                else { return }
+                self.errorMessage = errorMessage
+              }
             }
           )
         }

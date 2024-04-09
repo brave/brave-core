@@ -2746,6 +2746,37 @@ extension Strings {
       comment:
         "The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc."
     )
+    public static let retryTransactionButtonTitle = NSLocalizedString(
+      "wallet.retryTransactionButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Retry Transaction",
+      comment:
+        "The title for the button to retry a failed transaction."
+    )
+    public static let cancelTransactionButtonTitle = NSLocalizedString(
+      "wallet.cancelTransactionButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Cancel Transaction",
+      comment:
+        "The title for the button to cancel a submitted transaction."
+    )
+    public static let speedUpTransactionButtonTitle = NSLocalizedString(
+      "wallet.speedUpTransactionButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Speed Up",
+      comment:
+        "The title for the button to speed up a submitted transaction."
+    )
+    public static let errorAlertTitle = NSLocalizedString(
+      "wallet.errorAlertTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Error",
+      comment: "A title displayed in an alert above the error message or description."
+    )
     public static let sent = NSLocalizedString(
       "wallet.sent",
       tableName: "BraveWallet",
