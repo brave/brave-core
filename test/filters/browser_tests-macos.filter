@@ -6,4 +6,3 @@
 ##
 
 # Browser tests run extremely slowly on MacOS, disable them all for now.
--*
