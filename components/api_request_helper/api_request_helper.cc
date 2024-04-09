@@ -394,6 +394,7 @@ void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
     ParseJsonUsingRust(std::move(json), std::move(callback), task_runner_);
     return;
   }
+
   if (!data_decoder_) {
     VLOG(1) << "Creating DataDecoder for APIRequestHelper";
     data_decoder_ = std::make_unique<data_decoder::DataDecoder>();
