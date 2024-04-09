@@ -65,7 +65,7 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
     .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.0.0"),
-    .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.8.5"),
+    .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.9.1"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
     .package(
       url: "https://github.com/venmo/Static",
