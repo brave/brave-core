@@ -46,6 +46,7 @@ class BraveToolbarView : public ToolbarView,
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
   void OnShowBookmarksButtonChanged();
+  void OnShowWalletButtonChanged();
   void ShowBookmarkBubble(const GURL& url, bool already_bookmarked) override;
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
@@ -60,8 +61,6 @@ class BraveToolbarView : public ToolbarView,
   void OnProfileAdded(const base::FilePath& profile_path) override;
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
-
-  void UpdateWalletButtonVisibility();
 
   raw_ptr<BraveBookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
@@ -78,7 +77,6 @@ class BraveToolbarView : public ToolbarView,
   BooleanPrefMember show_bookmarks_button_;
 
   BooleanPrefMember show_wallet_button_;
-  BooleanPrefMember wallet_private_window_enabled_;
 
   BooleanPrefMember location_bar_is_wide_;
 
