@@ -51,6 +51,7 @@ public class BraveClassAdapter {
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLauncherActivityClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
+        chain = new BraveLocaleManagerDelegateImplClassAdapter(chain);
         chain = new BraveLocationBarCoordinatorClassAdapter(chain);
         chain = new BraveLocationBarLayoutClassAdapter(chain);
         chain = new BraveLocationBarMediatorClassAdapter(chain);

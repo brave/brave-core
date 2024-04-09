@@ -44,6 +44,7 @@ brave_bytecode_jars = [
   "obj/components/permissions/android/java.javac.jar",
   "obj/components/sync/android/sync_java.javac.jar",
   "obj/components/variations/android/variations_java.javac.jar",
+  "obj/chrome/browser/language/android/base_module_java.javac.jar",
 ]
 
 template("brave_bytecode_rewriter") {

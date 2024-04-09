@@ -823,3 +823,15 @@
 -keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy {
     public <init>(...);
 }
+
+-keep class org.chromium.components.language.LocaleManagerDelegateImpl {
+    public <init>(...);
+    *** getApplicationLocale(...);
+    *** setApplicationLocale(...);
+}
+
+-keep class org.chromium.components.language.BraveLocaleManagerDelegateImpl {
+    public <init>(...);
+    *** getApplicationLocale(...);
+    *** setApplicationLocale(...);
+}
