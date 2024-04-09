@@ -9,10 +9,10 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Utils
 import {
+  addLogoToToken,
   getUniqueAssets,
   sortNativeAndAndBatAssetsToTop
 } from '../../../utils/asset-utils'
-import { addLogoToToken } from '../../async/lib'
 import { mapLimit } from 'async'
 import { handleEndpointError } from '../../../utils/api-utils'
 
@@ -28,7 +28,8 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
       queryFn: async (_arg, _store, _extraOptions, baseQuery) => {
         try {
           const {
-            data: { blockchainRegistry }
+            data: { blockchainRegistry },
+            cache
           } = baseQuery(undefined)
           const { kRamp } = BraveWallet.OffRampProvider
 
@@ -44,8 +45,10 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             await mapLimit(
               rampAssets.flatMap((p) => p.tokens),
               10,
-              async (token: BraveWallet.BlockchainToken) =>
-                await addLogoToToken(token)
+              async (token: BraveWallet.BlockchainToken) => {
+                const tokenLogo = await cache.getTokenLogo(token)
+                return addLogoToToken(token, tokenLogo)
+              }
             )
 
           // moves Gas coins and BAT to front of list

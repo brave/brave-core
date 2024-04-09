@@ -205,6 +205,7 @@ export const {
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIPFSUrlFromGatewayLikeUrlQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
+  useGetIsImagePinnableQuery,
   useGetIsMetaMaskInstalledQuery,
   useGetIsPrivateWindowQuery,
   useGetIsTxSimulationOptInStatusQuery,

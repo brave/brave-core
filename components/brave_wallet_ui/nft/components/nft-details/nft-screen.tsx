@@ -32,7 +32,6 @@ import {
   braveWalletPanelOrigin,
   sendMessageToNftUiFrame
 } from '../../nft-ui-messages'
-import { areSupportedForPinning } from '../../../common/async/lib'
 import { getLocale } from '../../../../common/locale'
 import { makeAccountRoute } from '../../../utils/routes-utils'
 
@@ -42,7 +41,8 @@ import {
   useGetIPFSUrlFromGatewayLikeUrlQuery,
   useGetNftMetadataQuery,
   useGetNftPinningStatusQuery,
-  useUpdateUserTokenMutation
+  useUpdateUserTokenMutation,
+  useGetIsImagePinnableQuery
 } from '../../../common/slices/api.slice'
 
 // components
@@ -114,7 +114,6 @@ export const NftScreen = (props: Props) => {
   const [showTooltip, setShowTooltip] = React.useState<boolean>(false)
   const nftDetailsRef = React.useRef<HTMLIFrameElement>(null)
   const [nftIframeLoaded, setNftIframeLoaded] = React.useState(false)
-  const [isNftPinnable, setIsNftPinnable] = React.useState<boolean>(true)
   const [nftImageLoading, setNftImageLoading] = React.useState<boolean>(false)
 
   // queries
@@ -126,6 +125,9 @@ export const NftScreen = (props: Props) => {
     skip: !selectedAsset
   })
   const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
+  const { data: isNftPinnable } = useGetIsImagePinnableQuery(
+    nftMetadata?.imageURL || skipToken
+  )
   const { data: currentNftPinningStatus } = useGetNftPinningStatusQuery(
     selectedAsset,
     {
@@ -259,18 +261,6 @@ export const NftScreen = (props: Props) => {
         }
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
-    }
-
-    let ignore = false
-    if (nftMetadata?.imageURL) {
-      areSupportedForPinning([nftMetadata?.imageURL])
-        .then((v) => {
-          if (!ignore) setIsNftPinnable(v)
-        })
-        .catch((err) => console.error(err))
-    }
-    return () => {
-      ignore = true
     }
   }, [
     nftDetailsRef,

@@ -390,6 +390,24 @@ export const nftsEndpoints = ({
         }
       },
       providesTags: ['PinnableNftIds']
+    }),
+
+    getIsImagePinnable: query<boolean, string>({
+      queryFn: async (imageUrlArg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache } = baseQuery(undefined)
+          const isPinnable = await cache.getIsImagePinnable(imageUrlArg)
+          return {
+            data: isPinnable
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to check if image URL (${imageUrlArg}) is pinnable`,
+            error
+          )
+        }
+      }
     })
   }
 }

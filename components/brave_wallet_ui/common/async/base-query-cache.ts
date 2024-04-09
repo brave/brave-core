@@ -45,14 +45,22 @@ import {
 import getAPIProxy from './bridge'
 import {
   addChainIdToToken,
+  addLogoToToken,
   getAssetIdKey,
   GetBlockchainTokenIdArg,
   getDeletedTokenIds,
-  getHiddenTokenIds
+  getHiddenTokenIds,
+  isNativeAsset
 } from '../../utils/asset-utils'
-import { addLogoToToken } from './lib'
-import { makeNetworkAsset } from '../../options/asset-options'
-import { isIpfs } from '../../utils/string-utils'
+import {
+  makeNativeAssetLogo,
+  makeNetworkAsset
+} from '../../options/asset-options'
+import {
+  IPFS_PROTOCOL,
+  isIpfs,
+  stripERC20TokenImageURL
+} from '../../utils/string-utils'
 import { getEnabledCoinTypes } from '../../utils/api-utils'
 import { getBraveRewardsProxy } from './brave_rewards_api_proxy'
 import {
@@ -257,10 +265,11 @@ export class BaseQueryCache {
   getKnownTokensRegistry = async () => {
     if (!this._knownTokensRegistry) {
       const networksRegistry = await this.getNetworksRegistry()
-      this._knownTokensRegistry = await makeTokensRegistry(
+      this._knownTokensRegistry = await makeTokensRegistry({
         networksRegistry,
-        'known'
-      )
+        listType: 'known',
+        cache
+      })
     }
     return this._knownTokensRegistry
   }
@@ -268,10 +277,11 @@ export class BaseQueryCache {
   getUserTokensRegistry = async () => {
     if (!this._userTokensRegistry) {
       const networksRegistry = await this.getNetworksRegistry()
-      this._userTokensRegistry = await makeTokensRegistry(
+      this._userTokensRegistry = await makeTokensRegistry({
         networksRegistry,
-        'user'
-      )
+        listType: 'user',
+        cache
+      })
     }
     return this._userTokensRegistry
   }
@@ -322,6 +332,43 @@ export class BaseQueryCache {
     }
 
     return this._nftImageIpfsGateWayUrlRegistry[trimmedURL]
+  }
+
+  /** only caches ipfs translations since saving to a registry would require a
+   * long identifier */
+  getIsImagePinnable = async (imageUrl: string) => {
+    const result = await this.getExtractedIPFSUrlFromGatewayLikeUrl(
+      stripERC20TokenImageURL(imageUrl)
+    )
+
+    if (result) {
+      return result?.startsWith(IPFS_PROTOCOL)
+    }
+
+    return false
+  }
+
+  // TODO(apaymyshev): This function should not exist. Backend should be
+  // responsible in providing correct logo.
+  /** only caches ipfs translations since saving to a registry would require a
+   * long identifier */
+  getTokenLogo = async (token: BraveWallet.BlockchainToken) => {
+    if (isNativeAsset(token)) {
+      return makeNativeAssetLogo(token.symbol, token.chainId)
+    }
+
+    if (
+      !token.logo ||
+      token.logo.startsWith('data:image/') ||
+      token.logo.startsWith('chrome://erc-token-images/')
+    ) {
+      // nothing to change
+      return token.logo
+    }
+
+    return token.logo.startsWith('ipfs://')
+      ? (await this.getIpfsGatewayTranslatedNftUrl(token.logo)) || ''
+      : `chrome://erc-token-images/${token.logo}`
   }
 
   getEnabledCoinTypes = async () => {
@@ -476,10 +523,15 @@ export const resetCache = () => {
 type AssetsListType = 'user' | 'known'
 
 // internals
-async function fetchAssetsForNetwork(
-  listType: AssetsListType,
+async function fetchAssetsForNetwork({
+  cache,
+  listType,
+  network
+}: {
+  listType: AssetsListType
   network: BraveWallet.NetworkInfo
-) {
+  cache: BaseQueryCache
+}) {
   const { blockchainRegistry, braveWalletService } = getAPIProxy()
   // Get a list of user tokens for each coinType and network.
   const { tokens } =
@@ -492,7 +544,8 @@ async function fetchAssetsForNetwork(
     tokens,
     10,
     async (token: BraveWallet.BlockchainToken) => {
-      const updatedToken = await addLogoToToken(token)
+      const tokenLogo = await cache.getTokenLogo(token)
+      const updatedToken = addLogoToToken(token, tokenLogo)
       return addChainIdToToken(updatedToken, network.chainId)
     }
   )
@@ -508,10 +561,15 @@ async function fetchAssetsForNetwork(
   return tokenList
 }
 
-export async function makeTokensRegistry(
-  networksRegistry: NetworksRegistry,
+export async function makeTokensRegistry({
+  cache,
+  listType,
+  networksRegistry
+}: {
+  networksRegistry: NetworksRegistry
   listType: AssetsListType
-) {
+  cache: BaseQueryCache
+}) {
   const locallyDeletedTokenIds: string[] =
     listType === 'user' ? getDeletedTokenIds() : []
   const locallyHiddenTokenIds: string[] =
@@ -575,7 +633,7 @@ export async function makeTokensRegistry(
       }
 
       const fullTokensListForNetwork: BraveWallet.BlockchainToken[] =
-        await fetchAssetsForNetwork(listType, network)
+        await fetchAssetsForNetwork({ listType, network, cache })
 
       idsByChainId[networkId] = []
       visibleTokenIdsByChainId[networkId] = []
