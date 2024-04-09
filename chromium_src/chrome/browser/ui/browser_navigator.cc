@@ -40,9 +40,8 @@ bool IsURLAllowedInIncognitoBraveImpl(
   }
 
   if (host == kWalletPageHost || host == kWalletPanelHost) {
-    return browser_context &&
-           user_prefs::UserPrefs::Get(browser_context)
-               ->GetBoolean(kBraveWalletPrivateWindowsEnabled);
+    return user_prefs::UserPrefs::Get(browser_context)
+        ->GetBoolean(kBraveWalletPrivateWindowsEnabled);
   }
 
   return true;
