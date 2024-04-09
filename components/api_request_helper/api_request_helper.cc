@@ -113,15 +113,6 @@ class ScopedPerfTracker {
   base::ElapsedThreadTimer timer_;
 };
 
-template<typename T1, typename T2>
-std::string MapToString(const base::flat_map<T1, T2>& map) {
-    std::stringstream ss;
-    for (const auto& elem : map) {
-        ss << elem.first << ":" << elem.second << ",";
-    }
-    return ss.str();
-}
-
 }  // namespace
 
 APIRequestResult::APIRequestResult() = default;
@@ -196,7 +187,6 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const base::flat_map<std::string, std::string>& headers,
     const APIRequestOptions& request_options,
     ResponseConversionCallback conversion_callback) {
-
   auto iter = CreateRequestURLLoaderHandler(
       method, url, payload, payload_content_type, request_options, headers,
       std::move(callback));
@@ -400,7 +390,6 @@ void APIRequestHelper::URLLoaderHandler::send_sse_data_for_testing(
 void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
     std::string json,
     base::OnceCallback<void(ValueOrError)> callback) {
-
   if (base::FeatureList::IsEnabled(kUseBraveRustJSONSanitizer)) {
     ParseJsonUsingRust(std::move(json), std::move(callback), task_runner_);
     return;
