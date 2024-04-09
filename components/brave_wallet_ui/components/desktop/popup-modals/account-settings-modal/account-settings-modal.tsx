@@ -260,7 +260,8 @@ export const AccountSettingsModal = () => {
   }, [accountModalType])
 
   // computed
-  const isAccountNameTooLong = accountName.length > 30
+  const isAccountNameTooLong =
+    accountName.length > BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH
   const showNameInputErrors = accountName === '' || isAccountNameTooLong
 
   // render
@@ -295,9 +296,15 @@ export const AccountSettingsModal = () => {
               </div>
               <div slot='extra'>
                 {isAccountNameTooLong ? (
-                  <ErrorText>{accountName.length}/30</ErrorText>
+                  <ErrorText>
+                    {accountName.length}/
+                    {BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+                  </ErrorText>
                 ) : (
-                  <span>{accountName.length}/30</span>
+                  <span>
+                    {accountName.length}/
+                    {BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+                  </span>
                 )}
               </div>
             </Input>

@@ -10,6 +10,8 @@ import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/origin.mojom";
 import "url/mojom/url.mojom";
 
+const int8 kAccountNameMaxCharacterLength = 30;
+
 // Used to notify the renderer of provider information for use in
 // window.ethereum events
 interface EventsListener {

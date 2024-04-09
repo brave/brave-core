@@ -110,7 +110,8 @@ export const ImportAccountModal = () => {
   const [password, setPassword] = React.useState<string>('')
 
   // computed
-  const isAccountNameTooLong = accountName.length > 30
+  const isAccountNameTooLong =
+    accountName.length > BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH
   const hasAccountNameError = accountName === '' || isAccountNameTooLong
   const hasImportTypeError = importOption === 'key' ? !privateKey : !file
   const isDisabled = hasAccountNameError || hasImportTypeError
@@ -464,9 +465,15 @@ export const ImportAccountModal = () => {
               </div>
               <div slot='extra'>
                 {isAccountNameTooLong ? (
-                  <ErrorText>{accountName.length}/30</ErrorText>
+                  <ErrorText>
+                    {accountName.length}/
+                    {BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+                  </ErrorText>
                 ) : (
-                  <span>{accountName.length}/30</span>
+                  <span>
+                    {accountName.length}/
+                    {BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+                  </span>
                 )}
               </div>
             </Input>
