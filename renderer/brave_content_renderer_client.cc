@@ -192,9 +192,10 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 std::unique_ptr<media::KeySystemSupportRegistration>
 BraveContentRendererClient::GetSupportedKeySystems(
+    content::RenderFrame* render_frame,
     media::GetSupportedKeySystemsCB cb) {
   return ChromeContentRendererClient::GetSupportedKeySystems(
-      base::BindRepeating(&MaybeRemoveWidevineSupport, cb));
+      render_frame, base::BindRepeating(&MaybeRemoveWidevineSupport, cb));
 }
 
 void BraveContentRendererClient::RunScriptsAtDocumentStart(
