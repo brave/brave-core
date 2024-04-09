@@ -302,10 +302,15 @@ void SpeedreaderTabHelper::ProcessNavigation(
   TransitStateTo(DistillStates::ViewOriginal(), true);
 
   if (enabled_for_site) {
+    // Check if url is pointed to the homepage, basically these pages aren't
+    // readable. We've got the same check in speedreader::IsURLLooksReadable
+    const bool homepage = !navigation_handle->GetURL().has_path() ||
+                          navigation_handle->GetURL().path_piece() == "/";
+
     // Enable speedreader if the user explicitly enabled speedreader on the
     // site.
     const bool explicit_enabled_for_size =
-        kSpeedreaderExplicitPref.Get() &&
+        !homepage && kSpeedreaderExplicitPref.Get() &&
         GetSpeedreaderService()->GetEnabledForSiteSetting(
             navigation_handle->GetURL());
     if (url_looks_readable || explicit_enabled_for_size) {
