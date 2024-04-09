@@ -413,26 +413,26 @@ bool ParseCryptoQuotes(const base::Value& json_value,
     }
     quote->transaction_type = *quote_tt;
 
-    auto quote_er = item.GetDict().FindDouble("exchangeRate");
+    const auto quote_er = item.GetDict().FindDouble("exchangeRate");
     if (!quote_er) {
       return false;
     }
     quote->exchange_rate = *quote_er;
 
-    auto quote_amount = item.GetDict().FindDouble("sourceAmount");
+    const auto quote_amount = item.GetDict().FindDouble("sourceAmount");
     if (!quote_amount) {
       return false;
     }
     quote->source_amount = *quote_amount;
 
-    auto quote_amount_without_fee =
+    const auto quote_amount_without_fee =
         item.GetDict().FindDouble("sourceAmountWithoutFees");
     if (!quote_amount_without_fee) {
       return false;
     }
     quote->source_amount_without_fee = *quote_amount_without_fee;
 
-    auto quote_total_fee = item.GetDict().FindDouble("totalFee");
+    const auto quote_total_fee = item.GetDict().FindDouble("totalFee");
     if (!quote_total_fee) {
       return false;
     }
@@ -445,7 +445,8 @@ bool ParseCryptoQuotes(const base::Value& json_value,
     }
     quote->payment_method = *quote_pp;
 
-    auto quote_dest_amount = item.GetDict().FindDouble("destinationAmount");
+    const auto quote_dest_amount =
+        item.GetDict().FindDouble("destinationAmount");
     if (!quote_dest_amount) {
       return false;
     }
