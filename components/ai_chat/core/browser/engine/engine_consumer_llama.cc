@@ -41,7 +41,8 @@ constexpr char kLlama2BIns[] = "[INST]";
 constexpr char kLlama2EIns[] = "[/INST]";
 constexpr char kLlama2BSys[] = "<<SYS>>\n";
 constexpr char kLlama2ESys[] = "\n<</SYS>>\n\n";
-constexpr char kMixtralUserTag[] = "\n\nUser: ";
+constexpr char kMixtralUserTag[] = "User: ";
+constexpr char kMixtralAssistantTag[] = "Assistant: ";
 constexpr char kSelectedTextPromptPlaceholder[] = "\nSelected text: ";
 
 static constexpr auto kStopSequences =
@@ -97,7 +98,8 @@ std::string BuildLlamaFirstSequence(
   }
 
   std::string system_prompt = base::StrCat(
-      {system_msg, is_mixtral ? kMixtralUserTag : "", user_message});
+      {system_msg, is_mixtral ? base::StrCat({"\n\n", kMixtralUserTag}) : "",
+       user_message});
 
   // Wrap in [INST] [/INST] tags.
   std::string instruction_prompt = BuildLlamaInstructionPrompt(system_prompt);
@@ -112,15 +114,18 @@ std::string BuildLlamaFirstSequence(
     return base::StrCat({kLlama2Bos, instruction_prompt});
   }
 
-  // Add assistant response and wrap in <s> </s> tags.
+  // Add assistant message and wrap in <s> </s> tags.
+  std::string assistant_message = base::StrCat(
+      {is_mixtral ? kMixtralAssistantTag : "", *assistant_response});
   return base::StrCat(
-      {kLlama2Bos, instruction_prompt, *assistant_response, kLlama2Eos});
+      {kLlama2Bos, instruction_prompt, assistant_message, kLlama2Eos});
 }
 
 std::string BuildLlamaSubsequentSequence(
     std::string user_message,
     std::optional<std::string> assistant_response,
-    std::optional<std::string> assistant_response_seed) {
+    std::optional<std::string> assistant_response_seed,
+    const bool& is_mixtral) {
   // Builds a prompt segment that looks like this:
   // <s> [INST] Give me the first few numbers in the fibonacci sequence [/INST]
 
@@ -130,7 +135,8 @@ std::string BuildLlamaSubsequentSequence(
   // Hey there! Sure thing! The first few numbers in the Fibonacci sequence are:
   // 1, 1, 2, 3, 5, 8, 13, and so on. </s>
 
-  user_message = BuildLlamaInstructionPrompt(user_message);
+  user_message = BuildLlamaInstructionPrompt(
+      base::StrCat({is_mixtral ? kMixtralUserTag : "", user_message}));
 
   if (assistant_response_seed) {
     return base::StrCat({kLlama2Bos, user_message, *assistant_response_seed});
@@ -140,8 +146,10 @@ std::string BuildLlamaSubsequentSequence(
     return base::StrCat({kLlama2Bos, user_message});
   }
 
+  std::string assistant_message = base::StrCat(
+      {is_mixtral ? kMixtralAssistantTag : "", *assistant_response});
   return base::StrCat(
-      {kLlama2Bos, user_message, *assistant_response, kLlama2Eos});
+      {kLlama2Bos, user_message, assistant_message, kLlama2Eos});
 }
 
 std::string BuildLlamaGenerateRewriteSuggestionPrompt(
@@ -249,7 +257,7 @@ std::string BuildLlamaPrompt(
   if (conversation_history.empty() || conversation_history.size() <= 1) {
     return BuildLlamaFirstSequence(
         today_system_message, first_user_message, std::nullopt,
-        (is_mixtral) ? std::nullopt
+        (is_mixtral) ? std::optional(kMixtralAssistantTag)
                      : std::optional(l10n_util::GetStringUTF8(
                            IDS_AI_CHAT_LLAMA2_GENERAL_SEED)),
         is_mixtral);
@@ -271,8 +279,10 @@ std::string BuildLlamaPrompt(
                             *conversation_history[i].selected_text})
             : conversation_history[i].text;
     const std::string& assistant_message = conversation_history[i + 1].text;
-    prompt += BuildLlamaSubsequentSequence(prev_user_message, assistant_message,
-                                           std::nullopt);
+    prompt += BuildLlamaSubsequentSequence(
+        prev_user_message, assistant_message,
+        (is_mixtral) ? std::optional(kMixtralAssistantTag) : std::nullopt,
+        is_mixtral);
   }
 
   // Build the final subsequent exchange using the current turn.
@@ -287,13 +297,16 @@ std::string BuildLlamaPrompt(
           : user_message;
   prompt += BuildLlamaSubsequentSequence(
       cur_user_message, std::nullopt,
-      (is_mixtral) ? std::nullopt
+      (is_mixtral) ? std::optional(kMixtralAssistantTag)
                    : std::optional(l10n_util::GetStringUTF8(
-                         IDS_AI_CHAT_LLAMA2_GENERAL_SEED)));
+                         IDS_AI_CHAT_LLAMA2_GENERAL_SEED)),
+      is_mixtral);
 
-  // Trimming recommended by Meta
-  // https://huggingface.co/meta-llama/Llama-2-13b-chat#intended-use
-  prompt = base::TrimWhitespaceASCII(prompt, base::TRIM_ALL);
+  if (!is_mixtral) {
+    // Trimming recommended by Meta
+    // https://huggingface.co/meta-llama/Llama-2-13b-chat#intended-use
+    prompt = base::TrimWhitespaceASCII(prompt, base::TRIM_ALL);
+  }
   return prompt;
 }
 
