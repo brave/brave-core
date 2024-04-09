@@ -437,7 +437,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       guard !isLocked else { return }  // `update() will be called after unlock`
 
       self.isLoadingBalances = true
-      self.allAccounts = await keyringService.allAccounts(checkBTCTestnet: true)
+      self.allAccounts = await keyringService.allAccountInfos()
         .filter { account in
           WalletConstants.supportedCoinTypes().contains(account.coin)
         }

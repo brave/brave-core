@@ -108,7 +108,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
       }
       let tokens = allTokensPerNetwork.flatMap(\.tokens)
 
-      var allAccounts = await keyringService.allAccounts(checkBTCTestnet: true)
+      var allAccounts = await keyringService.allAccountInfos()
       var accountDetails = buildAccountDetails(accounts: allAccounts, tokens: tokens)
       self.primaryAccounts =
         accountDetails
@@ -123,7 +123,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
       )
 
       // if new accounts added while balances were being fetched.
-      allAccounts = await keyringService.allAccounts(checkBTCTestnet: true)
+      allAccounts = await keyringService.allAccountInfos()
       accountDetails = buildAccountDetails(accounts: allAccounts, tokens: tokens)
       self.primaryAccounts =
         accountDetails

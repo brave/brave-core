@@ -20,5 +20,7 @@ struct BraveWalletDebugMenu: View {
       }
     }
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .navigationTitle("Brave Wallet Debug")
+    .navigationBarTitleDisplayMode(.inline)
   }
 }

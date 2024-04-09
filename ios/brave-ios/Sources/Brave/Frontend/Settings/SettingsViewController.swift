@@ -98,9 +98,6 @@ class SettingsViewController: TableViewController {
     self.cryptoStore = cryptoStore
     self.ipfsAPI = braveCore.ipfsAPI
 
-    self.keyringStore?.setupObservers()
-    self.cryptoStore?.setupObservers()
-
     super.init(style: .insetGrouped)
 
     UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor =
