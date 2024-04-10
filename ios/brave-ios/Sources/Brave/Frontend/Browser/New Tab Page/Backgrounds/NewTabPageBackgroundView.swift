@@ -28,7 +28,7 @@ class NewTabPageBackgroundView: UIView {
     )
 
     let resizeToFill = shouldResizeToFill(filename: backgroundVideoPath.lastPathComponent)
-    if resizeToFill && UIDevice.isPhone {
+    if resizeToFill {
       playerLayer.videoGravity = .resizeAspectFill
     } else {
       playerLayer.videoGravity = .resizeAspect

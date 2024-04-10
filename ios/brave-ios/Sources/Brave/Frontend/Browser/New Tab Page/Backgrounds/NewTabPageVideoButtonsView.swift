@@ -134,8 +134,9 @@ extension NewTabPageVideoButtonsView {
       backgroundView.snp.makeConstraints {
         $0.edges.equalToSuperview()
       }
-
       imageView.snp.makeConstraints {
+        $0.width.equalTo(16)
+        $0.height.equalTo(16)
         $0.edges.equalToSuperview().inset(UIEdgeInsets(equalInset: 4))
       }
     }
@@ -154,7 +155,7 @@ extension NewTabPageVideoButtonsView {
       $0.clipsToBounds = true
       $0.isUserInteractionEnabled = false
     }
-    private var imageView = UIImageView().then {
+    private let imageView = UIImageView().then {
       $0.tintColor = .white
       $0.contentMode = .scaleAspectFit
     }
@@ -171,8 +172,9 @@ extension NewTabPageVideoButtonsView {
       backgroundView.snp.makeConstraints {
         $0.edges.equalToSuperview()
       }
-
       imageView.snp.makeConstraints {
+        $0.width.equalTo(40)
+        $0.height.equalTo(40)
         $0.edges.equalToSuperview().inset(UIEdgeInsets(equalInset: 10))
       }
     }

@@ -306,8 +306,9 @@ extension NewTabPageBackgroundButtonsView {
       backgroundView.snp.makeConstraints {
         $0.edges.equalToSuperview()
       }
-
       imageView.snp.makeConstraints {
+        $0.width.equalTo(40)
+        $0.height.equalTo(40)
         $0.edges.equalToSuperview().inset(UIEdgeInsets(equalInset: 10))
       }
     }
