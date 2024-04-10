@@ -44,6 +44,8 @@ struct FocusSplashScreenView: View {
   private var braveLogo: some View {
     Image("focus-logo-brave", bundle: .module)
       .resizable()
+      .renderingMode(.template)
+      .foregroundColor(Color(braveSystemName: .gray20))
       .aspectRatio(contentMode: .fit)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .padding(.leading, 42)

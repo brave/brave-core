@@ -148,7 +148,6 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
           .shadow(radius: 8)
           .overlay {
             Image("focus-slider-knob", bundle: .module)
-              .padding(.leading, 6)
           }
           .offset(x: (proxy.size.width * progress))
       }
