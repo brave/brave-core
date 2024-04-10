@@ -7,6 +7,18 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 
+// Shared Styles
+import { Column } from '../../../components/shared/style'
+
+export const SelectAssetWrapper = styled(Column)`
+  box-sizing: border-box;
+  overflow: hidden;
+`
+
+export const StyledWrapper = styled(SelectAssetWrapper)`
+  flex: 1;
+`
+
 export const ScrollContainer = styled.div`
   width: 100%;
   display: flex;
@@ -14,12 +26,8 @@ export const ScrollContainer = styled.div`
   overflow-y: auto;
 `
 
-export const SelectAssetWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: stretch;
-  justify-content: center;
-  flex-direction: column;
+export const TokenListWrapper = styled(StyledWrapper)`
+  overflow-y: auto;
 `
 
 export const SearchWrapper = styled.div`
@@ -114,4 +122,9 @@ export const AlertText = styled.p`
   color: ${leo.color.text.primary};
   margin: 0;
   padding: 0;
+`
+
+export const SearchAndDropdownWrapper = styled(Column)`
+  flex: 1;
+  min-width: 25%;
 `

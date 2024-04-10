@@ -55,6 +55,7 @@ export interface Props {
   noMinCardHeight?: boolean
   noBorderRadius?: boolean
   useDarkBackground?: boolean
+  useFullHeight?: boolean
   children?: React.ReactNode
 }
 
@@ -71,7 +72,8 @@ export const WalletPageWrapper = (props: Props) => {
     hideDivider,
     noMinCardHeight,
     noBorderRadius,
-    useDarkBackground
+    useDarkBackground,
+    useFullHeight
   } = props
 
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
@@ -180,6 +182,7 @@ export const WalletPageWrapper = (props: Props) => {
             hideCardHeader={!cardHeader}
             headerHeight={headerHeight}
             hideNav={hideNav}
+            padding={useFullHeight ? '0px' : undefined}
           >
             {cardHeader && !isPanel && (
               <CardHeaderWrapper isPanel={isPanel}>
@@ -193,6 +196,7 @@ export const WalletPageWrapper = (props: Props) => {
               noMinCardHeight={noMinCardHeight}
               noBorderRadius={noBorderRadius}
               useDarkBackground={useDarkBackground}
+              useFullHeight={useFullHeight}
             >
               {children}
             </ContainerCard>

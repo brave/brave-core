@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import styled from 'styled-components'
+export const listItemInitialHeight = 76
 
-export const HorizontallyPaddedDiv = styled.div`
-  padding-right: 12px;
-`
+export const AutoSizerStyle: React.CSSProperties = {
+  width: '100%',
+  height: '100%'
+}

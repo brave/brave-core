@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import { WalletButton } from '../style'
 
-export const BuyAssetOptionWrapper = styled(WalletButton)<{
+export const AssetButton = styled(WalletButton)<{
   isSelected?: boolean
 }>`
   width: 100%;
@@ -25,8 +25,6 @@ export const BuyAssetOptionWrapper = styled(WalletButton)<{
   border-color: ${(p) =>
     p.isSelected ? leo.color.button.background : leo.color.divider.subtle};
   border-width: 1px;
-  margin-top: 6px;
-  margin-bottom: 8px;
   padding: 8px 12px;
 `
 
