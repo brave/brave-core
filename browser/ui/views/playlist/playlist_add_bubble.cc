@@ -105,24 +105,24 @@ END_METADATA
 
 PlaylistAddBubble::PlaylistAddBubble(
     Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> anchor,
-    base::WeakPtr<PlaylistTabHelper> playlist_tab_helper)
+    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+    base::WeakPtr<PlaylistTabHelper> tab_helper)
     : PlaylistAddBubble(browser,
-                        std::move(anchor),
-                        playlist_tab_helper,
-                        playlist_tab_helper->found_items()) {}
+                        std::move(action_icon_view),
+                        tab_helper,
+                        tab_helper->found_items()) {}
 
 PlaylistAddBubble::PlaylistAddBubble(
     Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> anchor,
-    base::WeakPtr<PlaylistTabHelper> playlist_tab_helper,
+    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+    base::WeakPtr<PlaylistTabHelper> tab_helper,
     const std::vector<mojom::PlaylistItemPtr>& items)
     : PlaylistActionBubbleView(browser,
-                               std::move(anchor),
-                               std::move(playlist_tab_helper)),
+                               std::move(action_icon_view),
+                               std::move(tab_helper)),
       thumbnail_provider_(
-          std::make_unique<ThumbnailProvider>(playlist_tab_helper_.get())) {
-  playlist_tab_helper_observation_.Observe(playlist_tab_helper_.get());
+          std::make_unique<ThumbnailProvider>(tab_helper_.get())) {
+  tab_helper_observation_.Observe(tab_helper_.get());
   // What this looks like:
   // https://user-images.githubusercontent.com/5474642/243532255-f82fc740-eea0-4c52-b43a-378ab703d229.png
   SetTitle(l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_TO_PLAYLIST));
@@ -157,7 +157,7 @@ PlaylistAddBubble::PlaylistAddBubble(
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
   SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, false);
 
-  if (!playlist_tab_helper_->is_adding_items()) {
+  if (!tab_helper_->is_adding_items()) {
     InitListView();
   }
 }
@@ -165,7 +165,7 @@ PlaylistAddBubble::PlaylistAddBubble(
 PlaylistAddBubble::~PlaylistAddBubble() = default;
 
 void PlaylistAddBubble::PlaylistTabHelperWillBeDestroyed() {
-  playlist_tab_helper_observation_.Reset();
+  tab_helper_observation_.Reset();
 }
 
 void PlaylistAddBubble::OnAddedItemFromTabHelper(
@@ -178,13 +178,13 @@ void PlaylistAddBubble::OnAddedItemFromTabHelper(
     return SizeToContents();
   }
 
-  CHECK(playlist_tab_helper_);
-  if (!icon_view_) {
+  CHECK(tab_helper_);
+  if (!action_icon_view_) {
     return;
   }
 
-  ShowBubble(std::make_unique<PlaylistConfirmBubble>(browser_, icon_view_,
-                                                     playlist_tab_helper_));
+  ShowBubble(std::make_unique<PlaylistConfirmBubble>(
+      browser_, action_icon_view_, tab_helper_));
 }
 
 void PlaylistAddBubble::InitListView() {
@@ -193,10 +193,10 @@ void PlaylistAddBubble::InitListView() {
   loading_spinner_->SetVisible(false);
   scroll_view_->SetVisible(true);
   list_view_ = scroll_view_->SetContents(std::make_unique<SelectableItemsView>(
-      thumbnail_provider_.get(), playlist_tab_helper_->found_items(),
+      thumbnail_provider_.get(), tab_helper_->found_items(),
       base::BindRepeating(&PlaylistAddBubble::OnSelectionChanged,
                           base::Unretained(this))));
-  list_view_->SetSelected(playlist_tab_helper_->found_items());
+  list_view_->SetSelected(tab_helper_->found_items());
 
   SetAcceptCallbackWithClose(base::BindRepeating(
       &PlaylistAddBubble::AddSelected, base::Unretained(this)));
@@ -211,9 +211,9 @@ void PlaylistAddBubble::InitListView() {
 }
 
 bool PlaylistAddBubble::AddSelected() {
-  CHECK(playlist_tab_helper_);
+  CHECK(tab_helper_);
 
-  if (playlist_tab_helper_->is_adding_items()) {
+  if (tab_helper_->is_adding_items()) {
     // Don't do anything when already adding
     return false;
   }
@@ -229,9 +229,8 @@ bool PlaylistAddBubble::AddSelected() {
       << "The button should be disabled when nothing is selected.";
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&PlaylistTabHelper::AddItems,
-                     playlist_tab_helper_->GetWeakPtr(), std::move(items)));
+      FROM_HERE, base::BindOnce(&PlaylistTabHelper::AddItems,
+                                tab_helper_->GetWeakPtr(), std::move(items)));
 
   return false;
 }

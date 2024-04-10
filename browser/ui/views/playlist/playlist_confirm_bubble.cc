@@ -72,11 +72,11 @@ END_METADATA
 
 PlaylistConfirmBubble::PlaylistConfirmBubble(
     Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> anchor,
-    base::WeakPtr<PlaylistTabHelper> playlist_tab_helper)
+    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+    base::WeakPtr<PlaylistTabHelper> tab_helper)
     : PlaylistActionBubbleView(browser,
-                               std::move(anchor),
-                               std::move(playlist_tab_helper)) {
+                               std::move(action_icon_view),
+                               std::move(tab_helper)) {
   // What this looks like:
   // https://user-images.githubusercontent.com/5474642/243532057-4bbbe779-47a1-4c3a-bd34-ce1334cf1d1d.png
   set_margins({});
@@ -89,13 +89,13 @@ PlaylistConfirmBubble::PlaylistConfirmBubble(
           views::BoxLayout::CrossAxisAlignment::kStretch);
   ResetChildViews();
 
-  playlist_tab_helper_observation_.Observe(playlist_tab_helper_.get());
+  tab_helper_observation_.Observe(tab_helper_.get());
 }
 
 PlaylistConfirmBubble::~PlaylistConfirmBubble() = default;
 
 void PlaylistConfirmBubble::PlaylistTabHelperWillBeDestroyed() {
-  playlist_tab_helper_observation_.Reset();
+  tab_helper_observation_.Reset();
 }
 
 void PlaylistConfirmBubble::OnSavedItemsChanged(
@@ -130,7 +130,7 @@ void PlaylistConfirmBubble::ResetChildViews() {
     added_separator = !!AddChildView(std::make_unique<views::Separator>());
   };
 
-  const auto& saved_items = playlist_tab_helper_->saved_items();
+  const auto& saved_items = tab_helper_->saved_items();
 
   if (saved_items.front()->parents.size()) {
     add_separator_if_needed();
@@ -164,7 +164,7 @@ void PlaylistConfirmBubble::ResetChildViews() {
                             base::Unretained(this))));
   }
 
-  if (playlist_tab_helper_->GetUnsavedItems().size()) {
+  if (tab_helper_->GetUnsavedItems().size()) {
     AddChildView(std::make_unique<views::Separator>());
     AddChildView(std::make_unique<Row>(
         l10n_util::GetStringUTF16(IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE),
@@ -180,7 +180,7 @@ void PlaylistConfirmBubble::OpenInPlaylist() {
   // at the same time and their parent playlists could be different from each
   // other's. But for simplicity, we just open the first one assuming that most
   // users keep items from a site in a same playlist.
-  const auto& saved_items = playlist_tab_helper_->saved_items();
+  const auto& saved_items = tab_helper_->saved_items();
   CHECK(saved_items.size());
   CHECK(saved_items.front()->parents.size());
   const std::string& playlist_id = saved_items.front()->parents.front();
@@ -198,19 +198,18 @@ void PlaylistConfirmBubble::OpenInPlaylist() {
   side_panel_coordinator->LoadPlaylist(playlist_id, item_id);
 
   // Before closing widget, try resetting observer to avoid crash on Win11
-  playlist_tab_helper_observation_.Reset();
+  tab_helper_observation_.Reset();
   GetWidget()->Close();
 }
 
 void PlaylistConfirmBubble::ChangeFolder() {
   PlaylistActionDialog::Show<PlaylistMoveDialog>(
-      static_cast<BrowserView*>(browser_->window()),
-      playlist_tab_helper_.get());
+      static_cast<BrowserView*>(browser_->window()), tab_helper_.get());
 }
 
 void PlaylistConfirmBubble::RemoveFromPlaylist() {
-  CHECK(playlist_tab_helper_);
-  const auto& saved_items = playlist_tab_helper_->saved_items();
+  CHECK(tab_helper_);
+  const auto& saved_items = tab_helper_->saved_items();
   CHECK(saved_items.size());
 
   std::vector<mojom::PlaylistItemPtr> items;
@@ -218,21 +217,21 @@ void PlaylistConfirmBubble::RemoveFromPlaylist() {
                           [](const auto& item) { return item->Clone(); });
 
   // Before closing widget, try resetting observer to avoid crash on Win11
-  playlist_tab_helper_observation_.Reset();
+  tab_helper_observation_.Reset();
 
-  playlist_tab_helper_->RemoveItems(std::move(items));
+  tab_helper_->RemoveItems(std::move(items));
   GetWidget()->Close();
 }
 
 void PlaylistConfirmBubble::MoreMediaInContents() {
-  if (!icon_view_ || !playlist_tab_helper_ ||
-      !playlist_tab_helper_->found_items().size()) {
+  if (!action_icon_view_ || !tab_helper_ ||
+      !tab_helper_->found_items().size()) {
     return;
   }
 
   ShowBubble(std::make_unique<PlaylistAddBubble>(
-      browser_, icon_view_, playlist_tab_helper_,
-      playlist_tab_helper_->GetUnsavedItems()));
+      browser_, action_icon_view_, tab_helper_,
+      tab_helper_->GetUnsavedItems()));
 }
 
 BEGIN_METADATA(PlaylistConfirmBubble)
