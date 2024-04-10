@@ -131,7 +131,8 @@ void BraveNewTabUI::BindInterface(
 
   realbox_handler_ = std::make_unique<RealboxHandler>(
       std::move(pending_page_handler), profile, web_ui()->GetWebContents(),
-      nullptr, nullptr);
+      /*metrics_reporter=*/nullptr, /*lens_searchbox_client=*/nullptr,
+      /*omnibox_controller=*/nullptr);
 }
 
 void BraveNewTabUI::CreatePageHandler(
