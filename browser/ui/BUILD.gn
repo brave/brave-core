@@ -5,6 +5,7 @@
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
+import("//brave/browser/ui/tabs/sources.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_player/common/buildflags/buildflags.gni")
@@ -543,7 +544,6 @@ source_set("ui") {
     "//brave/browser/themes",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
-    "//brave/browser/ui/tabs",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
@@ -1166,6 +1166,9 @@ source_set("ui") {
       "//brave/components/brave_player/common",
     ]
   }
+
+  sources += brave_browser_ui_tabs_sources
+  deps += brave_browser_ui_tabs_deps
 }
 
 source_set("unit_tests") {

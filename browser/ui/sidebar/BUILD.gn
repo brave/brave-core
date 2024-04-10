@@ -85,7 +85,6 @@ source_set("browser_tests") {
     "//base",
     "//brave/app:command_ids",
     "//brave/browser/ui/sidebar",
-    "//brave/browser/ui/tabs",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/playlist/common",
     "//brave/components/sidebar/browser",
