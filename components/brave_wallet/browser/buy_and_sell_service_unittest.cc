@@ -291,7 +291,12 @@ TEST_F(BuyAndSellServiceUnitTest, GetServiceProviders) {
                                    item->status == "LIVE" &&
                                    item->web_site_url ==
                                        "http://www.banxa.com" &&
-                                   !item->logo_images.empty();
+                                    item->logo_images &&
+                                    item->logo_images->dark_url == "https://images-serviceprovider.meld.io/BANXA/logo_dark.png" &&
+                                    item->logo_images->dark_short_url == "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png" &&
+                                    item->logo_images->light_url == "https://images-serviceprovider.meld.io/BANXA/logo_light.png" &&
+                                    item->logo_images->light_short_url == "https://images-serviceprovider.meld.io/BANXA/short_logo_light.png"
+                                   ;
                           }),
                       1);
             EXPECT_EQ(base::ranges::count_if(
@@ -303,7 +308,12 @@ TEST_F(BuyAndSellServiceUnitTest, GetServiceProviders) {
                                    item->status == "LIVE" &&
                                    item->web_site_url ==
                                        "https://www.blockchain.com" &&
-                                   !item->logo_images.empty();
+                                    item->logo_images &&
+                                    item->logo_images->dark_url == "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/logo_dark.png" &&
+                                    item->logo_images->dark_short_url == "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_dark.png" &&
+                                    item->logo_images->light_url == "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/logo_light.png" &&
+                                    item->logo_images->light_short_url == "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_light.png"
+                                   ;
                           }),
                       1);
           }));
@@ -522,7 +532,11 @@ TEST_F(BuyAndSellServiceUnitTest, GetPaymentMethods) {
                             return item->payment_method == "ACH" &&
                                    item->name == "ACH" &&
                                    item->payment_type == "BANK_TRANSFER" &&
-                                   !item->logo_images.empty();
+                                    item->logo_images &&
+                                    item->logo_images->dark_short_url.empty() &&
+                                    item->logo_images->light_short_url.empty() &&
+                                    item->logo_images->dark_url == "https://images-paymentMethod.meld.io/ACH/logo_dark.png" &&
+                                    item->logo_images->light_url == "https://images-paymentMethod.meld.io/ACH/logo_light.png";
                           }),
                       1);
           }));

@@ -454,12 +454,19 @@ struct AssetPrice {
   string asset_timeframe_change;
 };
 
+struct LogoImages {
+  string dark_url;
+  string dark_short_url;
+  string light_url;
+  string light_short_url;
+};
+
 struct ServiceProvider {
   string name;
   string service_provider;
   string status;
   string web_site_url;
-  array<string> logo_images;
+  LogoImages logo_images;
 };
 
 struct CryptoQuote {
@@ -477,7 +484,7 @@ struct PaymentMethod {
   string payment_method;
   string name;
   string payment_type;
-  array<string> logo_images;
+  LogoImages logo_images;
 };
 
 struct FiatCurrency {

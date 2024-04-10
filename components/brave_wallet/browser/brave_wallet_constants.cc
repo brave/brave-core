@@ -136,7 +136,7 @@ const std::string GetMeldAssetRatioBaseURL() {
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
           switches::kMeldAssetRatioDevUrl);
   if (ratios_url.empty()) {
-    ratios_url = "https://api.meld.io";
+    ratios_url = kMeldRpcEndpoint;
   }
 
   return ratios_url;

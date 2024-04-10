@@ -8,25 +8,26 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 
 namespace {
 
 bool ParseMeldLogos(const base::Value::Dict* logos,
-                    std::vector<std::string>& logo_images) {
+                    brave_wallet::mojom::LogoImages* logo_images) {
   if (!logos) {
     return false;
   }
   if (const auto* dark_logo = logos->FindString("dark")) {
-    logo_images.push_back(*dark_logo);
+    logo_images->dark_url = *dark_logo;
   }
   if (const auto* dark_short_logo = logos->FindString("darkShort")) {
-    logo_images.push_back(*dark_short_logo);
+    logo_images->dark_short_url = *dark_short_logo;
   }
   if (const auto* light_logo = logos->FindString("light")) {
-    logo_images.push_back(*light_logo);
+    logo_images->light_url = *light_logo;
   }
   if (const auto* light_short_logo = logos->FindString("lightShort")) {
-    logo_images.push_back(*light_short_logo);
+    logo_images->light_short_url = *light_short_logo;
   }
 
   return true;
@@ -99,8 +100,9 @@ bool ParseServiceProviders(
     }
     sp->web_site_url = *sp_site_url;
 
+    sp->logo_images = mojom::LogoImages::New();
     if (const auto* logos = sp_item.GetDict().FindDict("logos");
-        !ParseMeldLogos(logos, sp->logo_images)) {
+        !ParseMeldLogos(logos, sp->logo_images.get())) {
       return false;
     }
 
@@ -306,8 +308,9 @@ bool ParsePaymentMethods(
     }
     pm->payment_type = *pm_payment_type;
 
+    pm->logo_images = mojom::LogoImages::New();
     if (const auto* logos = pm_item.GetDict().FindDict("logos");
-        !ParseMeldLogos(logos, pm->logo_images)) {
+        !ParseMeldLogos(logos, pm->logo_images.get())) {
       return false;
     }
     payment_methods->emplace_back(std::move(pm));
