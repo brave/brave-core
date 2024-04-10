@@ -367,7 +367,6 @@ if (is_android) {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/brave_ads/tooltips",
     "//brave/browser/importer",
-    "//brave/browser/ui/bookmark",
     "//brave/components/brave_search_conversion",
     "//brave/components/time_period_storage",
     "//components/infobars/content",

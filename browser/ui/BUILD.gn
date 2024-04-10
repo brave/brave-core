@@ -5,6 +5,7 @@
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
+import("//brave/browser/ui/bookmark/sources.gni")
 import("//brave/browser/ui/sidebar/sources.gni")
 import("//brave/browser/ui/tabs/sources.gni")
 import("//brave/build/config.gni")
@@ -832,7 +833,6 @@ source_set("ui") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/brave_wallet",
       "//brave/browser/resources/settings:resources",
-      "//brave/browser/ui/bookmark",
       "//brave/browser/ui/color:leo_colors",
       "//brave/common/importer",
       "//brave/components/brave_adaptive_captcha",
@@ -1167,9 +1167,11 @@ source_set("ui") {
     ]
   }
 
+  sources += brave_browser_ui_bookmark_sources
   sources += brave_browser_ui_sidebar_sources
   sources += brave_browser_ui_tabs_sources
 
+  deps += brave_browser_ui_bookmark_deps
   deps += brave_browser_ui_sidebar_deps
   deps += brave_browser_ui_tabs_deps
 }
