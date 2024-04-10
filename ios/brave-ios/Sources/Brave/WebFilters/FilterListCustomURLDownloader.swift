@@ -29,15 +29,6 @@ actor FilterListCustomURLDownloader: ObservableObject {
     }
   }
 
-  /// A formatter that is used to format a version number
-  private let fileVersionDateFormatter: DateFormatter = {
-    let dateFormatter = DateFormatter()
-    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-    dateFormatter.dateFormat = "yyyy.MM.dd.HH.mm.ss"
-    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-    return dateFormatter
-  }()
-
   static let shared = FilterListCustomURLDownloader()
 
   /// The resource downloader that downloads our resources
@@ -69,18 +60,15 @@ actor FilterListCustomURLDownloader: ObservableObject {
     for filterListCustomURL: FilterListCustomURL
   ) async {
     let source = await filterListCustomURL.setting.engineSource
-    let version = fileVersionDateFormatter.string(from: downloadResult.date)
+    let version = await downloadResult.version
 
     let fileInfo = AdBlockEngineManager.FileInfo(
       filterListInfo: GroupedAdBlockEngine.FilterListInfo(source: source, version: version),
       localFileURL: downloadResult.fileURL
     )
 
-    await AdBlockGroupsManager.shared.update(
-      fileInfo: fileInfo,
-      engineType: .aggressive,
-      compileDelayed: true
-    )
+    await AdBlockGroupsManager.shared.update(fileInfo: fileInfo)
+    await AdBlockGroupsManager.shared.compileEnginesIfFilesAreReady()
   }
 
   /// Start fetching the resource for the given filter list. Once a new version is downloaded, the file will be processed using the `handle` method
@@ -145,9 +133,9 @@ actor FilterListCustomURLDownloader: ObservableObject {
     fetchTasks.removeValue(forKey: resource)
 
     await AdBlockGroupsManager.shared.removeFileInfo(
-      for: filterListCustomURL.setting.engineSource,
-      engineType: .aggressive
+      for: filterListCustomURL.setting.engineSource
     )
+    await AdBlockGroupsManager.shared.compileEnginesIfFilesAreReady()
   }
 }
 

@@ -312,28 +312,17 @@ extension FilterListStorage {
         .map(\.engineSource)
   }
 
-  /// Return all engabled sources for the given engine type
-  func enabledSources(
+  func sources(
     for engineType: GroupedAdBlockEngine.EngineType
   ) -> [GroupedAdBlockEngine.Source] {
     return filterLists.isEmpty
       ? allFilterListSettings
-        .filter(\.isEnabled)
         .filter({ $0.engineType == engineType })
         .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
         .compactMap(\.engineSource)
       : filterLists
-        .filter(\.isEnabled)
         .filter({ $0.engineType == engineType })
         .map(\.engineSource)
-  }
-}
-
-extension FilterListSetting {
-  /// Lets us know if this filter list is always aggressive.
-  /// This value comes from `list_catalog.json` in brave core
-  @MainActor var engineType: GroupedAdBlockEngine.EngineType {
-    return isAlwaysAggressive ? .aggressive : .standard
   }
 }
 
@@ -356,5 +345,11 @@ extension AdblockService {
         continuation.yield(isDefaultFilterList ? .standard : .aggressive)
       })
     }
+  }
+}
+
+extension FilterListSetting {
+  @MainActor var engineType: GroupedAdBlockEngine.EngineType {
+    return isAlwaysAggressive ? .aggressive : .standard
   }
 }

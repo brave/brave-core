@@ -80,8 +80,8 @@ import os.log
       try await Task.sleep(seconds: 5)
       delayTasks.removeValue(forKey: engineType)
       let fileInfos = adBlockService.fileInfos(for: engineType)
-      AdBlockGroupsManager.shared.update(fileInfos: fileInfos, engineType: engineType)
-      AdBlockGroupsManager.shared.compileEnginesIfFilesAreReady()
+      AdBlockGroupsManager.shared.update(fileInfos: fileInfos)
+      AdBlockGroupsManager.shared.compileEngineIfFilesAreReady(for: engineType)
     }
   }
 }
