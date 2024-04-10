@@ -171,16 +171,15 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     tappedPlayButton?()
   }
 
-  @objc private func tappedVideDuringAutoplay() {
+  @objc private func tappedVideoDuringAutoplay() {
     tappedBackgroundDuringAutoplay?()
   }
 
   func videoAutoplayStarted() {
     let tapGesture = UITapGestureRecognizer(
       target: self,
-      action: #selector(self.tappedVideDuringAutoplay)
+      action: #selector(self.tappedVideoDuringAutoplay)
     )
-    tapGesture.numberOfTapsRequired = 1
     addGestureRecognizer(tapGesture)
     playButtonGestureRecognizer = tapGesture
   }
@@ -196,7 +195,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
   }
 
   private func updatePlayButtonVisibility() {
-    let isLandscape = frame.width > frame.height
+    let isLandscape = window?.windowScene?.interfaceOrientation.isLandscape == true
 
     // Hide the play button if the video is in landscape mode on iPhone
     if isLandscape && UIDevice.isPhone {
@@ -281,7 +280,9 @@ extension NewTabPageBackgroundButtonsView {
   }
   private class PlayButton: SpringButton {
     let imageView = UIImageView(
-      image: UIImage(braveSystemNamed: "leo.play.circle", compatibleWith: nil)!
+      image: UIImage(braveSystemNamed: "leo.play.circle")!.applyingSymbolConfiguration(
+        .init(scale: .large)
+      )
     ).then {
       $0.tintColor = .white
       $0.contentMode = .scaleAspectFit
@@ -305,10 +306,9 @@ extension NewTabPageBackgroundButtonsView {
 
       backgroundView.snp.makeConstraints {
         $0.edges.equalToSuperview()
+        $0.width.equalTo(self.snp.height)
       }
       imageView.snp.makeConstraints {
-        $0.width.equalTo(40)
-        $0.height.equalTo(40)
         $0.edges.equalToSuperview().inset(UIEdgeInsets(equalInset: 10))
       }
     }

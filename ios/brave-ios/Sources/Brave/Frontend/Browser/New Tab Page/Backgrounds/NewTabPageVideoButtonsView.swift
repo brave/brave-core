@@ -14,7 +14,7 @@ import UIKit
 /// The foreground view of the New Tab Page video player. It contains the cancel
 /// button and handles user tap gestures to play/pause the video.
 class NewTabPageVideoButtonsView: UIView {
-  var tappedVideoBackground: (() -> Bool)?
+  var tappedBackgroundVideo: (() -> Bool)?
   var tappedCancelButton: (() -> Void)?
 
   private let playPauseButtonImage = BluredImageView().then {
@@ -33,9 +33,8 @@ class NewTabPageVideoButtonsView: UIView {
 
     let tapGesture = UITapGestureRecognizer(
       target: self,
-      action: #selector(self.videoBackgroundTapped(sender:))
+      action: #selector(self.backgroundVideoTapped(sender:))
     )
-    tapGesture.numberOfTapsRequired = 1
     addGestureRecognizer(tapGesture)
 
     cancelButton.snp.makeConstraints {
@@ -61,24 +60,29 @@ class NewTabPageVideoButtonsView: UIView {
     tappedCancelButton?()
   }
 
-  @objc private func videoBackgroundTapped(sender: UITapGestureRecognizer) {
+  @objc private func backgroundVideoTapped(sender: UITapGestureRecognizer) {
     let location = sender.location(in: self)
     if let view = super.hitTest(location, with: nil), view == cancelButton {
       tappedVideoCancelButton()
       return
     }
 
-    guard let playStarted = tappedVideoBackground?() else {
+    guard let playStarted = tappedBackgroundVideo?() else {
       return
     }
 
     if playStarted {
-      playPauseButtonImage.setImage(imageName: "leo.play.circle")
-      showAndFadeOutImage(imageView: playPauseButtonImage)
+      playPauseButtonImage.imageView.image = UIImage(braveSystemNamed: "leo.play.circle")!
+        .applyingSymbolConfiguration(
+          .init(scale: .large)
+        )
     } else {
-      playPauseButtonImage.setImage(imageName: "leo.pause.circle")
-      showAndFadeOutImage(imageView: playPauseButtonImage)
+      playPauseButtonImage.imageView.image = UIImage(braveSystemNamed: "leo.pause.circle")!
+        .applyingSymbolConfiguration(
+          .init(scale: .large)
+        )
     }
+    showAndFadeOutImage(imageView: playPauseButtonImage)
   }
 
   private func showAndFadeOutImage(imageView: UIView) {
@@ -109,7 +113,9 @@ class NewTabPageVideoButtonsView: UIView {
 extension NewTabPageVideoButtonsView {
   private class CancelButton: SpringButton {
     let imageView = UIImageView(
-      image: UIImage(braveSystemNamed: "leo.close", compatibleWith: nil)!
+      image: UIImage(braveSystemNamed: "leo.close")!.applyingSymbolConfiguration(
+        .init(scale: .small)
+      )
     ).then {
       $0.tintColor = .white
       $0.contentMode = .scaleAspectFit
@@ -126,6 +132,7 @@ extension NewTabPageVideoButtonsView {
       super.init(frame: frame)
 
       clipsToBounds = true
+      accessibilityLabel = Strings.CancelString
 
       addSubview(backgroundView)
 
@@ -133,10 +140,9 @@ extension NewTabPageVideoButtonsView {
 
       backgroundView.snp.makeConstraints {
         $0.edges.equalToSuperview()
+        $0.width.equalTo(self.snp.height)
       }
       imageView.snp.makeConstraints {
-        $0.width.equalTo(16)
-        $0.height.equalTo(16)
         $0.edges.equalToSuperview().inset(UIEdgeInsets(equalInset: 4))
       }
     }
@@ -155,7 +161,7 @@ extension NewTabPageVideoButtonsView {
       $0.clipsToBounds = true
       $0.isUserInteractionEnabled = false
     }
-    private let imageView = UIImageView().then {
+    let imageView = UIImageView().then {
       $0.tintColor = .white
       $0.contentMode = .scaleAspectFit
     }
@@ -171,10 +177,9 @@ extension NewTabPageVideoButtonsView {
 
       backgroundView.snp.makeConstraints {
         $0.edges.equalToSuperview()
+        $0.width.equalTo(self.snp.height)
       }
       imageView.snp.makeConstraints {
-        $0.width.equalTo(40)
-        $0.height.equalTo(40)
         $0.edges.equalToSuperview().inset(UIEdgeInsets(equalInset: 10))
       }
     }
@@ -182,10 +187,6 @@ extension NewTabPageVideoButtonsView {
     override func layoutSubviews() {
       super.layoutSubviews()
       layer.cornerRadius = bounds.height / 2.0
-    }
-
-    func setImage(imageName: String) {
-      imageView.image = UIImage(braveSystemNamed: imageName, compatibleWith: nil)!
     }
 
     @available(*, unavailable)

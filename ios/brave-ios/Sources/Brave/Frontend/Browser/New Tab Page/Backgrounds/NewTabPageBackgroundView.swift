@@ -22,13 +22,15 @@ class NewTabPageBackgroundView: UIView {
     bounds = .init(x: -x, y: 0, width: bounds.width, height: bounds.height)
   }
 
-  func setupPlayerLayer(_ backgroundVideoPath: URL) {
-    backgroundColor = parseColorFromFilename(
+  func setupPlayerLayer(_ backgroundVideoPath: URL, player: AVPlayer?) {
+    playerLayer.player = player
+    layer.addSublayer(playerLayer)
+
+    backgroundColor = parseBackgroundColorFromFilename(
       filename: backgroundVideoPath.lastPathComponent
     )
 
-    let resizeToFill = shouldResizeToFill(filename: backgroundVideoPath.lastPathComponent)
-    if resizeToFill {
+    if shouldResizePlayerToFill(filename: backgroundVideoPath.lastPathComponent) {
       playerLayer.videoGravity = .resizeAspectFill
     } else {
       playerLayer.videoGravity = .resizeAspect
@@ -48,8 +50,6 @@ class NewTabPageBackgroundView: UIView {
       return .init(rgb: 0x3b3e4f)
     }
 
-    layer.addSublayer(playerLayer)
-
     addSubview(imageView)
     imageView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -61,31 +61,21 @@ class NewTabPageBackgroundView: UIView {
     fatalError()
   }
 
-  private func parseColorFromFilename(filename: String) -> UIColor {
-    var color: String?
+  private func parseBackgroundColorFromFilename(filename: String) -> UIColor {
+    var colorHex: String?
     if let range = filename.range(of: "\\.RGB[a-fA-F0-9]+\\.", options: .regularExpression) {
-      color = filename[range].replacingOccurrences(of: ".RGB", with: "")
+      colorHex = filename[range].replacingOccurrences(of: ".RGB", with: "")
         .replacingOccurrences(of: ".", with: "")
     }
 
-    guard let color = color,
-      color.count == 6
-    else {
+    guard let colorHex, colorHex.count == 6 else {
       return UIColor.black
     }
 
-    var rgbValue: UInt64 = 0
-    Scanner(string: color).scanHexInt64(&rgbValue)
-
-    return UIColor(
-      red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-      green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-      blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-      alpha: CGFloat(1.0)
-    )
+    return UIColor(colorString: colorHex)
   }
 
-  private func shouldResizeToFill(filename: String) -> Bool {
-    return filename.range(of: "\\.RTF\\.", options: .regularExpression) != nil
+  private func shouldResizePlayerToFill(filename: String) -> Bool {
+    return filename.contains(".RTF.")
   }
 }

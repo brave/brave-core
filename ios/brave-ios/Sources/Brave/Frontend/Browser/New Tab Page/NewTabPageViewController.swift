@@ -384,7 +384,7 @@ class NewTabPageViewController: UIViewController {
     // to use it.
     backgroundView.layoutIfNeeded()
 
-    updateVideoPlayerLayout()
+    updateVideoPlayer()
 
     calculateBackgroundCenterPoints()
   }
@@ -392,11 +392,13 @@ class NewTabPageViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    reportSponsoredImageBackgroundEvent(.servedImpression) { [weak self] _ in
-      self?.reportSponsoredImageBackgroundEvent(.viewedImpression)
+    reportSponsoredBackgroundEvent(.servedImpression) { [weak self] _ in
+      self?.reportSponsoredBackgroundEvent(.viewedImpression)
     }
 
-    videoPlayer?.maybeStartAutoplay()
+    if shouldShowBackgroundVideo() {
+      videoPlayer?.maybeStartAutoplay()
+    }
 
     presentNotification()
 
@@ -416,11 +418,13 @@ class NewTabPageViewController: UIViewController {
 
     backgroundView.imageView.image = parent == nil ? nil : background.backgroundImage
 
-    if let backgroundVideoPath = background.backgroundVideoPath {
-      videoPlayer?.maybeCancelPlay()
-      videoPlayer?.resetPlayer(parent == nil ? nil : backgroundVideoPath)
-      backgroundView.playerLayer.player = parent == nil ? nil : videoPlayer?.player
+    videoPlayer?.maybeCancelPlay()
+    if parent == nil {
+      videoPlayer?.resetPlayer()
+    } else {
+      videoPlayer?.createPlayer()
     }
+    backgroundView.playerLayer.player = videoPlayer?.player
   }
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -483,45 +487,41 @@ class NewTabPageViewController: UIViewController {
     guard let backgroundVideoPath = background.backgroundVideoPath else {
       return
     }
-    backgroundButtonsView.activeButton = .none
-    videoPlayer = NewTabPageVideoPlayer(
-      backgroundVideoPath: backgroundVideoPath,
-      videoInitiallyVisible: shouldShowVideoBackground()
-    )
-    backgroundView.playerLayer.player = videoPlayer?.player
-    backgroundView.setupPlayerLayer(backgroundVideoPath)
+    videoPlayer = NewTabPageVideoPlayer(backgroundVideoPath)
+    backgroundView.setupPlayerLayer(backgroundVideoPath, player: videoPlayer?.player)
 
-    videoButtonsView.tappedVideoBackground = { [weak self] in
-      guard let videoPlayer = self?.videoPlayer else {
+    videoButtonsView.tappedBackgroundVideo = { [weak videoPlayer] in
+      guard let videoPlayer else {
         return false
       }
       return videoPlayer.togglePlay()
     }
-    videoButtonsView.tappedCancelButton = { [weak self] in
-      self?.videoPlayer?.maybeCancelPlay()
+    videoButtonsView.tappedCancelButton = { [weak videoPlayer] in
+      videoPlayer?.maybeCancelPlay()
     }
 
+    backgroundButtonsView.activeButton = .none
     backgroundButtonsView.tappedPlayButton = { [weak self] in
       guard let self = self else { return }
       self.videoButtonsView.isHidden = false
       self.fadeOutAndHideCollectionView()
-      self.videoPlayer?.startVideoPlayback()
+      self.videoPlayer?.startPlayback()
     }
     backgroundButtonsView.tappedBackgroundDuringAutoplay = { [weak self] in
       guard let self = self else { return }
       self.collectionView.isHidden = true
       self.videoButtonsView.isHidden = false
-      self.videoPlayer?.startVideoPlayback()
+      self.videoPlayer?.startPlayback()
     }
 
-    videoPlayer?.playCancelledEvent = { [weak self] in
+    videoPlayer?.didCancelPlaybackEvent = { [weak self] in
       self?.videoButtonsView.isHidden = true
       self?.showAndFadeInCollectionView()
     }
-    videoPlayer?.autoplayStartedEvent = { [weak self] in
+    videoPlayer?.didStartAutoplayEvent = { [weak self] in
       self?.backgroundButtonsView.videoAutoplayStarted()
     }
-    videoPlayer?.autoplayFinishedEvent = { [weak self] in
+    videoPlayer?.didFinishAutoplayEvent = { [weak self] in
       guard let self = self else { return }
       self.backgroundButtonsView.videoAutoplayFinished()
       if case .sponsoredImage(let background) = self.background.currentBackground {
@@ -535,34 +535,34 @@ class NewTabPageViewController: UIViewController {
         }
       )
     }
-    videoPlayer?.playFinishedEvent = { [weak self] in
+    videoPlayer?.didFinishPlaybackEvent = { [weak self] in
       guard let self = self else { return }
       self.videoButtonsView.isHidden = true
-      self.reportSponsoredImageBackgroundEvent(.media100)
+      self.reportSponsoredBackgroundEvent(.media100)
       self.showAndFadeInCollectionView()
     }
-    videoPlayer?.playStartedEvent = { [weak self] in
-      self?.reportSponsoredImageBackgroundEvent(.mediaPlay)
+    videoPlayer?.didStartPlaybackEvent = { [weak self] in
+      self?.reportSponsoredBackgroundEvent(.mediaPlay)
     }
-    videoPlayer?.played25PercentEvent = { [weak self] in
-      self?.reportSponsoredImageBackgroundEvent(.media25)
+    videoPlayer?.didPlay25PercentEvent = { [weak self] in
+      self?.reportSponsoredBackgroundEvent(.media25)
     }
   }
 
-  private func shouldShowVideoBackground() -> Bool {
-    let isLandscape = view.frame.width > view.frame.height
-    let isPhone = UIDevice.isPhone
-    return !(isLandscape && isPhone)
+  private func shouldShowBackgroundVideo() -> Bool {
+    let isLandscape = view.window?.windowScene?.interfaceOrientation.isLandscape == true
+    return !(isLandscape && UIDevice.isPhone)
   }
 
-  private func updateVideoPlayerLayout() {
+  private func updateVideoPlayer() {
     backgroundView.playerLayer.frame = view.bounds
 
-    if shouldShowVideoBackground() {
+    if shouldShowBackgroundVideo() {
       backgroundView.playerLayer.isHidden = false
     } else {
-      // Cancel play and hide the player layer in landscape mode on iPhone.
+      // Hide the player layer in landscape mode on iPhone.
       backgroundView.playerLayer.isHidden = true
+      videoPlayer?.cancelAutoplay()
       videoPlayer?.maybeCancelPlay()
     }
   }
@@ -637,7 +637,7 @@ class NewTabPageViewController: UIViewController {
     backgroundView.updateImageXOffset(by: realisticXOffset)
   }
 
-  private func reportSponsoredImageBackgroundEvent(
+  private func reportSponsoredBackgroundEvent(
     _ event: BraveAds.NewTabPageAdEventType,
     completion: ((_ success: Bool) -> Void)? = nil
   ) {
@@ -1092,7 +1092,7 @@ class NewTabPageViewController: UIViewController {
       delegate?.navigateToInput(url.absoluteString, inNewTab: false, switchingToPrivateMode: false)
     }
 
-    reportSponsoredImageBackgroundEvent(.clicked)
+    reportSponsoredBackgroundEvent(.clicked)
   }
 
   private func tappedQRCode(_ code: String) {
