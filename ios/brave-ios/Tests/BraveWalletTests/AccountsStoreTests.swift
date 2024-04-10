@@ -12,6 +12,12 @@ import XCTest
 
 @MainActor class AccountsStoreTests: XCTestCase {
 
+  override class func tearDown() {
+    super.tearDown()
+    Preferences.Wallet.showTestNetworks.reset()
+    Preferences.Wallet.isBitcoinTestnetEnabled.reset()
+  }
+
   private var cancellables: Set<AnyCancellable> = .init()
 
   let ethAccount1: BraveWallet.AccountInfo = .mockEthAccount
@@ -96,8 +102,9 @@ import XCTest
 
   let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
 
-  func testUpdate() async {
+  func updateHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.showTestNetworks.value = true
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let ethBalanceWei =
       formatter.weiString(
         from: mockETHBalanceAccount1,
@@ -295,7 +302,8 @@ import XCTest
           XCTFail("Expected account details models")
           return
         }
-        XCTAssertEqual(accountDetails.count, 7)
+        let accountNumber = bitcoinTestnetEnabled ? 7 : 6
+        XCTAssertEqual(accountDetails.count, accountNumber)
 
         XCTAssertEqual(accountDetails[safe: 0]?.account, self.ethAccount1)
         XCTAssertEqual(accountDetails[safe: 0]?.tokensWithBalance, self.ethMainnetTokens)
@@ -325,9 +333,11 @@ import XCTest
         XCTAssertEqual(accountDetails[safe: 5]?.tokensWithBalance, [])  // BTC 0 value
         XCTAssertEqual(accountDetails[safe: 5]?.totalBalanceFiat, "$0.00")
 
-        XCTAssertEqual(accountDetails[safe: 6]?.account, self.btcTestnetAccount)
-        XCTAssertEqual(accountDetails[safe: 6]?.tokensWithBalance, [])  // BTC 0 value
-        XCTAssertEqual(accountDetails[safe: 6]?.totalBalanceFiat, "$0.00")
+        if bitcoinTestnetEnabled {
+          XCTAssertEqual(accountDetails[safe: 6]?.account, self.btcTestnetAccount)
+          XCTAssertEqual(accountDetails[safe: 6]?.tokensWithBalance, [])  // BTC 0 value
+          XCTAssertEqual(accountDetails[safe: 6]?.totalBalanceFiat, "$0.00")
+        }
       }.store(in: &cancellables)
 
     store.update()
@@ -335,8 +345,11 @@ import XCTest
     await fulfillment(of: [updateExpectation], timeout: 1)
   }
 
-  override class func tearDown() {
-    super.tearDown()
-    Preferences.Wallet.showTestNetworks.reset()
+  func testUpdate() async {
+    await updateHelper(bitcoinTestnetEnabled: false)
+  }
+
+  func testUpdateBitcoinTestnet() async {
+    await updateHelper(bitcoinTestnetEnabled: true)
   }
 }

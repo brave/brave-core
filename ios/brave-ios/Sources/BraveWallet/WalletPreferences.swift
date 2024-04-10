@@ -158,6 +158,12 @@ extension Preferences {
       key: "wallet.show-wallet-is-onboarding-completed",
       default: false
     )
+
+    /// Used for Debug section for anyone wants to test with Bitcoin Testnet network or account
+    public static let isBitcoinTestnetEnabled = Option<Bool>(
+      key: "wallet.is-bitcoin-testnet-enabled",
+      default: false
+    )
   }
 }
 

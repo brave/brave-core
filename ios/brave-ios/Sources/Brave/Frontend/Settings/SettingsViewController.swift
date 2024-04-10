@@ -163,6 +163,13 @@ class SettingsViewController: TableViewController {
     navigationController?.pushViewController(hostingController, animated: true)
   }
 
+  private func displayBraveWalletDebugMenu() {
+    let hostingController =
+      UIHostingController(rootView: BraveWalletDebugMenu())
+
+    navigationController?.pushViewController(hostingController, animated: true)
+  }
+
   /// The function for refreshing VPN status for menu
   /// - Parameter notification: NEVPNStatusDidChange
   @objc private func vpnConfigChanged(notification: NSNotification) {
@@ -1058,6 +1065,14 @@ class SettingsViewController: TableViewController {
           text: "View Brave Search Debug Menu",
           selection: { [unowned self] in
             self.displayBraveSearchDebugMenu()
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
+          text: "View Brave Wallet Debug Menu",
+          selection: { [unowned self] in
+            self.displayBraveWalletDebugMenu()
           },
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self

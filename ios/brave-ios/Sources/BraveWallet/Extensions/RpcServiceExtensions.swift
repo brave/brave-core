@@ -388,6 +388,11 @@ extension BraveWalletJsonRpcService {
             $0 == network.chainId
           })
         }
+        if Preferences.Wallet.showTestNetworks.value && respectTestnetPreference
+          && network.chainId == BraveWallet.BitcoinTestnet
+        {  // if testnets are enabled, we still need to check if bitcoin testnet is enabled
+          return Preferences.Wallet.isBitcoinTestnetEnabled.value
+        }
         return true
       }
       return allChains.sorted { lhs, rhs in

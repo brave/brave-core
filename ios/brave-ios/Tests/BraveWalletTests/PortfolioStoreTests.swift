@@ -31,6 +31,7 @@ import XCTest
     Preferences.Wallet.isHidingSmallBalancesFilter.reset()
     Preferences.Wallet.nonSelectedAccountsFilter.reset()
     Preferences.Wallet.nonSelectedNetworksFilter.reset()
+    Preferences.Wallet.isBitcoinTestnetEnabled.reset()
   }
 
   // Accounts
@@ -432,7 +433,7 @@ import XCTest
           return
         }
 
-        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Goerli, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet, BTC on Bitcoin testnet
+        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Goerli, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet. No BTC on Bitcoin testnet
         XCTAssertEqual(group.assets.count, 5)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
@@ -526,7 +527,7 @@ import XCTest
 
         // ETH Goerli (value = 0), hidden because test networks not selected by default
         // FIL Testnet (value = $400.00), hidden because test networks not selected by default
-        // FIL Testnet (value = 0.00), hidden because test networks not selected by default
+        // BIT Testnet (value = 0.00), hidden because Bitcoin testnet is disabled by default
         XCTAssertNil(group.assets[safe: 5])
       }
       .store(in: &cancellables)
@@ -617,8 +618,9 @@ import XCTest
   }
 
   /// Test `assetGroups` will be sorted to from smallest to highest fiat value when `sortOrder` filter is `valueAsc`.
-  func testFilterSort() async {
+  func filterSortHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.showTestNetworks.value = true
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
     let sortExpectation = expectation(description: "update-sortOrder")
     store.$assetGroups
@@ -636,69 +638,80 @@ import XCTest
           XCTFail("Unexpected test result")
           return
         }
-        // USDC on Ethereum mainnet, SOL on Solana mainnet, ETH on Ethereum mainnet, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet and BTC on Bitcoin testnet
-        XCTAssertEqual(group.assets.count, 8)
+        // USDC on Ethereum mainnet, SOL on Solana mainnet, ETH on Ethereum mainnet, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet. No BTC on Bitcoin testnet since Bitcoin tesnet is disabled by default
+        let assetGroupNumber = bitcoinTestnetEnabled ? 8 : 7
+        XCTAssertEqual(group.assets.count, assetGroupNumber)
         // BTC mainnet (value = $0)
         XCTAssertEqual(
           group.assets[safe: 0]?.token.symbol,
           BraveWallet.BlockchainToken.mockBTCToken.symbol
         )
         XCTAssertEqual(group.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
-        // BTC testnet (value = $0)
-        XCTAssertEqual(
-          group.assets[safe: 1]?.token.symbol,
-          BraveWallet.BlockchainToken.mockBTCToken.symbol
-        )
-        XCTAssertEqual(group.assets[safe: 1]?.quantity, String(format: "%.04f", 0))
+        var offset = 0
+        if bitcoinTestnetEnabled {
+          offset += 1
+          // BTC testnet (value = $0)
+          XCTAssertEqual(
+            group.assets[safe: 1]?.token.symbol,
+            BraveWallet.BlockchainToken.mockBTCToken.symbol
+          )
+          XCTAssertEqual(group.assets[safe: 1]?.quantity, String(format: "%.04f", 0))
+        }
         // ETH Goerli (value = $0)
+        offset += 1
         XCTAssertEqual(
-          group.assets[safe: 2]?.token.symbol,
+          group.assets[safe: offset]?.token.symbol,
           BraveWallet.BlockchainToken.previewToken.symbol
         )
-        XCTAssertEqual(group.assets[safe: 2]?.quantity, String(format: "%.04f", 0))
+        XCTAssertEqual(group.assets[safe: offset]?.quantity, String(format: "%.04f", 0))
         // USDC (value = $0.04)
+        offset += 1
         XCTAssertEqual(
-          group.assets[safe: 3]?.token.symbol,
+          group.assets[safe: offset]?.token.symbol,
           BraveWallet.BlockchainToken.mockUSDCToken.symbol
         )
         XCTAssertEqual(
-          group.assets[safe: 3]?.quantity,
+          group.assets[safe: offset]?.quantity,
           String(format: "%.04f", self.mockUSDCBalanceAccount1 + self.mockUSDCBalanceAccount2)
         )
         // FIL (value = $4.00) on filecoin mainnet
+        offset += 1
         XCTAssertEqual(
-          group.assets[safe: 4]?.token.symbol,
+          group.assets[safe: offset]?.token.symbol,
           BraveWallet.BlockchainToken.mockFilToken.symbol
         )
         XCTAssertEqual(
-          group.assets[safe: 4]?.quantity,
+          group.assets[safe: offset]?.quantity,
           String(format: "%.04f", self.mockFILBalanceAccount1)
         )
         // FIL (value = $400.00) on filecoin testnet
+        offset += 1
         XCTAssertEqual(
-          group.assets[safe: 5]?.token.symbol,
+          group.assets[safe: offset]?.token.symbol,
           BraveWallet.BlockchainToken.mockFilToken.symbol
         )
         XCTAssertEqual(
-          group.assets[safe: 5]?.quantity,
+          group.assets[safe: offset]?.quantity,
           String(format: "%.04f", self.mockFILBalanceTestnet)
         )
         // SOL (value = $775.3)
+        offset += 1
         XCTAssertEqual(
-          group.assets[safe: 6]?.token.symbol,
+          group.assets[safe: offset]?.token.symbol,
           BraveWallet.BlockchainToken.mockSolToken.symbol
         )
         XCTAssertEqual(
-          group.assets[safe: 6]?.quantity,
+          group.assets[safe: offset]?.quantity,
           String(format: "%.04f", self.mockSOLBalance)
         )
         // ETH Mainnet (value ~= $2741.7510399999996)
+        offset += 1
         XCTAssertEqual(
-          group.assets[safe: 7]?.token.symbol,
+          group.assets[safe: offset]?.token.symbol,
           BraveWallet.BlockchainToken.previewToken.symbol
         )
         XCTAssertEqual(
-          group.assets[safe: 7]?.quantity,
+          group.assets[safe: offset]?.quantity,
           String(format: "%.04f", self.mockETHBalanceAccount1)
         )
       }.store(in: &cancellables)
@@ -727,6 +740,14 @@ import XCTest
     )
     await fulfillment(of: [sortExpectation], timeout: 1)
     cancellables.removeAll()
+  }
+
+  func testFilterSort() async {
+    await filterSortHelper(bitcoinTestnetEnabled: false)
+  }
+
+  func testFilterSortBitcoinTestnet() async {
+    await filterSortHelper(bitcoinTestnetEnabled: true)
   }
 
   /// Test `assetGroups` will be filtered to remove small balances when `hideSmallBalances` filter is true.
@@ -801,12 +822,12 @@ import XCTest
         isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
         accounts: [
           ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2,
-          filTestnetAccount, btcAccount1, btcAccount2, btcTestnetAccount,
+          filTestnetAccount, btcAccount1, btcAccount2,
         ].map {
           .init(isSelected: true, model: $0)
         },
         networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
+          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet,
         ].map {
           .init(isSelected: true, model: $0)
         }
@@ -817,8 +838,10 @@ import XCTest
   }
 
   /// Test `assetGroups` will be filtered by accounts when `accounts` filter is has de-selected accounts.
-  func testFilterAccounts() async {
+  func filterAccountsHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.showTestNetworks.value = true
+    // test without bitcoin testnet enabled
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
     let accountsExpectation = expectation(description: "update-accounts")
     store.$assetGroups
@@ -837,7 +860,8 @@ import XCTest
           return
         }
         // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Goerli, FIL on mainnet and testnet, BTC on mainnet and testnet
-        XCTAssertEqual(group.assets.count, 8)
+        let assetGroupNumber: Int = bitcoinTestnetEnabled ? 8 : 7
+        XCTAssertEqual(group.assets.count, assetGroupNumber)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
           group.assets[safe: 0]?.token.symbol,
@@ -888,17 +912,21 @@ import XCTest
           group.assets[safe: 5]?.token.symbol,
           self.btcMainnet.nativeToken.symbol
         )
-        // BTC testnet (value = $0)
-        XCTAssertEqual(
-          group.assets[safe: 6]?.token.symbol,
-          self.btcMainnet.nativeToken.symbol
-        )
+        var goerliOffset: Int = 6
+        if bitcoinTestnetEnabled {
+          // BTC testnet (value = $0)
+          XCTAssertEqual(
+            group.assets[safe: 6]?.token.symbol,
+            self.btcMainnet.nativeToken.symbol
+          )
+          goerliOffset = 7
+        }
         // ETH Goerli (value = $0)
         XCTAssertEqual(
-          group.assets[safe: 7]?.token.symbol,
+          group.assets[safe: goerliOffset]?.token.symbol,
           self.goerliNetwork.nativeToken.symbol
         )
-        XCTAssertEqual(group.assets[safe: 7]?.quantity, String(format: "%.04f", 0))
+        XCTAssertEqual(group.assets[safe: goerliOffset]?.quantity, String(format: "%.04f", 0))
       }.store(in: &cancellables)
     isLocked = false
     store.saveFilters(
@@ -923,6 +951,14 @@ import XCTest
     )
     await fulfillment(of: [accountsExpectation], timeout: 1)
     cancellables.removeAll()
+  }
+
+  func testFilterAccounts() async {
+    await filterAccountsHelper(bitcoinTestnetEnabled: false)
+  }
+
+  func testFilterAccountsWithBitcoinTestnet() async {
+    await filterAccountsHelper(bitcoinTestnetEnabled: true)
   }
 
   /// Test `assetGroups` will be filtered by network when `networks` filter is has de-selected networks.
@@ -1027,8 +1063,9 @@ import XCTest
 
   /// Test `assetGroups` will be grouped by account when `GroupBy` filter is assigned `.account`.
   /// Additionally, test de-selecting/hiding one of the available accounts.
-  func testGroupByAccounts() async {
+  func groupByAccountsHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.showTestNetworks.value = true
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
     let assetGroupsExpectation = expectation(description: "update-assetGroups")
     XCTAssertTrue(store.assetGroups.isEmpty)  // Initial state
@@ -1042,8 +1079,11 @@ import XCTest
           XCTFail("Unexpected test result")
           return
         }
-        // grouping by .account; eth has 2 accounts, sol has 2 accounts, fil has 3 accounts, btc has 3 accounts
-        XCTAssertEqual(lastUpdatedAssetGroups.count, 10)
+        // grouping by .account; eth has 2 accounts, sol has 2 accounts, fil has 3 accounts, btc has 3 accounts (one tesnet)
+        let assetGroupNumber = bitcoinTestnetEnabled ? 10 : 9
+        XCTAssertEqual(lastUpdatedAssetGroups.count, assetGroupNumber)
+
+        var filAccount2Offset = bitcoinTestnetEnabled ? 9 : 8
         guard let ethAccount1Group = lastUpdatedAssetGroups[safe: 0],
           let solAccount1Group = lastUpdatedAssetGroups[safe: 1],
           let filTestnetAccountGroup = lastUpdatedAssetGroups[safe: 2],
@@ -1052,11 +1092,30 @@ import XCTest
           let solAccount2Group = lastUpdatedAssetGroups[safe: 5],
           let btcAccount1Group = lastUpdatedAssetGroups[safe: 6],
           let btcAccount2Group = lastUpdatedAssetGroups[safe: 7],
-          let btcTestnetAccountGroup = lastUpdatedAssetGroups[safe: 8],
-          let filAccount2Group = lastUpdatedAssetGroups[safe: 9]
+          let filAccount2Group = lastUpdatedAssetGroups[safe: filAccount2Offset]
         else {
           XCTFail("Unexpected test result")
           return
+        }
+
+        if bitcoinTestnetEnabled {
+          guard let btcTestnetAccountGroup = lastUpdatedAssetGroups[safe: 8]
+          else {
+            XCTFail("Unexpected test result")
+            return
+          }
+
+          XCTAssertEqual(btcTestnetAccountGroup.groupType, .account(self.btcTestnetAccount))
+          XCTAssertEqual(btcTestnetAccountGroup.assets.count, 1)
+          // BTC (value = $0)
+          XCTAssertEqual(
+            btcTestnetAccountGroup.assets[safe: 0]?.token.symbol,
+            BraveWallet.BlockchainToken.mockBTCToken.symbol
+          )
+          XCTAssertEqual(
+            btcTestnetAccountGroup.assets[safe: 0]?.quantity,
+            String(format: "%.04f", 0)
+          )
         }
 
         XCTAssertEqual(ethAccount1Group.groupType, .account(self.ethAccount1))
@@ -1173,15 +1232,6 @@ import XCTest
           BraveWallet.BlockchainToken.mockBTCToken.symbol
         )
         XCTAssertEqual(btcAccount2Group.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
-
-        XCTAssertEqual(btcTestnetAccountGroup.groupType, .account(self.btcTestnetAccount))
-        XCTAssertEqual(btcTestnetAccountGroup.assets.count, 1)
-        // BTC (value = $0)
-        XCTAssertEqual(
-          btcTestnetAccountGroup.assets[safe: 0]?.token.symbol,
-          BraveWallet.BlockchainToken.mockBTCToken.symbol
-        )
-        XCTAssertEqual(btcTestnetAccountGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
 
         XCTAssertEqual(filAccount2Group.groupType, .account(self.filAccount2))
         XCTAssertEqual(filAccount2Group.assets.count, 1)
@@ -1326,10 +1376,19 @@ import XCTest
     await fulfillment(of: [accountsExpectation], timeout: 1)
   }
 
+  func testGroupByAccounts() async {
+    await groupByAccountsHelper(bitcoinTestnetEnabled: false)
+  }
+
+  func testGroupByAccountsBitcoinTestnet() async {
+    await groupByAccountsHelper(bitcoinTestnetEnabled: true)
+  }
+
   /// Test `assetGroups` will be grouped by network when `GroupBy` filter is assigned `.network`.
   /// Additionally, test de-selecting/hiding one of the available networks.
-  func testGroupByNetworks() async {
+  func groupByNetworksHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.showTestNetworks.value = true
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
     let assetGroupsExpectation = expectation(description: "update-assetGroups")
     XCTAssertTrue(store.assetGroups.isEmpty)  // Initial state
@@ -1343,20 +1402,37 @@ import XCTest
           XCTFail("Unexpected test result")
           return
         }
-        // grouping by .network; 1 for each of the 2 networks
+        // grouping by .network; 1 for each of the 2 networks (Bitcoin testnet can be disabled)
         // network groups order should be the same as the order of all networks in `Filters`
-        XCTAssertEqual(lastUpdatedAssetGroups.count, 7)
+        let assetGroupNumber = bitcoinTestnetEnabled ? 7 : 6
+        XCTAssertEqual(lastUpdatedAssetGroups.count, assetGroupNumber)
         guard let ethMainnetGroup = lastUpdatedAssetGroups[safe: 0],
           let solMainnetGroup = lastUpdatedAssetGroups[safe: 1],
           let filTestnetGroup = lastUpdatedAssetGroups[safe: 2],
           let filMainnetGroup = lastUpdatedAssetGroups[safe: 3],
           let btcMainnetGroup = lastUpdatedAssetGroups[safe: 4],
-          let ethGoerliGroup = lastUpdatedAssetGroups[safe: 5],
-          let btcTestnetGroup = lastUpdatedAssetGroups[safe: 6]
+          let ethGoerliGroup = lastUpdatedAssetGroups[safe: 5]
         else {
           XCTFail("Unexpected test result")
           return
         }
+
+        if bitcoinTestnetEnabled {
+          guard let btcTestnetGroup = lastUpdatedAssetGroups[safe: 6]
+          else {
+            XCTFail("Unexpected test result")
+            return
+          }
+          XCTAssertEqual(btcTestnetGroup.groupType, .network(self.btcTestnet))
+          XCTAssertEqual(btcTestnetGroup.assets.count, 1)
+          // BTC testnet (value = $0)
+          XCTAssertEqual(
+            btcTestnetGroup.assets[safe: 0]?.token.symbol,
+            BraveWallet.BlockchainToken.mockBTCToken.symbol
+          )
+          XCTAssertEqual(btcTestnetGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
+        }
+
         XCTAssertEqual(ethMainnetGroup.groupType, .network(.mockMainnet))
         XCTAssertEqual(ethMainnetGroup.assets.count, 2)  // ETH Mainnet, USDC
         // ETH (value ~= $2741.7510399999996)
@@ -1431,15 +1507,6 @@ import XCTest
           BraveWallet.BlockchainToken.mockBTCToken.symbol
         )
         XCTAssertEqual(btcMainnetGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
-
-        XCTAssertEqual(btcTestnetGroup.groupType, .network(self.btcTestnet))
-        XCTAssertEqual(btcTestnetGroup.assets.count, 1)
-        // BTC testnet (value = $0)
-        XCTAssertEqual(
-          btcTestnetGroup.assets[safe: 0]?.token.symbol,
-          BraveWallet.BlockchainToken.mockBTCToken.symbol
-        )
-        XCTAssertEqual(btcTestnetGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
 
         // Verify NFTs not used in Portfolio #7945
         let noAssetsAreNFTs = lastUpdatedAssetGroups.flatMap(\.assets).allSatisfy({
@@ -1559,6 +1626,14 @@ import XCTest
     )
     await fulfillment(of: [networksExpectation], timeout: 1)
     cancellables.removeAll()
+  }
+
+  func testGroupByNetworks() async {
+    await groupByNetworksHelper(bitcoinTestnetEnabled: false)
+  }
+
+  func testGroupByNetworkBitcoinTestnet() async {
+    await groupByNetworksHelper(bitcoinTestnetEnabled: true)
   }
 }
 

@@ -378,7 +378,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
   public func refreshBalances(_ completion: (() -> Void)? = nil) {
     refreshBalanceTask?.cancel()
     refreshBalanceTask = Task { @MainActor in
-      let accounts = await keyringService.allAccounts().accounts
+      let accounts = await keyringService.allAccountInfos()
       let allNetworks = await rpcService.allNetworksForSupportedCoins()
       let allUserAssets: [NetworkAssets] = self.getAllUserAssetsInNetworkAssets(
         networks: allNetworks,
