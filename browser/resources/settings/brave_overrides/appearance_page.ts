@@ -161,16 +161,25 @@ RegisterPolymerTemplateModifications({
     }
     // </if>
 
-    // Remove show images on tab hover toggle as we already have a settings for
-    // this in the Tabs settings.
-    const hoverCardImagesTemplate = templateContent.querySelector(
-      'template[is=dom-if][if="[[showHoverCardImagesOption_]]"]')
-    if (!hoverCardImagesTemplate) {
+    // Remove show images on tab hover toggle and tab memory usage toggle as we
+    // already have settings for these in the Tabs settings.
+    const hoverCardImagesTemplateNotShow = templateContent.querySelector(
+      'template[is=dom-if][if="[[!showHoverCardImagesOption_]]"]')
+    if (!hoverCardImagesTemplateNotShow) {
       console.error(
         '[Brave Settings Overrides] Appearance Page cannot find hover card' +
-        ' images template')
+        ' images template with !showHoverCardImagesOption_')
     } else {
-      hoverCardImagesTemplate.remove()
+      hoverCardImagesTemplateNotShow.remove()
+    }
+    const hoverCardImagesTemplateShow = templateContent.querySelector(
+      'template[is=dom-if][if="[[showHoverCardImagesOption_]]"]')
+    if (!hoverCardImagesTemplateShow) {
+      console.error(
+        '[Brave Settings Overrides] Appearance Page cannot find hover card' +
+        ' images template with showHoverCardImagesOption_')
+    } else {
+      hoverCardImagesTemplateShow.remove()
     }
   },
 })
