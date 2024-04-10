@@ -65,7 +65,7 @@ const chromiumConfigs = {
         util.run('vpython3',
           [
             path.join(config.braveCoreDir,
-                      'build', 'mac', 'download_hermetic_xcode.py'),
+              'build', 'mac', 'download_hermetic_xcode.py'),
           ],
           config.defaultOptions)
       })
@@ -159,6 +159,16 @@ function buildChromiumRelease(buildOptions = {}) {
   util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"'],
     options)
 
+  Log.progressScope(`remove recursive symlinks`, () => {
+    // node_modules could have a symlink to src/brave. The recursive symlinks
+    // break the logic of some chromium scripts and should be remove before
+    // the build.
+    const linkPath = path.join(config.braveCoreDir, 'node_modules',
+      'brave-core')
+    if (fs.existsSync(linkPath)) {
+      fs.unlinkSync(linkPath);
+    }
+  })
 
   Log.progressScope(`ninja`, () => {
     const target = chromiumConfig.buildTarget
