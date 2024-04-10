@@ -1549,8 +1549,7 @@ inline constexpr char kBitcoinMainnetRpcEndpoint[] =
     "https://bitcoin-mainnet.wallet.brave.com/";
 inline constexpr char kBitcoinTestnetRpcEndpoint[] =
     "https://blockstream.info/testnet/api/";
-inline constexpr char kMeldRpcEndpoint[] =
-    "https://api.meld.io";
+inline constexpr char kMeldRpcEndpoint[] = "https://api.meld.io";
 
 const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
