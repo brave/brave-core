@@ -115,6 +115,7 @@ public class BraveRewardsPanel
     private static final String SUPPORT_URL = "https://support.brave.com";
     private static final String BRAVE_REWARDS_PAGE = "https://brave.com/rewards";
     private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://brave.com/rewards-changes";
+    private static final String BRAVE_REWARDS_RESET_PAGE = "brave://rewards#reset";
 
     private static final String TAG = "BraveRewards";
     private static final int UPDATE_BALANCE_INTERVAL = 60000; // In milliseconds
@@ -1293,9 +1294,10 @@ public class BraveRewardsPanel
         NoUnderlineClickableSpan resetClickableSpan =
                 new NoUnderlineClickableSpan(
                         mActivity,
-                        R.color.brave_blue_tint_color,
+                        R.color.rewards_panel_notification_secondary_text_color,
                         (textView) -> {
-                            mBraveRewardsNativeWorker.resetTheWholeState();
+                            TabUtils.openUrlInNewTab(false, BRAVE_REWARDS_RESET_PAGE);
+                            dismiss();
                         });
         NoUnderlineClickableSpan tosClickableSpan =
                 new NoUnderlineClickableSpan(
