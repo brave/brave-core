@@ -207,7 +207,6 @@
     "axios": "1.6.8",
     "loader-utils": "2.0.4",
     "json5": "2.2.3",
-    "protobufjs": "7.2.4",
     "@babel/traverse": "7.23.2"
   }
 }
