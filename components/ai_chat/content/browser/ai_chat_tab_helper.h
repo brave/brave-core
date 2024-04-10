@@ -67,6 +67,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // This will be called when print preview has been composited into image per
   // page and finish OCR.
   void OnPreviewTextReady(std::string ocr_text);
+  void SetPrintPreviewDisabled(bool disabled) {
+    is_print_preview_disabled_ = disabled;
+  }
 
   uint32_t GetMaxPageContentLength();
 
@@ -129,6 +132,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   bool is_same_document_navigation_ = false;
   int64_t pending_navigation_id_;
   bool is_pdf_a11y_info_loaded_ = false;
+  bool is_print_preview_disabled_ = false;
   GetPageContentCallback pending_get_page_content_callback_;
 
   std::unique_ptr<PDFA11yInfoLoadObserver> pdf_load_observer_;

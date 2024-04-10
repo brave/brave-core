@@ -4,8 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/files/file_path.h"
-#include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
@@ -17,11 +16,13 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/web_contents.h"
@@ -55,6 +56,13 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
 
     // Set a smaller window size so we can have test data with more pages.
     browser()->window()->SetContentsSize(gfx::Size(800, 600));
+
+    chat_tab_helper_ =
+        ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
+    ASSERT_TRUE(chat_tab_helper_);
+    chat_tab_helper_->SetUserOptedIn(true);
+    ai_chat_page_handler_ = OpenAIChatSidePanel();
+    ASSERT_TRUE(ai_chat_page_handler_);
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -74,6 +82,8 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
+
+  PrefService* prefs() { return browser()->profile()->GetPrefs(); }
 
   content::WebContents* GetActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
@@ -119,11 +129,11 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   }
 
   void FetchPageContent(const base::Location& location,
-                        ai_chat::AIChatTabHelper* helper,
                         std::string_view expected_text) {
     SCOPED_TRACE(testing::Message() << location.ToString());
+    CreatePrintPreview(ai_chat_page_handler_);
     base::RunLoop run_loop;
-    helper->GetPageContent(
+    chat_tab_helper_->GetPageContent(
         base::BindLambdaForTesting(
             [&run_loop, expected_text](std::string text, bool is_video,
                                        std::string invalidation_token) {
@@ -137,85 +147,64 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
 
  protected:
   net::test_server::EmbeddedTestServer https_server_;
+  raw_ptr<ai_chat::AIChatTabHelper> chat_tab_helper_ = nullptr;
+  raw_ptr<ai_chat::AIChatUIPageHandler> ai_chat_page_handler_ = nullptr;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreview) {
-  auto* chat_tab_helper =
-      ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
-  ASSERT_TRUE(chat_tab_helper);
-  chat_tab_helper->SetUserOptedIn(true);
-  auto* ai_chat_page_handler = OpenAIChatSidePanel();
-  ASSERT_TRUE(ai_chat_page_handler);
-
   NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
-  CreatePrintPreview(ai_chat_page_handler);
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   FetchPageContent(
-      FROM_HERE, chat_tab_helper,
-      "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
+      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
   // Panel is still active so we don't need to set it up again
 
   // Page recognition host with a canvas element
   NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
-  CreatePrintPreview(ai_chat_page_handler);
-  FetchPageContent(FROM_HERE, chat_tab_helper, "this is the way");
+  FetchPageContent(FROM_HERE, "this is the way");
 #if BUILDFLAG(IS_WIN)
   // Unsupported locale should return no content for Windows only
   // Other platforms do not use locale for extraction
   const brave_l10n::test::ScopedDefaultLocale locale("xx_XX");
   NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
-  CreatePrintPreview(ai_chat_page_handler);
-  FetchPageContent(FROM_HERE, chat_tab_helper, "");
+  FetchPageContent(FROM_HERE, "");
 #endif  // #if BUILDFLAG(IS_WIN)
 #else
-  FetchPageContent(FROM_HERE, chat_tab_helper, "");
+  FetchPageContent(FROM_HERE, "");
 #endif
 
   // Not supported on other hosts
   NavigateURL(https_server_.GetURL("a.com", "/long_canvas.html"));
-  CreatePrintPreview(ai_chat_page_handler);
-  FetchPageContent(FROM_HERE, chat_tab_helper, "");
+  FetchPageContent(FROM_HERE, "");
 }
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewPagesLimit) {
-  auto* chat_tab_helper =
-      ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
-  ASSERT_TRUE(chat_tab_helper);
-  chat_tab_helper->SetUserOptedIn(true);
-  auto* ai_chat_page_handler = OpenAIChatSidePanel();
-  ASSERT_TRUE(ai_chat_page_handler);
-
   NavigateURL(
       https_server_.GetURL("docs.google.com", "/extra_long_canvas.html"));
-  CreatePrintPreview(ai_chat_page_handler);
   std::string expected_string(ai_chat::kMaxPreviewPages - 1, '\n');
   base::StrAppend(&expected_string, {"This is the way."});
-  FetchPageContent(FROM_HERE, chat_tab_helper, expected_string);
+  FetchPageContent(FROM_HERE, expected_string);
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewContextLimit) {
-  auto* chat_tab_helper =
-      ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
-  ASSERT_TRUE(chat_tab_helper);
-  chat_tab_helper->SetUserOptedIn(true);
-  auto* ai_chat_page_handler = OpenAIChatSidePanel();
-  ASSERT_TRUE(ai_chat_page_handler);
-
   ai_chat::AIChatTabHelper::SetMaxContentLengthForTesting(10);
   NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
-  CreatePrintPreview(ai_chat_page_handler);
-  FetchPageContent(FROM_HERE, chat_tab_helper, "This is the way.");
+  FetchPageContent(FROM_HERE, "This is the way.");
 
   ai_chat::AIChatTabHelper::SetMaxContentLengthForTesting(20);
   NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
-  CreatePrintPreview(ai_chat_page_handler);
-  FetchPageContent(FROM_HERE, chat_tab_helper,
-                   "This is the way.\n\nI have spoken.");
+  FetchPageContent(FROM_HERE, "This is the way.\n\nI have spoken.");
 
   ai_chat::AIChatTabHelper::SetMaxContentLengthForTesting(std::nullopt);
 }
 #endif
+
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
+  prefs()->SetBoolean(prefs::kPrintPreviewDisabled, true);
+
+  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
+  FetchPageContent(FROM_HERE, "");
+}

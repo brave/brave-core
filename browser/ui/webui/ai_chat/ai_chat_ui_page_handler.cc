@@ -28,6 +28,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "chrome/common/pref_names.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
@@ -624,6 +625,12 @@ void AIChatUIPageHandler::OnGetOCRResult(std::string text) {
 }
 
 void AIChatUIPageHandler::MaybeCreatePrintPreview() {
+  const bool print_preview_disabled =
+      profile_->GetPrefs()->GetBoolean(::prefs::kPrintPreviewDisabled);
+  active_chat_tab_helper_->SetPrintPreviewDisabled(print_preview_disabled);
+  if (print_preview_disabled) {
+    return;
+  }
   auto url = active_chat_tab_helper_->web_contents()->GetLastCommittedURL();
   if (!base::Contains(kPrintPreviewRetrievalHosts, url.host_piece())) {
     return;
