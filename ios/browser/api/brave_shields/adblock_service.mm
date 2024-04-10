@@ -68,10 +68,12 @@ void AdBlockCatalogObserver::OnFilterListCatalogLoaded(
 
 @interface AdblockService () {
   component_updater::ComponentUpdateService* _cus;  // NOT OWNED
-  raw_ptr<brave_shields::AdBlockFilterListCatalogProvider> _catalogProvider;
-  raw_ptr<brave_shields::AdBlockComponentServiceManager> _serviceManager;
-  raw_ptr<brave_shields::AdBlockServiceObserver> _serviceObserver;
-  raw_ptr<brave_shields::AdBlockCatalogObserver> _catalogObserver;
+  std::unique_ptr<brave_shields::AdBlockFilterListCatalogProvider>
+      _catalogProvider;
+  std::unique_ptr<brave_shields::AdBlockComponentServiceManager>
+      _serviceManager;
+  std::unique_ptr<brave_shields::AdBlockServiceObserver> _serviceObserver;
+  std::unique_ptr<brave_shields::AdBlockCatalogObserver> _catalogObserver;
 }
 
 @property(nonatomic)
@@ -85,17 +87,18 @@ void AdBlockCatalogObserver::OnFilterListCatalogLoaded(
   if ((self = [super init])) {
     _cus = componentUpdaterService;
     _catalogProvider =
-        new brave_shields::AdBlockFilterListCatalogProvider(_cus);
-    _serviceManager = new brave_shields::AdBlockComponentServiceManager(
-        GetApplicationContext()->GetLocalState(),
-        GetApplicationContext()->GetApplicationLocale(), _cus,
-        _catalogProvider);
+        std::make_unique<brave_shields::AdBlockFilterListCatalogProvider>(_cus);
+    _serviceManager =
+        std::make_unique<brave_shields::AdBlockComponentServiceManager>(
+            GetApplicationContext()->GetLocalState(),
+            GetApplicationContext()->GetApplicationLocale(), _cus,
+            _catalogProvider.get());
   }
   return self;
 }
 
 - (void)registerFilterListChanges:(void (^)(bool isDefaultEngine))callback {
-  _serviceObserver = new brave_shields::AdBlockServiceObserver(
+  _serviceObserver = std::make_unique<brave_shields::AdBlockServiceObserver>(
       base::BindRepeating(^(const bool isDefaultEngine) {
         callback(isDefaultEngine);
       }));
@@ -104,8 +107,8 @@ void AdBlockCatalogObserver::OnFilterListCatalogLoaded(
 }
 
 - (void)registerCatalogChanges:(void (^)())callback {
-  _catalogObserver =
-      new brave_shields::AdBlockCatalogObserver(base::BindRepeating(^() {
+  _catalogObserver = std::make_unique<brave_shields::AdBlockCatalogObserver>(
+      base::BindRepeating(^() {
         callback();
       }));
 
