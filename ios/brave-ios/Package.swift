@@ -296,7 +296,7 @@ var package = Package(
         .copy("WelcomeFocus/Resources/LottieAssets/novideo-ads-light.json"),
         .copy("WelcomeFocus/Resources/LottieAssets/browser-default-dark.json"),
         .copy("WelcomeFocus/Resources/LottieAssets/browser-default-light.json"),
-        .copy("WelcomeFocus/Resources/Fonts/FlechaM-Medium.otf"),
+        .copy("WelcomeFocus/Resources/Fonts/Poppins-SemiBold.ttf"),
         .copy("WelcomeFocus/Resources/Fonts/Poppins-Medium.ttf"),
         .copy("WelcomeFocus/Resources/Fonts/Poppins-Regular.ttf"),
         .copy("Welcome/Resources/disconnect-entitylist.json"),

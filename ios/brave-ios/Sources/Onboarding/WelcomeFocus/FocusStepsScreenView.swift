@@ -222,7 +222,7 @@ private struct FocusStepsHeaderTitleView: View {
     VStack(spacing: 10) {
       Text(title)
         .font(
-          Font.custom("FlechaM-Medium", size: 32)
+          Font.custom("Poppins-SemiBold", size: 28)
         )
         .opacity(0.9)
       Text(description)

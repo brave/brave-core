@@ -103,7 +103,7 @@ struct FocusP3AScreenView: View {
         VStack(spacing: 8) {
           Text(Strings.FocusOnboarding.p3aScreenTitle)
             .font(
-              Font.custom("FlechaM-Medium", size: 32)
+              Font.custom("Poppins-SemiBold", size: 28)
             )
             .opacity(0.9)
           Text(Strings.FocusOnboarding.p3aScreenDescription)

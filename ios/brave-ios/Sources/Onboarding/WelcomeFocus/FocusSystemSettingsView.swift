@@ -52,7 +52,7 @@ struct FocusSystemSettingsView: View {
       VStack(spacing: 10) {
         Text(Strings.FocusOnboarding.defaultBrowserScreenTitle)
           .font(
-            Font.custom("FlechaM-Medium", size: 32)
+            Font.custom("Poppins-SemiBold", size: 28)
           )
           .multilineTextAlignment(.center)
         Text(Strings.FocusOnboarding.defaultBrowserScreenDescription)
