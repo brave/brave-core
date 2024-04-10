@@ -52,6 +52,7 @@ export const DropDownIcon = styled(CaratStrongDownIcon)<{
 
 export const DropDown = styled.div<{
   isV2?: boolean
+  dropdownPosition?: 'left' | 'right'
 }>`
   display: flex;
   flex-direction: column;
@@ -63,6 +64,8 @@ export const DropDown = styled.div<{
   border: 1px solid ${(p) => p.theme.color.divider01};
   border-radius: 8px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
+  right: ${(p) => (p.dropdownPosition === 'right' ? '0px' : 'unset')};
+  left: ${(p) => (p.dropdownPosition === 'left' ? '0px' : 'unset')};
   @media (prefers-color-scheme: dark) {
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
   }

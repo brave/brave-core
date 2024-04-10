@@ -40,6 +40,7 @@ export const LayoutCardWrapper = styled.div<{
   hideNav?: boolean
   hideCardHeader?: boolean
   headerHeight: number
+  padding?: string
 }>`
   --header-top-position: calc(
     var(--layout-top-position) + ${(p) => p.headerHeight}px
@@ -72,7 +73,7 @@ export const LayoutCardWrapper = styled.div<{
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  padding-bottom: 32px;
+  padding: ${(p) => p.padding ?? '0px 0px 32px 0px'};
   &::-webkit-scrollbar {
     display: none;
   }
@@ -96,6 +97,7 @@ export const ContainerCard = styled.div<{
   noMinCardHeight?: boolean
   noBorderRadius?: boolean
   useDarkBackground?: boolean
+  useFullHeight?: boolean
 }>`
   display: flex;
   flex: none;
@@ -112,11 +114,17 @@ export const ContainerCard = styled.div<{
   padding: ${(p) => (p.noPadding ? 0 : 20)}px;
   width: 100%;
   min-height: ${(p) => (p.noMinCardHeight ? 'unset' : `${minCardHeight}px`)};
+  height: ${(p) =>
+    p.useFullHeight ? 'calc(100vh - var(--top-position))' : 'unset'};
   max-width: ${maxCardWidth}px;
   position: relative;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     max-width: unset;
     width: 100%;
+    height: ${(p) =>
+      p.useFullHeight
+        ? 'calc(100vh - var(--top-position) - var(--bottom-position))'
+        : 'unset'};
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     min-height: calc(100vh - var(--bottom-position) - var(--top-position));

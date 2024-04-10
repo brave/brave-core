@@ -32,14 +32,19 @@ import {
 } from '../../../common/slices/api.slice'
 
 // components
-import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../style'
+import {
+  IconsWrapper,
+  MediumAssetIcon,
+  NetworkIconWrapper,
+  Row
+} from '../style'
 import { withPlaceholderIcon } from '../create-placeholder-icon/index'
 import { CreateNetworkIcon } from '../create-network-icon/index'
 import { NftIcon } from '../nft-icon/nft-icon'
 
 // styles
 import {
-  BuyAssetOptionWrapper,
+  AssetButton,
   AssetName,
   NameAndIcon,
   NameColumn,
@@ -64,7 +69,7 @@ const AssetIconWithPlaceholder = withPlaceholderIcon(
 )
 const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
-export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(
+export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
   ({ onClick, token, isPanel, selectedCurrency }, ref) => {
     // routing
     const { assetId: selectedOnRampAssetId } = useParams<{ assetId: string }>()
@@ -123,61 +128,65 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(
     }
 
     return (
-      <BuyAssetOptionWrapper
+      <Row
+        padding='6px 12px'
         ref={ref}
-        isSelected={isSelected}
-        onClick={handleOnClick}
       >
-        <NameAndIcon>
-          <IconsWrapper marginRight='14px'>
-            {token.isErc721 || token.isNft ? (
-              <NftAssetIconWithPlaceholder
-                asset={token}
-                network={tokenNetwork}
-              />
-            ) : (
-              <AssetIconWithPlaceholder
-                asset={token}
-                network={tokenNetwork}
-              />
-            )}
-            {tokenNetwork &&
-              !isPanel &&
-              checkIfTokenNeedsNetworkIcon(
-                tokenNetwork,
-                token.contractAddress
-              ) && (
-                <NetworkIconWrapper>
-                  <CreateNetworkIcon
-                    network={tokenNetwork}
-                    marginRight={0}
-                  />
-                </NetworkIconWrapper>
+        <AssetButton
+          isSelected={isSelected}
+          onClick={handleOnClick}
+        >
+          <NameAndIcon>
+            <IconsWrapper marginRight='14px'>
+              {token.isErc721 || token.isNft ? (
+                <NftAssetIconWithPlaceholder
+                  asset={token}
+                  network={tokenNetwork}
+                />
+              ) : (
+                <AssetIconWithPlaceholder
+                  asset={token}
+                  network={tokenNetwork}
+                />
               )}
-          </IconsWrapper>
-          <NameColumn>
-            <AssetName>
-              {token.name}{' '}
-              {token.isErc721 && token.tokenId
-                ? '#' + new Amount(token.tokenId).toNumber()
-                : ''}
-            </AssetName>
-            <NetworkDescriptionText>
-              {networkDescription}
-            </NetworkDescriptionText>
-          </NameColumn>
-        </NameAndIcon>
+              {tokenNetwork &&
+                !isPanel &&
+                checkIfTokenNeedsNetworkIcon(
+                  tokenNetwork,
+                  token.contractAddress
+                ) && (
+                  <NetworkIconWrapper>
+                    <CreateNetworkIcon
+                      network={tokenNetwork}
+                      marginRight={0}
+                    />
+                  </NetworkIconWrapper>
+                )}
+            </IconsWrapper>
+            <NameColumn>
+              <AssetName>
+                {token.name}{' '}
+                {token.isErc721 && token.tokenId
+                  ? '#' + new Amount(token.tokenId).toNumber()
+                  : ''}
+              </AssetName>
+              <NetworkDescriptionText>
+                {networkDescription}
+              </NetworkDescriptionText>
+            </NameColumn>
+          </NameAndIcon>
 
-        {selectedCurrency && (
-          <PriceContainer>
-            {isFetchingPrice || isLoadingPrice ? (
-              <LoadIcon />
-            ) : (
-              <PriceText>{price.formatAsFiat(selectedCurrency)}</PriceText>
-            )}
-          </PriceContainer>
-        )}
-      </BuyAssetOptionWrapper>
+          {selectedCurrency && (
+            <PriceContainer>
+              {isFetchingPrice || isLoadingPrice ? (
+                <LoadIcon />
+              ) : (
+                <PriceText>{price.formatAsFiat(selectedCurrency)}</PriceText>
+              )}
+            </PriceContainer>
+          )}
+        </AssetButton>
+      </Row>
     )
   }
 )
