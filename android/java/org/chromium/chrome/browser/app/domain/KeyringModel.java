@@ -191,7 +191,7 @@ public class KeyringModel implements KeyringServiceObserver {
      * Filecoin account will be created only if selected among available networks. Once the creation
      * finishes the callback is notified with a string containing the recovery phrases.
      *
-     * <b>Note:</b> This method must be always called from main UI thread.
+     * <p><b>Note:</b> This method must be always called from main UI thread.
      *
      * @param password Given password used to create the new Brave Wallet.
      * @param availableNetworks All available networks.
@@ -225,6 +225,7 @@ public class KeyringModel implements KeyringServiceObserver {
         removeHiddenNetworksLiveData.observeForever(
                 new Observer<>() {
                     int countRemovedHiddenNetworks;
+
                     @Override
                     public void onChanged(Boolean success) {
                         countRemovedHiddenNetworks++;
@@ -241,6 +242,7 @@ public class KeyringModel implements KeyringServiceObserver {
         addHiddenNetworksLiveData.observeForever(
                 new Observer<>() {
                     int countAddedHiddenNetworks;
+
                     @Override
                     public void onChanged(Boolean success) {
                         countAddedHiddenNetworks++;
@@ -315,6 +317,7 @@ public class KeyringModel implements KeyringServiceObserver {
                         createAccountsLiveData.observeForever(
                                 new Observer<>() {
                                     int countCreatedAccounts;
+
                                     @Override
                                     public void onChanged(Boolean success) {
                                         countCreatedAccounts++;
@@ -338,7 +341,8 @@ public class KeyringModel implements KeyringServiceObserver {
                                                 AssetUtils.getKeyring(
                                                         networkInfo.coin, networkInfo.chainId),
                                                 accountName,
-                                                accountInfo -> createAccountsLiveData.setValue(true));
+                                                accountInfo ->
+                                                        createAccountsLiveData.setValue(true));
                                     }
                                 });
                     }
