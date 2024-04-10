@@ -110,7 +110,7 @@ const StyledPage = styled('div') <PageProps>`
   }
 `
 
-export const Page: React.FunctionComponent<PageProps> = (props) => {
+export const Page: React.FunctionComponent<React.PropsWithChildren<PageProps>> = (props) => {
   // Note(petemill): When we scroll to the bottom, if there's an
   // extra scroll area (Brave News) then we "sticky" the Page at
   // the bottom scroll and overlay the extra content on top.

@@ -41,7 +41,7 @@ const HidableImage = ({ onError, ...rest }: React.DetailedHTMLProps<React.ImgHTM
     ref.current!.style.opacity = ''
   }, [rest.src])
 
-  const handleError = React.useCallback((e) => {
+  const handleError = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
     ref.current!.style.opacity = '0'
     onError?.(e)
   }, [onError])

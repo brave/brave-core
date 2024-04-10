@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
-import AutoSizer from '@brave/react-virtualized-auto-sizer'
+import AutoSizer from 'react-virtualized-auto-sizer'
 
 // Types
 import { BraveWallet } from '../../../../constants/types'
@@ -120,7 +120,7 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
 
   return (
     <AutoSizer style={AutoSizerStyle}>
-      {function ({ height, width }) {
+      {function ({ height, width }: { height: number; width: number }) {
         return (
           <List
             ref={onListMount}

@@ -220,7 +220,7 @@ export default function PlaylistFolder({
 
   // Share single callback among multiple items.
   const onItemClick = React.useCallback(
-    (item) => {
+    (item: PlaylistItemMojo) => {
       if (!playlist) return
 
       if (editMode === PlaylistEditMode.BULK_EDIT) {

@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import classnames from 'classnames'
+import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
