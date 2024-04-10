@@ -1035,7 +1035,10 @@ void PlaylistService::OnMediaFileDownloadFinished(
         PlaylistMediaFileDownloadManager::DownloadResult,
         PlaylistMediaFileDownloadManager::DownloadFailureReason>& result) {
   DCHECK(item);
-  DCHECK(IsValidPlaylistItem(item->id));
+  if (!IsValidPlaylistItem(item->id)) {
+    // As this callback is async, the item could have been removed.
+    return;
+  }
 
   if (!result.has_value() &&
       result.error() !=
