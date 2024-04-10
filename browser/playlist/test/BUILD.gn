@@ -40,10 +40,6 @@ source_set("browser_tests") {
   } else {
     deps += [ "//chrome/test:test_support_ui" ]
   }
-
-  if (enable_playlist_webui) {
-    deps += [ "//brave/browser/ui/sidebar" ]
-  }
 }
 
 source_set("unit_tests") {

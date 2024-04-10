@@ -1,0 +1,72 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+brave_browser_ui_sidebar_sources = []
+brave_browser_ui_sidebar_deps = []
+
+if (toolkit_views) {
+  brave_browser_ui_sidebar_sources += [
+    "//brave/browser/ui/sidebar/sidebar.h",
+    "//brave/browser/ui/sidebar/sidebar_controller.cc",
+    "//brave/browser/ui/sidebar/sidebar_controller.h",
+    "//brave/browser/ui/sidebar/sidebar_model.cc",
+    "//brave/browser/ui/sidebar/sidebar_model.h",
+    "//brave/browser/ui/sidebar/sidebar_service_factory.cc",
+    "//brave/browser/ui/sidebar/sidebar_service_factory.h",
+    "//brave/browser/ui/sidebar/sidebar_tab_helper.cc",
+    "//brave/browser/ui/sidebar/sidebar_tab_helper.h",
+    "//brave/browser/ui/sidebar/sidebar_utils.cc",
+    "//brave/browser/ui/sidebar/sidebar_utils.h",
+  ]
+
+  brave_browser_ui_sidebar_deps += [
+    "//base",
+    "//brave/browser/profiles:util",
+    "//brave/components/constants",
+    "//brave/components/sidebar/browser",
+    "//brave/components/sidebar/common",
+    "//chrome/browser/profiles",
+    "//chrome/common:channel_info",
+    "//components/google/core/common",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//content/public/common",
+    "//extensions/buildflags",
+    "//skia",
+    "//third_party/abseil-cpp:absl",
+    "//url",
+  ]
+
+  if (enable_extensions) {
+    brave_browser_ui_sidebar_deps += [
+      "//chrome/browser/extensions",
+      "//extensions/browser",
+      "//extensions/common",
+    ]
+  }
+
+  # included from chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h
+  # see check_includes comment above
+  brave_browser_ui_sidebar_deps += [
+    "//chrome/browser/cart:mojo_bindings",
+    "//ui/webui/resources/js/browser_command:mojo_bindings",
+  ]
+
+  if (!is_android) {
+    brave_browser_ui_sidebar_deps += [
+      "//chrome/browser/new_tab_page/modules/drive:mojo_bindings",
+      "//chrome/browser/new_tab_page/modules/recipes:mojo_bindings",
+      "//chrome/browser/ui/webui/new_tab_page:mojo_bindings",
+      "//components/omnibox/browser:mojo_bindings",
+    ]
+  }
+}

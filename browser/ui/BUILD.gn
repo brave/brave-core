@@ -5,6 +5,7 @@
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
+import("//brave/browser/ui/sidebar/sources.gni")
 import("//brave/browser/ui/tabs/sources.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
@@ -792,7 +793,6 @@ source_set("ui") {
 
   if (toolkit_views) {
     deps += [
-      "//brave/browser/ui/sidebar",
       "//brave/components/sidebar/browser",
       "//chrome/app:generated_resources",
       "//chrome/browser/ui/views",
@@ -1167,7 +1167,10 @@ source_set("ui") {
     ]
   }
 
+  sources += brave_browser_ui_sidebar_sources
   sources += brave_browser_ui_tabs_sources
+
+  deps += brave_browser_ui_sidebar_deps
   deps += brave_browser_ui_tabs_deps
 }
 

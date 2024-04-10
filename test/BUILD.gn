@@ -690,10 +690,7 @@ if (!is_android) {
     ]
 
     if (toolkit_views) {
-      deps += [
-        "//brave/browser/ui/sidebar",
-        "//brave/components/sidebar/browser",
-      ]
+      deps += [ "//brave/components/sidebar/browser" ]
     }
 
     if (enable_playlist_webui) {
@@ -1102,7 +1099,6 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
     ]
     deps += [
-      "//brave/browser/ui/sidebar",
       "//brave/browser/ui/sidebar:browser_tests",
       "//brave/browser/ui/views/brave_ads:browser_tests",
       "//brave/browser/ui/views/tabs:browser_tests",

@@ -42,7 +42,6 @@ source_set("browser_tests") {
     ]
     deps = [
       "//brave/app:generate_command_metadata",
-      "//brave/browser/ui/sidebar",
       "//brave/components/ai_chat/content/browser",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/browser:test_support",
