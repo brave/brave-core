@@ -1979,6 +1979,9 @@ Are you sure you want to do this?
     <message name="IDS_WALLET_ACCEPT_ITEMS" desc="Brave Wallet creation subtitle">
       We require that you acknowledge the items below
     </message>
+    <message name="IDS_CHOOSE_BLOCKCHAINS" desc="Brave Wallet supported networks subtitle">
+      Choose which blockchains to use in your wallet.
+    </message>
     <message name="IDS_UNDERSTAND_SELF_CUSTODY" desc="Brave Wallet self-custody explaination text">
       I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.
     </message>
@@ -2083,6 +2086,21 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BEFORE_WE_BEGIN" desc="Brave Wallet term of use screen title">
       Before we begin
+    </message>
+    <message name="IDS_SUPPORTED_NETWORKS" desc="Brave Wallet supported networks screen title">
+      Supported networks
+    </message>
+    <message name="IDS_ADD_NETWORKS" desc="Brave Wallet add networks text">
+      You can add networks anytime in Settings.
+    </message>
+    <message name="IDS_SEARCH_NETWORKS" desc="Brave Wallet search networks text">
+      Search networks
+    </message>
+    <message name="IDS_SHOW_TESTNETS" desc="Brave Wallet show testnets button">
+      Show testnets
+    </message>
+    <message name="IDS_CONTINUE_WITH_NETWORKS" desc="Continue with selected networks">
+      Continue with <ph name="NUMBER">%1$s</ph> networks
     </message>
     <message name="IDS_CREATE_PASSWORD" desc="Brave Wallet password creation description">
       Create a password
@@ -2784,7 +2802,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Submit
     </message>
     <message name="IDS_BRAVE_WALLET_SELECT_NETWORK_TITLE" desc="Brave wallet network selection title">
-      Select Network
+      Change Connected Account
     </message>
     <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new tab view.">
       New tab
@@ -2872,6 +2890,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_VPN_CONNECTION_ERROR" desc="Vpn connection error message">
       Connection error
+    </message>
+    <message name="IDS_WALLET_FEATURED" desc="Header for featured networks">
+      Featured
+    </message>
+    <message name="IDS_WALLET_POPULAR" desc="Header for popular networks">
+      Popular
     </message>
     <message name="IDS_BRAVE_WALLET_NETWORK_SELECTION_ERROR" desc="Network activity toolbar title">
       Unable to set network to <ph name="NETWORK_NAME">'%1$s'</ph>
@@ -3457,9 +3481,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_GENERATION_DISABLED_ERROR_TEXT" desc="wallet generation disabled error text">
       New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LEARN_MORE">%1$s</ph>
-    </message>
-    <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network filter selector title for all networks">
-      All Networks
     </message>
     <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_PRIMARY" desc="Network filter title for primary networks">
       Primary Networks

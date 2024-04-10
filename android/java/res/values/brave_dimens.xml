@@ -42,4 +42,7 @@
 
     <dimen name="vpn_plan_margin">32dp</dimen>
     <dimen name="vpn_plan_section_margin">16dp</dimen>
+
+    <dimen name="onboarding_network_selection_item_width">103dp</dimen>
+    <dimen name="onboarding_network_selection_item_height">96dp</dimen>
 </resources>

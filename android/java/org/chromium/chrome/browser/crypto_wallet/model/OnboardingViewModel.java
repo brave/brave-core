@@ -5,18 +5,50 @@
 
 package org.chromium.chrome.browser.crypto_wallet.model;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 
-public class OnboardingViewModel extends ViewModel {
-    private final MutableLiveData<String> mPassword = new MutableLiveData<>();
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 
-    public void setPassword(String password) {
-        mPassword.setValue(password);
+import java.util.HashSet;
+import java.util.Set;
+
+public class OnboardingViewModel extends ViewModel {
+    @Nullable private String mPassword;
+
+    @NonNull final Set<NetworkInfo> mSelectedNetworks = new HashSet<>();
+    @NonNull final Set<NetworkInfo> mAvailableNetworks = new HashSet<>();
+
+    public void setPassword(@NonNull final String password) {
+        mPassword = password;
     }
 
-    public LiveData<String> getPassword() {
+    @NonNull
+    public String getPassword() {
+        if (mPassword == null) {
+            throw new IllegalStateException("Wallet password must not be null.");
+        }
         return mPassword;
+    }
+
+    public void setSelectedNetworks(
+            @NonNull final Set<NetworkInfo> selectedNetworks,
+            @NonNull final Set<NetworkInfo> availableNetworks) {
+        mSelectedNetworks.clear();
+        mSelectedNetworks.addAll(selectedNetworks);
+
+        mAvailableNetworks.clear();
+        mAvailableNetworks.addAll(availableNetworks);
+    }
+
+    @NonNull
+    public Set<NetworkInfo> getSelectedNetworks() {
+        return mSelectedNetworks;
+    }
+
+    @NonNull
+    public Set<NetworkInfo> getAvailableNetworks() {
+        return mAvailableNetworks;
     }
 }

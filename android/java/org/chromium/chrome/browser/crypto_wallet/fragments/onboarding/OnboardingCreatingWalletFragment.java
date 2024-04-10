@@ -12,19 +12,19 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
-import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
+import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+
+import java.util.Set;
 
 /** Onboarding fragment for Brave Wallet which shows the spinner while wallet is created/restored */
 public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragment {
-    private OnboardingViewModel mOnboardingViewModel;
 
     @Override
     public View onCreateView(
@@ -36,31 +36,50 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setAnimatedBackground(view.findViewById(R.id.creating_wallet_root));
-        mOnboardingViewModel =
-                new ViewModelProvider((ViewModelStoreOwner) requireActivity())
-                        .get(OnboardingViewModel.class);
+    }
 
-        KeyringService keyringService = getKeyringService();
-        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-        if (keyringService != null) {
-            mOnboardingViewModel
-                    .getPassword()
-                    .observe(
-                            getViewLifecycleOwner(),
-                            password ->
-                                    keyringService.createWallet(
-                                            password,
-                                            recoveryPhrases -> {
-                                                if (braveWalletP3A != null) {
-                                                    braveWalletP3A.reportOnboardingAction(
-                                                            OnboardingAction.RECOVERY_SETUP);
-                                                }
-                                                // Go to the next page after wallet creation is done
-                                                Utils.setCryptoOnboarding(false);
-                                                if (mOnNextPage != null) {
-                                                    mOnNextPage.gotoNextPage();
-                                                }
-                                            }));
+    @Override
+    public void onResume() {
+        super.onResume();
+        KeyringModel keyringModel = getKeyringModel();
+        if (keyringModel != null) {
+            // Check if a wallet is already present and skip if that's the case.
+            keyringModel.isWalletCreated(
+                    isCreated -> {
+                        if (isCreated) {
+                            requireActivity().finish();
+                            return;
+                        }
+
+                        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                        JsonRpcService jsonRpcService = getJsonRpcService();
+
+                        if (jsonRpcService != null) {
+                            Set<NetworkInfo> availableNetworks =
+                                    mOnboardingViewModel.getAvailableNetworks();
+                            Set<NetworkInfo> selectedNetworks =
+                                    mOnboardingViewModel.getSelectedNetworks();
+                            keyringModel.createWallet(
+                                    mOnboardingViewModel.getPassword(),
+                                    availableNetworks,
+                                    selectedNetworks,
+                                    jsonRpcService,
+                                    recoveryPhrases -> {
+                                        if (braveWalletP3A != null) {
+                                            braveWalletP3A.reportOnboardingAction(
+                                                    OnboardingAction.RECOVERY_SETUP);
+                                        }
+
+                                        Utils.setCryptoOnboarding(false);
+
+                                        // Go to the next page after wallet creation is
+                                        // done
+                                        if (mOnNextPage != null) {
+                                            mOnNextPage.gotoNextPage();
+                                        }
+                                    });
+                        }
+                    });
         }
     }
 

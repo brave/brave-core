@@ -11,6 +11,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -55,14 +56,23 @@ public class WalletUtils {
     }
 
     public static String generateUniqueAccountName(
-            Context context, @CoinType.EnumType int coinType, AccountInfo[] accountInfos) {
-        Set<String> allNames = Arrays.stream(accountInfos)
-                                       .map(acc -> acc.name)
-                                       .collect(Collectors.toCollection(HashSet::new));
+            @CoinType.EnumType int coinType, AccountInfo[] accountInfos) {
+        Context context = ContextUtils.getApplicationContext();
+        if (context == null) {
+            Log.w(TAG, "Application context was null");
+            return "";
+        }
+        Set<String> allNames =
+                Arrays.stream(accountInfos)
+                        .map(acc -> acc.name)
+                        .collect(Collectors.toCollection(HashSet::new));
 
         for (int number = 1; number < 1000; ++number) {
-            String accountName = context.getString(R.string.new_account_prefix,
-                    getNewAccountPrefixForCoin(coinType), String.valueOf(number));
+            String accountName =
+                    context.getString(
+                            R.string.new_account_prefix,
+                            getNewAccountPrefixForCoin(coinType),
+                            String.valueOf(number));
 
             if (!allNames.contains(accountName)) {
                 return accountName;

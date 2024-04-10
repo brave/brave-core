@@ -65,8 +65,11 @@ public final class WalletConstants {
     public static final String[] BRAVE_WALLET_PREFS = {PREF_SHOW_BRIDGE_INFO_DIALOG};
 
     public static List<String> SUPPORTED_TOP_LEVEL_CHAIN_IDS =
-            Arrays.asList(BraveWalletConstants.MAINNET_CHAIN_ID,
-                    BraveWalletConstants.SOLANA_MAINNET, BraveWalletConstants.FILECOIN_MAINNET);
+            Arrays.asList(
+                    BraveWalletConstants.MAINNET_CHAIN_ID,
+                    BraveWalletConstants.SOLANA_MAINNET,
+                    BraveWalletConstants.FILECOIN_MAINNET,
+                    BraveWalletConstants.BITCOIN_MAINNET);
 
     // Solana
     public static final String SOL = "SOL";
@@ -96,13 +99,16 @@ public final class WalletConstants {
     public static final String SOL_INS_SIG_VERIFY = "Ed25519SigVerify111111111111111111111111111";
     public static final String SOL_INS_SECP = "KeccakSecp256k11111111111111111111111111111";
 
-    public static final Map<String, Integer> KNOWN_TEST_CHAINS_MAP = Map.of(
-            BraveWalletConstants.GOERLI_CHAIN_ID, CoinType.ETH,
-            BraveWalletConstants.SEPOLIA_CHAIN_ID, CoinType.ETH,
-            BraveWalletConstants.LOCALHOST_CHAIN_ID, CoinType.ETH,
-            BraveWalletConstants.SOLANA_TESTNET, CoinType.SOL, BraveWalletConstants.SOLANA_DEVNET,
-            CoinType.SOL, BraveWalletConstants.FILECOIN_TESTNET, CoinType.FIL,
-            BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID, CoinType.ETH);
+    public static final Map<String, Integer> KNOWN_TEST_CHAINS_MAP =
+            Map.of(
+                    BraveWalletConstants.GOERLI_CHAIN_ID, CoinType.ETH, //
+                    BraveWalletConstants.SEPOLIA_CHAIN_ID, CoinType.ETH, //
+                    BraveWalletConstants.LOCALHOST_CHAIN_ID, CoinType.ETH, //
+                    BraveWalletConstants.SOLANA_TESTNET, CoinType.SOL, //
+                    BraveWalletConstants.SOLANA_DEVNET, CoinType.SOL, //
+                    BraveWalletConstants.FILECOIN_TESTNET, CoinType.FIL, //
+                    BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID, CoinType.ETH, //
+                    BraveWalletConstants.BITCOIN_TESTNET, CoinType.BTC); //
 
     public static final List<String> KNOWN_TEST_CHAIN_IDS =
             new ArrayList<>(KNOWN_TEST_CHAINS_MAP.keySet());

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="4dp">
+    <TextView
+        android:id="@+id/network_selector_label_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingVertical="4dp"
+        android:layout_gravity="start"
+        android:textColor="@color/wallet_tertiary_layout_text_color"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/select_all_networks"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingVertical="4dp"
+        android:layout_gravity="end"
+        android:textColor="@color/brave_wallet_dn_button_color"
+        android:textSize="12sp" />
+</FrameLayout>

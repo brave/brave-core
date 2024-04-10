@@ -26,14 +26,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
@@ -51,7 +48,6 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
     private Button mBackupWalletButton;
     private String mPasswordFromBiometric;
     private boolean mBiometricExecuted;
-    private OnboardingViewModel mOnboardingViewModel;
 
     @NonNull
     public static OnboardingBackupWalletFragment newInstance(final boolean isOnboarding) {
@@ -80,8 +76,6 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
         mBiometricBackupWalletImage = view.findViewById(R.id.iv_biometric_unlock_wallet);
         mBackupWalletButton = view.findViewById(R.id.btn_backup_wallet_continue);
         mBackupWalletCheckbox = view.findViewById(R.id.backup_wallet_checkbox);
-        mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
-                                       .get(OnboardingViewModel.class);
 
         mBackupWalletPassword.addTextChangedListener(new FilterTextWatcherPassword());
         mBackupWalletButton.setOnClickListener(v -> {

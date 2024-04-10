@@ -6,15 +6,19 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFragment;
+import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 
 /**
  * Base abstract class used by onboarding fragments holding a reference to next page interface and
@@ -23,6 +27,8 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFra
  * @see org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage
  */
 public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFragment {
+
+    protected OnboardingViewModel mOnboardingViewModel;
 
     /** Returns {@code true} if the fragment can be closed. */
     protected boolean canBeClosed() {
@@ -35,6 +41,14 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
     }
 
     @Nullable private AnimationDrawable mAnimationDrawable;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mOnboardingViewModel =
+                new ViewModelProvider((ViewModelStoreOwner) requireActivity())
+                        .get(OnboardingViewModel.class);
+    }
 
     @Override
     public void onResume() {
