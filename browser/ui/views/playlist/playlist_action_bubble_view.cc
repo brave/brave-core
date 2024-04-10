@@ -80,7 +80,9 @@ PlaylistActionBubbleView::~PlaylistActionBubbleView() = default;
 void PlaylistActionBubbleView::WindowClosing() {
   BubbleDialogDelegateView::WindowClosing();
 
-  g_bubble = nullptr;
+  if (g_bubble == this) {
+    g_bubble = nullptr;
+  }
 }
 
 BEGIN_METADATA(PlaylistActionBubbleView)
