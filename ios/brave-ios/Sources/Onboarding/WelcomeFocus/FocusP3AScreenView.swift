@@ -56,8 +56,13 @@ struct FocusP3AScreenView: View {
           FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
         }
       }
-      .navigationBarHidden(true)
-
+      .osAvailabilityModifiers { content in
+        if #available(iOS 16.0, *) {
+          content.toolbar(.hidden, for: .navigationBar)
+        } else {
+          content.navigationBarHidden(true)
+        }
+      }
     } else {
       VStack {
         consentp3aContentView
@@ -70,7 +75,13 @@ struct FocusP3AScreenView: View {
           FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
         }
       }
-      .navigationBarHidden(true)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 16.0, *) {
+          content.toolbar(.hidden, for: .navigationBar)
+        } else {
+          content.navigationBarHidden(true)
+        }
+      }
     }
   }
 
