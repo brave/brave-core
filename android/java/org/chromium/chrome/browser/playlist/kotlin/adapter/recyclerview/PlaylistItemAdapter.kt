@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.adapter.recyclerview
+package org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -18,13 +18,14 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.listener.PlaylistItemClickListener
-import org.chromium.chrome.browser.playlist.listener.StartDragListener
-import org.chromium.chrome.browser.playlist.model.HlsContentProgressModel
-import org.chromium.chrome.browser.playlist.model.PlaylistItemModel
-import org.chromium.chrome.browser.playlist.util.PlaylistUtils
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.StartDragListener
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import java.util.Locale
 
 
 class PlaylistItemAdapter(
@@ -121,10 +122,10 @@ class PlaylistItemAdapter(
                         ((((duration / 1000) - milliseconds) / 1000 - seconds) / 60 - minutes) / 60
                     var durationText = ""
                     if (hours > 0) {
-                        durationText = durationText.plus(String.format("%02d:", hours))
+                        durationText = durationText.plus(String.format(Locale.ENGLISH, "%02d:", hours))
                     }
-                    durationText = durationText.plus(String.format("%02d:", minutes))
-                    durationText = durationText.plus(String.format("%02d", seconds))
+                    durationText = durationText.plus(String.format(Locale.ENGLISH, "%02d:", minutes))
+                    durationText = durationText.plus(String.format(Locale.ENGLISH, "%02d", seconds))
                     tvMediaDuration.visibility = View.VISIBLE
                     tvMediaDuration.text = durationText
                 }

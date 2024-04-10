@@ -5,13 +5,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.adapter
+package org.chromium.chrome.browser.playlist.kotlin.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import org.chromium.chrome.browser.playlist.fragment.PlaylistOnboardingSingleFragment
-import org.chromium.chrome.browser.playlist.model.PlaylistOnboardingModel
+import org.chromium.chrome.browser.playlist.kotlin.fragment.PlaylistOnboardingSingleFragment
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
 
 class PlaylistOnboardingFragmentStateAdapter(
     fragmentActivity: FragmentActivity,

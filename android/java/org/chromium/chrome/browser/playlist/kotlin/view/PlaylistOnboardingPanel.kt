@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.view
+package org.chromium.chrome.browser.playlist.kotlin.view
 
 import android.view.Gravity
 import android.view.View
@@ -17,12 +17,12 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.adapter.PlaylistOnboardingFragmentStateAdapter
-import org.chromium.chrome.browser.playlist.extension.addScrimBackground
-import org.chromium.chrome.browser.playlist.extension.afterMeasured
-import org.chromium.chrome.browser.playlist.extension.showOnboardingGradientBg
-import org.chromium.chrome.browser.playlist.listener.PlaylistOnboardingActionClickListener
-import org.chromium.chrome.browser.playlist.util.PlaylistUtils
+import org.chromium.chrome.browser.playlist.kotlin.adapter.PlaylistOnboardingFragmentStateAdapter
+import org.chromium.chrome.browser.playlist.kotlin.extension.addScrimBackground
+import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
+import org.chromium.chrome.browser.playlist.kotlin.extension.showOnboardingGradientBg
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

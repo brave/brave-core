@@ -13,8 +13,8 @@
     android:background="@drawable/ic_playlist_onboarding_bg"
     android:visibility="gone">
 
-    <com.brave.playlist.view.PlaylistToolbar
-        android:id="@+id/playlistToolbar"
+    <org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
+        android:id="@+id/emptyPlaylistToolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/playlist_toolbar_height"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toTopOf="@id/tvBrowseAndAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/playlistToolbar"
+        app:layout_constraintTop_toBottomOf="@id/emptyPlaylistToolbar"
         app:layout_constraintVertical_bias="0.3"
         app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/ic_playlist_icon_emptyplaylist" />

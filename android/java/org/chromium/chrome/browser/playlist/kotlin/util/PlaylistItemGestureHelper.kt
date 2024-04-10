@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.util
+package org.chromium.chrome.browser.playlist.kotlin.util
 
 import android.content.Context
 import android.graphics.Canvas
@@ -23,8 +23,8 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.adapter.recyclerview.AbstractRecyclerViewAdapter
-import org.chromium.chrome.browser.playlist.listener.ItemInteractionListener
+import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.AbstractRecyclerViewAdapter
+import org.chromium.chrome.browser.playlist.kotlin.listener.ItemInteractionListener
 import kotlin.math.min
 
 

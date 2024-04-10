@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.local_database
+package org.chromium.chrome.browser.playlist.kotlin.local_database
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -13,8 +13,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import org.chromium.chrome.browser.playlist.model.HlsContentQueueModel
-import org.chromium.chrome.browser.playlist.model.LastPlayedPositionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentQueueModel
+import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
 
 @Dao
 interface PlaylistItemModelDao {

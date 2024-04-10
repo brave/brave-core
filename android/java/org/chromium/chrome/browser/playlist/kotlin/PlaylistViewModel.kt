@@ -5,19 +5,19 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist
+package org.chromium.chrome.browser.playlist.kotlin
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.chromium.chrome.browser.playlist.model.CreatePlaylistModel
-import org.chromium.chrome.browser.playlist.model.HlsContentProgressModel
-import org.chromium.chrome.browser.playlist.model.MoveOrCopyModel
-import org.chromium.chrome.browser.playlist.model.PlaylistItemModel
-import org.chromium.chrome.browser.playlist.model.PlaylistItemOptionModel
-import org.chromium.chrome.browser.playlist.model.PlaylistModel
-import org.chromium.chrome.browser.playlist.model.PlaylistOptionsModel
-import org.chromium.chrome.browser.playlist.model.RenamePlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.CreatePlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
+import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
+import org.chromium.chrome.browser.playlist.kotlin.model.RenamePlaylistModel
 
 class PlaylistViewModel : ViewModel() {
     // Using Livedata for Playlist Data

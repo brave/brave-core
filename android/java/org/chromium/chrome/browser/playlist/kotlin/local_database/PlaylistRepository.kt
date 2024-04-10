@@ -5,11 +5,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.local_database
+package org.chromium.chrome.browser.playlist.kotlin.local_database
 
 import android.content.Context
-import org.chromium.chrome.browser.playlist.model.HlsContentQueueModel
-import org.chromium.chrome.browser.playlist.model.LastPlayedPositionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentQueueModel
+import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
 
 class PlaylistRepository(context: Context) {
     companion object {
@@ -19,17 +19,17 @@ class PlaylistRepository(context: Context) {
     private var mPlaylistItemModelDao: PlaylistItemModelDao? =
         PlaylistDatabase.getInstance(context)?.playlistItemModelDao()
 
-    fun getLastPlayedPositionByPlaylistItemId(playlistItemId: String): LastPlayedPositionModel? {
-        return mPlaylistItemModelDao?.getLastPlayedPositionByPlaylistItemId(playlistItemId)
-    }
+    // fun getLastPlayedPositionByPlaylistItemId(playlistItemId: String): LastPlayedPositionModel? {
+    //     return mPlaylistItemModelDao?.getLastPlayedPositionByPlaylistItemId(playlistItemId)
+    // }
 
-    fun insertLastPlayedPosition(lastPlayedPositionModel: LastPlayedPositionModel) {
-        mPlaylistItemModelDao?.insertLastPlayedPosition(lastPlayedPositionModel)
-    }
+    // fun insertLastPlayedPosition(lastPlayedPositionModel: LastPlayedPositionModel) {
+    //     mPlaylistItemModelDao?.insertLastPlayedPosition(lastPlayedPositionModel)
+    // }
 
-    fun deleteAllLastPlayedPosition() {
-        mPlaylistItemModelDao?.deleteAllLastPlayedPosition()
-    }
+    // fun deleteAllLastPlayedPosition() {
+    //     mPlaylistItemModelDao?.deleteAllLastPlayedPosition()
+    // }
 
     fun isHlsContentQueueModelExists(playlistItemId: String): Boolean? {
         return mPlaylistItemModelDao?.isHlsContentQueueModelExists(playlistItemId)

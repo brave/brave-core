@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.fragment
+package org.chromium.chrome.browser.playlist.kotlin.fragment
 
 import android.content.ComponentName
 import android.content.Context
@@ -31,37 +31,37 @@ import androidx.media3.session.MediaBrowser
 import androidx.media3.session.SessionToken
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import org.chromium.chrome.browser.playlist.PlaylistViewModel
+import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.adapter.recyclerview.PlaylistItemAdapter
-import org.chromium.chrome.browser.playlist.enums.HlsContentStatus
-import org.chromium.chrome.browser.playlist.enums.PlaylistOptionsEnum
-import org.chromium.chrome.browser.playlist.extension.afterMeasured
-import org.chromium.chrome.browser.playlist.listener.ItemInteractionListener
-import org.chromium.chrome.browser.playlist.listener.PlaylistItemClickListener
-import org.chromium.chrome.browser.playlist.listener.PlaylistItemOptionsListener
-import org.chromium.chrome.browser.playlist.listener.PlaylistOptionsListener
-import org.chromium.chrome.browser.playlist.listener.StartDragListener
-import org.chromium.chrome.browser.playlist.local_database.PlaylistRepository
-import org.chromium.chrome.browser.playlist.model.HlsContentQueueModel
-import org.chromium.chrome.browser.playlist.model.MoveOrCopyModel
-import org.chromium.chrome.browser.playlist.model.PlaylistItemModel
-import org.chromium.chrome.browser.playlist.model.PlaylistItemOptionModel
-import org.chromium.chrome.browser.playlist.model.PlaylistModel
-import org.chromium.chrome.browser.playlist.model.PlaylistOptionsModel
-import org.chromium.chrome.browser.playlist.playback_service.VideoPlaybackService
-import org.chromium.chrome.browser.playlist.util.ConstantUtils
-import org.chromium.chrome.browser.playlist.util.ConstantUtils.DEFAULT_PLAYLIST
-import org.chromium.chrome.browser.playlist.util.MediaItemUtil
-import org.chromium.chrome.browser.playlist.util.MediaUtils
-import org.chromium.chrome.browser.playlist.util.MenuUtils
-import org.chromium.chrome.browser.playlist.util.PlaylistItemGestureHelper
-import org.chromium.chrome.browser.playlist.util.PlaylistPreferenceUtils
-import org.chromium.chrome.browser.playlist.util.PlaylistPreferenceUtils.getLatestPlaylistItem
-import org.chromium.chrome.browser.playlist.util.PlaylistPreferenceUtils.recentlyPlayedPlaylist
-import org.chromium.chrome.browser.playlist.util.PlaylistPreferenceUtils.rememberListPlaybackPosition
-import org.chromium.chrome.browser.playlist.util.PlaylistUtils
-import org.chromium.chrome.browser.playlist.view.PlaylistToolbar
+import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
+import org.chromium.chrome.browser.playlist.kotlin.enums.HlsContentStatus
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
+import org.chromium.chrome.browser.playlist.kotlin.listener.ItemInteractionListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.StartDragListener
+import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentQueueModel
+import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
+import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.DEFAULT_PLAYLIST
+import org.chromium.chrome.browser.playlist.kotlin.util.MediaItemUtil
+import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.MenuUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistItemGestureHelper
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.getLatestPlaylistItem
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.recentlyPlayedPlaylist
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.rememberListPlaybackPosition
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
+import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
 import com.bumptech.glide.Glide
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.gson.GsonBuilder
@@ -283,24 +283,24 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
                             totalFileSize += it.mediaFileBytes
                         }
                     }
-                    mPlaylistModel.items.forEach { playlistItemModel ->
-                        if (!PlaylistUtils.isPlaylistItemCached(playlistItemModel)) {
-                            val isDownloadQueueModelExists =
-                                mPlaylistRepository.isHlsContentQueueModelExists(playlistItemModel.id)
-                                    ?: false
-                            if (playlistItemModel.isCached && MediaUtils.isHlsFile(playlistItemModel.mediaPath) && !isDownloadQueueModelExists) {
-                                mPlaylistRepository.insertHlsContentQueueModel(
-                                    HlsContentQueueModel(
-                                        playlistItemModel.id, HlsContentStatus.NOT_READY.name
-                                    )
-                                )
-                            }
-                        }
-                    }
-                    if (isFirstRun) {
-                        PlaylistUtils.checkAndStartHlsDownload(requireContext())
-                        isFirstRun = false
-                    }
+                    // mPlaylistModel.items.forEach { playlistItemModel ->
+                    //     if (!PlaylistUtils.isPlaylistItemCached(playlistItemModel)) {
+                    //         val isDownloadQueueModelExists =
+                    //             mPlaylistRepository.isHlsContentQueueModelExists(playlistItemModel.id)
+                    //                 ?: false
+                    //         if (playlistItemModel.isCached && MediaUtils.isHlsFile(playlistItemModel.mediaPath) && !isDownloadQueueModelExists) {
+                    //             mPlaylistRepository.insertHlsContentQueueModel(
+                    //                 HlsContentQueueModel(
+                    //                     playlistItemModel.id, HlsContentStatus.NOT_READY.name
+                    //                 )
+                    //             )
+                    //         }
+                    //     }
+                    // }
+                    // if (isFirstRun) {
+                    //     PlaylistUtils.checkAndStartHlsDownload(requireContext())
+                    //     isFirstRun = false
+                    // }
 
                     activity?.runOnUiThread {
                         if (totalFileSize > 0) {
@@ -492,13 +492,14 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
         }
         mScope.launch {
             val selectedPlaylistItem = mPlaylistModel.items[position]
-            val lastPlayedPositionModel =
-                mPlaylistRepository.getLastPlayedPositionByPlaylistItemId(selectedPlaylistItem.id)
+            // val lastPlayedPositionModel =
+            //     mPlaylistRepository.getLastPlayedPositionByPlaylistItemId(selectedPlaylistItem.id)
 
             activity?.runOnUiThread {
                 browser.clearMediaItems()
                 browser.addMediaItems(subItemMediaList)
-                browser.seekTo(position, lastPlayedPositionModel?.lastPlayedPosition ?: 0)
+                // browser.seekTo(position, lastPlayedPositionModel?.lastPlayedPosition ?: 0)
+                browser.seekTo(position, 0)
                 browser.shuffleModeEnabled = isShuffle
                 browser.prepare()
                 browser.play()

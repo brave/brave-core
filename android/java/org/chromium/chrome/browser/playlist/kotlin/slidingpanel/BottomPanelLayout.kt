@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.slidingpanel
+package org.chromium.chrome.browser.playlist.kotlin.slidingpanel
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -167,7 +167,7 @@ class BottomPanelLayout @JvmOverloads constructor(
                 )
             } == true) {
             setAllChildrenVisible()
-            ViewCompat.postInvalidateOnAnimation(this)
+            // ViewCompat.postInvalidateOnAnimation(this)
         }
     }
 
@@ -724,7 +724,7 @@ class BottomPanelLayout @JvmOverloads constructor(
                 mDragHelper?.abort()
                 return
             }
-            ViewCompat.postInvalidateOnAnimation(this)
+            // ViewCompat.postInvalidateOnAnimation(this)
         }
     }
 

@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.view.bottomsheet
+package org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,10 +14,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.adapter.bottomsheet.PlaylistItemOptionsBottomSheetAdapter
-import org.chromium.chrome.browser.playlist.extension.setTopCornersRounded
-import org.chromium.chrome.browser.playlist.listener.PlaylistItemOptionsListener
-import org.chromium.chrome.browser.playlist.model.PlaylistItemOptionModel
+import org.chromium.chrome.browser.playlist.kotlin.adapter.bottomsheet.PlaylistItemOptionsBottomSheetAdapter
+import org.chromium.chrome.browser.playlist.kotlin.extension.setTopCornersRounded
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
@@ -50,8 +50,8 @@ class PlaylistItemOptionsBottomSheet(
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         behavior.isDraggable = false
 
-        dialog?.window?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            ?.setBackgroundResource(android.R.color.transparent)
+        // dialog?.window?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        //     ?.setBackgroundResource(android.R.color.transparent)
     }
 
     override fun onPlaylistItemOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {

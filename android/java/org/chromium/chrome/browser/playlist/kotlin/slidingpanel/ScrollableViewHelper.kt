@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.slidingpanel
+package org.chromium.chrome.browser.playlist.kotlin.slidingpanel
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

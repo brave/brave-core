@@ -5,10 +5,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.listener
+package org.chromium.chrome.browser.playlist.kotlin.listener
 
 import android.view.View
-import org.chromium.chrome.browser.playlist.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 
 interface PlaylistItemClickListener {
     fun onPlaylistItemClick(position: Int) {}

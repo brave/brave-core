@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.util
+package org.chromium.chrome.browser.playlist.kotlin.util
 
 import android.util.TypedValue
 import android.view.Gravity
@@ -17,17 +17,17 @@ import androidx.fragment.app.FragmentActivity
 import androidx.transition.Slide
 import androidx.transition.TransitionManager
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.enums.PlaylistOptionsEnum
-import org.chromium.chrome.browser.playlist.extension.allowMoving
-import org.chromium.chrome.browser.playlist.interpolator.BraveBounceInterpolator
-import org.chromium.chrome.browser.playlist.listener.PlaylistOnboardingActionClickListener
-import org.chromium.chrome.browser.playlist.listener.PlaylistOptionsListener
-import org.chromium.chrome.browser.playlist.model.PlaylistOptionsModel
-import org.chromium.chrome.browser.playlist.model.SnackBarActionModel
-import org.chromium.chrome.browser.playlist.util.PlaylistPreferenceUtils.shouldShowOnboarding
-import org.chromium.chrome.browser.playlist.view.MovableImageButton
-import org.chromium.chrome.browser.playlist.view.PlaylistOnboardingPanel
-import org.chromium.chrome.browser.playlist.view.bottomsheet.PlaylistOptionsBottomSheet
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.extension.allowMoving
+import org.chromium.chrome.browser.playlist.kotlin.interpolator.BraveBounceInterpolator
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
+import org.chromium.chrome.browser.playlist.kotlin.model.SnackBarActionModel
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.shouldShowOnboarding
+import org.chromium.chrome.browser.playlist.kotlin.view.MovableImageButton
+import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistOnboardingPanel
+import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.PlaylistOptionsBottomSheet
 import com.google.android.material.snackbar.Snackbar
 
 @Suppress("unused")

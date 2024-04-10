@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.util
+package org.chromium.chrome.browser.playlist.kotlin.util
 
 import android.annotation.SuppressLint
 import android.content.Context

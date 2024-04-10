@@ -5,9 +5,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.listener
+package org.chromium.chrome.browser.playlist.kotlin.listener
 
-import org.chromium.chrome.browser.playlist.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
 
 interface PlaylistClickListener {
     fun onPlaylistClick(playlistModel: PlaylistModel) {}

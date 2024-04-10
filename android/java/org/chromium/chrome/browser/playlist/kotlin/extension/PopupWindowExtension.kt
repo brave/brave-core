@@ -5,12 +5,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.extension
+package org.chromium.chrome.browser.playlist.kotlin.extension
 
 import android.content.Context
 import android.view.WindowManager
 import android.widget.PopupWindow
-import org.chromium.chrome.browser.playlist.view.MovableImageButton
+import org.chromium.chrome.browser.playlist.kotlin.view.MovableImageButton
 
 fun PopupWindow.addScrimBackground() {
     val rootView = contentView.rootView

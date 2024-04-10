@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.util
+package org.chromium.chrome.browser.playlist.kotlin.util
 
 import android.app.ActivityManager
 import android.content.Context
@@ -17,12 +17,13 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.activity.PlaylistMenuOnboardingActivity
-import org.chromium.chrome.browser.playlist.local_database.PlaylistRepository
-import org.chromium.chrome.browser.playlist.model.HlsContentProgressModel
-import org.chromium.chrome.browser.playlist.model.MoveOrCopyModel
-import org.chromium.chrome.browser.playlist.model.PlaylistItemModel
-import org.chromium.chrome.browser.playlist.model.PlaylistOnboardingModel
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistMenuOnboardingActivity
+import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
+import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
+import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils
 
 object PlaylistUtils {
     private val TAG: String = "Playlist/"+this::class.java.simpleName

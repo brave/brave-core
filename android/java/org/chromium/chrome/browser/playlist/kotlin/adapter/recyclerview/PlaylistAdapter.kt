@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.adapter.recyclerview
+package org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +13,10 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.listener.PlaylistClickListener
-import org.chromium.chrome.browser.playlist.model.PlaylistModel
-import org.chromium.chrome.browser.playlist.util.ConstantUtils
-import org.chromium.chrome.browser.playlist.util.ConstantUtils.DEFAULT_PLAYLIST
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.DEFAULT_PLAYLIST
 import com.bumptech.glide.Glide
 
 class PlaylistAdapter(private val playlistClickListener: PlaylistClickListener?) :

@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.adapter.bottomsheet
+package org.chromium.chrome.browser.playlist.kotlin.adapter.bottomsheet
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +13,9 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.adapter.recyclerview.AbstractRecyclerViewAdapter
-import org.chromium.chrome.browser.playlist.listener.PlaylistOptionsListener
-import org.chromium.chrome.browser.playlist.model.PlaylistOptionsModel
+import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.AbstractRecyclerViewAdapter
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
 
 class PlaylistOptionsBottomSheetAdapter(private val playlistOptionsListener: PlaylistOptionsListener) :
     AbstractRecyclerViewAdapter<PlaylistOptionsModel, PlaylistOptionsBottomSheetAdapter.PlaylistOptionsViewHolder>() {

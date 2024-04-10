@@ -5,21 +5,21 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.playlist.util
+package org.chromium.chrome.browser.playlist.kotlin.util
 
 import android.content.Context
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.enums.PlaylistOptionsEnum
-import org.chromium.chrome.browser.playlist.listener.PlaylistItemOptionsListener
-import org.chromium.chrome.browser.playlist.listener.PlaylistOptionsListener
-import org.chromium.chrome.browser.playlist.model.PlaylistItemModel
-import org.chromium.chrome.browser.playlist.model.PlaylistItemOptionModel
-import org.chromium.chrome.browser.playlist.model.PlaylistModel
-import org.chromium.chrome.browser.playlist.model.PlaylistOptionsModel
-import org.chromium.chrome.browser.playlist.view.bottomsheet.PlaylistItemOptionsBottomSheet
-import org.chromium.chrome.browser.playlist.view.bottomsheet.PlaylistOptionsBottomSheet
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
+import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.PlaylistItemOptionsBottomSheet
+import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.PlaylistOptionsBottomSheet
 
 object MenuUtils {
     @JvmStatic
