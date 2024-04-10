@@ -8,6 +8,7 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_recipe.h"
+#include "ui/gfx/color_palette.h"
 
 void AddBraveMaterialSidePanelColorMixer(ui::ColorProvider* provider,
                                          const ui::ColorProviderKey& key) {
@@ -21,4 +22,6 @@ void AddBraveMaterialSidePanelColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidePanelScrollbarThumb] = {
       is_dark ? SkColorSetRGB(0x58, 0x58, 0x58)
               : SkColorSetRGB(0xB4, 0xB4, 0xB4)};
+  mixer[kColorSidePanelContentBackground] = {is_dark ? gfx::kGoogleGrey900
+                                                     : SK_ColorWHITE};
 }
