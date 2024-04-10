@@ -5,20 +5,20 @@
 
 #include <optional>
 
-#include "content/browser/attribution_reporting/attribution_storage_delegate_impl.h"
+#include "components/attribution_reporting/aggregatable_utils.h"
 
 #define GetNullAggregatableReports GetNullAggregatableReports_ChromiumImpl
-#include "src/content/browser/attribution_reporting/attribution_storage_delegate_impl.cc"
+#include "src/components/attribution_reporting/aggregatable_utils.cc"
 #undef GetNullAggregatableReports
 
-namespace content {
+namespace attribution_reporting {
 
-std::vector<AttributionStorageDelegate::NullAggregatableReport>
-AttributionStorageDelegateImpl::GetNullAggregatableReports(
-    const AttributionTrigger& trigger,
+std::vector<NullAggregatableReport> GetNullAggregatableReports(
+    const AggregatableTriggerConfig&,
     base::Time trigger_time,
-    std::optional<base::Time> attributed_source_time) const {
+    std::optional<base::Time> attributed_source_time,
+    GenerateNullAggregatableReportFunc) {
   return {};
 }
 
-}  // namespace content
+}  // namespace attribution_reporting
