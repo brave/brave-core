@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "brave_watermark_dark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +11,6 @@
           "value" : "dark"
         }
       ],
-      "filename" : "brave_watermark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

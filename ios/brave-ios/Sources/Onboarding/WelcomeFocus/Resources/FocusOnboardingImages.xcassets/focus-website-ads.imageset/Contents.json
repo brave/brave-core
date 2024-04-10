@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "ads.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +11,6 @@
           "value" : "dark"
         }
       ],
-      "filename" : "ads 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
