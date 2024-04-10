@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
+#include "base/metrics/histogram_macros.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -53,6 +54,10 @@ void MiscAndroidMetrics::RecordTabSwitcherNewTab() {
 
 void MiscAndroidMetrics::RecordBrowserUsageDuration(base::TimeDelta duration) {
   misc_metrics_->uptime_monitor()->ReportUsageDuration(duration);
+}
+
+void MiscAndroidMetrics::RecordSetAsDefault(bool is_default) {
+  UMA_HISTOGRAM_BOOLEAN(kBraveCoreIsDefaultHistogramName, is_default);
 }
 
 }  // namespace misc_metrics
