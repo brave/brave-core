@@ -73,4 +73,9 @@ extension CustomFilterListStorage {
       .filter(\.setting.isEnabled)
       .map(\.setting.engineSource)
   }
+
+  /// Gives us source representations of all the custom filter lists
+  @MainActor var allSources: [GroupedAdBlockEngine.Source] {
+    return filterListsURLs.map(\.setting.engineSource)
+  }
 }

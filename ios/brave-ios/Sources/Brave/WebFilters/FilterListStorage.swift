@@ -311,6 +311,19 @@ extension FilterListStorage {
         .filter(\.isEnabled)
         .map(\.engineSource)
   }
+
+  func sources(
+    for engineType: GroupedAdBlockEngine.EngineType
+  ) -> [GroupedAdBlockEngine.Source] {
+    return filterLists.isEmpty
+      ? allFilterListSettings
+        .filter({ $0.engineType == engineType })
+        .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
+        .compactMap(\.engineSource)
+      : filterLists
+        .filter({ $0.engineType == engineType })
+        .map(\.engineSource)
+  }
 }
 
 extension AdblockService {
@@ -332,5 +345,11 @@ extension AdblockService {
         continuation.yield(isDefaultFilterList ? .standard : .aggressive)
       })
     }
+  }
+}
+
+extension FilterListSetting {
+  @MainActor var engineType: GroupedAdBlockEngine.EngineType {
+    return isAlwaysAggressive ? .aggressive : .standard
   }
 }
