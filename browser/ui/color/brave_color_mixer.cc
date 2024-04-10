@@ -248,6 +248,12 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidePanelContentBackground] = {SK_ColorWHITE};
   mixer[ui::kColorListItemUrlFaviconBackground] = {gfx::kGoogleGrey050};
 
+  // Combobox hover
+  mixer[ui::kColorComboboxInkDropHovered] = {ui::kColorSysStateHoverOnSubtle};
+
+  // Toggle hover
+  mixer[ui::kColorToggleButtonHover] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
+
   // Upstream uses tab's background color as omnibox chip background color.
   // In our light mode, there is no difference between location bar's bg
   // color and tab's bg color. So, it looks like chip's bg color is transparent.
@@ -305,6 +311,12 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   // Sidebar tweaks
   mixer[kColorSidePanelContentBackground] = {gfx::kGoogleGrey900};
   mixer[ui::kColorListItemUrlFaviconBackground] = {gfx::kGoogleGrey800};
+
+  // Combobox hover
+  mixer[ui::kColorComboboxInkDropHovered] = {ui::kColorSysStateHoverOnSubtle};
+
+  // Toggle hover
+  mixer[ui::kColorToggleButtonHover] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
 }
 
 void AddChromeColorMixerForAllThemes(ui::ColorProvider* provider,
