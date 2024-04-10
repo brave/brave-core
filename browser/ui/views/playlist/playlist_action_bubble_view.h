@@ -26,8 +26,8 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
                          base::WeakPtr<PlaylistActionIconView> anchor,
                          base::WeakPtr<PlaylistTabHelper> playlist_tab_helper);
   static bool IsShowingBubble();
-  static void CloseBubble();
-  static views::BubbleDialogDelegateView* GetBubble();
+  static void MaybeCloseBubble();
+  static PlaylistActionBubbleView* GetBubble();
 
   ~PlaylistActionBubbleView() override;
 
@@ -43,8 +43,8 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   void WindowClosing() override;
 
   raw_ptr<Browser> browser_ = nullptr;
-  base::WeakPtr<PlaylistActionIconView> icon_view_;  // Our anchor.
-  base::WeakPtr<PlaylistTabHelper> playlist_tab_helper_;
+  base::WeakPtr<PlaylistActionIconView> action_icon_view_;  // Our anchor.
+  base::WeakPtr<PlaylistTabHelper> tab_helper_;
 };
 }  // namespace playlist
 

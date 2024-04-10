@@ -71,9 +71,7 @@ void PlaylistActionIconView::UpdateImpl() {
     return;
   }
 
-  if (playlist::PlaylistActionBubbleView::IsShowingBubble()) {
-    playlist::PlaylistActionBubbleView::CloseBubble();
-  }
+  playlist::PlaylistActionBubbleView::MaybeCloseBubble();
 
   playlist_tab_helper_observation_.Reset();
   if (auto* tab_helper = GetPlaylistTabHelper()) {

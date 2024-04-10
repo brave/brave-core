@@ -26,8 +26,8 @@ class PlaylistConfirmBubble : public PlaylistActionBubbleView,
   METADATA_HEADER(PlaylistConfirmBubble, PlaylistActionBubbleView)
  public:
   PlaylistConfirmBubble(Browser* browser,
-                        base::WeakPtr<PlaylistActionIconView> anchor,
-                        base::WeakPtr<PlaylistTabHelper> playlist_tab_helper);
+                        base::WeakPtr<PlaylistActionIconView> action_icon_view,
+                        base::WeakPtr<PlaylistTabHelper> tab_helper);
   ~PlaylistConfirmBubble() override;
 
   // PlaylistTabHelperObserver:
@@ -48,7 +48,7 @@ class PlaylistConfirmBubble : public PlaylistActionBubbleView,
   void MoreMediaInContents();
 
   base::ScopedObservation<PlaylistTabHelper, PlaylistTabHelperObserver>
-      playlist_tab_helper_observation_{this};
+      tab_helper_observation_{this};
 };
 }  // namespace playlist
 

@@ -40,11 +40,11 @@ class PlaylistAddBubble : public PlaylistActionBubbleView,
   static constexpr int kWidth = 288;
 
   PlaylistAddBubble(Browser* browser,
-                    base::WeakPtr<PlaylistActionIconView> anchor,
-                    base::WeakPtr<PlaylistTabHelper> playlist_tab_helper);
+                    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+                    base::WeakPtr<PlaylistTabHelper> tab_helper);
   PlaylistAddBubble(Browser* browser,
-                    base::WeakPtr<PlaylistActionIconView> anchor,
-                    base::WeakPtr<PlaylistTabHelper> playlist_tab_helper,
+                    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+                    base::WeakPtr<PlaylistTabHelper> tab_helper,
                     const std::vector<mojom::PlaylistItemPtr>& items);
   ~PlaylistAddBubble() override;
 
@@ -72,7 +72,7 @@ class PlaylistAddBubble : public PlaylistActionBubbleView,
   std::unique_ptr<ThumbnailProvider> thumbnail_provider_;
 
   base::ScopedObservation<PlaylistTabHelper, PlaylistTabHelperObserver>
-      playlist_tab_helper_observation_{this};
+      tab_helper_observation_{this};
 
   base::WeakPtrFactory<PlaylistAddBubble> weak_ptr_factory_{this};
 };
