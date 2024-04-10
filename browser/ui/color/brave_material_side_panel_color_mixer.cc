@@ -12,7 +12,13 @@
 void AddBraveMaterialSidePanelColorMixer(ui::ColorProvider* provider,
                                          const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
+  const bool is_dark = key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
 
   // We don't use card background.
   mixer[kColorSidePanelCardBackground] = {SK_ColorTRANSPARENT};
+
+  // Use leo color when it's ready.
+  mixer[kColorSidePanelScrollbarThumb] = {
+      is_dark ? SkColorSetRGB(0x58, 0x58, 0x58)
+              : SkColorSetRGB(0xB4, 0xB4, 0xB4)};
 }
