@@ -7,17 +7,18 @@
 
 import {pageVisibility} from './brave_overrides/page_visibility.js'
 import {loadTimeData} from './i18n_setup.js'
-import {SettingsRoutes} from 'chrome://settings/settings.js';
+import {SettingsRoutes} from 'chrome://settings/settings.js'
 
 export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   const isGuest = loadTimeData.getBoolean('isGuest')
   if (!r.BASIC) {
     console.error('[Brave Settings Overrides] Routes: could not find BASIC page')
+    return
   }
   if (pageVisibility.getStarted) {
     r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
     // bring back people's /manageProfile (now in getStarted)
-    r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile');
+    r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile')
     // We re-section people page into getStarted section (see people_page Brave
     // override), so we need to adjust the route accordingly in order for the
     // direct navigation to brave://settings/importData to work.
@@ -39,24 +40,24 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
   if (pageVisibility.braveSync) {
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
-    r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup');
+    r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup')
   }
   if (pageVisibility.braveWeb3) {
     r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')
   }
   if (pageVisibility.braveIPFS) {
     r.BRAVE_IPFS = r.BRAVE_WEB3.createSection('/ipfs', 'ipfs')
-    r.BRAVE_IPFS_KEYS = r.BRAVE_IPFS.createChild('/ipfs/keys');
-    r.BRAVE_IPFS_PEERS = r.BRAVE_IPFS.createChild('/ipfs/peers');
+    r.BRAVE_IPFS_KEYS = r.BRAVE_IPFS.createChild('/ipfs/keys')
+    r.BRAVE_IPFS_PEERS = r.BRAVE_IPFS.createChild('/ipfs/peers')
   }
   if (pageVisibility.braveWallet) {
     r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
-    r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks');
+    r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')
   }
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
   if (r.SITE_SETTINGS_SITE_DETAILS) {
     r.BRAVE_SITE_SETTINGS_COOKIES_DETAILS =
-      r.SITE_SETTINGS_SITE_DETAILS.createChild('/cookies/detail');
+      r.SITE_SETTINGS_SITE_DETAILS.createChild('/cookies/detail')
   } else if (!isGuest) {
     console.error('[Brave Settings Overrides] could not find expected route /content/siteDetails')
   }
