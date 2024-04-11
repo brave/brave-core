@@ -364,7 +364,7 @@ interface PanelHandlerFactory {
                          brave_wallet_auto_pin_service,
                      pending_receiver<IpfsService>
                          brave_wallet_ipfs_service_receiver,
-                     pending_receiver<MeldIntegrationService> buy_and_sell_service);
+                     pending_receiver<MeldIntegrationService> meld_integration_service);
 };
 
 interface PageHandlerFactory {
@@ -389,7 +389,7 @@ interface PageHandlerFactory {
                     pending_receiver<WalletAutoPinService>
                         brave_wallet_auto_pin_service,
                     pending_receiver<IpfsService> brave_wallet_ipfs_service,
-                    pending_receiver<MeldIntegrationService> buy_and_sell_service);
+                    pending_receiver<MeldIntegrationService> meld_integration_service);
 };
 
 // Lifetime option in sync with CreatePermissionLifetimeOptions()

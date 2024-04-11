@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_WALLET_BUY_AND_SELL_SERVICE_FACTORY_H_
-#define BRAVE_BROWSER_BRAVE_WALLET_BUY_AND_SELL_SERVICE_FACTORY_H_
+#ifndef BRAVE_BROWSER_BRAVE_WALLET_MELD_INTEGRATION_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_BRAVE_WALLET_MELD_INTEGRATION_SERVICE_FACTORY_H_
 
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -42,4 +42,4 @@ class MeldIntegrationServiceFactory : public BrowserContextKeyedServiceFactory {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_BROWSER_BRAVE_WALLET_BUY_AND_SELL_SERVICE_FACTORY_H_
+#endif  // BRAVE_BROWSER_BRAVE_WALLET_MELD_INTEGRATION_SERVICE_FACTORY_H_

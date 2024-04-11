@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BUY_AND_SELL_RESPONSE_PARSER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BUY_AND_SELL_RESPONSE_PARSER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_MELD_INTEGRATION_RESPONSE_PARSER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_MELD_INTEGRATION_RESPONSE_PARSER_H_
 
 #include <string>
 #include <vector>
@@ -35,4 +35,4 @@ bool ParseCountries(const base::Value& json_value,
                     std::vector<mojom::CountryPtr>* countries);
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BUY_AND_SELL_RESPONSE_PARSER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_MELD_INTEGRATION_RESPONSE_PARSER_H_

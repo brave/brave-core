@@ -14,7 +14,7 @@
 #include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/buy_and_sell_service_factory.h"
+#include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
@@ -138,7 +138,7 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
         ipfs_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
-        buy_and_sell_service) {
+        meld_integration_service) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -159,7 +159,7 @@ void WalletPageUI::CreatePageHandler(
   brave_wallet::AssetRatioServiceFactory::BindForContext(
       profile, std::move(asset_ratio_service_receiver));
   brave_wallet::MeldIntegrationServiceFactory::BindForContext(
-      profile, std::move(buy_and_sell_service));
+      profile, std::move(meld_integration_service));
   brave_wallet::KeyringServiceFactory::BindForContext(
       profile, std::move(keyring_service_receiver));
   brave_wallet::TxServiceFactory::BindForContext(

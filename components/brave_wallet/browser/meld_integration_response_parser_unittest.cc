@@ -12,7 +12,7 @@
 #include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/buy_and_sell_response_parser.h"
+#include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -20,7 +20,7 @@ using base::test::ParseJson;
 
 namespace brave_wallet {
 
-TEST(BuyAndSellResponseParserUnitTest, Parse_ServiceProvider) {
+TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
   std::string json(R"([
   {
     "serviceProvider": "BANXA",
@@ -74,7 +74,7 @@ TEST(BuyAndSellResponseParserUnitTest, Parse_ServiceProvider) {
   EXPECT_FALSE(ParseServiceProviders(ParseJson(json), &service_providers));
 }
 
-TEST(BuyAndSellResponseParserUnitTest, Parse_MeldErrorResponse) {
+TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
   std::string json(R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
@@ -108,7 +108,7 @@ TEST(BuyAndSellResponseParserUnitTest, Parse_MeldErrorResponse) {
   EXPECT_EQ(errors.size(), static_cast<size_t>(1));
 }
 
-TEST(BuyAndSellResponseParserUnitTest, Parse_CryptoQuotes) {
+TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
   std::string json(R"({
   "quotes": [
     {
@@ -159,7 +159,7 @@ TEST(BuyAndSellResponseParserUnitTest, Parse_CryptoQuotes) {
   EXPECT_FALSE(ParseCryptoQuotes(ParseJson(json), &quotes, &error));
 }
 
-TEST(BuyAndSellResponseParserUnitTest, Parse_PaymentMethods) {
+TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
   std::string json(R"([
   {
     "paymentMethod": "ACH",
@@ -197,7 +197,7 @@ TEST(BuyAndSellResponseParserUnitTest, Parse_PaymentMethods) {
   EXPECT_FALSE(ParsePaymentMethods(ParseJson(json), &payment_methods));
 }
 
-TEST(BuyAndSellResponseParserUnitTest, Parse_FiatCurrencies) {
+TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
   std::string json(R"([
   {
     "currencyCode": "AFN",
@@ -224,7 +224,7 @@ TEST(BuyAndSellResponseParserUnitTest, Parse_FiatCurrencies) {
   EXPECT_FALSE(ParseFiatCurrencies(ParseJson(json), &fiat_currencies));
 }
 
-TEST(BuyAndSellResponseParserUnitTest, Parse_CryptoCurrencies) {
+TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
   std::string json(R"([
   {
     "currencyCode": "USDT_KCC",
@@ -258,7 +258,7 @@ TEST(BuyAndSellResponseParserUnitTest, Parse_CryptoCurrencies) {
   EXPECT_FALSE(ParseCryptoCurrencies(ParseJson(json), &crypto_currencies));
 }
 
-TEST(BuyAndSellResponseParserUnitTest, Parse_Countries) {
+TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
   std::string json(R"([
   {
     "countryCode": "AF",

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BUY_AND_SELL_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BUY_AND_SELL_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_MELD_INTEGRATION_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_MELD_INTEGRATION_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -144,4 +144,4 @@ class MeldIntegrationService : public KeyedService, public mojom::MeldIntegratio
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BUY_AND_SELL_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_MELD_INTEGRATION_SERVICE_H_

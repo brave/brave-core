@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/buy_and_sell_service.h"
+#include "brave/components/brave_wallet/browser/meld_integration_service.h"
 
 #include <memory>
 #include <string>
@@ -13,7 +13,7 @@
 #include "base/environment.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/buy_and_sell_response_parser.h"
+#include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "net/base/url_util.h"
@@ -23,9 +23,9 @@
 namespace {
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("buy_and_sell_service", R"(
+  return net::DefineNetworkTrafficAnnotation("meld_integration_service", R"(
       semantics {
-        sender: "Buy And Sell Service"
+        sender: "Meld Integration Service"
         description:
           "This service is used to obtain assets prices from the external
  Meld API  for the Brave wallet."

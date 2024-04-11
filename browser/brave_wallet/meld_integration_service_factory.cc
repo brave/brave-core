@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/buy_and_sell_service_factory.h"
+#include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 
 #include <utility>
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/components/brave_wallet/browser/buy_and_sell_service.h"
+#include "brave/components/brave_wallet/browser/meld_integration_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/browser_context.h"
@@ -48,10 +48,10 @@ MeldIntegrationService* MeldIntegrationServiceFactory::GetServiceForContext(
 void MeldIntegrationServiceFactory::BindForContext(
     content::BrowserContext* context,
     mojo::PendingReceiver<mojom::MeldIntegrationService> receiver) {
-  auto* buy_and_sell_service =
+  auto* meld_integration_service =
       MeldIntegrationServiceFactory::GetServiceForContext(context);
-  if (buy_and_sell_service) {
-    buy_and_sell_service->Bind(std::move(receiver));
+  if (meld_integration_service) {
+    meld_integration_service->Bind(std::move(receiver));
   }
 }
 

@@ -67,7 +67,7 @@ class AndroidWalletPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
           ipfs_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
-          buy_and_sell_service) override;
+          meld_integration_service) override;
 
   std::unique_ptr<AndroidWalletPageHandler> page_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
