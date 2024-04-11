@@ -42,7 +42,7 @@ export const TooltipWrapper = styled.div<ToolTipProps>`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  position: absolute;
+  position: relative;
   transform: ${(p) =>
     p.labelPosition === 'start'
       ? 'var(--label-start-translate)'

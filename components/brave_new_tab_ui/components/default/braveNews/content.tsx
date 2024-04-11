@@ -34,7 +34,7 @@ export default function BraveNewsContent (props: Props) {
   const [showOptions, setShowOptions] = React.useState(false)
 
   // When an element at the bottom enters the viewport, ask for a new page
-  const setScrollTriggerRef = React.useCallback((element) => {
+  const setScrollTriggerRef = React.useCallback((element: HTMLElement | null) => {
     if (!element) {
       return
     }

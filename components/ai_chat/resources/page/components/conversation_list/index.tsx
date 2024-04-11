@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import classnames from 'classnames'
+import classnames from '$web-common/classnames'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import useLongPress from '$web-common/useLongPress'

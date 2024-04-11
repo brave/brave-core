@@ -9,7 +9,7 @@ import { useNewTabPref } from '../../hooks/usePref'
 
 interface Props extends Omit<WidgetProps, 'hideWidget'> {
     pref: keyof NewTab.Preferences
-    container: React.ComponentType<{}>
+    container: React.ComponentType<React.PropsWithChildren>
     children: React.ReactNode
 }
 

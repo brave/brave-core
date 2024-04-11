@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { initLocale } from 'brave-ui'
 
 import { loadTimeData } from '../../../common/loadTimeData'
@@ -21,7 +21,8 @@ function App () {
 
 function initialize () {
   initLocale(loadTimeData.data_)
-  render(<App />, document.getElementById('mountPoint'))
+  const root = createRoot(document.getElementById('mountPoint')!)
+  root.render(<App />)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

@@ -11,7 +11,7 @@ import {
   IconButton
 } from './full_panel_popup.style'
 
-interface Props {
+interface Props extends React.PropsWithChildren {
   kind?: 'danger'
   onClose?: () => void
 }
