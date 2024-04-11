@@ -20,7 +20,6 @@ import java.util.LinkedList
 import java.util.Queue
 
 @SuppressLint("UnsafeOptInUsageError")
-@Suppress("unused")
 object HLSParsingUtil {
     private val TAG: String = "Playlist/"+this::class.java.simpleName
     @JvmStatic

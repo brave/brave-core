@@ -8,7 +8,6 @@
 package org.chromium.chrome.browser.playlist.kotlin.enums
 
 enum class HlsContentStatus {
-    @Suppress("unused")
     READY,
     NOT_READY
 }

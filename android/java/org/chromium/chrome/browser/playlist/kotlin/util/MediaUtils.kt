@@ -19,7 +19,6 @@ import java.io.InputStream
 object MediaUtils {
     private val TAG: String = "Playlist/"+this::class.java.simpleName
     @JvmStatic
-    @Suppress("unused")
     fun getFileSizeFromUri(context: Context, uri: Uri): Long {
         var fileSize = 0L
         var inputStream: InputStream? = null
@@ -47,7 +46,6 @@ object MediaUtils {
     }
 
     @JvmStatic
-    @Suppress("unused")
     fun writeToFile(data: ByteArray?, filePath: String) {
         try {
             val file = File(filePath)
@@ -58,7 +56,6 @@ object MediaUtils {
     }
 
     @JvmStatic
-    @Suppress("unused")
     fun isFileExist(filePath: String) : Boolean {
         return try {
             val file = File(filePath)

@@ -20,7 +20,6 @@ data class PlaylistModel(
     Parcelable {
     companion object {
         @JvmField
-        @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<PlaylistModel> {
             override fun createFromParcel(parcel: Parcel) = PlaylistModel(parcel)
             override fun newArray(size: Int) = arrayOfNulls<PlaylistModel>(size)

@@ -35,12 +35,10 @@ class PlaylistRepository(context: Context) {
         return mPlaylistItemModelDao?.isHlsContentQueueModelExists(playlistItemId)
     }
 
-    @Suppress("unused")
     fun updateHlsContentQueueModel(hlsContentQueueModel: HlsContentQueueModel) {
         mPlaylistItemModelDao?.updateHlsContentQueueModel(hlsContentQueueModel)
     }
 
-    @Suppress("unused")
     fun getFirstHlsContentQueueModel(): HlsContentQueueModel? {
         return mPlaylistItemModelDao?.getFirstHlsContentQueueModel()
     }

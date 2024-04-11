@@ -491,7 +491,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
             }
         }
         mScope.launch {
-            val selectedPlaylistItem = mPlaylistModel.items[position]
+            // val selectedPlaylistItem = mPlaylistModel.items[position]
             // val lastPlayedPositionModel =
             //     mPlaylistRepository.getLastPlayedPositionByPlaylistItemId(selectedPlaylistItem.id)
 

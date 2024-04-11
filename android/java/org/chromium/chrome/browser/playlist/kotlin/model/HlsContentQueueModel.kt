@@ -22,7 +22,6 @@ data class HlsContentQueueModel(
 ) : Parcelable {
     companion object {
         @JvmField
-        @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<HlsContentQueueModel> {
             override fun createFromParcel(parcel: Parcel) = HlsContentQueueModel(parcel)
             override fun newArray(size: Int) = arrayOfNulls<HlsContentQueueModel>(size)

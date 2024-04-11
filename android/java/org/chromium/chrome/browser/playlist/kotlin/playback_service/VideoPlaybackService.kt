@@ -65,7 +65,6 @@ class VideoPlaybackService : MediaLibraryService(),
 
         private var mediaItemsInPlayer: ArrayList<MediaItem> = ArrayList()
 
-        @Suppress("unused")
         fun addNewPlaylistItemModel(newPlaylistItemModel: PlaylistItemModel) {
             if (newPlaylistItemModel.playlistId == currentPlaylistId) {
                 val mediaItem = MediaItemUtil.buildMediaItem(
@@ -78,7 +77,6 @@ class VideoPlaybackService : MediaLibraryService(),
             }
         }
 
-        @Suppress("unused")
         fun removePlaylistItemModel(playlistItemModelId: String) {
             mediaItemsInPlayer.forEachIndexed { index, mediaItem ->
                 if (mediaItem.mediaId == playlistItemModelId && mediaItem.mediaId != currentPlaylistId) {
@@ -88,7 +86,6 @@ class VideoPlaybackService : MediaLibraryService(),
             }
         }
 
-        @Suppress("unused")
         fun reorderPlaylistItemModel(playlistItemModelList : List<PlaylistItemModel>) {
             mediaItemsInPlayer.forEachIndexed { oldIndex, mediaItem ->
                val newIndex = playlistItemModelList.indexOfFirst{ it.id == mediaItem.mediaId }
@@ -219,11 +216,11 @@ class VideoPlaybackService : MediaLibraryService(),
     }
 
 
-    private fun saveLastPosition(mediaItem: MediaItem, currentPosition: Long) {
+    private fun saveLastPosition(mediaItem: MediaItem, @Suppress("UNUSED_PARAMETER") currentPosition: Long) {
         mScope.launch {
             if (PlaylistPreferenceUtils.defaultPrefs(applicationContext).rememberFilePlaybackPosition) {
                 mediaItem.mediaId.let {
-                    val lastPlayedPositionModel = LastPlayedPositionModel(it, currentPosition)
+                    // val lastPlayedPositionModel = LastPlayedPositionModel(it, currentPosition)
                     // mPlaylistRepository.insertLastPlayedPosition(lastPlayedPositionModel)
                 }
             }

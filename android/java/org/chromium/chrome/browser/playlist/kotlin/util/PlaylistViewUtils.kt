@@ -30,7 +30,6 @@ import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistOnboardingPanel
 import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.PlaylistOptionsBottomSheet
 import com.google.android.material.snackbar.Snackbar
 
-@Suppress("unused")
 object PlaylistViewUtils {
     @JvmStatic
     fun showPlaylistButton(

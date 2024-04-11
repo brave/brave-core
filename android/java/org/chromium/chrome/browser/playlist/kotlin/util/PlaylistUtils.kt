@@ -75,7 +75,6 @@ object PlaylistUtils {
     }
 
     @JvmStatic
-    @Suppress("unused")
     fun openPlaylistMenuOnboardingActivity(context: Context) {
         val playlistActivityIntent = Intent(context, PlaylistMenuOnboardingActivity::class.java)
         playlistActivityIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -125,7 +124,6 @@ object PlaylistUtils {
     val hlsContentProgress: LiveData<HlsContentProgressModel> get() = mutableHlsContentProgress
 
     @JvmStatic
-    @Suppress("unused")
     fun updateHlsContentProgress(hlsContentProgressModel: HlsContentProgressModel) {
         mutableHlsContentProgress.value = hlsContentProgressModel
     }

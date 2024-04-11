@@ -33,7 +33,6 @@ data class PlaylistItemModel(
 ) : Parcelable {
     companion object {
         @JvmField
-        @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<PlaylistItemModel> {
             override fun createFromParcel(parcel: Parcel) = PlaylistItemModel(parcel)
             override fun newArray(size: Int) = arrayOfNulls<PlaylistItemModel>(size)

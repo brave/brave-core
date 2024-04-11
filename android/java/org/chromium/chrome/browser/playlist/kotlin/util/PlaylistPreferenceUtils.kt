@@ -85,7 +85,6 @@ object PlaylistPreferenceUtils {
         }
 
     @JvmStatic
-    @Suppress("unused")
     fun resetPlaylistPrefs(context: Context) {
         defaultPrefs(context).apply {
             recentlyPlayedPlaylist = ""
