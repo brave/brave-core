@@ -172,6 +172,7 @@ struct ReadabilityResult {
   var title = ""
   var credits = ""
   var direction = "auto"
+  var cspMetaTags = [String]()
 
   init?(object: AnyObject?) {
     if let dict = object as? NSDictionary {
@@ -199,6 +200,9 @@ struct ReadabilityResult {
       if let direction = dict["dir"] as? String {
         self.direction = direction
       }
+      if let cspMetaTags = dict["cspMetaTags"] as? [String] {
+        self.cspMetaTags = cspMetaTags
+      }
     } else {
       return nil
     }
@@ -213,6 +217,7 @@ struct ReadabilityResult {
     let title = object["title"].string
     let credits = object["credits"].string
     let direction = object["dir"].string
+    let cspMetaTags = object["cspMetaTags"].arrayObject as? [String]
 
     if domain == nil || url == nil || content == nil || title == nil || credits == nil {
       return nil
@@ -224,13 +229,14 @@ struct ReadabilityResult {
     self.title = title!
     self.credits = credits!
     self.direction = direction ?? "auto"
+    self.cspMetaTags = cspMetaTags ?? []
   }
 
   /// Encode to a dictionary, which can then for example be json encoded
   func encode() -> [String: Any] {
     return [
       "domain": domain, "url": url, "content": content, "title": title, "credits": credits,
-      "dir": direction,
+      "dir": direction, "cspMetaTags": cspMetaTags,
     ]
   }
 

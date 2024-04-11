@@ -120,7 +120,7 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
   func makeWebView() -> BraveWebView {
     let frame = CGRect(width: 1, height: 1)
     let configuration = WKWebViewConfiguration().then {
-      $0.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
+      $0.setURLSchemeHandler(InternalSchemeHandler(tab: nil), forURLScheme: InternalURL.scheme)
     }
     let webView = BraveWebView(frame: frame, configuration: configuration)
     webView.allowsLinkPreview = false

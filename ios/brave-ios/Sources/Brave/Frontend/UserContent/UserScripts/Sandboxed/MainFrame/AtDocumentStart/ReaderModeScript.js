@@ -75,6 +75,15 @@ function checkReadability() {
         return;
       }
 
+      
+      // Preserve the CSP meta tag
+      delete document.querySelector;
+      delete document.querySelectorAll;
+      let cspMetaTags = document.querySelectorAll("meta[http-equiv=\"Content-Security-Policy\"]");
+      if (cspMetaTags) {
+        readabilityResult.cspMetaTags = [...cspMetaTags].map((e) => new XMLSerializer().serializeToString(e));
+      }
+      
       debug({Type: "ReaderModeStateChange", Value: readabilityResult !== null ? "Available" : "Unavailable"});
       webkit.messageHandlers.readerModeMessageHandler.postMessage({"securityToken": SECURITY_TOKEN, "data": {Type: "ReaderModeStateChange", Value: readabilityResult !== null ? "Available" : "Unavailable"}});
       webkit.messageHandlers.readerModeMessageHandler.postMessage({"securityToken": SECURITY_TOKEN, "data": {Type: "ReaderContentParsed", Value: readabilityResult}});
