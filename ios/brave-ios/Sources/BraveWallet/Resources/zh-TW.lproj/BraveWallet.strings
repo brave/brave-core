@@ -235,7 +235,7 @@
 /* As in buying cryptocurrency */
 "wallet.buy" = "購買";
 
-/* The description of a buy button on the buy/send/swap modal */
+/* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "透過 Wyre 使用 Apple Pay、信用卡或金融卡購買加密資產。";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
@@ -1348,7 +1348,7 @@
 /* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
 "wallet.sendCryptoToTitle" = "目的地";
 
-/* The description of a send button on the buy/send/swap modal */
+/* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "從一個帳戶傳送加密資產或轉帳至另一個帳戶。";
 
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
@@ -1705,9 +1705,6 @@
 /* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaUpgradeNonceAccountInstructionName" = "升級隨機帳戶";
 
-/* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
-"wallet.solanaWithdrawNonceAccountInstructionName" = "提現隨機帳戶";
-
 /* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsDescription" = "依法定貨幣值或名稱排序";
 
@@ -1771,7 +1768,7 @@
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "不支援的測試網路";
 
-/* The description of a swap button on the buy/send/swap modal */
+/* The description of a swap button on the buy/send/swap/deposit modal */
 "wallet.swapDescription" = "交換代幣和資產。";
 
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */

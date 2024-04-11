@@ -502,8 +502,7 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Salin maklumat app kepada papan klip.";
 
-/* Copy app info to clipboard action sheet action.
-   View all version info action sheet action. */
+/* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Salin maklumat saiz apl ke papan klip.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -1034,12 +1033,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "mo.";
 
-/* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Ketik untuk menuntut token percuma anda.";
-
-/* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
-
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Ketik di sini untuk mengetahui lebih lanjut.";
 
@@ -1459,9 +1452,6 @@
 
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Teruskan";
-
-/* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Maklumat P3A tanpa nama membantu Brave menganggarkan penggunaan keseluruhan, dan memastikan kami meningkatkan ciri popular.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Benarkan Analitis Produk Pengekalan Privasi (P3A)";
@@ -2340,12 +2330,6 @@
 "RewardsInternalsBalanceInfoHeader" = "Maklumat Baki";
 
 /* No comment provided by engineer. */
-"RewardsInternalsClaimedAt" = "Dituntut pada";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClaimID" = "ID Tuntutan";
-
-/* No comment provided by engineer. */
 "RewardsInternalsClearLogsConfirmation" = "Adakah anda pasti anda mahu mengosongkan semua log Ganjaran?";
 
 /* No comment provided by engineer. */
@@ -2423,9 +2407,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Benih Maklumat Penting";
 
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyPromotion" = "Promosi Legasi";
-
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d log ditunjukkan";
 
@@ -2440,24 +2421,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsProcessor" = "Pemproses";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusActive" = "Aktif";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusAttested" = "Dibuktikan";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusCorrupted" = "Rosak";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusFinished" = "Selesai";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusOver" = "Tamat";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionsTitle" = "Promosi";
 
 /* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Penerbit";
@@ -2494,9 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableLogsDescription" = "Pengelogan khusus ganjaran";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharablePromotionsDescription" = "Sebarang promosi BAT yang anda telah tuntut atau belum selesai daripada Iklan atau Geran";
 
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Kongsi";
@@ -2705,14 +2665,8 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Tetapan Kualiti";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Ping peribadi awanama ini membolehkan Brave menganggarkan pengguna aktif.";
-
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Hantar ping penggunaan harian secara automatik ke Brave";
-
-/* Header for the Youtube settings section */
-"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Tidak dapat memuat halaman.";
@@ -3485,9 +3439,6 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Dipromosi";
 
-/* Title for long press action sheet list which has item for rate / hide */
-"today.rateBraveCardActionSheetTitle" = "Berikan Penilaian untuk Brave dalam AppStore";
-
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Sembunyikan";
 
@@ -3634,9 +3585,6 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Sepantas kilat, sehingga 100 Mbps";
-
-/* AppStore Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "Resit App Store";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Versi Aplikasi";
@@ -4058,9 +4006,6 @@
 /* History tableview section header */
 "Yesterday" = "Semalam";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Dayakan Video YouTube Berkualiti Tinggi";
-
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Apabila ciri percubaan ini didayakan, video akan dimainkan semula pada kualiti maksimum yang tersedia dan data tambahan akan digunakan.";
 
@@ -4069,9 +4014,6 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Dihidupkan";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Kualiti Main Semula YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Benarkan melalui Wi-Fi";

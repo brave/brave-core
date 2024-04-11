@@ -502,8 +502,7 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Скопіювати дані програми до буферу обміну.";
 
-/* Copy app info to clipboard action sheet action.
-   View all version info action sheet action. */
+/* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Скопіювати дані про розмір програми до буферу обміну.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -1034,12 +1033,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "міс.";
 
-/* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Торкніться, щоб отримати безкоштовні токени.";
-
-/* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
-
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Торкніться тут, щоб дізнатися більше.";
 
@@ -1459,9 +1452,6 @@
 
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Продовжити";
-
-/* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Анонімізована інформація P3A допомагає Brave оцінити загальний досвід використання й забезпечити покращення популярних функцій.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Дозволити аналітику продуктів зі збереженням конфіденційності (P3A)";
@@ -2340,12 +2330,6 @@
 "RewardsInternalsBalanceInfoHeader" = "Інформація про баланс";
 
 /* No comment provided by engineer. */
-"RewardsInternalsClaimedAt" = "Отримано:";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClaimID" = "Ідентифікатор отримання";
-
-/* No comment provided by engineer. */
 "RewardsInternalsClearLogsConfirmation" = "Дійсно очистити всі журнали Rewards?";
 
 /* No comment provided by engineer. */
@@ -2423,9 +2407,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Інформація про ключ";
 
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyPromotion" = "Застаріла промоакція";
-
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "Показано журналів: %d";
 
@@ -2440,24 +2421,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsProcessor" = "Обробник";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusActive" = "Активна";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusAttested" = "Перевірена";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusCorrupted" = "Пошкоджена";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusFinished" = "Завершена";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusOver" = "Закінчена";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionsTitle" = "Промоакції";
 
 /* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Видавець";
@@ -2494,9 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableLogsDescription" = "Зазначені журнали винагород";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharablePromotionsDescription" = "Будь-які промоакції BAT, які ви отримали або на які очікуєте від реклами чи бонусів";
 
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Надіслати";
@@ -2705,14 +2665,8 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Налаштування якості";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Цей анонімне, приватне повідомлення дає можливість Brave оцінити активних користувачів.";
-
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Автоматично надсилайте щоденний пінг використання в Brave";
-
-/* Header for the Youtube settings section */
-"settings.youtube" = "Youtube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Не вдалося завантажити сторінку.";
@@ -3485,9 +3439,6 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Реклама";
 
-/* Title for long press action sheet list which has item for rate / hide */
-"today.rateBraveCardActionSheetTitle" = "Оцінити Brave у AppStore";
-
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Приховати";
 
@@ -3634,9 +3585,6 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Блискавична швидкість до 100 Мбіт/с";
-
-/* AppStore Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "Квитанція від AppStore";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Версія програми";
@@ -4058,9 +4006,6 @@
 /* History tableview section header */
 "Yesterday" = "Учора";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Високоякісні відео Youtube";
-
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Ця експериментальна функція відтворюватиме відео з максимальною доступною якістю, що призведе до збільшення використовуваних даних.";
 
@@ -4069,9 +4014,6 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Увімк.";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Якість відео Youtube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Дозволити через мережі Wi-Fi";

@@ -502,8 +502,7 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Copia la informació de l'app al porta-retalls.";
 
-/* Copy app info to clipboard action sheet action.
-   View all version info action sheet action. */
+/* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Copia la informació de la mida de l'app al porta-retalls.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -1034,12 +1033,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "mo.";
 
-/* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Prem per reclamar els teus tokens gratuïts.";
-
-/* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Recompenses de Brave 💵🎁";
-
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Prem aquí per saber-ne més.";
 
@@ -1459,9 +1452,6 @@
 
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Continua";
-
-/* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "La informació P3A anònima ajuda a Brave a estimar l'ús general i a garantir que millorem les funcions més populars.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Permet l'anàlisi de productes per preservar la privacitat (P3A)";
@@ -2340,12 +2330,6 @@
 "RewardsInternalsBalanceInfoHeader" = "Informació del balanç";
 
 /* No comment provided by engineer. */
-"RewardsInternalsClaimedAt" = "Reclamat a";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClaimID" = "Reclama l'ID";
-
-/* No comment provided by engineer. */
 "RewardsInternalsClearLogsConfirmation" = "Estàs segur que vols esborrar tots els registres de Recompenses?";
 
 /* No comment provided by engineer. */
@@ -2423,9 +2407,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Informació clau ";
 
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyPromotion" = "Promoció del llegat";
-
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d registres mostrats";
 
@@ -2440,24 +2421,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsProcessor" = "Processador";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusActive" = "Actiu";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusAttested" = "Testificat";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusCorrupted" = "Malmès";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusFinished" = "Acabat";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusOver" = "Fi";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionsTitle" = "Promocions";
 
 /* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Editor";
@@ -2494,9 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableLogsDescription" = "Recompensa un registre específic";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharablePromotionsDescription" = "Qualsevol promoció BAT que hagis reclamat o que tinguis pendent d'Anuncis o Subvencions";
 
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Comparteix";
@@ -2705,14 +2665,8 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Configuració de qualitat";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Aquest ping privat anònim permet a Brave estimar els usuaris actius.";
-
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Envia automàticament el ping d'ús diari a Brave";
-
-/* Header for the Youtube settings section */
-"settings.youtube" = "Youtube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "No es pot carregar la pàgina.";
@@ -3485,9 +3439,6 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promocionat";
 
-/* Title for long press action sheet list which has item for rate / hide */
-"today.rateBraveCardActionSheetTitle" = "Valora Brave a l'AppStore";
-
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Amaga";
 
@@ -3634,9 +3585,6 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Extremadament ràpid, fins a 100 Mbps";
-
-/* AppStore Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "Rebut de l'AppStore";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Versió de l'aplicació";
@@ -4058,9 +4006,6 @@
 /* History tableview section header */
 "Yesterday" = "Ahir";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Activa vídeos d'alta qualitat de Youtube";
-
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Si actives aquesta funció experimental, es reproduirà el vídeo amb la màxima qualitat disponible i s'utilitzaran dades addicionals.";
 
@@ -4069,9 +4014,6 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Activat";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Qualitat de reproducció de Youtube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Permet mitjançant Wi-Fi";

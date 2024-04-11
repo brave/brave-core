@@ -10,9 +10,6 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "레오는 브라우저에 바로 통합된 AI 기반 스마트 어시스턴트입니다.";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "다른 기기에서도 레오를 사용하려면 Appstore 구매 항목을 Brave 계정에 연결하세요.";
-
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "구매한 항목을 Brave 계정에 연결";
 
@@ -25,10 +22,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "상태";
 
-/* The subtitle for the error showing there is an erro from Appstore */
-"aichat.appStoreErrorSubTitle" = "Appstore에 연결할 수 없습니다. 나중에 다시 시도하세요.";
-
-/* The title for the error showing there is an erro from Appstore */
+/* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "App Store 오류";
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
