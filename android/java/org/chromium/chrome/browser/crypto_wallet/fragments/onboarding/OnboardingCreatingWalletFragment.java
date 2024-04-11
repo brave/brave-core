@@ -6,6 +6,8 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +24,16 @@ import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /** Onboarding fragment for Brave Wallet which shows the spinner while wallet is created/restored */
 public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragment {
+
+    private static final int NEXT_PAGE_DELAY_MS = 700;
+
+    private volatile boolean mAddTransitionDelay = true;
 
     @Override
     public View onCreateView(
@@ -41,6 +50,14 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     @Override
     public void onResume() {
         super.onResume();
+
+        final ScheduledExecutorService scheduler =
+                Executors.newScheduledThreadPool(1);
+
+        scheduler.schedule(() -> {
+            mAddTransitionDelay = false;
+        }, NEXT_PAGE_DELAY_MS, TimeUnit.MILLISECONDS);
+
         KeyringModel keyringModel = getKeyringModel();
         if (keyringModel != null) {
             // Check if a wallet is already present and skip if that's the case.
@@ -50,34 +67,39 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                             requireActivity().finish();
                             return;
                         }
+                        createWallet(keyringModel);
+                    });
+        }
+    }
 
-                        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-                        JsonRpcService jsonRpcService = getJsonRpcService();
+    private void createWallet(@NonNull final KeyringModel keyringModel) {
+        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+        JsonRpcService jsonRpcService = getJsonRpcService();
 
-                        if (jsonRpcService != null) {
-                            Set<NetworkInfo> availableNetworks =
-                                    mOnboardingViewModel.getAvailableNetworks();
-                            Set<NetworkInfo> selectedNetworks =
-                                    mOnboardingViewModel.getSelectedNetworks();
-                            keyringModel.createWallet(
-                                    mOnboardingViewModel.getPassword(),
-                                    availableNetworks,
-                                    selectedNetworks,
-                                    jsonRpcService,
-                                    recoveryPhrases -> {
-                                        if (braveWalletP3A != null) {
-                                            braveWalletP3A.reportOnboardingAction(
-                                                    OnboardingAction.RECOVERY_SETUP);
-                                        }
+        if (jsonRpcService != null) {
+            Set<NetworkInfo> availableNetworks = mOnboardingViewModel.getAvailableNetworks();
+            Set<NetworkInfo> selectedNetworks = mOnboardingViewModel.getSelectedNetworks();
+            keyringModel.createWallet(
+                    mOnboardingViewModel.getPassword(),
+                    availableNetworks,
+                    selectedNetworks,
+                    jsonRpcService,
+                    recoveryPhrases -> {
+                        if (braveWalletP3A != null) {
+                            braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
+                        }
 
-                                        Utils.setCryptoOnboarding(false);
+                        Utils.setCryptoOnboarding(false);
 
-                                        // Go to the next page after wallet creation is
-                                        // done
-                                        if (mOnNextPage != null) {
-                                            mOnNextPage.gotoNextPage();
-                                        }
-                                    });
+                        // Go to the next page after wallet creation is done.
+                        if (mOnNextPage != null) {
+                            // Add small delay if the Wallet creation completes faster than {@code NEXT_PAGE_DELAY_MS}.
+                            if (mAddTransitionDelay) {
+                                Handler handler = new Handler(Looper.getMainLooper());
+                                handler.postDelayed(() -> mOnNextPage.gotoNextPage(), NEXT_PAGE_DELAY_MS);
+                            } else {
+                                mOnNextPage.gotoNextPage();
+                            }
                         }
                     });
         }
