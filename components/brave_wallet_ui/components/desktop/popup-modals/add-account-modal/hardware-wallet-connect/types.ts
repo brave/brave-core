@@ -4,13 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
-  HardwareDerivationScheme,
   LedgerDerivationPaths,
   TrezorDerivationPaths,
   SolDerivationPaths
 } from '../../../../../common/hardware/types'
-import { BraveWallet, FilecoinNetwork } from '../../../../../constants/types'
-import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
+import { BraveWallet } from '../../../../../constants/types'
 export { SolDerivationPaths } from '../../../../../common/hardware/types'
 
 // TODO(apaymyshev): strings below need localization.
@@ -31,20 +29,6 @@ export const SolHardwareWalletDerivationPathLocaleMapping = {
   [SolDerivationPaths.Default]: 'Default',
   [SolDerivationPaths.LedgerLive]: 'Ledger Live',
   [SolDerivationPaths.Bip44Root]: 'Bip44 Root'
-}
-
-export interface HardwareWalletConnectOpts {
-  hardware: HardwareVendor
-  // TODO: add currency and network as enums
-  // currency: string
-  // network: string
-
-  startIndex: number
-  stopIndex: number
-  scheme?: HardwareDerivationScheme
-  network?: FilecoinNetwork
-  coin: BraveWallet.CoinType
-  onAuthorized: () => void
 }
 
 export interface ErrorMessage {

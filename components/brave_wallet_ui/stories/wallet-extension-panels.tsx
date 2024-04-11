@@ -34,11 +34,9 @@ import {
   StyledExtensionWrapper,
   StyledWelcomPanel
 } from './style'
-import { LibContext } from '../common/context/lib.context'
 import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
 
 // mocks
-import * as MockedLib from '../common/async/__mocks__/lib'
 import {
   mockTransactionInfo,
   mockedErc20ApprovalTransaction
@@ -379,8 +377,6 @@ const mockApiData: WalletApiDataOverrides = {
 }
 
 export const _ConfirmTransaction = () => {
-  const getERC20Allowance = () => Promise.resolve('0x15ddf09c97b0000')
-
   return (
     <Provider
       store={createMockStore(
@@ -392,14 +388,7 @@ export const _ConfirmTransaction = () => {
       )}
     >
       <StyledExtensionWrapperLonger>
-        <LibContext.Provider
-          value={{
-            ...(MockedLib as any),
-            getERC20Allowance
-          }}
-        >
-          <ConfirmTransactionPanel />
-        </LibContext.Provider>
+        <ConfirmTransactionPanel />
       </StyledExtensionWrapperLonger>
     </Provider>
   )
@@ -410,8 +399,6 @@ _ConfirmTransaction.story = {
 }
 
 export const _ConfirmErcApproveTransaction = () => {
-  const getERC20Allowance = () => Promise.resolve('0x15ddf09c97b0000')
-
   return (
     <StyledExtensionWrapperLonger>
       <Provider
@@ -430,14 +417,7 @@ export const _ConfirmErcApproveTransaction = () => {
           }
         )}
       >
-        <LibContext.Provider
-          value={{
-            ...(MockedLib as any),
-            getERC20Allowance
-          }}
-        >
-          <ConfirmTransactionPanel />
-        </LibContext.Provider>
+        <ConfirmTransactionPanel />
       </Provider>
     </StyledExtensionWrapperLonger>
   )

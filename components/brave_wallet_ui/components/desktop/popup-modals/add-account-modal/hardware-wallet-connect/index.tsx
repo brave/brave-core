@@ -7,6 +7,7 @@ import * as React from 'react'
 
 // utils
 import { getLocale } from '../../../../../../common/locale'
+import { onConnectHardwareWallet } from '../../../../../common/async/hardware'
 
 // components
 import { HardwareWalletAccountsList } from './accounts-list'
@@ -46,7 +47,6 @@ import {
 import { LedgerError } from '../../../../../common/hardware/ledgerjs/ledger-messages'
 
 // hooks
-import { useLib } from '../../../../../common/hooks/useLib'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useImportHardwareAccountsMutation //
@@ -106,9 +106,6 @@ export const HardwareWalletConnect = ({
   onSuccess,
   selectedAccountType
 }: Props) => {
-  // lib
-  const { onConnectHardwareWallet } = useLib()
-
   // queries
   const { accounts: savedAccounts } = useAccountsQuery()
 
@@ -164,7 +161,7 @@ export const HardwareWalletConnect = ({
         })
         .finally(() => setIsConnecting(false))
     },
-    [onConnectHardwareWallet, selectedAccountType]
+    [selectedAccountType]
   )
 
   const onAddHardwareAccounts = React.useCallback(
@@ -201,12 +198,7 @@ export const HardwareWalletConnect = ({
         })
         .finally(() => setIsConnecting(false))
     },
-    [
-      onConnectHardwareWallet,
-      selectedHardwareWallet,
-      selectedAccountType,
-      filecoinNetwork
-    ]
+    [selectedHardwareWallet, selectedAccountType, filecoinNetwork]
   )
 
   const getDefaultAccountName = React.useCallback(
@@ -295,7 +287,6 @@ export const HardwareWalletConnect = ({
       })
       .finally(() => setIsConnecting(false))
   }, [
-    onConnectHardwareWallet,
     selectedHardwareWallet,
     accounts,
     selectedDerivationScheme,
