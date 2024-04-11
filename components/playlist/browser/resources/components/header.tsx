@@ -9,11 +9,20 @@ import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import Icon from '@brave/leo/react/icon'
-import { color, font, radius, spacing, icon, elevation } from '@brave/leo/tokens/css'
+import {
+  color,
+  font,
+  radius,
+  spacing,
+  icon,
+  elevation
+} from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
 
 import PlaylistInfo from './playlistInfo'
 import {
+  ApplicationState,
+  CachingProgress,
   PlaylistEditMode,
   usePlaylist,
   usePlaylistEditMode,
@@ -24,6 +33,7 @@ import ContextualMenuAnchorButton from './contextualMenu'
 import { getPlaylistAPI } from '../api/api'
 import { getLocalizedString } from '../utils/l10n'
 import { getPlaylistActions } from '../api/getPlaylistActions'
+import { useSelector } from 'react-redux'
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -106,7 +116,7 @@ const SaveButton = styled(StyledButton)`
   --leo-button-padding: 10px;
 `
 
-function BackButton({
+function BackButton ({
   playlistEditMode
 }: {
   playlistEditMode?: PlaylistEditMode
@@ -132,8 +142,13 @@ function BackButton({
   )
 }
 
-function PlaylistHeader({ playlistId }: { playlistId: string }) {
+function PlaylistHeader ({ playlistId }: { playlistId: string }) {
   const playlist = usePlaylist(playlistId)
+  const cachingProgress = useSelector<
+    ApplicationState,
+    Map<string, CachingProgress> | undefined
+  >((applicationState) => applicationState.playlistData?.cachingProgress)
+
   const contextualMenuItems = []
   if (playlist?.items.length) {
     contextualMenuItems.push({
@@ -146,7 +161,10 @@ function PlaylistHeader({ playlistId }: { playlistId: string }) {
     // TODO(sko) We don't support this yet.
     // contextualMenuItems.push({ name: 'Share', iconName: 'share-macos', onClick: () => {} })
 
-    const uncachedItems = playlist.items.filter((item) => !item.cached)
+    const uncachedItems = playlist.items.filter(
+      (item) => !item.cached && !cachingProgress?.has(item.id)
+    )
+
     if (uncachedItems.length) {
       contextualMenuItems.push({
         name: getLocalizedString(
@@ -273,7 +291,7 @@ function PlaylistHeader({ playlistId }: { playlistId: string }) {
   )
 }
 
-function NewPlaylistButton() {
+function NewPlaylistButton () {
   return (
     <StyledButton
       size='large'
@@ -291,7 +309,7 @@ function NewPlaylistButton() {
   )
 }
 
-function SettingButton() {
+function SettingButton () {
   return (
     <StyledButton
       size='large'
@@ -307,7 +325,7 @@ function SettingButton() {
   )
 }
 
-function CloseButton() {
+function CloseButton () {
   return (
     <StyledButton
       size='large'
@@ -323,7 +341,7 @@ function CloseButton() {
   )
 }
 
-function PlaylistsCatalogHeader() {
+function PlaylistsCatalogHeader () {
   return (
     <>
       <GradientIcon name='product-playlist-bold-add-color' />
@@ -338,7 +356,7 @@ function PlaylistsCatalogHeader() {
   )
 }
 
-export default function Header({ playlistId, className }: HeaderProps) {
+export default function Header ({ playlistId, className }: HeaderProps) {
   return (
     <HeaderContainer className={className}>
       {playlistId ? (

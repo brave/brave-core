@@ -178,7 +178,7 @@ const StyledCheckBox = styled(Icon)<{ checked: boolean }>`
   color: ${(p) => (p.checked ? color.icon.interactive : color.icon.default)};
 `
 
-function Thumbnail({
+function Thumbnail ({
   thumbnailUrl,
   isSelected,
   isPlaying,
@@ -211,7 +211,7 @@ function Thumbnail({
   )
 }
 
-export function PlaylistItem({
+export function PlaylistItem ({
   playlist,
   item,
   isEditing,
@@ -320,6 +320,8 @@ export function PlaylistItem({
                 iconName: 'cloud-off',
                 onClick: () => getPlaylistAPI().removeLocalData(id)
               }
+            : cachingProgress
+            ? undefined // TODO(sko) We may want to have "cancel caching".
             : {
                 name: getLocalizedString(
                   'bravePlaylistContextMenuKeepForOfflinePlaying'
@@ -352,7 +354,7 @@ export function PlaylistItem({
 }
 
 export const SortablePlaylistItem = React.forwardRef(
-  function SortablePlaylistItem(
+  function SortablePlaylistItem (
     props: Props,
     forwardedRef?: React.ForwardedRef<HTMLAnchorElement>
   ) {
