@@ -34,10 +34,6 @@ class PlaylistConfirmBubble : public PlaylistActionBubbleView,
   void PlaylistTabHelperWillBeDestroyed() override;
   void OnSavedItemsChanged(
       const std::vector<mojom::PlaylistItemPtr>& items) override;
-  void OnFoundItemsChanged(
-      const std::vector<mojom::PlaylistItemPtr>& items) override {}
-  void OnAddedItemFromTabHelper(
-      const std::vector<mojom::PlaylistItemPtr>& items) override {}
 
  private:
   void ResetChildViews();

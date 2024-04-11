@@ -479,14 +479,12 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
       PlaylistActionBubbleView::GetBubble());
   EXPECT_TRUE(add_bubble);
   add_bubble->Accept();
+  EXPECT_TRUE(add_bubble->loading_spinner_->GetVisible());
 
-  WaitUntil(base::BindLambdaForTesting([&] {
-    auto* bubble = PlaylistActionBubbleView::GetBubble();
-    return views::IsViewClass<PlaylistAddBubble>(bubble) &&
-           // TODO(sszaloki): that's a hack until we adjust the UI to the new
-           // architecture (utilizes the fact that we swap the
-           // `PlaylistAddBubble`)
-           bubble != add_bubble;
+  WaitUntil(base::BindRepeating([] {
+    auto* add_bubble = views::AsViewClass<PlaylistAddBubble>(
+        PlaylistActionBubbleView::GetBubble());
+    return add_bubble ? !add_bubble->loading_spinner_->GetVisible() : false;
   }));
 
   EXPECT_TRUE(playlist_tab_helper->saved_items().empty());

@@ -50,13 +50,11 @@ class PlaylistAddBubble : public PlaylistActionBubbleView,
 
  private:
   FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTest, AddItemsToList);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBrowserTestWithSitesUsingMediaSource,
+                           MediaShouldBeExtractedFromBackground_FailToExtract);
 
   // PlaylistTabHelperObserver:
   void PlaylistTabHelperWillBeDestroyed() override;
-  void OnSavedItemsChanged(
-      const std::vector<mojom::PlaylistItemPtr>& items) override {}
-  void OnFoundItemsChanged(
-      const std::vector<mojom::PlaylistItemPtr>& items) override {}
   void OnAddedItemFromTabHelper(
       const std::vector<mojom::PlaylistItemPtr>& items) override;
 
