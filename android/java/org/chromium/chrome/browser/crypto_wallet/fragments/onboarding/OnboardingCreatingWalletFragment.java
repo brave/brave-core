@@ -30,7 +30,7 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
 
     private static final int NEXT_PAGE_DELAY_MS = 700;
 
-    private volatile boolean mAddTransitionDelay = true;
+    private boolean mAddTransitionDelay = true;
 
     @Override
     public View onCreateView(
