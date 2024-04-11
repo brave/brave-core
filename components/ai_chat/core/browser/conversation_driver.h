@@ -53,6 +53,7 @@ class ConversationDriver {
         mojom::SuggestionGenerationStatus suggestion_generation_status) {}
     virtual void OnFaviconImageDataChanged() {}
     virtual void OnPageHasContent(mojom::SiteInfoPtr site_info) {}
+    virtual void OnPrintPreviewRequested() {}
   };
 
   ConversationDriver(
@@ -170,6 +171,8 @@ class ConversationDriver {
   // To be called when a page navigation is detected and a new conversation
   // is expected.
   void OnNewPage(int64_t navigation_id);
+
+  void OnPrintPreviewRequested();
 
  private:
   void InitEngine();

@@ -270,9 +270,9 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
     pending_get_page_content_callback_ = std::move(callback);
   } else {
     if (base::Contains(kPrintPreviewRetrievalHosts,
-                       GetPageURL().host_piece()) &&
-        !is_print_preview_disabled_) {
+                       GetPageURL().host_piece())) {
       pending_get_page_content_callback_ = std::move(callback);
+      OnPrintPreviewRequested();
     } else {
       FetchPageContent(web_contents(), invalidation_token, std::move(callback));
     }

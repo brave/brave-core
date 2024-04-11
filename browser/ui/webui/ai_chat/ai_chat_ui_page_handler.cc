@@ -86,10 +86,6 @@ AIChatUIPageHandler::AIChatUIPageHandler(
 
   favicon_service_ = FaviconServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS);
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-  print_preview_extractor_ = std::make_unique<PrintPreviewExtractor>(
-      chat_context_web_contents, profile_);
-#endif
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -127,11 +123,6 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
   DCHECK(!active_chat_tab_helper_->IsRequestInProgress())
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
-
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-  MaybeCreatePrintPreview();
-#endif
-
   mojom::ConversationTurn turn = {
       CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       ConversationTurnVisibility::VISIBLE, input, std::nullopt};
@@ -381,6 +372,14 @@ void AIChatUIPageHandler::OnPageHasContent(mojom::SiteInfoPtr site_info) {
   }
 }
 
+void AIChatUIPageHandler::OnPrintPreviewRequested() {
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+  print_preview_extractor_ = std::make_unique<PrintPreviewExtractor>(
+      active_chat_tab_helper_->web_contents(), profile_);
+  print_preview_extractor_->CreatePrintPreview();
+#endif
+}
+
 void AIChatUIPageHandler::GetFaviconImageData(
     GetFaviconImageDataCallback callback) {
   if (!active_chat_tab_helper_) {
@@ -461,15 +460,5 @@ void AIChatUIPageHandler::OnGetPremiumStatus(
     std::move(callback).Run(status, std::move(info));
   }
 }
-
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-void AIChatUIPageHandler::MaybeCreatePrintPreview() {
-  auto url = active_chat_tab_helper_->web_contents()->GetLastCommittedURL();
-  if (!base::Contains(kPrintPreviewRetrievalHosts, url.host_piece())) {
-    return;
-  }
-  print_preview_extractor_->CreatePrintPreview();
-}
-#endif
 
 }  // namespace ai_chat

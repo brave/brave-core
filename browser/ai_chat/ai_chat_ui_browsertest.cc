@@ -9,8 +9,6 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/constants/brave_paths.h"
@@ -61,8 +59,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
         ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
     ASSERT_TRUE(chat_tab_helper_);
     chat_tab_helper_->SetUserOptedIn(true);
-    ai_chat_page_handler_ = OpenAIChatSidePanel();
-    ASSERT_TRUE(ai_chat_page_handler_);
+    OpenAIChatSidePanel();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -94,44 +91,23 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(WaitForLoadStop(GetActiveWebContents()));
   }
 
-  void CreatePrintPreview(ai_chat::AIChatUIPageHandler* handler) {
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-    handler->MaybeCreatePrintPreview();
-#endif
-  }
-
-  ai_chat::AIChatUIPageHandler* OpenAIChatSidePanel() {
+  void OpenAIChatSidePanel() {
     auto* side_panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
     side_panel_ui->Show(SidePanelEntryId::kChatUI);
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
     auto* side_panel = browser_view->unified_side_panel();
     auto* ai_chat_side_panel =
         side_panel->GetViewByID(SidePanelWebUIView::kSidePanelWebViewId);
-    if (!ai_chat_side_panel) {
-      return nullptr;
-    }
+    ASSERT_TRUE(ai_chat_side_panel);
     auto* side_panel_web_contents =
         (static_cast<views::WebView*>(ai_chat_side_panel))->web_contents();
-    if (!side_panel_web_contents) {
-      return nullptr;
-    }
+    ASSERT_TRUE(side_panel_web_contents);
     content::WaitForLoadStop(side_panel_web_contents);
-
-    auto* web_ui = side_panel_web_contents->GetWebUI();
-    if (!web_ui) {
-      return nullptr;
-    }
-    auto* ai_chat_ui = web_ui->GetController()->GetAs<AIChatUI>();
-    if (!ai_chat_ui) {
-      return nullptr;
-    }
-    return ai_chat_ui->GetPageHandlerForTesting();
   }
 
   void FetchPageContent(const base::Location& location,
                         std::string_view expected_text) {
     SCOPED_TRACE(testing::Message() << location.ToString());
-    CreatePrintPreview(ai_chat_page_handler_);
     base::RunLoop run_loop;
     chat_tab_helper_->GetPageContent(
         base::BindLambdaForTesting(
@@ -148,7 +124,6 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
  protected:
   net::test_server::EmbeddedTestServer https_server_;
   raw_ptr<ai_chat::AIChatTabHelper> chat_tab_helper_ = nullptr;
-  raw_ptr<ai_chat::AIChatUIPageHandler> ai_chat_page_handler_ = nullptr;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;

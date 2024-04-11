@@ -22,10 +22,6 @@ class BrowserContext;
 
 class Profile;
 
-namespace ai_chat {
-class AIChatUIPageHandler;
-}  // namespace ai_chat
-
 class AIChatUI : public ui::UntrustedWebUIController {
  public:
   explicit AIChatUI(content::WebUI* web_ui);
@@ -45,12 +41,8 @@ class AIChatUI : public ui::UntrustedWebUIController {
 
   static constexpr std::string GetWebUIName() { return "AIChatPanel"; }
 
-  ai_chat::AIChatUIPageHandler* GetPageHandlerForTesting() {
-    return page_handler_.get();
-  }
-
  private:
-  std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
+  std::unique_ptr<ai_chat::mojom::PageHandler> page_handler_;
 
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
   raw_ptr<Profile> profile_ = nullptr;

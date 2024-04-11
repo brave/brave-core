@@ -37,7 +37,6 @@ namespace favicon {
 class FaviconService;
 }  // namespace favicon
 
-class AIChatUIBrowserTest;
 namespace ai_chat {
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                             public AIChatTabHelper::Observer,
@@ -97,7 +96,6 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
 
  private:
-  friend class ::AIChatUIBrowserTest;
   // AIChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
@@ -108,16 +106,13 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       mojom::SuggestionGenerationStatus suggestion_generation_status) override;
   void OnFaviconImageDataChanged() override;
   void OnPageHasContent(mojom::SiteInfoPtr site_info) override;
+  void OnPrintPreviewRequested() override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
 
   void OnGetPremiumStatus(GetPremiumStatusCallback callback,
                           ai_chat::mojom::PremiumStatus status,
                           ai_chat::mojom::PremiumInfoPtr info);
-
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-  void MaybeCreatePrintPreview();
-#endif
 
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 

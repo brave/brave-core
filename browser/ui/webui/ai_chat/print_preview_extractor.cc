@@ -378,10 +378,8 @@ void PrintPreviewExtractor::OnGetOCRResult(std::string text) {
 }
 
 void PrintPreviewExtractor::CreatePrintPreview() {
-  const bool print_preview_disabled =
-      profile_->GetPrefs()->GetBoolean(::prefs::kPrintPreviewDisabled);
-  active_chat_tab_helper_->SetPrintPreviewDisabled(print_preview_disabled);
-  if (print_preview_disabled) {
+  if (profile_->GetPrefs()->GetBoolean(::prefs::kPrintPreviewDisabled)) {
+    active_chat_tab_helper_->OnPreviewTextReady("");
     return;
   }
   // TODO(darkdh): support pdf preview printing
