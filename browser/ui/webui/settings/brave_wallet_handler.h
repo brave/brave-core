@@ -56,6 +56,8 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void IsTransactionSimulationsEnabled(const base::Value::List& args);
   void GetPinnedNftCount(const base::Value::List& args);
   void ClearPinnedNft(const base::Value::List& args);
+  void SetWalletInPrivateWindowsEnabled(const base::Value::List& args);
+  void GetWalletInPrivateWindowsEnabled(const base::Value::List& args);
 
   PrefService* GetPrefs();
   brave_wallet::BraveWalletPinService* GetBraveWalletPinService();
