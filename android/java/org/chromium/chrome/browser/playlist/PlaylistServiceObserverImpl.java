@@ -123,6 +123,9 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     }
 
     @Override
+    public void onMediaFileDownloadScheduled(String id) {}
+
+    @Override
     public void onMediaFileDownloadProgressed(
             String id,
             long totalBytes,

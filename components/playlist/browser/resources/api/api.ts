@@ -147,6 +147,8 @@ class API {
     ) => void
   ) {
     this.#pageCallbackRouter.onMediaFileDownloadProgressed.addListener(listener)
+    this.#pageCallbackRouter.onMediaFileDownloadScheduled.addListener(
+      (id:string)=>listener(id, BigInt(0), BigInt(0), 0, ''))
   }
 
   addPlaylistUpdatedListener(listener: (playlist: Playlist) => void) {
