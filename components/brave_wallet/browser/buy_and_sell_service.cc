@@ -64,29 +64,28 @@ constexpr char kDefaultMeldStatuses[] = "LIVE,RECENTLY_ADDED";
 
 namespace brave_wallet {
 
-BuyAndSellService::BuyAndSellService(
+MeldIntegrationService::MeldIntegrationService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : api_request_helper_(
           std::make_unique<api_request_helper::APIRequestHelper>(
               GetNetworkTrafficAnnotationTag(),
-              url_loader_factory)),
-      weak_ptr_factory_(this) {}
+              url_loader_factory)) {}
 
-BuyAndSellService::~BuyAndSellService() = default;
+MeldIntegrationService::~MeldIntegrationService() = default;
 
-mojo::PendingRemote<mojom::BuyAndSellService> BuyAndSellService::MakeRemote() {
-  mojo::PendingRemote<mojom::BuyAndSellService> remote;
+mojo::PendingRemote<mojom::MeldIntegrationService> MeldIntegrationService::MakeRemote() {
+  mojo::PendingRemote<mojom::MeldIntegrationService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
 
-void BuyAndSellService::Bind(
-    mojo::PendingReceiver<mojom::BuyAndSellService> receiver) {
+void MeldIntegrationService::Bind(
+    mojo::PendingReceiver<mojom::MeldIntegrationService> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 
 // static
-GURL BuyAndSellService::GetServiceProviderURL(
+GURL MeldIntegrationService::GetServiceProviderURL(
     const std::string& countries,
     const std::string& fiat_currencies,
     const std::string& crypto_currencies,
@@ -122,7 +121,7 @@ GURL BuyAndSellService::GetServiceProviderURL(
   return url;
 }
 
-void BuyAndSellService::GetServiceProviders(
+void MeldIntegrationService::GetServiceProviders(
     const std::string& countries,
     const std::string& fiat_currencies,
     const std::string& crypto_currencies,
@@ -131,7 +130,7 @@ void BuyAndSellService::GetServiceProviders(
     const std::string& statuses,
     GetServiceProvidersCallback callback) {
   auto internal_callback =
-      base::BindOnce(&BuyAndSellService::OnGetServiceProviders,
+      base::BindOnce(&MeldIntegrationService::OnGetServiceProviders,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper_->Request(
@@ -142,7 +141,7 @@ void BuyAndSellService::GetServiceProviders(
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
-void BuyAndSellService::OnGetServiceProviders(
+void MeldIntegrationService::OnGetServiceProviders(
     GetServiceProvidersCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
@@ -166,7 +165,7 @@ void BuyAndSellService::OnGetServiceProviders(
   std::move(callback).Run(std::move(service_providers), std::nullopt);
 }
 
-void BuyAndSellService::GetCryptoQuotes(
+void MeldIntegrationService::GetCryptoQuotes(
     const std::string& country,
     const std::string& source_currency_code,
     const std::string& destination_currency_code,
@@ -187,7 +186,7 @@ void BuyAndSellService::GetCryptoQuotes(
   auto url = GURL(base::StringPrintf("%s/payments/crypto/quote",
                                      GetMeldAssetRatioBaseURL().c_str()));
   auto internal_callback =
-      base::BindOnce(&BuyAndSellService::OnGetCryptoQuotes,
+      base::BindOnce(&MeldIntegrationService::OnGetCryptoQuotes,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper_->Request(
@@ -196,7 +195,7 @@ void BuyAndSellService::GetCryptoQuotes(
       {.auto_retry_on_network_change = true, .enable_cache = false});
 }
 
-void BuyAndSellService::OnGetCryptoQuotes(
+void MeldIntegrationService::OnGetCryptoQuotes(
     GetCryptoQuotesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
@@ -228,7 +227,7 @@ void BuyAndSellService::OnGetCryptoQuotes(
 }
 
 // static
-GURL BuyAndSellService::GetGetPaymentMethodsURL(
+GURL MeldIntegrationService::GetGetPaymentMethodsURL(
     const std::string& countries,
     const std::string& fiat_currencies,
     const std::string& crypto_currencies,
@@ -266,7 +265,7 @@ GURL BuyAndSellService::GetGetPaymentMethodsURL(
   return url;
 }
 
-void BuyAndSellService::GetPaymentMethods(
+void MeldIntegrationService::GetPaymentMethods(
     const std::string& countries,
     const std::string& fiat_currencies,
     const std::string& crypto_currencies,
@@ -275,7 +274,7 @@ void BuyAndSellService::GetPaymentMethods(
     const std::string& statuses,
     GetPaymentMethodsCallback callback) {
   auto internal_callback =
-      base::BindOnce(&BuyAndSellService::OnGetPaymentMethods,
+      base::BindOnce(&MeldIntegrationService::OnGetPaymentMethods,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper_->Request(
@@ -287,7 +286,7 @@ void BuyAndSellService::GetPaymentMethods(
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
-void BuyAndSellService::OnGetPaymentMethods(
+void MeldIntegrationService::OnGetPaymentMethods(
     GetPaymentMethodsCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
@@ -312,7 +311,7 @@ void BuyAndSellService::OnGetPaymentMethods(
 }
 
 // static
-GURL BuyAndSellService::GetFiatCurrenciesURL(
+GURL MeldIntegrationService::GetFiatCurrenciesURL(
     const std::string& countries,
     const std::string& fiat_currencies,
     const std::string& crypto_currencies,
@@ -350,7 +349,7 @@ GURL BuyAndSellService::GetFiatCurrenciesURL(
   return url;
 }
 
-void BuyAndSellService::GetFiatCurrencies(
+void MeldIntegrationService::GetFiatCurrencies(
     const std::string& countries,
     const std::string& fiat_currencies,
     const std::string& crypto_currencies,
@@ -359,7 +358,7 @@ void BuyAndSellService::GetFiatCurrencies(
     const std::string& statuses,
     GetFiatCurrenciesCallback callback) {
   auto internal_callback =
-      base::BindOnce(&BuyAndSellService::OnGetFiatCurrencies,
+      base::BindOnce(&MeldIntegrationService::OnGetFiatCurrencies,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper_->Request(
@@ -370,7 +369,7 @@ void BuyAndSellService::GetFiatCurrencies(
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
-void BuyAndSellService::OnGetFiatCurrencies(
+void MeldIntegrationService::OnGetFiatCurrencies(
     GetFiatCurrenciesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
@@ -395,7 +394,7 @@ void BuyAndSellService::OnGetFiatCurrencies(
 }
 
 // static
-GURL BuyAndSellService::GetCryptoCurrenciesURL(
+GURL MeldIntegrationService::GetCryptoCurrenciesURL(
     const std::string& countries,
     const std::string& fiat_currencies,
     const std::string& crypto_currencies,
@@ -435,7 +434,7 @@ GURL BuyAndSellService::GetCryptoCurrenciesURL(
   return url;
 }
 
-void BuyAndSellService::GetCryptoCurrencies(
+void MeldIntegrationService::GetCryptoCurrencies(
     const std::string& countries,
     const std::string& fiat_currencies,
     const std::string& crypto_currencies,
@@ -444,7 +443,7 @@ void BuyAndSellService::GetCryptoCurrencies(
     const std::string& statuses,
     GetCryptoCurrenciesCallback callback) {
   auto internal_callback =
-      base::BindOnce(&BuyAndSellService::OnGetCryptoCurrencies,
+      base::BindOnce(&MeldIntegrationService::OnGetCryptoCurrencies,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper_->Request(
@@ -455,7 +454,7 @@ void BuyAndSellService::GetCryptoCurrencies(
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
-void BuyAndSellService::OnGetCryptoCurrencies(
+void MeldIntegrationService::OnGetCryptoCurrencies(
     GetCryptoCurrenciesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
@@ -481,7 +480,7 @@ void BuyAndSellService::OnGetCryptoCurrencies(
 }
 
 // static
-GURL BuyAndSellService::GetCountriesURL(const std::string& countries,
+GURL MeldIntegrationService::GetCountriesURL(const std::string& countries,
                                         const std::string& fiat_currencies,
                                         const std::string& crypto_currencies,
                                         const std::string& service_providers,
@@ -520,7 +519,7 @@ GURL BuyAndSellService::GetCountriesURL(const std::string& countries,
   return url;
 }
 
-void BuyAndSellService::GetCountries(const std::string& countries,
+void MeldIntegrationService::GetCountries(const std::string& countries,
                                      const std::string& fiat_currencies,
                                      const std::string& crypto_currencies,
                                      const std::string& service_providers,
@@ -528,7 +527,7 @@ void BuyAndSellService::GetCountries(const std::string& countries,
                                      const std::string& statuses,
                                      GetCountriesCallback callback) {
   auto internal_callback =
-      base::BindOnce(&BuyAndSellService::OnGetCountries,
+      base::BindOnce(&MeldIntegrationService::OnGetCountries,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper_->Request(
@@ -539,7 +538,7 @@ void BuyAndSellService::GetCountries(const std::string& countries,
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
-void BuyAndSellService::OnGetCountries(
+void MeldIntegrationService::OnGetCountries(
     GetCountriesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {

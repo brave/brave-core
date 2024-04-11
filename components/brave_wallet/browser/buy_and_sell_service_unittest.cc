@@ -19,17 +19,17 @@
 
 namespace brave_wallet {
 
-class BuyAndSellServiceUnitTest : public testing::Test {
+class MeldIntegrationServiceUnitTest : public testing::Test {
  public:
-  BuyAndSellServiceUnitTest()
+  MeldIntegrationServiceUnitTest()
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
     asset_ratio_service_ =
-        std::make_unique<BuyAndSellService>(shared_url_loader_factory_);
+        std::make_unique<MeldIntegrationService>(shared_url_loader_factory_);
   }
 
-  ~BuyAndSellServiceUnitTest() override = default;
+  ~MeldIntegrationServiceUnitTest() override = default;
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
     return shared_url_loader_factory_;
@@ -63,7 +63,7 @@ class BuyAndSellServiceUnitTest : public testing::Test {
       const std::string& service_providers,
       const std::string& payment_method_types,
       const std::string& statuses,
-      BuyAndSellService::GetServiceProvidersCallback callback,
+      MeldIntegrationService::GetServiceProvidersCallback callback,
       const bool error_interceptor = false) {
     if (!error_interceptor) {
       SetInterceptor(content);
@@ -89,7 +89,7 @@ class BuyAndSellServiceUnitTest : public testing::Test {
                            const std::string& to_asset,
                            const double source_amount,
                            const std::string& account,
-                           BuyAndSellService::GetCryptoQuotesCallback callback,
+                           MeldIntegrationService::GetCryptoQuotesCallback callback,
                            const bool error_interceptor = false) {
     if (!error_interceptor) {
       SetInterceptor(content);
@@ -116,7 +116,7 @@ class BuyAndSellServiceUnitTest : public testing::Test {
       const std::string& service_providers,
       const std::string& payment_method_types,
       const std::string& statuses,
-      BuyAndSellService::GetPaymentMethodsCallback callback,
+      MeldIntegrationService::GetPaymentMethodsCallback callback,
       const bool error_interceptor = false) {
     if (!error_interceptor) {
       SetInterceptor(content);
@@ -144,7 +144,7 @@ class BuyAndSellServiceUnitTest : public testing::Test {
       const std::string& service_providers,
       const std::string& payment_method_types,
       const std::string& statuses,
-      BuyAndSellService::GetFiatCurrenciesCallback callback,
+      MeldIntegrationService::GetFiatCurrenciesCallback callback,
       const bool error_interceptor = false) {
     if (!error_interceptor) {
       SetInterceptor(content);
@@ -172,7 +172,7 @@ class BuyAndSellServiceUnitTest : public testing::Test {
       const std::string& service_providers,
       const std::string& payment_method_types,
       const std::string& statuses,
-      BuyAndSellService::GetCryptoCurrenciesCallback callback,
+      MeldIntegrationService::GetCryptoCurrenciesCallback callback,
       const bool error_interceptor = false) {
     if (!error_interceptor) {
       SetInterceptor(content);
@@ -199,7 +199,7 @@ class BuyAndSellServiceUnitTest : public testing::Test {
                         const std::string& service_providers,
                         const std::string& payment_method_types,
                         const std::string& statuses,
-                        BuyAndSellService::GetCountriesCallback callback,
+                        MeldIntegrationService::GetCountriesCallback callback,
                         const bool error_interceptor = false) {
     if (!error_interceptor) {
       SetInterceptor(content);
@@ -220,7 +220,7 @@ class BuyAndSellServiceUnitTest : public testing::Test {
   }
 
  protected:
-  std::unique_ptr<BuyAndSellService> asset_ratio_service_;
+  std::unique_ptr<MeldIntegrationService> asset_ratio_service_;
   base::test::TaskEnvironment task_environment_;
 
  private:
@@ -229,8 +229,8 @@ class BuyAndSellServiceUnitTest : public testing::Test {
   //  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
-TEST_F(BuyAndSellServiceUnitTest, GetServiceProviders) {
-  const auto url = BuyAndSellService::GetServiceProviderURL(
+TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
+  const auto url = MeldIntegrationService::GetServiceProviderURL(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "");
   EXPECT_EQ(url.path(), "/service-providers");
@@ -374,7 +374,7 @@ TEST_F(BuyAndSellServiceUnitTest, GetServiceProviders) {
       false);
 }
 
-TEST_F(BuyAndSellServiceUnitTest, GetCryptoQuotes) {
+TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
   TestGetCryptoQuotes(
       R"({
   "quotes": [
@@ -511,8 +511,8 @@ TEST_F(BuyAndSellServiceUnitTest, GetCryptoQuotes) {
       false);
 }
 
-TEST_F(BuyAndSellServiceUnitTest, GetPaymentMethods) {
-  const auto url = BuyAndSellService::GetGetPaymentMethodsURL(
+TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
+  const auto url = MeldIntegrationService::GetGetPaymentMethodsURL(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "");
   EXPECT_EQ(url.path(), "/service-providers/properties/payment-methods");
@@ -605,8 +605,8 @@ TEST_F(BuyAndSellServiceUnitTest, GetPaymentMethods) {
       false);
 }
 
-TEST_F(BuyAndSellServiceUnitTest, GetFiatCurrencies) {
-  const auto url = BuyAndSellService::GetFiatCurrenciesURL(
+TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
+  const auto url = MeldIntegrationService::GetFiatCurrenciesURL(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "");
   EXPECT_EQ(url.path(), "/service-providers/properties/fiat-currencies");
@@ -702,8 +702,8 @@ TEST_F(BuyAndSellServiceUnitTest, GetFiatCurrencies) {
       false);
 }
 
-TEST_F(BuyAndSellServiceUnitTest, GetCryptoCurrencies) {
-  const auto url = BuyAndSellService::GetCryptoCurrenciesURL(
+TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
+  const auto url = MeldIntegrationService::GetCryptoCurrenciesURL(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "");
   EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
@@ -818,8 +818,8 @@ TEST_F(BuyAndSellServiceUnitTest, GetCryptoCurrencies) {
       false);
 }
 
-TEST_F(BuyAndSellServiceUnitTest, GetCountries) {
-  const auto url = BuyAndSellService::GetCountriesURL(
+TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
+  const auto url = MeldIntegrationService::GetCountriesURL(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "");
   EXPECT_EQ(url.path(), "/service-providers/properties/countries");

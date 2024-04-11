@@ -144,7 +144,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   brave_news::BraveNewsControllerFactory::GetInstance();
   brave_wallet::AssetRatioServiceFactory::GetInstance();
-  brave_wallet::BuyAndSellServiceFactory::GetInstance();
+  brave_wallet::MeldIntegrationServiceFactory::GetInstance();
   brave_wallet::KeyringServiceFactory::GetInstance();
   brave_wallet::JsonRpcServiceFactory::GetInstance();
   brave_wallet::SwapServiceFactory::GetInstance();

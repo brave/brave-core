@@ -140,7 +140,7 @@ void AndroidWalletPageUI::CreatePageHandler(
         brave_wallet_auto_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
         ipfs_service_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::BuyAndSellService>
+    mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
         buy_and_sell_service) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
@@ -160,7 +160,7 @@ void AndroidWalletPageUI::CreatePageHandler(
       profile, std::move(swap_service_receiver));
   brave_wallet::AssetRatioServiceFactory::BindForContext(
       profile, std::move(asset_ratio_service_receiver));
-  brave_wallet::BuyAndSellServiceFactory::BindForContext(
+  brave_wallet::MeldIntegrationServiceFactory::BindForContext(
       profile, std::move(buy_and_sell_service));
   brave_wallet::KeyringServiceFactory::BindForContext(
       profile, std::move(keyring_service_receiver));

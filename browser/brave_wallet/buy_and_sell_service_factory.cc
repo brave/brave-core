@@ -17,61 +17,61 @@
 namespace brave_wallet {
 
 // static
-BuyAndSellServiceFactory* BuyAndSellServiceFactory::GetInstance() {
-  static base::NoDestructor<BuyAndSellServiceFactory> instance;
+MeldIntegrationServiceFactory* MeldIntegrationServiceFactory::GetInstance() {
+  static base::NoDestructor<MeldIntegrationServiceFactory> instance;
   return instance.get();
 }
 
 // static
-mojo::PendingRemote<mojom::BuyAndSellService>
-BuyAndSellServiceFactory::GetForContext(content::BrowserContext* context) {
+mojo::PendingRemote<mojom::MeldIntegrationService>
+MeldIntegrationServiceFactory::GetForContext(content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
-    return mojo::PendingRemote<mojom::BuyAndSellService>();
+    return mojo::PendingRemote<mojom::MeldIntegrationService>();
   }
 
-  return static_cast<BuyAndSellService*>(
+  return static_cast<MeldIntegrationService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();
 }
 
 // static
-BuyAndSellService* BuyAndSellServiceFactory::GetServiceForContext(
+MeldIntegrationService* MeldIntegrationServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
     return nullptr;
   }
-  return static_cast<BuyAndSellService*>(
+  return static_cast<MeldIntegrationService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 // static
-void BuyAndSellServiceFactory::BindForContext(
+void MeldIntegrationServiceFactory::BindForContext(
     content::BrowserContext* context,
-    mojo::PendingReceiver<mojom::BuyAndSellService> receiver) {
+    mojo::PendingReceiver<mojom::MeldIntegrationService> receiver) {
   auto* buy_and_sell_service =
-      BuyAndSellServiceFactory::GetServiceForContext(context);
+      MeldIntegrationServiceFactory::GetServiceForContext(context);
   if (buy_and_sell_service) {
     buy_and_sell_service->Bind(std::move(receiver));
   }
 }
 
-BuyAndSellServiceFactory::BuyAndSellServiceFactory()
+MeldIntegrationServiceFactory::MeldIntegrationServiceFactory()
     : BrowserContextKeyedServiceFactory(
-          "BuyAndSellService",
+          "MeldIntegrationService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-BuyAndSellServiceFactory::~BuyAndSellServiceFactory() = default;
+MeldIntegrationServiceFactory::~MeldIntegrationServiceFactory() = default;
 
-KeyedService* BuyAndSellServiceFactory::BuildServiceInstanceFor(
+KeyedService* MeldIntegrationServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
 
-  return new BuyAndSellService(shared_url_loader_factory);
+  return new MeldIntegrationService(shared_url_loader_factory);
 }
 
-content::BrowserContext* BuyAndSellServiceFactory::GetBrowserContextToUse(
+content::BrowserContext* MeldIntegrationServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

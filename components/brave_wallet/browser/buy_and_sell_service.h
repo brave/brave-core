@@ -21,18 +21,18 @@ class SharedURLLoaderFactory;
 
 namespace brave_wallet {
 
-class BuyAndSellService : public KeyedService, public mojom::BuyAndSellService {
+class MeldIntegrationService : public KeyedService, public mojom::MeldIntegrationService {
  public:
-  explicit BuyAndSellService(
+  explicit MeldIntegrationService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~BuyAndSellService() override;
-  BuyAndSellService(const BuyAndSellService&) = delete;
-  BuyAndSellService& operator=(const BuyAndSellService&) = delete;
+  ~MeldIntegrationService() override;
+  MeldIntegrationService(const MeldIntegrationService&) = delete;
+  MeldIntegrationService& operator=(const MeldIntegrationService&) = delete;
 
   using APIRequestResult = api_request_helper::APIRequestResult;
 
-  mojo::PendingRemote<mojom::BuyAndSellService> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::BuyAndSellService> receiver);
+  mojo::PendingRemote<mojom::MeldIntegrationService> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::MeldIntegrationService> receiver);
 
   static GURL GetServiceProviderURL(const std::string& countries,
                                     const std::string& fiat_currencies,
@@ -117,8 +117,8 @@ class BuyAndSellService : public KeyedService, public mojom::BuyAndSellService {
                     GetCountriesCallback callback) override;
 
  private:
-  friend class BuyAndSellServiceUnitTest;
-  mojo::ReceiverSet<mojom::BuyAndSellService> receivers_;
+  friend class MeldIntegrationServiceUnitTest;
+  mojo::ReceiverSet<mojom::MeldIntegrationService> receivers_;
 
   void OnGetServiceProviders(GetServiceProvidersCallback callback,
                              APIRequestResult api_request_result) const;
@@ -139,7 +139,7 @@ class BuyAndSellService : public KeyedService, public mojom::BuyAndSellService {
                       APIRequestResult api_request_result) const;
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-  base::WeakPtrFactory<BuyAndSellService> weak_ptr_factory_;
+  base::WeakPtrFactory<MeldIntegrationService> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

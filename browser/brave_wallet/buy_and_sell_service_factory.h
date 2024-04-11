@@ -12,27 +12,27 @@
 
 namespace brave_wallet {
 
-class BuyAndSellService;
+class MeldIntegrationService;
 
-class BuyAndSellServiceFactory : public BrowserContextKeyedServiceFactory {
+class MeldIntegrationServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static mojo::PendingRemote<mojom::BuyAndSellService> GetForContext(
+  static mojo::PendingRemote<mojom::MeldIntegrationService> GetForContext(
       content::BrowserContext* context);
-  static BuyAndSellService* GetServiceForContext(
+  static MeldIntegrationService* GetServiceForContext(
       content::BrowserContext* context);
-  static BuyAndSellServiceFactory* GetInstance();
+  static MeldIntegrationServiceFactory* GetInstance();
   static void BindForContext(
       content::BrowserContext* context,
-      mojo::PendingReceiver<mojom::BuyAndSellService> receiver);
+      mojo::PendingReceiver<mojom::MeldIntegrationService> receiver);
 
  private:
-  friend base::NoDestructor<BuyAndSellServiceFactory>;
+  friend base::NoDestructor<MeldIntegrationServiceFactory>;
 
-  BuyAndSellServiceFactory();
-  BuyAndSellServiceFactory(const BuyAndSellServiceFactory&) = delete;
-  BuyAndSellServiceFactory& operator=(const BuyAndSellServiceFactory&) = delete;
+  MeldIntegrationServiceFactory();
+  MeldIntegrationServiceFactory(const MeldIntegrationServiceFactory&) = delete;
+  MeldIntegrationServiceFactory& operator=(const MeldIntegrationServiceFactory&) = delete;
 
-  ~BuyAndSellServiceFactory() override;
+  ~MeldIntegrationServiceFactory() override;
 
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
