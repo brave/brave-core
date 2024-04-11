@@ -4,13 +4,17 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
+
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 
 namespace brave_rewards::internal {
 
 RewardsEngineTest::RewardsEngineTest()
     : engine_(client_receiver_.BindNewEndpointAndPassDedicatedRemote(),
-              mojom::RewardsEngineOptions()) {}
+              mojom::RewardsEngineOptions()) {
+  engine().Get<EnvironmentConfig>().AllowDefaultValuesForTesting();
+}
 
 RewardsEngineTest::~RewardsEngineTest() = default;
 
