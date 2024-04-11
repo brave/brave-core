@@ -99,8 +99,6 @@ inline constexpr char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
 inline constexpr char kTabsSearchShow[] = "brave.tabs_search_show";
 inline constexpr char kTabMuteIndicatorNotClickable[] =
     "brave.tabs.mute_indicator_not_clickable";
-inline constexpr char kDontAskForCrashReporting[] =
-    "brave.dont_ask_for_crash_reporting";
 
 // Cast extension requires a browser restart once the setting is toggled.
 // kEnableMediaRouterOnRestart is used as a proxy to identify the current

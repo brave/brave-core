@@ -9,6 +9,7 @@ import * as S from './style'
 import Button from '$web-components/button'
 import { P3APhase, WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
 import { getLocale, splitStringForTag } from '$web-common/locale'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 interface InputCheckboxProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -33,8 +34,10 @@ function InputCheckbox (props: InputCheckboxProps) {
 }
 
 function HelpImprove () {
-  const [isMetricsReportingEnabled, setMetricsReportingEnabled] = React.useState(true)
-  const [isP3AEnabled, setP3AEnabled] = React.useState(true)
+  const [isMetricsReportingEnabled, setMetricsReportingEnabled] =
+    React.useState(loadTimeData.getBoolean('metricsReportingEnabled'))
+  const [isP3AEnabled, setP3AEnabled] =
+    React.useState(loadTimeData.getBoolean('p3aEnabled'))
 
   const handleP3AChange = () => {
     setP3AEnabled(!isP3AEnabled)

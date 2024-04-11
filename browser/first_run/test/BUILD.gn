@@ -3,16 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("metrics") {
-  sources = [
-    "metrics_util.cc",
-    "metrics_util.h",
-    "pref_names.h",
-    "switches.h",
-  ]
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "first_run_unittest.cc" ]
 
   deps = [
-    "//chrome/browser:browser_process",
-    "//components/prefs",
+    "//base",
+    "//brave/browser/first_run",
+    "//brave/browser/metrics",
+    "//chrome/browser",
+    "//testing/gtest",
   ]
+
+  if (is_mac) {
+    deps += [ "//chrome/browser/ui" ]
+  }
 }

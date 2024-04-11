@@ -10,16 +10,13 @@
 #include "base/values.h"
 #include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
-#include "brave/browser/metrics/buildflags/buildflags.h"
-#include "brave/browser/metrics/metrics_reporting_util.h"
+#include "brave/browser/metrics/pref_names.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -104,9 +101,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterLocalStatePrefs(registry);
 #endif
-  registry->SetDefaultPrefValue(
-      metrics::prefs::kMetricsReportingEnabled,
-      base::Value(GetDefaultPrefValueForMetricsReporting()));
+  // default values for onboarding are set by metrics::IsMetricsReportingOptIn
+  registry->SetDefaultPrefValue(metrics::prefs::kMetricsReportingEnabled,
+                                base::Value(false));
 
   p3a::P3AService::RegisterPrefs(registry,
 #if !BUILDFLAG(IS_ANDROID)
@@ -131,9 +128,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
                                 false);
 #endif
 
-#if BUILDFLAG(ENABLE_CRASH_DIALOG)
-  registry->RegisterBooleanPref(kDontAskForCrashReporting, false);
-#endif
+  registry->RegisterBooleanPref(metrics::prefs::kDontAskForCrashReporting,
+                                false);
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
   RegisterWidevineLocalstatePrefs(registry);

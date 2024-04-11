@@ -138,7 +138,6 @@ source_set("ui") {
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "page_action/brave_page_action_icon_type.h",
-      "session_crashed_bubble_brave.cc",
       "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
       "side_panel/ai_chat/ai_chat_side_panel_utils.h",
       "sidebar/sidebar.h",
@@ -394,8 +393,6 @@ source_set("ui") {
       "views/bookmarks/brave_bookmark_context_menu.h",
       "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.cc",
       "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.h",
-      "views/brave_first_run_dialog.cc",
-      "views/brave_first_run_dialog.h",
       "views/brave_layout_provider.cc",
       "views/brave_layout_provider.h",
       "views/brave_news/brave_news_bubble_view.cc",
@@ -508,7 +505,10 @@ source_set("ui") {
       "views/window_closing_confirm_dialog_view.h",
     ]
 
-    deps += [ "//components/bookmarks/browser" ]
+    deps += [
+      "//brave/browser/metrics",
+      "//components/bookmarks/browser",
+    ]
 
     if (enable_brave_vpn) {
       if (is_win) {

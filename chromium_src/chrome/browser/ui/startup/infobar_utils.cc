@@ -21,7 +21,6 @@ class BraveGoogleKeysInfoBarDelegate {
   }
 };
 
-#define ShowIfNotOffTheRecordProfile ShowIfNotOffTheRecordProfileBrave
 #define GoogleApiKeysInfoBarDelegate BraveGoogleKeysInfoBarDelegate
 #define AddInfoBarsIfNecessary AddInfoBarsIfNecessary_ChromiumImpl
 
@@ -37,7 +36,6 @@ class BraveGoogleKeysInfoBarDelegate {
 
 #undef AddInfoBarsIfNecessary
 #undef GoogleApiKeysInfoBarDelegate
-#undef ShowIfNotOffTheRecordProfile
 
 void AddInfoBarsIfNecessary(Browser* browser,
                             Profile* profile,
