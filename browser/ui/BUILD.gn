@@ -97,6 +97,16 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
+      "bookmark/bookmark_helper.cc",
+      "bookmark/bookmark_helper.h",
+      "bookmark/bookmark_prefs_service.cc",
+      "bookmark/bookmark_prefs_service.h",
+      "bookmark/bookmark_prefs_service_factory.cc",
+      "bookmark/bookmark_prefs_service_factory.h",
+      "bookmark/brave_bookmark_prefs.cc",
+      "bookmark/brave_bookmark_prefs.h",
+      "bookmark/brave_bookmark_tab_helper.cc",
+      "bookmark/brave_bookmark_tab_helper.h",
       "brave_browser.cc",
       "brave_browser.h",
       "brave_browser_command_controller.cc",
@@ -131,6 +141,38 @@ source_set("ui") {
       "session_crashed_bubble_brave.cc",
       "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
       "side_panel/ai_chat/ai_chat_side_panel_utils.h",
+      "sidebar/sidebar.h",
+      "sidebar/sidebar_controller.cc",
+      "sidebar/sidebar_controller.h",
+      "sidebar/sidebar_model.cc",
+      "sidebar/sidebar_model.h",
+      "sidebar/sidebar_service_factory.cc",
+      "sidebar/sidebar_service_factory.h",
+      "sidebar/sidebar_tab_helper.cc",
+      "sidebar/sidebar_tab_helper.h",
+      "sidebar/sidebar_utils.cc",
+      "sidebar/sidebar_utils.h",
+      "tabs/brave_tab_color_mixer.cc",
+      "tabs/brave_tab_color_mixer.h",
+      "tabs/brave_tab_layout_constants.h",
+      "tabs/brave_tab_menu_model.cc",
+      "tabs/brave_tab_menu_model.h",
+      "tabs/brave_tab_prefs.cc",
+      "tabs/brave_tab_prefs.h",
+      "tabs/brave_tab_strip_model.cc",
+      "tabs/brave_tab_strip_model.h",
+      "tabs/brave_tab_style.h",
+      "tabs/features.cc",
+      "tabs/features.h",
+      "tabs/shared_pinned_tab_service.cc",
+      "tabs/shared_pinned_tab_service.h",
+      "tabs/shared_pinned_tab_service_factory.cc",
+      "tabs/shared_pinned_tab_service_factory.h",
+      "tabs/split_view_browser_data.cc",
+      "tabs/split_view_browser_data.h",
+      "tabs/split_view_browser_data_observer.h",
+      "tabs/split_view_tab_strip_model_adapter.cc",
+      "tabs/split_view_tab_strip_model_adapter.h",
       "toolbar/app_menu_icons.cc",
       "toolbar/app_menu_icons.h",
       "toolbar/bookmark_bar_sub_menu_model.cc",
@@ -221,8 +263,34 @@ source_set("ui") {
       "whats_new/whats_new_util.h",
     ]
 
-    deps +=
-        [ "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings" ]
+    deps += [
+      "//base",
+      "//brave/browser/profiles:util",
+      "//brave/common",
+      "//brave/components/constants",
+      "//brave/components/sidebar/browser",
+      "//brave/components/sidebar/common",
+      "//chrome/app:generated_resources",
+      "//chrome/browser/profiles",
+      "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
+      "//chrome/common:channel_info",
+      "//components/bookmarks/common",
+      "//components/google/core/common",
+      "//components/keyed_service/content",
+      "//components/keyed_service/core",
+      "//components/pref_registry",
+      "//components/prefs",
+      "//components/sessions",
+      "//components/user_prefs",
+      "//content/public/browser",
+      "//content/public/common",
+      "//extensions/buildflags",
+      "//skia",
+      "//third_party/abseil-cpp:absl",
+      "//ui/color:color_headers",
+      "//ui/color:mixers",
+      "//url",
+    ]
 
     if (enable_request_otr) {
       deps += [
@@ -275,6 +343,12 @@ source_set("ui") {
         "webui/settings/brave_extensions_manifest_v2_handler.h",
         "webui/settings/brave_tor_snowflake_extension_handler.cc",
         "webui/settings/brave_tor_snowflake_extension_handler.h",
+      ]
+
+      deps += [
+        "//chrome/browser/extensions",
+        "//extensions/browser",
+        "//extensions/common",
       ]
     }
   }
@@ -543,7 +617,6 @@ source_set("ui") {
     "//brave/browser/themes",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
-    "//brave/browser/ui/tabs",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
@@ -792,7 +865,6 @@ source_set("ui") {
 
   if (toolkit_views) {
     deps += [
-      "//brave/browser/ui/sidebar",
       "//brave/components/sidebar/browser",
       "//chrome/app:generated_resources",
       "//chrome/browser/ui/views",
@@ -832,7 +904,6 @@ source_set("ui") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/brave_wallet",
       "//brave/browser/resources/settings:resources",
-      "//brave/browser/ui/bookmark",
       "//brave/browser/ui/color:leo_colors",
       "//brave/common/importer",
       "//brave/components/brave_adaptive_captcha",

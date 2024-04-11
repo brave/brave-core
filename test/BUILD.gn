@@ -175,7 +175,6 @@ test("brave_unit_tests") {
     "//brave/browser/ui:unit_tests",
     "//brave/browser/ui/brave_rewards:unit_tests",
     "//brave/browser/ui/brave_tooltips",
-    "//brave/browser/ui/tabs",
     "//brave/browser/ui/tabs/test:unit_tests",
     "//brave/browser/web_discovery:unit_tests",
     "//brave/chromium_src/components/flags_ui:unit_tests",
@@ -428,7 +427,6 @@ test("brave_unit_tests") {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/browser/download/bubble:unit_tests",
       "//brave/browser/renderer_context_menu/test:unit_tests",
-      "//brave/browser/ui/bookmark",
       "//brave/browser/ui/bookmark:unittest",
       "//brave/browser/ui/commands:unit_tests",
       "//brave/browser/ui/toolbar:brave_app_menu_unit_test",
@@ -691,10 +689,7 @@ if (!is_android) {
     ]
 
     if (toolkit_views) {
-      deps += [
-        "//brave/browser/ui/sidebar",
-        "//brave/components/sidebar/browser",
-      ]
+      deps += [ "//brave/components/sidebar/browser" ]
     }
 
     if (enable_playlist_webui) {
@@ -850,7 +845,6 @@ test("brave_browser_tests") {
     "//brave/browser/test:browser_tests",
     "//brave/browser/themes",
     "//brave/browser/ui:browser_tests",
-    "//brave/browser/ui/tabs",
     "//brave/browser/ui/tabs/test:browser_tests",
     "//brave/browser/ui/views/tabs:browser_tests",
     "//brave/browser/web_discovery:browser_tests",
@@ -1104,7 +1098,6 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
     ]
     deps += [
-      "//brave/browser/ui/sidebar",
       "//brave/browser/ui/sidebar:browser_tests",
       "//brave/browser/ui/views/brave_ads:browser_tests",
       "//brave/browser/ui/views/tabs:browser_tests",

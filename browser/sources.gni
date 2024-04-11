@@ -133,7 +133,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
-  "//brave/browser/ui/tabs",
   "//brave/common",
   "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/body_sniffer",
@@ -368,7 +367,6 @@ if (is_android) {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/brave_ads/tooltips",
     "//brave/browser/importer",
-    "//brave/browser/ui/bookmark",
     "//brave/components/brave_search_conversion",
     "//brave/components/time_period_storage",
     "//components/infobars/content",
@@ -379,10 +377,7 @@ if (toolkit_views) {
   brave_chrome_browser_sources += brave_browser_onboarding_sources
 
   brave_chrome_browser_deps += brave_browser_onboarding_deps
-  brave_chrome_browser_deps += [
-    "//brave/browser/ui/sidebar",
-    "//brave/components/sidebar/browser",
-  ]
+  brave_chrome_browser_deps += [ "//brave/components/sidebar/browser" ]
 }
 
 if (enable_tor) {

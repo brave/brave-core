@@ -13,7 +13,6 @@ source_set("browser_tests") {
   ]
 
   deps = [
-    "//brave/browser/ui/tabs:tabs",
     "//brave/components/constants",
     "//chrome/app:command_ids",
     "//chrome/browser",
@@ -41,7 +40,6 @@ source_set("unit_tests") {
 
     deps = [
       ":test_support",
-      "//brave/browser/ui/tabs",
       "//chrome/browser",
       "//chrome/browser/ui",
       "//chrome/test:test_support",

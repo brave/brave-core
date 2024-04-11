@@ -237,7 +237,6 @@ source_set("browser_tests") {
       "//base/test:test_support",
       "//brave/app:command_ids",
       "//brave/browser",
-      "//brave/browser/ui/sidebar",
       "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:pref_names",

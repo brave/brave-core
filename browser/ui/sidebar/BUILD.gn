@@ -9,69 +9,6 @@ import("//extensions/buildflags/buildflags.gni")
 
 assert(toolkit_views)
 
-source_set("sidebar") {
-  # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
-  # TODO(simonhong): Create issue for removing this. Remove when XXXXXXX is resolved
-  check_includes = false
-  sources = [
-    "sidebar.h",
-    "sidebar_controller.cc",
-    "sidebar_controller.h",
-    "sidebar_model.cc",
-    "sidebar_model.h",
-    "sidebar_service_factory.cc",
-    "sidebar_service_factory.h",
-    "sidebar_tab_helper.cc",
-    "sidebar_tab_helper.h",
-    "sidebar_utils.cc",
-    "sidebar_utils.h",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/browser/profiles:util",
-    "//brave/components/constants",
-    "//brave/components/sidebar/browser",
-    "//chrome/browser/profiles",
-    "//chrome/common:channel_info",
-    "//components/google/core/common",
-    "//components/keyed_service/content",
-    "//components/keyed_service/core",
-    "//components/prefs",
-    "//components/user_prefs",
-    "//content/public/browser",
-    "//content/public/common",
-    "//extensions/buildflags",
-    "//skia",
-    "//third_party/abseil-cpp:absl",
-    "//url",
-  ]
-
-  if (enable_extensions) {
-    deps += [
-      "//chrome/browser/extensions",
-      "//extensions/browser",
-      "//extensions/common",
-    ]
-  }
-
-  # included from chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h
-  # see check_includes comment above
-  deps += [
-    "//chrome/browser/cart:mojo_bindings",
-    "//ui/webui/resources/js/browser_command:mojo_bindings",
-  ]
-
-  if (!is_android) {
-    deps += [
-      "//chrome/browser/new_tab_page/modules/drive:mojo_bindings",
-      "//chrome/browser/new_tab_page/modules/recipes:mojo_bindings",
-      "//chrome/browser/ui/webui/new_tab_page:mojo_bindings",
-      "//components/omnibox/browser:mojo_bindings",
-    ]
-  }
-}
-
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -84,8 +21,6 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//brave/app:command_ids",
-    "//brave/browser/ui/sidebar",
-    "//brave/browser/ui/tabs",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/playlist/common",
     "//brave/components/sidebar/browser",
@@ -113,7 +48,6 @@ source_set("unit_tests") {
 
   deps = [
     "//base",
-    "//brave/browser/ui/sidebar",
     "//brave/common",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/playlist/common",
