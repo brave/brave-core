@@ -43,8 +43,7 @@ export function useLifi({
         !toAccountId ||
         !fromToken ||
         !toToken ||
-        !fromNetwork ||
-        !step
+        !fromNetwork
       ) {
         return
       }

@@ -43,7 +43,7 @@ export function useTokenAllowance() {
       account: BraveWallet.AccountInfo
       token: BraveWallet.BlockchainToken
     }) => {
-      if (!token.contractAddress) {
+      if (!token.contractAddress || token.coin !== BraveWallet.CoinType.ETH) {
         setHasAllowance(true)
         return
       }
