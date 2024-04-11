@@ -15,7 +15,6 @@ import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
 export const showConnectToSite =
   createAction<ShowConnectToSitePayload>('showConnectToSite')
-export const setupWallet = createAction('setupWallet')
 export const openWalletSettings = createAction('openWalletSettings')
 export const navigateTo = createAction<PanelTypes>('navigateTo')
 export const navigateToMain = createAction('navigateToMain')
