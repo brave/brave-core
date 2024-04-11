@@ -7,7 +7,10 @@
 #define BRAVE_COMPONENTS_MISC_METRICS_GENERAL_BROWSER_USAGE_H_
 
 #include <memory>
+#include <optional>
+#include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 
 class PrefRegistrySimple;
@@ -19,9 +22,17 @@ namespace misc_metrics {
 inline constexpr char kWeeklyUseHistogramName[] = "Brave.Core.WeeklyUsage";
 inline constexpr char kProfileCountHistogramName[] = "Brave.Core.ProfileCount";
 
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
+inline constexpr char kDayZeroInstallTimePrefix[] = "Brave.DayZero.";
+inline constexpr char kDayZeroInstallTimeSuffix[] = ".InstallTime";
+#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
+
 class GeneralBrowserUsage {
  public:
-  explicit GeneralBrowserUsage(PrefService* local_state);
+  GeneralBrowserUsage(PrefService* local_state,
+                      std::optional<std::string> day_zero_experiment_variant,
+                      bool is_first_run,
+                      base::Time first_run_time);
   ~GeneralBrowserUsage();
 
   GeneralBrowserUsage(const GeneralBrowserUsage&) = delete;
@@ -33,11 +44,16 @@ class GeneralBrowserUsage {
 
  private:
   void ReportWeeklyUse();
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
+  void ReportInstallTime();
+#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 
   void SetUpUpdateTimer();
 
   void Update();
 
+  raw_ptr<PrefService> local_state_;
+  base::Time first_run_time_;
   std::unique_ptr<ISOWeeklyStorage> usage_storage_;
 
   base::WallClockTimer report_timer_;
