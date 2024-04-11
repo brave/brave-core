@@ -16,11 +16,7 @@ import { WalletActions } from '../../common/actions'
 // types
 import { PanelState, UIState, WalletState } from '../../constants/types'
 
-// components
-import { LibContext } from '../../common/context/lib.context'
-
 // Mocks
-import * as Lib from '../../common/async/__mocks__/lib'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
 import { createMockStore } from '../../utils/test-utils'
 import { WalletApiDataOverrides } from '../../constants/testing_types'
@@ -70,9 +66,7 @@ export const WalletPanelStory: React.FC<
     <MemoryRouter initialEntries={['/']}>
       <Provider store={store}>
         <ApiProxyContext.Provider value={mockedProxy}>
-          <LibContext.Provider value={Lib as any}>
-            {children}
-          </LibContext.Provider>
+          {children}
         </ApiProxyContext.Provider>
       </Provider>
     </MemoryRouter>

@@ -22,11 +22,7 @@ import {
   UIState
 } from '../../constants/types'
 
-// components
-import { LibContext } from '../../common/context/lib.context'
-
 // Mocks
-import * as Lib from '../../common/async/__mocks__/lib'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
 import { WalletApiDataOverrides } from '../../constants/testing_types'
 import getAPIProxy from '../../common/async/bridge' // aut-mocked by complier
@@ -83,9 +79,7 @@ export const WalletPageStory: React.FC<
     >
       <Provider store={store}>
         <ApiProxyContext.Provider value={mockedProxy}>
-          <LibContext.Provider value={Lib as any}>
-            {children}
-          </LibContext.Provider>
+          {children}
         </ApiProxyContext.Provider>
       </Provider>
     </MemoryRouter>
