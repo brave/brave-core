@@ -135,9 +135,9 @@ class ZCashWalletServiceUnitTest : public testing::Test {
 // https://zcashblockexplorer.com/transactions/3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101/raw
 TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
   {
-    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
-                                         mojom::KeyringId::kZCashMainnet,
-                                         mojom::AccountKind::kDerived, 0);
+    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
     keyring_service_->UpdateNextUnusedAddressForZCashAccount(account_id, 2, 2);
   }
 
@@ -282,9 +282,9 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
           callback_called = true;
         });
 
-    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
-                                         mojom::KeyringId::kZCashMainnet,
-                                         mojom::AccountKind::kDerived, 0);
+    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
@@ -330,9 +330,9 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
           callback_called = true;
         });
 
-    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
-                                         mojom::KeyringId::kZCashMainnet,
-                                         mojom::AccountKind::kDerived, 0);
+    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
@@ -375,9 +375,9 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
           }));
 
   {
-    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
-                                         mojom::KeyringId::kZCashMainnet,
-                                         mojom::AccountKind::kDerived, 0);
+    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
     keyring_service_->UpdateNextUnusedAddressForZCashAccount(account_id, 2,
                                                              std::nullopt);
   }
@@ -394,9 +394,9 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
           callback_called = true;
         });
 
-    auto account_id = MakeZCashAccountId(mojom::CoinType::ZEC,
-                                         mojom::KeyringId::kZCashMainnet,
-                                         mojom::AccountKind::kDerived, 0);
+    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));

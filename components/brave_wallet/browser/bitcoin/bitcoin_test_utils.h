@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 
 namespace brave_wallet {
@@ -44,16 +45,16 @@ class BitcoinTestRpcServer {
   scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory();
 
   void SetUpBitcoinRpc(const mojom::AccountIdPtr& account_id);
-  void AddTransactedAddress(const std::string& address);
-  void AddMempoolBalance(const std::string& address,
+  void AddTransactedAddress(const mojom::BitcoinAddressPtr& address);
+  void AddMempoolBalance(const mojom::BitcoinAddressPtr& address,
                          uint64_t funded,
                          uint64_t spent);
 
   void FailNextTransactionBroadcast();
   void ConfirmAllTransactions();
 
-  const std::string& Address0() const { return address_0_; }
-  const std::string& Address6() const { return address_6_; }
+  const mojom::BitcoinAddressPtr& Address0() const { return address_0_; }
+  const mojom::BitcoinAddressPtr& Address6() const { return address_6_; }
 
   std::map<std::string, bitcoin_rpc::AddressStats>& address_stats_map() {
     return address_stats_map_;
@@ -68,8 +69,8 @@ class BitcoinTestRpcServer {
   std::string mainnet_rpc_url_ = "https://btc-mainnet.com/";
   std::string testnet_rpc_url_ = "https://btc-testnet.com/";
   uint32_t mainnet_height_ = 12345;
-  std::string address_0_;
-  std::string address_6_;
+  mojom::BitcoinAddressPtr address_0_;
+  mojom::BitcoinAddressPtr address_6_;
   std::map<std::string, bitcoin_rpc::AddressStats> address_stats_map_;
   std::map<std::string, bitcoin_rpc::UnspentOutputs> utxos_map_;
   base::Value fee_estimates_;

@@ -163,7 +163,7 @@ std::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
 }
 
 // https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#segwit-address-format
-std::string PubkeyToSegwitAddress(const std::vector<uint8_t>& pubkey,
+std::string PubkeyToSegwitAddress(base::span<const uint8_t> pubkey,
                                   bool testnet) {
   auto hash160 = Hash160(pubkey);
   std::vector<unsigned char> input;

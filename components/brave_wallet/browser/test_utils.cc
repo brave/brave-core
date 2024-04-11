@@ -23,6 +23,13 @@
 namespace brave_wallet {
 namespace {
 
+constexpr char kMockBtcMainnetImport[] =
+    "zprvAdG4iTXWBoARxkkzNpNh8r6Qag3irQB8PzEMkAFeTRXxHpbF9z4QgEvBRmfvqWvGp42t42"
+    "nvgGpNgYSJA9iefm1yYNZKEm7z6qUWCroSQnE";
+constexpr char kMockBtcTestnetImport[] =
+    "vprv9K7GLAaERuM58PVvbk1sMo7wzVCoPwzZpVXLRBmum93gL5pSqQCAAvZjtmz93nnnYMr9i2"
+    "FwG2fqrwYLRgJmDDwFjGiamGsbRMJ5Y6siJ8H";
+
 std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
   auto prefix = [&keyring_id]() -> std::string {
     switch (keyring_id) {
@@ -42,6 +49,10 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
         return "Zcash Mainnet Account";
       case mojom::KeyringId::kZCashTestnet:
         return "Zcash Testnet Account";
+      case mojom::KeyringId::kBitcoinImport:
+        return "Bitcoin Imported Account";
+      case mojom::KeyringId::kBitcoinImportTestnet:
+        return "Bitcoin Imported Testnet Account";
     }
     NOTREACHED();
     return "";
@@ -88,8 +99,56 @@ mojom::AccountInfoPtr AccountUtils::CreateDerivedAccount(
   return acc;
 }
 
+mojom::AccountInfoPtr AccountUtils::GetImportedAccount(
+    mojom::KeyringId keyring_id,
+    uint32_t index) {
+  EXPECT_TRUE(IsBitcoinImportKeyring(keyring_id));
+
+  auto all_accounts = keyring_service_->GetAllAccountsSync();
+  for (auto& acc : all_accounts->accounts) {
+    if (acc->account_id->keyring_id != keyring_id ||
+        acc->account_id->kind != mojom::AccountKind::kImported) {
+      continue;
+    }
+    if (index == 0) {
+      return acc->Clone();
+    }
+    --index;
+  }
+  return nullptr;
+}
+
+mojom::AccountInfoPtr AccountUtils::CreateImportedAccount(
+    mojom::KeyringId keyring_id,
+    const std::string& name) {
+  EXPECT_TRUE(IsBitcoinImportKeyring(keyring_id));
+  const auto network = GetNetworkForBitcoinKeyring(keyring_id);
+  auto acc =
+      keyring_service_
+          ->ImportBitcoinAccountSync(name,
+                                     (network == mojom::kBitcoinMainnet)
+                                         ? kMockBtcMainnetImport
+                                         : kMockBtcTestnetImport,
+                                     GetNetworkForBitcoinKeyring(keyring_id))
+          ->Clone();
+  EXPECT_TRUE(acc);
+  return acc;
+}
+
 mojom::AccountInfoPtr AccountUtils::EnsureAccount(mojom::KeyringId keyring_id,
                                                   uint32_t index) {
+  if (IsBitcoinImportKeyring(keyring_id)) {
+    for (auto i = 0u; i <= index; ++i) {
+      if (!GetImportedAccount(keyring_id, i)) {
+        EXPECT_TRUE(
+            CreateImportedAccount(keyring_id, NewAccName(keyring_id, i)));
+      }
+    }
+    auto acc = GetImportedAccount(keyring_id, index);
+    EXPECT_TRUE(acc);
+    return acc;
+  }
+
   for (auto i = 0u; i <= index; ++i) {
     if (!GetDerivedAccount(keyring_id, i)) {
       EXPECT_TRUE(CreateDerivedAccount(keyring_id, NewAccName(keyring_id, i)));

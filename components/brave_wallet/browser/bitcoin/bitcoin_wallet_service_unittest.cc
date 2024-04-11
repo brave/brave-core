@@ -110,13 +110,16 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
     expected_balance->balances[addr->address_string] = 0;
   }
 
-  auto address_0 = bitcoin_test_rpc_server_->Address0();
-  auto address_6 = bitcoin_test_rpc_server_->Address6();
+  auto address_0 = bitcoin_test_rpc_server_->Address0().Clone();
+  auto address_6 = bitcoin_test_rpc_server_->Address6().Clone();
 
-  expected_balance->balances[address_0] = 10000 - 5000 + 8888 - 2222;
-  expected_balance->balances[address_6] = 100000 - 50000 + 88888 - 22222;
-  expected_balance->total_balance = expected_balance->balances[address_0] +
-                                    expected_balance->balances[address_6];
+  expected_balance->balances[address_0->address_string] =
+      10000 - 5000 + 8888 - 2222;
+  expected_balance->balances[address_6->address_string] =
+      100000 - 50000 + 88888 - 22222;
+  expected_balance->total_balance =
+      expected_balance->balances[address_0->address_string] +
+      expected_balance->balances[address_6->address_string];
   expected_balance->available_balance =
       10000 + 100000 - 5000 - 50000 - 2222 - 22222;
   expected_balance->pending_balance = 8888 + 88888 - 2222 - 22222;
@@ -129,10 +132,11 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
   bitcoin_test_rpc_server_->AddMempoolBalance(address_0, 1000, 10000000);
   bitcoin_test_rpc_server_->AddTransactedAddress(address_6);
 
-  expected_balance->balances[address_0] = 0;
-  expected_balance->balances[address_6] = 0;
-  expected_balance->total_balance = expected_balance->balances[address_0] +
-                                    expected_balance->balances[address_6];
+  expected_balance->balances[address_0->address_string] = 0;
+  expected_balance->balances[address_6->address_string] = 0;
+  expected_balance->total_balance =
+      expected_balance->balances[address_0->address_string] +
+      expected_balance->balances[address_6->address_string];
   expected_balance->available_balance = 0;
   expected_balance->pending_balance = 1000 - 10000000;  // negative
   EXPECT_CALL(callback,
@@ -250,13 +254,15 @@ TEST_F(BitcoinWalletServiceUnitTest, GetUtxos) {
     expected_utxos[addr->address_string].clear();
   }
   auto& utxo_0 =
-      expected_utxos[bitcoin_test_rpc_server_->Address0()].emplace_back();
+      expected_utxos[bitcoin_test_rpc_server_->Address0()->address_string]
+          .emplace_back();
   utxo_0.txid = kMockBtcTxid1;
   utxo_0.vout = "1";
   utxo_0.value = "5000";
   utxo_0.status.confirmed = true;
   auto& utxo_6 =
-      expected_utxos[bitcoin_test_rpc_server_->Address6()].emplace_back();
+      expected_utxos[bitcoin_test_rpc_server_->Address6()->address_string]
+          .emplace_back();
   utxo_6.txid = kMockBtcTxid2;
   utxo_6.vout = "7";
   utxo_6.value = "50000";
@@ -287,9 +293,8 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction_UpdatesChangeAddress) {
               })));
 
   bitcoin_test_rpc_server_->AddTransactedAddress(
-      keyring_service_
-          ->GetBitcoinAddress(account_id(), mojom::BitcoinKeyId::New(1, 5))
-          ->address_string);
+      keyring_service_->GetBitcoinAddress(account_id(),
+                                          mojom::BitcoinKeyId::New(1, 5)));
 
   bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
                                              48000, false, callback.Get());
@@ -332,7 +337,8 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
 
   EXPECT_EQ(actual_tx.inputs().size(), 2u);
   auto& input_0 = actual_tx.inputs().at(0);
-  EXPECT_EQ(input_0.utxo_address, bitcoin_test_rpc_server_->Address0());
+  EXPECT_EQ(input_0.utxo_address,
+            bitcoin_test_rpc_server_->Address0()->address_string);
   EXPECT_EQ(base::HexEncode(input_0.utxo_outpoint.txid),
             base::ToUpperASCII(kMockBtcTxid1));
   EXPECT_EQ(input_0.utxo_outpoint.index, 1u);
@@ -341,7 +347,8 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
   EXPECT_TRUE(input_0.witness.empty());
 
   auto& input_1 = actual_tx.inputs().at(1);
-  EXPECT_EQ(input_1.utxo_address, bitcoin_test_rpc_server_->Address6());
+  EXPECT_EQ(input_1.utxo_address,
+            bitcoin_test_rpc_server_->Address6()->address_string);
   EXPECT_EQ(base::HexEncode(input_1.utxo_outpoint.txid),
             base::ToUpperASCII(kMockBtcTxid2));
   EXPECT_EQ(input_1.utxo_outpoint.index, 7u);
@@ -453,17 +460,11 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Receive addresses 5 and 30 for account 0 are transacted.
-  auto receive_address_5 =
-      keyring_service_
-          ->GetBitcoinAccountDiscoveryAddress(mojom::KeyringId::kBitcoin84, 0,
-                                              mojom::BitcoinKeyId::New(0, 5))
-          ->address_string;
+  auto receive_address_5 = keyring_service_->GetBitcoinAccountDiscoveryAddress(
+      mojom::KeyringId::kBitcoin84, 0, mojom::BitcoinKeyId::New(0, 5));
   bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_5);
-  auto receive_address_30 =
-      keyring_service_
-          ->GetBitcoinAccountDiscoveryAddress(mojom::KeyringId::kBitcoin84, 0,
-                                              mojom::BitcoinKeyId::New(0, 30))
-          ->address_string;
+  auto receive_address_30 = keyring_service_->GetBitcoinAccountDiscoveryAddress(
+      mojom::KeyringId::kBitcoin84, 0, mojom::BitcoinKeyId::New(0, 30));
   bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_30);
 
   // For acc 0 next receive address is 6.
@@ -489,24 +490,15 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Receive address 15 and change address 17 for account 0 are transacted.
-  auto receive_address_15 =
-      keyring_service_
-          ->GetBitcoinAccountDiscoveryAddress(mojom::KeyringId::kBitcoin84, 0,
-                                              mojom::BitcoinKeyId::New(0, 15))
-          ->address_string;
+  auto receive_address_15 = keyring_service_->GetBitcoinAccountDiscoveryAddress(
+      mojom::KeyringId::kBitcoin84, 0, mojom::BitcoinKeyId::New(0, 15));
   bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_15);
-  auto change_address_17 =
-      keyring_service_
-          ->GetBitcoinAccountDiscoveryAddress(mojom::KeyringId::kBitcoin84, 0,
-                                              mojom::BitcoinKeyId::New(1, 17))
-          ->address_string;
+  auto change_address_17 = keyring_service_->GetBitcoinAccountDiscoveryAddress(
+      mojom::KeyringId::kBitcoin84, 0, mojom::BitcoinKeyId::New(1, 17));
   bitcoin_test_rpc_server_->AddTransactedAddress(change_address_17);
   // Receive address 8 for account 1 is transacted.
-  auto receive_address_8 =
-      keyring_service_
-          ->GetBitcoinAccountDiscoveryAddress(mojom::KeyringId::kBitcoin84, 1,
-                                              mojom::BitcoinKeyId::New(0, 8))
-          ->address_string;
+  auto receive_address_8 = keyring_service_->GetBitcoinAccountDiscoveryAddress(
+      mojom::KeyringId::kBitcoin84, 1, mojom::BitcoinKeyId::New(0, 8));
   bitcoin_test_rpc_server_->AddTransactedAddress(receive_address_8);
 
   // Discovered are 30+1 and 17+1.

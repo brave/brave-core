@@ -72,6 +72,10 @@ class AccountUtils {
                                           uint32_t index);
   mojom::AccountInfoPtr CreateDerivedAccount(mojom::KeyringId keyring_id,
                                              const std::string& name);
+  mojom::AccountInfoPtr GetImportedAccount(mojom::KeyringId keyring_id,
+                                           uint32_t index);
+  mojom::AccountInfoPtr CreateImportedAccount(mojom::KeyringId keyring_id,
+                                              const std::string& name);
   mojom::AccountInfoPtr EnsureAccount(mojom::KeyringId keyring_id,
                                       uint32_t index);
 

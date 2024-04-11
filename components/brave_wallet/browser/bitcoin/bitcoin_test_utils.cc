@@ -14,6 +14,7 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -234,8 +235,8 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
   btc_testnet->rpc_endpoints[0] = GURL(testnet_rpc_url_);
   AddCustomNetwork(prefs_, *btc_testnet);
 
-  address_0_.clear();
-  address_6_.clear();
+  address_0_.reset();
+  address_6_.reset();
   address_stats_map_.clear();
   utxos_map_.clear();
 
@@ -245,9 +246,9 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
     address_0_ =
         keyring_service_
             ->GetBitcoinAddress(account_id_, mojom::BitcoinKeyId::New(0, 0))
-            ->address_string;
-    auto& stats_0 = address_stats_map_[address_0_];
-    stats_0.address = address_0_;
+            .Clone();
+    auto& stats_0 = address_stats_map_[address_0_->address_string];
+    stats_0.address = address_0_->address_string;
     stats_0.chain_stats.funded_txo_sum = "10000";
     stats_0.chain_stats.spent_txo_sum = "5000";
     stats_0.chain_stats.tx_count = "1";
@@ -258,9 +259,9 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
     address_6_ =
         keyring_service_
             ->GetBitcoinAddress(account_id_, mojom::BitcoinKeyId::New(1, 0))
-            ->address_string;
-    auto& stats_6 = address_stats_map_[address_6_];
-    stats_6.address = address_6_;
+            .Clone();
+    auto& stats_6 = address_stats_map_[address_6_->address_string];
+    stats_6.address = address_6_->address_string;
     stats_6.chain_stats.funded_txo_sum = "100000";
     stats_6.chain_stats.spent_txo_sum = "50000";
     stats_6.chain_stats.tx_count = "1";
@@ -268,13 +269,13 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
     stats_6.mempool_stats.spent_txo_sum = "22222";
     stats_6.mempool_stats.tx_count = "1";
 
-    auto& utxos_0 = utxos_map_[address_0_];
+    auto& utxos_0 = utxos_map_[address_0_->address_string];
     utxos_0.emplace_back();
     utxos_0.back().txid = kMockBtcTxid1;
     utxos_0.back().vout = "1";
     utxos_0.back().value = "5000";
     utxos_0.back().status.confirmed = true;
-    auto& utxos_6 = utxos_map_[address_6_];
+    auto& utxos_6 = utxos_map_[address_6_->address_string];
     utxos_6.emplace_back();
     utxos_6.back().txid = kMockBtcTxid2;
     utxos_6.back().vout = "7";
@@ -317,14 +318,18 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
         )");
 }
 
-void BitcoinTestRpcServer::AddTransactedAddress(const std::string& address) {
-  address_stats_map()[address] = TransactedAddressStats(address);
+void BitcoinTestRpcServer::AddTransactedAddress(
+    const mojom::BitcoinAddressPtr& address) {
+  address_stats_map()[address->address_string] =
+      TransactedAddressStats(address->address_string);
 }
 
-void BitcoinTestRpcServer::AddMempoolBalance(const std::string& address,
-                                             uint64_t funded,
-                                             uint64_t spent) {
-  address_stats_map()[address] = MempoolAddressStats(address, funded, spent);
+void BitcoinTestRpcServer::AddMempoolBalance(
+    const mojom::BitcoinAddressPtr& address,
+    uint64_t funded,
+    uint64_t spent) {
+  address_stats_map()[address->address_string] =
+      MempoolAddressStats(address->address_string, funded, spent);
 }
 
 void BitcoinTestRpcServer::FailNextTransactionBroadcast() {

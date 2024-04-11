@@ -22,8 +22,6 @@ constexpr KeyringId kDefaultKeyringId = KeyringId::kDefault;
 constexpr KeyringId kSolanaKeyringId = KeyringId::kSolana;
 constexpr KeyringId kFilecoinKeyringId = KeyringId::kFilecoin;
 constexpr KeyringId kFilecoinTestnetKeyringId = KeyringId::kFilecoinTestnet;
-constexpr KeyringId kBitcoinKeyring84Id = KeyringId::kBitcoin84;
-constexpr KeyringId kBitcoinKeyring84TestId = KeyringId::kBitcoin84Testnet;
 }  // namespace mojom
 
 using uint256_t = unsigned _BitInt(256);

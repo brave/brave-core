@@ -274,7 +274,8 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
     value_network = ValueToNetworkInfo(data_value);
     EXPECT_EQ(value_network->coin, mojom::CoinType::BTC);
     EXPECT_THAT(value_network->supported_keyrings,
-                ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet}));
+                ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet,
+                                  mojom::KeyringId::kBitcoinImportTestnet}));
 
     data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::ZEC));
     value_network = ValueToNetworkInfo(data_value);

@@ -68,7 +68,7 @@ export const getNormalizedExternalRewardsWallet = (
   return {
     accountId: {
       address: '0x',
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       coin: BraveWallet.CoinType.ETH,
       keyringId: 0,
       kind: 0,

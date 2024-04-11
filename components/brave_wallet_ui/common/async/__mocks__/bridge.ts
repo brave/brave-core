@@ -1015,6 +1015,7 @@ export class MockedWalletApiProxy {
       return {
         walletInfo: {
           isBitcoinEnabled: true,
+          isBitcoinImportEnabled: true,
           isZCashEnabled: true,
           isWalletBackedUp: true,
           isWalletCreated: true,

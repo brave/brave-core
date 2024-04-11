@@ -38,6 +38,10 @@ const base::FeatureParam<int> kBitcoinRpcThrottle{&kBraveWalletBitcoinFeature,
 const base::FeatureParam<bool> kBitcoinTestnetDiscovery{
     &kBraveWalletBitcoinFeature, "testnet_discovery", false};
 
+BASE_FEATURE(kBraveWalletBitcoinImportFeature,
+             "BraveWalletBitcoinImport",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 BASE_FEATURE(kBraveWalletZCashFeature,
              "BraveWalletZCash",
 #if BUILDFLAG(ENABLE_ZCASH_BY_DEFAULT)

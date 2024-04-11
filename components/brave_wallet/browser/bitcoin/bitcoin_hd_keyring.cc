@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_keyring.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 
 #include <memory>
 #include <optional>
@@ -11,28 +11,32 @@
 
 #include "base/check.h"
 #include "base/notimplemented.h"
+#include "base/notreached.h"
+#include "brave/components/brave_wallet/common/bitcoin_utils.h"
 
 namespace brave_wallet {
 
-BitcoinKeyring::BitcoinKeyring(base::span<const uint8_t> seed, bool testnet)
+BitcoinHDKeyring::BitcoinHDKeyring(base::span<const uint8_t> seed, bool testnet)
     : Secp256k1HDKeyring(
           seed,
           GetRootPath(testnet ? mojom::KeyringId::kBitcoin84Testnet
                               : mojom::KeyringId::kBitcoin84)),
       testnet_(testnet) {}
 
-std::optional<std::string> BitcoinKeyring::GetAddress(
+mojom::BitcoinAddressPtr BitcoinHDKeyring::GetAddress(
     uint32_t account,
     const mojom::BitcoinKeyId& key_id) {
   auto hd_key = DeriveKey(account, key_id);
   if (!hd_key) {
-    return std::nullopt;
+    return nullptr;
   }
 
-  return hd_key->GetSegwitAddress(testnet_);
+  return mojom::BitcoinAddress::New(
+      PubkeyToSegwitAddress(hd_key->GetPublicKeyBytes(), testnet_),
+      key_id.Clone());
 }
 
-std::optional<std::vector<uint8_t>> BitcoinKeyring::GetPubkey(
+std::optional<std::vector<uint8_t>> BitcoinHDKeyring::GetPubkey(
     uint32_t account,
     const mojom::BitcoinKeyId& key_id) {
   auto hd_key = DeriveKey(account, key_id);
@@ -43,7 +47,7 @@ std::optional<std::vector<uint8_t>> BitcoinKeyring::GetPubkey(
   return hd_key->GetPublicKeyBytes();
 }
 
-std::optional<std::vector<uint8_t>> BitcoinKeyring::SignMessage(
+std::optional<std::vector<uint8_t>> BitcoinHDKeyring::SignMessage(
     uint32_t account,
     const mojom::BitcoinKeyId& key_id,
     base::span<const uint8_t, 32> message) {
@@ -55,23 +59,45 @@ std::optional<std::vector<uint8_t>> BitcoinKeyring::SignMessage(
   return hd_key->SignDer(message);
 }
 
-std::string BitcoinKeyring::EncodePrivateKeyForExport(
-    const std::string& address) {
-  NOTIMPLEMENTED();
+std::string BitcoinHDKeyring::ImportAccount(
+    const std::vector<uint8_t>& private_key) {
+  NOTREACHED();
   return "";
 }
 
-std::string BitcoinKeyring::GetAddressInternal(const HDKey& hd_key) const {
-  return hd_key.GetSegwitAddress(testnet_);
+bool BitcoinHDKeyring::RemoveImportedAccount(const std::string& address) {
+  NOTREACHED();
+  return false;
 }
 
-std::unique_ptr<HDKey> BitcoinKeyring::DeriveAccount(uint32_t index) const {
+std::string BitcoinHDKeyring::GetDiscoveryAddress(size_t index) const {
+  NOTREACHED();
+  return "";
+}
+
+std::vector<std::string> BitcoinHDKeyring::GetImportedAccountsForTesting()
+    const {
+  NOTREACHED();
+  return {};
+}
+
+std::string BitcoinHDKeyring::EncodePrivateKeyForExport(
+    const std::string& address) {
+  NOTREACHED();
+  return "";
+}
+
+std::string BitcoinHDKeyring::GetAddressInternal(const HDKey& hd_key) const {
+  return PubkeyToSegwitAddress(hd_key.GetPublicKeyBytes(), testnet_);
+}
+
+std::unique_ptr<HDKey> BitcoinHDKeyring::DeriveAccount(uint32_t index) const {
   // Mainnet - m/84'/0'/{index}'
   // Testnet - m/84'/1'/{index}'
   return root_->DeriveHardenedChild(index);
 }
 
-std::unique_ptr<HDKey> BitcoinKeyring::DeriveKey(
+std::unique_ptr<HDKey> BitcoinHDKeyring::DeriveKey(
     uint32_t account,
     const mojom::BitcoinKeyId& key_id) {
   // TODO(apaymyshev): keep local cache of keys: key_id->key

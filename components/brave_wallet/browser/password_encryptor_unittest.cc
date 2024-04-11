@@ -23,6 +23,16 @@ std::string ToString(const std::vector<uint8_t>& v) {
 }
 }  // namespace
 
+TEST(PasswordEncryptorUnitTest, CreateNonce) {
+  EXPECT_EQ(PasswordEncryptor::CreateNonce().size(), 12u);
+  EXPECT_NE(PasswordEncryptor::CreateNonce(), PasswordEncryptor::CreateNonce());
+}
+
+TEST(PasswordEncryptorUnitTest, CreateSalt) {
+  EXPECT_EQ(PasswordEncryptor::CreateSalt().size(), 32u);
+  EXPECT_NE(PasswordEncryptor::CreateSalt(), PasswordEncryptor::CreateSalt());
+}
+
 TEST(PasswordEncryptorUnitTest, DeriveKeyFromPasswordUsingPbkdf2) {
   EXPECT_EQ(PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
                 "password", ToSpan("salt"), 100, 64),

@@ -68,7 +68,7 @@ const mockEthAccountId = (
       keyringId: BraveWallet.KeyringId.kDefault,
       kind: BraveWallet.AccountKind.kDerived,
       address: address,
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       uniqueKey: `${address}_id`
     }
   }
