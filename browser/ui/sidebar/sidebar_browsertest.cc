@@ -498,6 +498,33 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
   EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto bookmark_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+
+  // Wait till bookmark panel is activated.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
+
+  panel_ui->Close();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !panel_ui->GetCurrentEntryId().has_value(); }));
+
+  // Remove bookmarks and check it's gone.
+  SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->RemoveItemAt(*bookmark_item_index);
+  EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+
+  // Open panel w/o entry id.
+  panel_ui->Show();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return panel_ui->GetCurrentEntryId().has_value(); }));
+  // Check bookmark panel is not opened again as it's deleted item.
+  EXPECT_NE(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+}
+
 // Test sidebar's initial horizontal option is set properly.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_InitialHorizontalOptionTest) {
   auto* prefs = browser()->profile()->GetPrefs();
