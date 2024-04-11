@@ -6,8 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +13,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -24,9 +24,6 @@ import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /** Onboarding fragment for Brave Wallet which shows the spinner while wallet is created/restored */
 public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragment {
@@ -51,14 +48,8 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     public void onResume() {
         super.onResume();
 
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-        scheduler.schedule(
-                () -> {
-                    mAddTransitionDelay = false;
-                },
-                NEXT_PAGE_DELAY_MS,
-                TimeUnit.MILLISECONDS);
+        PostTask.postDelayedTask(
+                TaskTraits.USER_BLOCKING, () -> mAddTransitionDelay = false, NEXT_PAGE_DELAY_MS);
 
         KeyringModel keyringModel = getKeyringModel();
         if (keyringModel != null) {
@@ -98,9 +89,10 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                             // Add small delay if the Wallet creation completes faster than {@code
                             // NEXT_PAGE_DELAY_MS}.
                             if (mAddTransitionDelay) {
-                                Handler handler = new Handler(Looper.getMainLooper());
-                                handler.postDelayed(
-                                        () -> mOnNextPage.gotoNextPage(), NEXT_PAGE_DELAY_MS);
+                                PostTask.postDelayedTask(
+                                        TaskTraits.USER_BLOCKING,
+                                        () -> mOnNextPage.gotoNextPage(),
+                                        NEXT_PAGE_DELAY_MS);
                             } else {
                                 mOnNextPage.gotoNextPage();
                             }
