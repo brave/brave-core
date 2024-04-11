@@ -326,7 +326,10 @@ export const CreateAccountModal = () => {
             <div slot='errors'>
               <ErrorText>
                 {isAccountNameTooLong
-                  ? getLocale('braveWalletAccountNameTooLongError')
+                  ? getLocale('braveWalletAccountNameTooLongError').replace(
+                      '$1',
+                      BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH.toString()
+                    )
                   : ''}
               </ErrorText>
             </div>
