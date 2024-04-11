@@ -1081,6 +1081,7 @@ extension BrowserViewController: ToolbarDelegate {
       backForwardViewController.bvc = self
       backForwardViewController.modalPresentationStyle = .overCurrentContext
       backForwardViewController.backForwardTransitionDelegate = BackForwardListAnimator()
+      backForwardViewController.toolbarUrlActionsDelegate = self
       self.present(backForwardViewController, animated: true, completion: nil)
     }
   }

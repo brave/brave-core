@@ -14,16 +14,18 @@ private struct BackForwardViewUX {
   static let backgroundColor: UIColor = .braveBackground
 }
 
-class BackForwardListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
-  UIGestureRecognizerDelegate
+class BackForwardListViewController: UIViewController, UIGestureRecognizerDelegate,
+  ToolbarUrlActionsProtocol
 {
 
-  fileprivate let backForwardListCellIdentifier = "BackForwardListViewController"
-  fileprivate var profile: Profile
-  fileprivate lazy var sites = [String: Site]()
-  fileprivate var dismissing = false
-  fileprivate var currentRow = 0
-  fileprivate var verticalConstraints: [Constraint] = []
+  weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
+
+  private let cellIdentifier = "BackForwardListViewController"
+  private var profile: Profile
+  private lazy var sites = [String: Site]()
+  private var dismissing = false
+  private var currentRow = 0
+  private var verticalConstraints: [Constraint] = []
 
   lazy var tableView: UITableView = {
     let tableView = UITableView()
@@ -33,29 +35,32 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     tableView.alwaysBounceVertical = false
     tableView.register(
       BackForwardTableViewCell.self,
-      forCellReuseIdentifier: self.backForwardListCellIdentifier
+      forCellReuseIdentifier: self.cellIdentifier
     )
     tableView.backgroundColor = BackForwardViewUX.backgroundColor
     return tableView
   }()
 
-  lazy var shadow: UIView = {
+  private lazy var shadow: UIView = {
     let shadow = UIView()
     shadow.backgroundColor = UIColor(white: 0, alpha: 0.2)
     return shadow
   }()
 
-  var tabManager: TabManager!
+  var tabManager: TabManager?
   weak var bvc: BrowserViewController?
-  var currentItem: WKBackForwardListItem?
-  var listData = [WKBackForwardListItem]()
+  private var currentItem: WKBackForwardListItem?
+  private var backForwardListData = [WKBackForwardListItem]()
 
   var tableHeight: CGFloat {
     assert(
       Thread.isMainThread,
       "tableHeight interacts with UIKit components - cannot call from background thread."
     )
-    return min(BackForwardViewUX.rowHeight * CGFloat(listData.count), self.view.frame.height / 2)
+    return min(
+      BackForwardViewUX.rowHeight * CGFloat(backForwardListData.count),
+      self.view.frame.height / 2
+    )
   }
 
   var backForwardTransitionDelegate: UIViewControllerTransitioningDelegate? {
@@ -64,13 +69,21 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     }
   }
 
-  var snappedToBottom: Bool = true
+  private var snappedToBottom = true
+
+  private var isPrivateBrowsing: Bool {
+    return tabManager?.privateBrowsingManager.isPrivateBrowsing ?? false
+  }
 
   init(profile: Profile, backForwardList: WKBackForwardList) {
     self.profile = profile
     super.init(nibName: nil, bundle: nil)
 
     loadSites(backForwardList)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   override func viewDidLoad() {
@@ -97,7 +110,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
       + bfList.backList.reversed()
 
     // error url's are OK as they are used to populate history on session restore.
-    listData = items.filter {
+    backForwardListData = items.filter {
       guard let internalUrl = InternalURL($0.url) else { return true }
       if internalUrl.isAboutHomeURL {
         return true
@@ -111,7 +124,6 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
 
   func loadSites(_ bfList: WKBackForwardList) {
     currentItem = bfList.currentItem
-
     homeAndNormalPagesOnly(bfList)
   }
 
@@ -153,7 +165,10 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     let correctHeight = {
       self.tableView.snp.updateConstraints { make in
         make.height.equalTo(
-          min(BackForwardViewUX.rowHeight * CGFloat(self.listData.count), size.height / 2)
+          min(
+            BackForwardViewUX.rowHeight * CGFloat(self.backForwardListData.count),
+            size.height / 2
+          )
         )
       }
     }
@@ -218,24 +233,21 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     }
     return true
   }
+}
 
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  // MARK: - Table view
+extension BackForwardListViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return listData.count
+    return backForwardListData.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
     let cell =
       self.tableView.dequeueReusableCell(
-        withIdentifier: backForwardListCellIdentifier,
+        withIdentifier: cellIdentifier,
         for: indexPath
       ) as! BackForwardTableViewCell
-    let item = listData[indexPath.item]
+    let item = backForwardListData[indexPath.item]
     let urlString = { () -> String in
       guard let url = InternalURL(item.url), let extracted = url.extractedUrlParam else {
         return item.url.absoluteString
@@ -243,9 +255,9 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
       return extracted.absoluteString
     }()
 
-    cell.isPrivateBrowsing = tabManager.privateBrowsingManager.isPrivateBrowsing
-    cell.isCurrentTab = listData[indexPath.item] == self.currentItem
-    cell.connectingBackwards = indexPath.item != listData.count - 1
+    cell.isPrivateBrowsing = isPrivateBrowsing
+    cell.isCurrentTab = backForwardListData[indexPath.item] == self.currentItem
+    cell.connectingBackwards = indexPath.item != backForwardListData.count - 1
     cell.connectingForwards = indexPath.item != 0
 
     let isAboutHomeURL = InternalURL(item.url)?.isAboutHomeURL ?? false
@@ -259,13 +271,67 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
 
     return cell
   }
+}
 
+extension BackForwardListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    tabManager.selectedTab?.goToBackForwardListItem(listData[indexPath.item])
+    tabManager?.selectedTab?.goToBackForwardListItem(backForwardListData[indexPath.item])
     dismiss(animated: true, completion: nil)
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return BackForwardViewUX.rowHeight
+  }
+
+  func tableView(
+    _ tableView: UITableView,
+    contextMenuConfigurationForRowAt indexPath: IndexPath,
+    point: CGPoint
+  ) -> UIContextMenuConfiguration? {
+    let listItemURL = backForwardListData[indexPath.item].url
+
+    return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
+      [unowned self] _ in
+      let openInNewTabAction = UIAction(
+        title: Strings.openNewTabButtonTitle,
+        image: UIImage(systemName: "plus.square.on.square"),
+        handler: UIAction.deferredActionHandler { _ in
+          self.toolbarUrlActionsDelegate?.openInNewTab(
+            listItemURL,
+            isPrivate: self.isPrivateBrowsing
+          )
+          self.presentingViewController?.dismiss(animated: true)
+        }
+      )
+
+      let copyAction = UIAction(
+        title: Strings.copyLinkActionTitle,
+        image: UIImage(systemName: "doc.on.doc"),
+        handler: UIAction.deferredActionHandler { _ in
+          self.toolbarUrlActionsDelegate?.copy(listItemURL)
+        }
+      )
+      let shareAction = UIAction(
+        title: Strings.shareLinkActionTitle,
+        image: UIImage(systemName: "square.and.arrow.up"),
+        handler: UIAction.deferredActionHandler { _ in
+          self.toolbarUrlActionsDelegate?.share(listItemURL)
+        }
+      )
+
+      let newTabActionMenu: [UIAction] = [openInNewTabAction]
+      let urlMenu = UIMenu(title: "", options: .displayInline, children: newTabActionMenu)
+      let linkMenu = UIMenu(
+        title: "",
+        options: .displayInline,
+        children: [copyAction, shareAction]
+      )
+
+      return UIMenu(
+        title: listItemURL.absoluteString,
+        identifier: nil,
+        children: [urlMenu, linkMenu]
+      )
+    }
   }
 }
