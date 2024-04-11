@@ -16,22 +16,28 @@ import {
   Column,
   Row
 } from '../../shared/style'
+import {
+  layoutPanelWidth //
+} from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const HoverArea = styled.div<{
-  isPanel?: boolean
   noHover?: boolean
+  isGrouped?: boolean
 }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  padding: 12px ${(p) => (p.isPanel ? 0 : 12)}px;
+  padding: 12px;
   border-radius: var(--hover-area-border-radius);
   transition: background-color 300ms ease-out;
   &:hover {
     background-color: ${(p) =>
       p.noHover ? 'none' : leo.color.page.background};
+  }
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: ${(p) => (p.isGrouped ? 12 : 8)}px;
   }
 `
 
