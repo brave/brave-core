@@ -167,6 +167,17 @@ void BraveNewsController::GetFeed(GetFeedCallback callback) {
     std::move(callback).Run(brave_news::mojom::Feed::New());
     return;
   }
+  // If we're only recently opted-in but we haven't yet finished adding the
+  // top sources subscription (via the async functions in MaybeInitPrefs), we
+  // need to wait for that to complete before we can fetch the feed.
+  if (on_initializing_prefs_complete_ &&
+      !on_initializing_prefs_complete_->is_signaled()) {
+    on_initializing_prefs_complete_->Post(
+        FROM_HERE,
+        base::BindOnce(&BraveNewsController::GetFeed,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  }
   feed_controller_.GetOrFetchFeed(pref_manager_.GetSubscriptions(),
                                   std::move(callback));
 }
@@ -217,6 +228,17 @@ void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
     return;
   }
 
+  // If we're only recently opted-in but we haven't yet finished adding the
+  // top sources subscription (via the async functions in MaybeInitPrefs), we
+  // need to wait for that to complete before we can fetch the feed.
+  if (on_initializing_prefs_complete_ &&
+      !on_initializing_prefs_complete_->is_signaled()) {
+    on_initializing_prefs_complete_->Post(
+        FROM_HERE,
+        base::BindOnce(&BraveNewsController::GetFeedV2,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  }
   feed_v2_builder_->BuildAllFeed(pref_manager_.GetSubscriptions(),
                                  std::move(callback));
 }
@@ -752,9 +774,22 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
 }
 
 void BraveNewsController::MaybeInitPrefs() {
+  // When first enabled, we need to create the initial "Top Sources" channel
+  // for the revelant locale. We can't do this before opt-in as the list
+  // of supported locales needs to be fetched.
   if (pref_manager_.IsEnabled()) {
+    // TODO(petemill): Don't simply use the lack of any channel subscription
+    // as the signal that preferences haven't been seeded. The user could have
+    // unsubscribed from all channels but still have other subscriptions before
+    // temporary disabling the feature. Instead, we could detect any
+    // subscriptions, or store an indicator via another profile pref.
     const auto& channels = pref_manager_.GetSubscriptions().channels();
     if (channels.empty()) {
+      on_initializing_prefs_complete_ = std::make_unique<base::OneShotEvent>();
+      on_initializing_prefs_complete_->Post(
+          FROM_HERE,
+          base::BindOnce(&BraveNewsController::OnInitializingPrefsComplete,
+                         weak_ptr_factory_.GetWeakPtr()));
       publishers_controller_.GetLocale(
           pref_manager_.GetSubscriptions(),
           base::BindOnce(
@@ -770,10 +805,25 @@ void BraveNewsController::MaybeInitPrefs() {
                 }
                 controller->pref_manager_.SetChannelSubscribed(
                     locale, kTopSourcesChannel, true);
+
+                controller->on_initializing_prefs_complete_->Signal();
               },
               weak_ptr_factory_.GetWeakPtr()));
     }
   }
+}
+
+void BraveNewsController::OnInitializingPrefsComplete() {
+  // Some listeners won't have channels yet because they registered before
+  // any were fetched.
+  GetChannels(
+      base::BindOnce([](Channels channels) {
+        auto event = brave_news::mojom::ChannelsEvent::New();
+        event->addedOrUpdated = std::move(channels);
+        return event;
+      })
+      .Then(base::BindOnce(&BraveNewsController::NotifyChannelsChanged,
+                            weak_ptr_factory_.GetWeakPtr())));
 }
 
 void BraveNewsController::OnNetworkChanged(
