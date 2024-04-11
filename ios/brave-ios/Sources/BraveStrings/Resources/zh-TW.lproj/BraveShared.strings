@@ -502,8 +502,7 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "将应用信息复制到剪切板中。";
 
-/* Copy app info to clipboard action sheet action.
-   View all version info action sheet action. */
+/* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "將應用程式大小資訊複製到剪貼簿。";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -1034,12 +1033,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "月";
 
-/* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "輕觸即可免費領取代幣。";
-
-/* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
-
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "點選此處以瞭解詳細資訊。";
 
@@ -1459,9 +1452,6 @@
 
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "繼續";
-
-/* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "匿名的 P3A 資訊可協助 Brave 預估整體使用量，並確保我們改進受歡迎的功能。";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "允許保護隱私的產品分析 (P3A)";
@@ -2340,12 +2330,6 @@
 "RewardsInternalsBalanceInfoHeader" = "餘額資訊";
 
 /* No comment provided by engineer. */
-"RewardsInternalsClaimedAt" = "領取時間";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClaimID" = "領取 ID";
-
-/* No comment provided by engineer. */
 "RewardsInternalsClearLogsConfirmation" = "確定要清除所有 Rewards 記錄嗎？";
 
 /* No comment provided by engineer. */
@@ -2423,9 +2407,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "关键信息栏";
 
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyPromotion" = "舊行銷活動";
-
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "顯示 %d 筆記錄";
 
@@ -2440,24 +2421,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsProcessor" = "處理器";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusActive" = "進行中";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusAttested" = "已驗證";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusCorrupted" = "損毀";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusFinished" = "已結束";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusOver" = "超過";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionsTitle" = "行銷活動";
 
 /* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "發佈者";
@@ -2494,9 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableLogsDescription" = "Rewards 特定記錄";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharablePromotionsDescription" = "您已領取或尚待 Ads 或 Grants 處理的任何 BAT 行銷活動報酬";
 
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "分享";
@@ -2705,14 +2665,8 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "品質設定";
 
-/* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "這種匿名且私人的 ping 讓 Brave 可以估計活躍使用者。";
-
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Brave";
-
-/* Header for the Youtube settings section */
-"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "無法載入頁面。";
@@ -3485,9 +3439,6 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "推廣內容";
 
-/* Title for long press action sheet list which has item for rate / hide */
-"today.rateBraveCardActionSheetTitle" = "在 AppStore 為 Brave 評分";
-
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "隱藏";
 
@@ -3634,9 +3585,6 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "速度飛快，高達 100 Mbps";
-
-/* AppStore Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "App Store 收據";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "應用程式版本";
@@ -4058,9 +4006,6 @@
 /* History tableview section header */
 "Yesterday" = "昨天";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "啟用高畫質 YouTube 影片";
-
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "啟用此實驗性功能將以可用的最高畫質播放影片，並將使用額外的數據流量。";
 
@@ -4069,9 +4014,6 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "開啟";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Youtube 播放品質";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "允許透過 Wi-Fi";

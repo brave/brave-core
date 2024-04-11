@@ -10,9 +10,6 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo to inteligentny asystent oparty na sztucznej inteligencji, wbudowany bezpośrednio w przeglądarkę.";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Połącz zakup w sklepie App Store ze swoim kontem Brave, aby używać Leo na innych urządzeniach.";
-
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Połącz zakup ze swoim kontem Brave";
 
@@ -25,10 +22,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
-/* The subtitle for the error showing there is an erro from Appstore */
-"aichat.appStoreErrorSubTitle" = "Nie udało się połączyć z App Store, spróbuj ponownie później.";
-
-/* The title for the error showing there is an erro from Appstore */
+/* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "Błąd App Store";
 
 /* The title of the search bar suggestion when prompting to Ask Leo */

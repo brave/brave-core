@@ -1,0 +1,285 @@
+/* The title for button that submits feedback */
+"aichat.addFeedbackActionTitle" = "Voeg feedback toe";
+
+/* The title for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteTitle" = "Toon suggesties voor automatisch aanvullen in de adresbalk";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "Standaardmodel voor nieuwe gesprekken";
+
+/* The title for the header for adjusting leo ai settings */
+"aichat.advancedSettingsHeaderTitle" = "Leo is een slimme AI-gestuurde assistent, ingebouwd in de browser.";
+
+/* The title for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Koppel aankoop aan Brave-account";
+
+/* The title for the label showing the date which subscription expires */
+"aichat.advancedSettingsSubscriptionExpiresTitle" = "Verloopt:";
+
+/* The title for the header for subscription details */
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "Abonnement";
+
+/* The title for the label showing status if the subscription */
+"aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
+
+/* The title for the error showing there is an error from App Store */
+"aichat.appStoreErrorTitle" = "App Store-fout";
+
+/* The title of the search bar suggestion when prompting to Ask Leo */
+"aichat.askLeoSearchSuggestionTitle" = "Vraag het aan Leo";
+
+/* The subtitle for intro view which triggers just chat */
+"aichat.chatIntroJustTalkSubTitle" = "Je kunt me alles vragen. We kunnen het over elk onderwerp hebben. Ik leer altijd zodat ik betere antwoorden kan geven.";
+
+/* The title for intro view which triggers just chat */
+"aichat.chatIntroJustTalkTitle" = "Wil je gewoon chatten?";
+
+/* The subtitle for intro view */
+"aichat.chatIntroSubTitle" = "Een intelligente AI-gestuurde assistent, ingebouwd in Brave.";
+
+/* The title for intro view */
+"aichat.chatIntroTitle" = "Hallo, ik ben Leo!";
+
+/* The subtitle for intro view which triggers website help for article */
+"aichat.chatIntroWebsiteHelpSubtitleArticleSummarize" = "Ik kan artikelen voor jou samenvatten, toelichting geven bij de content van een website en nog veel meer.";
+
+/* The subtitle for intro view which triggers website help for summary */
+"aichat.chatIntroWebsiteHelpSubtitlePageSummarize" = "Ik kan artikelen voor jou samenvatten, toelichting geven bij de content van een website en nog veel meer. Weet je niet waar je moet beginnen? Probeer dan dit:";
+
+/* The title for intro view which triggers website help */
+"aichat.chatIntroWebsiteHelpTitle" = "Heb je hulp nodig met een website?";
+
+/* The title for the chat section in the menu */
+"aichat.chatMenuSectionTitle" = "Chat";
+
+/* The title shown on limit reached error view, which is suggesting user to change default model */
+"aichat.contextLimitErrorTitle" = "Dit gesprek is te lang en kan niet worden verdergezet.\nMogelijk kan Leo met andere beschikbare modellen langere gesprekken voeren.";
+
+/* The title for view which user type feedback */
+"aichat.feedbackInputViewTitle" = "Geef hier je feedback";
+
+/* The title for view which listsfeedback option list */
+"aichat.feedbackOptionsViewTitle" = "Waar gaat je feedback over?";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Antwoord is niet nuttig";
+
+/* The title for not working feedback option */
+"aichat.feedbackOptionTitleNotWorking" = "Er gaat iets mis";
+
+/* The title for other feedback option */
+"aichat.feedbackOptionTitleOther" = "Overige";
+
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+"aichat.feedbackPremiumAdTitle" = "Leo Premium geeft toegang tot een uitgebreide reeks taalmodellen voor nog betere antwoorden. [Meer informatie](https://brave.com/) - [Sluit](braveai://dismiss)";
+
+/* The title for the button that submits feedback */
+"aichat.feedbackSubmitActionTitle" = "Stuur";
+
+/* The title for feedback view when it fails to submit feedback */
+"aichat.feedbackSubmittedErrorTitle" = "Er is iets misgegaan. Probeer het opnieuw.";
+
+/* The title for feedback view when it is submitted */
+"aichat.feedbackSubmittedTitle" = "Feedback verstuurd";
+
+/* The title for feedback view when response is sucessfull but disliked */
+"aichat.feedbackSuccessAnswerDisLikedTitle" = "Antwoord niet leuk gevonden";
+
+/* The title for feedback view when response is sucessfull also liked */
+"aichat.feedbackSuccessAnswerLikedTitle" = "Antwoord leuk gevonden";
+
+/* The title for view which user type feedback */
+"aichat.feedbackViewMainTitle" = "Geef feedback over Brave AI";
+
+/* The button title for opening paywall screen */
+"aichat.goPremiumButtonTitle" = "Koop Premium";
+
+/* Description about answers are changing with page context */
+"aichat.infoAboutPageContext" = "Baseer antwoorden op de content van de pagina";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeInstantMessageDescription" = "Hallo, ik ben Leo. Ik werk via een proxy van Brave en ben mogelijk gemaakt door Claude Instant, een model dat door Anthropic is gemaakt voor gespreks- en tekstverwerkingstaken.";
+
+/* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeInstantModelDescription" = "Claude Instant van Anthropic";
+
+/* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
+"aichat.introMessageGenericMessageDescription" = "Hallo, ik ben Leo. Ik ben de AI-assistent van Brave, mogelijk gemaakt door %@. Je kunt me alles vragen en ik doe mijn best om je een antwoord te geven.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik ben mogelijk gemaakt door Llama 13B, een model dat door Meta is ontworpen om functioneel en veelzijdig te zijn.";
+
+/* The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator */
+"aichat.introMessageLlamaModelDescription" = "Llama 2 13b van Meta";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageMixtralMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik ben mogelijk gemaakt door Mixtral 8x7B, een model dat Mistral AI heeft ontworpen voor het uitvoeren van geavanceerde taken.";
+
+/* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
+"aichat.introMessageMixtralModelDescription" = "Mixtral van Mistral AI";
+
+/* The title for intro message */
+"aichat.introMessageTitle" = "Chat";
+
+/* The title of the advanced settings view */
+"aichat.leoNavigationTitle" = "Leo";
+
+/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Zet aan om vragen over deze pagina te stellen. De content van de site en je berichten worden naar Brave Leo gestuurd.";
+
+/* The accessibility text to read out loud when the user taps on the info icon on the page context view */
+"aichat.leoPageContextInfoIconAccessibilityTitle" = "Informatie over paginacontext";
+
+/* The title to display when the duration of the subscription is unknown */
+"aichat.leoSubscriptionUnknownDateTitle" = "N.b.";
+
+/* The button title for managing subscriptions */
+"aichat.manageSubscriptionsButtonTitle" = "Beheer abonnementen";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertDescription" = "Geef in de iOS-instellingen toegang tot de microfoon zodat Brave anonieme gesproken invoer kan gebruiken.";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertTitle" = "Toegang tot microfoon vereist";
+
+/* Title showing monthly subscription */
+"aichat.monthlySubscriptionTitle" = "Maandabonnement";
+
+/* The title for view that shows network - connection error and suggesting to try again */
+"aichat.networkErrorViewTitle" = "Er deed zich een netwerkprobleem voor tijdens de verbinding met Leo. Controleer de verbinding en probeer het opnieuw.";
+
+/* The title for button that starts a new chat */
+"aichat.newChatActionTitle" = "Nieuwe chat";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"aichat.paywallMonthlyPriceDividend" = "maand";
+
+/* Title indicating monthly subscription */
+"aichat.paywallMontlySubscriptionTitle" = "Maandelijks";
+
+/* The title for dismiss button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellDismissAction" = "Misschien later";
+
+/* The title for button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellPrimaryAction" = "Upgrade";
+
+/* The title for premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellTitle" = "Koop Premium en haal het maximale uit Leo:";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionTitle" = "Upgrade nu";
+
+/* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
+"aichat.paywallPurchaseDeepNote" = "Alle abonnementen worden automatisch verlengd, maar kunnen altijd vóór de verlengdatum worden opgezegd.";
+
+/* The error description when in app purcahse is erroneous. */
+"aichat.paywallPurchaseErrorDescription" = "Aankoop kan niet worden voltooid. Probeer het opnieuw, of controleer eerst je betalingsgegevens bij Apple en probeer het dan opnieuw.";
+
+/* The title for dismiss button when rate limit is shown after sending a message */
+"aichat.paywallRateLimitDismissActionTitle" = "Ga door met basismodel";
+
+/* The subtitle for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitSubTitle" = "Krijg snellere en betere antwoorden met een Premium-abonnement, of probeer het later opnieuw.";
+
+/* The title for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitTitle" = "Limiet voor antwoorden bereikt";
+
+/* The subtitle accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicSubTitle" = "Krijg nauwkeurigere antwoorden voor meer genuanceerde gesprekken.";
+
+/* The title accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicTitle" = "Blijf bij het onderwerp";
+
+/* The subtitle chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicSubTitle" = "Krijg hogere limieten voor langere en betere gesprekken.";
+
+/* The title chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicTitle" = "Chat langer";
+
+/* The subtitle creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicSubTitle" = "Krijg toegang tot modellen die beter geschikt zijn voor creatieve taken en het genereren van content.";
+
+/* The title creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicTitle" = "Laat je creativiteit de vrije loop";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Krijg als eerste toegang tot krachtige modellen met andere vaardigheden";
+
+/* The title model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicTitle" = "Ontdek andere AI-modellen";
+
+/* The title for paywall view */
+"aichat.paywallViewTitle" = "Leo Premium";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"aichat.paywallYearlyPriceDividend" = "jaar";
+
+/* The description indicating yearly subscription that show how much user is saving percentage */
+"aichat.paywallYearlySubscriptionDescription" = "BESPAAR TOT WEL 25%";
+
+/* Title indicating yearly subscription */
+"aichat.paywallYearlySubscriptionTitle" = "Eén jaar";
+
+/* Title shown next to Leo in navigation bar when user has premium subcription */
+"aichat.premiumNavigationBarBadgeTitle" = "Premium";
+
+/* Title showing premium subscription - not determined monthly por yearly */
+"aichat.premiumSubscriptionTitle" = "Premium abonnement";
+
+/* The text for placeholder on textfield for entering questions for AI */
+"aichat.promptPlaceHolderDescription" = "Voer hier een prompt in";
+
+/* The title for error when rating a response is not success */
+"aichat.rateAnswerActionErrorText" = "Fout bij beoordeling van antwoord";
+
+/* The title for the button where it triggers reset leo data */
+"aichat.resetLeoDataActionTitle" = "Wis Leo-gegevens";
+
+/* The description for the error whre leo data reset */
+"aichat.resetLeoDataErrorDescription" = "Weet je zeker dat je de Leo-gegevens wilt wissen?";
+
+/* The title for the error whre leo data reset */
+"aichat.resetLeoDataErrorTitle" = "Stel Leo-gegevens opnieuw in";
+
+/* The title for copying response to clipboard action */
+"aichat.responseContextMenuCopyTitle" = "Kopieer";
+
+/* The title for disliking response to clipboard action */
+"aichat.responseContextMenuDislikeAnswerTitle" = "Antwoord niet leuk";
+
+/* The title for liking response to clipboard action */
+"aichat.responseContextMenuLikeAnswerTitle" = "Antwoord leuk";
+
+/* The title for regenerating response action from context menu */
+"aichat.responseContextMenuRegenerateTitle" = "Genereer opnieuw";
+
+/* The button title for restoring ai-app purchse for Leo. */
+"aichat.restorePaywallButtonTitle" = "Herstel";
+
+/* The title for button for re-try */
+"aichat.retryActionTitle" = "Probeer opnieuw";
+
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Brave bewaart en deelt geen gesproken invoer.";
+
+/* The title for the button to generate suggestions */
+"aichat.suggestionsGenerationButtonTitle" = "Stel vragen voor...";
+
+/* The title for button that start summarizing page */
+"aichat.summarizePageActionTitle" = "Vat deze pagina samen";
+
+/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+"aichat.termsConditionsApproveActionTitle" = "Begrepen";
+
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leo is een slimme, AI-gestuurde, persoonlijke assistent waarmee je het internet efficiënter gebruikt. Leo is gratis, maar beperkt. Brave Leo Premium biedt meer modellen en hogere limieten en geeft abonnees als eerste toegang tot nieuwe functies. Het standaardmodel voor alle gebruikers is momenteel Mixtral 8x7B. Lees de **[Brave-wiki](%1$@)** voor meer informatie.\n\nWanneer je Leo een vraag stelt, kun je een antwoord krijgen op basis van de context van de door jou bezochte webpagina of de door jou gemarkeerde tekst. De antwoorden zijn mogelijk niet altijd even nauwkeurig en kunnen misleidende of onjuiste informatie bevatten. Leo gebruikt gegevens van Brave Search om de kwaliteit van antwoorden te verbeteren. Stuur geen gevoelige of privégegevens en wees altijd voorzichtig bij het gebruik van informatie over gezondheid, financiën, persoonlijke veiligheid en dergelijke. Je kunt de opties van Leo altijd aanpassen in Instellingen.\n\nLeo verzamelt geen ID's die aan jou kunnen worden gelinkt, zoals je IP-adres. Er worden geen persoonsgegevens bewaard door het AI-model of externe providers van modellen. Lees het **[Privacybeleid](%2$@)** voor meer informatie.";
+
+/* The title terms and conditions for AI chat usage */
+"aichat.termsConditionsTitle" = "Chat privé met Brave Leo";
+
+/* The accessibility description when pressing the microphone button to access voice entry. */
+"aichat.voiceInputButtonTitle" = "Gesproken invoer";
+
+/* Title showing yearly subscription - annual */
+"aichat.yearlySubscriptionTitle" = "Jaarabonnement";
+
