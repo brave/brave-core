@@ -35,7 +35,10 @@ import { networkSupportsAccount } from '../../../utils/network-utils'
 import { cacher } from '../../../utils/query-cache-utils'
 import { networkEntityAdapter } from '../entities/network.entity'
 import { TokenBalancesRegistry } from '../entities/token-balance.entity'
-import { baseQueryFunction } from '../../async/base-query-cache'
+import {
+  type BaseQueryCache, //
+  baseQueryFunction
+} from '../../async/base-query-cache'
 import {
   getPersistedPortfolioTokenBalances,
   setPersistedPortfolioTokenBalances
@@ -143,16 +146,18 @@ export const tokenBalancesEndpoints = ({
       GetTokenBalancesForChainIdArg[]
     >({
       queryFn: async (args, { endpoint }, extraOptions, baseQuery) => {
+        const { data: api, cache } = baseQuery(undefined)
         const {
           bitcoinWalletService,
           zcashWalletService,
           jsonRpcService,
           braveWalletService
-        } = baseQuery(undefined).data
+        } = api
 
         try {
           const result = await fetchTokenBalanceRegistryForAccountsAndChainIds({
             args,
+            cache,
             bitcoinWalletService,
             braveWalletService,
             jsonRpcService,
@@ -372,6 +377,7 @@ export const tokenBalancesEndpoints = ({
                                     )
                                   }
                                 ],
+                          cache,
                           bitcoinWalletService,
                           braveWalletService,
                           jsonRpcService,
@@ -747,7 +753,8 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   jsonRpcService,
   zcashWalletService,
   braveWalletService,
-  onBalance
+  onBalance,
+  cache
 }: {
   arg: GetTokenBalancesForChainIdArg
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
@@ -760,6 +767,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
     contractAddress: string,
     balance: string
   ) => void | Promise<void>
+  cache: BaseQueryCache
 }): Promise<void> {
   // Construct arg to query native token for use in case the
   // optimized balance fetcher kicks in.
@@ -806,11 +814,9 @@ async function fetchAccountTokenBalanceRegistryForChainId({
       return
     }
 
-    // TODO(josheleonard): aggresively cache this response
-    // since it never changes
-    const {
-      chainIds: supportedChainIds //
-    } = await braveWalletService.getBalanceScannerSupportedChains()
+    const supportedChainIds =
+      cache.balanceScannerSupportedChains ||
+      (await cache.getBalanceScannerSupportedChains())
 
     if (supportedChainIds.includes(arg.chainId)) {
       const result = await jsonRpcService.getERC20TokenBalances(
@@ -894,7 +900,8 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
   bitcoinWalletService,
   braveWalletService,
   zcashWalletService,
-  onBalance
+  onBalance,
+  cache
 }: {
   args: GetTokenBalancesForChainIdArg[]
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
@@ -907,6 +914,7 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
     contractAddress: string,
     balance: string
   ) => void | Promise<void>
+  cache: BaseQueryCache
 }): Promise<TokenBalancesRegistry> {
   const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
 
@@ -917,6 +925,7 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
       braveWalletService,
       jsonRpcService,
       zcashWalletService,
+      cache,
       onBalance:
         onBalance ||
         function (accountId, chainId, contractAddress, balance) {

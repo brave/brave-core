@@ -89,6 +89,7 @@ export class BaseQueryCache {
   private _enabledCoinTypes: number[]
   private _nftMetadataRegistry: Record<string, NFTMetadataReturnType> = {}
   public rewardsInfo: BraveRewardsInfo | undefined = undefined
+  public balanceScannerSupportedChains: string[] | undefined = undefined
 
   getWalletInfo = async () => {
     if (!this.walletInfo) {
@@ -260,6 +261,16 @@ export class BaseQueryCache {
 
   clearNetworksRegistry = () => {
     this._networksRegistry = undefined
+  }
+
+  getBalanceScannerSupportedChains = async () => {
+    if (!this.balanceScannerSupportedChains) {
+      const { braveWalletService } = getAPIProxy()
+      const { chainIds } =
+        await braveWalletService.getBalanceScannerSupportedChains()
+      this.balanceScannerSupportedChains = chainIds
+    }
+    return this.balanceScannerSupportedChains
   }
 
   getKnownTokensRegistry = async () => {
