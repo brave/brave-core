@@ -17,8 +17,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 namespace {
-constexpr auto kAndroidInfobarPermissionCookie =
-    IDR_ANDROID_INFOBAR_PERMISSION_COOKIE;
+constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
 }  // namespace
 #else
 namespace vector_icons {
@@ -33,8 +32,8 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
 //
 // TODO(jocelyn): Might need to update icon when we have ethereum.enable UI
 // support in Android.
-#define IDR_ANDROID_INFOBAR_PERMISSION_COOKIE        \
-  kAndroidInfobarPermissionCookie;                   \
+#define IDR_ANDROID_STORAGE_ACCESS                   \
+  kAndroidStorageAccess;                             \
   case RequestType::kWidevine:                       \
   case RequestType::kBraveEthereum:                  \
   case RequestType::kBraveSolana:                    \
@@ -74,12 +73,12 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
 
 #include "src/components/permissions/request_type.cc"
 
-#undef BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
-#undef IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
-#undef kMicIcon
-#undef ContentSettingsTypeToRequestType
-#undef RequestTypeToContentSettingsType
 #undef IsRequestablePermissionType
+#undef RequestTypeToContentSettingsType
+#undef ContentSettingsTypeToRequestType
+#undef BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
+#undef kMicIcon
+#undef IDR_ANDROID_STORAGE_ACCESS
 
 namespace permissions {
 

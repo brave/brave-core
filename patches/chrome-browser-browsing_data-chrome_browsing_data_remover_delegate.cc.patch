@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
+index 6c40393af17815c319e57a6ded03f27a38a0dcb3..2299d393b6b51bd38611c050cff9b1dd63b8a141 100644
+--- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
++++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
+@@ -1525,6 +1525,7 @@ const char* ChromeBrowsingDataRemoverDelegate::GetHistogramSuffix(
+       return "WebrtcVideoPerfHistory";
+     case TracingDataType::kMediaDeviceSalts:
+       return "MediaDeviceSalts";
++    CHROME_BROWSING_DATA_REMOVER_DELEGATE_GET_HISTORY_SUFFIX
+   }
+ }
+ 

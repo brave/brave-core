@@ -78,7 +78,7 @@ class BravePrefProvider : public PrefProvider,
       const std::string& patterns_string,
       const base::Time& expiration,
       const base::Time& last_modified,
-      SessionModel session_model,
+      content_settings::mojom::SessionModel session_model,
       int setting);
   void MigrateShieldsSettingsV1ToV2();
   void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type);

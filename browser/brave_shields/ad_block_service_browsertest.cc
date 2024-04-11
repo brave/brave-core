@@ -42,6 +42,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -52,6 +53,7 @@
 #include "net/test/test_data_directory.h"
 #include "services/network/host_resolver.h"
 
+#include "chrome/browser/ui/browser.h"
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/browser/playlist_service.h"

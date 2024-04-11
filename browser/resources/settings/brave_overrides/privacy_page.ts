@@ -321,5 +321,15 @@ RegisterPolymerTemplateModifications({
         privacyGuideLinkRow.setAttribute('hidden', 'true')
       }
     }
+
+    const sotrageAccessTemplate = templateContent.querySelector(
+      `template[is=dom-if][route-path='/content/storageAccess'`)
+    if (!sotrageAccessTemplate) {
+      console.error(
+        '[Brave Settings Overrides] Could not find template with' +
+        ' route-path=/content/storageAccess on privacy page.')
+    } else {
+      sotrageAccessTemplate.remove()
+    }
   },
 })

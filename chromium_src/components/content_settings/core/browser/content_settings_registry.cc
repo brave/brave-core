@@ -237,6 +237,33 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
 
+  // Disable storage access by default (we used to disable feature flag
+  // kPermissionStorageAccessAPI, but it went away in cr124).
+  content_settings_info_.erase(ContentSettingsType::STORAGE_ACCESS);
+  website_settings_registry_->UnRegister(ContentSettingsType::STORAGE_ACCESS);
+  content_settings_info_.erase(ContentSettingsType::TOP_LEVEL_STORAGE_ACCESS);
+  website_settings_registry_->UnRegister(
+      ContentSettingsType::TOP_LEVEL_STORAGE_ACCESS);
+  Register(ContentSettingsType::STORAGE_ACCESS, "storage-access",
+           CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::UNSYNCABLE,
+           /*allowlisted_primary_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ASK, CONTENT_SETTING_BLOCK},
+           WebsiteSettingsInfo::REQUESTING_AND_TOP_SCHEMEFUL_SITE_SCOPE,
+           WebsiteSettingsRegistry::ALL_PLATFORMS,
+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+  Register(ContentSettingsType::TOP_LEVEL_STORAGE_ACCESS,
+           "top-level-storage-access", CONTENT_SETTING_BLOCK,
+           WebsiteSettingsInfo::UNSYNCABLE,
+           /*allowlisted_primary_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ASK, CONTENT_SETTING_BLOCK},
+           WebsiteSettingsInfo::REQUESTING_AND_TOP_ORIGIN_SCOPE,
+           WebsiteSettingsRegistry::ALL_PLATFORMS,
+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+
   website_settings_registry_->UnRegister(ContentSettingsType::HTTP_ALLOWED);
   website_settings_registry_->Register(
       ContentSettingsType::HTTP_ALLOWED, "http-allowed", base::Value(),

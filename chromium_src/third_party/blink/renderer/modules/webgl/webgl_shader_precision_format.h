@@ -9,6 +9,7 @@
 #include "src/third_party/blink/renderer/modules/webgl/webgl_shader_precision_format.h"  // IWYU pragma: export
 
 #include "third_party/blink/renderer/modules/modules_export.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace blink {
 

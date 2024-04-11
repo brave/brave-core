@@ -34,13 +34,13 @@ class BraveBookmarkProviderTest : public testing::Test {
   }
 
   void SetUp() override {
-    EXPECT_CALL(client_, GetLocalOrSyncableBookmarkModel())
+    EXPECT_CALL(client_, GetBookmarkModel())
         .WillRepeatedly(testing::Return(model_.get()));
     EXPECT_CALL(client_, GetSchemeClassifier())
         .WillRepeatedly(testing::ReturnRef(classifier_));
-    auto* node = client_.GetLocalOrSyncableBookmarkModel()->other_node();
-    client_.GetLocalOrSyncableBookmarkModel()->AddURL(
-        node, 0, u"Hello", GURL("https://example.com"));
+    auto* node = client_.GetBookmarkModel()->other_node();
+    client_.GetBookmarkModel()->AddURL(node, 0, u"Hello",
+                                       GURL("https://example.com"));
     client_.set_template_url_service(
         std::make_unique<TemplateURLService>(nullptr, 0));
     provider_ = base::MakeRefCounted<BraveBookmarkProvider>(&client_);

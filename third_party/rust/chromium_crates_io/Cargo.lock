@@ -91,7 +91,7 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.79"
+version = "1.0.80"
 
 [[package]]
 name = "arrayref"
@@ -317,7 +317,6 @@ dependencies = [
  "brave-wallet-cxx",
  "challenge-bypass-ristretto-cxx",
  "constellation-cxx",
- "cxx",
  "filecoin-cxx",
  "json-cxx",
  "skus-cxx",
@@ -506,12 +505,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.52",
 ]
 
 [[package]]
 name = "cxx"
-version = "1.0.116"
+version = "1.0.119"
 dependencies = [
  "cc",
  "cxxbridge-flags",
@@ -521,15 +520,15 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.116"
+version = "1.0.119"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.116"
+version = "1.0.119"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.52",
 ]
 
 [[package]]
@@ -1224,7 +1223,7 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.20"
+version = "0.4.21"
 
 [[package]]
 name = "lol_html"
@@ -1726,7 +1725,7 @@ dependencies = [
 
 [[package]]
 name = "regex-automata"
-version = "0.4.5"
+version = "0.4.6"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -1774,7 +1773,7 @@ dependencies = [
 
 [[package]]
 name = "ryu"
-version = "1.0.16"
+version = "1.0.17"
 
 [[package]]
 name = "safemem"
@@ -1829,11 +1828,11 @@ dependencies = [
 
 [[package]]
 name = "semver"
-version = "1.0.21"
+version = "1.0.22"
 
 [[package]]
 name = "serde"
-version = "1.0.196"
+version = "1.0.197"
 dependencies = [
  "serde_derive",
 ]
@@ -1856,11 +1855,11 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.196"
+version = "1.0.197"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.52",
 ]
 
 [[package]]
@@ -1876,7 +1875,7 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.113"
+version = "1.0.114"
 dependencies = [
  "itoa 1.0.10",
  "ryu",
@@ -2140,7 +2139,7 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.48"
+version = "2.0.52"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2267,7 +2266,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.52",
 ]
 
 [[package]]
@@ -2389,7 +2388,7 @@ dependencies = [
  "once_cell",
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.52",
  "wasm-bindgen-shared",
 ]
 
@@ -2409,7 +2408,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.52",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]

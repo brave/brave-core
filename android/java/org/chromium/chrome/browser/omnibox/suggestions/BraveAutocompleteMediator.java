@@ -19,8 +19,6 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
-import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
@@ -47,11 +45,13 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     /** Will be deleted in bytecode, value from the parent class will be used instead. */
     private DropdownItemViewInfoListBuilder mDropdownViewInfoListBuilder;
 
-    public BraveAutocompleteMediator(@NonNull Context context,
+    public BraveAutocompleteMediator(
+            @NonNull Context context,
             @NonNull AutocompleteControllerProvider controllerProvider,
             @NonNull AutocompleteDelegate delegate,
             @NonNull UrlBarEditingTextStateProvider textProvider,
-            @NonNull PropertyModel listPropertyModel, @NonNull Handler handler,
+            @NonNull PropertyModel listPropertyModel,
+            @NonNull Handler handler,
             @NonNull Supplier<ModalDialogManager> modalDialogManagerSupplier,
             @NonNull Supplier<Tab> activityTabSupplier,
             @Nullable Supplier<ShareDelegate> shareDelegateSupplier,
@@ -59,12 +59,22 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             @NonNull Callback<Tab> bringTabToFrontCallback,
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
             @NonNull BookmarkState bookmarkState,
-            @NonNull OmniboxActionDelegate omniboxActionDelegate,
-            @NonNull OpenHistoryClustersDelegate openHistoryClustersDelegate) {
-        super(context, controllerProvider, delegate, textProvider, listPropertyModel, handler,
-                modalDialogManagerSupplier, activityTabSupplier, shareDelegateSupplier,
-                locationBarDataProvider, bringTabToFrontCallback, tabWindowManagerSupplier,
-                bookmarkState, omniboxActionDelegate, openHistoryClustersDelegate);
+            @NonNull OmniboxActionDelegate omniboxActionDelegate) {
+        super(
+                context,
+                controllerProvider,
+                delegate,
+                textProvider,
+                listPropertyModel,
+                handler,
+                modalDialogManagerSupplier,
+                activityTabSupplier,
+                shareDelegateSupplier,
+                locationBarDataProvider,
+                bringTabToFrontCallback,
+                tabWindowManagerSupplier,
+                bookmarkState,
+                omniboxActionDelegate);
         mContext = context;
         mDelegate = delegate;
     }
@@ -72,8 +82,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     @Override
     public void onTextChanged(String textWithoutAutocomplete) {
         if (ProfileManager.isInitialized()
-                && !UserPrefs.get(Profile.getLastUsedRegularProfile())
-                            .getBoolean(AUTOCOMPLETE_ENABLED)) {
+                && !UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(AUTOCOMPLETE_ENABLED)) {
             return;
         }
 

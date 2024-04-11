@@ -16,6 +16,8 @@ public class BraveWebsitePermissionsFetcher {
             case ContentSettingsType.BRAVE_GOOGLE_SIGN_IN:
             case ContentSettingsType.BRAVE_LOCALHOST_ACCESS:
                 return WebsitePermissionsType.CONTENT_SETTING_EXCEPTION;
+            case ContentSettingsType.STORAGE_ACCESS:
+                return null;
         }
         return WebsitePermissionsFetcher.getPermissionsType(contentSettingsType);
     }

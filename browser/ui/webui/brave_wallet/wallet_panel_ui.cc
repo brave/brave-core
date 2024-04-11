@@ -92,9 +92,6 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
-  if (ShouldDisableCSPForTesting()) {
-    source->DisableContentSecurityPolicy();
-  }
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
@@ -205,10 +202,4 @@ void WalletPanelUI::CreatePanelHandler(
   if (blockchain_registry) {
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
-}
-
-// static
-bool& WalletPanelUI::ShouldDisableCSPForTesting() {
-  static bool disable_csp = false;
-  return disable_csp;
 }

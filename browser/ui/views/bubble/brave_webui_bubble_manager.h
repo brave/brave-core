@@ -8,14 +8,14 @@
 
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 
-// A subclass of WebUIBubbleManagerT that allows customization of the bubble
+// A subclass of WebUIBubbleManagerImpl that allows customization of the bubble
 // border radius and other aspects of the rendered bubble view. Use exactly like
-// WebUIBubbleManagerT, or subclass if a different customization behavior is
+// WebUIBubbleManagerImpl, or subclass if a different customization behavior is
 // required.
 template <typename T>
-class BraveWebUIBubbleManager : public WebUIBubbleManagerT<T> {
+class BraveWebUIBubbleManager : public WebUIBubbleManagerImpl<T> {
  public:
-  using WebUIBubbleManagerT<T>::WebUIBubbleManagerT;
+  using WebUIBubbleManagerImpl<T>::WebUIBubbleManagerImpl;
 
   ~BraveWebUIBubbleManager() override = default;
 

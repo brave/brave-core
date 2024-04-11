@@ -26,13 +26,13 @@
 SpeedreaderIconView::SpeedreaderIconView(
     CommandUpdater* command_updater,
     IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
-    PageActionIconView::Delegate* page_action_icon_delegate,
-    PrefService* pref_service)
+    PageActionIconView::Delegate* page_action_icon_delegate)
     : PageActionIconView(command_updater,
                          IDC_SPEEDREADER_ICON_ONCLICK,
                          icon_label_bubble_delegate,
                          page_action_icon_delegate,
-                         "SpeedReader") {
+                         "SpeedReader",
+                         /*ephemeral*/ false) {
   SetVisible(false);
 }
 

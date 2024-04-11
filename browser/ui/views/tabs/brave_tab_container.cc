@@ -33,6 +33,11 @@
 #include "ui/gfx/skbitmap_operations.h"
 #include "ui/views/view_utils.h"
 
+using BrowserRootView::DropIndex::GroupInclusion::kDontIncludeInGroup;
+using BrowserRootView::DropIndex::GroupInclusion::kIncludeInGroup;
+using BrowserRootView::DropIndex::RelativeToIndex::kInsertBeforeIndex;
+using BrowserRootView::DropIndex::RelativeToIndex::kReplaceIndex;
+
 BraveTabContainer::BraveTabContainer(
     TabContainerController& controller,
     TabHoverCardController* hover_card_controller,
@@ -299,11 +304,12 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
   }
 }
 
-BrowserRootView::DropIndex BraveTabContainer::GetDropIndex(
-    const ui::DropTargetEvent& event) {
+std::optional<BrowserRootView::DropIndex> BraveTabContainer::GetDropIndex(
+    const ui::DropTargetEvent& event,
+    bool allow_replacement) {
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
-    return TabContainerImpl::GetDropIndex(event);
+    return TabContainerImpl::GetDropIndex(event, allow_replacement);
   }
 
   // Force animations to stop, otherwise it makes the index calculation tricky.
@@ -345,33 +351,49 @@ BrowserRootView::DropIndex BraveTabContainer::GetDropIndex(
           tab->group().has_value() &&
           model_index == controller_->GetFirstTabInGroup(tab->group().value());
 
-      const int hot_height = tab->height() / 4;
-      const int hot_width = tab->width() / 4;
+      const int hot_height = tab->height() / (allow_replacement ? 4 : 2);
+      const int hot_width = tab->width() / (allow_replacement ? 4 : 2);
 
       if (is_tab_pinned ? x >= (max_x - hot_width)
                         : y >= (max_y - hot_height)) {
-        return {model_index + 1, true /* drop_before */,
-                false /* drop_in_group */};
+        return BrowserRootView::DropIndex{
+            .index = model_index + 1,
+            .relative_to_index = kInsertBeforeIndex,
+            .group_inclusion = kDontIncludeInGroup};
       }
 
       if (is_tab_pinned ? x < tab->x() + hot_width
                         : y < tab->y() + hot_height) {
-        return {model_index, true /* drop_before */, first_in_group};
+        return BrowserRootView::DropIndex{
+            .index = model_index,
+            .relative_to_index = kInsertBeforeIndex,
+            .group_inclusion =
+                first_in_group ? kIncludeInGroup : kDontIncludeInGroup};
       }
 
-      return {model_index, false /* drop_before */, false /* drop_in_group */};
+      CHECK(allow_replacement)
+          << "This should be reached only when |allow_replacement| is true";
+      return BrowserRootView::DropIndex{.index = model_index,
+                                        .relative_to_index = kReplaceIndex,
+                                        .group_inclusion = kIncludeInGroup};
     } else {
       TabGroupHeader* const group_header = static_cast<TabGroupHeader*>(view);
       const int first_tab_index =
           controller_->GetFirstTabInGroup(group_header->group().value())
               .value();
-      return {first_tab_index, true /* drop_before */,
-              y >= max_y - group_header->height() / 2 /* drop_in_group */};
+      return BrowserRootView::DropIndex{
+          .index = first_tab_index,
+          .relative_to_index = kInsertBeforeIndex,
+          .group_inclusion = y >= max_y - group_header->height() / 2
+                                 ? kIncludeInGroup
+                                 : kDontIncludeInGroup};
     }
   }
 
   // The drop isn't over a tab, add it to the end.
-  return {GetTabCount(), true, false};
+  return BrowserRootView::DropIndex{.index = GetTabCount(),
+                                    .relative_to_index = kInsertBeforeIndex,
+                                    .group_inclusion = kDontIncludeInGroup};
 }
 
 // BraveTabContainer::DropArrow:
@@ -560,15 +582,23 @@ void BraveTabContainer::SetDropArrow(
   }
 
   // Let the controller know of the index update.
-  controller_->OnDropIndexUpdate(index->value, index->drop_before);
+  controller_->OnDropIndexUpdate(
+      index->index,
+      index->relative_to_index ==
+          BrowserRootView::DropIndex::RelativeToIndex::kInsertBeforeIndex);
 
   if (drop_arrow_ && (index == drop_arrow_->index())) {
     return;
   }
 
   bool is_beneath = false;
-  gfx::Rect drop_bounds = GetDropBounds(index->value, index->drop_before,
-                                        index->drop_in_group, &is_beneath);
+  gfx::Rect drop_bounds = GetDropBounds(
+      index->index,
+      index->relative_to_index ==
+          BrowserRootView::DropIndex::RelativeToIndex::kInsertBeforeIndex,
+      index->group_inclusion ==
+          BrowserRootView::DropIndex::GroupInclusion::kIncludeInGroup,
+      &is_beneath);
 
   if (!drop_arrow_) {
     DropArrow::Position position = DropArrow::Position::Vertical;

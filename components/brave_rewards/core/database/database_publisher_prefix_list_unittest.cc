@@ -7,7 +7,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/big_endian.h"
+#include "base/containers/span.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
@@ -33,7 +34,8 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
     std::string prefixes;
     prefixes.resize(prefix_count * 4);
     for (uint32_t i = 0; i < prefix_count; ++i) {
-      base::WriteBigEndian(&prefixes[i * 4], i);
+      base::as_writable_byte_span(prefixes).subspan(i * 4).first<4>().copy_from(
+          base::numerics::U32ToBigEndian(i));
     }
 
     publishers_pb::PublisherPrefixList message;

@@ -1,8 +1,8 @@
 diff --git a/telemetry/telemetry/internal/actions/action_runner.py b/telemetry/telemetry/internal/actions/action_runner.py
-index 0e3a354bb417130f3efc654968634aac2b3fe944..415a52542216f0ce56b86089833f205b6867b16e 100644
+index cfece5ea0d40858724186ab9b945a07a816c2640..eb7002027c5c226475b88323ea9232a243b82322 100644
 --- a/telemetry/telemetry/internal/actions/action_runner.py
 +++ b/telemetry/telemetry/internal/actions/action_runner.py
-@@ -41,7 +41,7 @@ import py_utils
+@@ -42,7 +42,7 @@ import py_utils
  
  # Time to wait in seconds before requesting a memory dump in deterministic
  # mode, thus allowing metric values to stabilize a bit.

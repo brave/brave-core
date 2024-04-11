@@ -27,7 +27,7 @@ class BraveVPNPanelController {
 
  private:
   raw_ptr<BraveBrowserView> browser_view_ = nullptr;
-  std::unique_ptr<WebUIBubbleManagerT<VPNPanelUI>> webui_bubble_manager_;
+  std::unique_ptr<WebUIBubbleManagerImpl<VPNPanelUI>> webui_bubble_manager_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_PANEL_CONTROLLER_H_

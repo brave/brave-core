@@ -28,7 +28,11 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.23.0/tree.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.23.0/visitor.rs",
   ]
-  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.23.0/README.md" ]
+  inputs = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.23.0/.cargo-checksum.json",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.23.0/.cargo_vcs_info.json",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.23.0/README.md",
+  ]
 
   build_native_rust_unit_tests = false
   edition = "2015"

@@ -50,13 +50,10 @@ bool IsSnowflakeToggleEnabled(content::WebContents* web_contents) {
 class TorSnowflakeExtensionBrowserTest : public InProcessBrowserTest {
  public:
   TorSnowflakeExtensionBrowserTest() {
-    // Disabling CSP on webui pages so EvalJS could be run in main world.
-    BraveSettingsUI::ShouldDisableCSPForTesting() = true;
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
   }
 
   ~TorSnowflakeExtensionBrowserTest() override {
-    BraveSettingsUI::ShouldDisableCSPForTesting() = false;
     BraveSettingsUI::ShouldExposeElementsForTesting() = false;
   }
 

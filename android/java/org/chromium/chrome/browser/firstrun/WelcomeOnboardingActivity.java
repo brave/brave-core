@@ -492,7 +492,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         super.triggerLayoutInflation();
 
         mFirstRunFlowSequencer =
-                new BraveFirstRunFlowSequencer(this, getProfileProviderSupplier()) {
+                new BraveFirstRunFlowSequencer(getProfileProviderSupplier()) {
                     @Override
                     public void onFlowIsKnown(Bundle freProperties) {
                         initializeViews();
