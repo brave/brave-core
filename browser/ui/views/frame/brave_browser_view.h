@@ -184,7 +184,6 @@ class BraveBrowserView : public BrowserView,
   bool IsActiveWebContentsTiled(const SplitViewBrowserData::Tile& tile) const;
   void UpdateSecondaryContentsWebViewVisibility();
 
-  // Returns the content::WebContents* for devtools.
   void UpdateSecondaryDevtoolsLayoutAndVisibility(
       content::WebContents* inspected_contents);
 

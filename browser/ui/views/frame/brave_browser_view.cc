@@ -416,6 +416,7 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
   } else {
     secondary_contents_web_view_->SetWebContents(nullptr);
     secondary_contents_web_view_->SetVisible(false);
+    secondary_devtools_web_view_->SetWebContents(nullptr);
     secondary_devtools_web_view_->SetVisible(false);
   }
 
@@ -427,10 +428,6 @@ void BraveBrowserView::UpdateSecondaryDevtoolsLayoutAndVisibility(
   DevToolsContentsResizingStrategy strategy;
   content::WebContents* devtools =
       DevToolsWindow::GetInTabWebContents(inspected_contents, &strategy);
-  if (secondary_devtools_web_view_->web_contents() != devtools) {
-    secondary_devtools_web_view_->SetWebContents(devtools);
-  }
-
   if (secondary_devtools_web_view_->web_contents() != devtools) {
     secondary_devtools_web_view_->SetWebContents(devtools);
   }
