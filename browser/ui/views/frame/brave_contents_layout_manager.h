@@ -34,6 +34,10 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
     show_main_web_contents_at_tail_ = tail;
   }
 
+  // Sets the contents resizing strategy.
+  void SetSecondaryContentsResizingStrategy(
+      const DevToolsContentsResizingStrategy& strategy);
+
  protected:
   // ContentsLayoutManager:
   void LayoutImpl() override;
@@ -44,6 +48,8 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
   raw_ptr<SplitViewBrowserData> split_view_browser_data_ = nullptr;
   raw_ptr<views::View> secondary_contents_view_ = nullptr;
   raw_ptr<views::View> secondary_devtools_view_ = nullptr;
+
+  DevToolsContentsResizingStrategy secondary_strategy_;
 
   bool show_main_web_contents_at_tail_ = false;
 };

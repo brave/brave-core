@@ -184,6 +184,9 @@ class BraveBrowserView : public BrowserView,
   bool IsActiveWebContentsTiled(const SplitViewBrowserData::Tile& tile) const;
   void UpdateSecondaryContentsWebViewVisibility();
 
+  void UpdateSecondaryDevtoolsLayoutAndVisibility(
+      content::WebContents* inspected_contents);
+
   bool closing_confirm_dialog_activated_ = false;
   raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
