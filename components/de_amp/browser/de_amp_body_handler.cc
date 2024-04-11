@@ -5,6 +5,7 @@
 
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -21,6 +22,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/page_navigator.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 
@@ -100,6 +102,13 @@ bool DeAmpBodyHandler::ShouldProcess(
     const GURL& response_url,
     network::mojom::URLResponseHead* response_head,
     bool* defer) {
+  // Only De-AMP HTML pages.
+  std::string mime_type;
+  if (!response_head || !response_head->headers ||
+      !response_head->headers->GetMimeType(&mime_type) ||
+      base::CompareCaseInsensitiveASCII(mime_type, "text/html")) {
+    return false;
+  }
   *defer = true;
   response_url_ = response_url;
   return navigation_chain_.GetList().size() < kMaxRedirectHops;

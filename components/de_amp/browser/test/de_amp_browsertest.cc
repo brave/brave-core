@@ -67,14 +67,15 @@ const char kTestAmpCanonicalLink[] = "<link rel='canonical' href='%s'>";
 std::unique_ptr<net::test_server::HttpResponse> BuildHttpResponse(
     const std::string& body,
     net::HttpStatusCode code = net::HttpStatusCode::HTTP_OK,
-    const std::map<std::string, std::string>& custom_headers = {}) {
+    const std::map<std::string, std::string>& custom_headers = {},
+    const std::string& content_type = "text/html") {
   auto http_response = std::make_unique<net::test_server::BasicHttpResponse>();
   http_response->set_code(code);
   for (auto& [k, v] : custom_headers) {
     http_response->AddCustomHeader(k, v);
   }
 
-  http_response->set_content_type("text/html");
+  http_response->set_content_type(content_type);
   http_response->set_content(body);
   return http_response;
 }
@@ -158,10 +159,12 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
       const std::string& page_path,
       const std::string& body,
       net::HttpStatusCode code = net::HttpStatusCode::HTTP_OK,
-      const std::map<std::string, std::string>& custom_headers = {}) {
+      const std::map<std::string, std::string>& custom_headers = {},
+      const std::string& content_type = "text/html") {
     auto handler = [](const std::string& page_path, const std::string& body,
                       net::HttpStatusCode code,
                       const std::map<std::string, std::string>& custom_headers,
+                      const std::string& content_type,
                       const net::test_server::HttpRequest& request)
         -> std::unique_ptr<net::test_server::HttpResponse> {
       [&request]() {
@@ -174,11 +177,12 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
         return nullptr;
       }
 
-      return BuildHttpResponse(body, code, custom_headers);
+      return BuildHttpResponse(body, code, custom_headers, content_type);
     };
 
-    https_server_->RegisterRequestHandler(base::BindRepeating(
-        std::move(handler), page_path, body, code, custom_headers));
+    https_server_->RegisterRequestHandler(
+        base::BindRepeating(std::move(handler), page_path, body, code,
+                            custom_headers, content_type));
   }
 
   void TogglePref(const bool on) {
@@ -223,6 +227,8 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
   SetRequestHandler(kTestSimpleNonAmpPage, Canonical());
   SetRequestHandler(kTestAmpPage, Amp(kTestCanonicalPage));
   SetRequestHandler(kTestCanonicalPage, Canonical());
+  SetRequestHandler(kTestRedirectingAmpPage1, Amp(kTestCanonicalPage),
+                    net::HttpStatusCode::HTTP_OK, {}, "text/plain");
   StartServer();
 
   // Go to any page
@@ -231,6 +237,10 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), simple);
 
   NavigateToURLAndWaitForRedirects(kTestAmpPage, kTestCanonicalPage);
+
+  // Non-HTML page should not be De-AMPed.
+  NavigateToURLAndWaitForRedirects(kTestRedirectingAmpPage1,
+                                   kTestRedirectingAmpPage1);
 }
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkWithinMax) {
