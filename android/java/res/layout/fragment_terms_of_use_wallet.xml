@@ -56,7 +56,7 @@
             android:layout_marginBottom="16dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/wallet_accept_items"
-            android:paddingStart="8dp"
+            android:paddingHorizontal="16dp"
             android:text="@string/understand_self_custody"
             android:textColor="@color/wallet_text_color"
             android:lineSpacingExtra="4sp"
@@ -72,7 +72,7 @@
             android:layout_marginBottom="16dp"
             android:layout_below="@+id/self_custody_check_box"
             android:layout_alignParentStart="true"
-            android:paddingStart="8dp"
+            android:paddingHorizontal="16dp"
             android:textColor="@color/wallet_text_color"
             android:lineSpacingExtra="4sp"
             android:textSize="14sp"/>
