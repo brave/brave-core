@@ -87,9 +87,16 @@ source_set("ui") {
     ]
 
     if (enable_print_preview) {
+      sources += [
+        "webui/ai_chat/print_preview_extractor.cc",
+        "webui/ai_chat/print_preview_extractor.h",
+      ]
       deps += [
         "//chrome/browser/pdf:pdf_pref_names",
         "//chrome/services/printing/public/mojom",
+        "//components/printing/browser",
+        "//components/printing/common:mojo_interfaces",
+        "//components/services/print_compositor/public/mojom",
       ]
     }
 
@@ -722,12 +729,9 @@ source_set("ui") {
     "//components/optimization_guide/core:features",
     "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
     "//components/prefs",
-    "//components/printing/browser",
-    "//components/printing/common:mojo_interfaces",
     "//components/qr_code_generator:bitmap_generator",
     "//components/resources:components_resources_grit",
     "//components/search_engines",
-    "//components/services/print_compositor/public/mojom",
     "//components/sessions",
     "//components/strings:components_strings",
     "//components/tab_groups",

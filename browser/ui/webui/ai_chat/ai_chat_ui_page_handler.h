@@ -9,14 +9,12 @@
 #include <stdint.h>
 
 #include <memory>
-#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -28,8 +26,7 @@
 #include "printing/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-#include "components/printing/common/print.mojom.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "brave/browser/ui/webui/ai_chat/print_preview_extractor.h"
 #endif
 
 namespace content {
@@ -40,18 +37,13 @@ namespace favicon {
 class FaviconService;
 }  // namespace favicon
 
-class AIChatUI;
 class AIChatUIBrowserTest;
 namespace ai_chat {
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-class PreviewPageTextExtractor;
-#endif
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                             public AIChatTabHelper::Observer,
                             public content::WebContentsObserver {
  public:
   AIChatUIPageHandler(
-      AIChatUI* owner,
       content::WebContents* owner_web_contents,
       content::WebContents* chat_context_web_contents,
       Profile* profile,
@@ -104,12 +96,6 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OnVisibilityChanged(content::Visibility visibility) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
 
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-  void OnPreviewReady();
-  void PreviewCleanup();
-  void OnGetOCRResult(std::string text);
-#endif
-
  private:
   friend class ::AIChatUIBrowserTest;
   // AIChatTabHelper::Observer
@@ -136,7 +122,6 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
-  raw_ptr<AIChatUI> owner_ = nullptr;
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
 
@@ -146,9 +131,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       chat_tab_helper_observation_{this};
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-  int preview_request_id_ = -1;
-  std::unique_ptr<PreviewPageTextExtractor> preview_page_text_extractor_;
-  mojo::AssociatedRemote<printing::mojom::PrintRenderFrame> print_render_frame_;
+  std::unique_ptr<PrintPreviewExtractor> print_preview_extractor_;
 #endif
   mojo::Receiver<ai_chat::mojom::PageHandler> receiver_;
 
