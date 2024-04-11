@@ -353,18 +353,18 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
         mIvSeekBack15Seconds = view.findViewById(R.id.ivSeekBack15Seconds)
         mIvVideoOptions = view.findViewById(R.id.ivVideoOptions)
         mIvVideoOptions.setOnClickListener {
-            mPlaylistModel?.let { model ->
-                val currentPlaylistItem =
-                    mPlaylistItems[mPlayerView.player?.currentPeriodIndex ?: 0]
-                MenuUtils.showPlaylistItemMenu(
-                    view.context,
-                    parentFragmentManager,
-                    currentPlaylistItem,
-                    playlistId = model.id,
-                    playlistItemOptionsListener = this,
-                    shouldShowMove = false
-                )
-            }
+            // mPlaylistModel?.let { model ->
+            //     val currentPlaylistItem =
+            //         mPlaylistItems[mPlayerView.player?.currentPeriodIndex ?: 0]
+            //     MenuUtils.showPlaylistItemMenu(
+            //         view.context,
+            //         parentFragmentManager,
+            //         currentPlaylistItem,
+            //         playlistId = model.id,
+            //         playlistItemOptionsListener = this,
+            //         shouldShowMove = false
+            //     )
+            // }
         }
         mVideoPlayerLoading = view.findViewById(R.id.videoPlayerLoading)
 
@@ -387,11 +387,11 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
         mRvPlaylist.adapter = mPlaylistItemAdapter
 
         mPlaylistViewModel.downloadProgress.observe(viewLifecycleOwner) {
-            mPlaylistItemAdapter?.updatePlaylistItemDownloadProgress(it)
+            // mPlaylistItemAdapter?.updatePlaylistItemDownloadProgress(it)
         }
 
         PlaylistUtils.hlsContentProgress.observe(viewLifecycleOwner) {
-            mPlaylistItemAdapter?.updatePlaylistItemDownloadProgress(it)
+            // mPlaylistItemAdapter?.updatePlaylistItemDownloadProgress(it)
         }
 
         mPlaylistViewModel.playlistData.observe(viewLifecycleOwner) { playlistData ->
@@ -410,13 +410,13 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
 
             VideoPlaybackService.currentPlayingItem.observe(viewLifecycleOwner) { currentPlayingItemId ->
                 if (!currentPlayingItemId.isNullOrEmpty()) {
-                    mPlaylistItemAdapter?.updatePlayingStatus(currentPlayingItemId)
+                    // mPlaylistItemAdapter?.updatePlayingStatus(currentPlayingItemId)
                 }
             }
 
             activity?.runOnUiThread {
                 // Bottom Layout set up
-                mPlaylistItemAdapter?.submitList(mPlaylistItems)
+                // mPlaylistItemAdapter?.submitList(mPlaylistItems)
 
                 mProgressBar.visibility = View.GONE
                 mRvPlaylist.visibility = View.VISIBLE
@@ -700,33 +700,33 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
         mMainLayout.smoothToBottom()
     }
 
-    override fun onPlaylistItemMenuClick(view: View, playlistItemModel: PlaylistItemModel) {
-        MenuUtils.showPlaylistItemMenu(
-            view.context,
-            parentFragmentManager,
-            playlistItemModel = playlistItemModel,
-            playlistId = playlistItemModel.playlistId,
-            playlistItemOptionsListener = this,
-            shouldShowMove = false
-        )
-    }
+    // override fun onPlaylistItemMenuClick(view: View, playlistItemModel: PlaylistItemModel) {
+    //     // MenuUtils.showPlaylistItemMenu(
+    //     //     view.context,
+    //     //     parentFragmentManager,
+    //     //     playlistItemModel = playlistItemModel,
+    //     //     playlistId = playlistItemModel.playlistId,
+    //     //     playlistItemOptionsListener = this,
+    //     //     shouldShowMove = false
+    //     // )
+    // }
 
     override fun onPlaylistItemOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
         if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {
-            playlistItemOptionModel.playlistItemModel?.pageSource?.let {
-                PlaylistUtils.showSharingDialog(
-                    requireContext(), it
-                )
-            }
+            // playlistItemOptionModel.playlistItemModel?.pageSource?.let {
+            //     PlaylistUtils.showSharingDialog(
+            //         requireContext(), it
+            //     )
+            // }
         } else {
             if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
                 mPlayerView.player?.stop()
                 if (activity is AppCompatActivity) (activity as AppCompatActivity).onBackPressedDispatcher.onBackPressed()
             } else if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM || playlistItemOptionModel.optionType == PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
-                val moveOrCopyItems = ArrayList<PlaylistItemModel>()
-                playlistItemOptionModel.playlistItemModel?.let { moveOrCopyItems.add(it) }
-                PlaylistUtils.moveOrCopyModel =
-                    MoveOrCopyModel(playlistItemOptionModel.optionType, "", moveOrCopyItems)
+                // val moveOrCopyItems = ArrayList<PlaylistItemModel>()
+                // playlistItemOptionModel.playlistItemModel?.let { moveOrCopyItems.add(it) }
+                // PlaylistUtils.moveOrCopyModel =
+                //     MoveOrCopyModel(playlistItemOptionModel.optionType, "", moveOrCopyItems)
             }
             mPlaylistViewModel.setPlaylistItemOption(playlistItemOptionModel)
         }

@@ -21,17 +21,17 @@ import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
 import org.chromium.chrome.browser.playlist.kotlin.listener.StartDragListener
 import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import java.util.Locale
+import org.chromium.playlist.mojom.PlaylistItem
 
 
 class PlaylistItemAdapter(
     private val playlistItemClickListener: PlaylistItemClickListener?,
     private val startDragListener: StartDragListener? = null,
-) : AbstractRecyclerViewAdapter<PlaylistItemModel, PlaylistItemAdapter.MediaItemViewHolder>() {
+) : AbstractRecyclerViewAdapter<PlaylistItem, PlaylistItemAdapter.MediaItemViewHolder>() {
     private var editMode = false
     private var isBottomLayout = false
     private var allViewHolderViews = HashMap<String, View>()
@@ -60,7 +60,7 @@ class PlaylistItemAdapter(
         isBottomLayout = true
     }
 
-    inner class MediaItemViewHolder(view: View) : AbstractViewHolder<PlaylistItemModel>(view) {
+    inner class MediaItemViewHolder(view: View) : AbstractViewHolder<PlaylistItem>(view) {
         private val ivMediaThumbnail: AppCompatImageView
         private val tvMediaTitle: AppCompatTextView
         private val tvMediaDuration: AppCompatTextView
@@ -83,7 +83,7 @@ class PlaylistItemAdapter(
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        override fun onBind(position: Int, model: PlaylistItemModel) {
+        override fun onBind(position: Int, model: PlaylistItem) {
             setViewOnSelected(model.isSelected)
             if (PlaylistUtils.isPlaylistItemCached(model)) {
                 setAlphaForViews(itemView as ViewGroup, 1.0f)
@@ -93,16 +93,16 @@ class PlaylistItemAdapter(
             }
             tvMediaTitle.text = model.name
 
-            if (model.thumbnailPath.isNotEmpty()) {
+            if (model.thumbnailPath.url.isNotEmpty()) {
                 Glide.with(itemView.context).asBitmap()
                     .placeholder(R.drawable.ic_playlist_item_placeholder)
-                    .error(R.drawable.ic_playlist_item_placeholder).load(model.thumbnailPath)
+                    .error(R.drawable.ic_playlist_item_placeholder).load(model.thumbnailPath.url)
                     .into(ivMediaThumbnail)
             } else {
                 ivMediaThumbnail.setImageResource(R.drawable.ic_playlist_item_placeholder)
             }
 
-            if (model.isCached) {
+            if (model.cached) {
                 val fileSize = model.mediaFileBytes
                 tvMediaFileSize.text = Formatter.formatShortFileSize(itemView.context, fileSize)
             }
@@ -136,7 +136,7 @@ class PlaylistItemAdapter(
                     return@setOnClickListener
                 }
                 playlistItemClickListener?.onPlaylistItemMenuClick(
-                    view = it, playlistItemModel = model
+                    view = it, playlistItem = model
                 )
             }
             ivDragMedia.visibility = if (editMode) View.VISIBLE else View.GONE
@@ -186,8 +186,8 @@ class PlaylistItemAdapter(
         }
     }
 
-    fun getSelectedItems(): ArrayList<PlaylistItemModel> {
-        val selectedItems = arrayListOf<PlaylistItemModel>()
+    fun getSelectedItems(): ArrayList<PlaylistItem> {
+        val selectedItems = arrayListOf<PlaylistItem>()
         currentList.forEach {
             if (it.isSelected) {
                 selectedItems.add(it)
@@ -220,13 +220,12 @@ class PlaylistItemAdapter(
         }
     }
 
-    fun updatePlaylistItem(playlistItemModel: PlaylistItemModel) {
-        val currentPlaylistItems = ArrayList<PlaylistItemModel>()
-        Log.e("updated_item", playlistItemModel.toString())
+    fun updatePlaylistItem(playlistItem: PlaylistItem) {
+        val currentPlaylistItems = ArrayList<PlaylistItem>()
+        Log.e("updated_item", playlistItem.toString())
         currentList.forEach {
-            if (it.id == playlistItemModel.id) {
-                playlistItemModel.playlistId = it.playlistId
-                currentPlaylistItems.add(playlistItemModel)
+            if (it.id == playlistItem.id) {
+                currentPlaylistItems.add(playlistItem)
             } else {
                 currentPlaylistItems.add(it)
             }

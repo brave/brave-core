@@ -23,7 +23,12 @@ import("//brave/components/signin/public/android/java_sources.gni")
 brave_kotlin_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/PlaylistItemDiffCallback.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/PlaylistViewModel.kt",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/AllPlaylistActivity.kt",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/NewPlaylistActivity.kt",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistActivity.kt",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistBaseActivity.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistMenuOnboardingActivity.kt",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistPlayerActivity.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/PlaylistOnboardingFragmentStateAdapter.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/bottomsheet/PlaylistItemOptionsBottomSheetAdapter.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/bottomsheet/PlaylistOptionsBottomSheetAdapter.kt",

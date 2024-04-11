@@ -73,6 +73,7 @@ struct PlaylistItem {
   // Playlists that contain this item. Could have multiple |Playlist| in case
   // user copied this item to another list.
   array<string> parents;
+  bool is_selected;
 };
 
 // Used by the web UI to bootstrap bidirectional communication.

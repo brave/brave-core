@@ -8,12 +8,14 @@
 package org.chromium.chrome.browser.playlist.kotlin.model
 
 import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.playlist.mojom.Playlist
+import org.chromium.playlist.mojom.PlaylistItem
 
 data class PlaylistOptionsModel(
     val optionTitle: String,
     val optionIcon: Int,
     val optionType: PlaylistOptionsEnum,
-    val allPlaylistModels: MutableList<PlaylistModel> = mutableListOf(),
-    val playlistModel: PlaylistModel? = null,
-    val playlistItemModels: ArrayList<PlaylistItemModel> = arrayListOf() // Used for multiple items
+    val allPlaylists: MutableList<Playlist> = mutableListOf(),
+    val playlist: Playlist? = null,
+    val playlistItems: ArrayList<PlaylistItem> = arrayListOf() // Used for multiple items
 )
