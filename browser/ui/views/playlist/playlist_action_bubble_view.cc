@@ -25,6 +25,7 @@ void PlaylistActionBubbleView::ShowBubble(
     Browser* browser,
     base::WeakPtr<PlaylistActionIconView> action_icon_view,
     base::WeakPtr<PlaylistTabHelper> tab_helper) {
+  CHECK(tab_helper);
   if (!tab_helper->saved_items().empty()) {
     ShowBubble(std::make_unique<PlaylistConfirmBubble>(
         browser, std::move(action_icon_view), std::move(tab_helper)));

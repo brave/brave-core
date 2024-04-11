@@ -211,11 +211,8 @@ void PlaylistAddBubble::InitListView() {
 }
 
 bool PlaylistAddBubble::AddSelected() {
-  CHECK(tab_helper_);
-
-  if (tab_helper_->is_adding_items()) {
-    // Don't do anything when already adding
-    return false;
+  if (!tab_helper_ || tab_helper_->is_adding_items()) {
+    return true;
   }
 
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
@@ -229,8 +226,8 @@ bool PlaylistAddBubble::AddSelected() {
       << "The button should be disabled when nothing is selected.";
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&PlaylistTabHelper::AddItems,
-                                tab_helper_->GetWeakPtr(), std::move(items)));
+      FROM_HERE, base::BindOnce(&PlaylistTabHelper::AddItems, tab_helper_,
+                                std::move(items)));
 
   return false;
 }

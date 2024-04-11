@@ -39,7 +39,6 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/view_utils.h"
 
 namespace playlist {
@@ -182,7 +181,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
 
   // Show up bubble and add all found items.
   location_bar_view->ShowPlaylistBubble();
-  views::BubbleDialogDelegateView* action_bubble = nullptr;
+  PlaylistActionBubbleView* action_bubble = nullptr;
   WaitUntil(base::BindLambdaForTesting([&]() {
     action_bubble = PlaylistActionBubbleView::GetBubble();
     return !!action_bubble;

@@ -50,7 +50,7 @@ class PlaylistBackgroundWebContentses final {
 
   void Add(const GURL& url,
            PlaylistMediaHandler::OnceCallback on_media_detected_callback,
-           base::TimeDelta timeout = base::Seconds(5));
+           base::TimeDelta timeout = base::Seconds(10));
 
   void Reset();
 
