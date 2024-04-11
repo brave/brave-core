@@ -51,12 +51,14 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     public void onResume() {
         super.onResume();
 
-        final ScheduledExecutorService scheduler =
-                Executors.newScheduledThreadPool(1);
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-        scheduler.schedule(() -> {
-            mAddTransitionDelay = false;
-        }, NEXT_PAGE_DELAY_MS, TimeUnit.MILLISECONDS);
+        scheduler.schedule(
+                () -> {
+                    mAddTransitionDelay = false;
+                },
+                NEXT_PAGE_DELAY_MS,
+                TimeUnit.MILLISECONDS);
 
         KeyringModel keyringModel = getKeyringModel();
         if (keyringModel != null) {
@@ -93,10 +95,12 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
 
                         // Go to the next page after wallet creation is done.
                         if (mOnNextPage != null) {
-                            // Add small delay if the Wallet creation completes faster than {@code NEXT_PAGE_DELAY_MS}.
+                            // Add small delay if the Wallet creation completes faster than {@code
+                            // NEXT_PAGE_DELAY_MS}.
                             if (mAddTransitionDelay) {
                                 Handler handler = new Handler(Looper.getMainLooper());
-                                handler.postDelayed(() -> mOnNextPage.gotoNextPage(), NEXT_PAGE_DELAY_MS);
+                                handler.postDelayed(
+                                        () -> mOnNextPage.gotoNextPage(), NEXT_PAGE_DELAY_MS);
                             } else {
                                 mOnNextPage.gotoNextPage();
                             }
