@@ -178,6 +178,7 @@ interface PlaylistServiceObserver {
 
   OnPlaylistUpdated(Playlist playlist);
 
+  OnMediaFileDownloadScheduled(string id);
   OnMediaFileDownloadProgressed(
       string id,
       int64 total_bytes,

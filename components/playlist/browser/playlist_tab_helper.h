@@ -85,6 +85,7 @@ class PlaylistTabHelper
   void OnItemCached(mojom::PlaylistItemPtr item) override {}
   void OnItemUpdated(mojom::PlaylistItemPtr item) override {}
 
+  void OnMediaFileDownloadScheduled(const std::string& id) override {}
   void OnMediaFileDownloadProgressed(
       const std::string& id,
       int64_t total_bytes,

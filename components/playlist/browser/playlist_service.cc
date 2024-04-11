@@ -389,6 +389,10 @@ void PlaylistService::DownloadMediaFile(const mojom::PlaylistItemPtr& item,
       update_media_src_and_retry_on_fail, std::move(callback));
 
   media_file_download_manager_->DownloadMediaFile(std::move(job));
+
+  for (auto& observer : observers_) {
+    observer->OnMediaFileDownloadScheduled(item->id);
+  }
 }
 
 base::FilePath PlaylistService::GetPlaylistItemDirPath(

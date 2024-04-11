@@ -17,7 +17,7 @@ interface MenuItemProps {
 }
 
 interface MenuProps {
-  items: MenuItemProps[]
+  items: Array<MenuItemProps | undefined>
   visible: boolean
   onShowMenu?: () => void
   onDismissMenu?: () => void
@@ -40,7 +40,7 @@ const StyledButtonMenu = styled(ButtonMenu)<{ visible: boolean }>`
   color: ${color.text.secondary};
 `
 
-export default function ContextualMenuAnchorButton({
+export default function ContextualMenuAnchorButton ({
   items,
   visible,
   onShowMenu,
@@ -63,20 +63,22 @@ export default function ContextualMenuAnchorButton({
       <div slot='anchor-content'>
         <Icon name='more-horizontal' />
       </div>
-      {items.map((i) => (
-        <leo-menu-item
-          key={i.name}
-          onClick={(e) => {
-            e.stopPropagation()
-            i.onClick()
-          }}
-        >
-          <StyledRow>
-            <span>{i.name}</span>
-            <Icon name={i.iconName} />
-          </StyledRow>
-        </leo-menu-item>
-      ))}
+      {items
+        .filter((i) => i)
+        .map((i) => (
+          <leo-menu-item
+            key={i!.name}
+            onClick={(e) => {
+              e.stopPropagation()
+              i!.onClick()
+            }}
+          >
+            <StyledRow>
+              <span>{i!.name}</span>
+              <Icon name={i!.iconName} />
+            </StyledRow>
+          </leo-menu-item>
+        ))}
     </StyledButtonMenu>
   )
 }
