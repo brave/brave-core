@@ -21,7 +21,7 @@ constexpr char kNotificationAdLastNormalizedDisplayCoordinateY[] =
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
-  // Added 2023-11
+  // Added 11/2023.
   registry->RegisterDoublePref(kNotificationAdLastNormalizedDisplayCoordinateX,
                                0.0);
   registry->RegisterDoublePref(kNotificationAdLastNormalizedDisplayCoordinateY,
@@ -29,7 +29,7 @@ void RegisterProfilePrefsForMigration(
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
-  // Added 2023-11
+  // Added 11/2023.
   prefs->ClearPref(kNotificationAdLastNormalizedDisplayCoordinateX);
   prefs->ClearPref(kNotificationAdLastNormalizedDisplayCoordinateY);
 }

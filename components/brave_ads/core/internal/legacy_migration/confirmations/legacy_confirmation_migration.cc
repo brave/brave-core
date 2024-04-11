@@ -30,6 +30,8 @@ void FailedToMigrate(InitializeCallback callback) {
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
+  SetProfileBooleanPref("brave.brave_ads.state.has_migrated.confirmations.v7",
+                        true);
   SetProfileBooleanPref(prefs::kHasMigratedConfirmationState, true);
   std::move(callback).Run(/*success=*/true);
 }
@@ -49,8 +51,19 @@ void MigrateConfirmationState(InitializeCallback callback) {
                // Confirmation state does not exist.
                return SuccessfullyMigrated(std::move(callback));
              }
+             std::string mutable_json = *json;
 
-             if (!ConfirmationStateManager::GetInstance().FromJson(*json)) {
+             if (!GetProfileBooleanPref(
+                     "brave.brave_ads.state.has_migrated.confirmations.v7") &&
+                 !ConfirmationStateManager::GetInstance().FromJson(
+                     mutable_json)) {
+               // The confirmation state is corrupted, therefore, reset it to
+               // the default values for version 7.
+               mutable_json = "{}";
+             }
+
+             if (!ConfirmationStateManager::GetInstance().FromJson(
+                     mutable_json)) {
                // TODO(https://github.com/brave/brave-browser/issues/32066):
                // Remove migration failure dumps.
                base::debug::DumpWithoutCrashing();
@@ -62,7 +75,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
              BLOG(1, "Migrating confirmation state");
 
              const std::optional<ConfirmationList> confirmations =
-                 json::reader::ReadConfirmations(*json);
+                 json::reader::ReadConfirmations(mutable_json);
              if (!confirmations) {
                // Confirmation queue state does not exist.
                return SuccessfullyMigrated(std::move(callback));
