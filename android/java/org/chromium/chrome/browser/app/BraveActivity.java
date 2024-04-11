@@ -2075,6 +2075,9 @@ public abstract class BraveActivity extends ChromeActivity
                             mMiscAndroidMetrics = miscAndroidMetrics;
                             mMiscAndroidMetrics.recordPrivacyHubEnabledStatus(
                                     OnboardingPrefManager.getInstance().isBraveStatsEnabled());
+                            mMiscAndroidMetrics.recordSetAsDefault(
+                                    BraveSetDefaultBrowserUtils.isAppSetAsDefaultBrowser(
+                                            BraveActivity.this));
                             if (mUsageMonitor == null) {
                                 mUsageMonitor = UsageMonitor.getInstance(mMiscAndroidMetrics);
                             }
