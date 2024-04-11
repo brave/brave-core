@@ -9,6 +9,7 @@ package org.chromium.chrome.browser.playlist.kotlin.util
 
 object ConstantUtils {
     const val PLAYLIST_ID = "playlist_id"
+    const val PLAYLIST_ITEM_ID = "playlist_item_id"
     const val NEW_PLAYLIST = "new_playlist"
     const val PLAYLIST_MODEL = "playlist_model"
     const val PLAYLIST_OPTION = "playlist_option"

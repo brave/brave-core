@@ -147,6 +147,8 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
+import org.chromium.chrome.browser.playlist.kotlin.activity.AllPlaylistActivity;
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistActivity;
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils;
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils;
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils;
@@ -432,7 +434,8 @@ public abstract class BraveActivity extends ChromeActivity
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet(false, false, false);
         } else if (id == R.id.brave_playlist_id) {
-            openPlaylist(true);
+            // openPlaylist(true);
+            openAllPlaylistActivity();
         } else if (id == R.id.add_to_playlist_id) {
             BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
             layout.addMediaToPlaylist();
@@ -1523,16 +1526,25 @@ public abstract class BraveActivity extends ChromeActivity
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
         } else if (shouldHandlePlaylistActivity) {
-            openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
+            // openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
+            openAllPlaylistActivity();
         }
     }
 
     public void openPlaylistActivity(Context context, String playlistId) {
-        Intent playlistActivityIntent = new Intent(context, PlaylistHostActivity.class);
+        Intent playlistActivityIntent = new Intent(context, PlaylistActivity.class);
         playlistActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, playlistId);
         playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         playlistActivityIntent.setAction(Intent.ACTION_VIEW);
         context.startActivity(playlistActivityIntent);
+    }
+
+    public void openAllPlaylistActivity() {
+        Intent allPlaylistActivityIntent =
+                new Intent(BraveActivity.this, AllPlaylistActivity.class);
+        allPlaylistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        allPlaylistActivityIntent.setAction(Intent.ACTION_VIEW);
+        startActivity(allPlaylistActivityIntent);
     }
 
     private void showLinkVpnSubscriptionDialog() {
