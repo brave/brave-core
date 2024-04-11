@@ -26,7 +26,47 @@
     settings-dropdown-menu.narrow-drop-down {
       --md-select-width: 100px;
     }
+
+  #needsRestart {
+    background-color: #fff;
+    bottom: 0;
+    box-shadow: 0 -2px 2px 0 var(--shadow-color);
+    box-sizing: border-box;
+    left: 0;
+    opacity: 1;
+    padding: 16px;
+    position: fixed;
+    transform: translate(0);
+    transition: all 225ms var(--ease-in-out);
+    width: 100%;
+    z-index: 10;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    #needsRestart {
+      background-color: rgb(22, 23, 25);
+    }
+  }
+
+  #needsRestart .flex:last-child {
+    text-align: right;  /* csschecker-disable-line left-right */
+  }
+
+  .restart-notice {
+    font-size: .9375rem;
+    line-height: 1.4;
+  }
+
+  button.primary {
+    background: var(--interactive-color);
+    border: 0;
+    border-radius: 3px;
+    color: white;
+    font-size: .875rem;
+    padding: 14px 38px;
+  }
 </style>
+
 <div hidden="[[isNetworkEditor_]]">
   <div class="settings-box first">
     <div class="start">$i18n{defaultEthereumWalletDesc}</div>
@@ -78,7 +118,8 @@
     </settings-toggle-button>
     <settings-toggle-button id="enablePrivateWindows"
         class="cr-row"
-        pref="{{prefs.brave.wallet.private_windows_enabled}}"
+        pref="[[isPrivateWindowsEnabled_]]"
+        on-settings-boolean-control-change="onPrivateWindowsEnabled_"
         label="$i18n{enablePrivateWindowsLabel}"
         sub-label="$i18n{enablePrivateWindowsDesc}">
     </settings-toggle-button>
@@ -115,6 +156,18 @@
       </div>
   </template>
 </div>
+<template is="dom-if" if="{{ showRestartToast_ }}">
+  <div id="needsRestart">
+    <div class="flex-container">
+      <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
+      <div class="flex">
+        <button id="restartButton" class="primary" tabindex="9" on-click="applyPrefChangesAndRestart">
+          $i18n{relaunchButtonLabel}
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
 <settings-animated-pages id="wallet-networks" section="wallet">
   <div route-path="default">
     <cr-link-row id="walletNetworksLinkRow"

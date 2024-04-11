@@ -69,6 +69,19 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         value: false,
       },
 
+      isPrivateWindowsEnabled_: {
+        type: Object,
+        value() {
+          return {}
+        },
+      },
+
+      showRestartToast_: {
+        type: Boolean,
+        value: false,
+      },
+
+
     }
   }
 
@@ -106,6 +119,13 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
       .then(list => {
         this.transaction_simulation_opt_in_options_ = list
       });
+    this.browserProxy_.getWalletInPrivateWindowsEnabled().then((val) => {
+      this.isPrivateWindowsEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: val,
+      }
+    });
 
     this.cryptocurrency_list_ = [
       { value: "BTC" },
@@ -241,6 +261,41 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.browserProxy_.clearPinnedNft().then(val => {
       this.onShowOptionChanged_()
     })
+  }
+
+  onPrivateWindowsEnabled_() {
+    // Toggle the setting switch UI, but don't actually update the pref.
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: !this.isPrivateWindowsEnabled_.value,
+    }
+    this.isPrivateWindowsEnabled_ = pref
+    this.updateRestartToast_()
+  }
+
+  updateRestartToast_() {
+    // Show restart toast if current private windows pref
+    // value does not match UI switch.
+    this.browserProxy_.getWalletInPrivateWindowsEnabled().then(enabled => {
+      if (enabled !== this.isPrivateWindowsEnabled_.value) {
+        this.showRestartToast_ = true
+      } else {
+        this.showRestartToast_ = false
+      }
+    });
+  }
+
+  applyPrefChangesAndRestart(e) {
+    this.browserProxy_.setWalletInPrivateWindowsEnabled(
+      this.isPrivateWindowsEnabled_.value
+    ).then(() => {
+        e.stopPropagation();
+        window.open("chrome://restart", "_self");
+      })
+      .catch((error) => {
+        console.error('Error setting Wallet in Private Windows:', error);
+      });
   }
 }
 
