@@ -10,7 +10,6 @@
 #include "base/strings/string_util.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_registry.h"
@@ -51,9 +50,8 @@ bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
   return registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
-bool IsWebtorrentPrefEnabled(content::BrowserContext* browser_context) {
-  return Profile::FromBrowserContext(browser_context)->
-      GetPrefs()->GetBoolean(kWebTorrentEnabled);
+bool IsWebtorrentPrefEnabled(PrefService* prefs) {
+  return prefs->GetBoolean(kWebTorrentEnabled);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

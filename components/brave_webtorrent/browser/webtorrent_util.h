@@ -20,15 +20,17 @@ namespace net {
 class HttpResponseHeaders;
 }
 
+class PrefService;
+
 namespace webtorrent {
 
 bool IsWebtorrentEnabled(content::BrowserContext* browser_context);
-bool IsWebtorrentPrefEnabled(content::BrowserContext* browser_context);
+bool IsWebtorrentPrefEnabled(PrefService* prefs);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 bool IsWebtorrentURL(const GURL& url);
 bool IsTorrentFile(const GURL& url, const net::HttpResponseHeaders* headers);
 bool TorrentURLMatched(const GURL& url);
 
-}  // webtorrent
+}  // namespace webtorrent
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_WEBTORRENT_UTIL_H_
