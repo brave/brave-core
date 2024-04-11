@@ -5,34 +5,19 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 
 namespace brave_wallet {
 
 bool IsAllowedForContext(content::BrowserContext* context) {
-  if (!context || context->IsTor()) {
+  if (context && (!brave::IsRegularProfile(context) ||
+                  !IsAllowed(user_prefs::UserPrefs::Get(context)))) {
     return false;
   }
 
-  auto* prefs = user_prefs::UserPrefs::Get(context);
-  if (!IsAllowed(prefs)) {
-    return false;
-  }
-
-  if (brave::IsRegularProfile(context)) {
-    return true;
-  }
-
-  if (Profile::FromBrowserContext(context)->IsIncognitoProfile()) {
-    return prefs->GetBoolean(kBraveWalletPrivateWindowsEnabled);
-  }
-
-  return false;
+  return true;
 }
 
 }  // namespace brave_wallet

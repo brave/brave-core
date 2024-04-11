@@ -61,8 +61,6 @@ class BraveToolbarView : public ToolbarView,
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
 
-  void UpdateWalletButtonVisibility();
-
   raw_ptr<BraveBookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
@@ -76,9 +74,6 @@ class BraveToolbarView : public ToolbarView,
 #endif
 
   BooleanPrefMember show_bookmarks_button_;
-
-  BooleanPrefMember show_wallet_button_;
-  BooleanPrefMember wallet_private_window_enabled_;
 
   BooleanPrefMember location_bar_is_wide_;
 

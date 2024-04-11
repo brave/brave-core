@@ -101,10 +101,8 @@ BraveWalletService::BraveWalletService(
     BitcoinWalletService* bitcoin_wallet_service,
     ZCashWalletService* zcash_wallet_service,
     PrefService* profile_prefs,
-    PrefService* local_state,
-    bool is_private_window)
-    : is_private_window_(is_private_window),
-      delegate_(std::move(delegate)),
+    PrefService* local_state)
+    : delegate_(std::move(delegate)),
       keyring_service_(keyring_service),
       json_rpc_service_(json_rpc_service),
       tx_service_(tx_service),
@@ -1319,16 +1317,6 @@ void BraveWalletService::SetNftDiscoveryEnabled(bool enabled) {
   profile_prefs_->SetBoolean(kBraveWalletNftDiscoveryEnabled, enabled);
 }
 
-void BraveWalletService::GetPrivateWindowsEnabled(
-    GetPrivateWindowsEnabledCallback callback) {
-  std::move(callback).Run(
-      profile_prefs_->GetBoolean(kBraveWalletPrivateWindowsEnabled));
-}
-
-void BraveWalletService::SetPrivateWindowsEnabled(bool enabled) {
-  profile_prefs_->SetBoolean(kBraveWalletPrivateWindowsEnabled, enabled);
-}
-
 void BraveWalletService::GetBalanceScannerSupportedChains(
     GetBalanceScannerSupportedChainsCallback callback) {
   const auto& contract_addresses = GetEthBalanceScannerContractAddresses();
@@ -1570,10 +1558,6 @@ void BraveWalletService::GetAnkrSupportedChainIds(
   }
 
   std::move(callback).Run(std::move(chain_ids));
-}
-
-void BraveWalletService::IsPrivateWindow(IsPrivateWindowCallback callback) {
-  std::move(callback).Run(is_private_window_);
 }
 
 void BraveWalletService::GetTransactionSimulationOptInStatus(

@@ -71,8 +71,7 @@ BraveWalletServiceFactory::BuildServiceInstanceFor(
       TxServiceFactory::GetServiceForState(browser_state),
       BitcoinWalletServiceFactory::GetServiceForState(browser_state),
       ZCashWalletServiceFactory::GetServiceForState(browser_state),
-      browser_state->GetPrefs(), GetApplicationContext()->GetLocalState(),
-      browser_state->IsOffTheRecord()));
+      browser_state->GetPrefs(), GetApplicationContext()->GetLocalState()));
   return service;
 }
 

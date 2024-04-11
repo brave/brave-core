@@ -110,7 +110,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
         shared_url_loader_factory_,
         std::make_unique<MockBraveWalletServiceDelegateImpl>(),
         keyring_service_.get(), json_rpc_service_.get(), tx_service_.get(),
-        nullptr, nullptr, &prefs_, &local_state_, false);
+        nullptr, nullptr, &prefs_, &local_state_);
 
     cus_ = std::make_unique<component_updater::MockComponentUpdateService>();
     installer().SetDelegate(

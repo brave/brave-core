@@ -1980,7 +1980,7 @@ TEST_F(KeyringServiceUnitTest, RestoreLegacyBraveWallet) {
   auto tx_service = MakeTxService(&service);
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState());
   auto verify_restore_wallet = base::BindLambdaForTesting(
       [&service](const char* mnemonic, const char* address, bool is_legacy,
                  bool expect_result) {
@@ -3557,7 +3557,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
   auto tx_service = MakeTxService(&service);
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3596,7 +3596,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
   auto tx_service = MakeTxService(&service);
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3637,7 +3637,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
   auto tx_service = MakeTxService(&service);
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3683,10 +3683,10 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
   BitcoinWalletService bitcoin_wallet_service(
       &service, GetPrefs(), bitcoin_test_rpc_server.GetURLLoaderFactory());
 
-  BraveWalletService brave_wallet_service(
-      shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      &tx_service, &bitcoin_wallet_service, nullptr, GetPrefs(),
-      GetLocalState(), false);
+  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
+                                          &service, json_rpc_service(),
+                                          &tx_service, &bitcoin_wallet_service,
+                                          nullptr, GetPrefs(), GetLocalState());
 
   bitcoin_test_rpc_server.SetUpBitcoinRpc({});
   BitcoinKeyring keyring_84(false);
@@ -3766,7 +3766,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
   auto tx_service = MakeTxService(&service);
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3807,7 +3807,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
   auto tx_service = MakeTxService(&service);
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3869,7 +3869,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   auto tx_service = MakeTxService(&service);
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
-      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState(), false);
+      &tx_service, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   std::vector<std::string> requested_addresses;
   bool first_restore = true;

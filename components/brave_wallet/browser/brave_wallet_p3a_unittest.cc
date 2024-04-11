@@ -85,7 +85,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
         shared_url_loader_factory_, nullptr /*delegate*/,
         keyring_service_.get(), json_rpc_service_.get(), tx_service_.get(),
         bitcoin_wallet_service_.get(), zcash_wallet_service_.get(), &prefs_,
-        &local_state_, false);
+        &local_state_);
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);

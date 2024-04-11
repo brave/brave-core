@@ -207,7 +207,6 @@ export const {
   useGetIsBase58EncodedSolPubkeyQuery,
   useGetIsImagePinnableQuery,
   useGetIsMetaMaskInstalledQuery,
-  useGetIsPrivateWindowQuery,
   useGetIsTxSimulationOptInStatusQuery,
   useGetIsWalletBackedUpQuery,
   useGetLocalIpfsNodeStatusQuery,
