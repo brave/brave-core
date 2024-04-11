@@ -117,7 +117,6 @@ base::Value ToPageGraphValue(ScriptState* script_state, T& value) {
       return base::Value();
     }
   }
-  ScriptState::Scope scope(script_state);
   v8::Local<v8::Value> v8_value =
       ToV8Traits<pg_internal::strip_type_qualifiers_t<T>>::ToV8(script_state,
                                                                 value);
@@ -133,7 +132,6 @@ base::Value ToPageGraphValue(ScriptState* script_state, T& value) {
       return base::Value();
     }
   }
-  ScriptState::Scope scope(script_state);
   v8::Local<v8::Value> v8_value =
       ToV8Traits<pg_internal::strip_type_qualifiers_t<T>>::ToV8(script_state,
                                                                 &value);
