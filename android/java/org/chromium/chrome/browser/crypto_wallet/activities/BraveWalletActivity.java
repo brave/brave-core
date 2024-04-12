@@ -230,7 +230,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         addRemoveSecureFlag(true);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void replaceNavigationFragments(@NonNull final WalletAction walletAction) {
         if (mCryptoWalletOnboardingViewPager == null) return;
         if (mCryptoWalletOnboardingPagerAdapter == null) return;
@@ -266,7 +265,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         }
         mCryptoWalletOnboardingPagerAdapter.replaceWithNavigationItems(
                 navigationFragments, mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
-        mCryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
 
         mCryptoWalletOnboardingViewPager.setCurrentItem(
                 mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
