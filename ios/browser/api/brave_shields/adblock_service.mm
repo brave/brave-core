@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/brave_shields/adblock_service.h"
 
 #include <Foundation/Foundation.h>
+#include "base/apple/foundation_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -99,19 +100,14 @@ void AdBlockCatalogObserver::OnFilterListCatalogLoaded(
 
 - (void)registerFilterListChanges:(void (^)(bool isDefaultEngine))callback {
   _serviceObserver = std::make_unique<brave_shields::AdBlockServiceObserver>(
-      base::BindRepeating(^(const bool isDefaultEngine) {
-        callback(isDefaultEngine);
-      }));
+      base::BindRepeating(callback));
   brave_shields::AdBlockFiltersProviderManager::GetInstance()->AddObserver(
       _serviceObserver.get());
 }
 
 - (void)registerCatalogChanges:(void (^)())callback {
   _catalogObserver = std::make_unique<brave_shields::AdBlockCatalogObserver>(
-      base::BindRepeating(^() {
-        callback();
-      }));
-
+      base::BindRepeating(callback));
   _catalogProvider->AddObserver(_catalogObserver.get());
 }
 
@@ -143,7 +139,7 @@ void AdBlockCatalogObserver::OnFilterListCatalogLoaded(
   if (file_path.empty()) {
     return nil;
   }
-  return [NSURL fileURLWithPath:base::SysUTF8ToNSString(file_path.value())];
+  return base::apple::FilePathToNSURL(file_path);
 }
 
 - (void)enableFilterListForUUID:(NSString*)uuid isEnabled:(bool)isEnabled {
