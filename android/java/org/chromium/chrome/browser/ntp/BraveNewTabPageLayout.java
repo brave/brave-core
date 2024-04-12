@@ -1173,6 +1173,8 @@ public class BraveNewTabPageLayout
             boolean isNtpAsHomeSurfaceOnTablet,
             boolean isSurfacePolishEnabled,
             boolean isSurfacePolishOmniboxColorEnabled,
+            boolean isSurfacePolishLessBrandSpaceEnabled,
+            boolean isLogoPolishEnabled,
             boolean isTablet,
             ObservableSupplier<Integer> tabStripHeightSupplier) {
         super.initialize(
@@ -1191,6 +1193,8 @@ public class BraveNewTabPageLayout
                 isNtpAsHomeSurfaceOnTablet,
                 isSurfacePolishEnabled,
                 isSurfacePolishOmniboxColorEnabled,
+                isSurfacePolishLessBrandSpaceEnabled,
+                isLogoPolishEnabled,
                 isTablet,
                 tabStripHeightSupplier);
 
