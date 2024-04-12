@@ -101,10 +101,19 @@ void CalculateVerticalLayout(const TabLayoutConstants& layout_constants,
     rect.set_width(width.value_or(tab.GetPreferredWidth()) - rect.x() * 2);
     rect.set_height(tab.state().open() == TabOpen::kOpen ? kVerticalTabHeight
                                                          : 0);
+
+    const auto tiled_state = tab.state().tiled_state();
+    if (tiled_state == TabTiledState::kFirst) {
+      rect.set_width(rect.width() / 2);
+    } else if (tiled_state == TabTiledState::kSecond) {
+      rect.set_width(rect.width() / 2);
+      rect.set_x(rect.width() + 4);
+    }
     result->push_back(rect);
 
     // Update rect for the next tab.
-    if (tab.state().open() == TabOpen::kOpen) {
+    if (tab.state().open() == TabOpen::kOpen &&
+        tiled_state != TabTiledState::kFirst) {
       rect.set_y(rect.bottom() + kVerticalTabsSpacing);
     }
   }
@@ -186,8 +195,9 @@ void UpdateInsertionIndexForVerticalTabs(
     TabStrip* tab_strip) {
   // We don't allow tab groups to be dragged over pinned tabs area.
   if (dragged_group.has_value() && candidate_index != 0 &&
-      tab_strip_controller->IsTabPinned(candidate_index - 1))
+      tab_strip_controller->IsTabPinned(candidate_index - 1)) {
     return;
+  }
 
   const bool is_vertical_tabs_floating =
       static_cast<BraveTabStrip*>(tab_strip)->IsVerticalTabsFloating();

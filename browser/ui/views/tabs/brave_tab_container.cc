@@ -34,6 +34,7 @@
 #include "chrome/grit/theme_resources.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/color/color_id.h"
 #include "ui/compositor/paint_recorder.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/canvas.h"
@@ -300,22 +301,31 @@ void BraveTabContainer::PaintBoundingBoxForTile(
   auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
   auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first);
   auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second);
-  CHECK(controller_->IsValidModelIndex(tab1_index));
-  CHECK(controller_->IsValidModelIndex(tab2_index));
+  CHECK(controller_->IsValidModelIndex(tab1_index)) << tab1_index;
+  CHECK(controller_->IsValidModelIndex(tab2_index)) << tab2_index;
 
   gfx::Rect bounding_rects;
   for (auto i : {tab1_index, tab2_index}) {
     bounding_rects.Union(GetTabAtModelIndex(i)->bounds());
   }
-  // TODO(sko) This might need fine tune with layout adjustments.
-  bounding_rects.Inset(gfx::Insets::VH(1, 0));
+  const bool is_vertical_tab =
+      tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser());
+  if (!is_vertical_tab) {
+    // In order to make gap between the bounding box and toolbar.
+    bounding_rects.Inset(gfx::Insets::VH(1, 0));
+  }
 
   constexpr auto kRadius = 12.f;  // same value with --leo-radius-l
 
   cc::PaintFlags flags;
   auto* cp = GetColorProvider();
-  CHECK(cp);
-  flags.setColor(cp->GetColor(kColorBraveSplitViewTileBackground));
+  DCHECK(cp);
+  if (is_vertical_tab && GetNativeTheme()->ShouldUseDarkColors()) {
+    flags.setColor(cp->GetColor(ui::kColorFrameActive));
+  } else {
+    flags.setColor(cp->GetColor(kColorBraveSplitViewTileBackground));
+  }
+
   canvas.DrawRoundRect(bounding_rects, kRadius, flags);
 }
 

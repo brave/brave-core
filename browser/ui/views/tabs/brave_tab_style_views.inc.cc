@@ -6,6 +6,8 @@
 // This file must be included inside tab_style_views.cc as classes here are
 // depending on what's defined in anonymous namespace of tab_style_views.cc
 
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
+
 namespace {
 
 using tabs::features::HorizontalTabsUpdateEnabled;
@@ -91,8 +93,8 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
       bool hovered) const override;
 };
 
-BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab) : BraveGM2TabStyle(tab) {
-}
+BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab)
+    : BraveGM2TabStyle(tab) {}
 
 SkPath BraveVerticalTabStyle::GetPath(
     TabStyle::PathType path_type,
@@ -165,6 +167,22 @@ SkPath BraveVerticalTabStyle::GetPath(
     }
   }
 
+  bool is_tab_tiled = false;
+  if (auto* browser = tab()->controller()->GetBrowser()) {
+    // browser can be null during tests.
+    if (auto* data = SplitViewBrowserData::FromBrowser(browser);
+        data && tab()->controller()->IsTabTiled(tab())) {
+      is_tab_tiled = true;
+    }
+  }
+
+  if (is_tab_tiled && !tab()->IsActive() &&
+      (path_type == TabStyle::PathType::kBorder ||
+       path_type == TabStyle::PathType::kFill)) {
+    // We don't want inactive tab in a tile to have border or fill.
+    return SkPath();
+  }
+
   const bool is_pinned = tab()->data().pinned;
 
   // Calculate the bounds of the actual path.
@@ -201,6 +219,16 @@ SkPath BraveVerticalTabStyle::GetPath(
       tab_bottom -= scale + scale * 0.5;
       radius -= scale;
     }
+  }
+
+  if (is_tab_tiled) {
+    const bool is_vertical_tab = ShouldShowVerticalTabs();
+    const auto padding_for_tile = is_vertical_tab ? 4 : 2;
+    tab_top += scale * padding_for_tile;
+    tab_bottom -= scale * padding_for_tile;
+    tab()->controller()->IsFirstTabInTile(tab())
+        ? tab_left += scale* padding_for_tile
+        : tab_right -= scale * padding_for_tile;
   }
 
   SkPath path;
