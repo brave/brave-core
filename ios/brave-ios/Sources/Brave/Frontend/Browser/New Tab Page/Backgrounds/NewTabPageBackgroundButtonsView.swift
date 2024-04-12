@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveUI
+import DesignSystem
 import Preferences
 import Shared
 import SnapKit
@@ -13,7 +14,8 @@ import UIKit
 /// The background view of new tab page which will hold static elements such as
 /// the image credit, brand logos or the share by QR code button
 ///
-/// Currently this view displays only a single active button at a time
+/// Currently this view displays a single active button and a play button if
+/// the video background is shown
 class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
   /// The button kind to display
   enum ActiveButton {
@@ -56,6 +58,8 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
       activeView?.isHidden = false
     }
   }
+  var tappedPlayButton: (() -> Void)?
+  var tappedBackgroundDuringAutoplay: (() -> Void)?
 
   private let imageCreditButton = ImageCreditButton().then {
     $0.isHidden = true
@@ -66,6 +70,11 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
   private let qrCodeButton = QRCodeButton().then {
     $0.isHidden = true
   }
+  private let playButton = PlayButton().then {
+    $0.isHidden = true
+  }
+  private var shouldShowPlayButton = false
+  private var playButtonGestureRecognizer: UITapGestureRecognizer?
 
   /// The parent safe area insets (since UICollectionView doesn't feed down
   /// proper `safeAreaInsets` when the `contentInsetAdjustmentBehavior` is set
@@ -95,6 +104,14 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     for button in [imageCreditButton, sponsorLogoButton, qrCodeButton] {
       addSubview(button)
       button.addTarget(self, action: #selector(tappedButton(_:)), for: .touchUpInside)
+    }
+
+    addSubview(playButton)
+    playButton.addTarget(self, action: #selector(tappedVideoPlayButton), for: .touchUpInside)
+
+    playButton.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.centerY.equalToSuperview().offset(20)
     }
   }
 
@@ -142,10 +159,50 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
         $0.centerX.equalToSuperview()
       }
     }
+
+    updatePlayButtonVisibility()
   }
 
   @objc private func tappedButton(_ sender: UIControl) {
     tappedActiveButton?(sender)
+  }
+
+  @objc private func tappedVideoPlayButton() {
+    tappedPlayButton?()
+  }
+
+  @objc private func tappedVideoDuringAutoplay() {
+    tappedBackgroundDuringAutoplay?()
+  }
+
+  func videoAutoplayStarted() {
+    let tapGesture = UITapGestureRecognizer(
+      target: self,
+      action: #selector(self.tappedVideoDuringAutoplay)
+    )
+    addGestureRecognizer(tapGesture)
+    playButtonGestureRecognizer = tapGesture
+  }
+
+  func videoAutoplayFinished() {
+    shouldShowPlayButton = true
+    updatePlayButtonVisibility()
+
+    if let playButtonGestureRecognizer = playButtonGestureRecognizer {
+      removeGestureRecognizer(playButtonGestureRecognizer)
+    }
+    playButtonGestureRecognizer = nil
+  }
+
+  private func updatePlayButtonVisibility() {
+    let isLandscape = window?.windowScene?.interfaceOrientation.isLandscape == true
+
+    // Hide the play button if the video is in landscape mode on iPhone
+    if isLandscape && UIDevice.isPhone {
+      playButton.isHidden = true
+    } else {
+      playButton.isHidden = !shouldShowPlayButton
+    }
   }
 
   func preferencesDidChange(for key: String) {
@@ -219,6 +276,46 @@ extension NewTabPageBackgroundButtonsView {
 
       layer.cornerRadius = bounds.height / 2.0
       layer.shadowPath = UIBezierPath(ovalIn: bounds).cgPath
+    }
+  }
+  private class PlayButton: SpringButton {
+    let imageView = UIImageView(
+      image: UIImage(braveSystemNamed: "leo.play.circle")!.applyingSymbolConfiguration(
+        .init(scale: .large)
+      )
+    ).then {
+      $0.tintColor = .white
+      $0.contentMode = .scaleAspectFit
+    }
+
+    private let backgroundView = UIVisualEffectView(
+      effect: UIBlurEffect(style: .systemUltraThinMaterialDark)
+    ).then {
+      $0.clipsToBounds = true
+      $0.isUserInteractionEnabled = false
+    }
+
+    override init(frame: CGRect) {
+      super.init(frame: frame)
+
+      clipsToBounds = true
+
+      addSubview(backgroundView)
+
+      backgroundView.contentView.addSubview(imageView)
+
+      backgroundView.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+        $0.width.equalTo(self.snp.height)
+      }
+      imageView.snp.makeConstraints {
+        $0.edges.equalToSuperview().inset(UIEdgeInsets(equalInset: 10))
+      }
+    }
+
+    override func layoutSubviews() {
+      super.layoutSubviews()
+      layer.cornerRadius = bounds.height / 2.0
     }
   }
 }

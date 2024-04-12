@@ -206,4 +206,40 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
                     ConfirmationType::kClicked);
 }
 
+void NewTabPageAdHandler::OnDidFireNewTabPageAdMediaPlayEvent(
+    const NewTabPageAdInfo& ad) {
+  BLOG(3, "Started playing new tab page video ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kMediaPlay);
+
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                    ConfirmationType::kMediaPlay);
+}
+
+void NewTabPageAdHandler::OnDidFireNewTabPageAdMedia25Event(
+    const NewTabPageAdInfo& ad) {
+  BLOG(3, R"(Played 25% of new tab page video ad with placement id )"
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kMedia25);
+
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                    ConfirmationType::kMedia25);
+}
+
+void NewTabPageAdHandler::OnDidFireNewTabPageAdMedia100Event(
+    const NewTabPageAdInfo& ad) {
+  BLOG(3, R"(Played 100% of new tab page video ad with placement id )"
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kMedia100);
+
+  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                    ConfirmationType::kMedia100);
+}
+
 }  // namespace brave_ads

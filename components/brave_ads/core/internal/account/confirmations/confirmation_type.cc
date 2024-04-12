@@ -27,6 +27,9 @@ constexpr char kMarkAdAsInappropriateType[] = "flag";
 constexpr char kLikedAdType[] = "upvote";
 constexpr char kDislikedAdType[] = "downvote";
 constexpr char kConversionType[] = "conversion";
+constexpr char kMediaPlayType[] = "media_play";
+constexpr char kMedia25Type[] = "media_25";
+constexpr char kMedia100Type[] = "media_100";
 
 constexpr auto kToConfirmationTypeMap =
     base::MakeFixedFlatMap<std::string_view, ConfirmationType>(
@@ -40,7 +43,10 @@ constexpr auto kToConfirmationTypeMap =
          {kMarkAdAsInappropriateType, ConfirmationType::kMarkAdAsInappropriate},
          {kLikedAdType, ConfirmationType::kLikedAd},
          {kDislikedAdType, ConfirmationType::kDislikedAd},
-         {kConversionType, ConfirmationType::kConversion}});
+         {kConversionType, ConfirmationType::kConversion},
+         {kMediaPlayType, ConfirmationType::kMediaPlay},
+         {kMedia25Type, ConfirmationType::kMedia25},
+         {kMedia100Type, ConfirmationType::kMedia100}});
 
 constexpr auto kConfirmationTypeToStringMap =
     base::MakeFixedFlatMap<ConfirmationType, std::string_view>(
@@ -54,7 +60,10 @@ constexpr auto kConfirmationTypeToStringMap =
          {ConfirmationType::kMarkAdAsInappropriate, kMarkAdAsInappropriateType},
          {ConfirmationType::kLikedAd, kLikedAdType},
          {ConfirmationType::kDislikedAd, kDislikedAdType},
-         {ConfirmationType::kConversion, kConversionType}});
+         {ConfirmationType::kConversion, kConversionType},
+         {ConfirmationType::kMediaPlay, kMediaPlayType},
+         {ConfirmationType::kMedia25, kMedia25Type},
+         {ConfirmationType::kMedia100, kMedia100Type}});
 
 }  // namespace
 

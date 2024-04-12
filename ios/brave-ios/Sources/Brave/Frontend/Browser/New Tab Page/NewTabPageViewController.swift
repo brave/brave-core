@@ -118,6 +118,9 @@ class NewTabPageViewController: UIViewController {
   private var background: NewTabPageBackground
   private let backgroundView = NewTabPageBackgroundView()
   private let backgroundButtonsView: NewTabPageBackgroundButtonsView
+  private var videoPlayer: NewTabPageVideoPlayer?
+  private var videoButtonsView = NewTabPageVideoButtonsView()
+
   /// A gradient to display over background images to ensure visibility of
   /// the NTP contents and sponsored logo
   ///
@@ -296,6 +299,7 @@ class NewTabPageViewController: UIViewController {
 
     view.addSubview(backgroundView)
     view.insertSubview(gradientView, aboveSubview: backgroundView)
+    view.addSubview(videoButtonsView)
     view.addSubview(collectionView)
     view.addSubview(feedOverlayView)
 
@@ -326,7 +330,11 @@ class NewTabPageViewController: UIViewController {
     }
 
     setupBackgroundImage()
+    setupBackgroundVideo()
     backgroundView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    videoButtonsView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
     collectionView.snp.makeConstraints {
@@ -374,14 +382,20 @@ class NewTabPageViewController: UIViewController {
     // to use it.
     backgroundView.layoutIfNeeded()
 
+    updateVideoPlayer()
+
     calculateBackgroundCenterPoints()
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    reportSponsoredImageBackgroundEvent(.servedImpression) { [weak self] _ in
-      self?.reportSponsoredImageBackgroundEvent(.viewedImpression)
+    reportSponsoredBackgroundEvent(.servedImpression) { [weak self] _ in
+      self?.reportSponsoredBackgroundEvent(.viewedImpression)
+    }
+
+    if shouldShowBackgroundVideo() {
+      videoPlayer?.maybeStartAutoplay()
     }
 
     presentNotification()
@@ -401,6 +415,14 @@ class NewTabPageViewController: UIViewController {
     super.willMove(toParent: parent)
 
     backgroundView.imageView.image = parent == nil ? nil : background.backgroundImage
+
+    videoPlayer?.maybeCancelPlay()
+    if parent == nil {
+      videoPlayer?.resetPlayer()
+    } else {
+      videoPlayer?.createPlayer()
+    }
+    backgroundView.playerLayer.player = videoPlayer?.player
   }
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -430,6 +452,116 @@ class NewTabPageViewController: UIViewController {
         // visible
         break
       }
+    }
+  }
+
+  private func fadeOutAndHideCollectionView() {
+    UIView.animate(
+      withDuration: 0.3,
+      animations: { [weak self] in
+        self?.collectionView.alpha = 0
+      },
+      completion: { [weak self] _ in
+        self?.collectionView.isHidden = true
+        self?.collectionView.alpha = 1
+      }
+    )
+  }
+
+  private func showAndFadeInCollectionView() {
+    collectionView.isHidden = false
+    collectionView.alpha = 0
+    UIView.animate(
+      withDuration: 0.3,
+      animations: { [weak self] in
+        self?.collectionView.alpha = 1
+      }
+    )
+  }
+
+  func setupBackgroundVideo() {
+    videoButtonsView.isHidden = true
+
+    guard let backgroundVideoPath = background.backgroundVideoPath else {
+      return
+    }
+    videoPlayer = NewTabPageVideoPlayer(backgroundVideoPath)
+    backgroundView.setupPlayerLayer(backgroundVideoPath, player: videoPlayer?.player)
+
+    videoButtonsView.tappedBackgroundVideo = { [weak videoPlayer] in
+      guard let videoPlayer else {
+        return false
+      }
+      return videoPlayer.togglePlay()
+    }
+    videoButtonsView.tappedCancelButton = { [weak videoPlayer] in
+      videoPlayer?.maybeCancelPlay()
+    }
+
+    backgroundButtonsView.activeButton = .none
+    backgroundButtonsView.tappedPlayButton = { [weak self] in
+      guard let self = self else { return }
+      self.videoButtonsView.isHidden = false
+      self.fadeOutAndHideCollectionView()
+      self.videoPlayer?.startPlayback()
+    }
+    backgroundButtonsView.tappedBackgroundDuringAutoplay = { [weak self] in
+      guard let self = self else { return }
+      self.collectionView.isHidden = true
+      self.videoButtonsView.isHidden = false
+      self.videoPlayer?.startPlayback()
+    }
+
+    videoPlayer?.didCancelPlaybackEvent = { [weak self] in
+      self?.videoButtonsView.isHidden = true
+      self?.showAndFadeInCollectionView()
+    }
+    videoPlayer?.didStartAutoplayEvent = { [weak self] in
+      self?.backgroundButtonsView.videoAutoplayStarted()
+    }
+    videoPlayer?.didFinishAutoplayEvent = { [weak self] in
+      guard let self = self else { return }
+      self.backgroundButtonsView.videoAutoplayFinished()
+      if case .sponsoredImage(let background) = self.background.currentBackground {
+        self.backgroundButtonsView.activeButton = .brandLogo(background.logo)
+      }
+      self.backgroundButtonsView.alpha = 0
+      UIView.animate(
+        withDuration: 0.3,
+        animations: { [weak self] in
+          self?.backgroundButtonsView.alpha = 1
+        }
+      )
+    }
+    videoPlayer?.didFinishPlaybackEvent = { [weak self] in
+      guard let self = self else { return }
+      self.videoButtonsView.isHidden = true
+      self.reportSponsoredBackgroundEvent(.media100)
+      self.showAndFadeInCollectionView()
+    }
+    videoPlayer?.didStartPlaybackEvent = { [weak self] in
+      self?.reportSponsoredBackgroundEvent(.mediaPlay)
+    }
+    videoPlayer?.didPlay25PercentEvent = { [weak self] in
+      self?.reportSponsoredBackgroundEvent(.media25)
+    }
+  }
+
+  private func shouldShowBackgroundVideo() -> Bool {
+    let isLandscape = view.window?.windowScene?.interfaceOrientation.isLandscape == true
+    return !(isLandscape && UIDevice.isPhone)
+  }
+
+  private func updateVideoPlayer() {
+    backgroundView.playerLayer.frame = view.bounds
+
+    if shouldShowBackgroundVideo() {
+      backgroundView.playerLayer.isHidden = false
+    } else {
+      // Hide the player layer in landscape mode on iPhone.
+      backgroundView.playerLayer.isHidden = true
+      videoPlayer?.cancelAutoplay()
+      videoPlayer?.maybeCancelPlay()
     }
   }
 
@@ -503,7 +635,7 @@ class NewTabPageViewController: UIViewController {
     backgroundView.updateImageXOffset(by: realisticXOffset)
   }
 
-  private func reportSponsoredImageBackgroundEvent(
+  private func reportSponsoredBackgroundEvent(
     _ event: BraveAds.NewTabPageAdEventType,
     completion: ((_ success: Bool) -> Void)? = nil
   ) {
@@ -512,6 +644,9 @@ class NewTabPageViewController: UIViewController {
         switch event {
         case .clicked: return .tapped
         case .viewedImpression: return .viewed
+        case .mediaPlay: return .mediaPlay
+        case .media25: return .media25
+        case .media100: return .media100
         default: return nil
         }
       }()
@@ -955,7 +1090,7 @@ class NewTabPageViewController: UIViewController {
       delegate?.navigateToInput(url.absoluteString, inNewTab: false, switchingToPrivateMode: false)
     }
 
-    reportSponsoredImageBackgroundEvent(.clicked)
+    reportSponsoredBackgroundEvent(.clicked)
   }
 
   private func tappedQRCode(_ code: String) {

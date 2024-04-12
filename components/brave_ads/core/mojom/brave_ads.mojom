@@ -80,7 +80,10 @@ enum NotificationAdEventType {
 enum NewTabPageAdEventType {
   kServedImpression = 0,
   kViewedImpression,
-  kClicked
+  kClicked,
+  kMediaPlay,
+  kMedia25,
+  kMedia100
 };
 
 enum PromotedContentAdEventType {
