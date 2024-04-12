@@ -17,11 +17,11 @@ class PlaylistTabHelperObserver : public base::CheckedObserver {
  public:
   virtual void PlaylistTabHelperWillBeDestroyed() = 0;
   virtual void OnSavedItemsChanged(
-      const std::vector<mojom::PlaylistItemPtr>& items) = 0;
+      const std::vector<mojom::PlaylistItemPtr>& items) {}
   virtual void OnFoundItemsChanged(
-      const std::vector<mojom::PlaylistItemPtr>& items) = 0;
+      const std::vector<mojom::PlaylistItemPtr>& items) {}
   virtual void OnAddedItemFromTabHelper(
-      const std::vector<mojom::PlaylistItemPtr>& items) = 0;
+      const std::vector<mojom::PlaylistItemPtr>& items) {}
 };
 
 }  // namespace playlist
