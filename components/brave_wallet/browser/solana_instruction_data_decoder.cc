@@ -907,4 +907,15 @@ GetMojomAccountParamsForTesting(
   return mojom_params;
 }
 
+std::optional<mojom::SolanaSystemInstruction> GetSystemInstructionType(
+    const std::vector<uint8_t>& data,
+    const std::string& program_id) {
+  if (program_id != mojom::kSolanaSystemProgramId) {
+    return std::nullopt;
+  }
+
+  size_t offset = 0;
+  return DecodeSystemInstructionType(data, offset);
+}
+
 }  // namespace brave_wallet::solana_ins_data_decoder

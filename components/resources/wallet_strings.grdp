@@ -406,6 +406,9 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PLACEHOLDER" desc="Transactions placeholder">Transactions will appear here</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED" desc="Transaction Approve Unlimited Spend">Unlimited</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND" desc="Transaction not found error">Transaction not found</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE_STATE" desc="Error message indicating that a transaction cannot be retried due to not in a retriable state">This transaction cannot be retried because it's not in rejected, error, or dropped state.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE_TYPE" desc="Error message indicating that a transaction cannot be retried due to its type">This transaction type cannot be retried.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_PARTIAL_SIGNED" desc="Error message indicating that a transaction is partially signed and cannot be retried from wallet side">This transaction is partially signed and can only be retried from dApp side.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_UNAPPROVED" desc="Status label for unapproved transaction">Unapproved</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_APPROVED" desc="Status label for approved transaction">Approved</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_REJECTED" desc="Status label for rejected transaction">Rejected</message>

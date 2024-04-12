@@ -15,6 +15,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
@@ -689,6 +690,33 @@ std::optional<SolanaMessage> SolanaMessage::FromDeprecatedLegacyValue(
 
   return CreateLegacyMessage(*recent_blockhash, last_valid_block_height,
                              *fee_payer, std::move(instructions));
+}
+
+bool SolanaMessage::UsesDurableNonce() const {
+  if (instructions_.empty()) {
+    return false;
+  }
+
+  const auto& instruction = instructions_[0];
+  if (instruction.GetAccounts().empty()) {
+    return false;
+  }
+
+  const auto& account = instruction.GetAccounts()[0];
+
+  // Is a nonce advance instruction from system program.
+  if (solana_ins_data_decoder::GetSystemInstructionType(
+          instruction.data(), instruction.GetProgramId()) !=
+      mojom::SolanaSystemInstruction::kAdvanceNonceAccount) {
+    return false;
+  }
+
+  // Nonce account is writable.
+  if (!account.is_writable) {
+    return false;
+  }
+
+  return true;
 }
 
 }  // namespace brave_wallet

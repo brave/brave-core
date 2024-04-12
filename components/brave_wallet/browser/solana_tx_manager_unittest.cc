@@ -12,6 +12,10 @@
 
 #include "base/base64.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/location.h"
+#include "base/run_loop.h"
+#include "base/scoped_observation.h"
+#include "base/sys_byteorder.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -34,15 +38,31 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
+
+class MockTxStateManagerObserver : public TxStateManager::Observer {
+ public:
+  explicit MockTxStateManagerObserver(TxStateManager* tx_state_manager) {
+    observation_.Observe(tx_state_manager);
+  }
+
+  MOCK_METHOD1(OnTransactionStatusChanged, void(mojom::TransactionInfoPtr));
+  MOCK_METHOD1(OnNewUnapprovedTx, void(mojom::TransactionInfoPtr));
+
+ private:
+  base::ScopedObservation<TxStateManager, TxStateManager::Observer>
+      observation_{this};
+};
 
 class SolanaTxManagerUnitTest : public testing::Test {
  public:
@@ -84,9 +104,11 @@ class SolanaTxManagerUnitTest : public testing::Test {
     CreateWallet();
 
     sol_account_ = SolAccount(0);
+    to_account_ = SolAccount(1);
   }
 
   const mojom::AccountIdPtr& sol_account() { return sol_account_; }
+  const mojom::AccountIdPtr& to_account() { return to_account_; }
 
   void CreateWallet() {
     base::RunLoop run_loop;
@@ -326,6 +348,17 @@ class SolanaTxManagerUnitTest : public testing::Test {
         tx_data_out);
   }
 
+  mojom::SolanaTxDataPtr GetSystemProgramTransferTxData(
+      const mojom::AccountIdPtr& from,
+      const mojom::AccountIdPtr& to,
+      uint64_t lamports = 10000000) {
+    mojom::SolanaTxDataPtr tx_data;
+    TestMakeSystemProgramTransferTxData(from, to->address, lamports, nullptr,
+                                        mojom::SolanaProviderError::kSuccess,
+                                        "", &tx_data);
+    return tx_data;
+  }
+
   void TestMakeTokenProgramTransferTxData(
       const std::string& chain_id,
       const std::string& spl_token_mint_address,
@@ -429,6 +462,46 @@ class SolanaTxManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestRetryTransaction(const base::Location& location,
+                            const std::string& tx_meta_id,
+                            bool expected_result,
+                            const std::string& expected_err_message,
+                            const std::string& expected_blockhash = "") {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+    MockTxStateManagerObserver observer(
+        solana_tx_manager()->GetSolanaTxStateManager());
+    if (expected_result) {
+      EXPECT_CALL(observer, OnNewUnapprovedTx(testing::_)).Times(1);
+    }
+
+    base::RunLoop run_loop;
+    solana_tx_manager()->RetryTransaction(
+        tx_meta_id,
+        base::BindLambdaForTesting([&](bool success, const std::string& id,
+                                       const std::string& err_message) {
+          EXPECT_EQ(expected_err_message, err_message);
+          EXPECT_EQ(expected_result, success);
+          if (expected_result) {
+            EXPECT_NE(tx_meta_id, id);
+            EXPECT_FALSE(id.empty());
+
+            // Get the new tx and check some fields.
+            auto tx_meta = solana_tx_manager()->GetTxForTesting(id);
+            ASSERT_TRUE(tx_meta);
+            EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+            EXPECT_TRUE(tx_meta->tx()->raw_signatures().empty());
+            EXPECT_EQ(tx_meta->tx()->message()->recent_blockhash(),
+                      expected_blockhash);
+            EXPECT_EQ(tx_meta->tx()->message()->last_valid_block_height(), 0u);
+          } else {
+            EXPECT_TRUE(id.empty());
+          }
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(&observer);
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
@@ -441,6 +514,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<TxService> tx_service_;
   mojom::AccountIdPtr sol_account_;
+  mojom::AccountIdPtr to_account_;
   std::string tx_hash1_;
   std::string tx_hash2_;
   std::string latest_blockhash1_;
@@ -1073,6 +1147,204 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash) {
           std::nullopt);
   ASSERT_EQ(pending_transactions.size(), 1u);
   EXPECT_EQ(pending_transactions[0]->id(), meta_id2);
+}
+
+TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash_DappBlockhash) {
+  mojom::SolanaTxDataPtr system_transfer_data =
+      GetSystemProgramTransferTxData(sol_account(), to_account());
+  ASSERT_TRUE(system_transfer_data);
+  system_transfer_data->recent_blockhash = latest_blockhash1_;
+  ASSERT_EQ(system_transfer_data->last_valid_block_height, 0u);
+
+  // Mock GetBlockHeight response.
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, "", "", true,
+                 last_valid_block_height1_, true);
+  std::string meta_id1;
+  AddUnapprovedTransaction(mojom::kSolanaMainnet, system_transfer_data.Clone(),
+                           sol_account(), &meta_id1);
+  ASSERT_FALSE(meta_id1.empty());
+  ApproveTransaction(meta_id1);
+
+  std::string meta_id2;
+  auto system_transfer_data2 = system_transfer_data.Clone();
+  system_transfer_data2->recent_blockhash = latest_blockhash2_;
+  system_transfer_data2->last_valid_block_height = 0;
+  AddUnapprovedTransaction(mojom::kSolanaMainnet,
+                           std::move(system_transfer_data2), sol_account(),
+                           &meta_id2);
+  ASSERT_FALSE(meta_id2.empty());
+  ApproveTransaction(meta_id2);
+
+  auto tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
+  ASSERT_TRUE(tx_meta2);
+  ASSERT_EQ(tx_meta2->tx()->message()->last_valid_block_height(),
+            last_valid_block_height1_ + 150);
+  tx_meta2->tx()->message()->set_last_valid_block_height(
+      last_valid_block_height2_ + 150);
+  ASSERT_TRUE(
+      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta2));
+
+  // Wait for tx to be updated.
+  task_environment_.RunUntilIdle();
+
+  // Last valid block height should be set during ApproveTransaction.
+  auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id1);
+  ASSERT_TRUE(tx_meta);
+  ASSERT_EQ(tx_meta->tx()->message()->recent_blockhash(), latest_blockhash1_);
+  ASSERT_EQ(tx_meta->tx()->message()->last_valid_block_height(),
+            last_valid_block_height1_ + 150);
+  EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Submitted);
+
+  tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
+  ASSERT_TRUE(tx_meta2);
+  ASSERT_EQ(tx_meta2->tx()->message()->recent_blockhash(), latest_blockhash2_);
+  ASSERT_EQ(tx_meta2->tx()->message()->last_valid_block_height(),
+            last_valid_block_height2_ + 150);
+  EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Submitted);
+
+  ASSERT_TRUE(solana_tx_manager()->GetSolanaBlockTracker()->IsRunning(
+      mojom::kSolanaMainnet));
+
+  // Trigger block tracker to run, with block_height < last_valid_block_height.
+  // Transaction stay as submitted.
+  task_environment_.FastForwardBy(
+      base::Seconds(kBlockTrackerDefaultTimeInSeconds));
+  task_environment_.RunUntilIdle();  // Wait for tx to be updated.
+
+  tx_meta = solana_tx_manager()->GetTxForTesting(meta_id1);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Submitted);
+
+  tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
+  ASSERT_TRUE(tx_meta2);
+  EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Submitted);
+
+  ASSERT_TRUE(solana_tx_manager()->GetSolanaBlockTracker()->IsRunning(
+      mojom::kSolanaMainnet));
+
+  // Fast forward to have block tracker run with the new interceptor, where
+  // block_height > last_valid_block_height.
+  // Transaction should be dropped.
+  SetInterceptor(latest_blockhash2_, last_valid_block_height2_, "", "", true,
+                 last_valid_block_height1_ + 151, true);
+  task_environment_.FastForwardBy(
+      base::Seconds(kBlockTrackerDefaultTimeInSeconds));
+  task_environment_.RunUntilIdle();  // Wait for tx to be updated.
+
+  tx_meta = solana_tx_manager()->GetTxForTesting(meta_id1);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Dropped);
+
+  tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
+  ASSERT_TRUE(tx_meta2);
+  EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Submitted);
+}
+
+TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
+  // Add a transaction with blockhash.
+  mojom::SolanaTxDataPtr tx_data =
+      GetSystemProgramTransferTxData(sol_account(), to_account());
+  ASSERT_TRUE(tx_data);
+  tx_data->recent_blockhash = latest_blockhash1_;
+  tx_data->last_valid_block_height = last_valid_block_height1_;
+  std::string meta_id1;
+  AddUnapprovedTransaction(mojom::kSolanaMainnet, std::move(tx_data),
+                           sol_account(), &meta_id1);
+
+  // Add a transaction with durable nonce.
+  mojom::SolanaTxDataPtr durable_nonce_tx_data =
+      GetSystemProgramTransferTxData(sol_account(), to_account());
+  auto nonce_account = SolAccount(3);
+  durable_nonce_tx_data->recent_blockhash = nonce_account->address;
+  durable_nonce_tx_data->last_valid_block_height =
+      last_valid_block_height1_ + 150;
+  std::string meta_id2;
+  AddUnapprovedTransaction(mojom::kSolanaMainnet,
+                           std::move(durable_nonce_tx_data), sol_account(),
+                           &meta_id2);
+
+  auto durable_nonce_meta = solana_tx_manager()->GetTxForTesting(meta_id2);
+  ASSERT_TRUE(durable_nonce_meta);
+
+  // Mock AdvanceNonceAccount instruction.
+  uint32_t instruction_type = static_cast<uint32_t>(
+      mojom::SolanaSystemInstruction::kAdvanceNonceAccount);
+  instruction_type = base::ByteSwapToLE32(instruction_type);
+
+  std::vector<uint8_t> instruction_data(
+      reinterpret_cast<uint8_t*>(&instruction_type),
+      reinterpret_cast<uint8_t*>(&instruction_type) + sizeof(instruction_type));
+  SolanaInstruction instruction = SolanaInstruction(
+      mojom::kSolanaSystemProgramId,
+      std::vector<SolanaAccountMeta>(
+          {SolanaAccountMeta(nonce_account->address, std::nullopt, false, true),
+           SolanaAccountMeta(SolAccount(4)->address, std::nullopt, false,
+                             false),
+           SolanaAccountMeta(sol_account()->address, std::nullopt, true,
+                             false)}),
+      instruction_data);
+
+  // Put AdvanceNonceAccount instruction before the transfer instruction.
+  std::vector<SolanaInstruction> vec;
+  vec.emplace_back(instruction);
+  vec.emplace_back(durable_nonce_meta->tx()->message()->instructions()[0]);
+  durable_nonce_meta->tx()->message()->SetInstructionsForTesting(vec);
+
+  ASSERT_TRUE(solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(
+      *durable_nonce_meta));
+
+  // Test retry transaction with invalid state.
+  TestRetryTransaction(FROM_HERE, meta_id1, false,
+                       l10n_util::GetStringUTF8(
+                           IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE_STATE));
+
+  // Update both transactions to dropped.
+  auto tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
+  ASSERT_TRUE(tx_meta1);
+  auto tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
+  ASSERT_TRUE(tx_meta2);
+  tx_meta1->set_status(mojom::TransactionStatus::Dropped);
+  tx_meta2->set_status(mojom::TransactionStatus::Dropped);
+  ASSERT_TRUE(
+      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta1));
+  ASSERT_TRUE(
+      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta2));
+
+  TestRetryTransaction(FROM_HERE, meta_id1, true, "", "");
+  TestRetryTransaction(FROM_HERE, meta_id2, true, "", nonce_account->address);
+
+  // Test retry partial signed transaction, only the one using durable nonce
+  // can be retried.
+  tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
+  ASSERT_TRUE(tx_meta1);
+  tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
+  ASSERT_TRUE(tx_meta2);
+
+  tx_meta1->tx()->set_sign_tx_param(mojom::SolanaSignTransactionParam::New(
+      "test", std::vector<mojom::SignaturePubkeyPairPtr>()));
+  tx_meta2->tx()->set_sign_tx_param(mojom::SolanaSignTransactionParam::New(
+      "test", std::vector<mojom::SignaturePubkeyPairPtr>()));
+  ASSERT_TRUE(
+      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta1));
+  ASSERT_TRUE(
+      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta2));
+  TestRetryTransaction(
+      FROM_HERE, meta_id1, false,
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_PARTIAL_SIGNED));
+  TestRetryTransaction(FROM_HERE, meta_id2, true, "", nonce_account->address);
+
+  // Test retry transaction with unknown tx id.
+  TestRetryTransaction(
+      FROM_HERE, "UnknownTxID", false,
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+
+  // Test retry transaction with invalid tx type.
+  tx_meta1->tx()->set_tx_type(mojom::TransactionType::SolanaSwap);
+  ASSERT_TRUE(
+      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta1));
+  TestRetryTransaction(FROM_HERE, meta_id1, false,
+                       l10n_util::GetStringUTF8(
+                           IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE_TYPE));
 }
 
 TEST_F(SolanaTxManagerUnitTest, GetTransactionMessageToSign) {

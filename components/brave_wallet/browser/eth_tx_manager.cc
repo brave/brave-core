@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
@@ -1147,6 +1148,14 @@ void EthTxManager::RetryTransaction(const std::string& tx_meta_id,
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  if (!IsRetriableStatus(meta->status(), mojom::CoinType::ETH)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE_STATE));
     return;
   }
 

@@ -197,6 +197,8 @@ void SetTransactionSimulationOptInStatus(
     PrefService* prefs,
     const mojom::BlowfishOptInStatus& status);
 
+bool IsRetriableStatus(mojom::TransactionStatus status, mojom::CoinType coin);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

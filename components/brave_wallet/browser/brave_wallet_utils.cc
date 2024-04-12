@@ -2123,4 +2123,17 @@ void SetTransactionSimulationOptInStatus(
                     static_cast<int>(status));
 }
 
+bool IsRetriableStatus(mojom::TransactionStatus status, mojom::CoinType type) {
+  if (type == mojom::CoinType::ETH) {
+    return status == mojom::TransactionStatus::Error;
+  }
+
+  if (type == mojom::CoinType::SOL) {
+    return status == mojom::TransactionStatus::Error ||
+           status == mojom::TransactionStatus::Dropped;
+  }
+
+  return false;
+}
+
 }  // namespace brave_wallet

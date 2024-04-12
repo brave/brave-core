@@ -1735,7 +1735,10 @@ interface TxService {
                              string chain_id, string tx_meta_id, bool cancel)
     => (bool success, string tx_meta_id, string error_message);
 
-  // Used to retry a transaction
+  // Used to retry a transaction.
+  // tx_meta_id parameter is the ID of the transaction to be retried.
+  // tx_meta_id in the callback result is the ID of the new transaction if
+  // the retry is successful, otherwise it will be empty.
   RetryTransaction(CoinType coin_type, string chain_id, string tx_meta_id)
     => (bool success, string tx_meta_id, string error_message);
 

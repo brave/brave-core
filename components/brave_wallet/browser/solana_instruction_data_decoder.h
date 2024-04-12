@@ -19,6 +19,10 @@ std::optional<SolanaInstructionDecodedData> Decode(
     const std::vector<uint8_t>& data,
     const std::string& program_id);
 
+std::optional<mojom::SolanaSystemInstruction> GetSystemInstructionType(
+    const std::vector<uint8_t>& data,
+    const std::string& program_id);
+
 std::vector<InsParamPair> GetAccountParamsForTesting(
     std::optional<mojom::SolanaSystemInstruction> sys_ins_type,
     std::optional<mojom::SolanaTokenInstruction> token_ins_type);
