@@ -25,8 +25,6 @@ class BraveTabStripModelDelegate : public BrowserTabStripModelDelegate {
 
   // BrowserTabStripModelDelegate:
   bool CanMoveTabsToWindow(const std::vector<int>& indices) override;
-  void CacheWebContents(const std::vector<std::unique_ptr<DetachedWebContents>>&
-                            web_contents) override;
 };
 
 }  // namespace chrome
