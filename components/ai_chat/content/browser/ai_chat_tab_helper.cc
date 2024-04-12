@@ -19,6 +19,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -40,6 +41,10 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
+
+namespace {
+std::optional<uint32_t> g_max_page_content_length_for_testing;
+}  // namespace
 
 AIChatTabHelper::PDFA11yInfoLoadObserver::PDFA11yInfoLoadObserver(
     content::WebContents* web_contents,
@@ -87,6 +92,12 @@ void AIChatTabHelper::BindPageContentExtractorHost(
   tab_helper->BindPageContentExtractorReceiver(std::move(receiver));
 }
 
+// static
+void AIChatTabHelper::SetMaxContentLengthForTesting(
+    std::optional<uint32_t> max_length) {
+  g_max_page_content_length_for_testing = max_length;
+}
+
 AIChatTabHelper::AIChatTabHelper(
     content::WebContents* web_contents,
     AIChatMetrics* ai_chat_metrics,
@@ -128,6 +139,13 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   pdf_load_observer_.reset();
   if (on_pdf_a11y_info_loaded_cb_) {
     std::move(on_pdf_a11y_info_loaded_cb_).Run();
+  }
+}
+
+void AIChatTabHelper::OnPreviewTextReady(std::string ocr_text) {
+  if (pending_get_page_content_callback_) {
+    std::move(pending_get_page_content_callback_)
+        .Run(std::move(ocr_text), false, "");
   }
 }
 
@@ -251,7 +269,13 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
     // invalidation_token doesn't matter for PDF extraction.
     pending_get_page_content_callback_ = std::move(callback);
   } else {
-    FetchPageContent(web_contents(), invalidation_token, std::move(callback));
+    if (base::Contains(kPrintPreviewRetrievalHosts,
+                       GetPageURL().host_piece())) {
+      pending_get_page_content_callback_ = std::move(callback);
+      OnPrintPreviewRequested();
+    } else {
+      FetchPageContent(web_contents(), invalidation_token, std::move(callback));
+    }
   }
 }
 
@@ -263,6 +287,13 @@ void AIChatTabHelper::BindPageContentExtractorReceiver(
     mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost> receiver) {
   page_content_extractor_receiver_.reset();
   page_content_extractor_receiver_.Bind(std::move(receiver));
+}
+
+uint32_t AIChatTabHelper::GetMaxPageContentLength() {
+  if (g_max_page_content_length_for_testing) {
+    return *g_max_page_content_length_for_testing;
+  }
+  return GetCurrentModel().max_page_content_length;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
@@ -56,6 +57,7 @@ static_library("browser") {
     "//brave/components/resources:strings_grit",
     "//brave/components/sidebar/common",
     "//brave/components/skus/common:mojom",
+    "//brave/components/text_recognition/common/buildflags",
     "//brave/components/time_period_storage",
     "//components/prefs",
     "//components/user_prefs",
@@ -67,6 +69,10 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
+
+  if (enable_text_recognition) {
+    deps += [ "//brave/components/text_recognition/browser" ]
+  }
 }
 
 if (!is_ios) {

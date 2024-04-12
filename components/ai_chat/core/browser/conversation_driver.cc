@@ -539,6 +539,12 @@ void ConversationDriver::OnNewPage(int64_t navigation_id) {
   CleanUp();
 }
 
+void ConversationDriver::OnPrintPreviewRequested() {
+  for (auto& obs : observers_) {
+    obs.OnPrintPreviewRequested();
+  }
+}
+
 void ConversationDriver::CleanUp() {
   DVLOG(1) << __func__;
   chat_history_.clear();

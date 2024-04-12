@@ -372,6 +372,14 @@ void AIChatUIPageHandler::OnPageHasContent(mojom::SiteInfoPtr site_info) {
   }
 }
 
+void AIChatUIPageHandler::OnPrintPreviewRequested() {
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+  print_preview_extractor_ = std::make_unique<PrintPreviewExtractor>(
+      active_chat_tab_helper_->web_contents(), profile_);
+  print_preview_extractor_->CreatePrintPreview();
+#endif
+}
+
 void AIChatUIPageHandler::GetFaviconImageData(
     GetFaviconImageDataCallback callback) {
   if (!active_chat_tab_helper_) {

@@ -14,8 +14,6 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/l10n/common/test/scoped_default_locale.h"
-#include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -27,7 +25,6 @@
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
-#include "ui/compositor/compositor_switches.h"
 
 namespace {
 
@@ -77,9 +74,6 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
-#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-    command_line->AppendSwitch(::switches::kEnablePixelOutputInTests);
-#endif
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
 
@@ -171,20 +165,8 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContent) {
   // Not a page extraction host and page with no text
   NavigateURL(https_server_.GetURL("a.com", "/canvas.html"));
   FetchPageContent(FROM_HERE, "", false);
-#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-  // Page recognition host with a canvas element
-  NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
-  FetchPageContent(FROM_HERE, "this is the way", false);
-#if BUILDFLAG(IS_WIN)
-  // Unsupported locale should return no content for Windows only
-  // Other platforms do not use locale for extraction
-  const brave_l10n::test::ScopedDefaultLocale locale("xx_XX");
-  NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
-  FetchPageContent(FROM_HERE, "", false);
-#endif  // #if BUILDFLAG(IS_WIN)
   NavigateURL(https_server_.GetURL("github.com", kGithubUrlPath));
   FetchPageContent(FROM_HERE, kGithubPatch, false);
-#endif  // #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 }
 
 IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {

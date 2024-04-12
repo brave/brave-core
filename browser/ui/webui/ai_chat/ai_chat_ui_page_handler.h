@@ -9,7 +9,6 @@
 #include <stdint.h>
 
 #include <memory>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -24,6 +23,11 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "printing/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#include "brave/browser/ui/webui/ai_chat/print_preview_extractor.h"
+#endif
 
 namespace content {
 class WebContents;
@@ -102,6 +106,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       mojom::SuggestionGenerationStatus suggestion_generation_status) override;
   void OnFaviconImageDataChanged() override;
   void OnPageHasContent(mojom::SiteInfoPtr site_info) override;
+  void OnPrintPreviewRequested() override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
 
@@ -120,6 +125,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>
       chat_tab_helper_observation_{this};
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+  std::unique_ptr<PrintPreviewExtractor> print_preview_extractor_;
+#endif
   mojo::Receiver<ai_chat::mojom::PageHandler> receiver_;
 
   base::WeakPtrFactory<AIChatUIPageHandler> weak_ptr_factory_{this};

@@ -33,6 +33,7 @@ namespace content {
 class ScopedAccessibilityMode;
 }
 
+class AIChatUIBrowserTest;
 namespace ai_chat {
 class AIChatMetrics;
 
@@ -48,6 +49,12 @@ class AIChatTabHelper : public content::WebContentsObserver,
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
           receiver);
 
+  // Maximum length can be exceeded, the length will determine that no more
+  // pages will be processed in print preview. Ex. if we reach the maximum
+  // length in the middle of the 5th page, the 5th page will be the last page
+  // and the rest of the pages will be ignored.
+  static void SetMaxContentLengthForTesting(std::optional<uint32_t> max_length);
+
   AIChatTabHelper(const AIChatTabHelper&) = delete;
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
@@ -57,8 +64,15 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // mojom::PageContentExtractorHost
   void OnInterceptedPageContentChanged() override;
 
+  // This will be called when print preview has been composited into image per
+  // page and finish OCR.
+  void OnPreviewTextReady(std::string ocr_text);
+
+  uint32_t GetMaxPageContentLength();
+
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
+  friend class ::AIChatUIBrowserTest;
 
   // To observe PDF InnerWebContents for "Finished loading PDF" event which
   // means PDF content has been loaded to an accessibility tree.
