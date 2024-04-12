@@ -44,7 +44,8 @@ class BraveAdsEligibleNotificationAdsV3Test : public UnitTestBase {
 TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
   // Arrange
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"The quick brown fox jumps over the lazy dog"));
 
   CreativeNotificationAdList creative_ads;
 
@@ -105,7 +106,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test,
   database::SaveCreativeNotificationAds(creative_ads);
 
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"The quick brown fox jumps over the lazy dog"));
 
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
@@ -121,7 +123,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test,
 TEST_F(BraveAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
   // Arrange
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"The quick brown fox jumps over the lazy dog"));
 
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
