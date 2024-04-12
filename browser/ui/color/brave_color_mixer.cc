@@ -310,19 +310,6 @@ void AddChromeColorMixerForAllThemes(ui::ColorProvider* provider,
       base::BindRepeating(get_toolbar_ink_drop_color, 0.25f, 0.05f)};
   mixer[kColorToolbarInkDropRipple] = {
       base::BindRepeating(get_toolbar_ink_drop_color, 0.4f, 0.1f)};
-
-  if (key.color_mode == ui::ColorProviderKey::ColorMode::kLight) {
-    mixer[ui::kColorMenuBackground] = {kColorToolbar};
-  } else {
-    mixer[ui::kColorMenuBackground] = {ui::kColorFrameActive};
-  }
-  mixer[ui::kColorMenuIcon] = {kColorToolbarButtonIcon};
-  mixer[ui::kColorMenuItemForegroundSecondary] = {kColorToolbarButtonIcon};
-  mixer[ui::kColorMenuSeparator] = {
-      base::BindRepeating([](SkColor input, const ui::ColorMixer& mixer) {
-        return SkColorSetA(mixer.GetResultColor(kColorToolbarButtonIcon),
-                           0.4 * 255);
-      })};
 }
 
 void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
