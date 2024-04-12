@@ -449,7 +449,6 @@ export const ImportAccountModal = () => {
               onInput={handleAccountNameChanged}
               onKeyDown={handleKeyDown}
               showErrors={hasAccountNameError}
-              maxlength={30}
             >
               {
                 // Label

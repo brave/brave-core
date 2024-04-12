@@ -283,7 +283,6 @@ export const AccountSettingsModal = () => {
               onInput={handleAccountNameChanged}
               onKeyDown={handleKeyDown}
               showErrors={showNameInputErrors}
-              maxlength={30}
               size='large'
             >
               {getLocale('braveWalletAddAccountPlaceholder')}

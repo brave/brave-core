@@ -317,7 +317,6 @@ export const CreateAccountModal = () => {
             onInput={handleAccountNameChanged}
             onKeyDown={handleKeyDown}
             showErrors={isDisabled}
-            maxlength={30}
           >
             {
               // Label
