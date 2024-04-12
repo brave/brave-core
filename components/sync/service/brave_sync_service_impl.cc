@@ -287,12 +287,13 @@ void BraveSyncServiceImpl::PermanentlyDeleteAccount(
   PermanentlyDeleteAccountImpl(1, std::move(callback));
 }
 
-void BraveSyncServiceImpl::ResetEngine(ShutdownReason shutdown_reason,
-                                       ResetEngineReason reset_reason) {
-  SyncServiceImpl::ResetEngine(shutdown_reason, reset_reason);
+std::unique_ptr<SyncEngine> BraveSyncServiceImpl::ResetEngine(
+    ShutdownReason shutdown_reason,
+    ResetEngineReason reset_reason) {
+  auto result = SyncServiceImpl::ResetEngine(shutdown_reason, reset_reason);
 
   if (initiated_self_device_info_deleted_) {
-    return;
+    return result;
   }
 
   if (shutdown_reason == ShutdownReason::DISABLE_SYNC_AND_CLEAR_DATA &&
@@ -320,6 +321,7 @@ void BraveSyncServiceImpl::ResetEngine(ShutdownReason shutdown_reason,
       std::move(join_chain_result_callback_).Run(false);
     }
   }
+  return result;
 }
 
 void BraveSyncServiceImpl::SetJoinChainResultCallback(
