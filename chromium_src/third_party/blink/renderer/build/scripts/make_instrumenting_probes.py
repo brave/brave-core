@@ -40,6 +40,7 @@ def _add_page_graph_to_config(config):
             "RegisterPageGraphEventListenerAdd",
             "RegisterPageGraphEventListenerRemove",
             "RegisterPageGraphJavaScriptUrl",
+            "ApplyCompilationModeOverride",
         ]
     }
 

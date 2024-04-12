@@ -7,11 +7,11 @@
 
 #include <utility>
 
+#include "base/debug/alias.h"
 #include "base/no_destructor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
-#include "third_party/blink/renderer/bindings/core/v8/script_source_location_type.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 
 namespace brave_page_graph {
@@ -58,8 +58,18 @@ NodeScript* ScriptTracker::AddScriptNode(v8::Isolate* isolate,
         }
       }
     }
-    CHECK(is_valid_script_data) << "isolate: " << script_key.first
-                                << " script id: " << script_key.second;
+    if (!is_valid_script_data) {
+      const ScriptData script_data_copy = script_data;
+      const ScriptData cached_script_data_copy = cached_script_data;
+      DEBUG_ALIAS_FOR_CSTR(script_data_code, script_data.code.Ascii().c_str(),
+                           256);
+      DEBUG_ALIAS_FOR_CSTR(cached_script_data_code,
+                           script_data.code.Ascii().c_str(), 256);
+      base::debug::Alias(&script_data_copy);
+      base::debug::Alias(&cached_script_data_copy);
+      CHECK(false) << "Script data mismatch" << " isolate: " << script_key.first
+                   << " script id: " << script_key.second;
+    }
     return it->value;
   }
   auto* script_node =

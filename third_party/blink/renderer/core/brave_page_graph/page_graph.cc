@@ -642,6 +642,21 @@ void PageGraph::DidFailLoading(
   LOG(ERROR) << "DidFailLoading) untracked request id: " << identifier;
 }
 
+void PageGraph::ApplyCompilationModeOverride(
+    const blink::ClassicScript& classic_script,
+    v8::ScriptCompiler::CachedData**,
+    v8::ScriptCompiler::CompileOptions* compile_options) {
+  if (classic_script.SourceLocationType() !=
+          ScriptSourceLocationType::kExternalFile ||
+      classic_script.SourceUrl().IsEmpty()) {
+    return;
+  }
+  // When PageGraph is active, always compile external scripts eagerly. We want
+  // each DOM node to have its own script instance even if the underlying script
+  // is fetched from the same URL.
+  *compile_options = v8::ScriptCompiler::kEagerCompile;
+}
+
 void PageGraph::RegisterPageGraphScriptCompilation(
     blink::ExecutionContext* execution_context,
     const blink::ReferrerScriptInfo& referrer_info,
