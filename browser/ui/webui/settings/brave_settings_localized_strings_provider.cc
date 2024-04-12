@@ -58,7 +58,7 @@ const char16_t kBraveReleaseTagPrefix[] =
     u"https://github.com/brave/brave-browser/releases/tag/v";
 const char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
-    u"Allow-Google-login---Third-Parties-and-Extensions";
+    u"Allow-Google-Sign‐In-on-websites-and-extensions";
 const char16_t kDNSLinkLearnMoreURL[] =
     u"https://docs.ipfs.io/concepts/dnslink/";
 const char16_t kUnstoppableDomainsLearnMoreURL[] =
