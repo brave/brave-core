@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/system_vpn_connection_api_impl_base.h"
 
 namespace brave_vpn {
@@ -31,6 +32,7 @@ class IKEv2ConnectionAPIImplMac : public SystemVPNConnectionAPIImplBase {
   bool IsOnDemandEnabled() const;
 
   id vpn_observer_ = nil;
+  base::WeakPtrFactory<IKEv2ConnectionAPIImplMac> weak_factory_{this};
 };
 
 }  // namespace brave_vpn
