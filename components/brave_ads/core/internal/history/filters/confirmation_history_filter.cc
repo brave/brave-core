@@ -29,7 +29,10 @@ bool ShouldFilterConfirmationType(const ConfirmationType confirmation_type) {
     case ConfirmationType::kMarkAdAsInappropriate:
     case ConfirmationType::kLikedAd:
     case ConfirmationType::kDislikedAd:
-    case ConfirmationType::kConversion: {
+    case ConfirmationType::kConversion:
+    case ConfirmationType::kMediaPlay:
+    case ConfirmationType::kMedia25:
+    case ConfirmationType::kMedia100: {
       return true;
     }
 

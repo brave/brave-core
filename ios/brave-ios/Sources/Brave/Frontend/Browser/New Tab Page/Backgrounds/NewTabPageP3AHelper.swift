@@ -209,6 +209,9 @@ final class NewTabPageP3AHelper {
     static let viewed: Self = .init(rawValue: "views")
     static let tapped: Self = .init(rawValue: "clicks")
     static let landed: Self = .init(rawValue: "lands")
+    static let mediaPlay: Self = .init(rawValue: "media_play")
+    static let media25: Self = .init(rawValue: "media_25")
+    static let media100: Self = .init(rawValue: "media_100")
   }
 
   struct Storage: Codable {
