@@ -14,14 +14,19 @@ class BraveComponentUpdaterAndroid;
 }
 }  // namespace chrome
 
+namespace brave_shields {
+class AdBlockComponentFiltersProvider;
+}
+
 #define BRAVE_COMPONENT_UPDATER_SERVICE_H_ \
   friend class ::IPFSDOMHandler;           \
   friend class ::chrome::android::BraveComponentUpdaterAndroid;
 
-#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER \
- private:                                                   \
-  friend void BraveOnDemandUpdate(const std::string&);      \
-                                                            \
+#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER    \
+ private:                                                      \
+  friend void BraveOnDemandUpdate(const std::string&);         \
+  friend class brave_shields::AdBlockComponentFiltersProvider; \
+                                                               \
  public:
 #include "src/components/component_updater/component_updater_service.h"  // IWYU pragma: export
 #undef BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER

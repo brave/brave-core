@@ -125,4 +125,21 @@ void AdBlockComponentFiltersProvider::LoadFilterSet(
       base::BindOnce(&OnReadDATFileData, std::move(cb), permission_mask_));
 }
 
+void AdBlockComponentFiltersProvider::UpdateComponent(
+    base::OnceCallback<void(bool)> callback) {
+  if (!component_updater_service_) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  auto on_updated = [](decltype(callback) cb, update_client::Error error) {
+    std::move(cb).Run(error == update_client::Error::NONE ||
+                      error == update_client::Error::UPDATE_IN_PROGRESS);
+  };
+
+  component_updater_service_->GetOnDemandUpdater().OnDemandUpdate(
+      component_id_, component_updater::OnDemandUpdater::Priority::FOREGROUND,
+      base::BindOnce(on_updated, std::move(callback)));
+}
+
 }  // namespace brave_shields

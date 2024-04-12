@@ -423,6 +423,18 @@
   <message name="IDS_BRAVE_ADBLOCK_SHOW_FULL_LISTS_BUTTON_LABEL" desc="A button label to expand full custom filter lists">
     Show full list
   </message>
+  <message name="IDS_BRAVE_ADBLOCK_UPDATE_LISTS_BUTTON_LABEL" desc="A button label to update all active filter lists">
+    Update lists
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_UPDATE_LISTS_RETRY_BUTTON_LABEL" desc="A button label to retry the update of all active filter lists">
+    Update failed - Retry
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_UPDATE_LISTS_UPDATED_BUTTON_LABEL" desc="A button label when list updates have finished">
+    Lists updated
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_UPDATE_LISTS_UPDATING_BUTTON_LABEL" desc="A button label when lists are updating">
+    Lists updating
+  </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTER_LISTS_INPUT_PLACEHOLDER" desc="A placeholder label for the input form to ask the user to enter a URL">
     Enter filter list URL
   </message>
