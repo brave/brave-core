@@ -74,8 +74,6 @@ class Publisher {
 
   void OnRestorePublishers(mojom::Result result, ResultCallback callback);
 
-  bool IsVerified(mojom::PublisherStatus);
-
   void SynopsisNormalizer();
 
   void CalcScoreConsts(const int min_duration_seconds);
