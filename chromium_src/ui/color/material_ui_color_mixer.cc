@@ -5,7 +5,7 @@
 
 #include "ui/color/material_ui_color_mixer.h"
 
-#define AddMaterialUiColorMixer AddMaterialUiColorMixer_Chromium
+#define AddMaterialUiColorMixer AddMaterialUiColorMixer_UnUsed
 
 #include "src/ui/color/material_ui_color_mixer.cc"
 #include "ui/gfx/color_palette.h"
@@ -14,10 +14,8 @@
 
 namespace ui {
 
-namespace {
-
-void AddBraveMaterialUiColorMixer(ColorProvider* provider,
-                                  const ColorProviderKey& key) {
+void AddMaterialUiColorMixer(ColorProvider* provider,
+                             const ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
   const bool is_dark = key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
   mixer[ui::kColorListItemUrlFaviconBackground] = {
@@ -25,14 +23,25 @@ void AddBraveMaterialUiColorMixer(ColorProvider* provider,
   mixer[ui::kColorToggleButtonHover] = {is_dark
                                             ? SkColorSetRGB(0x44, 0x36, 0xE1)
                                             : SkColorSetRGB(0x4C, 0x54, 0xD2)};
-}
-
-}  // namespace
-
-void AddMaterialUiColorMixer(ColorProvider* provider,
-                             const ColorProviderKey& key) {
-  AddMaterialUiColorMixer_Chromium(provider, key);
-  AddBraveMaterialUiColorMixer(provider, key);
+  mixer[ui::kColorComboboxInkDropHovered] = {ui::kColorSysStateHoverOnSubtle};
+  mixer[ui::kColorComboboxInkDropRipple] = {
+      ui::kColorSysStateRippleNeutralOnSubtle};
+  mixer[ui::kColorToastBackground] = {ui::kColorSysInverseSurface};
+  mixer[ui::kColorToastButton] = {ui::kColorSysInversePrimary};
+  mixer[ui::kColorToastForeground] = {ui::kColorSysInverseOnSurface};
+  mixer[ui::kColorToggleButtonHover] = {ui::kColorSysStateHover};
+  mixer[ui::kColorToggleButtonPressed] = {ui::kColorSysStatePressed};
+  mixer[ui::kColorToggleButtonShadow] = {ui::kColorSysOutline};
+  mixer[ui::kColorToggleButtonThumbOff] = {ui::kColorSysOutline};
+  mixer[ui::kColorToggleButtonThumbOffDisabled] = {ui::kColorSysStateDisabled};
+  mixer[ui::kColorToggleButtonThumbOn] = {ui::kColorSysOnPrimary};
+  mixer[ui::kColorToggleButtonThumbOnDisabled] = {ui::kColorSysSurface};
+  mixer[ui::kColorToggleButtonThumbOnHover] = {ui::kColorSysPrimaryContainer};
+  mixer[ui::kColorToggleButtonTrackOff] = {ui::kColorSysSurfaceVariant};
+  mixer[ui::kColorToggleButtonTrackOffDisabled] = {ui::kColorSysSurfaceVariant};
+  mixer[ui::kColorToggleButtonTrackOn] = {ui::kColorSysPrimary};
+  mixer[ui::kColorToggleButtonTrackOnDisabled] = {
+      ui::kColorSysStateDisabledContainer};
 }
 
 }  // namespace ui
