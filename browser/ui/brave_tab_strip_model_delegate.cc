@@ -24,17 +24,4 @@ bool BraveTabStripModelDelegate::CanMoveTabsToWindow(
   });
 }
 
-void BraveTabStripModelDelegate::CacheWebContents(
-    const std::vector<std::unique_ptr<DetachedWebContents>>& web_contents) {
-  BrowserTabStripModelDelegate::CacheWebContents(web_contents);
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
-    return;
-  }
-
-  auto* shared_pinned_tab_service =
-      SharedPinnedTabServiceFactory::GetForProfile(browser_->profile());
-  DCHECK(shared_pinned_tab_service);
-  shared_pinned_tab_service->CacheWebContentsIfNeeded(browser_, web_contents);
-}
-
 }  // namespace chrome
