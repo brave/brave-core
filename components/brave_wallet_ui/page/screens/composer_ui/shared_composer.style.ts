@@ -89,4 +89,7 @@ export const PresetButton = styled(WalletButton)`
 
 export const ReviewButtonRow = styled(Row)`
   max-width: 360px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    max-width: unset;
+  }
 `
