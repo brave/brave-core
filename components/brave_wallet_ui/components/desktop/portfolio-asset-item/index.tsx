@@ -204,7 +204,7 @@ export const PortfolioAssetItem = ({
         isGrouped={isGrouped}
       >
         {token.visible && (
-          <HoverArea isPanel={isPanel}>
+          <HoverArea isGrouped={isGrouped}>
             <Button
               disabled={isLoading}
               rightMargin={10}

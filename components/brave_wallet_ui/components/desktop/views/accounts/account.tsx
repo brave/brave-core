@@ -50,7 +50,8 @@ import {
   ControlsWrapper,
   AssetsWrapper,
   NFTsWrapper,
-  TransactionsWrapper
+  TransactionsWrapper,
+  EmptyStateWrapper
 } from './style'
 import { Column, VerticalSpace, Text } from '../../../shared/style'
 import { EmptyTransactionsIcon } from '../portfolio/style'
@@ -423,43 +424,51 @@ export const Account = () => {
       </ControlsWrapper>
 
       {selectedTab === AccountPageTabs.AccountAssetsSub && (
-        <AssetsWrapper fullWidth={true}>
-          {fungibleTokensSortedByValue.map((asset) => (
-            <PortfolioAssetItem
-              key={getAssetIdKey(asset)}
-              action={() => onSelectAsset(asset)}
-              account={selectedAccount}
-              assetBalance={
-                isLoadingBalances
-                  ? ''
-                  : getBalance(
-                      selectedAccount.accountId,
-                      asset,
-                      tokenBalancesRegistry
-                    )
-              }
-              token={asset}
-              spotPrice={
-                spotPriceRegistry && !isLoadingSpotPrices
-                  ? getTokenPriceAmountFromRegistry(
-                      spotPriceRegistry,
-                      asset
-                    ).format()
-                  : ''
-              }
-              isAccountDetails={true}
-            />
-          ))}
-          {showAssetDiscoverySkeleton && <PortfolioAssetItemLoadingSkeleton />}
+        <>
+          <AssetsWrapper fullWidth={true}>
+            {fungibleTokensSortedByValue.map((asset) => (
+              <PortfolioAssetItem
+                key={getAssetIdKey(asset)}
+                action={() => onSelectAsset(asset)}
+                account={selectedAccount}
+                assetBalance={
+                  isLoadingBalances
+                    ? ''
+                    : getBalance(
+                        selectedAccount.accountId,
+                        asset,
+                        tokenBalancesRegistry
+                      )
+                }
+                token={asset}
+                spotPrice={
+                  spotPriceRegistry && !isLoadingSpotPrices
+                    ? getTokenPriceAmountFromRegistry(
+                        spotPriceRegistry,
+                        asset
+                      ).format()
+                    : ''
+                }
+                isAccountDetails={true}
+              />
+            ))}
+            {showAssetDiscoverySkeleton && (
+              <PortfolioAssetItemLoadingSkeleton />
+            )}
+          </AssetsWrapper>
           {fungibleTokensSortedByValue.length === 0 &&
             !isLoadingBalances &&
-            !isLoadingSpotPrices && <EmptyTokenListState />}
-        </AssetsWrapper>
+            !isLoadingSpotPrices && (
+              <EmptyStateWrapper>
+                <EmptyTokenListState />
+              </EmptyStateWrapper>
+            )}
+        </>
       )}
 
-      {selectedTab === AccountPageTabs.AccountNFTsSub && (
-        <NFTsWrapper fullWidth={true}>
-          {nonFungibleTokens?.length !== 0 ? (
+      {selectedTab === AccountPageTabs.AccountNFTsSub &&
+        (nonFungibleTokens?.length !== 0 ? (
+          <NFTsWrapper fullWidth={true}>
             <NftGrid>
               {nonFungibleTokens?.map((nft: BraveWallet.BlockchainToken) => (
                 <NFTGridViewItem
@@ -471,11 +480,12 @@ export const Account = () => {
                 />
               ))}
             </NftGrid>
-          ) : (
+          </NFTsWrapper>
+        ) : (
+          <EmptyStateWrapper>
             <NftsEmptyState onImportNft={() => setShowAddNftModal(true)} />
-          )}
-        </NFTsWrapper>
-      )}
+          </EmptyStateWrapper>
+        ))}
 
       {selectedTab === AccountPageTabs.AccountTransactionsSub && (
         <>

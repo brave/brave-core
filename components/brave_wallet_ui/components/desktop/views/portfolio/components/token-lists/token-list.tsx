@@ -88,12 +88,7 @@ import {
 } from '../../../../../../common/slices/entities/token-balance.entity'
 
 // Styled Components
-import {
-  Column,
-  Row,
-  ScrollableColumn,
-  Text
-} from '../../../../../shared/style'
+import { Row, ScrollableColumn, Text } from '../../../../../shared/style'
 import {
   PortfolioActionButton,
   ButtonIcon,
@@ -102,6 +97,7 @@ import {
   SearchButtonWrapper,
   ContentWrapper
 } from '../../style'
+import { FlatTokenListWrapper, GroupTokenListWrapper } from './token-list.style'
 
 interface Props {
   userAssetList: UserAssetInfoType[]
@@ -608,18 +604,22 @@ export const TokenLists = ({
 
   const listUi = React.useMemo(() => {
     return selectedGroupAssetsByItem === NetworksGroupByOption.id ? (
-      listUiByNetworks
+      <GroupTokenListWrapper fullWidth={true}>
+        {listUiByNetworks}
+      </GroupTokenListWrapper>
     ) : selectedGroupAssetsByItem === AccountsGroupByOption.id ? (
-      listUiByAccounts
+      <GroupTokenListWrapper fullWidth={true}>
+        {listUiByAccounts}
+      </GroupTokenListWrapper>
     ) : noNetworks ? (
       <EmptyTokenListState />
     ) : (
-      <>
+      <FlatTokenListWrapper fullWidth={true}>
         {getSortedFungibleTokensList(filteredAssetList).map((token, index) =>
           renderToken({ index, item: token, viewMode: 'list' })
         )}
         {!assetAutoDiscoveryCompleted && <PortfolioAssetItemLoadingSkeleton />}
-      </>
+      </FlatTokenListWrapper>
     )
   }, [
     selectedGroupAssetsByItem,
@@ -708,12 +708,7 @@ export const TokenLists = ({
           {listUi}
         </ScrollableColumn>
       ) : (
-        <Column
-          fullWidth={true}
-          padding='0px 24px 24px 24px'
-        >
-          {listUi}
-        </Column>
+        listUi
       )}
     </ContentWrapper>
   )

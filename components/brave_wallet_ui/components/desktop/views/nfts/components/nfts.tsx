@@ -59,8 +59,8 @@ import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-disco
 import { NftIpfsBanner } from '../../../nft-ipfs-banner/nft-ipfs-banner'
 
 // styles
-import { NftGrid } from './nfts.styles'
-import { Row, ScrollableColumn } from '../../../../shared/style'
+import { BannerWrapper, NFTListWrapper, NftGrid } from './nfts.styles'
+import { Row } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 import {
@@ -448,7 +448,7 @@ export const Nfts = (props: Props) => {
     ) : selectedGroupAssetsByItem === AccountsGroupByOption.id ? (
       listUiByAccounts
     ) : (
-      <NftGrid>
+      <NftGrid padding='0px'>
         {renderedList.map(renderGridViewItem)}
         {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
       </NftGrid>
@@ -477,14 +477,13 @@ export const Nfts = (props: Props) => {
       {isNftPinningFeatureEnabled &&
       isIpfsBannerVisible &&
       visibleNfts.length > 0 ? (
-        <Row
+        <BannerWrapper
           justifyContent='center'
           alignItems='center'
-          padding='0px 32px'
           marginBottom={16}
         >
           <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
-        </Row>
+        </BannerWrapper>
       ) : null}
 
       <ControlBarWrapper
@@ -542,7 +541,7 @@ export const Nfts = (props: Props) => {
           )}
         </Row>
       </ControlBarWrapper>
-      <ScrollableColumn padding='0px 20px 20px 20px'>
+      <NFTListWrapper>
         {nftList.length === 0 &&
         userTokensRegistry?.hiddenTokenIds.length === 0 ? (
           isNftAutoDiscoveryEnabled ? (
@@ -557,7 +556,7 @@ export const Nfts = (props: Props) => {
         ) : (
           listUi
         )}
-      </ScrollableColumn>
+      </NFTListWrapper>
       {showAddNftModal && (
         <AddOrEditNftModal
           onClose={toggleShowAddNftModal}
