@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -25,6 +27,10 @@ import java.util.Set;
 
 /** Onboarding fragment for Brave Wallet which shows the spinner while wallet is created/restored */
 public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragment {
+
+    private static final int NEXT_PAGE_DELAY_MS = 700;
+
+    private boolean mAddTransitionDelay = true;
 
     @Override
     public View onCreateView(
@@ -41,6 +47,10 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     @Override
     public void onResume() {
         super.onResume();
+
+        PostTask.postDelayedTask(
+                TaskTraits.USER_BLOCKING, () -> mAddTransitionDelay = false, NEXT_PAGE_DELAY_MS);
+
         KeyringModel keyringModel = getKeyringModel();
         if (keyringModel != null) {
             // Check if a wallet is already present and skip if that's the case.
@@ -50,34 +60,42 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                             requireActivity().finish();
                             return;
                         }
+                        createWallet(keyringModel);
+                    });
+        }
+    }
 
-                        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-                        JsonRpcService jsonRpcService = getJsonRpcService();
+    private void createWallet(@NonNull final KeyringModel keyringModel) {
+        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+        JsonRpcService jsonRpcService = getJsonRpcService();
 
-                        if (jsonRpcService != null) {
-                            Set<NetworkInfo> availableNetworks =
-                                    mOnboardingViewModel.getAvailableNetworks();
-                            Set<NetworkInfo> selectedNetworks =
-                                    mOnboardingViewModel.getSelectedNetworks();
-                            keyringModel.createWallet(
-                                    mOnboardingViewModel.getPassword(),
-                                    availableNetworks,
-                                    selectedNetworks,
-                                    jsonRpcService,
-                                    recoveryPhrases -> {
-                                        if (braveWalletP3A != null) {
-                                            braveWalletP3A.reportOnboardingAction(
-                                                    OnboardingAction.RECOVERY_SETUP);
-                                        }
+        if (jsonRpcService != null) {
+            Set<NetworkInfo> availableNetworks = mOnboardingViewModel.getAvailableNetworks();
+            Set<NetworkInfo> selectedNetworks = mOnboardingViewModel.getSelectedNetworks();
+            keyringModel.createWallet(
+                    mOnboardingViewModel.getPassword(),
+                    availableNetworks,
+                    selectedNetworks,
+                    jsonRpcService,
+                    recoveryPhrases -> {
+                        if (braveWalletP3A != null) {
+                            braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
+                        }
 
-                                        Utils.setCryptoOnboarding(false);
+                        Utils.setCryptoOnboarding(false);
 
-                                        // Go to the next page after wallet creation is
-                                        // done
-                                        if (mOnNextPage != null) {
-                                            mOnNextPage.gotoNextPage();
-                                        }
-                                    });
+                        // Go to the next page after wallet creation is done.
+                        if (mOnNextPage != null) {
+                            // Add small delay if the Wallet creation completes faster than {@code
+                            // NEXT_PAGE_DELAY_MS}.
+                            if (mAddTransitionDelay) {
+                                PostTask.postDelayedTask(
+                                        TaskTraits.USER_BLOCKING,
+                                        () -> mOnNextPage.gotoNextPage(),
+                                        NEXT_PAGE_DELAY_MS);
+                            } else {
+                                mOnNextPage.gotoNextPage();
+                            }
                         }
                     });
         }
