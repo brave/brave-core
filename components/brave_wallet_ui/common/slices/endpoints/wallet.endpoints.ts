@@ -35,23 +35,23 @@ export const walletEndpoints = ({
   query
 }: WalletApiEndpointBuilderParams) => {
   return {
-    getIsWalletBackedUp: query<boolean, void>({
+    getWalletInfo: query<BraveWallet.WalletInfo, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
           const { walletInfo } = await api.walletHandler.getWalletInfo()
           return {
-            data: walletInfo.isWalletBackedUp
+            data: walletInfo
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
-            'Unable to check if wallet is backed up',
+            'Unable to get wallet info',
             error
           )
         }
       },
-      providesTags: ['IsWalletBackedUp']
+      providesTags: ['WalletInfo']
     }),
 
     getDefaultEthereumWallet: query<number, void>({
@@ -152,7 +152,8 @@ export const walletEndpoints = ({
         } catch (error) {
           return handleEndpointError(endpoint, 'Unable to create wallet', error)
         }
-      }
+      },
+      invalidatesTags: ['WalletInfo', 'AccountInfos']
     }),
 
     restoreWallet: mutation<
@@ -224,7 +225,7 @@ export const walletEndpoints = ({
       },
       invalidatesTags: [
         'AccountInfos',
-        'IsWalletBackedUp',
+        'WalletInfo',
         'TokenBalances',
         'TokenBalancesForChainId',
         'AccountTokenCurrentBalance'
@@ -333,7 +334,7 @@ export const walletEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
+      invalidatesTags: ['AccountInfos', 'WalletInfo']
     }),
 
     importFromCryptoWallets: mutation<
@@ -391,7 +392,7 @@ export const walletEndpoints = ({
       },
       invalidatesTags: [
         'AccountInfos',
-        'IsWalletBackedUp',
+        'WalletInfo',
         'TokenBalances',
         'TokenBalancesForChainId',
         'AccountTokenCurrentBalance'
@@ -452,7 +453,7 @@ export const walletEndpoints = ({
       },
       invalidatesTags: [
         'AccountInfos',
-        'IsWalletBackedUp',
+        'WalletInfo',
         'TokenBalances',
         'TokenBalancesForChainId',
         'AccountTokenCurrentBalance'
@@ -478,7 +479,7 @@ export const walletEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['IsWalletBackedUp']
+      invalidatesTags: ['WalletInfo']
     }),
 
     lockWallet: mutation<
@@ -505,7 +506,8 @@ export const walletEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['WalletInfo']
     }),
 
     unlockWallet: mutation<
@@ -531,7 +533,8 @@ export const walletEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['WalletInfo']
     })
   }
 }

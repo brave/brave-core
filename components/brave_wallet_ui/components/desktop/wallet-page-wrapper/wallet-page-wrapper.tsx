@@ -6,13 +6,11 @@
 import * as React from 'react'
 
 // Selectors
-import { WalletSelectors, UISelectors } from '../../../common/selectors'
+import { UISelectors } from '../../../common/selectors'
 
 // Hooks
-import {
-  useSafeWalletSelector,
-  useSafeUISelector
-} from '../../../common/hooks/use-safe-selector'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { useGetWalletInfoQuery } from '../../../common/slices/api.slice'
 
 // Components
 import { WalletNav } from '../wallet-nav/wallet-nav'
@@ -78,9 +76,12 @@ export const WalletPageWrapper = (props: Props) => {
 
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
+  // queries
+  const { data: walletInfo } = useGetWalletInfoQuery()
+  const isWalletCreated = walletInfo?.isWalletCreated ?? false
+  const isWalletLocked = walletInfo?.isWalletLocked ?? true
+
   // Wallet Selectors (safe)
-  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // State

@@ -4,18 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Redirect, Route, Switch } from 'react-router'
+import { Redirect, Switch } from 'react-router'
 
 // types
 import { WalletRoutes } from '../../../constants/types'
 
 // selectors
-import {
-  useSafePageSelector,
-  useSafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
 import { PageSelectors } from '../../selectors'
+
+// hooks
+import { useGetWalletInfoQuery } from '../../../common/slices/api.slice'
+import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
 
 // components
 import { OnboardingDisclosures } from './disclosures/disclosures'
@@ -36,8 +35,11 @@ import {
 } from './restore-from-recovery-phrase/restore-from-extension'
 
 export const OnboardingImportWalletRoutes = () => {
+  // queries
+  const { data: walletInfo } = useGetWalletInfoQuery()
+  const isWalletCreated = walletInfo?.isWalletCreated ?? false
+
   // redux
-  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const termsAcknowledged = useSafePageSelector(
     PageSelectors.walletTermsAcknowledged
   )
@@ -45,12 +47,14 @@ export const OnboardingImportWalletRoutes = () => {
   // render
   return (
     <Switch>
-      <Route
+      <ProtectedRoute
         path={WalletRoutes.OnboardingImportTerms}
         exact
+        requirement={!isWalletCreated}
+        redirectRoute={WalletRoutes.OnboardingComplete}
       >
         <OnboardingDisclosures />
-      </Route>
+      </ProtectedRoute>
 
       <ProtectedRoute
         path={WalletRoutes.OnboardingImportOrRestore}
@@ -74,7 +78,7 @@ export const OnboardingImportWalletRoutes = () => {
       <ProtectedRoute
         path={WalletRoutes.OnboardingRestoreWallet}
         exact
-        requirement={termsAcknowledged}
+        requirement={termsAcknowledged && !isWalletCreated}
         redirectRoute={WalletRoutes.OnboardingImportTerms}
       >
         <OnboardingRestoreFromRecoveryPhrase />

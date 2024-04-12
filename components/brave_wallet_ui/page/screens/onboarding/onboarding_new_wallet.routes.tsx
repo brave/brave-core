@@ -10,12 +10,10 @@ import { Redirect, Switch, useHistory } from 'react-router'
 import { WalletRoutes } from '../../../constants/types'
 
 // selectors
-import {
-  useSafePageSelector,
-  useSafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
 import { PageSelectors } from '../../selectors'
+
+// hooks
+import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
 
 // components
 import { OnboardingDisclosures } from './disclosures/disclosures'
@@ -43,13 +41,14 @@ export const OnboardingNewWalletRoutes = () => {
   const history = useHistory()
 
   // redux
-  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const termsAcknowledged = useSafePageSelector(
     PageSelectors.walletTermsAcknowledged
   )
   const setupStillInProgress = useSafePageSelector(
     PageSelectors.setupStillInProgress
   )
+  const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
+  const isWalletCreated = Boolean(mnemonic)
 
   // render
   return (
@@ -75,8 +74,12 @@ export const OnboardingNewWalletRoutes = () => {
       <ProtectedRoute
         path={WalletRoutes.OnboardingNewWalletCreatePassword}
         exact
-        requirement={termsAcknowledged}
-        redirectRoute={WalletRoutes.OnboardingNewWalletTerms}
+        requirement={termsAcknowledged && !isWalletCreated}
+        redirectRoute={
+          isWalletCreated
+            ? WalletRoutes.OnboardingExplainRecoveryPhrase
+            : WalletRoutes.OnboardingNewWalletTerms
+        }
       >
         <OnboardingCreatePassword
           onWalletCreated={() =>

@@ -16,7 +16,6 @@ import {
 } from '../constants/action_types'
 
 const defaultState: PageState = {
-  hasInitialized: false,
   showRecoveryPhrase: false,
   isFetchingNFTMetadata: true,
   nftMetadata: undefined,

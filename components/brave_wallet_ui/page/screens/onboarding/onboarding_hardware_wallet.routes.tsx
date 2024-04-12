@@ -10,12 +10,11 @@ import { Redirect, Route, Switch, useHistory } from 'react-router'
 import { WalletRoutes } from '../../../constants/types'
 
 // selectors
-import {
-  useSafePageSelector,
-  useSafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
 import { PageSelectors } from '../../selectors'
+
+// hooks
+import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
+import { useGetWalletInfoQuery } from '../../../common/slices/api.slice'
 
 // components
 import { OnboardingDisclosures } from './disclosures/disclosures'
@@ -36,8 +35,11 @@ export const OnboardingHardwareWalletRoutes = () => {
   // routing
   const history = useHistory()
 
+  // queries
+  const { data: walletInfo } = useGetWalletInfoQuery()
+  const isWalletCreated = walletInfo?.isWalletCreated ?? false
+
   // redux
-  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const termsAcknowledged = useSafePageSelector(
     PageSelectors.walletTermsAcknowledged
   )

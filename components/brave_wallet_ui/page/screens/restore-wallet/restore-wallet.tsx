@@ -12,9 +12,10 @@ import { WalletRoutes } from '../../../constants/types'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { useRestoreWalletMutation } from '../../../common/slices/api.slice'
-import { WalletSelectors } from '../../../common/selectors'
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import {
+  useGetWalletInfoQuery,
+  useRestoreWalletMutation
+} from '../../../common/slices/api.slice'
 
 // Components
 import { BackButton } from '../../../components/shared/back-button'
@@ -44,8 +45,9 @@ export const RestoreWallet = () => {
   let history = useHistory()
   const { pathname: walletLocation } = useLocation()
 
-  // redux
-  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+  // queries
+  const { data: walletInfo } = useGetWalletInfoQuery()
+  const isWalletLocked = walletInfo?.isWalletLocked ?? true
 
   // custom hooks
   const {

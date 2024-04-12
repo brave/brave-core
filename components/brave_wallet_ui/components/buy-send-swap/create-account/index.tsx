@@ -6,11 +6,10 @@
 import * as React from 'react'
 
 // Redux
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
 import {
   useAddAccountMutation,
-  useGetNetworkQuery
+  useGetNetworkQuery,
+  useGetWalletInfoQuery
 } from '../../../common/slices/api.slice'
 
 // Types
@@ -40,7 +39,8 @@ export const CreateAccountTab = ({
   onCancel
 }: Props) => {
   // redux
-  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+  const { data: walletInfo } = useGetWalletInfoQuery()
+  const isWalletLocked = walletInfo?.isWalletLocked ?? true
 
   // queries
   const { accounts } = useAccountsQuery()

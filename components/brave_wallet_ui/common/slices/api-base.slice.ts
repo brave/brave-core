@@ -62,7 +62,6 @@ export function createWalletApiBase() {
       'EthTokenSymbol',
       'EnsOffchainLookupEnabled',
       'NameServiceAddress',
-      'IsWalletBackedUp',
       'ConnectedAccounts',
       'DefaultEthWallet',
       'DefaultSolWallet',
@@ -74,7 +73,8 @@ export function createWalletApiBase() {
       'PendingEncryptRequest',
       'PendingSignTransactionRequests',
       'PendingSignAllTransactionsRequests',
-      'PinnableNftIds'
+      'PinnableNftIds',
+      'WalletInfo'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

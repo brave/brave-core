@@ -21,18 +21,15 @@ import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import * as WalletPageActions from './actions/wallet_page_actions'
 
 // selectors
-import { WalletSelectors } from '../common/selectors'
 import { PageSelectors } from './selectors'
 
 // types
 import { WalletRoutes } from '../constants/types'
 
 // hooks
-import {
-  useSafePageSelector,
-  useSafeWalletSelector
-} from '../common/hooks/use-safe-selector'
+import { useSafePageSelector } from '../common/hooks/use-safe-selector'
 import { useLocationPathName } from '../common/hooks/use-pathname'
+import { useGetWalletInfoQuery } from '../common/slices/api.slice'
 
 // style
 import 'emptykit.css'
@@ -71,19 +68,23 @@ export const Container = () => {
   // redux
   const dispatch = useDispatch()
 
-  // wallet selectors (safe)
-  const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
-  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
-  const isBitcoinEnabled = useSafeWalletSelector(
-    WalletSelectors.isBitcoinEnabled
-  )
+  // queries
+  const {
+    data: walletInfo,
+    isLoading: isInitializing,
+    isFetching: isFetchingWalletInfo
+  } = useGetWalletInfoQuery()
+  const isWalletCreated = walletInfo?.isWalletCreated ?? false
+  const isWalletLocked = walletInfo?.isWalletLocked ?? true
+  const isBitcoinEnabled = walletInfo?.isBitcoinEnabled ?? false
 
   // page selectors (safe)
   const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
   const setupStillInProgress = useSafePageSelector(
     PageSelectors.setupStillInProgress
   )
+  const isCheckingOnboardingStatus =
+    setupStillInProgress && isFetchingWalletInfo
 
   // state
   const [sessionRoute, setSessionRoute] = React.useState(initialSessionRoute)
@@ -121,7 +122,7 @@ export const Container = () => {
   }, [walletLocation, mnemonic, dispatch])
 
   // render
-  if (!hasInitialized) {
+  if (isInitializing || isCheckingOnboardingStatus) {
     return (
       <FullScreenWrapper>
         <ProgressRing mode='indeterminate' />

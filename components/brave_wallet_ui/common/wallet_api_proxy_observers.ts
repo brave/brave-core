@@ -20,9 +20,7 @@ export function makeBraveWalletServiceTokenObserver(store: Store) {
         store.dispatch(
           walletApi.endpoints.invalidateUserTokensRegistry.initiate()
         )
-        store.dispatch(
-          WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: false })
-        )
+        store.dispatch(WalletActions.refreshNetworksAndTokens())
         // re-parse transactions with new coins list
         store.dispatch(
           walletApi.endpoints.invalidateTransactionsCache.initiate()
@@ -32,9 +30,7 @@ export function makeBraveWalletServiceTokenObserver(store: Store) {
         store.dispatch(
           walletApi.endpoints.invalidateUserTokensRegistry.initiate()
         )
-        store.dispatch(
-          WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
-        )
+        store.dispatch(WalletActions.refreshNetworksAndTokens())
         // re-parse transactions with new coins list
         store.dispatch(
           walletApi.endpoints.invalidateTransactionsCache.initiate()
@@ -72,10 +68,10 @@ export function makeKeyringServiceObserver(store: Store) {
   const keyringServiceObserverReceiver =
     new BraveWallet.KeyringServiceObserverReceiver({
       walletCreated: function () {
-        store.dispatch(WalletActions.walletCreated())
+        // no-op, handled by mutation
       },
       walletRestored: function () {
-        store.dispatch(WalletActions.walletRestored())
+        // no-op handled by mutation
       },
       walletReset: function () {
         store.dispatch(WalletActions.walletReset())
@@ -206,11 +202,7 @@ export function makeBraveWalletServiceObserver(store: Store) {
         // merely upon switching to a custom network.
         //
         // Skipping balances refresh for now, until the bug is fixed.
-        store.dispatch(
-          WalletActions.refreshNetworksAndTokens({
-            skipBalancesRefresh: true
-          })
-        )
+        store.dispatch(WalletActions.refreshNetworksAndTokens())
       },
       onDiscoverAssetsStarted: function () {
         store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(false))

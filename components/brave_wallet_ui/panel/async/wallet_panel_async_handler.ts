@@ -35,20 +35,14 @@ import { storeCurrentAndPreviousPanel } from '../../utils/local-storage-utils'
 
 const handler = new AsyncActionHandler()
 
+let hasInitialized = false
+
 function getPanelState(store: Store): PanelState {
   return (store.getState() as WalletPanelState).panel
 }
 
 async function refreshWalletInfo(store: Store) {
-  const proxy = getWalletPanelApiProxy()
-  const { walletInfo } = await proxy.walletHandler.getWalletInfo()
-  const { allAccounts } = await proxy.keyringService.getAllAccounts()
-  store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
-  store.dispatch(
-    WalletActions.refreshAll({
-      skipBalancesRefresh: true
-    })
-  )
+  store.dispatch(WalletActions.refreshAll())
 }
 
 async function getPendingSignMessageRequests() {
@@ -304,11 +298,12 @@ handler.on(
 
 // Cross-slice action handlers
 handler.on(WalletActions.initialize.type, async (store) => {
-  const state = getPanelState(store)
   // Sanity check we only initialize once
-  if (state.hasInitialized) {
+  if (hasInitialized) {
     return
   }
+  hasInitialized = true
+
   // Setup external events
   document.addEventListener('visibilitychange', () => {
     store.dispatch(

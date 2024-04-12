@@ -14,10 +14,6 @@ import {
   useCreateWalletMutation,
   useReportOnboardingActionMutation
 } from '../../../../common/slices/api.slice'
-import {
-  useSafeWalletSelector //
-} from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../common/selectors'
 
 // components
 import {
@@ -50,9 +46,6 @@ interface OnboardingCreatePasswordProps {
 export const OnboardingCreatePassword = ({
   onWalletCreated
 }: OnboardingCreatePasswordProps) => {
-  // redux
-  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-
   // state
   const [isValid, setIsValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
@@ -67,10 +60,9 @@ export const OnboardingCreatePassword = ({
     if (!isValid) {
       return
     }
-    // Note: intentionally not using unwrapped value
-    // results are returned before other redux actions complete
     await createWallet({ password }).unwrap()
-  }, [isValid, createWallet, password])
+    onWalletCreated()
+  }, [isValid, createWallet, password, onWalletCreated])
 
   const handlePasswordChange = React.useCallback(
     ({ isValid, password }: NewPasswordValues) => {
@@ -84,14 +76,6 @@ export const OnboardingCreatePassword = ({
   React.useEffect(() => {
     report(BraveWallet.OnboardingAction.LegalAndPassword)
   }, [report])
-
-  React.useEffect(() => {
-    // wait for redux before redirecting
-    // otherwise, the restricted routes in the router will not be available
-    if (!isCreatingWallet && isWalletCreated) {
-      onWalletCreated()
-    }
-  }, [isWalletCreated, onWalletCreated, isCreatingWallet])
 
   if (isCreatingWallet) {
     return <CreatingWallet />

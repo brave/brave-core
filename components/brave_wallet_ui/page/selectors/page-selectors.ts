@@ -8,7 +8,6 @@ import { WalletPageState } from '../../constants/types'
 type State = Omit<WalletPageState, 'wallet'>
 
 // safe selectors (primitive return types only)
-export const hasInitialized = ({ page }: State) => page.hasInitialized
 export const isFetchingNFTMetadata = ({ page }: State) =>
   page.isFetchingNFTMetadata
 export const mnemonic = ({ page }: State) => page.mnemonic
