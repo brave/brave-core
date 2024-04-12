@@ -95,9 +95,9 @@ inline constexpr char kNextTokenRedemptionAt[] =
 
 // Stores migration status
 inline constexpr char kHasMigratedClientState[] =
-    "brave.brave_ads.state.has_migrated.client.v5";
+    "brave.brave_ads.state.has_migrated.client.v6";
 inline constexpr char kHasMigratedConfirmationState[] =
-    "brave.brave_ads.state.has_migrated.confirmations.v6";
+    "brave.brave_ads.state.has_migrated.confirmations.v7";
 inline constexpr char kHasMigratedConversionState[] =
     "brave.brave_ads.migrated.conversion_state";
 inline constexpr char kHasMigratedNotificationState[] =

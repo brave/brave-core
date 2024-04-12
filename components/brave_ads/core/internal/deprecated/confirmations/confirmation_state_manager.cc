@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -107,15 +108,30 @@ std::string ConfirmationStateManager::ToJson() {
 bool ConfirmationStateManager::FromJson(const std::string& json) {
   const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(json);
+  confirmation_tokens_.RemoveAll();
+  payment_tokens_.RemoveAllTokens();
+
   if (!dict) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Remove migration failure dumps.
+    base::debug::DumpWithoutCrashing();
+
     return false;
   }
 
   if (!ParseConfirmationTokensFromDictionary(*dict)) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Remove migration failure dumps.
+    base::debug::DumpWithoutCrashing();
+
     BLOG(1, "Failed to parse confirmation tokens");
   }
 
   if (!ParsePaymentTokensFromDictionary(*dict)) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Remove migration failure dumps.
+    base::debug::DumpWithoutCrashing();
+
     BLOG(1, "Failed to parse payment tokens");
   }
 
