@@ -6,13 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENT_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENT_UNITTEST_UTIL_H_
 
+#include <string>
+
 namespace brave_ads::ml::pipeline {
 
 struct TextEmbeddingInfo;
 
 namespace test {
 
-TextEmbeddingInfo BuildTextEmbedding();
+TextEmbeddingInfo BuildTextEmbedding(const std::string& text);
 
 }  // namespace test
 

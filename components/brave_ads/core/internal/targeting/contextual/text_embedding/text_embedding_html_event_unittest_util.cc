@@ -12,10 +12,10 @@
 
 namespace brave_ads::ml::pipeline::test {
 
-ml::pipeline::TextEmbeddingInfo BuildTextEmbedding() {
+ml::pipeline::TextEmbeddingInfo BuildTextEmbedding(const std::string& text) {
   TextEmbeddingInfo text_embedding;
 
-  text_embedding.text = "The quick brown fox jumps over the lazy dog";
+  text_embedding.text = text;
   text_embedding.hashed_text_base64 =
       base::Base64Encode(crypto::Sha256(text_embedding.text));
   text_embedding.locale = kDefaultLocale;
