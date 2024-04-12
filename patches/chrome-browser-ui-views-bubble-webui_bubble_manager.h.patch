@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/bubble/webui_bubble_manager.h b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-index ea2b2c5f0e7127677cbeb1a500ca778b544c7709..4b7659c8869acf513e5481fcf8b0546f2c46a4df 100644
+index ea2b2c5f0e7127677cbeb1a500ca778b544c7709..ac063ba5f52082673d297a5c6e70cc7a559d03ac 100644
 --- a/chrome/browser/ui/views/bubble/webui_bubble_manager.h
 +++ b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
 @@ -149,9 +149,11 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
@@ -14,11 +14,3 @@ index ea2b2c5f0e7127677cbeb1a500ca778b544c7709..4b7659c8869acf513e5481fcf8b0546f
  
    const raw_ptr<views::View> anchor_view_;
    const raw_ptr<Profile, DanglingUntriaged> profile_;
-@@ -231,6 +233,7 @@ WebUIBubbleManagerImpl<T>::CreateWebUIBubbleDialog(
- 
-   auto bubble_view = std::make_unique<WebUIBubbleDialogView>(
-       anchor_view_, contents_wrapper->GetWeakPtr(), anchor, arrow);
-+    BRAVE_WEBUI_BUBBLE_MANAGER_T_CREATE_WEB_UI_BUBBLE_DIALOG
- 
-   if (!widget_initialization_callback_.is_null()) {
-     bubble_view->RegisterWidgetInitializedCallback(
