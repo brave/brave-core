@@ -40,11 +40,11 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
         children={mainProps.text}
         components={{
           p: (props) => {
-            const endLine = props.node.position?.end.line
+            const currentLine = props.node?.position?.end.line
             return (
               <p>
                 {props.children}
-                {endLine === lastLine && mainProps.shouldShowTextCursor && (
+                {currentLine === lastLine && mainProps.shouldShowTextCursor && (
                   <span className={styles.textCursor}>
                     <CaretSVG />
                   </span>
