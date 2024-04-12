@@ -196,6 +196,7 @@ interface PageHandler {
   RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);
   SendFeedback(string category, string feedback, string rating_id, bool send_hostname) => (bool is_success);
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
+  ClosePanel();
 };
 
 interface ChatUIPage {

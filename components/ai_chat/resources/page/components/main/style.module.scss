@@ -48,13 +48,30 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 60px;
 }
 
 .actions {
   --leo-icon-size: 20px;
+  --gap: 12px;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: var(--gap);
+}
+
+.closeButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &:before {
+    content: '';
+    width: 1px;
+    height: 50%;
+    background: var(--leo-color-divider-subtle);
+    position: absolute;
+    left: calc(var(--gap)/2 * -1);
+  }
 }
 
 .logo {
@@ -68,14 +85,10 @@
 }
 
 .logoTitle {
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+  font-size: 19px;
   line-height: 1;
-
-  span {
-    color: var(--leo-color-text-primary);
-  }
 }
 
 .promptContainer {

@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.brave_leo;
 
+import android.app.Activity;
 import android.content.Context;
 
 import org.jni_zero.CalledByNative;
@@ -14,6 +15,7 @@ import org.chromium.chrome.browser.settings.BraveLeoPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.ui.base.WindowAndroid;
 
 /** Launches Brave Leo settings page or subscription. */
 public class BraveLeoSettingsLauncherHelper {
@@ -54,6 +56,19 @@ public class BraveLeoSettingsLauncherHelper {
         new BraveLeoVoiceRecognitionHandler(
                         chatWindowWebContents.getTopLevelNativeWindow(), contextWebContents)
                 .startVoiceRecognition();
+    }
+
+    @CalledByNative
+    private static void closeActivity(WebContents webContents) {
+        WindowAndroid windowAndroid = webContents.getTopLevelNativeWindow();
+        if (windowAndroid == null) {
+            return;
+        }
+        Activity activity = windowAndroid.getActivity().get();
+        if (activity == null) {
+            return;
+        }
+        activity.finish();
     }
 
     private static SettingsLauncher getLauncher() {

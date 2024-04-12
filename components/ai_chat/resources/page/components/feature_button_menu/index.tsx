@@ -33,7 +33,7 @@ export default function FeatureMenu() {
         size="small"
         kind="plain-faint"
       >
-        <Icon name='more-horizontal' />
+        <Icon name='settings' />
       </Button>
       <div className={styles.menuSectionTitle}>
         {getLocale('menuTitleModels')}
