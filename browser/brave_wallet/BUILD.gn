@@ -241,7 +241,7 @@ source_set("browser_tests") {
       "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:pref_names",
-      "//brave/components/sidebar",
+      "//brave/components/sidebar/browser",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
