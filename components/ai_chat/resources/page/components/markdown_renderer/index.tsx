@@ -7,6 +7,7 @@ import * as React from 'react'
 import Markdown from 'react-markdown'
 
 import styles from './style.module.scss'
+import CaretSVG from '../svg/caret'
 
 const CodeBlock = React.lazy(async () => ({
   default: (await import('../code_block')).default.Block
@@ -17,14 +18,40 @@ const CodeInline = React.lazy(async () => ({
 
 interface MarkdownRendererProps {
   text: string
+  shouldShowTextCursor: boolean
 }
 
-export default function MarkdownRenderer(props: MarkdownRendererProps) {
+export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
+  const [lastLine, setLastLine] = React.useState(1)
+
+  const plugin = React.useCallback(() => {
+    const transformer = (ast: any) => {
+      setLastLine(ast.position.end.line)
+    }
+
+    return transformer
+  }, [mainProps.text])
+
   return (
     <div className={styles.markdownContainer}>
       <Markdown
-        children={props.text}
+        rehypePlugins={[plugin]}
+        className={styles.markdownContainer}
+        children={mainProps.text}
         components={{
+          p: (props) => {
+            const endLine = props.node.position?.end.line
+            return (
+              <p>
+                {props.children}
+                {endLine === lastLine && mainProps.shouldShowTextCursor && (
+                  <span className={styles.textCursor}>
+                    <CaretSVG />
+                  </span>
+                )}
+              </p>
+            )
+          },
           code: (props) => {
             const { children, className } = props
             const match = /language-(\w+)/.exec(className || '')

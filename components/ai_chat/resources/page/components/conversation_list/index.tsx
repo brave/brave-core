@@ -32,7 +32,6 @@ interface ConversationListProps {
 function ConversationList(props: ConversationListProps) {
   const context = React.useContext(DataContext)
   const {
-    isGenerating,
     conversationHistory,
     suggestedQuestions,
     shouldDisableUserInput,
@@ -83,7 +82,7 @@ function ConversationList(props: ConversationListProps) {
       <div>
         {conversationHistory.map((turn, id) => {
           const isLastEntry = id === conversationHistory.length - 1
-          const isLoading = isLastEntry && isGenerating
+          const shouldShowTextCursor = isLastEntry && context.isGenerating
           const isHuman = turn.characterType === mojom.CharacterType.HUMAN
           const isAIAssistant = turn.characterType === mojom.CharacterType.ASSISTANT
           const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
@@ -136,13 +135,12 @@ function ConversationList(props: ConversationListProps) {
                 >
                   {!turn.selectedText ? (
                     isAIAssistant
-                      ? <MarkdownRenderer text={turn.text} />
+                      ? <MarkdownRenderer text={turn.text} shouldShowTextCursor={shouldShowTextCursor} />
                       : turn.text
                   ) : null // If there is selectedText, don't render turn.text at all
                   }
                   {turn.selectedText &&
                       <ActionTypeLabel actionType={turn.actionType} />}
-                  {isLoading && <span className={styles.caret} />}
                   {turn.selectedText && <Quote text={turn.selectedText} />}
                   {showSiteTitle && <div className={styles.siteTitleContainer}><SiteTitle size="default" /></div>}
                   {showLongPageContentInfo && <LongPageInfo />}

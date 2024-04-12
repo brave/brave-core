@@ -35,3 +35,19 @@
     margin-bottom: 0;
   }
 }
+
+.textCursor {
+  display: inline-block;
+  position: relative;
+  width: 5px;
+  height: 10px;
+
+  svg {
+    position: absolute;
+    top: 0;
+
+    rect {
+      fill: var(--leo-color-primary-30);
+    }
+  }
+}
