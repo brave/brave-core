@@ -242,9 +242,9 @@ export const HardwareWalletConnect = ({
         Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme
       )
       setSelectedHardwareWallet(vendor)
-      if (selectedHardwareWallet) onSelectVendor?.(selectedHardwareWallet)
+      onSelectVendor?.(vendor)
     },
-    [selectedHardwareWallet, onSelectVendor]
+    [onSelectVendor]
   )
 
   const onSelectLedger = React.useCallback(() => {

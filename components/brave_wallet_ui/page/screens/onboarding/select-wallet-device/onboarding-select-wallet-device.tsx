@@ -63,11 +63,7 @@ export const OnboardingSelectWalletDevice = () => {
       <HardwareWalletConnect
         selectedAccountType={selectedAccountType}
         onSelectVendor={setSelectedHardwareWallet}
-        onSuccess={() => {
-          if (selectedHardwareWallet) {
-            history.push(WalletRoutes.OnboardingComplete)
-          }
-        }}
+        onSuccess={() => history.push(WalletRoutes.OnboardingComplete)}
       />
     </OnboardingContentLayout>
   )
