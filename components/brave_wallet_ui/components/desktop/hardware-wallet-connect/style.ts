@@ -99,7 +99,6 @@ export const AddressBalanceWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  width: 140px;
   height: 100%;
 `
 
