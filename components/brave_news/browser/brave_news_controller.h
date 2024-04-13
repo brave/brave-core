@@ -190,11 +190,12 @@ class BraveNewsController
   base::RepeatingTimer timer_feed_update_;
   base::RepeatingTimer timer_publishers_update_;
   // Subscribe to this to know when the initial initializing (and seeding) of
-  // preferences occurs. This happens after first opt-in and after locales and
-  // channels are fetched. A valid feed and list of channels will only be
-  // available after this event has fired. If News is already enabled and this
-  // event is null or has already signalled, then they are already available.
-  std::unique_ptr<base::OneShotEvent> on_initializing_prefs_complete_;
+  // preferences is ensured. This happens after the feature is (re-)enabled
+  // and after locales and sources are fetched. A valid feed and list of
+  // channels might only be available after this event has fired. If News is
+  // already enabled and this event has already signalled, then they are already
+  // available.
+  base::OneShotEvent on_initializing_prefs_complete_;
   base::CancelableTaskTracker task_tracker_;
 
   base::ScopedObservation<BraveNewsPrefManager,
