@@ -621,6 +621,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_cache_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_cache_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h",
