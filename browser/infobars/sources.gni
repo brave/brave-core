@@ -50,24 +50,19 @@ if (!is_android) {
   ]
 
   if (enable_ipfs) {
+    brave_browser_infobar_sources += [
+      "//brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.cc",
+      "//brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h",
+      "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.cc",
+      "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h",
+      "//brave/browser/infobars/brave_ipfs_infobar_delegate.cc",
+      "//brave/browser/infobars/brave_ipfs_infobar_delegate.h",
+    ]
     brave_browser_infobar_deps += [
+      "//brave/components/infobars/core:core",
       "//brave/components/ipfs",
+      "//brave/components/vector_icons",
       "//components/user_prefs",
     ]
-    if (!is_android) {
-      brave_browser_infobar_sources += [
-        "//brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.cc",
-        "//brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h",
-        "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.cc",
-        "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h",
-        "//brave/browser/infobars/brave_ipfs_infobar_delegate.cc",
-        "//brave/browser/infobars/brave_ipfs_infobar_delegate.h",
-      ]
-      brave_browser_infobar_deps += [
-        "//brave/components/infobars/core:core",
-        "//brave/components/vector_icons",
-        "//chrome/browser/ui",
-      ]
-    }
   }
 }
