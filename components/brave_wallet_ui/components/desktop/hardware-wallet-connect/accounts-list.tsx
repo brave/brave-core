@@ -24,11 +24,10 @@ import { HardwareVendor } from '../../../common/api/hardware_keyrings'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { reduceAddress } from '../../../utils/reduce-address'
+
 import {
   useGetNetworksRegistryQuery //
 } from '../../../common/slices/api.slice'
-import { useAddressOrb } from '../../../common/hooks/use-orb'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import {
   networkEntityAdapter //
@@ -42,6 +41,7 @@ import {
 // Components
 import { SearchBar } from '../../shared/search-bar/index'
 import { NetworkFilterSelector } from '../network-filter-selector'
+import { AccountListItem } from './account-list-item'
 
 // Styles
 import {
@@ -50,17 +50,12 @@ import {
 } from '../popup-modals/add-account-modal/style'
 import {
   ButtonsContainer,
-  HardwareWalletAccountCircle,
-  HardwareWalletAccountListItem,
-  HardwareWalletAccountListItemRow,
   HardwareWalletAccountsListContainer,
   SelectRow,
   SelectWrapper,
   LoadingWrapper,
   LoadIcon,
-  AddressBalanceWrapper,
   NoSearchResultText,
-  AccountCheckbox,
   AccountListContainer,
   AccountListHeader,
   AccountListContent,
@@ -189,6 +184,24 @@ export const HardwareWalletAccountsList = ({
     [coin, onChangeFilecoinNetwork]
   )
 
+  const getPathValue = (
+    path: string
+  ): LedgerDerivationPath | TrezorDerivationPath => {
+    return ethDerivationPathsEnum[path]
+  }
+
+  const getDerivationPathLabel = (
+    pathValue: LedgerDerivationPath | TrezorDerivationPath
+  ): string => {
+    const pathLocale = HardwareWalletDerivationPathLocaleMapping[pathValue]
+    const isTrezorPath = pathValue === TrezorDerivationPaths.Default
+    const devicePath = isTrezorPath
+      ? getPathForTrezorIndex(undefined, pathValue)
+      : getPathForEthLedgerIndex(undefined, pathValue)
+
+    return `${pathLocale} "${devicePath}"`
+  }
+
   // effects
   React.useEffect(() => {
     setFilteredAccountList(accounts)
@@ -237,27 +250,22 @@ export const HardwareWalletAccountsList = ({
                   {getLocale('braveWalletHelpCenter')}
                 </HelpLink>
               </Row>
-              <div slot='value'>{selectedDerivationScheme}</div>
+              <div slot='value'>
+                {getDerivationPathLabel(
+                  selectedDerivationScheme as
+                    | LedgerDerivationPath
+                    | TrezorDerivationPath
+                )}
+              </div>
               {Object.keys(ethDerivationPathsEnum).map((path) => {
-                const pathValue: LedgerDerivationPath | TrezorDerivationPath =
-                  ethDerivationPathsEnum[path]
-
-                const pathLocale =
-                  HardwareWalletDerivationPathLocaleMapping[pathValue]
-
-                const isTrezorPath = pathValue === TrezorDerivationPaths.Default
+                const pathValue = getPathValue(path)
 
                 return (
                   <leo-option
                     value={pathValue}
                     key={pathValue}
                   >
-                    {pathLocale}{' '}
-                    {`"${
-                      isTrezorPath
-                        ? getPathForTrezorIndex(undefined, pathValue)
-                        : getPathForEthLedgerIndex(undefined, pathValue)
-                    }"`}
+                    {getDerivationPathLabel(pathValue)}
                   </leo-option>
                 )
               })}
@@ -319,6 +327,7 @@ export const HardwareWalletAccountsList = ({
             <AccountListContainer>
               <AccountListHeader>
                 <div>{getLocale('braveWalletSubviewAccount')}</div>
+                <div>{getLocale('braveWalletBalance')}</div>
                 <div>{getLocale('braveWalletAddAccountConnect')}</div>
               </AccountListHeader>
               <AccountListContent>
@@ -368,54 +377,6 @@ export const HardwareWalletAccountsList = ({
         </ContinueButton>
       </ButtonsContainer>
     </>
-  )
-}
-
-interface AccountListItemProps {
-  account: BraveWallet.HardwareWalletAccount
-  onSelect: () => void
-  selected: boolean
-  disabled: boolean
-  balanceAsset: Pick<
-    BraveWallet.BlockchainToken,
-    | 'coin'
-    | 'chainId'
-    | 'contractAddress'
-    | 'isErc721'
-    | 'isNft'
-    | 'symbol'
-    | 'tokenId'
-    | 'decimals'
-  >
-}
-
-function AccountListItem({
-  account,
-  onSelect,
-  selected,
-  disabled,
-  balanceAsset
-}: AccountListItemProps) {
-  // memos
-  const orb = useAddressOrb(account.address)
-
-  // render
-  return (
-    <HardwareWalletAccountListItem>
-      <HardwareWalletAccountCircle orb={orb} />
-      <HardwareWalletAccountListItemRow>
-        <AddressBalanceWrapper>
-          <div>{reduceAddress(account.address)}</div>
-        </AddressBalanceWrapper>
-        <AccountCheckbox
-          checked={selected}
-          onChange={onSelect}
-          isDisabled={disabled}
-        >
-          <div data-key={'selected'} />
-        </AccountCheckbox>
-      </HardwareWalletAccountListItemRow>
-    </HardwareWalletAccountListItem>
   )
 }
 
