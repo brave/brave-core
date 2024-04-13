@@ -6,8 +6,8 @@
 import * as React from 'react'
 
 // utils
-import { getLocale } from '../../../../../../common/locale'
-import { onConnectHardwareWallet } from '../../../../../common/async/hardware'
+import { getLocale } from '../../../../common/locale'
+import { onConnectHardwareWallet } from '../../../common/async/hardware'
 
 // components
 import { HardwareWalletAccountsList } from './accounts-list'
@@ -42,7 +42,7 @@ import {
 import { LedgerError } from '../../../common/hardware/ledgerjs/ledger-messages'
 
 // hooks
-import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 import {
   useImportHardwareAccountsMutation //
 } from '../../../common/slices/api.slice'

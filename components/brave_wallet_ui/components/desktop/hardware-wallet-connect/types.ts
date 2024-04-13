@@ -7,9 +7,9 @@ import {
   LedgerDerivationPaths,
   TrezorDerivationPaths,
   SolDerivationPaths
-} from '../../../../../common/hardware/types'
-import { BraveWallet } from '../../../../../constants/types'
-export { SolDerivationPaths } from '../../../../../common/hardware/types'
+} from '../../../common/hardware/types'
+import { BraveWallet } from '../../../constants/types'
+export { SolDerivationPaths } from '../../../common/hardware/types'
 
 // TODO(apaymyshev): strings below need localization.
 export const HardwareWalletDerivationPathLocaleMapping = {

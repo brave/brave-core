@@ -68,10 +68,7 @@ export const OnboardingCreatePassword = ({
     // Note: intentionally not using unwrapped value
     // results are returned before other redux actions complete
     await createWallet({ password }).unwrap()
-
-    // Set auto lock duration
-    await setAutoLockMinutes(autoLockDuration)
-  }, [isValid, createWallet, password, setAutoLockMinutes, autoLockDuration])
+  }, [isValid, createWallet, password])
 
   const handlePasswordChange = React.useCallback(
     ({ isValid, password }: NewPasswordValues) => {
@@ -87,12 +84,27 @@ export const OnboardingCreatePassword = ({
   }, [report])
 
   React.useEffect(() => {
-    // wait for redux before redirecting
-    // otherwise, the restricted routes in the router will not be available
-    if (!isCreatingWallet && isWalletCreated) {
-      onWalletCreated()
+    const setupWallet = async () => {
+      // wait for redux before redirecting
+      // otherwise, the restricted routes in the router will not be available
+      if (!isCreatingWallet && isWalletCreated) {
+        try {
+          await setAutoLockMinutes(autoLockDuration)
+          onWalletCreated()
+        } catch (error) {
+          console.error('Failed to set auto-lock duration:', error)
+        }
+      }
     }
-  }, [isWalletCreated, onWalletCreated, isCreatingWallet])
+
+    setupWallet()
+  }, [
+    isWalletCreated,
+    onWalletCreated,
+    isCreatingWallet,
+    setAutoLockMinutes,
+    autoLockDuration
+  ])
 
   if (isCreatingWallet) {
     return <OnboardingCreatingWallet />

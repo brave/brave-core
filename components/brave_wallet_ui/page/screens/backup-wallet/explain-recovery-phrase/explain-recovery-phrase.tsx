@@ -15,6 +15,7 @@ import { WalletPageActions } from '../../../actions'
 import {
   useReportOnboardingActionMutation //
 } from '../../../../common/slices/api.slice'
+import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -35,6 +36,9 @@ import { OnboardingContentLayout } from '../../onboarding/components/onboarding-
 export const RecoveryPhraseExplainer = () => {
   // state
   const [isSkipWarningOpen, setIsSkipWarningOpen] = React.useState(false)
+
+  // hooks
+  const isMounted = useIsMounted()
 
   // redux
   const dispatch = useDispatch()
@@ -68,8 +72,10 @@ export const RecoveryPhraseExplainer = () => {
 
   // effects
   React.useEffect(() => {
-    report(BraveWallet.OnboardingAction.RecoverySetup)
-  }, [report])
+    if (isMounted) {
+      report(BraveWallet.OnboardingAction.RecoverySetup)
+    }
+  }, [isMounted, report])
 
   // render
   return (
