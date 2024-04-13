@@ -54,6 +54,7 @@ export const OnboardingImportWalletRoutes = () => {
       >
         <OnboardingImportWalletType />
       </Route>
+
       <Route
         path={WalletRoutes.OnboardingImportTerms}
         exact
@@ -62,21 +63,21 @@ export const OnboardingImportWalletRoutes = () => {
       </Route>
 
       <ProtectedRoute
-        path={WalletRoutes.OnboardingImportOrRestore}
-        exact
-        requirement={termsAcknowledged}
-        redirectRoute={WalletRoutes.OnboardingImportTerms}
-      >
-        <OnboardingImportOrRestoreWallet />
-      </ProtectedRoute>
-
-      <ProtectedRoute
         path={WalletRoutes.OnboardingImportNetworkSelection}
         exact
         requirement={termsAcknowledged}
         redirectRoute={WalletRoutes.OnboardingImportTerms}
       >
         <OnboardingNetworkSelection />
+      </ProtectedRoute>
+
+      <ProtectedRoute
+        path={WalletRoutes.OnboardingImportOrRestore}
+        exact
+        requirement={termsAcknowledged}
+        redirectRoute={WalletRoutes.OnboardingImportTerms}
+      >
+        <OnboardingImportOrRestoreWallet />
       </ProtectedRoute>
 
       {/* From seed phrase */}
