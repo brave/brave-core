@@ -122,7 +122,7 @@ export const OnboardingCreatePassword = ({
       <NextButtonRow>
         <ContinueButton
           onClick={nextStep}
-          disabled={!isValid}
+          isDisabled={!isValid}
         >
           {getLocale('braveWalletButtonContinue')}
         </ContinueButton>
