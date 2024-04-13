@@ -294,6 +294,8 @@ void Database::ErrorCallback(const int extended_error,
     SCOPED_CRASH_KEY_STRING1024(
         "BraveAdsSqlDiagnosticInfo", "value",
         db_.GetDiagnosticInfo(extended_error, statement));
+    SCOPED_CRASH_KEY_STRING1024("BraveAdsSqlErrorMessage", "value",
+                                db_.GetErrorMessage());
     base::debug::DumpWithoutCrashing();
   }
 }
