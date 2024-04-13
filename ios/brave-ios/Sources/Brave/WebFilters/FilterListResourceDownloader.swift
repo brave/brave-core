@@ -29,28 +29,22 @@ import os.log
 
   init() {}
 
-  /// Start the adblock service to get updates to the `shieldsInstallPath`
+  /// Start the adblock service to get adblock file updates
   public func start(with adBlockService: AdblockService) {
-    // Here we register components in a specific order in order to avoid race conditions:
-    // 1. All our filter lists need the resources component. So we register this first
-    // 2. We start the custom filter list downloader
-    // 3. We register the filter list changes
     Task {
-      for await folderURL in adBlockService.resourcesComponentStream() {
-        guard let folderURL = folderURL else {
-          ContentBlockerManager.log.error("Missing folder for filter lists")
-          return
-        }
-
-        await AdBlockGroupsManager.shared.didUpdateResourcesComponent(folderURL: folderURL)
-        await FilterListCustomURLDownloader.shared.startIfNeeded()
-        await subscribeToFilterListChanges(with: adBlockService)
+      for await resourcesFileURL in adBlockService.resourcesComponentStream() {
+        AdBlockGroupsManager.shared.didUpdateResourcesComponent(
+          resourcesFileURL: resourcesFileURL
+        )
       }
     }
+
+    FilterListCustomURLDownloader.shared.startIfNeeded()
+    subscribeToFilterListChanges(with: adBlockService)
   }
 
   /// Subscribe to filter list changes so we keep the engines up to date
-  private func subscribeToFilterListChanges(with adBlockService: AdblockService) async {
+  private func subscribeToFilterListChanges(with adBlockService: AdblockService) {
     guard !subscribedToFilterListChange else { return }
     self.subscribedToFilterListChange = true
     filterListSubscription = FilterListStorage.shared.$filterLists
@@ -89,16 +83,14 @@ import os.log
 /// Helpful extension to the AdblockService
 extension AdblockService {
   /// Get a stream of resource component updates
-  @MainActor fileprivate func resourcesComponentStream() -> AsyncStream<URL?> {
+  @MainActor fileprivate func resourcesComponentStream() -> AsyncStream<URL> {
     return AsyncStream { continuation in
-      registerResourceComponent { folderPath in
-        guard let folderPath = folderPath else {
-          continuation.yield(nil)
+      registerResourcesChanges { [weak self] _ in
+        guard let resourcesPath = self?.resourcesPath else {
           return
         }
 
-        let folderURL = URL(fileURLWithPath: folderPath)
-        continuation.yield(folderURL)
+        continuation.yield(resourcesPath)
       }
     }
   }

@@ -18,6 +18,8 @@ OBJC_EXPORT
 /// Returns the filter lists that are available for the current platform
 @property(nonatomic, readonly)
     NSArray<AdblockFilterListCatalogEntry*>* filterListCatalogEntries;
+/// Returns the path to the resources file if it is available
+@property(nonatomic, readonly, nullable) NSURL* resourcesPath;
 
 /// Enable or disable a filter list given by its UUID
 - (void)enableFilterListForUUID:(NSString*)uuid isEnabled:(bool)isEnabled;
@@ -28,16 +30,14 @@ OBJC_EXPORT
 /// Returns the install path for a filter list given by its UUID
 - (nullable NSURL*)installPathForFilterListUUID:(NSString*)uuid;
 
-/// Registers the resources component and calls `componentReady`
-/// each time the component is updated
-- (void)registerResourceComponent:
-    (void (^)(NSString* _Nullable installPath))componentReady;
-
 /// Listen to downloaded version changes of filter lists
 - (void)registerFilterListChanges:(void (^)(bool isDefaultEngine))callback;
 
 /// Listen to downloaded version changes of the filter list catalog
 - (void)registerCatalogChanges:(void (^)())callback;
+
+/// Listen to downloaded version changes of resources
+- (void)registerResourcesChanges:(void (^)(NSString* resourcesJSON))callback;
 
 - (instancetype)init NS_UNAVAILABLE;
 

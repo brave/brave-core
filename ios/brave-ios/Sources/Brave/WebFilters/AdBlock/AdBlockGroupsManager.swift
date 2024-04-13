@@ -65,11 +65,8 @@ import os
 
   /// Load any cache data so its ready right during launch
   func loadResourcesFromCache() async {
-    if let resourcesFolderURL = FilterListSetting.makeFolderURL(
-      forComponentFolderPath: Preferences.AppState.lastAdBlockResourcesFolderPath.value
-    ), FileManager.default.fileExists(atPath: resourcesFolderURL.path) {
+    if let resourcesInfo = getCachedResourcesInfo() {
       // We need this for all filter lists so we can't compile anything until we download it
-      let resourcesInfo = getResourcesInfo(fromFolderURL: resourcesFolderURL)
       self.resourcesInfo = resourcesInfo
 
       if #available(iOS 16.0, *) {
@@ -116,18 +113,11 @@ import os
   }
 
   /// Inform this manager of updates to the resources so our engines can be updated
-  func didUpdateResourcesComponent(folderURL: URL) async {
-    await Task { @MainActor in
-      let folderSubPath = FilterListSetting.extractFolderPath(fromComponentFolderURL: folderURL)
-      Preferences.AppState.lastAdBlockResourcesFolderPath.value = folderSubPath
-    }.value
-
-    let version = folderURL.lastPathComponent
-    let resourcesInfo = GroupedAdBlockEngine.ResourcesInfo(
-      localFileURL: folderURL.appendingPathComponent("resources.json", conformingTo: .json),
-      version: version
-    )
-
+  func didUpdateResourcesComponent(resourcesFileURL: URL) {
+    let folderSubPath = AdblockService.extractRelativePath(fromComponentURL: resourcesFileURL)
+    Preferences.AppState.lastAdBlockResourcesFilePath.value = folderSubPath
+    Preferences.AppState.lastAdBlockResourcesFolderPath.value = nil
+    let resourcesInfo = getResourcesInfo(fromFileURL: resourcesFileURL)
     updateIfNeeded(resourcesInfo: resourcesInfo)
   }
 
@@ -260,8 +250,6 @@ import os
     for fileInfo: AdBlockEngineManager.FileInfo,
     engineType: GroupedAdBlockEngine.EngineType
   ) async {
-    let manager = getManager(for: engineType)
-
     guard
       let blocklistType = fileInfo.filterListInfo.source.blocklistType(
         isAlwaysAggressive: engineType.isAlwaysAggressive
@@ -270,7 +258,7 @@ import os
       return
     }
 
-    var modes = await contentBlockerManager.missingModes(
+    let modes = await contentBlockerManager.missingModes(
       for: blocklistType,
       version: fileInfo.filterListInfo.version
     )
@@ -283,13 +271,30 @@ import os
     )
   }
 
+  private func getCachedResourcesInfo() -> GroupedAdBlockEngine.ResourcesInfo? {
+    if let resourcesFolderURL = AdblockService.makeAbsoluteURL(
+      forComponentPath: Preferences.AppState.lastAdBlockResourcesFolderPath.value
+    ), FileManager.default.fileExists(atPath: resourcesFolderURL.path) {
+      // This is a legacy storage when we were gettting the component folder URL not the file URL
+      let resourcesFileURL = resourcesFolderURL.appendingPathComponent(
+        "resources.json",
+        conformingTo: .json
+      )
+      return getResourcesInfo(fromFileURL: resourcesFileURL)
+    } else if let resourcesFileURL = AdblockService.makeAbsoluteURL(
+      forComponentPath: Preferences.AppState.lastAdBlockResourcesFilePath.value
+    ), FileManager.default.fileExists(atPath: resourcesFileURL.path) {
+      return getResourcesInfo(fromFileURL: resourcesFileURL)
+    } else {
+      return nil
+    }
+  }
+
   /// Convert the given folder URL to a `ResourcesInfo` object
-  private func getResourcesInfo(fromFolderURL folderURL: URL) -> GroupedAdBlockEngine.ResourcesInfo
-  {
-    let version = folderURL.lastPathComponent
+  private func getResourcesInfo(fromFileURL fileURL: URL) -> GroupedAdBlockEngine.ResourcesInfo {
     return GroupedAdBlockEngine.ResourcesInfo(
-      localFileURL: folderURL.appendingPathComponent("resources.json", conformingTo: .json),
-      version: version
+      localFileURL: fileURL,
+      version: fileURL.deletingLastPathComponent().lastPathComponent
     )
   }
 
@@ -482,8 +487,9 @@ extension AdBlockEngineManager.FileInfo {
       .filter({ $0.isAlwaysAggressive == engineType.isAlwaysAggressive })
       .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
       .compactMap({ setting in
-        guard let folderURL = setting.folderURL else { return nil }
         guard let source = setting.engineSource else { return nil }
+        guard let folderURL = AdblockService.makeAbsoluteURL(forComponentPath: setting.folderPath)
+        else { return nil }
         return AdBlockEngineManager.FileInfo(for: source, downloadedFolderURL: folderURL)
       })
   }
