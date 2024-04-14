@@ -22,6 +22,7 @@ extern const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey;
 extern const base::FeatureParam<bool> kFreemiumAvailable;
 
 extern const base::FeatureParam<bool> kAIChatSSE;
+extern const base::FeatureParam<bool> kConversationAPIEnabled;
 extern const base::FeatureParam<double> kAITemperature;
 
 bool IsAIChatEnabled();

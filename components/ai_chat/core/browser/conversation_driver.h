@@ -143,6 +143,9 @@ class ConversationDriver {
   const std::string& GetArticleTextForTesting() const { return article_text_; }
   bool IsSuggestionsEmptyForTesting() const { return suggestions_.empty(); }
 
+  void SetEngineForTesting(std::unique_ptr<EngineConsumer> engine_for_testing) {
+    engine_ = std::move(engine_for_testing);
+  }
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
 
  protected:
