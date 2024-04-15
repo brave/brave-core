@@ -39,3 +39,12 @@
         label="$i18n{tabsToLinks}">
     </settings-toggle-button>
 </if>
+<settings-animated-pages id="pages" section="content">
+    <template is="dom-if" route-path="/fonts">
+        <settings-subpage associated-control="[[$$('#customize-fonts-subpage-trigger')]]"
+            page-title="$i18n{customizeFonts}">
+            <settings-appearance-fonts-page prefs="{{prefs}}">
+            </settings-appearance-fonts-page>
+        </settings-subpage>
+    </template>
+</settings-animated-pages>
