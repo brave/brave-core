@@ -32,7 +32,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "Onboarding Debug Preferences"
+    title = "Onboarding Debug Menu"
 
     dataSource.sections = [
       startOnboardingSection,
