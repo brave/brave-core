@@ -361,16 +361,6 @@
 -TabOrganizationServiceTest.*
 -TabOrganizationTriggerObserverTest.TriggersOnTabStripModelChange
 
-# These tests fail because we disable the media router via
-# prefs::kEnableMediaRouter
--CastDialogSinkViewTest.ButtonsAccessibleName
--MediaDialogViewWithRemotePlaybackTest.*
--MediaRouterActionControllerUnitTest.*
--MediaRouterDebuggerImplTest.ShouldFetchMirroringStatsAccessCodeCastFeature
--MediaRouterEnabledTest.*
--MediaRouterUIServiceFactoryUnitTest.*
--MediaRouterViewsUITest.*
-
 # This test is disabled because the Brave NTP doesn't support this feature
 -NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
 
@@ -661,16 +651,7 @@
 -BrowserUnitTest.*
 -BrowserViewHostedAppTest.*
 -BrowserViewTest.*
--CastDeviceListHostTest.StartAudioTabMirroring
--CastDialogSinkViewTest.FreezableSink
--CastDialogSinkViewTest.NonfreezableSink
--CastDialogSinkViewTest.SetEnabledState
 -CastDialogCoordinatorTest.ShowAndHideDialog
--CastDialogViewTest.AccessCodeEmptySinksSourcesAvailable
--CastDialogViewTest.FreezeNoRoute
--CastDialogViewTest.FreezeRoute
--CastDialogViewTest.FreezeUiStopCasting
--CastDialogViewTest.ShowAccessCodeCastButtonEnabled
 -CastHandlerTest.*
 -CastMediaNotificationProducerTest.*
 -CastToolbarButtonTest.*

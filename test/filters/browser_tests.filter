@@ -768,13 +768,6 @@
 # https://bugs.chromium.org/p/chromium/issues/detail?id=1414668
 -OriginTrialsBrowserTest.*
 
-# These tests fail because we intentionally disable prefs::kEnableMediaRouter
--All/CastMirroringServiceHostBrowserTestTabSwitcher.SwitchTabSource/*
--CastMirroringServiceHostBrowserTest.PauseSession
--CastMirroringServiceHostBrowserTestTabSwitcher.SwitchTabSource
--ProfileKeyedServiceBrowserTest.SystemProfileOTR_ServicesThatCanBeCreated
--ProfileKeyedServiceBrowserTest.SystemProfileParent_ServicesThatCanBeCreated
-
 # These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.WorkBadgeNonTransientModeAndSyncPause

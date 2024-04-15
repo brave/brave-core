@@ -25,7 +25,6 @@
 -EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
 -ExtensionServiceTest.*
 -LayoutProviderTest.*
--MediaRouterUIServiceFactoryUnitTest.*
 -NativeDesktopMediaListTest.CollectsCurrentProcessWindows
 -NotificationHelperLaunchesChrome.*
 -PathServiceTest.*
