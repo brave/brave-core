@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
-index d6dba4906895cb45d314d34574278b889d53a3b1..5ba94d8a20df43ce777182177b4f15f591a0e1c2 100644
+index 5d34407ebef42b5dc32e018bde632ceebbdcef13..f5f492912c4a416fed57d2d72f04b522f75abe11 100644
 --- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
 +++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
-@@ -337,6 +337,7 @@ void RecentTabsSubMenuModel::Build() {
+@@ -343,6 +343,7 @@ void RecentTabsSubMenuModel::Build() {
    }
    AddSeparator(ui::NORMAL_SEPARATOR);
    history_separator_index_ = GetItemCount() - 1;
@@ -10,11 +10,11 @@ index d6dba4906895cb45d314d34574278b889d53a3b1..5ba94d8a20df43ce777182177b4f15f5
    BuildLocalEntries();
    BuildTabsFromOtherDevices();
  }
-@@ -471,6 +472,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
-            ++k) {
-         BuildOtherDevicesTabItem(this, session_tag, *tabs_in_session[k]);
-       }  // for all tabs in one session
-+      BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES
-     }
-     ++num_sessions_added;
-   }  // for all sessions
+@@ -446,6 +447,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+     DCHECK(!session->GetSessionName().empty());
+     std::unique_ptr<ui::SimpleMenuModel> device_menu_model =
+         CreateOtherDeviceSubMenu(session, tabs_in_session);
++    BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES
+     const int command_id = GetAndIncrementNextMenuID();
+     AddSubMenu(command_id, base::UTF8ToUTF16(session->GetSessionName()),
+                device_menu_model.get());

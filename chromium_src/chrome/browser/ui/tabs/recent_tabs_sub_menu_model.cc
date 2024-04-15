@@ -5,6 +5,7 @@
 
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "components/sync_sessions/open_tabs_ui_delegate.h"
 
 namespace {
 
@@ -20,7 +21,7 @@ const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
                            IDC_CLEAR_BROWSING_DATA, IDS_CLEAR_BROWSING_DATA);
 
 #define BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES      \
-  if (tabs_in_session.size() > kMaxTabsPerSessionToShow) {                  \
+  if (tabs_in_session.size() > kMaxSessionsToShow) {                        \
     /* Not all the tabs are shown in menu */                                \
     if (!stub_tab_.get()) {                                                 \
       stub_tab_.reset(new sessions::SessionTab());                          \
@@ -31,13 +32,22 @@ const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
       stub_tab_->navigations.push_back(stub_nav_entry);                     \
       stub_tab_->tab_id = SessionID::NewUnique();                           \
     }                                                                       \
-    tabs_in_session[kMaxTabsPerSessionToShow] = stub_tab_.get();            \
-    BuildOtherDevicesTabItem(this, kBraveStubSessionTag,                    \
-                             *tabs_in_session[kMaxTabsPerSessionToShow]);   \
+    tabs_in_session[kMaxSessionsToShow] = stub_tab_.get();                  \
+    BuildOtherDevicesTabItem(device_menu_model.get(), kBraveStubSessionTag, \
+                             *tabs_in_session[kMaxSessionsToShow]);         \
   }
+
+// Do not show the menu item to signin to show tabs from other devices. Instead,
+// always show the "No tabs from other devices" string.
+#define GetAllForeignSessions(SESSIONS) GetAllForeignSessions(&sessions)) { \
+    AddItemWithStringId(IDC_RECENT_TABS_NO_DEVICE_TABS,                     \
+                        IDS_RECENT_TABS_NO_DEVICE_TABS);                    \
+  }                                                                         \
+  if (false
 
 #include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc"
 
+#undef GetAllForeignSessions
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD
 
