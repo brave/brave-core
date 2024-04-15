@@ -1,0 +1,85 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_education/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_education)
+
+source_set("brave_education") {
+  sources = [
+    "education_page_delegate_desktop.cc",
+    "education_page_delegate_desktop.h",
+    "education_page_handler.cc",
+    "education_page_handler.h",
+    "education_page_ui.cc",
+    "education_page_ui.h",
+    "education_server_checker.cc",
+    "education_server_checker.h",
+  ]
+
+  deps = [
+    "//brave/browser/ai_chat",
+    "//brave/browser/brave_rewards",
+    "//brave/browser/brave_wallet",
+    "//brave/components/brave_education:mojom",
+    "//brave/components/brave_education/resources:generated_resources",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/views/side_panel",
+    "//chrome/browser/ui/webui:webui_util",
+    "//components/language/core/browser",
+    "//ui/webui",
+  ]
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/browser/brave_vpn" ]
+  }
+
+  public_deps = [ "//brave/components/brave_education" ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "education_page_ui_browsertest.cc" ]
+
+  deps = [
+    ":brave_education",
+    "//base/test:test_support",
+    "//brave/components/brave_education",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/constants",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "education_page_handler_unitttest.cc",
+    "education_server_checker_unittest.cc",
+  ]
+
+  deps = [
+    ":brave_education",
+    "//base/test:test_support",
+    "//brave/components/brave_education",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//components/language/core/browser",
+    "//testing/gtest",
+  ]
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_BRAVE_EDUCATION_HTML" file="../brave_education/resources/brave_education.html" type="BINDATA" />
+</grit-part>

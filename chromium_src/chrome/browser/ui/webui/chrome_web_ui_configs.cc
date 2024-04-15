@@ -7,6 +7,7 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_education/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
 
 #define RegisterChromeWebUIConfigs RegisterChromeWebUIConfigs_ChromiumImpl
@@ -26,8 +27,13 @@
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
+
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+#include "brave/browser/ui/webui/brave_education/education_page_ui.h"
+#endif
 
 namespace {
 
@@ -78,6 +84,7 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
   map.AddWebUIConfig(
       std::make_unique<webcompat_reporter::WebcompatReporterUIConfig>());
+
 #endif  // !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<BraveAdblockUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveAdblockInternalsUIConfig>());
@@ -85,4 +92,9 @@ void RegisterChromeWebUIConfigs() {
   if (ai_chat::features::IsAIChatEnabled()) {
     map.AddWebUIConfig(std::make_unique<AIChatUIConfig>());
   }
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  map.AddWebUIConfig(
+      std::make_unique<brave_education::GettingStartedUIConfig>());
+#endif
 }

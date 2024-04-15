@@ -7,9 +7,12 @@
 
 #include <algorithm>
 
+#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/importer/importer_constants.h"
+#include "brave/components/brave_education/education_urls.h"
+#include "brave/components/brave_education/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -61,7 +64,10 @@ bool IsChromeDev(const std::u16string& browser_name) {
 
 }  // namespace
 
-WelcomeDOMHandler::WelcomeDOMHandler(Profile* profile) : profile_(profile) {
+WelcomeDOMHandler::WelcomeDOMHandler(Profile* profile)
+    : profile_(profile),
+      education_server_checker_(*profile->GetPrefs(),
+                                profile->GetURLLoaderFactory()) {
   base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(
       GURL("https://brave.com"))
       ->StartCheckIsDefaultAndGetDefaultClientName(
@@ -103,6 +109,10 @@ void WelcomeDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "enableWebDiscovery",
       base::BindRepeating(&WelcomeDOMHandler::HandleEnableWebDiscovery,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getWelcomeCompleteURL",
+      base::BindRepeating(&WelcomeDOMHandler::HandleGetWelcomeCompleteURL,
                           base::Unretained(this)));
 }
 
@@ -171,6 +181,37 @@ void WelcomeDOMHandler::HandleEnableWebDiscovery(
     const base::Value::List& args) {
   DCHECK(profile_);
   profile_->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
+}
+
+void WelcomeDOMHandler::HandleGetWelcomeCompleteURL(
+    const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  const auto& callback_id = args[0].GetString();
+  if (!base::FeatureList::IsEnabled(
+          brave_education::features::kShowGettingStartedPage)) {
+    OnGettingStatedServerCheck(callback_id, /* available */ false);
+    return;
+  }
+  education_server_checker_.IsServerPageAvailable(
+      brave_education::EducationPageType::kGettingStarted,
+      base::BindOnce(&WelcomeDOMHandler::OnGettingStatedServerCheck,
+                     weak_ptr_factory_.GetWeakPtr(), callback_id));
+}
+
+void WelcomeDOMHandler::OnGettingStatedServerCheck(
+    const std::string& callback_id,
+    bool available) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  GURL url;
+  if (available) {
+    url = brave_education::GetEducationPageBrowserURL(
+        brave_education::EducationPageType::kGettingStarted);
+  } else {
+    url = GURL(chrome::kChromeUINewTabURL);
+  }
+  ResolveJavascriptCallback(base::Value(callback_id), base::Value(url.spec()));
 }
 
 void WelcomeDOMHandler::SetLocalStateBooleanEnabled(
