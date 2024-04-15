@@ -45,7 +45,6 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/eth_tx_meta_unittest.cc",
     "//brave/components/brave_wallet/browser/eth_tx_state_manager_unittest.cc",
     "//brave/components/brave_wallet/browser/ethereum_keyring_unittest.cc",
-    "//brave/components/brave_wallet/browser/fil_address_unittest.cc",
     "//brave/components/brave_wallet/browser/fil_block_tracker_unittest.cc",
     "//brave/components/brave_wallet/browser/fil_nonce_tracker_unittest.cc",
     "//brave/components/brave_wallet/browser/fil_requests_unittest.cc",

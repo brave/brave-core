@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
 #include <optional>
-#include <utility>
 
 #include "base/check.h"
 #include "base/containers/span.h"
@@ -37,6 +36,7 @@ using crypto::SymmetricKey;
 namespace brave_wallet {
 
 namespace {
+constexpr char kMasterNode[] = "m";
 constexpr char kMasterSecret[] = "Bitcoin seed";
 constexpr size_t kSHA512Length = 64;
 constexpr uint32_t kHardenedOffset = 0x80000000;
@@ -116,8 +116,7 @@ HDKey::HDKey() : identifier_(20), public_key_(33), chain_code_(32) {}
 HDKey::~HDKey() = default;
 
 // static
-std::unique_ptr<HDKey> HDKey::GenerateFromSeed(
-    const std::vector<uint8_t>& seed) {
+std::unique_ptr<HDKey> HDKey::GenerateFromSeed(base::span<const uint8_t> seed) {
   // 128 - 512 bits
   if (seed.size() < 16 || seed.size() > 64) {
     LOG(ERROR) << __func__ << ": Seed size should be 16 to 64 bytes";
@@ -388,10 +387,6 @@ std::string HDKey::GetPrivateExtendedKey(
   return Serialize(version, private_key_);
 }
 
-std::string HDKey::EncodePrivateKeyForExport() const {
-  return base::ToLowerASCII(base::HexEncode(private_key_));
-}
-
 std::vector<uint8_t> HDKey::GetPrivateKeyBytes() const {
   return std::vector<uint8_t>(private_key_.begin(), private_key_.end());
 }
@@ -449,7 +444,7 @@ std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
   return public_key;
 }
 
-std::string HDKey::GetZCashTransparentAddress(bool testnet) {
+std::string HDKey::GetZCashTransparentAddress(bool testnet) const {
   return PubkeyToTransparentAddress(public_key_, testnet);
 }
 
@@ -506,7 +501,7 @@ void HDKey::SetChainCode(base::span<const uint8_t> value) {
   chain_code_.assign(value.begin(), value.end());
 }
 
-std::unique_ptr<HDKeyBase> HDKey::DeriveNormalChild(uint32_t index) {
+std::unique_ptr<HDKey> HDKey::DeriveNormalChild(uint32_t index) {
   if (index >= kHardenedOffset) {
     return nullptr;
   }
@@ -514,7 +509,7 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveNormalChild(uint32_t index) {
   return DeriveChild(index);
 }
 
-std::unique_ptr<HDKeyBase> HDKey::DeriveHardenedChild(uint32_t index) {
+std::unique_ptr<HDKey> HDKey::DeriveHardenedChild(uint32_t index) {
   if (index >= kHardenedOffset) {
     return nullptr;
   }
@@ -608,7 +603,7 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
   return hdkey;
 }
 
-std::unique_ptr<HDKeyBase> HDKey::DeriveChildFromPath(const std::string& path) {
+std::unique_ptr<HDKey> HDKey::DeriveChildFromPath(const std::string& path) {
   if (path_ != kMasterNode) {
     LOG(ERROR) << __func__ << ": must derive only from master key";
     return nullptr;
@@ -752,8 +747,8 @@ std::optional<std::vector<uint8_t>> HDKey::SignDer(
   return sig_der;
 }
 
-bool HDKey::Verify(const std::vector<uint8_t>& msg,
-                   const std::vector<uint8_t>& sig) {
+bool HDKey::VerifyForTesting(const std::vector<uint8_t>& msg,
+                             const std::vector<uint8_t>& sig) {
   if (msg.size() != 32 || sig.size() != kCompactSignatureSize) {
     LOG(ERROR) << __func__ << ": message or signature length is invalid";
     return false;

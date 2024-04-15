@@ -15,6 +15,9 @@ namespace brave_wallet {
 
 class FilAddress {
  public:
+  static std::optional<mojom::FilecoinAddressProtocol> GetProtocolFromAddress(
+      const std::string& address);
+
   static FilAddress FromUncompressedPublicKey(
       const std::vector<uint8_t>& public_key,
       mojom::FilecoinAddressProtocol protocol,

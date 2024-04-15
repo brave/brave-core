@@ -257,7 +257,7 @@ std::optional<base::Value> FilTransaction::DeserializeSignedTx(
 // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures
 std::optional<std::string> FilTransaction::GetSignedTransaction(
     const FilAddress& from,
-    const std::vector<uint8_t>& private_key) const {
+    base::span<const uint8_t> private_key) const {
   DCHECK(!from.IsEmpty());
 
   auto message = GetMessageToSign(from);

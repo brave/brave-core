@@ -9,7 +9,8 @@
 #include <optional>
 #include <utility>
 
-#include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
+#include "base/containers/contains.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -26,13 +27,40 @@ constexpr size_t kMaxSeedLen = 32;
 
 }  // namespace
 
-void SolanaKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
-                                       const std::string& hd_path) {
+SolanaKeyring::SolanaKeyring(base::span<const uint8_t> seed)
+    : root_(ConstructRootHDKey(seed, GetRootPath(mojom::KeyringId::kSolana))) {}
+SolanaKeyring::~SolanaKeyring() = default;
+
+// static
+std::unique_ptr<HDKeyEd25519> SolanaKeyring::ConstructRootHDKey(
+    base::span<const uint8_t> seed,
+    const std::string& hd_path) {
   if (!seed.empty()) {
     if (auto master_key = HDKeyEd25519::GenerateFromSeed(seed)) {
-      root_ = master_key->DeriveChildFromPath(hd_path);
+      return master_key->DeriveChildFromPath(hd_path);
     }
   }
+
+  return nullptr;
+}
+
+std::optional<AddedAccountInfo> SolanaKeyring::AddNewHDAccount() {
+  if (!root_) {
+    return std::nullopt;
+  }
+
+  auto new_acc_index = static_cast<uint32_t>(accounts_.size());
+  auto new_account = DeriveAccount(new_acc_index);
+  if (!new_account) {
+    return std::nullopt;
+  }
+  auto& added_account = accounts_.emplace_back(std::move(new_account));
+  return AddedAccountInfo{new_acc_index, GetAddressInternal(*added_account)};
+}
+
+void SolanaKeyring::RemoveLastHDAccount() {
+  CHECK(!accounts_.empty());
+  accounts_.pop_back();
 }
 
 std::string SolanaKeyring::ImportAccount(const std::vector<uint8_t>& keypair) {
@@ -45,12 +73,34 @@ std::string SolanaKeyring::ImportAccount(const std::vector<uint8_t>& keypair) {
     return std::string();
   }
 
-  const std::string address = GetAddressInternal(hd_key.get());
-  if (!AddImportedAddress(address, std::move(hd_key))) {
+  const std::string address = GetAddressInternal(*hd_key);
+
+  if (base::Contains(imported_accounts_, address)) {
     return std::string();
   }
 
+  if (base::ranges::any_of(accounts_, [&](auto& acc) {
+        return GetAddressInternal(*acc) == address;
+      })) {
+    return std::string();
+  }
+
+  imported_accounts_[address] = std::move(hd_key);
   return address;
+}
+
+bool SolanaKeyring::RemoveImportedAccount(const std::string& address) {
+  return imported_accounts_.erase(address) != 0;
+}
+
+std::string SolanaKeyring::EncodePrivateKeyForExport(
+    const std::string& address) {
+  HDKeyEd25519* hd_key = GetHDKeyFromAddress(address);
+  if (!hd_key) {
+    return std::string();
+  }
+
+  return hd_key->GetBase58EncodedKeypair();
 }
 
 std::vector<uint8_t> SolanaKeyring::SignMessage(
@@ -65,12 +115,32 @@ std::vector<uint8_t> SolanaKeyring::SignMessage(
   return hd_key->Sign(message);
 }
 
-std::string SolanaKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
-  if (!hd_key_base) {
-    return std::string();
+std::vector<std::string> SolanaKeyring::GetHDAccountsForTesting() const {
+  std::vector<std::string> addresses;
+  for (auto& acc : accounts_) {
+    addresses.push_back(GetAddressInternal(*acc));
   }
-  HDKeyEd25519* hd_key = static_cast<HDKeyEd25519*>(hd_key_base);
-  return hd_key->GetBase58EncodedPublicKey();
+  return addresses;
+}
+
+std::vector<std::string> SolanaKeyring::GetImportedAccountsForTesting() const {
+  std::vector<std::string> addresses;
+  for (auto& acc : imported_accounts_) {
+    addresses.push_back(GetAddressInternal(*acc.second));
+  }
+  return addresses;
+}
+
+std::string SolanaKeyring::GetDiscoveryAddress(size_t index) const {
+  if (auto key = DeriveAccount(index)) {
+    return GetAddressInternal(*key);
+  }
+  return std::string();
+}
+
+std::string SolanaKeyring::GetAddressInternal(
+    const HDKeyEd25519& hd_key) const {
+  return hd_key.GetBase58EncodedPublicKey();
 }
 
 // Create a valid program derived address without searching for a bump seed.
@@ -199,9 +269,23 @@ std::optional<std::string> SolanaKeyring::GetAssociatedMetadataAccount(
   return FindProgramDerivedAddress(seeds, mojom::kSolanaMetadataProgramId);
 }
 
-std::unique_ptr<HDKeyBase> SolanaKeyring::DeriveAccount(uint32_t index) const {
+std::unique_ptr<HDKeyEd25519> SolanaKeyring::DeriveAccount(
+    uint32_t index) const {
   // m/44'/501'/{index}'/0'
   return root_->DeriveHardenedChild(index)->DeriveHardenedChild(0);
+}
+
+HDKeyEd25519* SolanaKeyring::GetHDKeyFromAddress(const std::string& address) {
+  const auto imported_accounts_iter = imported_accounts_.find(address);
+  if (imported_accounts_iter != imported_accounts_.end()) {
+    return imported_accounts_iter->second.get();
+  }
+  for (auto& acc : accounts_) {
+    if (GetAddressInternal(*acc) == address) {
+      return acc.get();
+    }
+  }
+  return nullptr;
 }
 
 }  // namespace brave_wallet

@@ -17,15 +17,18 @@ namespace {
 constexpr char kBip84TestMnemonic[] =
     "immense leader act drama someone renew become mention fragile wide "
     "cinnamon obtain wool window mirror";
-}
+
+// https://github.com/Electric-Coin-Company/zcash-android-wallet-sdk/blob/57f3b7ada6381dcf67b072c84d2f24a6d331045f/sdk-lib/src/androidTest/java/cash/z/ecc/android/sdk/jni/TransparentTest.kt#L42
+constexpr char kDeputyVisaTestMnemonic[] =
+    "deputy visa gentle among clean scout farm drive comfort patch skin salt "
+    "ranch cool ramp warrior drink narrow normal lunch behind salt deal person";
+}  // namespace
 
 namespace brave_wallet {
 using mojom::ZCashKeyId;
 
 TEST(ZCashKeyringUnitTest, GetPubKey) {
-  ZCashKeyring keyring(false);
-  keyring.ConstructRootHDKey(*MnemonicToSeed(kBip84TestMnemonic, ""),
-                             "m/44'/133'");
+  ZCashKeyring keyring(*MnemonicToSeed(kBip84TestMnemonic), false);
 
   EXPECT_EQ(
       base::HexEncode(*keyring.GetPubkey(ZCashKeyId(0, 0, 0))),
@@ -40,9 +43,7 @@ TEST(ZCashKeyringUnitTest, GetPubKey) {
 
 TEST(ZCashKeyringUnitTest, GetAddress) {
   {
-    ZCashKeyring keyring(false);
-    keyring.ConstructRootHDKey(*MnemonicToSeed(kBip84TestMnemonic, ""),
-                               "m/44'/133'");
+    ZCashKeyring keyring(*MnemonicToSeed(kBip84TestMnemonic), false);
 
     EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 0))->address_string,
               "t1fhcesXQLT3U1t7caBYTpd59LiRV8tVfqj");
@@ -91,27 +92,13 @@ TEST(ZCashKeyringUnitTest, GetAddress) {
 
   // https://github.com/zcash/zcash-android-wallet-sdk/blob/57f3b7ada6381dcf67b072c84d2f24a6d331045f/sdk-lib/src/androidTest/java/cash/z/ecc/android/sdk/jni/TransparentTest.kt#L49
   {
-    ZCashKeyring keyring(false);
-    keyring.ConstructRootHDKey(
-        *MnemonicToSeed("deputy visa gentle among clean scout farm "
-                        "drive comfort patch skin salt ranch cool ramp "
-                        "warrior drink narrow normal lunch behind salt "
-                        "deal person",
-                        ""),
-        "m/44'/133'");
+    ZCashKeyring keyring(*MnemonicToSeed(kDeputyVisaTestMnemonic), false);
     EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 0))->address_string,
               "t1PKtYdJJHhc3Pxowmznkg7vdTwnhEsCvR4");
   }
 
   {
-    ZCashKeyring keyring(true);
-    keyring.ConstructRootHDKey(
-        *MnemonicToSeed("deputy visa gentle among clean scout farm "
-                        "drive comfort patch skin salt ranch cool ramp "
-                        "warrior drink narrow normal lunch behind salt "
-                        "deal person",
-                        ""),
-        "m/44'/1'");
+    ZCashKeyring keyring(*MnemonicToSeed(kDeputyVisaTestMnemonic), true);
     EXPECT_EQ(keyring.GetAddress(ZCashKeyId(0, 0, 0))->address_string,
               "tm9v3KTsjXK8XWSqiwFjic6Vda6eHY9Mjjq");
   }
@@ -119,9 +106,7 @@ TEST(ZCashKeyringUnitTest, GetAddress) {
 
 TEST(ZCashKeyringUnitTest, GetPubkey) {
   {
-    ZCashKeyring keyring(false);
-    keyring.ConstructRootHDKey(*MnemonicToSeed(kBip84TestMnemonic, ""),
-                               "m/44'/133'");
+    ZCashKeyring keyring(*MnemonicToSeed(kBip84TestMnemonic), false);
 
     EXPECT_EQ(
         base::HexEncode(*keyring.GetPubkey(ZCashKeyId(0, 0, 0))),
@@ -146,14 +131,7 @@ TEST(ZCashKeyringUnitTest, GetPubkey) {
 
   // https://github.com/zcash/zcash-android-wallet-sdk/blob/57f3b7ada6381dcf67b072c84d2f24a6d331045f/sdk-lib/src/androidTest/java/cash/z/ecc/android/sdk/jni/TransparentTest.kt#L49
   {
-    ZCashKeyring keyring(false);
-    keyring.ConstructRootHDKey(
-        *MnemonicToSeed("deputy visa gentle among clean scout farm "
-                        "drive comfort patch skin salt ranch cool ramp "
-                        "warrior drink narrow normal lunch behind salt "
-                        "deal person",
-                        ""),
-        "m/44'/133'");
+    ZCashKeyring keyring(*MnemonicToSeed(kDeputyVisaTestMnemonic), false);
     EXPECT_EQ(
         base::HexEncode(*keyring.GetPubkey(ZCashKeyId(0, 0, 0))),
         "03B1D7FB28D17C125B504D06B1530097E0A3C76ADA184237E3BC0925041230A5AF");

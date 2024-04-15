@@ -152,6 +152,7 @@ source_set("unit_tests") {
     "eth_request_helper_unittest.cc",
     "eth_sign_typed_data_helper_unittest.cc",
     "f4_jumble_unittest.cc",
+    "fil_address_unittest.cc",
     "hash_utils_unittest.cc",
     "hex_utils_unittest.cc",
     "mem_utils_unittest.cc",

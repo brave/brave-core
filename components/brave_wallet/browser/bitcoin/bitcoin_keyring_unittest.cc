@@ -18,9 +18,7 @@ using mojom::BitcoinKeyId;
 
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
 TEST(BitcoinKeyringUnitTest, TestVectors) {
-  BitcoinKeyring keyring(false);
-  keyring.ConstructRootHDKey(*MnemonicToSeed(kMnemonicAbandonAbandon, ""),
-                             "m/84'/0'");
+  BitcoinKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
 
   EXPECT_EQ(
       base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
@@ -41,9 +39,7 @@ TEST(BitcoinKeyringUnitTest, TestVectors) {
 }
 
 TEST(BitcoinKeyringUnitTest, GetAddress) {
-  BitcoinKeyring keyring(false);
-  keyring.ConstructRootHDKey(*MnemonicToSeed(kMnemonicAbandonAbandon, ""),
-                             "m/84'/0'");
+  BitcoinKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
 
   EXPECT_EQ(keyring.GetAddress(0, BitcoinKeyId(0, 0)),
             "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
@@ -59,9 +55,8 @@ TEST(BitcoinKeyringUnitTest, GetAddress) {
   EXPECT_EQ(keyring.GetAddress(1, BitcoinKeyId(1, 0)),
             "bc1qt0x83f5vmnapgl2gjj9r3d67rcghvjaqrvgpck");
 
-  BitcoinKeyring testnet_keyring(true);
-  testnet_keyring.ConstructRootHDKey(
-      *MnemonicToSeed(kMnemonicAbandonAbandon, ""), "m/84'/1'");
+  BitcoinKeyring testnet_keyring(*MnemonicToSeed(kMnemonicAbandonAbandon),
+                                 true);
 
   EXPECT_EQ(testnet_keyring.GetAddress(0, BitcoinKeyId(0, 0)),
             "tb1q6rz28mcfaxtmd6v789l9rrlrusdprr9pqcpvkl");
@@ -79,9 +74,7 @@ TEST(BitcoinKeyringUnitTest, GetAddress) {
 }
 
 TEST(BitcoinKeyringUnitTest, GetPubkey) {
-  BitcoinKeyring keyring(false);
-  keyring.ConstructRootHDKey(*MnemonicToSeed(kMnemonicAbandonAbandon, ""),
-                             "m/84'/0'");
+  BitcoinKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
 
   EXPECT_EQ(
       base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
@@ -103,9 +96,8 @@ TEST(BitcoinKeyringUnitTest, GetPubkey) {
       base::HexEncode(*keyring.GetPubkey(1, BitcoinKeyId(1, 0))),
       "025695996D13031C54896990E6E38DB5849F5A64FA81142B452D6E23C36FD83880");
 
-  BitcoinKeyring testnet_keyring(true);
-  testnet_keyring.ConstructRootHDKey(
-      *MnemonicToSeed(kMnemonicAbandonAbandon, ""), "m/84'/1'");
+  BitcoinKeyring testnet_keyring(*MnemonicToSeed(kMnemonicAbandonAbandon),
+                                 true);
 
   EXPECT_EQ(
       base::HexEncode(*testnet_keyring.GetPubkey(0, BitcoinKeyId(0, 0))),

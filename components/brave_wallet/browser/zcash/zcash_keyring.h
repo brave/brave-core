@@ -11,14 +11,14 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
+#include "brave/components/brave_wallet/browser/secp256k1_hd_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-class ZCashKeyring : public HDKeyring {
+class ZCashKeyring : public Secp256k1HDKeyring {
  public:
-  explicit ZCashKeyring(bool testnet);
+  ZCashKeyring(base::span<const uint8_t> seed, bool testnet);
   ~ZCashKeyring() override = default;
   ZCashKeyring(const ZCashKeyring&) = delete;
   ZCashKeyring& operator=(const ZCashKeyring&) = delete;
@@ -32,10 +32,12 @@ class ZCashKeyring : public HDKeyring {
       const mojom::ZCashKeyId& key_id,
       base::span<const uint8_t, 32> message);
 
+  std::string EncodePrivateKeyForExport(const std::string& address) override;
+
  private:
-  std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
-  std::unique_ptr<HDKeyBase> DeriveAccount(uint32_t index) const override;
-  std::unique_ptr<HDKeyBase> DeriveKey(const mojom::ZCashKeyId& key_id);
+  std::string GetAddressInternal(const HDKey& hd_key) const override;
+  std::unique_ptr<HDKey> DeriveAccount(uint32_t index) const override;
+  std::unique_ptr<HDKey> DeriveKey(const mojom::ZCashKeyId& key_id);
 
   bool testnet_ = false;
 };

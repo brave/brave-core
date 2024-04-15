@@ -355,4 +355,18 @@ TEST(FilAddressUnitTest, ConvertFEVMtoFVM) {
                   .IsEmpty());
 }
 
+TEST(FilAddressUnitTest, GetProtocolFromAddress) {
+  EXPECT_EQ(
+      mojom::FilecoinAddressProtocol::BLS,
+      FilAddress::GetProtocolFromAddress(
+          "t3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2"
+          "oz4o4tpa4mvigcrayh4a"));
+
+  EXPECT_EQ(mojom::FilecoinAddressProtocol::SECP256K1,
+            FilAddress::GetProtocolFromAddress(
+                "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq"));
+  EXPECT_EQ(std::nullopt, FilAddress::GetProtocolFromAddress(
+                              "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y"));
+}
+
 }  // namespace brave_wallet
