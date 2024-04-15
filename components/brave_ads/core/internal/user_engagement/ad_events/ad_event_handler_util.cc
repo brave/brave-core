@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
 
 #include "base/ranges/algorithm.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
 namespace brave_ads {
@@ -14,9 +15,25 @@ bool HasFiredAdEvent(const AdInfo& ad,
                      const AdEventList& ad_events,
                      const ConfirmationType confirmation_type) {
   const auto iter = base::ranges::find_if(
-      ad_events, [&ad, &confirmation_type](const AdEventInfo& ad_event) {
+      ad_events, [&ad, confirmation_type](const AdEventInfo& ad_event) {
         return ad_event.placement_id == ad.placement_id &&
                ad_event.confirmation_type == confirmation_type;
+      });
+
+  return iter != ad_events.cend();
+}
+
+bool HasFiredAdEventWithinTimeWindow(const AdInfo& ad,
+                                     const AdEventList& ad_events,
+                                     const ConfirmationType confirmation_type,
+                                     const base::TimeDelta time_window) {
+  const auto iter = base::ranges::find_if(
+      ad_events,
+      [&ad, confirmation_type, time_window](const AdEventInfo& ad_event) {
+        return ad_event.placement_id == ad.placement_id &&
+               ad_event.confirmation_type == confirmation_type &&
+               (time_window.is_zero() ||
+                base::Time::Now() - ad_event.created_at <= time_window);
       });
 
   return iter != ad_events.cend();

@@ -1141,6 +1141,8 @@ static_library("internal") {
     "user_engagement/ad_events/ad_event_cache.cc",
     "user_engagement/ad_events/ad_event_cache_util.cc",
     "user_engagement/ad_events/ad_event_cache_util.h",
+    "user_engagement/ad_events/ad_event_feature.cc",
+    "user_engagement/ad_events/ad_event_feature.h",
     "user_engagement/ad_events/ad_event_handler_util.cc",
     "user_engagement/ad_events/ad_event_handler_util.h",
     "user_engagement/ad_events/ad_event_info.cc",
