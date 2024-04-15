@@ -36,7 +36,8 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
     <div className={styles.markdownContainer}>
       <Markdown
         rehypePlugins={[plugin]}
-        className={styles.markdownContainer}
+        disallowedElements={['a']}
+        unwrapDisallowed={true}
         children={mainProps.text}
         components={{
           p: (props) => {
