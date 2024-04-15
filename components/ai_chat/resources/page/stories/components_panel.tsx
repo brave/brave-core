@@ -199,8 +199,8 @@ export default {
   decorators: [
     (Story: any, options: any) => {
       const [, setArgs] = useArgs()
-      const [isGenerating] = React.useState(false)
-      const [favIconUrl] = React.useState<string>()
+      const [isGenerating] = useState(false)
+      const [favIconUrl] = useState<string>()
       const hasAcceptedAgreement = options.args.hasAcceptedAgreement
 
       const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new mojom.SiteInfo()
