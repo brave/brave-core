@@ -7,6 +7,7 @@ import("//brave/android/android_browser_tests.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
+import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -443,6 +444,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/whats_new:unit_test",
       "//brave/components/brave_news/common:unit_tests",
       "//brave/components/brave_shields/core/common:mojom",
+      "//brave/components/brave_vpn/common/buildflags",
       "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/brave_wallet/browser:utils",
       "//brave/components/brave_wallet/common:test_support",
@@ -460,6 +462,10 @@ test("brave_unit_tests") {
 
   if (enable_captive_portal_detection) {
     deps += [ "//brave/components/captive_portal/content:unit_tests" ]
+  }
+
+  if (enable_brave_education) {
+    deps += [ "//brave/browser/ui/webui/brave_education:unit_tests" ]
   }
 
   # On Windows, brave_install_static_unittests covers channel test.
@@ -1189,6 +1195,10 @@ test("brave_browser_tests") {
       "//brave/browser/extensions/api/identity/test:browsertests",
       "//brave/components/brave_webtorrent/browser",
     ]
+  }
+
+  if (enable_brave_education) {
+    deps += [ "//brave/browser/ui/webui/brave_education:browser_tests" ]
   }
 
   if (is_android) {

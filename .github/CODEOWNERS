@@ -77,6 +77,11 @@ net/proxy_resolution/ @brave/tor-reviewers
 chromium_src/**/extensions/**/*_features.json @brave/sec-team
 chromium_src/tools/json_schema_compiler/ @brave/sec-team
 
+# Browser commands available via Brave Education content
+browser/ui/webui/brave_education/education_page_handler.* @brave/sec-team
+components/brave_education/education_urls.* @brave/sec-team
+components/brave_education/education_page.mojom @brave/sec-team
+
 # Brave theme
 browser/themes @simonhong
 

@@ -1,0 +1,33 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/buildflag_header.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "ENABLE_BRAVE_EDUCATION=$enable_brave_education" ]
+}
+
+source_set("brave_education") {
+  sources = [
+    "education_urls.cc",
+    "education_urls.h",
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/constants:constants",
+    "//url",
+  ]
+}
+
+mojom("mojom") {
+  sources = [ "education_page.mojom" ]
+  public_deps = [ "//mojo/public/mojom/base" ]
+}

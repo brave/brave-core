@@ -1,0 +1,23 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+transpile_web_ui("brave_education") {
+  entry_points = [ [
+        "brave_education",
+        rebase_path("brave_education.ts"),
+      ] ]
+  resource_name = "brave_education"
+  output_module = true
+  deps = [ "//brave/components/brave_education:mojom_js" ]
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "brave_education"
+  output_dir = "$root_gen_dir/brave/components/brave_education/resources"
+  deps = [ ":brave_education" ]
+}

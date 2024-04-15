@@ -44,6 +44,7 @@ import("//brave/build/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
+import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -150,6 +151,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser",
+  "//brave/components/brave_education:buildflags",
   "//brave/components/brave_federated",
   "//brave/components/brave_new_tab_ui:mojom",
   "//brave/components/brave_news/common:mojom",
@@ -293,6 +295,10 @@ if (!is_android) {
     "//components/feed/core/v2:feed_core_v2",
     "//components/feed/mojom:mojo_bindings",
   ]
+}
+
+if (enable_brave_education) {
+  brave_chrome_browser_deps += [ "//brave/browser/ui/webui/brave_education" ]
 }
 
 if (is_android) {
