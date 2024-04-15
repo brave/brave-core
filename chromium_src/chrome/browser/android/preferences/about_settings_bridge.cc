@@ -11,8 +11,7 @@
 #include "src/chrome/browser/android/preferences/about_settings_bridge.cc"
 #undef JNI_AboutSettingsBridge_GetApplicationVersion
 
-static ScopedJavaLocalRef<jstring>
-JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {
+static std::string JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {
   JNI_AboutSettingsBridge_GetApplicationVersion_ChromiumImpl(env);
 
   base::android::BuildInfo* android_build_info =
@@ -23,5 +22,5 @@ JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {
   application.append(", Chromium ");
   application.append(version_info::GetBraveChromiumVersionNumber());
 
-  return ConvertUTF8ToJavaString(env, application);
+  return application;
 }
