@@ -654,6 +654,7 @@ void PageGraph::ApplyCompilationModeOverride(
   // When PageGraph is active, always compile external scripts eagerly. We want
   // each DOM node to have its own script instance even if the underlying script
   // is fetched from the same URL.
+  CHECK(compile_options);
   *compile_options = v8::ScriptCompiler::kEagerCompile;
 }
 
