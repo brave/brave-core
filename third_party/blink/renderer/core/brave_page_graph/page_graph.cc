@@ -185,7 +185,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.5.0";
+constexpr char kPageGraphVersion[] = "0.5.1";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
