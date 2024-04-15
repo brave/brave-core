@@ -250,7 +250,13 @@ void SiteVisit::OnTabDidChangeFocus(const int32_t tab_id) {
   MaybeSuspendOrResumePageLand(tab_id);
 }
 
+void SiteVisit::OnTabDidChange(const TabInfo& tab) {
+  // Maybe land when an ad is opened in the same tab.
+  MaybeLandOnPage(tab);
+}
+
 void SiteVisit::OnDidOpenNewTab(const TabInfo& tab) {
+  // Maybe land when an ad is opened in a new tab.
   MaybeLandOnPage(tab);
 }
 
