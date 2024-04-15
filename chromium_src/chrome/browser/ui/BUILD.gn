@@ -13,6 +13,10 @@ group("ui") {
     "//brave/components/brave_vpn/common/buildflags",
   ]
 
+  if (is_mac) {
+    deps += [ "//brave/updater:buildflags" ]
+  }
+
   if (toolkit_views) {
     deps += [
       "//brave/components/ai_chat/core/common/buildflags",
