@@ -506,13 +506,12 @@ void CheckMenuIcons(ui::MenuModel* menu,
                     std::u16string path = u"") {
   constexpr int kIconlessCommands[] = {
       // Header, with no icon
-      IDC_RECENT_TABS_NO_DEVICE_TABS,
-      // Header, with no icon
       RecentTabsSubMenuModel::kDisabledRecentlyClosedHeaderCommandId};
   for (size_t i = 0; i < menu->GetItemCount(); ++i) {
     auto command_id = menu->GetCommandIdAt(i);
-    // Skip separators & commands which deliberately have no icons
-    if (command_id == -1 || base::Contains(kIconlessCommands, command_id)) {
+    // Skip separators, headers, & commands which deliberately have no icons
+    if (command_id == -1 || command_id == -2 ||
+        base::Contains(kIconlessCommands, command_id)) {
       continue;
     }
 
