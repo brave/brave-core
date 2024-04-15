@@ -17,6 +17,7 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.omnibox.OmniboxFeatures;
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
@@ -35,6 +36,7 @@ import org.chromium.ui.modelutil.PropertyModel;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuilder {
     private @Nullable BraveSearchBannerProcessor mBraveSearchBannerProcessor;
@@ -49,7 +51,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private Context mContext;
     private AutocompleteDelegate mAutocompleteDelegate;
     private BraveLeoAutocompleteDelegate mLeoAutocompleteDelegate;
-    private @Nullable OmniboxImageSupplier mImageSupplier;
+    private @NonNull Optional<OmniboxImageSupplier> mImageSupplier;
 
     BraveDropdownItemViewInfoListBuilder(
             @NonNull Supplier<Tab> tabSupplier, BookmarkState bookmarkState) {
@@ -79,7 +81,10 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                             (BraveSuggestionHost) host,
                             textProvider,
                             mAutocompleteDelegate);
-            mImageSupplier = new OmniboxImageSupplier(context);
+            mImageSupplier =
+                    OmniboxFeatures.isLowMemoryDevice()
+                            ? Optional.empty()
+                            : Optional.of(new OmniboxImageSupplier(context));
             mBraveLeoSuggestionProcessor =
                     new BraveLeoSuggestionProcessor(
                             context,

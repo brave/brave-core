@@ -25,6 +25,8 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.ui.modelutil.PropertyModel;
 
+import java.util.Optional;
+
 /** A class that handles model and view creation for the Brave Leo suggestion. */
 public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
     private final UrlBarEditingTextStateProvider mUrlBarEditingTextProvider;
@@ -36,7 +38,7 @@ public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
             Context context,
             SuggestionHost suggestionHost,
             UrlBarEditingTextStateProvider editingTextProvider,
-            OmniboxImageSupplier imageSupplier,
+            @NonNull Optional<OmniboxImageSupplier> imageSupplier,
             BraveLeoAutocompleteDelegate delegate,
             @NonNull Supplier<Tab> tabSupplier) {
         super(context, suggestionHost, imageSupplier);
@@ -79,11 +81,6 @@ public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
 
     @Override
     public boolean doesProcessSuggestion(AutocompleteMatch suggestion, int position) {
-        return true;
-    }
-
-    @Override
-    public boolean allowBackgroundRounding() {
         return true;
     }
 }
