@@ -20,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
@@ -324,22 +323,6 @@ void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to purge orphaned ad events");
-    return FailedToInitialize(std::move(callback));
-  }
-
-  rewards::Migrate(base::BindOnce(&AdsImpl::MigrateRewardsStateCallback,
-                                  weak_factory_.GetWeakPtr(), std::move(wallet),
-                                  std::move(callback)));
-}
-
-void AdsImpl::MigrateRewardsStateCallback(mojom::WalletInfoPtr wallet,
-                                          InitializeCallback callback,
-                                          const bool success) {
-  if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
-    base::debug::DumpWithoutCrashing();
-
     return FailedToInitialize(std::move(callback));
   }
 
