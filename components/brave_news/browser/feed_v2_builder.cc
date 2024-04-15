@@ -313,15 +313,14 @@ int PickRouletteWithWeighting(const ArticleInfos& articles,
   double picked_value = base::RandDouble() * total_weight;
   double current_weight = 0;
 
-  uint64_t i;
-  for (i = 0; i < weights.size(); ++i) {
+  for (uint64_t i = 0; i < weights.size(); ++i) {
     current_weight += weights[i];
-    if (current_weight > picked_value) {
-      break;
+    if (current_weight >= picked_value) {
+      return i;
     }
   }
 
-  return i;
+  return -1;
 }
 
 int PickRoulette(const ArticleInfos& articles) {
