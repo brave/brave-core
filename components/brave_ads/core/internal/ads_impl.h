@@ -124,9 +124,6 @@ class AdsImpl final : public Ads {
   void PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
                                      InitializeCallback callback,
                                      bool success);
-  void MigrateRewardsStateCallback(mojom::WalletInfoPtr wallet,
-                                   InitializeCallback callback,
-                                   bool success);
   void MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
                                   InitializeCallback callback,
                                   bool success);

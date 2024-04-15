@@ -21,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
@@ -302,7 +301,6 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
   for (const auto& payment_token : payment_tokens) {
     transaction_ids.push_back(payment_token.transaction_id);
   }
-  transaction_ids.emplace_back(rewards::kMigrationUnreconciledTransactionId);
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -330,8 +328,6 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
     BindString(&*command, index, transaction_id);
     ++index;
   }
-
-  BindString(&*command, index, rewards::kMigrationUnreconciledTransactionId);
 
   transaction->commands.push_back(std::move(command));
 
