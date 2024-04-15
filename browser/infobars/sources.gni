@@ -33,13 +33,13 @@ if (!is_android) {
   brave_browser_infobar_deps += [
     "//base",
     "//brave/app:brave_generated_resources_grit",
-    "//brave/browser/ui/views/infobars:brave_sync_account_deleted_infobar",
     "//brave/common:common",
     "//brave/components/brave_sync:features",
     "//brave/components/brave_sync:prefs",
     "//brave/components/constants",
     "//brave/components/p3a",
     "//chrome/app:branded_strings",
+    "//chrome/browser/ui",
     "//components/infobars/content",
     "//components/infobars/core",
     "//components/prefs",
@@ -50,24 +50,19 @@ if (!is_android) {
   ]
 
   if (enable_ipfs) {
+    brave_browser_infobar_sources += [
+      "//brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.cc",
+      "//brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h",
+      "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.cc",
+      "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h",
+      "//brave/browser/infobars/brave_ipfs_infobar_delegate.cc",
+      "//brave/browser/infobars/brave_ipfs_infobar_delegate.h",
+    ]
     brave_browser_infobar_deps += [
+      "//brave/components/infobars/core:core",
       "//brave/components/ipfs",
+      "//brave/components/vector_icons",
       "//components/user_prefs",
     ]
-    if (!is_android) {
-      brave_browser_infobar_sources += [
-        "//brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.cc",
-        "//brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h",
-        "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.cc",
-        "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h",
-        "//brave/browser/infobars/brave_ipfs_infobar_delegate.cc",
-        "//brave/browser/infobars/brave_ipfs_infobar_delegate.h",
-      ]
-      brave_browser_infobar_deps += [
-        "//brave/browser/ui/views/infobars:infobars",
-        "//brave/components/infobars/core:core",
-        "//brave/components/vector_icons",
-      ]
-    }
   }
 }

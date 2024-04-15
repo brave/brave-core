@@ -63,11 +63,11 @@ source_set("browsertests") {
     deps = [
       "//base/test:test_support",
       "//brave/browser",
-      "//brave/browser/ui/views/infobars:infobars",
       "//brave/common:common",
       "//brave/components/constants",
       "//brave/components/infobars/core",
       "//brave/components/ipfs",
+      "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//components/infobars/content",
