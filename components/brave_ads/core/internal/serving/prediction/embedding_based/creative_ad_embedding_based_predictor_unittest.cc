@@ -27,7 +27,8 @@ TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorTest, PredictCreativeAd) {
   creative_ads.push_back(creative_ad);
 
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"The quick brown fox jumps over the lazy dog"));
   const UserModelInfo user_model{
       IntentUserModelInfo{}, LatentInterestUserModelInfo{},
       InterestUserModelInfo{/*segments=*/{}, TextEmbeddingHtmlEventList{

@@ -37,7 +37,8 @@ TEST(BraveAdsCreativeAdEmbeddingBasedPredictorVotingUtilTest,
   creative_ads.push_back(creative_ad_3);
 
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"The quick brown fox jumps over the lazy dog"));
 
   const std::vector<double> creative_ad_similarity_scores =
       ComputeCreativeAdSimilarityScores(creative_ads,
