@@ -207,6 +207,7 @@
 <translation id="2289567621059034186">নীচে নতুন ট্যাব</translation>
 <translation id="3228962656492373217">নীচে ট্যাবগুলো বন্ধ করুন</translation>
 <translation id="8030501904366631501">এই উইন্ডোতে সমস্ত ট্যাব আনুন</translation>
+<translation id="253980346046488815">ডুপ্লিকেট ট্যাব বন্ধ করুন</translation>
 <translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
 <translation id="2523967823495420116">ভার্টিকাল ট্যাব ব্যবহার করুন</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ট্যাব মিউট করুন}one{ট্যাব মিউট করুন}other{ট্যাব মিউট করুন}}</translation>
@@ -214,6 +215,7 @@
 <translation id="4405580203042711503">নীচে নতুন ট্যাব</translation>
 <translation id="5611474372949142946">নীচে ট্যাবগুলো বন্ধ করুন</translation>
 <translation id="573844928911967687">এই উইন্ডোতে সমস্ত ট্যাব আনুন</translation>
+<translation id="2703180365855369896">ডুপ্লিকেট ট্যাব বন্ধ করুন</translation>
 <translation id="3704707436873245822">ছবি থেকে টেক্সট কপি করুন</translation>
 <translation id="5268098808165185458">ছবি থেকে টেক্সট কপি করা হচ্ছে...</translation>
 <translation id="4046485130884276245">ছবি থেকে টেক্সট কপি করা হয়েছে</translation>
@@ -221,7 +223,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Brave VPN-এ WireGuard প্রোটোকল ব্যবহার করুন</translation>
 <translation id="8519170191215826548">Brave VPN সংযুক্ত থাকা অবস্থায় এই সেটিং পরিবর্তন করা যাবে না৷</translation>
-<translation id="5620961847363372221">ব্রাউজার রিস্টার্ট প্রয়োজন৷</translation>
 <translation id="4235920711083356755">VPN বোতাম দেখান</translation>
 <translation id="4070612712151038707">টুলবারে VPN বোতামটি দেখায়</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -316,6 +317,9 @@
 <translation id="1727684853006449697">Brave প্লেয়ার</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
+<translation id="1426410128494586442">হ্যাঁ</translation>
+<translation id="4250680216510889253">না</translation>
+<translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="4472575034687746823">শুরু করুন</translation>
 <translation id="8081858229109418493">প্রোফাইলের নাম ও আইকন</translation>
 <translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
@@ -443,7 +447,6 @@
 <translation id="3540231253392253941">পুশ মেসেজিংয়ের জন্য Google পরিষেবাগুলি ব্যবহার করুন</translation>
 <translation id="933652931229970927">স্বয়ংক্রিয়ভাবে ক্র্যাশ রিপোর্টগুলো পাঠায়</translation>
 <translation id="4891600875049212418">সংবেদনশীল সাইট ভিজিট করার সময় অফ-দ্য-রেকর্ড হিসাবে যান</translation>
-<translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="4846154056248462491">প্রস্থানের সময়</translation>
 <translation id="2808630562319398131">Brave Rewards এর ডেটা রিসেট করুন...</translation>
 <translation id="6438096877646138757">আপনি সাইট বন্ধ করে দিলে সেগুলো কুকি সাফ করে</translation>
@@ -627,6 +630,8 @@
 <translation id="3044369626313583722">Brave ওয়ালেট বোতাম দেখান</translation>
 <translation id="7568430944629653319">NFT আবিষ্কার সক্রিয় করুন</translation>
 <translation id="970496996377628529">তৃতীয় পক্ষের APIগুলো ব্যবহার করে স্বয়ংক্রিয়ভাবে ওয়ালেটে NFTগুলো আপনার যোগ করুন।</translation>
+<translation id="4898839076551703154">ব্যক্তিগত উইন্ডোতে Brave ওয়ালেট চালু করুন।</translation>
+<translation id="1550684990179058322">সতর্কতা: ব্যক্তিগত উইন্ডো সেশনে কোনও ওয়ালেট ঠিকানা আবার ব্যবহার করা হলে তা কোনও সাইটকে কোনও ব্যক্তিগত উইন্ডো সেশনকে একটি ব্যক্তিগত নয় এমন উইন্ডো সেশনে লিঙ্ক করতে দেবে।</translation>
 <translation id="8239147115686034860">স্বয়ংক্রিয়ভাবে Brave ওয়ালেট লক করুন</translation>
 <translation id="414639769490080648">Brave ওয়ালেট স্বয়ং স্বয়ংক্রিয়ভাবে লক না হওয়া অবধি অপেক্ষারত মিনিটের সংখ্যা</translation>
 <translation id="856371974127598760">ওয়ালেট নেটওয়ার্ক</translation>
@@ -645,7 +650,7 @@
 <translation id="3752403403443723332">আপনার ওয়ালেট রিসেট করা হয়েছে।</translation>
 <translation id="594766067816395072">আপনার ওয়ালেটের লেনদেন রিসেট করা হয়েছে।</translation>
 <translation id="1615009913945115836">আপনার পিন করা NFTগুলো রিসেট করা হয়েছে।</translation>
-<translation id="1426410128494586442">হ্যাঁ</translation>
+<translation id="57798285717509216">আপনি সাইন করার আগে ট্রানজ্যাকশনের ফলাফল দেখুন। <ph name="BEGIN_LINK"/>&lt;u&gt;আরও জানুন&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Ethereum নেটওয়ার্ক</translation>
 <translation id="3504157706952484145">Filecoin নেটওয়ার্ক</translation>
 <translation id="1561541094377237745">Solana নেটওয়ার্ক</translation>

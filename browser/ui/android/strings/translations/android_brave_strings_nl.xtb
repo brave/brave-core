@@ -44,7 +44,6 @@
 <translation id="3259723213051400722">Probeer het opnieuw.</translation>
 <translation id="5298965408768377685">Deze maker is geregistreerd bij Brave en kan bijdragen ontvangen van gebruikers van Brave Beloningen-gebruikers. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Brave Rewards kunnen mogelijk niet werken als meldingen zijn uitgeschakeld.</translation>
-<translation id="4259212006412783790">INSCHAKELEN</translation>
 <translation id="6112331814131703370">Blokkeer "Naar app overschakelen"-meldingen</translation>
 <translation id="4744921452903670666">Geef ons uw mening!</translation>
 <translation id="2524310205387880526">Beoordeel Brave</translation>
@@ -98,7 +97,9 @@
 <translation id="5165042248369837294">Embedded tweets van Twitter toestaan</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
 <translation id="6302422639282249274">Beheer Brave Rewards</translation>
-<translation id="8877432762827303535">Online afrekenen</translation>
+<translation id="2709516037105925701">Automatisch aanvullen</translation>
+<translation id="8617525558807213034">Automatisch invullen in privétabbladen</translation>
+<translation id="8685431198160039193">Opgeslagen informatie kan automatisch worden ingevuld in privétabbladen</translation>
 <translation id="6583902294974160967">Ondersteuning</translation>
 <translation id="1799030480311994998">Functies</translation>
 <translation id="2005732746077850308">Brave Shields en privacy</translation>
@@ -132,7 +133,6 @@
 <translation id="5132969826889386652">Wijzigingen opgeslagen</translation>
 <translation id="4335929145384293789">Zet in het bovenstaande veld de aangepaste filters die u hebt gemaakt. Eén filter per regel is mogelijk. Zorg ervoor dat u de <ph name="ADBLOCK_FILTER_SYNTAX"/> gebruikt.</translation>
 <translation id="5023212862780303376">Adblock-filtersyntax</translation>
-<translation id="3872060236937011862"><ph name="ASSET_NAME"/>-prijs (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">Methode omzetten</translation>
@@ -539,7 +539,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="13296465911709339">Uw tekst is gekopieerd naar het klembord.</translation>
 <translation id="2735834606413553397">Openbaar adres is gekopieerd naar klembord.</translation>
 <translation id="2977461003134694205">Privacystatistieken</translation>
-<translation id="223536150967420869">Kopen</translation>
 <translation id="2956070106555335453">Samenvatting</translation>
 <translation id="7465614181960492526">Tokens verdienen en ze weer terugschenken</translation>
 <translation id="2731539192954672606">Verdien tokens door privacy-respecterende advertenties te bekijken en steun automatisch uw favoriete sites en makers van inhoud.</translation>
@@ -595,7 +594,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="6915830896450988084">Versturen met <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Sturen</translation>
 <translation id="538450413584738399">Wisselen</translation>
-<translation id="1366855498335432549">Storting</translation>
 <translation id="4556086616242530072">Direct in de browser.\nEigen beheer.\nEn multi-chain.</translation>
 <translation id="7909462264772842773">Neem de controle over uw crypto en NFT's. Brave Wallet ondersteunt Ethereum, EVM-chains, Solana, Filecoin en meer.</translation>
 <translation id="165255193061631296">Nieuwe wallet nodig?</translation>
@@ -613,34 +611,21 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2708402071160162126">WAARSCHUWING: deel je herstelzin nooit met anderen. Iedereen met deze zin kan voor altijd toegang krijgen tot jouw assets.</translation>
 <translation id="111912712268284159">Ik heb mijn herstelzin op een veilige plek opgeslagen.</translation>
 <translation id="6896758677409633944">Kopiëren</translation>
-<translation id="1544192797660353713">Wallet</translation>
-<translation id="375882617301124395">Back-up maken van je cryptowallet</translation>
-<translation id="8289942708804097960">Koop crypto met een creditcard of betaalkaart.</translation>
-<translation id="841880029259839903">Verzend of maak crypto over van het ene account naar het andere.</translation>
-<translation id="151939837774436299">Wissel tokens en assets.</translation>
-<translation id="5512897350309216422">Stort crypto op Brave Wallet.</translation>
 <translation id="1783600039044302171">Je crypto met een wachtwoord beveiligen</translation>
 <translation id="3726490322412361740">Wachtwoord invoeren</translation>
 <translation id="3038243139480464605">Wachtwoord verifiëren</translation>
 <translation id="3043677904160378840">Wachtwoorden moeten minimaal 8 tekens lang zijn</translation>
 <translation id="7396672979287122068">Geverifieerd wachtwoord komt niet overeen</translation>
 <translation id="7084181009966710506">Wallet wordt aangemaakt...</translation>
-<translation id="3188963375823360044">1 uur</translation>
-<translation id="8163269366661594721">1D</translation>
-<translation id="7640956400175663828">1W</translation>
-<translation id="9100647964747998533">1M</translation>
-<translation id="6366007539108097840">3M</translation>
-<translation id="6977728312178289892">1J</translation>
-<translation id="6895566650974550243">ALLE</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/>-account <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Account toevoegen</translation>
-<translation id="318334680413773318">Account toevoegen/importeren</translation>
 <translation id="3448492834076427715">Account bijwerken</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Ontgrendelen met vingerafdruk inschakelen?</translation>
 <translation id="5493402808936397665">Schakel biometrische gegevens in om snel zonder wachtwoord je wallet te ontgrendelen.</translation>
 <translation id="8030647312184163932">Ontgrendelen met vingerafdruk</translation>
 <translation id="4090490645603511157">Gebruik biometrische gegevens om snel zonder wachtwoord uw wallet te ontgrendelen.</translation>
+<translation id="1544192797660353713">Wallet</translation>
 <translation id="6901810042765869341">Voer je herstelwoorden in om het cryptoaccount van je Brave-wallet te herstellen.</translation>
 <translation id="9120654436199628567">Cryptoaccount herstellen</translation>
 <translation id="4811736040444856406">Herstelwoorden tonen</translation>
@@ -654,6 +639,16 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3157931365184549694">Herstel</translation>
 <translation id="5844138175312846408">Hebt u al een wallet?</translation>
 <translation id="2502258949541727762">Voordat we beginnen</translation>
+<translation id="8248460961680233459">Een wachtwoord maken</translation>
+<translation id="2789310860394340571">Je gebruikt dit wachtwoord om toegang tot je wallet te krijgen.</translation>
+<translation id="2136372518715274136">Nieuw wachtwoord invoeren</translation>
+<translation id="4450951602553063001">Wachtwoord opnieuw invoeren</translation>
+<translation id="8532036315398875940">Wachtwoord moet minimaal 8 tekens lang zijn.</translation>
+<translation id="5098216864434824711">Wachtwoord komt niet overeen.</translation>
+<translation id="4917385247580444890">Sterk</translation>
+<translation id="8297006494302853456">Zwak</translation>
+<translation id="574392208103952083">Gemiddeld</translation>
+<translation id="6697810017029555732">Ze komen overeen!</translation>
 <translation id="5981303441790732480">Uw bestaande wallet importeren</translation>
 <translation id="9111102763498581341">Ontsluit</translation>
 <translation id="6657585470893396449">Wachtwoord</translation>
@@ -662,42 +657,16 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1144810021918451336">Beschermt u niet tegen gevaarlijke websites, downloads en extensies.</translation>
 <translation id="5760476995887363522">Woorden komen niet overeen. Probeer het opnieuw.</translation>
 <translation id="2360588547830602174">Accountherstel mislukt; probeer het opnieuw.</translation>
-<translation id="5517732667776806421">Checksum-gegevens ontbreken</translation>
-<translation id="4006711930669471508">Ongeldige checksum-gegevens</translation>
 <translation id="1987317783729300807">Accounts</translation>
-<translation id="3535654229833214438">Transacties</translation>
-<translation id="2449682593754783720">1 uur</translation>
-<translation id="969133700726811190">1 dag</translation>
-<translation id="5882300031363619940">1 week</translation>
-<translation id="5698094150392720512">1 maand</translation>
-<translation id="5483736362376139517">1 jaar</translation>
-<translation id="6979737339423435258">Alles</translation>
 <translation id="6284218950354553099">Dagelijks automatisch gebruiksping verzenden naar Brave</translation>
 <translation id="2181060149810222381">Met deze privéping kan Brave het aantal actieve gebruikers inschatten.</translation>
-<translation id="3819257035322786455">Back-up maken</translation>
-<translation id="4608713693379664295">Primaire cryptoaccounts</translation>
-<translation id="4003821417160006384">Secundaire accounts</translation>
-<translation id="2471916999505901943">Deze accounts kunnen gebruikt worden met web 3 DApps en kunnen worden weergegeven in je portfolio. Houd er echter rekening mee dat secondaire accounts niet kunnen worden hersteld via de herstelzin vanuit de back-up van je primaire account.</translation>
 <translation id="6725413948756358325">Accountnaam</translation>
 <translation id="6062431965141524986">Je kunt een tweede account aanmaken door je privésleutel te importeren.</translation>
 <translation id="3952797765659730604">Typ, plak of importeer je stringbestand met privésleutel of JSON-bestand.</translation>
 <translation id="569068482611873351">Importeren...</translation>
-<translation id="1940465339426637378">Activa</translation>
 <translation id="4522570452068850558">Details</translation>
-<translation id="3995184924764722477">Accountgegevens</translation>
-<translation id="8967036623785635603">Zichtbare assets bewerken</translation>
-<translation id="8475984867371585028">Zichtbare NFT's bewerken</translation>
-<translation id="5050890334032852465">Sla je account-opvolglijst op.</translation>
-<translation id="7755766175599167100">Tokens zoeken</translation>
 <translation id="3784455785234192852">Vergrendelen</translation>
 <translation id="4412698727486357573">Helpcentrum</translation>
-<translation id="8796429300536029044">NFT-details</translation>
-<translation id="3866249974567520381">Beschrijving</translation>
-<translation id="4378475168089649292">Blockchain</translation>
-<translation id="794436451374055797">Tokenstandaard</translation>
-<translation id="9033453977881595182">Token-ID</translation>
-<translation id="4987916116550559556">Mintadres</translation>
-<translation id="7592795625234816917">Afbeelding niet beschikbaar</translation>
 <translation id="8239147115686034860">Brave-wallet automatisch vergrendelen</translation>
 <translation id="414639769490080648">Het aantal minuten dat je moet wachten voordat de Brave-wallet automatisch wordt vergrendeld</translation>
 <translation id="2326850911705720398">Walletgegevens resetten en wissen</translation>
@@ -714,19 +683,15 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="4122515759479497554">Zoeken naar video's</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">Upgrade naar een VPN om je verbinding te beschermen en invasieve trackers overal te blokkeren.</translation>
-<translation id="3435896845095436175">Inschakelen</translation>
 <translation id="8814357473522731680">Mogelijk gemaakt door</translation>
-<translation id="5596139545583924414">Advertenties en trackers op alle apps blokkeren</translation>
-<translation id="8272917646984397798">Beveiligt alle verbindingen</translation>
-<translation id="1751947227857853925">Snel en ongelimiteerd tot 100 Mbps</translation>
-<translation id="1400240082805528049">24/7 ondersteuning</translation>
 <translation id="5892534145504632332">Bescherm elke app en uw hele apparaat</translation>
 <translation id="7195416926059527505">Veiliger voor thuis of openbare wifi</translation>
 <translation id="1354700000739359839">Razendsnel, tot 100 Mbps</translation>
 <translation id="3510283489391432976">Kies je geo-locatie of land</translation>
 <translation id="7695158478627528928">Brave legt uw activiteit nooit vast</translation>
 <translation id="4575683170451975058">Bescherm 5 apparaten met 1 abonnement</translation>
-<translation id="276866628038850725">Alle abonnementen bieden een 7-daagse proefperiode!</translation>
+<translation id="4882693590083943563">Alle abonnementen zijn inclusief een <ph name="TRIAL_DAYS"/></translation>
+<translation id="487741927046441232">gratis proefperiode van 7 dagen!</translation>
 <translation id="1532536259167115948">Maandabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Jaarabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Wordt maandelijks verlengd</translation>
@@ -736,7 +701,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">Probeer 7 dagen gratis uit. Na 7 dagen wordt de abonnementsprijs in rekening gebracht. Alle abonnementen worden automatisch verlengd, maar kunnen voor verlenging worden geannuleerd.</translation>
 <translation id="6053992191006521518">Probeer GRATIS uit</translation>
-<translation id="3990956504562716932">Probeer 7 dagen gratis</translation>
+<translation id="5903391101107992067">Probeer 7 dagen gratis</translation>
 <translation id="721747358270435486">VPN installeren</translation>
 <translation id="836074276610740314">VPN-profiel installeren</translation>
 <translation id="8021842065465097929">Brave installeert nu een VPN-profiel.</translation>
@@ -797,12 +762,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1924965034964265193">Aangepaste nonce-waarde invoeren</translation>
 <translation id="5317780077021120954">Opslaan</translation>
 <translation id="4979796155378508955">Transactie wordt mogelijk niet aan het netwerk doorgegeven indien aangepaste nonce-waarde niet-sequentieel is of andere fouten bevat.</translation>
-<translation id="6122742277607781713">Portfolio</translation>
-<translation id="1736419249208073774">Verkennen</translation>
-<translation id="4576965889365503638">INFORMATIE</translation>
-<translation id="152455748535966757">Rang</translation>
-<translation id="4958716607782044952">24-uur volume</translation>
-<translation id="128834189395075789">Beurskapitalisatie</translation>
 <translation id="750843150060816463">Gasprijs (Gwei)</translation>
 <translation id="1426320910664514906">Gaslimiet</translation>
 <translation id="6389441740143786465">Sharing Hub uitschakelen</translation>
@@ -812,10 +771,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="8084782383392198011">Veld voor accountnaam kan niet leeg zijn.</translation>
 <translation id="5045550434625856497">Onjuist wachtwoord</translation>
 <translation id="1367951781824006909">Een bestand selecteren</translation>
-<translation id="5932938770824268122">Prive sleutel</translation>
-<translation id="2472882733835903303">Privésleutel weergeven</translation>
-<translation id="4391056902675005799">Privésleutel verbergen</translation>
-<translation id="7518007103754668253">Waarschuwing: deel deze sleutel nooit met anderen. Iedereen met je privésleutel kan assets van uw account stelen.</translation>
 <translation id="1133619932669546254"><ph name="TOKEN"/> activeren</translation>
 <translation id="2199215899212542417">FUNCTIETYPE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Geen gegevens</translation>
@@ -832,7 +787,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2331676293859649642">Bevestigd</translation>
 <translation id="8214232307424031138">Signed</translation>
 <translation id="1165039591588034296">Fout</translation>
-<translation id="8364362220156372884">Vergoeding: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Gebruik jij de snelste webbrowser?</translation>
 <translation id="2065971949051836200">3x sneller internet is al beschikbaar op je telefoon. Gebruik Brave om te browsen op internet.</translation>
 <translation id="2888278614497184977">Brave = 3x sneller browsen op internet</translation>
@@ -856,21 +810,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1254969878422524947">Fooilimiet per gaseenheid (Gwei)</translation>
 <translation id="7373308452149471621">Prijslimiet per gaseenheid (Gwei)</translation>
 <translation id="5891811606602061966">Fout bij het importeren van het account. Probeer het opnieuw.</translation>
-<translation id="5061574358754621254">Prijsgegevens beschikbaar gesteld door CoinGecko</translation>
-<translation id="8574289650879708853">Aangepaste asset toevoegen</translation>
-<translation id="1255896809210433555">NFT toevoegen</translation>
-<translation id="7791543448312431591">Toevoegen</translation>
-<translation id="6600400596821238377">Tokennaam</translation>
-<translation id="3797613444743816037">Mintadres</translation>
-<translation id="4092152169181928870">Tokensymbool</translation>
 <translation id="4351811224047421378">Zichtbare decimalen</translation>
-<translation id="547122651977318828">Token-ID (alleen voor ERC721)</translation>
-<translation id="8614026298974065517">Aangepaste asset verwijderen</translation>
-<translation id="4378941981362528553">Wilt u de token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) verwijderen?</translation>
-<translation id="4250680216510889253">Nee</translation>
-<translation id="8971278306757462297">Het ontvangende adres is je eigen adres</translation>
-<translation id="749944179568745958">Geen geldig ETH-adres</translation>
-<translation id="3506416339268164412">Het ontvangende adres is een contractadres van een token</translation>
 <translation id="3494964159182650590">Overzicht van de beloningen</translation>
 <translation id="590733288489975971">Beloningen uit advertenties</translation>
 <translation id="1886682615222609631">Inkomsten tot nu toe</translation>
@@ -902,6 +842,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4693057234255364395">Blokkeer Explorer-URL</translation>
 <translation id="7059127752542505809">Voer URL in</translation>
 <translation id="2156993118928861787">Ongeldig adres</translation>
+<translation id="7791543448312431591">Voeg toe</translation>
 <translation id="6889920539620318793">Instellen als actief</translation>
 <translation id="2653659639078652383">Verzenden</translation>
 <translation id="4945690646623486292">Netwerk selecteren</translation>
@@ -983,21 +924,14 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6577166808959668729">Ondersteunt SLP-compatibele assets op de blockchain van Solana</translation>
 <translation id="4541295941776129088">FIL-asset opslaan</translation>
 <translation id="6575120282593094155">U hebt nog geen <ph name="ACCOUNT_TYPE"/>-account. Wilt u er nu een aanmaken?</translation>
+<translation id="4250680216510889253">Nee</translation>
 <translation id="1599766910146472906">Uitgesloten apps</translation>
 <translation id="8463269357637177759">Toegestane reguliere apps</translation>
 <translation id="4554726425645556940">Toegestane systeem-apps</translation>
 <translation id="9023148942866814328">Systeem-apps weergeven</translation>
 <translation id="5472400694702418949">Voeg apps toe die uitgesloten moeten worden van VPN-verkeer.</translation>
 <translation id="7002577172732106572">Split-tunneling</translation>
-<translation id="2832270987629018596">Geen geldig SOL-adres</translation>
-<translation id="6423985584914773314">Geen geldig FIL-adres</translation>
 <translation id="8181161042860463420">Het bijbehorende tokenaccount bestaat nog niet. Er zal een klein bedrag aan SOL worden besteed om het aan te maken en er tegoed op te zetten. <ph name="CLICK_START"/>Meer informatie<ph name="CLICK_END"/></translation>
-<translation id="1304515257839771197">De app <ph name="APP_NAME"/> openen?</translation>
-<translation id="7653028065515320848"><ph name="CLICK_START"/>Meer informatie over het gebruik van Rainbow Bridge<ph name="CLICK_END"/></translation>
-<translation id="8219806187375413057"><ph name="CLICK_START"/>Leer risico's te beperken met Rainbow Bridge<ph name="CLICK_END"/></translation>
-<translation id="1065082006518490444"><ph name="APP_NAME"/> is een onafhankelijke service die u helpt activa over verschillende netwerken te migreren via bruggen en uw crypto op andere netwerken en DApp-ecosystemen te gebruiken. Er zijn risico's verbonden aan het overbruggen van activa naar andere netwerken.</translation>
-<translation id="8423380132356660250">Open de <ph name="APP_NAME"/>-app</translation>
-<translation id="4450893287417543264">Laat niet weer zien</translation>
 <translation id="168154537623654021">VPN-profiel bijwerken ...</translation>
 <translation id="7457027586454688423">Voer het wachtwoord van uw Brave-wallet in</translation>
 <translation id="4784306439879850873">Houd er rekening mee dat Brave niet kan controleren wat er gebeurt als u tekent. Een ondertekening kan bijna elke bewerking in uw account of namens uw account autoriseren, waaronder (maar niet beperkt tot) het geven van volledige controle over uw account en cryptoassets aan de website die het verzoek doet. Teken alleen als u deze actie wilt uitvoeren en de aanvragende website vertrouwt.</translation>
@@ -1076,7 +1010,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1313065465616456728">Verleend om</translation>
 <translation id="7902225556763260253">Vervaltijd</translation>
 <translation id="1908159733454294871">Beveiligingsrisico gedetecteerd</translation>
-<translation id="4220693114674044366">Token-adres</translation>
 <translation id="5658257029899993935">Aankoop koppelen aan uw Brave-account</translation>
 <translation id="1187061015547219282">Koppel uw Play Store-aankoop aan uw Brave-account om Brave VPN op andere apparaten te gebruiken.</translation>
 <translation id="6662142137695589205">Koppel uw VPN-abonnement</translation>
@@ -1089,7 +1022,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6067959437127691361">Brave Rewards helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
 <translation id="3264975266761862670">Klaar om te beginnen met verdienen?</translation>
 <translation id="265337947574975838">Koppel uw bestaande account of maak een nieuwe aan bij een van onze partners.</translation>
-<translation id="1772961321862399863">Om BAT te verdienen, moeten gebruikers een beheerdersaccount koppelen aan Brave Rewards. Er zijn geen beheerdersaccounts beschikbaar in uw regio, dus is verdienen niet mogelijk. Door Brave Rewards in te schakelen worden ontwikkelaars automatisch gesteund.</translation>
 <translation id="654447476965480878">Meer informatie over BAT verdienen</translation>
 <translation id="6278643716658443228">Instellingen voor beloningen</translation>
 <translation id="6516984207843289176">Koppel rekening</translation>
@@ -1110,33 +1042,23 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7748944510530490017">Primaire netwerken</translation>
 <translation id="2781668117338732220">Secundaire netwerken</translation>
 <translation id="282560918037172384">Testnetwerken</translation>
-<translation id="3586775666459823714">NFTs</translation>
-<translation id="8849001918648564819">Verborgen</translation>
 <translation id="707569835145765061">Actie vereist: koppel een beheerdersaccount of uw vBAT gaat verloren</translation>
 <translation id="1776742005329298234">Op <ph name="DUE_DATE"/> beëindigen we de ondersteuning voor bestaand virtueel BAT-saldo. Koppel vóór deze datum een beheerdersaccount, zodat we uw verdiende saldo kunnen overschrijven naar uw beheerdersaccount. Als u dit niet doet, gaat uw saldo verloren.</translation>
 <translation id="5089752671190341407">Er is nog steeds tijd om een bijdrage in vBAT te leveren aan uw favoriete ontwikkelaars</translation>
 <translation id="171158953146804144">Op <ph name="DUE_DATE"/> beëindigen we de ondersteuning voor bestaand virtueel BAT-saldo. Er zijn helaas geen beschikbare beheerders in uw regio (<ph name="REGION"/>) om uw verdiensten op te nemen. U kunt tot die tijd blijven bijdragen aan uw favoriete ontwikkelaars.</translation>
 <translation id="8949422576126100041">Pagina bekijken met Speedreader?</translation>
+<translation id="3435896845095436175">Inschakelen</translation>
 <translation id="5296840868251496327">Speedreader inschakelen</translation>
 <translation id="591648995518106347">Laadt automatisch artikelen in de lezermodus</translation>
 <translation id="1295796122927221823">In leesmodus weergeven</translation>
-<translation id="5062934803872044756"><ph name="SYMBOL"/> op <ph name="NETWORK"/></translation>
-<translation id="9085765419770918643">Hier zijn nog geen NFT's.</translation>
-<translation id="8445532667841598737">Bent u er klaar voor om NFT's te gaan toevoegen? Klik dan op de onderstaande knop om ze te importeren.</translation>
-<translation id="5925465310724910998">Wilt u dat uw NFT's automatisch worden weergegeven?</translation>
-<translation id="2827460859891872324">Brave Wallet kan een service van derden gebruiken om uw NFT's automatisch weer te geven. Brave zal uw walletadressen met <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> delen om deze service te bieden. <ph name="BEGIN_LINK_2"/>Meer informatie.<ph name="END_LINK_2"/></translation>
 <translation id="7568430944629653319">NFT-ontdekking inschakelen</translation>
 <translation id="622372328961630111">Voeg automatisch NFT's die u bezit toe aan de wallet met behulp van API's van derden. <ph name="BEGIN_LINK_1"/>Meer informatie.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Account van adresopzoektabel:</translation>
 <translation id="7659483790930268440">Index van adresopzoektabel:</translation>
-<translation id="7853202427316060426">Activiteit</translation>
 <translation id="4932733599132424254">Datum</translation>
 <translation id="346505172740911461">Marktprijs</translation>
-<translation id="4709355193533327244">Nog geen transacties om te bekijken.</translation>
-<translation id="4931644613135313937">Zodra u een transactie doet, kunt u deze hier bekijken.</translation>
 <translation id="5494920125229734069">Alles selecteren</translation>
 <translation id="5972844218283131174">Alles selecties ongedaan maken</translation>
-<translation id="6322030314101903925">Geen beschikbare assets</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Inloggen bij Brave Wallet</translation>
 <translation id="3696514931437952995">U logt in bij <ph name="ORIGIN"/>. Brave-wallet deelt uw wallet-adres met <ph name="ORIGIN"/>.</translation>
@@ -1227,4 +1149,33 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6393423486818299209">Uw huidige serviceprovider of Wikimedia DNS gebruiken</translation>
 <translation id="3401384982562827787">Uw huidige serviceprovider of Cloudflare gebruiken</translation>
 <translation id="8812367543786936496">Als uw huidige serviceprovider onbeveiligd is, gebruikt Brave een beveiligde alternatieve DNS-provider</translation>
+<translation id="5680678411439841197">stad</translation>
+<translation id="8185518433273977704">dorp</translation>
+<translation id="4528386452965343421">prefectuur</translation>
+<translation id="1589122976691792535">regio</translation>
+<translation id="2221292964468054123">staat</translation>
+<translation id="3801482889636327368">organisatie</translation>
+<translation id="1425162721525518064">bedrijf</translation>
+<translation id="7568794877555549044">land</translation>
+<translation id="5982110855572850497">label</translation>
+<translation id="6848689413353508904">container</translation>
+<translation id="1496514951988037011">gebruikersnaam</translation>
+<translation id="6155129418108337061">login</translation>
+<translation id="4038523199754403233">id</translation>
+<translation id="901834265349196618">e-mail</translation>
+<translation id="3488199663160411179">naam</translation>
+<translation id="793994607260936590">eerst</translation>
+<translation id="1782612111936779655">achternaam</translation>
+<translation id="7628132737455466188">volledige naam</translation>
+<translation id="8621068256433641644">telefoon</translation>
+<translation id="5993210100509955931">mobiel</translation>
+<translation id="598301471034819706">adres</translation>
+<translation id="5557821203571216370">appartement</translation>
+<translation id="8051552210542030943">postcode</translation>
+<translation id="5233247193491045452">postcode</translation>
+<translation id="3300502432153878901">postcode</translation>
+<translation id="4130750466177569591">Ik ga akkoord</translation>
+<translation id="3251885322612056119">Bijgewerkte Servicevoorwaarden</translation>
+<translation id="4049035689681585146">We hebben de Servicevoorwaarden voor Brave Rewards bijgewerkt. We hebben deze updates doorgevoerd om onze voorwaarden te verduidelijken en om ervoor te zorgen dat ze nieuwe functies dekken. Als u Brave Rewards blijft gebruiken, gaat u akkoord met de bijgewerkte Servicevoorwaarden. Als u niet akkoord gaat, kunt u Brave Rewards <ph name="RESET_START"/>opnieuw instellen<ph name="RESET_END"/>, waardoor de functie wordt uitgeschakeld.</translation>
+<translation id="2165953574528546737">Raadpleeg de <ph name="TOS_START"/>Servicevoorwaarden van Brave Rewards<ph name="TOS_END"/></translation>
 </translationbundle>

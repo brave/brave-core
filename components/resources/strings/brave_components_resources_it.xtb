@@ -165,10 +165,15 @@
 <translation id="4720556299488643018">Annulla l’iscrizione</translation>
 <translation id="1209739344687072997">Segnala un sito non funzionante</translation>
 <translation id="8510478288840333677">Segnala agli sviluppatori di Brave che questo sito non funziona bene con gli Scudi:</translation>
-<translation id="6387106423577201267">N.B.: il report inviato ai server di Brave includerà l’indirizzo del sito, il numero di versione di Brave, le impostazioni delle Protezioni, lo stato della VPN e le impostazioni della lingua.</translation>
+<translation id="3110968385867124099">Questa pagina non può essere segnalata perché non comunica tramite HTTP/HTTPS.</translation>
+<translation id="7907023135990310743">Questa pagina è una pagina web locale e non può essere segnalata.</translation>
+<translation id="3645455863322075098">Questa pagina è una pagina di errore e non può essere segnalata.</translation>
+<translation id="105644511106871142">Grazie per aver contribuito a rendere Brave migliore per tutti. Questa segnalazione invierà solo le informazioni necessarie per riparare il sito.</translation>
 <translation id="6476216365964140603">Dettagli aggiuntivi (facoltativo)</translation>
 <translation id="6145852496180774737">Contattami via: (facoltativo)</translation>
 <translation id="7616645803364270729">E-mail, Twitter ecc.</translation>
+<translation id="721949491455392748">Allega uno screenshot della pagina attuale</translation>
+<translation id="8459191579769999214">Visualizza screenshot</translation>
 <translation id="5299848999918506028">Grazie!</translation>
 <translation id="76550953340008122">Grazie, hai fatto notare agli sviluppatori di Brave che qualcosa non va su questo sito. Faremo del nostro meglio per rimediare!</translation>
 <translation id="4046860372562593546">Gestisci gli Annunci Brave</translation>
@@ -427,7 +432,7 @@
 <translation id="5669281110673664811">Cancella elenco esclusi</translation>
 <translation id="1797334173232638045">I siti bloccati sono stati spostati su</translation>
 <translation id="3074127054582480056">Attenzione</translation>
-<translation id="1666001796278936721">Con l’azzeramento verrà eliminato il tuo attuale profilo Ricompense Brave e ricomincerai con un profilo Ricompense Brave completamente nuovo. Prima di procedere, <ph name="LINK_BEGIN"/>scopri di più<ph name="LINK_END"/> sull’azzeramento, per non avere alcun dubbio.</translation>
+<translation id="4915997950539925115">Se procedi alla reimpostazione, il tuo profilo Ricompense Brave attuale verrà eliminato e le Ricompense non saranno più attive. Riattivandole più avanti, verrà creato un nuovo profilo. Per maggiori dettagli, leggi <ph name="LINK_BEGIN"/>l’articolo dedicato alla reimpostazione<ph name="LINK_END"/>.</translation>
 <translation id="4806029412510565611">Sono consapevole che il mio attuale profilo Ricompense Brave e i dati di Ricompense Brave verranno eliminati dal mio dispositivo e ho letto l’<ph name="LINK_BEGIN"/>articolo di supporto sull’azzeramento<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Riepilogo ricompense</translation>
 <translation id="2913994227901456490">Vedi tutti e [[numItems]] gli elementi</translation>
@@ -608,10 +613,8 @@
 <translation id="1848737374354350807">Bilancio:</translation>
 <translation id="6516984207843289176">Connetti conto</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Vuoi iniziare a guadagnare?<ph name="BOLD_END"/> Ti basta collegare un conto o aprirlo con uno dei nostri partner.</translation>
-<translation id="1772961321862399863">Per guadagnare BAT, gli utenti devono connettere un conto di custodia a Ricompense Brave. Purtroppo non ci sono gestori disponibili nella tua area geografica e pertanto nemmeno l’opzione di guadagno sarà disponibile. Per il momento l’attivazione di Ricompense Brave supporterà gli autori automaticamente.</translation>
 <translation id="902298128239575729">Invia contributi con Ricompense Brave</translation>
 <translation id="6276721355724491595">Una volta collegato un account custodial, potrai inviare ai tuoi autori preferiti dei contributi a richiesta, attingendoli dal saldo delle tue Ricompense Brave.</translation>
-<translation id="1149481926056509086">Per inviare dei contributi su richiesta, gli utenti devono collegare a Ricompense Brave un conto di custodia. Purtroppo non ci sono gestori disponibili nella tua area geografica, e non è quindi possibile procedere all’invio. Nel frattempo puoi comunque sostenere gli autori in modo automatico.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Questo mese hai visitato # autore supportato da Ricompense Brave}
       other {Questo mese hai visitato # autori supportati da Ricompense Brave}
@@ -646,9 +649,7 @@
 <translation id="1609556006143307897">Ci stai aiutando a sostenere chi crea contenuti</translation>
 <translation id="654447476965480878">Scopri come guadagnare i BAT</translation>
 <translation id="4105212447337987768">Dal giorno <ph name="DATE"/> non supporteremo più i saldi già pre-esistenti in BAT virtuali. Collega entro questa data un conto di custodia, per permetterci di trasferire gli importi guadagnati su tale conto, o il tuo saldo andrà perso.</translation>
-<translation id="5684206602316433615">Dal giorno <ph name="DATE"/> non supporteremo più i saldi pre-esistenti in BAT virtuali. Purtroppo nella tua area geografica (<ph name="REGION"/>) non sono disponibili servizi di custodia in grado di permetterti il prelievo degli importi guadagnati. Fino alla data indicata potrai continuare a sostenere economicamente i tuoi autori preferiti.</translation>
 <translation id="707569835145765061">Azione necessaria: collega un conto di custodia, o i tuoi vBAT andranno persi</translation>
-<translation id="5089752671190341407">Hai ancora tempo per fornire i vBAT ai tuoi autori preferiti.</translation>
 <translation id="1258144146756156541">Dimostra che sei un essere umano</translation>
 <translation id="1555514580945108302">Mmh... Quasi. Prova di Nuovo.</translation>
 <translation id="8078414184292711961">Trascina l’icona del BAT spostandola verso il punto di destinazione (<ph name="HINT"/>).</translation>
@@ -693,6 +694,10 @@
 <translation id="3479552764303398839">Non adesso</translation>
 <translation id="4185473179105062442">Ricevi BAT direttamente a un indirizzo di criptovaluta self-custody</translation>
 <translation id="5802986777701714573">Abbiamo aggiunto una nuova modalità con cui puoi ricevere le ricompense BAT mensili. Collega un account da uno dei nostri partner o usa la nuova opzione self-custody per iniziare subito a guadagnare.</translation>
+<translation id="3251885322612056119">Termini di servizio aggiornati</translation>
+<translation id="7454675823870922788">Abbiamo aggiornato i Termini di servizio per le Ricompense di Brave. Con questi aggiornamenti abbiamo chiarito i nostri termini e le nuove funzioni. Continuando a utilizzare le Ricompense Brave, accetti i Termini di servizio aggiornati. Se non vuoi accettarli, puoi <ph name="LINK_BEGIN"/>reimpostare<ph name="LINK_END"/> le Ricompense Brave, disattivando così la funzione.</translation>
+<translation id="5192526308598085294">Visualizza i <ph name="LINK_BEGIN"/>Termini di servizio delle Ricompense Brave<ph name="LINK_END"/></translation>
+<translation id="4130750466177569591">Accetto</translation>
 <translation id="86107454835395919">Imposta un contributo mensile</translation>
 <translation id="6621880242105464352">Sulla cifra inviata Brave trattiene, a titolo di commissione, la seguente percentuale: <ph name="FEE_PCT"/>.</translation>
 <translation id="1420756770787071946">Supporta questo creatore</translation>
@@ -1135,6 +1140,7 @@
 <translation id="2021522108838444624">L’importo deve essere superiore a 0</translation>
 <translation id="8464365289405373974">Indirizzo di destinazione richiesto</translation>
 <translation id="4884792073752467460">Indirizzo del beneficiario non valido</translation>
+<translation id="6326239384961270135">Parte visibile mancante</translation>
 <translation id="8585995109882455949">Come trovo l’indirizzo corretto?</translation>
 <translation id="8395402412470376435">Brave verifica e impedisce agli utenti di inviare fondi all’indirizzo sbagliato per un uso scorretto delle maiuscole. Si tratta di un processo “checksum” per verificare che si tratti di un indirizzo Ethereum valido.</translation>
 <translation id="4583433813614292221">1. Vai su</translation>
@@ -1483,6 +1489,7 @@
 <translation id="1893207255459018302">Nessuna cronologia delle transazioni</translation>
 <translation id="5356382676355994980">Le transazioni effettuate con il tuo Portafoglio Brave appariranno qui.</translation>
 <translation id="3033638954295674319">Si è verificato un errore e non siamo riusciti a recuperare i dettagli dell’NFT. Riprova in seguito.</translation>
+<translation id="5964615240954462738">Modifica token</translation>
 <translation id="2612436523196658045">L’indirizzo ETH sarà tradotto in indirizzo Filecoin.</translation>
 <translation id="3282354360699748542">L’indirizzo <ph name="FILECOIN_ADDRESS"/> nello spazio dei nomi Filecoin sarà utilizzato per la transazione.</translation>
 <translation id="2540568096903252632">Inserisci una password per continuare</translation>
@@ -1507,7 +1514,6 @@
 <translation id="8007404171238546456">Minimo ricevuto dopo lo slippage</translation>
 <translation id="767199001998615704">Commissione di rete</translation>
 <translation id="7057870207229052478">Commissione Brave</translation>
-<translation id="81116374028657878">Commissione del protocollo</translation>
 <translation id="3624518972158401291">Gratis</translation>
 <translation id="5038255447967558645">Fornitore di liquidità</translation>
 <translation id="8450638959928932199">Scambia e invia</translation>
@@ -1705,7 +1711,7 @@
 <translation id="7948579849190819732">Scheda attuale</translation>
 <translation id="7056969230130642253">È tutto aggiornato</translation>
 <translation id="7292242212818928219">Nuovi contenuti disponibili. Ricaricare?</translation>
-<translation id="6537880577641744343">Comandi</translation>
+<translation id="4144468798716165316">Comandi rapidi</translation>
 <translation id="7481312909269577407">Avanti</translation>
 <translation id="302781076327338683">Ricarica bypassando la cache</translation>
 <translation id="7211681214230730336">Ricarica svuotando la cache</translation>
@@ -1742,6 +1748,13 @@
 <translation id="855081842937141170">Blocca la scheda</translation>
 <translation id="2805351816064694332">Chiudi le schede non fissate</translation>
 <translation id="8657641252283410630">Raggruppa scheda</translation>
+<translation id="8908724110993882115">Attiva/disattiva gruppi espansi</translation>
+<translation id="8813600493701436462">Rimuovi la scheda dal gruppo attuale</translation>
+<translation id="3170171381379098900">Separa gruppo di schede attuale</translation>
+<translation id="8589082712469819302">Separa tutte le schede</translation>
+<translation id="6804504170598429513">Chiudi le schede non raggruppate</translation>
+<translation id="5960187586089070931">Chiudi le schede non del gruppo attuale</translation>
+<translation id="7043112527867086263">Raggruppa le schede non raggruppate</translation>
 <translation id="8290333944535778783">Scorri la scheda fino in cima</translation>
 <translation id="6141382045715907645">Scorri la scheda fino in fondo</translation>
 <translation id="923853139812360539">Generatore di codici QR</translation>
@@ -1832,7 +1845,6 @@
 <translation id="188822869499214197">Mostra la bolla della playlist</translation>
 <translation id="3202536111478033084">Raggruppa le schede secondo l’origine attuale</translation>
 <translation id="6002210667729577411">Sposta il gruppo in una nuova finestra</translation>
-<translation id="253980346046488815">Chiudi le schede duplicate</translation>
 <translation id="9210143726807220086">Attiva/disattiva le schede verticali espanse</translation>
 <translation id="684629111155788563">Aggiungi tutte le schede al nuovo gruppo</translation>
 <translation id="9106013521852824634">Invia scheda a me</translation>
@@ -2070,6 +2082,7 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="8814357473522731680">Con tecnologia</translation>
 <translation id="3960619311638643872">VPN di Brave</translation>
 <translation id="5747552184818312860">Scadenza</translation>
+<translation id="8421945428836418371">Riconnetti automaticamente</translation>
 <translation id="434523916398030617">Contatta l'assistenza tecnica</translation>
 <translation id="1116694919640316211">Informazioni</translation>
 <translation id="8670386189340362926">Blocca tracker e annunci in tutte le app</translation>

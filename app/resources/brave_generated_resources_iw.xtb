@@ -206,6 +206,7 @@
 <translation id="2289567621059034186">כרטיסייה חדשה מטה</translation>
 <translation id="3228962656492373217">סגור כרטיסיות מטה</translation>
 <translation id="8030501904366631501">הבא את כל הכרטיסיות לחלון זה</translation>
+<translation id="253980346046488815">סגור כרטיסיות כפולות</translation>
 <translation id="2336228925368920074">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="2523967823495420116">השתמשו בכרטיסיות אנכיות</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{השתקת הכרטיסייה}two{השתקת הכרטיסיות}many{השתקת הכרטיסיות}other{השתקת הכרטיסיות}}</translation>
@@ -213,6 +214,7 @@
 <translation id="4405580203042711503">כרטיסה חדשה מטה</translation>
 <translation id="5611474372949142946">סגור כרטיסיות מטה</translation>
 <translation id="573844928911967687">הבא את כל הכרטיסיות לחלון זה</translation>
+<translation id="2703180365855369896">סגור כרטיסיות כפולות</translation>
 <translation id="3704707436873245822">העתקת טקסט מתוך תמונה</translation>
 <translation id="5268098808165185458">מעתיק טקסט מתוך תמונה...</translation>
 <translation id="4046485130884276245">הועתק טקסט מתוך תמונה</translation>
@@ -220,7 +222,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">השתמש בפרוטוקול WireGuard ב-Brave VPN</translation>
 <translation id="8519170191215826548">לא ניתן לשנות הגדרה זו בזמן ש-Brave VPN מחובר</translation>
-<translation id="5620961847363372221">יש צורך לאתחל את הסייר</translation>
 <translation id="4235920711083356755">הצג את לחצן VPN</translation>
 <translation id="4070612712151038707">מציג את לחצן VPN בסרגל הכלים</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -315,6 +316,9 @@
 <translation id="1727684853006449697">נגן Brave</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
+<translation id="1426410128494586442">כן</translation>
+<translation id="4250680216510889253">לא</translation>
+<translation id="2356070529366658676">שאל</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
 <translation id="8081858229109418493">שם ואייקון הפרופיל</translation>
 <translation id="6786747875388722282">תוספים</translation>
@@ -442,7 +446,6 @@
 <translation id="3540231253392253941">השתמש בשירותי Google לצורך שליחת הודעות פוש</translation>
 <translation id="933652931229970927">שלחו דוחות באופן אוטומטי</translation>
 <translation id="4891600875049212418">עברו ל-Off-The-Record בעת ביקור באתרים רגישים</translation>
-<translation id="2356070529366658676">שאל</translation>
 <translation id="4846154056248462491">ביציאה</translation>
 <translation id="2808630562319398131">אפס נתוני Brave Rewards...</translation>
 <translation id="6438096877646138757">אתרים שמנקים קובצי עוגיות כאשר הם נסגרים</translation>
@@ -626,6 +629,8 @@
 <translation id="3044369626313583722">הצג כפתור ארנק אמיץ</translation>
 <translation id="7568430944629653319">אפשר גילוי NFT</translation>
 <translation id="970496996377628529">הוסף אוטומטית NFTs שבבעלותך לארנק באמצעות ממשקי API של צד שלישי.</translation>
+<translation id="4898839076551703154">הפעל את ארנק Brave בחלונות פרטיים.</translation>
+<translation id="1550684990179058322">אזהרה: שימוש חוזר בכתובת ארנק בפעילות בחלון פרטי יכול לאפשר לאתר לקשר פעילות בחלון פרטי לפעילות בחלון שאינו פרטי.</translation>
 <translation id="8239147115686034860">נעילה אוטומטית של Brave Wallet</translation>
 <translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
 <translation id="856371974127598760">Wallet Networks</translation>
@@ -643,7 +648,7 @@
 <translation id="3752403403443723332">הארנק שלכם אופס.</translation>
 <translation id="594766067816395072">פרטי העסקאות בארנקכם אופסו.</translation>
 <translation id="1615009913945115836">ה-NFT המוצמדים שלך אופסו.</translation>
-<translation id="1426410128494586442">כן</translation>
+<translation id="57798285717509216">יש לעיין בתוצאות העסקאות לפני החתימה. <ph name="BEGIN_LINK"/>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">רשתות Ethereum</translation>
 <translation id="3504157706952484145">רשתות Filecoin</translation>
 <translation id="1561541094377237745">רשתות Solana</translation>
