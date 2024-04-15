@@ -192,6 +192,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       ((url.host_piece() == kWelcomeHost ||
         url.host_piece() == chrome::kChromeUIWelcomeURL) &&
        !profile->IsGuestSession()) ||
+      url.host_piece() == kBraveGettingStartedHost ||
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
