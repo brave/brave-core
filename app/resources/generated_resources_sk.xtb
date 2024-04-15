@@ -33,6 +33,7 @@
 <translation id="1022522674678746124">PowerPoint</translation>
 <translation id="1022669824195822609">Vaše zariadenie spravuje <ph name="DOMAIN"/>. Správcovia majú prístup k údajom vo všetkých profiloch tohto zariadenia.</translation>
 <translation id="1022719295563085177">Predvolené nastavenie siete</translation>
+<translation id="1024852227421769661">Používanie polohy. Povoľte aplikáciám, webom a službám pre ChromeOS a Android s povoleným prístupom k polohe používať polohu vášho zariadenia. Brave môže pravidelne zhromažďovať údaje o polohe a anonymne pomocou nich zlepšovať presnosť určovania polohy a služby podmienené polohou. <ph name="BEGIN_LINK1"/>Ďalšie informácie<ph name="END_LINK1"/></translation>
 <translation id="1026655690966755180">Pridať port</translation>
 <translation id="1026822031284433028">Načítať obrázok</translation>
 <translation id="1026959648338730078">Windows Hello alebo externý bezpečnostný kľúč</translation>
@@ -116,6 +117,7 @@
 <translation id="1082214733466244292">Váš správca niektoré funkcie tohto zariadenia zablokoval</translation>
 <translation id="8073477228424628709">Nástroj <ph name="THIRD_PARTY_TOOL_NAME"/> chce obnoviť vaše nastavenia prehliadača Brave na predvolené hodnoty. Týmto sa obnoví domovská stránka, stránka na novej karte a vyhľadávač, zakážu sa rozšírenia a odopnú všetky karty. Vymažú sa tiež ďalšie dočasné údaje a údaje vyrovnávacej pamäte, ako sú napríklad súbory cookie či údaje obsahu a stránok.</translation>
 <translation id="1082725763867769612">Offline súbory</translation>
+<translation id="1084026333130513768">Uložiť, zdieľať a preniesť</translation>
 <translation id="1084096383128641877">Odstránením tohto hesla nevymažete svoj účet v doméne <ph name="DOMAIN"/>. Ak chcete svoj účet chrániť pred ostatnými, odstráňte ho v doméne <ph name="DOMAIN_LINK"/> alebo zmeňte svoje heslo.</translation>
 <translation id="1084288067399862432">Odhalené heslo bolo úspešne zmenené.
 
@@ -296,7 +298,6 @@ Heslá si môžete kedykoľvek skontrolovať v službe <ph name="GOOGLE_PASSWOR
 <translation id="1217117837721346030">Stiahnuť podozrivý súbor</translation>
 <translation id="1217483152325416304">Vaše miestne údaje budú čoskoro odstránené</translation>
 <translation id="1217668622537098248">Po akcii sa vrátiť na kliknutie ľavým tlačidlom myši</translation>
-<translation id="121783623783282548">Heslá sa nezhodujú.</translation>
 <translation id="1218015446623563536">Odstránenie systému Linux</translation>
 <translation id="1218839827383191197"><ph name="BEGIN_PARAGRAPH1"/>Služba určovania polohy od Googlu používa na presnejšie odhadnutie polohy tohto zariadenia zdroje, ako sú Wi-Fi, mobilná sieť a senzory.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Nastavenie Poloha môžete deaktivovať vypnutím hlavného nastavenia Poloha v tomto zariadení. V nastaveniach polohy môžete tiež vypnúť určovanie polohy pomocou siete Wi‑Fi, mobilnej siete a senzorov.<ph name="END_PARAGRAPH2"/></translation>
@@ -321,6 +322,7 @@ Heslá si môžete kedykoľvek skontrolovať v službe <ph name="GOOGLE_PASSWOR
 <translation id="123578888592755962">Disk je plný</translation>
 <translation id="1235924639474699896">{COUNT,plural, =1{text}few{# texty}many{# texts}other{# textov}}</translation>
 <translation id="1236009322878349843">Úprava telefónu</translation>
+<translation id="1237251612871334180">Aktualizujte a ukladajte heslá</translation>
 <translation id="1237950098253310325">Ak chcete zmeniť poradie tlačidla <ph name="BUTTON_NAME"/>, stlačte kláves Ctrl a šípku nahor alebo nadol</translation>
 <translation id="1238293488628890871">Chcete prepnúť profil?</translation>
 <translation id="1239594683407221485">Preskúmajte obsah zariadenia v aplikácii Súbory.</translation>
@@ -450,7 +452,6 @@ Heslá si môžete kedykoľvek skontrolovať v službe <ph name="GOOGLE_PASSWOR
 <translation id="13392265090583506">A11y</translation>
 <translation id="1340527397989195812">Zálohovať médiá zo zariadenia pomocou aplikácie Súbory</translation>
 <translation id="1341701348342335220">Dobrá práca.</translation>
-<translation id="1341871421050612057">Synchronizácia s účtom <ph name="USERNAME"/> nie je povolená</translation>
 <translation id="873343310451048603">Ak chcete skontrolovať odhalené heslá, prejdite do Správcu hesiel Brave</translation>
 <translation id="1343865611738742294">Udeľte systému Linux povolenia aplikácie na prístup k zariadeniam USB. Linux si nezapamätá odstránené zariadenia USB.</translation>
 <translation id="1343920184519992513">Pokračovať, kde ste prestali, a otvoriť konkrétnu skupinu stránok</translation>
@@ -484,7 +485,6 @@ Heslá si môžete kedykoľvek skontrolovať v službe <ph name="GOOGLE_PASSWOR
 <translation id="1370384480654163477">Zobrazte si a upravte súbory z poslednej návštevy tohto webu:</translation>
 <translation id="1372841398847029212">Synchronizovať do účtu</translation>
 <translation id="1373176046406139583">Viditeľnosťou zariadenia ovládate, kto s vami môže zdieľať obsah, keď máte odomknutú obrazovku. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
-<translation id="2700649569705885025">Väčšinu funkcií bočného panela môžete otvoriť v Ponuke Brave</translation>
 <translation id="1374844444528092021">Certifikát vyžadovaný sieťou <ph name="NETWORK_NAME"/> nie je nainštalovaný alebo je neplatný. Nainštalujte nový certifikát a skúste sa pripojiť znova.</translation>
 <translation id="1375557162880614858">Chcete aktivovať vstavanú čítačku obrazovky ChromeVox pre Chrome OS Flex?</translation>
 <translation id="1375938286942050085">Nastavenie je dokončené. Pripravte svoje zariadenie na hranie.</translation>
@@ -517,14 +517,12 @@ Heslá si môžete kedykoľvek skontrolovať v službe <ph name="GOOGLE_PASSWOR
 <translation id="1395832189806039783">Zvýrazňovať položky pomocou označenia klávesnice</translation>
 <translation id="1396120028054416908">Späť do priečinka <ph name="FOLDER_TITLE"/></translation>
 <translation id="1396139853388185343">Pri nastavovaní tlačiarne sa vyskytla chyba</translation>
-<translation id="1396963298126346194">Zadané používateľské meno a heslo sa nezhodujú</translation>
 <translation id="1397500194120344683">Žiadne zariadenia spĺňajúce kritériá. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="6748713973802395004">Prihlásili ste sa do Chromu v týchto zariadeniach, takže ich môžete používať ako bezpečnostné kľúče.</translation>
 <translation id="1398853756734560583">Maximalizovať</translation>
 <translation id="139911022479327130">Odomknite telefón a potvrďte, že ste to vy</translation>
 <translation id="1399261165075500043">Zmluvné podmienky služby Google Play sa nedajú načítať</translation>
 <translation id="1401216725754314428">Ďalšie informácie o súvisiacich weboch na novej karte</translation>
-<translation id="1401308693935339022">Používanie polohy. Povoľte aplikáciám a službám s povoleným prístupom k polohe používať polohu tohto zariadenia. Brave môže pravidelne zhromažďovať údaje o polohe a anonymne pomocou nich zlepšovať presnosť a služby na základe polohy.</translation>
 <translation id="1402426911829176748">Pripája sa k zariadeniu</translation>
 <translation id="1403222014593521787">K proxy serveru sa nepodarilo pripojiť</translation>
 <translation id="1405779994569073824">Karta zlyhala.</translation>
@@ -582,6 +580,7 @@ Heslá si môžete kedykoľvek skontrolovať v službe <ph name="GOOGLE_PASSWOR
 <translation id="1444628761356461360">Toto nastavenie spravuje vlastník zariadenia <ph name="OWNER_EMAIL"/>.</translation>
 <translation id="144518587530125858">Súbor „<ph name="IMAGE_PATH"/>“ sa pre motív nepodarilo načítať.</translation>
 <translation id="1447531650545977377">Zapnúť synchronizáciu…</translation>
+<translation id="1447895950459090752">Plávajúca karta s prehľadom</translation>
 <translation id="1448264954024227422">Tento účet môžete používať s aplikáciami pre Android. Ak chcete pridať účet niekoho iného, pridajte do svojho zariadenia <ph name="DEVICE_TYPE"/> <ph name="LINK_BEGIN"/>novú osobu<ph name="LINK_END"/>.
 
 Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento účet. Povolenia pre aplikácie pre Android môžete ovládať v <ph name="APPS_LINK_BEGIN"/>Nastaveniach aplikácií<ph name="APPS_LINK_END"/>.</translation>
@@ -803,6 +802,7 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1602085790802918092">Spúšťa sa virtuálny počítač</translation>
 <translation id="8275260485701169654">Informácie o systéme Brave</translation>
 <translation id="1603411913360944381">Odstrániť zariadenie <ph name="DEVICE_NAME"/></translation>
+<translation id="1603879843804174953">Dlhé stlačenie</translation>
 <translation id="1604432177629086300">Tlač zlyhala. Skontrolujte tlačiareň a skúste to znova.</translation>
 <translation id="1604567162047669454">Rozpoznávať sémantiku vizuálneho rozloženia</translation>
 <translation id="1604774728851271529">Na inováciu systému Linux potrebujete pripojenie k sieti. Pripojte sa k internetu a skúste to znova.</translation>
@@ -896,7 +896,6 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1657937299377480641">Ak sa chcete znova prihlásiť a získať tak prístup k vzdelávacím zdrojom, požiadajte rodiča o udelenie povolenia</translation>
 <translation id="1658424621194652532">Táto stránka má prístup k vášmu mikrofónu.</translation>
 <translation id="1660763353352708040">Problém s nabíjačkou</translation>
-<translation id="1661156625580498328">Vynúťte šifrovanie AES (odporúča sa).</translation>
 <translation id="16620462294541761">Vaše heslo sa nepodarilo overiť. Skúste to znova.</translation>
 <translation id="166278006618318542">Algoritmus verejného kľúča subjektu</translation>
 <translation id="1662801900924515589">Aplikácia <ph name="APP"/> je nainštalovaná</translation>
@@ -971,6 +970,7 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1723824996674794290">&amp;Nové okno</translation>
 <translation id="1724801751621173132">Režim vstupu</translation>
 <translation id="1725562816265788801">Posúvanie kariet</translation>
+<translation id="1725585416709851618">Skúste aktivovať Disk Brave v Nastaveniach a vyberte Skúsiť znova. Prípadne vyberte Otvoriť v základnom editore a použite možnosti obmedzeného zobrazenia a úprav.</translation>
 <translation id="1726503915437308071">Kurzíva</translation>
 <translation id="1729533290416704613">Tiež určuje, ktorá stránka sa zobrazí pri vyhľadávaní pomocou všeobecného poľa.</translation>
 <translation id="1730666151302379551">Nepamätám si staré heslo</translation>
@@ -988,7 +988,6 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="174123615272205933">Vlastné</translation>
 <translation id="1741314857973421784">Ďalej</translation>
 <translation id="1743970419083351269">Zatvoriť panel so stiahnutými súbormi</translation>
-<translation id="1744060673522309905">Zariadenie sa nepodarilo pripojiť k doméne. Skontrolujte, či ste nepresiahli počet zariadení, ktoré môžete pridať.</translation>
 <translation id="1744108098763830590">stránka na pozadí</translation>
 <translation id="1745732479023874451">Spravovať kontakty</translation>
 <translation id="1748283190377208783">{0,plural, =1{unused plural form}few{Chcete otvoriť a upraviť # súbory v tejto webovej aplikácii?}many{Open and edit # files in this web app?}other{Chcete otvoriť a upraviť # súborov v tejto webovej aplikácii?}}</translation>
@@ -1019,7 +1018,6 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1767043563165955993">Používať s aplikáciami pre Android</translation>
 <translation id="1767508543310534319">Ozvena interpunkcie</translation>
 <translation id="1768212860412467516">Odoslanie spätnej väzby k experimentu <ph name="EXPERIMENT_NAME"/></translation>
-<translation id="1768278914020124551">Ojoj! Pri pokuse o kontaktovanie registračného servera sa vyskytol problém. Skontrolujte pripojenie k sieti a názov domény a potom to skúste znova.</translation>
 <translation id="1769104665586091481">Otvoriť odkaz v novom &amp;okne</translation>
 <translation id="1770407692401984718">Sem presuňte obrázok alebo</translation>
 <translation id="177053719077591686">Zálohujte aplikácie pre Android na Disk Brave.</translation>
@@ -1094,7 +1092,6 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1817871734039893258">Obnovenie súboru Microsoft</translation>
 <translation id="1818913467757368489">Prebieha nahrávanie do denníka.</translation>
 <translation id="1819721979226826163">Klepnite na položky Upozornenia aplikácií &gt; Služby Google Play.</translation>
-<translation id="1820028137326691631">Zadajte heslo od správcu</translation>
 <translation id="3707821975049107110">Už ste používateľ Chromu? Prihláste sa</translation>
 <translation id="1822517323280215012">Sivá</translation>
 <translation id="1822635184853104396">Zobraziť celú históriu sťahovania na novej karte</translation>
@@ -1115,7 +1112,6 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1828901632669367785">Tlačiť prostredníctvom dialógového okna systému...</translation>
 <translation id="1829129547161959350">Tučniak</translation>
 <translation id="1829192082282182671">&amp;Oddialiť</translation>
-<translation id="182973053761690772">Plán ukončenia podpory</translation>
 <translation id="1830550083491357902">Neprihlásený/-á</translation>
 <translation id="1831848493690504725">Cez pripojenú sieť nie je možné s Googlom nadviazať spojenie. Skúste vybrať inú sieť alebo skontrolovať nastavenia siete či proxy servera (ak proxy server používate).</translation>
 <translation id="1832459821645506983">Áno, súhlasím</translation>
@@ -1211,7 +1207,6 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1901303067676059328">Vybrať &amp;všetko</translation>
 <translation id="6893464351226208429">Webové adresy, ktoré navštívite, sa uložia do vášho účtu Brave</translation>
 <translation id="7537444825255698750">Spravujte povolenia kamery pre weby v Brave</translation>
-<translation id="1905375423839394163">Názov zariadenia Chromebook</translation>
 <translation id="1906181697255754968">Weby zvyčajne získavajú prístup k súborom a priečinkom vo vašom zariadení, aby mohli poskytovať funkcie, ako je automatické ukladanie vašej práce</translation>
 <translation id="1907044622262489040">Zadávajte text hlasom. Stlačte Hľadať + D a začnite hovoriť.</translation>
 <translation id="1907659324308286326">Niektoré príslušenstvo Thunderbolt alebo USB4 vyžaduje na správne fungovanie prístup k pamäti.</translation>
@@ -1220,6 +1215,7 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1910721550319506122">Vitajte!</translation>
 <translation id="1910736334623230603">Nie je možné hľadať viaceré obrázky. Pridávajte obrázky po jednom.</translation>
 <translation id="2675239977494524649">Brave na testovanie verzie <ph name="BROWSER_VERSION"/> je určený iba na automatické testovanie. Na bežné prehliadanie používajte štandardnú verziu Chromu, ktorá sa automaticky aktualizuje.</translation>
+<translation id="1913749768968678106">Preniesť, uložiť a zdieľať</translation>
 <translation id="1915073950770830761">canary</translation>
 <translation id="1915307458270490472">Zložiť</translation>
 <translation id="1915734383465415025">Číslo predajne</translation>
@@ -1254,6 +1250,7 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1933489278505808700">Môže čítať a meniť</translation>
 <translation id="1935303383381416800">Môže zobrazovať vašu polohu</translation>
 <translation id="193565226207940518">Nástroj podpory</translation>
+<translation id="1935995810530254458">Aj tak skopírovať</translation>
 <translation id="1936157145127842922">Zobraziť v priečinku</translation>
 <translation id="1936931585862840749">Zadajte číslo označujúce počet kópií, ktoré chcete vytlačiť (od 1 do <ph name="MAX_COPIES"/>).</translation>
 <translation id="1937774647013465102">S týmto zariadením, ktoré je <ph name="ARCHITECTURE_DEVICE"/>, sa nedá importovať typ architektúry kontajnera <ph name="ARCHITECTURE_CONTAINER"/>. Tento kontajner môžete skúsiť obnoviť do iného zariadenia, prípadne môžete získať prístup k súborom v tomto obraze kontajnera pomocou aplikácie Súbory.</translation>
@@ -1274,6 +1271,7 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1949332606889020901">Identifikátory pádov</translation>
 <translation id="1949584741547056205">Rýchle odpovede</translation>
 <translation id="1949849604471335579">Prispôsobiť tapetu, šetrič obrazovky, zvýrazňujúce farby a ďalšie položky</translation>
+<translation id="1949980990364952348">Názov aplikácie</translation>
 <translation id="1951012854035635156">Asistent</translation>
 <translation id="1954597385941141174">Weby môžu žiadať o pripjenie k zariadeniam USB</translation>
 <translation id="1954813140452229842">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Skontrolujte poverenia a skúste to znova.</translation>
@@ -1295,7 +1293,6 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1972313920920745320">Weby, ktoré ste pridali, zostanú vždy aktívne a šetrič ich z pamäte neodstráni. <ph name="BEGIN_LINK"/>Ďalšie informácie o tom, ako určité weby zachovať aktívne<ph name="END_LINK"/></translation>
 <translation id="1972325230031091483">Prehliadanie sa zrýchli, pretože obsah bude proaktívne načítaný na základe vašej návštevy aktuálnej webovej stránky</translation>
 <translation id="197288927597451399">Uložiť</translation>
-<translation id="1973763416111613016"><ph name="FILE_NAME"/> nie je možné bezpečne stiahnuť. Stláčaním klávesov Shift + F6 prejdite do oblasti panela so stiahnutými súbormi.</translation>
 <translation id="1973886230221301399">ChromeVox</translation>
 <translation id="1974043046396539880">Distribučné body CRL</translation>
 <translation id="1974060860693918893">Rozšírené</translation>
@@ -1320,6 +1317,7 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="197989455406964291">KDC nepodporuje typ šifrovania</translation>
 <translation id="1981434377190976112">Čítať všetky vaše údaje na všetkých weboch</translation>
 <translation id="1984417487208496350">Bez ochrany (neodporúča sa)</translation>
+<translation id="1986836014090708999">Rozšírené nastavenia polohy</translation>
 <translation id="1987317783729300807">Účty</translation>
 <translation id="1987574314042117472">Vybrať a nainštalovať obľúbené aplikácie</translation>
 <translation id="1988259784461813694">Požiadavka</translation>
@@ -1334,6 +1332,7 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="1992397118740194946">Nie je nastavené</translation>
 <translation id="1994173015038366702">Webová adresa</translation>
 <translation id="1995916364271252349">Ovláda, ktoré informácie môžu weby používať a zobrazovať (polohu, fotoaparát, vyskakovacie okná a ďalšie)</translation>
+<translation id="199610894463449797">{0,plural, =1{Zavrieť tento profil}few{Zavrieť tento profil (# okná)}many{Close This Profile (# Windows)}other{Zavrieť tento profil (# okien)}}</translation>
 <translation id="5123795870522389058">Brave vyžaduje povolenie pripojiť sa k vášmu zariadeniu prostredníctvom rozhrania Bluetooth</translation>
 <translation id="1997616988432401742">Vaše certifikáty</translation>
 <translation id="1999115740519098545">Pri spustení</translation>
@@ -1366,7 +1365,6 @@ Povolenia, ktoré ste už udelili aplikáciám, sa môžu vzťahovať na tento �
 <translation id="2019718679933488176">&amp;Otvoriť zvuk na novej karte</translation>
 <translation id="2020183425253392403">Zobraziť nastavenia sieťovej adresy</translation>
 <translation id="2020225359413970060">Skontrolovať súbor</translation>
-<translation id="2020779321517562133">Odstrániť kópiu</translation>
 <translation id="2022953316617983419">QR kód</translation>
 <translation id="2023042679320690325"><ph name="BRAND"/> nedokáže skontrolovať, či boli vaše heslá odhalené pri porušení ochrany údajov. Skúste to o 24 hodín.</translation>
 <translation id="2023167225947895179">PIN sa dá ľahko uhádnuť</translation>
@@ -1518,7 +1516,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="21354425047973905">Skryť kódy PIN</translation>
 <translation id="2135456203358955318">Ukotvená lupa</translation>
 <translation id="2135787500304447609">&amp;Obnoviť</translation>
-<translation id="2136372518715274136">Zadajte nové heslo</translation>
 <translation id="2136476978468204130">Zadaná prístupová fráza je nesprávna</translation>
 <translation id="2137128126782078222">Nepovoliť upozornenia z webu <ph name="WEBSITE"/></translation>
 <translation id="2139919072249842737">Tlačidlo nastavenia</translation>
@@ -1538,6 +1535,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2147151613919729065">Ak chcete vymazať históriu režimu pre hostí, zatvorte všetky okná režimu pre hostí.</translation>
 <translation id="2147218225094845757">Skryť bočný panel</translation>
 <translation id="2147282432401652483">command</translation>
+<translation id="2147402320887035428">Tento súbor môže byť malvér.<ph name="LINE_BREAK"/>Bezpečné prehliadanie Brave kontroluje, či tento súbor nie je nebezpečný. Kontrola zvyčajne trvá niekoľko sekúnd.</translation>
 <translation id="2148219725039824548">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Uvedené úložisko sa v sieti nenašlo.</translation>
 <translation id="2148756636027685713">Formátovanie bolo dokončené</translation>
 <translation id="2148892889047469596">Prenášanie karty</translation>
@@ -1545,7 +1543,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2150139952286079145">Hľadať ciele</translation>
 <translation id="2150661552845026580">Pridať rozšírenie <ph name="EXTENSION_NAME"/>?</translation>
 <translation id="2151576029659734873">Zadali ste neplatný index kariet.</translation>
-<translation id="2152281589789213846">Pridanie tlačiarní do vášho profilu</translation>
 <translation id="2154484045852737596">Úprava karty</translation>
 <translation id="2155473371917268529">Aktuálne nastavenie viditeľnosti je nakonfigurované na vaše zariadenia</translation>
 <translation id="2155772377859296191">Vyzerá ako <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
@@ -1553,7 +1550,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2156877321344104010">Znova spustiť kontrolu bezpečnosti</translation>
 <translation id="2157474325782140681">Ak chcete získať ďalšie funkcie, použite dokovaciu stanicu od spoločnosti Dell, ktorá je navrhnutá pre tento Chromebook.</translation>
 <translation id="215753907730220065">Ukončiť zobrazenie na celú obrazovku</translation>
-<translation id="2157875535253991059">Táto stránka je teraz zobrazená na celú obrazovku.</translation>
 <translation id="2158249272743343757">Odstrániť údaje prispôsobenia…</translation>
 <translation id="2158475082070321257">Kopírovať odkaz na zvýraznenie</translation>
 <translation id="2159488579268505102">USB‑C</translation>
@@ -1574,6 +1570,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2175384018164129879">&amp;Spravovať vyhľadávače a vyhľadávanie na webe</translation>
 <translation id="217576141146192373">Tlačiareň sa nepodarilo pridať. Skontrolujte jej konfiguráciu a skúste to znova.</translation>
 <translation id="2175927920773552910">QR kód</translation>
+<translation id="217631816678106981">Neprilepovať</translation>
 <translation id="2177306523871626993">Sťahujú sa súbory na účely rozpoznávania textu… <ph name="PERCENT"/> %</translation>
 <translation id="2178056538281447670">Microsoft 365</translation>
 <translation id="2178585470774851578">Aktivujete funkcie ladenia systému Chrome OS Flex, ktoré nastavia parameter sshd daemon a umožnia zapínanie z kľúčov USB.</translation>
@@ -1584,6 +1581,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2182058453334755893">Skopírované do schránky</translation>
 <translation id="2182419606502127232">Zahrnúť moje denníky servera</translation>
 <translation id="2183570493397356669">Tlačidlo Pokračovať je deaktivované</translation>
+<translation id="2184272387334793084">Prihláste sa a používajte heslá a ďalší obsah vo všetkých svojich zariadeniach</translation>
 <translation id="8098574385249290065">Povoľte Chromu vyberať, kedy môžu weby prehrať zvuk (odporúčané)</translation>
 <translation id="2186206192313702726">Google Lens</translation>
 <translation id="2186711480981247270">Stránka je zdieľaná z iného zariadenia</translation>
@@ -1595,6 +1593,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2190069059097339078">WiFi Credentials Getter</translation>
 <translation id="219008588003277019">Modul miestneho klienta: <ph name="NEXE_NAME"/></translation>
 <translation id="2190355936436201913">(prázdne)</translation>
+<translation id="2190967441465539539">Ku kamere a mikrofónu nie je možné získať prístup</translation>
 <translation id="2191754378957563929">zapnuté</translation>
 <translation id="2192505247865591433">Zdroj:</translation>
 <translation id="2193365732679659387">Nastavenie dôveryhodnosti</translation>
@@ -1616,13 +1615,13 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2210462644007531147">Inštaláciu sa nepodarilo dokončiť</translation>
 <translation id="2211245494465528624">Spravovať možnosti synchronizácie</translation>
 <translation id="2214018885812055163">Zdieľané priečinky</translation>
-<translation id="2214884991347062907">Nesprávne heslo. Skúste to znova.</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;nie je zobrazený 1 riadok&gt;}few{&lt;nie sú zobrazené <ph name="NUMBER_OF_LINES"/> riadky&gt;}many{&lt;<ph name="NUMBER_OF_LINES"/> lines not shown&gt;}other{&lt;nie je zobrazených <ph name="NUMBER_OF_LINES"/> riadkov&gt;}}</translation>
 <translation id="2215070081105889450">Ak chcete zdieľať zvuk, zdieľajte kartu alebo obrazovku</translation>
 <translation id="2218019600945559112">Myš a touchpad</translation>
 <translation id="2218515861914035131">Prilepiť ako čistý text</translation>
 <translation id="221872881068107022">Obrátené posúvanie</translation>
 <translation id="2219007152108311874">Spýtať sa pri každej návšteve</translation>
+<translation id="2219081237089444028">Nastavte si heslo pre zariadenie <ph name="DEVICE_TYPE"/>, aby ste sa mohli ľahšie prihlasovať</translation>
 <translation id="2950533317914339731">Pridajte si záložky na obľúbené aplikácie Brave</translation>
 <translation id="2220529011494928058">Nahlásiť problém</translation>
 <translation id="2220572644011485463">PIN alebo heslo</translation>
@@ -1697,6 +1696,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2274840746523584236">Dobite Chromebook</translation>
 <translation id="2276503375879033601">Pridať ďalšie aplikácie</translation>
 <translation id="2276910256003242519">Vymazávajú sa dáta…</translation>
+<translation id="2278193750452754829">Rozšírenia sú na tomto webe povolené. Výberom otvorte ponuku.</translation>
 <translation id="2278562042389100163">Otvoriť okno prehliadača</translation>
 <translation id="2278668501808246459">Spúšťa sa správca kontajnera</translation>
 <translation id="2280486287150724112">Pravý okraj</translation>
@@ -1802,7 +1802,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2343747224442182863">Označiť túto kartu</translation>
 <translation id="2344032937402519675">Nepodarilo sa pripojiť k serveru. Skontrolujte ho a skúste to znova. Ak problémy pretrvávajú, skúste reštartovať Chromebook.</translation>
 <translation id="6055117817387598516">Staré verzie aplikácií pre Brave sa od decembra 2022 nebudú otvárať. Kontaktujte svojho správcu a požiadajte ho o inováciu na novú verziu alebo túto aplikáciu odstráňte.</translation>
-<translation id="2347930112185157300">Poskytovateľ mobilnej siete je uzamknutý</translation>
 <translation id="2348176352564285430">Aplikácia: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="2348729153658512593"><ph name="WINDOW_TITLE"/> – Vyžaduje sa povolenie, reagujte stlačením klávesov Ctrl + Ďalej</translation>
 <translation id="234889437187286781">Chyba pri načítavaní údajov</translation>
@@ -1842,7 +1841,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2373666622366160481">Prispôsobiť papieru</translation>
 <translation id="2375406435414127095">Pripojenie k telefónu</translation>
 <translation id="2376056713414548745">Čítať nahlas</translation>
-<translation id="2377588536920405462">Nastavenie Poloha môžete deaktivovať vypnutím hlavného nastavenia Poloha v zariadení. V nastaveniach polohy môžete tiež vypnúť určovanie polohy pomocou siete Wi‑Fi, mobilnej siete a senzorov.</translation>
 <translation id="2377667304966270281">Závažné chyby</translation>
 <translation id="237828693408258535">Preložiť túto stránku?</translation>
 <translation id="2378982052244864789">Vybrať adresár rozšírenia.</translation>
@@ -1924,10 +1922,12 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2435248616906486374">Sieť je odpojená</translation>
 <translation id="2435457462613246316">Zobraziť heslo</translation>
 <translation id="2436385001956947090">Kopírovať odkaz</translation>
+<translation id="2436746748253887661">Týmto povolíte systémovým službám s daným povolením používať vašu polohu. Nastavenie Poloha pomáha odhadnúť polohu vášho zariadenia pomocou zdrojov, ako sú Wi-Fi, mobilné siete a senzory. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="2438853563451647815">Nepripojené k tlačiarni</translation>
 <translation id="2439152382014731627">Obnova hesla typu zariadenia <ph name="DEVICE_TYPE"/></translation>
 <translation id="2439626940657133600">Načíta sa <ph name="WINDOW_TITLE"/></translation>
 <translation id="2440604414813129000">&amp;Zobraziť zdrojový kód</translation>
+<translation id="244071666433939959">Aplikácie sa otvárajú v okne</translation>
 <translation id="2440823041667407902">Prístup k polohe</translation>
 <translation id="2441719842399509963">Prestaviť na predvolené hodnoty</translation>
 <translation id="244231003699905658">Neplatná adresa. Skontrolujte adresu a skúste to znova.</translation>
@@ -1951,7 +1951,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2454206500483040640">Oddelené</translation>
 <translation id="2454247629720664989">Kľúčové slovo</translation>
 <translation id="2454524890947537054">Chcete žiadosť o web schváliť?</translation>
-<translation id="2454913962395846391">Automatické časové pásmo</translation>
 <translation id="245650153866130664">Ak chcete, aby sa tiket automaticky obnovoval, začiarknite možnosť Zapamätať si heslo. Vaše heslo sa uloží iba do vášho zariadenia.</translation>
 <translation id="2456794251167091176">Importovanie je dokončené</translation>
 <translation id="2456827790665612305">Prestať sledovať web</translation>
@@ -1967,7 +1966,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2462332841984057083">Steam sa už nastavuje. Počkajte, kým sa nastavovanie dokončí.</translation>
 <translation id="2462724976360937186">ID kľúča certifikačnej autority</translation>
 <translation id="2462752602710430187">Bolo pridané zariadenie: <ph name="PRINTER_NAME"/></translation>
-<translation id="2464046291463112461">Blokovať externému príslušenstvu prístup k pamäti aj jej zdieľanie (operačná pamäť)</translation>
+<translation id="2465517991293145960">Časové pásmo je momentálne nastavené na <ph name="TIME_ZONE_ENTRY"/>. Automatická aktualizácia časového pásma vyžaduje prístup k polohe. <ph name="BEGIN_LINK"/>Zapnúť prístup k polohe<ph name="END_LINK"/></translation>
 <translation id="2467755475704469005">Nebolo rozpoznané žiadne zariadenie. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
 <translation id="2468178265280335214">Zrýchlenie posúvania touchpadom</translation>
 <translation id="2468205691404969808">Používa súbory cookie na zapamätanie si vašich predvolieb, dokonca aj keď dané stránky nenavštívite</translation>
@@ -1988,6 +1987,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2476901513051581836">Priestor sa nedá vymazať, kým nie je známa veľkosť offline úložiska.</translation>
 <translation id="2476974672882258506">Ak chcete odinštalovať aplikáciu <ph name="PARALLELS_DESKTOP"/>, vypnite Windows.</translation>
 <translation id="2477065602824695373">Nastavili ste viacero prepínačov, takže automatické prehľadávanie bolo vypnuté.</translation>
+<translation id="2478076885740497414">Inštalovať aplikáciu</translation>
 <translation id="2478176599153288112">Povolenia súborov médií pre rozšírenie <ph name="EXTENSION"/></translation>
 <translation id="24786041351753425">Povoľte službu obnovenia údajov.</translation>
 <translation id="2480868415629598489">Upravovať dáta, ktoré kopírujete a prilepujete</translation>
@@ -2112,6 +2112,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2569972178052279830">Názov maloobchodu</translation>
 <translation id="257088987046510401">Motívy</translation>
 <translation id="2571655996835834626">Meniť nastavenia, ktoré ovládajú prístup webových stránok k funkciám, ako sú súbory cookie, JavaScript, doplnky, geolokácia, mikrofón, fotoaparát atď.</translation>
+<translation id="257175846174451436">Bola navrhnutá skupina kariet</translation>
 <translation id="2572032849266859634">Bol udelený prístup k médiu <ph name="VOLUME_NAME"/> s povolením iba na čítanie.</translation>
 <translation id="2573276323521243649">Späť zo stránky výberu avatara</translation>
 <translation id="2573417407488272418">Pred inováciou zálohuje aplikácie a súbory v sekcii Súbory &gt; Moje súbory.</translation>
@@ -2174,6 +2175,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2620215283731032047"><ph name="FILE_NAME"/> nie je možné bezpečne stiahnuť.</translation>
 <translation id="2620245777360407679">Zariadenia momentálne pripojené k hotspotu</translation>
 <translation id="2620436844016719705">Systém</translation>
+<translation id="2620900772667816510">Superrozlíšenie cez Bluetooth</translation>
 <translation id="6040544299680716440">Natrénovať hlasový model Asistenta Brave</translation>
 <translation id="26224892172169984">Nepovoliť žiadnym stránkam obsluhovať protokoly</translation>
 <translation id="262373406453641243">Colemak</translation>
@@ -2227,7 +2229,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2663302507110284145">Jazyk</translation>
 <translation id="2665394472441560184">Pridať nové slovo</translation>
 <translation id="2665647207431876759">Platnosť uplynula</translation>
-<translation id="2665717534925640469">Táto stránka je zobrazená na celú obrazovku a zakázala kurzor myši.</translation>
 <translation id="2665919335226618153">Ojoj! Pri formátovaní sa vyskytla chyba.</translation>
 <translation id="2666247341166669829">Úroveň batérie ľavého slúchadla je <ph name="PERCENTAGE"/> %.</translation>
 <translation id="2667144577800272420">Ďalšie aplikácie sú nastavené, aby otvárali rovnaké odkazy ako <ph name="APP_NAME"/>. Týmto zakážete aplikáciám <ph name="APP_NAME_2"/> a <ph name="APP_NAME_3"/> otvárať podporované odkazy.</translation>
@@ -2235,6 +2236,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2669241540496514785">Aplikáciu <ph name="APP_NAME"/> sa nepodarilo otvoriť</translation>
 <translation id="2669454659051515572">Stiahnuté súbory uvidia všetci používatelia tohto zariadenia</translation>
 <translation id="351520635355732555"><ph name="APP_NAME"/> zdieľa kartu Chromu.</translation>
+<translation id="2670350619068134931">Obmedzené animácie</translation>
 <translation id="2670403088701171361">Nepovoliť webom zobrazovať text alebo obrázky v schránke</translation>
 <translation id="2671451824761031126">Vaše záložky a nastavenia sú k dispozícii</translation>
 <translation id="2672142220933875349">Neplatný súbor crx, rozbalenie zlyhalo</translation>
@@ -2260,12 +2262,12 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2692503699962701720">Zmeňte výšku hlasu pri vyslovovaní typov prvkov a formátovaného textu</translation>
 <translation id="2692901429679246677">Aqua</translation>
 <translation id="2693134906590795721">Zvuky nabíjania</translation>
-<translation id="2693176596243495071">Ojoj, vyskytla sa neznáma chyba. Skúste to neskôr alebo, ak problém pretrváva, kontaktujte správcu.</translation>
 <translation id="2698147581454716013">Toto zariadenie je súčasťou balíka a nedá sa zaregistrovať pomocou povýšenia Kiosk &amp; Signage.</translation>
 <translation id="2699911226086014512">Operácia kódu PIN zlyhala. Kód chyby: <ph name="RETRIES"/>.</translation>
 <translation id="2701330563083355633">Zdieľané zo zariadenia <ph name="DEVICE_NAME"/></translation>
 <translation id="2701737434167469065">Prihlásiť sa, <ph name="EMAIL"/></translation>
 <translation id="2701960282717219666">Adresa MAC siete</translation>
+<translation id="2702720509009999256">Skontrolujte internetové pripojenie a vyberte Skúsiť znova. Prípadne zvoľte Otvoriť v základnom editore a použite možnosti obmedzeného zobrazenia a úprav.</translation>
 <translation id="2702801445560668637">Čitateľský zoznam</translation>
 <translation id="270414148003105978">Mobilné siete</translation>
 <translation id="2704184184447774363">Podpis dokumentu Microsoft</translation>
@@ -2321,6 +2323,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2732134891301408122">Ďalší obsah, <ph name="CURRENT_ELEMENT"/>. prvok z <ph name="TOTAL_ELEMENTS"/></translation>
 <translation id="2733248615007838252">Označením palcom hore odošlete spätnú väzbu, že sa vám tieto výsledky páčili.</translation>
 <translation id="2733992589856193783">Vytvorili ste prístupový kľúč pre tento web. Ak sa chcete prihlásiť, potrebujete mobilné zariadenie.</translation>
+<translation id="2734797989819862638">Nekopírovať</translation>
 <translation id="27349076983469322">Svetlé pozadie</translation>
 <translation id="2735712963799620190">Rozvrh</translation>
 <translation id="2737363922397526254">Zbaliť...</translation>
@@ -2388,11 +2391,9 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2778471504622896352">Pridanie vzdialených aplikácií do spúšťača systému ChromeOS</translation>
 <translation id="2779728796406650689">Asistentovi Brave to umožňuje poskytovať prispôsobené odpovede, keď sa na niečo spýtate.</translation>
 <translation id="2781692009645368755">Google Pay</translation>
-<translation id="2781800772148653810">Rozšírenia sú na tomto webe povolené</translation>
 <translation id="2782104745158847185">Pri inštalácii aplikácie pre Linux sa vyskytla chyba</translation>
 <translation id="2783024642731649028">Jedna položka vo vašom košíku so zľavou <ph name="DISCOUNT_TEXT"/> od predajcu <ph name="MERCHANT_NAME"/> (<ph name="MERCHANT_DOMAIN"/>) zobrazená <ph name="RELATIVE_TIME"/></translation>
 <translation id="2783298271312924866">Stiahnuté</translation>
-<translation id="2783829359200813069">Vyberte typy šifrovania</translation>
 <translation id="2783952358106015700">Použitie bezpečnostného kľúča s aplikáciou <ph name="APP_NAME"/></translation>
 <translation id="2785267875302712148">Kontrola hesiel</translation>
 <translation id="2785873697295365461">Deskriptory súborov</translation>
@@ -2429,9 +2430,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2806372837663997957">Zariadenie, s ktorým sa pokúšate položku zdieľať, ju neprijalo</translation>
 <translation id="2806891468525657116">Skratka už existuje</translation>
 <translation id="2807517655263062534">Tu sa zobrazia súbory, ktoré stiahnete</translation>
-<translation id="2808714658215073920">Pripája sa k sieti Wi‑Fi…</translation>
 <translation id="2809586584051668049">a ďalšie (počet: <ph name="NUMBER_ADDITIONAL_DISABLED"/>)</translation>
-<translation id="2810674554823487782">Ak chcete použiť možnosti obmedzeného zobrazenia a úprav, vyberte Otvoriť v offline editore.</translation>
 <translation id="2811205483104563968">Účty</translation>
 <translation id="2812049959647166806">Príslušenstvo Thunderbolt nie je podporované</translation>
 <translation id="2812171980080389735">Uložené siete a heslá, aby ste sa mohli okamžite pripojiť</translation>
@@ -2451,7 +2450,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2822551631199737692">Kamera sa používa</translation>
 <translation id="2822634587701817431">Zmenšiť/zväčšiť</translation>
 <translation id="2822910719211888134">Pri zálohovaní systému Linux sa vyskytla chyba</translation>
-<translation id="2823176412251649407">Zmeňte internetové pripojenie a vyberte Skúsiť znova. Prípadne zvoľte Otvoriť v offline editore a použite možnosti obmedzeného zobrazenia a úprav.</translation>
 <translation id="2824942875887026017"><ph name="IDS_SHORT_PRODUCT_NAME"/> používa nastavenia proxy servera od vášho správcu</translation>
 <translation id="2825151610926840364">Umožnite prístup všetkým aplikáciám a webom s povolením používať kameru. Ak chcete použiť kameru, možno budete musieť aplikáciu reštartovať alebo obnoviť stránku.</translation>
 <translation id="2825758591930162672">Verejný kľúč subjektu</translation>
@@ -2460,7 +2458,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2828833307884755422">Uvoľnený priestor: <ph name="MEMORY_SAVINGS"/></translation>
 <translation id="5143608303889092034">Spravovať účet &amp;Brave</translation>
 <translation id="2831430281393059038">Zariadenie je podporované</translation>
-<translation id="2831897288513571718">Skúste aktivovať Disk Brave v Nastaveniach a vyberte Skúsiť znova. Prípadne vyberte Otvoriť v offline editore a použite možnosti obmedzeného zobrazenia a úprav.</translation>
 <translation id="2832124733806557606">Vaše dieťa sa môže prihlásiť do zariadenia alebo ho odomknúť kódom PIN.</translation>
 <translation id="2835177225987815960">Aktuálne nastavenie prehľadávania bude resetované vrátane všetkých pridelených prepínačov a predvolieb rýchlosti automatického prehľadávania.</translation>
 <translation id="2835547721736623118">Služba rozpoznávania reči</translation>
@@ -2523,7 +2520,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="288042212351694283">Prístup k vašim zariadeniam so štandardom Universal 2nd Factor</translation>
 <translation id="2881076733170862447">Keď kliknete na rozšírenie</translation>
 <translation id="2882943222317434580"><ph name="IDS_SHORT_PRODUCT_NAME"/> sa o chvíľu reštartuje a obnoví</translation>
-<translation id="2883470649061584386">Informačný kanál</translation>
 <translation id="2884070497102362193">Otestujte svoju batériu, procesor, pamäť, pripojenie a viac</translation>
 <translation id="2885129935310217435">Existuje tlačidlo s rovnakým názvom. Vyberte iné.</translation>
 <translation id="2885378588091291677">Správca úloh</translation>
@@ -2542,6 +2538,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2893180576842394309">Brave môže pomocou vašej histórie prispôsobiť Vyhľadávanie a ďalšie služby Googlu</translation>
 <translation id="2893701697603065178">Spravované vývojové prostredie</translation>
 <translation id="2894757982205307093">Nová karta v skupine</translation>
+<translation id="2895730582088342039">Uložiť, zdieľať a preniesť</translation>
 <translation id="289695669188700754">Identifikácia kľúča: <ph name="KEY_ID"/></translation>
 <translation id="2897878306272793870">Naozaj chcete otvoriť tento počet kariet: <ph name="TAB_COUNT"/>?</translation>
 <translation id="2900247416110050639">Dokumenty, Tabuľky a Prezentácie Brave vyžadujú ukladanie súborov na Disk Brave. Miestne súbory sa presunú a súbory z iných umiestnení sa skopírujú. Svoje súbory nájdete v priečinku Disk Brave v aplikácii Súbory.</translation>
@@ -2588,11 +2585,13 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2932483646085333864">Ak chcete spustiť synchronizáciu, odhláste sa a potom sa znova prihláste</translation>
 <translation id="2932883381142163287">Nahlásiť zneužitie</translation>
 <translation id="2933632078076743449">Posledná aktualizácia</translation>
+<translation id="2934225044529065415">Nie je možné získať prístup ku kamere</translation>
 <translation id="2935225303485967257">Spravovať profily</translation>
 <translation id="2935314715123552088">Deaktivovať aktívny profil eSIM</translation>
 <translation id="2935654492420446828">Pridajte školský účet neskôr</translation>
 <translation id="2936851848721175671">Zálohovanie a obnovenie</translation>
 <translation id="2938981087412273365">Nemá povolené čítať ani meniť tento web</translation>
+<translation id="2939005221756255562">Povoľte upozornenia v centre upozornení. Otvorte <ph name="BEGIN_LINK"/>Nastavenia systému<ph name="END_LINK"/>.</translation>
 <translation id="2939908794993783865">Ďalšie neaktívne weby</translation>
 <translation id="2939938020978911855">Zobraziť dostupné zariadenia Bluetooth</translation>
 <translation id="2941112035454246133">Nízka</translation>
@@ -2644,6 +2643,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2981113813906970160">Zobraziť veľký kurzor myši</translation>
 <translation id="2983102365694924129">Založené na vašej aktivite na webe. Toto nastavenie je vypnuté.</translation>
 <translation id="2983373101216420412">Úroveň batérie puzdra je <ph name="PERCENTAGE"/> %.</translation>
+<translation id="2984727013951557074">Súbor sa stále synchronizuje s Diskom.</translation>
 <translation id="2985348301114641460">Chcete správcovi odoslať žiadosť o inštaláciu rozšírenia <ph name="EXTENSION_NAME"/>?</translation>
 <translation id="2985476671756533899">{NUM_SUB_APPS,plural, =1{Aplikácia <ph name="APP_NAME"/> odinštalovala aplikáciu}few{Aplikácia <ph name="APP_NAME"/> odinštalovala # aplikácie}many{<ph name="APP_NAME"/> uninstalled # apps}other{Aplikácia <ph name="APP_NAME"/> odinštalovala # aplikácií}}</translation>
 <translation id="2987620471460279764">Text zdieľaný z iného zariadenia</translation>
@@ -2673,7 +2673,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3003144360685731741">Preferované siete</translation>
 <translation id="5730179015008010982">Webové adresy, ktoré navštevujete, sa odosielajú Googlu, aby mohol predpokladať weby, ktoré navštívite ako ďalšie, a zobrazovať vám ďalšie informácie o navštevovanej stránke</translation>
 <translation id="3003623123441819449">Vyrovnávacia pamäť CSS</translation>
-<translation id="3003828226041301643">Zariadenie sa nepodarilo pripojiť k doméne. Skontrolujte svoj účte a uistite sa, že máte oprávnenia na pridávanie zariadení.</translation>
 <translation id="3003967365858406397">Telefón <ph name="PHONE_NAME"/> vytvorí súkromné pripojenie Wi‑Fi.</translation>
 <translation id="3004385386820284928">Prispôsobenie klávesov klávesnice</translation>
 <translation id="3005574332301273731">Nezobraziť</translation>
@@ -2717,8 +2716,8 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3025174326431589540">{COUNT,plural, =0{Žiadne uložené heslá}=1{Boli skontrolované heslá pre {COUNT} web}few{Boli skontrolované heslá pre {COUNT} weby a aplikácie}many{Checked passwords for {COUNT} sites and apps}other{Boli skontrolované heslá pre {COUNT} webov a aplikácií}}</translation>
 <translation id="3027296729579831126">Zapnúť Zdieľanie nablízku</translation>
 <translation id="3027644380269727216">Založené na vašej aktivite na webe. Toto nastavenie je zapnuté.</translation>
+<translation id="3028371505549235127">Pre zariadenie <ph name="DEVICE_TYPE"/> môžete vytvoriť heslo a nebudete musieť pri prihlasovaní zadávať heslo svojho účtu Brave</translation>
 <translation id="3028445648481691885">Sťahovanie bolo zrušené</translation>
-<translation id="3029276696788198026">Bez prednačítavania</translation>
 <translation id="3029466929721441205">Zobrazovať nástroje dotykového pera na poličke</translation>
 <translation id="3029808567601324798">Čas do uzamknutia</translation>
 <translation id="3030311804857586740">{NUM_DAYS,plural, =1{<ph name="MANAGER"/> vyžaduje, aby ste si dnes stiahli aktualizáciu. Aktualizácia sa automaticky stiahne po pripojení k internetu.}few{<ph name="MANAGER"/> vyžaduje, aby ste si do stanoveného termínu stiahli aktualizáciu. Aktualizácia sa automaticky stiahne po pripojení k internetu.}many{<ph name="MANAGER"/> vyžaduje, aby ste si do stanoveného termínu stiahli aktualizáciu. Aktualizácia sa automaticky stiahne po pripojení k internetu.}other{<ph name="MANAGER"/> vyžaduje, aby ste si do stanoveného termínu stiahli aktualizáciu. Aktualizácia sa automaticky stiahne po pripojení k internetu.}}</translation>
@@ -2732,7 +2731,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3033348223765101500">Majte svoje údaje pod kontrolou</translation>
 <translation id="3036327949511794916">Termín na vrátenie tohto zariadenia <ph name="DEVICE_TYPE"/> uplynul.</translation>
 <translation id="3036546437875325427">Povoliť Flash</translation>
-<translation id="3037754279345160234">Konfigurácia pridania do domény sa nedá analyzovať. Kontaktujte správcu.</translation>
 <translation id="3038272154009688107">Zobraziť všetky weby</translation>
 <translation id="3038612606416062604">Manuálne pridanie tlačiarne</translation>
 <translation id="3039491566278747710">Pravidlo pre režim offline sa nepodarilo v zariadení nainštalovať.</translation>
@@ -2874,6 +2872,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3166443275568926403">Výkonnosť a stav batérie</translation>
 <translation id="3169930038976362151">Vyberte motív, ktorý vyhovuje vašim potrebám. Ak chcete zmeniť motív, tapetu, šetrič obrazovky a ďalšie položky, stačí pridržať ľubovoľné miesto na pracovnej ploche.</translation>
 <translation id="3170072451822350649">Môžete tiež preskočiť prihlásenie a <ph name="LINK_START"/>prehliadať ako hosť<ph name="LINK_END"/>.</translation>
+<translation id="3175067642577044620">Text</translation>
 <translation id="3177430966804511955">Spravovať izolované webové aplikácie (beta)</translation>
 <translation id="31774765611822736">Nová karta vľavo</translation>
 <translation id="3177909033752230686">Jazyk stránky:</translation>
@@ -2884,6 +2883,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3182749001423093222">Kontrola pravopisu</translation>
 <translation id="3183139917765991655">Profile Importer</translation>
 <translation id="3183143381919926261">Mobilné dátové siete</translation>
+<translation id="3183700187146209259">Softvér skenera nie je možné nainštalovať</translation>
 <translation id="3183944777708523606">Usporiadanie monitora</translation>
 <translation id="3184536091884214176">Nastaviť alebo spravovať tlačiarne CUPS. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="3185014249447200271">{NUM_APPS,plural, =1{Táto aplikácia je blokovaná}few{Niektoré aplikácie sú blokované}many{Niektoré aplikácie sú blokované}other{Niektoré aplikácie sú blokované}}</translation>
@@ -2920,7 +2920,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3210736980143419785">Sťahovanie sa nepodarilo dokončiť</translation>
 <translation id="321084946921799184">Žltá a biela</translation>
 <translation id="3211126692872351610">&amp;Hľadať <ph name="SEARCH_TERMS"/> na novej karte vo vyhľadávači <ph name="SEARCH_ENGINE"/></translation>
-<translation id="321356136776075234">Organizačná jednotka zariadenia (OU) (napr. OU=Chromebooks,DC=example,DC=com)</translation>
 <translation id="321367297115597343">Pridajte záložku do tohto priečinka</translation>
 <translation id="3214531106883826119"><ph name="BEGIN_BOLD"/>Poznámka:<ph name="END_BOLD"/> K osobným výsledkom dieťaťa <ph name="SUPERVISED_USER_NAME"/> je možné získať prístup podobným hlasom alebo jeho nahrávkou.</translation>
 <translation id="3217843140356091325">Vytvoriť odkaz?</translation>
@@ -2992,7 +2991,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3269689705184377744">{COUNT,plural, =1{Súbor}few{# súbory}many{# files}other{# súborov}}</translation>
 <translation id="326999365752735949">Súbor diff sa sťahuje</translation>
 <translation id="3270965368676314374">Čítať, meniť a odstraňovať fotky, hudbu a ďalšie médiá z počítača</translation>
-<translation id="3274763671541996799">Prepli ste na režim celej obrazovky.</translation>
 <translation id="3275778809241512831">Váš interný bezpečnostný kľúč je momentálne nezabezpečený. Odstráňte ho zo všetkých služieb, v ktorých ste ho používali. Problém vyriešite jeho resetovaním.</translation>
 <translation id="3275778913554317645">Otvárať ako okno</translation>
 <translation id="3277214528693754078">Navigácia textovým kurzorom (kurzorové prehliadanie)</translation>
@@ -3030,7 +3028,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3301554464236215299">Tento súbor sa bežne nesťahuje a môže byť nebezpečný</translation>
 <translation id="33022249435934718">GDI – popisovače</translation>
 <translation id="3302388252085547855">Zarovnať podľa okrajov…</translation>
-<translation id="3303260552072730022">Rozšírenie spustilo režim celej obrazovky.</translation>
 <translation id="3303795387212510132">Chcete povoliť aplikácii otvárať odkazy <ph name="PROTOCOL_SCHEME"/>?</translation>
 <translation id="3303818374450886607">Kópie</translation>
 <translation id="3303855915957856445">Nič sa nenašlo</translation>
@@ -3053,6 +3050,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3315158641124845231">Skryť <ph name="PRODUCT_NAME"/></translation>
 <translation id="3315442055907669208">Spustiť režim čítačky</translation>
 <translation id="3317459757438853210">Obojstranne</translation>
+<translation id="3317521105713541270">Vytvoriť skupiny</translation>
 <translation id="3317678681329786349">Kamera a mikrofón sú zablokované</translation>
 <translation id="3319306431415395200">Preložiť text na obrázku pomocou služby <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="3320271870899888245">K službe OneDrive sa nedá pripojiť. Skúste to znova.</translation>
@@ -3062,7 +3060,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3321776060736518525">Z adresy <ph name="APP_URL"/></translation>
 <translation id="3323521181261657960">Bonus! Získavaš viac času používania.</translation>
 <translation id="3325804108816646710">Hľadajú sa dostupné profily...</translation>
-<translation id="3325910708063135066">Kamera a mikrofón sú vypnuté v predvoľbách systému Mac</translation>
 <translation id="3325930488268995856">Služba Microsoft OneDrive je pripojená</translation>
 <translation id="3325995804968971809">Štýl</translation>
 <translation id="3327050066667856415">Účelom Chromebookov je zabezpečenie. Vaše zariadenie je pred malvérom chránené automaticky – nevyžaduje sa žiadny ďalší softvér.</translation>
@@ -3100,6 +3097,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3361421571228286637">{COUNT,plural, =1{<ph name="DEVICE_NAME"/> s vami zdieľa <ph name="ATTACHMENTS"/>.}few{<ph name="DEVICE_NAME"/> s vami zdieľa <ph name="ATTACHMENTS"/>.}many{<ph name="DEVICE_NAME"/> s vami zdieľa <ph name="ATTACHMENTS"/>.}other{<ph name="DEVICE_NAME"/> s vami zdieľa <ph name="ATTACHMENTS"/>.}}</translation>
 <translation id="3361954577771524115">Z aplikácie</translation>
 <translation id="3363202073972776113">Tento nový profil bude spravovať vaša organizácia. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
+<translation id="3364159059299045452">Alt + umiestnenie kurzora myši</translation>
 <translation id="3364986687961713424">Od správcu: <ph name="ADMIN_MESSAGE"/></translation>
 <translation id="3365598184818502391">Použite Ctrl alebo Alt</translation>
 <translation id="3368922792935385530">Pripojené</translation>
@@ -3124,6 +3122,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="338323348408199233">Blokovať dátové prenosy bez siete VPN</translation>
 <translation id="3384362484379805487">Jazykové súbory sa zdieľajú medzi používateľmi, aby sa šetrilo miesto na disku.</translation>
 <translation id="3385092118218578224"><ph name="DISPLAY_ZOOM"/> %</translation>
+<translation id="3385509471227300644">Bezpečné prehliadanie Brave teraz kontroluje podozrivé súbory, ktoré sa pokúsite stiahnuť, v rámci vami vybranej rozšírenej ochrany.</translation>
 <translation id="338583716107319301">Oddeľovač</translation>
 <translation id="3387023983419383865">,</translation>
 <translation id="3387588771342841525">Keď je táto funkcia zapnutá, heslá sa ukladajú do účtu <ph name="EMAIL"/>. Keď je vypnutá, heslá sa ukladajú iba do tohto zariadenia.</translation>
@@ -3169,6 +3168,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3420501302812554910">Vyžaduje sa resetovanie interného bezpečného kľúča</translation>
 <translation id="3421387094817716717">Verejný kľúč založený na eliptickej krivke</translation>
 <translation id="3421672904902642628"><ph name="BEGIN_BOLD"/>Poznámka:<ph name="END_BOLD"/> K vašim osobným výsledkom alebo vášmu Asistentovi je možné získať prístup podobným hlasom alebo jeho nahrávkou.</translation>
+<translation id="3421835120203732951">Pridať nový profil</translation>
 <translation id="3423111258700187173">Výsledky boli nájdené v priečinku <ph name="FOLDER_TITLE"/></translation>
 <translation id="3423463006624419153">Vo vašich telefónoch <ph name="PHONE_NAME_1"/> a <ph name="PHONE_NAME_2"/>:</translation>
 <translation id="3423858849633684918">Reštartujte <ph name="PRODUCT_NAME"/></translation>
@@ -3310,10 +3310,12 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3524518036046613664">Objavovať zariadenia vo vašej miestnej sieti, napríklad tlačiarne</translation>
 <translation id="3524965460886318643">Exportovať aktivity</translation>
 <translation id="3525426269008462093">Kontrolovať po nastavení synchronizáciu zariadenia</translation>
+<translation id="3525606571546393707">Skúste súbor otvoriť v inom priečinku alebo vyberte Otvoriť v základnom editore a použite možnosti obmedzeného zobrazenia a úprav.</translation>
 <translation id="3526034519184079374">Údaje webu sa nedajú prečítať ani zmeniť</translation>
 <translation id="3527085408025491307">Priečinok</translation>
 <translation id="3528498924003805721">Ciele odkazov</translation>
 <translation id="3529851166527095708">&amp;Adresy a ďalšie položky</translation>
+<translation id="3531070080754387701">Microsoft 365 nedokáže otvoriť <ph name="FILE_NAMES"/> z tohto priečinka</translation>
 <translation id="3531883061432162622">Čitateľský zoznam a záložky nájdete v sekciách Záložky a Zoznamy</translation>
 <translation id="3532273508346491126">Synchronizovať správu</translation>
 <translation id="3532521178906420528">Nadväzuje sa pripojenie k sieti…</translation>
@@ -3356,6 +3358,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3563558822383875692">Konfiguruje sa DLC.</translation>
 <translation id="3564334271939054422">Sieť Wi‑Fi, ktorú používate (<ph name="NETWORK_ID"/>), môže vyžadovať, aby ste navštívili jej prihlasovaciu stránku.</translation>
 <translation id="3564848315152754834">Bezpečnostný kľúč USB</translation>
+<translation id="3566211766752891194">Zobrazovať využitie pamäte karty</translation>
 <translation id="3566325075220776093">Z tohto zariadenia</translation>
 <translation id="3566721612727112615">Neboli pridané žiadne weby</translation>
 <translation id="356738834800832239">Vaše heslo je uložené</translation>
@@ -3479,6 +3482,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="2334029754052191847">Brave zistil, že niektoré nastavenia boli poškodené iným programom, a preto obnovil pôvodné predvolené nastavenia.</translation>
 <translation id="3665919494326051362">Aktuálna verzia je <ph name="CURRENT_VERSION"/></translation>
 <translation id="3666196264870170605">Výpis údajov o ladení ovládačov Intel WiFi NIC</translation>
+<translation id="3666971425390608309">Sťahovanie bolo pozastavené: <ph name="FILE_NAME"/></translation>
 <translation id="3670113805793654926">Zariadenia od ľubovoľného dodávateľa</translation>
 <translation id="3670229581627177274">Zapnúť Bluetooth</translation>
 <translation id="3670480940339182416">Weby môžu používať optimalizátor V8</translation>
@@ -3558,6 +3562,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3719245268140483218">Udalosť zariadenia</translation>
 <translation id="3719310907809321183">Bol vyplnený formulár karty <ph name="CARD_IDENTIFIER"/>.</translation>
 <translation id="3719826155360621982">Domovská stránka</translation>
+<translation id="3720543739123045680">Iné karty zdieľajú s touto kartou proces, ktorý môže viesť k neočakávanému prostrediu nástrojov pre vývojárov.</translation>
 <translation id="372062398998492895">CUPS</translation>
 <translation id="8397843425685839889">Vy a Brave</translation>
 <translation id="3722108462506185496">Pri spúšťaní služby virtuálneho počítača sa vyskytla chyba. Skúste to znova.</translation>
@@ -3572,6 +3577,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="8077319455765501118">Ak chcete používať Správcu hesiel Brave s Kľúčenkou systému macOS, znova spustite Brave a povoľte prístup ku Kľúčenke. Po opätovnom spustení sa karty znova otvoria.</translation>
 <translation id="3728188878314831180">Zrkadliť upozornenia z telefónu</translation>
 <translation id="3728681439294129328">Konfigurovať adresu siete</translation>
+<translation id="3728805180379554595">Toto nastavenie ovláda používateľ <ph name="USER_EMAIL"/>.</translation>
 <translation id="3729506734996624908">Povolené weby</translation>
 <translation id="3729957991398443677">Ak si chcete zobraziť heslo alebo o ňom pridať poznámku, vyberte možnosť Správa hesiel vo vyhľadávaní a na paneli s adresou</translation>
 <translation id="3730076362938942381">Aplikácia písania dotykovým perom</translation>
@@ -3592,7 +3598,6 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3741056951918180319">Na rozšírenie môžete kedykoľvek kliknúť a použiť ho tak na ľubovoľnom webe</translation>
 <translation id="3741510433331996336">Dokončite aktualizáciu reštartom zariadenia</translation>
 <translation id="3742235229730461951">Kórejské rozloženie klávesnice</translation>
-<translation id="3742666961763734085">Nepodarilo sa nájsť organizačnú jednotku s daným názvom. Skúste to znova.</translation>
 <translation id="3743842571276656710">Zadajte PIN na spárovanie so zariadením <ph name="DEVICE_NAME"/></translation>
 <translation id="3744219658596020825">Heslá neboli importované</translation>
 <translation id="3747077776423672805">Ak chcete odstrániť aplikácie, prejdite do časti Nastavenia &gt; Obchod Google Play &gt; Spravovať predvoľby Androidu &gt; Aplikácie alebo Správca aplikácií. Potom klepnite na aplikáciu, ktorú chcete odinštalovať (možno budete musieť aplikáciu nájsť potiahnutím prstom doľava alebo doprava). Potom klepnite na možnosť Odinštalovať alebo Deaktivovať.</translation>
@@ -3627,6 +3632,8 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="3765055238058255342">Tento typ karty</translation>
 <translation id="3765246971671567135">Pravidlo pre režim offline ukážky sa nepodarilo načítať.</translation>
 <translation id="3765696567014520261">Weby si nemôžu na základe súborov cookie zobraziť vašu históriu prehliadania v rámci rôznych webov (napríklad na prispôsobenie reklám). Funkcie na niektorých weboch nemusia fungovať.</translation>
+<translation id="3766265338450715550"><ph name="BEGIN_PARAGRAPH1"/>Služba určovania polohy od Googlu odhaduje polohu vášho zariadenia pomocou zdrojov, ako sú Wi-Fi, mobilné siete a senzory.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Polohu systému ChromeOS a Androidu v zariadení môžete kedykoľvek vypnúť v sekcii Nastavenia &gt; Ochrana súkromia a zabezpečenie &gt; Nastavenia ochrany súkromia &gt; Prístup k polohe. Môžete vypnúť aj určovanie polohy Androidu pomocou Wi‑Fi, mobilných sietí a senzorov tak, že v rovnakej ponuke vypnete Zlepšiť presnosť určovania polohy Brave v sekcii Rozšírené nastavenia polohy.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3766687283066842296">Ďalšie informácie o Telefónnom centre</translation>
 <translation id="3766811143887729231"><ph name="REFRESH_RATE"/> Hz</translation>
 <translation id="4835748490302311946">Heslá môžete momentálne zdieľať iba s členmi rodiny. <ph name="BEGIN_LINK"/>Pozvite členov rodiny<ph name="END_LINK"/> do svojej skupiny a využívajte svoje služby a odbery na Googli ešte lepšie.</translation>
@@ -3789,14 +3796,12 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="3887022758415973389">Zobraziť zoznam zariadení</translation>
 <translation id="3888501106166145415">Spojené siete Wi‐Fi</translation>
 <translation id="3888550877729210209">Písanie poznámok v aplikácii <ph name="LOCK_SCREEN_APP_NAME"/></translation>
-<translation id="3888586133700543064">Tieto informácie nám pomôžu lepšie pochopiť problém s vaším Asistentom. Budú uložené maximálne 90 dní a prístup k nim je obmedzený len na príslušné tímy zodpovedajúce za programovanie a spätnú väzbu.</translation>
 <translation id="3518294595762833244">Zapnite synchronizáciu Chromu, aby ste mohli používať Synchronizáciu Wi-Fi</translation>
 <translation id="389313931326656921">Prideľte prepínač akcii Ďalej</translation>
 <translation id="3893268973182382220">Tento panel sa momentálne nedá načítať</translation>
 <translation id="3893536212201235195">Čítať a zmeniť nastavenia zjednodušenia ovládania</translation>
 <translation id="3893630138897523026">ChromeVox (hlasová spätná väzba)</translation>
 <translation id="3893764153531140319"><ph name="DOWNLOADED_SIZE"/>/<ph name="DOWNLOAD_SIZE"/></translation>
-<translation id="3894123633473837029">Zahrnúť nedávnu históriu Asistenta prostredníctvom aplikácie Sherlog (môže zahrnovať vašu totožnosť, polohu a informácie o ladení) <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
 <translation id="3894427358181296146">Pridanie priečinka</translation>
 <translation id="1968829513382924411">Chcete heslo presunúť do účtu Brave?</translation>
 <translation id="3894983081771074056">Správanie klávesnice a myši, predvoľby jazyka a ďalšie možnosti</translation>
@@ -3949,6 +3954,7 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="3995138139523574647">zariadenia USB-C (port vpravo vzadu)</translation>
 <translation id="3995963973192100066">Prehrať animáciu</translation>
 <translation id="399788104667917863">Pripnúť na panel s nástrojmi</translation>
+<translation id="3998780825367526465">Zobrazovať ukážky karty ako obrázky</translation>
 <translation id="3998976413398910035">Spravovať tlačiarne</translation>
 <translation id="4001540981461989979">Zvýrazniť kurzor myši pri pohybe</translation>
 <translation id="4002347779798688515">Stiahnutý profil sa možno nebude dať použiť, keď je poskytovateľ mobilnej siete uzamknutý. Ak potrebujete podporu, kontaktujte svojho poskytovateľa.</translation>
@@ -4019,6 +4025,8 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4051177682900543628">kláves vyhľadávania + šípka doprava</translation>
 <translation id="4052120076834320548">Drobné</translation>
 <translation id="4052913941260326985">Vytvoriť QR kód</translation>
+<translation id="405365679581583349">Aktualizujte Služby Google Play</translation>
+<translation id="4053833479432165765">&amp;Inštalovať stránku ako aplikáciu…</translation>
 <translation id="4054070260844648638">Viditeľné pre všetkých</translation>
 <translation id="8891261408659902804">Vypršal časový limit, ktorý tvoj rodič nastavil pre aplikáciu pre Brave <ph name="APP_NAME"/>. Zajtra ju môžeš používať <ph name="TIME_LIMIT"/>.</translation>
 <translation id="4057041477816018958"><ph name="SPEED"/> – <ph name="RECEIVED_AMOUNT"/></translation>
@@ -4058,6 +4066,7 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4090103403438682346">Povolí overený prístup</translation>
 <translation id="4090947011087001172">Chcete resetovať povolenia webu <ph name="SITE"/>?</translation>
 <translation id="4092636882861724179">Uložené heslá si môžete zobraziť a spravovať v službe <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translation>
+<translation id="7268155614575494857">Ak chcete pomôcť Správcovi hesiel Brave ukladať vaše prihlasovacie údaje, pridajte si používateľské meno pre tento web</translation>
 <translation id="4093865285251893588">Profilový obrázok</translation>
 <translation id="4093955363990068916">Miestny súbor:</translation>
 <translation id="4094647278880271855">Používate nepodporovanú premennú prostredia: <ph name="BAD_VAR"/>. Negatívne to ovplyvní stabilitu a zabezpečenie.</translation>
@@ -4086,7 +4095,6 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4108314971463891922">Sledovať</translation>
 <translation id="4109135793348361820">Presunúť okno k používateľovi <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="4110485659976215879">Obnoviť varovanie</translation>
-<translation id="4110490973560452005">Dokončilo sa sťahovanie súboru: <ph name="FILE_NAME"/>. Stláčaním klávesov Shift+F6 prejdite do oblasti panela so stiahnutými súbormi.</translation>
 <translation id="4112194537011183136"><ph name="DEVICE_NAME"/> (offline)</translation>
 <translation id="4113743276555482284">Heslo súboru</translation>
 <translation id="1423132677367459502">Zobrazujú sa navrhované súbory, ktoré vám pomôžu ľahko sa vrátiť k poslednej nedávnej aktivite na Disku Brave.
@@ -4124,7 +4132,6 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="413915106327509564"><ph name="WINDOW_TITLE"/> – bolo pripojené zariadenie HID</translation>
 <translation id="4139326893730851150">Aktualizácie firmvéru</translation>
 <translation id="4142052906269098341">Odomykajte zariadenie <ph name="DEVICE_TYPE"/> svojím telefónom. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
-<translation id="4142518881503042940">Uložte rozpoznané tlačiarne do svojho profilu alebo pridajte novú. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="4144218403971135344">Získajte kvalitnejšie video a predĺžte výdrž batérie. Video sa bude prehrávať iba na obrazovke podporujúcej Cast.</translation>
 <translation id="4146026355784316281">Vždy otvárať pomocou systémového zobrazovača</translation>
 <translation id="4146785383423576110">Resetovať a vyčistiť</translation>
@@ -4220,6 +4227,7 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4231141543165771749">Zavrieť ovládanie hry</translation>
 <translation id="4231231258999726714">Steam pre Chromebook sa nastavuje</translation>
 <translation id="4232375817808480934">Konfigurácia protokolu Kerberos</translation>
+<translation id="4232484478444192782">Prebieha prenos z telefónu s Androidom. Prenášajú sa sieť Wi‑Fi a heslá.</translation>
 <translation id="4233739489690259993">Váš Chromebook už nedostáva bezpečnostné aktualizácie ani aktualizácie softvéru. Inovujte zariadenie, aby ste mali k dispozícii najnovšie zabezpečenie a nové funkcie. Platia zmluvné podmienky ponuky.</translation>
 <translation id="4235965441080806197">Zrušiť prihlasovanie</translation>
 <translation id="4235976607074422892">Rýchlosť posúvania</translation>
@@ -4254,11 +4262,11 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4256316378292851214">Uložiť &amp;video ako...</translation>
 <translation id="4258348331913189841">Systémy súborov</translation>
 <translation id="4259388776256904261">Môže to chvíľu trvať</translation>
-<translation id="7033965027041115562">Súbor <ph name="FILE_NAME"/> môže byť nebezpečný. Chcete ho odoslať na kontrolu do rozšírenej ochrany Googlu? Stláčaním klávesov Shift + F6 prejdite do oblasti panela so stiahnutými súbormi.</translation>
 <translation id="4260699894265914672">Prispôsobte si ho stlačením klávesa na klávesnici</translation>
 <translation id="4261429981378979799">Povolenia rozšírení</translation>
 <translation id="4262004481148703251">Zavrieť varovanie</translation>
 <translation id="4263223596040212967">Skontrolujte svoje rozloženie klávesnice a skúste to znova.</translation>
+<translation id="4265096510956307240">Overte svoju totožnosť</translation>
 <translation id="4265301768135164545">Profil eSIM môžete nastaviť aj <ph name="BEGIN_LINK"/>manuálne<ph name="END_LINK"/>.</translation>
 <translation id="426564820080660648">Ak chcete skontrolovať aktualizácie, použite sieť ethernet, Wi‑Fi alebo mobilnú sieť.</translation>
 <translation id="426652736638196239">Toto číslo IBAN sa uloží iba do tohto zariadenia</translation>
@@ -4284,6 +4292,7 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4278779213160967034">Tento proces môže trvať niekoľko minút. Sťahujú sa súbory.</translation>
 <translation id="4279129444466079448">V tomto zariadení môžete nainštalovať maximálne tento počet profilov eSIM: <ph name="PROFILE_LIMIT"/>. Ak chcete pridať ďalší profil, najprv odstráňte existujúci.</translation>
 <translation id="4280325816108262082">Zariadenie sa automaticky odpojí, keď ho vypnete alebo nepoužívate</translation>
+<translation id="4281637354026226955">Povoľte aplikáciám a službám pre ChromeOS a Android s povoleným prístupom k polohe používať polohu vášho zariadenia. Brave môže pravidelne zhromažďovať údaje o polohe a anonymne pomocou nich zlepšovať presnosť určovania polohy a služby podmienené polohou.</translation>
 <translation id="4281844954008187215">Zmluvné podmienky</translation>
 <translation id="4281849573951338030">Prispôsobiť tlačidlá pera</translation>
 <translation id="4282196459431406533">Smart Lock je zapnutý</translation>
@@ -4309,6 +4318,7 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4297219207642690536">Reštartovať a resetovať</translation>
 <translation id="4297813521149011456">Otočenie obrazovky</translation>
 <translation id="4298660926525614540">Názvy odstrániteľných úložísk</translation>
+<translation id="4300272766492248925">Otvoriť aplikáciu</translation>
 <translation id="4301671483919369635">Táto stránka má povolené upravovať súbory</translation>
 <translation id="5105741679146933998">{COUNT,plural, =1{# kontakt nie je k dispozícii. Ak s ním chcete použiť funkciu <ph name="FEATURE_NAME"/>, pridajte e‑mailovú adresu spojenú s jeho účtom Brave do svojich kontaktov.}few{# kontakty nie sú k dispozícii. Ak s nimi chcete použiť fuknciu <ph name="FEATURE_NAME"/>, pridajte e‑mailové adresy spojené s ich účtami Brave do svojich kontaktov.}many{# contacts are not available. To use <ph name="FEATURE_NAME"/> with them, add the email addresses associated with their Brave sync chains to your contacts.}other{# kontaktov nie je k dispozícii. Ak s nimi chcete použiť fuknciu <ph name="FEATURE_NAME"/>, pridajte e‑mailové adresy spojené s ich účtami Brave do svojich kontaktov.}}</translation>
 <translation id="4303079906735388947">Nastavte pre svoj bezpečnostný kľúč nový kód PIN</translation>
@@ -4343,12 +4353,14 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4325433082696797523">Priestor a napájanie</translation>
 <translation id="7463244538445813736">Najúčinnejšie zabezpečenie Chromu vás viac chráni pred nebezpečnými webmi, stiahnutými súbormi a rozšíreniami</translation>
 <translation id="4326484226728068206">Položky vo vašom košíku so zľavou <ph name="DISCOUNT_TEXT"/> od predajcu <ph name="MERCHANT_NAME"/> (<ph name="MERCHANT_DOMAIN"/>) zobrazené <ph name="RELATIVE_TIME"/></translation>
+<translation id="4327380114687339519">Ponuka rozšírení</translation>
 <translation id="4330191372652740264">Voda s ľadom</translation>
 <translation id="4330387663455830245">Nikdy neprekladať jazyk <ph name="LANGUAGE"/></translation>
 <translation id="4332976768901252016">Nastavenie rodičovskej kontroly</translation>
 <translation id="4333854382783149454">Štandard PKCS #1 SHA-1 so šifrovaním RSA</translation>
 <translation id="4334768748331667190"><ph name="MODULE_NAME"/> už neuvidíte</translation>
 <translation id="4335835283689002019">Bezpečné prehliadanie je vypnuté</translation>
+<translation id="2949055937949724441">Ak chcete znova začať ukladať heslá do Správcu hesiel Brave, aktualizujte Služby Google Play</translation>
 <translation id="4338363401382232853">Návrh okna rozdelenej obrazovky</translation>
 <translation id="4339203724549370495">Odinštalovať aplikáciu</translation>
 <translation id="4340125850502689798">Neplatné používateľské meno</translation>
@@ -4375,7 +4387,7 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4354344420232759511">Navštívené weby sa zobrazia tu</translation>
 <translation id="435527878592612277">Vyberte fotku</translation>
 <translation id="4356100841225547054">Vypnutie zvuku</translation>
-<translation id="1762859572661747715">Braveri môžu do svojich hlásení so spätnou väzbou zahrnúť ďalšie denníky rozhrania Bluetooth, aby bolo možné lepšie diagnostikovať problémy s rozhraním Bluetooth. Keď začiarknete túto možnosť, hlásenie bude obsahovať denníky btsnoop a HCI aktuálnej relácie, z ktorých bolo odstránených čo najviac údajov umožňujúcich zistenie totožnosti. Prístup k týmto denníkom bude obmedzený na správcov skupiny produktov so systémom Brave OS v nástroji Listnr. Denníky budú vymazané po 90 dňoch.</translation>
+<translation id="4357583358198801992">Zobraziť skupiny kariet</translation>
 <translation id="4358361163731478742">Výber jazyka nepodporujú žiadne aplikácie</translation>
 <translation id="4358643842961018282">Zariadenie je aktualizované</translation>
 <translation id="4359408040881008151">Nainštalované pre závislé rozšírenia.</translation>
@@ -4391,6 +4403,7 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4364830672918311045">Zobrazovať upozornenia</translation>
 <translation id="4367513928820380646">Skontrolovať odstránené povolenia</translation>
 <translation id="4367971618859387374">Zobrazovaný názov</translation>
+<translation id="4368960422722232719">Zobrazovať využitie pamäte na plávajúcej karte s prehľadom</translation>
 <translation id="4369215744064167350">Žiadosť o web bola schválená</translation>
 <translation id="4369233657762989723">Zapnutie alebo vypnutie diktovania</translation>
 <translation id="436926121798828366">Môžete to kedykoľvek zmeniť v sekcii <ph name="SETTINGS_LINK"/></translation>
@@ -4423,6 +4436,7 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4388650384344483842">Použite aspoň osem znakov</translation>
 <translation id="4389091756366370506">Používateľ <ph name="VALUE"/></translation>
 <translation id="4390396490617716185"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/> a ďalšie (<ph name="NUMBER_OF_OTHER_SWITCHES"/>) prepínače</translation>
+<translation id="4390569024397171409">Inštalácia aplikácie do zariadenia <ph name="DEVICE_TYPE"/></translation>
 <translation id="439266289085815679">Konfiguráciu rozhrania Bluetooth spravuje <ph name="USER_EMAIL"/>.</translation>
 <translation id="4392896746540753732">Úprava konfiguračného súboru</translation>
 <translation id="4393102500004843976">kláves vyhľadávania + shift + <ph name="TOP_ROW_KEY"/></translation>
@@ -4470,7 +4484,6 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4416582610654027550">Zadajte platnú webovú adresu</translation>
 <translation id="4421932782753506458">Páperový</translation>
 <translation id="4423376891418188461">Obnoviť nastavenia</translation>
-<translation id="442397852638519243"><ph name="USER_NAME"/>, váš správca vyžaduje zmenu hesla.</translation>
 <translation id="4424867131226116718"><ph name="BEGIN_PARAGRAPH1"/>Ak povolíte zariadeniam so systémom ChromeOS odosielať automatické hlásenia, pomôžete nám tým určiť, čo treba v systéme ChromeOS prioritne opraviť a zlepšiť. Tieto hlásenia môžu obsahovať informácie, napríklad kedy ChromeOS padá a koľko pamäte zvyčajne využívate.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Môžete ich kedykoľvek začať alebo prestať povoľovať v nastaveniach svojho zariadenia Brave. Ak ste správcom domény, toto nastavenie môžete zmeniť v správcovskej konzole.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="4426268963847471040">Odstrániť súbor <ph name="FILE_NAME"/></translation>
@@ -4486,7 +4499,6 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4430369329743628066">Záložka bola pridaná</translation>
 <translation id="4430422687972614133">Zapnúť virtuálnu kartu</translation>
 <translation id="4432621511648257259">Heslo je nesprávne</translation>
-<translation id="443454694385851356">Staré (nezabezpečené)</translation>
 <translation id="4434611816075088065">Momentálne nevyžaduje vašu pozornosť nič iné</translation>
 <translation id="443475966875174318">Aktualizácia a odstránenie nekompatibilných aplikácií</translation>
 <translation id="4437947179446780764">Pridajte poskytovateľa služieb vlastného systému doménových názvov (DNS)</translation>
@@ -4530,6 +4542,7 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4473559657152613417">Kliknite pravým tlačidlom na kartu a vyberte Pridať kartu do novej skupiny</translation>
 <translation id="4473996011558324141">odhadovaný čas</translation>
 <translation id="4474155171896946103">Uložiť všetky karty ako záložky...</translation>
+<translation id="4475299370877036544">Táto akcia môže porušovať pravidlá vašej organizácie</translation>
 <translation id="4475552974751346499">Hľadať stiahnuté súbory</translation>
 <translation id="4476590490540813026">Športovkyňa</translation>
 <translation id="4476659815936224889">Tento kód môžete naskenovať pomocou aplikácie na skenovanie QR kódov vo svojom telefóne alebo pomocou niektorých aplikácií fotoaparátu.</translation>
@@ -4542,6 +4555,7 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="4481448477173043917">Zariadenie <ph name="DEVICE_TYPE"/> sa neočakávane reštartovalo</translation>
 <translation id="4481467543947557978">obsluha</translation>
 <translation id="4482990632723642375">Nedávno zavretá karta</translation>
+<translation id="4486333480498805415">Presnosť určovania polohy</translation>
 <translation id="4487489714832036847">Chromebooky používajú namiesto tradičného softvéru aplikácie. Získajte aplikácie na zvýšenie produktivity, zábavu a ďalšie činnosti.</translation>
 <translation id="4488257340342212116">Môže používať vašu kameru</translation>
 <translation id="4490086832405043258">Použiť pre tento profil nastavenia proxy servera v systéme Brave OS</translation>
@@ -4623,7 +4637,6 @@ Môže to zahŕňať informácie o nainštalovanom softvéri, súboroch, prehli
 <translation id="8936733030396193625">Hlasový vstup Asistenta Brave</translation>
 <translation id="4547659257713117923">Žiadne karty z iných zariadení</translation>
 <translation id="4547672827276975204">Nastaviť automaticky</translation>
-<translation id="6161402170488044025">Ak chcete pomôcť Správcovi hesiel Brave ukladať vaše prihlasovacie údaje, pridajte si používateľské meno pre tento web</translation>
 <translation id="4549791035683739768">V bezpečnostnom kľúči nie sú uložené žiadne odtlačky prstov</translation>
 <translation id="4550737096585299960">Skúste to znova o niekoľko minút.</translation>
 <translation id="4550926046134589611">Niektoré podporované odkazy sa budú stále otvárať v aplikácii <ph name="APP_NAME"/>.</translation>
@@ -4864,6 +4877,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="473775607612524610">Aktualizovať</translation>
 <translation id="473936925429402449">Vybrané, ďalší obsah, <ph name="CURRENT_ELEMENT"/>. prvok z <ph name="TOTAL_ELEMENTS"/></translation>
 <translation id="4739639199548674512">Tikety</translation>
+<translation id="4740546261986864539">Nedávno otvorené</translation>
 <translation id="4742334355511750246">Nemôže zobrazovať obrázky</translation>
 <translation id="4742970037960872810">Odstrániť zvýraznenie</translation>
 <translation id="4743260470722568160"><ph name="BEGIN_LINK"/>Ako aktualizovať aplikácie<ph name="END_LINK"/></translation>
@@ -4925,7 +4939,6 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="479536056609751218">Webová stránka, len kód HTML</translation>
 <translation id="4796142525425001238">Vždy obnoviť</translation>
 <translation id="4797314204379834752">Skúste pomocou skupín kariet usporiadať úlohy, nakupovať online a viac</translation>
-<translation id="5526928694260255286">Priložiť <ph name="BEGIN_LINK"/>denníky rozhrania Bluetooth<ph name="END_LINK"/> (interné informácie Brave)</translation>
 <translation id="479863874072008121">Správa zariadení</translation>
 <translation id="479989351350248267">search</translation>
 <translation id="4800839971935185386">Pozrite si aktualizácie názvu a ikony</translation>
@@ -4995,6 +5008,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="484462545196658690">Automaticky</translation>
 <translation id="4846628405149428620">Vyberte, kam tento web môže ukladať zmeny</translation>
 <translation id="4846680374085650406">V prípade tohto nastavenia dodržiavate odporúčania správcu.</translation>
+<translation id="4847242508757499006">Vyberte Skúsiť znova alebo zvoľte Otvoriť v základnom editore a použite možnosti obmedzeného zobrazenia a úprav.</translation>
 <translation id="9059376008425695864">„Ok Brave“ v Asistentovi Brave</translation>
 <translation id="4849286518551984791">Univerzálny koordinovaný čas (UTC/GMT)</translation>
 <translation id="4849517651082200438">Neinštalovať</translation>
@@ -5024,7 +5038,6 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="4868284252360267853">Toto dialógové okno nie je momentálne označené. Označíte ho stlačením kombinácie klávesov Command-Shift-Option A.</translation>
 <translation id="4869170227080975044">Čítať informácie o sieťach v systéme ChromeOS</translation>
 <translation id="4870724079713069532">Pomocou tejto aplikácie môžete otvárať a upravovať podporované súbory z Prieskumníka súborov alebo iných aplikácií. Ak chcete ovládať, ktoré súbory predvolene otvoria túto aplikáciu, prejdite do <ph name="BEGIN_LINK"/>nastavení systému Windows<ph name="END_LINK"/>.</translation>
-<translation id="4870758487381879312">Ak chcete získať informácie o konfigurácii, zadajte heslo od správcu</translation>
 <translation id="4870995365819149457">Niektoré podporované odkazy sa budú stále otvárať v aplikáciách <ph name="APP_NAME"/>, <ph name="APP_NAME_2"/>, <ph name="APP_NAME_3"/> a 1 ďalšej.</translation>
 <translation id="4871322859485617074">Kód PIN obsahuje neplatné znaky</translation>
 <translation id="4871370605780490696">Pridanie záložky</translation>
@@ -5059,6 +5072,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="488785315393301722">Zobraziť podrobnosti</translation>
 <translation id="488862352499217187">Vytvoriť nový priečinok</translation>
 <translation id="4890292359366636311">Aktivujte obraz v obraze automaticky, aby ste ho mohli používať nad ostatnými kartami a oknami.</translation>
+<translation id="4890399733764921729">Nedá sa pripojiť. Uzamknuté iným mobilným operátorom.</translation>
 <translation id="4890773143211625964">Zobraziť rozšírené možnosti tlačiarne</translation>
 <translation id="4891089016822695758">Beta fórum</translation>
 <translation id="4892229439761351791">Web môže používať Bluetooth</translation>
@@ -5090,7 +5104,6 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="4913209098186576320">Tento súbor môže byť nebezpečný<ph name="LINE_BREAK"/>Táto kontrola trvá dlhšie ako zvyčajne…</translation>
 <translation id="4915961947098019832">Môže zobrazovať obrázky</translation>
 <translation id="4916542008280060967">Chcete povoliť webu upravovať súbor <ph name="FILE_NAME"/>?</translation>
-<translation id="4917385247580444890">Silné</translation>
 <translation id="491779113051926205">Počítadlá návštevnosti v systéme ChromeOS</translation>
 <translation id="4918021164741308375">Web <ph name="ORIGIN"/> chce komunikovať s rozšírením <ph name="EXTENSION_NAME"/></translation>
 <translation id="4918086044614829423">Prijať</translation>
@@ -5100,6 +5113,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="1298471559729553235">Ak chcete používať Správcu hesiel so svojím operačným systémom, znova spustite Brave a povoľte prístup k Správcovi hesiel v počítači. Po opätovnom spustení sa karty znova otvoria.</translation>
 <translation id="492299503953721473">Odstrániť aplikácie pre Android</translation>
 <translation id="492363500327720082">Prebieha odinštalovanie aplikácie <ph name="APP_NAME"/>…</translation>
+<translation id="4923977675318667854">Zobraziť skupiny kariet</translation>
 <translation id="4924002401726507608">Odoslať spätnú väzbu</translation>
 <translation id="4924352752174756392">12x</translation>
 <translation id="4925320384394644410">Tu sa zobrazia vaše porty</translation>
@@ -5203,6 +5217,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5010886807652684893">Vizuálne zobrazenie</translation>
 <translation id="5012523644916800014">Spravovať heslá a prístupové kľúče</translation>
 <translation id="501394389332262641">Zvuková signalizácia nízkeho stavu batérie</translation>
+<translation id="50145804426592479">Používanie polohy. Povoľte aplikáciám, webom a službám pre ChromeOS a Android s povoleným prístupom k polohe používať polohu tohto zariadenia. Brave môže pravidelne zhromažďovať údaje o polohe a anonymne pomocou nich zlepšovať presnosť určovania polohy a služby podmienené polohou. <ph name="BEGIN_LINK1"/>Ďalšie informácie<ph name="END_LINK1"/></translation>
 <translation id="5015344424288992913">Určenie proxy...</translation>
 <translation id="5016305686459575361">Po pripojení telefónu budete mať k dispozícii:</translation>
 <translation id="5016491575926936899">Môžete odosielať textové správy z počítača, zdieľať internetové pripojenie, odpovedať na upozornenia na konverzácie a odomykať telefónom zariadenie <ph name="DEVICE_TYPE"/>.<ph name="FOOTNOTE_POINTER"/> <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
@@ -5221,7 +5236,6 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5026874946691314267">Nabudúce nezobrazovať</translation>
 <translation id="5027550639139316293">E-mailový certifikát</translation>
 <translation id="5027562294707732951">Pridať rozšírenie</translation>
-<translation id="5028445315206872221">Rozšírenia sú na tomto webe blokované</translation>
 <translation id="5029287942302939687">Vaše heslo je nastavené</translation>
 <translation id="5029873138381728058">Virtuálny počítač sa nepodarilo skontrolovať</translation>
 <translation id="503155457707535043">Sťahujú sa aplikácie</translation>
@@ -5269,7 +5283,6 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5068553687099139861">zobrazovať heslá</translation>
 <translation id="506886127401228110">Zapnúť izolované webové aplikácie</translation>
 <translation id="5068919226082848014">Pizza</translation>
-<translation id="506934332411950286">Wi‐Fi sa prenáša z telefónu s Androidom</translation>
 <translation id="5070773577685395116">Nerozumiete?</translation>
 <translation id="5071295820492622726">Späť na nedávno stiahnuté</translation>
 <translation id="5071892329440114717">Zobraziť podrobnosti o štandardnej ochrane</translation>
@@ -5287,7 +5300,6 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="2624861355887879084">Po zapnutí budú vaše aplikácie k dispozícii vo všetkých zariadeniach ChromeOS, keď sa prihlásite účtom Brave. Webové aplikácie nainštalované v prehliadači Brave sa budú synchronizovať aj vtedy, keď bude synchronizácia prehliadača vypnutá.</translation>
 <translation id="508059534790499809">Obnovenie tiketu Kerberos</translation>
 <translation id="5081124414979006563">Otvoriť profil pre hostí</translation>
-<translation id="5081960376148623587">Vyberte, či chcete prednačítavať stránky</translation>
 <translation id="5083035541015925118">Ctrl + Alt + šípka nahor</translation>
 <translation id="5084328598860513926">Nastavovanie bolo prerušené. Skúste to znova alebo kontaktujte vlastníka či správcu zariadenia. Kód chyby: <ph name="ERROR_CODE"/>.</translation>
 <translation id="5084622689760736648">Weby budú s väčšou pravdepodobnosťou fungovať podľa vašich očakávaní</translation>
@@ -5305,6 +5317,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5093477827231450397">Zoznam webov, ktorým ste zablokovali navrhovanie reklám iným webom</translation>
 <translation id="5094176498302660097">Pomocou tejto aplikácie môžete otvárať a upravovať podporované súbory z aplikácie Súbory alebo iných. Ak chcete ovládať, ktoré súbory predvolene otvoria túto aplikáciu, prečítajte si, <ph name="BEGIN_LINK"/>ako v zariadení nastaviť predvolené aplikácie<ph name="END_LINK"/>.</translation>
 <translation id="5094721898978802975">Komunikovať so spolupracujúcimi natívnymi aplikáciami</translation>
+<translation id="5095252080770652994">Priebeh</translation>
 <translation id="5095507226704905004">Súbor sa nedá skopírovať, pretože už neexistuje</translation>
 <translation id="5095848221827496531">Zrušiť výber</translation>
 <translation id="5097002363526479830">K sieti „<ph name="NAME"/>“ sa nepodarilo pripojiť: <ph name="DETAILS"/></translation>
@@ -5315,6 +5328,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5101839224773798795">Automaticky kliknúť po zastavení kurzora</translation>
 <translation id="5103311607312269661">zvýšenie jasu obrazovky</translation>
 <translation id="5106350808162641062">Odstrániť</translation>
+<translation id="5106608587025903971">Pre zariadenie <ph name="DEVICE_TYPE"/> môžete vytvoriť heslo a nebudete musieť pri prihlasovaní zadávať heslo svojho účtu Brave</translation>
 <translation id="510695978163689362"><ph name="USER_EMAIL"/> je pod dohľadom v aplikácii Family Link. Môžete pridať školské účty na prístup k školským zdrojom pod rodičovským dohľadom.</translation>
 <translation id="5107093668001980925">Nikdy nezobrazovať <ph name="MODULE_NAME"/></translation>
 <translation id="5107443654503185812">Bezpečné prehliadanie bolo vypnuté rozšírením</translation>
@@ -5373,7 +5387,6 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5147097165869384760">Hľadáte stránku operačného systému? Navštívte <ph name="BEGIN_LINK"/><ph name="CHROME_ABOUT_SYS_LINK"/><ph name="END_LINK"/>.</translation>
 <translation id="5147516217412920887">Podľa pokynov v telefóne overte kód</translation>
 <translation id="5147992672778369947">Používajte odporúčané heslo</translation>
-<translation id="5148277445782867161">Služby určovania polohy Brave odhadujú polohu vášho zariadenia pomocou zdrojov, ako sú Wi-Fi a mobilné siete.</translation>
 <translation id="5148285448107770349">Heslo musí obsahovať aspoň osem znakov</translation>
 <translation id="5149602533174716626">Kopírovať snímku videa</translation>
 <translation id="5150254825601720210">Netscape – názov servera SSL certifikátu</translation>
@@ -5395,6 +5408,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5162905305237671850">Zariadenie <ph name="DEVICE_TYPE"/> je blokované</translation>
 <translation id="5163910114647549394">Karta bola presunutá na koniec panela kariet</translation>
 <translation id="5164530241085602114">Web <ph name="SITE"/> nemá povolené upozornenia</translation>
+<translation id="5165989352025966137">Automatický prechod na celú obrazovku je povolený</translation>
 <translation id="516747639689914043">Protokol HTTP (Hypertext Transport Protocol)</translation>
 <translation id="5170568018924773124">Zobraziť v priečinku</translation>
 <translation id="5171045022955879922">Vyhľadajte alebo zadajte webovú adresu</translation>
@@ -5402,7 +5416,6 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5172855596271336236">K dispozícii je jedna spravovaná tlačiareň.</translation>
 <translation id="5173668317844998239">Pridať a odstrániť odtlačky prstov uložené v bezpečnostnom kľúči</translation>
 <translation id="5174169235862638850">Heslo bolo skopírované do schránky</translation>
-<translation id="5175379009094579629">Názov zariadenia je neplatný. Skúste to znova zadaním platného názvu zariadenia.</translation>
 <translation id="5177479852722101802">Aj naďalej blokovať prístup ku kamere a mikrofónu</translation>
 <translation id="5177549709747445269">Využívate mobilné dáta</translation>
 <translation id="5178667623289523808">Nájsť predchádzajúce</translation>
@@ -5417,6 +5430,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5185386675596372454">Najnovšia verzia doplnku „<ph name="EXTENSION_NAME"/>“ bola zakázaná, pretože vyžaduje viac povolení.</translation>
 <translation id="5185500136143151980">Bez internetu</translation>
 <translation id="5186381005592669696">Prispôsobenie jazyka zobrazenia podporovaných aplikácií</translation>
+<translation id="5187641678926990264">&amp;Inštalovať stránku ako aplikáciu…</translation>
 <translation id="5187826826541650604"><ph name="KEY_NAME"/> (<ph name="DEVICE"/>)</translation>
 <translation id="5190577235024772869">Využitý priestor: <ph name="USED_SPACE"/></translation>
 <translation id="5190926251776387065">Aktivovať port</translation>
@@ -5579,6 +5593,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5319712128756744240">Spárovanie nového zariadenia</translation>
 <translation id="5320135788267874712">Názov nového zariadenia</translation>
 <translation id="5320261549977878764">Zrušiť uloženie skupiny</translation>
+<translation id="5322274928052138413">Spravujte prístup aplikácií, webov a systémových služieb k polohe. Nastavenie Poloha pomáha odhadnúť polohu vášho zariadenia pomocou zdrojov, ako sú Wi-Fi, mobilné siete a senzory. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="532247166573571973">Server môže byť nedostupný. Skúste to neskôr.</translation>
 <translation id="4201026620212054031">Prispôsobte si vzhľad Chromu a tejto stránky</translation>
 <translation id="5324300749339591280">Zoznam aplikácií</translation>
@@ -5625,10 +5640,8 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5365881113273618889">Vybraný priečinok obsahuje citlivé súbory. Naozaj chcete aplikácii <ph name="APP_NAME"/> povoliť trvalý prístup na zapisovanie pre tento priečinok?</translation>
 <translation id="536638840841140142">Žiadne</translation>
 <translation id="5368246151595623328">Sieť <ph name="NETWORK_NAME"/> bola uložená v zariadení <ph name="DEVICE_NAME"/></translation>
-<translation id="5368255566854433132">Vytvorte si pre zariadenie <ph name="DEVICE_TYPE"/> heslo</translation>
 <translation id="5368441245151140827">Toto rozšírenie nemôže čítať a meniť informácie o webe ani byť spustené na pozadí</translation>
 <translation id="5368720394188453070">Telefón je uzamknutý. Ak chcete pokračovať, odomknite ho.</translation>
-<translation id="5368779022775404937">Prihláste sa do domény <ph name="REALM"/></translation>
 <translation id="5369491905435686894">Povoliť zrýchlenie myši</translation>
 <translation id="5369694795837229225">Nastaviť vývojové prostredie systému Linux</translation>
 <translation id="5370819323174483825">&amp;Obnoviť</translation>
@@ -5644,7 +5657,6 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5380424552031517043">Bolo odstránené povolenie <ph name="PERMISSION"/></translation>
 <translation id="5380526436444479273">Počkajte niekoľko minút a skúste to znova</translation>
 <translation id="5382591305415226340">Spravovať podporované odkazy</translation>
-<translation id="5383377866517186886">Kamera je vypnutá v predvoľbách systému Mac</translation>
 <translation id="5383740867328871413">Skupina bez názvu – <ph name="GROUP_CONTENTS"/> – <ph name="COLLAPSED_STATE"/></translation>
 <translation id="4871191274716686333">Toto heslo je uložené iba v tomto zariadení. Ak ho chcete používať v ďalších zariadeniach, uložte si ho do účtu Brave.</translation>
 <translation id="5387116558048951800">Upraviť <ph name="CREDENTIAL_TYPE"/></translation>
@@ -5661,6 +5673,7 @@ Ak chcete zobrazenie oddialiť, stlačte Ctrl + Alt + zníženie jasu.</translat
 <translation id="5395498824851198390">Predvolené písmo</translation>
 <translation id="5397378439569041789">Registrovať zariadenie v režime verejného terminálu alebo zariadenie so softvérom digital signage</translation>
 <translation id="5397794290049113714">Vy</translation>
+<translation id="5398062879200420134">⌥ + umiestnenie kurzora myši</translation>
 <translation id="5398497406011404839">Skryté záložky</translation>
 <translation id="5398572795982417028">Odkaz na stránku je mimo rozsahu, limit je <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="5400196580536813396">Nie je povolené vyhľadávať ani používať tlačiarne, ku ktorým má vaše zariadenie prístup</translation>
@@ -5812,7 +5825,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5499476581866658341">Teraz si môžete zobraziť nedávne fotky a médiá svojho telefónu</translation>
 <translation id="549957179819296104">Nová ikona</translation>
 <translation id="662980795232550526"><ph name="BEGIN_LINK_SEARCH"/>História vyhľadávania<ph name="END_LINK_SEARCH"/> a <ph name="BEGIN_LINK_GOOGLE"/>ďalšie formy aktivity<ph name="END_LINK_GOOGLE"/> sa môžu ukladať do vášho účtu Brave, keď sa doň prihlásite. Môžete ich kedykoľvek odstrániť.</translation>
-<translation id="5500516288673745630">Nastavenie hesla pre zariadenie <ph name="DEVICE_TYPE"/></translation>
 <translation id="5500709606820808700">Kontrola bezpečnosti prebehla dnes</translation>
 <translation id="5501322521654567960">Bočný panel je zarovnaný vľavo</translation>
 <translation id="5501809658163361512">{COUNT,plural, =1{Nepodarilo sa prijať prílohy (<ph name="ATTACHMENTS"/>) zo zariadenia <ph name="DEVICE_NAME"/>}few{Nepodarilo sa prijať prílohy (<ph name="ATTACHMENTS"/>) zo zariadenia <ph name="DEVICE_NAME"/>}many{Nepodarilo sa prijať prílohy (<ph name="ATTACHMENTS"/>) zo zariadenia <ph name="DEVICE_NAME"/>}other{Nepodarilo sa prijať prílohy (<ph name="ATTACHMENTS"/>) zo zariadenia <ph name="DEVICE_NAME"/>}}</translation>
@@ -5832,7 +5844,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5514315914873062345">Tab</translation>
 <translation id="5517304475148761050">Táto aplikácia vyžaduje prístup k Obchodu Play</translation>
 <translation id="5517412723934627386"><ph name="NETWORK_TYPE"/> – <ph name="NETWORK_DISPLAY_NAME"/></translation>
-<translation id="1473632877710838067">Väčšinu funkcií bočného panela môžete otvoriť v Ponuke Brave vpravo hore</translation>
 <translation id="5519195206574732858">LTE</translation>
 <translation id="5519900055135507385">Zvýšte zabezpečenie tohto účtu silným heslom. Bude uložené v službe <ph name="GOOGLE_PASSWORD_MANAGER"/> pre účet <ph name="EMAIL"/>.</translation>
 <translation id="5521078259930077036">Je toto domovská stránka, ktorú ste čakali?</translation>
@@ -5841,7 +5852,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5523149538118225875">{NUM_EXTENSIONS,plural, =1{Váš správca nainštaloval rozšírenie}few{Váš správca nainštaloval # rozšírenia}many{# extensions have been installed by your administrator}other{Váš správca nainštaloval # rozšírení}}</translation>
 <translation id="5523532775593636291">Weby, ktoré ste pridali, zostanú vždy aktívne a šetrič ich z pamäte neodstráni</translation>
 <translation id="5523558474028191231">Názov môže obsahovať písmená, čísla a špeciálne znaky. Môže mať maximálne tento počet znakov: <ph name="MAX_CHARACTER_COUNT"/>.</translation>
-<translation id="5526701598901867718">Všetko (nezabezpečené)</translation>
 <translation id="5526745900034778153">Ak chcete obnoviť synchronizáciu, znova sa prihláste</translation>
 <translation id="5527463195266282916">Došlo k pokusu o prechod rozšírenia na nižšiu verziu.</translation>
 <translation id="5527474464531963247">Môžete tiež vybrať inú sieť.</translation>
@@ -5852,7 +5862,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> vyžaduje</translation>
 <translation id="5537725057119320332">Prenášať</translation>
 <translation id="5539070192556911367">S Googlom sa nedá nadviazať spojenie</translation>
-<translation id="5539221284352502426">Zadané heslo bolo zamietnuté serverom. Možné dôvody: Heslo je príliš krátke. Heslo musí obsahovať čísla alebo symboly. Heslo sa musí odlišovať od predchádzajúcich hesiel.</translation>
 <translation id="5541694225089836610">Správca akciu zakázal</translation>
 <translation id="5542132724887566711">Profil</translation>
 <translation id="5542750926112347543">Boli zablokované súbory cookie z domény <ph name="DOMAIN"/></translation>
@@ -5928,6 +5937,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5590418976913374224">Prehrávať zvuk pri spustení zariadenia</translation>
 <translation id="5591465468509111843">Veľmi široké</translation>
 <translation id="5592595402373377407">Zatiaľ nie je k dispozícii dostatok údajov.</translation>
+<translation id="5594371836748657471">Mikrofón je vypnutý v nastaveniach systému Mac</translation>
 <translation id="5594899180331219722">Vybrať súbor</translation>
 <translation id="5595307023264033512">Celkový priestor využitý webmi: <ph name="TOTAL_USAGE"/></translation>
 <translation id="5595485650161345191">Upraviť adresu</translation>
@@ -5983,8 +5993,10 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5634446357546764049">Pozrite si spomienky z nedávnych ciest a viac</translation>
 <translation id="5635312199252507107">Povoliť na konkrétnych weboch</translation>
 <translation id="5636012309446422">Chcete odstrániť zariadenie <ph name="DEVICE"/> z účtu <ph name="PRIMARY_EMAIL"/>?</translation>
+<translation id="5636140764387862062">Ďalšie akcie pre PIN</translation>
 <translation id="5636996382092289526">Pred použitím siete <ph name="NETWORK_ID"/> bude možno potrebné najprv <ph name="LINK_START"/>prejsť na prihlasovaciu stránku siete<ph name="LINK_END"/>, ktorá sa otvorí automaticky v priebehu niekoľkých sekúnd. Ak k tomu nedôjde, daná sieť sa nedá použiť.</translation>
 <translation id="5637476008227280525">Povoliť mobilné dáta</translation>
+<translation id="5638170200695981015">Ak chcete použiť možnosti obmedzeného zobrazenia a úprav, vyberte Otvoriť v základnom editore.</translation>
 <translation id="563821631542362636">Povoliť webu ukladať údaje</translation>
 <translation id="5639549361331209298">Načítať túto stránku, ďalšie možnosti zobrazíte podržaním</translation>
 <translation id="5640133431808313291">Správa bezpečnostných kľúčov</translation>
@@ -6008,6 +6020,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5657667036353380798">Inštalácia externého rozšírenia vyžaduje prehliadač Brave verzie <ph name="MINIMUM_CHROME_VERSION"/> alebo vyšší</translation>
 <translation id="565899488479822148">Inštaluje sa najnovšia aktualizácia</translation>
 <translation id="5659593005791499971">E-mail</translation>
+<translation id="5659964844710667266">Vytvoriť heslo pre <ph name="DEVICE_TYPE"/></translation>
 <translation id="8744239658215739511">P&amp;rispôsobiť Brave</translation>
 <translation id="5662513737565158057">Zmeňte, ako budú aplikácie pre Linux fungovať.</translation>
 <translation id="5663459693447872156">Automaticky prepnúť na polovičnú šírku</translation>
@@ -6018,6 +6031,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5667546120811588575">Nastavuje sa služba Google Play...</translation>
 <translation id="5668351004957198136">Nepodarilo sa</translation>
 <translation id="5669863904928111203">Systém ChromeOS je neaktuálny</translation>
+<translation id="6115196230119052418">Správa prístupu webov k polohe v Brave</translation>
 <translation id="5671641761787789573">Boli zablokované obrázky</translation>
 <translation id="5671658447180261823">Odstrániť návrh <ph name="SUGGESTION_NAME"/></translation>
 <translation id="567210741546439261">&amp;Záložky a zoznamy</translation>
@@ -6052,6 +6066,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5696679855467848181">Aktuálny používaný súbor PPD: <ph name="PPD_NAME"/></translation>
 <translation id="5697832193891326782">Výber emodži</translation>
 <translation id="5698878456427040674">Skontrolujte, či je vybraný účet podporovaný.</translation>
+<translation id="5699227710146832453">Zo zariadenia</translation>
 <translation id="570043786759263127">Aplikácie a služby Google Play</translation>
 <translation id="5700761515355162635">Súbory cookie tretích strán sú povolené</translation>
 <translation id="5700836101007545240">Možnosť Pridať pripojenie je zakázaná správcom</translation>
@@ -6074,6 +6089,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5713033452812927234">Otvárajú sa okná z predchádzajúceho zariadenia</translation>
 <translation id="5713158217420111469">Pripojené k zariadeniu <ph name="DEVICE"/></translation>
 <translation id="5713960379473463904">Štýl vstupu medzery</translation>
+<translation id="5714100381896040477">Obmedzovať pohyb na obrazovke</translation>
 <translation id="5715711091495208045">Doplnok Broker: <ph name="PLUGIN_NAME"/></translation>
 <translation id="5718049162805123412">Mali by ste ich okamžite zmeniť</translation>
 <translation id="5719854774000914513">Weby môžu žiadať o pripojenie k zariadeniam HID</translation>
@@ -6092,7 +6108,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5734362860645681824">Komunikácia</translation>
 <translation id="5734697361979786483">Pridať zdieľanie súboru</translation>
 <translation id="5736092224453113618">{NUM_FILES,plural, =0{Tieto údaje alebo vaše zariadenie nespĺňa niektoré pravidlá zabezpečenia vašej organizácie. Zistite od správcu, čo je treba opraviť.}=1{Tento súbor alebo vaše zariadenie nespĺňa niektoré pravidlá zabezpečenia vašej organizácie. Zistite od správcu, čo je treba opraviť.}few{Tieto súbory nespĺňajú niektoré pravidlá zabezpečenia vašej organizácie. Zistite od správcu, čo je treba opraviť.}many{Tieto súbory nespĺňajú niektoré pravidlá zabezpečenia vašej organizácie. Zistite od správcu, čo je treba opraviť.}other{Tieto súbory nespĺňajú niektoré pravidlá zabezpečenia vašej organizácie. Zistite od správcu, čo je treba opraviť.}}</translation>
-<translation id="5736796278325406685">Zadajte platné používateľské meno</translation>
 <translation id="5738093759615225354">Tento prístupový kľúč potrebujete na prihlásenie do počítača</translation>
 <translation id="5739017626473506901">Ak chce dieťaťu <ph name="USER_NAME"/> pomôcť pridať školský účet, prihláste sa</translation>
 <translation id="5739235828260127894">Čaká sa na overenie. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
@@ -6125,7 +6140,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5764797882307050727">Uvoľnite miesto na zariadení.</translation>
 <translation id="5765425701854290211">Je nám ľúto, ale niektoré súbory boli poškodené a aktualizácia nebola úspešná. Synchronizované súbory sú v bezpečí.</translation>
 <translation id="5765491088802881382">Žiadne siete nie sú k dispozícii</translation>
-<translation id="870513381775606021">Súbor <ph name="FILE_NAME"/> môže byť nebezpečný. Chcete ho odoslať Googlu na kontrolu? Stláčaním klávesov Shift + F6 prejdite do oblasti panela so stiahnutými súbormi.</translation>
 <translation id="5767099457279594162">Heslo nebolo zdieľané</translation>
 <translation id="5770125698810550803">Zobraziť navigačné tlačidlá</translation>
 <translation id="5771816112378578655">Inštaluje sa...</translation>
@@ -6137,8 +6151,11 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5774295353725270860">Otvoriť aplikáciu Súbory</translation>
 <translation id="5775777649329475570">Chcete odstrániť aplikáciu Google Play a aplikácie pre Android?</translation>
 <translation id="5775863968701268310">Spravovať predvoľby služby Google Play</translation>
+<translation id="5776415697119024904"><ph name="DEVICE_NAME"/> (predvolené systémom)</translation>
 <translation id="5776450228446082914">Zoznam webov, ktoré sa dajú otvoriť v oboch prehliadačoch.</translation>
 <translation id="5776571780337000608">Pomocou tejto aplikácie môžete otvárať a upravovať podporované súbory zo správcu súborov alebo iných aplikácií. Ak chcete ovládať, ktoré súbory predvolene otvoria túto aplikáciu, prečítajte si, <ph name="BEGIN_LINK"/>ako v zariadení nastaviť predvolené aplikácie<ph name="END_LINK"/>.</translation>
+<translation id="5776884611062957102">Služba určovania polohy od Googlu pomáha odhadnúť vašu polohu tým, že zvyšuje presnosť určovania polohy pomocou siete Wi-Fi, mobilných sietí a senzorov. Brave môže pravidelne zhromažďovať údaje o polohe a anonymne pomocou nich zlepšovať presnosť určovania polohy a služby podmienené polohou.
+    Ak túto funkciu vypnete, Android bude určovať polohu iba pomocou adresy IP. Môže to ovplyvniť presnosť polohy používanej aplikáciami (napríklad Mapami).</translation>
 <translation id="5778491106820461378">Účty Brave prihlásených používateľov môžete spravovať v <ph name="LINK_BEGIN"/>Nastaveniach<ph name="LINK_END"/>. Povolenia, ktoré ste udelili webom a aplikáciám, môžu platiť pre všetky účty. Ak nechcete, aby mali weby alebo aplikácie prístup k informáciám o vašom účte, môžete sa v zariadení <ph name="DEVICE_TYPE"/> prihlásiť ako hosť.</translation>
 <translation id="5780011244986845107">Vybraný priečinok obsahuje citlivé súbory. Naozaj chcete aplikácii <ph name="APP_NAME"/> povoliť trvalý prístup na čítanie pre tento priečinok?</translation>
 <translation id="5780973441651030252">Priorita procesov</translation>
@@ -6221,6 +6238,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5836999627049108525">Jazyk, z ktorého chcete prekladať</translation>
 <translation id="583756221537636748">Puzdro</translation>
 <translation id="5840680448799937675">Súbory sa vždy budú zdieľať offline</translation>
+<translation id="5841167715783969407">Automatické časové pásmo na základe sietí Wi‐Fi alebo mobilných sietí</translation>
 <translation id="5841270259333717135">Konfigurácia ethernetu</translation>
 <translation id="5842497610951477805">Povolenie rozhrania Bluetooth</translation>
 <translation id="940606602121164929">Keď sa prihlásite, tieto údaje sú pripojené k vášmu účtu Brave, aby vás chránili v službách Googlu (napríklad zvýšenie ochrany v Gmaile po bezpečnostnom incidente).</translation>
@@ -6281,6 +6299,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5882919346125742463">Známe siete</translation>
 <translation id="5883356647197510494">Automaticky blokované: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/></translation>
 <translation id="5884447826201752041">Prispôsobiť pre každé rozšírenie</translation>
+<translation id="5884730022784413637">Dlhé stlačenie</translation>
 <translation id="5885314688092915589">Tento profil bude spravovať vaša organizácia</translation>
 <translation id="5885470467814103868">Spustenie vyhľadávania</translation>
 <translation id="5885631909150054232">Kopírovať token</translation>
@@ -6327,7 +6346,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5916664084637901428">Zapnuté</translation>
 <translation id="59174027418879706">Povolené</translation>
 <translation id="5920543303088087579">Pripojenie k tejto sieti je zakázané správcom</translation>
-<translation id="5921257443092182237">Služba určovania polohy od Googlu presnejšie odhaduje polohu tohto zariadenia pomocou zdrojov, ako sú Wi-Fi a mobilná sieť.</translation>
 <translation id="5924047253200400718">Získajte pomoc<ph name="SCANNING_STATUS"/></translation>
 <translation id="5924438086390153180">Opýtať sa pred kopírovaním alebo presunom súborov Microsoft na Disk Brave</translation>
 <translation id="5924527146239595929">Nasnímajte novú fotku alebo si zvoľte existujúcu fotku či ikonu.
@@ -6444,7 +6462,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6016178549409952427">Prechod na ďalší obsah, <ph name="CURRENT_ELEMENT"/>. prvok z <ph name="TOTAL_ELEMENTS"/></translation>
 <translation id="6016551720757758985">Potvrdenie obnovenia Powerwash s návratom k predchádzajúcej verzii</translation>
 <translation id="6016972670657536680">Tlačidlo pre výber jazyka a klávesnice. Aktuálne je vybratý jazyk <ph name="LANGUAGE"/>.</translation>
-<translation id="6017503096330453612">Vyberte Skúsiť znova alebo zvoľte Otvoriť v offline editore a použite možnosti obmedzeného zobrazenia a úprav.</translation>
 <translation id="6017514345406065928">Zelená</translation>
 <translation id="6019169947004469866">Orezať</translation>
 <translation id="6019851026059441029">Výborná – HD</translation>
@@ -6490,7 +6507,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5270972322901415631">Vyhľadávať na tejto stránke Googlom…</translation>
 <translation id="6054284857788651331">Nedávno zavretá skupina kariet</translation>
 <translation id="6054961935262556546">Zmeniť viditeľnosť</translation>
-<translation id="6055171183283175969">Zadané heslo je nesprávne.</translation>
 <translation id="6055392876709372977">Štandard PKCS #1 SHA-256 so šifrovaním RSA</translation>
 <translation id="6055544610007596637">Inštalácia aplikácií pre zariadenie <ph name="DEVICE_TYPE"/> z Obchodu Google Play</translation>
 <translation id="6056710589053485679">Opätovne načítať</translation>
@@ -6500,10 +6516,12 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6059652578941944813">Hierarchia certifikátu</translation>
 <translation id="6059925163896151826">Zariadenia USB</translation>
 <translation id="6061408389284235459">Upozornenie bolo odoslané do zariadenia <ph name="DEVICE_NAME"/></translation>
+<translation id="6062513606899361544">Vašu polohu nemajú povolené používať žiadne aplikácie</translation>
 <translation id="6063284707309177505">Vytvoriť QR kód</translation>
 <translation id="6063847492705284550"><ph name="BEGIN_BOLD"/>Poznámka:<ph name="END_BOLD"/> K osobným výsledkom dieťaťa <ph name="SUPERVISED_USER_NAME"/> je možné získať prístup podobným hlasom alebo jeho nahrávkou. Ak chcete šetriť batériu, môžete v nastaveniach Asistenta dieťaťa <ph name="SUPERVISED_USER_NAME"/> vybrať, aby bolo rozpoznávanie výrazu „Hey Brave“ zapnuté iba vtedy, keď je toto zariadenie pripojené k napájaciemu zdroju.</translation>
 <translation id="6064217302520318294">Zámka obrazovky</translation>
 <translation id="606449270532897041">Spravovať dáta webov</translation>
+<translation id="6064764629679333574">Zlepšite kvalitu zvuku mikrofónu s rozhraním Bluetooth tým, že zvýšite rozlíšenie zvuku z nízkeho na vysoké.</translation>
 <translation id="6065145031947216733">Chcete oddeliť svoje prehliadanie?</translation>
 <translation id="6065289257230303064">Atribúty adresára subjektu certifikátu</translation>
 <translation id="6066794465984119824">Hodnota hash obrázka nie je nastavená</translation>
@@ -6560,7 +6578,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6102043788063419338">Tento súbor zablokovala rozšírená ochrana.</translation>
 <translation id="6103681770816982672">Upozornenie: prechádzate na verziu pre vývojárov</translation>
 <translation id="1277915729653513667">Účty Brave</translation>
-<translation id="6104311680260824317">Zariadenie sa nepodarilo pripojiť k doméne. Server nepodporuje stanovené typy šifrovania Kerberos. Skontrolujte nastavenia šifrovania v časti Ďalšie možnosti.</translation>
 <translation id="6104667115274478616">Správa nastavení zvuku v systéme ChromeOS</translation>
 <translation id="6104796831253957966">Zoznam tlačových úloh je plný</translation>
 <translation id="610487644502954950">Bočný panel bol odopnutý</translation>
@@ -6667,6 +6684,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6180510783007738939">Nástroj na kreslenie čiar</translation>
 <translation id="6180550893222597997">Ktorý prístupový kľúč chcete používať pre aplikáciu <ph name="APP_NAME"/>?</translation>
 <translation id="6181431612547969857">Stiahnutie bolo zablokované</translation>
+<translation id="6183369864942961155">Automatický svetlý alebo tmavý motív</translation>
 <translation id="6184099524311454384">Vyhľadajte karty</translation>
 <translation id="1713601041945301465">Brave automaticky obmedzuje súbory cookie tretích strán</translation>
 <translation id="6185132558746749656">Poloha zariadenia</translation>
@@ -6732,6 +6750,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6235208551686043831">Fotoaparát zariadenia je zapnutý. Umiestnite QR kód eSIM karty pred jeho objektív.</translation>
 <translation id="7933920059744288500">V nastaveniach Chromu môžete kedykoľvek vybrať, ktoré dáta prehliadania sa majú synchronizovať. V <ph name="LINK_BEGIN"/>nastaveniach zariadenia<ph name="LINK_END"/> môžete ovládať synchronizáciu webových aplikácií nainštalovaných v prehliadači Brave. Brave môže prispôsobovať Vyhľadávanie a ďalšie služby na základe vašej histórie.</translation>
 <translation id="6237474966939441970">Aplikácia na písanie poznámok dotykovým perom</translation>
+<translation id="6237481151388361546">Zmeňte internetové pripojenie a vyberte Skúsiť znova. Prípadne zvoľte Otvoriť v základnom editore a použite možnosti obmedzeného zobrazenia a úprav.</translation>
 <translation id="623755660902014047">Režim čítania</translation>
 <translation id="6238767809035845642">Text zdieľaný z iného zariadenia</translation>
 <translation id="6238923052227198598">Zobrazovať poslednú poznámku na uzamknutej obrazovke</translation>
@@ -6794,7 +6813,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6277518330158259200">&amp;Vytvoriť snímku obrazovky</translation>
 <translation id="6278428485366576908">Motív</translation>
 <translation id="6278776436938569440">Zmeniť umiestnenie</translation>
-<translation id="6279183038361895380">Stlačením klávesa |<ph name="ACCELERATOR"/>| zobrazíte kurzor</translation>
 <translation id="6280215091796946657">Prihlásiť sa pomocou iného účtu</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="6282180787514676874">{COUNT,plural, =1{Prekračuje limit 1 hárka papiera}few{Prekračuje limit {COUNT} hárkov papiera}many{Prekračuje limit {COUNT} hárka papiera}other{Prekračuje limit {COUNT} hárkov papiera}}</translation>
@@ -6936,6 +6954,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6401597285454423070">Váš počítač obsahuje bezpečnostné zariadenie Trusted Platform Module (TPM), pomocou ktorého sa v systéme Brave OS implementuje mnoho kľúčových bezpečnostných funkcií. Viac sa dozviete v centre pomoci pre Chromebooky na https://support.google.com/chromebook/?p=tpm.</translation>
 <translation id="6402921224457714577">Weby môžu žiadať o povolenie ovládať a preprogramovávať vaše zariadenia MIDI</translation>
 <translation id="6404511346730675251">Upraviť záložku</translation>
+<translation id="640457954117263537">Používajte polohu pre aplikácie a funkcie pre ChromeOS a Android.</translation>
 <translation id="6406303162637086258">Simulovať reštartovanie prehliadača</translation>
 <translation id="6406506848690869874">Synchronizácia</translation>
 <translation id="6406708970972405507">Nastavenia – <ph name="SECTION_TITLE"/></translation>
@@ -6980,7 +6999,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6438475350605608554">Heslá už importujete na inej karte</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/> – Prehráva sa zvuk</translation>
 <translation id="6440081841023333832">Nemôžu ovládať a preprogramovávať vaše zariadenia MIDI</translation>
-<translation id="6440291723980579689">Stránky sa načítavajú až po otvorení</translation>
 <translation id="6441377161852435370">Pridať kartu do čitateľského zoznamu</translation>
 <translation id="6442187272350399447">Skvelý</translation>
 <translation id="6442445294758185945">Aktualizáciu sa nepodarilo stiahnuť. Skúste to neskôr.</translation>
@@ -7004,6 +7022,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6455521402703088376">Vypnuté • Zverejnenie tohto rozšírenia zrušil vývojár</translation>
 <translation id="6455894534188563617">&amp;Nový priečinok</translation>
 <translation id="645705751491738698">Pokračovať v blokovaní jazyka JavaScript</translation>
+<translation id="6458606150257356946">Aj tak prilepiť</translation>
 <translation id="6458701200018867744">Nepodarilo sa nahrať (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="6459488832681039634">Použiť výber na hľadanie</translation>
 <translation id="6459799433792303855">Aktívne okno bolo presunuté na inú obrazovku.</translation>
@@ -7065,8 +7084,8 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6512759338201777379"><ph name="INDEX"/>. vygenerovaný obrázok z <ph name="SUBJECT"/> vyjadrujúci náladu <ph name="MOOD"/>.</translation>
 <translation id="6513247462497316522">Ak nebudete mať pripojenie k inej sieti, prehliadač Brave použije mobilné dáta.</translation>
 <translation id="6514010653036109809">Dostupné zariadenie:</translation>
-<translation id="6514565641373682518">Táto stránka zakázala kurzor myši.</translation>
 <translation id="6517227424170598783">Chcete odstrániť odkaz <ph name="SHORTCUT_NAME"/> – <ph name="APP_NAME"/>?</translation>
+<translation id="6517382055541687102">Vybrané zariadenie bolo zmenené na <ph name="DEVICE_NAME"/></translation>
 <translation id="6517420300299531857">Súbory v sekcii Môj disk sa automaticky synchronizujú s Chromebookom, aby ste k nim mali prístup aj bez internetového pripojenia. Vyžaduje to približne <ph name="REQUIRED_SPACE"/>. Momentálne máte k dispozícii <ph name="FREE_SPACE_AVAILABLE"/>.</translation>
 <translation id="6517709704288360414">Vaše zariadenie už nemusí fungovať správne a môže dochádzať k problémom so zabezpečením a výkonnosťou. Vypnutie aktualizácií môže mať vplyv aj na vaše právo podávať v prípade problémov právne nároky.</translation>
 <translation id="6518014396551869914">&amp;Kopírovať obrázok</translation>
@@ -7111,7 +7130,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="6542521951477560771">Prebieha prenášanie do zariadenia <ph name="RECEIVER_NAME"/></translation>
 <translation id="6544134392255015460">prepínač podsvietenia klávesnice</translation>
 <translation id="6545665334409411530">Rýchlosť opakovania</translation>
-<translation id="6545867563032584178">Mikrofón je vypnutý v predvoľbách systému Mac</translation>
 <translation id="6546856949879953071">Podrobné informácie o inovácii nájdete v denníkoch uložených tu: Súbory &gt; Moje súbory &gt; <ph name="LOG_FILE"/></translation>
 <translation id="6547354035488017500">Uvoľnite aspoň 512 MB miesta, inak vaše zariadenie prestane reagovať. Miesto uvoľníte odstránením súborov z úložiska zariadenia.</translation>
 <translation id="6547854317475115430"><ph name="BEGIN_PARAGRAPH1"/>Služba určovania polohy od Googlu odhaduje polohu vášho zariadenia pomocou zdrojov, ako sú Wi-Fi, mobilné siete a senzory.<ph name="END_PARAGRAPH1"/>
@@ -7185,6 +7203,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="6596816719288285829">Adresa IP</translation>
 <translation id="6596916244504302242">Znova načítajte túto stránku, aby sa použili aktualizované nastavenia na tomto webe</translation>
 <translation id="6597017209724497268">Vzorky</translation>
+<translation id="6597324406048772521">Rozšírenia nie sú na tomto webe povolené</translation>
 <translation id="6597331566371766302">Váš správca zablokoval nasledujúce rozšírenia:</translation>
 <translation id="659894938503552850">najnovšie</translation>
 <translation id="6601262427770154296">Spravovať používateľské slovníky</translation>
@@ -7227,6 +7246,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="6636623428211296678">Preskúmajte ďalšie nastavenia nižšie alebo dokončite kontrolu</translation>
 <translation id="6639554308659482635">Pamäť nástroja SQLite</translation>
 <translation id="6640268266988685324">Otvoriť kartu</translation>
+<translation id="6642424629311432059">Povoľte aplikáciám a službám pre ChromeOS a Android s povoleným prístupom k polohe používať polohu tohto zariadenia. Brave môže pravidelne zhromažďovať údaje o polohe a anonymne pomocou nich zlepšovať presnosť určovania polohy a služby podmienené polohou.</translation>
 <translation id="6642720633335369752">Všetky otvorené okná aplikácie zobrazíte potiahnutím zdola nahor a pridržaním.</translation>
 <translation id="664290675870910564">Výber siete</translation>
 <translation id="6643016212128521049">Vymazať</translation>
@@ -7245,11 +7265,11 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="6651237644330755633">Dôverovať tomuto certifikátu na identifikáciu webových stránok</translation>
 <translation id="6651495917527016072">Synchronizujte siete Wi‑Fi so svojím telefónom. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="6651762277693024112">Spúšťa sa automaticky pri každej návšteve tohto webu</translation>
-<translation id="665355505818177700">Integrácia <ph name="MS_AD_NAME"/> pre Brave je podporovaná iba v platformách x86_64. Chromebooky zostavené na základe platformy ARM alebo x86 túto funkciu nepodporujú.</translation>
 <translation id="6654509035557065241">Preferovať sieť</translation>
 <translation id="6655190889273724601">Režim pre vývojárov</translation>
 <translation id="6655458902729017087">Skryť účty</translation>
 <translation id="6657180931610302174">Chcete pridať používateľské meno?</translation>
+<translation id="6657240842932274095">Chcete povoliť systémovým službám používať vašu polohu?</translation>
 <translation id="6657585470893396449">Heslo</translation>
 <translation id="6659213950629089752">Zobrazenie tejto stránky bolo priblížené rozšírením <ph name="NAME"/></translation>
 <translation id="6659594942844771486">Karta</translation>
@@ -7278,6 +7298,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="6675665718701918026">Bolo pripojené ukazovacie zariadenie</translation>
 <translation id="6675985668044425385">Ak web nefunguje podľa očakávaní, môžete preň povoliť súbory cookie tretích strán prostredníctvom možnosti Ochrana pred sledovaním v paneli s adresou.</translation>
 <translation id="6676212663108450937">Pri kalibrácii pre váš hlas odporúčame použiť slúchadlá</translation>
+<translation id="667752334740867460">Prijímajú sa informácie o sieti Wi‐Fi…</translation>
 <translation id="6678717876183468697">Webová adresa dopytu</translation>
 <translation id="6680442031740878064">K dispozícii: <ph name="AVAILABLE_SPACE"/></translation>
 <translation id="6680650203439190394">Ohodnotiť</translation>
@@ -7324,6 +7345,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="6713441551032149301">Pridržaním klávesa Spúšťač môžete prepínať medzi funkčnými klávesmi a systémovými klávesmi horného radu</translation>
 <translation id="6713668088933662563">Nikdy neponúkať preklad týchto jazykov</translation>
 <translation id="6715803357256707211">Počas inštalácie aplikácie pre Linux sa vyskytla chyba. Podrobnosti zistíte po kliknutí na upozornenie.</translation>
+<translation id="6716049856796700977">Nič nemôže používať vašu polohu. Aplikácie a weby však môžu stále vidieť vašu polohu na základe adresy IP. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="6716798148881908873">Pripojenie k sieti bolo prerušené. Skontrolujte ho alebo skúste inú sieť Wi-Fi.</translation>
 <translation id="4042337971102130070">Farby motívu Chromu boli obnovené, aby viac vyhovovali všetkým, či už používajú tmavý alebo svetlý režim</translation>
 <translation id="671928215901716392">Uzamknúť obrazovku</translation>
@@ -7379,7 +7401,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="676560328519657314">Vaše spôsoby platby v službe Google Pay</translation>
 <translation id="3829555700225710632">Prejsť do Správcu hesiel Brave</translation>
 <translation id="6767566652486411142">Vybrať iný jazyk…</translation>
-<translation id="6767639283522617719">Nepodarilo sa pripojiť k doméne. Skontrolujte, či sú nastavenia organizačnej jednotky správne.</translation>
 <translation id="6768034047581882264">Nemôže zobrazovať nezabezpečený obsah</translation>
 <translation id="6769902329858794251"><ph name="BEGIN_PARAGRAPH1"/><ph name="DEVICE_OS"/> zaisťuje to najlepšie prostredie zhromažďovaním údajov o hardvéri zariadení a ich zdieľaním s Googlom, aby bolo možné určiť, ktoré aktualizácie majú byť doručené. Nepovinne môžete Googlu povoliť používať tieto údaje na ďalšie účely, ako sú podpora a zlepšovanie prostredia a služieb systému <ph name="DEVICE_OS"/>.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>V tomto zariadení sa môžete prihlásiť a prejsť do sekcie chrome://system a zobraziť si polia uvedené ako chromeosflex_, kde nájdete údaje odoslané Googlu na filtrovanie aktualizácií, ako aj ďalšie prípady, kedy ste zdieľali údaje s Googlom.<ph name="END_PARAGRAPH2"/>
@@ -7454,7 +7475,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
     <ph name="BR"/>
     <ph name="FOOTER_MESSAGE"/></translation>
 <translation id="6810613314571580006">Prihlasovať sa na weby automaticky pomocou uložených poverení. Keď je táto funkcia zakázaná, zobrazí sa pred každým prihlásením na web výzva s potvrdením.</translation>
-<translation id="6810768462515084623">Ojoj, platnosť hesla zrejme vypršala. Obnovte ho v inom zariadení a skúste to znova.</translation>
 <translation id="6811034713472274749">Stránka je pripravená na prezeranie</translation>
 <translation id="6811151703183939603">Pevná</translation>
 <translation id="6811332638216701903">Názov hostiteľa DHCP</translation>
@@ -7488,7 +7508,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="682871081149631693">QuickFix</translation>
 <translation id="6828860976882136098">Nepodarilo sa nastaviť automatické aktualizácie pre všetkých používateľov (chyba pri vykonávaní predbežnej kontroly: <ph name="ERROR_NUMBER"/>)</translation>
 <translation id="682971198310367122">Pravidlá ochrany súkromia Brave</translation>
-<translation id="6830200424658853449">Otvoriť v offline editore</translation>
 <translation id="6831043979455480757">Preložiť</translation>
 <translation id="6832218595502288407">Zarovnať doľava</translation>
 <translation id="6833479554815567477">Karta bola odstránená zo skupiny <ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENTS"/></translation>
@@ -7526,7 +7545,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="6856623341093082836">Nastaviť a upraviť presnosť dotykovej obrazovky</translation>
 <translation id="6856850379840757744">Ak nastavenie vypnete, budú upozornenia stlmené</translation>
 <translation id="6857145580237920905">Pred spustením obnovenia pomocou funkcie Powerwash odstráňte profily eSIM karty</translation>
-<translation id="6857699260879628349">Získať informácie o konfigurácii</translation>
 <translation id="6857725247182211756"><ph name="SECONDS"/> s</translation>
 <translation id="6860097299815761905">Nastavenia servera proxy...</translation>
 <translation id="68601584151169673">&amp;Uložiť a zdieľať</translation>
@@ -7545,7 +7563,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="686839242150793617">Môžu automaticky spúšťať obraz v obraze</translation>
 <translation id="6868934826811377550">Zobraziť podrobnosti</translation>
 <translation id="6871644448911473373">Odpovedajúce zariadenie OCSP: <ph name="LOCATION"/></translation>
-<translation id="6872781471649843364">Zadané heslo bolo zamietnuté serverom.</translation>
 <translation id="6873571253135628430">Zmeniť povolenia webov</translation>
 <translation id="6876155724392614295">Bicykel</translation>
 <translation id="6876469544038980967">Neužitočné</translation>
@@ -7579,7 +7596,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="6901024547292737736"><ph name="ACTUAL_CHAR_COUNT"/>/<ph name="MAX_CHAR_COUNT"/></translation>
 <translation id="6902066522699286937">Hlas, ktorého ukážku si chcete vypočuť</translation>
 <translation id="6902336033320348843">Sekcia nie je podporovaná: <ph name="ERROR_LINE"/></translation>
-<translation id="6902837902700739466">Pripojte zariadenie k doméne</translation>
 <translation id="8347080852065577355">Vaše údaje budú synchronizované vo všetkých prehliadačoch Brave, v ktorých máte zapnutú synchronizáciu tohto účtu. Možnosti synchronizácie v systéme Brave OS nájdete v <ph name="LINK_BEGIN"/>nastaveniach systému Brave OS<ph name="LINK_END"/>.</translation>
 <translation id="6903590427234129279">Otvoriť všetky (<ph name="URL_COUNT"/>)</translation>
 <translation id="6903907808598579934">Zapnúť synchronizáciu</translation>
@@ -7616,7 +7632,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="6935031746833428401">Ďalšie informácie o správe zariadení</translation>
 <translation id="6935286146439255109">Chýba zásobník na papier</translation>
 <translation id="6938386202199793006">Máte jednu uloženú tlačiareň.</translation>
-<translation id="6938387822292071111">Zobrazovať obrázky na plávajúcich kartách ukážky umiestnením kurzora myši</translation>
 <translation id="6938606182859551396">Ak chcete v zariadení <ph name="DEVICE_TYPE"/> dostávať upozornenia z telefónu, podľa pokynov v telefóne udeľte Službám Google Play prístup k upozorneniam.</translation>
 <translation id="694168622559714949">Váš správca nastavil predvolený jazyk, ktorý sa nedá upraviť.</translation>
 <translation id="6941937518557314510">Ak chcete vykonať overenie pre hostiteľa <ph name="HOST_NAME"/> pomocou svojho certifikátu, prihláste sa do <ph name="TOKEN_NAME"/>.</translation>
@@ -7771,7 +7786,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7049293980323620022">Ponechať súbor?</translation>
 <translation id="7049524156282610342">Dáta prehliadania <ph name="DISPLAY_NAME"/></translation>
 <translation id="7050037487872780845">Neplatná konfigurácia hotspotu</translation>
-<translation id="7052237160939977163">Odosielať údaje sledovania výkonnosti</translation>
 <translation id="7053983685419859001">Blokovať</translation>
 <translation id="7055152154916055070">Presmerovanie bolo zablokované:</translation>
 <translation id="7055451306017383754">Zdieľanie sa nepodarilo zrušiť, pretože tento priečinok používa nejaká aplikácia. Jeho zdieľanie bude zrušené po ďalšom vypnutí aplikácie Parallels Desktop.</translation>
@@ -7798,12 +7812,14 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7072010813301522126">Názov skratky</translation>
 <translation id="7075513071073410194">Štandard PKCS #1 MD5 so šifrovaním RSA</translation>
 <translation id="7075625805486468288">Správa certifikátov a nastavení HTTPS/SSL</translation>
+<translation id="7075896597860500885">Neodporúčame kopírovať z tohto webu</translation>
 <translation id="7076875098323397992">Inovácia sa nedá spustiť</translation>
 <translation id="7077751457066325012">Zobraziť a prispôsobiť klávesové skratky</translation>
 <translation id="7077829361966535409">Prihlasovaciu stránku sa pomocou aktuálneho nastavenia servera proxy nepodarilo načítať. <ph name="GAIA_RELOAD_LINK_START"/>Skúste sa prihlásiť znova<ph name="GAIA_RELOAD_LINK_END"/> alebo použite iné <ph name="PROXY_SETTINGS_LINK_START"/>nastavenia servera proxy<ph name="PROXY_SETTINGS_LINK_END"/>.</translation>
 <translation id="7078120482318506217">Všetky siete</translation>
 <translation id="708060913198414444">K&amp;opírovať adresu zvuku</translation>
 <translation id="7082568314107259011">Sieť <ph name="NETWORK_NAME"/> je spravovaná správcom</translation>
+<translation id="7082850163410901674">Upozornenia sú vypnuté v nastaveniach systému Mac</translation>
 <translation id="7083774521940805477">Steam pre Chromebook (beta) nie je vo vašom Chromebooku k dispozícii.</translation>
 <translation id="708550780726587276">(nenakonfigurované)</translation>
 <translation id="7086672505018440886">Zahŕňať súbory denníka Chromu do archívu</translation>
@@ -7898,13 +7914,13 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7168109975831002660">Minimálna veľkosť písma</translation>
 <translation id="7169122689956315694">Zapnúť upozornenie na zariadenia v okolí</translation>
 <translation id="7170236477717446850">Profilová fotka</translation>
+<translation id="7170751905948784001">Informácie pre vývojárov:</translation>
 <translation id="7171259390164035663">Nezaregistrovať</translation>
 <translation id="7172470549472604877">{NUM_TABS,plural, =1{Pridať kartu do novej skupiny}few{Pridať karty do novej skupiny}many{Pridať karty do novej skupiny}other{Pridať karty do novej skupiny}}</translation>
 <translation id="7173114856073700355">Otvoriť Nastavenia</translation>
 <translation id="7174199383876220879">Novinka! Ovládajte svoju hudbu, videá a ďalší obsah.</translation>
 <translation id="7175037578838465313">Konfigurácia siete <ph name="NAME"/></translation>
 <translation id="7175353351958621980">Načítané z:</translation>
-<translation id="7177079607604198383">Skontrolujte internetové pripojenie a vyberte Skúsiť znova. Prípadne zvoľte Otvoriť v offline editore a použite možnosti obmedzeného zobrazenia a úprav.</translation>
 <translation id="7180611975245234373">Obnoviť</translation>
 <translation id="7180865173735832675">Prispôsobiť</translation>
 <translation id="7182063559013288142">Okamžitý hotspot</translation>
@@ -7931,7 +7947,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7198503619164954386">Musíte používať zariadenie zaregistrované v podniku</translation>
 <translation id="7199158086730159431">Získať p&amp;omoc</translation>
 <translation id="7199452998289813782">Pozastaviť prenos do zariadenia <ph name="DEVICE_NAME"/></translation>
-<translation id="7200083590239651963">Výber konfigurácie</translation>
 <translation id="720110658997053098">Udržiavať toto zariadenie trvale v režime kiosku</translation>
 <translation id="7201118060536064622">Položka <ph name="DELETED_ITEM_NAME"/> bola odstránená</translation>
 <translation id="7201420661433230412">Zobraziť súbory</translation>
@@ -8047,8 +8062,8 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7290242001003353852">Prihlasovacia služba hostená doménou <ph name="SAML_DOMAIN"/> pristupuje k vášmu fotoaparátu.</translation>
 <translation id="7292067737327289208"><ph name="BEGIN_LINK"/>Prehliadač je spravovaný<ph name="END_LINK"/> vašou organizáciou a váš <ph name="BEGIN_LINK"/>profil<ph name="END_LINK"/> doménou <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="7292195267473691167"><ph name="LOCALE"/> (<ph name="VARIANT"/>)</translation>
+<translation id="7295305918366078219">Automatický prechod na celú obrazovku nie je povolený</translation>
 <translation id="7295614427631867477">Upozorňujeme, že Android, Play a príslušné aplikácie sa riadia vlastnými pravidlami zhromažďovania údajov a používania.</translation>
-<translation id="729583233778673644">Povoľte šifrovania AES a RC4. Šifry RC4 sú nezabezpečené, takže použitím tejto možnosti zvýšite riziko.</translation>
 <translation id="7296503797589217366">Vybrať priečinok <ph name="FOLDER_TITLE"/></translation>
 <translation id="7297726121602187087">Tmavozelená</translation>
 <translation id="7298195798382681320">Odporúčané</translation>
@@ -8066,7 +8081,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7307129035224081534">Pozastavená</translation>
 <translation id="3665832074424990619">Heslá a prístupové kľúče vo vašom účte Brave budú k dispozícii aj v tomto zariadení, kým sa neodhlásite.</translation>
 <translation id="7308643132139167865">Jazyky webov</translation>
-<translation id="7310598146671372464">Nepodarilo sa prihlásiť. Server nepodporuje stanovené typy šifrovania Kerberos. Kontaktujte správcu.</translation>
 <translation id="7311005168897771689">Majte jednoduchý prístup k súborom na Disku Brave, keď ste offline</translation>
 <translation id="7311244614769792472">Neboli nájdené žiadne výsledky</translation>
 <translation id="7312210124139670355">Správca resetuje vašu eSIM kartu. Môže trvať niekoľko minút.</translation>
@@ -8098,7 +8112,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7339785458027436441">Kontrolovať pravopis počas písania</translation>
 <translation id="7339898014177206373">Nové okno</translation>
 <translation id="7340179705876485790">Ak sa chcete vrátiť viac ako stranu, pridržte Späť.</translation>
-<translation id="7340431621085453413">Stránka <ph name="FULLSCREEN_ORIGIN"/> sa teraz zobrazuje na celú obrazovku.</translation>
 <translation id="7340650977506865820">Web zdieľa vašu obrazovku</translation>
 <translation id="2548471733011527203">Prehľady pádov, diagnostiky a údaje o využití sa budú automaticky odosielať Googlu</translation>
 <translation id="734088800888587319">Metriky siete</translation>
@@ -8112,6 +8125,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7347751611463936647">Ak chcete použiť toto rozšírenie, zadajte text „<ph name="EXTENSION_KEYWORD"/>“, stlačte kláves Tab a začnite písať svoj príkaz alebo vyhľadávaný výraz.</translation>
 <translation id="7347943691222276892">Kliknutím odídete zo stránky <ph name="SUBPAGE_TITLE"/>.</translation>
 <translation id="7348093485538360975">Klávesnica na obrazovke</translation>
+<translation id="7348920948593871738">Kamera je vypnutá v nastaveniach systému Mac</translation>
 <translation id="7349010927677336670">Plynulosť videa</translation>
 <translation id="7350327333026851413">{COUNT,plural, =1{{COUNT} heslo je uložené iba v tomto zariadení}few{{COUNT} heslá sú uložené iba v tomto zariadení}many{{COUNT} passwords are saved only to this device}other{{COUNT} hesiel je uložených iba v tomto zariadení}}</translation>
 <translation id="7352651011704765696">Vyskytla sa chyba</translation>
@@ -8145,7 +8159,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="736877393389250337"><ph name="URL"/> sa nedá otvoriť v prehliadači <ph name="ALTERNATIVE_BROWSER_NAME"/>. Obráťte sa na správcu systému.</translation>
 <translation id="7368927539449986686">Úprava vyhľadávania na webe</translation>
 <translation id="7370592524170198497">EAP ethernetovej siete:</translation>
-<translation id="7371490947952970241">Nastavenie Poloha môžete deaktivovať vypnutím hlavného nastavenia Poloha v tomto zariadení. V nastaveniach polohy môžete tiež vypnúť určovanie polohy pomocou siete Wi‑Fi, mobilnej siete a senzorov.</translation>
+<translation id="7370751048350026847">Tento obsah neodporúčame prilepiť na tento web</translation>
 <translation id="7371917887111892735">Karty sa zmenšia na šírku pripnutých kariet</translation>
 <translation id="7374376573160927383">Správa zariadení USB</translation>
 <translation id="7376124766545122644">Tento odkaz sa nedá použiť. Skontrolujte, či sa odkaz začína reťazcom http:// alebo https:// a skúste to znova.</translation>
@@ -8180,6 +8194,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7396017167185131589">Tu sa zobrazia zdieľané priečinky</translation>
 <translation id="7396845648024431313">Aplikácia <ph name="APP_NAME"/> sa spustí pri spustení systému a bude fungovať na pozadí aj po zatvorení všetkých okien programu <ph name="PRODUCT_NAME"/>.</translation>
 <translation id="7399045143794278225">Prispôsobiť synchronizáciu</translation>
+<translation id="7399155934146900496">Vašu polohu nemajú povolené používať žiadne weby</translation>
 <translation id="7399616692258236448">Žiadosti o polohu sú automaticky blokované pre všetky weby okrem tých, ktoré povolíte</translation>
 <translation id="7399802613464275309">Kontrola bezpečnosti</translation>
 <translation id="7400418766976504921">Webová adresa</translation>
@@ -8279,6 +8294,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7465778193084373987">Netscape – webová adresa pre zrušenie certifikátu</translation>
 <translation id="7466431077154602932">Kompaktné zobrazenie</translation>
 <translation id="746861123368584540">Rozšírenie bolo načítané</translation>
+<translation id="7470131554696493512">Blokovať príslušenstvu Thunderbolt alebo USB4 prístup k pamäti aj jej zdieľanie (operačná pamäť)</translation>
 <translation id="7470424110735398630">Môže zobrazovať vašu schránku</translation>
 <translation id="747114903913869239">Chyba: Nepodarilo sa dekódovať rozšírenie</translation>
 <translation id="7471520329163184433">Pomalšie</translation>
@@ -8299,6 +8315,8 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7478658909253570368">Nepovoliť webom pripájať sa k sériovým portom</translation>
 <translation id="7479221278376295180">Prehľad využitia úložiska</translation>
 <translation id="747981547666531654">Pripojené k zariadeniam s rozhraním Bluetooth s názvami <ph name="FIRST_DEVICE"/> a <ph name="SECOND_DEVICE"/></translation>
+<translation id="7480299112230998727"><ph name="BEGIN_PARAGRAPH1"/>Služba určovania polohy od Googlu odhaduje polohu tohto zariadenia pomocou zdrojov, ako sú Wi-Fi, mobilné siete a senozory.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Polohu systému ChromeOS a Androidu môžete v tomto zariadení kedykoľvek vypnúť v sekcii Nastavenia &gt; Ochrana súkromia a zabezpečenie &gt; Nastavenia ochrany súkromia &gt; Prístup k polohe. Môžete vypnúť aj určovanie polohy Androidu pomocou Wi‑Fi, mobilných sietí a senzorov tak, že v rovnakej ponuke vypnete Zlepšiť presnosť určovania polohy Brave v sekcii Rozšírené nastavenia polohy.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="7481312909269577407">Dopredu</translation>
 <translation id="7481358317100446445">Pripravené</translation>
 <translation id="748138892655239008">Základné obmedzenia certifikátu</translation>
@@ -8376,6 +8394,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7544977292347272434">Požiadaj rodiča, aby rozšírenie povolil</translation>
 <translation id="7545466883021407599">Nepodarilo sa pripojiť k serveru. Skontrolujte ho a skúste to znova. Ak problémy pretrvávajú, skúste reštartovať Chromebook. Kód chyby: <ph name="ERROR_CODE"/>.</translation>
 <translation id="7547317915858803630">Upozornenie: Vaše nastavenia aplikácie <ph name="PRODUCT_NAME"/> sú uložené na sieťovom disku. Môže to viesť ku spomaleniu, chybám alebo strate údajov.</translation>
+<translation id="754836352246153944">Rozšírenia nie sú na tomto webe povolené. Výberom otvorte ponuku.</translation>
 <translation id="7548856833046333824">Limonáda</translation>
 <translation id="7549250950481368089">Tu sa zobrazia uložené heslá. <ph name="BEGIN_LINK"/> Importujte heslá<ph name="END_LINK"/> do služby <ph name="BRAND"/>.</translation>
 <translation id="7549434883223124329">Chcete prepnúť jazyk zariadenia?</translation>
@@ -8386,6 +8405,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7552846755917812628">Vyskúšajte nasledujúce tipy:</translation>
 <translation id="7553012839257224005">Kontroluje sa kontajner Linux</translation>
 <translation id="7553242001898162573">Zadajte svoje heslo</translation>
+<translation id="7553487223484420820">Aplikácie, weby a systémové služby s povoleným prístupom k polohe môžu používať vašu polohu. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="755472745191515939">Váš správca tento jazyk nepovoľuje</translation>
 <translation id="7554791636758816595">Nová karta</translation>
 <translation id="7556033326131260574">Funkcii Smart Lock sa nepodarilo overiť váš účet. Vstúpte zadaním svojho hesla.</translation>
@@ -8432,7 +8452,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7594725637786616550">Powerwash resetuje zariadenie <ph name="DEVICE_TYPE"/> tak, aby bolo ako nové.</translation>
 <translation id="7595453277607160340">Ak chcete používať aplikácie pre Android a zaistiť správne fungovanie zariadenia <ph name="DEVICE_TYPE"/>, znova sa prihláste a aktualizujte.</translation>
 <translation id="7595547011743502844"><ph name="ERROR"/> (kód chyby <ph name="ERROR_CODE"/>).</translation>
-<translation id="7599527631045201165">Názov zariadenia je príliš dlhý. Zadajte kratší názov a skúste to znova.</translation>
 <translation id="7600054753482800821">&amp;Spravovať vyhľadávače a vyhľadávanie na webe</translation>
 <translation id="7600218158048761260">Disk Brave je pre tento typ účtu deaktivovaný.</translation>
 <translation id="7600965453749440009">Nikdy neprekladať jazyk <ph name="LANGUAGE"/></translation>
@@ -8468,6 +8487,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7622768823216805500">Weby zvyčajne inštalujú obslužné nástroje platieb, aby mohli poskytovať nákupné funkcie, ako je ľahšie platenie</translation>
 <translation id="7622966771025050155">Prepnúť na zaznamenanú kartu</translation>
 <translation id="7624337243375417909">Funkcia Caps Lock je vypnutá</translation>
+<translation id="7625025537587898155">Pridať nový profil</translation>
 <translation id="7625568159987162309">Zobraziť povolenia a uložené dáta webov</translation>
 <translation id="7625823789272218216">Nová karta vľavo</translation>
 <translation id="7628201176665550262">Frekvencia obnovenia</translation>
@@ -8575,7 +8595,6 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="7686086654630106285">Ďalšie informácie o reklamách navrhovaných webmi</translation>
 <translation id="7686581688229391955">Výberom tejto možnosti povolíte rozšírenia na tomto webe</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
-<translation id="7690294790491645610">Potvrďte nové heslo</translation>
 <translation id="7690378713476594306">Vybrať v zozname</translation>
 <translation id="7690853182226561458">Pridať &amp;priečinok...</translation>
 <translation id="7691073721729883399">Nepodarilo sa pripojiť priestor cryptohome pre verejnú aplikáciu.</translation>
@@ -8698,6 +8717,7 @@ Odstráňte ju stlačením prideleného prepínača alebo klávesa.</translation
 <translation id="7776156998370251340"><ph name="ORIGIN"/> si bude môcť zobraziť súbory v priečinku <ph name="FOLDERNAME"/>, dokým nezavriete všetky karty tohto webu</translation>
 <translation id="5614774692683309331">Keď sa prihlásite, chráni váš v službách Googlu.</translation>
 <translation id="7776701556330691704">Nenašli sa žiadne hlasy</translation>
+<translation id="7776950606649732730">Skúste to znova po dokončení synchronizácie súboru.</translation>
 <translation id="7777624210360383048">Odkaz <ph name="SHORTCUT"/> na rozšírenie <ph name="EXTENSION_NAME"/></translation>
 <translation id="7779840061887151693">obrazovka</translation>
 <translation id="7781335840981796660">Všetky používateľské účty a miestne údaje budú odstránené.</translation>
@@ -8764,6 +8784,7 @@ Odstráňte ju stlačením prideleného prepínača alebo klávesa.</translation
 <translation id="7824665136384946951">Vaša organizácia vypla Bezpečné prehliadanie</translation>
 <translation id="7824864914877854148">Zálohovanie sa nepodarilo dokončiť pre chybu</translation>
 <translation id="782590969421016895">Použiť aktuálne stránky</translation>
+<translation id="7825973332242257878">Skupiny kariet</translation>
 <translation id="7826039927887234077"><ph name="INDEX"/>. nedávny motív vytvorený umelou inteligenciou z <ph name="SUBJECT"/> vyjadrujúci náladu <ph name="MOOD"/>.</translation>
 <translation id="7826174860695147464">Podpora starších prehliadačov (PSP) – interné</translation>
 <translation id="7826249772873145665">Ladenie ADB je deaktivované</translation>
@@ -8879,6 +8900,7 @@ Odstráňte ju stlačením prideleného prepínača alebo klávesa.</translation
 <translation id="7912080627461681647">Vaše heslo bolo zmenené na serveri. Odhláste sa a potom sa znova prihláste.</translation>
 <translation id="791247712619243506">Zrušiť nastavenie</translation>
 <translation id="7912974581251770345">Preklad</translation>
+<translation id="7914399737746719723">Aplikácia bola nainštalovaná</translation>
 <translation id="7915457674565721553">Ak chcete nastaviť rodičovskú kontrolu, pripojte sa k internetu</translation>
 <translation id="7916364730877325865">Vaša organizácia vám nepovoľuje zapnúť synchronizáciu s týmto účtom</translation>
 <translation id="7918257978052780342">Zaregistrovať</translation>
@@ -8886,6 +8908,7 @@ Odstráňte ju stlačením prideleného prepínača alebo klávesa.</translation
 <translation id="7919210519031517829"><ph name="DURATION"/> s</translation>
 <translation id="7920363873148656176"><ph name="ORIGIN"/> uvidí <ph name="FILENAME"/></translation>
 <translation id="7920482456679570420">Pridajte slová, ktoré má kontrola pravopisu preskočiť</translation>
+<translation id="7920715534283810633">Súbory <ph name="FILE_NAMES"/> nie je možné otvoriť</translation>
 <translation id="7921347341284348270">V tomto spravovanom účte si nemôžete zobrazovať upozornenia zo svojho telefónu. Vyskúšajte to znova s iným účtom. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="7921901223958867679">Toto rozšírenie môže čítať a meniť web <ph name="HOST"/></translation>
 <translation id="7922606348470480702">1 rozšírenie</translation>
@@ -8926,6 +8949,7 @@ Odstráňte ju stlačením prideleného prepínača alebo klávesa.</translation
 <translation id="7943837619101191061">Pridať umiestnenie...</translation>
 <translation id="79446453817422139">Tento súbor môže byť nebezpečný</translation>
 <translation id="7944772052836377867">Synchronizácia potrebuje overiť vašu totožnosť</translation>
+<translation id="7944847494038629732">Odpojte kábel USB skenera, znova ho pripojte a skúste to znova</translation>
 <translation id="7945703887991230167">Preferovaný hlas</translation>
 <translation id="7946586320617670168">Pôvod musí byť zabezpečený</translation>
 <translation id="794676567536738329">Potvrdiť povolenia</translation>
@@ -9087,6 +9111,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8062844841289846053">{COUNT,plural, =1{1 hárok papiera}few{{COUNT} hárky papiera}many{{COUNT} hárka papiera}other{{COUNT} hárkov papiera}}</translation>
 <translation id="8063235345342641131">Predvolený zelený avatar</translation>
 <translation id="8063535366119089408">Zobraziť súbor</translation>
+<translation id="1663358621471164569">Záložky, režim čítania a ďalší obsah môžete otvoriť v Ponuke Brave vpravo hore</translation>
 <translation id="8064015586118426197">Chrome OS Flex</translation>
 <translation id="8064279191081105977">Skupina <ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENTS"/> – <ph name="COLLAPSED_STATE"/></translation>
 <translation id="8066444921260601116">Dialógové okno pripojenia</translation>
@@ -9109,6 +9134,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8082106343289440791">Chcete spárovať so zariadením <ph name="DEVICE_NAME"/>?</translation>
 <translation id="8082390128630131497">Deaktivácia ladenia ADB obnoví výrobné nastavenia tohto zariadenia <ph name="DEVICE_TYPE"/>. Všetky používateľské účty a miestne údaje budú odstránené.</translation>
 <translation id="8084114998886531721">Uložené heslo</translation>
+<translation id="8084225986310167317">Blokované pre všetkých</translation>
 <translation id="8084429490152575036">Nastavenia názvu prístupového bodu (APN) mobilnej siete</translation>
 <translation id="8084510406207562688">O&amp;bnoviť všetky karty</translation>
 <translation id="8084628902026812045">Tento web nevyužíva zabezpečené pripojenie a s daným súborom mohlo byť neoprávnene manipulované</translation>
@@ -9142,6 +9168,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="810185532889603849">Vlastná farba</translation>
 <translation id="8101987792947961127">Pri ďalšom spustení sa bude vyžadovať funkcia Powerwash</translation>
 <translation id="8102139037507939978">Odstraňovať zo súboru system_logs.txt údaje umožňujúce zistenie totožnosti</translation>
+<translation id="8102344699913991108">Weby pomocou tohto nastavenia ponúkajú pútavé prostredie na celú obrazovku bez ohľadu na gestá používateľa</translation>
 <translation id="810362914482827094">Vyhľadávanie prístupových kľúčov</translation>
 <translation id="8104088837833760645">Stiahnuť profil eSIM</translation>
 <translation id="8105273883928376822">Ak chcete pokračovať, prihláste sa</translation>
@@ -9183,6 +9210,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8139447493436036221">Súbory na Disku Brave</translation>
 <translation id="8140070492745508800"><ph name="FIRST_DEVICE"/>, <ph name="SECOND_DEVICE"/></translation>
 <translation id="8140108728130537923"><ph name="BEGIN_LINK"/>Prehliadač je spravovaný<ph name="END_LINK"/> doménou <ph name="BROWSER_DOMAIN"/> a váš <ph name="BEGIN_LINK"/>profil<ph name="END_LINK"/> doménou <ph name="PROFILE_DOMAIN"/></translation>
+<translation id="8140869601171867148">Váš účet Brave je účet, ktorý používate s Gmailom, službou YouTube, Chromom a ďalšími službami Googlu.
+    Pomocou svojho účtu máte jednoduchý prístup k všetkým záložkám, súborom a ďalšiemu obsahu.</translation>
 <translation id="8141418916163800697">Ďalšie funkcie môžete nakonfigurovať v nastaveniach Telefónneho centra</translation>
 <translation id="8141584439523427891">Otvára sa alternatívny prehliadač</translation>
 <translation id="8141725884565838206">Správa hesiel</translation>
@@ -9234,7 +9263,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8180295062887074137"><ph name="PRINTER_NAME"/> <ph name="PRINTER_STATUS"/>. Tlačiareň <ph name="ITEM_POSITION"/> z <ph name="NUM_PRINTERS"/>.</translation>
 <translation id="8180785270975217276">Šetrič energie je zapnutý</translation>
 <translation id="8180786512391440389">Rozšírenie <ph name="EXTENSION"/> dokáže čítať a odstrániť obrázky, videá a zvukové súbory vo vybratých umiestneniach.</translation>
-<translation id="8181215761849004992">Nepodarilo sa pripojiť k doméne. Skontrolujte svoj účet, či máte dostatočné oprávnenia na pridávanie zariadení.</translation>
 <translation id="8182105986296479640">Aplikácia nereaguje.</translation>
 <translation id="8182412589359523143">Ak chcete odstrániť všetky údaje z tohto zariadenia <ph name="DEVICE_TYPE"/>, <ph name="BEGIN_LINK"/>kliknite tu<ph name="END_LINK"/>.</translation>
 <translation id="8183703640399301650">EID zariadenia je <ph name="EID_NUMBER"/> a jeho IMEI je <ph name="IMEI_NUMBER"/>. Pomocou týchto čísel je možné aktivovať službu.</translation>
@@ -9260,6 +9288,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8200772114523450471">Pokračovať</translation>
 <translation id="8200789660596905522">Nezabudnite prijať žiadosť o prenos v zariadení <ph name="DEVICE_NAME"/>.</translation>
 <translation id="8202160505685531999">Zadajte znova svoje heslo a aktualizujte tak profil zariadenia <ph name="DEVICE_TYPE"/>.</translation>
+<translation id="8202827109322349110">Otvoriť v základnom editore</translation>
 <translation id="8203152941016626022">Názov zariadenia pri Zdieľaní nablízku</translation>
 <translation id="8203732864715032075">Odosiela upozornenia a predvolene si zapamätá tento počítač pre Správy. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="8203795194971602413">Kliknutie pravým tlačidlom myši</translation>
@@ -9284,10 +9313,12 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8217399928341212914">Naďalej blokovať automatické sťahovanie viacerých súborov súčasne</translation>
 <translation id="822050276545350872">Odteraz už nemusíte čakať</translation>
 <translation id="8221491193165283816">Zvyčajne blokujete upozornenia. Ak chcete tomuto webu povoliť odosielanie upozornení, kliknite tu.</translation>
+<translation id="8222674561049363989">Súbor nie je platný dokument</translation>
 <translation id="822347941086490485">Hľadajú sa zariadenia HID…</translation>
 <translation id="8224427620313426549">Váš účet <ph name="DOMAIN_LINK"/> odstránený nebude</translation>
 <translation id="8225046344534779393">Skontrolujte internetové pripojenie</translation>
 <translation id="8225265270453771718">Zdieľanie okna aplikácie</translation>
+<translation id="8225516926291976401">Vašu polohu môžu používať iba systémové služby. Aplikácie a weby však môžu stále vidieť vašu polohu na základe adresy IP. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="8226222018808695353">Zakázané</translation>
 <translation id="8226619461731305576">Poradie</translation>
 <translation id="8227119283605456246">Pripojiť súbor</translation>
@@ -9328,17 +9359,17 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8253198102038551905">Vlastnosti siete otvoríte kliknutím na tlačidlo plus (+)</translation>
 <translation id="8255212965098517578">Nedávne fotky, upozornenia a aplikácie</translation>
 <translation id="8256319818471787266">Rexo</translation>
+<translation id="5401976223298265794">Záložky, režim čítania a ďalší obsah môžete otvoriť v Ponuke Brave</translation>
 <translation id="8257950718085972371">Aj naďalej blokovať prístup ku kamere</translation>
 <translation id="8258027225380843424">Import bol úspešný.</translation>
 <translation id="8259048637628995340">Pripojte telefón s Androidom, aby ste mali konzistentné prostredie</translation>
 <translation id="8260177673299865994">Zlepšite si ochranu pri sťahovaní</translation>
 <translation id="8260864402787962391">Myš</translation>
 <translation id="8261506727792406068">Odstrániť</translation>
+<translation id="8261625296061301062">Softvér skenera bol nainštalovaný</translation>
 <translation id="2649287203051299533">Aktivuje nový vzhľad rozhrania WebUI na pracovnej ploche. Musí byť povolené aj nastavenie Obnovenie Chromu 2023.</translation>
 <translation id="8263336784344783289">Pomenujte túto skupinu</translation>
-<translation id="8263744495942430914">Stránka <ph name="FULLSCREEN_ORIGIN"/> zakázala kurzor myši.</translation>
 <translation id="8264024885325823677">Toto nastavenie ovláda váš správca.</translation>
-<translation id="8264718194193514834">Rozšírenie <ph name="EXTENSION_NAME"/> spustilo režim celej obrazovky.</translation>
 <translation id="826511437356419340">Vstúpili ste do režimu prehľadu okien. Prechádzajte potiahnutím alebo ak používate klávesnicu, stlačte kláves Tab.</translation>
 <translation id="8266947622852630193">Všetky metódy vstupu</translation>
 <translation id="8267539814046467575">Pridať tlačiareň</translation>
@@ -9461,6 +9492,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8351630282875799764">Batéria sa nenabíja</translation>
 <translation id="8352287103893778223">Názov skupiny kariet</translation>
 <translation id="835238322900896202">Počas odinštalovania sa vyskytla chyba. Na odinštalovanie použite terminál.</translation>
+<translation id="8353420862507374944">Preniesť, uložiť a zdieľať</translation>
 <translation id="8353683614194668312">Môže:</translation>
 <translation id="8354034204605718473">Kód PIN vášho dieťaťa bol pridaný</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> – <ph name="COUNT"/></translation>
@@ -9514,6 +9546,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8387361103813440603">Nemôže zobrazovať vašu polohu</translation>
 <translation id="8388770971141403598">Sekundárne profily nie sú podporované</translation>
 <translation id="8389492867173948260">Umožniť tomuto rozšíreniu čítať a meniť všetky dáta na navštevovaných weboch:</translation>
+<translation id="8390392581097975659">Inštaluje sa softvér skenera</translation>
 <translation id="8390449457866780408">Server je nedostupný.</translation>
 <translation id="8391218455464584335">Vinyl</translation>
 <translation id="8392726714909453725">Nastavenia počúvania vybraného textu</translation>
@@ -9531,6 +9564,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1189449765746484728">Vaše údaje v Brave</translation>
 <translation id="8403807918453631441"><ph name="BRAND"/> bude môcť skontrolovať heslá, keď ich uložíte</translation>
 <translation id="8405046151008197676">Získajte zhrnutie najdôležitejších súčastí poslednej aktualizácie</translation>
+<translation id="8405118833120731611">{0,plural, =1{Zavrieť tento profil}few{Zavrieť tento profil (# okná)}many{Close this profile (# windows)}other{Zavrieť tento profil (# okien)}}</translation>
 <translation id="8407199357649073301">Úroveň denníka:</translation>
 <translation id="8408270600235826886">Vy ovládate, ktoré informácie sa budú zdieľať s Googlom. Môžete to kedykoľvek zmeniť v Nastaveniach. Údaje budú používané v súlade s <ph name="BEGIN_LINK"/>pravidlami ochrany súkromia<ph name="END_LINK"/> spoločnosti Brave.</translation>
 <translation id="84098433273647700">Aktuálny nainštalovaný motív</translation>
@@ -9565,6 +9599,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8428271547607112339">Pridať školský účet</translation>
 <translation id="84297032718407999">Odhlásenie prebehne o <ph name="LOGOUT_TIME_LEFT"/></translation>
 <translation id="8431190899827883166">Zobrazovanie klepnutí</translation>
+<translation id="8432724317983466962">Prechod na celú obrazovku predvolene vyžaduje gesto používateľa</translation>
 <translation id="8433186206711564395">Nastavenia siete</translation>
 <translation id="8434480141477525001">Port ladenia klienta NaCl</translation>
 <translation id="3380551973126785727">Prihláste sa a zapnite synchronizáciu, aby mohol Brave navrhovať skupiny kariet a usporadúvať vaše karty</translation>
@@ -9671,13 +9706,14 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8515580632187889788">Pokračovaním povoľujete tretím stranám overovať informácie umožňujúce zistenie totožnosti tohto zariadenia v sieti. Ak nechcete tretím stranám povoliť prístup k informáciám zo zariadení, môžete nastaviť profil eSIM <ph name="BEGIN_LINK"/>manuálne<ph name="END_LINK"/>.</translation>
 <translation id="8516472100141530292">Kliknite pravým tlačidlom na skupinu</translation>
 <translation id="8517759303731677493">Upraviť…</translation>
-<translation id="8518942514525208851">Skryť vulgarizmy</translation>
+<translation id="8518942514525208851">Skrývať vulgarizmy</translation>
 <translation id="8519895319663397036">Heslá sa nedajú importovať. Súbor musí byť menší než 150 kB.</translation>
 <translation id="851991974800416566">Rýchlo používajte silné heslo</translation>
 <translation id="8523493869875972733">Zachovať zmeny</translation>
 <translation id="8523849605371521713">Pridané pravidlom</translation>
 <translation id="8524594273111932386">kláves vyhľadávania + šípka nadol</translation>
 <translation id="4483547786985740455">Uloženie kariet do účtu Brave</translation>
+<translation id="8524817717332153865">Kamera a mikrofón sú vypnuté v nastaveniach systému Mac</translation>
 <translation id="8525306231823319788">Celá obrazovka</translation>
 <translation id="8525461909394569609">Táto aplikácia zahŕňa webový obsah zo zdroja</translation>
 <translation id="8526813720153458066">SSH</translation>
@@ -9691,7 +9727,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8531367864749403520">Ak chcete skupinu odstrániť z panela kariet, vyberte Skryť skupinu</translation>
 <translation id="8531701051932785007">Zlepšené bezpečné prehliadanie je vypnuté</translation>
 <translation id="8533670235862049797">Bezpečné prehliadanie je zapnuté</translation>
-<translation id="8534656636775144800">Ojoj, pri pripájaní k doméne sa vyskytla chyba. Skúste to znova.</translation>
 <translation id="8535005006684281994">Netscape – webová adresa pre obnovenie certifikátu</translation>
 <translation id="2432941819722210118">Touto akciou sa odhlásiš z väčšiny webov. Zachováš si prihlásenie do účtu Googlu, takže budú platiť nastavenia aplikácie Family Link pre Brave.</translation>
 <translation id="8536956381488731905">Zvuk pri stlačení klávesa</translation>
@@ -9716,6 +9751,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8551647092888540776"><ph name="FILE_NAMES"/> nemožno otvoriť v režime offline</translation>
 <translation id="8552102814346875916">Pridať do zoznamu Vždy nechať tieto weby aktívne</translation>
 <translation id="8554899698005018844">Žiadny jazyk</translation>
+<translation id="8555444629041783356">Automatický rozpis západov slnka</translation>
 <translation id="855604308879080518">Povoľte aplikáciám pre Android prístup k zariadeniam USB v tomto Chromebooku. Povolenie sa bude požadovať pri každom pripojení zariadenia USB. Jednotlivé aplikácie pre Android budú požadovať ďalšie povolenia.</translation>
 <translation id="8557022314818157177">Klepte na bezpečnostný kľúč, dokým sa odtlačok prsta nenasníma</translation>
 <translation id="2055442944008824554">V sekcii Lokalizačné služby v Macu zapnite Brave</translation>
@@ -9727,6 +9763,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8561206103590473338">Slon</translation>
 <translation id="8561565784790166472">Postupujte opatrne</translation>
 <translation id="8561853412914299728"><ph name="TAB_TITLE"/> <ph name="EMOJI_PLAYING"/></translation>
+<translation id="8563043098557365232">Povolené iba pre systémové služby</translation>
+<translation id="8564220755011656606">K mikrofónu nie je možné získať prístup</translation>
 <translation id="8565650234829130278">Došlo k pokusu o prechod aplikácie na staršiu verziu.</translation>
 <translation id="8566916288687510520">Bolo prijaté nové heslo</translation>
 <translation id="8569673829373920831">Viac o aplikácii <ph name="APP_NAME"/></translation>
@@ -9737,6 +9775,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8573111744706778015">Napísať „uo7“ a zadať „ươ“</translation>
 <translation id="8574990355410201600">Vždy povoliť zvuk na webe <ph name="HOST"/></translation>
 <translation id="8575286410928791436">Ukončíte pridržaním klávesa <ph name="KEY_EQUIVALENT"/></translation>
+<translation id="8575608435630445689">Zlepšenie presnosti určovania polohy (iba Android)</translation>
 <translation id="8576885347118332789">{NUM_TABS,plural, =1{Pridať kartu do čitateľského zoznamu}few{Pridať karty do čitateľského zoznamu}many{Pridať karty do čitateľského zoznamu}other{Pridať karty do čitateľského zoznamu}}</translation>
 <translation id="8577052309681449949">Automatické kliknutia, veľkosť kurzora, farba kurzora a ďalšie možnosti</translation>
 <translation id="8578639784464423491">Nemôže presiahnuť 99 znakov</translation>
@@ -9746,6 +9785,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8584843865238667486">Zariadenia HID s použitím <ph name="USAGE"/> zo stránky použití <ph name="USAGE_PAGE"/></translation>
 <translation id="8585480574870650651">Odstrániť Crostini</translation>
 <translation id="8585841788766257444">Weby uvedené nižšie sú ovládané vlastným nastavením (nie predvoleným)</translation>
+<translation id="8587660243683137365">Inštalácia tejto stránky ako aplikácie</translation>
 <translation id="8588866096426746242">Zobraziť štatistiky profilu</translation>
 <translation id="8588868914509452556"><ph name="WINDOW_TITLE"/> – VR sa prezentuje do náhlavnej súpravy</translation>
 <translation id="8590375307970699841">Nastaviť automatické aktualizácie</translation>
@@ -9768,7 +9808,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8607828412110648570">Skontrolujte, či je zariadenie s rozhraním Bluetooth v párovacom režime a nablízku. Párujte iba zariadenia, ktorým dôverujete. Spárované zariadenia sú viditeľné pre všetky účty v tomto Chromebooku. <ph name="BEGIN_LINK_LEARN_MORE"/>Ďalšie informácie<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="8608618451198398104">Pridanie tiketu Kerberos</translation>
 <translation id="8609465669617005112">Presunúť nahor</translation>
-<translation id="8610103157987623234">Nesprávny formát. Skúste to znova.</translation>
 <translation id="8612252270453580753">Vyhľadať snímku videa pomocou funkcie <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="8613164732773110792">Iba malé znaky, čísla, podčiarkovníky alebo pomlčky</translation>
 <translation id="8613504115484579584">Spôsoby prihlásenia</translation>
@@ -9840,7 +9879,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8662733268723715832">Trvá to dlhšie, ako sa očakávalo. Môžete preskočiť alebo čakať na dokončenie.</translation>
 <translation id="8662911384982557515">Zmeniť domovskú stránku na: <ph name="HOME_PAGE"/></translation>
 <translation id="8662978096466608964">Prehliadač Brave nemôže nastaviť tapetu.</translation>
-<translation id="8663051876219324457">Povoľte aplikáciám, webom a systémovým službám používať vašu polohu. Nastavenie Poloha pomáha odhadnúť polohu vášho zariadenia pomocou zdrojov, ako sú Wi-Fi, mobilné siete a senzory. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="8663099077749055505">Vždy blokovať viaceré automatické stiahnutia na stránkach <ph name="HOST"/></translation>
 <translation id="8664389313780386848">&amp;Zobraziť zdrojový kód stránky</translation>
 <translation id="8665110742939124773">Zadali te nesprávny prístupový kód. Skúste to znova.</translation>
@@ -9849,7 +9887,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8666268818656583275">Klávesy F budú odteraz fungovať ako systémové klávesy horného radu</translation>
 <translation id="8666321716757704924">Povolenia pre <ph name="WEBSITE"/> boli znova udelené</translation>
 <translation id="8667261224612332309">Máte heslá, ktoré sa dajú zlepšiť</translation>
-<translation id="8667328578593601900">Stránka <ph name="FULLSCREEN_ORIGIN"/> je teraz zobrazená na celú obrazovku a zakázala kurzor myši.</translation>
 <translation id="8667760277771450375">Skúmame spôsoby, ako obmedziť sledovanie na rôznych weboch a zároveň webom umožniť bojovať proti reklamnému spamu a podvodom.</translation>
 <translation id="8668378421690365723">Vaše zariadenie už nemusí fungovať správne a môže dochádzať k problémom so zabezpečením a výkonom.</translation>
 <translation id="8669284339312441707">Teplejšie</translation>
@@ -10082,6 +10119,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8838770651474809439">Hamburger</translation>
 <translation id="8838778928843281408">Spravovať telefóny</translation>
 <translation id="883924185304953854">Vyhľadávanie podľa obrázka</translation>
+<translation id="3740206403750675781">Heslo je uložené iba v tomto zariadení. Ak chcete do svojho účtu Brave ukladať nové heslá, aktualizujte Služby Google Play.</translation>
 <translation id="8841843049738266382">Čítať a meniť používateľov na zozname povolených</translation>
 <translation id="8842594465773264717">Odstrániť tento odtlačok prsta</translation>
 <translation id="8845001906332463065">Získať pomoc</translation>
@@ -10180,6 +10218,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8915370057835397490">Načítavajú sa návrhy</translation>
 <translation id="8917490105272468696">Áno, súhlasím</translation>
 <translation id="8918637186205009138">Zariadenie <ph name="DEVICE_TYPE"/> používateľa <ph name="GIVEN_NAME"/></translation>
+<translation id="8918900204934259333">Inštaluje sa aplikácia…</translation>
 <translation id="891931289445130855">Odstrániť dáta a povolenia</translation>
 <translation id="8920133120839850939">Vyberte kartu Ďalšie gestá a potom zapnite Prechádzanie stránkami, aby ste mohli prechádzať dozadu a dopredu</translation>
 <translation id="8922624386829239660">Posúvať obrazovku, keď sa myš dotkne jej okraja</translation>
@@ -10319,7 +10358,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="9018218886431812662">Inštalácia bola dokončená</translation>
 <translation id="901876615920222131">Ak chcete skupinu znova otvoriť, kliknite na ňu</translation>
 <translation id="9019062154811256702">Čítať a meniť nastavenia automatického dopĺňania</translation>
-<translation id="9019894137004772119">Používanie polohy. Povoľte aplikáciám a službám s povoleným prístupom k polohe používať polohu zariadenia. Brave môže pravidelne zhromažďovať údaje o polohe a anonymne pomocou nich zlepšovať presnosť a služby na základe polohy.</translation>
 <translation id="9019956081903586892">Slovník na kontrolu pravopisu sa nepodarilo stiahnuť</translation>
 <translation id="9020300839812600209">Zadajte webovú adresu a zistite, čo by s ňou urobila PSP.</translation>
 <translation id="9020362265352758658">4x</translation>
@@ -10369,12 +10407,10 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="9045160989383249058">Čitateľský zoznam bol presunutý na nový bočný panel. Vyskúšajte ho tu.</translation>
 <translation id="4534361985432360439">Odošle Googlu webovú adresu stránky, na ktorú sa pokúšate prejsť</translation>
 <translation id="9048745018038487540">Vybrať všetky písma</translation>
-<translation id="9050135202879860719">Heslom sa môžete prihlasovať do zariadenia <ph name="DEVICE_TYPE"/></translation>
 <translation id="9050666287014529139">Prístupová fráza</translation>
 <translation id="9052404922357793350">Pokračovať v blokovaní</translation>
 <translation id="90528604757378587">Aktivita na pozadí a niektoré vizuálne efekty, napríklad plynulé posúvanie, môžu byť obmedzené.</translation>
 <translation id="9053563360605707198">Obojstranná tlač</translation>
-<translation id="9055636786322918818">Vynúťte šifrovanie RC4. Šifry RC4 sú nezabezpečené, takže použitím tejto možnosti zvýšite riziko.</translation>
 <translation id="9056788090206401048">Ak chcete použiť prístupový kľúč v inom zariadení, musíte zapnúť Bluetooth. Môžete to kedykoľvek zmeniť v nastaveniach.</translation>
 <translation id="9056810968620647706">Nenašli sa žiadne zhody.</translation>
 <translation id="9057007989365783744"><ph name="SUPERVISED_USER_NAME"/> požaduje prístup k nasledujúcemu obsahu:</translation>
@@ -10607,7 +10643,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="93766956588638423">Opraviť rozšírenie</translation>
 <translation id="938623846785894166">Nezvyčajný súbor</translation>
 <translation id="939401694733344652">Tieto účty sa momentálne s aplikáciami pre Android nepoužívajú. Ak vyberiete účet na používanie s touto aplikáciou pre Android, bude sa dať používať aj s inými aplikáciami pre Android. Prístup do aplikácie pre Android môžete zmeniť v sekcii <ph name="LINK_BEGIN"/>Nastavenia &gt; Účty<ph name="LINK_END"/>.</translation>
-<translation id="939553663881639126">Vyberte, či chcete dostávať ďalšie návrhy vyhľadávania</translation>
 <translation id="939598580284253335">Zadať prístupovú frázu</translation>
 <translation id="939736085109172342">Nový priečinok</translation>
 <translation id="940212040923880623">&amp;Nájsť a upraviť</translation>
@@ -10671,6 +10706,7 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="992032470292211616">Rozšírenia, aplikácie a motívy môžu poškodiť vaše zariadenie. Naozaj chcete pokračovať?</translation>
 <translation id="992256792861109788">Ružová</translation>
 <translation id="992592832486024913">Zakázať funkciu ChromeVox (hlasovú spätnú väzbu)</translation>
+<translation id="992653586748191655">Počet navrhnutých skupín kariet: <ph name="NUM"/></translation>
 <translation id="992778845837390402">Prebieha zálohovanie systému Linux</translation>
 <translation id="993540765962421562">Inštaluje sa</translation>
 <translation id="994289308992179865">Opa&amp;kovať</translation>
@@ -10777,7 +10813,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="8648684608605749476">Blokovať súbory cookie tretích strán v anonymnom režime</translation>
 <translation id="3293179957233653243">Funkcie na niektorých webových stránkach nemusia fungovať v režime Inkognito</translation>
 <translation id="6304377454418270508">Keď ste v režime Inkognito, webové stránky môžu používať súbory cookie iba na zobrazenie vašej aktivity prehliadania na ich vlastnej webovej stránke. Súbory cookie sa vymažú na konci súkromnej relácie.</translation>
-<translation id="7393840550061186366">Keď kliknete alebo niečo napíšete do adresného riadka alebo vyhľadávacieho poľa, zobrazia sa návrhy z vášho predvoleného vyhľadávača. Táto možnosť je v súkromnom režime vypnutá.</translation>
 <translation id="5750851931752628242">{NUM_EXTENSIONS, plural, 
 =1 {Skontrolujte 1 rozšírenie, ktoré bolo stiahnuté z Web Store}
 other {Skontrolujte {NUM_EXTENSIONS} rozšírenie, ktoré bolo stiahnuté z Web Store}}</translation>

@@ -207,6 +207,7 @@
 <translation id="2289567621059034186">Новая вкладка ниже</translation>
 <translation id="3228962656492373217">Закрыть вкладки ниже</translation>
 <translation id="8030501904366631501">Перенести все вкладки в это окно</translation>
+<translation id="253980346046488815">Закрыть одинаковые вкладки</translation>
 <translation id="2336228925368920074">Добавить все вкладки в закладки…</translation>
 <translation id="2523967823495420116">Использовать вертикальные вкладки</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Отключить звук на вкладке}one{Отключить звук на вкладках}few{Отключить звук на вкладках}many{Отключить звук на вкладках}other{Отключить звук на вкладках}}</translation>
@@ -214,6 +215,7 @@
 <translation id="4405580203042711503">Новая вкладка ниже</translation>
 <translation id="5611474372949142946">Закрыть вкладки ниже</translation>
 <translation id="573844928911967687">Перенести все вкладки в это окно</translation>
+<translation id="2703180365855369896">Закрыть одинаковые вкладки</translation>
 <translation id="3704707436873245822">Скопировать текст с изображения</translation>
 <translation id="5268098808165185458">Копирование текста с изображения…</translation>
 <translation id="4046485130884276245">Текст скопирован</translation>
@@ -221,7 +223,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Использовать протокол WireGuard в Brave VPN</translation>
 <translation id="8519170191215826548">Этот параметр нельзя изменить при включенном Brave VPN</translation>
-<translation id="5620961847363372221">Потребуется перезапуск браузера</translation>
 <translation id="4235920711083356755">Показать кнопку VPN</translation>
 <translation id="4070612712151038707">Показывает кнопку VPN на панели инструментов</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -316,6 +317,9 @@
 <translation id="1727684853006449697">Проигрыватель Brave</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
+<translation id="1426410128494586442">Да</translation>
+<translation id="4250680216510889253">Нет</translation>
+<translation id="2356070529366658676">Спрашивать</translation>
 <translation id="4472575034687746823">Начало работы</translation>
 <translation id="8081858229109418493">Имя и иконка профиля</translation>
 <translation id="6786747875388722282">Расширения</translation>
@@ -443,7 +447,6 @@
 <translation id="3540231253392253941">Использовать сервисы Google для обмена push-сообщениями</translation>
 <translation id="933652931229970927">Автоматически отправлять данные диагностики</translation>
 <translation id="4891600875049212418">Включать режим «Не для протокола» при посещении сайтов с деликатным контентом</translation>
-<translation id="2356070529366658676">Спрашивать</translation>
 <translation id="4846154056248462491">На выходе</translation>
 <translation id="2808630562319398131">Сбросить данные Вознаграждений Brave...</translation>
 <translation id="6438096877646138757">Сайты, которые удаляют файлы cookie при закрытии</translation>
@@ -627,6 +630,8 @@
 <translation id="3044369626313583722">Показывать кнопку Brave Кошелька</translation>
 <translation id="7568430944629653319">Включить обнаружение NFT</translation>
 <translation id="970496996377628529">Автоматически добавляет NFT, которыми вы владеете, в кошелек, используя сторонние API.</translation>
+<translation id="4898839076551703154">Включить Brave Кошелек в режиме инкогнито</translation>
+<translation id="1550684990179058322">Внимание! Если вы повторно используете адрес кошелька в режиме инкогнито, сайт сможет связать приватный сеанс с обычным.</translation>
 <translation id="8239147115686034860">Автоматическая блокировка кошелька Brave</translation>
 <translation id="414639769490080648">Через сколько минут кошелек Brave автоматически блокируется</translation>
 <translation id="856371974127598760">Сети кошелька</translation>
@@ -645,7 +650,7 @@
 <translation id="3752403403443723332">Настройки кошелька сброшены.</translation>
 <translation id="594766067816395072">Информация о транзакциях в кошельке сброшена.</translation>
 <translation id="1615009913945115836">Список ваших прикрепленных NFT был сброшен.</translation>
-<translation id="1426410128494586442">Да</translation>
+<translation id="57798285717509216">Прежде чем подписать транзакцию, ознакомьтесь с результатами. <ph name="BEGIN_LINK"/>&lt;u&gt;Подробнее…&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Сети Ethereum</translation>
 <translation id="3504157706952484145">Сети Filecoin</translation>
 <translation id="1561541094377237745">Сети Solana</translation>
