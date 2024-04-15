@@ -82,7 +82,7 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
   // CoreHaptics Engine and Player for slider progress value
   @State private var hapticsEngine: CHHapticEngine?
   @State private var hapticsPlayer: CHHapticPatternPlayer?
-  @State private var hapticsLevel: HapticsLevel = .high
+  @State private var hapticsLevel: HapticsLevel = .intense
 
   var leading: Leading
   var trailing: Trailing
@@ -204,9 +204,6 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
         "[Focus Onboarding] - There was an error creating the engine: \(error.localizedDescription)"
       )
     }
-
-    // Create Initial Continous Feedback
-    createContinousHapticFeedback(intensity: hapticsLevel)
   }
 
   private func createContinousHapticFeedback(intensity: HapticsLevel) {
@@ -259,10 +256,12 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
       return .low
     case 21..<71:
       return .medium
-    case 71..<100:
+    case 71..<95:
       return .high
+    case 95..<100:
+      return .intense
     default:
-      return .medium
+      return .high
     }
   }
 }
