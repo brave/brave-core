@@ -7,7 +7,9 @@
 
 #include <cstddef>
 
+#include "base/base64.h"
 #include "base/functional/callback_helpers.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
@@ -25,7 +27,8 @@ class BraveAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {};
 TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
   // Arrange
   const ml::pipeline::TextEmbeddingInfo text_embedding =
-      ml::pipeline::test::BuildTextEmbedding();
+      ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"The quick brown fox jumps over the lazy dog");
 
   // Act
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
@@ -41,7 +44,8 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
 TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, LogEvent) {
   // Arrange
   const ml::pipeline::TextEmbeddingInfo text_embedding =
-      ml::pipeline::test::BuildTextEmbedding();
+      ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"The quick brown fox jumps over the lazy dog");
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(text_embedding);
 
@@ -65,7 +69,9 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   // Arrange
   for (int i = 0; i < kTextEmbeddingHistorySize.Get() + 3; ++i) {
     const ml::pipeline::TextEmbeddingInfo text_embedding =
-        ml::pipeline::test::BuildTextEmbedding();
+        ml::pipeline::test::BuildTextEmbedding(
+            /*text=*/base::StringPrintf(
+                "The quick brown fox jumps over the lazy dog %d", i));
     const TextEmbeddingHtmlEventInfo text_embedding_html_event =
         BuildTextEmbeddingHtmlEvent(text_embedding);
 

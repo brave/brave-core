@@ -44,11 +44,13 @@ TEST(BraveAdsCreativeAdEmbeddingBasedPredictorVotingTest,
   TextEmbeddingHtmlEventList text_embedding_html_events;
 
   const TextEmbeddingHtmlEventInfo text_embedding_html_event_1 =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"The quick brown fox jumps over the lazy dog"));
   text_embedding_html_events.push_back(text_embedding_html_event_1);
 
   const TextEmbeddingHtmlEventInfo text_embedding_html_event_2 =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"How vexingly quick daft zebras jump"));
   text_embedding_html_events.push_back(text_embedding_html_event_2);
 
   // Act & Assert
@@ -81,11 +83,13 @@ TEST(BraveAdsCreativeAdEmbeddingBasedPredictorVotingTest,
   TextEmbeddingHtmlEventList text_embedding_html_events;
 
   const TextEmbeddingHtmlEventInfo text_embedding_html_event_1 =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"The quick brown fox jumps over the lazy dog"));
   text_embedding_html_events.push_back(text_embedding_html_event_1);
 
   const TextEmbeddingHtmlEventInfo text_embedding_html_event_2 =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding(
+          /*text=*/"How vexingly quick daft zebras jump"));
   text_embedding_html_events.push_back(text_embedding_html_event_2);
 
   // Act & Assert
