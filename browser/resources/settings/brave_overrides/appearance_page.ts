@@ -126,6 +126,13 @@ RegisterPolymerTemplateModifications({
     } else {
       customizeFontsSubpageTrigger.remove()
     }
+    const customizeFontsTemplate = templateContent.querySelector(
+        'template[is=dom-if][route-path="/fonts"]')
+    if (!customizeFontsTemplate) {
+      console.error(`[Brave Settings Overrides] Couldn't find customize fonts subpage template`)
+    } else {
+      customizeFontsTemplate.remove()
+    }
     const pageZoom = templateContent.querySelector('.cr-row:has(#pageZoom)')
     if (!pageZoom) {
       console.error(`[Brave Settings Overrides] Couldn't find page zoom`)
