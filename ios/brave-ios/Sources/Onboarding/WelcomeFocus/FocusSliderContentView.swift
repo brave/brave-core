@@ -134,6 +134,11 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
         }
     }
     .onAppear(perform: prepareSliderHaptics)
+    .onDisappear(perform: {
+      Task { @MainActor in
+        await stopAllHaptics()
+      }
+    })
     .onChange(of: progress) { newValue in
       hapticsLevel = determineHapticIntensityLevel(from: newValue)
     }
@@ -217,7 +222,7 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
               CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5),
             ],
             relativeTime: 0,
-            duration: 1
+            duration: 100
           )
         ],
         parameters: []
@@ -233,8 +238,21 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
     }
   }
 
+  private func stopAllHaptics() async {
+    do {
+      try hapticsPlayer?.cancel()
+      try await hapticsEngine?.stop()
+    } catch let error {
+      Logger.module.debug(
+        "[Focus Onboarding] - Error stopping haptic engine: \(error.localizedDescription)"
+      )
+    }
+  }
+
   private func determineHapticIntensityLevel(from progress: CGFloat) -> HapticsLevel {
-    switch progress {
+    let progressPercentage = Int(progress * 100)
+
+    switch progressPercentage {
     case 0:
       return .none
     case 1..<21:

@@ -47,20 +47,17 @@ struct FocusStepsView: View {
   var body: some View {
     if shouldUseExtendedDesign {
       VStack(spacing: 40) {
-        VStack {
-          stepsContentView
-            .background(colorScheme == .dark ? .black : .white)
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
-        .frame(maxWidth: 616, maxHeight: 895)
-        .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
-        .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
-        .overlay(alignment: .topTrailing) {
-          cancelButton
-            .frame(width: iconSize, height: iconSize)
-            .padding(24)
-        }
-
+        stepsContentView
+          .background(colorScheme == .dark ? .black : .white)
+          .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
+          .frame(maxWidth: 616, maxHeight: 895)
+          .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
+          .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
+          .overlay(alignment: .topTrailing) {
+            cancelButton
+              .frame(width: iconSize, height: iconSize)
+              .padding(24)
+          }
         FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -181,7 +178,7 @@ struct FocusStepsView: View {
       .onChange(of: indicatorIndex) { newValue in
         if indicatorIndex == 1 {
           Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { _ in
-            UIImpactFeedbackGenerator(style: .medium).vibrate()
+            UINotificationFeedbackGenerator().vibrate(style: .error)
           }
         }
       }

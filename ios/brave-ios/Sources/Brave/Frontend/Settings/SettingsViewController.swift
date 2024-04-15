@@ -1116,7 +1116,7 @@ class SettingsViewController: TableViewController {
           cellClass: MultilineValue1Cell.self
         ),
         Row(
-          text: "Retention Preferences Debug Menu",
+          text: "Onboarding Debug Menu",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(
               RetentionPreferencesDebugMenuViewController(
