@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/notreached.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -121,11 +122,14 @@ SharedPinnedTabService::GetTabRendererDataForDummyContents(
       DummyContentsData::FromWebContents(maybe_dummy_contents);
   DCHECK(dummy_contents_data);
 
-  const auto& pinned_tab_data = pinned_tab_data_.at(index);
-  DCHECK_EQ(dummy_contents_data->shared_contents(),
-            pinned_tab_data.shared_contents);
+  for (auto& pinned_tab_data : pinned_tab_data_) {
+    if (pinned_tab_data.shared_contents ==
+        dummy_contents_data->shared_contents()) {
+      return &pinned_tab_data.renderer_data;
+    }
+  }
 
-  return &pinned_tab_data.renderer_data;
+  NOTREACHED_NORETURN();
 }
 
 void SharedPinnedTabService::CacheWebContentsIfNeeded(
@@ -196,6 +200,13 @@ void SharedPinnedTabService::OnBrowserAdded(Browser* browser) {
 }
 
 void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
+  if (change_source_model_) {
+    // This could happen when a shared web contents is attached to the closing
+    // browser. We attach the shared web contents to the closing browser so that
+    // it can be restore on the next startup.
+    return;
+  }
+
   if (!base::Contains(browsers_, browser)) {
     // Browser could be different profile or not a type we're
     // looking for. Let |OnBrowserAdded| decide which to look for.
@@ -234,7 +245,9 @@ void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
       // This was the last browser and there's a dangling contentses. We should
       // attach them to this |browser| so that they could be cleaned up.
       for (auto i = 0u; i < pinned_tab_data_.size(); i++) {
-        if (!pinned_tab_data_.at(i).contents_owner_model) {
+        if (!pinned_tab_data_.at(i).contents_owner_model ||
+            pinned_tab_data_.at(i).contents_owner_model !=
+                browser->tab_strip_model()) {
           MoveSharedWebContentsToBrowser(browser, i,
                                          /* is_last_closing_browser */ true);
         }
