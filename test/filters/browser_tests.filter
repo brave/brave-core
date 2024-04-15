@@ -391,6 +391,14 @@
 -PrivacySandboxNoticeConfirmationTest.NoticeTest/7
 -PrivacySandboxNoticeConfirmationTest.NoticeTest/11
 
+# This also fails because we override privacy sandbox settings.
+# Specifically, because Privacy sandbox is restricted
+# PrivacySandboxServiceImpl::PrivacySandboxServiceImpl ends up resetting
+# prefs::kPrivacySandboxM1FledgeEnabled, which causes
+# ChromeBrowsingDataRemoverDelegate::OnStartRemoving to add a keep alive to
+# profile manager that isn't normally being expected there.
+-AccessibilityLabelsBrowserTest.EnabledOnStartup
+
 # These tests fail because we intentionally disable direct/raw sockets via
 # policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
 # https://github.com/brave/brave-browser/issues/11546 for additional
