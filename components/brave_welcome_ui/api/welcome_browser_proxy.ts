@@ -35,6 +35,7 @@ export interface WelcomeBrowserProxy {
   openSettingsPage: () => void
   enableWebDiscovery: () => void
   getDefaultBrowser: () => Promise<string>
+  getWelcomeCompleteURL: () => Promise<string>
 }
 
 export { DefaultBrowserBrowserProxyImpl, ImportDataBrowserProxyImpl }
@@ -62,6 +63,10 @@ export class WelcomeBrowserProxyImpl implements WelcomeBrowserProxy {
 
   getDefaultBrowser (): Promise<string> {
     return sendWithPromise('getDefaultBrowser')
+  }
+
+  getWelcomeCompleteURL (): Promise<string> {
+    return sendWithPromise('getWelcomeCompleteURL')
   }
 
   static getInstance (): WelcomeBrowserProxy {

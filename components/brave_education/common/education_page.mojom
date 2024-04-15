@@ -1,0 +1,20 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_education.mojom;
+
+// Initializes messaging between the browser and the page.
+interface EducationPageHandlerFactory {
+  CreatePageHandler(pending_receiver<EducationPageHandler> receiver);
+};
+
+// Browser-side handler for requests from the WebUI page.
+interface EducationPageHandler {
+
+  // Returns the education content server URL that corresponds to the specified
+  // WebUI URL.
+  GetServerUrl(string webui_url) => (string server_url);
+
+};

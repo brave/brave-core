@@ -113,6 +113,9 @@ module.exports = {
     'chrome://resources\\/(.*)': getBuildOutputPathList(
       'gen/ui/webui/resources/tsc/$1'
     ),
+    '//resources\\/mojo\\/mojo\\/(.*)': getBuildOutputPathList(
+      'gen/mojo/$1'
+    ),
     'chrome://interstitials\\/(.*)': getBuildOutputPathList(
       'gen/components/security_interstitials/core/$1'
     ),

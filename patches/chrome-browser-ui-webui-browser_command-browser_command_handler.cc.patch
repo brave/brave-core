@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/browser_command/browser_command_handler.cc b/chrome/browser/ui/webui/browser_command/browser_command_handler.cc
+index 5c0a4196548de2c85c2a2db7f88ef9a696d633f6..878b704fff6a36b62fccfe6d993cfdf7e7277987 100644
+--- a/chrome/browser/ui/webui/browser_command/browser_command_handler.cc
++++ b/chrome/browser/ui/webui/browser_command/browser_command_handler.cc
+@@ -128,6 +128,7 @@ void BrowserCommandHandler::CanExecuteCommand(
+     case Command::kOpenPaymentsSettings:
+       can_execute = true;
+       break;
++    BRAVE_CAN_EXECUTE_COMMAND
+   }
+   std::move(callback).Run(can_execute);
+ }

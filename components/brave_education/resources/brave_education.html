@@ -1,0 +1,40 @@
+<!doctype html>
+<html dir="$i18n{textdirection}" lang="$i18n{language}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>$i18n{headerText}</title>
+  <style>
+    html {
+      --page-background: $i18n{backgroundColor};
+    }
+  </style>
+  <style>
+    html {
+      background: var(--page-background);
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    #content {
+      border: none;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <script type="module" src="/strings.m.js"></script>
+  <script type="module" src="/brave_education.bundle.js"></script>
+</head>
+<body>
+  <iframe
+    id="content"
+    title="Brave product education"
+    sandbox="allow-scripts allow-same-origin allow-popups
+             allow-popups-to-escape-sandbox"></iframe>
+</body>
+</html>
