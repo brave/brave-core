@@ -3,6 +3,13 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.6.0
+
+#### Tracking Frame ID For Many Edges / Actios
+
+Add `frame id` properties for most edges, to resolve ambiguities in the
+graph when scripts modify or call API's in other frames (e.g., local frames)
+
 ## Version 0.5.1
 
 #### Fix intermittent issues

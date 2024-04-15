@@ -20,6 +20,7 @@ class XmlUtf8String {
  public:
   explicit XmlUtf8String(std::string_view str);
   explicit XmlUtf8String(const String& str);
+  explicit XmlUtf8String(int value);
   ~XmlUtf8String();
 
   XmlUtf8String(const XmlUtf8String&) = delete;

@@ -15,9 +15,10 @@ namespace brave_page_graph {
 EdgeStorageSet::EdgeStorageSet(GraphItemContext* context,
                                NodeScript* out_node,
                                NodeStorage* in_node,
+                               const FrameId& frame_id,
                                const String& key,
                                const blink::PageGraphValue& value)
-    : EdgeStorage(context, out_node, in_node, key),
+    : EdgeStorage(context, out_node, in_node, frame_id, key),
       value_(blink::PageGraphValueToString(value)) {}
 
 EdgeStorageSet::~EdgeStorageSet() = default;

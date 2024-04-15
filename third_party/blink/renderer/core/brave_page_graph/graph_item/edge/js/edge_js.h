@@ -15,7 +15,10 @@ class GraphNode;
 
 class EdgeJS : public GraphEdge {
  public:
-  EdgeJS(GraphItemContext* context, GraphNode* out_node, GraphNode* in_node);
+  EdgeJS(GraphItemContext* context,
+         GraphNode* out_node,
+         GraphNode* in_node,
+         const FrameId& frame_id);
   ~EdgeJS() override;
 
   void AddGraphMLAttributes(xmlDocPtr doc,
@@ -25,6 +28,9 @@ class EdgeJS : public GraphEdge {
   bool IsEdgeJS() const override;
   virtual bool IsEdgeJSCall() const;
   virtual bool IsEdgeJSResult() const;
+
+ private:
+  const FrameId frame_id_;
 };
 
 }  // namespace brave_page_graph

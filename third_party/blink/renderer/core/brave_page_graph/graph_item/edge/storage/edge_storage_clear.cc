@@ -12,8 +12,9 @@ namespace brave_page_graph {
 
 EdgeStorageClear::EdgeStorageClear(GraphItemContext* context,
                                    NodeScript* out_node,
-                                   NodeStorage* in_node)
-    : EdgeStorage(context, out_node, in_node, "") {}
+                                   NodeStorage* in_node,
+                                   const FrameId& frame_id)
+    : EdgeStorage(context, out_node, in_node, frame_id, "") {}
 
 EdgeStorageClear::~EdgeStorageClear() = default;
 

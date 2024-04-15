@@ -13,8 +13,9 @@ namespace brave_page_graph {
 EdgeStorageDelete::EdgeStorageDelete(GraphItemContext* context,
                                      NodeScript* out_node,
                                      NodeStorage* in_node,
+                                     const FrameId& frame_id,
                                      const String& key)
-    : EdgeStorage(context, out_node, in_node, key) {}
+    : EdgeStorage(context, out_node, in_node, frame_id, key) {}
 
 EdgeStorageDelete::~EdgeStorageDelete() = default;
 

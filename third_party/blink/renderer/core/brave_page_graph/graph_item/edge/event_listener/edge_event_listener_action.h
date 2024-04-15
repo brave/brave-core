@@ -20,6 +20,7 @@ class EdgeEventListenerAction : public GraphEdge {
   EdgeEventListenerAction(GraphItemContext* context,
                           NodeActor* out_node,
                           NodeHTMLElement* in_node,
+                          const FrameId& frame_id,
                           const String& event_type,
                           const EventListenerId listener_id,
                           NodeActor* listener_script);
@@ -42,6 +43,7 @@ class EdgeEventListenerAction : public GraphEdge {
   virtual bool IsEdgeEventListenerRemove() const;
 
  private:
+  const FrameId frame_id_;
   const String event_type_;
   const EventListenerId listener_id_;
   NodeActor* listener_script_;

@@ -20,6 +20,7 @@ class EdgeStorageReadCall final : public EdgeStorage {
   EdgeStorageReadCall(GraphItemContext* context,
                       NodeScript* out_node,
                       NodeStorage* in_node,
+                      const FrameId& frame_id,
                       const String& key);
   ~EdgeStorageReadCall() override;
 

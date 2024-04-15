@@ -14,9 +14,11 @@ EdgeRequest::EdgeRequest(GraphItemContext* context,
                          GraphNode* out_node,
                          GraphNode* in_node,
                          const InspectorId request_id,
+                         const FrameId& frame_id,
                          const RequestStatus request_status)
     : GraphEdge(context, out_node, in_node),
       request_id_(request_id),
+      frame_id_(frame_id),
       request_status_(request_status) {}
 
 EdgeRequest::~EdgeRequest() = default;
@@ -32,6 +34,8 @@ void EdgeRequest::AddGraphMLAttributes(xmlDocPtr doc,
       ->AddValueNode(doc, parent_node, request_id_);
   GraphMLAttrDefForType(kGraphMLAttrDefStatus)
       ->AddValueNode(doc, parent_node, RequestStatusToString(request_status_));
+  GraphMLAttrDefForType(kGraphMLAttrDefEdgeFrameId)
+      ->AddValueNode(doc, parent_node, frame_id_);
 }
 
 bool EdgeRequest::IsEdgeRequest() const {

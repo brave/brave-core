@@ -21,6 +21,7 @@ class EdgeRequestStart final : public EdgeRequest {
                    GraphNode* out_node,
                    NodeResource* in_node,
                    const InspectorId request_id,
+                   const FrameId& frame_id,
                    const String& resource_type);
 
   ~EdgeRequestStart() override;
