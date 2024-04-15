@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+
 using ::testing::Return;
 
 namespace brave_rewards::internal {
@@ -19,6 +21,7 @@ MockRewardsEngine::MockRewardsEngine()
     : RewardsEngine(
           mock_client_receiver_.BindNewEndpointAndPassDedicatedRemote(),
           mojom::RewardsEngineOptions()) {
+  Get<EnvironmentConfig>().AllowDefaultValuesForTesting();
   ON_CALL(*this, database()).WillByDefault(Return(&mock_database_));
 }
 

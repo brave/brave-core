@@ -96,11 +96,11 @@ GURL EnvironmentConfig::rewards_api_url() const {
 GURL EnvironmentConfig::rewards_grant_url() const {
   switch (current_environment()) {
     case mojom::Environment::kDevelopment:
-      return GURL(BUILDFLAG(REWARDS_GRANT_DEV_ENDPOINT));
+      return URLValue(BUILDFLAG(REWARDS_GRANT_DEV_ENDPOINT));
     case mojom::Environment::kStaging:
-      return GURL(BUILDFLAG(REWARDS_GRANT_STAGING_ENDPOINT));
+      return URLValue(BUILDFLAG(REWARDS_GRANT_STAGING_ENDPOINT));
     case mojom::Environment::kProduction:
-      return GURL(BUILDFLAG(REWARDS_GRANT_PROD_ENDPOINT));
+      return URLValue(BUILDFLAG(REWARDS_GRANT_PROD_ENDPOINT));
   }
 }
 
@@ -116,15 +116,15 @@ GURL EnvironmentConfig::rewards_payment_url() const {
 }
 
 GURL EnvironmentConfig::uphold_oauth_url() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? GURL(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL))
-             : GURL(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL));
+  return URLValue(current_environment() == mojom::Environment::kProduction
+                      ? BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)
+                      : BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL));
 }
 
 GURL EnvironmentConfig::uphold_api_url() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? GURL(BUILDFLAG(UPHOLD_PRODUCTION_API_URL))
-             : GURL(BUILDFLAG(UPHOLD_SANDBOX_API_URL));
+  return URLValue(current_environment() == mojom::Environment::kProduction
+                      ? BUILDFLAG(UPHOLD_PRODUCTION_API_URL)
+                      : BUILDFLAG(UPHOLD_SANDBOX_API_URL));
 }
 
 std::string EnvironmentConfig::uphold_client_id() const {
@@ -157,15 +157,15 @@ std::string EnvironmentConfig::uphold_sku_destination() const {
 }
 
 GURL EnvironmentConfig::gemini_oauth_url() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? GURL(BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL))
-             : GURL(BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL));
+  return URLValue(current_environment() == mojom::Environment::kProduction
+                      ? BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)
+                      : BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL));
 }
 
 GURL EnvironmentConfig::gemini_api_url() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? GURL(BUILDFLAG(GEMINI_PRODUCTION_API_URL))
-             : GURL(BUILDFLAG(GEMINI_SANDBOX_API_URL));
+  return URLValue(current_environment() == mojom::Environment::kProduction
+                      ? BUILDFLAG(GEMINI_PRODUCTION_API_URL)
+                      : BUILDFLAG(GEMINI_SANDBOX_API_URL));
 }
 
 std::string EnvironmentConfig::gemini_client_id() const {
@@ -198,15 +198,15 @@ std::string EnvironmentConfig::gemini_sku_destination() const {
 }
 
 GURL EnvironmentConfig::zebpay_oauth_url() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? GURL(BUILDFLAG(ZEBPAY_PRODUCTION_OAUTH_URL))
-             : GURL(BUILDFLAG(ZEBPAY_SANDBOX_OAUTH_URL));
+  return URLValue(current_environment() == mojom::Environment::kProduction
+                      ? BUILDFLAG(ZEBPAY_PRODUCTION_OAUTH_URL)
+                      : BUILDFLAG(ZEBPAY_SANDBOX_OAUTH_URL));
 }
 
 GURL EnvironmentConfig::zebpay_api_url() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? GURL(BUILDFLAG(ZEBPAY_PRODUCTION_API_URL))
-             : GURL(BUILDFLAG(ZEBPAY_SANDBOX_API_URL));
+  return URLValue(current_environment() == mojom::Environment::kProduction
+                      ? BUILDFLAG(ZEBPAY_PRODUCTION_API_URL)
+                      : BUILDFLAG(ZEBPAY_SANDBOX_API_URL));
 }
 
 std::string EnvironmentConfig::zebpay_client_id() const {
@@ -222,9 +222,9 @@ std::string EnvironmentConfig::zebpay_client_secret() const {
 }
 
 GURL EnvironmentConfig::bitflyer_url() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? GURL(BUILDFLAG(BITFLYER_PRODUCTION_URL))
-             : GURL(BUILDFLAG(BITFLYER_SANDBOX_URL));
+  return URLValue(current_environment() == mojom::Environment::kProduction
+                      ? BUILDFLAG(BITFLYER_PRODUCTION_URL)
+                      : BUILDFLAG(BITFLYER_SANDBOX_URL));
 }
 
 std::string EnvironmentConfig::bitflyer_client_id() const {
@@ -243,6 +243,15 @@ std::string EnvironmentConfig::bitflyer_fee_address() const {
   return current_environment() == mojom::Environment::kProduction
              ? BUILDFLAG(BITFLYER_PRODUCTION_FEE_ADDRESS)
              : BUILDFLAG(BITFLYER_SANDBOX_FEE_ADDRESS);
+}
+
+GURL EnvironmentConfig::URLValue(std::string value) const {
+  if (value.empty() && allow_default_values_for_testing_) {
+    value = "https://example.com";
+  }
+  GURL url(value);
+  DCHECK(url.is_valid());
+  return url;
 }
 
 }  // namespace brave_rewards::internal
