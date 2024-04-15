@@ -173,6 +173,9 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       const blink::ResourceError&,
       const base::UnguessableToken& devtools_frame_or_worker_token);
   // Script/module compilation tracking:
+  void ApplyCompilationModeOverride(const blink::ClassicScript&,
+                                    v8::ScriptCompiler::CachedData**,
+                                    v8::ScriptCompiler::CompileOptions*);
   void RegisterPageGraphScriptCompilation(
       blink::ExecutionContext* execution_context,
       const blink::ReferrerScriptInfo& referrer_info,

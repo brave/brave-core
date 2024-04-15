@@ -64,7 +64,6 @@ base::Value ToPageGraphValue(ScriptState* script_state,
 template <>
 base::Value ToPageGraphValue(ScriptState* script_state,
                              const ScriptValue& script_value) {
-  ScriptState::Scope scope(script_state);
   v8::Local<v8::Value> value = script_value.V8Value();
   return ToPageGraphValue(script_state, value);
 }

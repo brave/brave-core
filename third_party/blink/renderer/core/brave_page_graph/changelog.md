@@ -3,6 +3,16 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.5.1
+
+#### Fix intermittent issues
+
+Remove `ScriptState::Scope` calls from args serialization. It fails in some edge
+cases, but it doesn't seem to be required at all right now.
+
+Disable v8 cache for external scripts. The cache should be disabled for most
+scripts, but here it was still active.
+
 ## Version 0.5.0
 
 #### Tracking resources redirects
