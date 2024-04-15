@@ -207,6 +207,7 @@
 <translation id="2289567621059034186">以下の新しいタブ</translation>
 <translation id="3228962656492373217">以下のタブを閉じる</translation>
 <translation id="8030501904366631501">すべてのタブをこのウィンドウに移動</translation>
+<translation id="253980346046488815">重複するタブを閉じる</translation>
 <translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
 <translation id="2523967823495420116">垂直タブを使用</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{タブをミュート}other{タブをミュート}}</translation>
@@ -214,6 +215,7 @@
 <translation id="4405580203042711503">以下の新しいタブ</translation>
 <translation id="5611474372949142946">以下のタブを閉じる</translation>
 <translation id="573844928911967687">すべてのタブをこのウィンドウに移動</translation>
+<translation id="2703180365855369896">重複するタブを閉じる</translation>
 <translation id="3704707436873245822">画像からテキストをコピー</translation>
 <translation id="5268098808165185458">画像からテキストをコピーしています...</translation>
 <translation id="4046485130884276245">画像からテキストをコピーしました</translation>
@@ -221,7 +223,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Brave VPNでWireGuardプロトコルを使用します</translation>
 <translation id="8519170191215826548">Brave VPNの接続中は、この設定を変更できません。</translation>
-<translation id="5620961847363372221">ブラウザの再起動が必要です。</translation>
 <translation id="4235920711083356755">VPNボタンを表示</translation>
 <translation id="4070612712151038707">ツールバーにVPNボタンを表示します</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -316,6 +317,9 @@
 <translation id="1727684853006449697">Braveプレーヤー</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
+<translation id="1426410128494586442">はい</translation>
+<translation id="4250680216510889253">いいえ</translation>
+<translation id="2356070529366658676">確認する</translation>
 <translation id="4472575034687746823">利用を開始</translation>
 <translation id="8081858229109418493">プロフィール名とアイコン</translation>
 <translation id="6786747875388722282">拡張機能</translation>
@@ -443,7 +447,6 @@
 <translation id="3540231253392253941">プッシュメッセージングにGoogleサービスを使用</translation>
 <translation id="933652931229970927">診断レポートを自動送信する</translation>
 <translation id="4891600875049212418">機密性の高いサイトを訪問する場合はOTRモードに切り替える</translation>
-<translation id="2356070529366658676">確認する</translation>
 <translation id="4846154056248462491">終了時に</translation>
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
@@ -627,6 +630,8 @@
 <translation id="3044369626313583722">Braveウォレットボタンを表示する</translation>
 <translation id="7568430944629653319">NFTディスカバリーを有効にする</translation>
 <translation id="970496996377628529">サードパーティーのAPIを使用して、所有するNFTを自動的にウォレットに追加します。</translation>
+<translation id="4898839076551703154">プライベートウィンドウでBraveウォレットを有効にします。</translation>
+<translation id="1550684990179058322">警告: プライベートウィンドウのセッションでウォレットアドレスを再利用すると、サイトでプライベートウィンドウのセッションをプライベートウィンドウ以外のセッションにリンクすることが許可されます。</translation>
 <translation id="8239147115686034860">Brave Wallet を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="856371974127598760">ウォレットネットワーク</translation>
@@ -645,7 +650,7 @@
 <translation id="3752403403443723332">ウォレットをリセットしました。</translation>
 <translation id="594766067816395072">ウォレットのトランザクション情報をリセットしました。</translation>
 <translation id="1615009913945115836">ピン留めされたNFTがリセットされました。</translation>
-<translation id="1426410128494586442">はい</translation>
+<translation id="57798285717509216">署名する前のトランザクション結果を表示します。 <ph name="BEGIN_LINK"/>&lt;u&gt;詳細はこちら&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Ethereumネットワーク</translation>
 <translation id="3504157706952484145">Filecoinネットワーク</translation>
 <translation id="1561541094377237745">Solanaネットワーク</translation>

@@ -12,6 +12,7 @@
 <translation id="5165042248369837294">ट्विटरला एम्बेड केलेल्या ट्विटस परवानगी द्या</translation>
 <translation id="958971637207126733">लिंक्डइन एम्बेड केलेल्या पोस्टना परवानगी द्या</translation>
 <translation id="6302422639282249274">Brave (ब्रेव्ह) पुरस्कार व्यवस्थापित करा</translation>
+<translation id="2709516037105925701">ऑटोफिल</translation>
 <translation id="1468415711258933398">मानक टॅब</translation>
 <translation id="3377025655491224618">गुप्त टॅब</translation>
 <translation id="9148058034647219655">निर्गमन</translation>
@@ -69,15 +70,13 @@
 <translation id="3943857333388298514">पेस्ट करा</translation>
 <translation id="6518133107902771759">सत्यापित करा</translation>
 <translation id="3157931365184549694">पुनर्संचयित करा</translation>
+<translation id="4917385247580444890">मजबूत</translation>
+<translation id="8297006494302853456">कमकुवत</translation>
 <translation id="9111102763498581341">अनलॉक करा</translation>
 <translation id="6657585470893396449">पासवर्ड</translation>
 <translation id="1987317783729300807">खाती</translation>
-<translation id="6979737339423435258">पूर्णवेळ</translation>
-<translation id="3819257035322786455">बॅक अप</translation>
 <translation id="4522570452068850558">तपशील</translation>
 <translation id="4412698727486357573">मदत केंद्र</translation>
-<translation id="3866249974567520381">वर्णन</translation>
-<translation id="3435896845095436175">सक्षम करा</translation>
 <translation id="7805768142964895445">स्थिती</translation>
 <translation id="5747552184818312860">कालबाह्य होईल</translation>
 <translation id="5646376287012673985">स्थान</translation>
@@ -86,14 +85,12 @@
 <translation id="6452181791372256707">नाकारा</translation>
 <translation id="8030852056903932865">मंजूर करा</translation>
 <translation id="5317780077021120954">सेव्ह करा</translation>
-<translation id="1736419249208073774">एक्सप्लोर करा</translation>
 <translation id="9065203028668620118">संपादन</translation>
 <translation id="473775607612524610">अपडेट करा</translation>
 <translation id="5045550434625856497">अयोग्य पासवर्ड</translation>
 <translation id="1367951781824006909">फाइल निवडा</translation>
 <translation id="1165039591588034296">एरर</translation>
 <translation id="7791543448312431591">जोडा</translation>
-<translation id="4250680216510889253">नाही</translation>
 <translation id="2653659639078652383">सबमिट करा</translation>
 <translation id="5233638681132016545">नवीन टॅब</translation>
 <translation id="2391762656119864333">मागे घ्या</translation>
@@ -104,6 +101,7 @@
 <translation id="7982789257301363584">नेटवर्क</translation>
 <translation id="5039804452771397117">परवानगी द्या</translation>
 <translation id="4394049700291259645">अक्षम करा</translation>
+<translation id="4250680216510889253">नाही</translation>
 <translation id="583281660410589416">अज्ञात</translation>
 <translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
 <translation id="6040143037577758943">बंद करा</translation>
@@ -111,6 +109,7 @@
 <translation id="6736243959894955139">पत्ता</translation>
 <translation id="308268297242056490">URI</translation>
 <translation id="3798449238516105146">आवृत्ती</translation>
+<translation id="3435896845095436175">सक्षम करा</translation>
 <translation id="5494920125229734069">सर्व निवडा</translation>
 <translation id="4850886885716139402">पहा</translation>
 <translation id="5939518447894949180">रीसेट करा</translation>
@@ -121,4 +120,5 @@
 <translation id="4195643157523330669">नवीन टॅबमध्ये उघडा</translation>
 <translation id="4243710787042215766">गुप्त टॅबमध्ये उघडा</translation>
 <translation id="8261506727792406068">हटवा</translation>
+<translation id="901834265349196618">ईमेल</translation>
 </translationbundle>

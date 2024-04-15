@@ -53,7 +53,6 @@
 <translation id="849607431499549468">Oplysninger om, hvordan Brave administrerer sine rodcertifikater</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Din organisation sletter automatisk browserdata, når Brave ikke bruges i 1 minut. Disse kan omfatte historik, autofyld og downloads. Dine faner forbliver åbne.}one{Din organisation sletter automatisk browserdata, når Brave ikke bruges i # minut. Disse kan omfatte historik, autofyld og downloads. Dine faner forbliver åbne.}other{Din organisation sletter automatisk browserdata, når Brave ikke bruges i # minutter. Disse kan omfatte historik, autofyld og downloads. Dine faner forbliver åbne.}}</translation>
 <translation id="2126108037660393668">Verificering af den downloadede fil mislykkedes.</translation>
-<translation id="2130870084309816036">Der kunne ikke oprettes forbindelse til internettet. Hvis du bruger en firewall, skal du føje <ph name="PRODUCT_EXE_NAME"/> til tilladelseslisten.</translation>
 <translation id="5789330946301045610">Brave har blokeret denne download, fordi websitet ikke anvender en sikker forbindelse, og der kan være blevet manipuleret med filen</translation>
 <translation id="142389341645668510">Tilpas Brave</translation>
 <translation id="2174917724755363426">Installationen er ikke fuldført. Er du sikker på, at du vil annullere?</translation>
@@ -139,6 +138,7 @@
 <translation id="4304059894777924102">Brave kan ikke tjekke dine adgangskoder. Prøv at tjekke din internetforbindelse.</translation>
 <translation id="2100587595569959771">Få flere oplysninger om personlig tilpasning af annoncer i Brave</translation>
 <translation id="1807774211756215222">Åbn linket på en ny Brave-&amp;fane</translation>
+<translation id="3867175562099983425">Administrer Brave-profiler</translation>
 <translation id="2106568569080763501">Med Brave kan du klikke på et telefonnummer på nettet og ringe op til det via Skype!</translation>
 <translation id="308146532933302843">Få flere oplysninger om, hvorfor Brave blokerer visse downloads</translation>
 <translation id="2189149060536531804">Brave giver dig besked, hvis der er noget, du skal gennemgå</translation>
@@ -151,14 +151,12 @@
 <translation id="7130675370997202556">Klik på dit navn for at åbne Brave og gå i gang med at browse.</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> er allerede logget ind på denne Brave-profil. Hvis du vil holde din browsing adskilt, kan Brave oprette en ny profil til dig.</translation>
 <translation id="2337217774418822704">Din konto administreres af <ph name="MANAGER_NAME"/>. Din administrator kan se og redigere denne Brave-browserprofil og dens data som f.eks. bogmærker, historik og adgangskoder.</translation>
-<translation id="4561646469134805137">Mens du skriver, sender Brave indholdet af adresselinjen eller søgefeltet til din standardsøgemaskine</translation>
 <translation id="3941890832296813527">Installationsfejl: Installationens filnavn er ugyldigt eller understøttes ikke.</translation>
 <translation id="8090497651549769448">Brave forsøger at kopiere adgangskoder. Angiv din Windows-adgangskode for at tillade dette.</translation>
 <translation id="4194619960643453552">Se, hvordan Brave beskytter dig</translation>
 <translation id="1311808042904310985">Om &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">Om Chrome OS</translation>
 <translation id="3703994572283698466">Chrome OS leveres ved hjælp af <ph name="BEGIN_LINK_CROS_OSS"/>open source-software<ph name="END_LINK_CROS_OSS"/>. Det samme gælder for <ph name="BEGIN_LINK_LINUX_OSS"/>Linux-udviklingsmiljøet<ph name="END_LINK_LINUX_OSS"/>.</translation>
-<translation id="238935410828556037">Hvis indstillingen er deaktiveret, får du stadig vist forslag, som Brave leverer lokalt</translation>
 <translation id="6056473803837713617">Hjælp med at gøre Brave bedre ved at rapportere de <ph name="BEGIN_LINK"/>aktuelle indstillinger<ph name="END_LINK"/>.</translation>
 <translation id="4050175100176540509">Vigtige sikkerhedsforbedringer og nye funktioner er tilgængelige i den seneste version.</translation>
 <translation id="4055805654398742145">Adgangskodeadministrator</translation>
@@ -267,7 +265,6 @@
 <translation id="4060970194201477024">Her kan du skifte mellem Brave-profiler</translation>
 <translation id="7815000350132166985">Hvis du tillader cookies, kan Brave bruge dem under forudindlæsning</translation>
 <translation id="6685697979743742605">Denne fil kan være skadelig<ph name="LINE_BREAK"/>Brave kan tjekke denne download for dig, hvis du angiver adgangskoden. Oplysninger om filen sendes til Brave Beskyttet browsing, men filens indhold og adgangskoden forbliver på din enhed.</translation>
-<translation id="3156047523158042818">Afhængigt af dine indstillinger sender Brave muligvis også cookies og din aktuelle webadresse</translation>
 <translation id="6182736845697986886">Installationen mislykkedes på grund af en intern fejl i opdateringsserveren.</translation>
 <translation id="4368341489795135329">Sørg for, at du er logget ind på Brave på din <ph name="TARGET_DEVICE_NAME"/>, og prøv derefter at sende igen.</translation>
 <translation id="8320964054148936490">Computeren har allerede en nyere version af Brave. Hvis softwaren ikke virker, skal du afinstallere Brave og prøve igen.</translation>
@@ -282,7 +279,6 @@
 <translation id="3792238845239580301">Giv din Brave-profil et navn</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> kan være skadelig, så Brave har blokeret den.</translation>
 <translation id="3205074487970075628">Brave bruger dit kamera.</translation>
-<translation id="7470405854261046555">Brave har blokeret denne fil, fordi den er skadelig</translation>
 <translation id="6327105987658262776">Der er ingen opdatering tilgængelig.</translation>
 <translation id="1819119299840995223">En anden handling i Brave er i gang. Prøv igen senere.</translation>
 <translation id="8616874628011103667">Det er nu blevet nemmere at bruge Brave med din Brave-konto og på delte computere.</translation>
@@ -321,9 +317,8 @@ Visse funktioner kan være utilgængelige. Angiv en anden profilmappe, eller bru
 <translation id="3136039682492230890">Brave anbefaler, at du scanner denne fil, da den kan være skadelig.</translation>
 <translation id="1547295885616600893">Chrome OS leveres ved hjælp af <ph name="BEGIN_LINK_CROS_OSS"/>open source-software<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8211837073776713955">Brave giver dig besked, hvis dine adgangskoder kompromitteres</translation>
-<translation id="4879299985215961051">Brave har blokeret denne fil, fordi den indeholder malware</translation>
+<translation id="684888714667046800">Der kunne ikke oprettes forbindelse til internettet. Hvis du bruger en firewall, skal du angive <ph name="PRODUCT_EXE_NAME"/> på tilladelseslisten.</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="2049565899730874086">Google Pay (kopieret til Brave)</translation>
 <translation id="3028928628792374067">Brave har registreret malware i "<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="2301993384336631869">Brave er blevet opdateret, men du har ikke brugt den i 30 dage.</translation>
 <translation id="8828443087767259398">Brave skal have adgang til Bluetooth for at fortsætte 
@@ -392,7 +387,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="813913629614996137">Initialiserer...</translation>
 <translation id="7550680632761245819">Aktivér yderligere beskyttelse i JavaScript- og WebAssembly-maskinen i Brave</translation>
 <translation id="9067428552314418522">Denne fil er farlig, så Brave har blokeret den.</translation>
-<translation id="7344826952831915813">Brave har blokeret denne fil, fordi denne type fil er skadelig</translation>
 <translation id="8207657266087451193">Hvis et billede ikke har en brugbar beskrivelse, forsøger Brave at angive en for dig. Billederne sendes til Brave, så der kan oprettes beskrivelser. Du kan til enhver tid deaktivere denne funktion i indstillingerne.</translation>
 <translation id="8622246347342688645">Brave kan ikke tjekke dine adgangskoder, da du ikke er logget ind</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave advarer dig<ph name="END_LINK"/> om usikre websites og downloads</translation>
@@ -414,6 +408,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="8555465886620020932">Tjenestefejl: <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="227028348235968071">Brave kan tjekke dine adgangskoder, når du er logget ind med din Brave-konto</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Forfatterne bag Brave. Alle rettigheder forbeholdes.</translation>
+<translation id="2406041951487110350">Tilpas Brave</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Sådan bruger vi disse data:<ph name="END_BOLD"/> Websites kan gemme oplysninger med Brave om dine interesser. Hvis du f.eks. besøger et website for at købe sko til et maraton, kan websitet muligvis definere, at din interesse er at løbe maraton. Hvis du derefter besøger et andet website for at tilmelde dig et løb, kan det website vise dig en annonce for løbesko baseret på dine interesser.</translation>
 <translation id="3052349005266761501">Starter Brave...</translation>
 <translation id="6283840329609797763">Installationen mislykkedes på grund af en uspecificeret fejl. Download Brave igen.</translation>
@@ -431,8 +426,10 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="8285294305439559616">Brave forsøger at vise adgangskoder. Angiv din Windows-adgangskode for at tillade dette.</translation>
 <translation id="6514033039060816211">Brave kan estimere dine interesser baseret på din browserhistorik de seneste få uger. Disse oplysninger forbliver på din enhed.</translation>
 <translation id="6389268239133412586">Brave kunne ikke opdateres</translation>
+<translation id="597377760569411310">Tilpas Brave</translation>
 <translation id="7731184591599776500">Brave Enterprise-logo</translation>
 <translation id="8986207147630327271">Du er ved at føje en arbejdsprofil til denne browser, og du giver kun din administrator kontrol over arbejdsprofilen.</translation>
+<translation id="3424657754843264466">Administrer Brave-profiler</translation>
 <translation id="82609232232243542">Log ind på Brave</translation>
 <translation id="3273774796888928550">Log ind på Brave. Hvis du kun vil logge ind på en konto én gang, kan du <ph name="GUEST_LINK_BEGIN"/>bruge enheden som gæst<ph name="GUEST_LINK_END"/>.</translation>
 <translation id="4561046754724442504">Brave blev automatisk lukket</translation>

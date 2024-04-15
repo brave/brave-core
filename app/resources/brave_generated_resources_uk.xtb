@@ -207,6 +207,7 @@
 <translation id="2289567621059034186">Нова вкладка нижче</translation>
 <translation id="3228962656492373217">Закрити вкладки нижче</translation>
 <translation id="8030501904366631501">Перенести всі вкладки до цього вікна</translation>
+<translation id="253980346046488815">Закрити копії вкладок</translation>
 <translation id="2336228925368920074">Додати до закладок усі вкладки...</translation>
 <translation id="2523967823495420116">Використовувати вертикальні вкладки</translation>
 <translation id="3785071023202624850">{NUM_TABS, plural, =1 {Вимкнути звук вкладки} other {Вимкнути звук вкладок}}</translation>
@@ -214,6 +215,7 @@
 <translation id="4405580203042711503">Нова вкладка нижче</translation>
 <translation id="5611474372949142946">Закрити вкладки нижче</translation>
 <translation id="573844928911967687">Перенести всі вкладки до цього вікна</translation>
+<translation id="2703180365855369896">Закриття копій вкладок</translation>
 <translation id="3704707436873245822">Копіювати текст із зображення</translation>
 <translation id="5268098808165185458">Копіювання тексту із зображення...</translation>
 <translation id="4046485130884276245">Текст із зображення скопійовано</translation>
@@ -221,7 +223,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Використовувати протокол WireGuard у Brave VPN</translation>
 <translation id="8519170191215826548">Цей параметр неможливо змінити під час активного з’єднання Brave VPN.</translation>
-<translation id="5620961847363372221">Потрібно перезапустити браузер.</translation>
 <translation id="4235920711083356755">Показати кнопку VPN</translation>
 <translation id="4070612712151038707">Показує кнопку VPN на панелі інструментів</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -316,6 +317,9 @@
 <translation id="1727684853006449697">Програвач Brave</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
+<translation id="1426410128494586442">так</translation>
+<translation id="4250680216510889253">ні</translation>
+<translation id="2356070529366658676">Запитати</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
 <translation id="8081858229109418493">Ім’я та зображення профілю</translation>
 <translation id="6786747875388722282">Розширення</translation>
@@ -331,9 +335,9 @@
 <translation id="2906510232093002459">Типові зображення Brave</translation>
 <translation id="8000020256436988724">Панель інструментів</translation>
 <translation id="8076492880354921740">Вкладки</translation>
-<translation id="8168435359814927499">Вміст</translation>
-<translation id="5860254591544742609">Показати панель заголовку</translation>
-<translation id="5371926069408837914">Розгортати вертикальну панель вкладок за наведення курсора, якщо вона згорнута</translation>
+<translation id="8168435359814927499">Контент</translation>
+<translation id="5860254591544742609">Показати панель заголовка</translation>
+<translation id="5371926069408837914">Розгортати вертикальну панель вкладок наведенням курсора, якщо вона згорнута</translation>
 <translation id="3367129510799209147">Режим наведення на вкладку</translation>
 <translation id="916373084491701212">Показати панель прокручування</translation>
 <translation id="515949045075831661">Показати праворуч</translation>
@@ -343,11 +347,11 @@
 <translation id="5297085818601043899">Підказка</translation>
 <translation id="2396127686705429331">Показати кнопку закладок</translation>
 <translation id="2814998458708016836">Використовувати широкий адресний рядок</translation>
-<translation id="4109670531935487117">Показувати рекомендації автозаповнення в адресному рядку</translation>
+<translation id="4109670531935487117">Показувати рекомендації автозавершення в адресному рядку</translation>
 <translation id="2858138569776157458">Популярні сайти</translation>
 <translation id="7859704718976024901">Історія перегляду</translation>
 <translation id="8820817407110198400">Закладки</translation>
-<translation id="7310387888625228830">Leo, помічник на базі ШІ</translation>
+<translation id="7310387888625228830">Leo – помічник на основі ШІ</translation>
 <translation id="5222974844674487962">Показати кнопку новин Brave</translation>
 <translation id="383007806262310953">Показати панель закладок</translation>
 <translation id="4054323497808446566">Панель закладок відображається на всіх сторінках</translation>
@@ -355,7 +359,7 @@
 <translation id="7158817046543187970">Панель закладок прихована на всіх сторінках</translation>
 <translation id="3416468988018290825">Завжди показувати URL-адреси повністю</translation>
 <translation id="5529693968082667490">Показувати кнопку пошуку вкладок</translation>
-<translation id="1643029991199044105">Переходьте між вкладками, які використовувались зовсім недавно за допомогою Ctrl-Tab</translation>
+<translation id="1643029991199044105">Перемикайте вкладки, які використовувались зовсім недавно за допомогою Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Статті автоматично завантажуються в режимі читання, заощаджуючи ваш час</translation>
 <translation id="2422927186524098759">Бічна панель</translation>
@@ -443,7 +447,6 @@
 <translation id="3540231253392253941">Використовуйте сервіси Гугл для надсилання push-повідомлень</translation>
 <translation id="933652931229970927">Автоматичне надсилання звітів про діагностику</translation>
 <translation id="4891600875049212418">Зберігайте приватність під час перегляду конфіденційних сайтів</translation>
-<translation id="2356070529366658676">Запитати</translation>
 <translation id="4846154056248462491">На вихід</translation>
 <translation id="2808630562319398131">Скинути дані Винагород Brave...</translation>
 <translation id="6438096877646138757">Сайти, що видаляють файли cookie, коли ви їх закриваєте</translation>
@@ -627,6 +630,8 @@
 <translation id="3044369626313583722">Показати кнопку гаманця Brave</translation>
 <translation id="7568430944629653319">Увімкнути знаходження NFT</translation>
 <translation id="970496996377628529">Автоматично додає NFT, якими ви володієте, в гаманець, використовуючи сторонні API.</translation>
+<translation id="4898839076551703154">Активувати Brave Wallet у приватних вікнах.</translation>
+<translation id="1550684990179058322">Попередження. Повторне використання адреси гаманця в сеансі приватного вікна може дати сайту змогу пов’язати сеанс приватного вікна із сеансом не приватного вікна.</translation>
 <translation id="8239147115686034860">Автоматично блокувати гаманець Brave</translation>
 <translation id="414639769490080648">Кількість хвилин до автоматичного блокування гаманця Brave</translation>
 <translation id="856371974127598760">Мережі гаманця</translation>
@@ -645,7 +650,7 @@
 <translation id="3752403403443723332">Параметри вашого гаманця скинуто.</translation>
 <translation id="594766067816395072">Інформацію про транзакції вашого гаманця скинуто.</translation>
 <translation id="1615009913945115836">Список ваших прикріплених NFT було скинуто.</translation>
-<translation id="1426410128494586442">так</translation>
+<translation id="57798285717509216">Переглядайте результати транзакції до входу. <ph name="BEGIN_LINK"/>&lt;u&gt;Детальніше&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Мережі Ethereum</translation>
 <translation id="3504157706952484145">Мережі Filecoin</translation>
 <translation id="1561541094377237745">Мережі Solana</translation>
