@@ -82,7 +82,7 @@ class MoveOrCopyToPlaylistBottomSheet :
             rvPlaylists.layoutManager = LinearLayoutManager(view.context)
             val playlistAdapter = PlaylistAdapter(this)
             rvPlaylists.adapter = playlistAdapter
-            playlistAdapter.submitList(allPlaylistList)
+            // playlistAdapter.submitList(allPlaylistList)
         }
 
         val behavior = BottomSheetBehavior.from(layoutBottomSheet)

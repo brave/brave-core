@@ -14,18 +14,18 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.playlist.mojom.Playlist
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import com.bumptech.glide.Glide
 
 class RecentlyPlayedPlaylistAdapter(private val playlistClickListener: PlaylistClickListener?) :
-    AbstractRecyclerViewAdapter<PlaylistModel, RecentlyPlayedPlaylistAdapter.RecentlyPlayedPlaylistViewHolder>() {
+    AbstractRecyclerViewAdapter<Playlist, RecentlyPlayedPlaylistAdapter.RecentlyPlayedPlaylistViewHolder>() {
 
     class RecentlyPlayedPlaylistViewHolder(
         view: View,
         private val playlistClickListener: PlaylistClickListener?
     ) :
-        AbstractViewHolder<PlaylistModel>(view) {
+        AbstractViewHolder<Playlist>(view) {
         private val ivPlaylistCover: AppCompatImageView
         private val tvPlaylistName: AppCompatTextView
         private val tvPlaylistItemCount: AppCompatTextView
@@ -36,13 +36,13 @@ class RecentlyPlayedPlaylistAdapter(private val playlistClickListener: PlaylistC
             tvPlaylistItemCount = view.findViewById(R.id.tvPlaylistItemCount)
         }
 
-        override fun onBind(position: Int, model: PlaylistModel) {
-            if (model.items.isNotEmpty() && model.items[0].thumbnailPath.isNotEmpty()) {
+        override fun onBind(position: Int, model: Playlist) {
+            if (model.items.isNotEmpty() && model.items[0].thumbnailPath.url.isNotEmpty()) {
                 Glide.with(itemView.context)
                     .asBitmap()
                     .placeholder(R.drawable.ic_playlist_item_placeholder)
                     .error(R.drawable.ic_playlist_item_placeholder)
-                    .load(model.items[0].thumbnailPath)
+                    .load(model.items[0].thumbnailPath.url)
                     .into(ivPlaylistCover)
             } else {
                 ivPlaylistCover.setImageResource(R.drawable.ic_playlist_item_placeholder)
@@ -54,7 +54,7 @@ class RecentlyPlayedPlaylistAdapter(private val playlistClickListener: PlaylistC
             tvPlaylistItemCount.text =
                 itemView.context.getString(R.string.playlist_number_items, model.items.size)
             itemView.setOnClickListener {
-                playlistClickListener?.onPlaylistClick(model)
+                // playlistClickListener?.onPlaylistClick(model)
             }
         }
     }

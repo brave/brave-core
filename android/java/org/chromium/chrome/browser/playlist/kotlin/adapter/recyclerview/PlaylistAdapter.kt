@@ -14,16 +14,16 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.playlist.mojom.Playlist
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.DEFAULT_PLAYLIST
 import com.bumptech.glide.Glide
 
 class PlaylistAdapter(private val playlistClickListener: PlaylistClickListener?) :
-    AbstractRecyclerViewAdapter<PlaylistModel, PlaylistAdapter.AllPlaylistViewHolder>() {
+    AbstractRecyclerViewAdapter<Playlist, PlaylistAdapter.AllPlaylistViewHolder>() {
 
     inner class AllPlaylistViewHolder(view: View) :
-        AbstractViewHolder<PlaylistModel>(view) {
+        AbstractViewHolder<Playlist>(view) {
         private val ivPlaylistThumbnail: AppCompatImageView
         private val ivNewPlaylistThumbnail: AppCompatImageView
         private val tvPlaylistTitle: AppCompatTextView
@@ -36,18 +36,18 @@ class PlaylistAdapter(private val playlistClickListener: PlaylistClickListener?)
             tvPlaylistItemCount = view.findViewById(R.id.tvPlaylistItemCount)
         }
 
-        override fun onBind(position: Int, model: PlaylistModel) {
+        override fun onBind(position: Int, model: Playlist) {
             if (model.id == ConstantUtils.NEW_PLAYLIST) {
                 tvPlaylistItemCount.visibility = View.GONE
                 ivNewPlaylistThumbnail.visibility = View.VISIBLE
                 ivPlaylistThumbnail.visibility = View.GONE
             } else {
-                if (model.items.isNotEmpty() && model.items[0].thumbnailPath.isNotEmpty()) {
+                if (model.items.isNotEmpty() && model.items[0].thumbnailPath.url.isNotEmpty()) {
                     Glide.with(itemView.context)
                         .asBitmap()
                         .placeholder(R.drawable.ic_playlist_item_placeholder)
                         .error(R.drawable.ic_playlist_item_placeholder)
-                        .load(model.items[0].thumbnailPath)
+                        .load(model.items[0].thumbnailPath.url)
                         .into(ivPlaylistThumbnail)
                 } else {
                     ivPlaylistThumbnail.setImageResource(R.drawable.ic_playlist_item_placeholder)
@@ -59,7 +59,7 @@ class PlaylistAdapter(private val playlistClickListener: PlaylistClickListener?)
             tvPlaylistTitle.text =
                 if (model.id == DEFAULT_PLAYLIST) itemView.context.resources.getString(R.string.playlist_play_later) else model.name
             itemView.setOnClickListener {
-                playlistClickListener?.onPlaylistClick(model)
+                // playlistClickListener?.onPlaylistClick(model)
             }
         }
     }

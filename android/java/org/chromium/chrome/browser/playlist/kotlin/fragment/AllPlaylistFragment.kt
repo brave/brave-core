@@ -70,64 +70,64 @@ class AllPlaylistFragment : Fragment(R.layout.fragment_all_playlist), PlaylistOp
 
         mTvRecentlyPlayed = view.findViewById(R.id.tvRecentlyPlayed)
 
-        mPlaylistViewModel.fetchPlaylistData(ConstantUtils.ALL_PLAYLIST)
+        // mPlaylistViewModel.fetchPlaylistData(ConstantUtils.ALL_PLAYLIST)
 
-        mPlaylistViewModel.allPlaylistData.observe(viewLifecycleOwner) { allPlaylistData ->
-            Log.e(TAG, allPlaylistData.toString())
-            val allPlaylistList = mutableListOf<PlaylistModel>()
+        // mPlaylistViewModel.allPlaylistData.observe(viewLifecycleOwner) { allPlaylistData ->
+        //     Log.e(TAG, allPlaylistData.toString())
+        //     val allPlaylistList = mutableListOf<PlaylistModel>()
 
-            var defaultPlaylistModel: PlaylistModel? = null
-            for (allPlaylistModel in allPlaylistData) {
-                val playlistModel = PlaylistModel(
-                    allPlaylistModel.id,
-                    allPlaylistModel.name,
-                    allPlaylistModel.items
-                )
+        //     var defaultPlaylistModel: PlaylistModel? = null
+        //     for (allPlaylistModel in allPlaylistData) {
+        //         val playlistModel = PlaylistModel(
+        //             allPlaylistModel.id,
+        //             allPlaylistModel.name,
+        //             allPlaylistModel.items
+        //         )
 
-                if (playlistModel.id == DEFAULT_PLAYLIST) {
-                    defaultPlaylistModel = playlistModel
-                } else {
-                    allPlaylistList.add(
-                        playlistModel
-                    )
-                }
-            }
-            defaultPlaylistModel?.let { allPlaylistList.add(0, it) }
+        //         if (playlistModel.id == DEFAULT_PLAYLIST) {
+        //             defaultPlaylistModel = playlistModel
+        //         } else {
+        //             allPlaylistList.add(
+        //                 playlistModel
+        //             )
+        //         }
+        //     }
+        //     defaultPlaylistModel?.let { allPlaylistList.add(0, it) }
 
-            val recentPlaylistJson =
-                PlaylistPreferenceUtils.defaultPrefs(requireContext()).recentlyPlayedPlaylist
-            if (!recentPlaylistJson.isNullOrEmpty()) {
-                val recentPlaylist = LinkedList<PlaylistModel>()
-                val recentPlaylistIds: LinkedList<String> = GsonBuilder().create().fromJson(
-                    recentPlaylistJson,
-                    TypeToken.getParameterized(LinkedList::class.java, String::class.java).type
-                )
-                if (recentPlaylistIds.size > 0) {
-                    recentPlaylistIds.forEach ids@{
-                        allPlaylistList.forEach models@{ model ->
-                            if (model.id == it && model.items.isNotEmpty()) {
-                                recentPlaylist.add(model)
-                                return@models
-                            }
-                        }
-                    }
-                }
-                mRvRecentlyPlayed.layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                val recentlyPlayedPlaylistAdapter = RecentlyPlayedPlaylistAdapter(this)
-                mRvRecentlyPlayed.adapter = recentlyPlayedPlaylistAdapter
-                recentlyPlayedPlaylistAdapter.submitList(recentPlaylist)
-                mRvRecentlyPlayed.visibility =
-                    if (recentPlaylist.isNotEmpty()) View.VISIBLE else View.GONE
-                mTvRecentlyPlayed.visibility =
-                    if (recentPlaylist.isNotEmpty()) View.VISIBLE else View.GONE
-            }
+        //     val recentPlaylistJson =
+        //         PlaylistPreferenceUtils.defaultPrefs(requireContext()).recentlyPlayedPlaylist
+        //     if (!recentPlaylistJson.isNullOrEmpty()) {
+        //         val recentPlaylist = LinkedList<PlaylistModel>()
+        //         val recentPlaylistIds: LinkedList<String> = GsonBuilder().create().fromJson(
+        //             recentPlaylistJson,
+        //             TypeToken.getParameterized(LinkedList::class.java, String::class.java).type
+        //         )
+        //         if (recentPlaylistIds.size > 0) {
+        //             recentPlaylistIds.forEach ids@{
+        //                 allPlaylistList.forEach models@{ model ->
+        //                     if (model.id == it && model.items.isNotEmpty()) {
+        //                         recentPlaylist.add(model)
+        //                         return@models
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //         mRvRecentlyPlayed.layoutManager =
+        //             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        //         val recentlyPlayedPlaylistAdapter = RecentlyPlayedPlaylistAdapter(this)
+        //         mRvRecentlyPlayed.adapter = recentlyPlayedPlaylistAdapter
+        //         recentlyPlayedPlaylistAdapter.submitList(recentPlaylist)
+        //         mRvRecentlyPlayed.visibility =
+        //             if (recentPlaylist.isNotEmpty()) View.VISIBLE else View.GONE
+        //         mTvRecentlyPlayed.visibility =
+        //             if (recentPlaylist.isNotEmpty()) View.VISIBLE else View.GONE
+        //     }
 
-            mRvPlaylist.layoutManager = LinearLayoutManager(requireContext())
-            val playlistAdapter = PlaylistAdapter(this)
-            mRvPlaylist.adapter = playlistAdapter
-            playlistAdapter.submitList(allPlaylistList)
-        }
+        //     mRvPlaylist.layoutManager = LinearLayoutManager(requireContext())
+        //     val playlistAdapter = PlaylistAdapter(this)
+        //     mRvPlaylist.adapter = playlistAdapter
+        //     playlistAdapter.submitList(allPlaylistList)
+        // }
     }
 
     override fun onPlaylistOptionClicked(playlistOptionsModel: PlaylistOptionsModel) {

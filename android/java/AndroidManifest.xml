@@ -135,6 +135,20 @@
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
 
+<activity
+    android:name="org.chromium.chrome.browser.playlist.kotlin.activity.AllPlaylistActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+
+<activity
+    android:name="org.chromium.chrome.browser.playlist.kotlin.activity.NewPlaylistActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+
 <activity android:name="org.chromium.chrome.browser.settings.BraveSettingsActivity"
     android:theme="@style/Theme.Chromium.Settings"
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize"

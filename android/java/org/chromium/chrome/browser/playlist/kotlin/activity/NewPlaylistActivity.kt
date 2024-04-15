@@ -8,8 +8,9 @@
 package org.chromium.chrome.browser.playlist.kotlin.activity
 
 import android.os.Bundle
-import android.content.Intent
+import android.widget.Toast
 import android.widget.ScrollView
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import org.chromium.chrome.browser.playlist.kotlin.adapter.PlaylistOnboardingFragmentStateAdapter
@@ -44,7 +45,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
-import org.chromium.chrome.browser.playlist.kotlin.activity.NewPlaylistActivity
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistAdapter
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.RecentlyPlayedPlaylistAdapter
@@ -62,7 +62,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.util.LinkedList
 
-class AllPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandler, PlaylistServiceObserverImplDelegate, PlaylistClickListener {
+class NewPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandler, PlaylistServiceObserverImplDelegate, PlaylistClickListener {
     companion object {
         val TAG: String = this::class.java.simpleName
     }
@@ -71,12 +71,11 @@ class AllPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandle
     private var mPlaylistServiceObserver: PlaylistServiceObserverImpl? = null
 
     private lateinit var mPlaylistViewModel: PlaylistViewModel
-
+    private lateinit var mEtPlaylistName: AppCompatEditText
     private lateinit var mPlaylistToolbar: PlaylistToolbar
-    private lateinit var mBtAddNewPlaylist: AppCompatButton
-    private lateinit var mRvRecentlyPlayed: RecyclerView
-    private lateinit var mRvPlaylist: RecyclerView
-    private lateinit var mTvRecentlyPlayed: AppCompatTextView
+    private var mPlaylistModel: PlaylistModel? = null
+    private var mPlaylistOptionsEnum: PlaylistOptionsEnum = PlaylistOptionsEnum.NEW_PLAYLIST
+    private var mShouldMoveOrCopy: Boolean = false
 
     override fun onConnectionError(mojoException : MojoException) {
         mPlaylistService?.close()
@@ -96,27 +95,26 @@ class AllPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandle
                 PlaylistServiceFactoryAndroid.getInstance()
                         .getPlaylistService(
                                 getProfileProviderSupplier().get()?.getOriginalProfile(), this)
-        addPlaylistObserver()
-    }
-
-    private fun addPlaylistObserver() {
-        mPlaylistServiceObserver = PlaylistServiceObserverImpl(this)
-        mPlaylistService?.addObserver(mPlaylistServiceObserver)
     }
 
     private fun initializeViews() {
-        setContentView(R.layout.fragment_all_playlist)
+        setContentView(R.layout.fragment_new_playlist)
 
         mPlaylistToolbar = findViewById(R.id.playlistToolbar)
+        mPlaylistToolbar.setToolbarTitle(
+            if (mPlaylistOptionsEnum == PlaylistOptionsEnum.NEW_PLAYLIST) getString(
+                R.string.playlist_new_text
+            ) else getString(R.string.playlist_rename_text)
+        )
+        mPlaylistToolbar.setActionText(
+            if (mPlaylistOptionsEnum == PlaylistOptionsEnum.NEW_PLAYLIST) getString(
+                R.string.playlist_create_toolbar_text
+            ) else getString(R.string.playlist_rename_text)
+        )
 
-        mBtAddNewPlaylist = findViewById(R.id.btAddNewPlaylist)
-        mBtAddNewPlaylist.setOnClickListener {
-            val newActivityIntent = Intent(this@AllPlaylistActivity, NewPlaylistActivity::class.java);
-            startActivity(newActivityIntent);
-        }
-        mRvRecentlyPlayed = findViewById(R.id.rvRecentlyPlayed)
-        mRvPlaylist = findViewById(R.id.rvPlaylists)
-        mTvRecentlyPlayed = findViewById(R.id.tvRecentlyPlayed)
+        mEtPlaylistName = findViewById(R.id.etPlaylistName)
+        mEtPlaylistName.setText(mPlaylistModel?.name)
+        mEtPlaylistName.requestFocus()
     }
 
     override fun triggerLayoutInflation() {
@@ -126,71 +124,58 @@ class AllPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandle
 
     override fun finishNativeInitialization() {
         super.finishNativeInitialization()
-    }
-    
-    override fun onResumeWithNative() {
-        super.onResumeWithNative();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             initPlaylistService();
         }
-        mPlaylistService?.getAllPlaylists {
-                playlists -> 
-                    Log.e(TAG, playlists.toString())
-                    val allPlaylistList = mutableListOf<Playlist>()
 
-                    var defaultPlaylist: Playlist? = null
-                    for (playlist in playlists) {
-
-                        if (playlist.id == DEFAULT_PLAYLIST) {
-                            defaultPlaylist = playlist
-                        } else {
-                            allPlaylistList.add(
-                                playlist
-                            )
-                        }
+        mPlaylistToolbar.setActionButtonClickListener(clickListener = {
+            if (mPlaylistOptionsEnum == PlaylistOptionsEnum.NEW_PLAYLIST) {
+                if (!mEtPlaylistName.text.isNullOrEmpty()) {
+                    // mPlaylistViewModel.setCreatePlaylistOption(
+                    //     CreatePlaylistModel(
+                    //         mEtPlaylistName.text.toString(),
+                    //         mShouldMoveOrCopy
+                    //     )
+                    // )
+                    // New Playlist
+                    val playlist = Playlist()
+                    playlist.name = mEtPlaylistName.text.toString()
+                    playlist.items = emptyArray()
+                    mPlaylistService?.createPlaylist(playlist) {
+                        _ -> 
                     }
-                    defaultPlaylist?.let { allPlaylistList.add(0, it) }
-                    mRvPlaylist.layoutManager = LinearLayoutManager(this@AllPlaylistActivity)
-                    val playlistAdapter = PlaylistAdapter(this@AllPlaylistActivity)
-                    mRvPlaylist.adapter = playlistAdapter
-                    playlistAdapter.submitList(allPlaylistList)
-
-                    val recentPlaylistJson = PlaylistPreferenceUtils.defaultPrefs(this@AllPlaylistActivity).recentlyPlayedPlaylist
-                    if (!recentPlaylistJson.isNullOrEmpty()) {
-                        val recentPlaylist = LinkedList<Playlist>()
-                        val recentPlaylistIds: LinkedList<String> = GsonBuilder().create().fromJson(
-                            recentPlaylistJson,
-                            TypeToken.getParameterized(LinkedList::class.java, String::class.java).type
-                        )
-                        if (recentPlaylistIds.size > 0) {
-                            recentPlaylistIds.forEach ids@{
-                                allPlaylistList.forEach playlists@{ playlist ->
-                                    if (playlist.id == it && playlist.items.isNotEmpty()) {
-                                        recentPlaylist.add(playlist)
-                                        return@playlists
-                                    }
-                                }
-                            }
-                        }
-                        mRvRecentlyPlayed.layoutManager =
-                            LinearLayoutManager(this@AllPlaylistActivity, LinearLayoutManager.HORIZONTAL, false)
-                        val recentlyPlayedPlaylistAdapter = RecentlyPlayedPlaylistAdapter(this@AllPlaylistActivity)
-                        mRvRecentlyPlayed.adapter = recentlyPlayedPlaylistAdapter
-                        recentlyPlayedPlaylistAdapter.submitList(recentPlaylist)
-                        mRvRecentlyPlayed.visibility =
-                            if (recentPlaylist.isNotEmpty()) View.VISIBLE else View.GONE
-                        mTvRecentlyPlayed.visibility =
-                            if (recentPlaylist.isNotEmpty()) View.VISIBLE else View.GONE
-                    }
-                };
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this@NewPlaylistActivity,
+                        R.string.playlist_empty_playlist_name,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                if (!mEtPlaylistName.text.isNullOrEmpty()) {
+                    // Rename playlist
+                    // mPlaylistViewModel.setRenamePlaylistOption(
+                    //     RenamePlaylistModel(
+                    //         mPlaylistModel?.id,
+                    //         mEtPlaylistName.text.toString()
+                    //     )
+                    // )
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this@NewPlaylistActivity,
+                        R.string.playlist_empty_playlist_name,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 
     override fun onDestroy() {
-            mPlaylistService?.close()
-            mPlaylistService = null
-            mPlaylistServiceObserver?.close()
-            mPlaylistServiceObserver?.destroy()
-            mPlaylistServiceObserver = null
+        mPlaylistService?.close()
+        mPlaylistService = null
         
         super.onDestroy();
     }
@@ -202,12 +187,4 @@ class AllPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandle
     override fun createProfileProvider() : OneshotSupplier<ProfileProvider> {
         return ActivityProfileProvider(getLifecycleDispatcher());
     }
-
-    // override fun onPlaylistOptionClicked(playlistOptionsModel: PlaylistOptionsModel) {
-    //     mPlaylistViewModel.setAllPlaylistOption(playlistOptionsModel)
-    // }
-
-    // override fun onPlaylistClick(playlistModel: PlaylistModel) {
-    //     mPlaylistViewModel.setPlaylistToOpen(playlistModel.id)
-    // }
 }
