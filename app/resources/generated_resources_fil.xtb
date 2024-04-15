@@ -33,6 +33,7 @@
 <translation id="1022522674678746124">PowerPoint</translation>
 <translation id="1022669824195822609">Pinapamahalaan ng <ph name="DOMAIN"/> ang iyong device. Maa-access ng mga administrator ang data sa anumang profile sa device na ito.</translation>
 <translation id="1022719295563085177">Default ng network</translation>
+<translation id="1024852227421769661">Gumamit ng lokasyon. Payagan ang mga app, website, at serbisyo ng ChromeOS at Android na may pahintulot sa lokasyon na gamitin ang lokasyon ng iyong device. Posibleng pana-panahong mangolekta ang Brave ng data ng lokasyon at gamitin nito ang data na ito sa anonymous na paraan para mapahusay ang katumpakan ng lokasyon at mga serbisyong batay sa lokasyon. <ph name="BEGIN_LINK1"/>Matuto Pa<ph name="END_LINK1"/></translation>
 <translation id="1026655690966755180">Magdagdag ng Port</translation>
 <translation id="1026822031284433028">I-load ang larawan</translation>
 <translation id="1026959648338730078">Windows Hello o external na security key</translation>
@@ -116,6 +117,7 @@
 <translation id="1082214733466244292">Na-block ng iyong administrator ang ilang functionality para sa device na ito</translation>
 <translation id="8073477228424628709">Gustong ibalik ng <ph name="THIRD_PARTY_TOOL_NAME"/> ang mga setting ng iyong Brave sa mga orihinal na default ng mga ito. Kapag isinagawa mo ito, mare-reset ang iyong home page, page ng bagong tab at search engine, madi-disable ang iyong mga extension at maa-unpin ang lahat ng tab. Maki-clear din nito ang iba pang pansamantala at naka-cache na data, gaya ng cookies, content at data ng site.</translation>
 <translation id="1082725763867769612">Mga offline na file</translation>
+<translation id="1084026333130513768">I-save, I-share, at I-cast</translation>
 <translation id="1084096383128641877">Kapag inalis ang password na ito, hindi ide-delete ang iyong account sa <ph name="DOMAIN"/>. Palitan ang iyong password o i-delete ang account mo sa <ph name="DOMAIN_LINK"/> para mapanatili itong ligtas mula sa iba.</translation>
 <translation id="1084288067399862432">Napalitan ang nakompromisong password.
 
@@ -297,7 +299,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="1217117837721346030">I-download ang kahina-hinalang file</translation>
 <translation id="1217483152325416304">Malapit nang i-delete ang iyong lokal na data</translation>
 <translation id="1217668622537098248">I-revert sa pag-left click pagkatapos ng pagkilos</translation>
-<translation id="121783623783282548">Hindi magkatugma ang mga password.</translation>
 <translation id="1218015446623563536">I-delete ang Linux</translation>
 <translation id="1218839827383191197"><ph name="BEGIN_PARAGRAPH1"/>Gumagamit ang serbisyo ng lokasyon ng Brave ng mga source tulad ng mga Wi-Fi at mobile network para makatulong na matantya ang lokasyon ng device na ito.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Maaari mong i-off ang Lokasyon sa pamamagitan ng pag-off sa pangunahing setting ng Lokasyon sa device na ito. Maaari mo ring i-off ang paggamit ng Wi‑Fi, mga mobile network, at mga sensor para sa lokasyon sa mga setting ng lokasyon.<ph name="END_PARAGRAPH2"/></translation>
@@ -322,6 +323,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="123578888592755962">Puno na ang disk</translation>
 <translation id="1235924639474699896">{COUNT,plural, =1{text}one{# text}other{# na text}}</translation>
 <translation id="1236009322878349843">I-edit ang telepono</translation>
+<translation id="1237251612871334180">Mag-update para makapag-save ng mga password</translation>
 <translation id="1237950098253310325">Baguhin ang pagkakaayos ng <ph name="BUTTON_NAME"/> gamit ang ctrl at pataas o pababang arrow</translation>
 <translation id="1238293488628890871">Lumipat ng Profile?</translation>
 <translation id="1239594683407221485">I-explore ang content ng device sa app na Mga File.</translation>
@@ -451,7 +453,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="13392265090583506">A11y</translation>
 <translation id="1340527397989195812">Mag-back up ng media mula sa device gamit ang Files app.</translation>
 <translation id="1341701348342335220">Mahusay!</translation>
-<translation id="1341871421050612057">Hindi makapag-sync sa <ph name="USERNAME"/></translation>
 <translation id="873343310451048603">Para tingnan kung may mga nakompromisong password, pumunta sa Brave Password Manager</translation>
 <translation id="1343865611738742294">Bugyan ang mga Linux app ng pahintulot na i-access ang mga USB device. Hindi maaalala ng Linux ang isang USB device pagkatapos itong alisin.</translation>
 <translation id="1343920184519992513">Magpatuloy kung saan ka huminto at magbukas ng partikular na hanay ng mga page</translation>
@@ -485,7 +486,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="1370384480654163477">Tumingin at mag-edit ng mga file mula sa huling beses na binisita mo ang site na ito:</translation>
 <translation id="1372841398847029212">I-sync sa iyong account</translation>
 <translation id="1373176046406139583">Kinokontrol ng pagiging visible ng device mo kung sino ang puwedeng magbahagi sa iyo habang naka-unlock ang screen mo. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
-<translation id="2700649569705885025">Puwede mong buksan ang karamihan ng mga feature ng panel sa gilid sa pamamagitan ng Menu ng Brave</translation>
 <translation id="1374844444528092021">Ang certificate na kinakailangan ng network na "<ph name="NETWORK_NAME"/>" ay maaaring hindi naka-install o wala nang bisa.  Mangyaring kumuha ng isang bagong certificate at subukang kumonekta muli.</translation>
 <translation id="1375557162880614858">Gusto mo bang i-activate ang ChromeVox, ang built-in na screen reader para sa ChromeOS Flex?</translation>
 <translation id="1375938286942050085">Tapos na ang pag-set up! Sunod na ihanda ang iyong device para sa gaming</translation>
@@ -518,14 +518,12 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="1395832189806039783">Mag-highlight ng item gamit ang pag-focus ng keyboard</translation>
 <translation id="1396120028054416908">Bumalik sa <ph name="FOLDER_TITLE"/></translation>
 <translation id="1396139853388185343">Nagkaroon ng error sa pag-set up ng printer</translation>
-<translation id="1396963298126346194">Hindi nagtutugma ang username at password na inilagay mo</translation>
 <translation id="1397500194120344683">Walang kwalipikadong device. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="6748713973802395004">Naka-sign in ka sa Brave sa mga device na ito, kaya magagamit mo ang mga ito bilang mga security key.</translation>
 <translation id="1398853756734560583">I-maximize</translation>
 <translation id="139911022479327130">I-unlock ang iyong telepono at kumpirmahing ikaw ito</translation>
 <translation id="1399261165075500043">Hindi ma-load ang Mga Tuntunin ng Serbisyo ng Google Play</translation>
 <translation id="1401216725754314428">Matuto pa tungkol sa mga kaugnay na site sa isang bagong tab</translation>
-<translation id="1401308693935339022">Gumamit ng lokasyon. Payagan ang mga app at serbisyong may pahintulot sa lokasyon na gamitin ang lokasyon ng device na ito. Posibleng pana-panahong mangolekta ang Brave ng data ng lokasyon at gamitin nito ang data na ito sa anonymous na paraan para mapahusay ang katumpakan ng lokasyon at mga serbisyong batay sa lokasyon.</translation>
 <translation id="1402426911829176748">Kumokonekta sa iyong device</translation>
 <translation id="1403222014593521787">Hindi makakonekta sa proxy</translation>
 <translation id="1405779994569073824">Nag-crash.</translation>
@@ -583,6 +581,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="1444628761356461360">Ang setting na ito ay pinamamahalaan ng may-ari ng device, <ph name="OWNER_EMAIL"/>.</translation>
 <translation id="144518587530125858">Maaaring hindi mai-load ang '<ph name="IMAGE_PATH"/>' para sa tema.</translation>
 <translation id="1447531650545977377">I-on ang &amp;Pag-sync...</translation>
+<translation id="1447895950459090752">Card ng preview na lalabas kapag nag-hover sa tab</translation>
 <translation id="1448264954024227422">Puwede mong gamitin ang account na ito sa mga Android app. Kung gusto mong magdagdag ng account para sa ibang tao, <ph name="LINK_BEGIN"/>magdagdag na lang ng bagong tao<ph name="LINK_END"/> sa iyong <ph name="DEVICE_TYPE"/>.
 
 Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga app. Puwede mong kontrolin ang mga pahintulot para sa mga Android app sa <ph name="APPS_LINK_BEGIN"/>Mga Setting ng Mga App<ph name="APPS_LINK_END"/>.</translation>
@@ -805,6 +804,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1602085790802918092">Sinisimulan ang virtual machine</translation>
 <translation id="8275260485701169654">Impormasyon ng System ng Brave</translation>
 <translation id="1603411913360944381">Kalimutan ang <ph name="DEVICE_NAME"/></translation>
+<translation id="1603879843804174953">Pindutin nang matagal</translation>
 <translation id="1604432177629086300">Hindi ma-print. Suriin ang printer at subukan ulit.</translation>
 <translation id="1604567162047669454">Makakilala ng mga semantic na visual na layout</translation>
 <translation id="1604774728851271529">Kailangan mo ng koneksyon ng network para ma-upgrade ang Linux. Kumonekta sa internet at subukan ulit.</translation>
@@ -898,7 +898,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1657937299377480641">Para mag-sign in ulit para sa access sa mga pang-edukasyong resource, hilingin sa isang magulang na bigyan ka ng pahintulot</translation>
 <translation id="1658424621194652532">Ina-access ng pahinang ito ang iyong mikropono.</translation>
 <translation id="1660763353352708040">Isyu ng power adapter</translation>
-<translation id="1661156625580498328">Ipatupad ang AES encryption (inirerekomenda).</translation>
 <translation id="16620462294541761">Paumanhin, hindi ma-verify ang iyong password. Pakisubukang muli.</translation>
 <translation id="166278006618318542">Subject Public Key Algorithm</translation>
 <translation id="1662801900924515589">Na-install ang <ph name="APP"/></translation>
@@ -981,6 +980,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1723824996674794290">&amp;Bagong window</translation>
 <translation id="1724801751621173132">Pamamaraan ng pag-input</translation>
 <translation id="1725562816265788801">Pag-scroll ng Tab</translation>
+<translation id="1725585416709851618">Subukang i-enable ang Google Drive sa Mga Setting at piliin ang "Subukan ulit," o piliin ang "Buksan sa basic na editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="1726503915437308071">Italic na font</translation>
 <translation id="1729533290416704613">Kinokontrol din nito kung anong pahina ang ipinapakita kapag naghanap ka mula sa Omnibox.</translation>
 <translation id="1730666151302379551">Nakalimutan ang lumang password</translation>
@@ -998,7 +998,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="174123615272205933">Custom</translation>
 <translation id="1741314857973421784">Magpatuloy</translation>
 <translation id="1743970419083351269">Isara ang Bar ng Mga Download</translation>
-<translation id="1744060673522309905">Hindi maisama ang device sa domain. Tiyaking hindi mo nalampasan ang bilang ng mga device na maaari mong idagdag.</translation>
 <translation id="1744108098763830590">pahina ng background</translation>
 <translation id="1745732479023874451">Pamahalaan ang mga contact</translation>
 <translation id="1748283190377208783">{0,plural, =1{unused plural form}one{Buksan at i-edit ang # file sa web app na ito?}other{Buksan at i-edit ang # na file sa web app na ito?}}</translation>
@@ -1029,7 +1028,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1767043563165955993">Gamitin sa mga Android app</translation>
 <translation id="1767508543310534319">Echo ng bantas</translation>
 <translation id="1768212860412467516">Magpadala ng feedback para sa <ph name="EXPERIMENT_NAME"/>.</translation>
-<translation id="1768278914020124551">Oops!  Nagkaproblema sa pakikipag-ugnayan sa server ng pag-log on. Pakisuri ang iyong koneksyon sa network at ang domain name, pagkatapos ay subukan ulit.</translation>
 <translation id="1769104665586091481">Buksan ang Link sa Bagong &amp;Window</translation>
 <translation id="1770407692401984718">Mag-drag ng larawan dito o</translation>
 <translation id="177053719077591686">Mag-back up ng mga Android app sa Google Drive.</translation>
@@ -1104,7 +1102,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1817871734039893258">Microsoft File Recovery</translation>
 <translation id="1818913467757368489">I-log ang isinasagawang pag-upload.</translation>
 <translation id="1819721979226826163">I-tap ang Mga notification ng app &gt; Mga serbisyo ng Google Play.</translation>
-<translation id="1820028137326691631">Maglagay ng password na ibinigay ng admin</translation>
 <translation id="3707821975049107110">Brave user ka na ba? Mag-sign in</translation>
 <translation id="1822517323280215012">Gray</translation>
 <translation id="1822635184853104396">Ipakita ang buong history ng pag-download sa bagong tab</translation>
@@ -1125,7 +1122,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1828901632669367785">I-print Gamit ang Dialog ng System...</translation>
 <translation id="1829129547161959350">Penguin</translation>
 <translation id="1829192082282182671">Mag-zoom &amp;Out</translation>
-<translation id="182973053761690772">Iskedyul na paglubog ng araw</translation>
 <translation id="1830550083491357902">Hindi naka-sign in</translation>
 <translation id="1831848493690504725">Hindi namin maabot ang Brave sa pamamagitan ng nakakonektang network. Subukang pumili ng ibang network o tingnan ang iyong mga setting ng network o setting ng proxy (kung gumagamit ka ng proxy).</translation>
 <translation id="1832459821645506983">Oo, payag ako</translation>
@@ -1222,7 +1218,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1901303067676059328">Piliin ang &amp;lahat</translation>
 <translation id="6893464351226208429">Naka-save sa iyong Brave sync chain ang mga URL na iyong binibisita</translation>
 <translation id="7537444825255698750">Pamahalaan ang mga pahintulot sa camera ng site sa Brave</translation>
-<translation id="1905375423839394163">Pangalan ng Chromebook device</translation>
 <translation id="1906181697255754968">Karaniwang ina-access ng mga site ang mga file at folder sa iyong device para sa mga feature gaya ng awtomatikong pag-save sa trabaho mo</translation>
 <translation id="1907044622262489040">Mag-type gamit ang iyong boses. Gamitin ang Search + D, pagkatapos ay magsimulang magsalita.</translation>
 <translation id="1907659324308286326">Kailangan ng ilang accessory ng Thunderbolt o USB4 ng access sa memory para gumana nang maayos.</translation>
@@ -1231,6 +1226,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1910721550319506122">Maligayang pagdating!</translation>
 <translation id="1910736334623230603">Hindi makapaghanap ng maraming larawan. Paisa-isang dagdagan ng larawan.</translation>
 <translation id="2675239977494524649">Ang Brave for Testing v<ph name="BROWSER_VERSION"/> ay para lang sa naka-automate na pagsubok. Para sa regular na pag-browse, gumamit ng standard na bersyon ng Brave na awtomatikong nag-a-update.</translation>
+<translation id="1913749768968678106">I-cast, i-save, at i-share</translation>
 <translation id="1915073950770830761">canary</translation>
 <translation id="1915307458270490472">Ibaba</translation>
 <translation id="1915734383465415025">Numero ng Store</translation>
@@ -1265,6 +1261,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1933489278505808700">Pinapayagang basahin at baguhin</translation>
 <translation id="1935303383381416800">Pinapayagang makita ang iyong lokasyon</translation>
 <translation id="193565226207940518">Tool sa Suporta</translation>
+<translation id="1935995810530254458">Kopyahin pa rin</translation>
 <translation id="1936157145127842922">Ipakita sa Folder</translation>
 <translation id="1936931585862840749">Gumamit ng numero para isaad kung gaano karaming kopya ang ipi-print (1 hanggang <ph name="MAX_COPIES"/>).</translation>
 <translation id="1937774647013465102">Hindi puwedeng mag-import ng uri ng architecture ng container na <ph name="ARCHITECTURE_CONTAINER"/> sa device na ito na <ph name="ARCHITECTURE_DEVICE"/>. Maaari mong subukang i-restore ang container na ito sa ibang device, o puwede mong i-access ang mga file sa loob ng ganitong larawan ng container sa pamamagitan ng pagbukas sa app na Mga File.</translation>
@@ -1285,6 +1282,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1949332606889020901">Mga Crash ID</translation>
 <translation id="1949584741547056205">Mga Mabilisang Sagot</translation>
 <translation id="1949849604471335579">I-personalize ang wallpaper, screen saver, mga kulay ng accent, at higit pa</translation>
+<translation id="1949980990364952348">Pangalan ng app</translation>
 <translation id="1951012854035635156">Assistant</translation>
 <translation id="1954597385941141174">Puwedeng hilingin ng mga site na kumonekta sa mga USB device</translation>
 <translation id="1954813140452229842">Nagka-error sa pag-mount ng share. Pakitingnan ang iyong mga kredensyal at subukan ulit.</translation>
@@ -1306,7 +1304,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1972313920920745320">Palaging mananatiling aktibo ang mga site na idinaragdag mo at hindi magbabakante ng memory mula sa mga ito. <ph name="BEGIN_LINK"/>Matuto pa tungkol sa pagpapanatiling aktibo ng mga partikular na site<ph name="END_LINK"/></translation>
 <translation id="1972325230031091483">Makakapag-browse ka nang mas mabilis dahil aktibong naglo-load ng content batay sa kasalukuyan mong pagbisita sa webpage</translation>
 <translation id="197288927597451399">Panatilihin</translation>
-<translation id="1973763416111613016">Hindi secure na mada-download ang <ph name="FILE_NAME"/>. Pindutin ang Shift+F6 para mag-cycle sa lugar ng bar ng mga download.</translation>
 <translation id="1973886230221301399">ChromeVox</translation>
 <translation id="1974043046396539880">Mga Punto ng Pagbabahagi ng CRL</translation>
 <translation id="1974060860693918893">Advanced</translation>
@@ -1331,6 +1328,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="197989455406964291">Hindi sinusuportahan ng KDC ang uri ng pag-encrypt</translation>
 <translation id="1981434377190976112">Basahin ang lahat ng iyong data sa lahat ng website</translation>
 <translation id="1984417487208496350">Walang proteksyon (hindi inirerekomenda)</translation>
+<translation id="1986836014090708999">Mga advanced na setting ng lokasyon</translation>
 <translation id="1987317783729300807">Mga Account</translation>
 <translation id="1987574314042117472">Pumili at mag-install ng mga sikat na app</translation>
 <translation id="1988259784461813694">Kinakailangan</translation>
@@ -1345,6 +1343,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="1992397118740194946">Hindi nakatakda</translation>
 <translation id="1994173015038366702">URL ng site</translation>
 <translation id="1995916364271252349">Kinokontrol ang impormasyong puwedeng gamitin at ipakita ng mga site (lokasyon, camera, mga pop-up, at higit pa)</translation>
+<translation id="199610894463449797">{0,plural, =1{Isara ang Profile na Ito}one{Isara ang Profile na Ito (# Window)}other{Isara ang Profile na Ito (# na Window)}}</translation>
 <translation id="5123795870522389058">Kailangan ng Brave ng pahintulot para gamitin ang Bluetooth para kumonekta sa iyong device</translation>
 <translation id="1997616988432401742">Iyong mga certificate</translation>
 <translation id="1999115740519098545">Sa startup</translation>
@@ -1377,7 +1376,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="2019718679933488176">&amp;Buksan ang Audio sa Bagong Tab</translation>
 <translation id="2020183425253392403">Ipakita ang mga setting ng address ng network</translation>
 <translation id="2020225359413970060">I-scan ang file</translation>
-<translation id="2020779321517562133">Alisin ang kopya</translation>
 <translation id="2022953316617983419">QR code</translation>
 <translation id="2023042679320690325">Hindi matitingnan ng <ph name="BRAND"/> kung kasama ang iyong mga password sa mga data breach. Subukan ulit pagkalipas ng 24 na oras.</translation>
 <translation id="2023167225947895179">Posibleng mahulaan agad ang PIN na ito</translation>
@@ -1529,7 +1527,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="21354425047973905">Itago ang Mga PIN</translation>
 <translation id="2135456203358955318">Naka-dock na magnifier</translation>
 <translation id="2135787500304447609">&amp;Magpatuloy</translation>
-<translation id="2136372518715274136">Ilagay ang bagong password</translation>
 <translation id="2136476978468204130">Mali ang inilagay mong passphrase</translation>
 <translation id="2137128126782078222">Huwag payagan ang mga notification mula sa <ph name="WEBSITE"/></translation>
 <translation id="2139919072249842737">Button na I-set up</translation>
@@ -1549,6 +1546,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2147151613919729065">Para i-clear ang history ng Guest mode, isara ang lahat ng Guest window.</translation>
 <translation id="2147218225094845757">Itago ang panel sa gilid</translation>
 <translation id="2147282432401652483">command</translation>
+<translation id="2147402320887035428">Posibleng malware ang file na ito.<ph name="LINE_BREAK"/>Sinusuri ng Ligtas na Pag-browse sa Brave kung hindi ligtas ang file na ito — karaniwang umaabot ng ilang segundo ang pag-scan.</translation>
 <translation id="2148219725039824548">Nagka-error sa pag-mount ng share. Hindi nakita ang isinaad na share sa network.</translation>
 <translation id="2148756636027685713">Tapos na ang pag-format</translation>
 <translation id="2148892889047469596">I-cast ang tab</translation>
@@ -1556,7 +1554,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2150139952286079145">Maghanap ng mga patutunguhan</translation>
 <translation id="2150661552845026580">Idagdag ang "<ph name="EXTENSION_NAME"/>"?</translation>
 <translation id="2151576029659734873">Di-wastong index ng tab ang ipinasok.</translation>
-<translation id="2152281589789213846">Magdagdag ng mga printer sa iyong profile</translation>
 <translation id="2154484045852737596">I-edit ang card</translation>
 <translation id="2155473371917268529">Ang kasalukuyang setting ng visibility ay iyong mga device</translation>
 <translation id="2155772377859296191">Mukhang <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
@@ -1564,7 +1561,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2156877321344104010">Magpatakbo ulit ng pag-check sa kaligtasan</translation>
 <translation id="2157474325782140681">Para makakuha ng karagdagang feature, gumamit ng istasyon ng pag-dock ng Dell na idinisenyo para gumana sa Chromebook na ito.</translation>
 <translation id="215753907730220065">Umalis sa Full Screen</translation>
-<translation id="2157875535253991059">Full screen na ngayon ang pahinang ito.</translation>
 <translation id="2158249272743343757">I-delete ang data ng pag-personalize...</translation>
 <translation id="2158475082070321257">Kopyahin ang link sa highlight</translation>
 <translation id="2159488579268505102">USB-C</translation>
@@ -1585,6 +1581,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2175384018164129879">Pamahalaan ang mga Search Engine at Site Search</translation>
 <translation id="217576141146192373">Hindi naidagdag ang printer. Pakitingnan ang configuration ng iyong printer at subukan ulit.</translation>
 <translation id="2175927920773552910">QR Code</translation>
+<translation id="217631816678106981">Huwag i-paste</translation>
 <translation id="2177306523871626993">Dina-download ang mga file ng pagkilala sa text… <ph name="PERCENT"/>%</translation>
 <translation id="2178056538281447670">Microsoft 365</translation>
 <translation id="2178585470774851578">Ie-enable mo ang mga feature para sa pag-debug ng ChromeOS Flex na magse-set up ng sshd daemon at mag-e-enable ng pagbo-boot mula sa mga USB drive.</translation>
@@ -1595,6 +1592,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2182058453334755893">Kinopya sa Iyong Clipboard</translation>
 <translation id="2182419606502127232">Isama ang aking server logs.</translation>
 <translation id="2183570493397356669">Na-disable ang button na Magpatuloy</translation>
+<translation id="2184272387334793084">Mag-sign in para makuha ang iyong mga password at higit pa sa lahat ng device mo</translation>
 <translation id="8098574385249290065">Hayaan ang Brave na pumili kung kailan makakapag-play ng tunog ang mga site (inirerekomenda)</translation>
 <translation id="2186206192313702726">Google Lens</translation>
 <translation id="2186711480981247270">Ibinahaging page mula sa ibang device</translation>
@@ -1606,6 +1604,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2190069059097339078">Pangkuha ng mga Kredensyal ng WiFi</translation>
 <translation id="219008588003277019">Module ng Native Client: <ph name="NEXE_NAME"/></translation>
 <translation id="2190355936436201913">(walang laman)</translation>
+<translation id="2190967441465539539">Hindi ma-access ang camera at mikropono</translation>
 <translation id="2191754378957563929">Naka-on</translation>
 <translation id="2192505247865591433">Mula:</translation>
 <translation id="2193365732679659387">Mga setting ng pagtitiwala</translation>
@@ -1627,13 +1626,13 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2210462644007531147">Hindi matapos ang pag-install</translation>
 <translation id="2211245494465528624">Pamahalaan ang mga opsyon sa pag-sync</translation>
 <translation id="2214018885812055163">Mga nakabahaging folder</translation>
-<translation id="2214884991347062907">Maling password, subukan ulit</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 linya ang hindi ipinapakita&gt;}one{&lt;<ph name="NUMBER_OF_LINES"/> linya ang hindi ipinapakita&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> (na) linya ang hindi ipinapakita&gt;}}</translation>
 <translation id="2215070081105889450">Para i-share ang audio, mag-share na lang ng tab o screen</translation>
 <translation id="2218019600945559112">Mouse at touchpad</translation>
 <translation id="2218515861914035131">I-paste bilang plain text</translation>
 <translation id="221872881068107022">Reverse na pag-scroll</translation>
 <translation id="2219007152108311874">Magtanong sa Bawat Pagbisita</translation>
+<translation id="2219081237089444028">Magtakda ng password sa <ph name="DEVICE_TYPE"/> para mas maging madali ang pag-sign in</translation>
 <translation id="2950533317914339731">Magdagdag ng mga bookmark sa iyong paboritong Brave Apps</translation>
 <translation id="2220529011494928058">Mag-ulat ng isyu</translation>
 <translation id="2220572644011485463">PIN o password</translation>
@@ -1711,6 +1710,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2274840746523584236">I-charge ang iyong Chromebook</translation>
 <translation id="2276503375879033601">Magdagdag ng higit pang apps</translation>
 <translation id="2276910256003242519">Kini-clear ang data...</translation>
+<translation id="2278193750452754829">Pinapayagan ang mga extension sa site na ito. Piliin para mabuksan ang menu</translation>
 <translation id="2278562042389100163">Magbukas ng browser window</translation>
 <translation id="2278668501808246459">Sinisimulan ang manager ng container</translation>
 <translation id="2280486287150724112">Kanang margin</translation>
@@ -1816,7 +1816,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2343747224442182863">I-focus ang Tab na Ito</translation>
 <translation id="2344032937402519675">Hindi makakonekta sa server. Suriin ang iyong koneksyon sa network at subukan ulit. Kung nagkakaproblema ka pa rin, subukang i-restart ang iyong Chromebook.</translation>
 <translation id="6055117817387598516">Hindi na bubukas ang mga lumang bersyon ng Brave Apps pagkatapos ng Disyembre 2022. Makipag-ugnayan sa iyong administrator para mag-update sa bagong bersyon o alisin ang app na ito.</translation>
-<translation id="2347930112185157300">Naka-lock ang provider ng mobile network</translation>
 <translation id="2348176352564285430">App: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="2348729153658512593"><ph name="WINDOW_TITLE"/> - Humiling ng pahintulot, pindutin ang Ctrl + Forward para tumugon</translation>
 <translation id="234889437187286781">Nagka-error sa pag-load ng data</translation>
@@ -1856,7 +1855,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2373666622366160481">Pagkasyahin sa papel</translation>
 <translation id="2375406435414127095">Kumonekta sa iyong telepono</translation>
 <translation id="2376056713414548745">Basahin nang malakas</translation>
-<translation id="2377588536920405462">Puwede mong i-off ang Lokasyon sa pamamagitan ng pag-off sa pangunahing setting ng Lokasyon sa iyong device. Puwede mo ring i-off ang paggamit ng Wi-Fi, mga mobile network, at mga sensor para sa lokasyon sa mga setting ng lokasyon.</translation>
 <translation id="2377667304966270281">Mga Hard Fault</translation>
 <translation id="237828693408258535">I-translate ang page na ito?</translation>
 <translation id="2378982052244864789">Piliin ang direktoryo ng extension.</translation>
@@ -1938,10 +1936,12 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2435248616906486374">Nadiskonekta ang network</translation>
 <translation id="2435457462613246316">Ipakita ang password</translation>
 <translation id="2436385001956947090">Kopyahin ang &amp;link</translation>
+<translation id="2436746748253887661">Pinapayagan nito ang mga serbisyo ng system na may pahintulot na gamitin ang iyong lokasyon. Posibleng gumamit ang lokasyon ng mga source na tulad ng Wi‑Fi, mga mobile network, at mga sensor para makatulong na tantyahin ang lokasyon ng iyong device. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="2438853563451647815">Hindi nakakonekta sa printer</translation>
 <translation id="2439152382014731627">I-reset ang password ng <ph name="DEVICE_TYPE"/></translation>
 <translation id="2439626940657133600">Nilo-load ang <ph name="WINDOW_TITLE"/></translation>
 <translation id="2440604414813129000">Tingnan s&amp;ource</translation>
+<translation id="244071666433939959">Bubukas ang mga app sa isang window</translation>
 <translation id="2440823041667407902">Access sa lokasyon</translation>
 <translation id="2441719842399509963">Mag-reset sa mga default</translation>
 <translation id="244231003699905658">Invalid na address. Pakisuri ang address at subukan ulit.</translation>
@@ -1965,7 +1965,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2454206500483040640">Naka-partition</translation>
 <translation id="2454247629720664989">Keyword</translation>
 <translation id="2454524890947537054">Aprubahan ang kahilingan sa web?</translation>
-<translation id="2454913962395846391">Awtomatikong time zone</translation>
 <translation id="245650153866130664">Para awtomatikong i-refresh ang isang ticket, lagyan ng check ang “Tandaan ang password.” Maso-store ang iyong password sa device mo lang.</translation>
 <translation id="2456794251167091176">Kumpleto na ang pag-import</translation>
 <translation id="2456827790665612305">Huwag nang subaybayan ang site</translation>
@@ -1981,7 +1980,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2462332841984057083">Sine-set up na ang Steam. Hintaying matapos ang pag-set up.</translation>
 <translation id="2462724976360937186">Certification Authority Key ID</translation>
 <translation id="2462752602710430187">Idinagdag ang <ph name="PRINTER_NAME"/></translation>
-<translation id="2464046291463112461">I-block ang mga external na accessory sa pag-access at pag-share ng memory (RAM)</translation>
+<translation id="2465517991293145960">Kasalukuyang nakatakda ang time zone sa <ph name="TIME_ZONE_ENTRY"/>. Kailangan ng access sa lokasyon para awtomatikong ma-update ang time zone. <ph name="BEGIN_LINK"/>I-on ang Access sa lokasyon<ph name="END_LINK"/></translation>
 <translation id="2467755475704469005">Walang na-detect na device. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="2468178265280335214">Pag-accelerate ng pag-scroll gamit ang touchpad</translation>
 <translation id="2468205691404969808">Gumamit ng mga cookie para matandaan ang iyong mga kagustuhan kahit na hindi mo binibisita ang mga page na iyon</translation>
@@ -2002,6 +2001,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2476901513051581836">Hindi malilinis ang storage hangga't hindi nalalaman ang laki ng offline na storage.</translation>
 <translation id="2476974672882258506">I-shut down ang Windows para ma-uninstall ang <ph name="PARALLELS_DESKTOP"/>.</translation>
 <translation id="2477065602824695373">Dahil nagtalaga ka ng maraming switch, na-off ang awtomatikong pag-scan.</translation>
+<translation id="2478076885740497414">I-install ang app</translation>
 <translation id="2478176599153288112">Mga Pahintulot sa Media-File para sa "<ph name="EXTENSION"/>"</translation>
 <translation id="24786041351753425">I-enable ang serbisyong pag-recover ng data.</translation>
 <translation id="2480868415629598489">Baguhin ang data na kinokopya at pine-paste mo</translation>
@@ -2126,6 +2126,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2569972178052279830">Pangalan ng Retailer</translation>
 <translation id="257088987046510401">Mga tema</translation>
 <translation id="2571655996835834626">Palitan ang iyong mga setting na kumokontrol sa access ng mga website sa mga feature gaya ng mga cookie, JavaScript, plugin, geolocation, mikropono, camera, atbp.</translation>
+<translation id="257175846174451436">Iminumungkahing grupo ng tab</translation>
 <translation id="2572032849266859634">Ipinagkaloob na sa <ph name="VOLUME_NAME"/> ang read-only na access.</translation>
 <translation id="2573276323521243649">Bumalik mula sa page ng pagpili ng avatar</translation>
 <translation id="2573417407488272418">Mag-back up ng mga app at file sa Mga File &gt; Aking mga file bago ang pag-upgrade.</translation>
@@ -2188,6 +2189,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2620215283731032047">Hindi ligtas na mada-download ang file na<ph name="FILE_NAME"/>.</translation>
 <translation id="2620245777360407679">Mga device na kasalukuyang nakakonekta sa hotspot</translation>
 <translation id="2620436844016719705">System</translation>
+<translation id="2620900772667816510">Super Resolution ng Bluetooth</translation>
 <translation id="6040544299680716440">Sanayin ang voice model ng Brave Assistant</translation>
 <translation id="26224892172169984">Huwag payagan ang anumang site na mangasiwa ng mga protocol</translation>
 <translation id="262373406453641243">Colemak</translation>
@@ -2241,7 +2243,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2663302507110284145">Wika</translation>
 <translation id="2665394472441560184">Magdagdag ng bagong salita</translation>
 <translation id="2665647207431876759">Nag-expire</translation>
-<translation id="2665717534925640469">Nasa full screen na ngayon ang pahinang ito at hindi pinagana ang cursor ng iyong mouse.</translation>
 <translation id="2665919335226618153">Naku! Nagkaroon ng error habang nagpo-format.</translation>
 <translation id="2666247341166669829"><ph name="PERCENTAGE"/>% antas ng baterya ng kaliwa.</translation>
 <translation id="2667144577800272420">May iba pang app na nakatakdang buksan ang mga link na kapareho ng sa <ph name="APP_NAME"/>. Idi-disable nito ang kakayahan ng <ph name="APP_NAME_2"/> at <ph name="APP_NAME_3"/> na buksan ang mga sinusuportahang link.</translation>
@@ -2249,6 +2250,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2669241540496514785">Hindi mabuksan ang <ph name="APP_NAME"/></translation>
 <translation id="2669454659051515572">Makikita ng sinumang gumagamit ng device na ito ang mga na-download na file</translation>
 <translation id="351520635355732555">Nagbabahagi ang <ph name="APP_NAME"/> ng isang tab ng Brave.</translation>
+<translation id="2670350619068134931">Mga pinasimpleng animation</translation>
 <translation id="2670403088701171361">Huwag payagan ang mga site na makita ang text o mga larawan sa iyong clipboard</translation>
 <translation id="2671451824761031126">Handa na ang iyong mga bookmark at setting</translation>
 <translation id="2672142220933875349">Sirang crx file, hindi na-unpack.</translation>
@@ -2274,12 +2276,12 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2692503699962701720">Baguhin ang pitch kapag binibigkas ang mga uri ng element at naka-format na text</translation>
 <translation id="2692901429679246677">Aqua</translation>
 <translation id="2693134906590795721">Mga tunog sa pag-charge</translation>
-<translation id="2693176596243495071">Oops!  Nagkaroon ng hindi matukoy na error. Pakisubukang muli sa ibang pagkakataon o makipag-ugnayan sa iyong administrator kung magpapatuloy ang isyu.</translation>
 <translation id="2698147581454716013">Isa itong naka-bundle na device at hindi ito puwedeng i-enroll sa Upgrade para sa Kiosk at Signage.</translation>
 <translation id="2699911226086014512">Hindi nagamit ang PIN na may code <ph name="RETRIES"/>.</translation>
 <translation id="2701330563083355633">Ibinahagi mula kay <ph name="DEVICE_NAME"/></translation>
 <translation id="2701737434167469065">Mag-sign in, <ph name="EMAIL"/></translation>
 <translation id="2701960282717219666">MAC Address ng Network</translation>
+<translation id="2702720509009999256">Tingnan ang iyong koneksyon sa internet at piliin ang "Subukan ulit," o piliin ang "Buksan sa basic na editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="2702801445560668637">Listahan ng Babasahin</translation>
 <translation id="270414148003105978">Mga mobile network</translation>
 <translation id="2704184184447774363">Microsoft Document Signing</translation>
@@ -2335,6 +2337,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2732134891301408122">Karagdagang content na <ph name="CURRENT_ELEMENT"/> sa <ph name="TOTAL_ELEMENTS"/></translation>
 <translation id="2733248615007838252">Nagsusumite ang thumbs up ng feedback na gusto mo ang mga resultang ito.</translation>
 <translation id="2733992589856193783">Gumawa ka ng passkey para sa site na ito. Kailangan mo ang iyong mobile device para mag-sign in.</translation>
+<translation id="2734797989819862638">Huwag kopyahin</translation>
 <translation id="27349076983469322">Maliwanag na background</translation>
 <translation id="2735712963799620190">Iskedyul</translation>
 <translation id="2737363922397526254">Tiklupin...</translation>
@@ -2402,11 +2405,9 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2778471504622896352">Magdagdag ng mga remote na app sa launcher ng ChromeOS</translation>
 <translation id="2779728796406650689">Binibigyang-daan nito ang Brave Assistant na magbigay ng mga iniangkop na sagot kapag nagtatanong ka.</translation>
 <translation id="2781692009645368755">Google Pay</translation>
-<translation id="2781800772148653810">Pinapayagan ang mga extension sa site na ito</translation>
 <translation id="2782104745158847185">Nagkaroon ng error sa pag-install ng Linux application</translation>
 <translation id="2783024642731649028">1 item sa iyong cart na may <ph name="DISCOUNT_TEXT"/> mula sa <ph name="MERCHANT_NAME"/>, <ph name="MERCHANT_DOMAIN"/>, na tiningnan noong <ph name="RELATIVE_TIME"/></translation>
 <translation id="2783298271312924866">Na-download</translation>
-<translation id="2783829359200813069">Pumili ng mga uri ng pag-encrypt</translation>
 <translation id="2783952358106015700">Gamitin ang iyong security key sa <ph name="APP_NAME"/></translation>
 <translation id="2785267875302712148">Password Checkup</translation>
 <translation id="2785873697295365461">Mga descriptor ng file</translation>
@@ -2443,9 +2444,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2806372837663997957">Hindi tinanggap ng device na sinusubukan mong bahaginan</translation>
 <translation id="2806891468525657116">Mayroon nang ganitong shortcut</translation>
 <translation id="2807517655263062534">Dito lalabas ang mga file na iyong ida-download</translation>
-<translation id="2808714658215073920">Kumokonekta sa Wi-Fi...</translation>
 <translation id="2809586584051668049">at <ph name="NUMBER_ADDITIONAL_DISABLED"/> pa</translation>
-<translation id="2810674554823487782">Piliin ang "Buksan sa offline editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="2811205483104563968">Mga Account</translation>
 <translation id="2812049959647166806">Hindi sinusuportahan ang thunderbolt</translation>
 <translation id="2812171980080389735">Sine-save ang mga network at password para makakonekta ka kaagad</translation>
@@ -2465,7 +2464,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2822551631199737692">Ginagamit ang camera</translation>
 <translation id="2822634587701817431">Paliitin / Palawakin</translation>
 <translation id="2822910719211888134">Nagka-error habang bina-back up ang Linux</translation>
-<translation id="2823176412251649407">Palitan ang iyong koneksyon sa internet at piliin ang "Subukan ulit," o piliin ang "Buksan sa offline editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="2824942875887026017">Ginagamit ng <ph name="IDS_SHORT_PRODUCT_NAME"/> ang mga setting ng proxy mula sa iyong administrator</translation>
 <translation id="2825151610926840364">Payagan ang access para sa mga app at website na may pahintulot sa camera. Para magamit ang camera, posibleng kailanganin mong i-restart ang app o i-refresh ang page.</translation>
 <translation id="2825758591930162672">Pampublikong Key ng Paksa</translation>
@@ -2474,7 +2472,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2828833307884755422"><ph name="MEMORY_SAVINGS"/> ang nabakante</translation>
 <translation id="5143608303889092034">Pamahalaan ang iyong &amp;Brave account</translation>
 <translation id="2831430281393059038">Sinusuportahan ang device</translation>
-<translation id="2831897288513571718">Subukang i-enable ang Google Drive sa Mga Setting at piliin ang "Subukan ulit," o piliin ang "Buksan sa offline editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="2832124733806557606">Puwedeng gumamit ng PIN ang iyong anak para mag-sign in sa o i-unlock ang device.</translation>
 <translation id="2835177225987815960">Mare-reset ang iyong kasalukuyang setup ng pag-scan, kasama ang anumang nakatalagang switch at kagustuhan sa bilis ng awtomatikong pag-scan.</translation>
 <translation id="2835547721736623118">Serbisyo ng pagkilala sa speech</translation>
@@ -2537,7 +2534,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="288042212351694283">Ina-access ang iyong mga Universal 2nd Factor device</translation>
 <translation id="2881076733170862447">Kapag Iki-click Mo ang Extension</translation>
 <translation id="2882943222317434580">Magre-restart at magre-reset ang <ph name="IDS_SHORT_PRODUCT_NAME"/> sa ilang sandali</translation>
-<translation id="2883470649061584386">Feed</translation>
 <translation id="2884070497102362193">Subukan ang iyong baterya, CPU, memory, pagkakonekta, at higit pa</translation>
 <translation id="2885129935310217435">May button na may katulad na pangalan. Pumili ng ibang pangalan.</translation>
 <translation id="2885378588091291677">Task Manager</translation>
@@ -2556,6 +2552,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="2893180576842394309">Maaaring gamitin ng Brave ang iyong history para i-personalize ang Search at iba pang serbisyo ng Brave</translation>
 <translation id="2893701697603065178">Pinapamahalaang Environment sa Pag-develop</translation>
 <translation id="2894757982205307093">Bagong tab sa grupo</translation>
+<translation id="2895730582088342039">I-save, i-share, at i-cast</translation>
 <translation id="289695669188700754">Key ID: <ph name="KEY_ID"/></translation>
 <translation id="2897878306272793870">Sigurado ka bang gusto mong buksan ang <ph name="TAB_COUNT"/> tab?</translation>
 <translation id="2900247416110050639">Nire-require ng Google Docs, Sheets, at Slides na ma-store ang mga file sa Google Drive. Malilipat ang mga lokal na file at makokopya ang mga file mula sa iba pang lokasyon. Makikita ang iyong mga file sa folder ng Google Drive sa Files app.</translation>
@@ -2602,11 +2599,13 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="2932483646085333864">Mag-sign out pagkatapos ay muling mag-sign in upang simulan ang pag-sync</translation>
 <translation id="2932883381142163287">I-ulat ang pang-aabuso</translation>
 <translation id="2933632078076743449">Huling Pag-update</translation>
+<translation id="2934225044529065415">Hindi ma-access ang camera</translation>
 <translation id="2935225303485967257">Pamahalaan ang mga profile</translation>
 <translation id="2935314715123552088">I-disable ang aktibong profile ng eSIM</translation>
 <translation id="2935654492420446828">Magdagdag ng pampaaralang account sa ibang pagkakataon</translation>
 <translation id="2936851848721175671">I-backup &amp; i-restore</translation>
 <translation id="2938981087412273365">Hindi pinapayagang mabasa at mabago ang site na ito</translation>
+<translation id="2939005221756255562">Mag-enable ng mga notification sa Notification Center. Buksan ang <ph name="BEGIN_LINK"/>Mga Setting ng System<ph name="END_LINK"/>.</translation>
 <translation id="2939908794993783865">Mga karagdagang hindi aktibong site</translation>
 <translation id="2939938020978911855">Ipakita ang mga available na Bluetooth device</translation>
 <translation id="2941112035454246133">Mababa</translation>
@@ -2658,6 +2657,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="2981113813906970160">Ipakita ang malaking mouse cursor</translation>
 <translation id="2983102365694924129">Batay sa iyong aktibidad sa isang site. Naka-off ang setting na ito.</translation>
 <translation id="2983373101216420412"><ph name="PERCENTAGE"/>% antas ng baterya ng case.</translation>
+<translation id="2984727013951557074">Sini-sync pa rin ang file sa Drive.</translation>
 <translation id="2985348301114641460">Magpadala ng kahilingan sa iyong administrator para i-install ang "<ph name="EXTENSION_NAME"/>"?</translation>
 <translation id="2985476671756533899">{NUM_SUB_APPS,plural, =1{Nag-uninstall ang <ph name="APP_NAME"/> ng app}one{Nag-uninstall ang <ph name="APP_NAME"/> ng # app}other{Nag-uninstall ang <ph name="APP_NAME"/> ng # na app}}</translation>
 <translation id="2987620471460279764">Ibinahaging text mula sa ibang device</translation>
@@ -2687,7 +2687,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3003144360685731741">Mga gustong network</translation>
 <translation id="5730179015008010982">Ipinapadala sa Brave ang mga URL na binibisita mo para mahulaan kung anong mga site ang posibleng susunod mong bibisitahin at para pakitaan ka ng karagdagang impormasyon tungkol sa page na binibisita mo</translation>
 <translation id="3003623123441819449">Cache ng CSS</translation>
-<translation id="3003828226041301643">Hindi maisama ang device sa domain. Suriin ang iyong account para matiyak na mayroon kang mga pribilehiyong magdagdag ng mga device.</translation>
 <translation id="3003967365858406397">Gagawa ang iyong <ph name="PHONE_NAME"/> ng pribadong koneksyon sa Wi-Fi.</translation>
 <translation id="3004385386820284928">I-customize ang mga keyboard key</translation>
 <translation id="3005574332301273731">Huwag ipakita</translation>
@@ -2731,8 +2730,8 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3025174326431589540">{COUNT,plural, =0{Walang naka-save na password}=1{Nasuri ang mga password para sa {COUNT} site}one{Nasuri ang mga password para sa {COUNT} site at app}other{Nasuri ang mga password para sa {COUNT} na site at app}}</translation>
 <translation id="3027296729579831126">I-on ang Nearby Share</translation>
 <translation id="3027644380269727216">Batay sa iyong aktibidad sa isang site. Naka-on ang setting na ito.</translation>
+<translation id="3028371505549235127">Sa halip na ilagay ang iyong password sa Brave sync chain para mag-sign in, puwede kang gumawa ng password sa <ph name="DEVICE_TYPE"/> para sa device na ito</translation>
 <translation id="3028445648481691885">Kinansela ang pag-download</translation>
-<translation id="3029276696788198026">Walang pag-preload</translation>
 <translation id="3029466929721441205">Ipakita ang mga tool ng stylus sa shelf</translation>
 <translation id="3029808567601324798">Oras para mag-lock</translation>
 <translation id="3030311804857586740">{NUM_DAYS,plural, =1{Hinihiling sa iyo ng <ph name="MANAGER"/> na mag-download ng update ngayong araw. Awtomatikong mada-download ang update kapag kumonekta ka sa internet.}one{Hinihiling sa iyo ng <ph name="MANAGER"/> na mag-download ng update bago ang deadline. Awtomatikong mada-download ang update kapag kumonekta ka sa internet.}other{Hinihiling sa iyo ng <ph name="MANAGER"/> na mag-download ng update bago ang deadline. Awtomatikong mada-download ang update kapag kumonekta ka sa internet.}}</translation>
@@ -2746,7 +2745,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3033348223765101500">Kontrolin ang iyong data</translation>
 <translation id="3036327949511794916">Lumipas na ang deadline para ibalik ang <ph name="DEVICE_TYPE"/> na ito.</translation>
 <translation id="3036546437875325427">I-enable ang Flash</translation>
-<translation id="3037754279345160234">Hindi ma-parse ang configuration para magsama ng domain. Makipag-ugnayan sa iyong administrator.</translation>
 <translation id="3038272154009688107">Tingnan ang lahat ng site</translation>
 <translation id="3038612606416062604">Manual na magdagdag ng printer</translation>
 <translation id="3039491566278747710">Hindi na-install ang offline na patakaran sa device.</translation>
@@ -2888,6 +2886,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3166443275568926403">Performance at Status ng Baterya</translation>
 <translation id="3169930038976362151">Piliin ang temang tumutugon sa iyong mga pangangailangan. Para baguhin ang iyong tema, wallpaper, screen saver, at higit pa, pumindot lang nang matagal sa desktop.</translation>
 <translation id="3170072451822350649">Maaari mo ring laktawan ang pag-sign in at <ph name="LINK_START"/>mag-browse bilang Bisita<ph name="LINK_END"/>.</translation>
+<translation id="3175067642577044620">Nilalaman</translation>
 <translation id="3177430966804511955">Pamahalaan ang mga naka-isolate na web app (beta)</translation>
 <translation id="31774765611822736">Bagong tab sa kaliwa</translation>
 <translation id="3177909033752230686">Wika ng Page:</translation>
@@ -2898,6 +2897,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3182749001423093222">Pang-check ng pagbabaybay</translation>
 <translation id="3183139917765991655">Pang-import ng Profile</translation>
 <translation id="3183143381919926261">Mga mobile data network</translation>
+<translation id="3183700187146209259">Hindi ma-install ang software ng scanner</translation>
 <translation id="3183944777708523606">Arrangement ng monitor</translation>
 <translation id="3184536091884214176">Mag-set up o mamahala ng mga printer ng CUPS. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="3185014249447200271">{NUM_APPS,plural, =1{Naka-block ang app na ito}one{Naka-block ang ilang app}other{Naka-block ang ilang app}}</translation>
@@ -2934,7 +2934,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3210736980143419785">Hindi matapos ang pag-download</translation>
 <translation id="321084946921799184">Dilaw at puti</translation>
 <translation id="3211126692872351610">&amp;Hanapin sa <ph name="SEARCH_ENGINE"/> ang “<ph name="SEARCH_TERMS"/>” sa bagong tab</translation>
-<translation id="321356136776075234">Device OU (hal. OU=Mga Chromebook,DC=halimbawa,DC=com)</translation>
 <translation id="321367297115597343">Magdagdag ng bookmark sa folder na ito</translation>
 <translation id="3214531106883826119"><ph name="BEGIN_BOLD"/>Tandaan:<ph name="END_BOLD"/> Posibleng ma-access din ng katulad na boses o recording ang mga personal na resulta ni <ph name="SUPERVISED_USER_NAME"/>.</translation>
 <translation id="3217843140356091325">Gumawa ng shortcut?</translation>
@@ -3006,7 +3005,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3269689705184377744">{COUNT,plural, =1{File}one{# file}other{# na file}}</translation>
 <translation id="326999365752735949">Dina-download ang diff</translation>
 <translation id="3270965368676314374">Basahin, baguhin at i-delete ang mga larawan, musika at iba pang media sa iyong computer</translation>
-<translation id="3274763671541996799">Nag-full screen ka.</translation>
 <translation id="3275778809241512831">Kasalukuyang hindi secure ang iyong internal na security key. Pakialis ito sa anumang serbisyo kung saan mo ito ginamit. Para lutasin ang isyu, paki-reset ang security key.</translation>
 <translation id="3275778913554317645">Buksan bilang window</translation>
 <translation id="3277214528693754078">Mag-navigate gamit ang cursor ng text (caret browsing)</translation>
@@ -3044,7 +3042,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3301554464236215299">Hindi karaniwang dina-download ang ganitong file at posibleng mapanganib ito</translation>
 <translation id="33022249435934718">Mga GDI Handle</translation>
 <translation id="3302388252085547855">Ilagay ang pag-justify...</translation>
-<translation id="3303260552072730022">Na-trigger ng isang extension ang buong screen.</translation>
 <translation id="3303795387212510132">Payagan ang app na magbukas ng mga link na <ph name="PROTOCOL_SCHEME"/>?</translation>
 <translation id="3303818374450886607">Mga kopya</translation>
 <translation id="3303855915957856445">Walang nakitang resulta ng paghahanap</translation>
@@ -3067,6 +3064,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3315158641124845231">Itago ang <ph name="PRODUCT_NAME"/></translation>
 <translation id="3315442055907669208">I-on ang reader mode</translation>
 <translation id="3317459757438853210">Magkabilaan</translation>
+<translation id="3317521105713541270">Gumawa ng mga grupo</translation>
 <translation id="3317678681329786349">Naka-block ang camera at mikropono</translation>
 <translation id="3319306431415395200">Isalin ang text sa larawan gamit ang <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="3320271870899888245">Hindi makakonekta sa OneDrive. Subukan ulit.</translation>
@@ -3076,7 +3074,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3321776060736518525">Mula sa <ph name="APP_URL"/></translation>
 <translation id="3323521181261657960">Bonus! Nadagdagan ang tagal ng paggamit</translation>
 <translation id="3325804108816646710">Naghahanap ng mga available na profile...</translation>
-<translation id="3325910708063135066">Naka-off ang camera at mikropono sa System Preferences ng Mac</translation>
 <translation id="3325930488268995856">Nakakonekta ang Microsoft OneDrive</translation>
 <translation id="3325995804968971809">Istilo</translation>
 <translation id="3327050066667856415">Idinisenyo ang mga Chromebook para sa seguridad. Awtomatikong pinoprotektahan ang iyong device laban sa malware – walang kinakailangang karagdagang software.</translation>
@@ -3114,6 +3111,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3361421571228286637">{COUNT,plural, =1{Nagbabahagi sa iyo ang <ph name="DEVICE_NAME"/> ng <ph name="ATTACHMENTS"/>.}one{Nagbabahagi sa iyo ang <ph name="DEVICE_NAME"/> ng <ph name="ATTACHMENTS"/>.}other{Nagbabahagi sa iyo ang <ph name="DEVICE_NAME"/> ng <ph name="ATTACHMENTS"/>.}}</translation>
 <translation id="3361954577771524115">Mula sa app</translation>
 <translation id="3363202073972776113">Papamahalaan ng iyong organisasyon ang bagong profile na ito. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
+<translation id="3364159059299045452">Alt+Hover</translation>
 <translation id="3364986687961713424">Mula sa iyong administrator: <ph name="ADMIN_MESSAGE"/></translation>
 <translation id="3365598184818502391">Isa lang sa Ctrl o Alt ang gamitin</translation>
 <translation id="3368922792935385530">Nakakonekta</translation>
@@ -3138,6 +3136,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="338323348408199233">I-block ang trapiko nang walang VPN</translation>
 <translation id="3384362484379805487">Ibinabahagi ang mga file ng wika sa mga user para makatipid ng disk space.</translation>
 <translation id="3385092118218578224"><ph name="DISPLAY_ZOOM"/>%</translation>
+<translation id="3385509471227300644">Sina-scan na ngayon ng Ligtas na Pag-browse sa Brave ang mga kahina-hinalang file na sinusubukan mong i-download bilang bahagi ng pinaigting na proteksyong pinili mo.</translation>
 <translation id="338583716107319301">Separator</translation>
 <translation id="3387023983419383865">,</translation>
 <translation id="3387588771342841525">Kapag naka-on, mase-save ang mga password sa <ph name="EMAIL"/>. Kapag naka-off, mase-save lang ang mga password sa device na ito.</translation>
@@ -3183,6 +3182,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3420501302812554910">Nangangailangan ng pag-reset ang internal na security key</translation>
 <translation id="3421387094817716717">Elliptic Curve Public Key</translation>
 <translation id="3421672904902642628"><ph name="BEGIN_BOLD"/>Tandaan:<ph name="END_BOLD"/> Puwedeng ma-access ng katulad na boses o recording ang iyong mga personal na resulta o ang Assistant mo.</translation>
+<translation id="3421835120203732951">Magdagdag ng Bagong Profile</translation>
 <translation id="3423111258700187173">Nakita ang mga resulta sa <ph name="FOLDER_TITLE"/></translation>
 <translation id="3423463006624419153">Sa iyong '<ph name="PHONE_NAME_1"/>' at '<ph name="PHONE_NAME_2"/>':</translation>
 <translation id="3423858849633684918">Pakilunsad Muli ang <ph name="PRODUCT_NAME"/></translation>
@@ -3324,10 +3324,12 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3524518036046613664">Tumuklas ng mga device sa iyong lokal na network, gaya ng mga printer</translation>
 <translation id="3524965460886318643">I-export ang Mga Aktibidad</translation>
 <translation id="3525426269008462093">Suriin ang pag-sync ng device pagkatapos ng pag-set up</translation>
+<translation id="3525606571546393707">Subukang buksan ang file mula sa ibang folder, o piliin ang "Buksan sa basic na editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="3526034519184079374">Hindi Mabasa o Mapalitan ang Data ng Site</translation>
 <translation id="3527085408025491307">Folder</translation>
 <translation id="3528498924003805721">Mga target ng shortcut</translation>
 <translation id="3529851166527095708">&amp;Mga address at Higit Pa</translation>
+<translation id="3531070080754387701">Hindi mabuksan ng Microsoft 365 ang <ph name="FILE_NAMES"/> sa folder na ito</translation>
 <translation id="3531883061432162622">Hanapin ang iyong listahan ng babasahin at mga bookmark sa Mga Bookmark at Listahan</translation>
 <translation id="3532273508346491126">I-sync ang pamamahala</translation>
 <translation id="3532521178906420528">Kumokonekta sa network ...</translation>
@@ -3370,6 +3372,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3563558822383875692">Kino-configure ang DLC.</translation>
 <translation id="3564334271939054422">Maaaring humiling sa iyo ang ginagamit mong Wi-Fi network (<ph name="NETWORK_ID"/>) na bisitahin mo ang page ng pag-log in nito.</translation>
 <translation id="3564848315152754834">USB security key</translation>
+<translation id="3566211766752891194">Ipakita ang paggamit ng memory ng tab</translation>
 <translation id="3566325075220776093">Mula sa device na ito</translation>
 <translation id="3566721612727112615">Walang naidagdag na site</translation>
 <translation id="356738834800832239">Na-save ang Password Mo</translation>
@@ -3493,6 +3496,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="2334029754052191847">Natunton ng Brave na ilan sa iyong mga setting ay nasira ng isa pang program at ni-reset ang mga ito sa kanilang mga orihinal na default.</translation>
 <translation id="3665919494326051362">Ang kasalukuyang bersyon ay <ph name="CURRENT_VERSION"/></translation>
 <translation id="3666196264870170605">Dump ng Pag-debug ng Mga Intel Wi-Fi NIC</translation>
+<translation id="3666971425390608309">Na-pause ang pag-download: <ph name="FILE_NAME"/>.</translation>
 <translation id="3670113805793654926">Mga device mula sa anumang vendor</translation>
 <translation id="3670229581627177274">I-on ang Bluetooth</translation>
 <translation id="3670480940339182416">Puwedeng gamitin ng mga site ang V8 optimizer</translation>
@@ -3572,6 +3576,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3719245268140483218">Event sa Device</translation>
 <translation id="3719310907809321183">Napunan ang <ph name="CARD_IDENTIFIER"/>.</translation>
 <translation id="3719826155360621982">Homepage</translation>
+<translation id="3720543739123045680">Magka-share sa iisang proseso ang iba pang tab at ang tab na ito, na posibleng magresulta sa hindi inaasahang experience sa DevTools.</translation>
 <translation id="372062398998492895">CUPS</translation>
 <translation id="8397843425685839889">Ikaw at ang Brave</translation>
 <translation id="3722108462506185496">Nagkaroon ng error sa pagpapagana ng serbisyo ng virtual machine. Pakisubukang muli.</translation>
@@ -3586,6 +3591,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="8077319455765501118">Para magamit ang Brave Password Manager sa macOS Keychain, ilunsad ulit ang Brave at payagan ang access sa Keychain. Bubukas ulit ang iyong mga tab pagkatapos malunsad ulit.</translation>
 <translation id="3728188878314831180">I-mirror ang mga notification mula sa iyong telepono</translation>
 <translation id="3728681439294129328">I-configure ang network address</translation>
+<translation id="3728805180379554595">Ang setting na ito ay kinokontrol ni <ph name="USER_EMAIL"/>.</translation>
 <translation id="3729506734996624908">Mga pinapahintulutang site</translation>
 <translation id="3729957991398443677">Para matingnan ang iyong password o magdagdag ng tala tungkol dito, piliin ang pamahalaan ang iyong mga password sa search at address bar</translation>
 <translation id="3730076362938942381">App sa pagsusulat gamit ang stylus</translation>
@@ -3606,7 +3612,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3741056951918180319">Puwede mong i-click ang extension para magamit ito sa anumang site anumang oras</translation>
 <translation id="3741510433331996336">I-restart ang iyong device para tapusin ang pag-update</translation>
 <translation id="3742235229730461951">Layout ng Korean na keyboard</translation>
-<translation id="3742666961763734085">Hindi makahanap ng unit ng organisasyon na may ganyang pangalan. Pakisubukang muli.</translation>
 <translation id="3743842571276656710">Ilagay ang PIN para maipares sa <ph name="DEVICE_NAME"/></translation>
 <translation id="3744219658596020825">Hindi in-import ang iyong mga password</translation>
 <translation id="3747077776423672805">Para mag-alis ng mga app, pumunta sa Mga Setting &gt; Google Play Store &gt; Pamahalaan ang mga kagustuhan sa Android &gt; Mga App o Application manager. Pagkatapos ay i-tap ang app na gusto mong i-uninstall (maaaring kailanganin mong mag-swipe pakanan o pakaliwa para mahanap ang app). Pagkatapos, i-tap ang I-uninstall o I-disable.</translation>
@@ -3641,6 +3646,8 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="3765055238058255342">ganitong uri ng card</translation>
 <translation id="3765246971671567135">Hindi ma-read ang patakaran ng offline na demo mode.</translation>
 <translation id="3765696567014520261">Hindi magagamit ng mga site ang cookies mo para makita ang iyong aktibidad sa pag-browse sa iba't ibang site, halimbawa, para mag-personalize ng mga ad. Posibleng hindi gumana ang mga feature sa ilang site</translation>
+<translation id="3766265338450715550"><ph name="BEGIN_PARAGRAPH1"/>Gumagamit ang serbisyo sa lokasyon ng Brave ng mga source tulad ng Wi-Fi, mga mobile network, at sensor para makatulong na tantyahin ang lokasyon ng iyong device.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Puwede mong i-off ang lokasyon ng ChromeOS at Android sa iyong device anumang oras sa pamamagitan ng pagpunta sa Mga Setting &gt; Privacy at seguridad &gt; Mga kontrol sa privacy &gt; Access sa lokasyon. Puwede mo ring i-off ang paggamit ng Wi-Fi, mga mobile network, at mga sensor para sa lokasyon ng Android sa pamamagitan ng pag-off sa "Pahusayin ang katumpakan ng lokasyon" sa ilalim ng "Mga advanced na setting ng lokasyon" sa parehong menu.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3766687283066842296">Matuto pa tungkol sa Phone Hub</translation>
 <translation id="3766811143887729231"><ph name="REFRESH_RATE"/> Hz</translation>
 <translation id="4835748490302311946">Sa ngayon, puwede ka lang mag-share ng mga password sa mga miyembro ng pamilya. <ph name="BEGIN_LINK"/>Mag-imbita ng mga miyembro ng pamilya<ph name="END_LINK"/> na sumali sa grupo mo, at mas sulitin ang iyong mga produkto at subscription sa buong Brave.</translation>
@@ -3803,14 +3810,12 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="3887022758415973389">Ipakita ang listahan ng device</translation>
 <translation id="3888501106166145415">Mga nauugnay na Wi-Fi network</translation>
 <translation id="3888550877729210209">Nagtatala gamit ang <ph name="LOCK_SCREEN_APP_NAME"/></translation>
-<translation id="3888586133700543064">Nakakatulong sa amin ang impormasyong ito na maunawaan nang mas mabuti ang iyong isyu sa Assistant. Sino-store ito nang hanggang 90 araw at paghihigpitan ang access sa mga naaangkop na engineering team at feedback team.</translation>
 <translation id="3518294595762833244">I-on ang Brave Sync para gamitin ang Wi-Fi Sync</translation>
 <translation id="389313931326656921">Magtalaga ng switch para sa “Susunod”</translation>
 <translation id="3893268973182382220">Hindi ma-load ang panel na ito sa ngayon</translation>
 <translation id="3893536212201235195">Basahin at baguhin ang iyong mga setting ng accessibility</translation>
 <translation id="3893630138897523026">ChromeVox (pasalitang feedback)</translation>
 <translation id="3893764153531140319"><ph name="DOWNLOADED_SIZE"/>/<ph name="DOWNLOAD_SIZE"/></translation>
-<translation id="3894123633473837029">Isama ang kamakailang history ng Assistant sa pamamagitan ng Sherlog. Puwedeng kasama rito ang iyong pagkakakilanlan, lokasyon, at impormasyon sa pag-debug. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="3894427358181296146">Magdagdag ng folder</translation>
 <translation id="1968829513382924411">Ilipat sa Brave sync chain?</translation>
 <translation id="3894983081771074056">Gawi ng keyboard at mouse, mga preference sa wika, at higit pa</translation>
@@ -3963,6 +3968,7 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="3995138139523574647">USB-C device (port sa kanang bahagi sa likod)</translation>
 <translation id="3995963973192100066">I-play ang animation</translation>
 <translation id="399788104667917863">I-pin sa toolbar</translation>
+<translation id="3998780825367526465">Ipakita ang mga preview na larawan ng tab</translation>
 <translation id="3998976413398910035">Pamahalaan ang mga printer</translation>
 <translation id="4001540981461989979">I-highlight ang cursor ng mouse kapag gumagalaw</translation>
 <translation id="4002347779798688515">Posibleng hindi magamit ang naka-download na profile kung naka-lock ang mobile network provider. Makipag-ugnayan sa iyong provider para sa suporta.</translation>
@@ -4033,6 +4039,8 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4051177682900543628">search + pakanang arrow</translation>
 <translation id="4052120076834320548">Maliit</translation>
 <translation id="4052913941260326985">Gumawa ng &amp;QR Code</translation>
+<translation id="405365679581583349">I-update ang mga serbisyo ng Google Play</translation>
+<translation id="4053833479432165765">&amp;I-install ang page bilang app...</translation>
 <translation id="4054070260844648638">Makikita ng lahat ng tao</translation>
 <translation id="8891261408659902804">Naabot mo na ang limitasyon sa oras na itinakda ng iyong magulang para sa Brave app na <ph name="APP_NAME"/>. Puwede mo itong magamit nang <ph name="TIME_LIMIT"/> bukas.</translation>
 <translation id="4057041477816018958"><ph name="SPEED"/> - <ph name="RECEIVED_AMOUNT"/></translation>
@@ -4072,6 +4080,7 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4090103403438682346">I-enable ang Bine-verify na Access</translation>
 <translation id="4090947011087001172">I-reset ang mga pahintulot sa site para sa <ph name="SITE"/>?</translation>
 <translation id="4092636882861724179">Puwede mong tingnan at pamahalaan ang mga naka-save na password sa <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translation>
+<translation id="7268155614575494857">Para makatulong na ma-save ng Brave Password Manager ang iyong impormasyon sa pag-sign in, idagdag ang username mo para sa site na ito</translation>
 <translation id="4093865285251893588">Larawan sa profile</translation>
 <translation id="4093955363990068916">Lokal na file:</translation>
 <translation id="4094647278880271855">Gumagamit ka ng hindi sinusuportahang variable ng environment: <ph name="BAD_VAR"/>. Magkakaproblema sa stability at seguridad.</translation>
@@ -4100,7 +4109,6 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4108314971463891922">Subaybayan</translation>
 <translation id="4109135793348361820">Ilipat ang window sa <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="4110485659976215879">I-restore ang babala</translation>
-<translation id="4110490973560452005">Na-download na: <ph name="FILE_NAME"/>. Pindutin ang Shift+F6 para mag-cycle sa lugar ng bar ng mga download.</translation>
 <translation id="4112194537011183136"><ph name="DEVICE_NAME"/> (offline)</translation>
 <translation id="4113743276555482284">Password ng file</translation>
 <translation id="1423132677367459502">Nakikita mo ang mga iminumungkahing file na makakatulong para madali mong mabalikan ang iyong pinakakamakailang aktibidad sa Google Drive.
@@ -4138,7 +4146,6 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="413915106327509564"><ph name="WINDOW_TITLE"/> - Nakakonekta sa HID device</translation>
 <translation id="4139326893730851150">Mga update sa firmware</translation>
 <translation id="4142052906269098341">I-unlock ang iyong <ph name="DEVICE_TYPE"/> gamit ang telepono mo. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
-<translation id="4142518881503042940">I-save ang mga natukoy na printer sa iyong profile, o magdagdag ng bagong printer. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="4144218403971135344">Magkaroon ng mas magandang kalidad na video at makatipid ng baterya. Magpe-play lang ang video sa iyong screen na may naka-enable na Cast.</translation>
 <translation id="4146026355784316281">Palaging Buksan Gamit ang System Viewer</translation>
 <translation id="4146785383423576110">I-reset at linisin</translation>
@@ -4234,6 +4241,7 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4231141543165771749">Isara ang mga kontrol sa laro</translation>
 <translation id="4231231258999726714">Sine-set up ang Steam para sa Chromebook</translation>
 <translation id="4232375817808480934">I-configure ang Kerberos</translation>
+<translation id="4232484478444192782">Ang Android phone mo ang bahala sa iyo. Inililipat ang iyong Wi-Fi at password.</translation>
 <translation id="4233739489690259993">Hindi na nakakatanggap ang iyong Chromebook ng mga update sa seguridad at software. I-upgrade ang iyong device para sa pinakabagong seguridad at mga bagong feature. May mga nalalapat na tuntunin ng alok.</translation>
 <translation id="4235965441080806197">Kanselahin ang pag-sign in</translation>
 <translation id="4235976607074422892">Bilis ng pag-scroll</translation>
@@ -4268,11 +4276,11 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4256316378292851214">I-sa&amp;ve ang Video Bilang...</translation>
 <translation id="4258348331913189841">Mga system ng file</translation>
 <translation id="4259388776256904261">Puwede itong magtagal nang ilang sandali</translation>
-<translation id="7033965027041115562">Posibleng mapanganib ang <ph name="FILE_NAME"/>. Ipadala sa Advanced na Proteksyon ng Brave para ma-scan? Pindutin ang Shift+F6 para mag-cycle sa lugar ng bar ng mga download.</translation>
 <translation id="4260699894265914672">Pumindot ng key sa keyboard para mag-customize</translation>
 <translation id="4261429981378979799">Mga pahintulot sa extension</translation>
 <translation id="4262004481148703251">I-dismiss ang babala</translation>
 <translation id="4263223596040212967">Tingnan ang layout ng iyong keyboard at subukan ulit.</translation>
+<translation id="4265096510956307240">I-verify na ikaw ito</translation>
 <translation id="4265301768135164545">Puwede ka ring <ph name="BEGIN_LINK"/>manual<ph name="END_LINK"/> na mag-set up ng profile ng eSIM</translation>
 <translation id="426564820080660648">Upang tumingin ng mga update, pakigamit ang Ethernet, Wi-Fi o mobile data.</translation>
 <translation id="426652736638196239">Sa device lang na ito ise-save ang IBAN na ito</translation>
@@ -4298,6 +4306,7 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4278779213160967034">Puwedeng magtagal ang prosesong ito nang ilang minuto. Nagda-download ng mga file.</translation>
 <translation id="4279129444466079448">Puwede kang mag-install nang hanggang <ph name="PROFILE_LIMIT"/> (na) profile ng eSIM sa device na ito. Para magdagdag ng isa pang profile, mag-alis muna ng dati nang profile.</translation>
 <translation id="4280325816108262082">Awtomatikong madidiskonekta ang device kapag na-off ito o hindi ito ginagamit</translation>
+<translation id="4281637354026226955">Payagan ang mga app at serbisyo ng ChromeOS at Android na may pahintulot sa lokasyon na gamitin ang lokasyon ng iyong device. Posibleng pana-panahong mangolekta ang Brave ng data ng lokasyon at posibleng gamitin nito ang data na ito sa anonymous na paraan para pahusayin ang katumpakan ng lokasyon at mga serbisyong batay sa lokasyon.</translation>
 <translation id="4281844954008187215">Mga Tuntunin ng Serbisyo</translation>
 <translation id="4281849573951338030">I-customize ang mga button sa pen</translation>
 <translation id="4282196459431406533">Naka-on ang Smart Lock</translation>
@@ -4323,6 +4332,7 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4297219207642690536">I-restart at i-reset</translation>
 <translation id="4297813521149011456">Pag-rotate ng display</translation>
 <translation id="4298660926525614540">Mga Pangalan ng Naaalis na Storage</translation>
+<translation id="4300272766492248925">Buksan ang app</translation>
 <translation id="4301671483919369635">Pinapayagan ang page na ito na mag-edit ng mga file</translation>
 <translation id="5105741679146933998">{COUNT,plural, =1{# contact ang hindi available. Para magamit ang <ph name="FEATURE_NAME"/> kasama niya, idagdag sa iyong mga contact ang email address na nauugnay sa kanyang Brave sync chain.}one{# contact ang hindi available. Para magamit ang <ph name="FEATURE_NAME"/> kasama nila, idagdag sa iyong mga contact ang mga email address na nauugnay sa kanilang Brave sync chain.}other{# na contact ang hindi available. Para magamit ang <ph name="FEATURE_NAME"/> kasama nila, idagdag sa iyong mga contact ang mga email address na nauugnay sa kanilang Brave sync chain.}}</translation>
 <translation id="4303079906735388947">Mag-set up ng bagong PIN para sa iyong security key</translation>
@@ -4357,12 +4367,14 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4325433082696797523">Storage at power</translation>
 <translation id="7463244538445813736">Marami pang ginagawa ang pinakamalakas na seguridad ng Brave para maprotektahan ka laban sa mga mapanganib na website, download, at extension</translation>
 <translation id="4326484226728068206">Mga item sa iyong cart na may <ph name="DISCOUNT_TEXT"/> mula sa <ph name="MERCHANT_NAME"/>, <ph name="MERCHANT_DOMAIN"/>, na tiningnan noong <ph name="RELATIVE_TIME"/></translation>
+<translation id="4327380114687339519">Menu ng mga extension</translation>
 <translation id="4330191372652740264">Icewater</translation>
 <translation id="4330387663455830245">Huwag Isalin Ang <ph name="LANGUAGE"/></translation>
 <translation id="4332976768901252016">Mag-set Up ng Parental Controls</translation>
 <translation id="4333854382783149454">PKCS #1 SHA-1 na May RSA Encryption</translation>
 <translation id="4334768748331667190">Hindi mo na makikita ulit ang <ph name="MODULE_NAME"/></translation>
 <translation id="4335835283689002019">Naka-off ang Ligtas na Pag-browse</translation>
+<translation id="2949055937949724441">Para simulan ulit ang pag-save ng mga password sa Brave Password Manager, i-update ang mga serbisyo ng Google Play</translation>
 <translation id="4338363401382232853">Suhestyon sa split screen na window</translation>
 <translation id="4339203724549370495">I-uninstall ang app</translation>
 <translation id="4340125850502689798">Invalid na username</translation>
@@ -4389,7 +4401,7 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4354344420232759511">Lalabas dito ang mga site na binibisita mo</translation>
 <translation id="435527878592612277">Piliin ang iyong larawan</translation>
 <translation id="4356100841225547054">I-off ang volume</translation>
-<translation id="1762859572661747715">Para mas mahusay na ma-diagnose ang mga isyu sa Bluetooth, puwedeng magsama ang mga Braver ng mga karagdagang log ng Bluetooth sa kanilang mga ulat ng feedback. Kapag may check ang opsyong ito, maisasama sa iyong ulat ang mga log ng btsnoop at HCI mula sa kasalukuyan mong session, na nalinis para maalis ang lahat ng PII na puwedeng alisin. Paghihigpitan ang access sa mga log na ito sa mga manager ng grupo ng produkto ng ChromeOS sa Listnr. Ipu-purge ang mga log pagkatapos ng 90 araw.</translation>
+<translation id="4357583358198801992">Ipakita ang mga grupo ng tab</translation>
 <translation id="4358361163731478742">Walang app ang sumusuporta sa pagpili ng wika ng app</translation>
 <translation id="4358643842961018282">Updated ang iyong device</translation>
 <translation id="4359408040881008151">Na-install dahil sa (mga) nakadependeng extension.</translation>
@@ -4405,6 +4417,7 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4364830672918311045">Ipakita ang mga notification</translation>
 <translation id="4367513928820380646">Suriin ang mga inalis na pahintulot</translation>
 <translation id="4367971618859387374">Display name</translation>
+<translation id="4368960422722232719">Ipakita ang paggamit ng memory sa card ng preview na lalabas kapag nag-hover sa tab</translation>
 <translation id="4369215744064167350">Inaprubahan ang kahilingan sa website</translation>
 <translation id="4369233657762989723">I-on/i-off ang dictation</translation>
 <translation id="436926121798828366">Puwede mo itong baguhin anumang oras sa <ph name="SETTINGS_LINK"/></translation>
@@ -4437,6 +4450,7 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4388650384344483842">Gumamit ng hindi bababa sa 8 character</translation>
 <translation id="4389091756366370506">User <ph name="VALUE"/></translation>
 <translation id="4390396490617716185"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/>, at <ph name="NUMBER_OF_OTHER_SWITCHES"/> pang switch</translation>
+<translation id="4390569024397171409">I-install ang app sa iyong <ph name="DEVICE_TYPE"/></translation>
 <translation id="439266289085815679">Ang configuration ng bluetooth ay kinokontrol ni <ph name="USER_EMAIL"/>.</translation>
 <translation id="4392896746540753732">I-edit ang file ng configuration</translation>
 <translation id="4393102500004843976">search + shift + <ph name="TOP_ROW_KEY"/></translation>
@@ -4484,7 +4498,6 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4416582610654027550">Mag-type ng valid na URL</translation>
 <translation id="4421932782753506458">Mingming</translation>
 <translation id="4423376891418188461">I-restore ang Mga Setting</translation>
-<translation id="442397852638519243"><ph name="USER_NAME"/>, hinihiling sa iyo ng administrator mo na palitan ang iyong password.</translation>
 <translation id="4424867131226116718"><ph name="BEGIN_PARAGRAPH1"/>Kapag pinayagan ang mga ChromeOS device na magpadala ng mga awtomatikong ulat, makakatulong ito sa aming bigyang-priyoridad kung ano ang dapat ayusin at pahusayin sa ChromeOS. Posibleng kasama sa mga ulat na ito ang mga bagay gaya kung kailan nagka-crash ang ChromeOS, aling mga feature ang ginamit, at kung gaano kalaking memory ang karaniwang nagamit.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Puwede mong simulan o ihinto ang pagpayag sa mga ulat na ito anumang oras sa mga setting ng iyong Brave device. Kung isa kang administrator ng domain, puwede mong baguhin ang setting na ito sa admin console.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="4426268963847471040">I-delete ang <ph name="FILE_NAME"/></translation>
@@ -4500,7 +4513,6 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4430369329743628066">Naidagdag na ang bookmark</translation>
 <translation id="4430422687972614133">I-on ang virtual card</translation>
 <translation id="4432621511648257259">Mali ang password</translation>
-<translation id="443454694385851356">Legacy (hindi secure)</translation>
 <translation id="4434611816075088065">Wala nang ibang nangangailangan ng atensyon mo sa ngayon</translation>
 <translation id="443475966875174318">I-update o alisin ang mga hindi compatible na application</translation>
 <translation id="4437947179446780764">Magdagdag ng custom na service provider ng DNS</translation>
@@ -4544,6 +4556,7 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4473559657152613417">Mag-right click sa isang tab at piliin ang "Idagdag ang Tab sa Bagong Grupo"</translation>
 <translation id="4473996011558324141">tinatantya ang oras</translation>
 <translation id="4474155171896946103">I-bookmark ang lahat ng tab...</translation>
+<translation id="4475299370877036544">Posibleng lumabag ang pagkilos na ito sa mga patakaran ng iyong organisasyon</translation>
 <translation id="4475552974751346499">Paghahanap ng mga pag-download</translation>
 <translation id="4476590490540813026">Atleta</translation>
 <translation id="4476659815936224889">Para i-scan ang code na ito, puwede kang gumamit ng QR scanner app sa iyong telepono, o ilang camera app.</translation>
@@ -4556,6 +4569,7 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="4481448477173043917">Nag-restart nang hindi inaasahan ang iyong <ph name="DEVICE_TYPE"/></translation>
 <translation id="4481467543947557978">service worker</translation>
 <translation id="4482990632723642375">Kamakailang Isinarang Tab</translation>
+<translation id="4486333480498805415">Katumpakan ng lokasyon</translation>
 <translation id="4487489714832036847">Gumagamit ng mga app ang mga Chromebook sa halip na tradisyonal na software. Kumuha ng mga app para sa pagiging produktibo, entertainment, at higit pa.</translation>
 <translation id="4488257340342212116">Pinapayagang gamitin ang iyong camera</translation>
 <translation id="4490086832405043258">Gamitin ang mga setting ng proxy ng ChromeOS para sa profile na ito.</translation>
@@ -4638,7 +4652,6 @@ Puwedeng kasama rito ang impormasyon tungkol sa naka-install na software, mga fi
 <translation id="8936733030396193625">Input na boses ng Brave Assistant</translation>
 <translation id="4547659257713117923">Walang Mga Tab Mula Sa Ibang Mga Device</translation>
 <translation id="4547672827276975204">Awtomatikong itakda</translation>
-<translation id="6161402170488044025">Para makatulong na ma-save ng Brave Password Manager ang iyong impormasyon sa pag-sign in, idagdag ang username mo para sa site na ito</translation>
 <translation id="4549791035683739768">Walang naka-store na fingerprint sa iyong security key</translation>
 <translation id="4550737096585299960">Pakisubukan ulit sa loob ng ilang minuto.</translation>
 <translation id="4550926046134589611">Bubukas pa rin ang ilang sinusuportahang link sa <ph name="APP_NAME"/>.</translation>
@@ -4879,6 +4892,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="473775607612524610">I-update</translation>
 <translation id="473936925429402449">Pinili, karagdagang content na <ph name="CURRENT_ELEMENT"/> sa <ph name="TOTAL_ELEMENTS"/></translation>
 <translation id="4739639199548674512">Mga Ticket</translation>
+<translation id="4740546261986864539">Kabubukas lang</translation>
 <translation id="4742334355511750246">Hindi pinapayagang magpakita ng mga larawan</translation>
 <translation id="4742970037960872810">Alisin ang highlight</translation>
 <translation id="4743260470722568160"><ph name="BEGIN_LINK"/>Alamin kung paano i-update ang mga application<ph name="END_LINK"/></translation>
@@ -4940,7 +4954,6 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="479536056609751218">Webpage, HTML Lamang</translation>
 <translation id="4796142525425001238">Palaging i-restore</translation>
 <translation id="4797314204379834752">Subukang gumamit ng mga grupo ng tab para isaayos ang mga gawain, para sa online na pamimili, at higit pa</translation>
-<translation id="5526928694260255286">Mag-attach ng <ph name="BEGIN_LINK"/>Mga Log ng Bluetooth<ph name="END_LINK"/> (Brave internal)</translation>
 <translation id="479863874072008121">Pamahalaan ang mga device</translation>
 <translation id="479989351350248267">search</translation>
 <translation id="4800839971935185386">Suriin ang mga update sa pangalan at icon</translation>
@@ -5010,6 +5023,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="484462545196658690">Auto</translation>
 <translation id="4846628405149428620">Piliin kung saan makakapag-save ng mga pagbabago ang site na ito</translation>
 <translation id="4846680374085650406">Sinusunod mo ang rekomendasyon ng administrator para sa setting na ito.</translation>
+<translation id="4847242508757499006">Piliin ang "Subukan ulit," o piliin ang "Buksan sa basic na editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="9059376008425695864">Brave Assistant "Ok Brave"</translation>
 <translation id="4849286518551984791">Coordinated Universal Time (UTC/GMT)</translation>
 <translation id="4849517651082200438">Huwag I-install</translation>
@@ -5039,7 +5053,6 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="4868284252360267853">Kasalukuyang hindi naka-focus ang dialog na ito. Pindutin ang Command-Shift-Option A para i-focus ang dialog na ito.</translation>
 <translation id="4869170227080975044">Basahin ang impormasyon ng network ng ChromeOS</translation>
 <translation id="4870724079713069532">Magagawa mong magbukas at mag-edit ng mga sinusuportahang file mula sa File Explorer o iba pang app gamit ang app na ito. Para kontrolin kung aling mga file ang magbubukas sa app na ito bilang default, pumunta sa <ph name="BEGIN_LINK"/>Mga setting ng Windows<ph name="END_LINK"/>.</translation>
-<translation id="4870758487381879312">Ilagay ang password na ibinigay ng admin para makuha ang impormasyon sa pag-configure</translation>
 <translation id="4870995365819149457">Bubukas pa rin ang ilang sinusuportahang link sa <ph name="APP_NAME"/>, <ph name="APP_NAME_2"/>, <ph name="APP_NAME_3"/>, at 1 pang app.</translation>
 <translation id="4871322859485617074">Naglalaman ang PIN ng mga invalid na character</translation>
 <translation id="4871370605780490696">Magdagdag ng bookmark</translation>
@@ -5074,6 +5087,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="488785315393301722">Ipakita ang Mga Detalye</translation>
 <translation id="488862352499217187">Gumawa ng Bagong Folder</translation>
 <translation id="4890292359366636311">Awtomatikong pumasok sa picture-in-picture, para magamit mo ito sa ibabaw ng iba pang tab at window.</translation>
+<translation id="4890399733764921729">Hindi makakonekta. Ni-lock ng ibang mobile provider.</translation>
 <translation id="4890773143211625964">Ipakita ang mga advanced na opsyon sa printer</translation>
 <translation id="4891089016822695758">Forum sa Beta</translation>
 <translation id="4892229439761351791">Puwedeng gumamit ng Bluetooth ang site</translation>
@@ -5105,7 +5119,6 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="4913209098186576320">Posibleng mapanganib ang file na ito<ph name="LINE_BREAK"/>Mas natatagalan kaysa sa karaniwan ang pagsusuring ito...</translation>
 <translation id="4915961947098019832">Pinapayagang magpakita ng mga larawan</translation>
 <translation id="4916542008280060967">Payagan ang site na i-edit ang <ph name="FILE_NAME"/>?</translation>
-<translation id="4917385247580444890">Malakas</translation>
 <translation id="491779113051926205">Mga Traffic Counter ng ChromeOS</translation>
 <translation id="4918021164741308375">Gusto ng <ph name="ORIGIN"/> na makipag-ugnayan sa extension na "<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="4918086044614829423">Tanggapin</translation>
@@ -5115,6 +5128,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="1298471559729553235">Para gamitin ang Password Manager sa iyong operating system, ilunsad ulit ang Brave at payagan ang pag-access sa password manager ng iyong computer. Bubukas ulit ang iyong mga tab pagkatapos malunsad ulit.</translation>
 <translation id="492299503953721473">Alisin ang mga Android app</translation>
 <translation id="492363500327720082">Ina-uninstall ang <ph name="APP_NAME"/>...</translation>
+<translation id="4923977675318667854">Ipakita ang Mga Grupo ng Tab</translation>
 <translation id="4924002401726507608">Magsumite ng Feedback</translation>
 <translation id="4924352752174756392">12x</translation>
 <translation id="4925320384394644410">Lalabas dito ang iyong mga port</translation>
@@ -5218,6 +5232,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5010886807652684893">Visual view</translation>
 <translation id="5012523644916800014">Pamahalaan ang mga password at passkey</translation>
 <translation id="501394389332262641">Tunog na paubos na ang baterya</translation>
+<translation id="50145804426592479">Gumamit ng lokasyon. Payagan ang mga app, website, at serbisyo ng Android at ChromeOS na may pahintulot sa lokasyon na gamitin ang lokasyon ng device na ito. Posibleng pana-panahong mangolekta ang Brave ng data ng lokasyon at gamitin nito ang data na ito sa anonymous na paraan para mapahusay ang katumpakan ng lokasyon at mga serbisyong batay sa lokasyon. <ph name="BEGIN_LINK1"/>Matuto Pa<ph name="END_LINK1"/></translation>
 <translation id="5015344424288992913">Nilulutas ang proxy...</translation>
 <translation id="5016305686459575361">Sa pamamagitan ng pagkonekta ng iyong telepono, magagawa mo ang sumusunod:</translation>
 <translation id="5016491575926936899">Magagawa mong mag-text mula sa iyong computer, ibahagi ang koneksyon mo sa internet, sumagot sa mga notification sa pag-uusap, at i-unlock ang iyong <ph name="DEVICE_TYPE"/> gamit ang telepono mo.<ph name="FOOTNOTE_POINTER"/> <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
@@ -5236,7 +5251,6 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5026874946691314267">Huwag itong ipakita muli</translation>
 <translation id="5027550639139316293">Email Certificate</translation>
 <translation id="5027562294707732951">Idagdag ang extension</translation>
-<translation id="5028445315206872221">Naka-block ang mga extension sa site na ito</translation>
 <translation id="5029287942302939687">Nakatakda na ang iyong password</translation>
 <translation id="5029873138381728058">Hindi nasuri ang mga VM</translation>
 <translation id="503155457707535043">Dina-download ang mga app</translation>
@@ -5284,7 +5298,6 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5068553687099139861">ipakita ang mga password</translation>
 <translation id="506886127401228110">I-on ang mga naka-isolate na web app</translation>
 <translation id="5068919226082848014">Pizza</translation>
-<translation id="506934332411950286">Inililipat ang Wi-Fi mula sa iyong Android phone</translation>
 <translation id="5070773577685395116">Hindi natanggap?</translation>
 <translation id="5071295820492622726">Bumalik sa mga kamakailang download</translation>
 <translation id="5071892329440114717">Ipakita ang mga detalye ng karaniwang proteksyon</translation>
@@ -5302,7 +5315,6 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="2624861355887879084">Kapag naka-on na, magiging available sa anumang ChromeOS device ang iyong mga app pagkatapos mong mag-sign in gamit ang iyong Brave sync chain. Isi-sync ang mga web app na na-install mula sa Brave browser kahit na naka-off ang pag-sync sa browser.</translation>
 <translation id="508059534790499809">I-refresh ang ticket ng Kerberos</translation>
 <translation id="5081124414979006563">&amp;Buksan ang Profile ng Bisita</translation>
-<translation id="5081960376148623587">Piliin kung magpi-preload ng mga page</translation>
 <translation id="5083035541015925118">ctrl + alt + pataas na arrow</translation>
 <translation id="5084328598860513926">Naantala ang daloy ng pag-provision. Pakisubukan ulit o makipag-ugnayan sa may-ari o administrator ng iyong device. Code ng error: <ph name="ERROR_CODE"/>.</translation>
 <translation id="5084622689760736648">Mas malamang na gumana ang mga site tulad ng inaasahan mo</translation>
@@ -5320,6 +5332,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5093477827231450397">Listahan ng mga site na na-block mo na ayaw mong magmungkahi ng mga ad sa iba pang site</translation>
 <translation id="5094176498302660097">Magagawa mong magbukas at mag-edit ng mga sinusuportahang file mula sa Files app o iba pang app gamit ang app na ito. Para kontrolin kung aling mga file ang magbubukas sa app na ito bilang default, <ph name="BEGIN_LINK"/>alamin kung paano magtakda ng mga default na app sa iyong device<ph name="END_LINK"/>.</translation>
 <translation id="5094721898978802975">Makipag-ugnay sa mga nakikipagtulungang native na application</translation>
+<translation id="5095252080770652994">Pag-usad</translation>
 <translation id="5095507226704905004">Hindi makopya ang file dahil wala na ito</translation>
 <translation id="5095848221827496531">I-unselect</translation>
 <translation id="5097002363526479830">Nabigong kumonekta sa network na '<ph name="NAME"/>': <ph name="DETAILS"/></translation>
@@ -5330,6 +5343,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5101839224773798795">Awtomatikong mag-click kapag huminto ang cursor</translation>
 <translation id="5103311607312269661">taasan ang brightness ng display</translation>
 <translation id="5106350808162641062">Alisin</translation>
+<translation id="5106608587025903971">Sa halip na ilagay ang iyong password sa Brave sync chain para mag-sign in, puwede kang gumawa ng password sa <ph name="DEVICE_TYPE"/> para sa device na ito</translation>
 <translation id="510695978163689362">Pinapamahalaan ng Family Link ang <ph name="USER_EMAIL"/>. Puwede kang magdagdag ng mga pampaaralang account para ma-access ang mga resource ng paaralan nang may patnubay ng magulang.</translation>
 <translation id="5107093668001980925">Huwag kailanman ipakita ang <ph name="MODULE_NAME"/></translation>
 <translation id="5107443654503185812">Na-off ng isang extension ang Ligtas na Pag-browse</translation>
@@ -5388,7 +5402,6 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5147097165869384760">Hinahanap ang system page ng OS? Bisitahin ang<ph name="BEGIN_LINK"/><ph name="CHROME_ABOUT_SYS_LINK"/><ph name="END_LINK"/>.</translation>
 <translation id="5147516217412920887">Sundin ang mga tagubilin sa iyong telepono para i-verify ang code</translation>
 <translation id="5147992672778369947">Gamitin ang inirerekomendang password</translation>
-<translation id="5148277445782867161">Ang serbisyo ng lokasyon ng Brave ay gumagamit ng mga source tulad ng Wi-Fi, mga mobile network, at sensor para makatulong na tantyahin ang lokasyon ng iyong device.</translation>
 <translation id="5148285448107770349">Dapat hindi bababa sa 8 character ang password</translation>
 <translation id="5149602533174716626">Kop&amp;yahin ang Video Frame</translation>
 <translation id="5150254825601720210">Pangalan ng Server ng Netscape Certificate SSL</translation>
@@ -5410,6 +5423,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5162905305237671850">Na-block na ang <ph name="DEVICE_TYPE"/></translation>
 <translation id="5163910114647549394">Inilipat ang tab sa dulo ng tabstrip</translation>
 <translation id="5164530241085602114">Hindi pinapayagan ang mga notification para sa <ph name="SITE"/></translation>
+<translation id="5165989352025966137">Pinapayagan na awtomatikong mag-fullscreen</translation>
 <translation id="516747639689914043">Hypertext Transport Protocol (HTTP)</translation>
 <translation id="5170568018924773124">Ipinakita sa folder</translation>
 <translation id="5171045022955879922">Hanapin o i-type ang URL</translation>
@@ -5417,7 +5431,6 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5172855596271336236">May 1 pinapamahalaang printer.</translation>
 <translation id="5173668317844998239">Magdagdag at mag-delete ng mga fingerprint na naka-save sa iyong security key</translation>
 <translation id="5174169235862638850">Nakopya sa clipboard ang password</translation>
-<translation id="5175379009094579629">Invalid ang pangalan ng device. Maglagay ng valid na pangalan ng device para subukan ulit.</translation>
 <translation id="5177479852722101802">Ipagpatuloy ang pag-block ng access sa camera at mikropono</translation>
 <translation id="5177549709747445269">Gumagamit ka ng mobile data</translation>
 <translation id="5178667623289523808">Find Previous</translation>
@@ -5432,6 +5445,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5185386675596372454">Hindi pinagana ang pinakabagong bersyon ng "<ph name="EXTENSION_NAME"/>" dahil nangangailangan ito ng higit pang mga pahintulot.</translation>
 <translation id="5185500136143151980">Walang Internet</translation>
 <translation id="5186381005592669696">I-customize ang wika ng display para sa mga sinusuportahang app</translation>
+<translation id="5187641678926990264">&amp;I-install ang Page bilang App...</translation>
 <translation id="5187826826541650604"><ph name="KEY_NAME"/> (<ph name="DEVICE"/>)</translation>
 <translation id="5190577235024772869">Gumagamit ng <ph name="USED_SPACE"/></translation>
 <translation id="5190926251776387065">I-activate ang port</translation>
@@ -5594,6 +5608,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5319712128756744240">Magpares ng bagong device</translation>
 <translation id="5320135788267874712">Bagong pangalan ng device</translation>
 <translation id="5320261549977878764">I-unsave ang grupo</translation>
+<translation id="5322274928052138413">Pamahalaan ang access sa lokasyon para sa mga app, website at serbisyo ng system. Posibleng gumamit ang lokasyon ng mga source na tulad ng Wi‑Fi, mga mobile network, at sensor para makatulong sa pagtantya sa lokasyon ng iyong device. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="532247166573571973">Maaaring hindi makakonekta sa server. Subukang muli sa ibang pagkakataon.</translation>
 <translation id="4201026620212054031">I-customize ang hitsura ng Brave at ng page na ito</translation>
 <translation id="5324300749339591280">Listahan ng mga app</translation>
@@ -5640,10 +5655,8 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5365881113273618889">Naglalaman ng mga sensitibong file ang pinili mong folder. Sigurado ka bang gusto mong bigyan ang "<ph name="APP_NAME"/>" ng permanenteng access sa pag-write sa folder na ito?</translation>
 <translation id="536638840841140142">Wala</translation>
 <translation id="5368246151595623328">Na-save ang '<ph name="NETWORK_NAME"/>' mula sa <ph name="DEVICE_NAME"/></translation>
-<translation id="5368255566854433132">Gumawa ng password ng <ph name="DEVICE_TYPE"/></translation>
 <translation id="5368441245151140827">Hindi mababasa o mababago ng extension na ito ang impormasyon ng site o hindi ito gagana sa background</translation>
 <translation id="5368720394188453070">Naka-lock ang iyong telepono. I-unlock ito upang makapasok.</translation>
-<translation id="5368779022775404937">Mag-sign in sa <ph name="REALM"/></translation>
 <translation id="5369491905435686894">I-enable ang pag-accelerate ng mouse</translation>
 <translation id="5369694795837229225">I-set up ang environment sa pag-develop ng Linux</translation>
 <translation id="5370819323174483825">I-&amp;reload</translation>
@@ -5659,7 +5672,6 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5380424552031517043">Inalis ang <ph name="PERMISSION"/></translation>
 <translation id="5380526436444479273">Maghintay nang ilang minuto at subukan ulit</translation>
 <translation id="5382591305415226340">Pamahalaan ang mga sinusuportahang link</translation>
-<translation id="5383377866517186886">Naka-off ang camera sa System Preferences ng Mac</translation>
 <translation id="5383740867328871413">Grupong walang pangalan - <ph name="GROUP_CONTENTS"/> - <ph name="COLLAPSED_STATE"/></translation>
 <translation id="4871191274716686333">Mase-save lang ang password na ito sa device na ito. Para magamit ito sa iba mo pang device, i-save ito sa iyong Brave sync chain.</translation>
 <translation id="5387116558048951800">I-edit ang <ph name="CREDENTIAL_TYPE"/></translation>
@@ -5676,6 +5688,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5395498824851198390">Default na font</translation>
 <translation id="5397378439569041789">I-enroll ang kiosk o signage device</translation>
 <translation id="5397794290049113714">Ikaw</translation>
+<translation id="5398062879200420134">⌥+Hover</translation>
 <translation id="5398497406011404839">Mga nakatagong bookmark</translation>
 <translation id="5398572795982417028">Lampas sa hangganan ang tinukoy na page, ang limitasyon ay <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="5400196580536813396">Hindi pinapayagang maghanap o gumamit ng mga printer na naa-access ng device mo</translation>
@@ -5827,7 +5840,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5499476581866658341">Puwede mo nang tingnan ang mga pinakabagong larawan at media ng iyong telepono</translation>
 <translation id="549957179819296104">Bagong icon</translation>
 <translation id="662980795232550526">Posibleng ma-save ang <ph name="BEGIN_LINK_SEARCH"/>history ng paghahanap<ph name="END_LINK_SEARCH"/> at <ph name="BEGIN_LINK_GOOGLE"/>iba pang anyo ng aktibidad<ph name="END_LINK_GOOGLE"/> sa iyong Brave sync chain kapag naka-sign in ka. Puwede mong i-delete ang mga ito anumang oras.</translation>
-<translation id="5500516288673745630">Itakda ang password ng <ph name="DEVICE_TYPE"/></translation>
 <translation id="5500709606820808700">Nagpatakbo ng pag-check sa kaligtasan ngayong araw</translation>
 <translation id="5501322521654567960">Ang panel sa gilid na naka-align sa kaliwa</translation>
 <translation id="5501809658163361512">{COUNT,plural, =1{Hindi natanggap ang <ph name="ATTACHMENTS"/> mula sa <ph name="DEVICE_NAME"/>}one{Hindi natanggap ang <ph name="ATTACHMENTS"/> mula sa <ph name="DEVICE_NAME"/>}other{Hindi natanggap ang <ph name="ATTACHMENTS"/> mula sa <ph name="DEVICE_NAME"/>}}</translation>
@@ -5847,7 +5859,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5514315914873062345">Tab</translation>
 <translation id="5517304475148761050">Kinakailangan ng app na ito ng access sa Play Store</translation>
 <translation id="5517412723934627386"><ph name="NETWORK_TYPE"/> - <ph name="NETWORK_DISPLAY_NAME"/></translation>
-<translation id="1473632877710838067">Puwede mong buksan ang karamihan ng mga feature ng panel sa gilid sa pamamagitan ng Menu ng Brave sa kanang bahagi sa itaas</translation>
 <translation id="5519195206574732858">LTE</translation>
 <translation id="5519900055135507385">Panatilihing mas secure ang account na ito gamit ang malakas na password. Mase-save ito sa <ph name="GOOGLE_PASSWORD_MANAGER"/> para sa <ph name="EMAIL"/>.</translation>
 <translation id="5521078259930077036">Ito ba ang inaasahan mong home page?</translation>
@@ -5856,7 +5867,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5523149538118225875">{NUM_EXTENSIONS,plural, =1{Isang extension ang na-install ng iyong administrator}one{# extension ang na-install ng iyong administrator}other{# na extension ang na-install ng iyong administrator}}</translation>
 <translation id="5523532775593636291">Palaging mananatiling aktibo ang mga site na idinaragdag mo at hindi magbabakante ng memory mula sa mga ito</translation>
 <translation id="5523558474028191231">Puwedeng gumamit ang pangalan ng mga titik, numero, at special character, at dapat na <ph name="MAX_CHARACTER_COUNT"/> (na) character o mas kaunti</translation>
-<translation id="5526701598901867718">Lahat (hindi secure)</translation>
 <translation id="5526745900034778153">Mag-sign in muli para ituloy ang pag-sync</translation>
 <translation id="5527463195266282916">Tinangkang i-downgrade ang extension.</translation>
 <translation id="5527474464531963247">Maaari ka ring pumili ng isa pang network.</translation>
@@ -5867,7 +5877,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5533001281916885985">Gusto ng <ph name="SITE_NAME"/> na</translation>
 <translation id="5537725057119320332">I-cast</translation>
 <translation id="5539070192556911367">Hindi maabot ang Brave</translation>
-<translation id="5539221284352502426">Tinanggihan ng server ang password na inilagay mo. Kabilang sa mga posibleng dahilan: Masyadong maikli ang password. Dapat may mga numero o simbolo ang password. Dapat naiiba ang password sa mga nakaraang password.</translation>
 <translation id="5541694225089836610">Na-disable ng iyong administrator ang pagkilos na ito</translation>
 <translation id="5542132724887566711">Profile</translation>
 <translation id="5542750926112347543">Na-block ang cookies mula sa <ph name="DOMAIN"/></translation>
@@ -5943,6 +5952,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5590418976913374224">I-play ang tunog sa pagsisimula ng device</translation>
 <translation id="5591465468509111843">Napakalapad</translation>
 <translation id="5592595402373377407">Wala pang available na sapat na data.</translation>
+<translation id="5594371836748657471">Naka-off ang mikropono sa Mga Setting ng System ng Mac</translation>
 <translation id="5594899180331219722">Pumili ng file</translation>
 <translation id="5595307023264033512">Kabuuang storage na ginagamit ng mga site: <ph name="TOTAL_USAGE"/></translation>
 <translation id="5595485650161345191">Mag-edit ng address</translation>
@@ -5998,8 +6008,10 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5634446357546764049">Tingnan ang mga alaala ng mga kamakailan mong biyahe at iba pa</translation>
 <translation id="5635312199252507107">Payagan sa mga partikular na site</translation>
 <translation id="5636012309446422">Alisin ang <ph name="DEVICE"/> sa <ph name="PRIMARY_EMAIL"/>?</translation>
+<translation id="5636140764387862062">Higit pang pagkilos para sa PIN</translation>
 <translation id="5636996382092289526">Upang gamitin ang <ph name="NETWORK_ID"/>, maaaring kailangan mo munang <ph name="LINK_START"/>bisitahin ang pahina sa pag-sign in ng network<ph name="LINK_END"/>, na awtomatikong bubukas sa loob ng ilang segundo. Kung hindi ito mangyayari, hindi magagamit ang network.</translation>
 <translation id="5637476008227280525">Pag-enable sa mobile data</translation>
+<translation id="5638170200695981015">Piliin ang "Buksan sa basic na editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="563821631542362636">Payagan ang site na mag-save ng data</translation>
 <translation id="5639549361331209298">I-reload ang pahinang ito, pindutin nang matagal upang makakita ng higit pang mga pagpipilian</translation>
 <translation id="5640133431808313291">Pamahalaan ang mga security key</translation>
@@ -6023,6 +6035,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5657667036353380798">Kinakailangan ng external na extension ang bersyon ng Brave na <ph name="MINIMUM_CHROME_VERSION"/> o mas mataas upang ma-install.</translation>
 <translation id="565899488479822148">Ini-install ang pinakabagong update</translation>
 <translation id="5659593005791499971">Email</translation>
+<translation id="5659964844710667266">Gumawa ng password para sa <ph name="DEVICE_TYPE"/> na ito</translation>
 <translation id="8744239658215739511">I-c&amp;ustomize ang Iyong Brave</translation>
 <translation id="5662513737565158057">Baguhin kung paano gagana ang mga Linux app.</translation>
 <translation id="5663459693447872156">Awtomatikong lumipat sa kalahating lapad</translation>
@@ -6033,6 +6046,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5667546120811588575">Sine-set up ang Google Play...</translation>
 <translation id="5668351004957198136">Hindi Pumasa</translation>
 <translation id="5669863904928111203">Hindi up to date ang ChromeOS</translation>
+<translation id="6115196230119052418">Pamahalaan ang mga pahintulot sa lokasyon ng site sa Brave</translation>
 <translation id="5671641761787789573">Na-block ang mga larawan</translation>
 <translation id="5671658447180261823">Alisin ang suhestyong <ph name="SUGGESTION_NAME"/></translation>
 <translation id="567210741546439261">&amp;Mga Bookmark at Listahan</translation>
@@ -6067,6 +6081,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5696679855467848181">Kasalukuyang ginagamit na PPD file: <ph name="PPD_NAME"/></translation>
 <translation id="5697832193891326782">Picker ng Emoji</translation>
 <translation id="5698878456427040674">Tingnan kung sinusuportahan ang napiling account.</translation>
+<translation id="5699227710146832453">Mula sa iyong</translation>
 <translation id="570043786759263127">Mga app at serbisyo ng Google Play</translation>
 <translation id="5700761515355162635">Pinapayagan ang third-party na cookies</translation>
 <translation id="5700836101007545240">Na-disable ng iyong administrator ang pagdaragdag ng koneksyon</translation>
@@ -6089,6 +6104,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5713033452812927234">Binubuksan ang windows mula sa iyong dating device</translation>
 <translation id="5713158217420111469">Nakakonekta sa <ph name="DEVICE"/></translation>
 <translation id="5713960379473463904">Istilo ng Pag-input ng Puwang</translation>
+<translation id="5714100381896040477">Limitahan ang paggalaw sa screen</translation>
 <translation id="5715711091495208045">Broker ng plugin: <ph name="PLUGIN_NAME"/></translation>
 <translation id="5718049162805123412">Dapat mong palitan ang mga ito ngayon mismo</translation>
 <translation id="5719854774000914513">Puwedeng hilingin ng mga site na kumonekta sa mga HID device</translation>
@@ -6107,7 +6123,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5734362860645681824">Komunikasyon</translation>
 <translation id="5734697361979786483">Magdagdag ng file share</translation>
 <translation id="5736092224453113618">{NUM_FILES,plural, =0{Hindi natutugunan ng data na ito o ng iyong device ang ilan sa mga patakarang panseguridad ng organisasyon mo. Itanong sa iyong admin kung ano ang kailangang ayusin.}=1{Hindi natutugunan ng file na ito o ng iyong device ang ilan sa mga patakarang panseguridad ng organisasyon mo. Itanong sa iyong admin kung ano ang kailangang ayusin.}one{Hindi natutugunan ng mga file na ito ang ilan sa mga patakarang panseguridad ng organisasyon mo. Itanong sa iyong admin kung ano ang kailangang ayusin.}other{Hindi natutugunan ng mga file na ito ang ilan sa mga patakarang panseguridad ng organisasyon mo. Itanong sa iyong admin kung ano ang kailangang ayusin.}}</translation>
-<translation id="5736796278325406685">Mangyaring maglagay ng wastong username</translation>
 <translation id="5738093759615225354">Kailangan mo ang passkey na ito para mag-sign in sa iyong computer</translation>
 <translation id="5739017626473506901">Mag-sign in para matulungan si <ph name="USER_NAME"/> na magdagdag ng pampaaralang account</translation>
 <translation id="5739235828260127894">Naghihintay ng pag-verify. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
@@ -6140,7 +6155,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5764797882307050727">Magbakante ng ilang espasyo sa iyong device.</translation>
 <translation id="5765425701854290211">Paumanhin, nasira ang ilang file at hindi nagtagumpay ang pag-update. Ligtas ang iyong mga naka-sync na file.</translation>
 <translation id="5765491088802881382">Walang magagamit na network</translation>
-<translation id="870513381775606021">Posibleng mapanganib ang <ph name="FILE_NAME"/>. Ipadala sa Brave para ma-scan? Pindutin ang Shift+F6 para mag-cycle sa lugar ng bar ng mga download.</translation>
 <translation id="5767099457279594162">Hindi na-share ang password</translation>
 <translation id="5770125698810550803">Ipakita ang mga button ng navigation</translation>
 <translation id="5771816112378578655">Kasalukuyang Nag-se-setup...</translation>
@@ -6152,8 +6166,11 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5774295353725270860">App na Buksan ang Mga File</translation>
 <translation id="5775777649329475570">Aalisin ang Google Play at mga Android app?</translation>
 <translation id="5775863968701268310">Pamahalaan ang mga preference sa Google Play</translation>
+<translation id="5776415697119024904"><ph name="DEVICE_NAME"/> (Default ng system)</translation>
 <translation id="5776450228446082914">Ang listahan ng mga website na mabubuksan sa alinmang browser.</translation>
 <translation id="5776571780337000608">Magagawa mong magbukas at mag-edit ng mga sinusuportahang file mula sa iyong file browser o iba pang app gamit ang app na ito. Para kontrolin kung aling mga file ang magbubukas sa app na ito bilang default, <ph name="BEGIN_LINK"/>alamin kung paano magtakda ng mga default na app sa iyong device<ph name="END_LINK"/>.</translation>
+<translation id="5776884611062957102">Pinapahusay ng serbisyo sa lokasyon ng Brave ang katumpakan ng lokasyon sa pamamagitan ng paggamit ng Wi-Fi, mga mobile network, at mga sensor para makatulong na tantyahin ang iyong lokasyon. Posibleng pana-panahong mangolekta ang Brave ng data ng lokasyon at posibleng gamitin nito ang data na ito sa anonymous na paraan para pahusayin ang katumpakan ng lokasyon at mga serbisyong batay sa lokasyon.
+    Kapag in-off ito, ang IP address lang ang gagamitin ng Android para sa lokasyon. Posible itong makaapekto sa katumpakan ng lokasyong ginagamit ng mga app gaya ng Maps.</translation>
 <translation id="5778491106820461378">Puwede mong pamahalaan ang mga naka-sign in na Brave sync chain mula sa <ph name="LINK_BEGIN"/>Mga Setting<ph name="LINK_END"/>. Posibleng malapat sa lahat ng account ang mga pahintulot na ibinigay mo sa mga website at app. Kung ayaw mong ma-access ng mga site o app ang impormasyon ng iyong account, puwede kang mag-sign in sa <ph name="DEVICE_TYPE"/> mo bilang bisita.</translation>
 <translation id="5780011244986845107">Naglalaman ng mga sensitibong file ang folder na pinili mo. Sigurado ka bang gusto mong bigyan ang "<ph name="APP_NAME"/>" ng permanenteng access sa pag-read sa folder na ito?</translation>
 <translation id="5780973441651030252">Priority ng proseso</translation>
@@ -6236,6 +6253,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5836999627049108525">Wikang pagmumulan ng Pagsalin</translation>
 <translation id="583756221537636748">Case</translation>
 <translation id="5840680448799937675">Palaging ibabahagi offline ang mga file</translation>
+<translation id="5841167715783969407">Awtomatikong time zone batay sa Wi-Fi o mga mobile network</translation>
 <translation id="5841270259333717135">I-configure ang Ethernet</translation>
 <translation id="5842497610951477805">I-enable ang Bluetooth</translation>
 <translation id="940606602121164929">Kapag naka-sign in ka, naka-link ang data na ito sa iyong Brave sync chain para protektahan ka sa lahat ng serbisyo ng Brave, halimbawa, pagpapaigting ng proteksyon sa Gmail pagkatapos ng isang insidente sa seguridad.</translation>
@@ -6296,6 +6314,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5882919346125742463">Mga Kilalang Network</translation>
 <translation id="5883356647197510494">Awtomatikong na-block ang <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/></translation>
 <translation id="5884447826201752041">I-customize para sa bawat extension</translation>
+<translation id="5884730022784413637">Pindutin nang Matagal</translation>
 <translation id="5885314688092915589">Papamahalaan ng iyong organisasyon ang profile na ito</translation>
 <translation id="5885470467814103868">Simulan ang pag-scan</translation>
 <translation id="5885631909150054232">Kopyahin ang token</translation>
@@ -6342,7 +6361,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5916664084637901428">Naka-on</translation>
 <translation id="59174027418879706">Pinagana</translation>
 <translation id="5920543303088087579">Na-disable ng iyong administrator ang pagkonekta sa network na ito</translation>
-<translation id="5921257443092182237">Ang serbisyo ng lokasyon ng Brave ay gumagamit ng mga source gaya ng Wi-Fi, mga mobile network, at sensor para makatulong na tantyahin ang lokasyon ng device na ito.</translation>
 <translation id="5924047253200400718">Humingi ng tulong<ph name="SCANNING_STATUS"/></translation>
 <translation id="5924438086390153180">Magtanong bago kumopya o maglipat ng mga Microsoft file sa Google Drive</translation>
 <translation id="5924527146239595929">Kumuha ng bagong larawan o pumili ng dati nang larawan o icon.
@@ -6459,7 +6477,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="6016178549409952427">Mag-navigate sa karagdagang content na <ph name="CURRENT_ELEMENT"/> sa <ph name="TOTAL_ELEMENTS"/></translation>
 <translation id="6016551720757758985">Kumpirmahin ang Powerwash na maaaring bumalik sa dating bersyon</translation>
 <translation id="6016972670657536680">Button ng pumili ng wika at keyboard. Ang kasalukuyang napiling wika ay <ph name="LANGUAGE"/>.</translation>
-<translation id="6017503096330453612">Piliin ang "Subukan ulit", o piliin ang "Buksan sa offline editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="6017514345406065928">Berde</translation>
 <translation id="6019169947004469866">I-crop</translation>
 <translation id="6019851026059441029">Napakaganda - HD</translation>
@@ -6505,7 +6522,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5270972322901415631">Maghan&amp;ap sa Page na Ito gamit ang Brave...</translation>
 <translation id="6054284857788651331">Grupo ng Tab na Kamakailang Isinara</translation>
 <translation id="6054961935262556546">Baguhin ang visibility</translation>
-<translation id="6055171183283175969">Hindi wasto ang password na iyong inilagay.</translation>
 <translation id="6055392876709372977">PKCS #1 SHA-256 na May RSA Encryption</translation>
 <translation id="6055544610007596637">Mag-install ng mga app para sa iyong <ph name="DEVICE_TYPE"/> mula sa Google Play Store</translation>
 <translation id="6056710589053485679">I-reload Nang Normal</translation>
@@ -6515,10 +6531,12 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="6059652578941944813">Pagkakasunud-sunod ng Certificate</translation>
 <translation id="6059925163896151826">Mga USB device</translation>
 <translation id="6061408389284235459">May ipinadalang notification sa <ph name="DEVICE_NAME"/></translation>
+<translation id="6062513606899361544">Walang app na pinapayagang gumamit ng iyong lokasyon</translation>
 <translation id="6063284707309177505">Gumawa ng QR Code</translation>
 <translation id="6063847492705284550"><ph name="BEGIN_BOLD"/>Tandaan:<ph name="END_BOLD"/> Posibleng ma-access din ng katulad na boses o recording ang mga personal na resulta ni <ph name="SUPERVISED_USER_NAME"/>. Para makatipid ng baterya, puwede mong piliin sa mga setting ng Assistant ni <ph name="SUPERVISED_USER_NAME"/> na i-on lang ang “Hey Brave” kapag nakakonekta ang device na ito sa isang power source.</translation>
 <translation id="6064217302520318294">Lock ng screen</translation>
 <translation id="606449270532897041">Pamahalaan ang data ng site</translation>
+<translation id="6064764629679333574">Pagandahin ang kalidad ng tunog ng Bluetooth na mikropono sa pamamagitan ng pag-upscale sa high-res mula sa low-res.</translation>
 <translation id="6065145031947216733">Ihiwalay ang iyong pag-browse?</translation>
 <translation id="6065289257230303064">Mga Katangian ng Direktoryo ng Paksa ng Certificate</translation>
 <translation id="6066794465984119824">Hindi nakatakda ang hash ng larawan</translation>
@@ -6575,7 +6593,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="6102043788063419338">Na-block ng Advanced Protection ang file na ito.</translation>
 <translation id="6103681770816982672">Babala: lumilipat ka sa channel ng developer</translation>
 <translation id="1277915729653513667">Mga Brave sync chain</translation>
-<translation id="6104311680260824317">Hindi maisama ang device sa domain. Hindi sinusuportahan ng server ang mga natukoy na uri ng Kerberos na pag-encrypt. Suriin ang "Higit pang opsyon" para sa mga setting ng pag-encrypt.</translation>
 <translation id="6104667115274478616">Pamahalaan ang mga setting ng audio ng ChromeOS</translation>
 <translation id="6104796831253957966">Puno ang queue ng printer</translation>
 <translation id="610487644502954950">Na-unpin ang panel sa gilid</translation>
@@ -6682,6 +6699,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="6180510783007738939">Line Tool</translation>
 <translation id="6180550893222597997">Aling passkey ang gusto mong gamitin para sa <ph name="APP_NAME"/>?</translation>
 <translation id="6181431612547969857">Na-block ang pagda-download</translation>
+<translation id="6183369864942961155">Awtomatikong maliwanag/madilim na tema</translation>
 <translation id="6184099524311454384">Maghanap sa Mga Tab</translation>
 <translation id="1713601041945301465">Awtomatikong nililimitahan ng Brave ang third-party na cookies</translation>
 <translation id="6185132558746749656">Lokasyon ng Device</translation>
@@ -6747,6 +6765,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="6235208551686043831">Naka-on na ang camera ng device. Pakitapat ang QR Code ng iyong eSIM sa harap ng camera.</translation>
 <translation id="7933920059744288500">Puwede mong piliin anumang oras kung anong data mula sa pagba-browse ang isi-sync sa mga setting ng Brave. Sa <ph name="LINK_BEGIN"/>mga setting ng device<ph name="LINK_END"/>, puwede mong kontrolin ang pag-sync para sa mga web app na na-install mula sa Brave browser. Puwedeng i-personalize ng Brave ang Search at iba pang serbisyo batay sa iyong history.</translation>
 <translation id="6237474966939441970">App sa pagtatala gamit ang stylus</translation>
+<translation id="6237481151388361546">Palitan ang iyong koneksyon sa internet at piliin ang "Subukan ulit," o piliin ang "Buksan sa basic na editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="623755660902014047">Reading mode</translation>
 <translation id="6238767809035845642">Ibinahaging text mula sa Ibang Device</translation>
 <translation id="6238923052227198598">Panatilihin ang pinakabagong tala sa lock screen</translation>
@@ -6809,7 +6828,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="6277518330158259200">Kumuha ng Screenshot</translation>
 <translation id="6278428485366576908">Tema</translation>
 <translation id="6278776436938569440">Baguhin ang lokasyon</translation>
-<translation id="6279183038361895380">Pindutin ang |<ph name="ACCELERATOR"/>| upang ipakita ang iyong cursor</translation>
 <translation id="6280215091796946657">Mag-sign in gamit ang ibang account</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="6282180787514676874">{COUNT,plural, =1{Lumalampas sa limitasyong 1 pirasong papel}one{Lumalampas sa limitasyong {COUNT} pirasong papel}other{Lumalampas sa limitasyong {COUNT} na pirasong papel}}</translation>
@@ -6951,6 +6969,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="6401597285454423070">Ang iyong computer ay mayroong device na panseguridad na Trusted Platform Module (TPM), na ginagamit para magpatupad ng maraming mahalagang panseguridad na feature sa ChromeOS. Bumisita sa Help Center ng Chromebook para matuto pa: https://support.google.com/chromebook/?p=tpm</translation>
 <translation id="6402921224457714577">Puwedeng hilingin ng mga site na kontrolin at i-reprogram ang iyong mga MIDI device</translation>
 <translation id="6404511346730675251">I-edit ang bookmark</translation>
+<translation id="640457954117263537">Gumamit ng lokasyon para sa mga app at serbisyo ng ChromeOS at Android.</translation>
 <translation id="6406303162637086258">I-simulate ang pag-restart ng browser</translation>
 <translation id="6406506848690869874">Pag-sync</translation>
 <translation id="6406708970972405507">Mga Setting - <ph name="SECTION_TITLE"/></translation>
@@ -6995,7 +7014,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="6438475350605608554">Nag-i-import ka na ng mga password sa ibang tab</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/> - May tumutugtog na audio</translation>
 <translation id="6440081841023333832">Hindi pinapayagang kontrolin at i-reprogram ang iyong mga MIDI device</translation>
-<translation id="6440291723980579689">Maglo-load lang ang mga page pagkatapos mong buksan ang mga ito</translation>
 <translation id="6441377161852435370">Idagdag ang tab sa listahan ng babasahin</translation>
 <translation id="6442187272350399447">Kahanga-hanga</translation>
 <translation id="6442445294758185945">Hindi ma-download ang update. Pakisubukan ulit sa ibang pagkakataon.</translation>
@@ -7019,6 +7037,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="6455521402703088376">Naka-off • In-unpublish ng developer nito ang extension na ito</translation>
 <translation id="6455894534188563617">&amp;Bagong Folder</translation>
 <translation id="645705751491738698">Magpatuloy sa pagharang ng JavaScript</translation>
+<translation id="6458606150257356946">I-paste pa rin</translation>
 <translation id="6458701200018867744">Hindi na-upload (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="6459488832681039634">Use Selection for Find</translation>
 <translation id="6459799433792303855">Inilipat ang aktibong window sa ibang display.</translation>
@@ -7080,8 +7099,8 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="6512759338201777379">Nabuong larawan <ph name="INDEX"/> sa <ph name="SUBJECT"/>, na may mood na <ph name="MOOD"/>.</translation>
 <translation id="6513247462497316522">Gagamit ang Brave ng data ng mobile kung hindi ka nakakonekta sa isa pang network.</translation>
 <translation id="6514010653036109809">Available na device:</translation>
-<translation id="6514565641373682518">Hindi pinagana ng pahinang ito ang cursor ng iyong mouse.</translation>
 <translation id="6517227424170598783">Alisin ang shortcut na "<ph name="SHORTCUT_NAME"/> - <ph name="APP_NAME"/>"?</translation>
+<translation id="6517382055541687102">Ginawang <ph name="DEVICE_NAME"/> ang napiling device</translation>
 <translation id="6517420300299531857">Awtomatikong nagsi-sync sa iyong Chromebook ang mga file mo sa Aking Drive kaya maa-access mo ang mga ito nang walang koneksyon sa internet. Gagamit ito ng humigit-kumulang <ph name="REQUIRED_SPACE"/>. May available kang <ph name="FREE_SPACE_AVAILABLE"/> sa kasalukuyan.</translation>
 <translation id="6517709704288360414">Posibleng hindi na gumana nang maayos ang iyong device, at posibleng makaranas ka ng mga isyu sa seguridad at performance. Puwede ring maapektuhan ng pag-off mo sa mga update ang karapatan mong maghain ng mga legal na claim kung makakaranas ka ng anumang isyu.</translation>
 <translation id="6518014396551869914">Kop&amp;yahin ang imahe</translation>
@@ -7126,7 +7145,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="6542521951477560771">Nagka-cast sa <ph name="RECEIVER_NAME"/></translation>
 <translation id="6544134392255015460">toggle ng backlight ng keyboard</translation>
 <translation id="6545665334409411530">Rate ng pag-uulit</translation>
-<translation id="6545867563032584178">Naka-off ang mikropono sa System Preferences ng Mac</translation>
 <translation id="6546856949879953071">Para sa detalyadong impormasyon sa pag-upgrade, na-save ang mga log sa Mga File &gt; Aking mga file &gt; <ph name="LOG_FILE"/></translation>
 <translation id="6547354035488017500">Magbakante ng hindi bababa sa 512 MB ng espasyo ng iyong device, kung hindi ay hindi gagana nang maayos ang iyong device. Upang magbakante ng espasyo, mag-delete ng mga file mula sa storage ng device.</translation>
 <translation id="6547854317475115430"><ph name="BEGIN_PARAGRAPH1"/>Ang serbisyo ng lokasyon ng Brave ay gumagamit ng mga source tulad ng Wi-Fi, mga mobile network, at sensor para makatulong na tantyahin ang lokasyon ng iyong device.<ph name="END_PARAGRAPH1"/>
@@ -7198,6 +7216,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="6596816719288285829">IP Address</translation>
 <translation id="6596916244504302242">I-reload ang page na ito para i-apply ang iyong mga in-update na setting ng extension sa site na ito</translation>
 <translation id="6597017209724497268">Mga Sample</translation>
+<translation id="6597324406048772521">Hindi pinapayagan ang mga extension sa site na ito</translation>
 <translation id="6597331566371766302">Na-block ng iyong administrator ang mga sumusunod na extension:</translation>
 <translation id="659894938503552850">pinakabago</translation>
 <translation id="6601262427770154296">Pamahalaan ang mga diksyunaryo ng user</translation>
@@ -7240,6 +7259,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="6636623428211296678">Mag-explore pa ng mga setting sa ibaba o tapusin ngayon</translation>
 <translation id="6639554308659482635">Memorya sa SQLite</translation>
 <translation id="6640268266988685324">Bukas na Tab</translation>
+<translation id="6642424629311432059">Payagan ang mga app at serbisyo ng ChromeOS at Android na may pahintulot sa lokasyon na gamitin ang lokasyon ng device na ito. Posibleng pana-panahong mangolekta ang Brave ng data ng lokasyon at gamitin nito ang data na ito sa anonymous na paraan para pahusayin ang katumpakan ng lokasyon at mga serbisyong batay sa lokasyon.</translation>
 <translation id="6642720633335369752">Para makita ang lahat ng nakabukas na window ng app, mag-swipe pataas mula sa ibaba at i-hold ito.</translation>
 <translation id="664290675870910564">Pagpili ng Network</translation>
 <translation id="6643016212128521049">I-clear</translation>
@@ -7258,11 +7278,11 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="6651237644330755633">Pagkatiwalaan ang certificate na ito para sa pagtukoy ng mga website</translation>
 <translation id="6651495917527016072">Mag-sync ng mga Wi-Fi network sa iyong telepono. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="6651762277693024112">Awtomatikong tatakbo tuwing bibisitahin mo ang site na ito</translation>
-<translation id="665355505818177700">Ang pagsasama ng <ph name="MS_AD_NAME"/> ng Brave ay sinusuportahan lang sa mga platform na x86_64. Ang functionality na ito ay hindi sinusuportahan ng mga Chromebook na ginawa batay sa platform na ARM o x86.</translation>
 <translation id="6654509035557065241">Magtakda ng gustong network</translation>
 <translation id="6655190889273724601">Developer mode</translation>
 <translation id="6655458902729017087">Itago ang Mga Account</translation>
 <translation id="6657180931610302174">Magdagdag ng username?</translation>
+<translation id="6657240842932274095">Payagan ang mga serbisyo ng system na gamitin ang iyong lokasyon?</translation>
 <translation id="6657585470893396449">Password</translation>
 <translation id="6659213950629089752">Ang page na ito ay na-zoom sa pamamagitan ng extension ng "<ph name="NAME"/>"</translation>
 <translation id="6659594942844771486">Tab</translation>
@@ -7291,6 +7311,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="6675665718701918026">May nakakonektang pointing device</translation>
 <translation id="6675985668044425385">Kung hindi gumagana ang isang site gaya sa inaasahan, puwede mong i-enable ang third-party na cookies para dito sa pamamagitan ng opsyong Proteksyon sa Pag-track sa address bar.</translation>
 <translation id="6676212663108450937">Pag-isipang gumamit ng headphones habang sinasanay ang iyong boses</translation>
+<translation id="667752334740867460">Tinatanggap ang impormasyon ng Wi-Fi...</translation>
 <translation id="6678717876183468697">URL ng Query</translation>
 <translation id="6680442031740878064">Available: <ph name="AVAILABLE_SPACE"/></translation>
 <translation id="6680650203439190394">I-rate</translation>
@@ -7337,6 +7358,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="6713441551032149301">Pindutin nang matagal ang launcher key para magpalipat-lipat sa mga function key at mga top-row key ng system</translation>
 <translation id="6713668088933662563">Huwag kailanmang mag-alok na isalin ang mga wikang ito.</translation>
 <translation id="6715803357256707211">Nagkaroon ng error habang ini-install ang iyong Linux application. Mag-click sa notification para sa mga detalye.</translation>
+<translation id="6716049856796700977">Walang makakagamit ng iyong lokasyon. Gayunpaman, posibleng visible pa rin sa mga app at website ang iyong lokasyon sa pamamagitan ng IP address mo. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="6716798148881908873">Nawala ang koneksyon sa network. Suriin ang iyong koneksyon sa network o sumubok ng ibang Wi-Fi network.</translation>
 <translation id="4042337971102130070">Ginawang bago ang mga kulay ng tema ng Brave para mas gumana ang mga ito para sa lahat, naka-dark o naka-light mode ka man</translation>
 <translation id="671928215901716392">I-lock ang screen</translation>
@@ -7392,7 +7414,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="676560328519657314">Iyong mga paraan ng pagbabayad sa Google Pay</translation>
 <translation id="3829555700225710632">Pumunta sa Brave Password Manager</translation>
 <translation id="6767566652486411142">Pumili ng Iba Pang Wika...</translation>
-<translation id="6767639283522617719">Hindi maisama sa domain. Tiyaking tama ang mga setting para sa unit ng organisasyon.</translation>
 <translation id="6768034047581882264">Hindi pinapayagang magpakita ng hindi secure na content</translation>
 <translation id="6769902329858794251"><ph name="BEGIN_PARAGRAPH1"/>Para maibigay ang pinakamagandang experience, nangongolekta ang <ph name="DEVICE_OS"/> ng data ng hardware tungkol sa mga device at shine-share nito ang mga iyon sa Brave para matukoy kung aling mga update ang dapat i-deliver. Bilang opsyon, puwede mong payagan ang Brave na gamitin ang data na ito para sa mga karagdagang layunin tulad ng suporta at mga pagpapahusay sa experience sa at serbisyo ng <ph name="DEVICE_OS"/>.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Magagawa mong mag-log in sa device na ito at tingnan ang mga field na nakalista bilang chromeosflex_ sa chrome://system para makita ang data na ipinadala sa Brave para sa pag-filter ng update, pati na ang anupamang sitwasyon kung saan pinili mong mag-share ng data sa Brave.<ph name="END_PARAGRAPH2"/>
@@ -7467,7 +7488,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
     <ph name="BR"/>
     <ph name="FOOTER_MESSAGE"/></translation>
 <translation id="6810613314571580006">Awtomatikong mag-sign in sa mga website gamit ang mga naka-store na kredensyal. Kapag naka-disable ang feature, palagi kang hihingan ng kumpirmasyon bago ka mag-sign in sa isang website.</translation>
-<translation id="6810768462515084623">Oops!  Mukhang nag-expire ang iyong password. Paki-renew ito sa ibang device at subukan ulit.</translation>
 <translation id="6811034713472274749">Maaari nang tingnan ang page</translation>
 <translation id="6811151703183939603">Madiin</translation>
 <translation id="6811332638216701903">Hostname ng DHCP</translation>
@@ -7501,7 +7521,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="682871081149631693">QuickFix</translation>
 <translation id="6828860976882136098">Hindi na-set up ang mga awtomatikong pag-update para sa lahat ng user (error sa pagpapatupad sa preflight: <ph name="ERROR_NUMBER"/>)</translation>
 <translation id="682971198310367122">Patakaran sa privacy ng Brave</translation>
-<translation id="6830200424658853449">Buksan sa offline editor</translation>
 <translation id="6831043979455480757">Isalin</translation>
 <translation id="6832218595502288407">I-align sa kaliwa</translation>
 <translation id="6833479554815567477">Inalis ang tab sa grupong <ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENTS"/></translation>
@@ -7539,7 +7558,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="6856623341093082836">I-set up at isaayos ang katumpakan ng iyong touchscreen</translation>
 <translation id="6856850379840757744">Kapag naka-on, masa-silent ang lahat ng notification</translation>
 <translation id="6857145580237920905">Alisin ang mga profile ng eSIM bago mag-Powerwash</translation>
-<translation id="6857699260879628349">Kunin ang impormasyon sa pag-configure</translation>
 <translation id="6857725247182211756"><ph name="SECONDS"/> seg</translation>
 <translation id="6860097299815761905">Mga setting ng proxy...</translation>
 <translation id="68601584151169673">&amp;I-save at I-share</translation>
@@ -7558,7 +7576,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="686839242150793617">Pinapayagang awtomatikong pumasok sa picture-in-picture</translation>
 <translation id="6868934826811377550">Tingnan ang Mga Detalye</translation>
 <translation id="6871644448911473373">OCSP Responder: <ph name="LOCATION"/></translation>
-<translation id="6872781471649843364">Tinanggihan ng server ang password na inilagay mo.</translation>
 <translation id="6873571253135628430">Baguhin ang mga pahintulot ng site</translation>
 <translation id="6876155724392614295">Bisikleta</translation>
 <translation id="6876469544038980967">Hindi Nakatulong</translation>
@@ -7592,7 +7609,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="6901024547292737736"><ph name="ACTUAL_CHAR_COUNT"/>/<ph name="MAX_CHAR_COUNT"/></translation>
 <translation id="6902066522699286937">Boses na ipi-preview</translation>
 <translation id="6902336033320348843">Hindi sinusuportahan ang seksyon: <ph name="ERROR_LINE"/></translation>
-<translation id="6902837902700739466">Isama ang device sa domain</translation>
 <translation id="8347080852065577355">Ang iyong data ay masi-sync sa lahat ng Brave browser kung saan mo na-on ang pag-sync para sa account na ito. Para sa mga opsyon sa pag-sync sa ChromeOS, pumunta sa <ph name="LINK_BEGIN"/>mga setting ng ChromeOS<ph name="LINK_END"/>.</translation>
 <translation id="6903590427234129279">Buksan lahat (<ph name="URL_COUNT"/>)</translation>
 <translation id="6903907808598579934">I-on ang pag-sync</translation>
@@ -7629,7 +7645,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="6935031746833428401">Matuto pa tungkol sa Pamamahala ng Device</translation>
 <translation id="6935286146439255109">Walang tray para sa papel</translation>
 <translation id="6938386202199793006">Mayroon kang 1 naka-save na printer.</translation>
-<translation id="6938387822292071111">Magpakita ng mga larawan sa mga hino-hover na card ng preview sa tab</translation>
 <translation id="6938606182859551396">Para makatanggap ng mga notification mula sa iyong telepono sa <ph name="DEVICE_TYPE"/> mo, sundin ang mga tagubilin sa iyong telepono para bigyan ng access sa mga notification ang Mga Serbisyo ng Google Play.</translation>
 <translation id="694168622559714949">Nagtakda ang iyong administrator ng default na wika na hindi puwedeng baguhin</translation>
 <translation id="6941937518557314510">Mangyaring mag-sign in sa <ph name="TOKEN_NAME"/> upang magpatunay sa <ph name="HOST_NAME"/> gamit ang iyong certificate.</translation>
@@ -7784,7 +7799,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7049293980323620022">Gusto mo bang panatilihin ang file?</translation>
 <translation id="7049524156282610342">Data mula sa pag-browse ni <ph name="DISPLAY_NAME"/></translation>
 <translation id="7050037487872780845">Invalid na configuration ng hotspot</translation>
-<translation id="7052237160939977163">Ipadala ang data ng pagte-trace sa pagganap</translation>
 <translation id="7053983685419859001">I-block</translation>
 <translation id="7055152154916055070">Na-block ang pag-redirect:</translation>
 <translation id="7055451306017383754">Hindi ma-unshare dahil ginagamit ng isang application ang folder na ito. Maa-unshare ang folder kapag na-shutdown ang Parallels Desktop.</translation>
@@ -7811,12 +7825,14 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7072010813301522126">Pangalan ng shortcut</translation>
 <translation id="7075513071073410194">PKCS #1 MD5 na May RSA Encryption</translation>
 <translation id="7075625805486468288">Pamahalaan ang mga certificate at setting ng HTTPS/SSL</translation>
+<translation id="7075896597860500885">Hindi inirerekomenda ang pagkopya mula sa site na ito</translation>
 <translation id="7076875098323397992">Hindi masimulan ang pag-upgrade</translation>
 <translation id="7077751457066325012">Tumingin at mag-customize ng mga keyboard shortcut</translation>
 <translation id="7077829361966535409">Nabigong ma-load ang pahina sa pag-sign in gamit ang mga kasalukuyang setting ng proxy. Mangyaring <ph name="GAIA_RELOAD_LINK_START"/>subukang mag-sign in muli<ph name="GAIA_RELOAD_LINK_END"/>, o gumamit ng ibang <ph name="PROXY_SETTINGS_LINK_START"/>mga setting ng proxy<ph name="PROXY_SETTINGS_LINK_END"/>.</translation>
 <translation id="7078120482318506217">Lahat ng network</translation>
 <translation id="708060913198414444">K&amp;opyahin ang address ng audio</translation>
 <translation id="7082568314107259011">Pinapamahalaan ng iyong administrator ang <ph name="NETWORK_NAME"/></translation>
+<translation id="7082850163410901674">Naka-off ang mga notification sa Mga Setting ng System ng Mac</translation>
 <translation id="7083774521940805477">Hindi available sa iyong Chromebook ang Steam para sa Chromebook (beta).</translation>
 <translation id="708550780726587276">(hindi na-configure)</translation>
 <translation id="7086672505018440886">Magsama ng mga log file ng Brave sa archive.</translation>
@@ -7911,13 +7927,13 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7168109975831002660">Minimum na laki ng font</translation>
 <translation id="7169122689956315694">I-on ang notification kapag nasa malapit ang mga device</translation>
 <translation id="7170236477717446850">Larawan sa profile</translation>
+<translation id="7170751905948784001">Impormasyon ng developer:</translation>
 <translation id="7171259390164035663">Huwag i-enroll</translation>
 <translation id="7172470549472604877">{NUM_TABS,plural, =1{Magdagdag ng tab sa bagong grupo}one{Magdagdag ng mga tab sa bagong grupo}other{Magdagdag ng mga tab sa bagong grupo}}</translation>
 <translation id="7173114856073700355">Buksan ang Mga Setting</translation>
 <translation id="7174199383876220879">Bago! Kontrolin ang iyong musika, mga video, at higit pa.</translation>
 <translation id="7175037578838465313">I-configure ang <ph name="NAME"/></translation>
 <translation id="7175353351958621980">Nag-load mula sa:</translation>
-<translation id="7177079607604198383">Tingnan ang iyong koneksyon sa internet at piliin ang "Subukan ulit", o piliin ang "Buksan sa offline editor" para gamitin ang mga limitadong opsyon sa pagtingin at pag-edit.</translation>
 <translation id="7180611975245234373">I-refresh</translation>
 <translation id="7180865173735832675">I-customize</translation>
 <translation id="7182063559013288142">Instant na hotspot</translation>
@@ -7944,7 +7960,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7198503619164954386">Dapat ay gumagamit ka ng device na naka-enroll sa enterprise</translation>
 <translation id="7199158086730159431">Humingi ng Tulong</translation>
 <translation id="7199452998289813782">I-pause ang pag-cast sa <ph name="DEVICE_NAME"/></translation>
-<translation id="7200083590239651963">Pumili ng configuration</translation>
 <translation id="720110658997053098">Permanenteng panatilihin sa kiosk mode ang device na ito</translation>
 <translation id="7201118060536064622">Na-delete ang '<ph name="DELETED_ITEM_NAME"/>'</translation>
 <translation id="7201420661433230412">Tingnan ang mga file</translation>
@@ -8060,8 +8075,8 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7290242001003353852">Ina-access ng serbisyo sa pag-sign in na ito, na hino-host ng <ph name="SAML_DOMAIN"/>, ang iyong camera.</translation>
 <translation id="7292067737327289208">Ang iyong <ph name="BEGIN_LINK"/>browser ay pinapamahalaan<ph name="END_LINK"/> ng iyong organisasyon at ang iyong <ph name="BEGIN_LINK"/>profile ay pinapamahalaan<ph name="END_LINK"/> ng <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="7292195267473691167"><ph name="LOCALE"/> (<ph name="VARIANT"/>)</translation>
+<translation id="7295305918366078219">Hindi pinapayagan na awtomatikong mag-fullscreen</translation>
 <translation id="7295614427631867477">Tandaang ang Android, Play, at mga nauugnay na app ay nasasaklawan ng sari-sarili nitong mga patakaran sa pagkolekta at paggamit ng data.</translation>
-<translation id="729583233778673644">Payagan ang AES at RC4 encryption. Magiging mas mapanganib para sa iyo kapag ginamit ang opsyong ito, dahil hindi secure ang mga RC4 cipher.</translation>
 <translation id="7296503797589217366">Piliin ang folder na <ph name="FOLDER_TITLE"/></translation>
 <translation id="7297726121602187087">Dark green</translation>
 <translation id="7298195798382681320">Inirerekomenda</translation>
@@ -8079,7 +8094,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7307129035224081534">Naka-pause</translation>
 <translation id="3665832074424990619">Magiging available din sa device na ito ang mga password at passkey sa iyong Brave sync chain habang naka-sign in ka</translation>
 <translation id="7308643132139167865">Mga wika ng website</translation>
-<translation id="7310598146671372464">Hindi makapag-log in. Hindi sinusuportahan ng server ang mga natukoy na uri ng Kerberos na pag-encrypt. Makipag-ugnayan sa iyong administrator.</translation>
 <translation id="7311005168897771689">Ma-access ang iyong mga file sa Google Drive kapag offline ka</translation>
 <translation id="7311244614769792472">Walang nakitang resulta</translation>
 <translation id="7312210124139670355">Nire-reset ng iyong administrator ang eSIM mo. Puwede itong tumagal nang ilang minuto.</translation>
@@ -8111,7 +8125,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7339785458027436441">Check Spelling While Typing</translation>
 <translation id="7339898014177206373">Bagong window</translation>
 <translation id="7340179705876485790">Para bumalik nang lampas sa 1 page, i-click at i-hold nang matagal ang Bumalik.</translation>
-<translation id="7340431621085453413">Full screen na ngayon ang <ph name="FULLSCREEN_ORIGIN"/>.</translation>
 <translation id="7340650977506865820">Ibinabahagi ng site ang iyong screen</translation>
 <translation id="2548471733011527203">Awtomatikong nagpapadala sa Brave ng mga ulat ng pag-crash pati na rin ng diagnostic na data at data ng paggamit</translation>
 <translation id="734088800888587319">Mga Sukatan ng Network</translation>
@@ -8125,6 +8138,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7347751611463936647">Upang gamitin ang extension na ito, i-type ang "<ph name="EXTENSION_KEYWORD"/>", pagkatapos ay ang TAB, pagkatapos ay ang iyong command o paghahanap.</translation>
 <translation id="7347943691222276892">I-click para mag-navigate paalis sa <ph name="SUBPAGE_TITLE"/>.</translation>
 <translation id="7348093485538360975">Nasa screen na keyboard</translation>
+<translation id="7348920948593871738">Naka-off ang camera sa Mga Setting ng System ng Mac</translation>
 <translation id="7349010927677336670">Pagka-smooth ng Video</translation>
 <translation id="7350327333026851413">{COUNT,plural, =1{May {COUNT} password na naka-save lang device na ito}one{May {COUNT} password na naka-save lang sa device na ito}other{May {COUNT} na password na naka-save lang sa device na ito}}</translation>
 <translation id="7352651011704765696">Nagkaroon ng problema</translation>
@@ -8158,7 +8172,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="736877393389250337">Hindi mabuksan ang <ph name="URL"/> sa <ph name="ALTERNATIVE_BROWSER_NAME"/>. Makipag-ugnayan sa iyong system administrator.</translation>
 <translation id="7368927539449986686">I-edit ang paghahanap sa site</translation>
 <translation id="7370592524170198497">Ethernet EAP:</translation>
-<translation id="7371490947952970241">Puwede mong i-off ang Lokasyon sa pamamagitan ng pag-off sa pangunahing setting ng Lokasyon sa device na ito. Puwede mo ring i-off ang paggamit ng Wi-Fi, mga mobile network, at mga sensor para sa lokasyon sa mga setting ng lokasyon.</translation>
+<translation id="7370751048350026847">Hindi inirerekomenda ang pag-paste ng content na ito sa site na ito</translation>
 <translation id="7371917887111892735">Paliitin ang mga tab sa lapad ng naka-pin na tab</translation>
 <translation id="7374376573160927383">Pamahalaan ang mga USB device</translation>
 <translation id="7376124766545122644">Hindi magamit ang link na ito. Tiyaking nagsisimula ang iyong link sa 'http://' o 'https://' para subukan ulit.</translation>
@@ -8193,6 +8207,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7396017167185131589">Lalabas dito ang mga nakabahaging folder</translation>
 <translation id="7396845648024431313">Ilulunsad ang <ph name="APP_NAME"/> sa system startup at patuloy na paganahin sa background kahit na sa sandaling maisara mo ang lahat ng ibang mga window ng <ph name="PRODUCT_NAME"/>.</translation>
 <translation id="7399045143794278225">I-customize ang pag-sync</translation>
+<translation id="7399155934146900496">Walang website na pinapayagang gumamit ng iyong lokasyon</translation>
 <translation id="7399616692258236448">Awtomatikong naka-block ang mga request sa lokasyon para sa lahat ng site maliban sa mga pinapayagan mo</translation>
 <translation id="7399802613464275309">Pagsusuri sa Kaligtasan</translation>
 <translation id="7400418766976504921">URL</translation>
@@ -8293,6 +8308,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7465778193084373987">URL ng Pagpapawalang-bisa ng Netscape Certificate</translation>
 <translation id="7466431077154602932">Compact view</translation>
 <translation id="746861123368584540">Na-load ang extension</translation>
+<translation id="7470131554696493512">I-block ang Thunderbolt o USB4 na accessory sa pag-access at pag-share ng memory (RAM)</translation>
 <translation id="7470424110735398630">Pinapayagang tingnan ang iyong clipboard</translation>
 <translation id="747114903913869239">Error: Hindi magawang i-decode ang extension</translation>
 <translation id="7471520329163184433">Mas Mabagal</translation>
@@ -8313,6 +8329,8 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7478658909253570368">Huwag payagan ang mga site na kumonekta sa mga serial port</translation>
 <translation id="7479221278376295180">Overview ng Paggamit ng Storage</translation>
 <translation id="747981547666531654">Nakakonekta sa mga Bluetooth device na pinangalanang <ph name="FIRST_DEVICE"/> at <ph name="SECOND_DEVICE"/></translation>
+<translation id="7480299112230998727"><ph name="BEGIN_PARAGRAPH1"/>Ang serbisyo sa lokasyon ng Brave ay gumagamit ng mga source gaya ng Wi-Fi, mga mobile network, at sensor para makatulong na tantyahin ang lokasyon ng device na ito.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Puwede mong i-off ang lokasyon ng ChromeOS at Android sa device na ito anumang oras sa pamamagitan ng pagpunta sa Mga Setting &gt; Privacy at seguridad &gt; Mga kontrol sa privacy &gt; Access sa lokasyon. Puwede mo ring i-off ang paggamit ng Wi-Fi, mga mobile network, at mga sensor para sa lokasyon ng Android sa pamamagitan ng pag-off sa "Pahusayin ang katumpakan ng lokasyon" sa ilalim ng "Mga advanced na setting ng lokasyon" sa parehong menu.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="7481312909269577407">Sumulong</translation>
 <translation id="7481358317100446445">Handa</translation>
 <translation id="748138892655239008">Mga Limitasyon sa Pangunahing Certificate</translation>
@@ -8390,6 +8408,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7544977292347272434">Hilingin sa magulang mo na payagan ang isang extension</translation>
 <translation id="7545466883021407599">Hindi makakonekta sa server. Suriin ang iyong koneksyon sa network at subukan ulit. Kung nagkakaproblema ka pa rin, subukang i-restart ang iyong Chromebook. Code ng error: <ph name="ERROR_CODE"/>.</translation>
 <translation id="7547317915858803630">Babala: ang mga setting sa iyong <ph name="PRODUCT_NAME"/> ay nakatago sa isang network drive. Maaari itong magresulta sa mga pagbagal, pag-crash o pati na rin pagkawala ng data.</translation>
+<translation id="754836352246153944">Hindi pinapayagan ang mga extension sa site na ito. Piliin para mabuksan ang menu</translation>
 <translation id="7548856833046333824">Lemonade</translation>
 <translation id="7549250950481368089">Lalabas dito ang mga naka-save na password. <ph name="BEGIN_LINK"/>Mag-import ng mga password<ph name="END_LINK"/> sa <ph name="BRAND"/>.</translation>
 <translation id="7549434883223124329">Magpalit ng wika ng device?</translation>
@@ -8400,6 +8419,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7552846755917812628">Subukan ang mga sumusunod na tip:</translation>
 <translation id="7553012839257224005">Sinusuri ang Linux container</translation>
 <translation id="7553242001898162573">Ilagay ang iyong password</translation>
+<translation id="7553487223484420820">Magagamit ng mga app, website at serbisyo ng system na may pahintulot sa lokasyon ang iyong lokasyon. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="755472745191515939">Hindi pinapayagan ng iyong administrator ang wikang ito</translation>
 <translation id="7554791636758816595">Bagong Tab</translation>
 <translation id="7556033326131260574">Hindi na-verify ng Smart Lock ang iyong account. I-type ang iyong password upang makapasok.</translation>
@@ -8446,7 +8466,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7594725637786616550">Mag-powerwash para i-reset ang iyong <ph name="DEVICE_TYPE"/> para maging mukhang bago.</translation>
 <translation id="7595453277607160340">Para gumamit ng mga Android app at panatilihing gumagana nang maayos ang iyong <ph name="DEVICE_TYPE"/>, mag-sign in muli at mag-update.</translation>
 <translation id="7595547011743502844"><ph name="ERROR"/> (error code na <ph name="ERROR_CODE"/>).</translation>
-<translation id="7599527631045201165">Masyadong mahaba ang pangalan ng device. Maglagay ng mas maikling pangalan para subukan ulit.</translation>
 <translation id="7600054753482800821">Pamahalaan ang mga search engine at site search</translation>
 <translation id="7600218158048761260">Naka-disable ang Google Drive para sa uri ng account na ito.</translation>
 <translation id="7600965453749440009">Huwag isalin kailanman ang <ph name="LANGUAGE"/></translation>
@@ -8482,6 +8501,7 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7622768823216805500">Karaniwang nag-i-install ang mga site ng mga tagapangasiwa ng pagbabayad para sa mga feature sa pamimili gaya ng mas madaling pag-check out</translation>
 <translation id="7622966771025050155">Lumipat sa na-capture na tab</translation>
 <translation id="7624337243375417909">naka-off ang caps lock</translation>
+<translation id="7625025537587898155">Magdagdag ng bagong profile</translation>
 <translation id="7625568159987162309">Tingnan ang mga pahintulot at data na naka-store sa lahat ng site</translation>
 <translation id="7625823789272218216">Bagong Tab sa Kaliwa</translation>
 <translation id="7628201176665550262">Rate ng Pag-refresh</translation>
@@ -8589,7 +8609,6 @@ May # ka pang nakompromisong password. Inirerekomenda ng Brave Password Manager 
 <translation id="7686086654630106285">Higit pa tungkol sa mga ad na iminumungkahi ng site</translation>
 <translation id="7686581688229391955">Piliin para payagan ang mga extension sa site na ito</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
-<translation id="7690294790491645610">Kumpirmahin ang bagong password</translation>
 <translation id="7690378713476594306">Pumili sa listahan</translation>
 <translation id="7690853182226561458">Magdagdag ng &amp;folder...</translation>
 <translation id="7691073721729883399">Hindi mai-mount ang cryptohome para sa kiosk application.</translation>
@@ -8712,6 +8731,7 @@ Pumindot ng nakatalagang switch o key para alisin ang pagtatalaga.</translation>
 <translation id="7776156998370251340">Matitingnan ng <ph name="ORIGIN"/> ang mga file sa <ph name="FOLDERNAME"/> hanggang sa isara mo ang lahat ng tab para sa site na ito</translation>
 <translation id="5614774692683309331">Kapag naka-sign in ka, poprotektahan ka nito sa lahat ng serbisyo ng Brave.</translation>
 <translation id="7776701556330691704">Walang nakitang boses</translation>
+<translation id="7776950606649732730">Subukan ulit kapag tapos nang ma-sync ang file.</translation>
 <translation id="7777624210360383048">Shortcut na <ph name="SHORTCUT"/> para sa <ph name="EXTENSION_NAME"/></translation>
 <translation id="7779840061887151693">display</translation>
 <translation id="7781335840981796660">Aalisin ang lahat ng user account at lokal na data.</translation>
@@ -8778,6 +8798,7 @@ Pumindot ng nakatalagang switch o key para alisin ang pagtatalaga.</translation>
 <translation id="7824665136384946951">In-off ng iyong organisasyon ang Ligtas na Pag-browse</translation>
 <translation id="7824864914877854148">Hindi makumpleto ang pag-back up dahil sa error</translation>
 <translation id="782590969421016895">Gamitin ang mga kasalukuyang page</translation>
+<translation id="7825973332242257878">Mga grupo ng tab</translation>
 <translation id="7826039927887234077">Kamakailang AI theme <ph name="INDEX"/> sa <ph name="SUBJECT"/>, na may mood na <ph name="MOOD"/>.</translation>
 <translation id="7826174860695147464">Legacy Browser Support (LBS) - Mga Internal</translation>
 <translation id="7826249772873145665">Na-disable ang pag-debug ng ADB</translation>
@@ -8893,6 +8914,7 @@ Pumindot ng nakatalagang switch o key para alisin ang pagtatalaga.</translation>
 <translation id="7912080627461681647">Napalitan na ang iyong password sa server. Mag-sign out at muling mag-sign in.</translation>
 <translation id="791247712619243506">Kanselahin ang pag-set up</translation>
 <translation id="7912974581251770345">Pagsasalin</translation>
+<translation id="7914399737746719723">Na-install ang app</translation>
 <translation id="7915457674565721553">Kumonekta sa internet para i-set up ang mga kontrol ng magulang</translation>
 <translation id="7916364730877325865">Hindi ka pinapayagan ng iyong organisasyon na i-on ang pag-sync sa account na ito</translation>
 <translation id="7918257978052780342">Magpatala</translation>
@@ -8900,6 +8922,7 @@ Pumindot ng nakatalagang switch o key para alisin ang pagtatalaga.</translation>
 <translation id="7919210519031517829"><ph name="DURATION"/>s</translation>
 <translation id="7920363873148656176">Puwedeng tingnan ng <ph name="ORIGIN"/> ang <ph name="FILENAME"/></translation>
 <translation id="7920482456679570420">Magdagdag ng mga salitang gusto mong laktawan ng pang-check ng pagbabaybay</translation>
+<translation id="7920715534283810633">Hindi mabuksan ang <ph name="FILE_NAMES"/></translation>
 <translation id="7921347341284348270">Hindi mo makikita ang mga notification ng telepono mo sa pinamamahalaang account na ito. Subukan ulit gamit ang ibang account. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="7921901223958867679">Kayang basahin at baguhin ng extension na ito ang <ph name="HOST"/></translation>
 <translation id="7922606348470480702">1 extension</translation>
@@ -8940,6 +8963,7 @@ Pumindot ng nakatalagang switch o key para alisin ang pagtatalaga.</translation>
 <translation id="7943837619101191061">Magdagdag ng Lokasyon...</translation>
 <translation id="79446453817422139">Posibleng mapanganib ang file na ito</translation>
 <translation id="7944772052836377867">Kailangang ma-verify ng pag-sync na ikaw ito</translation>
+<translation id="7944847494038629732">Hugutin sa saksakan ang USB cable ng scanner at isaksak ulit ito para subukan ulit</translation>
 <translation id="7945703887991230167">Gustong boses</translation>
 <translation id="7946586320617670168">Dapat ay secure ang pinagmulan</translation>
 <translation id="794676567536738329">Kumpirmahin ang Mga Pagpapahintulot</translation>
@@ -9101,6 +9125,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8062844841289846053">{COUNT,plural, =1{1 pirasong papel}one{{COUNT} pirasong papel}other{{COUNT} na pirasong papel}}</translation>
 <translation id="8063235345342641131">Default na berdeng avatar</translation>
 <translation id="8063535366119089408">Tingnan ang file</translation>
+<translation id="1663358621471164569">Puwede mong buksan ang mga bookmark, reading mode, at higit pa mula sa menu ng Brave sa kanang bahagi sa itaas</translation>
 <translation id="8064015586118426197">ChromeOS Flex</translation>
 <translation id="8064279191081105977">Grupong <ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENTS"/> - <ph name="COLLAPSED_STATE"/></translation>
 <translation id="8066444921260601116">Dialog ng Koneksyon</translation>
@@ -9123,6 +9148,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8082106343289440791">Ipares sa "<ph name="DEVICE_NAME"/>?"</translation>
 <translation id="8082390128630131497">Kapag na-disable ang pag-bug ng ADB, mare-reset ang <ph name="DEVICE_TYPE"/> na ito sa mga factory setting. Mabubura ang lahat ng user account at lokal na data.</translation>
 <translation id="8084114998886531721">Naka-save na password</translation>
+<translation id="8084225986310167317">Naka-block sa lahat</translation>
 <translation id="8084429490152575036">Mga setting ng Cellular APN</translation>
 <translation id="8084510406207562688">I-restore ang lahat ng tab</translation>
 <translation id="8084628902026812045">Hindi gumagamit ng secure na koneksyon ang site na ito at posibleng na-tamper ang file</translation>
@@ -9156,6 +9182,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="810185532889603849">Custom na kulay</translation>
 <translation id="8101987792947961127">Kinakailangan ng Powerwash sa susunod na reboot</translation>
 <translation id="8102139037507939978">Alisin ang Impormasyong Nagbibigay ng Personal na Pagkakakilanlan sa system_logs.txt.</translation>
+<translation id="8102344699913991108">Ginagamit ng mga site ang setting na ito para mag-alok ng mga immersive na fullscreen na experience anuman ang mga galaw ng user</translation>
 <translation id="810362914482827094">Maghanap sa mga passkey</translation>
 <translation id="8104088837833760645">I-download ang profile ng eSIM</translation>
 <translation id="8105273883928376822">Mag-sign in para magpatuloy.</translation>
@@ -9197,6 +9224,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8139447493436036221">Mga file sa Google Drive</translation>
 <translation id="8140070492745508800"><ph name="FIRST_DEVICE"/>, <ph name="SECOND_DEVICE"/></translation>
 <translation id="8140108728130537923">Ang iyong <ph name="BEGIN_LINK"/>browser ay pinapamahalaan<ph name="END_LINK"/> ng <ph name="BROWSER_DOMAIN"/> at ang iyong <ph name="BEGIN_LINK"/>profile ay pinapamahalaan<ph name="END_LINK"/> ng <ph name="PROFILE_DOMAIN"/></translation>
+<translation id="8140869601171867148">Ang iyong Brave sync chain ang account na ginagamit mo para sa Gmail, YouTube, Brave, at iba pang produkto ng Brave.
+    Gamitin ang account mo para madaling ma-access ang lahat ng iyong bookmark, file, at higit pa.</translation>
 <translation id="8141418916163800697">Puwede kang mag-set up ng higit pang feature sa mga setting ng Phone Hub</translation>
 <translation id="8141584439523427891">Binubuksan ngayon sa alternatibong browser</translation>
 <translation id="8141725884565838206">Pamahalaan ang iyong mga password</translation>
@@ -9248,7 +9277,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8180295062887074137"><ph name="PRINTER_NAME"/> <ph name="PRINTER_STATUS"/>. Printer <ph name="ITEM_POSITION"/> ng <ph name="NUM_PRINTERS"/>.</translation>
 <translation id="8180785270975217276">Na-on ang Energy Saver</translation>
 <translation id="8180786512391440389">Magagawa ng "<ph name="EXTENSION"/>" na magbasa at magtanggal ng mga larawan, video, at sound file sa mga may check na lokasyon.</translation>
-<translation id="8181215761849004992">Hindi maisali sa domain. Suriin ang iyong account para makita kung mayroon kang sapat na mga pribilehiyo para magdagdag ng mga device.</translation>
 <translation id="8182105986296479640">Hindi tumutugon ang application.</translation>
 <translation id="8182412589359523143">Para i-delete ang lahat ng data sa <ph name="DEVICE_TYPE"/> na ito, <ph name="BEGIN_LINK"/>mag-click dito<ph name="END_LINK"/>.</translation>
 <translation id="8183703640399301650">Ang iyong device EID ay <ph name="EID_NUMBER"/> at ang device IMEI ay <ph name="IMEI_NUMBER"/>. Puwedeng gamitin ang mga numerong ito para makatulong na ma-activate ang serbisyo.</translation>
@@ -9274,6 +9302,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8200772114523450471">Resume</translation>
 <translation id="8200789660596905522">Tiyaking tanggapin ang kahilingan sa Pag-cast sa iyong <ph name="DEVICE_NAME"/></translation>
 <translation id="8202160505685531999">Mangyaring ilagay muli ang iyong password upang i-update ang iyong profile sa <ph name="DEVICE_TYPE"/>.</translation>
+<translation id="8202827109322349110">Buksan sa basic na editor</translation>
 <translation id="8203152941016626022">Pangalan ng device sa Nearby Share</translation>
 <translation id="8203732864715032075">Papadalhan ka ng mga notification at aalalahanin ang computer na ito para sa Messages bilang default. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="8203795194971602413">Mag-right click</translation>
@@ -9298,10 +9327,12 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8217399928341212914">Patuloy na i-block ang mga awtomatikong pagda-download ng maraming file</translation>
 <translation id="822050276545350872">Mula sa puntong ito, hindi na kailangang maghintay</translation>
 <translation id="8221491193165283816">Kadalasan mong bina-block ang mga notification. Para hayaan ang site na itong abisuhan ka, mag-click dito.</translation>
+<translation id="8222674561049363989">Hindi valid na dokumento ang file</translation>
 <translation id="822347941086490485">Naghahanap ng mga HID device...</translation>
 <translation id="8224427620313426549">Hindi made-delete ang iyong <ph name="DOMAIN_LINK"/> account.</translation>
 <translation id="8225046344534779393">Tingnan ang koneksyon sa internet</translation>
 <translation id="8225265270453771718">Magbahagi ng application window</translation>
+<translation id="8225516926291976401">Ang mga serbisyo ng system lang ang puwedeng gumamit ng iyong lokasyon. Gayunpaman, posibleng visible pa rin sa mga app at website ang iyong lokasyon sa pamamagitan ng IP address mo. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="8226222018808695353">Ipinagbabawal</translation>
 <translation id="8226619461731305576">I-queue</translation>
 <translation id="8227119283605456246">Mag-attach ng file</translation>
@@ -9342,17 +9373,17 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8253198102038551905">I-click '+' upang makita ang mga property ng network</translation>
 <translation id="8255212965098517578">Mga kamakailang larawan, notification, at app</translation>
 <translation id="8256319818471787266">Bantay</translation>
+<translation id="5401976223298265794">Puwede mong buksan ang mga bookmark, reading mode, at higit pa mula sa menu ng Brave</translation>
 <translation id="8257950718085972371">Ipagpatuloy ang pag-block ng access sa camera</translation>
 <translation id="8258027225380843424">Matagumpay ang pag-import!</translation>
 <translation id="8259048637628995340">Ikonekta ang iyong Android phone para sa maayos na experience</translation>
 <translation id="8260177673299865994">Pahusayin ang proteksyon sa pag-download</translation>
 <translation id="8260864402787962391">Mouse</translation>
 <translation id="8261506727792406068">I-delete</translation>
+<translation id="8261625296061301062">Na-install na ang software ng scanner</translation>
 <translation id="2649287203051299533">Ine-enable ang bagong disenyo ng desktop para sa WebUI. Dapat ding i-enable ang Bagong Anyo ng Brave 2023</translation>
 <translation id="8263336784344783289">Pangalanan ang Grupong Ito</translation>
-<translation id="8263744495942430914">Hindi pinagana ng <ph name="FULLSCREEN_ORIGIN"/> ang cursor ng iyong mouse.</translation>
 <translation id="8264024885325823677">Pinapamahalaan ng iyong administrator ang setting na ito.</translation>
-<translation id="8264718194193514834">Nag-trigger ang "<ph name="EXTENSION_NAME"/>" ng full screen.</translation>
 <translation id="826511437356419340">Pumasok sa overview mode ng window. Mag-swipe para mag-navigate, o pindutin ang tab kung gumagamit ng keyboard.</translation>
 <translation id="8266947622852630193">Lahat ng pamamaraan ng pag-input</translation>
 <translation id="8267539814046467575">Magdagdag ng printer</translation>
@@ -9475,6 +9506,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8351630282875799764">Hindi nagcha-charge ang baterya</translation>
 <translation id="8352287103893778223">Pamagat ng grupo ng tab</translation>
 <translation id="835238322900896202">Nagka-error habang nag-a-uninstall. Mag-uninstall sa pamamagitan ng Terminal.</translation>
+<translation id="8353420862507374944">I-cast, I-save, at I-share</translation>
 <translation id="8353683614194668312">Maaari itong:</translation>
 <translation id="8354034204605718473">Naidagdag na ang PIN ng iyong anak</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
@@ -9528,6 +9560,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8387361103813440603">Hindi pinapayagang makita ang iyong lokasyon</translation>
 <translation id="8388770971141403598">Hindi sinusuportahan ang mga pangalawang profile</translation>
 <translation id="8389492867173948260">Pahintulutan ang extension na ito na i-read at baguhin ang lahat ng iyong data sa mga website na binibisita mo:</translation>
+<translation id="8390392581097975659">Ini-install ang software ng scanner</translation>
 <translation id="8390449457866780408">Hindi available ang server.</translation>
 <translation id="8391218455464584335">Vinyl</translation>
 <translation id="8392726714909453725">Mga setting ng select-to-speak</translation>
@@ -9545,6 +9578,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1189449765746484728">Ang iyong data sa Brave</translation>
 <translation id="8403807918453631441">Masusuri ng <ph name="BRAND"/> ang iyong mga password kapag na-save mo ang mga ito</translation>
 <translation id="8405046151008197676">Kunin ang mga highlight mula sa pinakabagong update</translation>
+<translation id="8405118833120731611">{0,plural, =1{Isara ang profile na ito}one{Isara ang profile na ito (# window)}other{Isara ang profile na ito (# na window)}}</translation>
 <translation id="8407199357649073301">Antas ng Log:</translation>
 <translation id="8408270600235826886">Makokontrol mo kung anong data ang ibinabahagi sa Brave. Puwede mo itong baguhin anumang oras sa Mga Setting. Gagamitin ang data alinsunod sa <ph name="BEGIN_LINK"/>Patakaran sa Privacy<ph name="END_LINK"/> ng Brave.</translation>
 <translation id="84098433273647700">Kasalukuyang temang na-install mo.</translation>
@@ -9579,6 +9613,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8428271547607112339">Magdagdag ng pampaaralang account</translation>
 <translation id="84297032718407999">Masa-sign out ka sa loob ng <ph name="LOGOUT_TIME_LEFT"/></translation>
 <translation id="8431190899827883166">Ipakita ang mga pag-tap</translation>
+<translation id="8432724317983466962">Bilang default, nire-require ang galaw ng user para mag-fullscreen</translation>
 <translation id="8433186206711564395">Mga setting ng network</translation>
 <translation id="8434480141477525001">NaCl Debug Port</translation>
 <translation id="3380551973126785727">Mag-sign in at i-on ang pag-sync para payagan ang Brave na magmungkahi ng mga grupo ng tab at panatilihing nakaayos ang iyong mga tab</translation>
@@ -9693,6 +9728,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8523849605371521713">Idinagdag ng patakaran</translation>
 <translation id="8524594273111932386">search + pababang arrow</translation>
 <translation id="4483547786985740455">I-save ang mga card sa iyong Brave sync chain</translation>
+<translation id="8524817717332153865">Naka-off ang camera at mikropono sa Mga Setting ng System ng Mac</translation>
 <translation id="8525306231823319788">Buong screen</translation>
 <translation id="8525461909394569609">Naglalaman ang app na ito ng content sa web mula sa</translation>
 <translation id="8526813720153458066">SSH</translation>
@@ -9706,7 +9742,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8531367864749403520">Piliin ang "I-hide ang Grupo" para alisin ang grupo sa iyong tab strip</translation>
 <translation id="8531701051932785007">Naka-off ang Pinahusay na Ligtas na Pag-browse</translation>
 <translation id="8533670235862049797">Naka-on ang Ligtas na Pag-browse</translation>
-<translation id="8534656636775144800">Oops!  Nagkaproblema noong sinusubukang sumali sa domain. Pakisubukang muli.</translation>
 <translation id="8535005006684281994">URL ng Pag-renew ng Netscape Certificate</translation>
 <translation id="2432941819722210118">Isa-sign out ka sa karamihan ng mga site. Mananatili kang naka-sign in sa iyong Brave sync chain kaya malalapat ang mga setting mo ng Family Link para sa Brave.</translation>
 <translation id="8536956381488731905">Tunog sa keypress</translation>
@@ -9731,6 +9766,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8551647092888540776">Hindi mabuksan ang <ph name="FILE_NAMES"/> kapag offline</translation>
 <translation id="8552102814346875916">I-save sa listahang "palaging panatilihing aktibo ang mga site na ito"</translation>
 <translation id="8554899698005018844">Walang wika</translation>
+<translation id="8555444629041783356">Awtomatikong iskedyul ng paglubog ng araw</translation>
 <translation id="855604308879080518">Payagan ang mga Android app na mag-access ng mga USB device sa Chromebook na ito. Hihiling ng pahintulot sa tuwing magsasaksak ka ng USB device. Hihiling ang mga indibidwal na Android app ng mga karagdagang pahintulot.</translation>
 <translation id="8557022314818157177">Patuloy na pindutin ang iyong security key hanggang ma-capture ang fingerprint mo</translation>
 <translation id="2055442944008824554">I-on ang "Brave" sa Mga Serbisyo ng Lokasyon sa iyong Mac</translation>
@@ -9742,6 +9778,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8561206103590473338">Elepante</translation>
 <translation id="8561565784790166472">Maingat na magpatuloy</translation>
 <translation id="8561853412914299728"><ph name="TAB_TITLE"/> <ph name="EMOJI_PLAYING"/></translation>
+<translation id="8563043098557365232">Pinapayagan lang sa mga serbisyo ng system</translation>
+<translation id="8564220755011656606">Hindi ma-access ang mikropono</translation>
 <translation id="8565650234829130278">Tinangkang i-downgrade ang app.</translation>
 <translation id="8566916288687510520">May natanggap na bagong password</translation>
 <translation id="8569673829373920831">Higit pa tungkol sa <ph name="APP_NAME"/></translation>
@@ -9752,6 +9790,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8573111744706778015">I-type ang "uo7" para makuha ang "ươ"</translation>
 <translation id="8574990355410201600">Palaging payagan ang tunog sa <ph name="HOST"/></translation>
 <translation id="8575286410928791436">Pindutin nang matagal ang <ph name="KEY_EQUIVALENT"/> para Umalis.</translation>
+<translation id="8575608435630445689">Pahusayin ang katumpakan ng lokasyon (Android lang)</translation>
 <translation id="8576885347118332789">{NUM_TABS,plural, =1{Idagdag ang tab sa listahan ng babasahin}one{Idagdag ang mga tab sa listahan ng babasahin}other{Idagdag ang mga tab sa listahan ng babasahin}}</translation>
 <translation id="8577052309681449949">Mga awtomatikong pag-click, laki ng cursor, kulay ng cursor, at higit pa</translation>
 <translation id="8578639784464423491">Hindi maaaring lumagpas sa 99 na titik</translation>
@@ -9761,6 +9800,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8584843865238667486">Mga HID device na may paggamit na <ph name="USAGE"/> mula sa page ng paggamit na <ph name="USAGE_PAGE"/></translation>
 <translation id="8585480574870650651">Alisin ang Crostini</translation>
 <translation id="8585841788766257444">Sinusunod ng mga site na nakalista sa ibaba ang custom na setting sa halip na ang default</translation>
+<translation id="8587660243683137365">I-install ang page na ito bilang app</translation>
 <translation id="8588866096426746242">Ipakita ang mga istatistika ng profile</translation>
 <translation id="8588868914509452556"><ph name="WINDOW_TITLE"/> - ipinapakita ang VR sa headset</translation>
 <translation id="8590375307970699841">Mag-set up ng mga awtomatikong update</translation>
@@ -9783,7 +9823,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8607828412110648570">Tiyaking nasa pairing mode at nasa malapit ang iyong Bluetooth device. Makipagpares lang sa mga device na pinagkakatiwalaan mo. Makikita ng lahat ng account sa Chromebook na ito ang mga nakapares na device. <ph name="BEGIN_LINK_LEARN_MORE"/>Matuto pa<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="8608618451198398104">Magdagdag ng ticket ng Kerberos</translation>
 <translation id="8609465669617005112">Ilipat sa itaas</translation>
-<translation id="8610103157987623234">Hindi wastong format, pakisubukang muli</translation>
 <translation id="8612252270453580753">&amp;Hanapin ang video frame gamit ang <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="8613164732773110792">Maliliit na character, digit, underscore, o gitling lang</translation>
 <translation id="8613504115484579584">Mga paraan sa pag-sign in</translation>
@@ -9855,7 +9894,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8662733268723715832">Mas matagal ito kaysa sa inaasahan, puwede mong laktawan o hintayin hanggang sa matapos ito.</translation>
 <translation id="8662911384982557515">Baguhin ang iyong home page sa: <ph name="HOME_PAGE"/></translation>
 <translation id="8662978096466608964">Hindi maitakda ng Brave ang wallpaper.</translation>
-<translation id="8663051876219324457">Payagan ang mga app, website, at serbisyo ng system na gamitin ang iyong lokasyon. Posibleng gumamit ang lokasyon ng mga source tulad ng Wi‑Fi, mga mobile network, at sensor para tumulong sa pagtantya ng lokasyon ng iyong device. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="8663099077749055505">Palaging i-block ang maraming awtomatikong pagda-download sa <ph name="HOST"/></translation>
 <translation id="8664389313780386848">&amp;Tingnan ang page source</translation>
 <translation id="8665110742939124773">Naglagay ka ng maling access code. Subukan ulit.</translation>
@@ -9864,7 +9902,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8666268818656583275">Magiging mga top-row key na ng system ang gawi ng mga F key</translation>
 <translation id="8666321716757704924">Pinayagan ulit ang mga pahintulot para sa <ph name="WEBSITE"/></translation>
 <translation id="8667261224612332309">May mga password ka na puwedeng mapalakas</translation>
-<translation id="8667328578593601900">Nasa full screen na ngayon ang <ph name="FULLSCREEN_ORIGIN"/> at hindi pinagana ang cursor ng iyong mouse.</translation>
 <translation id="8667760277771450375">Nag-e-explore kami ng mga paraan para paghigpitan ang cross-site na pagsubaybay habang binibigyang-daan ang mga site na ihinto ang spam at panloloko sa ad.</translation>
 <translation id="8668378421690365723">Posibleng hindi na gumana nang maayos ang iyong device, at posible itong makaranas ng mga isyu sa seguridad at performance.</translation>
 <translation id="8669284339312441707">Warmer</translation>
@@ -10096,6 +10133,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="8838770651474809439">Hamburger</translation>
 <translation id="8838778928843281408">Pamahalaan ang mga telepono</translation>
 <translation id="883924185304953854">Maghanap gamit ang larawan</translation>
+<translation id="3740206403750675781">Sine-save lang ang password sa device na ito. Para mag-save ng mga bagong password sa iyong Brave sync chain, i-update ang mga serbisyo ng Google Play.</translation>
 <translation id="8841843049738266382">Basahin at baguhin ang mga naka-allowlist na user</translation>
 <translation id="8842594465773264717">I-delete ang fingerprint na ito</translation>
 <translation id="8845001906332463065">Humingi ng tulong</translation>
@@ -10195,6 +10233,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="8915370057835397490">Nilo-load ang suhestiyon</translation>
 <translation id="8917490105272468696">Oo, Tinatanggap Ko</translation>
 <translation id="8918637186205009138"><ph name="DEVICE_TYPE"/> ni <ph name="GIVEN_NAME"/></translation>
+<translation id="8918900204934259333">Ini-install ang app...</translation>
 <translation id="891931289445130855">I-delete ang data at mga pahintulot</translation>
 <translation id="8920133120839850939">Piliin ang tab na Higit Pang Galaw, at pagkatapos ay i-on ang Pag-swipe sa mga page para mag-navigate pabalik at paabante</translation>
 <translation id="8922624386829239660">Igalaw ang screen kapag napunta ang mouse sa mga gilid ng screen</translation>
@@ -10334,7 +10373,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="9018218886431812662">Tapos na ang pag-install</translation>
 <translation id="901876615920222131">Para buksan ulit ang grupo, mag-click sa grupo</translation>
 <translation id="9019062154811256702">Basahin at baguhin ang mga setting ng autofill</translation>
-<translation id="9019894137004772119">Gumamit ng lokasyon. Payagan ang mga app at serbisyong may pahintulot sa lokasyon na gamitin ang lokasyon ng iyong device. Posibleng pana-panahong mangolekta ang Brave ng data ng lokasyon at gamitin nito ang data na ito sa anonymous na paraan para mapahusay ang katumpakan ng lokasyon at mga serbisyong batay sa lokasyon.</translation>
 <translation id="9019956081903586892">Hindi ma-download ang diksyunaryo ng pang-check ng pagbabaybay</translation>
 <translation id="9020300839812600209">Maglagay ng URL para makita kung ano ang gagawin dito ng LBS.</translation>
 <translation id="9020362265352758658">4x</translation>
@@ -10384,12 +10422,10 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="9045160989383249058">Inilipat ang iyong listahan ng babasahin sa bagong panel sa gilid. Subukan ito rito.</translation>
 <translation id="4534361985432360439">Ipinapadala sa Brave ang address ng web ng page na sinusubukan mong puntahan</translation>
 <translation id="9048745018038487540">Piliin ang lahat ng font</translation>
-<translation id="9050135202879860719">Gumamit ng password para mag-sign in sa iyong <ph name="DEVICE_TYPE"/></translation>
 <translation id="9050666287014529139">Passphrase</translation>
 <translation id="9052404922357793350">Patuloy na i-block</translation>
 <translation id="90528604757378587">Posibleng maging limitado ang aktibidad sa background at ilang visual effect, tulad ng maayos na pag-scroll.</translation>
 <translation id="9053563360605707198">Mag-print sa magkabilang bahagi</translation>
-<translation id="9055636786322918818">Ipatupad ang RC4 encryption. Magiging mas mapanganib para sa iyo kapag ginamit ang opsyong ito, dahil hindi secure ang mga RC4 cipher.</translation>
 <translation id="9056788090206401048">Dapat naka-on ang bluetooth para magamit ang iyong passkey sa ibang device. Puwede mong pamahalaan ito anumang oras sa mga setting.</translation>
 <translation id="9056810968620647706">Walang nakitang tugma.</translation>
 <translation id="9057007989365783744">Gustong i-access ni <ph name="SUPERVISED_USER_NAME"/> ang sumusunod na content:</translation>
@@ -10622,7 +10658,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="93766956588638423">Ayusin ang extension</translation>
 <translation id="938623846785894166">Hindi karaniwang file</translation>
 <translation id="939401694733344652">Hindi ginagamit sa mga Android app ang mga account na ito sa ngayon. Kung pipili ka ng account na gagamitin sa Android app na ito, puwede ring gamitin ang account sa iba pang Android app. Puwede mong baguhin ang access ng Android app sa <ph name="LINK_BEGIN"/>Mga Setting &gt; Mga Account<ph name="LINK_END"/>.</translation>
-<translation id="939553663881639126">Piliin kung makakakuha ka ng mga karagdagang suhestyon sa paghahanap</translation>
 <translation id="939598580284253335">Ilagay ang passphrase</translation>
 <translation id="939736085109172342">Bagong folder</translation>
 <translation id="940212040923880623">&amp;Hanapin at I-edit</translation>
@@ -10686,6 +10721,7 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="992032470292211616">Maaaring mapinsala ng mga extension, apps at mga tema ang iyong device. Sigurado kang gusto mong magpatuloy?</translation>
 <translation id="992256792861109788">Pink</translation>
 <translation id="992592832486024913">I-disable ang ChromeVox (pasalitang feedback)</translation>
+<translation id="992653586748191655"><ph name="NUM"/> (na) Grupo ng tab ang iminumungkahi</translation>
 <translation id="992778845837390402">Kasalukuyang isinasagawa ang pag-back up ng Linux</translation>
 <translation id="993540765962421562">Ini-install</translation>
 <translation id="994289308992179865">&amp;Loop</translation>
@@ -10792,7 +10828,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="8648684608605749476">I-block ang third-party na cookies sa Incognito</translation>
 <translation id="3293179957233653243">Posibleng hindi gumana sa Pribado ang mga feature sa ilang site</translation>
 <translation id="6304377454418270508">Kapag nasa Private mode ka, ang mga site ay pwede lang gumamit ng cookies para makita ang iyong aktibidad sa pag-browse sa site nila. Ide-delete ang cookies sa dulo ng Private session.</translation>
-<translation id="7393840550061186366">Kapag nag-click o nag-type ka sa address bar o box para sa paghahanap, makakakita ka ng mga suhestyon mula sa iyong default na search engine. Naka-off ito sa Pribado.</translation>
 <translation id="5750851931752628242">{NUM_EXTENSIONS, plural,
      =1 {Suriin ang 1 extension na inalis sa Web Store}
      other {Suriin ang {NUM_EXTENSIONS} (na) extension na inalis sa Web Store}}</translation>

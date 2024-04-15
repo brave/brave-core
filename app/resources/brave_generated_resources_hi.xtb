@@ -208,6 +208,7 @@
 <translation id="2289567621059034186">नया टैब नीचे दिया गया है</translation>
 <translation id="3228962656492373217">नीचे दिए गए टैब बंद करें</translation>
 <translation id="8030501904366631501">सभी टैब को इस विंडो में लाएँ</translation>
+<translation id="253980346046488815">डुप्लीकेट टैब को बंद करें</translation>
 <translation id="2336228925368920074">सभी टैब बुकमार्क करें...</translation>
 <translation id="2523967823495420116">वर्टिकल टैब का इस्तेमाल करें</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{टैब म्यूट करें}one{टैब म्यूट करें}other{टैब म्यूट करें}}</translation>
@@ -215,6 +216,7 @@
 <translation id="4405580203042711503">नया टैब नीचे दिया गया है</translation>
 <translation id="5611474372949142946">नीचे दिए गए टैब बंद करें</translation>
 <translation id="573844928911967687">सभी टैब को इस विंडो में लाएँ</translation>
+<translation id="2703180365855369896">डुप्लीकेट टैब को बंद करें</translation>
 <translation id="3704707436873245822">ईमेज से टेक्स्ट कॉपी करें</translation>
 <translation id="5268098808165185458">ईमेज से टेक्स्ट कॉपी हो रहा है...</translation>
 <translation id="4046485130884276245">ईमेज से टेक्स्ट कॉपी हो गया है</translation>
@@ -222,7 +224,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Brave VPN में WireGuard प्रोटोकॉल का इस्तेमाल करें</translation>
 <translation id="8519170191215826548">Brave VPN कनेक्ट रहने के दौरान यह सेटिंग बदली नहीं जा सकती.</translation>
-<translation id="5620961847363372221">ब्राउज़र को फिर से शुरू करना होगा.</translation>
 <translation id="4235920711083356755">VPN बटन दिखाएं</translation>
 <translation id="4070612712151038707">टूलबार में VPN बटन दिखाता है</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -317,6 +318,9 @@
 <translation id="1727684853006449697">Brave प्लेयर</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
+<translation id="1426410128494586442">हां</translation>
+<translation id="4250680216510889253">नहीं</translation>
+<translation id="2356070529366658676">पूछें</translation>
 <translation id="4472575034687746823">आरंभ करें</translation>
 <translation id="8081858229109418493">प्रोफाइल का नाम और आइकन</translation>
 <translation id="6786747875388722282">एक्सटेंशन</translation>
@@ -477,7 +481,6 @@ Binance
 <translation id="3540231253392253941">पुश मैसेजिंग के लिए Google सेवाओं का इस्तेमाल करें</translation>
 <translation id="933652931229970927">अपने आप नैदानिक रिपोर्ट भेजें</translation>
 <translation id="4891600875049212418">संवेदनशील वेबसाइट पर जाते समय 'अदृश्य' हो जाएँ</translation>
-<translation id="2356070529366658676">पूछें</translation>
 <translation id="4846154056248462491">बाहर निकलने पर</translation>
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 <translation id="6438096877646138757">साइटें जो बंद करने पर कुकीज़ को साफ़ करती हैं</translation>
@@ -661,6 +664,8 @@ Binance
 <translation id="3044369626313583722">Brave वॉलेट का बटन दिखाएँ</translation>
 <translation id="7568430944629653319">NFT डिस्कवरी सक्षम करें</translation>
 <translation id="970496996377628529">तीसरे पक्ष के API का इस्तेमाल करके NFT को अपने-आप अपने वॉलेट में जोड़ने की सुविधा चालू करें।</translation>
+<translation id="4898839076551703154">निजी विंडोज़ में Brave Wallet इनेबल करें.</translation>
+<translation id="1550684990179058322">चेतावनी: निजी विंडो सेशन में वॉलेट पते का दोबारा इस्तेमाल करने से साइट निजी विंडो सेशन को गैर-निजी विंडो सेशन से लिंक कर पाएगा.</translation>
 <translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
 <translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="856371974127598760">वॉलेट नेटवर्क</translation>
@@ -679,7 +684,7 @@ Binance
 <translation id="3752403403443723332">आपका वॉलेट रिसेट किया गया.</translation>
 <translation id="594766067816395072">आपकी वॉलेट लेन-देन की जानकारी रीसेट कर दी गई थी.</translation>
 <translation id="1615009913945115836">आपके पिन किए गए NFT रीसेट कर दिए गए थे।</translation>
-<translation id="1426410128494586442">हां</translation>
+<translation id="57798285717509216">साइन करने से पहले लेनदेन के रिज़ल्ट देखें.<ph name="BEGIN_LINK"/>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Ethereum नेटवर्क</translation>
 <translation id="3504157706952484145">Filecoin नेटवर्क</translation>
 <translation id="1561541094377237745">Solana नेटवर्क</translation>

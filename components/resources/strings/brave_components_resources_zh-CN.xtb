@@ -165,10 +165,15 @@
 <translation id="4720556299488643018">退订</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="8510478288840333677">让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：</translation>
-<translation id="6387106423577201267">注意：发送至 Brave 服务器的报告会包括网址、Brave 版本号码、Shields 设置、VPN 状态和语言设置。</translation>
+<translation id="3110968385867124099">无法报告此页面，因为此页面不是通过 HTTP/HTTPS 提供的。</translation>
+<translation id="7907023135990310743">本页面为本地网页，不符合报告条件。</translation>
+<translation id="3645455863322075098">此页面为错误页面，不符合报告条件。</translation>
+<translation id="105644511106871142">感谢您的帮助，让大家都能更好地使用 Brave。该报告只会发送我们修复网站所需的信息。</translation>
 <translation id="6476216365964140603">其他详细信息（可选）</translation>
 <translation id="6145852496180774737">联系方式：（可选）</translation>
 <translation id="7616645803364270729">电子邮箱、Twitter 等</translation>
+<translation id="721949491455392748">包括当前页面的截图</translation>
+<translation id="8459191579769999214">查看截图</translation>
 <translation id="5299848999918506028">谢谢！</translation>
 <translation id="76550953340008122">感谢您让 Brave 的开发人员知道此站点出了问题。我们会尽力解决问题！</translation>
 <translation id="4046860372562593546">管理 Brava 广告</translation>
@@ -427,7 +432,7 @@
 <translation id="5669281110673664811">清除排除列表</translation>
 <translation id="1797334173232638045">您的固定网站已移至</translation>
 <translation id="3074127054582480056">精力</translation>
-<translation id="1666001796278936721">通过重置，您当前的 Brave 奖励档案将被删除，您将重新开始一个全新的 Brave 奖励档案。在继续之前，以防万一，<ph name="LINK_BEGIN"/>请了解个更多<ph name="LINK_END"/>关于重置的信息。</translation>
+<translation id="4915997950539925115">重置后，您当前的 Brave 奖励资料将被删除，Brave 奖励也将不再启用。如果稍后再次启用 Brave 奖励，将从一个新的配置文件开始。请阅读我们关于重置 <ph name="LINK_END"/>的<ph name="LINK_BEGIN"/>支持文档，了解更多详情。</translation>
 <translation id="4806029412510565611">我知道我目前的 Brava 奖励档案和 Brave 奖励数据将从我的设备上删除，我已阅读<ph name="LINK_BEGIN"/>关于重置的支持文档<ph name="LINK_END"/>。</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
 <translation id="2913994227901456490">查看所有 [[numItems]] 个条目</translation>
@@ -608,10 +613,8 @@
 <translation id="1848737374354350807">余额：</translation>
 <translation id="6516984207843289176">连接账户</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>准备好赚取收益了吗？<ph name="BOLD_END"/>与我们的合作伙伴之一连接或创建一个账户。</translation>
-<translation id="1772961321862399863">要赚取 BAT，用户必须将托管账户连接至 Brave 奖励。不幸的是，在您所在的地区没有可用的托管人，因此无法获得收益。现在，打开 Brave 奖励将自动支持创作者。</translation>
 <translation id="902298128239575729">用 Brave 奖励发送捐款</translation>
 <translation id="6276721355724491595">连接托管账户后，您就能不定期使用 Brave Rewards 余额，手动捐款给您喜爱的创作者。</translation>
-<translation id="1149481926056509086">要发送按需捐款，用户必须将一个托管账户连接到 Brave 奖励。不幸的是，您所在的地区没有托管人，所以无法发送。同时，你仍然在自动支持创作者。</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {本月您访问了# 个 Brave 奖励支持的创作者}
       other {本月您访问了# 个 Brave 奖励支持的创作者}
@@ -646,9 +649,7 @@
 <translation id="1609556006143307897">您正在支持內容創作者</translation>
 <translation id="654447476965480878">了解更多关于赚取 BAT 的信息</translation>
 <translation id="4105212447337987768">在 <ph name="DATE"/>，我们将停止对现有虚拟 BAT 余额的支持。在此日期之前连接一个托管账户，以便我们将您的收入余额转到您的托管账户，否则您的余额将丢失。</translation>
-<translation id="5684206602316433615">在<ph name="DATE"/>，我们将停止对现有虚拟 BAT 余额的支持。但您所在的地区（<ph name="REGION"/>）没有可用的托管人来提取您的收入。在那之前，您仍然可以为您最喜欢的创作者做贡献。</translation>
 <translation id="707569835145765061">待办事项：连接托管账户，否则您的 vBAT 将丢失</translation>
-<translation id="5089752671190341407">您仍然有时间把您的 vBAT 贡献给您最喜欢的创作者</translation>
 <translation id="1258144146756156541">确认您是人</translation>
 <translation id="1555514580945108302">嗯......不太妙。请重试。</translation>
 <translation id="8078414184292711961">拖动 BAT 图标到<ph name="HINT"/>目标。</translation>
@@ -693,6 +694,10 @@
 <translation id="3479552764303398839">以后再说</translation>
 <translation id="4185473179105062442">通过自行保管的加密地址直接收取 BAT</translation>
 <translation id="5802986777701714573">我们新增了一种方式，以便您收取每月的 BAT 奖励。关联任一合作伙伴账户，或使用全新自行保管选项，即刻开始盈利。</translation>
+<translation id="3251885322612056119">更新的服务条款</translation>
+<translation id="7454675823870922788">我们更新了 Brave Rewards 的服务条款。这些更新旨在澄清我们的条款，并确保其涵盖新的功能。如果您继续使用 Brave Rewards，即表示您同意更新后的服务条款。您可以<ph name="LINK_BEGIN"/>重置<ph name="LINK_END"/>Brave Rewards，这将禁用该功能。</translation>
+<translation id="5192526308598085294">查看<ph name="LINK_BEGIN"/>Brave Rewards 服务条款<ph name="LINK_END"/></translation>
+<translation id="4130750466177569591">我同意</translation>
 <translation id="86107454835395919">设置为每月捐款</translation>
 <translation id="6621880242105464352">Brave 将收取捐款金额的 <ph name="FEE_PCT"/> 作为手续费。</translation>
 <translation id="1420756770787071946">支持此创作者</translation>
@@ -1135,6 +1140,7 @@
 <translation id="2021522108838444624">金额必须大于 0</translation>
 <translation id="8464365289405373974">收款人地址为必填项</translation>
 <translation id="4884792073752467460">无效的收件人地址</translation>
+<translation id="6326239384961270135">缺少透明部分</translation>
 <translation id="8585995109882455949">该如何找到正确的地址？</translation>
 <translation id="8395402412470376435">Brave 验证并防止用户由于大写不正确而将资金发送到错误的地址。这是一个“检查和”过程，用于验证它是一个有效的 ETH 地址。</translation>
 <translation id="4583433813614292221">1. 访问</translation>
@@ -1483,6 +1489,7 @@
 <translation id="1893207255459018302">无交易记录</translation>
 <translation id="5356382676355994980">使用 Brave 钱包进行的交易将显示在此处。</translation>
 <translation id="3033638954295674319">获取 NFT 详细信息时发生了错误。请稍后再试。</translation>
+<translation id="5964615240954462738">编辑代币</translation>
 <translation id="2612436523196658045">ETH 地址将转换为 Filecoin 地址。</translation>
 <translation id="3282354360699748542">Filecoin 名称空间中的<ph name="FILECOIN_ADDRESS"/>地址将用于事务。</translation>
 <translation id="2540568096903252632">输入密码继续</translation>
@@ -1507,7 +1514,6 @@
 <translation id="8007404171238546456">波动后最小接收量</translation>
 <translation id="767199001998615704">网络费用</translation>
 <translation id="7057870207229052478">Brave 费用</translation>
-<translation id="81116374028657878">协议费用</translation>
 <translation id="3624518972158401291">免费</translation>
 <translation id="5038255447967558645">流动性提供者</translation>
 <translation id="8450638959928932199">兑换 &amp; 发送</translation>
@@ -1705,7 +1711,7 @@ other {# 个来源}
 <translation id="7948579849190819732">当前选项卡</translation>
 <translation id="7056969230130642253">没有更多内容</translation>
 <translation id="7292242212818928219">有新内容，要刷新吗？</translation>
-<translation id="6537880577641744343">指令器</translation>
+<translation id="4144468798716165316">快捷指令</translation>
 <translation id="7481312909269577407">前进</translation>
 <translation id="302781076327338683">绕过缓存重新加载</translation>
 <translation id="7211681214230730336">清除缓存重新加载</translation>
@@ -1742,6 +1748,13 @@ other {# 个来源}
 <translation id="855081842937141170">“固定”选项卡</translation>
 <translation id="2805351816064694332">关闭未固定标签页</translation>
 <translation id="8657641252283410630">“组”选项卡</translation>
+<translation id="8908724110993882115">切换已展开的群组</translation>
+<translation id="8813600493701436462">从当前群组中删除选项卡</translation>
+<translation id="3170171381379098900">取消当前选项卡群组的分组</translation>
+<translation id="8589082712469819302">取消所有选项卡的分组</translation>
+<translation id="6804504170598429513">关闭未分组的选项卡</translation>
+<translation id="5960187586089070931">关闭不在当前群组中的选项卡</translation>
+<translation id="7043112527867086263">为未分组的选项卡分组</translation>
 <translation id="8290333944535778783">滚动标签页至顶部</translation>
 <translation id="6141382045715907645">滚动标签页至底部</translation>
 <translation id="923853139812360539">二维码生成器</translation>
@@ -1832,7 +1845,6 @@ other {# 个来源}
 <translation id="188822869499214197">显示播放列表气泡字体</translation>
 <translation id="3202536111478033084">按当前原点分组标签</translation>
 <translation id="6002210667729577411">将群组移动至新窗口</translation>
-<translation id="253980346046488815">关闭重复选项卡</translation>
 <translation id="9210143726807220086">打开垂直选项卡</translation>
 <translation id="684629111155788563">添加所有标签页至群组</translation>
 <translation id="9106013521852824634">发送标签页给自己</translation>
@@ -2070,6 +2082,7 @@ other {# 个来源}
 <translation id="8814357473522731680">技术支持：</translation>
 <translation id="3960619311638643872">Brave 的 VPN</translation>
 <translation id="5747552184818312860">到期时间</translation>
+<translation id="8421945428836418371">自动恢复连接</translation>
 <translation id="434523916398030617">联系技术支持</translation>
 <translation id="1116694919640316211">关于</translation>
 <translation id="8670386189340362926">拦截所有应用的跟踪器和广告</translation>

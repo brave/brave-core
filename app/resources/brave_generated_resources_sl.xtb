@@ -209,6 +209,7 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="2289567621059034186">Nov zavihek spodaj</translation>
 <translation id="3228962656492373217">Zapri zavihke spodaj</translation>
 <translation id="8030501904366631501">Prenesite vse zavihke v to okno</translation>
+<translation id="253980346046488815">Zapri podvojene zavihke</translation>
 <translation id="2336228925368920074">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="2523967823495420116">Uporabite navpične zavihke</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Izklop zvoka zavihka}one{Izklop zvoka zavihkov}two{Izklop zvoka zavihkov}few{Izklop zvoka zavihkov}other{Izklop zvoka zavihkov}}</translation>
@@ -216,6 +217,7 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="4405580203042711503">Nov zavihek spodaj</translation>
 <translation id="5611474372949142946">Zapri zavihke spodaj</translation>
 <translation id="573844928911967687">Prenesite vse zavihke v to okno</translation>
+<translation id="2703180365855369896">Zapri podvojene zavihke</translation>
 <translation id="3704707436873245822">Kopiraj besedilo s slike</translation>
 <translation id="5268098808165185458">Kopiranje besedila s slike...</translation>
 <translation id="4046485130884276245">Besedilo kopirano s slike</translation>
@@ -223,7 +225,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Uporabite protokol WireGuard v Brave VPN</translation>
 <translation id="8519170191215826548">Te nastavitve ni mogoče spremeniti, ko je Brave VPN povezan.</translation>
-<translation id="5620961847363372221">Zahteva ponovni zagon brskalnika.</translation>
 <translation id="4235920711083356755">Pokaži gumb VPN</translation>
 <translation id="4070612712151038707">V orodni vrstici prikaže gumb VPN</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -319,6 +320,9 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="1727684853006449697">Brave predvajalnik</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
+<translation id="1426410128494586442">Da</translation>
+<translation id="4250680216510889253">Ne</translation>
+<translation id="2356070529366658676">Vprašaj</translation>
 <translation id="4472575034687746823">Kako začeti</translation>
 <translation id="8081858229109418493">Profilno ime in ikona</translation>
 <translation id="6786747875388722282">Razširitve</translation>
@@ -446,7 +450,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="3540231253392253941">Za potisna sporočila uporabite Googlove storitve</translation>
 <translation id="933652931229970927">Samodejno pošiljanje diagnostičnih poročil</translation>
 <translation id="4891600875049212418">Ko obiščete občutljiva spletna mesta, preklopite v Nezabeleženi način</translation>
-<translation id="2356070529366658676">Vprašaj</translation>
 <translation id="4846154056248462491">Ob izhodu</translation>
 <translation id="2808630562319398131">Ponastavi podatke Brave Rewards ...</translation>
 <translation id="6438096877646138757">Spletna mesta, ki izbrišejo piškotke, ko jih zaprete</translation>
@@ -630,6 +633,8 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="3044369626313583722">Prikaži gumb denarnice Brave</translation>
 <translation id="7568430944629653319">Omogoči odkrivanje NFT</translation>
 <translation id="970496996377628529">Samodejno dodajte NFT-je, ki jih imate, v denarnico z uporabo API-jev tretjih oseb.</translation>
+<translation id="4898839076551703154">Omogoči Brave Wallet v zasebnih oknih.</translation>
+<translation id="1550684990179058322">Opozorilo: Ponovna uporaba naslova denarnice v seji zasebnega okna lahko mestu omogoči, da sejo zasebnega okna poveže s sejo ne-zasebnega okna.</translation>
 <translation id="8239147115686034860">Samodejno zakleni Brave denarnice</translation>
 <translation id="414639769490080648">Število minut čakanja, da se Brave  denarnica samodejno zaklene</translation>
 <translation id="856371974127598760">Omrežja denarnice</translation>
@@ -648,7 +653,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="3752403403443723332">Vaša denarnica je bila ponastavljena.</translation>
 <translation id="594766067816395072">Podatki o transakciji v denarnici so bili ponastavljeni.</translation>
 <translation id="1615009913945115836">Vaši pripeti NFT-ji so bili ponastavljeni.</translation>
-<translation id="1426410128494586442">Da</translation>
+<translation id="57798285717509216">Pred podpisom si oglejte rezultate transakcij.<ph name="BEGIN_LINK"/>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Omrežja Ethereum</translation>
 <translation id="3504157706952484145">Omrežja Filecoin</translation>
 <translation id="1561541094377237745">Omrežja Solana</translation>

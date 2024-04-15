@@ -165,10 +165,15 @@
 <translation id="4720556299488643018">Cancelar subscrição</translation>
 <translation id="1209739344687072997">Comunicar ''site'' com problemas</translation>
 <translation id="8510478288840333677">Permita que os programadores do Brave saibam que o ''site'' não funciona corretamente com as «Proteções»</translation>
-<translation id="6387106423577201267">Nota: o relatório enviado para os servidores do Brave inclui o endereço do site, a versão do Brave utilizada, as definições das proteções, o estado da VPN e as definições de idioma.</translation>
+<translation id="3110968385867124099">Esta página não pode ser denunciada porque não foi disponibilizada através de HTTP/HTTPS.</translation>
+<translation id="7907023135990310743">Por ser uma página web local, esta página não pode ser denunciada.</translation>
+<translation id="3645455863322075098">Por ser uma página de erro, esta página não pode ser denunciada.</translation>
+<translation id="105644511106871142">Agradecemos a sua contribuição para melhorar o Brave para todos. Este relatório só enviará as informações necessárias para corrigir o site.</translation>
 <translation id="6476216365964140603">Detalhes adicionais (opcional)</translation>
 <translation id="6145852496180774737">Entrem em contacto comigo: (opcional)</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
+<translation id="721949491455392748">Incluir captura de ecrã da página atual</translation>
+<translation id="8459191579769999214">Ver captura de ecrã</translation>
 <translation id="5299848999918506028">Obrigado!</translation>
 <translation id="76550953340008122">Obrigado por comunicar aos programadores do Brave que há algo de errado com este ''site''. Nós iremos fazer o nosso melhor para o corrigir.</translation>
 <translation id="4046860372562593546">Gerir anúncios privados do Brave</translation>
@@ -427,7 +432,7 @@
 <translation id="5669281110673664811">Limpar lista de exclusão</translation>
 <translation id="1797334173232638045">Os sites afixados foram movidos para</translation>
 <translation id="3074127054582480056">Atenção</translation>
-<translation id="1666001796278936721">Ao redefinir, o seu perfil atual de Recompensas Brave será eliminado e terá de iniciar novamente com um perfil de Recompensas Brave totalmente novo. Antes de continuar,<ph name="LINK_BEGIN"/>saiba mais<ph name="LINK_END"/> sobre como redefinir primeiro.</translation>
+<translation id="4915997950539925115">Ao fazer a reposição, o seu perfil atual das Recompensas Brave será eliminado e estas passarão a estar inativas. Se voltar a ativar as Recompensas Brave mais tarde, começará com um perfil novo. Leia este <ph name="LINK_BEGIN"/>artigo de ajuda sobre a reposição<ph name="LINK_END"/> para saber mais.</translation>
 <translation id="4806029412510565611">Compreendo que o meu perfil atual de Recompensas Brave e os dados de Recompensas Brave serão eliminados do meu dispositivo e confirmo que li o <ph name="LINK_BEGIN"/>artigo de suporte sobre como redefinir<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Resumo de Recompensas</translation>
 <translation id="2913994227901456490">Ver todas as linhas ([[numItems]])</translation>
@@ -608,10 +613,8 @@
 <translation id="1848737374354350807">Saldo</translation>
 <translation id="6516984207843289176">Ligar conta</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Pronto para começar a ganhar?<ph name="BOLD_END"/> Associe-se ou crie uma conta com um dos nossos parceiros.</translation>
-<translation id="1772961321862399863">Para ganhar BATs, os utilizadores têm de ligar uma conta de salvaguarda às Recompensas Brave. Infelizmente, não existe nenhuma conta de salvaguarda disponível na sua região, pelo que não é possível ganhar BATs. Por agora, se ativar as Recompensas Brave, os criadores serão suportados automaticamente.</translation>
 <translation id="902298128239575729">Enviar contribuições com Recompensas Brave</translation>
 <translation id="6276721355724491595">Poderá enviar contribuições a pedido para os seus criadores favoritos com o seu saldo de Recompensas Brave assim que tiver uma conta de custódia associada.</translation>
-<translation id="1149481926056509086">Para enviar contribuições a pedido, os utilizadores devem associar uma conta de salvaguarda a Recompensas Brave. Infelizmente, não existe um depositário disponível na sua região, portanto, o envio não está disponível. Entretanto, o utilizador continua a apoiar automaticamente os criadores.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Neste mês, visitou um # criador suportado pelas Recompensas Brave}
       other {Neste mês, visitou # criadores suportados pelas Recompensas Brave}
@@ -646,9 +649,7 @@
 <translation id="1609556006143307897">Você está apoiando criadores de conteúdo</translation>
 <translation id="654447476965480878">Saiba mais sobre ganhar BAT</translation>
 <translation id="4105212447337987768">A <ph name="DATE"/>, vamos descontinuar o suporte de saldos BAT virtuais existentes. Associe uma conta de salvaguarda antes desta data, para que possamos transferir o seu saldo para a conta de salvaguarda. Caso contrário, perderá o saldo.</translation>
-<translation id="5684206602316433615">A <ph name="DATE"/>, vamos descontinuar o suporte de saldos BAT virtuais existentes. Infelizmente, não existem depositários disponíveis na sua região (<ph name="REGION"/>) para retirar os seus ganhos. Até esta data, pode continuar a contribuir para os seus criadores favoritos.</translation>
 <translation id="707569835145765061">Ação necessária: associe uma conta de salvaguarda ou irá perder o seu vBAT</translation>
-<translation id="5089752671190341407">Ainda pode contribuir com o seu vBAT para os seus criadores favoritos</translation>
 <translation id="1258144146756156541">Confirme que é um ser humano</translation>
 <translation id="1555514580945108302">Humm… Não está correto. Tente novamente.</translation>
 <translation id="8078414184292711961">Arraste o ícone BAT para o alvo: <ph name="HINT"/>.</translation>
@@ -693,6 +694,10 @@
 <translation id="3479552764303398839">Agora não</translation>
 <translation id="4185473179105062442">Receba BAT diretamente num endereço cripto de autocustódia</translation>
 <translation id="5802986777701714573">Adicionámos uma nova forma de receber as suas recompensas mensais em BAT. Associe uma conta de um dos nossos parceiros, ou use a nova opção de autocustódia e comece já a ganhar.</translation>
+<translation id="3251885322612056119">Termos de Serviço atualizados</translation>
+<translation id="7454675823870922788">Atualizámos os Termos de Serviço das Recompensas Brave. Implementámos estas atualizações para clarificar os termos e garantir que abrangem as novas funcionalidades. Ao continuar a utilizar as Recompensas Brave, está a concordar com os novos Termos de Serviço. Se não concordar, pode <ph name="LINK_BEGIN"/>repor<ph name="LINK_END"/> as Recompensas Brave, de modo a desativar a funcionalidade.</translation>
+<translation id="5192526308598085294">Consulte os <ph name="LINK_BEGIN"/>Termos de Serviço das Recompensas Brave<ph name="LINK_END"/></translation>
+<translation id="4130750466177569591">Concordo</translation>
 <translation id="86107454835395919">Definir como contribuição mensal</translation>
 <translation id="6621880242105464352">O Brave recebe <ph name="FEE_PCT"/> do valor enviado como taxa de processamento.</translation>
 <translation id="1420756770787071946">Contribuir para este criador</translation>
@@ -1135,6 +1140,7 @@
 <translation id="2021522108838444624">A quantia tem de ser superior a 0</translation>
 <translation id="8464365289405373974">É necessário o endereço do destinatário</translation>
 <translation id="4884792073752467460">Endereço de destinatário inválido</translation>
+<translation id="6326239384961270135">Parte transparente em falta</translation>
 <translation id="8585995109882455949">Como posso encontrar o endereço correto?</translation>
 <translation id="8395402412470376435">O Brave valida e evita que os utilizadores enviem fundos para o endereço errado devido à utilização incorreta de maiúsculas. Este é um processo de "soma de verificação" para verificar se se trata de um endereço de Ethereum válido.</translation>
 <translation id="4583433813614292221">1. Visitar</translation>
@@ -1483,6 +1489,7 @@
 <translation id="1893207255459018302">Nenhum histórico de transações</translation>
 <translation id="5356382676355994980">As transações realizadas com a sua Brave Wallet serão apresentadas aqui.</translation>
 <translation id="3033638954295674319">Ocorreu um erro ao obter os detalhes de NFT. Tente novamente mais tarde.</translation>
+<translation id="5964615240954462738">Editar token</translation>
 <translation id="2612436523196658045">O endereço ETH será traduzido para o endereço Filecoin.</translation>
 <translation id="3282354360699748542">O endereço <ph name="FILECOIN_ADDRESS"/> no espaço de nome Filecoin será utilizado para a transação.</translation>
 <translation id="2540568096903252632">Introduza uma palavra-passe para continuar</translation>
@@ -1507,7 +1514,6 @@
 <translation id="8007404171238546456">Mínimo recebido após desvio</translation>
 <translation id="767199001998615704">Taxa da rede</translation>
 <translation id="7057870207229052478">Taxa do Brave</translation>
-<translation id="81116374028657878">Taxa de protocolo</translation>
 <translation id="3624518972158401291">Grátis</translation>
 <translation id="5038255447967558645">Fornecedor de liquidez</translation>
 <translation id="8450638959928932199">Trocar e enviar</translation>
@@ -1705,7 +1711,7 @@
 <translation id="7948579849190819732">Separador atual</translation>
 <translation id="7056969230130642253">Tudo visto!</translation>
 <translation id="7292242212818928219">Novo conteúdo disponível. Recarregar?</translation>
-<translation id="6537880577641744343">Commander</translation>
+<translation id="4144468798716165316">Comandos rápidos</translation>
 <translation id="7481312909269577407">Avançar</translation>
 <translation id="302781076327338683">Recarregar sem passar pela cache</translation>
 <translation id="7211681214230730336">Recarregar e limpar a cache</translation>
@@ -1742,6 +1748,13 @@
 <translation id="855081842937141170">Fixar separador</translation>
 <translation id="2805351816064694332">Fechar separadores não fixados</translation>
 <translation id="8657641252283410630">Agrupar separador</translation>
+<translation id="8908724110993882115">Ativar/desativar expansão do grupo</translation>
+<translation id="8813600493701436462">Remover separador do grupo atual</translation>
+<translation id="3170171381379098900">Desagrupar grupo de separadores atual</translation>
+<translation id="8589082712469819302">Desagrupar todos os separadores</translation>
+<translation id="6804504170598429513">Fechar separadores não agrupados</translation>
+<translation id="5960187586089070931">Fechar separadores fora do grupo atual</translation>
+<translation id="7043112527867086263">Agrupar separadores não agrupados</translation>
 <translation id="8290333944535778783">Deslocar separador para o início</translation>
 <translation id="6141382045715907645">Deslocar separador para o fim</translation>
 <translation id="923853139812360539">Gerador de códigos QR</translation>
@@ -1832,7 +1845,6 @@
 <translation id="188822869499214197">Mostrar bolha da lista de reprodução</translation>
 <translation id="3202536111478033084">Agrupar separadores na origem atual</translation>
 <translation id="6002210667729577411">Mover grupo para uma nova janela</translation>
-<translation id="253980346046488815">Fechar separadores duplicados</translation>
 <translation id="9210143726807220086">Ativar/desativar separadores verticais expandidos</translation>
 <translation id="684629111155788563">Adicionar todos os separadores a um novo grupo</translation>
 <translation id="9106013521852824634">Enviar separador para mim</translation>
@@ -2070,6 +2082,7 @@
 <translation id="8814357473522731680">Desenvolvido por</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="5747552184818312860">Expira</translation>
+<translation id="8421945428836418371">Voltar a ligar automaticamente</translation>
 <translation id="434523916398030617">Contactar apoio técnico</translation>
 <translation id="1116694919640316211">Acerca de</translation>
 <translation id="8670386189340362926">Bloquear rastreadores e anúncios em todas as aplicações</translation>

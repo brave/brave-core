@@ -165,10 +165,15 @@
 <translation id="4720556299488643018">Cofnij subskrypcję</translation>
 <translation id="1209739344687072997">Zgłoś uszkodzoną stronę</translation>
 <translation id="8510478288840333677">Poinformuj programistów Brave, że ta strona nie działa prawidłowo z tarczami Brave.</translation>
-<translation id="6387106423577201267">Uwaga: raport wysłany do serwerów Brave będzie zawierał adres witryny, numer wersji Brave, ustawienia tarcz, status VPN oraz ustawienia językowe.</translation>
+<translation id="3110968385867124099">Nie można zgłosić strony, ponieważ nie korzystała z protokołu HTTP/HTTPS.</translation>
+<translation id="7907023135990310743">Ta strona jest lokalną stroną internetową i nie można jej zgłosić.</translation>
+<translation id="3645455863322075098">Ta strona jest stroną błędu i nie można jej zgłosić.</translation>
+<translation id="105644511106871142">Dziękujemy za pomoc w ulepszaniu Brave dla wszystkich użytkowników. Ten raport będzie zawierał tylko informacje niezbędne do naprawienia tej strony.</translation>
 <translation id="6476216365964140603">Dodatkowe szczegóły (opcjonalne)</translation>
 <translation id="6145852496180774737">Skontaktuj się ze mną poprzez: (opcjonalne)</translation>
 <translation id="7616645803364270729">E-mail, Twitter, itp.</translation>
+<translation id="721949491455392748">Dołącz zrzut ekranu bieżącej strony</translation>
+<translation id="8459191579769999214">Wyświetl zrzut ekranu</translation>
 <translation id="5299848999918506028">Dziękujemy!</translation>
 <translation id="76550953340008122">Dziękujemy za poinformowanie deweloperów Brave, że coś jest nie tak z tą witryną. Dołożymy wszelkich starań, aby ją naprawić!</translation>
 <translation id="4046860372562593546">Zarządzaj reklamami Brave</translation>
@@ -427,7 +432,7 @@
 <translation id="5669281110673664811">Wyczyść listę wykluczonych</translation>
 <translation id="1797334173232638045">Twoje przypięte strony zostały przeniesione do</translation>
 <translation id="3074127054582480056">Uwaga</translation>
-<translation id="1666001796278936721">Poprzez zresetowanie Twój obecny profil Nagród Brave zostanie usunięty i zaczniesz od nowa z zupełnie nowym profilem Nagród Brave. Zanim przejdziesz dalej, tak dla pewności <ph name="LINK_BEGIN"/> dowiedz się więcej<ph name="LINK_END"/> o resetowaniu.</translation>
+<translation id="4915997950539925115">Poprzez zresetowanie Twój obecny profil Nagród Brave zostanie usunięty, a usługa Nagrody Brave zostanie wyłączona. Jeśli później postanowisz ją ponownie włączyć, zaczniesz od nowa z zupełnie nowym profilem Nagród Brave. Aby dowiedzieć się więcej, przeczytaj nasz <ph name="LINK_BEGIN"/>artykuł pomocy dotyczący resetowania<ph name="LINK_END"/>.</translation>
 <translation id="4806029412510565611">Rozumiem, że mój obecny profil Nagród Brave oraz dane Nagród Brave zostaną usunięte z mojego urządzenia i potwierdzam przeczytanie <ph name="LINK_BEGIN"/>artykułu pomocy dotyczącego resetowania<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Podsumowanie nagród</translation>
 <translation id="2913994227901456490">Zobacz wszystkie elementy: [[numItems]]</translation>
@@ -608,10 +613,8 @@
 <translation id="1848737374354350807">Ilość środków</translation>
 <translation id="6516984207843289176">Podłącz konto</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Chcesz zacząć zarabiać?<ph name="BOLD_END"/> Podłącz lub utwórz konto u jednego z naszych partnerów.</translation>
-<translation id="1772961321862399863">Żeby zacząć zarabiać BAT, użytkownicy muszą połączyć konto powiernicze z Nagrodami Brave. Niestety w Twoim regionie nie ma dostępnych kont powierniczych, więc nie możesz zdobywać tokenów. W tej chwili włączenie Nagród Brave automatycznie wspomoże twórców.</translation>
 <translation id="902298128239575729">Wysyłaj datki za pomocą Nagród Brave</translation>
 <translation id="6276721355724491595">Kiedy już podłączysz konto powiernicze, będziesz w stanie wysyłać datki na życzenie swoim ulubiony twórcom za pomocom swojego salda Nagród Brave.</translation>
-<translation id="1149481926056509086">Aby zacząć wysyłać datki na życzenie, użytkownicy muszą połączyć konto powiernicze z Nagrodami Brave. Niestety w Twoim regionie nie ma dostępnych kont powierniczych, więc nie możesz wysyłać datków. Obecnie wciąż automatycznie wspierasz twórców.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {W tym miesiącu odwiedzono # twórcę, który jest wspierany przez Nagrody Brave}
       few {W tym miesiącu odwiedzono # twórców, którzy są wspierani przez Nagrody Brave}
@@ -648,9 +651,7 @@
 <translation id="1609556006143307897">Pomagasz twórcom treści</translation>
 <translation id="654447476965480878">Dowiedz się więcej o zarabianiu BAT</translation>
 <translation id="4105212447337987768"><ph name="DATE"/> będziemy kończyć wsparcie dla istniejących wirtualnych sald BAT. Połącz konto powiernicze przed tym terminem, a przeniesiemy Twoje saldo na konto powiernicze. W innym wypadku Twoje saldo przepadnie.</translation>
-<translation id="5684206602316433615"><ph name="DATE"/> będziemy kończyć wsparcie dla istniejących wirtualnych sald BAT. Niestety w Twoim regionie nie ma dostępnych powierników (<ph name="REGION"/>), którzy umożliwiliby wypłatę Twoich środków. Do tego czasu możesz nadal wspierać swoich ulubionych twórców.</translation>
 <translation id="707569835145765061">Wymagane działanie: połącz konto powiernicze albo Twoje saldo vBAT przepadnie</translation>
-<translation id="5089752671190341407">Nadal masz czas wspierać ulubionych twórców za pomocą swoich vBAT</translation>
 <translation id="1258144146756156541">Potwierdź, że jesteś człowiekiem</translation>
 <translation id="1555514580945108302">Hmm... Niezupełnie. Spróbuj jeszcze raz.</translation>
 <translation id="8078414184292711961">Przeciągnij ikonę BAT na cel <ph name="HINT"/>.</translation>
@@ -695,6 +696,10 @@
 <translation id="3479552764303398839">Nie teraz</translation>
 <translation id="4185473179105062442">Otrzymuj BAT bezpośrednio do kryptowalutowego portfela self-custody</translation>
 <translation id="5802986777701714573">Dodaliśmy nowy sposób otrzymywania comiesięcznych nagród BAT. Połącz konto od jednego z naszych partnerów lub skorzystaj z nowej opcji self-custody, aby zacząć zarabiać już teraz.</translation>
+<translation id="3251885322612056119">Zaktualizowane warunki świadczenia usług</translation>
+<translation id="7454675823870922788">Zaktualizowaliśmy warunki korzystania z usługi Nagrody Brave. Wprowadziliśmy te aktualizacje, aby wyjaśnić nasze warunki i upewnić się, że obejmują one nowe funkcje. Dalsze korzystanie z usługi Nagrody Brave oznacza akceptację zaktualizowanych warunków świadczenia usług. Jeśli nie wyrażasz zgody, możesz <ph name="LINK_BEGIN"/>zresetować<ph name="LINK_END"/> stronę usługi, co spowoduje wyłączenie tej funkcji.</translation>
+<translation id="5192526308598085294">Zobacz <ph name="LINK_BEGIN"/>Warunki świadczenia usługi Nagrody Brave<ph name="LINK_END"/></translation>
+<translation id="4130750466177569591">zgadzam się</translation>
 <translation id="86107454835395919">Ustaw jako comiesięczny datek</translation>
 <translation id="6621880242105464352">Brave potrąca <ph name="FEE_PCT"/> wysyłanej sumy jako opłatę manipulacyjną.</translation>
 <translation id="1420756770787071946">Wspieraj tego twórcę</translation>
@@ -1137,6 +1142,7 @@
 <translation id="2021522108838444624">Kwota musi być większa od 0</translation>
 <translation id="8464365289405373974">Adres wysyłki jest wymagany</translation>
 <translation id="4884792073752467460">Nieprawidłowy adres odbiorcy</translation>
+<translation id="6326239384961270135">Brakujący T-adres</translation>
 <translation id="8585995109882455949">Jak mogę znaleźć poprawny adres?</translation>
 <translation id="8395402412470376435">Brave zatwierdza i zapobiega wysyłaniu środków na niewłaściwy adres z powodu nieprawidłowej kapitalizacji. Jest to proces „sumy kontrolnej”, który ma na celu sprawdzenie, czy jest to prawidłowy adres Ethereum.</translation>
 <translation id="4583433813614292221">1. Przejdź do strony</translation>
@@ -1485,6 +1491,7 @@
 <translation id="1893207255459018302">Brak historii transakcji</translation>
 <translation id="5356382676355994980">Transakcje dokonane za pomocą portfela Brave będą pokazywane tutaj.</translation>
 <translation id="3033638954295674319">Coś poszło nie tak podczas pobierania danych tokena NFT. Spróbuj ponownie później.</translation>
+<translation id="5964615240954462738">Edytuj token</translation>
 <translation id="2612436523196658045">Adres ETH zostanie przetłumaczony na dres Filecoin.</translation>
 <translation id="3282354360699748542">Do transakcji zostanie użyty adres <ph name="FILECOIN_ADDRESS"/> w przestrzeni nazw Filecoin.</translation>
 <translation id="2540568096903252632">Wprowadź hasło, aby kontynuować</translation>
@@ -1509,7 +1516,6 @@
 <translation id="8007404171238546456">Minimalna kwota uzyskana po wymianie</translation>
 <translation id="767199001998615704">Opłata sieciowa</translation>
 <translation id="7057870207229052478">Opłata Brave</translation>
-<translation id="81116374028657878">Opłata protokołowa</translation>
 <translation id="3624518972158401291">Bezpłatnie</translation>
 <translation id="5038255447967558645">Dostawca płynności</translation>
 <translation id="8450638959928932199">Zamień i wyślij</translation>
@@ -1709,7 +1715,7 @@
 <translation id="7948579849190819732">Bieżąca karta</translation>
 <translation id="7056969230130642253">Nie ma nic nowego</translation>
 <translation id="7292242212818928219">Dostępne są nowe treści. Załadować ponownie?</translation>
-<translation id="6537880577641744343">Skróty klawiszowe</translation>
+<translation id="4144468798716165316">Skróty klawiszowe</translation>
 <translation id="7481312909269577407">Dalej</translation>
 <translation id="302781076327338683">Załaduj ponownie z pominięciem danych podręcznych</translation>
 <translation id="7211681214230730336">Załaduj ponownie, czyszcząc dane podręczne</translation>
@@ -1746,6 +1752,13 @@
 <translation id="855081842937141170">Przypnij kartę</translation>
 <translation id="2805351816064694332">Zamknij odpięte karty</translation>
 <translation id="8657641252283410630">Dodaj kartę do grupy</translation>
+<translation id="8908724110993882115">Włącz rozwiniętą grupę</translation>
+<translation id="8813600493701436462">Usuń kartę z bieżącej grupy</translation>
+<translation id="3170171381379098900">Rozgrupuj bieżącą grupę kart</translation>
+<translation id="8589082712469819302">Rozgrupuj wszystkie karty</translation>
+<translation id="6804504170598429513">Zamknij niezgrupowane karty</translation>
+<translation id="5960187586089070931">Zamknij karty spoza bieżącej grupy</translation>
+<translation id="7043112527867086263">Grupuj niezgrupowane karty</translation>
 <translation id="8290333944535778783">Przewiń kartę do góry</translation>
 <translation id="6141382045715907645">Przewiń kartę w dół</translation>
 <translation id="923853139812360539">Generator kodów QR</translation>
@@ -1836,7 +1849,6 @@
 <translation id="188822869499214197">Pokaż okno listy odtwarzania</translation>
 <translation id="3202536111478033084">Grupuj karty na obecnym pochodzeniu</translation>
 <translation id="6002210667729577411">Przenieś grupę do nowego okna</translation>
-<translation id="253980346046488815">Zamknij zduplikowane karty</translation>
 <translation id="9210143726807220086">Włącz rozwinięte karty pionowe</translation>
 <translation id="684629111155788563">Dodaj wszystkie karty do nowej grupy</translation>
 <translation id="9106013521852824634">Wyślij kartę do siebie</translation>
@@ -2074,6 +2086,7 @@
 <translation id="8814357473522731680">Technologia</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Wygasa</translation>
+<translation id="8421945428836418371">Automatycznie połącz ponownie</translation>
 <translation id="434523916398030617">Skontaktuj się z pomocą techniczną</translation>
 <translation id="1116694919640316211">Informacje</translation>
 <translation id="8670386189340362926">Zablokuj skrypty śledzące i reklamy we wszystkich aplikacjach</translation>

@@ -165,10 +165,15 @@
 <translation id="4720556299488643018">Avslutt abonnement</translation>
 <translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="8510478288840333677">Gi utviklerne av Brave beskjed om at dette nettstedet ikke fungerer skikkelig med Shields:</translation>
-<translation id="6387106423577201267">Merk: Rapporten som sendes til Brave-servere vil omfatte nettstedets adresse, Brave-versjonsnummeret, Shields-innstillinger, VPN-status og språkinnstillinger.</translation>
+<translation id="3110968385867124099">Denne siden kan ikke rapporteres fordi den ikke ble vist med HTTP/HTTPS.</translation>
+<translation id="7907023135990310743">Denne siden er en lokal nettside og kvalifiserer ikke for rapportering.</translation>
+<translation id="3645455863322075098">Denne siden er en feilside og kvalifiserer ikke for rapportering.</translation>
+<translation id="105644511106871142">Takk for at du hjelper til med å gjøre Brave bedre for alle. Denne rapporten sender bare informasjon som kreves for at vi skal kunne fikse dette nettstedet.</translation>
 <translation id="6476216365964140603">Ytterligere informasjon (valgfritt)</translation>
 <translation id="6145852496180774737">Kontakt meg på: (valgfritt)</translation>
 <translation id="7616645803364270729">E-post, Twitter osv.</translation>
+<translation id="721949491455392748">Inkluder skjermbilde av den gjeldende siden</translation>
+<translation id="8459191579769999214">Se skjermbilde</translation>
 <translation id="5299848999918506028">Takk skal du ha!</translation>
 <translation id="76550953340008122">Takk for at du ga beskjed til utviklerne av Brave om at noe er galt med dette nettstedet. Vi skal gjøre vårt beste for å rette det!</translation>
 <translation id="4046860372562593546">Administrer Brave Ads</translation>
@@ -427,7 +432,7 @@
 <translation id="5669281110673664811">Slett ekskluderingslisten</translation>
 <translation id="1797334173232638045">De festede sidene dine er flyttet til</translation>
 <translation id="3074127054582480056">Obs</translation>
-<translation id="1666001796278936721">Ved tilbakestilling slettes den gjeldende Brave Rewards-profilen, og du starter på nytt med en splitter ny Brave Rewards-profil. Før du fortsetter bør du <ph name="LINK_BEGIN"/>lese mer<ph name="LINK_END"/> om tilbakestilling for å være på den sikre siden.</translation>
+<translation id="4915997950539925115">Ved å tilbakestille dette blir den nåværende profilen din for Brave-belønninger slettet, og Brave Rewards vil ikke lenger være aktivert. Hvis du aktiverer Brave-belønninger igjen senere, begynner du med en ny profil. Les vår <ph name="LINK_BEGIN"/>støtteartikkel om tilbakestilling<ph name="LINK_END"/> for mer informasjon.</translation>
 <translation id="4806029412510565611">Jeg forstår at min nåværende Brave rewards-profil og Brave Rewards-informasjonen min slettes fra enheten min, og jeg har lest <ph name="LINK_BEGIN"/>supportartikkelen om tilbakestilling<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Sammendrag av belønninger</translation>
 <translation id="2913994227901456490">Se alle [[numItems]] gjenstander</translation>
@@ -608,10 +613,8 @@
 <translation id="1848737374354350807">Saldo</translation>
 <translation id="6516984207843289176">Tilknytt konto</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Er du klar til å begynne å tjene penger?<ph name="BOLD_END"/> Koble til en konto eller opprett en hos en av partnerne våre.</translation>
-<translation id="1772961321862399863">For å tjene opp BAT må brukerne tilknytte en partnerkonto til Brave Rewards. Dessverre er det ingen partnere tilgjengelige i din region, så opptjening er ikke mulig. Per nå vil det å slå på Brave rewards automatisk støtte innholdsskapere.</translation>
 <translation id="902298128239575729">Send bidrag med Brave Rewards</translation>
 <translation id="6276721355724491595">Du vil kunne sende bidrag på forespørsel til favorittskaperne dine med Brave Rewards-saldoen din når du har en oppbevaringskonto tilkoblet.</translation>
-<translation id="1149481926056509086">For å sende on demand-bidrag må brukerne tilknytte en partnerkonto til Brave Rewards. Dessverre er det ingen partnere tilgjengelige i din region, så sending er ikke mulig. I mellomtiden støtter du fortsatt innholdsskapere automatisk.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Denne måneden har du besøkt # innholdsskaper støttet av Brave Rewards}
       other {Denne måneden har du besøkt # innholdsskapere støttet av Brave Rewards}
@@ -646,9 +649,7 @@
 <translation id="1609556006143307897">Du bidrar til å støtte innholdsskapere</translation>
 <translation id="654447476965480878">Les mer om opptjening av BAT</translation>
 <translation id="4105212447337987768"><ph name="DATE"/> avvikler vi støtten for esisterende BAT-saldoer. Tilknytt en partnerkonto før denne datoen, slik at vi kan overføre den opptjente saldoen din til partnerkontoen – hvis ikke går saldoen tapt.</translation>
-<translation id="5684206602316433615"><ph name="DATE"/> avvikler vi støtten for eksisterende virtuelle BAT-saldoer. Dessverre er det ingen tilgjengelige partnere i din region (<ph name="REGION"/>) inntektene dine kan overføres til. Frem til da kan du fortsatt gi bidrag til innholdsskapere du liker.</translation>
 <translation id="707569835145765061">Handling kreves: Tilknytt en partnerkonto, ellers går vBAT-saldoen din tapt</translation>
-<translation id="5089752671190341407">Du har fortsatt tid til å gi vBAT til innholdsskapere du liker</translation>
 <translation id="1258144146756156541">Bekreft at du er et menneske</translation>
 <translation id="1555514580945108302">Hmm… det stemmer ikke helt. Prøv på nytt.</translation>
 <translation id="8078414184292711961">Dra BAT-ikonet til <ph name="HINT"/>-målet.</translation>
@@ -693,6 +694,10 @@
 <translation id="3479552764303398839">Ikke nå</translation>
 <translation id="4185473179105062442">Motta BAT direkte på en egenstyrt kryptoadresse</translation>
 <translation id="5802986777701714573">Vi har lagt til en ny måte for du kan motta de månedlige BAT-belønningene dine på. Koble til en konto fra en av partnerne våre eller bruk det nye selvstyrte alternative for å begynne å tjene BAT nå.</translation>
+<translation id="3251885322612056119">Oppdaterte bruksvilkår</translation>
+<translation id="7454675823870922788">Vi har oppdatert bruksvilkårene for Brave Rewards. Vi har gjort disse oppdateringene for å tydeliggjøre vilkårene våre og sikre at de dekker nye funksjoner. Hvis du fortsetter å bruke Brave Rewards, godtar du de oppdaterte bruksvilkårene. Hvis du ikke samtykker, kan du <ph name="LINK_BEGIN"/>tilbakestille<ph name="LINK_END"/> Brave Rewards, noe som deaktiverer funksjonen.</translation>
+<translation id="5192526308598085294">Se <ph name="LINK_BEGIN"/>bruksvilkårene for Brave Rewards<ph name="LINK_END"/></translation>
+<translation id="4130750466177569591">Jeg samtykker</translation>
 <translation id="86107454835395919">Angi som månedlig bidrag</translation>
 <translation id="6621880242105464352">Brave belaster et gebyr på <ph name="FEE_PCT"/> av det sendte beløpet.</translation>
 <translation id="1420756770787071946">Støtt denne skaperen</translation>
@@ -1135,6 +1140,7 @@
 <translation id="2021522108838444624">Beløpet må være større enn 0</translation>
 <translation id="8464365289405373974">Til-adresse kreves</translation>
 <translation id="4884792073752467460">Ugyldig mottaker-adresse</translation>
+<translation id="6326239384961270135">Transparent del mangler</translation>
 <translation id="8585995109882455949">Hvordan kan jeg finne den rette adressen?</translation>
 <translation id="8395402412470376435">Brave validerer og forhindrer brukere fra å sende midler til feil adresse ved feil bruk av stor og liten bokstav. Dette er en "sjekksum"-prosess som bekrefter at det er en gydig Ethereum-adresse.</translation>
 <translation id="4583433813614292221">1. Besøk</translation>
@@ -1483,6 +1489,7 @@
 <translation id="1893207255459018302">Ingen transaksjonshistorikk</translation>
 <translation id="5356382676355994980">Transaksjoner utført med din Brave Wallet vil vises her.</translation>
 <translation id="3033638954295674319">Det oppstod en feil ved henting av NFT-info. Prøv på nytt senere.</translation>
+<translation id="5964615240954462738">Rediger token</translation>
 <translation id="2612436523196658045">ETH-adressen vil oversettes til Filecoin-adressen.</translation>
 <translation id="3282354360699748542"><ph name="FILECOIN_ADDRESS"/>-adresse i Filecoin-navneområdet vil brukes til transaksjonen.</translation>
 <translation id="2540568096903252632">Skriv inn et passord for å fortsette</translation>
@@ -1507,7 +1514,6 @@
 <translation id="8007404171238546456">Minimum mottatt etter slippage</translation>
 <translation id="767199001998615704">Nettverksavgift</translation>
 <translation id="7057870207229052478">Brave-avgift</translation>
-<translation id="81116374028657878">Protokollavgift</translation>
 <translation id="3624518972158401291">Gratis</translation>
 <translation id="5038255447967558645">Likviditetsleverandør</translation>
 <translation id="8450638959928932199">Bytt og send</translation>
@@ -1705,7 +1711,7 @@
 <translation id="7948579849190819732">Gjeldende fane</translation>
 <translation id="7056969230130642253">Du har lest alle innleggene i feeden</translation>
 <translation id="7292242212818928219">Nytt innhold er tilgjengelig. Vil du oppdatere siden?</translation>
-<translation id="6537880577641744343">Kommandør</translation>
+<translation id="4144468798716165316">Hurtigkommandoer</translation>
 <translation id="7481312909269577407">Frem</translation>
 <translation id="302781076327338683">Oppdater og omgå bufret innhold</translation>
 <translation id="7211681214230730336">Oppdater og slett bufret innhold</translation>
@@ -1742,6 +1748,13 @@
 <translation id="855081842937141170">Fest fanen</translation>
 <translation id="2805351816064694332">Lukk faner som ikke er festet</translation>
 <translation id="8657641252283410630">Grupper fanen</translation>
+<translation id="8908724110993882115">Aktiver/deaktiver utvidet gruppe</translation>
+<translation id="8813600493701436462">Fjern fane fra gjeldende gruppe</translation>
+<translation id="3170171381379098900">Opphev gruppering av gjeldende fanegruppe</translation>
+<translation id="8589082712469819302">Opphev gruppering av alle faner</translation>
+<translation id="6804504170598429513">Lukk faner med opphevet gruppering</translation>
+<translation id="5960187586089070931">Lukk faner som ikke er i gjeldende gruppe</translation>
+<translation id="7043112527867086263">Grupper ikke-grupperte faner</translation>
 <translation id="8290333944535778783">Rull til toppen</translation>
 <translation id="6141382045715907645">Rull til nederst</translation>
 <translation id="923853139812360539">QR-kode-generator</translation>
@@ -1832,7 +1845,6 @@
 <translation id="188822869499214197">Vis spillelisteboble</translation>
 <translation id="3202536111478033084">Grupper faner etter gjeldende opprinnelse</translation>
 <translation id="6002210667729577411">Flytt gruppen til et nytt vindu</translation>
-<translation id="253980346046488815">Lukk dupliserte faner</translation>
 <translation id="9210143726807220086">Aktiver/deaktiver utvidede vertikale faner</translation>
 <translation id="684629111155788563">Legg til alle faner i en ny gruppe</translation>
 <translation id="9106013521852824634">Send fanen til deg selv</translation>
@@ -2070,6 +2082,7 @@
 <translation id="8814357473522731680">Driftet av</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Utløper</translation>
+<translation id="8421945428836418371">Koble til igjen automatisk</translation>
 <translation id="434523916398030617">Ta kontakt med teknisk støtte</translation>
 <translation id="1116694919640316211">Info</translation>
 <translation id="8670386189340362926">Blokker sporere og annonser på tvers av alle apper</translation>

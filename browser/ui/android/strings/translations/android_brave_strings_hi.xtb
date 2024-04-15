@@ -44,7 +44,6 @@
 <translation id="3259723213051400722">कृपया पुनः प्रयास करें।</translation>
 <translation id="5298965408768377685">ये क्रिएटर Brave पर रजिस्टर कर चुके हैं और Brave रिवॉर्ड के यूज़र से योगदान ले सकते हैं. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">हो सकता है कि Brave रिवॉर्ड उस समय काम न करें, जब सूचनाओं को अक्षम किया गया हो।</translation>
-<translation id="4259212006412783790">चालू करें</translation>
 <translation id="6112331814131703370">'ऐप में स्विच करें' सूचनाओं को अवरुद्ध करें</translation>
 <translation id="4744921452903670666">हमें बताएँ कि आप क्या सोचते हैं!</translation>
 <translation id="2524310205387880526">Brave का मूल्यांकन करें</translation>
@@ -98,7 +97,9 @@
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="6302422639282249274">Brave रिवार्ड्स को प्रबंधित करें</translation>
-<translation id="8877432762827303535">ऑनलाइन चेक आउट</translation>
+<translation id="2709516037105925701">ऑटोमैटिक भरना</translation>
+<translation id="8617525558807213034">निजी टैब अपने-आप भरें</translation>
+<translation id="8685431198160039193">सेव की गई जानकारी निजी टैब में अपने आप भरी जा सकती है</translation>
 <translation id="6583902294974160967">सपोर्ट</translation>
 <translation id="1799030480311994998">सुविधाएँ</translation>
 <translation id="2005732746077850308">Brave शील्ड और गोपनीयता</translation>
@@ -132,7 +133,6 @@
 <translation id="5132969826889386652">बदलाव सेव किए गये</translation>
 <translation id="4335929145384293789">ऊपर दिए गए फ़ील्ड में, हर लाइन में आपके द्वारा बनाए गए कस्टम फ़िल्टर जोड़ें। <ph name="ADBLOCK_FILTER_SYNTAX"/> का इस्तेमाल ज़रूर करें।</translation>
 <translation id="5023212862780303376">ऐडब्लॉक फ़िल्टर सिंटेक्स</translation>
-<translation id="3872060236937011862"><ph name="ASSET_NAME"/> मूल्य (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum नाम सेवा</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">हल निकालने का तरीका</translation>
@@ -538,7 +538,6 @@
 <translation id="13296465911709339">आपके टेक्स्ट को क्लिपबोर्ड पर कॉपी किया गया है।</translation>
 <translation id="2735834606413553397">सार्वजनिक पते को क्लिपबोर्ड पर कॉपी कर लिया गया है.</translation>
 <translation id="2977461003134694205">गोपनीयता आँकड़े</translation>
-<translation id="223536150967420869">खरीदें</translation>
 <translation id="2956070106555335453">सारांश</translation>
 <translation id="7465614181960492526">टोकन कमाएँ और वापस देंं</translation>
 <translation id="2731539192954672606">गोपनीयता का सम्मान करने वाले विज्ञापन देखकर टोकन कमाएँ और अपनी पसंदीदा साइटों और कंटेंट रचनाकारों का स्वचालित रूप से सपोर्ट करें।</translation>
@@ -594,7 +593,6 @@
 <translation id="6915830896450988084"><ph name="CUSTODIAN"/> के साथ भेजें</translation>
 <translation id="1483493594462132177">भेजें</translation>
 <translation id="538450413584738399">स्वैप</translation>
-<translation id="1366855498335432549">जमा</translation>
 <translation id="4556086616242530072">ब्राउज़र नेटिव।\nसेल्फ़ कस्टडी।\nऔर मल्टी-चेन।</translation>
 <translation id="7909462264772842773">अपनी क्रिप्टो और NFT पर कंट्रोल करें। Brave वॉलेट, Ethereum, EVM चेन, Solana, Filecoin वगैरह को सपोर्ट करता है।</translation>
 <translation id="165255193061631296">क्या आपको नया वॉलेट चाहिए?</translation>
@@ -612,34 +610,21 @@
 <translation id="2708402071160162126">चेतावनी: अपने रिकवरी फ़्रेज़ को कभी भी शेयर न करें. इस फ़्रेज़ वाला कोई भी व्यक्ति आपकी संपत्ति को हमेशा के लिए ले सकता है.</translation>
 <translation id="111912712268284159">मैंने अपने फ़्रेज़ का बैकअप कहीं सुरक्षित रखा है</translation>
 <translation id="6896758677409633944">कॉपी</translation>
-<translation id="1544192797660353713">वॉलेट</translation>
-<translation id="375882617301124395">अपने क्रिप्टो वॉलेट का बैकअप लें</translation>
-<translation id="8289942708804097960">क्रेडिट या डेबिट कार्ड से क्रिप्टो खरीदें.</translation>
-<translation id="841880029259839903">क्रिप्टो भेजें या एक अकाउंट से दूसरे अकॉउंट में ट्रांसफर करें.</translation>
-<translation id="151939837774436299">टोकन और एसेट स्वैप करें.</translation>
-<translation id="5512897350309216422">क्रिप्टो को Brave वॉलेट में जमा करें.</translation>
 <translation id="1783600039044302171">पासवर्ड से अपना क्रिप्टो सुरक्षित करें</translation>
 <translation id="3726490322412361740">पासवर्ड एंटर करें</translation>
 <translation id="3038243139480464605">पासवर्ड वेरीफ़ाई करें</translation>
 <translation id="3043677904160378840">पासवर्ड में कम से कम 8 वर्ण होने चाहिए।</translation>
 <translation id="7396672979287122068">वेरीफ़ाई किया गया पासवर्ड मेल नहीं खाता</translation>
 <translation id="7084181009966710506">वॉलेट बनाया जा रहा है...</translation>
-<translation id="3188963375823360044">1H</translation>
-<translation id="8163269366661594721">1 दिन</translation>
-<translation id="7640956400175663828">1 हफ़्ता</translation>
-<translation id="9100647964747998533">1 महीना</translation>
-<translation id="6366007539108097840">3 महीने</translation>
-<translation id="6977728312178289892">1 साल</translation>
-<translation id="6895566650974550243">सब</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> अकाउंट <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">खाता जोड़ें</translation>
-<translation id="318334680413773318">अकाउंट जोड़ें/इंपोर्ट करें</translation>
 <translation id="3448492834076427715">अकाउंट अपडेट करें</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">फ़िंगरप्रिंट अनलॉक चालू करें</translation>
 <translation id="5493402808936397665">अपना पासवर्ड डाले बिना अपने वॉलेट को जल्दी से अनलॉक करने के लिए बायोमेट्रिक्स चालू करें.</translation>
 <translation id="8030647312184163932">फिंगरप्रिंट अनलॉक किया गया</translation>
 <translation id="4090490645603511157">अपना पासवर्ड डाले बिना अपने वॉलेट को जल्दी से अनलॉक करने के लिए बायोमेट्रिक्स का इस्तेमाल करें.</translation>
+<translation id="1544192797660353713">वॉलेट</translation>
 <translation id="6901810042765869341">अपने Brave वॉलेट क्रिप्टो अकाउंट को रिस्टोर करने के लिए अपना रिकवरी फ्रेज़ एंटर करें.</translation>
 <translation id="9120654436199628567">क्रिप्टो अकाउंट रिस्टोर करें</translation>
 <translation id="4811736040444856406">रिकवरी फ्रेज़ दिखाएँ</translation>
@@ -653,6 +638,16 @@
 <translation id="3157931365184549694">पुनर्स्थापित करें</translation>
 <translation id="5844138175312846408">आपके पास पहले से कोई वॉलेट है?</translation>
 <translation id="2502258949541727762">हमारे शुरू करने से पहले</translation>
+<translation id="8248460961680233459">पासवर्ड बनाएँ</translation>
+<translation id="2789310860394340571">आप अपने वॉलेट को एक्सेस करने के लिए इस पासवर्ड का इस्तेमाल करेंगे.</translation>
+<translation id="2136372518715274136">नया पासवर्ड डालें</translation>
+<translation id="4450951602553063001">दोबारा पासवर्ड एंटर करें</translation>
+<translation id="8532036315398875940">पासवर्ड कम से कम 8 कैरेक्टर का होना चाहिए.</translation>
+<translation id="5098216864434824711">पासवर्ड मेल नहीं खा रहे</translation>
+<translation id="4917385247580444890">सशक्त</translation>
+<translation id="8297006494302853456">कमज़ोर</translation>
+<translation id="574392208103952083">मध्यम</translation>
+<translation id="6697810017029555732">मिलान!</translation>
 <translation id="5981303441790732480">मौजूदा वॉलेट को इम्पोर्ट करें</translation>
 <translation id="9111102763498581341">अनलॉक करें</translation>
 <translation id="6657585470893396449">पासवर्ड</translation>
@@ -661,42 +656,16 @@
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
 <translation id="5760476995887363522">वाक्य मेल नहीं खा रहे. कृपया फिर से कोशिश करें.</translation>
 <translation id="2360588547830602174">अकाउंट रिकवरी नहीं हो पाया. कृपया दोबारा कोशिश करें.</translation>
-<translation id="5517732667776806421">चेकसम जानकारी नहीं है</translation>
-<translation id="4006711930669471508">चेकसम जानकारी अमान्य है</translation>
 <translation id="1987317783729300807">खाते</translation>
-<translation id="3535654229833214438">लेन-देन</translation>
-<translation id="2449682593754783720">1 घंटा</translation>
-<translation id="969133700726811190">1 दिन</translation>
-<translation id="5882300031363619940">1 हफ़्ता</translation>
-<translation id="5698094150392720512">1 महीना</translation>
-<translation id="5483736362376139517">1 साल</translation>
-<translation id="6979737339423435258">हमेशा</translation>
 <translation id="6284218950354553099">हर दिन के उपयोग पिंग Brave को अपने आप भेजें</translation>
 <translation id="2181060149810222381">यह प्राइवेट पिंग, Brave को सक्रिय उपयोगकर्ताओं का अनुमान लगाने देता है।</translation>
-<translation id="3819257035322786455">बैकअप</translation>
-<translation id="4608713693379664295">प्राथमिक क्रिप्टो अकाउंट्स</translation>
-<translation id="4003821417160006384">सेकंडरी अकाउंट्स</translation>
-<translation id="2471916999505901943">इन अकॉउंट का उपयोग वेब 3 DApps के साथ किया जा सकता है और आपके पोर्टफ़ोलियो में दिखाया जा सकता है, हालांकि, उन्हें आपके प्राथमिक अकाउंट बैकअप से रिकवरी फ़्रेज़ के ज़रिए रिस्टोर नहीं किया जा सकता है.</translation>
 <translation id="6725413948756358325">खाते का नाम</translation>
 <translation id="6062431965141524986">आप अपनी प्राइवेट की इम्पोर्ट करके एक सेकेंडरी अकाउंट बना सकते हैं.</translation>
 <translation id="3952797765659730604">अपनी प्राइवेट की स्ट्रिंग फ़ाइल या JSON एंटर करें, पेस्ट करें या इम्पोर्ट  करें.</translation>
 <translation id="569068482611873351">इम्पोर्ट...</translation>
-<translation id="1940465339426637378">एसेट्स</translation>
 <translation id="4522570452068850558">विवरण</translation>
-<translation id="3995184924764722477">खाते की जानकारी</translation>
-<translation id="8967036623785635603">दिखाई देने वाले एसेट में बदलाव करें</translation>
-<translation id="8475984867371585028">दिखाई देने वाले NFT संपादित करें</translation>
-<translation id="5050890334032852465">अकाउंट वॉचलिस्ट सेव करें</translation>
-<translation id="7755766175599167100">टोकन सर्च करें</translation>
 <translation id="3784455785234192852">लॉक करें</translation>
 <translation id="4412698727486357573">सहायता केंद्र</translation>
-<translation id="8796429300536029044">NFT की जानकारी</translation>
-<translation id="3866249974567520381">वर्णन</translation>
-<translation id="4378475168089649292">ब्लॉकचेन</translation>
-<translation id="794436451374055797">टोकन स्टैंटर्ड</translation>
-<translation id="9033453977881595182">टोकन  ID</translation>
-<translation id="4987916116550559556">मिंट का पता</translation>
-<translation id="7592795625234816917">फ़ोटो उपलब्ध नहीं है</translation>
 <translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
 <translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="2326850911705720398">वॉलेट का डेटा रीसेट करें और मिटाएँ</translation>
@@ -713,19 +682,15 @@
 <translation id="4122515759479497554">वीडियो सर्च करें</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">अपने कनेक्शन की सुरक्षा के लिए VPN में अपग्रेड करें और हर जगह ज़बरदस्ती घुसने वाले ट्रैकर्स को ब्लॉक करें.</translation>
-<translation id="3435896845095436175">सक्षम करें</translation>
 <translation id="8814357473522731680">द्वारा संचालित</translation>
-<translation id="5596139545583924414">विज्ञापनों को ब्लॉक करें &amp; सभी ऐप्स में ट्रैकर्स</translation>
-<translation id="8272917646984397798">सभी कनेक्शन सुरक्षित करता है</translation>
-<translation id="1751947227857853925">100 Mbps तक तेज और असीमित कनेक्शन</translation>
-<translation id="1400240082805528049">24/7 सहायता</translation>
 <translation id="5892534145504632332">हर ऐप और अपने पूरे डिवाइस को सुरक्षित रखें</translation>
 <translation id="7195416926059527505">घर या सार्वजनिक Wi-Fi के लिए अधिक सुरक्षित</translation>
 <translation id="1354700000739359839">बिजली की तेजी से, 100 Mbps तक</translation>
 <translation id="3510283489391432976">Chooअपना भौगोलिक/देश का स्थान चुनें</translation>
 <translation id="7695158478627528928">Brave कभी भी आपकी गतिविधि को लॉग नहीं करता है</translation>
 <translation id="4575683170451975058">1 सदस्यता पर 5 डिवाइस सुरक्षित रखें</translation>
-<translation id="276866628038850725">सभी प्लान में एक फ़्री 7-दिन का ट्रायल शामिल है!</translation>
+<translation id="4882693590083943563">सभी प्लान में <ph name="TRIAL_DAYS"/> शामिल है</translation>
+<translation id="487741927046441232">7 दिन फ़्री ट्रायल!</translation>
 <translation id="1532536259167115948">मासिक सदस्यता <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">सालाना सदस्यता <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">हर महीने रिन्यू होता है</translation>
@@ -735,7 +700,7 @@
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / साल.</translation>
 <translation id="2655185358771731232">7 दिनों के लिए मुफ़्त आज़माएँ. 7 दिनों के बाद, आपसे प्लान की कीमत ली जाएगी. सभी सब्सक्रिप्शन अपने आप रिन्यू होते हैं लेकिन रिन्यू होने से पहले कैंसिल किए जा सकते हैं.</translation>
 <translation id="6053992191006521518">फ़्री में आज़माएँ</translation>
-<translation id="3990956504562716932">7 दिनों के लिए मुफ़्त में आज़माएं</translation>
+<translation id="5903391101107992067">7 दिन फ़्री में आज़माएँ</translation>
 <translation id="721747358270435486">VPN इंस्टॉल करें</translation>
 <translation id="836074276610740314">VPN प्रोफ़ाइल इंस्टॉल करें</translation>
 <translation id="8021842065465097929">Brave अब VPN प्रोफ़ाइल इंस्टॉल करेगा.</translation>
@@ -796,12 +761,6 @@
 <translation id="1924965034964265193">मनचाहे नॉन्स वैल्यू डालें</translation>
 <translation id="5317780077021120954">सहेजें</translation>
 <translation id="4979796155378508955">अगर आपकी ओर से डाले गए नॉन्स वैल्यू सिक्वेंस के मुताबिक नहीं है या कोई और गड़बड़ी होती है, तो हो सकता है कि नेटवर्क पर लेन-देन न दिखाई दे.</translation>
-<translation id="6122742277607781713">पोर्टफ़ोलियो</translation>
-<translation id="1736419249208073774">बेहतर जानें</translation>
-<translation id="4576965889365503638">जानकारी</translation>
-<translation id="152455748535966757">रैंक</translation>
-<translation id="4958716607782044952">24 घंटे का वॉल्यूम</translation>
-<translation id="128834189395075789">मार्केट कैपिटलाइज़ेशन</translation>
 <translation id="750843150060816463">गैस की कीमत (Gwei)</translation>
 <translation id="1426320910664514906">गैस की सीमा\n</translation>
 <translation id="6389441740143786465">शेयरिंग हब बंद करें</translation>
@@ -811,10 +770,6 @@
 <translation id="8084782383392198011">अकाउंट नेम खाली नहीं हो सकता.</translation>
 <translation id="5045550434625856497">ग़लत पासवर्ड</translation>
 <translation id="1367951781824006909">कोई फ़ाइल चुनें</translation>
-<translation id="5932938770824268122">निजी कुंजी</translation>
-<translation id="2472882733835903303">प्राइवेट की (Key) दिखाएँ</translation>
-<translation id="4391056902675005799">प्राइवेट की (Key) छिपाएँ</translation>
-<translation id="7518007103754668253">चेतावनी : यह की (key) किसी से ज़ाहिर न करें. जिसके पास भी यह प्राइवेट की (key) होगी, वह आपके अकाउंट में मौजूद कोई भी ऐसेट चुरा सकता है.</translation>
 <translation id="1133619932669546254"><ph name="TOKEN"/> ऐक्टिवेट करें</translation>
 <translation id="2199215899212542417">फ़ंक्शन का प्रकार : <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">कोई डेटा नहीं</translation>
@@ -831,7 +786,6 @@
 <translation id="2331676293859649642">पुष्टि की गई</translation>
 <translation id="8214232307424031138">साइन किया गया</translation>
 <translation id="1165039591588034296">गड़बड़ी</translation>
-<translation id="8364362220156372884">शुल्क: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">क्या आप सबसे तेज़ ब्राउज़र का इस्तेमाल कर रहे हैं?</translation>
 <translation id="2065971949051836200">आपके फ़ोन पर 3x तेज़ इंटरनेट पहले से हैं. अपनी सभी वेब ब्राउज़िंग के लिए Brave का इस्तेमाल करें.</translation>
 <translation id="2888278614497184977">Brave = 3x ज़्यादा तेज़ वेब ब्राउज़िंग</translation>
@@ -855,21 +809,7 @@
 <translation id="1254969878422524947">प्रति-गैस टिप सीमा (Gwei)</translation>
 <translation id="7373308452149471621">प्रति-गैस मूल्य सीमा (Gwei)</translation>
 <translation id="5891811606602061966">अकाउंट इम्पोर्ट नहीं हो पाया, कृपया दोबारा कोशिश करें.</translation>
-<translation id="5061574358754621254">मूल्य डेटा CoinGecko द्वारा संचालित है</translation>
-<translation id="8574289650879708853">कस्टम एसेट जोड़ें</translation>
-<translation id="1255896809210433555">NFT जोड़ें</translation>
-<translation id="7791543448312431591">जोड़ें</translation>
-<translation id="6600400596821238377">टोकन नेम</translation>
-<translation id="3797613444743816037">मिंट का पता</translation>
-<translation id="4092152169181928870">टोकन प्रतीक</translation>
 <translation id="4351811224047421378">डेसिमल ऑफ़ प्रिसिशन</translation>
-<translation id="547122651977318828">टोकन आईडी (सिर्फ़ ERC721 के लिए)</translation>
-<translation id="8614026298974065517">कस्टम एसेट हटाएँ</translation>
-<translation id="4378941981362528553">क्या आप <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) टोकन हटाना चाहते हैं?</translation>
-<translation id="4250680216510889253">नहीं</translation>
-<translation id="8971278306757462297">प्राप्त करने वाला पता आपका अपना पता है</translation>
-<translation id="749944179568745958">यह कोई मान्य ETH पता नहीं है</translation>
-<translation id="3506416339268164412">प्राप्त करने वाला पता एक टोकन का कॉन्ट्रैक्ट पता है</translation>
 <translation id="3494964159182650590">रिवॉर्ड के बारे में जानकारी</translation>
 <translation id="590733288489975971">विज्ञापनों से रिवॉर्ड</translation>
 <translation id="1886682615222609631">अब तक की कमाई</translation>
@@ -901,6 +841,7 @@
 <translation id="4693057234255364395">एक्सप्लोरर को ब्लॉक करें</translation>
 <translation id="7059127752542505809">URL डालें</translation>
 <translation id="2156993118928861787">अमान्य पता</translation>
+<translation id="7791543448312431591">जोड़ें</translation>
 <translation id="6889920539620318793">एक्टिव के तौर पर सेट करें</translation>
 <translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="4945690646623486292">नेटवर्क चुनें</translation>
@@ -982,21 +923,14 @@
 <translation id="6577166808959668729">Solana ब्लॉकचेन पर SLP कम्पैटिबल असेट को सपोर्ट करता</translation>
 <translation id="4541295941776129088">FIL असेट स्टोर करें</translation>
 <translation id="6575120282593094155">आपके पास अभी तक <ph name="ACCOUNT_TYPE"/> अकाउंट नहीं है. क्या आप यह बनाना चाहते हैं?</translation>
+<translation id="4250680216510889253">नहीं</translation>
 <translation id="1599766910146472906">शामिल नहीं किए गए ऐप</translation>
 <translation id="8463269357637177759">शामिल किए गए नियमित ऐप</translation>
 <translation id="4554726425645556940">शामिल किए गए सिस्टम ऐप</translation>
 <translation id="9023148942866814328">सिस्टम ऐप दिखाएँ</translation>
 <translation id="5472400694702418949">वे ऐप जोड़ें जिन्हें VPN ट्रैफ़िक से बाहर रखना है.</translation>
 <translation id="7002577172732106572">स्प्लिट टनलिंग</translation>
-<translation id="2832270987629018596">यह SOL पता मान्य नहीं है</translation>
-<translation id="6423985584914773314">यह कोई मान्य FIL पता नहीं है</translation>
 <translation id="8181161042860463420">संबंधित टोकन अकाउंट अभी मौजूद नहीं है. इसे बनाने और फंड करने के लिए SOL की एक छोटी राशि खर्च करनी होगी. <ph name="CLICK_START"/>और जानें<ph name="CLICK_END"/></translation>
-<translation id="1304515257839771197"><ph name="APP_NAME"/> ऐप खोलना चाहते हैं?</translation>
-<translation id="7653028065515320848"><ph name="CLICK_START"/>Rainbow Bridge को इस्तेमाल करने के बारे में और जानें<ph name="CLICK_END"/></translation>
-<translation id="8219806187375413057"><ph name="CLICK_START"/>Rainbow Bridge पर जोखिम को कम करने के तरीके जानें<ph name="CLICK_END"/></translation>
-<translation id="1065082006518490444"><ph name="APP_NAME"/> एक स्वतंत्र सेवा है जो आपको कई नेटवर्क में ऐसेट को ब्रिज करने और अन्य नेटवर्क और DApp इकोसिस्टम पर अपने क्रिप्टो का इस्तेमाल करने में मदद करती है. अन्य नेटवर्क पर ऐसेट को ब्रिज करना थोड़ा जोखिम भरा होता है.</translation>
-<translation id="8423380132356660250"><ph name="APP_NAME"/> ऐप खोलें</translation>
-<translation id="4450893287417543264">इसे दोबारा न दिखाएँ</translation>
 <translation id="168154537623654021">VPN प्रोफ़ाइल अपडेट किया जा रहा है...</translation>
 <translation id="7457027586454688423">अपने Brave वॉलेट का पासवर्ड डालें</translation>
 <translation id="4784306439879850873">ध्यान दें, आपके साइन करने से क्या होगा, यह Brave नहीं बता सकता. सिग्नेचर आपके अकाउंट में या आपकी ओर से लगभग सभी ऑपरेशन को ऑथराइज़ कर सकता है, जिसमें अनुरोध करने वाली साइट को आपके अकाउंट और क्रिप्टो ऐसेट का पूरा कंट्रोल देना शामिल है (लेकिन इसी तक सीमित नहीं है). अगर आप पक्के तौर पर यह काम करना चाहते हैं और अनुरोध करने वाली साइट पर भरोसा करते हों, तो ही साइन करें.</translation>
@@ -1075,7 +1009,6 @@
 <translation id="1313065465616456728">जारी करने का समय</translation>
 <translation id="7902225556763260253">अंतिम अवधि</translation>
 <translation id="1908159733454294871">सुरक्षा संबंधित जोखिम का पता चला</translation>
-<translation id="4220693114674044366">टोकन का पता</translation>
 <translation id="5658257029899993935">खरीदारी को अपने Brave अकाउंट से लिंक करें</translation>
 <translation id="1187061015547219282">अन्य डिवाइस पर Brave VPN का इस्तेमाल करने के लिए अपने Play Store की खरीदारी को अपने Brave अकाउंट से लिंक करें.</translation>
 <translation id="6662142137695589205">अपनी VPN की सदस्यता को लिंक करें</translation>
@@ -1088,7 +1021,6 @@
 <translation id="6067959437127691361">Brave रिवॉर्ड का इस्तेमाल करने से कंटेंट क्रिएटर को सपोर्ट मिलता है और आपको BAT कमाने का मौका मिलता है.</translation>
 <translation id="3264975266761862670">कमाई शुरू करने के लिए तैयार हैं?</translation>
 <translation id="265337947574975838">अपना अकाउंट कनेक्ट करें या हमारे किसी पार्टनर के साथ नया अकाउंट बनाएँ.</translation>
-<translation id="1772961321862399863">BAT कमाने के लिए यूज़र को एक कस्टोडियल अकाउंट Brave रिवॉर्ड से कनेक्ट करना होगा. बदकिस्मती से आपके क्षेत्र में कोई कस्टोडियन उपलब्ध नहीं है, इसलिए कमाई करना मुमकिन नहीं है. अभी के लिए सिर्फ़ Brave रिवॉर्ड चालू कर देने से क्रिएटर को अपने-आप सपोर्ट मिलेगा.</translation>
 <translation id="654447476965480878">BAT कमाने के बारे में और जानें</translation>
 <translation id="6278643716658443228">रिवॉर्ड से जुड़ी सेटिंग</translation>
 <translation id="6516984207843289176">अकाउंट कनेक्ट करें</translation>
@@ -1109,33 +1041,23 @@
 <translation id="7748944510530490017">प्राइमरी नेटवर्क</translation>
 <translation id="2781668117338732220">सेकंडरी नेटवर्क</translation>
 <translation id="282560918037172384">टेस्ट नेटवर्क</translation>
-<translation id="3586775666459823714">NFTs</translation>
-<translation id="8849001918648564819">छिपे हुए</translation>
 <translation id="707569835145765061">कार्रवाई ज़रूरी है : कोई कस्टोडियल अकाउंट कनेक्ट करें वरना आप अपना vBAT खो देंगे</translation>
 <translation id="1776742005329298234"><ph name="DUE_DATE"/> को हम मौजूदा वर्चुअल BAT के बैलेंस का सपोर्ट बंद कर रहे हैं. इसलिए इस तारीख से पहले कोई कस्टोडियल अकाउंट जोड़ें ताकि हम आपकी कमाई का बैलेंस आपके कस्टोडियल अकाउंट में ट्रांसफ़र कर सकें, वरना आप अपना बैलेंस खो देंगे.</translation>
 <translation id="5089752671190341407">आपके पास अपने पसंदीदा क्रिएटर को अपने vBAT देने का समय अब भी बचा है</translation>
 <translation id="171158953146804144"><ph name="DUE_DATE"/> को हम मौजूदा वर्चुअल BAT के बैलेंस का सपोर्ट बंद कर रहे हैं. बदकिस्मती से आपकी कमाई को निकालने के लिए आपके क्षेत्र (<ph name="REGION"/>) में कोई कस्टोडियन मौजूद नहीं है. हालाँकि, तब तक आप अपने पसंदीदा क्रिएटर को योगदान दे सकते हैं.</translation>
 <translation id="8949422576126100041">स्पीडरीडर वाला पेज देखें?</translation>
+<translation id="3435896845095436175">सक्षम करें</translation>
 <translation id="5296840868251496327">स्पीडरीडर को चालू करें</translation>
 <translation id="591648995518106347">रीडर मोड में योग्य आलेखों को अपने-आप लोड करता है</translation>
 <translation id="1295796122927221823">रीडर मोड में देखें</translation>
-<translation id="5062934803872044756"><ph name="NETWORK"/> पर <ph name="SYMBOL"/></translation>
-<translation id="9085765419770918643">यहाँ अभी कोई NFT नहीं है।</translation>
-<translation id="8445532667841598737">कुछ को जोड़ने के लिए तैयार हैं? आयात करने के लिए बस नीचे दिए गए बटन पर क्लिक करें।</translation>
-<translation id="5925465310724910998">आप चाहते हैं कि आपके NFT अपने आप दिखाई दें?</translation>
-<translation id="2827460859891872324">आपके NFT को अपने आप दिखाने के लिए Brave वॉलेट किसी थर्ड पार्टी की सेवा ले सकती है. यह सेवा देने के लिए Brave आपके वॉलेट का पता <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> के साथ साझा करेगी. <ph name="BEGIN_LINK_2"/>और जानें.<ph name="END_LINK_2"/></translation>
 <translation id="7568430944629653319">NFT डिस्कवरी सक्षम करें</translation>
 <translation id="622372328961630111">थर्ड पार्टी API के ज़रिए अपने NFT को वॉलेट में अपने आप जोड़ें. <ph name="BEGIN_LINK_1"/>और जानें.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">एड्रेस लुकअप टेबल अकाउंट</translation>
 <translation id="7659483790930268440">एड्रेस लुकअप टेबल इंडेक्स</translation>
-<translation id="7853202427316060426">गतिविधि</translation>
 <translation id="4932733599132424254">तिथि</translation>
 <translation id="346505172740911461">मार्केट की कीमत</translation>
-<translation id="4709355193533327244">अभी तक कोई ट्रांज़ैक्शन नहीं हुआ है</translation>
-<translation id="4931644613135313937">ट्रांज़ैक्शन करने के बाद आप उसे यहाँ देख पाएँगे.</translation>
 <translation id="5494920125229734069">सभी को चुनें</translation>
 <translation id="5972844218283131174">सभी चुने हुए को हटाएँ</translation>
-<translation id="6322030314101903925">कोई एसेट उपलब्ध नहीं है</translation>
 <translation id="6129027151000961048">लियो</translation>
 <translation id="8613144770663526433">Brave वॉलेट के साथ साइन इन करें</translation>
 <translation id="3696514931437952995">आप <ph name="ORIGIN"/> में साइन इन कर रहे हैं. Brave वॉलेट आपका पता <ph name="ORIGIN"/> के साथ शेयर करेगा.</translation>
@@ -1226,4 +1148,33 @@
 <translation id="6393423486818299209">अपने मौजूदा सेवा प्रदाता या Wikimedia DNS का उपयोग करें</translation>
 <translation id="3401384982562827787">अपने मौजूदा सेवा प्रदाता या Cloudflare का उपयोग करें</translation>
 <translation id="8812367543786936496">अगर आपका मौजूदा सेवा प्रदाता असुरक्षित है, तो Brave एक अन्य सुरक्षित DNS प्रदाता का उपयोग करता है</translation>
+<translation id="5680678411439841197">शहर</translation>
+<translation id="8185518433273977704">शहर</translation>
+<translation id="4528386452965343421">प्रान्त</translation>
+<translation id="1589122976691792535">क्षेत्र</translation>
+<translation id="2221292964468054123">राज्य</translation>
+<translation id="3801482889636327368">संगठन</translation>
+<translation id="1425162721525518064">कंपनी</translation>
+<translation id="7568794877555549044">देश</translation>
+<translation id="5982110855572850497">लेबल</translation>
+<translation id="6848689413353508904">कंटेनर</translation>
+<translation id="1496514951988037011">यूज़रनेम</translation>
+<translation id="6155129418108337061">लॉगिन</translation>
+<translation id="4038523199754403233">id</translation>
+<translation id="901834265349196618">ईमेल</translation>
+<translation id="3488199663160411179">नाम</translation>
+<translation id="793994607260936590">पहला</translation>
+<translation id="1782612111936779655">कुल नाम</translation>
+<translation id="7628132737455466188">पूरा नाम</translation>
+<translation id="8621068256433641644">फ़ोन</translation>
+<translation id="5993210100509955931">मोबाइल</translation>
+<translation id="598301471034819706">पता</translation>
+<translation id="5557821203571216370">अपार्टमेंट</translation>
+<translation id="8051552210542030943">पिन कोड</translation>
+<translation id="5233247193491045452">पोस्ट कोड</translation>
+<translation id="3300502432153878901">ज़िप कोड</translation>
+<translation id="4130750466177569591">मैं सहमत हूँ</translation>
+<translation id="3251885322612056119">सेवा की अपडेटेड शर्तें</translation>
+<translation id="4049035689681585146">हमने Brave Rewards के लिए सेवा की शर्तें अपडेट कर दी हैं. हमने अपनी शर्तों को स्पष्ट करने और यह सुनिश्चित करने के लिए ये अपडेट किए हैं कि उनमें नई सुविधाएँ शामिल हों. अगर आप Brave Rewards का इस्तेमाल करना जारी रखते हैं, तो आप अपडेटेड सेवा की शर्तों से सहमत हैं. अगर आप सहमत नहीं हैं, तो आप <ph name="RESET_START"/> Brave Rewards <ph name="RESET_END"/> को रीसेट कर सकते हैं, जिससे सुविधा डिसेबल कर दी जाएंगी.</translation>
+<translation id="2165953574528546737">Brave Rewards सेवा की शर्तों <ph name="TOS_END"/> के बारे में <ph name="TOS_START"/> देखें</translation>
 </translationbundle>

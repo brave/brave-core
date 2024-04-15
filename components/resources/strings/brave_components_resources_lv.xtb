@@ -165,10 +165,15 @@
 <translation id="4720556299488643018">Anulēt abonementu</translation>
 <translation id="1209739344687072997">Ziņot par bojātu vietni</translation>
 <translation id="8510478288840333677">Paziņojiet Brave izstrādātājiem, kad šī vietne ar aizsargiem nedarbojas pareizi:</translation>
-<translation id="6387106423577201267">Piezīme: Brave serveriem nosūtītajā ziņojumā tiks norādīta vietnes adrese, Brave versijas numurs, aizsarga iestatījumi, VPN statuss un valodas iestatījumi.</translation>
+<translation id="3110968385867124099">Par šo lapu nevar ziņot, jo tā nav HTTP/HTTPS lapa.</translation>
+<translation id="7907023135990310743">Šī lapa ir vietēja tīmekļa lapa, un par to nevar ziņot.</translation>
+<translation id="3645455863322075098">Šī lapa ir kļūdas lapa, un par to nevar ziņot.</translation>
+<translation id="105644511106871142">Paldies, ka palīdzat Brave veidot labāku. Ar šo paziņojumu tiks nosūtīta tikai tā informācija, kas nepieciešama, lai salabotu šo lapu.</translation>
 <translation id="6476216365964140603">Papildu informācija (pēc izvēles)</translation>
 <translation id="6145852496180774737">Sazināties ar mani: (pēc izvēles)</translation>
 <translation id="7616645803364270729">E-pasts, Twitter utt.</translation>
+<translation id="721949491455392748">Iekļaut pašreizējās lapas ekrānuzņēmumu</translation>
+<translation id="8459191579769999214">Aplūkot ekrānuzņēmumu</translation>
 <translation id="5299848999918506028">Paldies!</translation>
 <translation id="76550953340008122">Paldies, ka paziņojāt Brave izstrādātājiem par problēmām ar šo vietni. Pacentīsimies to salabot!</translation>
 <translation id="4046860372562593546">Pārvaldīt Brave reklāmas</translation>
@@ -427,7 +432,7 @@
 <translation id="5669281110673664811">Notīrīt neiekļaušanas sarakstu</translation>
 <translation id="1797334173232638045">Jūsu piespraustās vietnes ir pārvietotas uz</translation>
 <translation id="3074127054582480056">Uzmanību</translation>
-<translation id="1666001796278936721">Atiestatot, jūsu pašreizējais Brave balvu profils tiks dzēsts un jūs atkal sāksiet ar pilnīgi jaunu Brave balvu profilu. Pirms turpināt, drošības dēļ <ph name="LINK_BEGIN"/>uzziniet vairāk<ph name="LINK_END"/> par atiestatīšanu.</translation>
+<translation id="4915997950539925115">Atiestatot jūsu pašreizējais Brave balvu profils tiks dzēsts, un Brave balvas vairs nebūs iespējotas. Ja vēlāk atkal iespējosiet Brave balvas, sāksiet ar jaunu profilu. Izlasiet mūsu <ph name="LINK_BEGIN"/>palīdzības rakstu par atiestatīšanu<ph name="LINK_END"/>, lai uzzinātu vairāk.</translation>
 <translation id="4806029412510565611">Es saprotu, ka mans pašreizējais Brave balvu profils un Brave balvu dati tiks dzēsti no manas ierīces, un esmu izlasījis <ph name="LINK_BEGIN"/>informatīvo rakstu par atiestatīšanu<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Balvu kopsavilkums</translation>
 <translation id="2913994227901456490">Skatīt visus [[numItems]] vienumus</translation>
@@ -608,10 +613,8 @@
 <translation id="1848737374354350807">Bilance</translation>
 <translation id="6516984207843289176">Pievienot kontu</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Vai esat gatavs sākt pelnīt?<ph name="BOLD_END"/> Pieslēdzieties vai izveidojiet kontu pie kāda no mūsu partneriem.</translation>
-<translation id="1772961321862399863">Lai pelnītu BAT, lietotājiem Brave balvām ir jāpievieno depozitārais konts. Diemžēl jūsu reģionā nav pieejama depozitārija, tāpēc pelnīšana nav iespējama. Pagaidām, ieslēdzot Brave balvas, automātiski tiks atbalstīti satura veidotāji.</translation>
 <translation id="902298128239575729">Nosūtīt iemaksas ar Brave balvas</translation>
 <translation id="6276721355724491595">Tiklīdz pievienosiet depozitāro kontu, jūs varēsiet nosūtīt pieprasītās iemaksas saviem iecienītākajiem satura veidotājiem, izmantojot Brave balvas.</translation>
-<translation id="1149481926056509086">Lai nosūtītu pieprasītās iemaksas, lietotājiem depozitārais konts jāpieslēdz Brave balvām. Diemžēl jūsu reģionā nav pieejams depozitārs, tāpēc sūtīšana nav pieejama. Jūs joprojām automātiski atbalstāt satura veidotājus.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Šomēnes jūs esat apmeklējis # Brave balvu atbalstītu satura veidotāju}
       other {Šomēnes jūs esat apmeklējis # Brave balvu atbalstītus satura veidotājus}
@@ -646,9 +649,7 @@
 <translation id="1609556006143307897">Jūs palīdzat atbalstīt satura veidotājus</translation>
 <translation id="654447476965480878">Uzzināt vairāk par BAT pelnīšanu</translation>
 <translation id="4105212447337987768">No <ph name="DATE"/> mēs vairs neatbalstīsim esošos virtuālos BAT atlikumus. Izveidojiet savienojumu ar depozitāro kontu pirms šī datuma, lai mēs varētu pārskaitīt jūsu nopelnīto atlikumu uz jūsu depozitāro kontu, citādi jūsu atlikums tiks zaudēts.</translation>
-<translation id="5684206602316433615">No <ph name="DATE"/> mēs vairs neatbalstīsim esošos virtuālos BAT atlikumus. Diemžēl jūsu reģionā (<ph name="REGION"/>) nav depozitāriju, lai jūs varētu izņemt savus ienākumus. Līdz šim datumam jūs joprojām varat nodot savus ienākumus saviem iecienītākajiem satura radītājiem.</translation>
 <translation id="707569835145765061">Jāveic darbība: izveidojiet savienojumu ar depozitāro kontu, citādi jūsu vBAT tiks zaudēts.</translation>
-<translation id="5089752671190341407">Jums vēl ir laiks, lai nodotu savu vBAT saviem iecienītākajiem satura radītājiem.</translation>
 <translation id="1258144146756156541">Apstipriniet, ka esat cilvēks</translation>
 <translation id="1555514580945108302">Hmm… Ne gluži. Mēģiniet vēlreiz.</translation>
 <translation id="8078414184292711961">Pavelciet BAT ikonu uz <ph name="HINT"/> mērķi.</translation>
@@ -693,6 +694,10 @@
 <translation id="3479552764303398839">Vēlāk</translation>
 <translation id="4185473179105062442">Saņemiet BAT tieši uz pašaizbildnības kriptovalūtas adresi</translation>
 <translation id="5802986777701714573">Mēs pievienojām jaunu veidu, kā saņemt jūsu ikmēneša BAT atlīdzības. Pievienojiet kāda mūsu partnera kontu vai izmantojiet jauno pašaizbildnības opciju, lai sāktu pelnīt jau tagad.</translation>
+<translation id="3251885322612056119">Atjauninātie pakalpojuma noteikumi</translation>
+<translation id="7454675823870922788">Mēs esam atjauninājuši Brave balvu pakalpojuma noteikumus. Atjauninājumus veicām, lai paskaidrotu mūsu noteikumus un nodrošinātu, ka tie atbilst jaunajām iespējām. Ja jūs turpināsiet izmantot Brave balvas, tas nozīmēs, ka piekrītat atjauninātajiem pakalpojuma noteikumiem. Ja nepiekrītat, varat <ph name="LINK_BEGIN"/>atiestatīt<ph name="LINK_END"/> Brave balvas, lai atspējotu šo funkciju.</translation>
+<translation id="5192526308598085294">Skatīt <ph name="LINK_BEGIN"/>Brave balvu pakalpojuma noteikumus<ph name="LINK_END"/></translation>
+<translation id="4130750466177569591">Es piekrītu</translation>
 <translation id="86107454835395919">Iestatīt kā ikmēneša iemaksu</translation>
 <translation id="6621880242105464352">Brave iekasē <ph name="FEE_PCT"/> no nosūtītās summas kā apstrādes maksu.</translation>
 <translation id="1420756770787071946">Atbalstīt šo satura veidotāju</translation>
@@ -1135,6 +1140,7 @@
 <translation id="2021522108838444624">Summai ir jābūt lielākai par 0</translation>
 <translation id="8464365289405373974">Nepieciešama adrese</translation>
 <translation id="4884792073752467460">Nederīga saņēmēja adrese</translation>
+<translation id="6326239384961270135">Trūkst publiskās daļas</translation>
 <translation id="8585995109882455949">Kā atrast pareizo adresi?</translation>
 <translation id="8395402412470376435">Lai novērstu to, ka lietotāji nepareizi lietotu burtu dēļ nosūtītu līdzekļus uz nepareizu adresi, Brave veic pārbaudi. Tas ir "kontrolsummas" process, lai pārbaudītu, ka adrese ir derīga Ethereum adrese.</translation>
 <translation id="4583433813614292221">1. Apmeklē</translation>
@@ -1483,6 +1489,7 @@
 <translation id="1893207255459018302">Nav darījumu vēstures</translation>
 <translation id="5356382676355994980">Šeit tiks parādīti ar jūsu Brave Maku veiktie darījumi.</translation>
 <translation id="3033638954295674319">Kaut kas nogājis greizi, iegūstot NFT informāciju. Lūdzu, mēģini vēlreiz vēlāk.</translation>
+<translation id="5964615240954462738">Rediģēt marķieri</translation>
 <translation id="2612436523196658045">ETH adrese tiks tulkota Filecoin adresē.</translation>
 <translation id="3282354360699748542"><ph name="FILECOIN_ADDRESS"/> adrese tiks izmantota darījumam Filecoin vārdtelpā.</translation>
 <translation id="2540568096903252632">Ievadi paroli, lai turpinātu</translation>
@@ -1507,7 +1514,6 @@
 <translation id="8007404171238546456">Pēc novirzes saņemamais minimums</translation>
 <translation id="767199001998615704">Tīkla maksa</translation>
 <translation id="7057870207229052478">Brave maksa</translation>
-<translation id="81116374028657878">Protokola maksa</translation>
 <translation id="3624518972158401291">Bezmaksas</translation>
 <translation id="5038255447967558645">Likviditātes nodrošinātājs</translation>
 <translation id="8450638959928932199">Veikt mijmaiņu un nosūtīt</translation>
@@ -1705,7 +1711,7 @@
 <translation id="7948579849190819732">Pašreizējā cilne</translation>
 <translation id="7056969230130642253">East informēts par visu aktuālo</translation>
 <translation id="7292242212818928219">Ir pieejams jauns saturs. Ielādēt atkārtoti?</translation>
-<translation id="6537880577641744343">Komandas</translation>
+<translation id="4144468798716165316">Ātrās komandas</translation>
 <translation id="7481312909269577407">Pārsūtīt</translation>
 <translation id="302781076327338683">Ielādēt vēlreiz, neizmantojot kešatmiņu</translation>
 <translation id="7211681214230730336">Ielādēt vēlreiz, notīrot kešatmiņu</translation>
@@ -1742,6 +1748,13 @@
 <translation id="855081842937141170">Piespraust cilni</translation>
 <translation id="2805351816064694332">Aizvērt nepiespraustās cilnes</translation>
 <translation id="8657641252283410630">Grupēt cilnes</translation>
+<translation id="8908724110993882115">Ieslēgt/izslēgt grupas paplašināšanu</translation>
+<translation id="8813600493701436462">Noņemt cilni no pašreizējās grupas</translation>
+<translation id="3170171381379098900">Atgrupēt pašreizējo ciļņu grupu</translation>
+<translation id="8589082712469819302">Atgrupēt visas cilnes</translation>
+<translation id="6804504170598429513">Aizvērt negrupētās cilnes</translation>
+<translation id="5960187586089070931">Aizvērt cilnes, kas nav pašreizējā grupā</translation>
+<translation id="7043112527867086263">Grupēt negrupētās cilnes</translation>
 <translation id="8290333944535778783">Ritināt cilni uz augšu</translation>
 <translation id="6141382045715907645">Ritināt cilni uz leju</translation>
 <translation id="923853139812360539">Kvadrātkoda ģenerators</translation>
@@ -1832,7 +1845,6 @@
 <translation id="188822869499214197">Rādīt atskaņošanas saraksta burbuli</translation>
 <translation id="3202536111478033084">Grupējiet cilnes pēc pašreizējās izcelsmes</translation>
 <translation id="6002210667729577411">Pārvietot grupu uz jaunu logu</translation>
-<translation id="253980346046488815">Aizvērt dublētās cilnes</translation>
 <translation id="9210143726807220086">Pārslēgt vertikālās cilnes izvērstas</translation>
 <translation id="684629111155788563">Pievienot visas cilnes jaunai grupai</translation>
 <translation id="9106013521852824634">Nosūtīt cilni sev</translation>
@@ -2070,6 +2082,7 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="8814357473522731680">Nodrošina</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Termiņš</translation>
+<translation id="8421945428836418371">Automātiski savienot vēlreiz</translation>
 <translation id="434523916398030617">Sazināties ar tehnisko atbalstu</translation>
 <translation id="1116694919640316211">Par</translation>
 <translation id="8670386189340362926">Bloķēt izsekotājus un reklāmas visās lietotnēs</translation>

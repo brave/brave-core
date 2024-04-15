@@ -165,10 +165,15 @@
 <translation id="4720556299488643018">Preklic naročnine</translation>
 <translation id="1209739344687072997">Prijavite nedelujočo spletno stran</translation>
 <translation id="8510478288840333677">Obvestite razvijalce Brave o tem, da spletna stran ne deluje pravilno s ščiti:</translation>
-<translation id="6387106423577201267">Opomba: Poročilo, poslano strežnikom Brave, bo vsebovalo naslov spletnega mesta, številko različice Brave, nastavitve Shields, stanje VPN in jezikovne nastavitve</translation>
+<translation id="3110968385867124099">O tej strani ni mogoče poročati, ker ni bila prikazana prek protokola HTTP/HTTPS.</translation>
+<translation id="7907023135990310743">Ta stran je lokalna spletna stran in ni upravičena do poročanja.</translation>
+<translation id="3645455863322075098">Ta stran je stran z napako in ni primerna za poročanje.</translation>
+<translation id="105644511106871142">Zahvaljujemo se vam, da ste pomagali izboljšati Brave za vse. S tem poročilom boste poslali le informacije, ki jih potrebujemo za popravljanje tega spletnega mesta.</translation>
 <translation id="6476216365964140603">Dodatne podrobnosti (neobvezno)</translation>
 <translation id="6145852496180774737">Kontaktirajte me na: (neobvezno)</translation>
 <translation id="7616645803364270729">E-pošta, Twitter itd.</translation>
+<translation id="721949491455392748">Vključite posnetek zaslona trenutne strani</translation>
+<translation id="8459191579769999214">Oglejte si posnetek zaslona</translation>
 <translation id="5299848999918506028">Hvala!</translation>
 <translation id="76550953340008122">Hvala, ker ste obvestili razvijalce Brave, da je s to spletno stranjo nekaj narobe. Potrudili se bomo, da to popravimo!</translation>
 <translation id="4046860372562593546">Upravljanje oglasov Brave Ads</translation>
@@ -430,7 +435,7 @@
 <translation id="5669281110673664811">Počisti seznam izključitev</translation>
 <translation id="1797334173232638045">Vaša pripeta spletna mesta so bila premaknjena v</translation>
 <translation id="3074127054582480056">Pozor</translation>
-<translation id="1666001796278936721">S ponastavitvijo bo vaš trenutni profil za nagrade Brave izbrisan in na novo boste začeli s ​​popolnoma novim profilom za nagrade Brave. Preden nadaljujete, za vsak primer <ph name="LINK_BEGIN"/>preberite več<ph name="LINK_END"/> o ponastavitvi.</translation>
+<translation id="4915997950539925115">S ponastavitvijo bo vaš trenutni profil Brave nagrajevanje izbrisan in Brave nagrajevanje ne bo več omogočeno. Če kasneje ponovno omogočite Brave nagrajevanje, boste začeli z novim profilom. Za več <ph name="LINK_BEGIN"/>podrobnosti preberite članek podpore<ph name="LINK_END"/> o ponastavitvi.</translation>
 <translation id="4806029412510565611">Razumem, da bo moj trenutni profil Brave Rewards vključno s podatki o Brave Rewards izbrisan iz moje naprave, hkrati pa sem prebral(a) <ph name="LINK_BEGIN"/>članek s koristnimi informacijami o ponastavitvi<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Povzetek nagrad</translation>
 <translation id="2913994227901456490">Oglejte si vse elemente: [[numItems]]</translation>
@@ -611,10 +616,8 @@
 <translation id="1848737374354350807">Znesek</translation>
 <translation id="6516984207843289176">Povežite račun</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Ste pripravljeni začeti služiti? <ph name="BOLD_END"/>Povežite se ali ustvarite račun pri enem od naših partnerjev.</translation>
-<translation id="1772961321862399863">Za služenje žetonov BAT morajo uporabniki povezati skrbniški račun z Brave Rewards. Žal skrbnik v vaši regiji ni na voljo, zato storitev služenja ni na voljo. Zaenkrat vklop Brave Rewards samodejno podpira ustvarjalce.</translation>
 <translation id="902298128239575729">Pošljite prispevke z Brave Rewards</translation>
 <translation id="6276721355724491595">Ko boste imeli povezan skrbniški račun, boste lahko pošiljali prispevke na zahtevo svojim najljubšim ustvarjalcem z dobroimetjem v programu Brave Rewards.</translation>
-<translation id="1149481926056509086">Za pošiljanje prispevkov na zahtevo morajo uporabniki povezati skrbniški račun z Brave Rewards. Na žalost v vaši regiji ni na voljo skrbnika, zato pošiljanje ni na voljo. Medtem še vedno samodejno podpirate ustvarjalce.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Ta mesec ste obiskali ustvarjalca # , ki ga podpira Brave Rewards}
       other {Ta mesec ste obiskali ustvarjalce # , ki jih podpira Brave Rewards}
@@ -649,9 +652,7 @@
 <translation id="1609556006143307897">Pomagate nam podpirati ustvarjalce vsebin</translation>
 <translation id="654447476965480878">Izvedite več o zaslužku BAT</translation>
 <translation id="4105212447337987768">Dne <ph name="DATE"/> bomo ukinili podporo za obstoječa virtualna stanja BAT. Pred tem datumom povežite skrbniški račun, da bomo lahko vaše zasluženo stanje prenesli na vaš skrbniški račun, sicer bo vaše stanje izgubljeno.</translation>
-<translation id="5684206602316433615">Dne <ph name="DATE"/>bomo ukinili podporo za obstoječa virtualna stanja BAT. Na žalost v vaši regiji ni razpoložljivih skrbnikov (<ph name="REGION"/>), ki bi lahko dvignili vaš zaslužek. Do takrat lahko še vedno prispevate svojim najljubšim ustvarjalcem.</translation>
 <translation id="707569835145765061">Zahtevano dejanje: povežite skrbniški račun, sicer bo vaš vBAT izgubljen</translation>
-<translation id="5089752671190341407">Še vedno imate čas, da svoj vBAT prispevate svojim najljubšim ustvarjalcem</translation>
 <translation id="1258144146756156541">Potrdite, da ste človek</translation>
 <translation id="1555514580945108302">Hmm ... Ni pravilno. Poskusite znova.</translation>
 <translation id="8078414184292711961">Ikono BAT povlecite na <ph name="HINT"/> tarčo.</translation>
@@ -696,6 +697,10 @@
 <translation id="3479552764303398839">Ne zdaj</translation>
 <translation id="4185473179105062442">Prejemanje BAT neposredno na kriptografski naslov za lastno hrambo</translation>
 <translation id="5802986777701714573">Dodali smo nov način prejemanja mesečnih nagrad BAT. Povežite račun enega od naših partnerjev ali uporabite novo možnost samostojnega skrbništva in začnite zaslužiti že zdaj.</translation>
+<translation id="3251885322612056119">Posodobljeni pogoji uporabe storitve</translation>
+<translation id="7454675823870922788">Posodobili smo pogoje storitve za Brave Rewards. S temi posodobitvami smo pojasnili naše pogoje in zagotovili, da bodo zajemali nove funkcije. Če še naprej uporabljate storitev Brave Rewards, se strinjate s posodobljenimi pogoji uporabe. Če se s tem ne strinjate, lahko<ph name="LINK_BEGIN"/>ponastavite <ph name="LINK_END"/> Brave Rewards, s čimer bo funkcija onemogočena.</translation>
+<translation id="5192526308598085294">Oglejte <ph name="LINK_BEGIN"/> si Pogoje uporabe storitev Brave Rewards<ph name="LINK_END"/></translation>
+<translation id="4130750466177569591">Strinjam se</translation>
 <translation id="86107454835395919">Nastavite kot mesečni prispevek</translation>
 <translation id="6621880242105464352">Brave pobere <ph name="FEE_PCT"/> poslanega zneska kot provizijo za obdelavo.</translation>
 <translation id="1420756770787071946">Podprite tega ustvarjalca</translation>
@@ -1138,6 +1143,7 @@
 <translation id="2021522108838444624">Znesek mora biti večji od 0</translation>
 <translation id="8464365289405373974">Dodajte naslovnika</translation>
 <translation id="4884792073752467460">Neveljaven naslov prejemnika</translation>
+<translation id="6326239384961270135">Manjka prosojni del</translation>
 <translation id="8585995109882455949">Kako naj poiščem pravi naslov?</translation>
 <translation id="8395402412470376435">Brave preverja in preprečuje, da bi uporabniki zaradi nepravilne uporabe velikih in malih začetnic sredstva pošiljali na napačen naslov. Gre za postopek "kontrolne vsote", s katerim preverimo, ali gre za veljaven naslov Ethereum.</translation>
 <translation id="4583433813614292221">1. Obiščite</translation>
@@ -1490,6 +1496,7 @@
 <translation id="1893207255459018302">Ni zgodovine transakcij</translation>
 <translation id="5356382676355994980">Tukaj bodo prikazane transakcije, opravljene z vašo denarnico Brave Wallet.</translation>
 <translation id="3033638954295674319">Pri pridobivanju podrobnosti NFT je prišlo do napake. Prosimo, poskusite kasneje.</translation>
+<translation id="5964615240954462738">Uredi žeton</translation>
 <translation id="2612436523196658045">Naslov ETH bo preveden v naslov Filecoin.</translation>
 <translation id="3282354360699748542"><ph name="FILECOIN_ADDRESS"/>naslov v imeniku Filecoin bo uporabljen za transakcijo.</translation>
 <translation id="2540568096903252632">Za nadaljevanje vnesite geslo</translation>
@@ -1514,7 +1521,6 @@
 <translation id="8007404171238546456">Minimalni prejemek po spremembi</translation>
 <translation id="767199001998615704">Strošek omrežja</translation>
 <translation id="7057870207229052478">Strošek omrežja Brave</translation>
-<translation id="81116374028657878">Protokolarna pristojbina</translation>
 <translation id="3624518972158401291">Brezplačno</translation>
 <translation id="5038255447967558645">Ponudnik likvidnosti</translation>
 <translation id="8450638959928932199">Zamenjaj in pošlji</translation>
@@ -1715,7 +1721,7 @@
 <translation id="7948579849190819732">Trenutnem zavihku</translation>
 <translation id="7056969230130642253">Ste že na tekočem</translation>
 <translation id="7292242212818928219">Na voljo je nova vsebina. Ali želite ponovno naložiti?</translation>
-<translation id="6537880577641744343">Ukazovalnik</translation>
+<translation id="4144468798716165316">Hitri ukazi</translation>
 <translation id="7481312909269577407">Naprej</translation>
 <translation id="302781076327338683">Znova naloži mimo predpomnilnika</translation>
 <translation id="7211681214230730336">Znova naloži in počisti predpomnilnik</translation>
@@ -1752,6 +1758,13 @@
 <translation id="855081842937141170">Pripni zavihek</translation>
 <translation id="2805351816064694332">Zapri nepripete zavihke</translation>
 <translation id="8657641252283410630">Združi zavihek</translation>
+<translation id="8908724110993882115">Preklapljanje razširjene skupine</translation>
+<translation id="8813600493701436462">Odstranitev zavihka iz trenutne skupine</translation>
+<translation id="3170171381379098900">Odstranitev trenutne skupine zavihkov</translation>
+<translation id="8589082712469819302">Razporeditev vseh zavihkov v skupine</translation>
+<translation id="6804504170598429513">Zapri nesestavljene zavihke</translation>
+<translation id="5960187586089070931">Zapri zavihke, ki niso v trenutni skupini</translation>
+<translation id="7043112527867086263">Združevanje zavihkov, ki niso razvrščeni v skupine</translation>
 <translation id="8290333944535778783">Pomaknite zavihek na vrh</translation>
 <translation id="6141382045715907645">Pomaknite zavihek na dno</translation>
 <translation id="923853139812360539">Generator QR kode</translation>
@@ -1842,7 +1855,6 @@
 <translation id="188822869499214197">Pokaži oblaček seznama predvajanja</translation>
 <translation id="3202536111478033084">Združi zavihke glede na trenutni izvor</translation>
 <translation id="6002210667729577411">Premakni skupino v novo okno</translation>
-<translation id="253980346046488815">Zapri podvojene zavihke</translation>
 <translation id="9210143726807220086">Preklopi navpične razširjene zavihke</translation>
 <translation id="684629111155788563">Dodajte vse zavihke v novo skupino</translation>
 <translation id="9106013521852824634">Pošlji zavihek sebi</translation>
@@ -2082,6 +2094,7 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="8814357473522731680">Poganja</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Poteče</translation>
+<translation id="8421945428836418371">Ponovna samodejna povezava</translation>
 <translation id="434523916398030617">Obrnite se na tehnično podporo</translation>
 <translation id="1116694919640316211">O možnostih</translation>
 <translation id="8670386189340362926">Blokiranje sledilnikov &amp; oglasov na vseh aplikacijah</translation>

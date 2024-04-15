@@ -44,7 +44,6 @@
 <translation id="3259723213051400722">Pakisubukang muli.</translation>
 <translation id="5298965408768377685">Narehistro ang Creator na ito sa Brave at makakatanggap ito ng mga kontribusyon mula sa mga user ng Mga Reward ng Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Posibleng hindi gumana ang Mga Reward ng Brave habang naka-disable ang mga notification.</translation>
-<translation id="4259212006412783790">I-ON</translation>
 <translation id="6112331814131703370">I-block ang Mga Abisong 'Lumipat sa App'</translation>
 <translation id="4744921452903670666">Sabihin sa amin ang iyong saloobin!</translation>
 <translation id="2524310205387880526">I-rate ang Brave</translation>
@@ -98,7 +97,9 @@
 <translation id="5165042248369837294">Payagan ang mga Twitter embedded tweet</translation>
 <translation id="958971637207126733">Payagan ang mga naka-embed na post sa LinkedIn</translation>
 <translation id="6302422639282249274">Pamahalaan ang Brave Rewards</translation>
-<translation id="8877432762827303535">Online checkout</translation>
+<translation id="2709516037105925701">AutoFill</translation>
+<translation id="8617525558807213034">I-autofill ang mga pribadong tab</translation>
+<translation id="8685431198160039193">Puwedeng i-auto fill ang mga naka-save na impormasyon sa mga pribadong tab</translation>
 <translation id="6583902294974160967">Suporta</translation>
 <translation id="1799030480311994998">Mga feature</translation>
 <translation id="2005732746077850308">Brave Shields at Privacy</translation>
@@ -132,7 +133,6 @@
 <translation id="5132969826889386652">Matagumpay na na-save ang mga pagbabago</translation>
 <translation id="4335929145384293789">Magdagdag ng mga custom na filter na ginawa mo, isa bawat linya, sa field sa itaas. Tiyaking gamitin ang <ph name="ADBLOCK_FILTER_SYNTAX"/></translation>
 <translation id="5023212862780303376">Syntax ng filter ng adblock</translation>
-<translation id="3872060236937011862">Presyo ng <ph name="ASSET_NAME"/> (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">Pamamaraan ng Pagresolba</translation>
@@ -539,7 +539,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="13296465911709339">Nakopya ang iyong text sa clipboard.</translation>
 <translation id="2735834606413553397">Nakopya na sa clipboard ang pampublikong address.</translation>
 <translation id="2977461003134694205">Mga Istatistika ng Privacy</translation>
-<translation id="223536150967420869">Bumili</translation>
 <translation id="2956070106555335453">Buod</translation>
 <translation id="7465614181960492526">Makakuha ng Mga Token at Gumanti ng Tulong</translation>
 <translation id="2731539192954672606">Makakuha ng mga token sa pamamagitan ng pagtingin sa mga ad na gumagalang sa privacy at awtomatikong suportahan ang iyong mga paboritong site at creator ng content.</translation>
@@ -595,7 +594,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6915830896450988084">Ipadala gamit ang <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Ipadala</translation>
 <translation id="538450413584738399">Pagpalitin</translation>
-<translation id="1366855498335432549">Deposit</translation>
 <translation id="4556086616242530072">Browser native.\nSelf-custody.\nAnd multi-chain.</translation>
 <translation id="7909462264772842773">Kontrolin ang crypto at mga NFT mo. Sinusuportahan ng Brave Wallet ang Ethereum, mga EVM chain, Solana, Filecoin, at marami pa.</translation>
 <translation id="165255193061631296">Kailangan ba ng bagong wallet?</translation>
@@ -613,34 +611,21 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2708402071160162126">BABALA: Huwag kailanman ibahagi ang iyong parirala sa pag-recover. Pwedeng kunin at hindi na ibalik pa ng sinumang mayroon ng pariralang ito ang iyong mga asset.</translation>
 <translation id="111912712268284159">Nai-back up ko na ang aking parirala sa ligtas na lugar.</translation>
 <translation id="6896758677409633944">Kopyahin</translation>
-<translation id="1544192797660353713">Wallet</translation>
-<translation id="375882617301124395">I-back up ang iyong wallet ng cryptocurrency</translation>
-<translation id="8289942708804097960">Bumili ng crypto sa pamamagitan ng credit o debit card.</translation>
-<translation id="841880029259839903">Magpadala ng crypto o maglipat mula sa isang account papunta sa isa pang account.</translation>
-<translation id="151939837774436299">Mag-swap ng mga token at asset.</translation>
-<translation id="5512897350309216422">Mag-deposit ng crypto sa Brave Wallet.</translation>
 <translation id="1783600039044302171">I-secure ang iyong crypto sa pamamagitan ng password</translation>
 <translation id="3726490322412361740">Ilagay ang Password</translation>
 <translation id="3038243139480464605">I-verify ang password</translation>
 <translation id="3043677904160378840">Dapat na hindi bababa sa 8 na mga character ang mga password.</translation>
 <translation id="7396672979287122068">Hindi tumugma ang na-verify na password</translation>
 <translation id="7084181009966710506">Lumilikha ng Wallet...</translation>
-<translation id="3188963375823360044">1H</translation>
-<translation id="8163269366661594721">1D</translation>
-<translation id="7640956400175663828">1W</translation>
-<translation id="9100647964747998533">1M</translation>
-<translation id="6366007539108097840">3M</translation>
-<translation id="6977728312178289892">1Y</translation>
-<translation id="6895566650974550243">LAHAT</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> Account <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Magdagdag ng account</translation>
-<translation id="318334680413773318">Magdagdag/Mag-import ng account</translation>
 <translation id="3448492834076427715">I-update ang account</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">I-enable ang pag-unlock gamit ang fingerprint?</translation>
 <translation id="5493402808936397665">I-enable ang biometrics para mabilis na ma-unlock ang iyong wallet nang hindi inilalagay ang iyong password.</translation>
 <translation id="8030647312184163932">Pag-unlock gamit ang fingerprint</translation>
 <translation id="4090490645603511157">Gamitin ang biometrics para mabilis na ma-unlock ang iyong wallet nang hindi inilalagay ang iyong password.</translation>
+<translation id="1544192797660353713">Wallet</translation>
 <translation id="6901810042765869341">I-enable ang iyong parirala sa pag-recover para ma-restore ang iyong Brave Wallet crypto account.</translation>
 <translation id="9120654436199628567">I-restore ang crypto account</translation>
 <translation id="4811736040444856406">Ipakita ang parirala sa pag-recover</translation>
@@ -654,6 +639,16 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="3157931365184549694">Ipanumbalik</translation>
 <translation id="5844138175312846408">Mayroon na bang wallet?</translation>
 <translation id="2502258949541727762">Bago tayo magsimula</translation>
+<translation id="8248460961680233459">Gumawa ng password</translation>
+<translation id="2789310860394340571">Magagamit ang password na ito para ma-access ang wallet mo.</translation>
+<translation id="2136372518715274136">Maglagay ng bagong password</translation>
+<translation id="4450951602553063001">Ilagay ulit ang password</translation>
+<translation id="8532036315398875940">Kailangang hindi bababa sa 8 character ang password.</translation>
+<translation id="5098216864434824711">Hindi tumutugma ang password.</translation>
+<translation id="4917385247580444890">Malakas</translation>
+<translation id="8297006494302853456">Mahina</translation>
+<translation id="574392208103952083">Katamtaman</translation>
+<translation id="6697810017029555732">Tugma!</translation>
 <translation id="5981303441790732480">I-import ang umiiral na wallet mo</translation>
 <translation id="9111102763498581341">I-unlock</translation>
 <translation id="6657585470893396449">Password</translation>
@@ -662,42 +657,16 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="1144810021918451336">Hindi ka pinoprotektahan laban sa mga mapanganib na website, pag-download, at extension.</translation>
 <translation id="5760476995887363522">Hindi tugma ang mga parirala. Pakisubukan ulit.</translation>
 <translation id="2360588547830602174">Hindi na-recover ang account. Pakisubukan ulit.</translation>
-<translation id="5517732667776806421">Kulang ng impormasyon ng checksum</translation>
-<translation id="4006711930669471508">Hindi wasto na impormasyon ng checksum</translation>
 <translation id="1987317783729300807">Mga Account</translation>
-<translation id="3535654229833214438">Mga transaksyon</translation>
-<translation id="2449682593754783720">1 Oras</translation>
-<translation id="969133700726811190">1 Araw</translation>
-<translation id="5882300031363619940">1 Linggo</translation>
-<translation id="5698094150392720512">1 Buwan</translation>
-<translation id="5483736362376139517">1 Taon</translation>
-<translation id="6979737339423435258">Lahat ng oras</translation>
 <translation id="6284218950354553099">Awtomatikong ipadala sa Brave ang ping ng araw-araw na paggamit</translation>
 <translation id="2181060149810222381">Ang pribadong ping na ito ang nagbibigay ng kakayahan sa Brave na tantiyahin ang mga aktibong user.</translation>
-<translation id="3819257035322786455">Backup</translation>
-<translation id="4608713693379664295">Mga Pangunahing Crypto Account</translation>
-<translation id="4003821417160006384">Mga Pangalawang Account</translation>
-<translation id="2471916999505901943">Ang mga account na ito ay pwedeng gamitin kasama ang mga web 3 DApp, at pwedeng ipakita sa iyong portfolio. Gayunpaman, tandaang ang mga pangalawang account ay hindi maibabalik sa pamamagitan ng parirala ng pag-recover mula sa backup ng iyong pangunahing account.</translation>
 <translation id="6725413948756358325">Pangalan ng Account</translation>
 <translation id="6062431965141524986">Makakagawa ka ng pangalawang account sa pamamagitan ng pag-import ng iyong pribadong key.</translation>
 <translation id="3952797765659730604">Ilagay, i-paste, o i-import ang iyong pribadong key string file o JSON.</translation>
 <translation id="569068482611873351">I-import...</translation>
-<translation id="1940465339426637378">Mga Asset</translation>
 <translation id="4522570452068850558">Mga Detalye</translation>
-<translation id="3995184924764722477">Mga Detalye ng Account</translation>
-<translation id="8967036623785635603">I-edit ang mga nakikitang asset</translation>
-<translation id="8475984867371585028">I-edit ang mga nakikitang NFT</translation>
-<translation id="5050890334032852465">I-save ang watchlist ng account</translation>
-<translation id="7755766175599167100">Mga token ng paghahanap</translation>
 <translation id="3784455785234192852">Lock</translation>
 <translation id="4412698727486357573">Help center</translation>
-<translation id="8796429300536029044">Detalye ng NFT</translation>
-<translation id="3866249974567520381">Paglalarawan</translation>
-<translation id="4378475168089649292">Blockchain</translation>
-<translation id="794436451374055797">Pamantayan ng Token</translation>
-<translation id="9033453977881595182">ID ng token</translation>
-<translation id="4987916116550559556">Address ng Mint</translation>
-<translation id="7592795625234816917">Hindi available ang larawan</translation>
 <translation id="8239147115686034860">Awtomatikong i-lock ang Brave Wallet</translation>
 <translation id="414639769490080648">Ang bilang ng minutong hihintayin hanggang awtomatikong ma-lock ang Brave Wallet</translation>
 <translation id="2326850911705720398">I-reset at i-clear ang data ng wallet</translation>
@@ -714,19 +683,15 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="4122515759479497554">Mag-search ng mga video</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">Mag-upgrade sa VPN para protektahan ang iyong koneksyon at i-block ang mga mapanghimasok na tracker na galing kung saan-saan.</translation>
-<translation id="3435896845095436175">I-enable</translation>
 <translation id="8814357473522731680">Pinapagana ng</translation>
-<translation id="5596139545583924414">I-block ang mga ad at tracker sa lahat ng app</translation>
-<translation id="8272917646984397798">Isine-secure ang lahat ng koneksyon</translation>
-<translation id="1751947227857853925">Mabilis at unlimited nang hanggang 100 Mbps</translation>
-<translation id="1400240082805528049">24/7 na suporta</translation>
 <translation id="5892534145504632332">Protektahan ang lahat ng app at ang buong device mo</translation>
 <translation id="7195416926059527505">Mas ligtas para sa pambahay o pampublikong Wi-Fi</translation>
 <translation id="1354700000739359839">Napakabilis, hanggang 100 Mbps</translation>
 <translation id="3510283489391432976">Piliin ang iyong heograpikal na lokasyon/lokasyon ng bansa</translation>
 <translation id="7695158478627528928">Hindi kailanman nila-log ng Brave ang aktibidad mo</translation>
 <translation id="4575683170451975058">Protektahan ang 5 device sa 1 subscription</translation>
-<translation id="276866628038850725">May kasamang 7 araw na libreng trial ang lahat ng plan!</translation>
+<translation id="4882693590083943563">Kasama sa lahat ng plan ang <ph name="TRIAL_DAYS"/></translation>
+<translation id="487741927046441232">libreng 7 araw na trial!</translation>
 <translation id="1532536259167115948">Buwanang subscription <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Taunang subscription <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Nagre-renew buwan-buwan</translation>
@@ -736,7 +701,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / taon</translation>
 <translation id="2655185358771731232">Libreng subukan sa loob ng 7 araw. Makalipas ang 7 araw, sisingilin ka para sa presyo ng plano. Awtomatikong nare-renew ang mga subscription pero pwede itong kanselahin bago ma-renew.</translation>
 <translation id="6053992191006521518">Subukan nang LIBRE</translation>
-<translation id="3990956504562716932">Subukan nang Libre sa loob ng 7 Araw</translation>
+<translation id="5903391101107992067">Subukan nang 7 Araw - Libre</translation>
 <translation id="721747358270435486">Mag-install ng VPN</translation>
 <translation id="836074276610740314">Mag-install ng VPN Profile</translation>
 <translation id="8021842065465097929">Mag-i-install na ang Brave ng VPN profile.</translation>
@@ -797,12 +762,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="1924965034964265193">Maglagay ng custom na value ng nonce</translation>
 <translation id="5317780077021120954">I-save</translation>
 <translation id="4979796155378508955">Posibleng hindi ma-propagate sa network ang transaksyon kung ang custom na value ng nonce ay non-sequential o may iba pang error.</translation>
-<translation id="6122742277607781713">Portfolio</translation>
-<translation id="1736419249208073774">I-explore</translation>
-<translation id="4576965889365503638">IMPORMASYON</translation>
-<translation id="152455748535966757">Ranggo</translation>
-<translation id="4958716607782044952">24h na Volume</translation>
-<translation id="128834189395075789">Market Cap</translation>
 <translation id="750843150060816463">Presyo ng Gas (Gwei)</translation>
 <translation id="1426320910664514906">Limitasyon sa Gas</translation>
 <translation id="6389441740143786465">I-off ang Hub sa Pagbabahagi</translation>
@@ -812,10 +771,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="8084782383392198011">Hindi pwedeng walang laman ang pangalan ng account.</translation>
 <translation id="5045550434625856497">Hindi wastong password</translation>
 <translation id="1367951781824006909">Pumili ng isang file</translation>
-<translation id="5932938770824268122">Private Key</translation>
-<translation id="2472882733835903303">Ipakita ang Pribadong key</translation>
-<translation id="4391056902675005799">Itago ang Pribadong key</translation>
-<translation id="7518007103754668253">Babala: Huwag na huwag ihayag ang key na ito. Mananakaw ng kahit sinong mayroon ng pribadong key na ito ang anumang asset sa iyong account.</translation>
 <translation id="1133619932669546254">I-activate ang <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">URI NG FUNCTION: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Walang data</translation>
@@ -832,7 +787,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="2331676293859649642">Nakumpirma</translation>
 <translation id="8214232307424031138">Na-sign</translation>
 <translation id="1165039591588034296">Nagka-error</translation>
-<translation id="8364362220156372884">Bayad:<ph name="VALUE"/><ph name="CHAIN_ASSET"/>($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Ginagamit mo ba ang pinakamabilis na browser ng web?</translation>
 <translation id="2065971949051836200">Nasa telepono mo na ang 3x na mas mabilis na internet. Gamitin ang Brave para sa lahat ng iyong pag-browse ng web,</translation>
 <translation id="2888278614497184977">Brave = 3x na mas mabilis na pag-browse ng web</translation>
@@ -856,21 +810,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="1254969878422524947">Limit ng per-gas na tip (Gwei)</translation>
 <translation id="7373308452149471621">Limit ng per-gas na presyo (Gwei)</translation>
 <translation id="5891811606602061966">Hindi na-import ang account, pakisubukan ulit.</translation>
-<translation id="5061574358754621254">Data ng presyo na pinapagana ng CoinGecko</translation>
-<translation id="8574289650879708853">Magdagdag ng custom na asset</translation>
-<translation id="1255896809210433555">Magdagdag ng NFT</translation>
-<translation id="7791543448312431591">Idagdag</translation>
-<translation id="6600400596821238377">Pangalan ng token</translation>
-<translation id="3797613444743816037">Address ng mint</translation>
-<translation id="4092152169181928870">Simbolo ng token</translation>
 <translation id="4351811224047421378">Mga decimal ng katumpakan</translation>
-<translation id="547122651977318828">Token ID (para sa ERC721 lang)</translation>
-<translation id="8614026298974065517">Alisin ang custom na asset</translation>
-<translation id="4378941981362528553">Gusto mo bang alisin ang token na <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
-<translation id="4250680216510889253">Hindi</translation>
-<translation id="8971278306757462297">Ang address ng tatanggap ay ang iyong sariling address</translation>
-<translation id="749944179568745958">Hindi valid na ETH address</translation>
-<translation id="3506416339268164412">Ang address ng tatanggap ay contract address ng token</translation>
 <translation id="3494964159182650590">Buod ng Mga Pabuya</translation>
 <translation id="590733288489975971">Mga Reward mula sa Ads</translation>
 <translation id="1886682615222609631">Kita sa ngayon</translation>
@@ -902,6 +842,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="4693057234255364395">I-block ang URL ng explorer</translation>
 <translation id="7059127752542505809">Ilagay ang URL</translation>
 <translation id="2156993118928861787">Hindi wasto ang address</translation>
+<translation id="7791543448312431591">Idagdag</translation>
 <translation id="6889920539620318793">Itakda bilang aktibo</translation>
 <translation id="2653659639078652383">Isumite</translation>
 <translation id="4945690646623486292">Pumili ng Network</translation>
@@ -983,21 +924,14 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6577166808959668729">Sinusuportahan ang mga asset na compatible sa SPL sa Solana blockchain</translation>
 <translation id="4541295941776129088">Store FIL na asset</translation>
 <translation id="6575120282593094155">Wala ka pang <ph name="ACCOUNT_TYPE"/> account. Gumawa na ng isa ngayon?</translation>
+<translation id="4250680216510889253">Hindi</translation>
 <translation id="1599766910146472906">Mga Hindi Kasamang App</translation>
 <translation id="8463269357637177759">Mga Pinapayagang Regular App</translation>
 <translation id="4554726425645556940">Mga Pinapayagang System App</translation>
 <translation id="9023148942866814328">Ipakita ang Mga System App</translation>
 <translation id="5472400694702418949">Magdagdag ng mga app na hindi isasama sa trapiko ng VPN.</translation>
 <translation id="7002577172732106572">Split Tunneling</translation>
-<translation id="2832270987629018596">Hindi valid na SOL address</translation>
-<translation id="6423985584914773314">Hindi valid na FIL na address</translation>
 <translation id="8181161042860463420">Wala pang ganitong nauugnay na token account. May kaunting SOL na gagastusin para gawin at pondohan ito. <ph name="CLICK_START"/>Matuto pa<ph name="CLICK_END"/></translation>
-<translation id="1304515257839771197">Buksan ang <ph name="APP_NAME"/> app?</translation>
-<translation id="7653028065515320848"><ph name="CLICK_START"/>Alamin pa ang tungkol sa paggamit sa Rainbow Bridge<ph name="CLICK_END"/></translation>
-<translation id="8219806187375413057"><ph name="CLICK_START"/>Alamin pa kung paano bawasan ang risk sa Rainbow Bridge<ph name="CLICK_END"/></translation>
-<translation id="1065082006518490444">Ang <ph name="APP_NAME"/> ay isang independiyenteng service na nakakatulong sa iyong mag-bridge ng mga asset sa maraming network, at magamit ang iyong crypto sa iba pang mga network at DApp ecosystem. Ang pag-bridge ng mga asset sa iba pang mga network ay may ilang risk.</translation>
-<translation id="8423380132356660250">Buksan ang <ph name="APP_NAME"/> app</translation>
-<translation id="4450893287417543264">Huwag ipakita ulit</translation>
 <translation id="168154537623654021">Nag-a-update ng VPN Profile ...</translation>
 <translation id="7457027586454688423">Ilagay ang iyong password sa Brave Wallet</translation>
 <translation id="4784306439879850873">Tandaang hindi mave-verify ng Brave ang mangyayari kapag lumagda ka. Posibleng pahintulutan ng lagda ang halos anumang operasyon sa iyong account o sa ngalan mo, kabilang ang (pero hindi  ito limitado sa) pagbibigay ng ganap na kontrol sa iyong account at mga asset ng cryptocurrency sa humihiling na site. Lumagda lang kung sigurado kang gusto mong gawin ang pagkilos na ito, at pinagkakatiwalaan mo ang humihiling na site.</translation>
@@ -1076,7 +1010,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="1313065465616456728">Na-isyu noong</translation>
 <translation id="7902225556763260253">Oras ng expiration</translation>
 <translation id="1908159733454294871">Natukoy na panganib sa seguridad</translation>
-<translation id="4220693114674044366">Address ng token</translation>
 <translation id="5658257029899993935">Mag-link ng pagbili sa Brave account mo</translation>
 <translation id="1187061015547219282">I-link ang pagbili mo sa Play Store sa Brave account mo gamit ang Brave VPN sa iba pang device.</translation>
 <translation id="6662142137695589205">I-link ang subscription mo sa VPN</translation>
@@ -1089,7 +1022,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6067959437127691361">Tumutulong ang paggamit ng Brave Rewards na suportahan ang mga creator ng content, at binibigyang-daan kang makaipon ng BAT.</translation>
 <translation id="3264975266761862670">Handa ka na bang kumita?</translation>
 <translation id="265337947574975838">Kumonekta o gumawa ng account sa isa sa aming mga partner.</translation>
-<translation id="1772961321862399863">Para makaipon ng BAT, kailangang kumonekta ang mga user ng custodial account sa Brave Rewards. Sa kasamaang palad, walang custodian na available sa lugar mo, kaya't hindi available ang pag-iipon. Sa ngayon, awtomatikong susuportahan ang mga creator sa pag-on ng Brave Rewards.</translation>
 <translation id="654447476965480878">Matuto pa tungkol sa pagkita ng BAT</translation>
 <translation id="6278643716658443228">Mga setting ng mga reward</translation>
 <translation id="6516984207843289176">Ikonekta ang account</translation>
@@ -1110,33 +1042,23 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="7748944510530490017">Mga Pangunahing Network</translation>
 <translation id="2781668117338732220">Mga Pangalawang Network</translation>
 <translation id="282560918037172384">I-test and Mga Network</translation>
-<translation id="3586775666459823714">Mga NFT</translation>
-<translation id="8849001918648564819">Nakatago</translation>
 <translation id="707569835145765061">Kinakailangan ang pagkilos: Ikonekta ang isang custodial account kung hindi, mawawala ang vBAT mo.</translation>
 <translation id="1776742005329298234">Sa <ph name="DUE_DATE"/>, ititigil na namin ang pagsuporta sa mga umiiral na virtual BAT balance. Ikonekta ang isang custodial account bago ang petsang ito para mai-transfer namin ang naipon mong balance sa iyong custodial account, kung hindi, mawawala ang balance mo.</translation>
 <translation id="5089752671190341407">May panahon ka pa para iambag ang iyong vBAT sa mga paborito mong creator</translation>
 <translation id="171158953146804144">Sa <ph name="DUE_DATE"/>, ititigil na namin ang pagsuporta sa mga umiiral na virtual BAT balance. Sa kasamaang palad, walang available na custodian sa lugar mo (<ph name="REGION"/>) para i-withdraw ang mga ipon mo. Samantala, puwede ka pa ring mag-ambag sa iyong mga paboritong creator.</translation>
 <translation id="8949422576126100041">Tingnan ang page gamit ang Speedreader?</translation>
+<translation id="3435896845095436175">I-enable</translation>
 <translation id="5296840868251496327">I-enable ang Speedreader</translation>
 <translation id="591648995518106347">Awtomatikong nilo-load ang mga kwalipikadong artikulo sa reader mode</translation>
 <translation id="1295796122927221823">Tingnan sa mode na reader</translation>
-<translation id="5062934803872044756"><ph name="SYMBOL"/> sa <ph name="NETWORK"/></translation>
-<translation id="9085765419770918643">Wala pang NFT dito.</translation>
-<translation id="8445532667841598737">Handa nang magdagdag? I-click lang ang button sa ibaba para mag-import.</translation>
-<translation id="5925465310724910998">Gusto mo bang awtomatiko na naka-display ang iyong mga NFT?</translation>
-<translation id="2827460859891872324">Pwedeng gumamit ang Brave Wallet ng third-party na serbisyo para awtomatikong ipakita ang iyong mga NFT. Ibabahagi ng Brave ang mga address ng iyong wallet sa <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> para maibigay ang serbisyong ito. <ph name="BEGIN_LINK_2"/>Matuto pa.<ph name="END_LINK_2"/></translation>
 <translation id="7568430944629653319">I-enable ang pagtuklas ng NFT</translation>
 <translation id="622372328961630111">Awtomatikong magdagdag sa Wallet ng mga NFT na pagmamay-ari mo gamit ang mga third-party na API. <ph name="BEGIN_LINK_1"/>Matuto pa.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Account ng Table ng Address Lookup:</translation>
 <translation id="7659483790930268440">Index ng Table ng Address Lookup:</translation>
-<translation id="7853202427316060426">Aktibidad</translation>
 <translation id="4932733599132424254">Petsa</translation>
 <translation id="346505172740911461">Presyo sa Market</translation>
-<translation id="4709355193533327244">Wala pang makikitang transaksyon.</translation>
-<translation id="4931644613135313937">Kapag gumawa ka na ng transaksyon, makikita mo ito rito.</translation>
 <translation id="5494920125229734069">Piliin ang lahat</translation>
 <translation id="5972844218283131174">Alisin sa pagkakapili ang lahat</translation>
-<translation id="6322030314101903925">Walang available na asset</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Mag-sign in gamit ang Brave Wallet</translation>
 <translation id="3696514931437952995">Nagsa-sign in ka sa <ph name="ORIGIN"/>. Ibabahagi ng Brave wallet ang wallet address mo sa <ph name="ORIGIN"/>.</translation>
@@ -1227,4 +1149,33 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6393423486818299209">Gamitin ang kasalukuyang tagapagkaloob ng serbisyo mo o Wikimedia DNS</translation>
 <translation id="3401384982562827787">Gamiting ang kasalukuyang tagapagkaloob ng serbisyo mo o Cloudflare</translation>
 <translation id="8812367543786936496">Kung insecure ang kasalukuyang tagapagkaloob ng serbisyo mo, gumagamit ang Brave ng secure na alternatibong tagapagkaloob ng DNS</translation>
+<translation id="5680678411439841197">lungsod</translation>
+<translation id="8185518433273977704">bayan</translation>
+<translation id="4528386452965343421">prefecture</translation>
+<translation id="1589122976691792535">rehiyon</translation>
+<translation id="2221292964468054123">estado</translation>
+<translation id="3801482889636327368">organisasyon</translation>
+<translation id="1425162721525518064">kumpanya</translation>
+<translation id="7568794877555549044">bansa</translation>
+<translation id="5982110855572850497">label</translation>
+<translation id="6848689413353508904">container</translation>
+<translation id="1496514951988037011">username</translation>
+<translation id="6155129418108337061">login</translation>
+<translation id="4038523199754403233">id</translation>
+<translation id="901834265349196618">email</translation>
+<translation id="3488199663160411179">pangalan</translation>
+<translation id="793994607260936590">una</translation>
+<translation id="1782612111936779655">apelyido</translation>
+<translation id="7628132737455466188">buo</translation>
+<translation id="8621068256433641644">telepono</translation>
+<translation id="5993210100509955931">mobile</translation>
+<translation id="598301471034819706">address</translation>
+<translation id="5557821203571216370">apartment</translation>
+<translation id="8051552210542030943">pin code</translation>
+<translation id="5233247193491045452">postal code</translation>
+<translation id="3300502432153878901">zip</translation>
+<translation id="4130750466177569591">Sumasang-ayon ako</translation>
+<translation id="3251885322612056119">Na-update na Mga Tuntunin ng Serbisyo</translation>
+<translation id="4049035689681585146">Na-update na namin ang Mga Tuntunin ng Serbisyo para sa Brave Rewards. Ginawa namin ang mga update na ito para linawin ang aming mga tuntunin at tiyaking sinasakop ng mga ito ang bagong mga feature. Kung patuloy mong gagamitin ang na-update na Mga Tuntunin ng Serbisyo. Kung hindi ka sumasang-ayon, puwede mong <ph name="RESET_START"/>i-reset<ph name="RESET_END"/> ang Brave Rewards, na magdi-disable sa feature.</translation>
+<translation id="2165953574528546737">Tingnan ang <ph name="TOS_START"/>Mga Tuntunin ng Serbisyo ng Brave Rewards<ph name="TOS_END"/></translation>
 </translationbundle>
