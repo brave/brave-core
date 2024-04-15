@@ -71,6 +71,11 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (pageVisibility.content) {
     r.BRAVE_CONTENT = r.BASIC.createSection('/braveContent', 'content')
+    // Move fonts from APPEARANCE to BRAVE_CONTENT
+    if (r.FONTS) {
+        delete r.FONTS
+    }
+    r.FONTS = r.BRAVE_CONTENT.createChild('/fonts');
   }
   if (r.SITE_SETTINGS) {
     r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
