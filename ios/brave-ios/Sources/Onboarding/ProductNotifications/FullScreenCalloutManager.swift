@@ -5,6 +5,7 @@
 
 import Foundation
 import Growth
+import Onboarding
 import Preferences
 import Shared
 
@@ -56,9 +57,18 @@ public enum FullScreenCalloutType: CaseIterable {
 }
 
 public struct FullScreenCalloutManager {
+  ///  Delay period 3 days that will be added to full screen callouts or  product notifications
+  public static let delayAmountJpOnboarding = 3.days
+
   /// It determines whether we should show show the designated callout or not and sets corresponding preferences accordingly.
   /// Returns true if the callout should be shown.
   public static func shouldShowCallout(calloutType: FullScreenCalloutType) -> Bool {
+    // If REgion is Japan check new focus onboarding is finished
+    if Locale.current.regionCode == "JP", !Preferences.FocusOnboarding.focusOnboardingFinished.value
+    {
+      return false
+    }
+
     guard Preferences.Onboarding.isNewRetentionUser.value == true,
       let appRetentionLaunchDate = Preferences.DAU.appRetentionLaunchDate.value,
       !calloutType.preferenceValue.value
@@ -67,10 +77,15 @@ public struct FullScreenCalloutManager {
     }
 
     let rightNow = Date()
+    var calloutDelayInterval = calloutType.period.days
 
-    let nextShowDate = appRetentionLaunchDate.addingTimeInterval(
-      AppConstants.isOfficialBuild ? calloutType.period.days : calloutType.period.minutes
-    )
+    // Delay period 3 days that will be added to full screen callouts
+    // This will be the case as long as new onboarding is active for JAPAN
+    if Locale.current.regionCode == "JP" {
+      calloutDelayInterval += delayAmountJpOnboarding
+    }
+
+    let nextShowDate = appRetentionLaunchDate.addingTimeInterval(calloutDelayInterval)
 
     if rightNow > nextShowDate {
       calloutType.preferenceValue.value = true

@@ -92,7 +92,6 @@ extension PageSecurityView: PopoverContentComponent {
   }
 }
 
-#if swift(>=5.9)
 #if DEBUG
 #Preview {
   PageSecurityView(
@@ -105,5 +104,4 @@ extension PageSecurityView: PopoverContentComponent {
   .shadow(radius: 10, x: 0, y: 1)
   .padding()
 }
-#endif
 #endif

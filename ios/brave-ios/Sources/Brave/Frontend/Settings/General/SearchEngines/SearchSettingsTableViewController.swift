@@ -458,7 +458,7 @@ class SearchSettingsTableViewController: UITableViewController {
           }
         )
 
-        UIImpactFeedbackGenerator(style: .medium).bzzt()
+        UIImpactFeedbackGenerator(style: .medium).vibrate()
         present(alert, animated: true, completion: nil)
       } else {
         deleteCustomEngine()

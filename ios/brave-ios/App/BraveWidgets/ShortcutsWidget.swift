@@ -23,9 +23,7 @@ struct ShortcutsWidget: Widget {
     .configurationDisplayName(Strings.Widgets.shortcutsWidgetTitle)
     .description(Strings.Widgets.shortcutsWidgetDescription)
     .supportedFamilies([.systemMedium])
-    #if swift(>=5.9)
     .contentMarginsDisabled()
-    #endif
   }
 }
 
@@ -230,7 +228,6 @@ private struct ShortcutsView: View {
 
 // MARK: - Previews
 
-#if swift(>=5.9)
 @available(iOS 17.0, *)#Preview(
   as: .systemMedium,
   widget: {
@@ -240,17 +237,3 @@ private struct ShortcutsView: View {
     ShortcutEntry(date: .now, shortcutSlots: [.newTab, .newPrivateTab, .bookmarks])
   }
 )
-#else
-#if DEBUG
-struct ShortcutsWidget_Previews: PreviewProvider {
-  static var previews: some View {
-    ShortcutsView(slots: [.newTab, .newPrivateTab, .bookmarks])
-      .previewContext(WidgetPreviewContext(family: .systemMedium))
-    ShortcutsView(slots: [.downloads, .history, .playlist])
-      .previewContext(WidgetPreviewContext(family: .systemMedium))
-    ShortcutsView(slots: [.wallet, .search, .scanQRCode])
-      .previewContext(WidgetPreviewContext(family: .systemMedium))
-  }
-}
-#endif
-#endif

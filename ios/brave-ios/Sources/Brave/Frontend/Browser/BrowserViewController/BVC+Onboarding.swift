@@ -11,6 +11,7 @@ import Onboarding
 import Preferences
 import Shared
 import StoreKit
+import SwiftUI
 import UIKit
 
 // MARK: - Onboarding
@@ -20,17 +21,22 @@ extension BrowserViewController {
   func presentOnboardingIntro() {
     if Preferences.DebugFlag.skipOnboardingIntro == true { return }
 
-    Preferences.AppState.isOnboardingActive.value = true
-    presentOnboardingWelcomeScreen(on: self)
+    // If locale is JP, start the new onboarding process
+    // This will be the case as long as new onboarding is active for JAPAN
+    if Locale.current.regionCode == "JP" {
+      presentFocusOnboarding()
+    } else {
+      presentOnboardingWelcomeScreen()
+    }
   }
 
-  private func presentOnboardingWelcomeScreen(on parentController: UIViewController) {
-    if Preferences.DebugFlag.skipOnboardingIntro == true { return }
+  // MARK: Welcome Onboarding - Regions except JAPAN
 
+  private func presentOnboardingWelcomeScreen() {
     // 1. Existing user.
     // 2. User already completed onboarding.
     if Preferences.Onboarding.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
-      Preferences.AppState.isOnboardingActive.value = false
+      Preferences.AppState.shouldDeferPromotedPurchase.value = false
       return
     }
 
@@ -44,26 +50,13 @@ extension BrowserViewController {
         attributionManager: attributionManager
       )
       onboardingController.modalPresentationStyle = .fullScreen
-      parentController.present(onboardingController, animated: false)
+      present(onboardingController, animated: false)
       isOnboardingOrFullScreenCalloutPresented = true
     }
   }
 
-  private func addNTPTutorialPage() {
-    let basicOnboardingNotCompleted =
-      Preferences.Onboarding.basicOnboardingProgress.value != OnboardingProgress.newTabPage.rawValue
-
-    if basicOnboardingNotCompleted, showNTPEducation().isEnabled, let url = showNTPEducation().url {
-      tabManager.addTab(
-        PrivilegedRequest(url: url) as URLRequest,
-        afterTab: self.tabManager.selectedTab,
-        isPrivate: privateBrowsingManager.isPrivateBrowsing
-      )
-    }
-  }
-
   func showNTPOnboarding() {
-    Preferences.AppState.isOnboardingActive.value = false
+    Preferences.AppState.shouldDeferPromotedPurchase.value = false
     iapObserver.savedPayment = nil
 
     if !topToolbar.inOverlayMode,
@@ -95,36 +88,99 @@ extension BrowserViewController {
       from: topToolbar.locationView
     ).insetBy(dx: -1.0, dy: -1.0)
 
-    // Present the popover
-    let controller = WelcomeOmniBoxOnboardingController()
-    controller.setText(
-      title: Strings.Onboarding.omniboxOnboardingPopOverTitle,
-      details: Strings.Onboarding.omniboxOnboardingPopOverDescription
-    )
+    var controller: UIViewController & PopoverContentComponent
 
-    presentPopoverContent(
-      using: controller,
-      with: frame,
-      cornerRadius: topToolbar.locationContainer.layer.cornerRadius,
-      didDismiss: { [weak self] in
-        guard let self = self else { return }
-
-        Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
-        Preferences.AppState.isOnboardingActive.value = false
-
-        self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
-      },
-      didClickBorderedArea: { [weak self] in
-        guard let self = self else { return }
-
-        Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
-        Preferences.AppState.isOnboardingActive.value = false
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-          self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
-        }
+    if Locale.current.regionCode != "JP" {
+      // Present the popover
+      controller = WelcomeOmniBoxOnboardingController().then {
+        $0.setText(
+          title: Strings.Onboarding.omniboxOnboardingPopOverTitle,
+          details: Strings.Onboarding.omniboxOnboardingPopOverDescription
+        )
       }
-    )
+      presentNTPURLBarPopover(
+        controller: controller,
+        onDismiss: { [weak self] in
+          guard let self = self else { return }
+          self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
+        },
+        onClickURLBar: { [weak self] in
+          guard let self = self else { return }
+
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
+          }
+        }
+      )
+    } else {
+      if Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value {
+        Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.reset()
+
+        controller = FocusNTPOnboardingViewController().then {
+          $0.setText(
+            title: Strings.FocusOnboarding.urlBarIndicatorTitle,
+            details: Strings.FocusOnboarding.urlBarIndicatorDescription
+          )
+        }
+
+        presentNTPURLBarPopover(
+          controller: controller,
+          onDismiss: { [weak self] in
+            guard let self = self else { return }
+            self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
+          },
+          onClickURLBar: { [weak self] in
+            guard let self = self else { return }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+              self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
+            }
+          }
+        )
+      }
+    }
+
+    func presentNTPURLBarPopover(
+      controller: UIViewController & PopoverContentComponent,
+      onDismiss: @escaping () -> Void,
+      onClickURLBar: @escaping () -> Void
+    ) {
+      presentPopoverContent(
+        using: controller,
+        with: frame,
+        cornerRadius: topToolbar.locationContainer.layer.cornerRadius,
+        didDismiss: {
+          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
+          Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+          onDismiss()
+        },
+        didClickBorderedArea: {
+          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
+          Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+          onClickURLBar()
+        }
+      )
+    }
+  }
+
+  private func addNTPTutorialPage() {
+    // The new onboarding will be only JP Region and this is part of old onboarding
+    guard Locale.current.regionCode != "JP" else {
+      return
+    }
+
+    // NTP Education screen should load after onboarding is finished and user is on locale JP
+    let (educationPermitted, url) = (Locale.current.regionCode == "JP", URL.brave.ntpTutorialPage)
+
+    if educationPermitted {
+      tabManager.addTab(
+        URLRequest(url: url),
+        afterTab: self.tabManager.selectedTab,
+        isPrivate: privateBrowsingManager.isPrivateBrowsing
+      )
+    }
   }
 
   private func triggerPromotedInAppPurchase(savedPayment: SKPayment?) {
@@ -196,6 +252,12 @@ extension BrowserViewController {
     )
   }
 
+  func completeOnboarding(_ controller: UIViewController) {
+    Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+    Preferences.AppState.shouldDeferPromotedPurchase.value = false
+    controller.dismiss(animated: true)
+  }
+
   private func presentPopoverContent(
     using contentController: UIViewController & PopoverContentComponent,
     with frame: CGRect,
@@ -211,7 +273,11 @@ extension BrowserViewController {
     popover.arrowDistance = 10.0
 
     // Create a border / placeholder view
-    let borderView = BorderView(frame: frame, cornerRadius: cornerRadius, colouredBorder: true)
+    let borderView = NotificationBorderView(
+      frame: frame,
+      cornerRadius: cornerRadius,
+      colouredBorder: true
+    )
     let placeholderView = UIView(frame: frame).then {
       $0.alpha = 0.0
       $0.frame = frame
@@ -282,80 +348,29 @@ extension BrowserViewController {
       }()
     }
   }
-
-  func notifyTrackersBlocked(
-    domain: String,
-    displayTrackers: [AdBlockTrackerType],
-    trackerCount: Int
-  ) {
-    let controller = WelcomeBraveBlockedAdsController().then {
-      $0.setData(displayTrackers: displayTrackers.map(\.rawValue), trackerCount: trackerCount)
-    }
-
-    let popover = PopoverController(contentController: controller)
-    popover.previewForOrigin = .init(
-      view: topToolbar.shieldsButton,
-      action: { [weak self] popover in
-        popover.dismissPopover {
-          self?.presentBraveShieldsViewController()
-        }
-      }
-    )
-    popover.present(from: topToolbar.shieldsButton, on: self)
-
-    popover.popoverDidDismiss = { [weak self] _ in
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        guard let self = self else { return }
-
-        if self.shouldShowPlaylistOnboardingThisSession {
-          self.showPlaylistOnboarding(tab: self.tabManager.selectedTab)
-        }
-      }
-    }
-  }
-
-  /// New Tab Page Education screen should load after onboarding is finished and user is on locale JP
-  /// - Returns: A tuple which shows NTP Education is enabled and URL to be loaded
-  func showNTPEducation() -> (isEnabled: Bool, url: URL?) {
-    return (Locale.current.regionCode == "JP", .brave.ntpTutorialPage)
-  }
-
-  func completeOnboarding(_ controller: UIViewController) {
-    Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-    Preferences.AppState.isOnboardingActive.value = false
-    controller.dismiss(animated: true)
-  }
 }
 
-// MARK: BorderView
+extension BrowserViewController {
 
-private class BorderView: UIView {
+  // MARK: Day 0 Focus Onboarding - JAPAN Region
 
-  public var didClickBorderedArea: (() -> Void)?
+  func presentFocusOnboarding() {
 
-  init(frame: CGRect, cornerRadius: CGFloat, colouredBorder: Bool = false) {
-    let borderLayer = CAShapeLayer().then {
-      let frame = frame.with { $0.origin = .zero }
-      $0.strokeColor = colouredBorder ? UIColor.braveLighterBlurple.cgColor : UIColor.white.cgColor
-      $0.fillColor = UIColor.clear.cgColor
-      $0.lineWidth = 2.0
-      $0.strokeEnd = 1.0
-      $0.path = UIBezierPath(roundedRect: frame, cornerRadius: cornerRadius).cgPath
+    // Check user has never seen onboarding - new user
+    guard Preferences.Onboarding.basicOnboardingCompleted.value == OnboardingState.unseen.rawValue
+    else {
+      Preferences.AppState.shouldDeferPromotedPurchase.value = false
+      return
     }
 
-    super.init(frame: frame)
-    layer.addSublayer(borderLayer)
+    let welcomeView = FocusOnboardingView(
+      attributionManager: attributionManager,
+      p3aUtilities: braveCore.p3aUtils
+    )
+    let onboardingController = FocusOnboardingHostingController(rootView: welcomeView).then {
+      $0.modalPresentationStyle = .fullScreen
+    }
 
-    addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onClickBorder(_:))))
-  }
-
-  @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
-  }
-
-  @objc
-  private func onClickBorder(_ tap: UITapGestureRecognizer) {
-    didClickBorderedArea?()
+    present(onboardingController, animated: false)
   }
 }

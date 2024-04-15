@@ -57,10 +57,8 @@ struct PasswordEntryField: View {
         return Image(systemName: "faceid")
       case .touchID:
         return Image(systemName: "touchid")
-      #if swift(>=5.9)
       case .opticID:
         return Image(systemName: "opticid")
-      #endif
       case .none:
         return nil
       @unknown default:
@@ -153,7 +151,7 @@ struct PasswordEntryView: View {
       DispatchQueue.main.async {
         if let entryError = entryError {
           self.error = entryError
-          UIImpactFeedbackGenerator(style: .medium).bzzt()
+          UIImpactFeedbackGenerator(style: .medium).vibrate()
         } else {
           presentationMode.dismiss()
         }

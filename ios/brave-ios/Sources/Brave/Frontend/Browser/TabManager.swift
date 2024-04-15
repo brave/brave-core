@@ -362,7 +362,7 @@ class TabManager: NSObject {
       SessionTab.setSelected(tabId: tabId)
     }
 
-    UIImpactFeedbackGenerator(style: .light).bzzt()
+    UIImpactFeedbackGenerator(style: .light).vibrate()
     selectedTab?.createWebview()
     selectedTab?.lastExecutedTime = Date.now()
 

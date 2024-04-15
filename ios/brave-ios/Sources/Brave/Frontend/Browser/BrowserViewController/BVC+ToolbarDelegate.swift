@@ -124,7 +124,7 @@ extension BrowserViewController: TopToolbarDelegate {
       )
     )
 
-    UIImpactFeedbackGenerator(style: .heavy).bzzt()
+    UIImpactFeedbackGenerator(style: .heavy).vibrate()
     if UIDevice.current.userInterfaceIdiom == .pad {
       alert.popoverPresentationController?.sourceView = self.view
       alert.popoverPresentationController?.sourceRect = self.view.convert(
@@ -630,7 +630,7 @@ extension BrowserViewController: TopToolbarDelegate {
         if let finalizedRecognition {
           // Feedback indicating recognition is finalized
           AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-          UIImpactFeedbackGenerator(style: .medium).bzzt()
+          UIImpactFeedbackGenerator(style: .medium).vibrate()
           stopVoiceSearch(searchQuery: finalizedRecognition)
         }
       }
@@ -955,7 +955,7 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func tabToolbarDidLongPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-    UIImpactFeedbackGenerator(style: .heavy).bzzt()
+    UIImpactFeedbackGenerator(style: .heavy).vibrate()
     showBackForwardList()
   }
 
@@ -1044,7 +1044,7 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func tabToolbarDidLongPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-    UIImpactFeedbackGenerator(style: .heavy).bzzt()
+    UIImpactFeedbackGenerator(style: .heavy).vibrate()
     showBackForwardList()
   }
 

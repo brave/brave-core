@@ -283,6 +283,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   func sceneWillResignActive(_ scene: UIScene) {
     Preferences.AppState.backgroundedCleanly.value = true
+    Preferences.AppState.shouldDeferPromotedPurchase.value = false
     scene.userActivity?.resignCurrent()
     AppState.shared.uptimeMonitor.pauseMonitoring()
   }
@@ -296,7 +297,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func sceneDidEnterBackground(_ scene: UIScene) {
     AppState.shared.profile.shutdown()
     BraveVPN.sendVPNWorksInBackgroundNotification()
-    Preferences.AppState.isOnboardingActive.value = false
   }
 
   func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
