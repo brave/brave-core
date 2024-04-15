@@ -56,6 +56,8 @@ void MigrateClientState(InitializeCallback callback) {
                  !client.FromJson(mutable_json)) {
                // The client state is corrupted, therefore, reset it to the
                // default values for version 6.
+               BLOG(0,
+                    "Client state is corrupted, resetting to default values");
                mutable_json = "{}";
              }
 

@@ -119,32 +119,20 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
     return false;
   }
 
-  if (!ParseConfirmationTokensFromDictionary(*dict)) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
-    base::debug::DumpWithoutCrashing();
+  ParseConfirmationTokensFromDictionary(*dict);
 
-    BLOG(1, "Failed to parse confirmation tokens");
-  }
-
-  if (!ParsePaymentTokensFromDictionary(*dict)) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
-    base::debug::DumpWithoutCrashing();
-
-    BLOG(1, "Failed to parse payment tokens");
-  }
+  ParsePaymentTokensFromDictionary(*dict);
 
   return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
+void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
     const base::Value::Dict& dict) {
   const auto* const list = dict.FindList("unblinded_tokens");
   if (!list) {
-    return false;
+    return;
   }
 
   ConfirmationTokenList filtered_confirmation_tokens =
@@ -167,20 +155,13 @@ bool ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
   }
 
   confirmation_tokens_.Set(filtered_confirmation_tokens);
-
-  return true;
 }
 
-bool ConfirmationStateManager::ParsePaymentTokensFromDictionary(
+void ConfirmationStateManager::ParsePaymentTokensFromDictionary(
     const base::Value::Dict& dict) {
-  const auto* const list = dict.FindList("unblinded_payment_tokens");
-  if (!list) {
-    return false;
+  if (const auto* const list = dict.FindList("unblinded_payment_tokens")) {
+    payment_tokens_.SetTokens(PaymentTokensFromValue(*list));
   }
-
-  payment_tokens_.SetTokens(PaymentTokensFromValue(*list));
-
-  return true;
 }
 
 }  // namespace brave_ads

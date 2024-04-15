@@ -97,7 +97,7 @@ inline constexpr char kNextTokenRedemptionAt[] =
 inline constexpr char kHasMigratedClientState[] =
     "brave.brave_ads.state.has_migrated.client.v6";
 inline constexpr char kHasMigratedConfirmationState[] =
-    "brave.brave_ads.state.has_migrated.confirmations.v7";
+    "brave.brave_ads.state.has_migrated.confirmations.v8";
 inline constexpr char kHasMigratedConversionState[] =
     "brave.brave_ads.migrated.conversion_state";
 inline constexpr char kHasMigratedNotificationState[] =
