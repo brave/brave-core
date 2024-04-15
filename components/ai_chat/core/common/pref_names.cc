@@ -41,7 +41,10 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kObseleteBraveChatAutoGenerateQuestions, false);
+  if (ai_chat::features::IsAIChatEnabled()) {
+    registry->RegisterBooleanPref(kObseleteBraveChatAutoGenerateQuestions,
+                                  false);
+  }
 }
 
 void MigrateProfilePrefs(PrefService* profile_prefs) {
