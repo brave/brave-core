@@ -53,7 +53,6 @@
 <translation id="849607431499549468">Informacje o tym, jak Brave zarządza certyfikatami głównymi</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Twoja organizacja automatycznie usuwa dane przeglądania, gdy nie korzystasz z Brave przez minutę. Może to obejmować historię, autouzupełnianie i pobrane pliki. Karty pozostają otwarte.}few{Twoja organizacja automatycznie usuwa dane przeglądania, gdy nie korzystasz z Brave przez # minuty. Może to obejmować historię, autouzupełnianie i pobrane pliki. Karty pozostają otwarte.}many{Twoja organizacja automatycznie usuwa dane przeglądania, gdy nie korzystasz z Brave przez # minut. Może to obejmować historię, autouzupełnianie i pobrane pliki. Karty pozostają otwarte.}other{Twoja organizacja automatycznie usuwa dane przeglądania, gdy nie korzystasz z Brave przez # minuty. Może to obejmować historię, autouzupełnianie i pobrane pliki. Karty pozostają otwarte.}}</translation>
 <translation id="2126108037660393668">Weryfikacja pobranego pliku zakończyła się niepowodzeniem.</translation>
-<translation id="2130870084309816036">Nie można połączyć się z internetem. Jeśli używasz zapory sieciowej, dodaj <ph name="PRODUCT_EXE_NAME"/> do listy dozwolonych.</translation>
 <translation id="5789330946301045610">Pobieranie zostało zablokowane przez Brave, ponieważ strona nie korzysta z bezpiecznego połączenia, a plik mógł zostać zmodyfikowany</translation>
 <translation id="142389341645668510">Dostosuj Brave</translation>
 <translation id="2174917724755363426">Instalacja nie została ukończona. Czy na pewno chcesz ją anulować?</translation>
@@ -137,6 +136,7 @@
 <translation id="4304059894777924102">Brave nie może sprawdzić Twoich haseł. Sprawdź połączenie z internetem.</translation>
 <translation id="2100587595569959771">Więcej informacji o personalizacji reklam w Brave</translation>
 <translation id="1807774211756215222">O&amp;twórz link w nowej karcie Brave</translation>
+<translation id="3867175562099983425">Zarządzaj profilami Brave</translation>
 <translation id="2106568569080763501">W Brave możesz kliknąć numer telefonu zamieszczony w sieci i zadzwonić pod niego przez Skype.</translation>
 <translation id="308146532933302843">Dlaczego Brave blokuje pobieranie niektórych plików</translation>
 <translation id="2189149060536531804">Jeśli coś będzie wymagało sprawdzenia, Brave Cię o tym poinformuje</translation>
@@ -149,14 +149,12 @@
 <translation id="7130675370997202556">Otwórz Brave, klikając swoją nazwę i rozpocznij przeglądanie.</translation>
 <translation id="4920958997042285125">W tym profilu Brave jest już zalogowany użytkownik <ph name="EXISTING_USER"/>. Aby umożliwić Ci przeglądanie osobno, Brave może utworzyć dla Ciebie nowy profil.</translation>
 <translation id="2337217774418822704">Tym kontem zarządza <ph name="MANAGER_NAME"/>. Administrator może przeglądać i edytować ten profil przeglądarki Brave i dane, które się na nim znajdują, w tym zakładki, historię i hasła.</translation>
-<translation id="4561646469134805137">Gdy piszesz, Brave wysyła zawartość paska adresu lub pola wyszukiwania do domyślnej wyszukiwarki</translation>
 <translation id="3941890832296813527">Błąd instalacji: nazwa pliku instalatora jest nieprawidłowa lub nieobsługiwana.</translation>
 <translation id="8090497651549769448">Brave próbuje skopiować hasła. Aby na to zezwolić, podaj swoje hasło do Windows.</translation>
 <translation id="4194619960643453552">Jak Brave dba o Twoje bezpieczeństwo</translation>
 <translation id="1311808042904310985">&amp;Brave for Testing – informacje</translation>
 <translation id="1152920704813762236">System operacyjny Brave – informacje</translation>
 <translation id="3703994572283698466">Opracowanie Brave OS było możliwe dzięki dodatkowemu <ph name="BEGIN_LINK_CROS_OSS"/>oprogramowaniu open source<ph name="END_LINK_CROS_OSS"/>. To samo dotyczy <ph name="BEGIN_LINK_LINUX_OSS"/>środowiska programistycznego Linuksa<ph name="END_LINK_LINUX_OSS"/>.</translation>
-<translation id="238935410828556037">Gdy to ustawienie będzie wyłączone, nadal będziesz otrzymywać sugestie, które Brave udostępnia lokalnie</translation>
 <translation id="6056473803837713617">Pomóż ulepszyć Brave, zgłaszając <ph name="BEGIN_LINK"/>bieżące ustawienia<ph name="END_LINK"/></translation>
 <translation id="4050175100176540509">W najnowszej wersji zostały wprowadzone ważne poprawki bezpieczeństwa i nowe funkcje.</translation>
 <translation id="4055805654398742145">Menedżer &amp;haseł</translation>
@@ -265,7 +263,6 @@
 <translation id="4060970194201477024">Tu możesz przełączać się między profilami Brave</translation>
 <translation id="7815000350132166985">Jeśli zezwolisz na pliki cookie, Brave może ich używać podczas wstępnego wczytywania</translation>
 <translation id="6685697979743742605">Ten plik może być niebezpieczny<ph name="LINE_BREAK"/>Brave może go sprawdzić, jeśli podasz hasło. Informacje o pliku są wysyłane do Bezpiecznego przeglądania Brave, ale zawartość pliku i hasło pozostają na urządzeniu.</translation>
-<translation id="3156047523158042818">W zależności od ustawień Brave może też wysyłać pliki cookie i Twój aktualny adres URL</translation>
 <translation id="6182736845697986886">Instalacja się nie udała z powodu wewnętrznego błędu serwera aktualizacji.</translation>
 <translation id="4368341489795135329">Najpierw zaloguj się w Brave na swoim urządzeniu <ph name="TARGET_DEVICE_NAME"/>, a potem ponów próbę wysyłania.</translation>
 <translation id="8320964054148936490">Na tym komputerze jest już zainstalowana nowsza wersja Brave. Jeśli program nie działa, odinstaluj go i spróbuj ponownie.</translation>
@@ -280,7 +277,6 @@
 <translation id="3792238845239580301">Nadaj nazwę profilowi Brave</translation>
 <translation id="3561569806301739367">Plik <ph name="FILE_NAME"/> może być niebezpieczny, dlatego został zablokowany przez Brave.</translation>
 <translation id="3205074487970075628">Brave używa Twojej kamery.</translation>
-<translation id="7470405854261046555">Ten plik został zablokowany przez Brave, bo jest niebezpieczny</translation>
 <translation id="6327105987658262776">Brak dostępnych aktualizacji.</translation>
 <translation id="1819119299840995223">Brave wykonuje teraz inną operację. Spróbuj ponownie później.</translation>
 <translation id="8616874628011103667">Korzystanie z Brave na wspólnych komputerach i przy użyciu konta Brave jest teraz jeszcze łatwiejsze.</translation>
@@ -319,9 +315,8 @@ Niektóre funkcje mogą być niedostępne. Podaj inny katalog z profilem lub uż
 <translation id="3136039682492230890">Brave zaleca przeskanowanie tego pliku, bo może on być niebezpieczny.</translation>
 <translation id="1547295885616600893">Opracowanie systemu operacyjnego Brave było możliwe dzięki dodatkowemu <ph name="BEGIN_LINK_CROS_OSS"/>oprogramowaniu open source<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8211837073776713955">Brave poinformuje Cię, jeśli Twoje hasła dostaną się w niepowołane ręce</translation>
-<translation id="4879299985215961051">Ten plik został zablokowany przez Brave, bo zawiera złośliwe oprogramowanie</translation>
+<translation id="684888714667046800">Nie można połączyć się z internetem. Jeśli używasz zapory sieciowej, sprawdź, czy adres <ph name="PRODUCT_EXE_NAME"/> znajduje się na liście dozwolonych.</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="2049565899730874086">Google Pay (skopiowana do Brave)</translation>
 <translation id="3028928628792374067">Przeglądarka Brave wykryła, że rozszerzenie „<ph name="EXTENSION_NAME"/>” zawiera złośliwe oprogramowanie</translation>
 <translation id="2301993384336631869">Przeglądarka Brave została zaktualizowana, ale nie była przez Ciebie używana przez co najmniej 30 dni.</translation>
 <translation id="8828443087767259398">Aby kontynuować parowanie, Brave potrzebuje dostępu do Bluetootha. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -389,7 +384,6 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="813913629614996137">Inicjuję…</translation>
 <translation id="7550680632761245819">Włącz dodatkową ochronę w mechanizmie JavaScript i WebAssembly w Brave</translation>
 <translation id="9067428552314418522">Ten plik jest niebezpieczny, dlatego został zablokowany przez Brave.</translation>
-<translation id="7344826952831915813">Plik został zablokowany przez Brave, bo ten typ pliku jest niebezpieczny</translation>
 <translation id="8207657266087451193">Jeśli obraz nie ma przydatnego opisu, Brave spróbuje go dla Ciebie stworzyć. W tym celu obrazy zostaną wysłane do Brave. W każdej chwili możesz wyłączyć tę funkcję w ustawieniach.</translation>
 <translation id="8622246347342688645">Brave nie może sprawdzić haseł, jeśli się nie zalogujesz</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave ostrzega<ph name="END_LINK"/> o niebezpiecznych stronach i pobieranych plikach</translation>
@@ -411,6 +405,7 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="8555465886620020932">Błąd usługi: <ph name="SERVICE_ERROR"/></translation>
 <translation id="227028348235968071">Brave może sprawdzić Twoje hasła, gdy zalogujesz się na swoje konto Brave</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Autorzy Brave. Wszelkie prawa zastrzeżone.</translation>
+<translation id="2406041951487110350">Dostosuj Brave</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Jak używamy tych danych:<ph name="END_BOLD"/> w Brave witryny mogą przechowywać informacje o Twoich zainteresowaniach Na przykład jeśli odwiedzasz stronę internetową, żeby kupić buty na maraton, strona może zidentyfikować bieganie w maratonach jako Twoje zainteresowanie. Jeśli później odwiedzisz inną witrynę, żeby zapisać się na jakiś bieg, witryna ta może wyświetlić reklamę butów do biegania na podstawie Twoich zainteresowań.</translation>
 <translation id="3052349005266761501">Uruchamiam Brave…</translation>
 <translation id="6283840329609797763">Instalacja nie powiodła się z powodu nieokreślonego błędu. Pobierz Brave ponownie.</translation>
@@ -428,8 +423,10 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="8285294305439559616">Brave próbuje pokazać hasła. Podaj swoje hasło do Windows, by na to zezwolić.</translation>
 <translation id="6514033039060816211">Brave może oszacować Twoje zainteresowania na podstawie Twojej historii przeglądania z ostatnich kilku tygodni. Te informacje zostają na Twoim urządzeniu.</translation>
 <translation id="6389268239133412586">Nie można zaktualizować Brave</translation>
+<translation id="597377760569411310">Dostosuj Brave</translation>
 <translation id="7731184591599776500">Logo Brave Enterprise</translation>
 <translation id="8986207147630327271">Dodajesz profil służbowy w tej przeglądarce i dajesz swojemu administratorowi kontrolę tylko nad tym profilem.</translation>
+<translation id="3424657754843264466">Zarządzaj profilami Brave</translation>
 <translation id="82609232232243542">Zaloguj się w Brave</translation>
 <translation id="3273774796888928550">Zaloguj się w Brave. Jeśli chcesz zalogować się na konto tylko raz, możesz <ph name="GUEST_LINK_BEGIN"/>skorzystać z trybu gościa na urządzeniu<ph name="GUEST_LINK_END"/>.</translation>
 <translation id="4561046754724442504">Aplikacja Brave została automatycznie zamknięta</translation>

@@ -44,7 +44,6 @@
 <translation id="3259723213051400722">Sila cuba lagi.</translation>
 <translation id="5298965408768377685">Pencipta ini telah mendaftar dengan Brave dan boleh menerima sumbangan daripada pengguna Brave Rewards. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Ganjaran Brave mungkin tidak berfungsi semasa pemberitahuan dinyahdayakan.</translation>
-<translation id="4259212006412783790">HIDUPKAN</translation>
 <translation id="6112331814131703370">Sekat Notis 'Tukar kepada Aplikasi'</translation>
 <translation id="4744921452903670666">Berikan maklum balas anda!</translation>
 <translation id="2524310205387880526">Nilaikan Brave</translation>
@@ -98,7 +97,9 @@
 <translation id="5165042248369837294">Benarkan Twitter memasukkan tweet</translation>
 <translation id="958971637207126733">Benarkan hantaran terbenam LinkedIn</translation>
 <translation id="6302422639282249274">Uruskan Ganjaran Brave</translation>
-<translation id="8877432762827303535">Daftar keluar dalam talian</translation>
+<translation id="2709516037105925701">Autoisi</translation>
+<translation id="8617525558807213034">Autoisi dalam tab peribadi</translation>
+<translation id="8685431198160039193">Maklumat tersimpan boleh diisi secara automatik dalam tab peribadi</translation>
 <translation id="6583902294974160967">Sokongan</translation>
 <translation id="1799030480311994998">Ciri</translation>
 <translation id="2005732746077850308">Perisai Brave &amp; privasi</translation>
@@ -132,7 +133,6 @@
 <translation id="5132969826889386652">Berjaya menyimpan perubahan</translation>
 <translation id="4335929145384293789">Tambahkan penapis tersuai yang telah anda cipta, satu setiap baris, dalam medan di atas. Pastikan anda menggunakan <ph name="ADBLOCK_FILTER_SYNTAX"/>.</translation>
 <translation id="5023212862780303376">Sintaks penapis Adblock</translation>
-<translation id="3872060236937011862"><ph name="ASSET_NAME"/> Harga (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">Kaedah Selesai</translation>
@@ -539,7 +539,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="13296465911709339">Teks anda telah disalin ke papan klip.</translation>
 <translation id="2735834606413553397">Alamat awam telah disalin ke papan keratan.</translation>
 <translation id="2977461003134694205">Stat Privasi</translation>
-<translation id="223536150967420869">Beli</translation>
 <translation id="2956070106555335453">Ringkasan</translation>
 <translation id="7465614181960492526">Dapatkan Token &amp; Beri Balik</translation>
 <translation id="2731539192954672606">Dapatkan token dengan melihat iklan yang menghormati privasi dan sokong laman-laman dan pencipta kandungan kegemaran anda secara automatik.</translation>
@@ -595,7 +594,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="6915830896450988084">Hantar dengan <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Hantar</translation>
 <translation id="538450413584738399">Pertukaran</translation>
-<translation id="1366855498335432549">Deposit</translation>
 <translation id="4556086616242530072">Natif penyemak imbas.\nJagaan sendiri.\nDan berbilang rantaian.</translation>
 <translation id="7909462264772842773">Kawal kripto dan NFT anda. Brave Wallet menyokong Ethereum, rantaian EVM, Solana dan banyak lagi.</translation>
 <translation id="165255193061631296">Perlukan dompet baharu?</translation>
@@ -613,34 +611,21 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2708402071160162126">AMARAN: Jangan sekali-kali berkongsi frasa pemulihan anda. Sesiapa yang mempunyai frasa ini boleh mengambil aset anda selama-lamanya.</translation>
 <translation id="111912712268284159">Saya telah menyandarkan frasa saya di tempat yang selamat.</translation>
 <translation id="6896758677409633944">Salin</translation>
-<translation id="1544192797660353713">Dompet</translation>
-<translation id="375882617301124395">Sandarkan dompet kripto anda</translation>
-<translation id="8289942708804097960">Beli kripto dengan kad kredit atau debit.</translation>
-<translation id="841880029259839903">Hantar kripto atau pindahkan dari satu akaun ke akaun lain.</translation>
-<translation id="151939837774436299">Tukar token dengan aset</translation>
-<translation id="5512897350309216422">Masukkan kripto pada Dompet Brave.</translation>
 <translation id="1783600039044302171">Lindungi keselamatan kripto anda dengan kata laluan</translation>
 <translation id="3726490322412361740">Masukkan Kata Laluan</translation>
 <translation id="3038243139480464605">Sahkan kata laluan</translation>
 <translation id="3043677904160378840">Kata laluan mestilah sekurang-kurangnya 8 aksara.</translation>
 <translation id="7396672979287122068">Kata laluan yang disahkan tidak sepadan</translation>
 <translation id="7084181009966710506">Mencipta Dompet...</translation>
-<translation id="3188963375823360044">1J</translation>
-<translation id="8163269366661594721">1D</translation>
-<translation id="7640956400175663828">1W</translation>
-<translation id="9100647964747998533">1M</translation>
-<translation id="6366007539108097840">3M</translation>
-<translation id="6977728312178289892">1Y</translation>
-<translation id="6895566650974550243">SEMUA</translation>
 <translation id="1577948178257477049">Akaun <ph name="ACCOUNT_NAME"/>  <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Tambah akaun</translation>
-<translation id="318334680413773318">Tambah/Import akaun</translation>
 <translation id="3448492834076427715">Kemas kini akaun</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Dayakan buka kunci cap jari?</translation>
 <translation id="5493402808936397665">Dayakan biometrik untuk membuka kunci dompet anda dengan cepat tanpa memasukkan kata laluan anda.</translation>
 <translation id="8030647312184163932">Buka kunci cap jari</translation>
 <translation id="4090490645603511157">Gunakan biometrik untuk membuka kunci dompet anda dengan cepat tanpa memasukkan kata laluan anda.</translation>
+<translation id="1544192797660353713">Dompet</translation>
 <translation id="6901810042765869341">Masukkan frasa pemulihan anda untuk memulihkan akaun kripto Brave Wallet anda.</translation>
 <translation id="9120654436199628567">Pulihkan akaun kripto</translation>
 <translation id="4811736040444856406">Tunjukkan frasa pemulihan</translation>
@@ -654,6 +639,16 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
 <translation id="5844138175312846408">Sudah memiliki dompet?</translation>
 <translation id="2502258949541727762">Sebelum kami bermula</translation>
+<translation id="8248460961680233459">Cipta kata laluan</translation>
+<translation id="2789310860394340571">Anda perlu menggunakan kata laluan ini untuk mengakses dompet anda.</translation>
+<translation id="2136372518715274136">Masukkan kata laluan baharu</translation>
+<translation id="4450951602553063001">Masukkan semula kata laluan</translation>
+<translation id="8532036315398875940">Kata laluan mestilah sekurang-kurangnya 8 aksara.</translation>
+<translation id="5098216864434824711">Kata laluan tidak sepadan.</translation>
+<translation id="4917385247580444890">Kuat</translation>
+<translation id="8297006494302853456">Lemah</translation>
+<translation id="574392208103952083">Sederhana</translation>
+<translation id="6697810017029555732">Sepadan!</translation>
 <translation id="5981303441790732480">Import dompet anda yang sedia ada</translation>
 <translation id="9111102763498581341">Buka kunci</translation>
 <translation id="6657585470893396449">Kata laluan</translation>
@@ -662,42 +657,16 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1144810021918451336">Tidak melindungi anda daripada laman web, muat turun, dan sambungan berbahaya.</translation>
 <translation id="5760476995887363522">Frasa tidak sepadan. Sila cuba lagi.</translation>
 <translation id="2360588547830602174">Pemulihan akaun gagal. Sila cuba lagi.</translation>
-<translation id="5517732667776806421">Tiada maklumat hasil tambah semak</translation>
-<translation id="4006711930669471508">Maklumat hasil tambah semak tidak sah</translation>
 <translation id="1987317783729300807">Akaun</translation>
-<translation id="3535654229833214438">Transaksi</translation>
-<translation id="2449682593754783720">1 Jam</translation>
-<translation id="969133700726811190">1 Hari</translation>
-<translation id="5882300031363619940">1 Minggu</translation>
-<translation id="5698094150392720512">1 Bulan</translation>
-<translation id="5483736362376139517">1 Tahun</translation>
-<translation id="6979737339423435258">Sepanjang masa</translation>
 <translation id="6284218950354553099">Hantar ping penggunaan harian secara automatik ke Brave</translation>
 <translation id="2181060149810222381">Ping peribadi ini membolehkan Brave menganggarkan pengguna aktif.</translation>
-<translation id="3819257035322786455">Sandaran</translation>
-<translation id="4608713693379664295">Akaun Kripto Utama</translation>
-<translation id="4003821417160006384">Akaun Kedua</translation>
-<translation id="2471916999505901943">Akaun ini dapat digunakan dengan web 3 DApps, dan dapat ditunjukkan dalam portfolio anda. Namun, sila ambil perhatian bahawa akaun kedua tidak dapat dipulihkan melalui frasa pemulihan daripada sandaran akaun utama anda.</translation>
 <translation id="6725413948756358325">Nama Akaun</translation>
 <translation id="6062431965141524986">Anda boleh mencipta akaun kedua dengan mengimport kunci peribadi anda.</translation>
 <translation id="3952797765659730604">Masukkan, tampal atau import fail rentetan kunci peribadi atau JSON.</translation>
 <translation id="569068482611873351">Import...</translation>
-<translation id="1940465339426637378">Aset</translation>
 <translation id="4522570452068850558">Butiran</translation>
-<translation id="3995184924764722477">Butiran Akaun</translation>
-<translation id="8967036623785635603">Edit aset yang kelihatan</translation>
-<translation id="8475984867371585028">Edit NFT boleh dilihat</translation>
-<translation id="5050890334032852465">Simpan senarai tonton akaun</translation>
-<translation id="7755766175599167100">Cari token</translation>
 <translation id="3784455785234192852">Kunci</translation>
 <translation id="4412698727486357573">Pusat bantuan</translation>
-<translation id="8796429300536029044">Butiran NFT</translation>
-<translation id="3866249974567520381">Keterangan</translation>
-<translation id="4378475168089649292">Blok rantai</translation>
-<translation id="794436451374055797">Standard Token</translation>
-<translation id="9033453977881595182">ID Token</translation>
-<translation id="4987916116550559556">Alamat Mint</translation>
-<translation id="7592795625234816917">Imej tidak tersedia</translation>
 <translation id="8239147115686034860">Kunci Brave Wallet secara automatik</translation>
 <translation id="414639769490080648">Bilangan minit untuk menunggu sehingga Brave Wallet dikunci secara automatik</translation>
 <translation id="2326850911705720398">Tetapkan semula dan kosongkan data dompet</translation>
@@ -714,19 +683,15 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="4122515759479497554">Cari video</translation>
 <translation id="4449475351935531438">Tembok Api Brave + VPN</translation>
 <translation id="719977489961414786">Naik taraf ke VPN untuk melindungi sambungan anda dan sekat penjejak invasif di mana-mana sahaja.</translation>
-<translation id="3435896845095436175">Dayakan</translation>
 <translation id="8814357473522731680">Dikuasakan oleh</translation>
-<translation id="5596139545583924414">Sekat penjejak iklan &amp; merentasi semua peranti</translation>
-<translation id="8272917646984397798">Melindungi semua sambungan</translation>
-<translation id="1751947227857853925">Cepat dan tanpa had sehingga 100 Mbps</translation>
-<translation id="1400240082805528049">Sokongan 24/7</translation>
 <translation id="5892534145504632332">Lindungi setiap apl &amp; seluruh peranti anda</translation>
 <translation id="7195416926059527505">Lebih selamat untuk WI-Fi rumah atau awam</translation>
 <translation id="1354700000739359839">Sepantas kilat, sehingga 100 Mbps</translation>
 <translation id="3510283489391432976">Pilih lokasi geo/negara anda</translation>
 <translation id="7695158478627528928">Brave tidak pernah mengelogkan aktiviti anda</translation>
 <translation id="4575683170451975058">Lindungi 5 peranti pada 1 langganan</translation>
-<translation id="276866628038850725">Semua pelan termasuk percubaan 7 hari percuma!</translation>
+<translation id="4882693590083943563">Semua pelan termasuk <ph name="TRIAL_DAYS"/></translation>
+<translation id="487741927046441232">percubaan percuma 7 hari!</translation>
 <translation id="1532536259167115948">Langganan bulanan <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Langganan tahunan <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Diperbaharui secara bulanan</translation>
@@ -736,7 +701,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / thn.</translation>
 <translation id="2655185358771731232">Cuba secara percuma untuk 7 hari. Selepas 7 hari, anda akan dikenakan caj harga pelan. Semua langganan diperbaharui secara automatik tetapi boleh dibatalkan sebelum pembaharuan.</translation>
 <translation id="6053992191006521518">Cuba secara PERCUMA</translation>
-<translation id="3990956504562716932">Cuba gunakan secara Percuma selama 7 Hari</translation>
+<translation id="5903391101107992067">Cuba gunakan selama 7 Hari secara Percuma</translation>
 <translation id="721747358270435486">Pasang VPN</translation>
 <translation id="836074276610740314">Pasang Profil VPN</translation>
 <translation id="8021842065465097929">Brave kini akan memasang profil VPN.</translation>
@@ -797,12 +762,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1924965034964265193">Masukkan nilai nonce tersuai</translation>
 <translation id="5317780077021120954">Simpan</translation>
 <translation id="4979796155378508955">Transaksi mungkin tidak disebarluaskan ke rangkaian jika nilai nonce tersuai tidak mengikut urutan atau mempunyai ralat lain.</translation>
-<translation id="6122742277607781713">Portfolio</translation>
-<translation id="1736419249208073774">Teroka</translation>
-<translation id="4576965889365503638">MAKLUMAT</translation>
-<translation id="152455748535966757">Pangkat</translation>
-<translation id="4958716607782044952">Kelantangan 24j</translation>
-<translation id="128834189395075789">Modal Pasaran</translation>
 <translation id="750843150060816463">Harga Gas (Gwei)</translation>
 <translation id="1426320910664514906">Had Gas</translation>
 <translation id="6389441740143786465">Nyahdayakan Hab Pengongsian</translation>
@@ -812,10 +771,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="8084782383392198011">Nama akaun tidak boleh kosong.</translation>
 <translation id="5045550434625856497">Kata laluan tidak sah</translation>
 <translation id="1367951781824006909">Pilih fail</translation>
-<translation id="5932938770824268122">Kekunci Persendirian</translation>
-<translation id="2472882733835903303">Tunjukkan Kekunci Persendirian</translation>
-<translation id="4391056902675005799">Sembunyikan Kekunci Persendirian</translation>
-<translation id="7518007103754668253">Amaran: Jangan sekali-kali mendedahkan kunci ini. Sesiapa sahaja yang mempunyai kunci peribadi ini boleh mencuri sebarang aset yang disimpan dalam akaun anda.</translation>
 <translation id="1133619932669546254">Aktifkan <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">JENIS FUNGSI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Tiada data</translation>
@@ -832,7 +787,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2331676293859649642">Disahkan</translation>
 <translation id="8214232307424031138">Ditandatangani</translation>
 <translation id="1165039591588034296">Ralat</translation>
-<translation id="8364362220156372884">Yuran: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Adakah anda menggunakan penyemak imbas web yang terpantas?</translation>
 <translation id="2065971949051836200">Internet 3x lebih pantas kini di telefon anda. Gunakan Brave untuk semua penyemakan imbas web anda.</translation>
 <translation id="2888278614497184977">Brave = penyemakan imbas web 3x lebih pantas</translation>
@@ -856,21 +810,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1254969878422524947">Had tip per gas (Gwei)</translation>
 <translation id="7373308452149471621">Had harga per gas (Gwei)</translation>
 <translation id="5891811606602061966">Gagal mengimport akaun, sila cuba lagi.</translation>
-<translation id="5061574358754621254">Data harga dikuasakan oleh CoinGecko</translation>
-<translation id="8574289650879708853">Tambah aset tersuai</translation>
-<translation id="1255896809210433555">Tambah NFT</translation>
-<translation id="7791543448312431591">Tambah</translation>
-<translation id="6600400596821238377">Nama token</translation>
-<translation id="3797613444743816037">Alamat Mint</translation>
-<translation id="4092152169181928870">Simbol token</translation>
 <translation id="4351811224047421378">Titik perpuluhan tepat</translation>
-<translation id="547122651977318828">ID Token (hanya untuk ERC721)</translation>
-<translation id="8614026298974065517">Alih keluar aset tersuai</translation>
-<translation id="4378941981362528553">Adakah anda mahu mengalih keluar <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) token?</translation>
-<translation id="4250680216510889253">Tidak</translation>
-<translation id="8971278306757462297">Alamat penerima ialah alamat anda sendiri</translation>
-<translation id="749944179568745958">Bukan alamat ETH yang sah</translation>
-<translation id="3506416339268164412">Alamat penerima ialah alamat kontrak token</translation>
 <translation id="3494964159182650590">Ringkasan Ganjaran</translation>
 <translation id="590733288489975971">Ganjaran dari Iklan</translation>
 <translation id="1886682615222609631">Pendapatan setakat ini</translation>
@@ -902,6 +842,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="4693057234255364395">Sekat URL penjelajah</translation>
 <translation id="7059127752542505809">Masukkan URL</translation>
 <translation id="2156993118928861787">Alamat tidak sah</translation>
+<translation id="7791543448312431591">Tambah</translation>
 <translation id="6889920539620318793">Tetapkan sebagai aktif</translation>
 <translation id="2653659639078652383">Serah</translation>
 <translation id="4945690646623486292">Pilih Rangkaian</translation>
@@ -983,21 +924,14 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6577166808959668729">Menyokong aset serasi SPL pada rantaian blok Solana</translation>
 <translation id="4541295941776129088">Simpan aset FIL</translation>
 <translation id="6575120282593094155">Anda belum lagi mempunyai akaun <ph name="ACCOUNT_TYPE"/>. Cipta akaun sekarang?</translation>
+<translation id="4250680216510889253">Tidak</translation>
 <translation id="1599766910146472906">Apl yang Dikecualikan</translation>
 <translation id="8463269357637177759">Apl Biasa yang Dibenarkan</translation>
 <translation id="4554726425645556940">Apl Sistem yang Dibenarkan</translation>
 <translation id="9023148942866814328">Tunjukkan Apl Sistem</translation>
 <translation id="5472400694702418949">Tambah apl untuk dikecualikan daripada trafik VPN.</translation>
 <translation id="7002577172732106572">Penerowongan Terpisah</translation>
-<translation id="2832270987629018596">Bukan alamat SOL yang sah</translation>
-<translation id="6423985584914773314">Bukan alamat FIL yang sah</translation>
 <translation id="8181161042860463420">Akaun token yang berkaitan belum wujud lagi. Sejumlah kecil SOL akan dibelanjakan untuk mencipta dan membiayainya. <ph name="CLICK_START"/>Ketahui lebih lanjut<ph name="CLICK_END"/></translation>
-<translation id="1304515257839771197">Buka apl <ph name="APP_NAME"/>?</translation>
-<translation id="7653028065515320848"><ph name="CLICK_START"/>Ketahui lebih lanjut tentang cara menggunakan Rainbow Bridge<ph name="CLICK_END"/></translation>
-<translation id="8219806187375413057"><ph name="CLICK_START"/>Ketahui cara untuk mengurangkan risiko di Rainbow Bridge<ph name="CLICK_END"/></translation>
-<translation id="1065082006518490444"><ph name="APP_NAME"/> merupakan perkhidmatan bebas yang membantu anda menghubungkan aset ke seluruh rangkaian dan menggunakan kripto anda pada rangkaian lain dan ekosistem DApp. Penghubungan aset kepada rangkaian lain mempunyai beberapa risiko.</translation>
-<translation id="8423380132356660250">Buka apl <ph name="APP_NAME"/></translation>
-<translation id="4450893287417543264">Jangan tunjuk lagi</translation>
 <translation id="168154537623654021">Mengemas kini Profil VPN ...</translation>
 <translation id="7457027586454688423">Masukkan kata laluan Dompet Brave anda</translation>
 <translation id="4784306439879850873">Sila ambil perhatian bahawa Brave tidak dapat mengesahkan kesan daripada penurunan tandatangan anda.  Tandatangan boleh membenarkan hampir semua kendalian dalam akaun anda atau bagi pihak anda, termasuk (tetapi tidak terhad kepada) memberikan kawalan sepenuhnya terhadap akaun dan aset kripto anda kepada laman web yang membuat permintaan tersebut. Hanya tandatangan jika anda pasti dengan tindakan ini, dan mempercayai laman web tersebut.</translation>
@@ -1076,7 +1010,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1313065465616456728">Dikeluarkan pada</translation>
 <translation id="7902225556763260253">Masa tamat tempoh</translation>
 <translation id="1908159733454294871">Risiko keselamatan dikesan</translation>
-<translation id="4220693114674044366">Alamat token</translation>
 <translation id="5658257029899993935">Pautkan pembelian ke akaun Brave anda</translation>
 <translation id="1187061015547219282">Pautkan pembelian Play Store pada akaun Brave anda untuk menggunakan VPN Brave pada peranti lain.</translation>
 <translation id="6662142137695589205">Pautkan langganan VPN anda</translation>
@@ -1089,7 +1022,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6067959437127691361">Tindakan menggunakan Ganjaran Brave dapat menyokong pencipta kandungan dan membolehkan anda memperoleh BAT</translation>
 <translation id="3264975266761862670">Sudah bersedia untuk mula memperoleh pendapatan?</translation>
 <translation id="265337947574975838">Sambung atau cipta akaun dengan salah satu rakan kongsi kami.</translation>
-<translation id="1772961321862399863">Untuk memperoleh BAT, pengguna mesti menyambungkan akaun penjagaan dengan Ganjaran Brave. Malangnya, tiada penjagaan yang tersedia di rantau anda jadi pendapatan tidak tersedia. Buat masa ini, tindakan menghidupkan Ganjaran Brave akan menyokong pencipta secara automatik.</translation>
 <translation id="654447476965480878">Ketahui lebih lanjut tentang perolehan BAT</translation>
 <translation id="6278643716658443228">Tetapan ganjaran</translation>
 <translation id="6516984207843289176">Hubungkan akaun</translation>
@@ -1110,33 +1042,23 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="7748944510530490017">Rangkaian Utama</translation>
 <translation id="2781668117338732220">Rangkaian Kedua</translation>
 <translation id="282560918037172384">Rangkaian Ujian</translation>
-<translation id="3586775666459823714">NFT</translation>
-<translation id="8849001918648564819">Tersembunyi</translation>
 <translation id="707569835145765061">Tindakan diperlukan: Sambungkan akaun penjaga atau vBAT anda akan hilang</translation>
 <translation id="1776742005329298234">Pada <ph name="DUE_DATE"/>, kami akan menghentikan sokongan untuk baki BAT maya sedia ada. Sambungkan akaun penjagaan sebelum tarikh ini supaya kami boleh memindahkan baki anda yang diperoleh ke akaun penjagaan anda. Jika tidak, baki anda akan hilang.</translation>
 <translation id="5089752671190341407">Anda masih mempunyai masa untuk menyumbangkan vBAT anda kepada pencipta kegemaran anda</translation>
 <translation id="171158953146804144">Pada <ph name="DUE_DATE"/>, kami akan menghentikan sokongan untuk baki BAT maya sedia ada. Malangnya, tiada penjaga yang tersedia di rantau anda (<ph name="REGION"/>) untuk mengeluarkan pendapatan anda. Sementara itu, anda masih boleh menyumbang kepada pencipta kegemaran anda.</translation>
 <translation id="8949422576126100041">Paparkan halaman dengan Speedreader?</translation>
+<translation id="3435896845095436175">Dayakan</translation>
 <translation id="5296840868251496327">Dayakan Pembaca Laju</translation>
 <translation id="591648995518106347">Memuatkan artikel layak secara automatik dalam mod pembaca</translation>
 <translation id="1295796122927221823">Paparkan dalam mod pembaca</translation>
-<translation id="5062934803872044756"><ph name="SYMBOL"/> pada <ph name="NETWORK"/></translation>
-<translation id="9085765419770918643">Belum ada NFT di sini.</translation>
-<translation id="8445532667841598737">Sedia untuk menambahkan beberapa data? Hanya klik butang di bawah untuk pengimportan.</translation>
-<translation id="5925465310724910998">Mahu NFT anda dipaparkan secara automatik?</translation>
-<translation id="2827460859891872324">Dompet Brave boleh menggunakan perkhidmatan pihak ketiga untuk memaparkan NFT anda secara automatik. Brave akan kongsikan alamat dompet anda dengan <ph name="BEGIN_LINK_1"/>SimpleHash<ph name="END_LINK_1"/> untuk menyediakan perkhidmatan ini. <ph name="BEGIN_LINK_2"/>Ketahui lebih lanjut.<ph name="END_LINK_2"/></translation>
 <translation id="7568430944629653319">Dayakan penemuan NFT</translation>
 <translation id="622372328961630111">Tambahkan NFT yang anda miliki secara automatik pada dompet menggunakan API pihak ketiga. <ph name="BEGIN_LINK_1"/>Ketahui lebih lanjut.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Akaun Jadual Carian Alamat:</translation>
 <translation id="7659483790930268440">Indeks Jadual Carian Alamat:</translation>
-<translation id="7853202427316060426">Aktiviti</translation>
 <translation id="4932733599132424254">Tarikh</translation>
 <translation id="346505172740911461">Harga Pasaran</translation>
-<translation id="4709355193533327244">Tiada transaksi untuk dipaparkan lagi.</translation>
-<translation id="4931644613135313937">Setelah anda membuat transaksi, anda akan dapat melihat transaksi ini di sini.</translation>
 <translation id="5494920125229734069">Pilih semua</translation>
 <translation id="5972844218283131174">Nyahpilih semua</translation>
-<translation id="6322030314101903925">Tiada aset yang tersedia</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Log masuk dengan Brave Wallet</translation>
 <translation id="3696514931437952995">Anda sedang log masuk ke <ph name="ORIGIN"/>. Brave Wallet akan berkongsi alamat dompet anda dengan <ph name="ORIGIN"/>.</translation>
@@ -1227,4 +1149,33 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6393423486818299209">Gunakan penyedia perkhidmatan semasa anda atau Wikimedia DNS</translation>
 <translation id="3401384982562827787">Gunakan penyedia perkhidmatan semasa anda atau Cloudflare</translation>
 <translation id="8812367543786936496">Jika penyedia perkhidmatan semasa anda tidak selamat, Brave menggunakan penyedia DNS alternatif yang selamat</translation>
+<translation id="5680678411439841197">bandar</translation>
+<translation id="8185518433273977704">pekan</translation>
+<translation id="4528386452965343421">daerah</translation>
+<translation id="1589122976691792535">wilayah</translation>
+<translation id="2221292964468054123">negeri</translation>
+<translation id="3801482889636327368">organisasi</translation>
+<translation id="1425162721525518064">syarikat</translation>
+<translation id="7568794877555549044">negara</translation>
+<translation id="5982110855572850497">label</translation>
+<translation id="6848689413353508904">bekas</translation>
+<translation id="1496514951988037011">nama pengguna</translation>
+<translation id="6155129418108337061">log masuk</translation>
+<translation id="4038523199754403233">id</translation>
+<translation id="901834265349196618">e-mel</translation>
+<translation id="3488199663160411179">nama</translation>
+<translation id="793994607260936590">pertama</translation>
+<translation id="1782612111936779655">akhir</translation>
+<translation id="7628132737455466188">penuh</translation>
+<translation id="8621068256433641644">telefon</translation>
+<translation id="5993210100509955931">tel. bimbit</translation>
+<translation id="598301471034819706">alamat</translation>
+<translation id="5557821203571216370">pangsapuri</translation>
+<translation id="8051552210542030943">kod pin</translation>
+<translation id="5233247193491045452">poskod</translation>
+<translation id="3300502432153878901">kod zip</translation>
+<translation id="4130750466177569591">Saya bersetuju</translation>
+<translation id="3251885322612056119">Syarat Perkhidmatan yang dikemaskinikan</translation>
+<translation id="4049035689681585146">Kami telah mengemaskinikan Syarat Perkhidmatan untuk Ganjaran Brave. Kami membuat kemaskinian ini untuk menjelaskan syarat kami dan memastikan ia meliputi ciri baharu. Jika anda meneruskan penggunaan Ganjaran Brave, maksudnya anda bersetuju menerima Syarat Perkhidmatan yang dikemaskinikan. Jika anda tidak bersetuju, anda boleh <ph name="RESET_START"/>menetapkan semula<ph name="RESET_END"/> Ganjaran Brave, dan tindakan ini akan menyahdayakan ciri tersebut.</translation>
+<translation id="2165953574528546737">Lihat <ph name="TOS_START"/>Syarat Perkhidmatan Ganjaran Brave<ph name="TOS_END"/></translation>
 </translationbundle>

@@ -207,6 +207,7 @@
 <translation id="2289567621059034186">ಕೆಳಗೆ ಹೊಸ ಟ್ಯಾಬ್ ಇದೆ</translation>
 <translation id="3228962656492373217">ಕೆಳಗಿನ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
 <translation id="8030501904366631501">ಎಲ್ಲಾ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಈ ವಿಂಡೋಗೆ ತನ್ನಿ</translation>
+<translation id="253980346046488815">ನಕಲಿ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
 <translation id="2336228925368920074">ಎಲ್ಲಾ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿ...</translation>
 <translation id="2523967823495420116">ಲಂಬ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬಳಸಿ</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ಟ್ಯಾಬ್ ಅನ್ನು ಮ್ಯೂಟ್ ಮಾಡಿ}one{ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮ್ಯೂಟ್ ಮಾಡಿ}other{ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮ್ಯೂಟ್ ಮಾಡಿ}}</translation>
@@ -214,6 +215,7 @@
 <translation id="4405580203042711503">ಕೆಳಗೆ ಹೊಸ ಟ್ಯಾಬ್ ಇದೆ</translation>
 <translation id="5611474372949142946">ಕೆಳಗಿನ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
 <translation id="573844928911967687">ಎಲ್ಲಾ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಈ ವಿಂಡೋಗೆ ತನ್ನಿ</translation>
+<translation id="2703180365855369896">ನಕಲಿ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
 <translation id="3704707436873245822">ಚಿತ್ರದಿಂದ ಪಠ್ಯವನ್ನು ನಕಲಿಸಿ</translation>
 <translation id="5268098808165185458">ಚಿತ್ರದಿಂದ ಪಠ್ಯವನ್ನು ನಕಲಿಸಲಾಗುತ್ತಿದೆ...</translation>
 <translation id="4046485130884276245">ಚಿತ್ರದಿಂದ ಪಠ್ಯವನ್ನು ನಕಲಿಸಲಾಗಿದೆ</translation>
@@ -221,7 +223,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Brave VPN ನಲ್ಲಿ WireGuard ಪ್ರೋಟೋಕಾಲ್ ಬಳಸಿ</translation>
 <translation id="8519170191215826548">Brave VPN ಸಂಪರ್ಕಗೊಂಡಿರುವಾಗ ಈ ಸೆಟ್ಟಿಂಗ್ ಅನ್ನು ಬದಲಾಯಿಸಲಾಗುವುದಿಲ್ಲ.</translation>
-<translation id="5620961847363372221">ಬ್ರೌಸರ್ ಪುನಾರಂಭಿಸುವಿಕೆ ಅಗತ್ಯವಿದೆ.</translation>
 <translation id="4235920711083356755">VPN ಬಟನ್‌ ತೋರಿಸು</translation>
 <translation id="4070612712151038707">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ VPN ಬಟನ್ ತೋರಿಸುತ್ತದೆ</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -316,6 +317,9 @@
 <translation id="1727684853006449697">Brave ಪ್ಲೇಯರ್</translation>
 <translation id="9156965752763025780">ನೀವು ಮುಂದಿನ ಬಾರಿ Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿದಾಗ ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಕಾರ್ಯಗತಗೊಳ್ಳುತ್ತವೆ.</translation>
 <translation id="7179921470347911571">ಇದೀಗ ಮರುಆರಂಭಿಸಿ</translation>
+<translation id="1426410128494586442">ಹೌದು</translation>
+<translation id="4250680216510889253">ಇಲ್ಲ</translation>
+<translation id="2356070529366658676">ಕೇಳಿ</translation>
 <translation id="4472575034687746823">ಪ್ರಾರಂಭ</translation>
 <translation id="8081858229109418493">ಪ್ರೊಫೈಲ್ ಹೆಸರು ಮತ್ತು ಐಕಾನ್</translation>
 <translation id="6786747875388722282">ವಿಸ್ತರಣೆಗಳು</translation>
@@ -443,7 +447,6 @@
 <translation id="3540231253392253941">ಪುಶ್ ಸಂದೇಶ ಕಳುಹಿಸುವಿಕೆಗಾಗಿ Google ಸೇವೆಗಳನ್ನು ಬಳಸಿ</translation>
 <translation id="933652931229970927">ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸಿ</translation>
 <translation id="4891600875049212418">ಸೂಕ್ಷ್ಮ ಸೈಟ್‌ಗಳಿಗೆ ಭೇಟಿ ನೀಡುವಾಗ ಆಫ್-ದಿ-ರೆಕಾರ್ಡ್ ಸ್ಥಿತಿಗೆ ಹೋಗಿ</translation>
-<translation id="2356070529366658676">ಕೇಳಿ</translation>
 <translation id="4846154056248462491">ತೊರೆಯುವಾಗ</translation>
 <translation id="2808630562319398131">Brave Rewards ಡೇಟಾ ಮರುಹೊಂದಿಸಿ...</translation>
 <translation id="6438096877646138757">ನೀವು ಅವುಗಳನ್ನು ಮುಚ್ಚಿದಾಗ ಕುಕೀಗಳನ್ನು ಕ್ಲಿಯರ್ ಮಾಡುವ ಸೈಟ್‌ಗಳು</translation>
@@ -627,6 +630,8 @@
 <translation id="3044369626313583722">Brave ವ್ಯಾಲೆಟ್ ಬಟನ್ ತೋರಿಸಿ</translation>
 <translation id="7568430944629653319">NFT ಅನ್ವೇಷಣೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="970496996377628529">ಮೂರನೇ ಪಾರ್ಟಿ API ಗಳನ್ನು ಬಳಸಿಕೊಂಡು ನಿಮ್ಮ ಸ್ವಂತ ವ್ಯಾಲೆಟ್‌ಗೆ NFT ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸೇರಿಸಿ.</translation>
+<translation id="4898839076551703154">ಖಾಸಗಿ ವಿಂಡೋಗಳಲ್ಲಿ Brave ವ್ಯಾಲೆಟ್ ಸಕ್ರಿಯಗೊಳಿಸಿ.</translation>
+<translation id="1550684990179058322">ಎಚ್ಚರಿಕೆ: ಖಾಸಗಿ ವಿಂಡೋ ಸೆಷನ್‌ನಲ್ಲಿ ವ್ಯಾಲೆಟ್ ವಿಳಾಸವನ್ನು ಮರುಬಳಕೆ ಮಾಡುವುದರಿಂದ ಖಾಸಗಿ ವಿಂಡೋ ಸೆಷನ್ ಅನ್ನು ಖಾಸಗಿಯಲ್ಲದ ವಿಂಡೋ ಸೆಷನ್‌ಗೆ ಲಿಂಕ್ ಮಾಡಲು ಸೈಟ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಬಹುದು.</translation>
 <translation id="8239147115686034860">ಸ್ವಯಂಚಾಲಿತವಾಗಿ Brave ವ್ಯಾಲೆಟ್ ಲಾಕ್ ಮಾಡಿ</translation>
 <translation id="414639769490080648">Brave ವ್ಯಾಲೆಟ್ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಲಾಕ್ ಆಗುವ ತನಕ ಕಾಯಬೇಕಾದ ನಿಮಿಷಗಳ ಸಂಖ್ಯೆ</translation>
 <translation id="856371974127598760">ವ್ಯಾಲೆಟ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
@@ -645,7 +650,7 @@
 <translation id="3752403403443723332">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಲಾಗಿದೆ.</translation>
 <translation id="594766067816395072">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ವಹಿವಾಟು ಮಾಹಿತಿಯನ್ನು ಮರುಹೊಂದಿಸಲಾಗಿದೆ.</translation>
 <translation id="1615009913945115836">ನಿಮ್ಮ ಪಿನ್ ಮಾಡಲಾದ NFT ಗಳನ್ನು ಮರುಹೊಂದಿಸಲಾಗಿದೆ.</translation>
-<translation id="1426410128494586442">ಹೌದು</translation>
+<translation id="57798285717509216">ನೀವು ಸಹಿ ಮಾಡುವುದಕ್ಕೂ ಮೊದಲು ವಹಿವಾಟುಗಳ ಫಲಿತಾಂಶಗಳನ್ನು ನೋಡಿ. <ph name="BEGIN_LINK"/>&lt;u&gt;ಹೆಚ್ಚು ತಿಳಿಯಿರಿ&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Ethereum ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="3504157706952484145">Filecoin ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="1561541094377237745">Solana ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>

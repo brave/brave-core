@@ -165,10 +165,15 @@
 <translation id="4720556299488643018">Se désinscrire</translation>
 <translation id="1209739344687072997">Signaler un site qui ne fonctionne pas</translation>
 <translation id="8510478288840333677">Indiquez aux développeurs de Brave que ce site ne fonctionne pas correctement avec Shields :</translation>
-<translation id="6387106423577201267">Remarque : le rapport envoyé aux serveurs Brave comprendra l'adresse du site, le numéro de version de Brave, les paramètres des boucliers, le statut du VPN et les paramètres linguistiques.</translation>
+<translation id="3110968385867124099">Impossible de signaler cette page, car elle n'était pas diffusée via HTTP/HTTPS.</translation>
+<translation id="7907023135990310743">Cette page est une page Web locale et n'est pas admissible au rapport.</translation>
+<translation id="3645455863322075098">Cette page est une page d'erreur et n'est pas admissible au rapport.</translation>
+<translation id="105644511106871142">Merci de nous aider à améliorer Brave pour tous. Ce rapport enverra uniquement les renseignements qui nous sont nécessaires pour réparer ce site.</translation>
 <translation id="6476216365964140603">Plus de détails (facultatif)</translation>
 <translation id="6145852496180774737">Communiquez avec moi : (facultatif)</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
+<translation id="721949491455392748">Inclure une capture d'écran de la page actuelle</translation>
+<translation id="8459191579769999214">Afficher la capture d'écran</translation>
 <translation id="5299848999918506028">Merci!</translation>
 <translation id="76550953340008122">Merci de faire savoir aux développeurs de Brave qu'il y a quelque chose qui ne va pas sur ce site. Nous ferons de notre mieux pour le réparer !</translation>
 <translation id="4046860372562593546">Gérer Brave Ads</translation>
@@ -427,7 +432,7 @@
 <translation id="5669281110673664811">Vider la liste des exclusions</translation>
 <translation id="1797334173232638045">Vos sites épinglés ont été déplacés vers</translation>
 <translation id="3074127054582480056">Attention</translation>
-<translation id="1666001796278936721">Si vous procédez à la réinitialisation, votre profil Récompenses Brave actuel sera supprimé et vous recommencerez avec un tout nouveau profil Récompenses Brave. Avant de continuer, <ph name="LINK_BEGIN"/>apprenez-en davantage<ph name="LINK_END"/> sur la réinitialisation, par sécurité.</translation>
+<translation id="4915997950539925115">Si vous procédez à la réinitialisation, votre profil Récompenses Brave actuel sera supprimé et les Récompenses Brave ne seront plus activées. Si vous réactivez les Récompenses Brave plus tard, vous recommencerez avec un tout nouveau profil. Lisez notre <ph name="LINK_BEGIN"/>article d'assistance concernant la réinitialisation<ph name="LINK_END"/> pour en savoir plus.</translation>
 <translation id="4806029412510565611">Je comprends que mon profil Récompenses Brave actuel et mes données Récompenses Brave seront supprimés de mon appareil, et j'ai lu l'<ph name="LINK_BEGIN"/>article d'assistance concernant la réinitialisation<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Résumé des récompenses</translation>
 <translation id="2913994227901456490">Voir les [[numItems]] éléments</translation>
@@ -608,10 +613,8 @@
 <translation id="1848737374354350807">Solde</translation>
 <translation id="6516984207843289176">Connecter le compte</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Envie de gagner de l'argent?<ph name="BOLD_END"/> Connectez un compte ou créez-en un auprès de l'un de nos partenaires.</translation>
-<translation id="1772961321862399863">Pour gagner des BAT, les utilisateurs doivent connecter un compte de dépôt à Récompenses Brave. Malheureusement, vous ne pouvez pas en gagner, car votre région ne compte aucun partenaire de compte de dépôt. Pour le moment, l'activation de Récompenses Brave soutiendra automatiquement des créateurs.</translation>
 <translation id="902298128239575729">Envoyer des contributions avec le programme de récompenses Brave</translation>
 <translation id="6276721355724491595">Une fois que vous aurez connecté un compte de dépôt, vous pourrez envoyer des contributions sur demande à vos créateurs préférés en utilisant votre solde associé au programme de récompenses Brave.</translation>
-<translation id="1149481926056509086">Pour pouvoir envoyer des contributions sur demande, les utilisateurs doivent connecter un compte de dépôt au programme de récompenses Brave. Malheureusement, vous ne pouvez pas en envoyer, car votre région ne compte aucun partenaire de compte de dépôt. En attendant, vous continuez de soutenir automatiquement les créateurs.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Ce mois-ci, vous avez visité # créateur soutenu par Récompenses Brave}
       other {Ce mois-ci, vous avez visité # créateurs soutenus par Récompenses Brave}
@@ -646,9 +649,7 @@
 <translation id="1609556006143307897">Vous soutenez les créateurs de contenu</translation>
 <translation id="654447476965480878">En savoir plus sur la manière de gagner des BAT</translation>
 <translation id="4105212447337987768">À compter du <ph name="DATE"/>, nous ne prendrons plus en charge les soldes BAT virtuels existants. Connectez un compte de dépôt avant cette date afin que nous puissions transférer votre solde gagné vers votre compte de dépôt, sinon votre solde sera perdu.</translation>
-<translation id="5684206602316433615">À compter du <ph name="DATE"/>, nous ne prendrons plus en charge les soldes BAT virtuels existants. Malheureusement, il n'y a pas de partenaires de compte de dépôt disponibles dans votre région (<ph name="REGION"/>) pour retirer vos gains. En attendant, vous pouvez toujours contribuer à vos créateurs préférés.</translation>
 <translation id="707569835145765061">Action requise : connecter un compte de dépôt ou vos BAT virtuels seront perdus</translation>
-<translation id="5089752671190341407">Vous avez encore le temps de verser vos BAT virtuels à vos créateurs favoris</translation>
 <translation id="1258144146756156541">Confirmez que vous êtes un être humain</translation>
 <translation id="1555514580945108302">Hmm... Pas tout à fait. Essayez encore.</translation>
 <translation id="8078414184292711961">Faites glisser l'icône BAT vers le <ph name="HINT"/> cible.</translation>
@@ -693,6 +694,10 @@
 <translation id="3479552764303398839">Pas maintenant</translation>
 <translation id="4185473179105062442">Recevez les BAT directement à une adresse de cryptomonnaie en garde autonome</translation>
 <translation id="5802986777701714573">Nous avons ajouté une nouvelle façon pour vous de recevoir vos récompenses mensuelles BAT. Associez un compte de l'un de nos partenaires ou utilisez la nouvelle option de garde autonome pour commencer à gagner dès maintenant.</translation>
+<translation id="3251885322612056119">Conditions d'utilisation mises à jour</translation>
+<translation id="7454675823870922788">Nous avons mis à jour les conditions d'utilisation des Récompenses Brave. Nous avons effectué ces mises à jour pour clarifier nos conditions et garantir qu'elles prennent en compte les nouvelles fonctionnalités. Si vous continuez à utiliser les Récompenses Brave, vous acceptez les nouvelles conditions d'utilisation. Si vous ne les acceptez pas, vous pouvez <ph name="LINK_BEGIN"/>réinitialiser<ph name="LINK_END"/> les Récompenses Brave, ce qui entraînera la désactivation de la fonctionnalité.</translation>
+<translation id="5192526308598085294">Consultez les <ph name="LINK_BEGIN"/>conditions d'utilisation des Récompenses Brave<ph name="LINK_END"/></translation>
+<translation id="4130750466177569591">J'accepte</translation>
 <translation id="86107454835395919">Définir comme contribution mensuelle</translation>
 <translation id="6621880242105464352">Brave prélève <ph name="FEE_PCT"/> du montant envoyé à titre de frais de traitement.</translation>
 <translation id="1420756770787071946">Soutenez ce créateur</translation>
@@ -1135,6 +1140,7 @@
 <translation id="2021522108838444624">Le montant doit être supérieur à 0</translation>
 <translation id="8464365289405373974">L'adresse de destination est obligatoire</translation>
 <translation id="4884792073752467460">Adresse du destinataire non valide</translation>
+<translation id="6326239384961270135">Partie transparente manquante</translation>
 <translation id="8585995109882455949">Comment trouver la bonne adresse?</translation>
 <translation id="8395402412470376435">Brave valide l'adresse pour empêcher les utilisateurs d'envoyer des fonds à la mauvaise adresse en raison d'une mauvaise utilisation des majuscules. Il s'agit d'un processus de « somme de contrôle » pour vérifier qu'il s'agit d'une adresse Ethereum valide.</translation>
 <translation id="4583433813614292221">1. Visiter</translation>
@@ -1483,6 +1489,7 @@
 <translation id="1893207255459018302">Aucun historique de transaction</translation>
 <translation id="5356382676355994980">Les transactions réalisées avec votre portefeuille Brave s'affichent ici.</translation>
 <translation id="3033638954295674319">Une erreur est survenue lors de la récupération des détails du NFT. Veuillez réessayer ultérieurement.</translation>
+<translation id="5964615240954462738">Modifier le jeton</translation>
 <translation id="2612436523196658045">L'adresse ETH sera convertie en adresse Filecoin.</translation>
 <translation id="3282354360699748542">L'adresse <ph name="FILECOIN_ADDRESS"/> dans l'espace de nom Filecoin sera utilisée pour la transaction.</translation>
 <translation id="2540568096903252632">Saisissez un mot de passe pour continuer</translation>
@@ -1507,7 +1514,6 @@
 <translation id="8007404171238546456">Minimum reçu après glissement</translation>
 <translation id="767199001998615704">Frais de réseau</translation>
 <translation id="7057870207229052478">Frais de Brave</translation>
-<translation id="81116374028657878">Frais de protocole</translation>
 <translation id="3624518972158401291">Gratuits</translation>
 <translation id="5038255447967558645">Fournisseur de liquidités</translation>
 <translation id="8450638959928932199">Échanger et envoyer</translation>
@@ -1705,7 +1711,7 @@
 <translation id="7948579849190819732">L'onglet actuel</translation>
 <translation id="7056969230130642253">Vous avez tout vu</translation>
 <translation id="7292242212818928219">Nouveau contenu disponible. Recharger?</translation>
-<translation id="6537880577641744343">Commander</translation>
+<translation id="4144468798716165316">Commandes rapides</translation>
 <translation id="7481312909269577407">Suivant</translation>
 <translation id="302781076327338683">Recharger le cache de contournement</translation>
 <translation id="7211681214230730336">Recharger le cache d'effacement</translation>
@@ -1742,6 +1748,13 @@
 <translation id="855081842937141170">Épingler l'onglet</translation>
 <translation id="2805351816064694332">Fermer les onglets non épinglés</translation>
 <translation id="8657641252283410630">Grouper l'onglet</translation>
+<translation id="8908724110993882115">Option Activer/Désactiver le groupe développée</translation>
+<translation id="8813600493701436462">Retirer l'onglet du groupe actuel</translation>
+<translation id="3170171381379098900">Dissocier le groupe d'onglets actuel</translation>
+<translation id="8589082712469819302">Dissocier tous les onglets</translation>
+<translation id="6804504170598429513">Fermer les onglets dissociés</translation>
+<translation id="5960187586089070931">Fermer les onglets qui ne sont pas dans le groupe actuel</translation>
+<translation id="7043112527867086263">Grouper les onglets dissociés</translation>
 <translation id="8290333944535778783">Faire défiler l'onglet vers le haut</translation>
 <translation id="6141382045715907645">Faire défiler l'onglet vers le bas</translation>
 <translation id="923853139812360539">Générateur de codes QR</translation>
@@ -1826,13 +1839,12 @@
 <translation id="5950760360751948276">Toujours afficher la barre des favoris</translation>
 <translation id="2960757369920422313">Afficher la barre des favoris sur la nouvelle page d'onglets</translation>
 <translation id="522953399371747698">Masquer la barre des favoris</translation>
-<translation id="134184943774258988">Visibilité du bouton Activer/Désactiver tous les favoris</translation>
+<translation id="134184943774258988">Activer/Désactiver la visibilité du bouton Tous les favoris</translation>
 <translation id="2158862020143233462">Activer/Désactiver les boucliers</translation>
 <translation id="4610630726762318759">Activer/Désactiver JavaScript</translation>
 <translation id="188822869499214197">Afficher la bulle de la liste de lecture</translation>
 <translation id="3202536111478033084">Regrouper les onglets selon l'origine actuelle</translation>
 <translation id="6002210667729577411">Déplacer le groupe dans une nouvelle fenêtre</translation>
-<translation id="253980346046488815">Fermer les onglets en double</translation>
 <translation id="9210143726807220086">Activer/Désactiver les onglets verticaux développés</translation>
 <translation id="684629111155788563">Ajouter tous les onglets au nouveau groupe</translation>
 <translation id="9106013521852824634">M'envoyer l'onglet</translation>
@@ -2070,6 +2082,7 @@
 <translation id="8814357473522731680">Optimisé par</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="5747552184818312860">Date d'expiration</translation>
+<translation id="8421945428836418371">Reconnecter automatiquement</translation>
 <translation id="434523916398030617">Communiquer avec l'assistance technique</translation>
 <translation id="1116694919640316211">À propos</translation>
 <translation id="8670386189340362926">Bloquer les traceurs et les annonces sur toutes les applications</translation>

@@ -210,6 +210,7 @@
 <translation id="2289567621059034186">የአዲስ ትር ከታች</translation>
 <translation id="3228962656492373217">ከታች ያሉትን ትሮች ይዝጉ</translation>
 <translation id="8030501904366631501">ሁሉንም ትሮች ወደዚህ መስኮት ያምጡ</translation>
+<translation id="253980346046488815">የተባዙ ትሮችን ዝጋ</translation>
 <translation id="2336228925368920074">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
 <translation id="2523967823495420116">አቀባዊ ትሮችን ተጠቀም</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ትር ላይ ድምጸ-ከል አድርግ}one{ትሮች ላይ ድምጸ-ከል አድርግ}other{ትሮች ላይ ድምጸ-ከል አድርግ}}</translation>
@@ -224,7 +225,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">በ Brave VPN ውስጥ የ WireGuard ፕሮቶኮልን ይጠቀሙ</translation>
 <translation id="8519170191215826548">Brave VPN ሲገናኝ ይህ ቅንብር ሊቀየር አይችልም።</translation>
-<translation id="5620961847363372221">የአሳሽ ዳግም ማስጀመር ያስፈልገዋል።</translation>
 <translation id="4235920711083356755">የ VPN ቁልፍን ማሳየት</translation>
 <translation id="4070612712151038707">በቱልባር ውስጥ የ VPN ቁልፍን ያሳያል</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -319,6 +319,9 @@
 <translation id="1727684853006449697">Brave አጫዋች</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="7179921470347911571">አሁን እንደገና ያስጀምሩ</translation>
+<translation id="1426410128494586442">አዎ</translation>
+<translation id="4250680216510889253">አይ</translation>
+<translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="4472575034687746823">ይጀምሩ</translation>
 <translation id="8081858229109418493">የገጽ ስም እና አዶ</translation>
 <translation id="6786747875388722282">ቅጥያዎች</translation>
@@ -446,7 +449,6 @@
 <translation id="3540231253392253941">ለሚላክ መልእክት የ Google አገልግሎቶችን ይጠቀሙ</translation>
 <translation id="933652931229970927">የምርመራ ሪፖርቶችን በራስ-ሰር ላክ</translation>
 <translation id="4891600875049212418">ሚስጥራዊነት ያላቸው ድህረ ገጾችን ሲጎበኙ ከቅጂ-ውጭ በሆነ ሁነታ ይጠቀሙ</translation>
-<translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="4846154056248462491">ሲወጣ</translation>
 <translation id="2808630562319398131">የ Brave ሽልማቶች ውሂብን ዳግም ያስጀምሩ...</translation>
 <translation id="6438096877646138757">ኩኪዎችን ሲዘጉ የሚያጸዱ ጣቢያዎች</translation>
@@ -645,7 +647,6 @@
 <translation id="3752403403443723332">ዋሌትዎ ዳግም ተጀምሯል።</translation>
 <translation id="594766067816395072">የዋሌትዎ የግብይት መረጃ ዳግም ተጀምሯል።</translation>
 <translation id="1615009913945115836">የእርስዎ የተሰኩ NFTs ዳግም ተጀምረዋል።</translation>
-<translation id="1426410128494586442">አዎ</translation>
 <translation id="4226543734057230801">የ Ethereum አውታረ መረቦች</translation>
 <translation id="3504157706952484145">የ Filecoin አውታረ መረቦች</translation>
 <translation id="1561541094377237745">የ Solana አውታረ መረቦች</translation>

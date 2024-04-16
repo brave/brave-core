@@ -165,10 +165,15 @@
 <translation id="4720556299488643018">Abonnement beenden</translation>
 <translation id="1209739344687072997">Melden Sie eine fehlerhafte Website</translation>
 <translation id="8510478288840333677">Informieren Sie Braves Entwickler darüber, dass diese Website in Kombination mit Schutz nicht richtig funktioniert:</translation>
-<translation id="6387106423577201267">Hinweis: Der an Brave-Server gesendete Bericht wird die Website-Adresse, die Brave-Versionsnummer, die Schutzeinstellungen, den VPN-Status und die Spracheinstellungen enthalten.</translation>
+<translation id="3110968385867124099">Diese Seite kann nicht gemeldet werden, weil sie nicht über HTTP/HTTPS bereitgestellt wurde.</translation>
+<translation id="7907023135990310743">Diese Seite ist eine lokale Webseite und kann nicht gemeldet werden</translation>
+<translation id="3645455863322075098">Diese Seite ist eine Fehlerseite und kann nicht gemeldet werden</translation>
+<translation id="105644511106871142">Vielen Dank, dass Sie dazu beitragen, Brave für alle besser zu machen. Diese Meldung übermittelt nur Informationen, die wir benötigen, um diese Seite zu reparieren.</translation>
 <translation id="6476216365964140603">Zusätzliche Details (optional)</translation>
 <translation id="6145852496180774737">Kontaktieren Sie mich unter: (optional)</translation>
 <translation id="7616645803364270729">E-Mail, Twitter usw.</translation>
+<translation id="721949491455392748">Screenshot der aktuellen Seite einbeziehen</translation>
+<translation id="8459191579769999214">Screenshot anzeigen</translation>
 <translation id="5299848999918506028">Vielen Dank!</translation>
 <translation id="76550953340008122">Vielen Dank, dass Sie Braves Entwickler darüber informiert haben, dass auf dieser Website ein Fehler auftritt. Wir werden unser Bestes tun, um ihn zu beheben!</translation>
 <translation id="4046860372562593546">Brave Anzeigen verwalten</translation>
@@ -427,7 +432,7 @@
 <translation id="5669281110673664811">Ausschlussliste leeren</translation>
 <translation id="1797334173232638045">Ihre angehefteten Seiten wurden verschoben in</translation>
 <translation id="3074127054582480056">Anteil</translation>
-<translation id="1666001796278936721">Durch das Zurücksetzen wird Ihr aktuelles Brave-Belohnungsprofil gelöscht und Sie beginnen mit einem völlig neuen Brave-Belohnungsprofil. Bevor Sie fortfahren, sollten Sie <ph name="LINK_BEGIN"/>weitere Informationen<ph name="LINK_END"/> über das Zurücksetzen lesen, damit Sie sich sicher sind.</translation>
+<translation id="4915997950539925115">Durch das Zurücksetzen wird Ihr aktuelles Profil bei Brave-Belohnungen gelöscht. Brave-Belohnung ist dann nicht mehr aktiv. Wenn Sie Brave-Belohnungen später erneut aktivieren, fangen Sie mit einem neuen Profil an. Lesen Sie unseren <ph name="LINK_BEGIN"/>Support-Artikel über das Zurücksetzen<ph name="LINK_END"/>, um weitere Informationen zu erhalten.</translation>
 <translation id="4806029412510565611">Ich bin mir darüber im Klaren, dass mein aktuelles Brave-Belohnungsprofil und meine Brave-Belohnungsdaten von meinem Gerät gelöscht werden. Außerdem habe ich den <ph name="LINK_BEGIN"/>Support-Artikel über das Zurücksetzen<ph name="LINK_END"/> gelesen.</translation>
 <translation id="3494964159182650590">Übersicht der Spenden</translation>
 <translation id="2913994227901456490">Alle [[numItems]] Elemente ansehen</translation>
@@ -608,10 +613,8 @@
 <translation id="1848737374354350807">Guthaben:</translation>
 <translation id="6516984207843289176">Konto verknüpfen</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Bereit, mit dem Verdienen zu beginnen?<ph name="BOLD_END"/> Verknüpfen Sie Ihr Konto oder erstellen Sie ein neues bei einem unserer Partner.</translation>
-<translation id="1772961321862399863">Um BAT zu verdienen, müssen Benutzer ein Depotkonto mit Brave-Belohnungen verknüpfen. Leider gibt es in Ihrer Region keine Depotbank, so dass Sie keine BAT verdienen können. Wenn Sie Brave-Belohnungen aktivieren, werden automatisch Ersteller unterstützt.</translation>
 <translation id="902298128239575729">Senden Sie Beiträge mit Brave-Belohnungen</translation>
 <translation id="6276721355724491595">Nachdem Sie Ihr Depotkonto verknüpft haben, können Sie über das Guthaben aus Ihren Brave-Belohnungen einmalige Beiträge an Ihre Lieblingsersteller senden.</translation>
-<translation id="1149481926056509086">Um einmalige Beiträge zu senden, müssen Benutzer ein Depotkonto mit Brave-Belohnungen verknüpfen. Leider gibt es in Ihrer Region keine Depotbank, sodass Sie keine Beiträge senden können. Sie unterstützen dennoch automatisch Ersteller.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Diesen Monat haben Sie # Ersteller besucht, der von Brave-Belohnungen unterstützt wird}
       other {Diesen Monat haben Sie # Ersteller besucht, die von Brave-Belohnungen unterstützt werden}
@@ -646,9 +649,7 @@
 <translation id="1609556006143307897">Sie unterstützen Content-Ersteller.</translation>
 <translation id="654447476965480878">Weitere Informationen zum Verdienen von BAT</translation>
 <translation id="4105212447337987768">Am <ph name="DATE"/> werden wir die Unterstützung für bestehende virtuelle BAT-Guthaben einstellen. Verknüpfen Sie vor diesem Datum ein Depotkonto, damit wir Ihr verdientes Guthaben auf Ihr Depotkonto übertragen können. Andernfalls geht Ihr Guthaben verloren.</translation>
-<translation id="5684206602316433615">Am <ph name="DATE"/> werden wir die Unterstützung für bestehende virtuelle BAT-Guthaben einstellen. Leider gibt es in Ihrer Region (<ph name="REGION"/>) keine Depotbanken, bei denen Sie Ihre Einnahmen abheben könnten. Bis dahin können Sie Ihre Lieblingsersteller weiterhin mit Beiträgen unterstützen.</translation>
 <translation id="707569835145765061">Aktion erforderlich: Verknüpfen Sie ein Depotkonto oder Ihr vBAT geht verloren</translation>
-<translation id="5089752671190341407">Sie haben noch Zeit, mit Ihren vBAT Ihre Lieblingsersteller zu unterstützen</translation>
 <translation id="1258144146756156541">Beweisen Sie, dass Sie ein Mensch sind</translation>
 <translation id="1555514580945108302">Hmm ... nicht ganz. Versuchen Sie es erneut.</translation>
 <translation id="8078414184292711961">Ziehen Sie das BAT-Symbol auf das <ph name="HINT"/>-Ziel.</translation>
@@ -693,6 +694,10 @@
 <translation id="3479552764303398839">Jetzt nicht</translation>
 <translation id="4185473179105062442">Erhalten Sie BAT direkt an eine Selbstverwahrungs-Kryptoadresse</translation>
 <translation id="5802986777701714573">Wir haben eine neue Möglichkeit für Sie geschaffen, Ihre monatlichen BAT-Belohnungen zu erhalten. Verknüpfen Sie ein Konto von einem unserer Partner oder nutzen Sie die neue Möglichkeit der Selbstverwahrung, um jetzt anzufangen zu verdienen.</translation>
+<translation id="3251885322612056119">Aktualisierte Nutzungsbedingungen</translation>
+<translation id="7454675823870922788">Wir haben die Nutzungsbedingungen für Brave-Belohnungen geändert. Wir haben diese Änderungen vorgenommen, um die Bedingungen klarer auszudrücken und sicherzustellen, dass sie die neuen Funktionen abdecken. Wenn Sie Brave-Belohnungen weiter verwenden, stimmen Sie den aktualisierten Nutzungsbedingungen zu. Wenn Sie nicht zustimmen, können Sie Brave-Belohnungen <ph name="LINK_BEGIN"/>zurücksetzen<ph name="LINK_END"/>, sodass diese Funktion deaktiviert wird.</translation>
+<translation id="5192526308598085294">Siehe <ph name="LINK_BEGIN"/>Nutzungsbedingungen für Brave-Belohnungen<ph name="LINK_END"/></translation>
+<translation id="4130750466177569591">Ich stimme zu</translation>
 <translation id="86107454835395919">Als monatlichen Beitrag festlegen</translation>
 <translation id="6621880242105464352">Brave erhebt ein Bearbeitungsgebühr in Höhe von <ph name="FEE_PCT"/> des gesendeten Betrags.</translation>
 <translation id="1420756770787071946">Diesen Creator unterstützen</translation>
@@ -1135,6 +1140,7 @@
 <translation id="2021522108838444624">Der Betrag muss größer als 0 sein</translation>
 <translation id="8464365289405373974">Eine Adresse ist erforderlich</translation>
 <translation id="4884792073752467460">Ungültige Empfängeradresse</translation>
+<translation id="6326239384961270135">Transparenter Teil fehlt</translation>
 <translation id="8585995109882455949">Wie finde ich die richtige Adresse?</translation>
 <translation id="8395402412470376435">Brave validiert und verhindert, dass Benutzer Gelder aufgrund falscher Großschreibung an die falsche Adresse senden. Dies ist ein „Prüfsummen“-Prozess, um zu verifizieren, dass es sich um eine gültige Ethereum-Adresse handelt.</translation>
 <translation id="4583433813614292221">1. Website aufrufen</translation>
@@ -1483,6 +1489,7 @@
 <translation id="1893207255459018302">Keine Transaktionshistorie</translation>
 <translation id="5356382676355994980">Transaktionen, die Sie mit Ihrer Brave Wallet getätigt haben, werden hier angezeigt.</translation>
 <translation id="3033638954295674319">Beim Abrufen der NFT-Details ist etwas schiefgelaufen. Bitte versuchen Sie es später erneut</translation>
+<translation id="5964615240954462738">Token bearbeiten</translation>
 <translation id="2612436523196658045">Die ETH-Adresse wird in die Filecoin-Adresse übersetzt.</translation>
 <translation id="3282354360699748542"><ph name="FILECOIN_ADDRESS"/>-Adresse im Filecoin-Namensraum wird für die Transaktion verwendet.</translation>
 <translation id="2540568096903252632">Zum Fortfahren Passwort eingeben</translation>
@@ -1507,7 +1514,6 @@
 <translation id="8007404171238546456">Mindestbetrag nach Tausch</translation>
 <translation id="767199001998615704">Netzwerkgebühr</translation>
 <translation id="7057870207229052478">Brave-Gebühr</translation>
-<translation id="81116374028657878">Protokollgebühr</translation>
 <translation id="3624518972158401291">Kostenlos</translation>
 <translation id="5038255447967558645">Liquiditätsanbieter</translation>
 <translation id="8450638959928932199">Tauschen und Senden</translation>
@@ -1705,7 +1711,7 @@
 <translation id="7948579849190819732">Aktuellem Tab</translation>
 <translation id="7056969230130642253">Sie sind auf dem Laufenden.</translation>
 <translation id="7292242212818928219">Neue Inhalte verfügbar. Neu laden?</translation>
-<translation id="6537880577641744343">Befehle</translation>
+<translation id="4144468798716165316">Kurzbefehle</translation>
 <translation id="7481312909269577407">Vorwärts</translation>
 <translation id="302781076327338683">Ohne Cache neu laden</translation>
 <translation id="7211681214230730336">Mit gelöschtem Cache neu laden</translation>
@@ -1742,6 +1748,13 @@
 <translation id="855081842937141170">Tab anheften</translation>
 <translation id="2805351816064694332">Nicht angeheftete Tabs schließen</translation>
 <translation id="8657641252283410630">Tab gruppieren</translation>
+<translation id="8908724110993882115">Gruppe ein-/ausklappen</translation>
+<translation id="8813600493701436462">Tab aus der aktuellen Gruppe entfernen</translation>
+<translation id="3170171381379098900">Aktuelle Tab-Gruppe auflösen</translation>
+<translation id="8589082712469819302">Alle Tab-Gruppen auflösen</translation>
+<translation id="6804504170598429513">Nicht gruppierte Tabs schließen</translation>
+<translation id="5960187586089070931">Tabs, die nicht in der aktuellen Gruppe sind, schließen</translation>
+<translation id="7043112527867086263">Nicht gruppierte Tabs gruppieren</translation>
 <translation id="8290333944535778783">Tab nach oben scrollen</translation>
 <translation id="6141382045715907645">Tab nach unten scrollen</translation>
 <translation id="923853139812360539">QR-Codegenerator</translation>
@@ -1832,7 +1845,6 @@
 <translation id="188822869499214197">Playlist-Blase anzeigen</translation>
 <translation id="3202536111478033084">Gruppenregisterkarten für den aktuellen Ursprung</translation>
 <translation id="6002210667729577411">Gruppe in neues Fenster verschieben</translation>
-<translation id="253980346046488815">Doppelte Registerkarten schließen</translation>
 <translation id="9210143726807220086">Vertikale Registerkarten erweitert umschalten</translation>
 <translation id="684629111155788563">Alle Tabs zu neuer Gruppe hinzufügen</translation>
 <translation id="9106013521852824634">Tab an eigenes Konto schicken</translation>
@@ -2070,6 +2082,7 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="8814357473522731680">Powered by</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Ablaufdatum</translation>
+<translation id="8421945428836418371">Automatisch neu verbinden</translation>
 <translation id="434523916398030617">Technischen Support kontaktieren</translation>
 <translation id="1116694919640316211">Über</translation>
 <translation id="8670386189340362926">Tracker und Anzeigen auf allen Apps blockieren</translation>

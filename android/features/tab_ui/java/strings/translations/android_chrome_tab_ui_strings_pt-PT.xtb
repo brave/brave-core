@@ -1,15 +1,21 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-PT">
+<translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Criado há <ph name="NUM_WEEKS_ONE"/> semana}other{Criado há <ph name="NUM_WEEKS_MANY"/> semanas}}</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> dos seus separadores não foram utilizados recentemente. Quer fechá-los?</translation>
+<translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Criado há <ph name="NUM_YEARS_ONE"/> ano}other{Criado há <ph name="NUM_YEARS_MANY"/> anos}}</translation>
 <translation id="1155815720264022949">Quer fechar os separadores antigos?</translation>
 <translation id="1197088940767939838">Laranja</translation>
 <translation id="1215127405478249895">Reveja os separadores</translation>
 <translation id="125153950246128346">Toque para ver outro separador.</translation>
+<translation id="1322824555808364080">Convidar pessoas</translation>
 <translation id="1326271443836399892">Reveja as definições de organização atuais.</translation>
+<translation id="149054111719651807">{NUM_MINS,plural, =1{Criado há <ph name="NUM_MINS_ONE"/> minuto}other{Criado há <ph name="NUM_MINS_MANY"/> minutos}}</translation>
 <translation id="1555130319947370107">Azul</translation>
 <translation id="161042844686301425">Turquesa</translation>
+<translation id="1645759014353344461"><ph name="TABS_COUNT_MANY"/> separadores agrupados</translation>
 <translation id="1657719826150349398">Mover o separador para baixo</translation>
+<translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> separador agrupado</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> separador}other{<ph name="TABS_COUNT_MANY"/> separadores}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Adicionar <ph name="TABS_COUNT_ONE"/> separador selecionado aos marcadores}other{Adicionar <ph name="TABS_COUNT_MANY"/> separadores selecionados aos marcadores}}</translation>
 <translation id="2118649612461486615">Informações da loja</translation>
@@ -17,12 +23,13 @@
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Desagrupar separador}other{Desagrupar separadores}}</translation>
 <translation id="2277224997687551299">Editar nome do grupo</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{Adic. separ. aos marcadores}other{Adic. separ. aos marcadores}}</translation>
+<translation id="2375257132547014176">{TABS_COUNT,plural, =1{Reduza o grupo de separadores <ph name="TITLE_OF_GROUP"/> com <ph name="TABS_COUNT_ONE"/> separador.}other{Reduza o grupo de separadores <ph name="TITLE_OF_GROUP"/> com <ph name="TABS_COUNT_MANY"/> separadores.}}</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Reduza <ph name="TABS_COUNT_ONE"/> separador.}other{Reduza o grupo de separadores com <ph name="TABS_COUNT_MANY"/> separadores.}}</translation>
 <translation id="2569352796411618312">Sugestão: <ph name="NUMBER_OF_TABS"/> dos seus separadores não foram utilizados recentemente. Quer fechá-los?</translation>
 <translation id="2613747923081026172">Criar grupo</translation>
 <translation id="2662028055331606429">Classificação de <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Visitar site</translation>
-<translation id="2759453070259087442">Expanda o grupo de separadores <ph name="TITLE_OF_GROUP"/> com <ph name="NUMBER_OF_TABS"/> separadores.</translation>
+<translation id="2776817246640326047">{NUM_HOURS,plural, =1{Criado há <ph name="NUM_HOURS_ONE"/> hora}other{Criado há <ph name="NUM_HOURS_MANY"/> horas}}</translation>
 <translation id="2801787514987684416">Quer ver informações sobre a loja?</translation>
 <translation id="4691798003247738043">Brave | Acerca desta loja</translation>
 <translation id="2977480621796371840">Remover do grupo</translation>
@@ -34,16 +41,18 @@
 <translation id="3328308545011660196">Sugestão: <ph name="NUMBER_OF_TABS"/> separadores parecem estar relacionados. Quer agrupá-los?</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="374923079891132274">Miniat. pré-visual. folha partilha</translation>
-<translation id="3819916404117584598">{TABS_COUNT,plural, =1{Reduza <ph name="TABS_COUNT_ONE"/> separador.}other{Reduza o grupo de separadores <ph name="TITLE_OF_GROUP"/> com <ph name="TABS_COUNT_MANY"/> separadores.}}</translation>
 <translation id="3882834874697329510">Para receber um alerta quando existir um preço inferior num separador aberto, ative as notificações nas Definições.</translation>
 <translation id="3940195383040445971">Monitorize os preços nos separadores.</translation>
 <translation id="3954615705217314756">{TABS_COUNT,plural, =1{Agrupar separador}other{Agrupar separadores}}</translation>
 <translation id="3996880007329611795">Receber notificações</translation>
+<translation id="4009732926939031387">{NUM_DAYS,plural, =1{Criado há <ph name="NUM_DAYS_ONE"/> dia}other{Criado há <ph name="NUM_DAYS_MANY"/> dias}}</translation>
 <translation id="4133493477912226187"><ph name="NUMBER_OF_TABS"/> separadores parecem estar relacionados. Quer agrupá-los?</translation>
 <translation id="4159784952369912983">Roxo</translation>
 <translation id="4212246570487010370">Continue a navegar</translation>
+<translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{Expandir o grupo de separadores <ph name="TITLE_OF_GROUP"/> com <ph name="TABS_COUNT_ONE"/> separador.}other{Expandir o grupo de separadores <ph name="TITLE_OF_GROUP"/> com <ph name="TABS_COUNT_MANY"/> separadores.}}</translation>
 <translation id="427987768447457592">Novo grupo separadores</translation>
 <translation id="4648718555153979859">Os separadores estão agrupados aqui.</translation>
+<translation id="4686942373615810936">Criado agora mesmo</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> crítica)}other{(<ph name="REVIEWS_COUNT_MANY"/> críticas)}}</translation>
 <translation id="4850886885716139402">Ver</translation>
 <translation id="4870911314065352661">Fechar todos os separadores?</translation>
@@ -55,18 +64,16 @@
 <translation id="5082793167783849073">Compare páginas rapidamente através da criação de um grupo. Para começar, toque sem soltar num link.</translation>
 <translation id="5161254044473106830">Título obrigatório</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{Tem <ph name="TABS_COUNT_ONE"/> separador que não usou recentemente}other{Tem <ph name="TABS_COUNT_MANY"/> separadores que não usou recentemente}}</translation>
+<translation id="5338401825260744482">{NUMBER_OF_TABS,plural, =1{Fechar o grupo de separadores com <ph name="TABS_COUNT_ONE"/> separador.}other{Fechar o grupo de separadores com <ph name="TABS_COUNT_MANY"/> separadores.}}</translation>
 <translation id="5339733443032484186">O seu último separador</translation>
 <translation id="5400836586163650660">Cinzento</translation>
 <translation id="5490235265819901748">Grupo de separadores expandido</translation>
 <translation id="5494920125229734069">Selecionar tudo</translation>
 <translation id="5545379293264651575">Fechar sem rever</translation>
 <translation id="5556417849629758491">Veja informações da loja, opção disponível junto à parte superior do ecrã</translation>
-<translation id="5558362125926932819">Feche o grupo de separadores com <ph name="NUMBER_OF_TABS"/> separadores.</translation>
-<translation id="5580090775658607195"><ph name="TAB_COUNT"/> separadores agrupados</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link do Brave}other{<ph name="TABS_COUNT_MANY"/> links do Brave}}</translation>
 <translation id="575494663145460764">Quer obter alertas para descidas de preços?</translation>
 <translation id="58326064309361797">Arraste os separadores para os agrupar.</translation>
-<translation id="5846292395804797011">Feche o grupo <ph name="TITLE_OF_GROUP"/> com <ph name="NUMBER_OF_TABS"/> separadores.</translation>
 <translation id="5901630391730855834">Amarelo</translation>
 <translation id="5972844218283131174">Desmarcar tudo</translation>
 <translation id="6017514345406065928">Verde</translation>
@@ -80,10 +87,12 @@
 <translation id="6562820390860419811">Mover o separador para a esquerda</translation>
 <translation id="6615455863669487791">Mostrar</translation>
 <translation id="6398241160085205003">Pode encontrar os seus separadores fechados em Separadores recentes no menu principal do Brave.</translation>
+<translation id="6744956528665271406">Editar cor do grupo</translation>
 <translation id="6840760312327750441">Para agrupar separadores, toque sem soltar num separador. Em seguida, arraste-o para cima de outro separador.</translation>
 <translation id="6856809498882026482">Ocultar modo de seleção múltipla</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Partilhar separador}other{Partilhar separadores}}</translation>
 <translation id="7129458170538955174">Informações acerca desta loja abertas a meia altura</translation>
+<translation id="7200189319044305940">{NUMBER_OF_TABS,plural, =1{Fechar o grupo <ph name="TITLE_OF_GROUP"/> com <ph name="TABS_COUNT_ONE"/> separador.}other{Fechar o grupo <ph name="TITLE_OF_GROUP"/> com <ph name="TABS_COUNT_MANY"/> separadores.}}</translation>
 <translation id="7204204600596740190">Modo de seleção múltipla</translation>
 <translation id="731648547091221002">Cor <ph name="COLOR_NAME"/> selecionada</translation>
 <translation id="7326879924029668159">Veja a Política de Devolução e muito mais</translation>
@@ -104,16 +113,16 @@
 <translation id="8205266828577616993">Mover separador para cima</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Fechar <ph name="TABS_COUNT_ONE"/> separador selecionado}other{Fechar <ph name="TABS_COUNT_MANY"/> separadores selecionados}}</translation>
 <translation id="8398929769197326728">Nova pasta – <ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="8557923272772633250">Expandir o grupo de separadores com <ph name="NUMBER_OF_TABS"/> separadores</translation>
 <translation id="8714939927607906138">Preço mais baixo</translation>
+<translation id="875848103419578654">{NUM_MONTHS,plural, =1{Criado há <ph name="NUM_MONTHS_ONE"/> mês}other{Criado há <ph name="NUM_MONTHS_MANY"/> meses}}</translation>
 <translation id="8820741577754260431">Veja as descidas de preços nos seus separadores.</translation>
+<translation id="8993967613304721520">{NUMBER_OF_TABS,plural, =1{Expandir o grupo de separadores com <ph name="TABS_COUNT_ONE"/> separador.}other{Expandir o grupo de separadores com <ph name="TABS_COUNT_MANY"/> separadores.}}</translation>
 <translation id="9090098097337832354">Informações acerca desta loja fechadas</translation>
 <translation id="9150694013019234766">Alterne entre separadores no grupo de separadores junto à parte inferior do ecrã.</translation>
 <translation id="9169594135889675189">Adicionar um novo separador ao grupo</translation>
 <translation id="955558140275419384">Reveja todos os separadores arquivados para maior organização acedendo a este editor.</translation>
 <translation id="959682366969460160">Organize-se</translation>
 <translation id="992256792861109788">Rosa</translation>
-<translation id="132189180163944668">Convidar perfis</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
  =1 {Pode encontrar os separadores fechados em Separadores recentes no menu principal do Brave. O seu separador privado não estará disponível.}
 other {Pode encontrar os separadores fechados em Separadores recentes no menu principal do Brave. Os seus # separadores privados não estarão disponíveis.}}</translation>
