@@ -22,5 +22,5 @@ extension UINotificationFeedbackGenerator {
     // Returned in case wanted for retaining to re-impact
     return self
   }
-  
+
 }
