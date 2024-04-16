@@ -44,12 +44,13 @@ bool TabStripLayoutHelper::FillTiledState(
   }
 
   for (int i = 0; i < static_cast<int>(slots_.size()); i++) {
-    if (!controller_->IsValidModelIndex(i)) {
+    auto index = tab_strip_->GetModelIndexOf(slots_.at(i).view);
+    if (!index) {
       continue;
     }
 
     auto& tab_width = tab_widths[i];
-    tab_width.state().set_tiled_state(tab_strip->GetTiledStateForTab(i));
+    tab_width.state().set_tiled_state(tab_strip->GetTiledStateForTab(*index));
   }
   return true;
 }
