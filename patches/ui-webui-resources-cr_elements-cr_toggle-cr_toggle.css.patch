@@ -1,0 +1,25 @@
+diff --git a/ui/webui/resources/cr_elements/cr_toggle/cr_toggle.css b/ui/webui/resources/cr_elements/cr_toggle/cr_toggle.css
+index 94fc2e271790790b67400b33a952f6306896a3e4..ff6073720e1ba3258de411dfeb1edc8d71f57f16 100644
+--- a/ui/webui/resources/cr_elements/cr_toggle/cr_toggle.css
++++ b/ui/webui/resources/cr_elements/cr_toggle/cr_toggle.css
+@@ -75,8 +75,8 @@
+ 
+ @media (prefers-color-scheme: dark) {
+   :host {
+-    --cr-toggle-checked-bar-color: var(--google-blue-300);
+-    --cr-toggle-checked-button-color: var(--google-blue-300);
++    --cr-toggle-checked-bar-color: var(--cr-link-color);
++    --cr-toggle-checked-button-color: var(--cr-link-color);
+     --cr-toggle-checked-ripple-color:
+         rgba(var(--google-blue-300-rgb), .4);
+     --cr-toggle-unchecked-bar-color: var(--google-grey-500);
+@@ -272,3 +272,9 @@ paper-ripple {
+   right: 50%;
+   transform: translate(50%, -50%);
+ }
++
++:host {
++  --cr-toggle-checked-bar-color: var(--cr-link-color) !important;
++  --cr-toggle-checked-button-color: var(--cr-link-color) !important;
++  --cr-toggle-checked-ink-color: var(--cr-link-color) !important;
++}
