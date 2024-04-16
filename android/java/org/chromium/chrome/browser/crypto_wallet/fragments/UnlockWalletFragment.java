@@ -93,12 +93,13 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                     }
                 });
 
-        mUnlockWalletRestoreButton.setOnClickListener(v -> {
-            if (mOnNextPage != null) {
-                mOnNextPage.gotoRestorePage(false);
-                mUnlockWalletPassword.getText().clear();
-            }
-        });
+        mUnlockWalletRestoreButton.setOnClickListener(
+                v -> {
+                    if (mOnNextPage != null) {
+                        mOnNextPage.gotoRestorePage(false);
+                        mUnlockWalletPassword.getText().clear();
+                    }
+                });
 
         mBiometricUnlockWalletImage.setOnClickListener(
                 v -> {

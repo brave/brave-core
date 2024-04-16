@@ -118,7 +118,7 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
                     throw new IllegalStateException(
                             String.format(
                                     "No fragment found for ONBOARDING Wallet action at position"
-                                        + " %d.",
+                                            + " %d.",
                                     position));
                 }
             }
@@ -146,7 +146,7 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
                     throw new IllegalStateException(
                             String.format(
                                     "No fragment found for PASSWORD_CREATION Wallet action at"
-                                        + " position %d.",
+                                            + " position %d.",
                                     position));
                 }
             }
@@ -166,7 +166,7 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
                     throw new IllegalStateException(
                             String.format(
                                     "No fragment found for ONBOARDING_RESTORE Wallet action at"
-                                        + " position %d.",
+                                            + " position %d.",
                                     position));
                 }
             }
