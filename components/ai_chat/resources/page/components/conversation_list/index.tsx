@@ -47,7 +47,7 @@ function ConversationList(props: ConversationListProps) {
     SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
 
   const handleQuestionSubmit = (question: string) => {
-    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
+    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question, null)
   }
 
   const lastEntryElementRef = React.useRef<HTMLDivElement>(null)

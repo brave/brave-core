@@ -245,8 +245,12 @@ function DataContextProvider (props: DataContextProviderProps) {
     if (isCharLimitExceeded) return
     if (shouldDisableUserInput) return
 
-    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(inputText)
+    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(
+      inputText,
+      selectedActionType ?? null
+    )
     setInputText('')
+    resetSelectedActionType()
   }
 
   const initialiseForTargetTab = async () => {
