@@ -96,6 +96,20 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
 
  private:
+  class ChatContextObserver : public content::WebContentsObserver {
+   public:
+    explicit ChatContextObserver(content::WebContents* web_contents,
+                                 AIChatUIPageHandler& page_handler);
+    ~ChatContextObserver() override;
+
+   private:
+    // content::WebContentsObserver
+    void WebContentsDestroyed() override;
+    raw_ref<AIChatUIPageHandler> page_handler_;
+  };
+
+  void HandleWebContentsDestroyed();
+
   // AIChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
@@ -124,6 +138,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
 
   base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>
       chat_tab_helper_observation_{this};
+  std::unique_ptr<ChatContextObserver> chat_context_observer_;
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   std::unique_ptr<PrintPreviewExtractor> print_preview_extractor_;

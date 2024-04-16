@@ -54,6 +54,13 @@ using mojom::CharacterType;
 using mojom::ConversationTurn;
 using mojom::ConversationTurnVisibility;
 
+AIChatUIPageHandler::ChatContextObserver::ChatContextObserver(
+    content::WebContents* web_contents,
+    AIChatUIPageHandler& page_handler)
+    : content::WebContentsObserver(web_contents), page_handler_(page_handler) {}
+
+AIChatUIPageHandler::ChatContextObserver::~ChatContextObserver() = default;
+
 AIChatUIPageHandler::AIChatUIPageHandler(
     content::WebContents* owner_web_contents,
     content::WebContents* chat_context_web_contents,
@@ -69,6 +76,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
+    chat_context_observer_ =
+        std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
     // Report visibility of AI Chat UI to the Conversation, so that
     // automatic actions are only performed when neccessary.
     bool is_visible =
@@ -316,6 +325,15 @@ void AIChatUIPageHandler::SendFeedback(const std::string& category,
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
   active_chat_tab_helper_->SetUserOptedIn(true);
+}
+
+void AIChatUIPageHandler::ChatContextObserver::WebContentsDestroyed() {
+  page_handler_->HandleWebContentsDestroyed();
+}
+
+void AIChatUIPageHandler::HandleWebContentsDestroyed() {
+  chat_tab_helper_observation_.Reset();
+  chat_context_observer_.reset();
 }
 
 void AIChatUIPageHandler::OnHistoryUpdate() {
