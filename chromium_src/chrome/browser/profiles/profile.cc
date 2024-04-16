@@ -6,7 +6,7 @@
 #include "brave/chromium_src/chrome/browser/profiles/profile.h"
 
 #include "brave/components/tor/tor_constants.h"
-#include "components/search_engines/search_engine_choice_utils.h"
+#include "components/search_engines/search_engine_choice/search_engine_choice_utils.h"
 
 #define BRAVE_ALLOWS_BROWSER_WINDOWS *this == TorID() ||
 
