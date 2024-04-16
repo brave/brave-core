@@ -7683,7 +7683,7 @@ extension Strings {
         "vpn.contactFormIssueDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Please choose the cetagory that describes the issue.",
+        value: "Please choose the category that describes the issue.",
         comment: "Description used for specific issue field for customer support contact form."
       )
 
