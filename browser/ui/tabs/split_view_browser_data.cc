@@ -116,7 +116,7 @@ void SplitViewBrowserData::RemoveObserver(
 SplitViewBrowserData::OnTabDragEndedClosure::OnTabDragEndedClosure() = default;
 
 SplitViewBrowserData::OnTabDragEndedClosure::OnTabDragEndedClosure(
-    base::WeakPtr<SplitViewBrowserData> data,
+    SplitViewBrowserData* data,
     base::OnceClosure closure)
     : data_(data), closure_(std::move(closure)) {
   CHECK(data_);
@@ -138,7 +138,7 @@ void SplitViewBrowserData::OnTabDragEndedClosure::RunAndReset() {
   if (closure_) {
     closure_.RunAndReset();
   }
-  data_.reset();
+  data_ = nullptr;
 }
 
 void SplitViewBrowserData::OnTabDragEndedClosure::
@@ -158,7 +158,7 @@ void SplitViewBrowserData::OnTabDragEndedClosure::
     }
   }
 
-  data_.reset();
+  data_ = nullptr;
   std::swap(data_, other.data_);
   std::swap(closure_, other.closure_);
 }
@@ -170,14 +170,13 @@ SplitViewBrowserData::TabDragStarted() {
   tab_strip_model_adapter_->TabDragStarted();
 
   return OnTabDragEndedClosure(
-      weak_ptr_factory_.GetWeakPtr(),
-      base::BindOnce(
-          [](base::WeakPtr<SplitViewBrowserData> data) {
-            if (data) {
-              data->tab_strip_model_adapter_->TabDragEnded();
-            }
-          },
-          weak_ptr_factory_.GetWeakPtr()));
+      this, base::BindOnce(
+                [](base::WeakPtr<SplitViewBrowserData> data) {
+                  if (data) {
+                    data->tab_strip_model_adapter_->TabDragEnded();
+                  }
+                },
+                weak_ptr_factory_.GetWeakPtr()));
 }
 
 BROWSER_USER_DATA_KEY_IMPL(SplitViewBrowserData);

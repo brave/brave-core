@@ -45,7 +45,7 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   class OnTabDragEndedClosure {
    public:
     OnTabDragEndedClosure();
-    OnTabDragEndedClosure(base::WeakPtr<SplitViewBrowserData> data,
+    OnTabDragEndedClosure(SplitViewBrowserData* data,
                           base::OnceClosure closure);
     OnTabDragEndedClosure(OnTabDragEndedClosure&& other) noexcept;
     OnTabDragEndedClosure& operator=(OnTabDragEndedClosure&& other) noexcept;
@@ -56,7 +56,7 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
    private:
     void RunCurrentClosureIfNeededAndReplaceWith(OnTabDragEndedClosure&& other);
 
-    base::WeakPtr<SplitViewBrowserData> data_;
+    raw_ptr<SplitViewBrowserData> data_;
 
     base::ScopedClosureRunner closure_;
   };
