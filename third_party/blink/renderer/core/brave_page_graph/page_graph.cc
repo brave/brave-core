@@ -603,8 +603,7 @@ void PageGraph::DidReceiveData(uint64_t identifier,
     return;
   }
 
-  if (DocumentRequest* document_request =
-          request_tracker_.GetDocumentRequestInfo(identifier)) {
+  if (request_tracker_.GetDocumentRequestInfo(identifier)) {
     // Track document data?
     return;
   }
@@ -615,8 +614,7 @@ void PageGraph::DidReceiveData(uint64_t identifier,
 void PageGraph::DidReceiveBlob(uint64_t identifier,
                                blink::DocumentLoader*,
                                blink::BlobDataHandle*) {
-  if (TrackedRequestRecord* request_record =
-          request_tracker_.GetTrackingRecord(identifier)) {
+  if (request_tracker_.GetTrackingRecord(identifier)) {
     // Track blob data?
     return;
   }
@@ -632,14 +630,12 @@ void PageGraph::DidFinishLoading(uint64_t identifier,
                                  int64_t encoded_data_length,
                                  int64_t decoded_body_length) {
   const FrameId frame_id = GetFrameId(loader);
-  if (TrackedRequestRecord* request_record =
-          request_tracker_.GetTrackingRecord(identifier)) {
+  if (request_tracker_.GetTrackingRecord(identifier)) {
     RegisterRequestComplete(identifier, encoded_data_length, frame_id);
     return;
   }
 
-  if (DocumentRequest* document_request =
-          request_tracker_.GetDocumentRequestInfo(identifier)) {
+  if (request_tracker_.GetDocumentRequestInfo(identifier)) {
     RegisterRequestCompleteForDocument(identifier, encoded_data_length,
                                        frame_id);
     return;
@@ -655,14 +651,12 @@ void PageGraph::DidFailLoading(
     const blink::ResourceError&,
     const base::UnguessableToken& devtools_frame_or_worker_token) {
   const FrameId frame_id = GetFrameId(loader);
-  if (TrackedRequestRecord* request_record =
-          request_tracker_.GetTrackingRecord(identifier)) {
+  if (request_tracker_.GetTrackingRecord(identifier)) {
     RegisterRequestError(identifier, frame_id);
     return;
   }
 
-  if (DocumentRequest* document_request =
-          request_tracker_.GetDocumentRequestInfo(identifier)) {
+  if (request_tracker_.GetDocumentRequestInfo(identifier)) {
     RegisterRequestCompleteForDocument(identifier, -1, frame_id);
     return;
   }

@@ -32,7 +32,7 @@ CommanderProvider::CommanderProvider(AutocompleteProviderClient* client,
   }
 
   if (auto* delegate = client_->GetCommanderDelegate()) {
-    observation_.Observe(client_->GetCommanderDelegate());
+    observation_.Observe(delegate);
   }
 }
 

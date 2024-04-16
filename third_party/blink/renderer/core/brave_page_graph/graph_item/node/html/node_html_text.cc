@@ -47,8 +47,7 @@ void NodeHTMLText::AddGraphMLAttributes(xmlDocPtr doc,
 
 void NodeHTMLText::AddInEdge(const GraphEdge* in_edge) {
   NodeHTML::AddInEdge(in_edge);
-  if (const EdgeNodeRemove* remove_node_in_edge =
-          DynamicTo<EdgeNodeRemove>(in_edge)) {
+  if (DynamicTo<EdgeNodeRemove>(in_edge)) {
     // HTML Text nodes can't be removed if they were never inserted into the
     // tree.
     if (GetParentNode()) {

@@ -48,8 +48,7 @@ void NodeHTML::AddGraphMLAttributes(xmlDocPtr doc,
 
 void NodeHTML::AddInEdge(const GraphEdge* in_edge) {
   GraphNode::AddInEdge(in_edge);
-  if (const EdgeNodeDelete* delete_node_in_edge =
-          DynamicTo<EdgeNodeDelete>(in_edge)) {
+  if (DynamicTo<EdgeNodeDelete>(in_edge)) {
     MarkDeleted();
   }
 }
