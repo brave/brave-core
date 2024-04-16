@@ -16,7 +16,7 @@ import {
   GetTokenBalancesRegistryArg //
 } from '../slices/endpoints/token_balances.endpoints'
 
-type Arg = Pick<GetTokenBalancesRegistryArg, 'networks' | 'persistKey'> & {
+type Arg = Pick<GetTokenBalancesRegistryArg, 'networks'> & {
   accounts: BraveWallet.AccountInfo[]
 }
 
@@ -45,8 +45,7 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
               supportedKeyrings
             })
           ),
-          useAnkrBalancesFeature,
-          persistKey: arg.persistKey
+          useAnkrBalancesFeature
         }
       : skipToken,
     {

@@ -286,8 +286,7 @@ export const PortfolioOverview = () => {
         ? skipToken
         : {
             accounts: usersFilteredAccounts,
-            networks: visiblePortfolioNetworks,
-            persistKey: 'portfolio'
+            networks: visiblePortfolioNetworks
           }
     )
 

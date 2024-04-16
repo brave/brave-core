@@ -92,16 +92,29 @@ export type GetTokenBalancesRegistryArg = {
   accountIds: BraveWallet.AccountId[]
   networks: BalanceNetwork[]
   useAnkrBalancesFeature: boolean
-  /**
-   * Allows the results to be save in local-storage.
-   *
-   * Only allowing the portfolio-page registry for now since that loads the most
-   * balances.
-   *
-   * All calls to this query will use the persisted portfolio registry for the
-   * initial balance before the latest values are streamed-in
-   */
-  persistKey?: 'portfolio'
+}
+
+function mergeTokenBalancesRegistry(
+  a: TokenBalancesRegistry,
+  b: TokenBalancesRegistry
+): TokenBalancesRegistry {
+  const result: TokenBalancesRegistry = { ...a }
+
+  for (const accountId of Object.keys(b.accounts)) {
+    const accountBalances = b.accounts[accountId]
+
+    for (const chainId of Object.keys(accountBalances.chains)) {
+      const chainBalances = accountBalances.chains[chainId]
+
+      result.accounts[accountId] = result.accounts[accountId] || {
+        chains: {}
+      }
+
+      result.accounts[accountId].chains[chainId] = chainBalances
+    }
+  }
+
+  return result
 }
 
 export const tokenBalancesEndpoints = ({
@@ -401,9 +414,13 @@ export const tokenBalancesEndpoints = ({
               return tokenBalancesRegistry
             })
 
-            if (arg.persistKey === 'portfolio') {
-              setPersistedPortfolioTokenBalances(tokenBalancesRegistry)
-            }
+            const persistedBalances = getPersistedPortfolioTokenBalances()
+            setPersistedPortfolioTokenBalances(
+              mergeTokenBalancesRegistry(
+                persistedBalances,
+                tokenBalancesRegistry
+              )
+            )
           } catch (error) {
             handleEndpointError(
               'getTokenBalancesRegistry.onCacheEntryAdded',
