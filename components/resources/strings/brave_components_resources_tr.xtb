@@ -165,10 +165,15 @@
 <translation id="4720556299488643018">Abonelikten çık</translation>
 <translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
 <translation id="8510478288840333677">Bu sitenin Kalkanlar'la düzgün çalışmadığını Brave geliştiricilerine bildirin:</translation>
-<translation id="6387106423577201267">Not: Brave sunucularına gönderilen rapor site adresini, Brave sürüm numarasını, Kalkanlar ayarlarını, VPN durumunu ve dil ayarlarını içerecektir.</translation>
+<translation id="3110968385867124099">Bu sayfa HTTP/HTTPS üzerinden sunulmadığı için rapor edilemiyor.</translation>
+<translation id="7907023135990310743">Bu sayfa bir yerel sayfa ve raporlama için uygun değil.</translation>
+<translation id="3645455863322075098">Bu sayfa bir hata sayfası ve raporlama için uygun değil.</translation>
+<translation id="105644511106871142">Brave'i herkes için daha iyi hale getirmeye yardım ettiğiniz için teşekkürler. Bu rapor yalnızca bu siteyi düzeltmemiz için gerekli bilgileri gönderecek.</translation>
 <translation id="6476216365964140603">Ek ayrıntılar (isteğe bağlı)</translation>
 <translation id="6145852496180774737">Benimle şuradan iletişime geçin (isteğe bağlı):</translation>
 <translation id="7616645803364270729">E-posta, Twitter, vb.</translation>
+<translation id="721949491455392748">Mevcut sayfanın ekran görüntüsünü dahil et</translation>
+<translation id="8459191579769999214">Ekran görüntüsünü görüntüle</translation>
 <translation id="5299848999918506028">Teşekkür ederiz!</translation>
 <translation id="76550953340008122">Bu sitede yanlış bir şeyler olduğunu Brave geliştiricilerine bildirdiğiniz için teşekkür ederiz. Düzeltmek için elimizden geleni yapacağız!</translation>
 <translation id="4046860372562593546">Brave Reklamlarını Yönet</translation>
@@ -427,7 +432,7 @@
 <translation id="5669281110673664811">Hariç tutulanlar listesini temizle</translation>
 <translation id="1797334173232638045">Sabitlenmiş siteleriniz şuraya taşındı:</translation>
 <translation id="3074127054582480056">Dikkat</translation>
-<translation id="1666001796278936721">Sıfırlayarak mevcut Brave Ödülleri profiliniz silinecek ve tamamen yeni bir Brave Ödülleri profiliyle yeniden başlayacaksınız. Devam etmeden önce emin olmak için sıfırlama hakkında <ph name="LINK_BEGIN"/>daha fazla bilgi edinin<ph name="LINK_END"/>.</translation>
+<translation id="4915997950539925115">Sıfırlandığında mevcut Brave Ödülleri profiliniz silinecek ve Brave Ödülleri artık etkin olmayacak. Daha sonra Brave Ödüllerini tekrar etkinleştirirseniz yeni bir profil başlatmış olacaksınız. Daha fazla detay için <ph name="LINK_END"/> sıfırlama hakkında <ph name="LINK_BEGIN"/> destek makalemizi okuyun.</translation>
 <translation id="4806029412510565611">Mevcut Brave Ödülleri profilimin ve Brave Ödülleri verilerimin cihazımdan silineceğini anlıyorum ve <ph name="LINK_BEGIN"/>sıfırlamayla ilgili destek makalesini<ph name="LINK_END"/> okudum.</translation>
 <translation id="3494964159182650590">Ödüller Özeti</translation>
 <translation id="2913994227901456490">[[numItems]] öğenin hepsini gör</translation>
@@ -608,10 +613,8 @@
 <translation id="1848737374354350807">Bakiye:</translation>
 <translation id="6516984207843289176">Hesabı bağla</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Kazanmaya hazır mısınız?<ph name="BOLD_END"/> Bağlanın veya ortaklarımızdan biriyle bir hesap oluşturun.</translation>
-<translation id="1772961321862399863">BAT kazanmak için kullanıcıların Brave Ödüllerine bir korumalı hesap bağlamaları gerekir. Ne yazık ki bölgenizde ulaşılabilir bir koruyucu olmadığı için kazanç özelliği kullanılamıyor. Şimdilik Brave Ödüllerini açmak, oluşturucuları otomatik olarak destekler.</translation>
 <translation id="902298128239575729">Brave Ödülleri ile katkı gönderin</translation>
 <translation id="6276721355724491595">Bir korumalı hesabı bağladıktan sonra en sevdiğiniz oluşturuculara Brave Ödülleri bakiyenizle isteğinize bağlı olarak katkıda bulunabileceksiniz.</translation>
-<translation id="1149481926056509086">İsteğe bağlı katkıda bulunmak için kullanıcılar korumalı bir hesabı Brave Ödüllerine bağlamalıdır. Ne yazık ki bölgenizde koruyucu bulunmamaktadır, bu yüzden katkıda bulunamıyorsunuz. Ancak bu sırada içerik oluşturucuları desteklemeye devam ediyorsunuz.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Bu ay, Brave Ödülleri tarafından desteklenen # oluşturucuyu ziyaret ettiniz}
       other {Bu ay, Brave Ödülleri tarafından desteklenen # oluşturucuyu ziyaret ettiniz}
@@ -646,9 +649,7 @@
 <translation id="1609556006143307897">İçerik oluşturucuları desteklemeye yardımcı oluyorsunuz</translation>
 <translation id="654447476965480878">BAT kazanmak hakkında daha fazla bilgi alın</translation>
 <translation id="4105212447337987768"><ph name="DATE"/> tarihinde, mevcut BAT bakiyeleri için destek vermeyi durduracağız. Kazandığınız bakiyenizi korumalı hesabınıza aktarabilmemiz için bu tarihten önce bir korumalı hesap bağlayın, aksi takdirde bakiyenizi kaybedersiniz.</translation>
-<translation id="5684206602316433615"><ph name="DATE"/> tarihinde, mevcut BAT bakiyeleri için destek vermeyi durduracağız. Ne yazık ki bölgenizde (<ph name="REGION"/>) kazancınızı çekebileceğiniz kullanılabilir korumalı hesaplar mevcut değil. O zamana kadar, favori oluşturucularınıza destek vermeye devam edebilirsiniz.</translation>
 <translation id="707569835145765061">Eylem gerekli: Bir korumalı hesap bağlamazsanız vBAT'ınız kaybolacak</translation>
-<translation id="5089752671190341407">Favori oluşturucularınıza vBAT bağışı yapmak için hala zamanınız var</translation>
 <translation id="1258144146756156541">Bir insan olduğunuzu onaylayın</translation>
 <translation id="1555514580945108302">Hmm... Pek Sayılmaz. Tekrar Deneyin.</translation>
 <translation id="8078414184292711961">BAT ikonunu <ph name="HINT"/> hedefine sürükleyin.</translation>
@@ -693,6 +694,10 @@
 <translation id="3479552764303398839">Şimdi değil</translation>
 <translation id="4185473179105062442">Öz korumalı bir kripto adresine doğrudan BAT alın</translation>
 <translation id="5802986777701714573">Aylık BAT ödüllerinizi almanız için yeni bir yol ekledik. Hemen kazanmaya başlamak için iş ortaklarımızın birinden bir hesabı bağlayın veya yeni öz koruma seçeneğini kullanın.</translation>
+<translation id="3251885322612056119">Güncellenmiş Hizmet Koşulları</translation>
+<translation id="7454675823870922788">Brave Ödülleri için Hizmet Koşullarını güncelledik. Bu güncellemeleri, koşullarımızı netleştirmek ve yeni özellikleri kapsadıklarından emin olmak için yaptık. Brave Ödüllerini kullanmaya devam ederseniz güncellenmiş Hizmet Koşullarını kabul etmiş olursunuz. Kabul etmiyorsanız, Brave Ödüllerini <ph name="LINK_BEGIN"/>sıfırlayabilirsiniz<ph name="LINK_END"/> ve bu özellik devre dışı kalır.</translation>
+<translation id="5192526308598085294"><ph name="LINK_BEGIN"/>Brave Ödülleri Hizmet Koşullarına<ph name="LINK_END"/> bakın</translation>
+<translation id="4130750466177569591">Kabul ediyorum</translation>
 <translation id="86107454835395919">Aylık katkı belirle</translation>
 <translation id="6621880242105464352">Brave, gönderilen miktardan <ph name="FEE_PCT"/> oranında işlem ücreti alır.</translation>
 <translation id="1420756770787071946">Bu yaratıcıyı destekle</translation>
@@ -1135,6 +1140,7 @@
 <translation id="2021522108838444624">Tutar 0'dan büyük olmalıdır</translation>
 <translation id="8464365289405373974">Gönderim adresi gerekli</translation>
 <translation id="4884792073752467460">Geçersiz alıcı adresi</translation>
+<translation id="6326239384961270135">Saydam kısım eksik</translation>
 <translation id="8585995109882455949">Doğru adresi nasıl bulabilirim?</translation>
 <translation id="8395402412470376435">Brave doğrulama yaparak yanlış büyük veya küçük harf kullanımı nedeniyle kullanıcıların fonları yanlış adrese göndermesini önler. Bu, geçerli bir Ethereum adresi olduğunu doğrulamak için yapılan bir "sağlama toplamı" işlemidir.</translation>
 <translation id="4583433813614292221">1. Ziyaret edin</translation>
@@ -1483,6 +1489,7 @@
 <translation id="1893207255459018302">İşlem geçmişi yok</translation>
 <translation id="5356382676355994980">Brave Cüzdanınızla yapılan işlemler burada görünür.</translation>
 <translation id="3033638954295674319">NFT ayrıntıları getirilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</translation>
+<translation id="5964615240954462738">Token'ı Düzenle</translation>
 <translation id="2612436523196658045">ETH adresi, Filecoin adresine dönüştürülecektir.</translation>
 <translation id="3282354360699748542">Filecoin isim uzayındaki <ph name="FILECOIN_ADDRESS"/> adresi, işlem için kullanılacaktır.</translation>
 <translation id="2540568096903252632">Devam etmek için bir parola girin</translation>
@@ -1507,7 +1514,6 @@
 <translation id="8007404171238546456">Slipajdan sonra alınan minimum</translation>
 <translation id="767199001998615704">Ağ ücreti</translation>
 <translation id="7057870207229052478">Brave ücreti</translation>
-<translation id="81116374028657878">Protokol ücreti</translation>
 <translation id="3624518972158401291">Ücretsiz</translation>
 <translation id="5038255447967558645">Likidite sağlayıcı</translation>
 <translation id="8450638959928932199">Takas et ve gönder</translation>
@@ -1705,7 +1711,7 @@
 <translation id="7948579849190819732">Mevcut sekme</translation>
 <translation id="7056969230130642253">Tamamen güncelsiniz</translation>
 <translation id="7292242212818928219">Yeni içerik mevcut. Yeniden yüklensin mi?</translation>
-<translation id="6537880577641744343">Komutçu</translation>
+<translation id="4144468798716165316">Hızlı komutlar</translation>
 <translation id="7481312909269577407">İleri</translation>
 <translation id="302781076327338683">Önbellek kullanmadan yeniden yükle</translation>
 <translation id="7211681214230730336">Önbellek temizleyerek yeniden yükle</translation>
@@ -1742,6 +1748,13 @@
 <translation id="855081842937141170">Sekmeyi sabitle</translation>
 <translation id="2805351816064694332">Sabitlenmemiş sekmeleri kapat</translation>
 <translation id="8657641252283410630">Sekme grupla</translation>
+<translation id="8908724110993882115">Grup genişletmeyi aç/kapat</translation>
+<translation id="8813600493701436462">Sekmeyi mevcut gruptan çıkar</translation>
+<translation id="3170171381379098900">Mevcut sekme grubunu dağıt</translation>
+<translation id="8589082712469819302">Tüm sekmeleri dağıt</translation>
+<translation id="6804504170598429513">Dağıtılmış sekmeleri kapat</translation>
+<translation id="5960187586089070931">Mevcut grupta olmayan sekmeleri kapat</translation>
+<translation id="7043112527867086263">Dağıtılmış sekmeleri grupla</translation>
 <translation id="8290333944535778783">Sekmeyi en yukarı kaydır</translation>
 <translation id="6141382045715907645">Sekmeyi en aşağı kaydır</translation>
 <translation id="923853139812360539">QR kod oluşturucu</translation>
@@ -1832,7 +1845,6 @@
 <translation id="188822869499214197">Oynatma listesi baloncuğunu göster</translation>
 <translation id="3202536111478033084">Sekmeleri mevcut kaynağa göre grupla</translation>
 <translation id="6002210667729577411">Grubu yeni pencereye taşı</translation>
-<translation id="253980346046488815">Kopyalanmış sekmeleri kapat</translation>
 <translation id="9210143726807220086">Genişletilmiş dikey sekmeleri aç/kapat</translation>
 <translation id="684629111155788563">Tüm sekmeleri yeni gruba ekle</translation>
 <translation id="9106013521852824634">Sekmeyi kendine gönder</translation>
@@ -2070,6 +2082,7 @@
 <translation id="8814357473522731680">Destekleyen:</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Süre sonu tarihi</translation>
+<translation id="8421945428836418371">Otomatik olarak tekrar bağlan</translation>
 <translation id="434523916398030617">Teknik destekle iletişime geçin</translation>
 <translation id="1116694919640316211">Hakkında</translation>
 <translation id="8670386189340362926">Tüm uygulamalardaki izleyicileri ve reklamları engelleyin</translation>

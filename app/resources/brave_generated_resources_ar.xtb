@@ -207,6 +207,7 @@
 <translation id="2289567621059034186">علامة تبويب جديدة أدناه</translation>
 <translation id="3228962656492373217">إغلاق علامات التبويب أدناه</translation>
 <translation id="8030501904366631501">اجمع كل علامات التبويب في هذه النافذة</translation>
+<translation id="253980346046488815">إغلاق علامات التبويب المكررة</translation>
 <translation id="2336228925368920074">وضع إشارة على جميع علامات التبويب...</translation>
 <translation id="2523967823495420116">استخدام علامات تبويب عمودية</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{كتم صوت علامة تبويب واحدة}zero{كتم صوت علامات التبويب}two{كتم صوت علامتيِّ التبويب}few{كتم صوت علامات التبويب}many{كتم صوت علامات التبويب}other{كتم صوت علامات التبويب}}</translation>
@@ -214,6 +215,7 @@
 <translation id="4405580203042711503">علامة تبويب جديدة أدناه</translation>
 <translation id="5611474372949142946">إغلاق علامات التبويب أدناه</translation>
 <translation id="573844928911967687">اجمع كل علامات التبويب في هذه النافذة</translation>
+<translation id="2703180365855369896">إغلاق علامات التبويب المكررة</translation>
 <translation id="3704707436873245822">نسخ النص من الصورة</translation>
 <translation id="5268098808165185458">جارٍ نسخ النص من الصورة...</translation>
 <translation id="4046485130884276245">تم نسخ النص من الصورة</translation>
@@ -221,7 +223,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">استخدم بروتوكول WireGuard في Brave VPN</translation>
 <translation id="8519170191215826548">لا يمكن تغيير هذا الإعداد أثناء اتصال Brave VPN.</translation>
-<translation id="5620961847363372221">يتطلب إعادة تشغيل المتصفح.</translation>
 <translation id="4235920711083356755">إظهار زر VPN</translation>
 <translation id="4070612712151038707">يُظهر زر VPN في شريط الأدوات</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -317,6 +318,9 @@
 <translation id="1727684853006449697">مشغّل Brave</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
+<translation id="1426410128494586442">نعم</translation>
+<translation id="4250680216510889253">لا</translation>
+<translation id="2356070529366658676">طلب</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
 <translation id="8081858229109418493">اسم ورمز الملف الشخصي</translation>
 <translation id="6786747875388722282">الإضافات</translation>
@@ -444,7 +448,6 @@
 <translation id="3540231253392253941">استخدم خدمات Google لإرسال الرسائل</translation>
 <translation id="933652931229970927">إرسال تقارير التشخيص تلقائيًا</translation>
 <translation id="4891600875049212418">استمتع بالخصوصية عند زيارة المواقع التي تتضمن محتوى حساسًا</translation>
-<translation id="2356070529366658676">طلب</translation>
 <translation id="4846154056248462491">عند الخروج</translation>
 <translation id="2808630562319398131">إعادة تعيين بيانات مكافآت Brave...</translation>
 <translation id="6438096877646138757">المواقع التي تقوم بمسح ملفات تعريف الارتباط بمجرد إغلاقها</translation>
@@ -628,6 +631,8 @@
 <translation id="3044369626313583722">عرض زر Brave Wallet</translation>
 <translation id="7568430944629653319">تمكين اكتشاف الرمز المميز غير القابل للاستبدال</translation>
 <translation id="970496996377628529">أضف الرموز المميزة غير قابل للاستبدال التي تملكها بشكل تلقائي إلى المحفظة باستخدام واجهات برمجة التطبيقات التابعة لجهات خارجية.</translation>
+<translation id="4898839076551703154">تمكين Brave Wallet في النوافذ الخاصة.</translation>
+<translation id="1550684990179058322">تحذير: يمكن أن تؤدي إعادة استخدام عنوان المحفظة في جلسة نافذة خاصة إلى تمكين الموقع من ربط جلسة نافذة خاصة بجلسة نافذة غير خاصة.</translation>
 <translation id="8239147115686034860">قفل Brave Wallet تلقائيًا</translation>
 <translation id="414639769490080648">عدد دقائق الانتظار حتى يتم قفل Brave Wallet تلقائيًا</translation>
 <translation id="856371974127598760">شبكات المحفظة</translation>
@@ -646,7 +651,7 @@
 <translation id="3752403403443723332">تم إعادة ضبط محفظتك</translation>
 <translation id="594766067816395072">تمت إعادة ضبط معلومات تداولات محفظتك.</translation>
 <translation id="1615009913945115836">تمت إعادة تعيين الرموز المميزة غير القابلة للاستبدال المُثبّتة الخاصة بك.</translation>
-<translation id="1426410128494586442">نعم</translation>
+<translation id="57798285717509216">الاطلاع على نتائج المعاملات قبل التوقيع. <ph name="BEGIN_LINK"/>&lt;u&gt;معرفة المزيد&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">شبكات الإيثيريوم</translation>
 <translation id="3504157706952484145">شبكات Filecoin</translation>
 <translation id="1561541094377237745">شبكات Solana</translation>

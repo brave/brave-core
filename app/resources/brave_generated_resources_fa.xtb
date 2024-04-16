@@ -206,6 +206,7 @@
 <translation id="2289567621059034186">تب جدید در زیر</translation>
 <translation id="3228962656492373217">تب‌های زیر را ببندید</translation>
 <translation id="8030501904366631501">همه زبانه‌ها را به این پنجره بیاورید</translation>
+<translation id="253980346046488815">بستن تب‌های تکراری</translation>
 <translation id="2336228925368920074">نشانک‌گذاری همه برگه‌ها...</translation>
 <translation id="2523967823495420116">استفاده از زبانه‌های عمودی</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{بی‌صدا کردن برگه}one{بی‌صدا کردن برگه‌ها}other{بی‌صدا کردن برگه‌ها}}</translation>
@@ -213,6 +214,7 @@
 <translation id="4405580203042711503">تب جدید در زیر</translation>
 <translation id="5611474372949142946">تب‌های زیر را ببندید</translation>
 <translation id="573844928911967687">همه زبانه‌ها را به این پنجره بیاورید</translation>
+<translation id="2703180365855369896">زبانه‌های تکراری را ببندید</translation>
 <translation id="3704707436873245822">کپی کردن متن از تصویر</translation>
 <translation id="5268098808165185458">در حال کپی کردن متن از تصویر...</translation>
 <translation id="4046485130884276245">متن از تصویر کپی شد</translation>
@@ -220,7 +222,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">استفاده از پروتکل WireGuard در Brave VPN</translation>
 <translation id="8519170191215826548">این تنظیم هنگام متصل بودن Brave VPN قابل تغییر نیست.</translation>
-<translation id="5620961847363372221">باید مرورگر مجدداً راه‌اندازی شود.</translation>
 <translation id="4235920711083356755">نمایش دکمه VPN</translation>
 <translation id="4070612712151038707">دکمه VPN را در نوار ابزار نمایش می‌دهد</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -315,6 +316,9 @@
 <translation id="1727684853006449697">پخش‌کننده Brave</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
+<translation id="1426410128494586442">بله</translation>
+<translation id="4250680216510889253">خیر</translation>
+<translation id="2356070529366658676">سؤال شود</translation>
 <translation id="4472575034687746823">شروع به کار</translation>
 <translation id="8081858229109418493">نام و آیکون نمایه</translation>
 <translation id="6786747875388722282">افزونه‌ها</translation>
@@ -442,7 +446,6 @@
 <translation id="3540231253392253941">استفاده از سرویس‌های Google برای پیام‌رسانی فشاری</translation>
 <translation id="933652931229970927">ارسال خودکار گزارش‌های عیب‌یابی</translation>
 <translation id="4891600875049212418">هنگام بازدید از سایت‌های حساس، به «حالت خصوصی و محرمانه» بروید</translation>
-<translation id="2356070529366658676">سؤال شود</translation>
 <translation id="4846154056248462491">در برگه خروج</translation>
 <translation id="2808630562319398131">بازنشانی داده‌های Brave Rewards…</translation>
 <translation id="6438096877646138757">سایت‌هایی که با بسته شدن، کوکی‌ها را پاک می‌کنند</translation>
@@ -626,6 +629,8 @@
 <translation id="3044369626313583722">نمایش دکمه کیف پول Brave</translation>
 <translation id="7568430944629653319">کشف NFT را فعال کنید</translation>
 <translation id="970496996377628529">NFT‌هایی را که دارید به طور خودکار با استفاده از API‌های شخص ثالث به Wallet اضافه کنید.</translation>
+<translation id="4898839076551703154">Brave Wallet را در پنجره خصوصی فعال کنید.</translation>
+<translation id="1550684990179058322">هشدار: استفاده مجدد از آدرس کیف پول در یک جلسه پنجره خصوصی می‌تواند سایت را قادر سازد تا یک جلسه پنجره خصوصی را به یک جلسه پنجره غیرخصوصی پیوند دهد.</translation>
 <translation id="8239147115686034860">کیف پول Brave به‌طور خودکار قفل شود</translation>
 <translation id="414639769490080648">تعداد دقایقی که باید منتظر بمانید تا کیف پول Brave به‌طور خودکار قفل شود</translation>
 <translation id="856371974127598760">شبکه‌های کیف پول</translation>
@@ -644,7 +649,7 @@
 <translation id="3752403403443723332">کیف پول شما بازنشانی شده است.</translation>
 <translation id="594766067816395072">اطلاعات تراکنش کیف پول شما بازنشانی شده است.</translation>
 <translation id="1615009913945115836">NFT‌های پین‌شده شما بازتنظیم شدند.</translation>
-<translation id="1426410128494586442">بله</translation>
+<translation id="57798285717509216">قبل از امضا، نتایج معاملات را مشاهده کنید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">شبکه‌های Ethereum</translation>
 <translation id="3504157706952484145">شبکه‌های Filecoin</translation>
 <translation id="1561541094377237745">شبکه‌های Solana</translation>

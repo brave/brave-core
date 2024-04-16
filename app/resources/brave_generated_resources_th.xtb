@@ -207,6 +207,7 @@
 <translation id="2289567621059034186">แท็บใหม่ด้านล่าง</translation>
 <translation id="3228962656492373217">ปิดแท็บด้านล่าง</translation>
 <translation id="8030501904366631501">นำแท็บทั้งหมดมาที่หน้าต่างนี้</translation>
+<translation id="253980346046488815">ปิดแท็บที่ซ้ำกัน</translation>
 <translation id="2336228925368920074">บุ๊กมาร์กแท็บทั้งหมด...</translation>
 <translation id="2523967823495420116">ใช้แท็บแนวตั้ง</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ซ่อนแท็บ}other{ซ่อนแท็บ}}</translation>
@@ -214,6 +215,7 @@
 <translation id="4405580203042711503">แท็บใหม่ด้านล้าง</translation>
 <translation id="5611474372949142946">ปิดแท็บด้านล่าง</translation>
 <translation id="573844928911967687">นำแท็บทั้งหมดมาที่หน้าต่างนี้</translation>
+<translation id="2703180365855369896">ปิดแท็บที่ซ้ำกัน</translation>
 <translation id="3704707436873245822">คัดลอกข้อความจากรูปภาพ</translation>
 <translation id="5268098808165185458">กำลังคัดลอกข้อความจากรูปภาพ...</translation>
 <translation id="4046485130884276245">คัดลอกข้อความจากรูปภาพแล้ว</translation>
@@ -221,7 +223,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">ใช้โปรโตคอล WireGuard ใน Brave VPN</translation>
 <translation id="8519170191215826548">การตั้งค่านี้ไม่สามารถเปลี่ยนแปลงได้ในขณะที่เชื่อมต่อกับ Brave VPN</translation>
-<translation id="5620961847363372221">จำเป็นต้องรีสตาร์ทเบราว์เซอร์</translation>
 <translation id="4235920711083356755">แสดงปุ่ม VPN</translation>
 <translation id="4070612712151038707">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -316,6 +317,9 @@
 <translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
+<translation id="1426410128494586442">ใช่</translation>
+<translation id="4250680216510889253">ไม่มี</translation>
+<translation id="2356070529366658676">ถาม</translation>
 <translation id="4472575034687746823">เริ่มต้น</translation>
 <translation id="8081858229109418493">ชื่อโปรไฟล์และไอคอน</translation>
 <translation id="6786747875388722282">ส่วนขยาย</translation>
@@ -443,7 +447,6 @@
 <translation id="3540231253392253941">ใช้บริการ Google ในการส่งข้อความแบบพุช</translation>
 <translation id="933652931229970927">ส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
 <translation id="4891600875049212418">ไปที่ Off-The-Record เมื่อเยี่ยมชมเว็บไซต์ที่สำคัญ</translation>
-<translation id="2356070529366658676">ถาม</translation>
 <translation id="4846154056248462491">เมื่อออก</translation>
 <translation id="2808630562319398131">รีเซ็ตข้อมูล Brave Rewards...</translation>
 <translation id="6438096877646138757">เว็บไซต์ที่จะล้างคุกกี้เมื่อคุณปิด</translation>
@@ -627,6 +630,8 @@
 <translation id="3044369626313583722">แสดงปุ่ม Brave Wallet</translation>
 <translation id="7568430944629653319">เปิดใช้งาน NFT discovery</translation>
 <translation id="970496996377628529">เพิ่ม NFT ของคุณไปยังวอลเล็ทโดยอัตโนมัติด้วย API ของบุคคลที่สาม</translation>
+<translation id="4898839076551703154">เปิดใช้งาน Brave วอลเล็ทในหน้าต่างแบบส่วนตัว</translation>
+<translation id="1550684990179058322">คำเตือน: การใช้ที่อยู่ของวอลเล็ทซ้ำในเซสชันหน้าต่างแบบส่วนตัวอาจเป็นการเปิดใช้งานเว็บไซต์เพื่อเชื่อมโยงเซสชันหน้าต่างแบบส่วนตัวกับเซสชันหน้าต่างที่ไม่ใช่แบบส่วนตัวได้</translation>
 <translation id="8239147115686034860">ล็อค Brave วอลเล็ตโดยอัตโนมัติ</translation>
 <translation id="414639769490080648">จำนวนนาทีที่ต้องรอจนกว่า Brave วอลเล็ตจะล็อคโดยอัตโนมัติ</translation>
 <translation id="856371974127598760">เครือข่ายกระเป๋าเงิน</translation>
@@ -645,7 +650,7 @@
 <translation id="3752403403443723332">รีเซ็ตกระเป๋าเงินของคุณแล้ว!</translation>
 <translation id="594766067816395072">รีเซ็ตข้อมูลธุรกรรมในกระเป๋าเงินของคุณแล้ว</translation>
 <translation id="1615009913945115836">NFT ที่ตรึงไว้ของคุณถูกรีเซ็ตแล้ว</translation>
-<translation id="1426410128494586442">ใช่</translation>
+<translation id="57798285717509216">ดูผลการทำธุรกรรมก่อนเซ็นชื่อ <ph name="BEGIN_LINK"/>&lt;u&gt;เรียนรู้เพิ่มเติม&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">เครือข่าย Ethereum</translation>
 <translation id="3504157706952484145">เครือข่าย Filecoin</translation>
 <translation id="1561541094377237745">เครือข่าย Solana</translation>

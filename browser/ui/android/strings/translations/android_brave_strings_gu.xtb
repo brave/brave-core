@@ -7,6 +7,7 @@
 <translation id="94154759592465111">લિપિઓ અવરોધિત કરો</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="6302422639282249274">ગોપનીયતા-આદર આપતી જાહેરાતો જોવા માટે</translation>
+<translation id="2709516037105925701">સ્વતઃભરો</translation>
 <translation id="1468415711258933398">માનક ટૅબ</translation>
 <translation id="3377025655491224618">ખાનગી મોડ</translation>
 <translation id="9148058034647219655">બહાર નીકળો</translation>
@@ -129,15 +130,13 @@
 <translation id="3943857333388298514">પેસ્ટ કરો</translation>
 <translation id="6518133107902771759">પ્રમાણિત કરો</translation>
 <translation id="3157931365184549694">પુનઃસ્થાપિત કરો</translation>
+<translation id="4917385247580444890">સશક્ત</translation>
+<translation id="8297006494302853456">નબળું</translation>
 <translation id="9111102763498581341">અનલોક કરો</translation>
 <translation id="6657585470893396449">પાસવર્ડ</translation>
 <translation id="1987317783729300807">એકાઉન્ટ્સ</translation>
-<translation id="6979737339423435258">હંમેશાં</translation>
-<translation id="3819257035322786455">બેકઅપ</translation>
 <translation id="4522570452068850558">વિગતો</translation>
 <translation id="4412698727486357573">સહાયતા કેન્દ્ર</translation>
-<translation id="3866249974567520381">વર્ણન</translation>
-<translation id="3435896845095436175">સક્ષમ કરો</translation>
 <translation id="7805768142964895445">સ્થિતિ</translation>
 <translation id="5747552184818312860">સમાપ્ત થાય છે</translation>
 <translation id="5646376287012673985">સ્થાન</translation>
@@ -146,16 +145,14 @@
 <translation id="6452181791372256707">નકારો</translation>
 <translation id="8030852056903932865">મંજૂર કરો</translation>
 <translation id="5317780077021120954">સાચવો</translation>
-<translation id="1736419249208073774">શોધખોળ કરો</translation>
 <translation id="9065203028668620118">ફેરફાર કરો</translation>
 <translation id="473775607612524610">અપડેટ કરો</translation>
 <translation id="5045550434625856497">ખોટો પાસવર્ડ</translation>
 <translation id="1367951781824006909">એક ફાઇલ પસંદ કરો</translation>
 <translation id="1165039591588034296">ભૂલ</translation>
-<translation id="7791543448312431591">ઉમેરો</translation>
-<translation id="4250680216510889253">નહીં</translation>
 <translation id="7335371657242627509">આપમેળે-ફાળામાં સામેલ કરો</translation>
 <translation id="3074127054582480056">ધ્યાન આપો</translation>
+<translation id="7791543448312431591">ઉમેરો</translation>
 <translation id="2653659639078652383">સબમિટ કરો</translation>
 <translation id="5233638681132016545">નવું ટૅબ</translation>
 <translation id="2391762656119864333">રદબાતલ કરો</translation>
@@ -166,6 +163,7 @@
 <translation id="7982789257301363584">નેટવર્ક</translation>
 <translation id="5039804452771397117">મંજૂરી આપો</translation>
 <translation id="4394049700291259645">બંધ કરો</translation>
+<translation id="4250680216510889253">નહીં</translation>
 <translation id="583281660410589416">અજ્ઞાત</translation>
 <translation id="7144878232160441200">ફરી પ્રયાસ કરો</translation>
 <translation id="6040143037577758943">બંધ કરો</translation>
@@ -173,6 +171,7 @@
 <translation id="6736243959894955139">સરનામું</translation>
 <translation id="308268297242056490">URI</translation>
 <translation id="3798449238516105146">વર્ઝન</translation>
+<translation id="3435896845095436175">સક્ષમ કરો</translation>
 <translation id="5494920125229734069">બધા પસંદ કરો</translation>
 <translation id="1166682575529520472">માસિક</translation>
 <translation id="4850886885716139402">જુઓ</translation>
@@ -184,4 +183,5 @@
 <translation id="4195643157523330669">નવા ટૅબમાં ખોલો</translation>
 <translation id="4243710787042215766">ખાનગી ટૅબમાં ખોલો</translation>
 <translation id="8261506727792406068">ડિલીટ કરો</translation>
+<translation id="901834265349196618">ઇમેઇલ</translation>
 </translationbundle>

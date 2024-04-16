@@ -165,7 +165,8 @@
 <translation id="4720556299488643018">ከደንበኝነት ምዝገባ መውጣት</translation>
 <translation id="1209739344687072997">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="8510478288840333677">ይህ ገጽ ከጋሻዎች ጋር በትክክል እንደማይሰራ የ Brave አዘጋጆች እንዲያውቁት ያድርጉ፡</translation>
-<translation id="6387106423577201267">ማስታወሻ፦ ለBrave አገልጋዮች የተላከው ሪፖርት የጣቢያውን አድራሻ፣ የBrave ስሪት ቁጥር፣ የሺልድ ቅንብሮች፣ የVPN ሁኔታ እና የቋንቋ ቅንብሮችን ያካትታል።</translation>
+<translation id="3110968385867124099">ይህ ገጽ ሪፖርት ሊደረግ አይችልም ምክንያቱም በHTTP/HTTPS ስላልተገለገለ ነው።</translation>
+<translation id="7907023135990310743">ይህ ገጽ አካባቢያዊ የድር ገጽ ነው እና ሪፖርት ለማድረግ ብቁ አይደለም።</translation>
 <translation id="6476216365964140603">ተጨማሪ ዝርዝሮች (አማራጭ)</translation>
 <translation id="6145852496180774737">በሚከተለው ያግኙኝ፡ (አማራጭ)</translation>
 <translation id="7616645803364270729">ኢሜይል፣ ትዊተር፣ ወዘተ.</translation>
@@ -427,7 +428,6 @@
 <translation id="5669281110673664811">የማይካተቱ ዝርዝሮችን አጽዳ</translation>
 <translation id="1797334173232638045">የእርስዎ የተሰኩ ጣቢያዎች ተንቀሳቅሰዋል ወደ</translation>
 <translation id="3074127054582480056">ትኩረት</translation>
-<translation id="1666001796278936721">ዳግም በማስጀመር፣ የእርስዎ የአሁን Brave ሽልማቶች መገለጫ ይሰረዛል እና ፍጹም አዲስ በሆነ የBrave ሽልማቶች መገለጫ ጋር ዳግም ይጀምራሉ። ከመቀጠልዎ በፊት፣ ደህንነትዎን ለመጠበቅ ዳግም ስለማስጀመር<ph name="LINK_BEGIN"/>የበለጠ ይወቁ<ph name="LINK_END"/>።</translation>
 <translation id="4806029412510565611">የእኔ Brave ሽልማቶች መገለጫ እና የBrave ሽልማቶች ውሂብ ከመሳሪያዬ ላይ እንደሚሰረዝ እና <ph name="LINK_BEGIN"/>ዳግም ስለማስጀመር ደጋፊ ጽሁፍ<ph name="LINK_END"/>እንዳነበብኩ ተገንዝቤያለሁ።</translation>
 <translation id="3494964159182650590">የሽልማት ማጠቃለያ</translation>
 <translation id="2913994227901456490">ሁሉንም [[numItems]] ንጥሎችን ይመልከቱ</translation>
@@ -608,10 +608,8 @@
 <translation id="1848737374354350807">ቀሪ ሂሳብ</translation>
 <translation id="6516984207843289176">መለያ ያገናኙ</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>ገንዘብ ለማግኘት ዝግጁ ነዎት?<ph name="BOLD_END"/>ከአጋሮቻችን ከአንዱ ጋር መለያ ያገናኙ ወይም ይፍጠሩ።</translation>
-<translation id="1772961321862399863">BAT ለማግትኘ፣ ተጠቃሚዎች የጠባቂ መለያ ከBrave ሽልማቶች ጋር ማገናኘት ይገባቸዋል። በሚያሳዝን ሁኔታ፣ በእርስዎ ክልል ውስጥ ምንም ጠባቂ አይገኝም፣ ስለዚህ ማግኘት አይኖርም። ለአሁኑ፣ የBrave ሽልማቶችን ማብራት ፈጣሪዎችን በራስ-ሰር ይደግፋል።</translation>
 <translation id="902298128239575729">ከBrave ሽልማቶች ጋር መዋጮዎችን ይላኩ</translation>
 <translation id="6276721355724491595">በሞግዚት የሚከፈት የህጻናት የባንክ ሂሳብ ካገናኙ በኋላ በትዕዛዝ አስተዋፅዎችን ለተወዳጅ ፈጣሪዎችዎ በBrave የሽልማቶች ቀሪ ሒሳብ መላክ ይችላሉ።</translation>
-<translation id="1149481926056509086">የሚፈለጉ መዋጮዎችን ለመላክ፣ ተጠቃሚዎች የጠባቂ መለያን ከBrave ሽልማቶች ጋር ማገናኘት አለበት። የሚያሳዝነው፣ በእርስዎ ክልል የሚገኝ ጠባቂ የለም ስለዚህ፣ መላኪያ አይገኝም። ለጊዜው፣ ፈጣሪዎችን አሁንም በራስ ሰር ይደግፋሉ።</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {በዚህ ወር, እርስዎ # ፈጣሪ የሆነውን በBrave ሽልማቶች የሚደገፈውን ጎብኝተዋል}
       other {በዚህ ወር, እርስዎ # ፈጣሪዎች የሆነውን በBrave ሽልማቶች የሚደገፈውን ጎብኝተዋል}
@@ -646,9 +644,7 @@
 <translation id="1609556006143307897">እርስዎ የድጋፍ ይዘት ፈጣሪዎችን እያገዙ ነው</translation>
 <translation id="654447476965480878">ስለ BAT የበለጠ ይወቁ።</translation>
 <translation id="4105212447337987768"><ph name="DATE"/> ላይ ለነባር ምናባዊ BAT ቀሪ ሒሳቦች ድጋፍን እናቆማለን። የተገኘውን ሒሳብዎን ወደ በአዋቂ የሚተዳደር የልጅ ሒሳብዎ ማስተላለፍ እንድንችል ከዚህ ቀን በፊት ያገናኙ፣ ያለበለዚያ ቀሪ ሒሳቡ ይጠፋል።</translation>
-<translation id="5684206602316433615">በ<ph name="DATE"/>ለነባር ምናባዊ BAT ቀሪ ሒሳቦች ድጋፍን እናቆማለን። እንደ አለመታደል ሆኖ ገቢዎን ለማውጣት በክልልዎ  (<ph name="REGION"/>)  ሃላፊነት የሚወስዱ ሰዎች የሉም። እስከዚያ ድረስ አሁንም ለሚወዷቸው ፈጣሪዎች አስተዋጽኦ ማበርከት ይችላሉ።</translation>
 <translation id="707569835145765061">እርምጃ መውሰድ ያስፈልጋል፦ በአዋቂ የሚተዳደር የልጅ መለያን ያገናኙ አለበለዚያ የእርስዎ vBAT ይጠፋል</translation>
-<translation id="5089752671190341407">የእርስዎን vBAT ለሚወዷቸው ፈጣሪዎች አስተዋጽኦ ለማበርከት አሁንም ጊዜ አለዎት</translation>
 <translation id="1258144146756156541">ሰው መሆንዎን ያረጋግጡ</translation>
 <translation id="1555514580945108302">ህምም....እንዲህ አይደለም። እንደገና ይሞክሩ።</translation>
 <translation id="8078414184292711961">የ BAT አዶን ወደ <ph name="HINT"/> ኢላማው ይጎትቱት።</translation>
@@ -1509,7 +1505,6 @@
 <translation id="8007404171238546456">ድጎ ከተደረገ በኋላ የደረሰው ዝቅተኛ መጠን</translation>
 <translation id="767199001998615704">የአውታረ መረብ ክፍያ</translation>
 <translation id="7057870207229052478">የBrave ክፍያ</translation>
-<translation id="81116374028657878">የፕሮቶኮል ክፍያ</translation>
 <translation id="3624518972158401291">ነጻ</translation>
 <translation id="5038255447967558645">የሊክዊዲቲ አቅራቢ</translation>
 <translation id="8450638959928932199">ቀያይር &amp; ላክ</translation>
@@ -1709,7 +1704,7 @@
 <translation id="7948579849190819732">የአሁኑ ትር</translation>
 <translation id="7056969230130642253">ቡዙ ነገር ላይ ነዎት</translation>
 <translation id="7292242212818928219">አዲስ ይዘት ይገኛል። እንደገና ይጫን?</translation>
-<translation id="6537880577641744343">አዛዥ</translation>
+<translation id="4144468798716165316">ፈጣን ትዕዛዞች</translation>
 <translation id="7481312909269577407">ወደ ፊት</translation>
 <translation id="302781076327338683">የሚያልፍ መሸጎጫ እንደገና ያስጀምሩ</translation>
 <translation id="7211681214230730336">የማጽጃ መሸጎጫ እንደገና አስጀምር</translation>
@@ -1836,7 +1831,6 @@
 <translation id="188822869499214197">የአጫዋች ዝርዝር አረፋ አሳይ</translation>
 <translation id="3202536111478033084">የቡድን ትሮች በአሁን መነሻ ላይ</translation>
 <translation id="6002210667729577411">ቡድንን ወደ አዲስ መስኮት አንቀሳቅስ</translation>
-<translation id="253980346046488815">የተባዙ ትሮችን ዝጋ</translation>
 <translation id="9210143726807220086">አቀባዊ ትሮችን ተዘርግተው ቀያይር</translation>
 <translation id="684629111155788563">ሁሉንም ትሮች ወደ አዲስ ቡድን ያክሉ</translation>
 <translation id="9106013521852824634">ትሩን ወደራስ ይላኩ</translation>

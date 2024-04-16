@@ -207,6 +207,7 @@
 <translation id="2289567621059034186">Нов раздел по-долу</translation>
 <translation id="3228962656492373217">Затваряне на разделите по-долу</translation>
 <translation id="8030501904366631501">Пренесете всички раздели към този прозорец</translation>
+<translation id="253980346046488815">Затваряне на дублираните радели</translation>
 <translation id="2336228925368920074">Запазване на отметки към всички раздели...</translation>
 <translation id="2523967823495420116">Използване на вертикални раздели</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Спиране на звука на раздела}other{Спиране на звука на разделите}}</translation>
@@ -214,6 +215,7 @@
 <translation id="4405580203042711503">Нов раздел по-долу</translation>
 <translation id="5611474372949142946">Затваряне на разделите по-долу</translation>
 <translation id="573844928911967687">Пренесете всички раздели към този прозорец</translation>
+<translation id="2703180365855369896">Затваряне на дублираните раздели</translation>
 <translation id="3704707436873245822">Копиране на текст от изображение</translation>
 <translation id="5268098808165185458">Копиране на текст от изображение...</translation>
 <translation id="4046485130884276245">Копиран е текст от изображение</translation>
@@ -221,7 +223,6 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">Използване на протокол на WireGuard в Brave VPN</translation>
 <translation id="8519170191215826548">Тази настройка не може да се променя, когато Brave VPN е свързан.</translation>
-<translation id="5620961847363372221">Изисква рестартиране на браузъра.</translation>
 <translation id="4235920711083356755">Показване на VPN бутона</translation>
 <translation id="4070612712151038707">Показване на VPN бутона в лентата с инструменти</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -316,6 +317,9 @@
 <translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
 <translation id="7179921470347911571">Презареди сега</translation>
+<translation id="1426410128494586442">Да</translation>
+<translation id="4250680216510889253">Не</translation>
+<translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="4472575034687746823">Първи стъпки</translation>
 <translation id="8081858229109418493">Име и икона на профила</translation>
 <translation id="6786747875388722282">Разширения</translation>
@@ -443,7 +447,6 @@
 <translation id="3540231253392253941">Използвайте услугите на Google за насочени съобщения</translation>
 <translation id="933652931229970927">Автоматично изпращане на отчети с диагностика</translation>
 <translation id="4891600875049212418">Преминете в режим „Off-The-Record“, когато посещавате чувствителни сайтове</translation>
-<translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="4846154056248462491">При излизане</translation>
 <translation id="2808630562319398131">Нулиране на данните за Brave награди...</translation>
 <translation id="6438096877646138757">Сайтове, които изчистват бисквитките, когато ги затворите</translation>
@@ -627,6 +630,8 @@
 <translation id="3044369626313583722">Показване на бутона Портфейл в Brave</translation>
 <translation id="7568430944629653319">Активиране на откриването на NFT</translation>
 <translation id="970496996377628529">Автоматично добавяйте NFT, които притежавате, в портфейла с помощта на API на трети страни.</translation>
+<translation id="4898839076551703154">Активиране на Brave Портфейл в частни прозорци.</translation>
+<translation id="1550684990179058322">Предупреждение: Повторното използване на адреса на портфейла в сесия в частен прозорец може да позволи на сайта да свърже сесия в частен прозорец със сесия в нечастен прозорец.</translation>
 <translation id="8239147115686034860">Автоматично заключване на портфейла на Brave</translation>
 <translation id="414639769490080648">Оставащи минути до автоматичното заключване на портфейл на Brave</translation>
 <translation id="856371974127598760">Мрежи на портфейла</translation>
@@ -645,7 +650,7 @@
 <translation id="3752403403443723332">Вашият портфейл беше нулиран.</translation>
 <translation id="594766067816395072">Информацията за трансакциите на вашия портфейл е нулирана.</translation>
 <translation id="1615009913945115836">Вашите закачени NFT бяха нулирани.</translation>
-<translation id="1426410128494586442">Да</translation>
+<translation id="57798285717509216">Вижте резултатите от трансакциите, преди да подпишете. <ph name="BEGIN_LINK"/>&lt;u&gt;Научете повече&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Мрежи на Ethereum</translation>
 <translation id="3504157706952484145">Мрежи на Filecoin</translation>
 <translation id="1561541094377237745">Мрежи на Solana</translation>

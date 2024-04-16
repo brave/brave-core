@@ -206,6 +206,7 @@
 <translation id="2289567621059034186">以下新标签页</translation>
 <translation id="3228962656492373217">关闭以下标签页</translation>
 <translation id="8030501904366631501">将所有选项卡引入此窗口</translation>
+<translation id="253980346046488815">关闭重复选项卡</translation>
 <translation id="2336228925368920074">为所有标签页添加书签...</translation>
 <translation id="2523967823495420116">使用垂直标签</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{将这个标签页静音}other{将这些标签页静音}}</translation>
@@ -213,6 +214,7 @@
 <translation id="4405580203042711503">下列新标签页</translation>
 <translation id="5611474372949142946">关闭下列标签页</translation>
 <translation id="573844928911967687">将所有选项卡带入此窗口</translation>
+<translation id="2703180365855369896">关闭重复选项卡</translation>
 <translation id="3704707436873245822">从图像中复制文本</translation>
 <translation id="5268098808165185458">从图像中复制文本……</translation>
 <translation id="4046485130884276245">文本已从图像中复制成功</translation>
@@ -220,7 +222,6 @@
 <translation id="3960619311638643872">Brave 的 VPN</translation>
 <translation id="2506438154311626334">在 Brave VPN 中使用 WireGuard 协议</translation>
 <translation id="8519170191215826548">连接 Brave VPN 时无法更改此设置。</translation>
-<translation id="5620961847363372221">需要重新启动浏览器。</translation>
 <translation id="4235920711083356755">显示 VPN 按钮</translation>
 <translation id="4070612712151038707">显示工具栏中的 VPN 按钮</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -315,6 +316,9 @@
 <translation id="1727684853006449697">Brave 播放器</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
+<translation id="1426410128494586442">是</translation>
+<translation id="4250680216510889253">否</translation>
+<translation id="2356070529366658676">询问</translation>
 <translation id="4472575034687746823">开始使用</translation>
 <translation id="8081858229109418493">个人资料姓名和图标</translation>
 <translation id="6786747875388722282">扩展程序</translation>
@@ -442,7 +446,6 @@
 <translation id="3540231253392253941">使用 Google 服务进行推送消息传递</translation>
 <translation id="933652931229970927">自动发送诊断报告</translation>
 <translation id="4891600875049212418">访问敏感网站时不记录在案</translation>
-<translation id="2356070529366658676">询问</translation>
 <translation id="4846154056248462491">退出时</translation>
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="6438096877646138757">关闭时所有网站窗口时清除 cookie 的网站</translation>
@@ -626,6 +629,8 @@
 <translation id="3044369626313583722">显示 Brave 钱包按钮</translation>
 <translation id="7568430944629653319">启用 NFT 发现</translation>
 <translation id="970496996377628529">使用第三方 API 自动将你拥有的 NFT 添加到钱包。</translation>
+<translation id="4898839076551703154">在无痕式窗口中启用 Brave Wallet。</translation>
+<translation id="1550684990179058322">注意：在无痕式窗口会话中重复使用钱包地址可使网站将无痕式窗口会话链接到非无痕式窗口会话。</translation>
 <translation id="8239147115686034860">自动锁定 Brave 钱包</translation>
 <translation id="414639769490080648">自动锁定 Brave 钱包前等待的分钟数</translation>
 <translation id="856371974127598760">钱包网络</translation>
@@ -644,7 +649,7 @@
 <translation id="3752403403443723332">您的钱包已重置。</translation>
 <translation id="594766067816395072">您的钱包交易信息已重置。</translation>
 <translation id="1615009913945115836">您的固定 NFT 已重置。</translation>
-<translation id="1426410128494586442">是</translation>
+<translation id="57798285717509216">在签署之前查看交易结果。<ph name="BEGIN_LINK"/>&lt;u&gt;了解更多&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">以太坊网络</translation>
 <translation id="3504157706952484145">Filecoin 网络</translation>
 <translation id="1561541094377237745">Solana 网络</translation>
