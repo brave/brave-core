@@ -234,6 +234,10 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const handleActionTypeClick = (actionType: mojom.ActionType) => {
     setSelectedActionType(actionType)
+
+    if (inputText.startsWith('/')) {
+      setInputText('')
+    }
   }
 
   const submitInputTextToAPI = () => {

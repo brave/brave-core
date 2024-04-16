@@ -200,7 +200,7 @@ export default {
     (Story: any, options: any) => {
       const [, setArgs] = useArgs()
       const [isGenerating] = useState(false)
-      const [favIconUrl] = useState<string>()
+      const [favIconUrl] = useState<string>('https://brave.com/static-assets/images/brave-favicon.png')
       const hasAcceptedAgreement = options.args.hasAcceptedAgreement
 
       const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new mojom.SiteInfo()
@@ -229,6 +229,10 @@ export default {
 
       const handleActionTypeClick = (actionType: mojom.ActionType) => {
         setSelectedActionType(actionType)
+
+        if (inputText.startsWith('/')) {
+          setInputText('')
+        }
       }
 
       const setInputText = (text: string) => {

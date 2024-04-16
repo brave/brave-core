@@ -100,7 +100,6 @@ function InputBox() {
           >
           <div
             className={classnames({
-              [styles.slashIcon]: true,
               [styles.slashIconActive]: context.isToolsMenuOpen
             })}
           >

@@ -13,10 +13,42 @@ import * as mojom from '../../api/page_handler'
 const data = [
   {
     category: 'Quick actions',
+    actions: [{ label: 'Explain', type: mojom.ActionType.EXPLAIN }]
+  },
+  {
+    category: 'Rewrite',
     actions: [
-      { label: 'Explain', type: mojom.ActionType.EXPLAIN },
       { label: 'Paraphrase', type: mojom.ActionType.PARAPHRASE },
-      { label: 'Improve', type: mojom.ActionType.IMPROVE }
+      { label: 'Improve', type: mojom.ActionType.IMPROVE },
+      { label: 'Change tone', type: -1 },
+      { label: 'Change tone / Academic', type: mojom.ActionType.ACADEMICIZE },
+      {
+        label: 'Change tone / Professional',
+        type: mojom.ActionType.PROFESSIONALIZE
+      },
+      {
+        label: 'Change tone / Persuasive',
+        type: mojom.ActionType.PERSUASIVE_TONE
+      },
+      { label: 'Change tone / Casual', type: mojom.ActionType.CASUALIZE },
+      { label: 'Change tone / Funny', type: mojom.ActionType.FUNNY_TONE },
+      { label: 'Change length / Short', type: mojom.ActionType.SHORTEN },
+      { label: 'Change length / Expand', type: mojom.ActionType.EXPAND }
+    ]
+  },
+  {
+    category: 'Create',
+    actions: [
+      { label: 'Tagline', type: mojom.ActionType.CREATE_TAGLINE },
+      { label: 'Social media', type: -1 },
+      {
+        label: 'Social media / Short',
+        type: mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_SHORT
+      },
+      {
+        label: 'Social media / Long',
+        type: mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG
+      }
     ]
   }
 ]
@@ -33,20 +65,26 @@ export default function ToolsButtonMenu(props: Props) {
       isOpen={context.isToolsMenuOpen}
       onClose={() => context.setIsToolsMenuOpen(false)}
     >
-      <div slot="anchor-content">
-        {props.children}
-      </div>
+      <div slot='anchor-content'>{props.children}</div>
       {data.map((entry) => {
         return (
           <>
             <div className={styles.menuSectionTitle}>{entry.category}</div>
-            {entry.actions.map((action) => (
-              <leo-menu-item
-                onClick={() => context.handleActionTypeClick(action.type)}
-              >
-                {action.label}
-              </leo-menu-item>
-            ))}
+            {entry.actions.map((action) => {
+              if (action.type === -1) {
+                return (
+                  <div className={styles.menuSubtitle}>{action.label}</div>
+                )
+              } else {
+                return (
+                  <leo-menu-item
+                    onClick={() => context.handleActionTypeClick(action.type)}
+                  >
+                    {action.label}
+                  </leo-menu-item>
+                )
+              }
+            })}
           </>
         )
       })}
