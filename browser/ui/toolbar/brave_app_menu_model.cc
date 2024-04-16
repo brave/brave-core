@@ -473,11 +473,6 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
   if (const auto index = GetIndexOfCommandId(IDC_ABOUT)) {
     RemoveItemAt(*index);
   }
-
-  // Remove upstream's distill menu. It's replaced with speedreader.
-  if (const auto index = GetIndexOfCommandId(IDC_DISTILL_PAGE)) {
-    RemoveItemAt(*index);
-  }
 }
 
 void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {

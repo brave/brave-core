@@ -252,7 +252,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
     UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
-    UpdateCommandEnabled(IDC_DISTILL_PAGE, false);
   }
 #endif
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
