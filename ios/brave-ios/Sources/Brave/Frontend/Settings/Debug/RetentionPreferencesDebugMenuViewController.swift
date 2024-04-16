@@ -32,7 +32,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "Retention Preferences"
+    title = "Onboarding Debug Menu"
 
     dataSource.sections = [
       startOnboardingSection,
@@ -57,12 +57,12 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
   private lazy var startOnboardingSection: Static.Section = {
     var section = Static.Section(
       rows: [
-        .init(
+        Row(
           text: "Start Onboarding",
           selection: { [unowned self] in
             let onboardingController = WelcomeViewController(
               state: .loading,
-              p3aUtilities: self.p3aUtilities,
+              p3aUtilities: p3aUtilities,
               attributionManager: attributionManager
             )
             onboardingController.modalPresentationStyle = .fullScreen
@@ -70,7 +70,23 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
             present(onboardingController, animated: false)
           },
           cellClass: MultilineButtonCell.self
-        )
+        ),
+        Row(
+          text: "Start Day 0 JP Onboarding",
+          selection: { [unowned self] in
+            let welcomeView = FocusOnboardingView(
+              attributionManager: attributionManager,
+              p3aUtilities: p3aUtilities
+            )
+            let onboardingController = FocusOnboardingHostingController(rootView: welcomeView).then
+            {
+              $0.modalPresentationStyle = .fullScreen
+            }
+
+            present(onboardingController, animated: false)
+          },
+          cellClass: MultilineButtonCell.self
+        ),
       ]
     )
 
@@ -117,7 +133,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
 
   private lazy var retentionPreferenceFlags: Section = {
     var shields = Section(
-      header: .title("Retention Preferences"),
+      header: .title("Onboarding Debug Menu"),
       rows: [
         .boolRow(
           title: "Retention User",

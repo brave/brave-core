@@ -82,7 +82,7 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
   // CoreHaptics Engine and Player for slider progress value
   @State private var hapticsEngine: CHHapticEngine?
   @State private var hapticsPlayer: CHHapticPatternPlayer?
-  @State private var hapticsLevel: HapticsLevel = .high
+  @State private var hapticsLevel: HapticsLevel = .intense
 
   var leading: Leading
   var trailing: Trailing
@@ -134,6 +134,11 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
         }
     }
     .onAppear(perform: prepareSliderHaptics)
+    .onDisappear(perform: {
+      Task { @MainActor in
+        await stopAllHaptics()
+      }
+    })
     .onChange(of: progress) { newValue in
       hapticsLevel = determineHapticIntensityLevel(from: newValue)
     }
@@ -199,9 +204,6 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
         "[Focus Onboarding] - There was an error creating the engine: \(error.localizedDescription)"
       )
     }
-
-    // Create Initial Continous Feedback
-    createContinousHapticFeedback(intensity: hapticsLevel)
   }
 
   private func createContinousHapticFeedback(intensity: HapticsLevel) {
@@ -217,7 +219,7 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
               CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5),
             ],
             relativeTime: 0,
-            duration: 1
+            duration: 100
           )
         ],
         parameters: []
@@ -233,18 +235,33 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
     }
   }
 
+  private func stopAllHaptics() async {
+    do {
+      try hapticsPlayer?.cancel()
+      try await hapticsEngine?.stop()
+    } catch let error {
+      Logger.module.debug(
+        "[Focus Onboarding] - Error stopping haptic engine: \(error.localizedDescription)"
+      )
+    }
+  }
+
   private func determineHapticIntensityLevel(from progress: CGFloat) -> HapticsLevel {
-    switch progress {
+    let progressPercentage = Int(progress * 100)
+
+    switch progressPercentage {
     case 0:
       return .none
     case 1..<21:
       return .low
     case 21..<71:
       return .medium
-    case 71..<100:
+    case 71..<95:
       return .high
+    case 95..<100:
+      return .intense
     default:
-      return .medium
+      return .high
     }
   }
 }
