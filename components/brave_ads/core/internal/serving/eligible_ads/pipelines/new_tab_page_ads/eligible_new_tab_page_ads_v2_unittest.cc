@@ -58,8 +58,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{SegmentList{"foo-bar1", "foo-bar2"}},
                     LatentInterestUserModelInfo{},
-                    InterestUserModelInfo{SegmentList{"foo-bar3"},
-                                          TextEmbeddingHtmlEventList{}}},
+                    InterestUserModelInfo{SegmentList{"foo-bar3"}}},
       callback.Get());
 }
 
@@ -93,8 +92,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
       UserModelInfo{
           IntentUserModelInfo{SegmentList{"intent-foo", "intent-boo"}},
           LatentInterestUserModelInfo{},
-          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
-                                TextEmbeddingHtmlEventList{}}},
+          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"}}},
       callback.Get());
 }
 

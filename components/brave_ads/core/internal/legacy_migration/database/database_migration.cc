@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/embeddings_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
@@ -26,7 +25,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -50,9 +48,6 @@ void MigrateToVersion(mojom::DBTransactionInfo* transaction,
   table::AdEvents ad_events_database_table;
   ad_events_database_table.Migrate(transaction, to_version);
 
-  table::TextEmbeddingHtmlEvents text_embedding_html_events_database_table;
-  text_embedding_html_events_database_table.Migrate(transaction, to_version);
-
   table::Transactions transactions_database_table;
   transactions_database_table.Migrate(transaction, to_version);
 
@@ -61,9 +56,6 @@ void MigrateToVersion(mojom::DBTransactionInfo* transaction,
 
   table::Segments segments_database_table;
   segments_database_table.Migrate(transaction, to_version);
-
-  table::Embeddings embeddings_database_table;
-  embeddings_database_table.Migrate(transaction, to_version);
 
   table::Deposits deposits_database_table;
   deposits_database_table.Migrate(transaction, to_version);

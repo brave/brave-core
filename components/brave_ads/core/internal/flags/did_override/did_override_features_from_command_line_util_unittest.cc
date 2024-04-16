@@ -41,7 +41,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
@@ -115,7 +114,6 @@ struct ParamInfo final {
     {{switches::kEnableFeatures, kSearchResultAdFeature.name}, true},
     {{switches::kEnableFeatures, kSubdivisionFeature.name}, true},
     {{switches::kEnableFeatures, kTextClassificationFeature.name}, true},
-    {{switches::kEnableFeatures, kTextEmbeddingFeature.name}, true},
     {{switches::kEnableFeatures, kUserActivityFeature.name}, true},
     {{switches::kEnableFeatures, kUserIdleDetectionFeature.name}, true},
 
@@ -199,8 +197,6 @@ struct ParamInfo final {
      true},
     {{variations::switches::kForceFieldTrialParams,
       kTextClassificationFeature.name},
-     true},
-    {{variations::switches::kForceFieldTrialParams, kTextEmbeddingFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kUserActivityFeature.name},
      true},

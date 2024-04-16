@@ -42,7 +42,6 @@ struct CatalogCreativeSetInfo final {
   int total_max = 0;
   double value = 0.0;
   std::string split_test_group;
-  std::vector<float> embedding;
   CatalogSegmentList segments;
   CatalogOsList oses;
   CatalogConversionList conversions;

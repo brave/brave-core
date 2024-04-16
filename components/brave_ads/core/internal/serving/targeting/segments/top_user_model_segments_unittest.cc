@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -26,8 +25,7 @@ UserModelInfo BuildUserModel() {
       LatentInterestUserModelInfo{SegmentList{
           "latent_interest_1_parent-child", "latent_interest_2_parent-child"}},
       InterestUserModelInfo{
-          SegmentList{"interest_1_parent-child", "interest_2_parent-child"},
-          TextEmbeddingHtmlEventList{}}};
+          SegmentList{"interest_1_parent-child", "interest_2_parent-child"}}};
 }
 
 }  // namespace

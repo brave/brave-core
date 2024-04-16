@@ -37,8 +37,8 @@ bool CatalogCreativeSetInfo::operator==(
          base::IsApproximatelyEqual(value, other.value,
                                     std::numeric_limits<double>::epsilon()) &&
          split_test_group == other.split_test_group &&
-         embedding == other.embedding && segments == other.segments &&
-         oses == other.oses && conversions == other.conversions &&
+         segments == other.segments && oses == other.oses &&
+         conversions == other.conversions &&
          creative_notification_ads == other.creative_notification_ads &&
          creative_inline_content_ads == other.creative_inline_content_ads &&
          creative_new_tab_page_ads == other.creative_new_tab_page_ads &&

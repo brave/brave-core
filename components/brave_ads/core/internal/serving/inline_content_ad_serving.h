@@ -23,7 +23,6 @@ class AntiTargetingResource;
 class EligibleInlineContentAdsBase;
 class SubdivisionTargeting;
 struct InlineContentAdInfo;
-struct UserModelInfo;
 
 class InlineContentAdServing final {
  public:
@@ -54,11 +53,7 @@ class InlineContentAdServing final {
   void GetEligibleAds(int32_t tab_id,
                       const std::string& dimensions,
                       MaybeServeInlineContentAdCallback callback) const;
-  void BuildUserModelCallback(int32_t tab_id,
-                              const std::string& dimensions,
-                              MaybeServeInlineContentAdCallback callback,
-                              const UserModelInfo& user_model) const;
-  void GetEligibleAdsForUserModelCallback(
+  void GetEligibleAdsCallback(
       int32_t tab_id,
       const std::string& dimensions,
       MaybeServeInlineContentAdCallback callback,
