@@ -31,6 +31,10 @@
 #include "printing/buildflags/buildflags.h"
 #include "ui/compositor/compositor_switches.h"
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#include "chrome/browser/printing/test_print_preview_observer.h"
+#endif
+
 namespace {
 
 constexpr char kEmbeddedTestServerDirectory[] = "leo";
@@ -175,7 +179,35 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewContextLimit) {
 
   ai_chat::AIChatTabHelper::SetMaxContentLengthForTesting(std::nullopt);
 }
-#endif
+
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+// Test print preview extraction while print dialog open
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintDiaglogExtraction) {
+  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
+
+  printing::TestPrintPreviewObserver print_preview_observer(
+      /*wait_for_loaded=*/true);
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "window.print();");
+  print_preview_observer.WaitUntilPreviewIsReady();
+  FetchPageContent(
+      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
+}
+
+// Test print dialog can still be open after print preview extraction
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
+  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
+  FetchPageContent(
+      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
+
+  printing::TestPrintPreviewObserver print_preview_observer(
+      /*wait_for_loaded=*/true);
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "window.print();");
+  print_preview_observer.WaitUntilPreviewIsReady();
+}
+#endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
   prefs()->SetBoolean(prefs::kPrintPreviewDisabled, true);
