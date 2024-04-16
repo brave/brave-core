@@ -17,6 +17,7 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/test/wait_for_callback.h"
 #include "brave/components/brave_news/browser/urls.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -174,6 +175,31 @@ TEST_F(BraveNewsChannelsControllerTest,
     EXPECT_EQ(it.first == "Five",
               base::Contains(it.second->subscribed_locales, "ja_JA"));
   }
+}
+
+TEST_F(BraveNewsChannelsControllerTest, CanGetPublisherChannels) {
+  auto publisher = mojom::Publisher::New();
+  auto l1 = mojom::LocaleInfo::New();
+  l1->locale = "en_NZ";
+  l1->channels.push_back("foo");
+  l1->channels.push_back("bar");
+  publisher->locales.push_back(std::move(l1));
+
+  auto l2 = mojom::LocaleInfo::New();
+  l2->locale = "en_AU";
+  l2->channels.push_back("foo");
+  publisher->locales.push_back(std::move(l2));
+
+  EXPECT_EQ(0u, GetChannelsForPublisher("en_US", publisher).size());
+
+  auto channels = GetChannelsForPublisher("en_NZ", publisher);
+  EXPECT_EQ(2u, channels.size());
+  EXPECT_EQ("foo", channels.at(0));
+  EXPECT_EQ("bar", channels.at(1));
+
+  channels = GetChannelsForPublisher("en_AU", publisher);
+  EXPECT_EQ(1u, channels.size());
+  EXPECT_EQ("foo", channels.at(0));
 }
 
 }  // namespace brave_news
