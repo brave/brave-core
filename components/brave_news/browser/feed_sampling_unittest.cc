@@ -8,8 +8,11 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
@@ -59,6 +62,58 @@ TEST(BraveNewsFeedSampling, GetNormalIsClampedBetweenZeroAndOne) {
     EXPECT_GE(normal, 0);
     EXPECT_LE(normal, 1);
   }
+}
+
+TEST(BraveNewsFeedSampling, PickFirstIndexPicksFirstUnlessArticlesAreEmpty) {
+  ArticleInfos infos;
+  EXPECT_EQ(-1, PickFirstIndex(infos));
+
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleWeight()});
+
+  EXPECT_EQ(0, PickFirstIndex(infos));
+
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleWeight()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleWeight()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleWeight()});
+
+  EXPECT_EQ(0, PickFirstIndex(infos));
+}
+
+TEST(BraveNewsFeedSampling, PickRouletteDoesntBreakOnEmptyList) {
+  ArticleInfos infos;
+
+  EXPECT_EQ(-1, PickRoulette(infos));
+}
+
+TEST(BraveNewsFeedSampling, PickRouletteWithWeighting) {
+  ArticleInfos infos;
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleWeight()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleWeight()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleWeight()});
+
+  auto& first = std::get<0>(infos.at(0));
+  auto& second = std::get<0>(infos.at(1));
+  auto& third = std::get<0>(infos.at(2));
+
+  // No positively weighted items, so we shouldn't pick anything.
+  EXPECT_EQ(-1,
+            PickRouletteWithWeighting(
+                infos, base::BindRepeating(
+                           [](const mojom::FeedItemMetadataPtr& item,
+                              const ArticleWeight& weight) { return 0.0; })));
+
+  auto make_picker_for = [](mojom::FeedItemMetadataPtr& target) -> GetWeighting {
+    return base::BindRepeating(
+        [](const mojom::FeedItemMetadataPtr& target, const mojom::FeedItemMetadataPtr& item,
+           const ArticleWeight& weight) {
+          return target == item ? 100.0 : 0.0;
+        },
+        target);
+  };
+
+  EXPECT_EQ(0, PickRouletteWithWeighting(infos, make_picker_for(first)));
+  EXPECT_EQ(1, PickRouletteWithWeighting(infos, make_picker_for(second)));
+  EXPECT_EQ(2, PickRouletteWithWeighting(infos, make_picker_for(third)));
 }
 
 }  // namespace brave_news
