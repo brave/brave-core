@@ -45,6 +45,10 @@ export function PublisherCard () {
 
   const publisherVerified = publisherInfo.verified
 
+  const showAutoContributeControls =
+    settings.autoContributeEnabled &&
+    publisherInfo.supportedWalletProviders.length > 0
+
   function renderStatusIndicator () {
     if (!publisherInfo) {
       return null
@@ -123,7 +127,7 @@ export function PublisherCard () {
     return (
       <>
         {
-          settings.autoContributeEnabled &&
+          showAutoContributeControls &&
             <style.attention data-test-id='attention-score-text'>
               <div>{getString('attention')}</div>
               <div className='value'>
@@ -133,7 +137,7 @@ export function PublisherCard () {
         }
         <style.contribution>
           {
-            settings.autoContributeEnabled &&
+            showAutoContributeControls &&
               <style.autoContribution>
                 <div>{getString('includeInAutoContribute')}</div>
                 <div>

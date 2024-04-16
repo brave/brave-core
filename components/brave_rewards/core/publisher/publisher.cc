@@ -27,6 +27,26 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 
 namespace brave_rewards::internal {
+
+namespace {
+
+bool IsPublisherExcluded(mojom::PublisherInfo& publisher_info) {
+  if (publisher_info.excluded == mojom::PublisherExclude::EXCLUDED) {
+    return true;
+  }
+  switch (publisher_info.status) {
+    case mojom::PublisherStatus::NOT_VERIFIED:
+    case mojom::PublisherStatus::WEB3_ENABLED:
+      return true;
+    case mojom::PublisherStatus::UPHOLD_VERIFIED:
+    case mojom::PublisherStatus::BITFLYER_VERIFIED:
+    case mojom::PublisherStatus::GEMINI_VERIFIED:
+      return false;
+  }
+}
+
+}  // namespace
+
 namespace publisher {
 
 Publisher::Publisher(RewardsEngine& engine)
@@ -224,7 +244,7 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
     return;
   }
 
-  bool is_verified = IsVerified(status);
+  bool is_verified = status != mojom::PublisherStatus::NOT_VERIFIED;
 
   bool new_publisher = false;
   bool updated_publisher = false;
@@ -258,7 +278,8 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
   publisher_info->url = visit_data.url;
   publisher_info->status = status;
 
-  bool excluded = publisher_info->excluded == mojom::PublisherExclude::EXCLUDED;
+  bool excluded = IsPublisherExcluded(*publisher_info);
+
   bool ignore_time = ignoreMinTime(publisher_key);
   if (duration == 0) {
     ignore_time = false;
@@ -520,10 +541,6 @@ void Publisher::SynopsisNormalizerCallback(
 
   engine_->database()->NormalizeActivityInfoList(std::move(save_list),
                                                  base::DoNothing());
-}
-
-bool Publisher::IsVerified(mojom::PublisherStatus status) {
-  return status != mojom::PublisherStatus::NOT_VERIFIED;
 }
 
 void Publisher::GetPublisherActivityFromUrl(uint64_t windowId,
