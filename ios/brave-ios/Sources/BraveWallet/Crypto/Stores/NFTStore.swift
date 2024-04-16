@@ -66,7 +66,9 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     return Filters(
       accounts: allAccounts.map { account in
         .init(
-          isSelected: !nonSelectedAccountAddresses.contains(where: { $0 == account.address }),
+          isSelected: !nonSelectedAccountAddresses.contains(where: {
+            $0 == account.filterAccountKey
+          }),
           model: account
         )
       },

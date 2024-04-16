@@ -531,6 +531,8 @@ extension BraveWallet.AllAccountsInfo {
       .mockSolAccount,
       .mockFilAccount,
       .mockFilTestnetAccount,
+      .mockBtcAccount,
+      .mockBtcTestnetAccount,
     ],
     selectedAccount: .mockEthAccount,
     ethDappSelectedAccount: .mockEthAccount,

@@ -201,6 +201,16 @@ extension BraveWallet.AccountInfo {
     }
     return parentOrder
   }
+
+  // The account unique key that we use to store for token balance in CD
+  var cacheBalanceKey: String {
+    coin == .btc ? accountId.uniqueKey : address
+  }
+
+  // The account unique key that we use to store for user filter preferences
+  var filterAccountKey: String {
+    coin == .btc ? accountId.uniqueKey : address
+  }
 }
 
 extension BraveWallet.CoinType {

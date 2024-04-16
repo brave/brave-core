@@ -44,6 +44,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let assetManager: WalletUserAssetManagerType
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
@@ -75,6 +76,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.account = account
@@ -88,6 +90,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     self.blockchainRegistry = blockchainRegistry
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
+    self.bitcoinWalletService = bitcoinWalletService
     self.assetManager = userAssetManager
     self._isSwapSupported = .init(
       wrappedValue: account.coin == .eth || account.coin == .sol
@@ -223,10 +226,25 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       )
 
       self.isLoadingAccountFiat = true
-      let tokenBalances = await self.rpcService.fetchBalancesForTokens(
-        account: account,
-        networkAssets: allUserNetworkAssets
-      )
+      var tokenBalances: [String: Double] = [:]
+      if account.coin == .btc {
+        let networkAsset = allUserNetworkAssets.first {
+          $0.network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
+        }
+        if let btc = networkAsset?.tokens.first,
+          let btcBalance = await self.bitcoinWalletService.fetchBTCBalance(
+            accountId: account.accountId
+          )
+        {
+          tokenBalances = [btc.id: btcBalance]
+        }
+      } else {
+        tokenBalances = await self.rpcService.fetchBalancesForTokens(
+          account: account,
+          networkAssets: allUserNetworkAssets
+        )
+        tokenBalanceCache.merge(with: tokenBalances)
+      }
       tokenBalanceCache.merge(with: tokenBalances)
 
       // fetch price for every user asset

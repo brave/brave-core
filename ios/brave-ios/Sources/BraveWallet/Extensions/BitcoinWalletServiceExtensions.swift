@@ -36,4 +36,25 @@ extension BraveWalletBitcoinWalletService {
       }
     )
   }
+
+  /// - Parameters:
+  ///     - accountId: A list of `BraveWallet.AccountId`
+  ///
+  /// - Returns: The BTC balance of the given `BraveWallet.AccountId` in `Double`; Will return a nil if there is an issue fetching balance.
+  func fetchBTCBalance(accountId: BraveWallet.AccountId) async -> Double? {
+    guard let btcBalance = await self.balance(accountId: accountId).0
+    else { return nil }
+
+    let availableSatoshiString = String(btcBalance.availableBalance)
+    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8))
+    if let valueString = formatter.decimalString(
+      for: availableSatoshiString,
+      radix: .decimal,
+      decimals: 8
+    ) {
+      return Double(valueString)
+    } else {
+      return nil
+    }
+  }
 }

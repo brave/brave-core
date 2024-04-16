@@ -57,7 +57,8 @@ class AccountActivityStoreTests: XCTestCase {
     BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry,
     BraveWallet.TestAssetRatioService, BraveWallet.TestSwapService,
     BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy,
-    IpfsAPI
+    IpfsAPI,
+    BraveWallet.TestBitcoinWalletService
   ) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -165,9 +166,14 @@ class AccountActivityStoreTests: XCTestCase {
 
     let ipfsApi = TestIpfsAPI()
 
+    let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+    bitcoinWalletService._balance = {
+      $1(.init(totalBalance: 1000, availableBalance: 1000, pendingBalance: 0, balances: [:]), nil)
+    }
+
     return (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
-      swapService, txService, solTxManagerProxy, ipfsApi
+      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService
     )
   }
 
@@ -208,7 +214,7 @@ class AccountActivityStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
-      swapService, txService, solTxManagerProxy, ipfsApi
+      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService
     ) = setupServices(
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
@@ -254,6 +260,7 @@ class AccountActivityStoreTests: XCTestCase {
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
+      bitcoinWalletService: bitcoinWalletService,
       userAssetManager: mockAssetManager
     )
 
@@ -397,7 +404,7 @@ class AccountActivityStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
-      swapService, txService, solTxManagerProxy, ipfsApi
+      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService
     ) = setupServices(
       mockLamportBalance: mockLamportBalance,
       mockSplTokenBalances: mockSplTokenBalances,
@@ -442,6 +449,7 @@ class AccountActivityStoreTests: XCTestCase {
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
+      bitcoinWalletService: bitcoinWalletService,
       userAssetManager: mockAssetManager
     )
 
@@ -600,7 +608,7 @@ class AccountActivityStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
-      swapService, txService, solTxManagerProxy, ipfsApi
+      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService
     ) = setupServices(
       mockFilBalance: mockFilDecimalBalanceInWei,
       mockFilTestnetBalance: mockFilTestnetDecimalBalanceInWei,
@@ -643,6 +651,7 @@ class AccountActivityStoreTests: XCTestCase {
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
+      bitcoinWalletService: bitcoinWalletService,
       userAssetManager: mockAssetManager
     )
 
