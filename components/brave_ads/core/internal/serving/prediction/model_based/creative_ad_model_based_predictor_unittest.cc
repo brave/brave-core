@@ -32,8 +32,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
   const UserModelInfo user_model{
       IntentUserModelInfo{SegmentList{"parent-child"}},
       LatentInterestUserModelInfo{SegmentList{"parent-child"}},
-      InterestUserModelInfo{SegmentList{"parent-child"},
-                            TextEmbeddingHtmlEventList{}}};
+      InterestUserModelInfo{SegmentList{"parent-child"}}};
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
@@ -70,8 +69,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
   const UserModelInfo user_model{
       IntentUserModelInfo{SegmentList{"parent-child"}},
       LatentInterestUserModelInfo{SegmentList{"parent-child"}},
-      InterestUserModelInfo{SegmentList{"parent-child"},
-                            TextEmbeddingHtmlEventList{}}};
+      InterestUserModelInfo{SegmentList{"parent-child"}}};
 
   AdEventList ad_events;
   const AdEventInfo ad_event =

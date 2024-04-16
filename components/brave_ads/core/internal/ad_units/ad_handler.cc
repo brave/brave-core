@@ -27,7 +27,6 @@ AdHandler::AdHandler(Account& account)
       purchase_intent_processor_(purchase_intent_resource_),
       epsilon_greedy_bandit_resource_(catalog_),
       text_classification_processor_(text_classification_resource_),
-      text_embedding_processor_(text_embedding_resource_),
       inline_content_ad_handler_(account,
                                  site_visit_,
                                  subdivision_targeting_,

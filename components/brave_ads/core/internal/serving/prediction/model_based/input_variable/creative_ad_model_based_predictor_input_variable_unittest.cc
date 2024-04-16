@@ -30,8 +30,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableTest,
   const UserModelInfo user_model{
       IntentUserModelInfo{SegmentList{"parent-child"}},
       LatentInterestUserModelInfo{SegmentList{"xyzzy-thud"}},
-      InterestUserModelInfo{SegmentList{"parent"},
-                            TextEmbeddingHtmlEventList{}}};
+      InterestUserModelInfo{SegmentList{"parent"}}};
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(

@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/embeddings_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
@@ -66,6 +65,7 @@ class CreativeNotificationAds final : public TableInterface {
 
  private:
   void MigrateToV35(mojom::DBTransactionInfo* transaction);
+  void MigrateToV37(mojom::DBTransactionInfo* transaction);
 
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeNotificationAdList& creative_ads);
@@ -80,7 +80,6 @@ class CreativeNotificationAds final : public TableInterface {
   CreativeAds creative_ads_database_table_;
   Dayparts dayparts_database_table_;
   Deposits deposits_database_table_;
-  Embeddings embeddings_database_table_;
   GeoTargets geo_targets_database_table_;
   Segments segments_database_table_;
 };

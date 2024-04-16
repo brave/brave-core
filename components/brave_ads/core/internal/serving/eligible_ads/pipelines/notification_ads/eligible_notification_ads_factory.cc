@@ -8,7 +8,6 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v1.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v2.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v3.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
@@ -27,11 +26,6 @@ EligibleNotificationAdsFactory::Build(
 
     case 2: {
       return std::make_unique<EligibleNotificationAdsV2>(
-          subdivision_targeting, anti_targeting_resource);
-    }
-
-    case 3: {
-      return std::make_unique<EligibleNotificationAdsV3>(
           subdivision_targeting, anti_targeting_resource);
     }
 

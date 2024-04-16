@@ -9,7 +9,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_unittest_helper.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_unittest_helper.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_unittest_helper.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_unittest_helper.h"
 
 namespace brave_ads {
 
@@ -48,7 +47,6 @@ class TargetingHelper final {
   EpsilonGreedyBanditHelper epsilon_greedy_bandit_;
   PurchaseIntentHelper purchase_intent_;
   TextClassificationHelper text_classification_;
-  TextEmbeddingHelper text_embedding_;
 };
 
 }  // namespace test

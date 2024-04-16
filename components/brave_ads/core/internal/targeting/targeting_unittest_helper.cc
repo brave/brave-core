@@ -49,13 +49,11 @@ LatentInterestUserModelInfo TargetingHelper::LatentInterestExpectation() {
 
 void TargetingHelper::MockInterest() {
   text_classification_.Mock();
-  text_embedding_.Mock();
 }
 
 // static
 InterestUserModelInfo TargetingHelper::InterestExpectation() {
-  return InterestUserModelInfo{TextClassificationHelper::Expectation(),
-                               TextEmbeddingHelper::Expectation()};
+  return InterestUserModelInfo{TextClassificationHelper::Expectation()};
 }
 
 }  // namespace brave_ads::test

@@ -60,10 +60,9 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
   base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeNotificationAdList{creative_ad_2}));
   eligible_ads_->GetForUserModel(
-      UserModelInfo{
-          IntentUserModelInfo{}, LatentInterestUserModelInfo{},
-          InterestUserModelInfo{SegmentList{"technology & computing-software"},
-                                TextEmbeddingHtmlEventList{}}},
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing-software"}}},
       callback.Get());
 }
 
@@ -78,10 +77,9 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
   base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeNotificationAdList{creative_ad}));
   eligible_ads_->GetForUserModel(
-      UserModelInfo{
-          IntentUserModelInfo{}, LatentInterestUserModelInfo{},
-          InterestUserModelInfo{SegmentList{"technology & computing-software"},
-                                TextEmbeddingHtmlEventList{}}},
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing-software"}}},
       callback.Get());
 }
 
@@ -96,8 +94,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForUntargetedSegment) {
   EXPECT_CALL(callback, Run(CreativeNotificationAdList{creative_ad}));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
-                    InterestUserModelInfo{SegmentList{"finance-banking"},
-                                          TextEmbeddingHtmlEventList{}}},
+                    InterestUserModelInfo{SegmentList{"finance-banking"}}},
       callback.Get());
 }
 
@@ -130,8 +127,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
-                        SegmentList{"technology & computing", "food & drink"},
-                        TextEmbeddingHtmlEventList{}}},
+                        SegmentList{"technology & computing", "food & drink"}}},
       callback.Get());
 }
 
@@ -159,8 +155,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
-                    InterestUserModelInfo{SegmentList{"UNMATCHED"},
-                                          TextEmbeddingHtmlEventList{}}},
+                    InterestUserModelInfo{SegmentList{"UNMATCHED"}}},
       callback.Get());
 }
 
@@ -171,8 +166,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
-                        SegmentList{"technology & computing", "food & drink"},
-                        TextEmbeddingHtmlEventList{}}},
+                        SegmentList{"technology & computing", "food & drink"}}},
       callback.Get());
 }
 
@@ -201,8 +195,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
-                        SegmentList{"technology & computing", "food & drink"},
-                        TextEmbeddingHtmlEventList{}}},
+                        SegmentList{"technology & computing", "food & drink"}}},
       callback.Get());
 }
 
@@ -232,8 +225,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
-                        SegmentList{"technology & computing", "food & drink"},
-                        TextEmbeddingHtmlEventList{}}},
+                        SegmentList{"technology & computing", "food & drink"}}},
       callback.Get());
 }
 
@@ -267,8 +259,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetPrioritizedAds) {
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
-                        SegmentList{"technology & computing", "food & drink"},
-                        TextEmbeddingHtmlEventList{}}},
+                        SegmentList{"technology & computing", "food & drink"}}},
       callback.Get());
 }
 

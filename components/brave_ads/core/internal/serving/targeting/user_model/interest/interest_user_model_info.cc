@@ -11,11 +11,8 @@ namespace brave_ads {
 
 InterestUserModelInfo::InterestUserModelInfo() = default;
 
-InterestUserModelInfo::InterestUserModelInfo(
-    SegmentList segments,
-    TextEmbeddingHtmlEventList text_embedding_html_events)
-    : segments(std::move(segments)),
-      text_embedding_html_events(std::move(text_embedding_html_events)) {}
+InterestUserModelInfo::InterestUserModelInfo(SegmentList segments)
+    : segments(std::move(segments)) {}
 
 InterestUserModelInfo::InterestUserModelInfo(
     const InterestUserModelInfo& other) = default;

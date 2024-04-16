@@ -101,16 +101,6 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
         continue;
       }
 
-      if (creative_set_node.HasMember("embedding")) {
-        const auto& embedding_nodes = creative_set_node["embedding"].GetArray();
-        creative_set.embedding.reserve(embedding_nodes.Size());
-
-        for (const auto& embedding_node : embedding_nodes) {
-          creative_set.embedding.push_back(
-              static_cast<float>(embedding_node.GetDouble()));
-        }
-      }
-
       if (creative_set_node.HasMember("splitTestGroup")) {
         creative_set.split_test_group =
             creative_set_node["splitTestGroup"].GetString();
