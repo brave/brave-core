@@ -192,6 +192,7 @@ public class Utils {
 
     /**
      * Hides software keyboard.
+     *
      * @param activity Activity used to retrieve input method service.
      */
     public static void hideKeyboard(@NonNull final Activity activity) {
@@ -199,12 +200,14 @@ public class Utils {
     }
 
     /**
-     * Hides software keyboard targeting a specific window token, useful for those components handling
-     * multiple views off screen (e.g. ViewPager2)
+     * Hides software keyboard targeting a specific window token, useful for those components
+     * handling multiple views off screen (e.g. ViewPager2)
+     *
      * @param activity Activity used to retrieve input method service.
      * @param windowToken Token of the window that is making the request.
      */
-    public static void hideKeyboard(@NonNull final Activity activity, @Nullable final IBinder windowToken) {
+    public static void hideKeyboard(
+            @NonNull final Activity activity, @Nullable final IBinder windowToken) {
         InputMethodManager imm =
                 (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (windowToken != null) {
@@ -219,6 +222,7 @@ public class Utils {
 
     /**
      * Get a short name of a network
+     *
      * @param networkName of chain e.g. Ethereum Mainnet
      * @return short name of the network e.g. Ethereum
      */
@@ -1098,9 +1102,12 @@ public class Utils {
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "getProfile " + e);
         }
-        if (chromeActivity == null) chromeActivity = BraveActivity.getChromeTabbedActivity();
-        if (chromeActivity == null)
+        if (chromeActivity == null) {
+            chromeActivity = BraveActivity.getChromeTabbedActivity();
+        }
+        if (chromeActivity == null) {
             return ProfileManager.getLastUsedRegularProfile(); // Last resort
+        }
 
         return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
     }

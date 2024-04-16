@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
-import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter.WalletAction;
-
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +25,7 @@ import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
+import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter.WalletAction;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
@@ -37,9 +36,7 @@ import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
-/**
- * Main Brave Wallet activity
- */
+/** Main Brave Wallet activity */
 public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNextPage {
 
     public static final String IS_FROM_DAPPS = "isFromDapps";
@@ -114,13 +111,16 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mCryptoWalletOnboardingViewPager = findViewById(R.id.crypto_wallet_onboarding_viewpager);
         mCryptoWalletOnboardingViewPager.setUserInputEnabled(false);
         mCryptoWalletOnboardingViewPager.setOffscreenPageLimit(1);
-        mCryptoWalletOnboardingViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                Utils.hideKeyboard(BraveWalletActivity.this, mCryptoWalletOnboardingViewPager.getWindowToken());
-            }
-        });
+        mCryptoWalletOnboardingViewPager.registerOnPageChangeCallback(
+                new ViewPager2.OnPageChangeCallback() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        super.onPageSelected(position);
+                        Utils.hideKeyboard(
+                                BraveWalletActivity.this,
+                                mCryptoWalletOnboardingViewPager.getWindowToken());
+                    }
+                });
 
         mOnboardingCloseButton = findViewById(R.id.onboarding_close_button);
         mOnboardingCloseButton.setOnClickListener(v -> finish());
@@ -143,7 +143,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        mCryptoWalletOnboardingPagerAdapter = new CryptoWalletOnboardingPagerAdapter(this, mBraveWalletP3A, mRestartSetupAction, mRestartRestoreAction);
+        mCryptoWalletOnboardingPagerAdapter =
+                new CryptoWalletOnboardingPagerAdapter(
+                        this, mBraveWalletP3A, mRestartSetupAction, mRestartRestoreAction);
         mCryptoWalletOnboardingViewPager.setAdapter(mCryptoWalletOnboardingPagerAdapter);
 
         if (Utils.shouldShowCryptoOnboarding()) {
@@ -156,7 +158,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                     isLocked -> {
                         if (isLocked) {
                             mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
-                            mCryptoWalletOnboardingPagerAdapter.setWalletAction(WalletAction.UNLOCK);
+                            mCryptoWalletOnboardingPagerAdapter.setWalletAction(
+                                    WalletAction.UNLOCK);
                             mCryptoWalletOnboardingViewPager.setCurrentItem(0);
                             addRemoveSecureFlag(true);
                         } else if (mBackupWallet) {

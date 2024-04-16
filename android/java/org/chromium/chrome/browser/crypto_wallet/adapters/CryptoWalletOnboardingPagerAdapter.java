@@ -24,9 +24,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.Onboarding
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment;
 
 public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
-    /**
-     * Wallet action types used to determine onboarding navigation sequence.
-     */
+    /** Wallet action types used to determine onboarding navigation sequence. */
     public enum WalletAction {
         // Initial onboarding action triggered to create a new Wallet or restore an existing one.
         ONBOARDING,
@@ -46,20 +44,18 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
     private static final long TERMS_OF_USE_PASSWORD_CREATION_ID = 999;
     private static final long TERMS_OF_USE_RESTORE_ID = 998;
 
-
-    @NonNull
-    private final BraveWalletP3a mBraveWalletP3A;
+    @NonNull private final BraveWalletP3a mBraveWalletP3A;
     private final boolean mRestartSetupAction;
     private final boolean mRestartRestoreAction;
 
-    @NonNull
-    private WalletAction mWalletAction;
+    @NonNull private WalletAction mWalletAction;
     private boolean mShowBiometricPrompt;
 
-    public CryptoWalletOnboardingPagerAdapter(@NonNull final FragmentActivity fragmentActivity,
-                                              @NonNull final BraveWalletP3a braveWalletP3a,
-                                              final boolean restartSetupAction,
-                                              final boolean restartRestoreAction) {
+    public CryptoWalletOnboardingPagerAdapter(
+            @NonNull final FragmentActivity fragmentActivity,
+            @NonNull final BraveWalletP3a braveWalletP3a,
+            final boolean restartSetupAction,
+            final boolean restartRestoreAction) {
         super(fragmentActivity);
         mBraveWalletP3A = braveWalletP3a;
         mRestartSetupAction = restartSetupAction;
@@ -68,9 +64,10 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
     }
 
     public void setWalletAction(@NonNull final WalletAction walletAction) {
-        android.util.Log.d("SIMONE", "setWalletAction " + walletAction);
         mWalletAction = walletAction;
-        mShowBiometricPrompt = walletAction != WalletAction.ONBOARDING_RESTORE && walletAction != WalletAction.RESTORE;
+        mShowBiometricPrompt =
+                walletAction != WalletAction.ONBOARDING_RESTORE
+                        && walletAction != WalletAction.RESTORE;
 
         if (walletAction == WalletAction.ONBOARDING) {
             mBraveWalletP3A.reportOnboardingAction(OnboardingAction.SHOWN);
@@ -81,7 +78,6 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
         }
 
         notifyItemRangeChanged(0, getItemCount());
-
     }
 
     @Override
@@ -116,17 +112,22 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
         switch (mWalletAction) {
             case ONBOARDING -> {
                 if (position == 0) {
-                    return new OnboardingInitWalletFragment(mRestartSetupAction, mRestartRestoreAction);
+                    return new OnboardingInitWalletFragment(
+                            mRestartSetupAction, mRestartRestoreAction);
                 } else {
-                    throw new IllegalStateException(String.format(
-                            "No fragment found for ONBOARDING Wallet action at position %d.", position));
+                    throw new IllegalStateException(
+                            String.format(
+                                    "No fragment found for ONBOARDING Wallet action at position"
+                                        + " %d.",
+                                    position));
                 }
             }
             case PASSWORD_CREATION -> {
                 final boolean isOnboarding = true;
 
                 if (position == 0) {
-                    return new OnboardingInitWalletFragment(mRestartSetupAction, mRestartRestoreAction);
+                    return new OnboardingInitWalletFragment(
+                            mRestartSetupAction, mRestartRestoreAction);
                 } else if (position == 1) {
                     return OnboardingTermsOfUseFragment.newInstance();
                 } else if (position == 2) {
@@ -142,13 +143,17 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
                 } else if (position == 7) {
                     return OnboardingVerifyRecoveryPhraseFragment.newInstance(isOnboarding);
                 } else {
-                    throw new IllegalStateException(String.format(
-                            "No fragment found for PASSWORD_CREATION Wallet action at position %d.", position));
+                    throw new IllegalStateException(
+                            String.format(
+                                    "No fragment found for PASSWORD_CREATION Wallet action at"
+                                        + " position %d.",
+                                    position));
                 }
             }
             case ONBOARDING_RESTORE -> {
                 if (position == 0) {
-                    return new OnboardingInitWalletFragment(mRestartSetupAction, mRestartRestoreAction);
+                    return new OnboardingInitWalletFragment(
+                            mRestartSetupAction, mRestartRestoreAction);
                 } else if (position == 1) {
                     return OnboardingTermsOfUseFragment.newInstance();
                 } else if (position == 2) {
@@ -158,8 +163,11 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
                 } else if (position == 4) {
                     return new OnboardingCreatingWalletFragment();
                 } else {
-                    throw new IllegalStateException(String.format(
-                            "No fragment found for ONBOARDING_RESTORE Wallet action at position %d.", position));
+                    throw new IllegalStateException(
+                            String.format(
+                                    "No fragment found for ONBOARDING_RESTORE Wallet action at"
+                                        + " position %d.",
+                                    position));
                 }
             }
             case UNLOCK -> {
@@ -173,10 +181,13 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
                 } else if (position == 2) {
                     return new OnboardingCreatingWalletFragment();
                 } else {
-                    throw new IllegalStateException(String.format(
-                            "No fragment found for RESTORE Wallet action at position %d.", position));
+                    throw new IllegalStateException(
+                            String.format(
+                                    "No fragment found for RESTORE Wallet action at position %d.",
+                                    position));
                 }
-            } case BACKUP -> {
+            }
+            case BACKUP -> {
                 final boolean isOnboarding = false;
                 if (position == 0) {
                     return OnboardingBackupWalletFragment.newInstance(isOnboarding);
@@ -185,13 +196,14 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
                 } else if (position == 2) {
                     return OnboardingVerifyRecoveryPhraseFragment.newInstance(isOnboarding);
                 } else {
-                    throw new IllegalStateException(String.format(
-                            "No fragment found for BACKUP Wallet action at position %d.", position));
+                    throw new IllegalStateException(
+                            String.format(
+                                    "No fragment found for BACKUP Wallet action at position %d.",
+                                    position));
                 }
             }
-            default ->
-                throw new IllegalStateException(String.format(
-                        "No fragment found for Wallet action %s.", mWalletAction));
+            default -> throw new IllegalStateException(
+                    String.format("No fragment found for Wallet action %s.", mWalletAction));
         }
     }
 
@@ -210,7 +222,7 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
         } else if (mWalletAction == WalletAction.BACKUP) {
             return 3;
         }
-        throw new IllegalStateException(String.format(
-                "Item count not available for Wallet action %s.", mWalletAction));
+        throw new IllegalStateException(
+                String.format("Item count not available for Wallet action %s.", mWalletAction));
     }
 }
