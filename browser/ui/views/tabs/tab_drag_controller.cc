@@ -332,7 +332,13 @@ gfx::Rect TabDragController::CalculateDraggedBrowserBounds(
 
 [[nodiscard]] TabDragController::Liveness TabDragController::ContinueDragging(
     const gfx::Point& point_in_screen) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+  auto* browser_widget = GetAttachedBrowserWidget();
+  auto* browser = BrowserView::GetBrowserViewForNativeWindow(
+                      browser_widget->GetNativeWindow())
+                      ->browser();
+  SplitViewBrowserData* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_browser_data) {
     return TabDragControllerChromium::ContinueDragging(point_in_screen);
   }
 
@@ -352,12 +358,6 @@ gfx::Rect TabDragController::CalculateDraggedBrowserBounds(
     return liveness;
   }
 
-  auto* browser_widget = GetAttachedBrowserWidget();
-  auto* browser = BrowserView::GetBrowserViewForNativeWindow(
-                      browser_widget->GetNativeWindow())
-                      ->browser();
-  SplitViewBrowserData* split_view_browser_data =
-      SplitViewBrowserData::FromBrowser(browser);
   const bool is_dragging_tabs = current_state_ == DragState::kDraggingTabs;
   if (is_dragging_tabs) {
     on_tab_drag_ended_closure_ = split_view_browser_data->TabDragStarted();

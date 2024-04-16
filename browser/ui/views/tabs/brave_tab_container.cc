@@ -107,15 +107,14 @@ base::OnceClosure BraveTabContainer::LockLayout() {
 
 void BraveTabContainer::AddedToWidget() {
   TabContainerImpl::AddedToWidget();
+  auto* browser = tab_slot_controller_->GetBrowser();
+  if (!browser) {
+    CHECK_IS_TEST();
+    return;
+  }
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
-    auto* split_view_data = SplitViewBrowserData::FromBrowser(
-        const_cast<Browser*>(tab_slot_controller_->GetBrowser()));
-    if (!split_view_data) {
-      // Can be null if browser isn't normal type browser.
-      return;
-    }
-
+  if (auto* split_view_data =
+          SplitViewBrowserData::FromBrowser(const_cast<Browser*>(browser))) {
     if (!split_view_data_observation_.IsObserving()) {
       split_view_data_observation_.Observe(split_view_data);
     }
@@ -286,9 +285,9 @@ void BraveTabContainer::UpdateLayoutOrientation() {
   InvalidateLayout();
 }
 
-void BraveTabContainer::PaintBoundingBoxForTiles(gfx::Canvas& canvas) {
-  auto* split_view_data =
-      SplitViewBrowserData::FromBrowser(tab_slot_controller_->GetBrowser());
+void BraveTabContainer::PaintBoundingBoxForTiles(
+    gfx::Canvas& canvas,
+    const SplitViewBrowserData* split_view_data) {
   base::ranges::for_each(split_view_data->tiles(), [&](const auto& tile) {
     PaintBoundingBoxForTile(canvas, tile);
   });
@@ -357,12 +356,13 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
 
   std::stable_sort(orderable_children.begin(), orderable_children.end());
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+  if (auto* split_view_data = SplitViewBrowserData::FromBrowser(
+          tab_slot_controller_->GetBrowser())) {
     ui::PaintRecorder recorder(paint_info.context(),
                                paint_info.paint_recording_size(),
                                paint_info.paint_recording_scale_x(),
                                paint_info.paint_recording_scale_y(), nullptr);
-    PaintBoundingBoxForTiles(*recorder.canvas());
+    PaintBoundingBoxForTiles(*recorder.canvas(), split_view_data);
   }
 
   for (const ZOrderableTabContainerElement& child : orderable_children) {

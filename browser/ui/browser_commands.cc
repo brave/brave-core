@@ -879,14 +879,12 @@ void ToggleAllBookmarksButtonVisibility(Browser* browser) {
 
 bool CanOpenNewSplitViewForTab(Browser* browser,
                                std::optional<tabs::TabHandle> tab) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
-  if (!browser->is_type_normal() || browser->tab_strip_model()->empty()) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
     return false;
   }
 
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
-  if (!split_view_data) {
-    //  can happen on startup
+  if (browser->tab_strip_model()->empty()) {
     return false;
   }
 
@@ -898,7 +896,11 @@ bool CanOpenNewSplitViewForTab(Browser* browser,
 }
 
 void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return;
+  }
+
   if (!CanOpenNewSplitViewForTab(browser, tab)) {
     return;
   }
@@ -909,7 +911,6 @@ void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
 
   auto* model = browser->tab_strip_model();
   int tab_index = model->GetIndexOfTab(*tab);
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
   chrome::AddTabAt(browser, GURL("chrome://newtab"), tab_index + 1,
                    /*foreground*/ true);
   split_view_data->TileTabs(std::make_pair(
@@ -918,12 +919,15 @@ void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
 
 void CloseSplitViewForTab(Browser* browser,
                           std::optional<tabs::TabHandle> tab) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return;
+  }
+
   if (!tab) {
     tab = GetActiveTabHandle(browser);
   }
 
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
   auto* model = browser->tab_strip_model();
   auto tile = split_view_data->GetTile(*tab);
   if (!tile) {
@@ -935,6 +939,11 @@ void CloseSplitViewForTab(Browser* browser,
 }
 
 void TileTabs(Browser* browser, const std::vector<int>& indices) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return;
+  }
+
   if (indices.empty()) {
     return TileTabs(browser, GetSelectedIndices(browser));
   }
@@ -954,8 +963,6 @@ void TileTabs(Browser* browser, const std::vector<int>& indices) {
   auto* model = browser->tab_strip_model();
   auto tab1 = indices[0];
   auto tab2 = indices[1];
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
-  CHECK(split_view_data);
   CHECK(!split_view_data->IsTabTiled(model->GetTabHandleAt(tab1)));
   CHECK(!split_view_data->IsTabTiled(model->GetTabHandleAt(tab2)));
 
@@ -968,12 +975,15 @@ void TileTabs(Browser* browser, const std::vector<int>& indices) {
 }
 
 void BreakTiles(Browser* browser, const std::vector<int>& indices) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return;
+  }
+
   if (indices.empty()) {
     return BreakTiles(browser, GetSelectedIndices(browser));
   }
 
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
-  CHECK(split_view_data);
   auto* model = browser->tab_strip_model();
   for (auto index : indices) {
     // The tile could have already been broken from the earlier iteration.
@@ -985,7 +995,12 @@ void BreakTiles(Browser* browser, const std::vector<int>& indices) {
 }
 
 bool IsTabsTiled(Browser* browser, const std::vector<int>& indices) {
-  if (!browser->is_type_normal() || browser->tab_strip_model()->empty()) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return false;
+  }
+
+  if (browser->tab_strip_model()->empty()) {
     return false;
   }
 
@@ -995,16 +1010,18 @@ bool IsTabsTiled(Browser* browser, const std::vector<int>& indices) {
 
   auto* model = browser->tab_strip_model();
 
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
-  CHECK(split_view_data);
-
   return base::ranges::any_of(indices, [&](auto index) {
     return split_view_data->IsTabTiled(model->GetTabHandleAt(index));
   });
 }
 
 bool CanTileTabs(Browser* browser, const std::vector<int>& indices) {
-  if (!browser->is_type_normal() || browser->tab_strip_model()->empty()) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return false;
+  }
+
+  if (browser->tab_strip_model()->empty()) {
     return false;
   }
 
@@ -1016,8 +1033,6 @@ bool CanTileTabs(Browser* browser, const std::vector<int>& indices) {
     return false;
   }
 
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
-  CHECK(split_view_data);
   auto* model = browser->tab_strip_model();
   return base::ranges::none_of(indices, [&](auto index) {
     return split_view_data->IsTabTiled(model->GetTabHandleAt(index));

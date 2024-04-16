@@ -368,7 +368,12 @@ bool BraveBrowserView::IsActiveWebContentsTiled(
 }
 
 void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(browser_.get());
+  if (!split_view_browser_data) {
+    return;
+  }
+
   if (browser()->IsBrowserClosing()) {
     secondary_contents_web_view_->SetWebContents(nullptr);
     return;
@@ -376,8 +381,6 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
 
   auto active_tab_handle = GetActiveTabHandle();
 
-  auto* split_view_browser_data =
-      SplitViewBrowserData::FromBrowser(browser_.get());
   if (auto tile = split_view_browser_data->GetTile(active_tab_handle)) {
     const bool second_tile_is_active_web_contents =
         active_tab_handle == tile->second;
