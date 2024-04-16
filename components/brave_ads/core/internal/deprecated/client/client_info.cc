@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
@@ -222,6 +223,10 @@ bool ClientInfo::FromJson(const std::string& json) {
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!dict) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Remove migration failure dumps.
+    base::debug::DumpWithoutCrashing();
+
     return false;
   }
 

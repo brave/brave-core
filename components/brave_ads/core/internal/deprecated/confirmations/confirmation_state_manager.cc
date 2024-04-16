@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -107,28 +108,31 @@ std::string ConfirmationStateManager::ToJson() {
 bool ConfirmationStateManager::FromJson(const std::string& json) {
   const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(json);
+  confirmation_tokens_.RemoveAll();
+  payment_tokens_.RemoveAllTokens();
+
   if (!dict) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Remove migration failure dumps.
+    base::debug::DumpWithoutCrashing();
+
     return false;
   }
 
-  if (!ParseConfirmationTokensFromDictionary(*dict)) {
-    BLOG(1, "Failed to parse confirmation tokens");
-  }
+  ParseConfirmationTokensFromDictionary(*dict);
 
-  if (!ParsePaymentTokensFromDictionary(*dict)) {
-    BLOG(1, "Failed to parse payment tokens");
-  }
+  ParsePaymentTokensFromDictionary(*dict);
 
   return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
+void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
     const base::Value::Dict& dict) {
   const auto* const list = dict.FindList("unblinded_tokens");
   if (!list) {
-    return false;
+    return;
   }
 
   ConfirmationTokenList filtered_confirmation_tokens =
@@ -151,20 +155,13 @@ bool ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
   }
 
   confirmation_tokens_.Set(filtered_confirmation_tokens);
-
-  return true;
 }
 
-bool ConfirmationStateManager::ParsePaymentTokensFromDictionary(
+void ConfirmationStateManager::ParsePaymentTokensFromDictionary(
     const base::Value::Dict& dict) {
-  const auto* const list = dict.FindList("unblinded_payment_tokens");
-  if (!list) {
-    return false;
+  if (const auto* const list = dict.FindList("unblinded_payment_tokens")) {
+    payment_tokens_.SetTokens(PaymentTokensFromValue(*list));
   }
-
-  payment_tokens_.SetTokens(PaymentTokensFromValue(*list));
-
-  return true;
 }
 
 }  // namespace brave_ads
