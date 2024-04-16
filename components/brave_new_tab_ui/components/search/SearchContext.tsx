@@ -74,6 +74,7 @@ class SearchPage implements PageInterface {
   }
 
   setInputText(inputText: string) {}
+  setThumbnail(thumbnailUrl: string) {}
 }
 
 export const search = new SearchPage()
