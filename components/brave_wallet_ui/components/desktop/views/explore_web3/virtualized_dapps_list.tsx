@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
-import AutoSizer from '@brave/react-virtualized-auto-sizer'
+import AutoSizer from 'react-virtualized-auto-sizer'
 
 // types
 import { BraveWallet } from '../../../../constants/types'
@@ -24,6 +24,7 @@ interface VirtualizedTokensListProps {
 interface ListItemProps extends Omit<VirtualizedTokensListProps, 'dappsList'> {
   index: number
   data: BraveWallet.Dapp
+  setSize: (index: number, size: number) => void
   style: React.CSSProperties
 }
 
@@ -33,7 +34,6 @@ const VirtualListStyle: React.CSSProperties = {
 }
 
 const defaultItemSizePx = 64
-const getItemSize = () => defaultItemSizePx
 
 const getListItemKey = (index: number, dappsList: BraveWallet.Dapp[]) => {
   return dappsList[index].id
@@ -43,6 +43,7 @@ const DappListItem = React.forwardRef<
   HTMLDivElement,
   {
     dapp: BraveWallet.Dapp
+    ref: React.Ref<HTMLDivElement>
     onClick?: (dappId: number) => void
   }
 >(({ dapp, onClick }, ref) => {
@@ -94,13 +95,23 @@ const DappListItem = React.forwardRef<
 })
 
 const ListItem = (props: ListItemProps) => {
-  const { data, style, onClickDapp } = props
+  const { index, data, style, setSize, onClickDapp } = props
+
+  const handleSetSize = React.useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref) {
+        setSize(index, ref.getBoundingClientRect().height)
+      }
+    },
+    [index, setSize]
+  )
 
   return (
     <div style={style}>
       <DappListItem
         dapp={data}
         onClick={onClickDapp}
+        ref={handleSetSize}
       />
     </div>
   )
@@ -108,19 +119,59 @@ const ListItem = (props: ListItemProps) => {
 
 export const VirtualizedDappsList = (props: VirtualizedTokensListProps) => {
   const { dappsList: tokenList, onClickDapp } = props
+  const listRef = React.useRef<List | null>(null)
+  const itemSizes = React.useRef<number[]>(
+    new Array(tokenList.length).fill(defaultItemSizePx)
+  )
+
+  // Methods
+  const onListMount = React.useCallback(
+    (ref: List | null) => {
+      if (ref) {
+        // Set ref on mount
+        listRef.current = ref
+        // Clear cached data and rerender
+        listRef.current.resetAfterIndex(0)
+      }
+    },
+    [listRef]
+  )
+
+  const setSize = React.useCallback(
+    (index: number, size: number) => {
+      // Performance: Only update the sizeMap and reset cache if an actual value
+      // changed
+      if (itemSizes.current[index] !== size && size > -1) {
+        itemSizes.current[index] = size
+        if (listRef.current) {
+          // Clear cached data and rerender
+          listRef.current.resetAfterIndex(0)
+        }
+      }
+    },
+    [itemSizes, listRef]
+  )
+
+  const getSize = React.useCallback(
+    (index: number) => {
+      return itemSizes.current[index] || defaultItemSizePx
+    },
+    [itemSizes]
+  )
 
   // render
   return (
     <div style={VirtualListStyle}>
       <AutoSizer style={VirtualListStyle}>
-        {function ({ width, height }) {
+        {function ({ width, height }: { width: number; height: number }) {
           return (
             <List
+              ref={onListMount}
               width={width}
               height={height}
               itemData={tokenList}
               itemCount={tokenList.length}
-              itemSize={getItemSize}
+              itemSize={getSize}
               overscanCount={10}
               itemKey={getListItemKey}
               children={({ data, index, style }) => (
@@ -129,6 +180,7 @@ export const VirtualizedDappsList = (props: VirtualizedTokensListProps) => {
                   onClickDapp={onClickDapp}
                   index={index}
                   style={style}
+                  setSize={setSize}
                 />
               )}
             />
