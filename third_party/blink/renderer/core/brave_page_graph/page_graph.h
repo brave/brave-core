@@ -358,11 +358,9 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                          const InspectorId request_id,
                                          const blink::KURL& url,
                                          const String& resource_type);
-  void RegisterRequestStartForDocument(blink::Document* document,
-                                       LocalFrame* frame,
+  void RegisterRequestStartForDocument(blink::DocumentLoader* loader,
                                        const InspectorId request_id,
-                                       const blink::KURL& url,
-                                       const bool is_main_frame);
+                                       const blink::KURL& url);
   void RegisterRequestRedirect(const ResourceRequest& request,
                                const ResourceResponse& redirect_response,
                                const brave_page_graph::FrameId& frame_id);

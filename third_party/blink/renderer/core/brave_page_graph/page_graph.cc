@@ -471,9 +471,7 @@ void PageGraph::WillSendNavigationRequest(uint64_t identifier,
                                           const blink::KURL& url,
                                           const AtomicString& http_method,
                                           blink::EncodedFormData*) {
-  RegisterRequestStartForDocument(loader->GetFrame()->GetDocument(),
-                                  loader->GetFrame(), identifier, url,
-                                  loader->GetFrame()->IsMainFrame());
+  RegisterRequestStartForDocument(loader, identifier, url);
 }
 
 void PageGraph::WillSendRequest(
@@ -1596,12 +1594,12 @@ void PageGraph::RegisterRequestStartFromCSSOrLink(blink::DocumentLoader* loader,
 }
 
 // Request start for root document and subdocument HTML
-void PageGraph::RegisterRequestStartForDocument(blink::Document* document,
-                                                LocalFrame* frame,
+void PageGraph::RegisterRequestStartForDocument(blink::DocumentLoader* loader,
                                                 const InspectorId request_id,
-                                                const blink::KURL& url,
-                                                const bool is_main_frame) {
+                                                const blink::KURL& url) {
+  blink::LocalFrame* frame = loader->GetFrame();
   CHECK(frame);
+  bool is_main_frame = frame->IsMainFrame();
   const FrameId frame_id = GetFrameId(*frame);
   const base::TimeDelta timestamp = base::TimeTicks::Now() - start_;
 
