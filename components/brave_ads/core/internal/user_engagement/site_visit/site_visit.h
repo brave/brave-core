@@ -81,6 +81,7 @@ class SiteVisit final : public TabManagerObserver {
 
   // TabManagerObserver:
   void OnTabDidChangeFocus(int32_t tab_id) override;
+  void OnTabDidChange(const TabInfo& tab) override;
   void OnDidOpenNewTab(const TabInfo& tab) override;
   void OnDidCloseTab(int32_t tab_id) override;
 
