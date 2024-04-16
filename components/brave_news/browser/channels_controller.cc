@@ -19,6 +19,21 @@
 
 namespace brave_news {
 
+std::vector<std::string> GetChannelsForPublisher(
+    const std::string& locale,
+    const mojom::PublisherPtr& publisher) {
+  std::vector<std::string> result;
+  for (const auto& locale_info : publisher->locales) {
+    if (locale_info->locale != locale) {
+      continue;
+    }
+    for (const auto& channel : locale_info->channels) {
+      result.push_back(channel);
+    }
+  }
+  return result;
+}
+
 ChannelsController::ChannelsController(
     PublishersController* publishers_controller)
     : publishers_controller_(publishers_controller) {}
