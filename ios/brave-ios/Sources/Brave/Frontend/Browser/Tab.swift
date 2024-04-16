@@ -97,6 +97,7 @@ class Tab: NSObject {
   private(set) var type: TabType = .regular
 
   var redirectURLs = [URL]()
+  var responses = [URL: URLResponse]()
 
   var isPrivate: Bool {
     return type.isPrivate
@@ -463,7 +464,7 @@ class Tab: NSObject {
 
       if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
         configuration!.setURLSchemeHandler(
-          InternalSchemeHandler(),
+          InternalSchemeHandler(tab: self),
           forURLScheme: InternalURL.scheme
         )
       }

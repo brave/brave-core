@@ -106,13 +106,28 @@ extension URL {
   }
 
   /// Embed a url into an internal URL for the given path. The url will be placed in a `url` querey param
-  public func encodeEmbeddedInternalURL(for path: InternalURL.Path) -> URL? {
+  public func encodeEmbeddedInternalURL(
+    for path: InternalURL.Path,
+    headers: [String: String]? = nil
+  ) -> URL? {
     let baseURL = "\(InternalURL.baseUrl)/\(path.rawValue)"
 
     guard
       let encodedURL = absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
     else {
       return nil
+    }
+
+    if let headers = headers, !headers.isEmpty,
+      let data = try? JSONSerialization.data(withJSONObject: headers),
+      let encodedHeaders = data.base64EncodedString.addingPercentEncoding(
+        withAllowedCharacters: .alphanumerics
+      )
+    {
+      return URL(
+        string:
+          "\(baseURL)?\(InternalURL.Param.url.rawValue)=\(encodedURL)&headers=\(encodedHeaders)"
+      )
     }
 
     return URL(string: "\(baseURL)?\(InternalURL.Param.url.rawValue)=\(encodedURL)")

@@ -25,13 +25,92 @@ public class ReaderModeHandler: InternalSchemeResponse {
       return nil
     }
 
+    // Decode the original page's response headers
+    var headers = [String: String]()
+    if let base64EncodedHeaders = _url.getQuery()["headers"]?.unescape(),
+      let data = Data(base64Encoded: base64EncodedHeaders),
+      let decodedHeaders = try? JSONSerialization.jsonObject(with: data) as? [String: String]
+    {
+      headers = decodedHeaders
+    }
+
+    headers = headers.filter({
+      let key = $0.key.lowercased()
+
+      // These are the only headers kept from the original page
+      return key == "access-control-allow-origin" || key == "content-security-policy"
+        || key == "strict-transport-security" || key == "content-language"
+    })
+
+    // Tighten security by adding some of our own headers
+    headers["X-Frame-Options"] = "DENY"
+    headers["X-Content-Type-Options"] = "nosniff"
+    headers["Referrer-Policy"] = "no-referrer"
+    headers["Cache-Control"] = "private, s-maxage=0, max-age=0, must-revalidate"
+
+    // Add Generic headers
+    headers["Content-Type"] = "text/html; charset=UTF-8"
+
+    // Handle CSP header
+    // Must generate a unique nonce, every single time as per Content-Policy spec.
+    let setTitleNonce = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+
+    // Create our own CSPs
+    var policies = [
+      ("default-src", "'none'"),
+      ("base-uri", "'none'"),
+      ("form-action", "'none'"),
+      ("frame-ancestors", "'none'"),
+      //("sandbox", ""),                  // Do not enable `sandbox` as it causes `Wikipedia` to not work and possibly other pages
+      ("upgrade-insecure-requests", "1"),
+      ("img-src", "*"),
+      ("style-src", "\(InternalURL.baseUrl) '\(ReaderModeHandler.readerModeStyleHash)'"),
+      ("font-src", "\(InternalURL.baseUrl)"),
+      ("script-src", "'nonce-\(setTitleNonce)'"),
+    ]
+
+    // Parse CSP Header
+    if let originalCSP = headers.first(where: { $0.key.lowercased() == "content-security-policy" })?
+      .value
+    {
+      var originalPolicies = [(String, String)]()
+      for policy in originalCSP.components(separatedBy: ";") {
+        let components = policy.components(separatedBy: " ")
+        if components.count == 1 {
+          originalPolicies.append((policy, ""))
+        } else {
+          let key = components[0]
+          let value = components[1...].joined(separator: " ")
+          originalPolicies.append((key, value))
+        }
+      }
+
+      // Remove unwanted policies
+      originalPolicies.removeAll(where: { key, _ in
+        key == "report-uri" || key == "report-to"
+      })
+
+      if originalPolicies.contains(where: { key, _ in key == "img-src" }) {
+        policies.removeAll(where: { key, _ in key == "img-src" })
+      }
+
+      // Add original CSPs onto our own
+      policies.append(contentsOf: originalPolicies)
+    }
+
+    headers["Content-Security-Policy"] = String(
+      policies.map({ (key, value) in
+        return value.isEmpty ? "\(key);" : "\(key) \(value);"
+      }).joined(by: " ")
+    )
+
     if url.url.lastPathComponent == "page-exists" {
       let statusCode = ReaderModeHandler.readerModeCache.contains(readerModeUrl) ? 200 : 400
       if let response = HTTPURLResponse(
         url: url.url,
         statusCode: statusCode,
         httpVersion: "HTTP/1.1",
-        headerFields: ["Content-Type": "text/html; charset=UTF-8"]
+        headerFields: headers
       ) {
         return (response, Data())
       }
@@ -62,9 +141,6 @@ public class ReaderModeHandler: InternalSchemeResponse {
         }
       }
 
-      // Must generate a unique nonce, every single time as per Content-Policy spec.
-      let setTitleNonce = UUID().uuidString.replacingOccurrences(of: "-", with: "")
-
       if let html = ReaderModeUtils.generateReaderContent(
         readabilityResult,
         initialStyle: readerModeStyle,
@@ -78,11 +154,7 @@ public class ReaderModeHandler: InternalSchemeResponse {
           url: url.url,
           statusCode: 200,
           httpVersion: "HTTP/1.1",
-          headerFields: [
-            "Content-Type": "text/html; charset=UTF-8",
-            "Content-Security-Policy":
-              "default-src 'none'; img-src *; style-src \(InternalURL.baseUrl) '\(ReaderModeHandler.readerModeStyleHash)'; font-src \(InternalURL.baseUrl); script-src 'nonce-\(setTitleNonce)'",
-          ]
+          headerFields: headers
         ) {
           return (response, data)
         }
