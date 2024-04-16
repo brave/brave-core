@@ -91,8 +91,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
                         // Add a little delay for a smooth ripple effect animation.
                         PostTask.postDelayedTask(
                                 TaskTraits.UI_DEFAULT,
-                                () -> mOnNextPage.gotoRestorePage(true),
-                                200);
+                                () -> mOnNextPage.gotoRestorePage(true), 200);
                     }
                 });
         PostTask.postTask(
