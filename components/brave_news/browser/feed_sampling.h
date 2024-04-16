@@ -6,7 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_SAMPLING_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_SAMPLING_H_
 
+#include <cstddef>
+#include <optional>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -49,7 +52,8 @@ using GetWeighting =
 // PickArticles is a strategy used to pick articles (for example, taking the
 // first article). Different feeds use different strategies for picking
 // articles.
-using PickArticles = base::RepeatingCallback<int(const ArticleInfos& infos)>;
+using PickArticles =
+    base::RepeatingCallback<std::optional<size_t>(const ArticleInfos& infos)>;
 using ContentGroup = std::pair<std::string, bool>;
 
 template <typename T>
@@ -83,10 +87,10 @@ int GetNormal(int min, int max);
 // should either:
 // 1. Return a valid index into a list of articles.
 // 2. Return -1 if there is no valid article to pick.
-int PickFirstIndex(const ArticleInfos& articles);
-int PickRouletteWithWeighting(const ArticleInfos& articles,
-                              GetWeighting get_weighting);
-int PickRoulette(const ArticleInfos& articles);
+std::optional<size_t> PickFirstIndex(const ArticleInfos& articles);
+std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
+                                                GetWeighting get_weighting);
+std::optional<size_t> PickRoulette(const ArticleInfos& articles);
 
 mojom::FeedItemMetadataPtr PickAndRemove(ArticleInfos& articles,
                                          PickArticles picker);
