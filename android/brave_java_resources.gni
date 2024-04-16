@@ -632,7 +632,6 @@ brave_java_resources = [
   "java/res/drawable/ic_readermode.xml",
   "java/res/drawable/ic_rectangle.xml",
   "java/res/drawable/ic_refresh_20.xml",
-  "java/res/drawable/ic_remove_offline_data_playlist.xml",
   "java/res/drawable/ic_rename_playlist.xml",
   "java/res/drawable/ic_reward_info_outline.xml",
   "java/res/drawable/ic_rewards.xml",

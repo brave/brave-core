@@ -22,8 +22,13 @@ import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
 import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
+<<<<<<< HEAD
 import org.chromium.chrome.browser.util.ServiceUtils
 import org.chromium.chrome.browser.playlist.hls_content.HlsService
+=======
+import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils
+import org.chromium.playlist.mojom.PlaylistItem
+>>>>>>> 728a2c229cb (Update PlaylistActivity)
 
 object PlaylistUtils {
     private val TAG: String = "Playlist/" + this::class.java.simpleName
@@ -119,6 +124,15 @@ object PlaylistUtils {
         ) || (MediaUtils.isHlsFile(
             selectedPlaylistItemModel.mediaPath
         ) && !TextUtils.isEmpty(selectedPlaylistItemModel.hlsMediaPath)))
+    }
+
+    @JvmStatic
+    fun isPlaylistItemCached(selectedPlaylistItem: PlaylistItem): Boolean {
+        return selectedPlaylistItem.cached && (!MediaUtils.isHlsFile(
+            selectedPlaylistItem.mediaPath.url
+        ) || (MediaUtils.isHlsFile(
+            selectedPlaylistItem.mediaPath.url
+        ) && !TextUtils.isEmpty(selectedPlaylistItem.hlsMediaPath.url)))
     }
 
     private val mutableHlsContentProgress = MutableLiveData<HlsContentProgressModel>()

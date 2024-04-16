@@ -61,14 +61,12 @@ import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.util.LinkedList
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
 
-class NewPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandler, PlaylistServiceObserverImplDelegate, PlaylistClickListener {
+class NewPlaylistActivity : PlaylistBaseActivity(), PlaylistClickListener {
     companion object {
-        val TAG: String = this::class.java.simpleName
+        val TAG: String = "NewPlaylistActivity"
     }
-
-    private var mPlaylistService: PlaylistService? = null
-    private var mPlaylistServiceObserver: PlaylistServiceObserverImpl? = null
 
     private lateinit var mPlaylistViewModel: PlaylistViewModel
     private lateinit var mEtPlaylistName: AppCompatEditText
@@ -77,27 +75,7 @@ class NewPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandle
     private var mPlaylistOptionsEnum: PlaylistOptionsEnum = PlaylistOptionsEnum.NEW_PLAYLIST
     private var mShouldMoveOrCopy: Boolean = false
 
-    override fun onConnectionError(mojoException : MojoException) {
-        mPlaylistService?.close()
-        mPlaylistService = null
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
-            initPlaylistService()
-        }
-    }
-
-    fun initPlaylistService() {
-        if (mPlaylistService != null) {
-            mPlaylistService = null;
-        }
-        mPlaylistService =
-                PlaylistServiceFactoryAndroid.getInstance()
-                        .getPlaylistService(
-                                getProfileProviderSupplier().get()?.getOriginalProfile(), this)
-    }
-
-    private fun initializeViews() {
+    override fun initializeViews() {
         setContentView(R.layout.fragment_new_playlist)
 
         mPlaylistToolbar = findViewById(R.id.playlistToolbar)
@@ -117,17 +95,8 @@ class NewPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandle
         mEtPlaylistName.requestFocus()
     }
 
-    override fun triggerLayoutInflation() {
-        initializeViews()
-        onInitialLayoutInflationComplete()
-    }
-
     override fun finishNativeInitialization() {
         super.finishNativeInitialization()
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
-            initPlaylistService();
-        }
-
         mPlaylistToolbar.setActionButtonClickListener(clickListener = {
             if (mPlaylistOptionsEnum == PlaylistOptionsEnum.NEW_PLAYLIST) {
                 if (!mEtPlaylistName.text.isNullOrEmpty()) {
@@ -171,20 +140,5 @@ class NewPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandle
                 }
             }
         })
-    }
-
-    override fun onDestroy() {
-        mPlaylistService?.close()
-        mPlaylistService = null
-        
-        super.onDestroy();
-    }
-
-    override fun shouldStartGpuProcess() : Boolean {
-        return true;
-    }
-
-    override fun createProfileProvider() : OneshotSupplier<ProfileProvider> {
-        return ActivityProfileProvider(getLifecycleDispatcher());
     }
 }

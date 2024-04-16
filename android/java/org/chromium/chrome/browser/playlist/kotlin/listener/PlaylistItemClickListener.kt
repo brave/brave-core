@@ -9,10 +9,12 @@ package org.chromium.chrome.browser.playlist.kotlin.listener
 
 import android.view.View
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.playlist.mojom.PlaylistItem
 
 interface PlaylistItemClickListener {
     fun onPlaylistItemClick(position: Int) {}
 
     fun onPlaylistItemClickInEditMode(count: Int) {}
     fun onPlaylistItemMenuClick(view: View, playlistItemModel: PlaylistItemModel) {}
+    fun onPlaylistItemMenuClick(view: View, playlistItem: PlaylistItem) {}
 }

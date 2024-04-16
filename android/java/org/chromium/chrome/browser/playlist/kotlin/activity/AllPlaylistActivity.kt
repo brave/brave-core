@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate
 import org.chromium.playlist.mojom.Playlist
 import org.chromium.playlist.mojom.PlaylistItem
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
@@ -43,7 +44,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
 import org.chromium.chrome.browser.playlist.kotlin.activity.NewPlaylistActivity
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistAdapter
@@ -62,15 +62,10 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.util.LinkedList
 
-class AllPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandler, PlaylistServiceObserverImplDelegate, PlaylistClickListener {
+class AllPlaylistActivity : PlaylistBaseActivity(), PlaylistClickListener {
     companion object {
-        val TAG: String = this::class.java.simpleName
+        val TAG: String = "AllPlaylistActivity"
     }
-
-    private var mPlaylistService: PlaylistService? = null
-    private var mPlaylistServiceObserver: PlaylistServiceObserverImpl? = null
-
-    private lateinit var mPlaylistViewModel: PlaylistViewModel
 
     private lateinit var mPlaylistToolbar: PlaylistToolbar
     private lateinit var mBtAddNewPlaylist: AppCompatButton
@@ -78,33 +73,7 @@ class AllPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandle
     private lateinit var mRvPlaylist: RecyclerView
     private lateinit var mTvRecentlyPlayed: AppCompatTextView
 
-    override fun onConnectionError(mojoException : MojoException) {
-        mPlaylistService?.close()
-        mPlaylistService = null
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
-            initPlaylistService()
-        }
-    }
-
-    fun initPlaylistService() {
-        if (mPlaylistService != null) {
-            mPlaylistService = null;
-        }
-        mPlaylistService =
-                PlaylistServiceFactoryAndroid.getInstance()
-                        .getPlaylistService(
-                                getProfileProviderSupplier().get()?.getOriginalProfile(), this)
-        addPlaylistObserver()
-    }
-
-    private fun addPlaylistObserver() {
-        mPlaylistServiceObserver = PlaylistServiceObserverImpl(this)
-        mPlaylistService?.addObserver(mPlaylistServiceObserver)
-    }
-
-    private fun initializeViews() {
+    override fun initializeViews() {
         setContentView(R.layout.fragment_all_playlist)
 
         mPlaylistToolbar = findViewById(R.id.playlistToolbar)
@@ -118,21 +87,9 @@ class AllPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandle
         mRvPlaylist = findViewById(R.id.rvPlaylists)
         mTvRecentlyPlayed = findViewById(R.id.tvRecentlyPlayed)
     }
-
-    override fun triggerLayoutInflation() {
-        initializeViews()
-        onInitialLayoutInflationComplete()
-    }
-
-    override fun finishNativeInitialization() {
-        super.finishNativeInitialization()
-    }
     
     override fun onResumeWithNative() {
         super.onResumeWithNative();
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
-            initPlaylistService();
-        }
         mPlaylistService?.getAllPlaylists {
                 playlists -> 
                     Log.e(TAG, playlists.toString())
@@ -185,29 +142,9 @@ class AllPlaylistActivity : AsyncInitializationActivity(), ConnectionErrorHandle
                 };
     }
 
-    override fun onDestroy() {
-            mPlaylistService?.close()
-            mPlaylistService = null
-            mPlaylistServiceObserver?.close()
-            mPlaylistServiceObserver?.destroy()
-            mPlaylistServiceObserver = null
-        
-        super.onDestroy();
+    override fun onPlaylistClick(playlist: Playlist) {
+        val playlistActivityIntent = Intent(this@AllPlaylistActivity, PlaylistActivity::class.java)
+        playlistActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, playlist.id)
+        startActivity(playlistActivityIntent)
     }
-
-    override fun shouldStartGpuProcess() : Boolean {
-        return true;
-    }
-
-    override fun createProfileProvider() : OneshotSupplier<ProfileProvider> {
-        return ActivityProfileProvider(getLifecycleDispatcher());
-    }
-
-    // override fun onPlaylistOptionClicked(playlistOptionsModel: PlaylistOptionsModel) {
-    //     mPlaylistViewModel.setAllPlaylistOption(playlistOptionsModel)
-    // }
-
-    // override fun onPlaylistClick(playlistModel: PlaylistModel) {
-    //     mPlaylistViewModel.setPlaylistToOpen(playlistModel.id)
-    // }
 }

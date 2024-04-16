@@ -59,7 +59,7 @@ class PlaylistAdapter(private val playlistClickListener: PlaylistClickListener?)
             tvPlaylistTitle.text =
                 if (model.id == DEFAULT_PLAYLIST) itemView.context.resources.getString(R.string.playlist_play_later) else model.name
             itemView.setOnClickListener {
-                // playlistClickListener?.onPlaylistClick(model)
+                playlistClickListener?.onPlaylistClick(model)
             }
         }
     }

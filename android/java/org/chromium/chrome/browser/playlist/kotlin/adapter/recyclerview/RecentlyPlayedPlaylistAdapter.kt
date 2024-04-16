@@ -54,7 +54,7 @@ class RecentlyPlayedPlaylistAdapter(private val playlistClickListener: PlaylistC
             tvPlaylistItemCount.text =
                 itemView.context.getString(R.string.playlist_number_items, model.items.size)
             itemView.setOnClickListener {
-                // playlistClickListener?.onPlaylistClick(model)
+                playlistClickListener?.onPlaylistClick(model)
             }
         }
     }
