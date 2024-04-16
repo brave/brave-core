@@ -25,6 +25,7 @@ import android.hardware.biometrics.BiometricManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.IBinder;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -189,11 +190,31 @@ public class Utils {
         sharedPreferencesEditor.apply();
     }
 
-    public static void hideKeyboard(Activity activity) {
+    /**
+     * Hides software keyboard.
+     * @param activity Activity used to retrieve input method service.
+     */
+    public static void hideKeyboard(@NonNull final Activity activity) {
+        hideKeyboard(activity, null);
+    }
+
+    /**
+     * Hides software keyboard targeting a specific window token, useful for those components handling
+     * multiple views off screen (e.g. ViewPager2)
+     * @param activity Activity used to retrieve input method service.
+     * @param windowToken Token of the window that is making the request.
+     */
+    public static void hideKeyboard(@NonNull final Activity activity, @Nullable final IBinder windowToken) {
         InputMethodManager imm =
                 (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        View focusedView = activity.getCurrentFocus();
-        if (focusedView != null) imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+        if (windowToken != null) {
+            imm.hideSoftInputFromWindow(windowToken, 0);
+        } else {
+            View focusedView = activity.getCurrentFocus();
+            if (focusedView != null) {
+                imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+            }
+        }
     }
 
     /**
