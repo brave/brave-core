@@ -16,8 +16,8 @@ import { useJupiter } from './useJupiter'
 import { useZeroEx } from './useZeroEx'
 import { useDebouncedCallback } from './useDebouncedCallback'
 import {
-  useBalancesFetcher //
-} from '../../../../common/hooks/use-balances-fetcher'
+  useScopedBalanceUpdater //
+} from '../../../../common/hooks/use-scoped-balance-updater'
 import { useQuery } from '../../../../common/hooks/use-query'
 
 // Types and constants
@@ -200,20 +200,21 @@ export const useSwap = () => {
     AccountInfoEntity | undefined
   >(undefined)
 
-  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
-    useBalancesFetcher(
-      fromNetwork && fromAccount
-        ? {
-            networks: [fromNetwork],
-            accounts: [fromAccount]
-          }
-        : skipToken
-    )
-
   const nativeAsset = useMemo(
     () => makeNetworkAsset(fromNetwork),
     [fromNetwork]
   )
+
+  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
+    useScopedBalanceUpdater(
+      fromAccount && fromNetwork && fromToken && nativeAsset
+        ? {
+            network: fromNetwork,
+            accounts: [fromAccount],
+            tokens: [fromToken, nativeAsset]
+          }
+        : skipToken
+    )
 
   const tokenPriceIds = useMemo(
     () =>
