@@ -104,10 +104,7 @@ export const DappDetails = () => {
       >
         <Row gap={'8px'}>
           <DappMetric
-            metricName={
-              // TODO
-              'Active wallets'
-            }
+            metricName={getLocale('braveWalletActiveWallets')}
             meticValue={dapp.uaw}
             isUSDValue={false}
           />
@@ -169,10 +166,7 @@ export const DappDetails = () => {
         onSubmit={() => {
           openTab(dapp.website)
         }}
-        text={
-          // TODO
-          'Visit $1'.replace('$1', dapp.name)
-        }
+        text={getLocale('braveWalletVisitDapp').replace('$1', dapp.name)}
       />
     </Column>
   )

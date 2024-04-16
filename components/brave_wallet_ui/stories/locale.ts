@@ -1346,5 +1346,8 @@ provideStrings({
 
   // Explore
   braveWalletWeb3: 'Web3',
-  braveWalletTopNavExplore: 'Explore'
+  braveWalletTopNavExplore: 'Explore',
+  braveWalletNoDappsFound: 'No DApps found',
+  braveWalletActiveWallets: 'Active wallets',
+  braveWalletVisitDapp: 'Visit $1'
 })

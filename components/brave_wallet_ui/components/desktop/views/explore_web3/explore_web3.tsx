@@ -116,8 +116,7 @@ export const ExploreWeb3View = () => {
       ) : (
         <Row>
           <h2>
-            {/* TODO */}
-            No dapps found
+            {getLocale('braveWalletNoDappsFounds')}
           </h2>
         </Row>
       )}
