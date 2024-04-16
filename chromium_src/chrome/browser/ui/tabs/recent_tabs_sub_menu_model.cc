@@ -66,9 +66,9 @@ BraveRecentTabsSubMenuModel::~BraveRecentTabsSubMenuModel() {}
 
 void BraveRecentTabsSubMenuModel::ExecuteCommand(int command_id,
                                                  int event_flags) {
-  if (IsTabModelCommandId(command_id)) {
-    TabNavigationItems* tab_items = GetTabVectorForCommandId(command_id);
-    const TabNavigationItem& item = (*tab_items)[command_id];
+  if (IsCommandType(CommandType::Tab, command_id)) {
+    const TabItems& tab_items = *GetTabVectorForCommandId(command_id);
+    const TabItem& item = tab_items.at(command_id);
     DCHECK(item.tab_id.is_valid() && item.url.is_valid());
 
     if (item.session_tag == kBraveStubSessionTag) {
