@@ -18,8 +18,4 @@ rust_static_library("rust_lib") {
     "//brave/third_party/rust/curve25519_dalek/v3:lib",
     "//brave/third_party/rust/ed25519_dalek_bip32/v0_2:lib",
   ]
-
-  if (enable_orchard) {
-    deps += [ "//brave/third_party/rust/orchard/v0_7:lib" ]
-  }
 }
