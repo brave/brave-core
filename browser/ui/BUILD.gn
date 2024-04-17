@@ -1035,7 +1035,6 @@ source_set("ui") {
       ]
 
       deps += [
-        "//brave/browser/tor",
         "//brave/components/tor",
         "//brave/components/tor:pref_names",
         "//brave/components/tor/resources",

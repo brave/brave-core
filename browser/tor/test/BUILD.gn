@@ -8,57 +8,6 @@ import("//extensions/buildflags/buildflags.gni")
 
 assert(enable_tor)
 
-source_set("tor") {
-  # Remove when https://github.com/brave/brave-browser/issues/10655 is resolved
-  check_includes = false
-  visibility = [
-    ":*",
-    "//brave/browser",
-    "//brave/browser/decentralized_dns/test:unit_tests",
-    "//brave/browser/ipfs/test:*",
-    "//brave/browser/net:browser_tests",
-    "//brave/browser/profiles",
-    "//brave/browser/ui",
-    "//brave/test:*",
-    "//chrome/browser",
-  ]
-
-  sources = [
-    "tor_profile_manager.cc",
-    "tor_profile_manager.h",
-    "tor_profile_service_factory.cc",
-    "tor_profile_service_factory.h",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/components/brave_webtorrent/browser/buildflags",
-    "//brave/components/constants",
-    "//brave/components/tor",
-    "//brave/components/tor:pref_names",
-    "//chrome/common",
-    "//components/autofill/content/browser",
-    "//components/autofill/core/browser",
-    "//components/keyed_service/content",
-    "//components/safe_browsing/core/common:safe_browsing_prefs",
-    "//components/translate/core/browser",
-    "//content/public/browser",
-    "//net",
-    "//third_party/blink/public/common",
-    "//url",
-  ]
-
-  # Below dep list are not directly used tor target.
-  # Only added to fix intermittent build failure.
-  # Most of the case comes from including brave_browser_process_impl.h`
-  # headers. That header includes some buildflags but sometimes they are
-  # not generated before evaluating tor target.
-  deps += [
-    "//brave/components/greaselion/browser/buildflags",
-    "//brave/components/speedreader/common/buildflags",
-  ]
-}
-
 source_set("unit_tests") {
   testonly = true
 
@@ -70,7 +19,6 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/browser/tor",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/constants",
     "//brave/components/tor",
@@ -105,7 +53,6 @@ source_set("browser_tests") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser",
-    "//brave/browser/tor",
     "//brave/common",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
