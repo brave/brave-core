@@ -21,6 +21,7 @@
 #include "brave/services/device/geolocation/geoclue_client_object.h"
 #include "components/dbus/thread_linux/dbus_thread_linux.h"
 #include "services/device/public/cpp/device_features.h"
+#include "services/device/public/mojom/geolocation_internals.mojom.h"
 #include "services/device/public/mojom/geoposition.mojom.h"
 
 namespace device {
@@ -55,7 +56,7 @@ bool GeoClueAvailable() {
       proxy->CallMethodAndBlock(&call, dbus::ObjectProxy::TIMEOUT_USE_DEFAULT);
 
   // If the response is |nullptr| then the GeoClue2.Manager does not exist.
-  bool available = response.get();
+  bool available = response->get();
 
   // Shutdown this bus - we'll use one on the DBus thread for our actual
   // provider.
@@ -121,6 +122,23 @@ const mojom::GeopositionResult* GeoClueLocationProvider::GetPosition() {
 void GeoClueLocationProvider::OnPermissionGranted() {
   permission_granted_ = true;
   MaybeStartClient();
+}
+
+void GeoClueLocationProvider::FillDiagnostics(
+    mojom::GeolocationDiagnostics& diagnostics) {
+  if (!client_) {
+    diagnostics.provider_state =
+        mojom::GeolocationDiagnostics::ProviderState::kStopped;
+  } else if (!permission_granted_) {
+    diagnostics.provider_state = mojom::GeolocationDiagnostics::ProviderState::
+        kBlockedBySystemPermission;
+  } else if (high_accuracy_requested_) {
+    diagnostics.provider_state =
+        mojom::GeolocationDiagnostics::ProviderState::kHighAccuracy;
+  } else {
+    diagnostics.provider_state =
+        mojom::GeolocationDiagnostics::ProviderState::kLowAccuracy;
+  }
 }
 
 void GeoClueLocationProvider::SetPosition(

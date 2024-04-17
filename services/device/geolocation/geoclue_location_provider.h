@@ -15,6 +15,7 @@
 #include "brave/services/device/geolocation/geoclue_client_object.h"
 #include "dbus/bus.h"
 #include "services/device/public/cpp/geolocation/location_provider.h"
+#include "services/device/public/mojom/geolocation_internals.mojom.h"
 #include "services/device/public/mojom/geoposition.mojom.h"
 
 namespace device {
@@ -36,6 +37,7 @@ class COMPONENT_EXPORT(BRAVE_GEOLOCATION) GeoClueLocationProvider
   void StopProvider() override;
   const mojom::GeopositionResult* GetPosition() override;
   void OnPermissionGranted() override;
+  void FillDiagnostics(mojom::GeolocationDiagnostics& diagnostics) override;
 
  protected:
   // Stores whether or not permission has been granted.
