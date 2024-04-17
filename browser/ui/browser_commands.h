@@ -16,12 +16,15 @@
 
 class Browser;
 class GURL;
+class Profile;
 
 namespace brave {
 
 bool HasSelectedURL(Browser* browser);
 void CleanAndCopySelectedURL(Browser* browser);
-void NewOffTheRecordWindowTor(Browser*);
+void NewOffTheRecordWindowTor(Browser* browser);
+void NewOffTheRecordWindowTor(Profile* profile);
+
 void NewTorConnectionForSite(Browser*);
 void ShowWalletBubble(Browser* browser);
 void ShowApproveWalletBubble(Browser* browser);
