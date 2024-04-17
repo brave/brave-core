@@ -185,7 +185,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
         countries, fiat_currencies, crypto_currencies, service_providers,
         payment_method_types, statuses,
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::CryptoCurrencyPtr> crypto_currencies,
+            [&](std::optional<std::vector<mojom::CryptoCurrencyPtr>> crypto_currencies,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(crypto_currencies), errors);
               run_loop.Quit();
@@ -784,12 +784,12 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "LIVE,RECENTLY_ADDED",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::CryptoCurrencyPtr> crypto_currencies,
+          [](std::optional<std::vector<mojom::CryptoCurrencyPtr>> crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(
                 base::ranges::count_if(
-                    crypto_currencies,
+                    *crypto_currencies,
                     [](const auto& item) {
                       return item->currency_code == "USDT_KCC" &&
                              item->name == "#REF!" &&
@@ -805,7 +805,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                 1);
             EXPECT_EQ(
                 base::ranges::count_if(
-                    crypto_currencies,
+                    *crypto_currencies,
                     [](const auto& item) {
                       return item->currency_code == "00" &&
                              item->name == "00 Token" &&
@@ -824,7 +824,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::CryptoCurrencyPtr> crypto_currencies,
+          [](std::optional<std::vector<mojom::CryptoCurrencyPtr>> crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
@@ -834,7 +834,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::CryptoCurrencyPtr> crypto_currencies,
+          [](std::optional<std::vector<mojom::CryptoCurrencyPtr>> crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
@@ -856,7 +856,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [&](std::vector<mojom::CryptoCurrencyPtr> crypto_currencies,
+          [&](std::optional<std::vector<mojom::CryptoCurrencyPtr>> crypto_currencies,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>(

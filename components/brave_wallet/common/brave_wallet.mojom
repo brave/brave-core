@@ -1259,7 +1259,7 @@ interface MeldIntegrationService {
   GetCryptoCurrencies(string? countries, string? fiat_currencies,
     string? crypto_currencies, string? service_providers,
     string? payment_method_types, string? statuses)
-    => (array<CryptoCurrency> fiat_currencies, array<string>? error);
+    => (array<CryptoCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of countries
   // All parameters are optional

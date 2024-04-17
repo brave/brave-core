@@ -407,9 +407,8 @@ std::optional<std::vector<mojom::FiatCurrencyPtr>> ParseFiatCurrencies(
   return fiat_currencies;
 }
 
-bool ParseCryptoCurrencies(
-    const base::Value& json_value,
-    std::vector<mojom::CryptoCurrencyPtr>* crypto_currencies) {
+std::optional<std::vector<mojom::CryptoCurrencyPtr>> ParseCryptoCurrencies(
+    const base::Value& json_value) {
   // Parses results like this:
   // [
   //   {
@@ -433,18 +432,17 @@ bool ParseCryptoCurrencies(
   //     "https://images-currency.meld.io/crypto/00/symbol.png"
   //   }
   // ]
-  DCHECK(crypto_currencies);
-
   if (!json_value.is_list()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
-    return false;
+    return std::nullopt;
   }
+  std::vector<mojom::CryptoCurrencyPtr> crypto_currencies;
   for (const auto& cc_item : json_value.GetList()) {
     const auto crypto_currency_value =
         meld_integration_responses::CryptoCurrency::FromValue(cc_item);
     if (!crypto_currency_value) {
       LOG(ERROR) << "Invalid response, could not parse JSON";
-      return false;
+      return std::nullopt;
     }
 
     auto cc = mojom::CryptoCurrency::New();
@@ -456,10 +454,10 @@ bool ParseCryptoCurrencies(
     cc->contract_address = ParseOptionalString(crypto_currency_value->contract_address);
     cc->symbol_image_url = ParseOptionalString(crypto_currency_value->symbol_image_url);
 
-    crypto_currencies->emplace_back(std::move(cc));
+    crypto_currencies.emplace_back(std::move(cc));
   }
 
-  return true;
+  return crypto_currencies;
 }
 
 bool ParseCountries(const base::Value& json_value,

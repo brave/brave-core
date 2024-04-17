@@ -313,10 +313,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
     "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
     "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
   }])");
-  std::vector<mojom::CryptoCurrencyPtr> crypto_currencies;
-  EXPECT_TRUE(ParseCryptoCurrencies(ParseJson(json), &crypto_currencies));
+  auto crypto_currencies = ParseCryptoCurrencies(ParseJson(json));
+  EXPECT_TRUE(crypto_currencies);
   EXPECT_EQ(base::ranges::count_if(
-                crypto_currencies,
+                *crypto_currencies,
                 [](const auto& item) {
                   return item->currency_code == "USDT_KCC" &&
                          item->name == "#REF!" && item->chain_code == "KCC" &&
@@ -329,11 +329,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
                              "USDT_KCC/symbol.png";
                 }),
             1);
-  crypto_currencies.clear();
-  EXPECT_FALSE(ParseCryptoCurrencies(base::Value(), &crypto_currencies));
+  EXPECT_FALSE(ParseCryptoCurrencies(base::Value()));
 
   json = (R"({})");
-  EXPECT_FALSE(ParseCryptoCurrencies(ParseJson(json), &crypto_currencies));
+  EXPECT_FALSE(ParseCryptoCurrencies(ParseJson(json)));
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {

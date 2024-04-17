@@ -461,21 +461,20 @@ void MeldIntegrationService::OnGetCryptoCurrencies(
     GetCryptoCurrenciesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run({},
+    std::move(callback).Run(std::nullopt,
                             std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
     return;
   }
 
   if (auto errors = ParseMeldErrorResponse(api_request_result.value_body());
       errors) {
-    std::move(callback).Run({}, errors);
+    std::move(callback).Run(std::nullopt, errors);
     return;
   }
 
-  std::vector<mojom::CryptoCurrencyPtr> crypto_currencies;
-  if (!ParseCryptoCurrencies(api_request_result.value_body(),
-                             &crypto_currencies)) {
-    std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
+  auto crypto_currencies = ParseCryptoCurrencies(api_request_result.value_body());
+  if (!crypto_currencies) {
+    std::move(callback).Run(std::nullopt, std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
 

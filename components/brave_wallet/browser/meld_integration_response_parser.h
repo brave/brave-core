@@ -26,10 +26,8 @@ std::optional<std::vector<mojom::PaymentMethodPtr>> ParsePaymentMethods(
     const base::Value& json_value);
 std::optional<std::vector<mojom::FiatCurrencyPtr>> ParseFiatCurrencies(
     const base::Value& json_value);
-
-bool ParseCryptoCurrencies(
-    const base::Value& json_value,
-    std::vector<mojom::CryptoCurrencyPtr>* crypto_currencies);
+std::optional<std::vector<mojom::CryptoCurrencyPtr>> ParseCryptoCurrencies(
+    const base::Value& json_value);
 
 bool ParseCountries(const base::Value& json_value,
                     std::vector<mojom::CountryPtr>* countries);
