@@ -37,6 +37,7 @@ import { getLocale } from '$web-common/locale'
 import Amount from '../../../../utils/amount'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
 // FIXME(onyb): move makeNetworkAsset to utils/assets-utils
+import { isNativeAsset } from '../../../../utils/asset-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -211,7 +212,9 @@ export const useSwap = () => {
         ? {
             network: fromNetwork,
             accounts: [fromAccount],
-            tokens: [fromToken, nativeAsset]
+            tokens: isNativeAsset(fromToken)
+              ? [nativeAsset]
+              : [nativeAsset, fromToken]
           }
         : skipToken
     )
