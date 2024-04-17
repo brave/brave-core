@@ -157,7 +157,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
         countries, fiat_currencies, crypto_currencies, service_providers,
         payment_method_types, statuses,
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::FiatCurrencyPtr> fiat_currencies,
+            [&](std::optional<std::vector<mojom::FiatCurrencyPtr>> fiat_currencies,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(fiat_currencies), errors);
               run_loop.Quit();
@@ -679,11 +679,11 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::FiatCurrencyPtr> fiat_currencies,
+          [](std::optional<std::vector<mojom::FiatCurrencyPtr>> fiat_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(base::ranges::count_if(
-                          fiat_currencies,
+                          *fiat_currencies,
                           [](const auto& item) {
                             return item->currency_code == "AFN" &&
                                    item->name == "Afghani" &&
@@ -693,7 +693,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
                           }),
                       1);
             EXPECT_EQ(base::ranges::count_if(
-                          fiat_currencies,
+                          *fiat_currencies,
                           [](const auto& item) {
                             return item->currency_code == "DZD" &&
                                    item->name == "Algerian Dinar" &&
@@ -708,7 +708,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::FiatCurrencyPtr> fiat_currencies,
+          [](std::optional<std::vector<mojom::FiatCurrencyPtr>> fiat_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
@@ -718,7 +718,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::FiatCurrencyPtr> fiat_currencies,
+          [](std::optional<std::vector<mojom::FiatCurrencyPtr>> fiat_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
@@ -740,7 +740,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [&](std::vector<mojom::FiatCurrencyPtr> fiat_currencies,
+          [&](std::optional<std::vector<mojom::FiatCurrencyPtr>> fiat_currencies,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>(

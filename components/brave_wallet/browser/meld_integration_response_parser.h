@@ -24,8 +24,8 @@ std::optional<std::vector<mojom::CryptoQuotePtr>> ParseCryptoQuotes(
     std::string* error);
 std::optional<std::vector<mojom::PaymentMethodPtr>> ParsePaymentMethods(
     const base::Value& json_value);
-bool ParseFiatCurrencies(const base::Value& json_value,
-                         std::vector<mojom::FiatCurrencyPtr>* fiat_currencies);
+std::optional<std::vector<mojom::FiatCurrencyPtr>> ParseFiatCurrencies(
+    const base::Value& json_value);
 
 bool ParseCryptoCurrencies(
     const base::Value& json_value,

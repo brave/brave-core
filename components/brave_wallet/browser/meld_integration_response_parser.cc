@@ -372,8 +372,8 @@ std::optional<std::vector<mojom::PaymentMethodPtr>> ParsePaymentMethods(
   return payment_methods;
 }
 
-bool ParseFiatCurrencies(const base::Value& json_value,
-                         std::vector<mojom::FiatCurrencyPtr>* fiat_currencies) {
+std::optional<std::vector<mojom::FiatCurrencyPtr>> ParseFiatCurrencies(
+    const base::Value& json_value) {
   // Parses results like this:
   // [
   //   {
@@ -383,18 +383,17 @@ bool ParseFiatCurrencies(const base::Value& json_value,
   //   }
   // ]
 
-  DCHECK(fiat_currencies);
-
   if (!json_value.is_list()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
-    return false;
+    return std::nullopt;
   }
+  std::vector<mojom::FiatCurrencyPtr> fiat_currencies;
   for (const auto& fc_item : json_value.GetList()) {
     const auto fiat_currency_value =
         meld_integration_responses::FiatCurrency::FromValue(fc_item);
     if (!fiat_currency_value) {
       LOG(ERROR) << "Invalid response, could not parse JSON";
-      return false;
+      return std::nullopt;
     }
 
     auto fc = mojom::FiatCurrency::New();
@@ -402,10 +401,10 @@ bool ParseFiatCurrencies(const base::Value& json_value,
     fc->currency_code = ParseOptionalString(fiat_currency_value->currency_code);
     fc->symbol_image_url = ParseOptionalString(fiat_currency_value->symbol_image_url);
 
-    fiat_currencies->emplace_back(std::move(fc));
+    fiat_currencies.emplace_back(std::move(fc));
   }
 
-  return true;
+  return fiat_currencies;
 }
 
 bool ParseCryptoCurrencies(

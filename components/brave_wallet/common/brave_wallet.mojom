@@ -1252,7 +1252,7 @@ interface MeldIntegrationService {
   GetFiatCurrencies(string? countries, string? fiat_currencies,
     string? crypto_currencies, string? service_providers,
     string? payment_method_types, string? statuses)
-    => (array<FiatCurrency> fiat_currencies, array<string>? error);
+    => (array<FiatCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of crypto currencies
   // All parameters are optional

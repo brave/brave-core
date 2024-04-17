@@ -284,10 +284,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
     "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
   }])");
 
-  std::vector<mojom::FiatCurrencyPtr> fiat_currencies;
-  EXPECT_TRUE(ParseFiatCurrencies(ParseJson(json), &fiat_currencies));
+  auto fiat_currencies = ParseFiatCurrencies(ParseJson(json));
+  EXPECT_TRUE(fiat_currencies);
   EXPECT_EQ(base::ranges::count_if(
-                fiat_currencies,
+                *fiat_currencies,
                 [](const auto& item) {
                   return item->currency_code == "AFN" &&
                          item->name == "Afghani" &&
@@ -296,11 +296,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
                              "AFN/symbol.png";
                 }),
             1);
-  fiat_currencies.clear();
-  EXPECT_FALSE(ParseFiatCurrencies(base::Value(), &fiat_currencies));
+  EXPECT_FALSE(ParseFiatCurrencies(base::Value()));
 
   json = (R"({})");
-  EXPECT_FALSE(ParseFiatCurrencies(ParseJson(json), &fiat_currencies));
+  EXPECT_FALSE(ParseFiatCurrencies(ParseJson(json)));
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
