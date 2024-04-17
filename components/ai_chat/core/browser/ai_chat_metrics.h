@@ -100,10 +100,12 @@ class AIChatMetrics {
   void RecordNewChat();
   void RecordNewPrompt();
 
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   void RecordOmniboxOpen();
   void RecordOmniboxSearchQuery();
 
   void RecordContextMenuUsage(ContextMenuAction action);
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   void HandleOpenViaSidebar();
 
@@ -115,8 +117,10 @@ class AIChatMetrics {
   void ReportAllMetrics();
   void ReportFeatureUsageMetrics();
   void ReportChatCounts();
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   void ReportOmniboxCounts();
   void ReportContextMenuMetrics();
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   bool is_enabled_ = false;
   bool is_premium_ = false;
@@ -125,11 +129,13 @@ class AIChatMetrics {
 
   WeeklyStorage chat_count_storage_;
   WeeklyStorage prompt_count_storage_;
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   base::flat_map<ContextMenuAction, std::unique_ptr<WeeklyStorage>>
       context_menu_usage_storages_;
 
   TimePeriodStorage omnibox_open_storage_;
   TimePeriodStorage omnibox_autocomplete_storage_;
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   base::OneShotTimer report_debounce_timer_;
 
