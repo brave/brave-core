@@ -326,9 +326,8 @@ std::optional<std::vector<mojom::CryptoQuotePtr>> ParseCryptoQuotes(
   return quotes;
 }
 
-bool ParsePaymentMethods(
-    const base::Value& json_value,
-    std::vector<mojom::PaymentMethodPtr>* payment_methods) {
+std::optional<std::vector<mojom::PaymentMethodPtr>> ParsePaymentMethods(
+    const base::Value& json_value) {
   // Parses results like this:
   // [
   //   {
@@ -341,19 +340,17 @@ bool ParsePaymentMethods(
   //     }
   //   }
   // ]
-  DCHECK(payment_methods);
-
   if (!json_value.is_list()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
-    return false;
+    return std::nullopt;
   }
-
+  std::vector<mojom::PaymentMethodPtr> payment_methods;
   for (const auto& pm_item : json_value.GetList()) {
     const auto payment_method_value =
         meld_integration_responses::PaymentMethod::FromValue(pm_item);
     if (!payment_method_value) {
       LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
-      return false;
+      return std::nullopt;
     }
 
     auto pm = mojom::PaymentMethod::New();
@@ -365,10 +362,14 @@ bool ParsePaymentMethods(
       pm->logo_images = std::move(*logo_images);
     }
     
-    payment_methods->emplace_back(std::move(pm));
+    payment_methods.emplace_back(std::move(pm));
   }
 
-  return true;
+  if(payment_methods.empty()) {
+    return std::nullopt;
+  }
+
+  return payment_methods;
 }
 
 bool ParseFiatCurrencies(const base::Value& json_value,

@@ -294,20 +294,20 @@ void MeldIntegrationService::OnGetPaymentMethods(
     GetPaymentMethodsCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run({},
+    std::move(callback).Run(std::nullopt,
                             std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
     return;
   }
 
   if (auto errors = ParseMeldErrorResponse(api_request_result.value_body());
       errors) {
-    std::move(callback).Run({}, errors);
+    std::move(callback).Run(std::nullopt, errors);
     return;
   }
 
-  std::vector<mojom::PaymentMethodPtr> payment_methods;
-  if (!ParsePaymentMethods(api_request_result.value_body(), &payment_methods)) {
-    std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
+  auto payment_methods = ParsePaymentMethods(api_request_result.value_body());
+  if (!payment_methods) {
+    std::move(callback).Run(std::nullopt, std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
 

@@ -222,26 +222,25 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
   }
   ])");
 
-  std::vector<mojom::PaymentMethodPtr> payment_methods;
-  EXPECT_TRUE(ParsePaymentMethods(ParseJson(json), &payment_methods));
+  auto payment_methods = ParsePaymentMethods(ParseJson(json));
+  EXPECT_TRUE(payment_methods);
   EXPECT_EQ(base::ranges::count_if(
-                payment_methods,
+                *payment_methods,
                 [](const auto& item) {
                   return item->payment_method == "ACH" && item->name == "ACH" &&
                          item->payment_type == "BANK_TRANSFER" &&
-                          item->logo_images //&&
-                        //  item->logo_images->dark_short_url->empty() &&
-                        //  item->logo_images->light_short_url->empty() &&
-                        //  *(item->logo_images->dark_url) ==
-                        //      "https://images-paymentMethod.meld.io/ACH/"
-                        //      "logo_dark.png" &&
-                        //  *(item->logo_images->light_url) ==
-                        //      "https://images-paymentMethod.meld.io/ACH/"
-                        //      "logo_light.png"
+                          item->logo_images &&
+                         !item->logo_images->dark_short_url &&
+                         !item->logo_images->light_short_url &&
+                         *(item->logo_images->dark_url) ==
+                             "https://images-paymentMethod.meld.io/ACH/"
+                             "logo_dark.png" &&
+                         *(item->logo_images->light_url) ==
+                             "https://images-paymentMethod.meld.io/ACH/"
+                             "logo_light.png"
                              ;
                 }),
             1);
-  payment_methods.clear();
   std::string json_null_dark_logo(R"([
   {
     "paymentMethod": "ACH",
@@ -253,28 +252,28 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
     }
   }
   ])");
-  EXPECT_TRUE(ParsePaymentMethods(ParseJson(json_null_dark_logo), &payment_methods));
+  payment_methods = ParsePaymentMethods(ParseJson(json_null_dark_logo));
+  EXPECT_TRUE(payment_methods);
   EXPECT_EQ(base::ranges::count_if(
-                payment_methods,
+                *payment_methods,
                 [](const auto& item) {
                   return item->payment_method == "ACH" && item->name == "ACH" &&
                          item->payment_type == "BANK_TRANSFER" &&
-                         item->logo_images //&&
-                        //  item->logo_images->dark_short_url->empty() &&
-                        //  item->logo_images->light_short_url->empty() &&
-                        //  !item->logo_images->dark_url &&
-                        //  *(item->logo_images->light_url) ==
-                        //      "https://images-paymentMethod.meld.io/ACH/"
-                        //      "logo_light.png"
+                         item->logo_images &&
+                         !item->logo_images->dark_short_url &&
+                         !item->logo_images->light_short_url &&
+                         !item->logo_images->dark_url &&
+                         *(item->logo_images->light_url) ==
+                             "https://images-paymentMethod.meld.io/ACH/"
+                             "logo_light.png"
                              ;
                 }),
             1);
 
-  payment_methods.clear();
-  EXPECT_FALSE(ParsePaymentMethods(base::Value(), &payment_methods));
+  EXPECT_FALSE(ParsePaymentMethods(base::Value()));
 
   json = (R"({})");
-  EXPECT_FALSE(ParsePaymentMethods(ParseJson(json), &payment_methods));
+  EXPECT_FALSE(ParsePaymentMethods(ParseJson(json)));
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
