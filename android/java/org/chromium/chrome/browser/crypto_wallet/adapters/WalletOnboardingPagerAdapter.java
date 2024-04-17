@@ -23,7 +23,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.Onboarding
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingTermsOfUseFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment;
 
-public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
+public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
     /** Wallet action types used to determine onboarding navigation sequence. */
     public enum WalletAction {
         // Initial onboarding action triggered to create a new Wallet or restore an existing one.
@@ -51,7 +51,7 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStateAdapter {
     @NonNull private WalletAction mWalletAction;
     private boolean mShowBiometricPrompt;
 
-    public CryptoWalletOnboardingPagerAdapter(
+    public WalletOnboardingPagerAdapter(
             @NonNull final FragmentActivity fragmentActivity,
             @NonNull final BraveWalletP3a braveWalletP3a,
             final boolean restartSetupAction,
