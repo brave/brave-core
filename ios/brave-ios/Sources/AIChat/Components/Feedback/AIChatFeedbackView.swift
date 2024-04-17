@@ -313,6 +313,8 @@ enum AIChatFeedbackOption: String, CaseIterable, Identifiable {
   case unsafeHarmful
   case other
 
+  // These values are taken from: https://github.com/brave/brave-core/blob/master/components/ai_chat/resources/page/components/feedback_form/index.tsx#L16
+  // and must not be changed!
   var id: RawValue {
     switch self {
     case .notHelpful:
