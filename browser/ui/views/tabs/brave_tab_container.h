@@ -20,7 +20,6 @@ class BraveTabContainer : public TabContainerImpl,
                           public SplitViewBrowserDataObserver {
   METADATA_HEADER(BraveTabContainer, TabContainerImpl)
  public:
-
   BraveTabContainer(TabContainerController& controller,
                     TabHoverCardController* hover_card_controller,
                     TabDragContextBase* drag_context,
@@ -105,7 +104,8 @@ class BraveTabContainer : public TabContainerImpl,
 
   void UpdateLayoutOrientation();
 
-  void PaintBoundingBoxForTiles(gfx::Canvas& canvas);
+  void PaintBoundingBoxForTiles(gfx::Canvas& canvas,
+                                const SplitViewBrowserData* split_view_data);
   void PaintBoundingBoxForTile(gfx::Canvas& canvas,
                                const SplitViewBrowserData::Tile& tile);
 
