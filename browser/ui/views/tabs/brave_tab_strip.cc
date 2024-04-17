@@ -43,14 +43,6 @@
 #include "ui/gfx/canvas.h"
 #include "ui/views/layout/flex_layout.h"
 
-// Provides default implementation here for FakeTabSlotController.
-bool TabSlotController::IsTabTiled(const Tab* tab) const {
-  return false;
-}
-bool TabSlotController::IsFirstTabInTile(const Tab* tab) const {
-  return false;
-}
-
 BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
     : TabStrip(std::move(controller)) {}
 

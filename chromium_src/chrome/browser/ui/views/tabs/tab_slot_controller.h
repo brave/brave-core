@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 
-#define IsGroupCollapsed                               \
-  IsTabTiled(const Tab* tab) const;                    \
-  virtual bool IsFirstTabInTile(const Tab* tab) const; \
+#define IsGroupCollapsed                                   \
+  IsTabTiled(const Tab* tab) const = 0;                    \
+  virtual bool IsFirstTabInTile(const Tab* tab) const = 0; \
   virtual bool IsGroupCollapsed
 
 #include "src/chrome/browser/ui/views/tabs/tab_slot_controller.h"  // IWYU pragma: export
