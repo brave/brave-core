@@ -587,6 +587,12 @@
 -All/DeclarativeNetRequestAllowAllRequestsBrowserTest.TestPostNavigationMatched/*
 -All/DeclarativeNetRequestAllowAllRequestsBrowserTest.TestPostNavigationNotMatched/*
 
+# This test is flaky because of the shields extension. The extension's action
+# to create a menu causes the external protocol handler to be in the state not
+# expected by the test. Running with --disable-brave-extension gets the test
+# to pass every time.
+-BookmarkBarNavigationTest.ExternalHandlerAllowed
+
 # These tests fail because of the shields extension. The tests don't expect
 # permission manager to get a request from 
 # chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/ before the callback is
