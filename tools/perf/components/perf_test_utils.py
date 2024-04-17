@@ -125,7 +125,9 @@ def DownloadArchiveAndUnpack(output_directory: str, url: str):
 def GetFileAtRevision(filepath: str, revision: str) -> Optional[str]:
   if os.path.isabs(filepath):
     filepath = os.path.relpath(filepath, path_util.GetBraveDir())
-  success, content = GetProcessOutput(['git', 'show', f'{revision}:{filepath}'],
-                                      cwd=path_util.GetBraveDir(),
-                                      output_to_debug=False)
+  normalized_path = filepath.replace('\\', '/')
+  success, content = GetProcessOutput(
+      ['git', 'show', f'{revision}:{normalized_path}'],
+      cwd=path_util.GetBraveDir(),
+      output_to_debug=False)
   return content if success else None
