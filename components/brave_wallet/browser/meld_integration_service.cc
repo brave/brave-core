@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -147,20 +148,20 @@ void MeldIntegrationService::OnGetServiceProviders(
     GetServiceProvidersCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run({},
+    std::move(callback).Run(std::nullopt,
                             std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
     return;
   }
 
   if (auto errors = ParseMeldErrorResponse(api_request_result.value_body());
       errors) {
-    std::move(callback).Run({}, errors);
+    std::move(callback).Run(std::nullopt, errors);
     return;
   }
 
   auto service_providers = ParseServiceProviders(api_request_result.value_body());
   if (!service_providers) {
-    std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(std::nullopt, std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
 
