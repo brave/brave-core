@@ -1,0 +1,24 @@
+From 6c2fb69094126dd4f36b8dfa45d81b1a1ea6893a Mon Sep 17 00:00:00 2001
+From: oisupov <oisupov@brave.com>
+Date: Wed, 17 Apr 2024 23:30:37 +0700
+Subject: [PATCH] Remove spin_no_std for lazy_static in pasta_curves
+
+---
+ .../rust/chromium_crates_io/vendor/pasta_curves-0.5.1/Cargo.toml | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/Cargo.toml b/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/Cargo.toml
+index 72b348ecb47..97a8363b582 100644
+--- a/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/Cargo.toml
++++ b/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/Cargo.toml
+@@ -81,7 +81,6 @@ default-features = false
+ 
+ [dependencies.lazy_static]
+ version = "1.4.0"
+-features = ["spin_no_std"]
+ optional = true
+ 
+ [dependencies.rand]
+-- 
+2.38.1
+

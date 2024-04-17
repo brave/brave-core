@@ -1309,9 +1309,6 @@ dependencies = [
 [[package]]
 name = "lazy_static"
 version = "1.4.0"
-dependencies = [
- "spin",
-]
 
 [[package]]
 name = "lazycell"
@@ -2305,11 +2302,6 @@ dependencies = [
  "libc",
  "speedreader",
 ]
-
-[[package]]
-name = "spin"
-version = "0.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "sta-rs"
