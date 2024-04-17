@@ -122,7 +122,7 @@ constexpr auto kCountryCodeAnonymitySet =
             "RE",  // Reunion
             "RO",  // Romania
             "RS",  // Serbia
-            "RU",  // Russian Federation
+            "RU",  // Russia
             "RW",  // Rwanda
             "SA",  // Saudi Arabia
             "SE",  // Sweden

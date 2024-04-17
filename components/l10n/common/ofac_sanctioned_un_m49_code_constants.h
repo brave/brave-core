@@ -20,14 +20,14 @@ inline constexpr auto kOFACSactionedUnM49Codes =
         {
             // See https://en.wikipedia.org/wiki/UN_M49.
 
-            "001",  // World which includes sanctioned Cuba, Iran, North Korea,
-                    // Russia and Syria.
+            "001",  // World which includes sanctioned Belarus, Cuba, Iran,
+                    // Moldova, North Korea, Russia, Syria and Ukraine.
             "029",  // Caribbean which includes sanctioned Cuba.
             "030",  // Eastern Asia which includes sanctioned North Korea.
             "034",  // Southern Asia which includes sanctioned Iran.
-            "145",  // Western Asia which includes Syria.
+            "145",  // Western Asia which includes sanctioned Syria.
             "151",  // Eastern Europe (including Northern Asia) which includes
-                    // sanctioned Russia.
+                    // sanctioned Belarus, Moldova, Russia and Ukraine.
         });
 
 }  // namespace brave_l10n
