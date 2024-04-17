@@ -6,4 +6,4 @@
 // We redefine our own versions of PrepopulatedEngine for DDG and Qwant.
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
-#include "src/components/search_engines/generated_marketing_snippets.cc"
+#include "src/components/search_engines/search_engine_choice/generated_marketing_snippets.cc"
