@@ -683,20 +683,20 @@ void BringAllTabs(Browser* browser) {
       [&](const Browser* from) { return CanTakeTabs(from, browser); });
 
   // Detach all tabs from other browsers
-  std::stack<std::unique_ptr<content::WebContents>> detached_pinned_tabs;
-  std::stack<std::unique_ptr<content::WebContents>> detached_unpinned_tabs;
+  std::stack<std::unique_ptr<tabs::TabModel>> detached_pinned_tabs;
+  std::stack<std::unique_ptr<tabs::TabModel>> detached_unpinned_tabs;
 
   base::ranges::for_each(browsers, [&detached_pinned_tabs,
                                     &detached_unpinned_tabs](auto* other) {
     auto* tab_strip_model = other->tab_strip_model();
     const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();
     for (int i = tab_strip_model->count() - 1; i >= 0; --i) {
-      auto contents = tab_strip_model->DetachWebContentsAtForInsertion(i);
+      auto tab = tab_strip_model->DetachTabAtForInsertion(i);
       const bool is_pinned = i < pinned_tab_count;
       if (is_pinned) {
-        detached_pinned_tabs.push(std::move(contents));
+        detached_pinned_tabs.push(std::move(tab));
       } else {
-        detached_unpinned_tabs.push(std::move(contents));
+        detached_unpinned_tabs.push(std::move(tab));
       }
     }
   });
@@ -704,7 +704,7 @@ void BringAllTabs(Browser* browser) {
   // Insert pinned tabs
   auto* tab_strip_model = browser->tab_strip_model();
   while (!detached_pinned_tabs.empty()) {
-    tab_strip_model->InsertWebContentsAt(
+    tab_strip_model->InsertDetachedTabAt(
         tab_strip_model->IndexOfFirstNonPinnedTab(),
         std::move(detached_pinned_tabs.top()), AddTabTypes::ADD_PINNED);
     detached_pinned_tabs.pop();
@@ -712,7 +712,7 @@ void BringAllTabs(Browser* browser) {
 
   // Insert unpinned tabs
   while (!detached_unpinned_tabs.empty()) {
-    tab_strip_model->InsertWebContentsAt(
+    tab_strip_model->InsertDetachedTabAt(
         tab_strip_model->count(), std::move(detached_unpinned_tabs.top()),
         AddTabTypes::ADD_NONE);
     detached_unpinned_tabs.pop();
