@@ -54,6 +54,7 @@ class BraveSearchConversionPromotionView : public views::View {
   int GetBannerTypeTitleStringResourceId();
   int GetBannerTypeDescStringResourceId();
   SkColor GetCloseButtonColor() const;
+  int GetOverallHorizontalMarginAroundDescription() const;
 
   raw_ptr<BraveOmniboxResultView> result_view_ = nullptr;
 
