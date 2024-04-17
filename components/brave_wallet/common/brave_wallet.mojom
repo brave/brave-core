@@ -1231,7 +1231,7 @@ interface MeldIntegrationService {
   GetServiceProviders(string? countries, string? fiat_currencies,
     string? crypto_currencies, string? service_providers,
     string? payment_method_types, string? statuses)
-    => (array<ServiceProvider> service_providers, array<string>? error);
+    => (array<ServiceProvider>? service_providers, array<string>? error);
 
   // Obtains the crypto quotes
   // Note that next parameters are mandatory:

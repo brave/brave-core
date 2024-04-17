@@ -41,11 +41,11 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
     }
   }])");
 
-  std::vector<mojom::ServiceProviderPtr> service_providers;
-  EXPECT_TRUE(ParseServiceProviders(ParseJson(json), &service_providers));
+  auto service_providers = ParseServiceProviders(ParseJson(json));
+  EXPECT_TRUE(service_providers);
   EXPECT_EQ(
       base::ranges::count_if(
-          service_providers,
+          *service_providers,
           [](const auto& item) {
             return item->name == "Banxa" && item->service_provider == "BANXA" &&
                    item->status == "LIVE" &&
@@ -70,7 +70,6 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
                        "short_logo_light.png";
           }),
       1);
-  service_providers.clear();
   std::string json_null_logos(R"([
   {
     "serviceProvider": "BANXA",
@@ -83,10 +82,11 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
     "websiteUrl": "http://www.banxa.com",
     "logos": null
   }])");
-  EXPECT_TRUE(ParseServiceProviders(ParseJson(json_null_logos), &service_providers));
+  service_providers = ParseServiceProviders(ParseJson(json_null_logos));
+  EXPECT_TRUE(service_providers);
   EXPECT_EQ(
       base::ranges::count_if(
-          service_providers,
+          *service_providers,
           [](const auto& item) {
             return item->name == "Banxa" && item->service_provider == "BANXA" &&
                    item->status == "LIVE" &&
@@ -99,13 +99,12 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
           }),
       1);
 
-  service_providers.clear();
   // Invalid json
-  EXPECT_FALSE(ParseServiceProviders(base::Value(), &service_providers));
+  EXPECT_FALSE(ParseServiceProviders(base::Value()));
 
   // Valid json, missing required field
   json = (R"({})");
-  EXPECT_FALSE(ParseServiceProviders(ParseJson(json), &service_providers));
+  EXPECT_FALSE(ParseServiceProviders(ParseJson(json)));
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {

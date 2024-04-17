@@ -76,7 +76,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
         countries, from_assets, to_assets, service_providers,
         payment_method_types, statuses,
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::ServiceProviderPtr> sps,
+            [&](std::optional<std::vector<mojom::ServiceProviderPtr>> sps,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(sps), errors);
               run_loop.Quit();
@@ -280,11 +280,11 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
   }])",
       "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting(
-          [&](std::vector<mojom::ServiceProviderPtr> sps,
+          [&](std::optional<std::vector<mojom::ServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(base::ranges::count_if(
-                          sps,
+                          *sps,
                           [](const auto& item) {
                             return item->name == "Banxa" &&
                                    item->service_provider == "BANXA" &&
@@ -307,7 +307,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                           }),
                       1);
             EXPECT_EQ(base::ranges::count_if(
-                          sps,
+                          *sps,
                           [](const auto& item) {
                             return item->name == "Blockchain.com" &&
                                    item->service_provider ==
@@ -334,7 +334,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
   TestGetServiceProvider(
       "some wrone data", "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting(
-          [&](std::vector<mojom::ServiceProviderPtr> sps,
+          [&](std::optional<std::vector<mojom::ServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
@@ -342,7 +342,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
   TestGetServiceProvider(
       "some wrone data", "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting(
-          [&](std::vector<mojom::ServiceProviderPtr> sps,
+          [&](std::optional<std::vector<mojom::ServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
@@ -362,7 +362,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
   })",
       "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting(
-          [&](std::vector<mojom::ServiceProviderPtr> sps,
+          [&](std::optional<std::vector<mojom::ServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>(

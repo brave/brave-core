@@ -63,6 +63,7 @@ constexpr char kDefaultMeldStatuses[] = "LIVE,RECENTLY_ADDED";
 }  // namespace
 
 namespace brave_wallet {
+using std::move;
 
 MeldIntegrationService::MeldIntegrationService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -157,12 +158,12 @@ void MeldIntegrationService::OnGetServiceProviders(
     return;
   }
 
-  std::vector<mojom::ServiceProviderPtr> service_providers;
-  if (!ParseServiceProviders(api_request_result.value_body(),
-                             &service_providers)) {
+  auto service_providers = ParseServiceProviders(api_request_result.value_body());
+  if (!service_providers) {
     std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
+
   std::move(callback).Run(std::move(service_providers), std::nullopt);
 }
 

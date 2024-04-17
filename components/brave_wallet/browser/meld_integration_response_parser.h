@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_MELD_INTEGRATION_RESPONSE_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_MELD_INTEGRATION_RESPONSE_PARSER_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -16,9 +17,8 @@
 namespace brave_wallet {
 std::optional<std::vector<std::string>> ParseMeldErrorResponse(
     const base::Value& json_value);
-bool ParseServiceProviders(
-    const base::Value& json_value,
-    std::vector<mojom::ServiceProviderPtr>* service_providers);
+std::optional<std::vector<mojom::ServiceProviderPtr>> ParseServiceProviders(
+    const base::Value& json_value);
 bool ParseCryptoQuotes(const base::Value& json_value,
                        std::vector<mojom::CryptoQuotePtr>* quotes,
                        std::string* error);

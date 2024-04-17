@@ -138,9 +138,8 @@ std::optional<base::flat_map<std::string, std::string>> ParseOptionalMapOfString
 
 namespace brave_wallet {
 
-bool ParseServiceProviders(
-    const base::Value& json_value,
-    std::vector<mojom::ServiceProviderPtr>* service_providers) {
+std::optional<std::vector<mojom::ServiceProviderPtr>> ParseServiceProviders(
+    const base::Value& json_value) {
   // Parses results like this:
   // {
   //    "categories": [ "CRYPTO_ONRAMP" ],
@@ -162,13 +161,12 @@ bool ParseServiceProviders(
   //    "websiteUrl": "http://www.banxa.com"
   // }
 
-  DCHECK(service_providers);
-
   if (!json_value.is_list()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
-    return false;
+    return std::nullopt;
   }
 
+  std::vector<mojom::ServiceProviderPtr> service_providers;
   for (const auto& sp_item : json_value.GetList()) {
     auto sp = mojom::ServiceProvider::New();
     const auto service_provider_value =
@@ -176,7 +174,7 @@ bool ParseServiceProviders(
     if (!service_provider_value) {
       LOG(ERROR)
           << "Invalid response, could not parse JSON, JSON is not a dict";
-      return false;
+      return std::nullopt;
     }
 
     sp->name = ParseOptionalString(service_provider_value->name);
@@ -190,10 +188,14 @@ bool ParseServiceProviders(
       sp->logo_images = std::move(*logo_images);
     }
 
-    service_providers->emplace_back(std::move(sp));
+    service_providers.emplace_back(std::move(sp));
   }
 
-  return true;
+  if(service_providers.empty()) {
+    return std::nullopt;
+  }
+
+  return service_providers;
 }
 
 std::optional<std::vector<std::string>> ParseMeldErrorResponse(const base::Value& json_value) {
