@@ -545,20 +545,20 @@ void MeldIntegrationService::OnGetCountries(
     GetCountriesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run({},
+    std::move(callback).Run(std::nullopt,
                             std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
     return;
   }
 
   if (auto errors = ParseMeldErrorResponse(api_request_result.value_body());
       errors) {
-    std::move(callback).Run({}, errors);
+    std::move(callback).Run(std::nullopt, errors);
     return;
   }
 
-  std::vector<mojom::CountryPtr> countries;
-  if (!ParseCountries(api_request_result.value_body(), &countries)) {
-    std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
+  auto countries = ParseCountries(api_request_result.value_body());
+  if (!countries) {
+    std::move(callback).Run(std::nullopt, std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
   std::move(callback).Run(std::move(countries), std::nullopt);

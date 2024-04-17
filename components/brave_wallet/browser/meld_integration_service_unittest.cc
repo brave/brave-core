@@ -212,7 +212,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
         countries, fiat_currencies, crypto_currencies, service_providers,
         payment_method_types, statuses,
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::CountryPtr> countries,
+            [&](std::optional<std::vector<mojom::CountryPtr>> countries,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(countries), errors);
               run_loop.Quit();
@@ -893,12 +893,12 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "LIVE,RECENTLY_ADDED",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::CountryPtr> countries,
+          [](std::optional<std::vector<mojom::CountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(
                 base::ranges::count_if(
-                    countries,
+                    *countries,
                     [](const auto& item) {
                       return item->country_code == "AF" &&
                              item->name == "Afghanistan" &&
@@ -908,7 +908,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
                 1);
             EXPECT_EQ(
                 base::ranges::count_if(
-                    countries,
+                    *countries,
                     [](const auto& item) {
                       return item->country_code == "AL" &&
                              item->name == "Albania" &&
@@ -921,7 +921,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::CountryPtr> countries,
+          [](std::optional<std::vector<mojom::CountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
@@ -931,7 +931,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::CountryPtr> countries,
+          [](std::optional<std::vector<mojom::CountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
@@ -953,7 +953,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [&](std::vector<mojom::CountryPtr> countries,
+          [&](std::optional<std::vector<mojom::CountryPtr>> countries,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>(

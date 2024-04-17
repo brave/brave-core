@@ -460,8 +460,8 @@ std::optional<std::vector<mojom::CryptoCurrencyPtr>> ParseCryptoCurrencies(
   return crypto_currencies;
 }
 
-bool ParseCountries(const base::Value& json_value,
-                    std::vector<mojom::CountryPtr>* countries) {
+std::optional<std::vector<mojom::CountryPtr>> ParseCountries(
+    const base::Value& json_value) {
   // Parses results like this:
   // [
   //   {
@@ -477,18 +477,17 @@ bool ParseCountries(const base::Value& json_value,
   //     "regions": null
   //   }
   // ]
-  DCHECK(countries);
-
   if (!json_value.is_list()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
-    return false;
+    return std::nullopt;
   }
+  std::vector<mojom::CountryPtr> countries;
   for (const auto& country_item : json_value.GetList()) {
     const auto country_value =
         meld_integration_responses::Country::FromValue(country_item);
     if (!country_value) {
       LOG(ERROR) << "Invalid response, could not parse JSON";
-      return false;
+      return std::nullopt;
     }
 
     auto country = mojom::Country::New();
@@ -497,10 +496,10 @@ bool ParseCountries(const base::Value& json_value,
     country->flag_image_url = ParseOptionalString(country_value->flag_image_url);
     ParseMeldRegions(country_value->regions, country.get());
 
-   countries->emplace_back(std::move(country));
+   countries.emplace_back(std::move(country));
   }
 
-  return true;
+  return countries;
 }
 
 }  // namespace brave_wallet

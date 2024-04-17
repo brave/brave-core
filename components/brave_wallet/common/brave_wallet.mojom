@@ -1266,7 +1266,7 @@ interface MeldIntegrationService {
   GetCountries(string? countries, string? fiat_currencies,
     string? crypto_currencies, string? service_providers,
     string? payment_method_types, string? statuses)
-    => (array<Country> countries, array<string>? error);
+    => (array<Country>? countries, array<string>? error);
 };
 
 // Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs

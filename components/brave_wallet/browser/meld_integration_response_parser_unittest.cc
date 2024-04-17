@@ -352,10 +352,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
       }
     ]
   }])");
-  std::vector<mojom::CountryPtr> countries;
-  EXPECT_TRUE(ParseCountries(ParseJson(json), &countries));
+  auto countries = ParseCountries(ParseJson(json));
+  EXPECT_TRUE(countries);
   EXPECT_EQ(base::ranges::count_if(
-                countries,
+                *countries,
                 [](const auto& item) {
                   return item->country_code == "AF" &&
                          item->name == "Afghanistan" &&
@@ -366,11 +366,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
                   ;
                 }),
             1);
-  countries.clear();
-  EXPECT_FALSE(ParseCountries(base::Value(), &countries));
+  EXPECT_FALSE(ParseCountries(base::Value()));
 
   json = (R"({})");
-  EXPECT_FALSE(ParseCountries(ParseJson(json), &countries));
+  EXPECT_FALSE(ParseCountries(ParseJson(json)));
 }
 
 }  // namespace brave_wallet
