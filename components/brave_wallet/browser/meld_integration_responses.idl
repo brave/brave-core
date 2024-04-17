@@ -1,0 +1,95 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+namespace meld_integration_responses {
+    dictionary Logos {
+        any? dark;
+        any? light;
+        any? darkShort;
+        any? lightShort;
+    };
+
+    dictionary Region {
+        any? regionCode;
+        any? name;
+    };
+
+    dictionary Country {
+        any? countryCode;
+        any? name;
+        any? flagImageUrl;
+        // Region[]
+        any? regions;
+    };
+
+    dictionary CryptoCurrency {
+        any? currencyCode;
+        any? name;
+        any? chainCode;
+        any? chainName;
+        any? chainId;
+        any? contractAddress;
+        any? symbolImageUrl;
+    };
+
+    dictionary FiatCurrency {
+        any? currencyCode;
+        any? name;
+        any? symbolImageUrl;
+    };
+
+    dictionary PaymentMethod {
+        any? paymentMethod;
+        any? name;
+        any? paymentType;
+        // Logos[]
+        any? logos;
+    };
+
+    dictionary CryptoQuote {
+        any? transactionType;
+        any? sourceAmount;
+        any? sourceAmountWithoutFees;
+        any? fiatAmountWithoutFees;
+        any? destinationAmountWithoutFees;
+        any? sourceCurrencyCode;
+        any? countryCode;
+        any? totalFee;
+        any? networkFee;
+        any? transactionFee;
+        any? destinationAmount;
+        any? destinationCurrencyCode;
+        any? exchangeRate;
+        any? paymentMethodType;
+        any? customerScore;
+        any? serviceProvider;
+    };
+
+    dictionary CryptoQuoteResponse {
+        // CryptoQuote[]
+        any? quotes;
+        any? message;
+        any? error;
+    };
+
+    dictionary ServiceProvider {
+        any? serviceProvider;
+        any? name;
+        any? status;
+        any? categories;
+        any? categoryStatuses;
+        any? websiteUrl;
+        // Logos[]
+        any? logos;
+    };
+
+    dictionary MeldError {
+        DOMString? code;
+        DOMString? message;
+        DOMString[]? errors;
+        DOMString? requestId;
+        DOMString? timestamp;
+    };
+};

@@ -558,7 +558,6 @@ void MeldIntegrationService::OnGetCountries(
     std::move(callback).Run({}, std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
-
   std::move(callback).Run(std::move(countries), std::nullopt);
 }
 

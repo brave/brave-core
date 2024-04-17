@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -408,15 +409,22 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
             EXPECT_EQ(base::ranges::count_if(
                           quotes,
                           [](const auto& item) {
-                            return item->transaction_type ==
-                                       "CRYPTO_PURCHASE" &&
-                                   item->exchange_rate == 75286 &&
-                                   item->source_amount == 50 &&
-                                   item->source_amount_without_fee == 43.97 &&
-                                   item->total_fee == 6.03 &&
-                                   item->payment_method == "APPLE_PAY" &&
-                                   item->destination_amount == 0.00066413 &&
-                                   item->service_provider_id == "TRANSAK";
+                          return item->transaction_type == "CRYPTO_PURCHASE" &&
+                                item->source_amount == 50 &&
+                                item->source_amount_without_fee == 43.97 &&
+                                item->fiat_amount_without_fees == 43.97 &&
+                                item->destination_amount_without_fees == std::nullopt &&
+                                item->source_currency_code == "USD" &&
+                                item->country_code == "US" &&
+                                item->total_fee == 6.03 &&
+                                item->network_fee == 3.53 &&
+                                item->transaction_fee == 2 &&
+                                item->destination_amount == 0.00066413 &&
+                                item->destination_currency_code == "BTC" &&
+                                item->exchange_rate == 75286 &&
+                                item->payment_method == "APPLE_PAY" &&
+                                item->customer_score == 20 &&
+                                item->service_provider == "TRANSAK";
                           }),
                       1);
           }));
@@ -475,15 +483,22 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
             EXPECT_EQ(base::ranges::count_if(
                           quotes,
                           [](const auto& item) {
-                            return item->transaction_type ==
-                                       "CRYPTO_PURCHASE" &&
-                                   item->exchange_rate == 75286 &&
-                                   item->source_amount == 50 &&
-                                   item->source_amount_without_fee == 43.97 &&
-                                   item->total_fee == 6.03 &&
-                                   item->payment_method == "APPLE_PAY" &&
-                                   item->destination_amount == 0.00066413 &&
-                                   item->service_provider_id == "TRANSAK";
+                          return item->transaction_type == "CRYPTO_PURCHASE" &&
+                                item->source_amount == 50 &&
+                                item->source_amount_without_fee == 43.97 &&
+                                item->fiat_amount_without_fees == 43.97 &&
+                                item->destination_amount_without_fees == std::nullopt &&
+                                item->source_currency_code == "USD" &&
+                                item->country_code == "US" &&
+                                item->total_fee == 6.03 &&
+                                item->network_fee == 3.53 &&
+                                item->transaction_fee == 2 &&
+                                item->destination_amount == 0.00066413 &&
+                                item->destination_currency_code == "BTC" &&
+                                item->exchange_rate == 75286 &&
+                                item->payment_method == "APPLE_PAY" &&
+                                item->customer_score == 20 &&
+                                item->service_provider == "TRANSAK";
                           }),
                       1);
           }));
@@ -521,7 +536,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
-
   TestGetPaymentMethods(
       R"([
   {
@@ -544,17 +558,54 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
                           payment_methods,
                           [](const auto& item) {
                             return item->payment_method == "ACH" &&
-                                   item->name == "ACH" &&
-                                   item->payment_type == "BANK_TRANSFER" &&
-                                   item->logo_images &&
-                                   item->logo_images->dark_short_url.empty() &&
-                                   item->logo_images->light_short_url.empty() &&
+                                    item->name == "ACH" &&
+                                    item->payment_type == "BANK_TRANSFER" &&
+                                    item->logo_images &&
+                                    !item->logo_images->dark_short_url &&
+                                    !item->logo_images->light_short_url &&
                                    item->logo_images->dark_url ==
                                        "https://images-paymentMethod.meld.io/"
                                        "ACH/logo_dark.png" &&
                                    item->logo_images->light_url ==
                                        "https://images-paymentMethod.meld.io/"
-                                       "ACH/logo_light.png";
+                                       "ACH/logo_light.png"
+                            ;
+                          }),
+                      1);
+          }));
+
+  TestGetPaymentMethods(
+      R"([
+  {
+    "paymentMethod": "ACH",
+    "name": "ACH",
+    "paymentType": "BANK_TRANSFER",
+    "logos": {
+      "dark": null,
+      "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
+    }
+  }
+  ])",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [](std::vector<mojom::PaymentMethodPtr> payment_methods,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_FALSE(errors.has_value());
+            EXPECT_EQ(base::ranges::count_if(
+                          payment_methods,
+                          [](const auto& item) {
+                            return item->payment_method == "ACH" &&
+                                    item->name == "ACH" &&
+                                    item->payment_type == "BANK_TRANSFER" &&
+                                    item->logo_images &&
+                                    !item->logo_images->dark_short_url &&
+                                    !item->logo_images->light_short_url &&
+                                   !item->logo_images->dark_url &&
+                                   item->logo_images->light_url ==
+                                       "https://images-paymentMethod.meld.io/"
+                                       "ACH/logo_light.png"
+                            ;
                           }),
                       1);
           }));
@@ -828,7 +879,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
-
   TestGetCountries(
       R"([
   {

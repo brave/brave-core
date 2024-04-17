@@ -250,6 +250,7 @@ static_library("browser") {
     ":generated_json_rpc_responses",
     ":generated_simulation_responses",
     ":generated_swap_responses",
+    ":meld_integration_responses",
     ":hd_keyring",
     ":pref_names",
     ":transaction",
@@ -506,5 +507,15 @@ config("sardine_config") {
   defines = [
     "SARDINE_CLIENT_ID=\"$sardine_client_id\"",
     "SARDINE_CLIENT_SECRET=\"$sardine_client_secret\"",
+  ]
+}
+
+generated_types("meld_integration_responses") {
+  sources = [ "meld_integration_responses.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
   ]
 }

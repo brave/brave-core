@@ -5,37 +5,139 @@
 
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 
+#include <algorithm>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
+#include "base/ranges/algorithm.h"
+#include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "tools/json_schema_compiler/util.h"
 
 namespace {
 
-bool ParseMeldLogos(const base::Value::Dict* logos,
-                    brave_wallet::mojom::LogoImages* logo_images) {
-  if (!logos) {
-    return false;
-  }
-  if (const auto* dark_logo = logos->FindString("dark")) {
-    logo_images->dark_url = *dark_logo;
-  }
-  if (const auto* dark_short_logo = logos->FindString("darkShort")) {
-    logo_images->dark_short_url = *dark_short_logo;
-  }
-  if (const auto* light_logo = logos->FindString("light")) {
-    logo_images->light_url = *light_logo;
-  }
-  if (const auto* light_short_logo = logos->FindString("lightShort")) {
-    logo_images->light_short_url = *light_short_logo;
+std::optional<brave_wallet::mojom::LogoImagesPtr> ParseMeldLogos(const std::optional<base::Value>& logos) {
+  if (!logos || !logos->is_dict()) {
+    return std::nullopt;
   }
 
-  return true;
+  const auto logos_value =
+      brave_wallet::meld_integration_responses::Logos::FromValue(*logos);
+  if (!logos_value) {
+    return std::nullopt;
+  }
+
+  std::optional<brave_wallet::mojom::LogoImagesPtr> logo_images = brave_wallet::mojom::LogoImages::New();
+  if (logos_value->dark && logos_value->dark->is_string()) {
+    (*logo_images)->dark_url = logos_value->dark->GetString();
+  }
+  if (logos_value->dark_short && logos_value->dark_short->is_string()) {
+    (*logo_images)->dark_short_url = logos_value->dark_short->GetString();
+  }
+  if (logos_value->light && logos_value->light->is_string()) {
+    (*logo_images)->light_url = logos_value->light->GetString();
+  }
+  if (logos_value->light_short && logos_value->light_short->is_string()) {
+    (*logo_images)->light_short_url = logos_value->light_short->GetString();
+  }
+
+  return logo_images;
+}
+
+std::optional<std::string> ParseOptionalString(
+    const std::optional<base::Value>& value) {
+  if (!value || !value->is_string()) {
+    return std::nullopt;
+  }
+
+  return value->GetString();
+}
+
+std::optional<double> ParseOptionDouble(const std::optional<base::Value>& value) {
+  if (!value) {
+    return std::nullopt;
+  }
+
+  if(value->is_double()) {
+    return value->GetDouble();
+  }
+
+  if(value->is_int()) {
+    return static_cast<double>(value->GetInt());
+  }
+
+  return std::nullopt;
+}
+
+void ParseMeldRegions(
+    const std::optional<base::Value>& idl_regions,
+    brave_wallet::mojom::Country* country) {
+  if (!idl_regions || !idl_regions->is_list() || !country) {
+    return;
+  }
+
+  if(!country->regions) {
+    country->regions = std::vector<brave_wallet::mojom::RegionPtr>();
+  }
+
+  for(const auto& item : idl_regions->GetList()) {
+    const auto region_value =
+        brave_wallet::meld_integration_responses::Region::FromValue(item);
+    if (!region_value) {
+      return;
+    }
+
+    auto reg = brave_wallet::mojom::Region::New();
+    reg->region_code = ParseOptionalString(region_value->region_code);
+    reg->name = ParseOptionalString(region_value->name);
+    country->regions->emplace_back(std::move(reg));
+  }
+}
+
+std::optional<std::vector<std::string>> ParseOptionalVectorOfStrings(
+    const std::optional<base::Value>& val) {
+  if (!val || !val->is_list()) {
+    return std::nullopt;
+  }
+
+  std::vector<std::string> result;
+  for (const auto& item : val->GetList()) {
+    if (!item.is_string()) {
+      continue;
+    }
+    result.emplace_back(item.GetString());
+  }
+
+  if (result.empty()) {
+    return std::nullopt;
+  }
+
+  return result;
+}
+
+std::optional<base::flat_map<std::string, std::string>> ParseOptionalMapOfStrings(
+    const std::optional<base::Value>& val) {
+  if (!val || !val->is_dict()) {
+    return std::nullopt;
+  }
+
+  base::flat_map<std::string, std::string> result;
+  for (const auto [key, value] : val->GetDict()) {
+    result.insert_or_assign(key, value.GetString());
+  }
+  if (result.empty()) {
+    return std::nullopt;
+  }
+
+  return result;
 }
 
 }  //  namespace
 
 namespace brave_wallet {
+
 bool ParseServiceProviders(
     const base::Value& json_value,
     std::vector<mojom::ServiceProviderPtr>* service_providers) {
@@ -68,42 +170,24 @@ bool ParseServiceProviders(
   }
 
   for (const auto& sp_item : json_value.GetList()) {
-    if (!sp_item.is_dict()) {
+    auto sp = mojom::ServiceProvider::New();
+    const auto service_provider_value =
+        meld_integration_responses::ServiceProvider::FromValue(sp_item);
+    if (!service_provider_value) {
       LOG(ERROR)
           << "Invalid response, could not parse JSON, JSON is not a dict";
       return false;
     }
 
-    auto sp = mojom::ServiceProvider::New();
-    const std::string* sp_name = sp_item.GetDict().FindString("name");
-    if (!sp_name) {
-      return false;
-    }
-    sp->name = *sp_name;
+    sp->name = ParseOptionalString(service_provider_value->name);
+    sp->service_provider = ParseOptionalString(service_provider_value->service_provider);
+    sp->status = ParseOptionalString(service_provider_value->status);
+    sp->categories = ParseOptionalVectorOfStrings(service_provider_value->categories);
+    sp->web_site_url = ParseOptionalString(service_provider_value->website_url);
+    sp->category_statuses = ParseOptionalMapOfStrings(service_provider_value->category_statuses);
 
-    const std::string* sp_status = sp_item.GetDict().FindString("status");
-    if (!sp_status) {
-      return false;
-    }
-    sp->status = *sp_status;
-
-    const std::string* sp_service_provider =
-        sp_item.GetDict().FindString("serviceProvider");
-    if (!sp_service_provider) {
-      return false;
-    }
-    sp->service_provider = *sp_service_provider;
-
-    const std::string* sp_site_url = sp_item.GetDict().FindString("websiteUrl");
-    if (!sp_site_url) {
-      return false;
-    }
-    sp->web_site_url = *sp_site_url;
-
-    sp->logo_images = mojom::LogoImages::New();
-    if (const auto* logos = sp_item.GetDict().FindDict("logos");
-        !ParseMeldLogos(logos, sp->logo_images.get())) {
-      return false;
+    if(auto logo_images = ParseMeldLogos(service_provider_value->logos); logo_images) {
+      sp->logo_images = std::move(*logo_images);
     }
 
     service_providers->emplace_back(std::move(sp));
@@ -125,23 +209,21 @@ bool ParseMeldErrorResponse(const base::Value& json_value,
   //     "timestamp": "2022-01-19T20:32:30.784928Z"
   // }
   DCHECK(errors);
-  if (!json_value.is_dict()) {
+  const auto meld_error_value =
+      meld_integration_responses::MeldError::FromValue(json_value);
+  if (!meld_error_value) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
 
-  const auto& response_error_dict = json_value.GetDict();
-
-  if (const auto* response_errors = response_error_dict.FindList("errors");
-      response_errors) {
-    for (const auto& err : *response_errors) {
-      errors->emplace_back(err.GetString());
-    }
+  if (meld_error_value->errors.has_value() &&
+      !meld_error_value->errors->empty()) {
+    errors->assign(meld_error_value->errors->begin(),
+                   meld_error_value->errors->end());
   }
 
-  if (const auto* response_error_message =
-          response_error_dict.FindString("message");
-      response_error_message && errors->empty()) {
-    errors->emplace_back(*response_error_message);
+  if (meld_error_value->message.has_value() && errors->empty()) {
+    errors->emplace_back(*meld_error_value->message);
   }
 
   return !errors->empty();
@@ -177,81 +259,57 @@ bool ParseCryptoQuotes(const base::Value& json_value,
   // }
   DCHECK(quotes);
   DCHECK(error);
-
-  if (!json_value.is_dict()) {
+  const auto quote_resp_value =
+      meld_integration_responses::CryptoQuoteResponse::FromValue(json_value);
+  if (!quote_resp_value) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
 
-  const auto& response_dict = json_value.GetDict();
-  if (const auto* response_error = response_dict.FindString("error")) {
-    *error = *response_error;
+  if (quote_resp_value->error && quote_resp_value->error->is_string()) {
+    *error = quote_resp_value->error->GetString();
   }
 
-  const auto* response_quotes = response_dict.FindList("quotes");
-  if (!response_quotes) {
+  if (!quote_resp_value->quotes || !quote_resp_value->quotes->is_list()) {
     return false;
   }
 
-  for (const auto& item : *response_quotes) {
-    if (!item.is_dict()) {
+  for (const auto& item : quote_resp_value->quotes->GetList()) {
+    const auto quote_value =
+        meld_integration_responses::CryptoQuote::FromValue(item);
+    if (!quote_value) {
       LOG(ERROR)
           << "Invalid response, could not parse JSON, JSON is not a dict";
       return false;
     }
 
     auto quote = mojom::CryptoQuote::New();
-    const std::string* quote_tt = item.GetDict().FindString("transactionType");
-    if (!quote_tt) {
-      return false;
-    }
-    quote->transaction_type = *quote_tt;
 
-    const auto quote_er = item.GetDict().FindDouble("exchangeRate");
-    if (!quote_er) {
-      return false;
-    }
-    quote->exchange_rate = *quote_er;
-
-    const auto quote_amount = item.GetDict().FindDouble("sourceAmount");
-    if (!quote_amount) {
-      return false;
-    }
-    quote->source_amount = *quote_amount;
-
-    const auto quote_amount_without_fee =
-        item.GetDict().FindDouble("sourceAmountWithoutFees");
-    if (!quote_amount_without_fee) {
-      return false;
-    }
-    quote->source_amount_without_fee = *quote_amount_without_fee;
-
-    const auto quote_total_fee = item.GetDict().FindDouble("totalFee");
-    if (!quote_total_fee) {
-      return false;
-    }
-    quote->total_fee = *quote_total_fee;
-
-    const std::string* quote_pp =
-        item.GetDict().FindString("paymentMethodType");
-    if (!quote_pp) {
-      return false;
-    }
-    quote->payment_method = *quote_pp;
-
-    const auto quote_dest_amount =
-        item.GetDict().FindDouble("destinationAmount");
-    if (!quote_dest_amount) {
-      return false;
-    }
-    quote->destination_amount = *quote_dest_amount;
-
-    const std::string* quote_sp = item.GetDict().FindString("serviceProvider");
-    if (!quote_sp) {
-      return false;
-    }
-    quote->service_provider_id = *quote_sp;
-
+    quote->transaction_type =
+        ParseOptionalString(quote_value->transaction_type);
+    quote->source_amount = ParseOptionDouble(quote_value->source_amount);
+    quote->source_amount_without_fee =
+        ParseOptionDouble(quote_value->source_amount_without_fees);
+    quote->fiat_amount_without_fees =
+        ParseOptionDouble(quote_value->fiat_amount_without_fees);
+    quote->destination_amount_without_fees =
+        ParseOptionDouble(quote_value->destination_amount_without_fees);
+    quote->source_currency_code =
+        ParseOptionalString(quote_value->source_currency_code);
+    quote->country_code = ParseOptionalString(quote_value->country_code);
+    quote->total_fee = ParseOptionDouble(quote_value->total_fee);
+    quote->network_fee = ParseOptionDouble(quote_value->network_fee);
+    quote->transaction_fee = ParseOptionDouble(quote_value->transaction_fee);
+    quote->destination_amount =
+        ParseOptionDouble(quote_value->destination_amount);
+    quote->destination_currency_code =
+        ParseOptionalString(quote_value->destination_currency_code);
+    quote->exchange_rate = ParseOptionDouble(quote_value->exchange_rate);
+    quote->payment_method =
+        ParseOptionalString(quote_value->payment_method_type);
+    quote->customer_score = ParseOptionDouble(quote_value->customer_score);
+    quote->service_provider =
+        ParseOptionalString(quote_value->service_provider);
     quotes->emplace_back(std::move(quote));
   }
 
@@ -281,38 +339,22 @@ bool ParsePaymentMethods(
   }
 
   for (const auto& pm_item : json_value.GetList()) {
-    if (!pm_item.is_dict()) {
-      LOG(ERROR)
-          << "Invalid response, could not parse JSON, JSON is not a dict";
+    const auto payment_method_value =
+        meld_integration_responses::PaymentMethod::FromValue(pm_item);
+    if (!payment_method_value) {
+      LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
       return false;
     }
 
     auto pm = mojom::PaymentMethod::New();
-    const std::string* pm_name = pm_item.GetDict().FindString("name");
-    if (!pm_name) {
-      return false;
-    }
-    pm->name = *pm_name;
+    pm->name = ParseOptionalString(payment_method_value->name);
+    pm->payment_method = ParseOptionalString(payment_method_value->payment_method);
+    pm->payment_type = ParseOptionalString(payment_method_value->payment_type);
 
-    const std::string* pm_payment_method =
-        pm_item.GetDict().FindString("paymentMethod");
-    if (!pm_payment_method) {
-      return false;
+    if(auto logo_images = ParseMeldLogos(payment_method_value->logos); logo_images) {
+      pm->logo_images = std::move(*logo_images);
     }
-    pm->payment_method = *pm_payment_method;
-
-    const std::string* pm_payment_type =
-        pm_item.GetDict().FindString("paymentType");
-    if (!pm_payment_type) {
-      return false;
-    }
-    pm->payment_type = *pm_payment_type;
-
-    pm->logo_images = mojom::LogoImages::New();
-    if (const auto* logos = pm_item.GetDict().FindDict("logos");
-        !ParseMeldLogos(logos, pm->logo_images.get())) {
-      return false;
-    }
+    
     payment_methods->emplace_back(std::move(pm));
   }
 
@@ -337,31 +379,17 @@ bool ParseFiatCurrencies(const base::Value& json_value,
     return false;
   }
   for (const auto& fc_item : json_value.GetList()) {
-    if (!fc_item.is_dict()) {
-      LOG(ERROR)
-          << "Invalid response, could not parse JSON, JSON is not a dict";
+    const auto fiat_currency_value =
+        meld_integration_responses::FiatCurrency::FromValue(fc_item);
+    if (!fiat_currency_value) {
+      LOG(ERROR) << "Invalid response, could not parse JSON";
       return false;
     }
+
     auto fc = mojom::FiatCurrency::New();
-    const std::string* fc_name = fc_item.GetDict().FindString("name");
-    if (!fc_name) {
-      return false;
-    }
-    fc->name = *fc_name;
-
-    const std::string* fc_currency_code =
-        fc_item.GetDict().FindString("currencyCode");
-    if (!fc_currency_code) {
-      return false;
-    }
-    fc->currency_code = *fc_currency_code;
-
-    const std::string* fc_img_url =
-        fc_item.GetDict().FindString("symbolImageUrl");
-    if (!fc_img_url) {
-      return false;
-    }
-    fc->symbol_image_url = *fc_img_url;
+    fc->name = ParseOptionalString(fiat_currency_value->name);
+    fc->currency_code = ParseOptionalString(fiat_currency_value->currency_code);
+    fc->symbol_image_url = ParseOptionalString(fiat_currency_value->symbol_image_url);
 
     fiat_currencies->emplace_back(std::move(fc));
   }
@@ -402,58 +430,21 @@ bool ParseCryptoCurrencies(
     return false;
   }
   for (const auto& cc_item : json_value.GetList()) {
-    if (!cc_item.is_dict()) {
-      LOG(ERROR)
-          << "Invalid response, could not parse JSON, JSON is not a dict";
+    const auto crypto_currency_value =
+        meld_integration_responses::CryptoCurrency::FromValue(cc_item);
+    if (!crypto_currency_value) {
+      LOG(ERROR) << "Invalid response, could not parse JSON";
       return false;
     }
 
     auto cc = mojom::CryptoCurrency::New();
-    const std::string* cc_name = cc_item.GetDict().FindString("name");
-    if (!cc_name) {
-      return false;
-    }
-    cc->name = *cc_name;
-
-    const std::string* cc_code = cc_item.GetDict().FindString("currencyCode");
-    if (!cc_code) {
-      return false;
-    }
-    cc->currency_code = *cc_code;
-
-    const std::string* cc_chain_name =
-        cc_item.GetDict().FindString("chainName");
-    if (!cc_chain_name) {
-      return false;
-    }
-    cc->chain_name = *cc_chain_name;
-
-    const std::string* cc_chain_code =
-        cc_item.GetDict().FindString("chainCode");
-    if (!cc_chain_code) {
-      return false;
-    }
-    cc->chain_code = *cc_chain_code;
-
-    const std::string* cc_chain_id = cc_item.GetDict().FindString("chainId");
-    if (!cc_chain_id) {
-      return false;
-    }
-    cc->chain_id = *cc_chain_id;
-
-    const std::string* cc_contract_addr =
-        cc_item.GetDict().FindString("contractAddress");
-    if (!cc_contract_addr) {
-      return false;
-    }
-    cc->contract_address = *cc_contract_addr;
-
-    const std::string* cc_img_url =
-        cc_item.GetDict().FindString("symbolImageUrl");
-    if (!cc_img_url) {
-      return false;
-    }
-    cc->symbol_image_url = *cc_img_url;
+    cc->name = ParseOptionalString(crypto_currency_value->name);
+    cc->currency_code = ParseOptionalString(crypto_currency_value->currency_code);
+    cc->chain_code = ParseOptionalString(crypto_currency_value->chain_code);
+    cc->chain_name = ParseOptionalString(crypto_currency_value->chain_name);
+    cc->chain_id = ParseOptionalString(crypto_currency_value->chain_id);
+    cc->contract_address = ParseOptionalString(crypto_currency_value->contract_address);
+    cc->symbol_image_url = ParseOptionalString(crypto_currency_value->symbol_image_url);
 
     crypto_currencies->emplace_back(std::move(cc));
   }
@@ -485,36 +476,23 @@ bool ParseCountries(const base::Value& json_value,
     return false;
   }
   for (const auto& country_item : json_value.GetList()) {
-    if (!country_item.is_dict()) {
-      LOG(ERROR)
-          << "Invalid response, could not parse JSON, JSON is not a dict";
+    const auto country_value =
+        meld_integration_responses::Country::FromValue(country_item);
+    if (!country_value) {
+      LOG(ERROR) << "Invalid response, could not parse JSON";
       return false;
     }
 
     auto country = mojom::Country::New();
-    const std::string* cc_name = country_item.GetDict().FindString("name");
-    if (!cc_name) {
-      return false;
-    }
-    country->name = *cc_name;
+    country->name = ParseOptionalString(country_value->name);
+    country->country_code = ParseOptionalString(country_value->country_code);
+    country->flag_image_url = ParseOptionalString(country_value->flag_image_url);
+    ParseMeldRegions(country_value->regions, country.get());
 
-    const std::string* cc_code =
-        country_item.GetDict().FindString("countryCode");
-    if (!cc_code) {
-      return false;
-    }
-    country->country_code = *cc_code;
-
-    const std::string* cc_img_url =
-        country_item.GetDict().FindString("flagImageUrl");
-    if (!cc_img_url) {
-      return false;
-    }
-    country->flag_image_url = *cc_img_url;
-
-    countries->emplace_back(std::move(country));
+   countries->emplace_back(std::move(country));
   }
 
   return true;
 }
+
 }  // namespace brave_wallet
