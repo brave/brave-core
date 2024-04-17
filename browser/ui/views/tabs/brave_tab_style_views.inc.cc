@@ -222,8 +222,7 @@ SkPath BraveVerticalTabStyle::GetPath(
   }
 
   if (is_tab_tiled) {
-    const bool is_vertical_tab = ShouldShowVerticalTabs();
-    const auto padding_for_tile = is_vertical_tab ? 4 : 2;
+    constexpr auto padding_for_tile = 1;
     tab_top += scale * padding_for_tile;
     tab_bottom -= scale * padding_for_tile;
     tab()->controller()->IsFirstTabInTile(tab())
