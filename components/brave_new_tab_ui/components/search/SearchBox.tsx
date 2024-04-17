@@ -56,10 +56,10 @@ export default function SearchBox() {
     ? 'Search the web privately'
     : 'Search the web'
   const searchInput = React.useRef<HTMLElement>()
-  return <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.detail.value)} placeholder={placeholderText}>
+  return <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.value)} placeholder={placeholderText}>
     <Flex slot="left-icon">
       <EnginePicker positionStrategy='fixed' value={searchEngine?.keyword} onChange={e => {
-        setSearchEngine(e.detail.value)
+        setSearchEngine(e.value!)
       }}>
         <EngineValueSlot slot="value">
           <MediumIcon src={searchEngine?.faviconUrl.url} />

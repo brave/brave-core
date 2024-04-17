@@ -25,10 +25,6 @@ export function ResetModal (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const [consented, setConsented] = React.useState(false)
 
-  const onCheckboxChange = (event: CustomEvent<{checked: boolean}>) => {
-    setConsented(event.detail.checked)
-  }
-
   return (
     <PageModal onClose={props.onClose}>
       <style.root data-test-id='rewards-reset-modal'>
@@ -49,7 +45,7 @@ export function ResetModal (props: Props) {
           }
         </style.text>
         <style.consent>
-          <Checkbox checked={consented} onChange={onCheckboxChange}>
+          <Checkbox checked={consented} onChange={({checked}) => setConsented(checked)}>
             <style.consentLabel>
               {
                 formatMessage(getString('rewardsResetConsent'), {

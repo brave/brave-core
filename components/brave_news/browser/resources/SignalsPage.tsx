@@ -81,21 +81,21 @@ export default function SignalsPage(props: Props) {
       </div>
       <Flex direction='column' gap={8}>
         Show only:
-        <Radio name='show' value="all" currentValue={show} onChange={e => setShow(e.detail.value)} />
-        <Radio name='show' value="publishers" currentValue={show} onChange={e => setShow(e.detail.value)} />
-        <Radio name='show' value="channels" currentValue={show} onChange={e => setShow(e.detail.value)} />
+        <Radio name='show' value="all" currentValue={show} onChange={e => setShow(e.value)} />
+        <Radio name='show' value="publishers" currentValue={show} onChange={e => setShow(e.value)} />
+        <Radio name='show' value="channels" currentValue={show} onChange={e => setShow(e.value)} />
       </Flex>
-      <Input placeholder='filter...' value={filter} onInput={e => setFilter(e.detail.value)}>
+      <Input placeholder='filter...' value={filter} onInput={e => setFilter(e.value)}>
         Filter
       </Input>
-      <Dropdown value={sort} onChange={e => setSort(e.detail.value as typeof sort)}>
+      <Dropdown value={sort} onChange={e => setSort(e.value as typeof sort)}>
         <div slot="label">Sort by</div>
         <leo-option>name</leo-option>
         <leo-option>subscribed</leo-option>
         <leo-option>visitWeight</leo-option>
         <leo-option>shownCount</leo-option>
       </Dropdown>
-      <Input type="text" value={truncate} onChange={e => setTruncate(parseInt((e.detail.value)))}>
+      <Input type="text" value={truncate} onChange={e => setTruncate(parseInt((e.value)))}>
         Consider first {"{n}"} cards
       </Input>
     </Flex>

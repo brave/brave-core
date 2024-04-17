@@ -126,9 +126,8 @@ export default function Settings(props: Props) {
     changeTab(props.setActiveTab)
   }, [props.setActiveTab])
 
-  return <SettingsDialog isOpen={props.showSettingsMenu} showClose onClose={e => {
+  return <SettingsDialog isOpen={props.showSettingsMenu} showClose onClose={() => {
     if (customizePage) {
-      e.preventDefault()
       return
     }
 

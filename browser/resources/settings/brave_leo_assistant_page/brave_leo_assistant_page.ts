@@ -130,8 +130,8 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     onModelSelectionChange_(e: any) {
-      this.setPrefValue(MODEL_PREF_PATH, e.detail.value)
-      this.defaultModelKeyPrefValue_ = e.detail.value
+      this.setPrefValue(MODEL_PREF_PATH, e.value)
+      this.defaultModelKeyPrefValue_ = e.value
     }
 
     private updateShowLeoAssistantIcon_() {

@@ -46,7 +46,7 @@ function ClockSettings() {
     </SettingsRow>
     {showClock && <SettingsRow>
       <SettingsText>{getLocale('clockFormat')}</SettingsText>
-      <StyledDropdown value={clockFormat} onChange={e => setClockFormat(e.detail.value)}>
+      <StyledDropdown value={clockFormat} onChange={e => setClockFormat(e.value!)}>
         <leo-option value=''>{getLocale('clockFormatDefault')}{localeInfo}</leo-option>
         <leo-option value='12'>{getLocale('clockFormat12')}</leo-option>
         <leo-option value='24'>{getLocale('clockFormat24')}</leo-option>

@@ -40,7 +40,7 @@ function BackgroundChooser ({ title, backgrounds, onBack, onSelectValue, current
         <SettingsRow>
           <SettingsText>{getLocale('refreshBackgroundOnNewTab')}</SettingsText>
           <Toggle
-            onChange={e => onToggleRandomColor(e.detail.checked)}
+            onChange={e => onToggleRandomColor(e.checked)}
             checked={usingRandomColor}
           />
         </SettingsRow>
