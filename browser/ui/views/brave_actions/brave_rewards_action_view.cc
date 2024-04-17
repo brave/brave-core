@@ -13,7 +13,6 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
-#include "brave/browser/ui/views/bubble/brave_webui_bubble_manager.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -26,6 +25,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -182,7 +182,7 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
           nullptr,
           false),
       browser_(browser),
-      bubble_manager_(std::make_unique<BraveWebUIBubbleManager<RewardsPanelUI>>(
+      bubble_manager_(WebUIBubbleManager::Create<RewardsPanelUI>(
           this,
           browser_->profile(),
           GURL(kBraveRewardsPanelURL),
