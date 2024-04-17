@@ -6,7 +6,6 @@
 import("//brave/components/tor/buildflags/buildflags.gni")
 
 brave_browser_tor_sources = []
-brave_browser_tor_deps = []
 
 if (enable_tor) {
   brave_browser_tor_sources = [
@@ -17,33 +16,8 @@ if (enable_tor) {
   ]
 
   brave_browser_tor_deps = [
-    "//base",
-    "//brave/components/brave_webtorrent/browser/buildflags",
-    "//brave/components/constants",
     "//brave/components/tor",
     "//brave/components/tor:common",
     "//brave/components/tor:pref_names",
-    "//chrome/browser/profiles",
-    "//chrome/common",
-    "//components/autofill/content/browser",
-    "//components/autofill/core/browser",
-    "//components/keyed_service/content",
-    "//components/safe_browsing/core/common:safe_browsing_prefs",
-    "//components/translate/core/browser",
-    "//components/user_prefs",
-    "//content/public/browser",
-    "//net",
-    "//third_party/blink/public/common",
-    "//url",
-  ]
-
-  # Below dep list are not directly used tor target.
-  # Only added to fix intermittent build failure.
-  # Most of the case comes from including brave_browser_process_impl.h`
-  # headers. That header includes some buildflags but sometimes they are
-  # not generated before evaluating tor target.
-  brave_browser_tor_deps += [
-    "//brave/components/greaselion/browser/buildflags",
-    "//brave/components/speedreader/common/buildflags",
   ]
 }
