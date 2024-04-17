@@ -204,23 +204,23 @@ void MeldIntegrationService::OnGetCryptoQuotes(
     GetCryptoQuotesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run({},
+    std::move(callback).Run(std::nullopt,
                             std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
     return;
   }
 
   if (auto errors = ParseMeldErrorResponse(api_request_result.value_body());
       errors) {
-    std::move(callback).Run({}, errors);
+    std::move(callback).Run(std::nullopt, errors);
     return;
   }
 
   std::optional<std::vector<std::string>> errors;
   std::string error;
-  std::vector<mojom::CryptoQuotePtr> quotes;
-  if (!ParseCryptoQuotes(api_request_result.value_body(), &quotes, &error)) {
+  auto quotes = ParseCryptoQuotes(api_request_result.value_body(), &error);
+  if (!quotes) {
     errors = std::vector<std::string>{"PARSING_ERROR"};
-    std::move(callback).Run({}, errors);
+    std::move(callback).Run(std::nullopt, errors);
     return;
   }
 

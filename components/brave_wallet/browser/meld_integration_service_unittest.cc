@@ -101,7 +101,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     asset_ratio_service_->GetCryptoQuotes(
         country, from_asset, to_asset, source_amount, account,
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::CryptoQuotePtr> quotes,
+            [&](std::optional<std::vector<mojom::CryptoQuotePtr>> quotes,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(quotes), errors);
               run_loop.Quit();
@@ -400,11 +400,11 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
 })",
       "US", "USD", "BTC", 50, "btc account address",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::CryptoQuotePtr> quotes,
+          [](std::optional<std::vector<mojom::CryptoQuotePtr>> quotes,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(base::ranges::count_if(
-                          quotes,
+                          *quotes,
                           [](const auto& item) {
                           return item->transaction_type == "CRYPTO_PURCHASE" &&
                                 item->source_amount == 50 &&
@@ -429,7 +429,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
   TestGetCryptoQuotes(
       "some wrong data", "US", "USD", "BTC", 50, "btc account address",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::CryptoQuotePtr> quotes,
+          [](std::optional<std::vector<mojom::CryptoQuotePtr>> quotes,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
@@ -438,7 +438,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
   TestGetCryptoQuotes(
       "some wrong data", "US", "USD", "BTC", 50, "btc account address",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::CryptoQuotePtr> quotes,
+          [](std::optional<std::vector<mojom::CryptoQuotePtr>> quotes,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
@@ -473,12 +473,12 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
 })",
       "US", "USD", "BTC", 50, "btc account address",
       base::BindLambdaForTesting(
-          [](std::vector<mojom::CryptoQuotePtr> quotes,
+          [](std::optional<std::vector<mojom::CryptoQuotePtr>> quotes,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"error description"});
             EXPECT_EQ(base::ranges::count_if(
-                          quotes,
+                          *quotes,
                           [](const auto& item) {
                           return item->transaction_type == "CRYPTO_PURCHASE" &&
                                 item->source_amount == 50 &&
@@ -513,7 +513,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
   })",
       "US", "USD", "BTC", 50, "btc account address",
       base::BindLambdaForTesting(
-          [&](std::vector<mojom::CryptoQuotePtr> quotes,
+          [&](std::optional<std::vector<mojom::CryptoQuotePtr>> quotes,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>(

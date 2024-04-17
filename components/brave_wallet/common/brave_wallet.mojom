@@ -1238,7 +1238,7 @@ interface MeldIntegrationService {
   // destination_currency_code, country, source_amount, source_currency_code
   GetCryptoQuotes(string country, string source_currency_code,
     string destination_currency_code, double source_amount, string? account)
-    => (array<CryptoQuote> crypto_quotes, array<string>? error);
+    => (array<CryptoQuote>? crypto_quotes, array<string>? error);
 
   // Obtains the list of payment methods
   // All parameters are optional

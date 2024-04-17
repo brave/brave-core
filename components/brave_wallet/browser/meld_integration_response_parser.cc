@@ -235,9 +235,9 @@ std::optional<std::vector<std::string>> ParseMeldErrorResponse(const base::Value
   return errors;
 }
 
-bool ParseCryptoQuotes(const base::Value& json_value,
-                       std::vector<mojom::CryptoQuotePtr>* quotes,
-                       std::string* error) {
+std::optional<std::vector<mojom::CryptoQuotePtr>> ParseCryptoQuotes(
+    const base::Value& json_value,
+    std::string* error) {
   // Parses results like this:
   // {
   //   "quotes": [
@@ -263,13 +263,12 @@ bool ParseCryptoQuotes(const base::Value& json_value,
   //   "message": null,
   //   "error": null
   // }
-  DCHECK(quotes);
   DCHECK(error);
   const auto quote_resp_value =
       meld_integration_responses::CryptoQuoteResponse::FromValue(json_value);
   if (!quote_resp_value) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
-    return false;
+    return std::nullopt;
   }
 
   if (quote_resp_value->error && quote_resp_value->error->is_string()) {
@@ -277,16 +276,17 @@ bool ParseCryptoQuotes(const base::Value& json_value,
   }
 
   if (!quote_resp_value->quotes || !quote_resp_value->quotes->is_list()) {
-    return false;
+    return std::nullopt;
   }
 
+  std::vector<mojom::CryptoQuotePtr> quotes;
   for (const auto& item : quote_resp_value->quotes->GetList()) {
     const auto quote_value =
         meld_integration_responses::CryptoQuote::FromValue(item);
     if (!quote_value) {
       LOG(ERROR)
           << "Invalid response, could not parse JSON, JSON is not a dict";
-      return false;
+      return std::nullopt;
     }
 
     auto quote = mojom::CryptoQuote::New();
@@ -316,10 +316,14 @@ bool ParseCryptoQuotes(const base::Value& json_value,
     quote->customer_score = ParseOptionDouble(quote_value->customer_score);
     quote->service_provider =
         ParseOptionalString(quote_value->service_provider);
-    quotes->emplace_back(std::move(quote));
+    quotes.emplace_back(std::move(quote));
   }
 
-  return true;
+  if(quotes.empty()) {
+    return std::nullopt;
+  }
+
+  return quotes;
 }
 
 bool ParsePaymentMethods(

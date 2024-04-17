@@ -168,10 +168,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
 })");
 
   std::string error;
-  std::vector<mojom::CryptoQuotePtr> quotes;
-  EXPECT_TRUE(ParseCryptoQuotes(ParseJson(json), &quotes, &error));
+  auto quotes = ParseCryptoQuotes(ParseJson(json), &error);
+  EXPECT_TRUE(quotes);
   EXPECT_EQ(base::ranges::count_if(
-                quotes,
+                *quotes,
                 [](const auto& item) {
                   return item->transaction_type == "CRYPTO_PURCHASE" &&
                          item->source_amount == 50 &&
@@ -192,23 +192,21 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
             1);
   EXPECT_TRUE(error.empty());
 
-  quotes.clear();
   error.clear();
   std::string json_null_quotes(R"({
   "quotes": null,
   "message": null,
   "error": "No Valid Quote Combinations Found For Provided Quote Request."
 })");
-  EXPECT_FALSE(ParseCryptoQuotes(ParseJson(json_null_quotes), &quotes, &error));
+  EXPECT_FALSE(ParseCryptoQuotes(ParseJson(json_null_quotes), &error));
   EXPECT_FALSE(error.empty());
   EXPECT_EQ(error,
             "No Valid Quote Combinations Found For Provided Quote Request.");
 
-  quotes.clear();
-  EXPECT_FALSE(ParseCryptoQuotes(base::Value(), &quotes, &error));
+  EXPECT_FALSE(ParseCryptoQuotes(base::Value(), &error));
 
   json = (R"({})");
-  EXPECT_FALSE(ParseCryptoQuotes(ParseJson(json), &quotes, &error));
+  EXPECT_FALSE(ParseCryptoQuotes(ParseJson(json), &error));
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
