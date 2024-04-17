@@ -146,6 +146,26 @@ const MODELS: mojom.Model[] = [
   }
 ]
 
+const ACTIONS_LIST = [
+  {
+    category: 'Quick actions',
+    actions: [{ label: 'Explain', type: mojom.ActionType.EXPLAIN }]
+  },
+  {
+    category: 'Rewrite',
+    actions: [
+      { label: 'Paraphrase', type: mojom.ActionType.PARAPHRASE },
+      { label: 'Improve', type: mojom.ActionType.IMPROVE },
+      { label: 'Change tone', type: -1 },
+      { label: 'Change tone / Academic', type: mojom.ActionType.ACADEMICIZE },
+      {
+        label: 'Change tone / Professional',
+        type: mojom.ActionType.PROFESSIONALIZE
+      },
+    ]
+  }
+]
+
 const SAMPLE_QUESTIONS = [
   'Summarize this article',
   'What was the score?',
@@ -217,6 +237,7 @@ export default {
       const [inputText, setInputText_] = useState('')
       const [selectedActionType, setSelectedActionType] = useState<mojom.ActionType | undefined>(undefined)
       const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false)
+      const [actionsList, setActionsList] = useState(ACTIONS_LIST)
 
       const switchToBasicModel = () => {
         const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
@@ -240,7 +261,27 @@ export default {
 
         if (selectedActionType === undefined && text.startsWith('/')) {
           setIsToolsMenuOpen(true)
+          const filteredList = ACTIONS_LIST.map(category => ({
+            ...category,
+            actions: category.actions.filter(action =>
+                action.label.toLocaleLowerCase().includes(text.substring(1).toLocaleLowerCase())
+            )
+          })).filter(category => category.actions.length > 0)
+          setActionsList(filteredList)
         } else {
+          setIsToolsMenuOpen(false)
+          setActionsList(ACTIONS_LIST)
+        }
+      }
+
+      const maybeSelectFirstActionType = () => {
+        if (
+          isToolsMenuOpen &&
+          inputText.startsWith('/') &&
+          actionsList.length > 0
+        ) {
+          setSelectedActionType(actionsList[0].actions[0].type)
+          setInputText('')
           setIsToolsMenuOpen(false)
         }
       }
@@ -283,6 +324,8 @@ export default {
         handleActionTypeClick,
         isToolsMenuOpen,
         setIsToolsMenuOpen,
+        actionsList,
+        maybeSelectFirstActionType,
       }
 
       return (

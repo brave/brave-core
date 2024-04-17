@@ -41,6 +41,10 @@ function InputBox() {
       e.preventDefault()
     }
 
+    if (e.key === 'Enter') {
+      context.maybeSelectFirstActionType()
+    }
+
     if (
       e.key === 'Backspace' &&
       context.inputText === '' &&

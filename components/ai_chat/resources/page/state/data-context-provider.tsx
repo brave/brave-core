@@ -19,6 +19,49 @@ function toBlobURL(data: number[] | null) {
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
 
+const ACTIONS_LIST = [
+  {
+    category: 'Quick actions',
+    actions: [{ label: 'Explain', type: mojom.ActionType.EXPLAIN }]
+  },
+  {
+    category: 'Rewrite',
+    actions: [
+      { label: 'Paraphrase', type: mojom.ActionType.PARAPHRASE },
+      { label: 'Improve', type: mojom.ActionType.IMPROVE },
+      { label: 'Change tone', type: -1 },
+      { label: 'Change tone / Academic', type: mojom.ActionType.ACADEMICIZE },
+      {
+        label: 'Change tone / Professional',
+        type: mojom.ActionType.PROFESSIONALIZE
+      },
+      {
+        label: 'Change tone / Persuasive',
+        type: mojom.ActionType.PERSUASIVE_TONE
+      },
+      { label: 'Change tone / Casual', type: mojom.ActionType.CASUALIZE },
+      { label: 'Change tone / Funny', type: mojom.ActionType.FUNNY_TONE },
+      { label: 'Change length / Short', type: mojom.ActionType.SHORTEN },
+      { label: 'Change length / Expand', type: mojom.ActionType.EXPAND }
+    ]
+  },
+  {
+    category: 'Create',
+    actions: [
+      { label: 'Tagline', type: mojom.ActionType.CREATE_TAGLINE },
+      { label: 'Social media', type: -1 },
+      {
+        label: 'Social media / Short',
+        type: mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_SHORT
+      },
+      {
+        label: 'Social media / Long',
+        type: mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG
+      }
+    ]
+  }
+]
+
 interface DataContextProviderProps {
   children: React.ReactNode
 }
@@ -47,6 +90,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [inputText, setInputText_] = React.useState('')
   const [selectedActionType, setSelectedActionType] = React.useState<mojom.ActionType | undefined>()
   const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
+  const [actionsList, setActionsList] = React.useState(ACTIONS_LIST)
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -213,8 +257,16 @@ function DataContextProvider (props: DataContextProviderProps) {
 
     if (selectedActionType === undefined && text.startsWith('/')) {
       setIsToolsMenuOpen(true)
+      const filteredList = ACTIONS_LIST.map(category => ({
+        ...category,
+        actions: category.actions.filter(action =>
+            action.label.toLocaleLowerCase().includes(text.substring(1).toLocaleLowerCase())
+        )
+      })).filter(category => category.actions.length > 0)
+      setActionsList(filteredList)
     } else {
       setIsToolsMenuOpen(false)
+      setActionsList(ACTIONS_LIST)
     }
   }
 
@@ -251,6 +303,18 @@ function DataContextProvider (props: DataContextProviderProps) {
     )
     setInputText('')
     resetSelectedActionType()
+  }
+
+  const maybeSelectFirstActionType = () => {
+    if (
+      isToolsMenuOpen &&
+      inputText.startsWith('/') &&
+      actionsList.length > 0
+    ) {
+      setSelectedActionType(actionsList[0].actions[0].type)
+      setInputText('')
+      setIsToolsMenuOpen(false)
+    }
   }
 
   const initialiseForTargetTab = async () => {
@@ -343,6 +407,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     inputTextCharCountDisplay,
     selectedActionType,
     isToolsMenuOpen,
+    actionsList,
     setCurrentModel,
     switchToBasicModel,
     goPremium,
@@ -361,6 +426,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     resetSelectedActionType,
     handleActionTypeClick,
     setIsToolsMenuOpen,
+    maybeSelectFirstActionType,
   }
 
   return (
