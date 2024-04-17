@@ -318,7 +318,7 @@ test("brave_unit_tests") {
 
   if (enable_tor) {
     deps += [
-      "//brave/browser/tor:unit_tests",
+      "//brave/browser/tor/test:unit_tests",
       "//brave/components/tor:tor_unit_tests",
     ]
   }
@@ -988,7 +988,7 @@ test("brave_browser_tests") {
 
   if (enable_tor) {
     deps += [
-      "//brave/browser/tor:browser_tests",
+      "//brave/browser/tor/test:browser_tests",
       "//brave/components/tor",
     ]
   }
