@@ -6,16 +6,17 @@
 import("//brave/components/tor/buildflags/buildflags.gni")
 
 brave_browser_tor_sources = []
+brave_browser_tor_deps = []
 
 if (enable_tor) {
-  brave_browser_tor_sources = [
+  brave_browser_tor_sources += [
     "//brave/browser/tor/tor_profile_manager.cc",
     "//brave/browser/tor/tor_profile_manager.h",
     "//brave/browser/tor/tor_profile_service_factory.cc",
     "//brave/browser/tor/tor_profile_service_factory.h",
   ]
 
-  brave_browser_tor_deps = [
+  brave_browser_tor_deps += [
     "//brave/components/tor",
     "//brave/components/tor:common",
     "//brave/components/tor:pref_names",
