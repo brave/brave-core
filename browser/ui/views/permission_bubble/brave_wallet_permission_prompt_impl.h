@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_BRAVE_WALLET_PERMISSION_PROMPT_IMPL_H_
 
 #include <optional>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
