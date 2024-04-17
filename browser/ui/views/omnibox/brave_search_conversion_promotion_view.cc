@@ -259,15 +259,6 @@ BraveSearchConversionPromotionView::BraveSearchConversionPromotionView(
 BraveSearchConversionPromotionView::~BraveSearchConversionPromotionView() =
     default;
 
-void BraveSearchConversionPromotionView::ResetChildrenVisibility() {
-  // Reset all children visibility and configure later based on type.
-  if (button_type_container_)
-    button_type_container_->SetVisible(false);
-
-  if (banner_type_container_)
-    banner_type_container_->SetVisible(false);
-}
-
 void BraveSearchConversionPromotionView::SetTypeAndInput(
     brave_search_conversion::ConversionType type,
     const std::u16string& input) {
@@ -286,14 +277,7 @@ void BraveSearchConversionPromotionView::SetTypeAndInput(
   input_ = input;
   selected_ = false;
 
-  ResetChildrenVisibility();
-
-  if (type_ == ConversionType::kButton) {
-    ConfigureForButtonType();
-  } else {
-    ConfigureForBannerType();
-  }
-
+  ConfigureForBannerType();
   UpdateState();
 
   brave_search_conversion::p3a::RecordPromoShown(local_state_, type);
@@ -303,14 +287,6 @@ void BraveSearchConversionPromotionView::OnSelectionStateChanged(
     bool selected) {
   selected_ = selected;
   UpdateState();
-}
-
-void BraveSearchConversionPromotionView::UpdateState() {
-  if (type_ == ConversionType::kButton) {
-    UpdateButtonTypeState();
-  } else {
-    UpdateBannerTypeState();
-  }
 }
 
 void BraveSearchConversionPromotionView::OpenMatch() {
@@ -328,32 +304,11 @@ void BraveSearchConversionPromotionView::MaybeLater() {
   result_view_->RefreshOmniboxResult();
 }
 
-void BraveSearchConversionPromotionView::UpdateButtonTypeState() {
-  if (!button_type_container_)
+void BraveSearchConversionPromotionView::UpdateState() {
+  if (!banner_type_container_) {
     return;
-
-  button_type_container_->SetVisible(true);
-  button_type_selection_indicator_->SetVisible(selected_);
-  button_type_contents_input_->SetText(input_);
-  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    auto desc_color_id = kColorSearchConversionButtonTypeDescNormal;
-    if (IsMouseHovered() || selected_) {
-      desc_color_id = kColorSearchConversionButtonTypeDescHovered;
-    }
-    button_type_description_->SetEnabledColor(
-        color_provider->GetColor(desc_color_id));
-    append_for_input_->SetEnabledColor(
-        color_provider->GetColor(kColorSearchConversionButtonTypeInputAppend));
   }
 
-  SetBackground(GetButtonTypeBackground());
-}
-
-void BraveSearchConversionPromotionView::UpdateBannerTypeState() {
-  if (!banner_type_container_)
-    return;
-
-  banner_type_container_->SetVisible(true);
   SkColor desc_color = gfx::kPlaceholderColor;
   SkColor border_color = gfx::kPlaceholderColor;
   const bool is_selected_or_hovered = selected_ || IsMouseHovered();
@@ -386,111 +341,10 @@ void BraveSearchConversionPromotionView::UpdateBannerTypeState() {
       std::make_unique<HorizontalGradientBackground>());
 }
 
-void BraveSearchConversionPromotionView::ConfigureForButtonType() {
-  if (button_type_container_)
-    return;
-
-  button_type_container_ = AddChildView(std::make_unique<views::View>());
-  button_type_container_->SetProperty(
-      views::kFlexBehaviorKey,
-      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
-                               views::MaximumFlexSizeRule::kUnbounded));
-
-  button_type_container_
-      ->SetLayoutManager(std::make_unique<views::FlexLayout>())
-      ->SetOrientation(views::LayoutOrientation::kHorizontal);
-
-  auto* selection_container =
-      button_type_container_->AddChildView(std::make_unique<views::View>());
-  selection_container->SetPreferredSize(gfx::Size(3, height()));
-  selection_container->SetLayoutManager(std::make_unique<views::FillLayout>());
-  button_type_selection_indicator_ = selection_container->AddChildView(
-      std::make_unique<BraveOmniboxResultSelectionIndicator>(this));
-
-  auto& bundle = ui::ResourceBundle::GetSharedInstance();
-  auto* icon_view =
-      button_type_container_->AddChildView(std::make_unique<views::ImageView>(
-          ui::ImageModel::FromImageSkia(*bundle.GetImageSkiaNamed(
-              IDR_BRAVE_SEARCH_LOGO_IN_SEARCH_PROMOTION))));
-  icon_view->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(14, 12, 36, 8));
-
-  auto* contents_container =
-      button_type_container_->AddChildView(std::make_unique<views::View>());
-  contents_container->SetProperty(views::kMarginsKey,
-                                  gfx::Insets::TLBR(12, 12, 12, 0));
-  contents_container->SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kVertical, gfx::Insets(), 2));
-
-  auto* input_container =
-      contents_container->AddChildView(std::make_unique<views::View>());
-  input_container->SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kHorizontal, gfx::Insets(), 4));
-
-  // Use 14px font size for input text.
-  views::Label::CustomFont emphasized_font = {
-      GetFont(14, gfx::Font::Weight::SEMIBOLD)};
-  button_type_contents_input_ = input_container->AddChildView(
-      std::make_unique<views::Label>(input_, emphasized_font));
-  button_type_contents_input_->SetAutoColorReadabilityEnabled(false);
-  button_type_contents_input_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-
-  views::Label::CustomFont normal_font = {
-      GetFont(14, gfx::Font::Weight::NORMAL)};
-  append_for_input_ =
-      input_container->AddChildView(std::make_unique<views::Label>(
-          brave_l10n::GetLocalizedResourceUTF16String(
-              IDS_BRAVE_SEARCH_CONVERSION_INPUT_APPEND_LABEL),
-          normal_font));
-  append_for_input_->SetAutoColorReadabilityEnabled(false);
-  append_for_input_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-
-  // Configure description
-  const std::u16string first_part = brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL_FIRST_PART);
-  const std::u16string desc_label = brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL);
-
-  button_type_description_ = contents_container->AddChildView(
-      std::make_unique<views::Label>(desc_label, normal_font));
-  button_type_description_->SetAutoColorReadabilityEnabled(false);
-  button_type_description_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  button_type_description_->SetTextStyleRange(
-      views::style::STYLE_EMPHASIZED, gfx::Range(0, first_part.length()));
-
-  contents_container->SetProperty(
-      views::kFlexBehaviorKey,
-      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
-                               views::MaximumFlexSizeRule::kUnbounded)
-          .WithOrder(2));
-
-  auto* try_button = button_type_container_->AddChildView(
-      std::make_unique<CustomMdTextButton>(views::Button::PressedCallback(
-          base::BindRepeating(&BraveSearchConversionPromotionView::OpenMatch,
-                              base::Unretained(this)))));
-  try_button->SetKind(views::MdTextButton::Kind::kPrimary);
-  try_button->SetProperty(views::kMarginsKey, gfx::Insets::VH(17, 0));
-  try_button->SetText(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL));
-  try_button->SetFontSize(12);
-
-  auto* close_button = button_type_container_->AddChildView(
-      std::make_unique<CloseButton>(views::Button::PressedCallback(
-          base::BindRepeating(&BraveSearchConversionPromotionView::Dismiss,
-                              base::Unretained(this)))));
-  constexpr int kButtonTypeCloseButtonSize = 16;
-  views::SetImageFromVectorIconWithColor(
-      close_button, kLeoCloseIcon, kButtonTypeCloseButtonSize,
-      GetCloseButtonColor(), gfx::kPlaceholderColor);
-  views::InstallCircleHighlightPathGenerator(close_button);
-  views::FocusRing::Install(close_button);
-  close_button->SetProperty(views::kMarginsKey, gfx::Insets::VH(25, 8));
-  close_button->SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_SEARCH_CONVERSION_CLOSE_BUTTON_TOOLTIP));
-}
-
 void BraveSearchConversionPromotionView::ConfigureForBannerType() {
-  if (banner_type_container_)
+  if (banner_type_container_) {
     return;
+  }
 
   banner_type_container_ =
       AddChildView(std::make_unique<BannerTypeContainer>());
@@ -609,28 +463,9 @@ SkColor BraveSearchConversionPromotionView::GetCloseButtonColor() const {
   return button_color;
 }
 
-std::unique_ptr<views::Background>
-BraveSearchConversionPromotionView::GetButtonTypeBackground() {
-  SkColor bg = gfx::kPlaceholderColor;
-  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    auto bg_color_id = kColorSearchConversionButtonTypeBackgroundNormal;
-    if (IsMouseHovered() || selected_) {
-      bg_color_id = kColorSearchConversionButtonTypeBackgroundHovered;
-    }
-    bg = color_provider->GetColor(bg_color_id);
-  }
-
-  return views::CreateSolidBackground(bg);
-}
-
 gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize() const {
-  views::View* active_child = (type_ == ConversionType::kButton)
-                                  ? button_type_container_
-                                  : banner_type_container_;
+  views::View* active_child = banner_type_container_;
   DCHECK(active_child);
-  if (type_ == ConversionType::kButton) {
-    return active_child->GetPreferredSize();
-  }
 
   // Ask preferred size + margin for banner.
   auto size = active_child->GetPreferredSize();

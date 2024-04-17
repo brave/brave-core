@@ -67,6 +67,7 @@ const char* GetPromoTriggeredKeyName(ConversionType type) {
     case ConversionType::kBannerTypeD:
       return kBannerDTriggeredKey;
     case ConversionType::kButton:
+      // Deprecated but leave as it's used by migration code.
       return kButtonTriggeredKey;
     case ConversionType::kNTP:
       return kNTPTriggeredKey;
@@ -87,6 +88,7 @@ const char* GetPromoTypeHistogramName(ConversionType type) {
     case ConversionType::kBannerTypeD:
       return kSearchPromoBannerDHistogramName;
     case ConversionType::kButton:
+      // Deprecated but leave as it's used by migration code.
       return kSearchPromoButtonHistogramName;
     case ConversionType::kNTP:
       return kSearchPromoNTPHistogramName;
@@ -103,8 +105,7 @@ void UpdateHistograms(PrefService* prefs) {
 
   const ConversionType types[] = {
       ConversionType::kBannerTypeB, ConversionType::kBannerTypeC,
-      ConversionType::kBannerTypeD, ConversionType::kButton,
-      ConversionType::kNTP};
+      ConversionType::kBannerTypeD, ConversionType::kNTP};
 
   VLOG(1) << "SearchConversionP3A: updating histograms";
 

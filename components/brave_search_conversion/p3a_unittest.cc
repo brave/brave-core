@@ -32,10 +32,6 @@ const ConversionTypeInfo type_infos[] = {
         .histogram_name = kSearchPromoBannerDHistogramName,
     },
     {
-        .type = ConversionType::kButton,
-        .histogram_name = kSearchPromoButtonHistogramName,
-    },
-    {
         .type = ConversionType::kNTP,
         .histogram_name = kSearchPromoNTPHistogramName,
     }};

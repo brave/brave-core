@@ -89,10 +89,6 @@ ConversionType GetConversionType(PrefService* prefs,
     return ConversionType::kNone;
   }
 
-  if (base::FeatureList::IsEnabled(features::kOmniboxButton)) {
-    return ConversionType::kButton;
-  }
-
   if (base::FeatureList::IsEnabled(features::kOmniboxBanner)) {
     // Give conversion type after 3d passed since maybe later clicked time.
     auto clicked_time = prefs->GetTime(prefs::kMaybeLaterClickedTime);
@@ -133,8 +129,7 @@ GURL GetPromoURL(const std::string& search_term) {
 }
 
 bool IsBraveSearchConversionFeatureEnabled() {
-  return base::FeatureList::IsEnabled(features::kOmniboxButton) ||
-         base::FeatureList::IsEnabled(features::kOmniboxBanner);
+  return base::FeatureList::IsEnabled(features::kOmniboxBanner);
 }
 
 }  // namespace brave_search_conversion
