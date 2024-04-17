@@ -226,9 +226,5 @@ extra_input_roots = [ "../README.md" ]
 extra_input_roots = [ "../README.md" ]
 
 [crate.libm]
-extra_kv = { raw_gn = '''
-  features = [
-    "checked",
-  ]
-'''}
+extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
 
