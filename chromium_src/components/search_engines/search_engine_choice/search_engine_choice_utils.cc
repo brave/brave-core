@@ -6,7 +6,7 @@
 #include "components/search_engines/search_engine_choice/search_engine_choice_utils.h"
 
 #define IsChoiceScreenFlagEnabled IsChoiceScreenFlagEnabled_ChromiumImpl
-#include "src/components/search_engines/search_engine_choice_utils.cc"
+#include "src/components/search_engines/search_engine_choice/search_engine_choice_utils.cc"
 #undef IsChoiceScreenFlagEnabled
 
 namespace search_engines {
