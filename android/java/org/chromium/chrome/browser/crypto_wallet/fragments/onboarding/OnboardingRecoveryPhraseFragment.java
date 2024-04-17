@@ -71,11 +71,12 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
         mCopyButton = view.findViewById(R.id.btn_copy);
         mCopyButton.setEnabled(false);
         mCopyButton.setOnClickListener(
-                v -> Utils.saveTextToClipboard(
-                        requireContext(),
-                        Utils.getRecoveryPhraseFromList(mRecoveryPhrases),
-                        R.string.text_has_been_copied,
-                        true));
+                v ->
+                        Utils.saveTextToClipboard(
+                                requireContext(),
+                                Utils.getRecoveryPhraseFromList(mRecoveryPhrases),
+                                R.string.text_has_been_copied,
+                                true));
 
         Button recoveryPhraseButton = view.findViewById(R.id.btn_recovery_phrase_continue);
         recoveryPhraseButton.setOnClickListener(

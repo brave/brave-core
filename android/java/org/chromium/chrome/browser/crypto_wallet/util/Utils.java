@@ -138,10 +138,11 @@ public class Utils {
         return recoveryPhrasesText.trim();
     }
 
-    public static void saveTextToClipboard(@NonNull final Context context,
-                                           @NonNull final String textToCopy,
-                                           final int textToShow,
-                                           final boolean scheduleClear) {
+    public static void saveTextToClipboard(
+            @NonNull final Context context,
+            @NonNull final String textToCopy,
+            final int textToShow,
+            final boolean scheduleClear) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("", textToCopy);
