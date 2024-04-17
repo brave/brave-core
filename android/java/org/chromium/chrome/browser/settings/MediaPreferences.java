@@ -35,6 +35,7 @@ public class MediaPreferences extends BravePreferenceFragment
             "hide_youtube_recommended_content";
     private static final String PREF_HIDE_YOUTUBE_DISTRACTING_ELEMENTS =
             "hide_youtube_distracting_elements";
+    private static final String PREF_HIDE_YOUTUBE_SHORTS = "hide_youtube_shorts";
 
     private FilterListAndroidHandler mFilterListAndroidHandler;
 
@@ -91,6 +92,11 @@ public class MediaPreferences extends BravePreferenceFragment
         if (hideYoutubeDistractingElementsPref != null) {
             hideYoutubeDistractingElementsPref.setOnPreferenceChangeListener(this);
         }
+        ChromeSwitchPreference hideYoutubeShortsPref =
+                (ChromeSwitchPreference) findPreference(PREF_HIDE_YOUTUBE_SHORTS);
+        if (hideYoutubeShortsPref != null) {
+            hideYoutubeShortsPref.setOnPreferenceChangeListener(this);
+        }
 
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.isFilterListEnabled(
@@ -105,6 +111,13 @@ public class MediaPreferences extends BravePreferenceFragment
                     isEnabled -> {
                         if (hideYoutubeDistractingElementsPref != null) {
                             hideYoutubeDistractingElementsPref.setChecked(isEnabled);
+                        }
+                    });
+            mFilterListAndroidHandler.isFilterListEnabled(
+                    FilterListConstants.HIDE_YOUTUBE_SHORTS_UUID,
+                    isEnabled -> {
+                        if (hideYoutubeShortsPref != null) {
+                            hideYoutubeShortsPref.setChecked(isEnabled);
                         }
                     });
         }
@@ -138,6 +151,11 @@ public class MediaPreferences extends BravePreferenceFragment
                 mFilterListAndroidHandler.enableFilter(
                         FilterListConstants.HIDE_YOUTUBE_DISTRACTING_ELEMENTS_UUID,
                         (boolean) newValue);
+            }
+        } else if (PREF_HIDE_YOUTUBE_SHORTS.equals(key)) {
+            if (mFilterListAndroidHandler != null) {
+                mFilterListAndroidHandler.enableFilter(
+                        FilterListConstants.HIDE_YOUTUBE_SHORTS_UUID, (boolean) newValue);
             }
         }
 
