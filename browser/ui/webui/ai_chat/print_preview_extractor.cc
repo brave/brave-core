@@ -5,6 +5,10 @@
 
 #include "brave/browser/ui/webui/ai_chat/print_preview_extractor.h"
 
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
@@ -337,7 +341,6 @@ void PrintPreviewExtractor::OnCompositeToPdfDone(
 void PrintPreviewExtractor::PreviewCleanup() {
   CHECK(print_preview_ui_id_);
   PrintPreviewDataService::GetInstance()->RemoveEntry(*print_preview_ui_id_);
-  print_render_frame_->OnPrintPreviewDialogClosed();
   DisconnectPrintPrieviewUI();
 }
 
@@ -389,7 +392,9 @@ void PrintPreviewExtractor::CreatePrintPreview() {
       rfh->GetRemoteAssociatedInterfaces()->GetInterface(&print_render_frame_);
     }
 
+    print_render_frame_->SetIsPrintPreviewExtraction(true);
     print_render_frame_->InitiatePrintPreview(false);
+    print_render_frame_->SetIsPrintPreviewExtraction(false);
 
     if (!IsPrintPreviewUIBound()) {
       print_render_frame_->SetPrintPreviewUI(BindPrintPreviewUI());

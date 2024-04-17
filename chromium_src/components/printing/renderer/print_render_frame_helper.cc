@@ -5,17 +5,65 @@
 
 #include "components/printing/renderer/print_render_frame_helper.h"
 
-#define SetPrintPreviewUI SetPrintPreviewUI_ChromiumImpl
+#define PrintRenderFrameHelper PrintRenderFrameHelper_ChromiumImpl
 #include "src/components/printing/renderer/print_render_frame_helper.cc"
-#undef SetPrintPreviewUI
+#undef PrintRenderFrameHelper
 
 namespace printing {
+
+PrintRenderFrameHelper::PrintRenderFrameHelper(
+    content::RenderFrame* render_frame,
+    std::unique_ptr<Delegate> delegate)
+    : PrintRenderFrameHelper_ChromiumImpl(render_frame, std::move(delegate)) {}
+
+PrintRenderFrameHelper::~PrintRenderFrameHelper() = default;
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 void PrintRenderFrameHelper::SetPrintPreviewUI(
     mojo::PendingAssociatedRemote<mojom::PrintPreviewUI> preview) {
   preview_ui_.reset();
-  SetPrintPreviewUI_ChromiumImpl(std::move(preview));
+  PrintRenderFrameHelper_ChromiumImpl::SetPrintPreviewUI(std::move(preview));
+}
+
+void PrintRenderFrameHelper::InitiatePrintPreview(
+#if BUILDFLAG(IS_CHROMEOS_ASH)
+    mojo::PendingAssociatedRemote<mojom::PrintRenderer> print_renderer,
+#endif
+    bool has_selection) {
+  if (!is_print_preview_extraction_) {
+    PrintRenderFrameHelper_ChromiumImpl::InitiatePrintPreview(
+#if BUILDFLAG(IS_CHROMEOS_ASH)
+        std::move(print_renderer),
+#endif
+        has_selection);
+    return;
+  }
+
+  ScopedIPC scoped_ipc(weak_ptr_factory_.GetWeakPtr());
+  if (ipc_nesting_level_ > kAllowedIpcDepthForPrint) {
+    return;
+  }
+
+  if (print_in_progress_) {
+    return;
+  }
+
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+
+  // If we are printing a frame with an internal PDF plugin element, find the
+  // plugin node and print that instead.
+  auto plugin = delegate_->GetPdfElement(frame);
+  if (!plugin.IsNull()) {
+    PrintNode(plugin);
+    return;
+  }
+
+  print_preview_context_.InitWithFrame(frame);
+  print_in_progress_ = false;
+}
+
+void PrintRenderFrameHelper::SetIsPrintPreviewExtraction(bool value) {
+  is_print_preview_extraction_ = value;
 }
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
