@@ -871,6 +871,8 @@ void BraveNewsController::OnPublishersChanged() {
   // When publishers are changed, see if it affects the feed.
   if (MaybeInitFeedV2()) {
     feed_v2_builder_->RecheckFeedHash(last_subscriptions_);
+  } else {
+    feed_controller_.EnsureFeedIsUpdating(pref_manager_.GetSubscriptions());
   }
 }
 
