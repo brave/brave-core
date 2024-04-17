@@ -233,14 +233,13 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
 TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
   const auto url = MeldIntegrationService::GetServiceProviderURL(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "");
+      "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers");
   EXPECT_EQ(url.query(),
             "accountFilter=false&statuses=LIVE%2CRECENTLY_ADDED&countries=US%"
             "2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies=BTC%2CETH&"
             "serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&paymentMethodTypes="
             "MOBILE_WALLET%2CBANK_TRANSFER");
-
   TestGetServiceProvider(
       R"([
   {
@@ -332,7 +331,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                           }),
                       1);
           }));
-
   TestGetServiceProvider(
       "some wrone data", "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting(
@@ -351,7 +349,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                       std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
           }),
       true);
-
   TestGetServiceProvider(
       R"({
     "code": "BAD_REQUEST",
@@ -527,9 +524,9 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
-  const auto url = MeldIntegrationService::GetGetPaymentMethodsURL(
+  const auto url = MeldIntegrationService::GetPaymentMethodsURL(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "");
+      "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/payment-methods");
   EXPECT_EQ(url.query(),
             "includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
@@ -659,7 +656,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
 TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
   const auto url = MeldIntegrationService::GetFiatCurrenciesURL(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "");
+      "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/fiat-currencies");
   EXPECT_EQ(url.query(),
             "includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
@@ -756,7 +753,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
   const auto url = MeldIntegrationService::GetCryptoCurrenciesURL(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "");
+      "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
   EXPECT_EQ(url.query(),
             "includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
@@ -872,7 +869,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
 TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
   const auto url = MeldIntegrationService::GetCountriesURL(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
-      "MOBILE_WALLET,BANK_TRANSFER", "");
+      "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/countries");
   EXPECT_EQ(url.query(),
             "includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"

@@ -196,8 +196,7 @@ bool ParseServiceProviders(
   return true;
 }
 
-bool ParseMeldErrorResponse(const base::Value& json_value,
-                            std::vector<std::string>* errors) {
+std::optional<std::vector<std::string>> ParseMeldErrorResponse(const base::Value& json_value) {
   // Parses results like this:
   // {
   //     "code": "BAD_REQUEST",
@@ -208,25 +207,30 @@ bool ParseMeldErrorResponse(const base::Value& json_value,
   //     "requestId": "eb6aaa76bd7103cf6c5b090610c31913",
   //     "timestamp": "2022-01-19T20:32:30.784928Z"
   // }
-  DCHECK(errors);
+  
   const auto meld_error_value =
       meld_integration_responses::MeldError::FromValue(json_value);
   if (!meld_error_value) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
-    return false;
+    return std::nullopt;
   }
 
-  if (meld_error_value->errors.has_value() &&
+  std::vector<std::string> errors;
+  if (meld_error_value->errors &&
       !meld_error_value->errors->empty()) {
-    errors->assign(meld_error_value->errors->begin(),
+    errors.assign(meld_error_value->errors->begin(),
                    meld_error_value->errors->end());
   }
 
-  if (meld_error_value->message.has_value() && errors->empty()) {
-    errors->emplace_back(*meld_error_value->message);
+  if (meld_error_value->message.has_value() && errors.empty()) {
+    errors.emplace_back(*meld_error_value->message);
   }
 
-  return !errors->empty();
+  if(errors.empty()){
+    return std::nullopt;
+  }
+
+  return errors;
 }
 
 bool ParseCryptoQuotes(const base::Value& json_value,

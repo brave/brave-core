@@ -14,8 +14,8 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
-bool ParseMeldErrorResponse(const base::Value& json_value,
-                            std::vector<std::string>* errors);
+std::optional<std::vector<std::string>> ParseMeldErrorResponse(
+    const base::Value& json_value);
 bool ParseServiceProviders(
     const base::Value& json_value,
     std::vector<mojom::ServiceProviderPtr>* service_providers);

@@ -120,15 +120,15 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })");
 
-  std::vector<std::string> errors;
-  EXPECT_TRUE(ParseMeldErrorResponse(ParseJson(json), &errors));
-  EXPECT_EQ(errors.size(), static_cast<size_t>(2));
+  auto errors = ParseMeldErrorResponse(ParseJson(json));
+  EXPECT_TRUE(errors.has_value());
+  EXPECT_EQ(errors->size(), static_cast<size_t>(2));
 
-  errors.clear();
-  EXPECT_FALSE(ParseMeldErrorResponse(base::Value(), &errors));
+  errors = ParseMeldErrorResponse(base::Value());
+  EXPECT_FALSE(errors.has_value());
 
-  errors.clear();
-  EXPECT_FALSE(ParseMeldErrorResponse(ParseJson((R"({})")), &errors));
+  errors = ParseMeldErrorResponse(ParseJson((R"({})")));
+  EXPECT_FALSE(errors.has_value());
 
   std::string json_only_msg(R"({
     "code": "BAD_REQUEST",
@@ -137,9 +137,9 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })");
-  errors.clear();
-  EXPECT_TRUE(ParseMeldErrorResponse(ParseJson(json_only_msg), &errors));
-  EXPECT_EQ(errors.size(), static_cast<size_t>(1));
+  errors = ParseMeldErrorResponse(ParseJson(json_only_msg));
+  EXPECT_TRUE(errors);
+  EXPECT_EQ(errors->size(), static_cast<size_t>(1));
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
