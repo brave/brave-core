@@ -96,8 +96,8 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
   feature_list.Reset();
   feature_list.InitAndEnableFeatureWithParameters(
       brave_search_conversion::features::kOmniboxBanner,
-      {{brave_search_conversion::features::kBannerTypeParamName, "type_A"}});
-  EXPECT_EQ(ConversionType::kBannerTypeA,
+      {{brave_search_conversion::features::kBannerTypeParamName, "type_B"}});
+  EXPECT_EQ(ConversionType::kBannerTypeB,
             GetConversionType(&pref_service_, &template_url_service_));
 
   // Check conversion type is set again after 3days passed.
@@ -110,7 +110,7 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
             GetConversionType(&pref_service_, &template_url_service_));
 
   task_environment_.AdvanceClock(base::Days(1) + base::Milliseconds(1));
-  EXPECT_EQ(ConversionType::kBannerTypeA,
+  EXPECT_EQ(ConversionType::kBannerTypeB,
             GetConversionType(&pref_service_, &template_url_service_));
 
   // Set dismissed.

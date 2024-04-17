@@ -12,7 +12,7 @@ enum class ConversionType {
   kNone = 0,
   kButton,
   kNTP,
-  kBannerTypeA,
+  kBannerTypeA,  // deprecated.
   kBannerTypeB,
   kBannerTypeC,
   kBannerTypeD,

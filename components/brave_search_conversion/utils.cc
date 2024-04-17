@@ -10,6 +10,7 @@
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -29,10 +30,6 @@ namespace brave_search_conversion {
 namespace {
 
 ConversionType GetConversionTypeFromBannerTypeParam(const std::string& param) {
-  if (param == "type_A") {
-    return ConversionType::kBannerTypeA;
-  }
-
   if (param == "type_B") {
     return ConversionType::kBannerTypeB;
   }

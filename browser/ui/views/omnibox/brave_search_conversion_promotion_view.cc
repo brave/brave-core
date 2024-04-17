@@ -664,7 +664,7 @@ void BraveSearchConversionPromotionView::UpdateHoverState() {
 int BraveSearchConversionPromotionView::GetBannerTypeTitleStringResourceId() {
   switch (type_) {
     case ConversionType::kBannerTypeA:
-      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_TITLE;
+      NOTREACHED_NORETURN();
     case ConversionType::kBannerTypeB:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_TITLE;
     case ConversionType::kBannerTypeC:
@@ -681,7 +681,7 @@ int BraveSearchConversionPromotionView::GetBannerTypeTitleStringResourceId() {
 int BraveSearchConversionPromotionView::GetBannerTypeDescStringResourceId() {
   switch (type_) {
     case ConversionType::kBannerTypeA:
-      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DESC;
+      NOTREACHED_NORETURN();
     case ConversionType::kBannerTypeB:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DESC;
     case ConversionType::kBannerTypeC:

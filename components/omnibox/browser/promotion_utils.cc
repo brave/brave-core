@@ -68,7 +68,7 @@ ConversionType GetConversionTypeFromMatch(const AutocompleteMatch& match) {
     return ConversionType::kNone;
   const ConversionType type = static_cast<ConversionType>(type_int);
   DCHECK(type == ConversionType::kButton ||
-         (type >= ConversionType::kBannerTypeA &&
+         (type >= ConversionType::kBannerTypeB &&
           type <= ConversionType::kBannerTypeD));
   return type;
 }

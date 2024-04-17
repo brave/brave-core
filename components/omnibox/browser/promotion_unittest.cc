@@ -245,7 +245,7 @@ TEST_F(OmniboxPromotionTest, AutocompleteResultTest) {
   // Make 3rd match as banner type promotion and check that promotion is
   // reordered at last.
   matches[2].destination_url = GetPromoURL(input.text());
-  SetConversionTypeToMatch(ConversionType::kBannerTypeA, &matches[2]);
+  SetConversionTypeToMatch(ConversionType::kBannerTypeB, &matches[2]);
   result.AppendMatches(matches);
   SortBraveSearchPromotionMatch(&result);
   EXPECT_TRUE(IsBraveSearchPromotionMatch(*result.match_at(3)));
@@ -253,7 +253,7 @@ TEST_F(OmniboxPromotionTest, AutocompleteResultTest) {
   result.Reset();
   matches = CreateTestMatches();
   matches[2].destination_url = GetPromoURL(input.text());
-  SetConversionTypeToMatch(ConversionType::kBannerTypeA, &matches[2]);
+  SetConversionTypeToMatch(ConversionType::kBannerTypeB, &matches[2]);
   result.AppendMatches(matches);
   // Make first match is not search query with default provider.
   result.begin()->type = AutocompleteMatchType::NAVSUGGEST;
