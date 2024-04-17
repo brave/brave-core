@@ -203,7 +203,7 @@
 "aichat.paywallUpsellCreativityTopicTitle" = "創造性を発揮";
 
 /* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "さまざまなスキルを持つパワフルなモデルへの優先アクセス";
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "さまざまなスキルを持つパワフルなモデルへの優先アクセス。";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "さまざまなAIモデルを探索";

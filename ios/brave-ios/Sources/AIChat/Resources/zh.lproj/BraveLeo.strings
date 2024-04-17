@@ -203,7 +203,7 @@
 "aichat.paywallUpsellCreativityTopicTitle" = "解锁您的创意";
 
 /* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "优先访问具有不同技能的强大模型";
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "优先访问具有不同技能的强大模型。";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "探索不同的人工智能模型";

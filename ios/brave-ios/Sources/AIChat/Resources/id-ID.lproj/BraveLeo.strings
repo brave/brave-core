@@ -203,7 +203,7 @@
 "aichat.paywallUpsellCreativityTopicTitle" = "Lepaskan kreativitas Anda";
 
 /* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Akses prioritas ke model penuh kekuatan dengan keterampilan berbeda";
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Akses prioritas ke model penuh kekuatan dengan keterampilan berbeda.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Jelajahi model AI yang berbeda";

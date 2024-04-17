@@ -203,7 +203,7 @@
 "aichat.paywallUpsellCreativityTopicTitle" = "Yaratıcılığınızı serbest bırakın";
 
 /* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Farklı yeteneklere sahip güçlü modellere öncelikli erişim";
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Farklı yeteneklere sahip güçlü modellere öncelikli erişim.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Farklı Yapay Zeka modellerini keşfedin";
