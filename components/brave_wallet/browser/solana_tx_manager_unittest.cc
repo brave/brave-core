@@ -15,7 +15,6 @@
 #include "base/location.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
-#include "base/sys_byteorder.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -28,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
+#include "brave/components/brave_wallet/browser/solana_test_utils.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
@@ -1266,25 +1266,8 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
   auto durable_nonce_meta = solana_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(durable_nonce_meta);
 
-  // Mock AdvanceNonceAccount instruction.
-  uint32_t instruction_type = static_cast<uint32_t>(
-      mojom::SolanaSystemInstruction::kAdvanceNonceAccount);
-  instruction_type = base::ByteSwapToLE32(instruction_type);
-
-  std::vector<uint8_t> instruction_data(
-      reinterpret_cast<uint8_t*>(&instruction_type),
-      reinterpret_cast<uint8_t*>(&instruction_type) + sizeof(instruction_type));
-  SolanaInstruction instruction = SolanaInstruction(
-      mojom::kSolanaSystemProgramId,
-      std::vector<SolanaAccountMeta>(
-          {SolanaAccountMeta(nonce_account->address, std::nullopt, false, true),
-           SolanaAccountMeta(SolAccount(4)->address, std::nullopt, false,
-                             false),
-           SolanaAccountMeta(sol_account()->address, std::nullopt, true,
-                             false)}),
-      instruction_data);
-
   // Put AdvanceNonceAccount instruction before the transfer instruction.
+  SolanaInstruction instruction = GetAdvanceNonceAccountInstruction();
   std::vector<SolanaInstruction> vec;
   vec.emplace_back(instruction);
   vec.emplace_back(durable_nonce_meta->tx()->message()->instructions()[0]);
@@ -1294,9 +1277,9 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
       *durable_nonce_meta));
 
   // Test retry transaction with invalid state.
-  TestRetryTransaction(FROM_HERE, meta_id1, false,
-                       l10n_util::GetStringUTF8(
-                           IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE_STATE));
+  TestRetryTransaction(
+      FROM_HERE, meta_id1, false,
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE));
 
   // Update both transactions to dropped.
   auto tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
@@ -1320,17 +1303,20 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
   tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
 
-  tx_meta1->tx()->set_sign_tx_param(mojom::SolanaSignTransactionParam::New(
-      "test", std::vector<mojom::SignaturePubkeyPairPtr>()));
-  tx_meta2->tx()->set_sign_tx_param(mojom::SolanaSignTransactionParam::New(
-      "test", std::vector<mojom::SignaturePubkeyPairPtr>()));
+  auto param = mojom::SolanaSignTransactionParam::New(
+      "test", std::vector<mojom::SignaturePubkeyPairPtr>());
+  param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(
+      std::vector<uint8_t>(kSolanaSignatureSize, 1), sol_account()->address));
+  tx_meta1->tx()->set_sign_tx_param(param.Clone());
+  tx_meta2->tx()->set_sign_tx_param(param.Clone());
+
   ASSERT_TRUE(
       solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta1));
   ASSERT_TRUE(
       solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta2));
   TestRetryTransaction(
       FROM_HERE, meta_id1, false,
-      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_PARTIAL_SIGNED));
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE));
   TestRetryTransaction(FROM_HERE, meta_id2, true, "", nonce_account->address);
 
   // Test retry transaction with unknown tx id.
@@ -1342,9 +1328,9 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
   tx_meta1->tx()->set_tx_type(mojom::TransactionType::SolanaSwap);
   ASSERT_TRUE(
       solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta1));
-  TestRetryTransaction(FROM_HERE, meta_id1, false,
-                       l10n_util::GetStringUTF8(
-                           IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE_TYPE));
+  TestRetryTransaction(
+      FROM_HERE, meta_id1, false,
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE));
 }
 
 TEST_F(SolanaTxManagerUnitTest, GetTransactionMessageToSign) {

@@ -44,6 +44,8 @@ class SolanaTxMeta : public TxMeta {
     signature_status_ = signature_status;
   }
 
+  bool IsRetriable() const;
+
  private:
   std::unique_ptr<SolanaTransaction> tx_;
   // Status returned by getSignatureStatuses JSON-RPC call.

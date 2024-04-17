@@ -1144,18 +1144,18 @@ void EthTxManager::RetryTransaction(const std::string& tx_meta_id,
                                     RetryTransactionCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
       GetEthTxStateManager()->GetEthTx(tx_meta_id);
-  if (!meta || meta->status() != mojom::TransactionStatus::Error) {
+
+  if (!meta || !meta->tx()) {
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
     return;
   }
 
-  if (!IsRetriableStatus(meta->status(), mojom::CoinType::ETH)) {
+  if (!meta->IsRetriable()) {
     std::move(callback).Run(
         false, "",
-        l10n_util::GetStringUTF8(
-            IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE_STATE));
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE));
     return;
   }
 

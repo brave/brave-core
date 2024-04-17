@@ -14,55 +14,12 @@
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
-
-namespace {
-
-constexpr char kFromAccount[] = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
-constexpr char kToAccount[] = "3QpJ3j1vq1PfqJdvCcHKWuePykqoUYSvxyRb3Cnh79BD";
-constexpr char kTestAccount[] = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
-constexpr char kRecentBlockhash[] =
-    "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
-constexpr uint64_t kLastValidBlockHeight = 3090;
-
-SolanaMessage GetTestLegacyMessage() {
-  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
-  SolanaInstruction instruction(
-      // Program ID
-      mojom::kSolanaSystemProgramId,
-      // Accounts
-      {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
-       SolanaAccountMeta(kToAccount, std::nullopt, false, true)},
-      data);
-  auto message = SolanaMessage::CreateLegacyMessage(
-      kRecentBlockhash, kLastValidBlockHeight, kFromAccount, {instruction});
-  return std::move(*message);
-}
-
-SolanaMessage GetTestV0Message() {
-  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
-  SolanaMessageAddressTableLookup lookup(*SolanaAddress::FromBase58(kToAccount),
-                                         {3, 1}, {2, 4});
-  SolanaInstruction instruction(
-      mojom::kSolanaSystemProgramId,
-      {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
-       SolanaAccountMeta(kToAccount, 1, false, true)},
-      data);
-  std::vector<SolanaMessageAddressTableLookup> lookups;
-  lookups.push_back(std::move(lookup));
-  return SolanaMessage(
-      mojom::SolanaMessageVersion::kV0, kRecentBlockhash, kLastValidBlockHeight,
-      kFromAccount, SolanaMessageHeader(1, 0, 1),
-      {*SolanaAddress::FromBase58(kFromAccount),
-       *SolanaAddress::FromBase58(mojom::kSolanaSystemProgramId)},
-      {instruction}, std::move(lookups));
-}
-
-}  // namespace
 
 TEST(SolanaMessageUnitTest, SerializeDeserialize) {
   std::vector<uint8_t> expected_bytes_legacy = {
