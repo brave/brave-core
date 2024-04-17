@@ -135,6 +135,7 @@ std::optional<base::UnguessableToken> EphemeralStorageService::Get1PESToken(
     if (token_it != fpes_tokens_.end()) {
       return token_it->second;
     }
+
     token = base::UnguessableToken::Create();
     fpes_tokens_[ephemeral_storage_domain] = *token;
   }
