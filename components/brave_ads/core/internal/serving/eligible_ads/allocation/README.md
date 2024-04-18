@@ -1,5 +1,5 @@
 # Allocation
 
-Serve ads equally by "taking turns" using a round-robin scheduling algorithm that evenly distributes ads.
+Allocation involves strategically distributing advertising resources to maximize reach and engagement.
 
 Please add to it!
