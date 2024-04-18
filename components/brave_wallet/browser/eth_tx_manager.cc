@@ -567,7 +567,16 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
   }
 
   meta->tx()->set_nonce(nonce);
-  DCHECK(!keyring_service_->IsLocked(mojom::kDefaultKeyringId));
+
+  if (keyring_service_->IsLockedSync()) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewProviderError(
+            mojom::ProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
   keyring_service_->SignTransactionByDefaultKeyring(*meta->from(), meta->tx(),
                                                     chain_id);
   meta->set_status(mojom::TransactionStatus::Approved);

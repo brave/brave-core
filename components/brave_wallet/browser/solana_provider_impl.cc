@@ -101,7 +101,7 @@ void SolanaProviderImpl::Connect(std::optional<base::Value::Dict> arg,
     is_eagerly_connect = arg->FindBool(kOnlyIfTrustedOption).value_or(false);
   }
 
-  if (keyring_service_->IsLocked(mojom::kSolanaKeyringId)) {
+  if (keyring_service_->IsLockedSync()) {
     // Reject the request when we are already waiting for unlock and we will
     // also reject eagerly connect when wallet is locked.
     if (pending_connect_callback_ || is_eagerly_connect) {

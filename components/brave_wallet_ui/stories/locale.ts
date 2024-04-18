@@ -59,7 +59,7 @@ provideStrings({
   // Actions
   braveWalletClickToSwitch: 'Click to switch',
   braveWalletEnterYourPassword: 'Enter your password',
-  braveWalletEnterAPassswordToContinue: 'Enter a password to continue',
+  braveWalletEnterAPasswordToContinue: 'Enter a password to continue',
   braveWalletEnterYourPasswordToStartBackup:
     'Enter your Brave Wallet password to start backing up wallet.',
 
@@ -520,7 +520,7 @@ provideStrings({
   braveWalletOrdinalTenth: 'Tenth',
   braveWalletOrdinalEleventh: 'Eleventh',
   braveWalletOrdinalTwelfth: 'Twelfth',
-  braveWalletOridinalThirteenth: 'Thirteenth',
+  braveWalletOrdinalThirteenth: 'Thirteenth',
   braveWalletOrdinalFourteenth: 'Fourteenth',
   braveWalletOrdinalFifteenth: 'Fifteenth',
   braveWalletOrdinalSixteenth: 'Sixteenth',
@@ -723,7 +723,7 @@ provideStrings({
   braveWalletConfirmTransactionAmountFee: 'Amount + fee',
   braveWalletConfirmTransactionNoData: 'No data.',
   braveWalletConfirmTransactionNext: 'next',
-  braveWalletConfirmTransactionFrist: 'first',
+  braveWalletConfirmTransactionFirst: 'first',
   braveWalletConfirmTransactions: 'transactions',
   braveWalletConfirmTransactionAccountCreationFee:
     'The associated token account does not exist yet. ' +

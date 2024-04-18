@@ -53,8 +53,7 @@ class WalletNotificationServiceUnitTest : public testing::Test {
     notification_service_ = std::make_unique<WalletNotificationService>(
         tx_service_.get(), profile());
     tester_ = std::make_unique<NotificationDisplayServiceTester>(profile());
-    keyring_service_->CreateWallet(kMnemonicDivideCruise, "brave",
-                                   base::DoNothing());
+    GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
   }
   Profile* profile() { return &profile_; }
   PrefService* prefs() { return profile_.GetPrefs(); }

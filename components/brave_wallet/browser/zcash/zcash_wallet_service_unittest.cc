@@ -98,8 +98,7 @@ class ZCashWalletServiceUnitTest : public testing::Test {
     auto zcash_rpc = std::make_unique<testing::NiceMock<MockZCashRPC>>();
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
         keyring_service_.get(), std::move(zcash_rpc));
-    keyring_service_->CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
-                                   base::DoNothing());
+    GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
     zcash_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
     ASSERT_TRUE(zcash_account_);

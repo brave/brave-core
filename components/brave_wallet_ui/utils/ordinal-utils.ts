@@ -19,7 +19,7 @@ export const ORDINALS = {
   9: getLocale('braveWalletOrdinalTenth'),
   10: getLocale('braveWalletOrdinalEleventh'),
   11: getLocale('braveWalletOrdinalTwelfth'),
-  12: getLocale('braveWalletOridinalThirteenth'),
+  12: getLocale('braveWalletOrdinalThirteenth'),
   13: getLocale('braveWalletOrdinalFourteenth'),
   14: getLocale('braveWalletOrdinalFifteenth'),
   15: getLocale('braveWalletOrdinalSixteenth'),

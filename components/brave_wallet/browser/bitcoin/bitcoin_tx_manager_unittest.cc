@@ -72,8 +72,8 @@ class BitcoinTxManagerUnitTest : public testing::Test {
         base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
-    keyring_service_->CreateWallet(kMnemonicDivideCruise, "brave",
-                                   base::DoNothing());
+    GetAccountUtils().CreateWallet(kMnemonicDivideCruise, "brave");
+
     task_environment_.RunUntilIdle();
 
     bitcoin_test_rpc_server_->SetUpBitcoinRpc(BtcAcc(0));

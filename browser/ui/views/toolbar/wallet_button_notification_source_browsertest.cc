@@ -46,19 +46,9 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
     return brave_wallet::AccountUtils(keyring_service_);
   }
 
-  void RestoreWallet() {
-    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
-        brave_wallet::kMnemonicDripCaution, brave_wallet::kTestWalletPassword,
-        false));
-  }
-
   void CreateWallet() {
-    base::RunLoop run_loop;
-    keyring_service_->CreateWallet(
-        brave_wallet::kTestWalletPassword,
-        base::BindLambdaForTesting(
-            [&](const std::string&) { run_loop.Quit(); }));
-    run_loop.Run();
+    GetAccountUtils().CreateWallet(brave_wallet::kMnemonicDripCaution,
+                                   brave_wallet::kTestWalletPassword);
   }
 
  private:
@@ -90,7 +80,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        DontShowBadge_WhenWalletCreated) {
-  RestoreWallet();
+  CreateWallet();
 
   base::RunLoop run_loop;
   std::optional<bool> show_badge_suggest_result;
@@ -174,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        PendingTransactionsCounter) {
-  RestoreWallet();
+  CreateWallet();
 
   // Add initial FIL transaction
   std::string first_tx_meta_id;
@@ -360,7 +350,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 
 IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        CounterReset_WhenResetTxService) {
-  RestoreWallet();
+  CreateWallet();
 
   // Add initial transaction
   std::string tx_meta_id;

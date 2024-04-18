@@ -186,12 +186,19 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
         l10n_util::GetStringUTF8(IDS_WALLET_GET_NONCE_ERROR));
     return;
   }
+  if (keyring_service_->IsLockedSync()) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewFilecoinProviderError(
+            mojom::FilecoinProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
   // DCHECK_LE will eventually be expanded into `CheckOpValueStr` which doesn't
   // have uint256_t overload.
   DCHECK(nonce <= static_cast<uint256_t>(UINT64_MAX));
   meta->tx()->set_nonce(static_cast<uint64_t>(nonce));
-  DCHECK(!keyring_service_->IsLocked(mojom::kFilecoinKeyringId) ||
-         !keyring_service_->IsLocked(mojom::kFilecoinTestnetKeyringId));
   meta->set_status(mojom::TransactionStatus::Approved);
   if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
     std::move(callback).Run(

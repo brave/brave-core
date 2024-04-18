@@ -66,6 +66,8 @@ class AccountUtils {
  public:
   explicit AccountUtils(KeyringService* keyring_service);
 
+  void CreateWallet(const std::string& mnemonic, const std::string& password);
+
   mojom::AccountInfoPtr GetDerivedAccount(mojom::KeyringId keyring_id,
                                           uint32_t index);
   mojom::AccountInfoPtr CreateDerivedAccount(mojom::KeyringId keyring_id,

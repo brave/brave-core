@@ -55,6 +55,11 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
 AccountUtils::AccountUtils(KeyringService* keyring_service)
     : keyring_service_(keyring_service) {}
 
+void AccountUtils::CreateWallet(const std::string& mnemonic,
+                                const std::string& password) {
+  keyring_service_->CreateWalletInternal(mnemonic, password, false, false);
+}
+
 mojom::AccountInfoPtr AccountUtils::GetDerivedAccount(
     mojom::KeyringId keyring_id,
     uint32_t index) {

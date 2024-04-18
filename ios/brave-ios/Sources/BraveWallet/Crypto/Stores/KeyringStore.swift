@@ -450,13 +450,13 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   func restoreWallet(
     words: [String],
     password: String,
-    isLegacyBraveWallet: Bool,
+    isLegacyEthSeedFormat: Bool,
     completion: ((Bool) -> Void)? = nil
   ) {
     restoreWallet(
       phrase: words.joined(separator: " "),
       password: password,
-      isLegacyBraveWallet: isLegacyBraveWallet,
+      isLegacyEthSeedFormat: isLegacyEthSeedFormat,
       completion: completion
     )
   }
@@ -464,7 +464,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   func restoreWallet(
     phrase: String,
     password: String,
-    isLegacyBraveWallet: Bool,
+    isLegacyEthSeedFormat: Bool,
     completion: ((Bool) -> Void)? = nil
   ) {
     guard !isRestoringWallet else {  // wallet is already being restored.
@@ -476,7 +476,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     keyringService.restoreWallet(
       mnemonic: phrase,
       password: password,
-      isLegacyBraveWallet: isLegacyBraveWallet
+      isLegacyEthSeedFormat: isLegacyEthSeedFormat
     ) { [weak self] isMnemonicValid in
       guard let self = self else { return }
       self.isRestoringWallet = false
