@@ -85,7 +85,8 @@ bool SpeedreaderBodyDistiller::ShouldProcess(
   }
 
   std::string mime_type;
-  if (!response_head || !response_head->headers->GetMimeType(&mime_type) ||
+  if (!response_head || !response_head->headers ||
+      !response_head->headers->GetMimeType(&mime_type) ||
       base::CompareCaseInsensitiveASCII(mime_type, "text/html")) {
     // Skip all non-html documents.
     return false;
