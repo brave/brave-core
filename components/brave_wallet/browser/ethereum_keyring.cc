@@ -29,6 +29,9 @@ std::vector<uint8_t> GetMessageHash(const std::vector<uint8_t>& message) {
 
 }  // namespace
 
+EthereumKeyring::EthereumKeyring(base::span<const uint8_t> seed)
+    : Secp256k1HDKeyring(seed, GetRootPath(mojom::KeyringId::kDefault)) {}
+
 // static
 bool EthereumKeyring::RecoverAddress(const std::vector<uint8_t>& message,
                                      const std::vector<uint8_t>& signature,
@@ -81,7 +84,7 @@ std::vector<uint8_t> EthereumKeyring::SignMessage(
     const std::vector<uint8_t>& message,
     uint256_t chain_id,
     bool is_eip712) {
-  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
+  HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key) {
     return std::vector<uint8_t>();
   }
@@ -110,7 +113,7 @@ std::vector<uint8_t> EthereumKeyring::SignMessage(
 void EthereumKeyring::SignTransaction(const std::string& address,
                                       EthTransaction* tx,
                                       uint256_t chain_id) {
-  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
+  HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key || !tx) {
     return;
   }
@@ -121,12 +124,8 @@ void EthereumKeyring::SignTransaction(const std::string& address,
   tx->ProcessSignature(signature, recid, chain_id);
 }
 
-std::string EthereumKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
-  if (!hd_key_base) {
-    return std::string();
-  }
-  HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
-  const std::vector<uint8_t> public_key = hd_key->GetUncompressedPublicKey();
+std::string EthereumKeyring::GetAddressInternal(const HDKey& hd_key) const {
+  const std::vector<uint8_t> public_key = hd_key.GetUncompressedPublicKey();
   // trim the header byte 0x04
   const std::vector<uint8_t> pubkey_no_header(public_key.begin() + 1,
                                               public_key.end());
@@ -139,7 +138,7 @@ std::string EthereumKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
 bool EthereumKeyring::GetPublicKeyFromX25519_XSalsa20_Poly1305(
     const std::string& address,
     std::string* key) {
-  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
+  HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key) {
     return false;
   }
@@ -159,7 +158,7 @@ EthereumKeyring::DecryptCipherFromX25519_XSalsa20_Poly1305(
     const std::vector<uint8_t>& ephemeral_public_key,
     const std::vector<uint8_t>& ciphertext,
     const std::string& address) {
-  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
+  HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key) {
     return std::nullopt;
   }
@@ -167,8 +166,17 @@ EthereumKeyring::DecryptCipherFromX25519_XSalsa20_Poly1305(
       version, nonce, ephemeral_public_key, ciphertext);
 }
 
-std::unique_ptr<HDKeyBase> EthereumKeyring::DeriveAccount(
-    uint32_t index) const {
+std::string EthereumKeyring::EncodePrivateKeyForExport(
+    const std::string& address) {
+  HDKey* hd_key = GetHDKeyFromAddress(address);
+  if (!hd_key) {
+    return std::string();
+  }
+
+  return base::ToLowerASCII(base::HexEncode(hd_key->GetPrivateKeyBytes()));
+}
+
+std::unique_ptr<HDKey> EthereumKeyring::DeriveAccount(uint32_t index) const {
   // m/44'/60'/0'/0/{index}
   return root_->DeriveNormalChild(index);
 }

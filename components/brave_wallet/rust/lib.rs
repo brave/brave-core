@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+use bech32::Error as Bech32Error;
+use bech32::FromBase32;
 use core::fmt;
 use curve25519_dalek;
 use ed25519_dalek_bip32::derivation_path::{
@@ -14,9 +16,7 @@ use ed25519_dalek_bip32::ed25519_dalek::{
 };
 use ed25519_dalek_bip32::Error as Ed25519Bip32Error;
 use ed25519_dalek_bip32::{ChildIndex, ExtendedSecretKey};
-use bech32::FromBase32;
-use ffi::{Bech32DecodeVariant};
-use bech32::Error as Bech32Error;
+use ffi::Bech32DecodeVariant;
 
 macro_rules! impl_result {
     ($t:ident, $r:ident, $f:ident) => {
@@ -66,7 +66,7 @@ macro_rules! impl_error {
 mod ffi {
     enum Bech32DecodeVariant {
         Bech32,
-        Bech32m
+        Bech32m,
     }
 
     extern "Rust" {
@@ -79,11 +79,11 @@ mod ffi {
         type Ed25519DalekVerificationResult;
         type Bech32DecodeResult;
 
-        fn generate_ed25519_extended_secrect_key_from_seed(
+        fn generate_ed25519_extended_secret_key_from_seed(
             bytes: &[u8],
         ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
 
-        fn generate_ed25519_extended_secrect_key_from_bytes(
+        fn generate_ed25519_extended_secret_key_from_bytes(
             bytes: &[u8],
         ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
 
@@ -214,14 +214,14 @@ impl From<Result<(), Error>> for Ed25519DalekVerificationResult {
     }
 }
 
-fn generate_ed25519_extended_secrect_key_from_seed(
+fn generate_ed25519_extended_secret_key_from_seed(
     bytes: &[u8],
 ) -> Box<Ed25519DalekExtendedSecretKeyResult> {
     Box::new(Ed25519DalekExtendedSecretKeyResult::from(
         ExtendedSecretKey::from_seed(bytes).map_err(|err| Error::from(err)),
     ))
 }
-fn generate_ed25519_extended_secrect_key_from_bytes(
+fn generate_ed25519_extended_secret_key_from_bytes(
     bytes: &[u8],
 ) -> Box<Ed25519DalekExtendedSecretKeyResult> {
     Box::new(Ed25519DalekExtendedSecretKeyResult::from(
@@ -245,21 +245,16 @@ fn decode_bech32(input: &str) -> Box<Bech32DecodeResult> {
         Ok(decoded_value) => {
             let (hrp, data, variant) = decoded_value;
             Box::new(Bech32DecodeResult::from(
-                Vec::<u8>::from_base32(&data)
-                    .map_err(Error::from)
-                    .and_then(|as_u8| Ok(
-                        Bech32Decoded {
-                            hrp: hrp,
-                            data: as_u8,
-                            variant : Bech32DecodeVariant::from(variant)
-                        })
-                    )
-                )
-            )
-        },
-        Err(e) => {
-            Box::new(Bech32DecodeResult::from(Err(Error::from(e))))
+                Vec::<u8>::from_base32(&data).map_err(Error::from).and_then(|as_u8| {
+                    Ok(Bech32Decoded {
+                        hrp: hrp,
+                        data: as_u8,
+                        variant: Bech32DecodeVariant::from(variant),
+                    })
+                }),
+            ))
         }
+        Err(e) => Box::new(Bech32DecodeResult::from(Err(Error::from(e)))),
     }
 }
 
@@ -271,9 +266,7 @@ impl Ed25519DalekExtendedSecretKey {
                 .and_then(|d_path| Ok(self.0.derive(&d_path)?)),
         ))
     }
-    fn derive_hardened_child(
-        &self, index: u32
-    ) -> Box<Ed25519DalekExtendedSecretKeyResult> {
+    fn derive_hardened_child(&self, index: u32) -> Box<Ed25519DalekExtendedSecretKeyResult> {
         Box::new(Ed25519DalekExtendedSecretKeyResult::from(
             ChildIndex::hardened(index)
                 .map_err(|err| Error::from(err))
@@ -320,7 +313,7 @@ impl Ed25519DalekSignature {
 
 impl Bech32DecodeValue {
     fn hrp(self: &Bech32DecodeValue) -> String {
-       self.0.hrp.clone()
+        self.0.hrp.clone()
     }
     fn data(self: &Bech32DecodeValue) -> Vec<u8> {
         self.0.data.clone()

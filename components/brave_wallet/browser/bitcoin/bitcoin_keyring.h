@@ -11,14 +11,14 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
+#include "brave/components/brave_wallet/browser/secp256k1_hd_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-class BitcoinKeyring : public HDKeyring {
+class BitcoinKeyring : public Secp256k1HDKeyring {
  public:
-  explicit BitcoinKeyring(bool testnet);
+  BitcoinKeyring(base::span<const uint8_t> seed, bool testnet);
   ~BitcoinKeyring() override = default;
   BitcoinKeyring(const BitcoinKeyring&) = delete;
   BitcoinKeyring& operator=(const BitcoinKeyring&) = delete;
@@ -35,11 +35,13 @@ class BitcoinKeyring : public HDKeyring {
       const mojom::BitcoinKeyId& key_id,
       base::span<const uint8_t, 32> message);
 
+  std::string EncodePrivateKeyForExport(const std::string& address) override;
+
  private:
-  std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
-  std::unique_ptr<HDKeyBase> DeriveAccount(uint32_t index) const override;
-  std::unique_ptr<HDKeyBase> DeriveKey(uint32_t account,
-                                       const mojom::BitcoinKeyId& key_id);
+  std::string GetAddressInternal(const HDKey& hd_key) const override;
+  std::unique_ptr<HDKey> DeriveAccount(uint32_t index) const override;
+  std::unique_ptr<HDKey> DeriveKey(uint32_t account,
+                                   const mojom::BitcoinKeyId& key_id);
 
   bool testnet_ = false;
 };

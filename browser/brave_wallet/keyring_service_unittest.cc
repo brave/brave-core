@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/span.h"
 #include "base/functional/callback_helpers.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
@@ -24,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -56,6 +58,7 @@
 
 using ::testing::_;
 using ::testing::AnyNumber;
+using ::testing::ElementsAre;
 using ::testing::ElementsAreArray;
 using ::testing::Eq;
 using ::testing::NiceMock;
@@ -779,25 +782,23 @@ TEST_F(KeyringServiceUnitTest, CreateDefaultKeyringInternal) {
                                             kMnemonicDivideCruise, false));
   task_environment_.RunUntilIdle();
   auto* default_keyring = service.GetHDKeyringById(mojom::kDefaultKeyringId);
-  default_keyring->AddAccounts(1);
-  EXPECT_EQ(default_keyring->GetAddress(0),
-            "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
+  ASSERT_TRUE(default_keyring->AddNewHDAccount());
+  EXPECT_THAT(default_keyring->GetHDAccountsForTesting(),
+              ElementsAre("0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"));
   const std::string encrypted_mnemonic1 =
       GetStringPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId);
   // The pref is encrypted
-  EXPECT_NE(base::Base64Encode(std::vector<uint8_t>(
-                reinterpret_cast<const uint8_t*>(kMnemonicDivideCruise),
-                reinterpret_cast<const uint8_t*>(kMnemonicDivideCruise) +
-                    strlen(kMnemonicDivideCruise))),
-            encrypted_mnemonic1);
+  EXPECT_NE(
+      base::Base64Encode(base::byte_span_from_cstring(kMnemonicDivideCruise)),
+      encrypted_mnemonic1);
 
   // default keyring will be overwritten
   ASSERT_TRUE(service.CreateKeyringInternal(mojom::kDefaultKeyringId,
                                             kMnemonic2, false));
   auto* default_keyring2 = service.GetHDKeyringById(mojom::kDefaultKeyringId);
-  default_keyring2->AddAccounts(1);
-  EXPECT_EQ(default_keyring2->GetAddress(0),
-            "0xf83C3cBfF68086F276DD4f87A82DF73B57b28820");
+  ASSERT_TRUE(default_keyring2->AddNewHDAccount());
+  EXPECT_THAT(default_keyring2->GetHDAccountsForTesting(),
+              ElementsAre("0xf83C3cBfF68086F276DD4f87A82DF73B57b28820"));
   EXPECT_NE(
       GetStringPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId),
       encrypted_mnemonic1);
@@ -821,8 +822,8 @@ TEST_F(KeyringServiceUnitTest, CreateDefaultKeyring) {
 
     HDKeyring* keyring = service.CreateKeyring(mojom::kDefaultKeyringId,
                                                GenerateMnemonic(16), "brave1");
-    keyring->AddAccounts(1);
-    const std::string address1 = keyring->GetAddress(0);
+    ASSERT_TRUE(keyring->AddNewHDAccount());
+    const std::string address1 = keyring->GetHDAccountsForTesting()[0];
     EXPECT_FALSE(address1.empty());
     EXPECT_TRUE(
         HasPrefForKeyring(kPasswordEncryptorSalt, mojom::kDefaultKeyringId));
@@ -834,8 +835,8 @@ TEST_F(KeyringServiceUnitTest, CreateDefaultKeyring) {
     // default keyring will be overwritten
     keyring = service.CreateKeyring(mojom::kDefaultKeyringId,
                                     GenerateMnemonic(16), "brave2");
-    keyring->AddAccounts(1);
-    const std::string address2 = keyring->GetAddress(0);
+    ASSERT_TRUE(keyring->AddNewHDAccount());
+    const std::string address2 = keyring->GetHDAccountsForTesting()[0];
     EXPECT_FALSE(address2.empty());
     EXPECT_NE(address1, address2);
 
@@ -967,8 +968,9 @@ TEST_F(KeyringServiceUnitTest, RestoreDefaultKeyring) {
   task_environment_.RunUntilIdle();
   EXPECT_EQ(service.GetAccountInfosForKeyring(mojom::kDefaultKeyringId).size(),
             1u);
-  EXPECT_EQ(service.GetHDKeyringById(mojom::kDefaultKeyringId)->GetAddress(0),
-            "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
+  EXPECT_THAT(service.GetHDKeyringById(mojom::kDefaultKeyringId)
+                  ->GetHDAccountsForTesting(),
+              ElementsAre("0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"));
 }
 
 TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
@@ -1666,7 +1668,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
 
   // Imported accounts should also be restored in default keyring
   auto* default_keyring = service.GetHDKeyringById(mojom::kDefaultKeyringId);
-  EXPECT_EQ(default_keyring->GetImportedAccountsNumber(), 2u);
+  EXPECT_EQ(default_keyring->GetImportedAccountsForTesting().size(), 2u);
 
   const base::Value* imported_accounts_value =
       KeyringService::GetPrefForKeyring(*GetPrefs(), kImportedAccounts,
@@ -2263,8 +2265,8 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   ASSERT_TRUE(CreateWallet(&service, "brave"));
   auto* default_keyring = service.GetHDKeyringById(mojom::kDefaultKeyringId);
   auto* solana_keyring = service.GetHDKeyringById(mojom::kSolanaKeyringId);
-  std::string first_account = default_keyring->GetAddress(0);
-  std::string first_sol_account = solana_keyring->GetAddress(0);
+  std::string first_account = default_keyring->GetHDAccountsForTesting()[0];
+  std::string first_sol_account = solana_keyring->GetHDAccountsForTesting()[0];
 
   EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   // Selected account changed when creating wallet
@@ -3167,7 +3169,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
 
   auto* filecoin_testnet_keyring =
       service.GetHDKeyringById(mojom::kFilecoinTestnetKeyringId);
-  EXPECT_EQ(filecoin_testnet_keyring->GetImportedAccountsNumber(),
+  EXPECT_EQ(filecoin_testnet_keyring->GetImportedAccountsForTesting().size(),
             imported_testnet_accounts.size());
 
   // Remove testnet account
@@ -3190,7 +3192,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
       kPasswordBrave));
   observer.WaitAndVerify();
 
-  EXPECT_EQ(filecoin_testnet_keyring->GetImportedAccountsNumber(),
+  EXPECT_EQ(filecoin_testnet_keyring->GetImportedAccountsForTesting().size(),
             imported_testnet_accounts.size() - 1);
   // remove invalid address
   EXPECT_CALL(observer, AccountsChanged()).Times(0);
@@ -3212,7 +3214,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   EXPECT_EQ(account_infos[2]->address, imported_testnet_accounts[3].address);
   EXPECT_EQ(account_infos[2]->name, imported_testnet_accounts[3].name);
   EXPECT_EQ(account_infos[2]->account_id->kind, mojom::AccountKind::kImported);
-  EXPECT_EQ(filecoin_testnet_keyring->GetImportedAccountsNumber(),
+  EXPECT_EQ(filecoin_testnet_keyring->GetImportedAccountsForTesting().size(),
             imported_testnet_accounts.size() - 1);
   service.Lock();
   // cannot get private key when locked
@@ -3242,7 +3244,8 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kImported);
 
   EXPECT_EQ(service.GetHDKeyringById(mojom::kFilecoinTestnetKeyringId)
-                ->GetImportedAccountsNumber(),
+                ->GetImportedAccountsForTesting()
+                .size(),
             imported_testnet_accounts.size() - 1);
   auto payload = EncodePrivateKeyForExport(
       &service,
@@ -3254,9 +3257,10 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
 
   auto* default_keyring = service.GetHDKeyringById(mojom::kDefaultKeyringId);
   // Imported accounts should also be restored in filecoin keyring
-  EXPECT_EQ(default_keyring->GetImportedAccountsNumber(), 0u);
+  EXPECT_EQ(default_keyring->GetImportedAccountsForTesting().size(), 0u);
   EXPECT_EQ(service.GetHDKeyringById(mojom::kFilecoinTestnetKeyringId)
-                ->GetImportedAccountsNumber(),
+                ->GetImportedAccountsForTesting()
+                .size(),
             imported_testnet_accounts.size() - 1);
 }
 
@@ -3466,19 +3470,12 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
     saved_mnemonic_ = CreateWallet(&service, "brave").value_or("");
     EXPECT_FALSE(saved_mnemonic_.empty());
 
-    auto* keyring = service.GetHDKeyringById(keyring_id);
     for (size_t i = 0; i < 100u; ++i) {
-      if (coin_type == mojom::CoinType::FIL) {
-        EXPECT_TRUE(AddAccount(&service, mojom::CoinType::FIL,
-                               mojom::kFilecoinKeyringId,
-                               "Acc" + base::NumberToString(i)));
-      } else {
-        EXPECT_TRUE(AddAccount(&service, coin_type, keyring_id,
-                               "Acc" + base::NumberToString(i)));
-      }
-      saved_addresses_.push_back(keyring->GetAddress(i));
+      ASSERT_TRUE(AddAccount(&service, coin_type, keyring_id,
+                             "Acc" + base::NumberToString(i)));
     }
-    task_environment_.RunUntilIdle();
+    saved_addresses_ =
+        service.GetHDKeyringById(keyring_id)->GetHDAccountsForTesting();
   }
 
   void set_eth_transaction_count_callback(InterceptorCallback cb) {
@@ -3689,12 +3686,9 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
       GetLocalState(), false);
 
   bitcoin_test_rpc_server.SetUpBitcoinRpc({});
-  BitcoinKeyring keyring_84(false);
-  keyring_84.ConstructRootHDKey(*MnemonicToSeed(kMnemonicAbandonAbandon, ""),
-                                "m/84'/0'");
-  BitcoinKeyring keyring_84_test(true);
-  keyring_84_test.ConstructRootHDKey(
-      *MnemonicToSeed(kMnemonicAbandonAbandon, ""), "m/84'/1'");
+  BitcoinKeyring keyring_84(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
+  BitcoinKeyring keyring_84_test(*MnemonicToSeed(kMnemonicAbandonAbandon),
+                                 true);
 
   // Account 0
   bitcoin_test_rpc_server.AddTransactedAddress(

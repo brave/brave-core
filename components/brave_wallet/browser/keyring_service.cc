@@ -42,6 +42,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/switches.h"
@@ -173,29 +174,6 @@ std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
   return "";
 }
 
-std::string GetRootPath(mojom::KeyringId keyring_id) {
-  if (keyring_id == mojom::kDefaultKeyringId) {
-    return "m/44'/60'/0'/0";
-  } else if (keyring_id == mojom::kSolanaKeyringId) {
-    return "m/44'/501'";
-  } else if (keyring_id == mojom::kFilecoinKeyringId) {
-    return "m/44'/461'/0'/0";
-  } else if (keyring_id == mojom::kFilecoinTestnetKeyringId) {
-    return "m/44'/1'/0'/0";
-  } else if (keyring_id == mojom::KeyringId::kBitcoin84) {
-    return "m/84'/0'";
-  } else if (keyring_id == mojom::KeyringId::kBitcoin84Testnet) {
-    return "m/84'/1'";
-  } else if (keyring_id == mojom::KeyringId::kZCashMainnet) {
-    return "m/44'/133'";
-  } else if (keyring_id == mojom::KeyringId::kZCashTestnet) {
-    return "m/44'/1'";
-  }
-
-  NOTREACHED();
-  return "";
-}
-
 std::optional<uint32_t> ExtractAccountIndex(mojom::KeyringId keyring_id,
                                             const std::string& path) {
   CHECK(keyring_id == mojom::KeyringId::kDefault ||
@@ -211,7 +189,7 @@ std::optional<uint32_t> ExtractAccountIndex(mojom::KeyringId keyring_id,
   // For all types remove root path and slash. For Solana also remove '/0'.
 
   auto account_index = std::string_view(path);
-  auto root_path = GetRootPath(keyring_id);
+  auto root_path = HDKeyring::GetRootPath(keyring_id);
   if (!base::StartsWith(account_index, root_path)) {
     return std::nullopt;
   }
@@ -302,7 +280,7 @@ void SerializeHardwareAccounts(const std::string& device_id,
 }
 
 // TODO(apaymyshev): Need to use much lesser value for unit tests where this
-// value is irrelevenat. Otherwise it takes too much time for tests to pass (44
+// value is irrelevant. Otherwise it takes too much time for tests to pass (44
 // seconds for *KeryingService* on my machine).
 int GetPbkdf2Iterations() {
   return KeyringService::GetPbkdf2IterationsForTesting().value_or(
@@ -921,8 +899,8 @@ HDKeyring* KeyringService::ResumeKeyring(mojom::KeyringId keyring_id,
 
   size_t account_no =
       GetDerivedAccountsNumberForKeyring(profile_prefs_, keyring_id);
-  if (account_no) {
-    keyring->AddAccounts(account_no);
+  for (auto i = 0u; i < account_no; ++i) {
+    keyring->AddNewHDAccount();
   }
 
   for (const auto& imported_account_info :
@@ -937,8 +915,12 @@ HDKeyring* KeyringService::ResumeKeyring(mojom::KeyringId keyring_id,
     if (IsFilecoinKeyringId(keyring_id)) {
       auto* filecoin_keyring = static_cast<FilecoinKeyring*>(keyring);
       if (filecoin_keyring) {
-        filecoin_keyring->RestoreFilecoinAccount(
-            *private_key, imported_account_info.account_address);
+        if (auto protocol = FilAddress::GetProtocolFromAddress(
+                imported_account_info.account_address)) {
+          auto imported_address =
+              filecoin_keyring->ImportFilecoinAccount(*private_key, *protocol);
+          DCHECK_EQ(imported_account_info.account_address, imported_address);
+        }
       }
     } else {
       keyring->ImportAccount(*private_key);
@@ -959,7 +941,7 @@ HDKeyring* KeyringService::RestoreKeyring(mojom::KeyringId keyring_id,
   // Try getting existing mnemonic first
   if (CreateEncryptorForKeyring(password, keyring_id)) {
     const std::string current_mnemonic = GetMnemonicForKeyringImpl(keyring_id);
-    // Restore with same mnmonic and same password, resume current keyring
+    // Restore with same mnemonic and same password, resume current keyring
     // Also need to make sure is_legacy_brave_wallet are the same, users might
     // choose the option wrongly and then want to start over with same mnemonic
     // but different is_legacy_brave_wallet value
@@ -1487,14 +1469,13 @@ mojom::AccountInfoPtr KeyringService::AddAccountForKeyring(
     return nullptr;
   }
 
-  auto added_accounts = keyring->AddAccounts(1);
-  if (added_accounts.empty()) {
+  auto added_account = keyring->AddNewHDAccount();
+  if (!added_account) {
     return nullptr;
   }
-  DCHECK_EQ(added_accounts.size(), 1u);
 
-  DerivedAccountInfo derived_account_info(
-      added_accounts[0].account_index, account_name, added_accounts[0].address);
+  DerivedAccountInfo derived_account_info(added_account->account_index,
+                                          account_name, added_account->address);
 
   AddDerivedAccountInfoForKeyring(profile_prefs_, derived_account_info,
                                   keyring_id);
@@ -2158,36 +2139,30 @@ HDKeyring* KeyringService::CreateKeyringInternal(mojom::KeyringId keyring_id,
                     base::Value(is_legacy_brave_wallet), keyring_id);
 
   if (keyring_id == mojom::kDefaultKeyringId) {
-    keyrings_[mojom::kDefaultKeyringId] = std::make_unique<EthereumKeyring>();
+    keyrings_[mojom::kDefaultKeyringId] =
+        std::make_unique<EthereumKeyring>(*seed);
   } else if (IsFilecoinKeyringId(keyring_id)) {
-    keyrings_[keyring_id] =
-        std::make_unique<FilecoinKeyring>(GetFilecoinChainId(keyring_id));
+    keyrings_[keyring_id] = std::make_unique<FilecoinKeyring>(
+        *seed, GetFilecoinChainId(keyring_id));
   } else if (keyring_id == mojom::kSolanaKeyringId) {
-    keyrings_[mojom::kSolanaKeyringId] = std::make_unique<SolanaKeyring>();
+    keyrings_[mojom::kSolanaKeyringId] = std::make_unique<SolanaKeyring>(*seed);
   } else if (keyring_id == mojom::kBitcoinKeyring84Id) {
     keyrings_[mojom::kBitcoinKeyring84Id] =
-        std::make_unique<BitcoinKeyring>(false);
+        std::make_unique<BitcoinKeyring>(*seed, false);
   } else if (keyring_id == mojom::kBitcoinKeyring84TestId) {
     keyrings_[mojom::kBitcoinKeyring84TestId] =
-        std::make_unique<BitcoinKeyring>(true);
+        std::make_unique<BitcoinKeyring>(*seed, true);
   } else if (keyring_id == mojom::KeyringId::kZCashMainnet) {
     keyrings_[mojom::KeyringId::kZCashMainnet] =
-        std::make_unique<ZCashKeyring>(false);
+        std::make_unique<ZCashKeyring>(*seed, false);
   } else if (keyring_id == mojom::KeyringId::kZCashTestnet) {
     keyrings_[mojom::KeyringId::kZCashTestnet] =
-        std::make_unique<ZCashKeyring>(true);
-  }
-  auto* keyring = GetHDKeyringById(keyring_id);
-  DCHECK(keyring) << "No HDKeyring for " << keyring_id;
-  if (keyring) {
-    // TODO(apaymyshev): Keyring creation is always followed by this method
-    // call. Should be moved into ctor.
-    keyring->ConstructRootHDKey(*seed, GetRootPath(keyring_id));
+        std::make_unique<ZCashKeyring>(*seed, true);
   }
 
   UpdateLastUnlockPref(local_state_);
 
-  return keyring;
+  return GetHDKeyringById(keyring_id);
 }
 
 void KeyringService::AddObserver(

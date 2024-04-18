@@ -375,6 +375,8 @@ source_set("hd_keyring") {
     "filecoin_keyring.h",
     "hd_keyring.cc",
     "hd_keyring.h",
+    "secp256k1_hd_keyring.cc",
+    "secp256k1_hd_keyring.h",
     "solana_keyring.cc",
     "solana_keyring.h",
     "zcash/zcash_keyring.cc",
