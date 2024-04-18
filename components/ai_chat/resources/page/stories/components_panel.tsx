@@ -259,14 +259,21 @@ export default {
       const setInputText = (text: string) => {
         setInputText_(text)
 
-        if (selectedActionType === undefined && text.startsWith('/')) {
+        if (text.startsWith('/')) {
           setIsToolsMenuOpen(true)
+
+          // effectively remove the leading slash before comparing it to the action labels.
+          const searchText = text.substring(1).toLocaleLowerCase()
+
           const filteredList = ACTIONS_LIST.map(category => ({
             ...category,
-            actions: category.actions.filter(action =>
-                action.label.toLocaleLowerCase().includes(text.substring(1).toLocaleLowerCase())
-            )
+            actions: category.actions.filter(action => {
+              // actionType with -1 is a subcategory so we skip
+              if (action.type === -1) return
+              return action.label.toLocaleLowerCase().includes(searchText)
+            })
           })).filter(category => category.actions.length > 0)
+
           setActionsList(filteredList)
         } else {
           setIsToolsMenuOpen(false)
@@ -274,7 +281,7 @@ export default {
         }
       }
 
-      const maybeSelectFirstActionType = () => {
+      const isUserSelectingActionType = () => {
         if (
           isToolsMenuOpen &&
           inputText.startsWith('/') &&
@@ -283,7 +290,14 @@ export default {
           setSelectedActionType(actionsList[0].actions[0].type)
           setInputText('')
           setIsToolsMenuOpen(false)
+          return true
         }
+
+        return false
+      }
+
+      const submitInputTextToAPI = () => {
+        isUserSelectingActionType()
       }
 
       const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
@@ -325,7 +339,7 @@ export default {
         isToolsMenuOpen,
         setIsToolsMenuOpen,
         actionsList,
-        maybeSelectFirstActionType,
+        submitInputTextToAPI,
       }
 
       return (

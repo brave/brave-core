@@ -53,7 +53,6 @@ export interface AIChatContext {
   resetSelectedActionType: () => void
   handleActionTypeClick: (actionType: mojom.ActionType) => void
   setIsToolsMenuOpen: (isOpen: boolean) => void
-  maybeSelectFirstActionType: () => void
 }
 
 export const defaultContext: AIChatContext = {
@@ -102,7 +101,6 @@ export const defaultContext: AIChatContext = {
   resetSelectedActionType: () => {},
   handleActionTypeClick: () => {},
   setIsToolsMenuOpen: () => {},
-  maybeSelectFirstActionType: () => {},
 }
 
 export default React.createContext<AIChatContext>(defaultContext)

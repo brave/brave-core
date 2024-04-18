@@ -255,14 +255,21 @@ function DataContextProvider (props: DataContextProviderProps) {
   const setInputText = (text: string) => {
     setInputText_(text)
 
-    if (selectedActionType === undefined && text.startsWith('/')) {
+    if (text.startsWith('/')) {
       setIsToolsMenuOpen(true)
+
+      // effectively remove the leading slash before comparing it to the action labels.
+      const searchText = text.substring(1).toLocaleLowerCase()
+
       const filteredList = ACTIONS_LIST.map(category => ({
         ...category,
-        actions: category.actions.filter(action =>
-            action.label.toLocaleLowerCase().includes(text.substring(1).toLocaleLowerCase())
-        )
+        actions: category.actions.filter(action => {
+          // actionType with -1 is a subcategory so we skip
+          if (action.type === -1) return
+          return action.label.toLocaleLowerCase().includes(searchText)
+        })
       })).filter(category => category.actions.length > 0)
+
       setActionsList(filteredList)
     } else {
       setIsToolsMenuOpen(false)
@@ -292,20 +299,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     }
   }
 
-  const submitInputTextToAPI = () => {
-    if (!inputText) return
-    if (isCharLimitExceeded) return
-    if (shouldDisableUserInput) return
-
-    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(
-      inputText,
-      selectedActionType ?? null
-    )
-    setInputText('')
-    resetSelectedActionType()
-  }
-
-  const maybeSelectFirstActionType = () => {
+  const isUserSelectingActionType = () => {
     if (
       isToolsMenuOpen &&
       inputText.startsWith('/') &&
@@ -314,7 +308,24 @@ function DataContextProvider (props: DataContextProviderProps) {
       setSelectedActionType(actionsList[0].actions[0].type)
       setInputText('')
       setIsToolsMenuOpen(false)
+      return true
     }
+
+    return false
+  }
+
+  const submitInputTextToAPI = () => {
+    if (!inputText) return
+    if (isCharLimitExceeded) return
+    if (shouldDisableUserInput) return
+    if (isUserSelectingActionType()) return
+
+    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(
+      inputText,
+      selectedActionType ?? null
+    )
+    setInputText('')
+    resetSelectedActionType()
   }
 
   const initialiseForTargetTab = async () => {
@@ -330,6 +341,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     getCurrentAPIError()
     getCanShowPremiumPrompt()
     getShouldSendPageContents()
+    resetSelectedActionType()
   }
 
   const isMobile = React.useMemo(() => loadTimeData.getBoolean('isMobile'), [])
@@ -426,7 +438,6 @@ function DataContextProvider (props: DataContextProviderProps) {
     resetSelectedActionType,
     handleActionTypeClick,
     setIsToolsMenuOpen,
-    maybeSelectFirstActionType,
   }
 
   return (

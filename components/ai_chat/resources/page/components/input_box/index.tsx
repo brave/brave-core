@@ -41,10 +41,6 @@ function InputBox() {
       e.preventDefault()
     }
 
-    if (e.key === 'Enter') {
-      context.maybeSelectFirstActionType()
-    }
-
     if (
       e.key === 'Backspace' &&
       context.inputText === '' &&
@@ -96,8 +92,8 @@ function InputBox() {
           {context.inputTextCharCountDisplay}
         </div>
       )}
-      <div className={styles.actions}>
-        <div>
+      <div className={styles.toolsContainer}>
+        <div className={styles.tools}>
           <Button
             kind='plain-faint'
             onClick={() => context.setIsToolsMenuOpen(!context.isToolsMenuOpen)}

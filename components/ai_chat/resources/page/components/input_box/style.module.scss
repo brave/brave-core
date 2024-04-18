@@ -101,12 +101,16 @@
   color: var(--leo-color-systemfeedback-error-icon);
 }
 
-.actions {
+.toolsContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
   padding: 0 var(--leo-spacing-xl);
+}
+
+.tools {
+  display: flex;
+  gap: 10px;
 }
 
 .actionsLabelContainer {
