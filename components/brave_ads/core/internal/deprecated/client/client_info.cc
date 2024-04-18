@@ -58,18 +58,6 @@ base::Value::Dict ClientInfo::ToValue() const {
   dict.Set("purchaseIntentSignalHistory",
            std::move(purchase_intent_signal_history_dict));
 
-  base::Value::Dict seen_advertisers_dict;
-  for (const auto& [ad_type, advertisers] : seen_advertisers) {
-    base::Value::Dict seen_advertiser_dict;
-    for (const auto& [advertiser_id, seen_advertiser] : advertisers) {
-      seen_advertiser_dict.Set(advertiser_id, seen_advertiser);
-    }
-
-    seen_advertisers_dict.Set(ToString(ad_type),
-                              std::move(seen_advertiser_dict));
-  }
-  dict.Set("seenAdvertisers", std::move(seen_advertisers_dict));
-
   base::Value::List probabilities_history_list;
   for (const auto& item : text_classification_probabilities) {
     base::Value::List probabilities_list;
@@ -125,21 +113,6 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
       }
 
       purchase_intent_signal_history.emplace(segment, histories);
-    }
-  }
-
-  if (const auto* const value = dict.FindDict("seenAdvertisers")) {
-    for (const auto [ad_type, advertisers] : *value) {
-      if (!advertisers.is_dict()) {
-        continue;
-      }
-
-      for (const auto [advertiser_id, seen_advertiser] :
-           advertisers.GetDict()) {
-        CHECK(seen_advertiser.is_bool());
-        seen_advertisers[ToAdType(ad_type)][advertiser_id] =
-            seen_advertiser.GetBool();
-      }
     }
   }
 
