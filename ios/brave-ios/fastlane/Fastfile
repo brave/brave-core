@@ -98,7 +98,7 @@ platform :ios do
     testflight_build({gymOverrides: gymOverrides})
   end
 
-  desc "Uploads a build to TestFlight"
+  desc "Uploads a build to TestFlight. Deprecated, use upload_build and distribute_build"
   lane :upload do |options|
     api_key = app_store_connect_api_key()
     pilotParams = {
@@ -108,6 +108,39 @@ platform :ios do
       skip_waiting_for_build_processing: false,
       reject_build_waiting_for_review: true,
       ipa: "build/Client.ipa",
+      groups: ["Brave Internal"]
+    }
+    if options[:public] && options[:channel].downcase == "beta"
+      pilotParams[:groups] << "Public Beta"
+    end
+    pilot(pilotParams)
+  end
+
+  desc "Uploads a build to TestFlight"
+  lane :upload_build do |options|
+    api_key = app_store_connect_api_key()
+    pilotParams = {
+      api_key: api_key,
+      skip_submission: true,
+      ipa: "build/Client.ipa",
+    }
+    pilot(pilotParams)
+  end
+
+  desc "Distributes a build to external testers"
+  lane :distribute_build do |options|
+    api_key = app_store_connect_api_key()
+    app_version = get_ipa_info_plist_value(ipa: "build/Client.ipa", key: "CFBundleShortVersionString")
+    build_number = get_ipa_info_plist_value(ipa: "build/Client.ipa", key: "CFBundleVersion")
+    pilotParams = {
+      ipa: "build/Client.ipa", # Needed to auto set app_identifier/app_platform
+      api_key: api_key,
+      distribute_only: true,
+      app_version: app_version,
+      build_number: build_number,
+      changelog: "Bug fixes & improvements",
+      distribute_external: true,
+      reject_build_waiting_for_review: true,
       groups: ["Brave Internal"]
     }
     if options[:public] && options[:channel].downcase == "beta"
