@@ -33,7 +33,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
         trigger:
           "Triggered by uses of the native Brave wallet."
         data:
-          "Ethereum JSON RPC response bodies."
+          "Meld JSON RPC response bodies."
         destination: WEBSITE
       }
       policy {
@@ -56,6 +56,7 @@ base::flat_map<std::string, std::string> MakeMeldApiHeaders() {
   meld_api_key = base::StrCat({"BASIC", " ", meld_api_key});
   request_headers["Authorization"] = std::move(meld_api_key);
   request_headers["accept"] = "application/json";
+  request_headers[brave_wallet::kMeldRpcVersionHeader] = brave_wallet::kMeldRpcVersion;
 
   return request_headers;
 }
