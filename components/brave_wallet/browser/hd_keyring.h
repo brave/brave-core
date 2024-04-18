@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -46,9 +45,6 @@ class HDKeyring {
 
   virtual std::vector<std::string> GetHDAccountsForTesting() const = 0;
   virtual std::vector<std::string> GetImportedAccountsForTesting() const = 0;
-
- private:
-  FRIEND_TEST_ALL_PREFIXES(BitcoinKeyringUnitTest, TestVectors);
 };
 
 }  // namespace brave_wallet

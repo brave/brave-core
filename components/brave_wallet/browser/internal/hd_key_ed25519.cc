@@ -89,7 +89,7 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveChildFromPath(
   return std::make_unique<HDKeyEd25519>(path, std::move(child_private_key));
 }
 
-std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg) {
+std::vector<uint8_t> HDKeyEd25519::Sign(base::span<const uint8_t> msg) {
   auto signature_result = private_key_->unwrap().sign(
       rust::Slice<const uint8_t>{msg.data(), msg.size()});
   if (!signature_result->is_ok()) {
@@ -100,8 +100,8 @@ std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg) {
   return std::vector<uint8_t>(signature_bytes.begin(), signature_bytes.end());
 }
 
-bool HDKeyEd25519::VerifyForTesting(const std::vector<uint8_t>& msg,
-                                    const std::vector<uint8_t>& sig) {
+bool HDKeyEd25519::VerifyForTesting(base::span<const uint8_t> msg,
+                                    base::span<const uint8_t> sig) {
   auto verification_result = private_key_->unwrap().verify(
       rust::Slice<const uint8_t>{msg.data(), msg.size()},
       rust::Slice<const uint8_t>{sig.data(), sig.size()});

@@ -64,9 +64,9 @@ class HDKey {
   std::vector<uint8_t> GetPublicKeyFromX25519_XSalsa20_Poly1305() const;
   std::optional<std::vector<uint8_t>> DecryptCipherFromX25519_XSalsa20_Poly1305(
       const std::string& version,
-      const std::vector<uint8_t>& nonce,
-      const std::vector<uint8_t>& ephemeral_public_key,
-      const std::vector<uint8_t>& ciphertext) const;
+      base::span<const uint8_t> nonce,
+      base::span<const uint8_t> ephemeral_public_key,
+      base::span<const uint8_t> ciphertext) const;
 
   // index should be 0 to 2^31-1
   // If anything failed, nullptr will be returned.
@@ -88,7 +88,7 @@ class HDKey {
   // Sign the message using private key. The msg has to be exactly 32 bytes
   // Return 64 bytes ECDSA signature when succeed, otherwise empty vector
   // if recid is not null, recovery id will be filled.
-  std::vector<uint8_t> SignCompact(const std::vector<uint8_t>& msg, int* recid);
+  std::vector<uint8_t> SignCompact(base::span<const uint8_t> msg, int* recid);
 
   // Sign the message using private key and return it in DER format.
   std::optional<std::vector<uint8_t>> SignDer(
@@ -97,15 +97,15 @@ class HDKey {
   // Verify the ECDSA signature using public key. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return true when successfully verified, false otherwise.
-  bool VerifyForTesting(const std::vector<uint8_t>& msg,
-                        const std::vector<uint8_t>& sig);
+  bool VerifyForTesting(base::span<const uint8_t> msg,
+                        base::span<const uint8_t> sig);
 
   // Recover public key from signature and message. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return valid public key when succeed, all zero vector otherwise
   std::vector<uint8_t> RecoverCompact(bool compressed,
-                                      const std::vector<uint8_t>& msg,
-                                      const std::vector<uint8_t>& sig,
+                                      base::span<const uint8_t> msg,
+                                      base::span<const uint8_t> sig,
                                       int recid);
 
  private:

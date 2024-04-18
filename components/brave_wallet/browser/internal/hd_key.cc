@@ -462,9 +462,9 @@ std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
 std::optional<std::vector<uint8_t>>
 HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
     const std::string& version,
-    const std::vector<uint8_t>& nonce,
-    const std::vector<uint8_t>& ephemeral_public_key,
-    const std::vector<uint8_t>& ciphertext) const {
+    base::span<const uint8_t> nonce,
+    base::span<const uint8_t> ephemeral_public_key,
+    base::span<const uint8_t> ciphertext) const {
   // Only x25519-xsalsa20-poly1305 is supported by MM at the time of writing
   if (version != "x25519-xsalsa20-poly1305") {
     return std::nullopt;
@@ -481,7 +481,7 @@ HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
     return std::nullopt;
   }
 
-  std::vector<uint8_t> padded_ciphertext = ciphertext;
+  std::vector<uint8_t> padded_ciphertext(ciphertext.begin(), ciphertext.end());
   padded_ciphertext.insert(padded_ciphertext.begin(), crypto_box_BOXZEROBYTES,
                            0);
   std::vector<uint8_t> padded_plaintext(padded_ciphertext.size());
@@ -661,7 +661,7 @@ std::unique_ptr<HDKey> HDKey::DeriveChildFromPath(const std::string& path) {
   return hd_key;
 }
 
-std::vector<uint8_t> HDKey::SignCompact(const std::vector<uint8_t>& msg,
+std::vector<uint8_t> HDKey::SignCompact(base::span<const uint8_t> msg,
                                         int* recid) {
   std::vector<uint8_t> sig(kCompactSignatureSize);
   if (msg.size() != 32) {
@@ -747,8 +747,8 @@ std::optional<std::vector<uint8_t>> HDKey::SignDer(
   return sig_der;
 }
 
-bool HDKey::VerifyForTesting(const std::vector<uint8_t>& msg,
-                             const std::vector<uint8_t>& sig) {
+bool HDKey::VerifyForTesting(base::span<const uint8_t> msg,
+                             base::span<const uint8_t> sig) {
   if (msg.size() != 32 || sig.size() != kCompactSignatureSize) {
     LOG(ERROR) << __func__ << ": message or signature length is invalid";
     return false;
@@ -776,8 +776,8 @@ bool HDKey::VerifyForTesting(const std::vector<uint8_t>& msg,
 }
 
 std::vector<uint8_t> HDKey::RecoverCompact(bool compressed,
-                                           const std::vector<uint8_t>& msg,
-                                           const std::vector<uint8_t>& sig,
+                                           base::span<const uint8_t> msg,
+                                           base::span<const uint8_t> sig,
                                            int recid) {
   size_t public_key_len = compressed ? 33 : 65;
   std::vector<uint8_t> public_key(public_key_len);

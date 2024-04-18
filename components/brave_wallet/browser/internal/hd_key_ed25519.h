@@ -36,9 +36,9 @@ class HDKeyEd25519 {
 
   // If path contains normal index, nullptr will be returned
   std::unique_ptr<HDKeyEd25519> DeriveChildFromPath(const std::string& path);
-  std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg);
-  bool VerifyForTesting(const std::vector<uint8_t>& msg,
-                        const std::vector<uint8_t>& sig);
+  std::vector<uint8_t> Sign(base::span<const uint8_t> msg);
+  bool VerifyForTesting(base::span<const uint8_t> msg,
+                        base::span<const uint8_t> sig);
 
   std::vector<uint8_t> GetPrivateKeyBytes() const;
   std::vector<uint8_t> GetPublicKeyBytes() const;
