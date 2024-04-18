@@ -57,8 +57,5 @@ source_set("headers") {
     "//url",
   ]
 
-  public_deps = [
-    "//brave/components/brave_ads/core/mojom",
-    "//brave/components/brave_federated/public/interfaces",
-  ]
+  public_deps = [ "//brave/components/brave_ads/core/mojom" ]
 }

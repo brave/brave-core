@@ -13,8 +13,5 @@ mojom("interfaces") {
     "//url/mojom:url_mojom_gurl",
   ]
 
-  deps = [
-    "//brave/components/brave_ads/core/mojom",
-    "//brave/components/brave_federated/public/interfaces",
-  ]
+  deps = [ "//brave/components/brave_ads/core/mojom" ]
 }

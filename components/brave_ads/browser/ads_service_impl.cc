@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -51,7 +50,6 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
 #include "brave/components/brave_ads/resources/grit/bat_ads_resources.h"
-#include "brave/components/brave_federated/data_stores/async_data_store.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
@@ -217,8 +215,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<DeviceId> device_id,
     std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
     history::HistoryService* history_service,
-    brave_rewards::RewardsService* rewards_service,
-    brave_federated::AsyncDataStore* notification_ad_timing_data_store)
+    brave_rewards::RewardsService* rewards_service)
     : profile_(profile),
       local_state_(local_state),
       history_service_(history_service),
@@ -232,7 +229,6 @@ AdsServiceImpl::AdsServiceImpl(
       base_path_(profile_->GetPath().AppendASCII("ads_service")),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
       rewards_service_(rewards_service),
-      notification_ad_timing_data_store_(notification_ad_timing_data_store),
       bat_ads_client_associated_receiver_(this) {
   CHECK(profile_);
   CHECK(local_state_);
@@ -1713,22 +1709,6 @@ void AdsServiceImpl::RecordP2AEvents(const std::vector<std::string>& events) {
     RecordAndEmitP2AHistogramName(profile_->GetPrefs(),
                                   /*name*/ event);
   }
-}
-
-void AdsServiceImpl::AddFederatedLearningPredictorTrainingSample(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
-  if (!notification_ad_timing_data_store_) {
-    return;
-  }
-
-  notification_ad_timing_data_store_->AddTrainingInstance(
-      std::move(training_sample), base::BindOnce([](const bool success) {
-        if (!success) {
-          return VLOG(6) << "Failed to add training sample";
-        }
-
-        VLOG(6) << "Successfully added training sample";
-      }));
 }
 
 void AdsServiceImpl::GetProfilePref(const std::string& path,

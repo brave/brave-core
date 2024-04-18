@@ -17,9 +17,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable_util.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -207,8 +204,6 @@ void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kViewedImpression);
-
-  SetNotificationAdServedAtPredictorVariable(base::Time::Now());
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
@@ -229,10 +224,6 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
 
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kClicked});
-
-  SetNotificationAdEventPredictorVariable(
-      mojom::NotificationAdEventType::kClicked);
-  PredictorsManager::GetInstance().AddTrainingSample();
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
@@ -251,10 +242,6 @@ void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
 
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kDismissed});
-
-  SetNotificationAdEventPredictorVariable(
-      mojom::NotificationAdEventType::kDismissed);
-  PredictorsManager::GetInstance().AddTrainingSample();
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(
@@ -268,10 +255,6 @@ void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(
 
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
-
-  SetNotificationAdEventPredictorVariable(
-      mojom::NotificationAdEventType::kTimedOut);
-  PredictorsManager::GetInstance().AddTrainingSample();
 }
 
 }  // namespace brave_ads

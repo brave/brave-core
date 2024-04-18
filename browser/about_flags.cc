@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
-#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
@@ -278,18 +277,6 @@
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeedUpdate),      \
       })
-
-#define BRAVE_FEDERATED_FEATURE_ENTRIES                                        \
-  EXPAND_FEATURE_ENTRIES({                                                     \
-      "brave-federated",                                                       \
-      "Enables local data collection for notification ad timing "              \
-      "(brave-federated)",                                                     \
-      "Starts local collection for notification ad timing data. This data is " \
-      "stored locally and automatically erased after one month. No data "      \
-      "leaves the client.",                                                    \
-      kOsDesktop,                                                              \
-      FEATURE_VALUE_TYPE(brave_federated::features::kFederatedLearning),       \
-  })
 
 #define CRYPTO_WALLETS_FEATURE_ENTRIES                                      \
   IF_BUILDFLAG(                                                             \
@@ -1020,7 +1007,6 @@
   SPEEDREADER_FEATURE_ENTRIES                                                  \
   REQUEST_OTR_FEATURE_ENTRIES                                                  \
   BRAVE_MODULE_FILENAME_PATCH                                                  \
-  BRAVE_FEDERATED_FEATURE_ENTRIES                                              \
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
