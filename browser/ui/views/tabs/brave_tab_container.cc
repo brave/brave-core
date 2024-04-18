@@ -547,6 +547,11 @@ void BraveTabContainer::HandleDragExited() {
 
 void BraveTabContainer::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
   SchedulePaint();
+
+  // This cancels StartInsertTabAnimation() triggered for the new tab to be
+  // paired in tile.
+  // TODO(sko) Can we animate this naturally on vertical tabs?
+  CompleteAnimationAndLayout();
 }
 
 void BraveTabContainer::OnDidBreakTile(const SplitViewBrowserData::Tile& tile) {

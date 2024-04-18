@@ -159,7 +159,9 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
   for (const TabSlotView* view : views) {
     auto width = tab_strip->GetDragContext()->GetTabDragAreaWidth();
     const int height = view->height();
-    if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab) {
+    const bool is_slot_tab =
+        view->GetTabSlotViewType() == TabSlotView::ViewType::kTab;
+    if (is_slot_tab) {
       if (!is_vertical_tabs_floating &&
           static_cast<const Tab*>(view)->data().pinned) {
         // In case it's a pinned tab, lay out them horizontally
@@ -174,9 +176,24 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
         x = BraveTabGroupHeader::kPaddingForGroup;
         width -= x * 2;
       }
+
+      // If a tab is tiled, we should lay out a pair of tabs in a row.
+      auto tab_index = tab_strip->GetModelIndexOf(view);
+      DCHECK(tab_index);
+      auto tile = static_cast<BraveTabStrip*>(tab_strip)->GetTiledStateForTab(
+          *tab_index);
+      if (tile != TabTiledState::kNone) {
+        width /= 2;
+        if (tile == TabTiledState::kSecond) {
+          x += width;
+        }
+        bounds.emplace_back(x, y, width, height);
+        continue;
+      }
     }
     bounds.emplace_back(x, y, width, height);
-    // unpinned dragged tabs are laid out vertically
+
+    // unpinned dragged tabs are laid out vertically.
     y += height + kVerticalTabsSpacing;
   }
   return bounds;

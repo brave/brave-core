@@ -34,6 +34,7 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
+#include "chrome/browser/ui/views/tabs/tab_slot_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
@@ -161,7 +162,23 @@ void BraveTabStrip::MaybeStartDrag(
     }
   }
 
-  TabStrip::MaybeStartDrag(source, event, original_selection);
+  auto new_selection = original_selection;
+  if (source->GetTabSlotViewType() == TabSlotView::ViewType::kTab) {
+    auto* tab = static_cast<Tab*>(source);
+    if (auto tile = GetTileForTab(tab)) {
+      // Make a pair of tabs in a tile selected together so that they move
+      // together during drag and drop.
+      auto* tab_strip_model = controller_->GetBrowser()->tab_strip_model();
+      auto index = tab_strip_model->GetIndexOfTab(
+          IsFirstTabInTile(tab) ? tile->second : tile->first);
+      DCHECK_NE(index, TabStripModel::kNoTab);
+      new_selection.AddIndexToSelection(index);
+      tab_strip_model->SetSelectionFromModel(new_selection);
+      DCHECK(IsTabSelected(tab_at(index)));
+    }
+  }
+
+  TabStrip::MaybeStartDrag(source, event, new_selection);
 }
 
 void BraveTabStrip::AddedToWidget() {
