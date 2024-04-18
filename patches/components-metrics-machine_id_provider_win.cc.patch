@@ -1,8 +1,8 @@
 diff --git a/components/metrics/machine_id_provider_win.cc b/components/metrics/machine_id_provider_win.cc
-index c92ad1f2eabd04b5f4219e480b4c784f4c88c1e0..ddbf106071876087eb2c01128513311f99c8fcde 100644
+index c7c96ff87563bb673efd71f80d157a6a3c808b00..00d25b6027d842b2c7a88709030e20ad08e8ae1e 100644
 --- a/components/metrics/machine_id_provider_win.cc
 +++ b/components/metrics/machine_id_provider_win.cc
-@@ -19,7 +19,7 @@ namespace metrics {
+@@ -20,7 +20,7 @@ namespace metrics {
  
  // static
  bool MachineIdProvider::HasId() {

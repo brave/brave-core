@@ -1,8 +1,8 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index a92b70f30efd943414509c6a958881d063683a33..28b7696630dba2d4813ab03f478637245a8233de 100644
+index fbece51ef5c77767e968c7fcc56e5a537f0a1a8b..9289cf0a7f6085cb0e3da847ace4b5ab045bee8f 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
-@@ -45,6 +45,7 @@ js_files = [
+@@ -44,6 +44,7 @@ js_files = [
  ]
  
  if (is_chromeos_ash) {
@@ -10,7 +10,7 @@ index a92b70f30efd943414509c6a958881d063683a33..28b7696630dba2d4813ab03f47863724
    js_files += [
      "iron-dropdown/iron-dropdown.js",
      "iron-dropdown/iron-dropdown-scroll-manager.js",
-@@ -173,6 +174,7 @@ ts_library("library") {
+@@ -171,6 +172,7 @@ ts_library("library") {
    ]
  
    if (is_chromeos_ash) {

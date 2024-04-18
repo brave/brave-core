@@ -1,8 +1,8 @@
 diff --git a/chrome/services/printing/public/mojom/BUILD.gn b/chrome/services/printing/public/mojom/BUILD.gn
-index 86aa38b6343172871d18ecd8f7ba6302b7d9aacf..c940c1843c81473df3e9c52ff36be42152c49cb6 100644
+index 927bbc4d9c7e0aaaeb1bb6e206069e84ac72d3f6..6f8901a941bba19d6828f2485b7ea6ee659abdaa 100644
 --- a/chrome/services/printing/public/mojom/BUILD.gn
 +++ b/chrome/services/printing/public/mojom/BUILD.gn
-@@ -25,6 +25,7 @@ mojom("mojom") {
+@@ -22,6 +22,7 @@ mojom("mojom") {
      "//url/mojom:url_mojom_gurl",
    ]
  

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/gcapi/gcapi.cc b/chrome/installer/gcapi/gcapi.cc
-index e776cd9cfdbde95309660be2c3e0d7a9a5dc8e63..f3a477ca33343552e089ba48ffa3bf5e6cc04b76 100644
+index 1daa771421a570a03a3cdeb3d04923a5364c0e59..b73f67226ef541ca2329f23cb086db102546b56a 100644
 --- a/chrome/installer/gcapi/gcapi.cc
 +++ b/chrome/installer/gcapi/gcapi.cc
 @@ -58,6 +58,16 @@ using Microsoft::WRL::ComPtr;

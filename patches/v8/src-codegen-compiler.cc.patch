@@ -1,5 +1,5 @@
 diff --git a/src/codegen/compiler.cc b/src/codegen/compiler.cc
-index a2984d393169a3ac2c23630504fdd955912336de..7e9b29dda86f10c9f3a4993c51cf37193ecdf3c8 100644
+index afb74deec375824e5d64830879ef7e09b021a3bc..e1a49e3342c317807d969e71bd45aee6fda8c1c6 100644
 --- a/src/codegen/compiler.cc
 +++ b/src/codegen/compiler.cc
 @@ -3013,6 +3013,7 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(

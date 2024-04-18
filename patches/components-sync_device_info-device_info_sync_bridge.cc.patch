@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index 9a52e5ad9dc0cbf4b16461d368b53f5c98fd9e51..722f475de6ee3b83ddcc1f288d11323250598927 100644
+index 6355ada2e67908671558c8fe748cd906a12b6e6c..058db147e114f404ed10a75f13f1c25354489a38 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
 @@ -273,6 +273,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(

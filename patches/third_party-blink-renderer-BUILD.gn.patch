@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/BUILD.gn b/third_party/blink/renderer/BUILD.gn
-index bd778536e1541f71763791bc1e275a89f5997a7a..cdb66873dbb8c845cdf9a76016ff5588d53c574d 100644
+index 443b3406d8c3f08d7e8ba6855a64433d5b8b348a..29c6c9f6f2dd3f2a31da3ad0ee01fd465dd277c0 100644
 --- a/third_party/blink/renderer/BUILD.gn
 +++ b/third_party/blink/renderer/BUILD.gn
-@@ -9,6 +9,7 @@ if (is_clang) {
+@@ -10,6 +10,7 @@ if (is_clang) {
  }
  
  visibility = [ "//third_party/blink/*" ]

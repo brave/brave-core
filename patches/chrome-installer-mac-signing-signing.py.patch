@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index 1310932b4d81ea4550c59d619626ba4c0a27b4a1..b521950a42c52620d0de8ac823928878f11aa9b8 100644
+index af124ba7e693a789194342c5f504b3cb030e8ea7..c35e7e177ec7a62a0d3975bb8775ce0bed7163c7 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
-@@ -15,7 +15,7 @@ from signing import commands, invoker
+@@ -23,7 +23,7 @@ class InvalidAppGeometryException(ValueError):
  class Invoker(invoker.Base):
  
      def codesign(self, config, product, path, replace_existing_signature=False):

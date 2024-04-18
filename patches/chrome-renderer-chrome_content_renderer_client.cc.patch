@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index bf59360fb366d83c29a49f95201be8638bc5d01c..215973fb4f15f55a25be5f97652ba02d8e900629 100644
+index 620f0ebad27d33315ccb4e73f323f844daa18653..62a57524aaf99b0cf89b0ad5fe2321fff8be881a 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -606,7 +606,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -604,7 +604,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
        ChromeExtensionsRendererClient::GetInstance()->extension_dispatcher());
  #endif
    content_settings::ContentSettingsAgentImpl* content_settings =
@@ -11,7 +11,7 @@ index bf59360fb366d83c29a49f95201be8638bc5d01c..215973fb4f15f55a25be5f97652ba02d
            render_frame, should_allow_for_content_settings,
            std::move(content_settings_delegate));
    if (chrome_observer_.get()) {
-@@ -791,6 +791,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -787,6 +787,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
    MultilineDetector::InstallIfNecessary(render_frame);
  #endif
