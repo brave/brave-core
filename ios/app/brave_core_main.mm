@@ -75,6 +75,7 @@
 #include "ios/chrome/browser/sync/model/session_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/chrome/browser/webui/ui_bundled/chrome_web_ui_ios_controller_factory.h"
+#include "ios/chrome/common/channel_info.h"
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
@@ -482,12 +483,11 @@ static bool CustomLogHandler(int severity,
   return _ipfsAPI;
 }
 
-- (void)initializeP3AServiceForChannel:(NSString*)channel
-                         weekOfInstall:(NSString*)weekOfInstall {
+- (void)initializeP3AService:(NSString*)weekOfInstall {
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   _p3a_service = base::MakeRefCounted<p3a::P3AService>(
-      *GetApplicationContext()->GetLocalState(),
-      base::SysNSStringToUTF8(channel), base::SysNSStringToUTF8(weekOfInstall),
+      *GetApplicationContext()->GetLocalState(), ::GetChannel(),
+      base::SysNSStringToUTF8(weekOfInstall),
       p3a::P3AConfig::LoadFromCommandLine());
   _p3a_service->InitCallbacks();
   _p3a_service->Init(GetApplicationContext()->GetSharedURLLoaderFactory());

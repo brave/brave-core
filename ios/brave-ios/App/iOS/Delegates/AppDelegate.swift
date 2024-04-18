@@ -265,10 +265,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       ?? Preferences.DAU.installationDate.value?.mondayOfCurrentWeekFormatted,
       AppConstants.isOfficialBuild
     {
-      AppState.shared.braveCore.initializeP3AService(
-        forChannel: AppConstants.buildChannel.serverChannelParam,
-        weekOfInstall: weekOfInstall
-      )
+      AppState.shared.braveCore.initializeP3AService(weekOfInstall)
     }
 
     Task(priority: .low) {
