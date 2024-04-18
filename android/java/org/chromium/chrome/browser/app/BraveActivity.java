@@ -992,8 +992,10 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         // Make sure this option is disabled
-        if (PreloadPagesSettingsBridge.getState() != PreloadPagesState.NO_PRELOADING) {
-            PreloadPagesSettingsBridge.setState(PreloadPagesState.NO_PRELOADING);
+        if (PreloadPagesSettingsBridge.getState(getCurrentProfile())
+                != PreloadPagesState.NO_PRELOADING) {
+            PreloadPagesSettingsBridge.setState(
+                    getCurrentProfile(), PreloadPagesState.NO_PRELOADING);
         }
 
         if (BraveRewardsHelper.hasRewardsEnvChange()) {
