@@ -10,6 +10,7 @@
 #include "base/logging.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/leo/colors.h"
+#include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_result_view.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
@@ -46,7 +47,6 @@
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
-#include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
 
@@ -61,6 +61,9 @@ constexpr int kBannerTypeMargin = 12;
 constexpr int kBannerTypeMarginBottom = 4;
 constexpr int kBannerTypeRadius = 8;
 constexpr int kMaxBannerDescLines = 5;
+constexpr int kBannerTypeCloseButtonSize = 24;
+constexpr int kBannerTypeCloseButtonMargin = 8;
+constexpr int kBannerTypeContentsMargin = 13;
 
 gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
   gfx::FontList font_list;
@@ -252,7 +255,7 @@ BraveSearchConversionPromotionView::BraveSearchConversionPromotionView(
           base::Unretained(this))),
       local_state_(local_state),
       profile_prefs_(profile_prefs) {
-  SetLayoutManager(std::make_unique<views::FlexLayout>());
+  SetLayoutManager(std::make_unique<views::FillLayout>());
   mouse_enter_exit_handler_.ObserveMouseEnterExitOn(this);
 }
 
@@ -275,7 +278,6 @@ void BraveSearchConversionPromotionView::SetTypeAndInput(
 
   type_ = type;
   input_ = input;
-  selected_ = false;
 
   ConfigureForBannerType();
   UpdateState();
@@ -331,9 +333,10 @@ void BraveSearchConversionPromotionView::UpdateState() {
                         kBannerTypeMarginBottom, kBannerTypeMargin);
   // By adjusting only container's margin when border thickness is changed,
   // container's overall bounds is not changed regardless of selected state.
-  if (is_selected_or_hovered)
+  if (is_selected_or_hovered) {
     container_margin += gfx::Insets(-1);
-  banner_type_container_->SetProperty(views::kMarginsKey, container_margin);
+  }
+  SetBorder(views::CreateEmptyBorder(container_margin));
 
   SetBackground(views::CreateSolidBackground(
       GetColorProvider()->GetColor(kColorOmniboxResultsBackground)));
@@ -348,14 +351,6 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
 
   banner_type_container_ =
       AddChildView(std::make_unique<BannerTypeContainer>());
-  banner_type_container_->SetProperty(
-      views::kMarginsKey,
-      gfx::Insets::TLBR(kBannerTypeMargin, kBannerTypeMargin,
-                        kBannerTypeMarginBottom, kBannerTypeMargin));
-  banner_type_container_->SetProperty(
-      views::kFlexBehaviorKey,
-      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
-                               views::MaximumFlexSizeRule::kUnbounded));
 
   banner_type_container_
       ->SetLayoutManager(std::make_unique<views::FlexLayout>())
@@ -372,8 +367,9 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                views::MaximumFlexSizeRule::kUnbounded)
           .WithOrder(2));
-  banner_contents->SetProperty(views::kMarginsKey,
-                               gfx::Insets::TLBR(13, 13, 0, 0));
+  banner_contents->SetProperty(
+      views::kMarginsKey, gfx::Insets::TLBR(kBannerTypeContentsMargin,
+                                            kBannerTypeContentsMargin, 0, 0));
 
   // Setup banner contents.
   const std::u16string title_label =
@@ -443,13 +439,13 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
       std::make_unique<CloseButton>(views::Button::PressedCallback(
           base::BindRepeating(&BraveSearchConversionPromotionView::Dismiss,
                               base::Unretained(this)))));
-  constexpr int kBannerTypeCloseButtonSize = 24;
   views::SetImageFromVectorIconWithColor(
       close_button, kLeoCloseIcon, kBannerTypeCloseButtonSize,
       GetCloseButtonColor(), gfx::kPlaceholderColor);
   views::InstallCircleHighlightPathGenerator(close_button);
   views::FocusRing::Install(close_button);
-  close_button->SetProperty(views::kMarginsKey, gfx::Insets::VH(8, 8));
+  close_button->SetProperty(views::kMarginsKey,
+                            gfx::Insets(kBannerTypeCloseButtonMargin));
   close_button->SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BRAVE_SEARCH_CONVERSION_CLOSE_BUTTON_TOOLTIP));
 }
@@ -464,24 +460,24 @@ SkColor BraveSearchConversionPromotionView::GetCloseButtonColor() const {
 }
 
 gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize() const {
-  views::View* active_child = banner_type_container_;
-  DCHECK(active_child);
-
   // Ask preferred size + margin for banner.
-  auto size = active_child->GetPreferredSize();
-  auto* margin = active_child->GetProperty(views::kMarginsKey);
-  size.Enlarge(0, margin->height());
+  auto size = banner_type_container_->GetPreferredSize();
+  const auto margin = GetInsets();
+  size.Enlarge(0, margin.height());
 
-  const auto lines = banner_type_description_->GetRequiredLines();
-  if (lines <= 1) {
-    return size;
-  } else if (lines <= kMaxBannerDescLines) {
-    // Updating preferred height to get proper height for multi-lined label.
-    size.Enlarge(0, banner_type_description_->GetLineHeight() * (lines - 1));
-  } else {
-    size.Enlarge(0, banner_type_description_->GetLineHeight() *
-                        (kMaxBannerDescLines - 1));
-  }
+  // When it's called, omnibox popup's bound is not determined.
+  // To give proper size, we need final width because this promotion view's
+  // height could be changed for width because description is multi line label.
+  // To get final width, we use location bar's width.
+  const auto final_width_for_description =
+      result_view_->GetPopupView()->GetLocationBarViewWidth() -
+      GetOverallHorizontalMarginAroundDescription();
+
+  // Only add increased size as |size| already includes description's default
+  // height.
+  size.Enlarge(0, banner_type_description_->GetHeightForWidth(
+                      final_width_for_description) -
+                      banner_type_description_->GetLineHeight());
 
   return size;
 }
@@ -490,6 +486,20 @@ void BraveSearchConversionPromotionView::OnThemeChanged() {
   View::OnThemeChanged();
 
   UpdateState();
+}
+
+int BraveSearchConversionPromotionView::
+    GetOverallHorizontalMarginAroundDescription() const {
+  CHECK(banner_type_container_);
+
+  int horizontal_margin =
+      GetInsets().width() + banner_type_container_->GetInsets().width();
+  horizontal_margin +=
+      banner_type_description_->GetProperty(views::kMarginsKey)->width();
+  horizontal_margin += kBannerTypeContentsMargin;
+  horizontal_margin +=
+      (kBannerTypeCloseButtonSize + kBannerTypeCloseButtonMargin * 2);
+  return horizontal_margin;
 }
 
 void BraveSearchConversionPromotionView::UpdateHoverState() {
