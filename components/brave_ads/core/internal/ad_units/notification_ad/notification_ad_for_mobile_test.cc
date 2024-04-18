@@ -48,9 +48,6 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents(BuildP2AAdOpportunityEvents(
                                     AdType::kNotificationAd, /*segments=*/{})));
 
-  EXPECT_CALL(ads_client_mock_, AddFederatedLearningPredictorTrainingSample)
-      .Times(0);
-
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {
         EXPECT_TRUE(
@@ -67,9 +64,6 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
 
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
-  EXPECT_CALL(ads_client_mock_, AddFederatedLearningPredictorTrainingSample)
-      .Times(0);
-
   ServeAd();
 }
 
@@ -82,9 +76,6 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
   // Arrange
   test::ForcePermissionRules();
-
-  EXPECT_CALL(ads_client_mock_, AddFederatedLearningPredictorTrainingSample)
-      .Times(0);
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
@@ -115,9 +106,6 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        EXPECT_CALL(ads_client_mock_,
-                    AddFederatedLearningPredictorTrainingSample);
-
         EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad.placement_id));
 
         base::MockCallback<TriggerAdEventCallback> callback;
@@ -143,9 +131,6 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        EXPECT_CALL(ads_client_mock_,
-                    AddFederatedLearningPredictorTrainingSample);
-
         base::MockCallback<TriggerAdEventCallback> callback;
         EXPECT_CALL(callback, Run(/*success=*/true));
         GetAds().TriggerNotificationAdEvent(
@@ -169,9 +154,6 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        EXPECT_CALL(ads_client_mock_,
-                    AddFederatedLearningPredictorTrainingSample);
-
         base::MockCallback<TriggerAdEventCallback> callback;
         EXPECT_CALL(callback, Run(/*success=*/true));
         GetAds().TriggerNotificationAdEvent(

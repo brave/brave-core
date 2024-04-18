@@ -15,7 +15,6 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/client/ads_client.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 #include "brave/components/services/bat_ads/bat_ads_client_notifier_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -100,10 +99,6 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
                         brave_ads::RunDBTransactionCallback callback) override;
 
   void RecordP2AEvents(const std::vector<std::string>& events) override;
-
-  void AddFederatedLearningPredictorTrainingSample(
-      std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample)
-      override;
 
   std::optional<base::Value> GetProfilePref(const std::string& path) override;
   void SetProfilePref(const std::string& path, base::Value value) override;

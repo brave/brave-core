@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/export.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 
 namespace brave_ads {
 
@@ -129,11 +128,6 @@ class ADS_EXPORT AdsClient {
 
   // Record P2A (Private Advertising Analytics) `events`.
   virtual void RecordP2AEvents(const std::vector<std::string>& events) = 0;
-
-  // Add federated learning `training_sample`.
-  virtual void AddFederatedLearningPredictorTrainingSample(
-      std::vector<brave_federated::mojom::CovariateInfoPtr>
-          training_sample) = 0;
 
   // Get the value from the specified profile preference `path`. Returns the
   // default value if the path does not exist.

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_unittest_util.h"
 
-#include <optional>
 #include <string>
 
 #include "base/check.h"

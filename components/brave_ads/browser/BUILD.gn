@@ -72,7 +72,6 @@ static_library("browser") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/profiles:util",
     "//brave/common",
-    "//brave/components/brave_federated",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/browser/component_updater/component_util.h"
 
-#include <optional>
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"

@@ -1537,12 +1537,6 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   // P3A analytics.
 }
 
-- (void)addFederatedLearningPredictorTrainingSample:
-    (std::vector<brave_federated::mojom::CovariateInfoPtr>)training_sample {
-  // TODO(https://github.com/brave/brave-browser/issues/33787): Unify Brave Ads
-  // federated learning.
-}
-
 - (std::optional<base::Value>)getProfilePref:(const std::string&)path {
   if (path == brave_news::prefs::kBraveNewsOptedIn ||
       path == brave_news::prefs::kNewTabPageShowToday ||

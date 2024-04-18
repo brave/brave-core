@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar.h"
 
-#include <optional>
-
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"

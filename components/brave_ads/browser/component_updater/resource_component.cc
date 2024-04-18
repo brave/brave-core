@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 
-#include <optional>
-
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"

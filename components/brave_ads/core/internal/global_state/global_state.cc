@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state_holder.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
@@ -31,7 +30,6 @@ GlobalState::GlobalState(AdsClient* ads_client)
   browser_manager_ = std::make_unique<BrowserManager>();
   client_state_manager_ = std::make_unique<ClientStateManager>();
   confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
-  predictors_manager_ = std::make_unique<PredictorsManager>();
   database_manager_ = std::make_unique<DatabaseManager>();
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
   history_manager_ = std::make_unique<HistoryManager>();
@@ -107,12 +105,6 @@ NotificationAdManager& GlobalState::GetNotificationAdManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(notification_ad_manager_);
   return *notification_ad_manager_;
-}
-
-PredictorsManager& GlobalState::GetPredictorsManager() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK(predictors_manager_);
-  return *predictors_manager_;
 }
 
 TabManager& GlobalState::GetTabManager() {

@@ -48,10 +48,6 @@ class OneShotTimer;
 class SequencedTaskRunner;
 }  // namespace base
 
-namespace brave_federated {
-class AsyncDataStore;
-}  // namespace brave_federated
-
 namespace brave_rewards {
 class RewardsService;
 }  // namespace brave_rewards
@@ -85,8 +81,7 @@ class AdsServiceImpl : public AdsService,
       std::unique_ptr<DeviceId> device_id,
       std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
       history::HistoryService* history_service,
-      brave_rewards::RewardsService* rewards_service,
-      brave_federated::AsyncDataStore* notification_ad_timing_data_store);
+      brave_rewards::RewardsService* rewards_service);
 
   AdsServiceImpl(const AdsServiceImpl&) = delete;
   AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
@@ -354,10 +349,6 @@ class AdsServiceImpl : public AdsService,
   // business logic.
   void RecordP2AEvents(const std::vector<std::string>& events) override;
 
-  void AddFederatedLearningPredictorTrainingSample(
-      std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample)
-      override;
-
   void GetProfilePref(const std::string& path,
                       GetProfilePrefCallback callback) override;
   void SetProfilePref(const std::string& path, base::Value value) override;
@@ -454,9 +445,6 @@ class AdsServiceImpl : public AdsService,
       nullptr;  // NOT OWNED
   const raw_ptr<brave_rewards::RewardsService> rewards_service_{
       nullptr};  // NOT OWNED
-
-  const raw_ptr<brave_federated::AsyncDataStore>
-      notification_ad_timing_data_store_ = nullptr;  // NOT OWNED
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};
