@@ -1,0 +1,11 @@
+diff --git a/ui/webui/resources/tools/generate_grd.py b/ui/webui/resources/tools/generate_grd.py
+index 4627c198ac74d..6c10c51b3aba1 100644
+--- a/ui/webui/resources/tools/generate_grd.py
++++ b/ui/webui/resources/tools/generate_grd.py
+@@ -183,5 +183,6 @@ def main(argv):
+     return
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   main(sys.argv[1:])
