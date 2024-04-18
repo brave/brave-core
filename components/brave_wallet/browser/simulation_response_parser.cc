@@ -35,7 +35,7 @@ mojom::BlowfishWarningSeverity ParseWarningSeverity(
 mojom::BlowfishWarningKind ParseWarningKind(
     const simulation_responses::WarningKind& kind) {
   switch (kind) {
-    case simulation_responses::WarningKind::kApprovalToEOA:
+    case simulation_responses::WarningKind::kApprovalToEoa:
       return mojom::BlowfishWarningKind::kApprovalToEOA;
     case simulation_responses::WarningKind::kBlocklistedDomainCrossOrigin:
       return mojom::BlowfishWarningKind::kBlocklistedDomainCrossOrigin;

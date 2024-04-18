@@ -14,7 +14,7 @@ namespace simulation_responses {
 
   // UI should defer to the supplied message if the kind isn't recognized
   enum WarningKind {
-    APPROVAL_TO_E_O_A,
+    APPROVAL_TO_EOA,
     BLOCKLISTED_DOMAIN_CROSS_ORIGIN,
     BLUR_BULK_ORDER_NOT_ON_BLUR,
     BLUR_V2_ORDER_NOT_ON_BLUR,
