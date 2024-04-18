@@ -26,6 +26,8 @@ class BraveTabStrip;
  private:                                                           \
   friend class BraveTabContainer;                                   \
   bool FillGroupInfo(std::vector<TabWidthConstraints>& tab_widths); \
+  bool FillTiledState(std::vector<TabWidthConstraints>& tab_widths, \
+                      BraveTabStrip* tab_strip);                    \
   bool use_vertical_tabs_ = false;                                  \
   raw_ptr<BraveTabStrip> tab_strip_ = nullptr;                      \
                                                                     \
