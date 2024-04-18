@@ -14,7 +14,7 @@ namespace brave_ads {
 std::optional<base::Time> GetLastSeenAdAt(const AdEventList& ad_events,
                                           const CreativeAdInfo& creative_ad) {
   const auto iter = base::ranges::find_if(
-      ad_events, [&creative_ad](const AdEventInfo& ad_event) -> bool {
+      ad_events, [&creative_ad](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type ==
                    ConfirmationType::kViewedImpression &&
                ad_event.creative_instance_id ==

@@ -789,7 +789,6 @@ static_library("internal") {
     "serving/ad_serving_util.h",
     "serving/eligible_ads/allocation/round_robin_ads.h",
     "serving/eligible_ads/allocation/round_robin_advertisers.h",
-    "serving/eligible_ads/allocation/seen_ads.h",
     "serving/eligible_ads/allocation/seen_ads_util.cc",
     "serving/eligible_ads/allocation/seen_ads_util.h",
     "serving/eligible_ads/allocation/seen_advertisers.h",
