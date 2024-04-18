@@ -167,6 +167,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kResourceTimingForCancelledNavigationInFrame,
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,
+#if !BUILDFLAG(IS_ANDROID)
+      &features::kSidePanelPinning,
+#endif
       &features::kSignedExchangeReportingForDistributors,
       &features::kSignedHTTPExchange,
       &features::kSupportSearchSuggestionForPrerender2,
