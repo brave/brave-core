@@ -1,8 +1,8 @@
 diff --git a/tracing/tracing/value/diagnostics/reserved_infos.py b/tracing/tracing/value/diagnostics/reserved_infos.py
-index 091ee617e2ee970aa021d45356f131c306039095..15b6b6ec356fbf7b36413f462869557c57f59ea8 100644
+index 50e3f0aa9e64841dfc1facd932f1e5dbf248210a..b3d0588d530ec01e24b8856919fad8de4acf3020 100644
 --- a/tracing/tracing/value/diagnostics/reserved_infos.py
 +++ b/tracing/tracing/value/diagnostics/reserved_infos.py
-@@ -113,3 +113,4 @@ def AllInfos():
+@@ -116,3 +116,4 @@ def AllInfos():
  def AllNames():
    for info in AllInfos():
      yield info.name

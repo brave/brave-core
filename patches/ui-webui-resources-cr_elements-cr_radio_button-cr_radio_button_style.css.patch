@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css b/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css
-index 409850c828d62281576f7f47f6e12d9270b66a46..f85691d772b487091e37cef5270d44ee12b87a29 100644
+index 26be0eb63c6710da71edffb9f7a5c796b321d72a..113aaf9463ffe59fbace67dff252c53f6fc9c979 100644
 --- a/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css
 +++ b/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css
 @@ -7,6 +7,8 @@

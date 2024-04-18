@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 5eff3512acbc9dbf555f7dd18827754bb4293b0e..58093b8db307de0e39faad3efbd6806b43c9485b 100644
+index 6ace1e4dfe2ff425103ec1ad7ded6f72176c572c..2dbd7c2caaf28e920775955149ee0aab451eed67 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1746,6 +1746,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1754,6 +1754,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,7 +11,7 @@ index 5eff3512acbc9dbf555f7dd18827754bb4293b0e..58093b8db307de0e39faad3efbd6806b
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -2199,6 +2201,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2205,6 +2207,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_FUCHSIA)
    registry->RegisterIntegerPref(prefs::kChromeDataRegionSetting, 0);
  #endif

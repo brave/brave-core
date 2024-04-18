@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc b/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
-index 6599a889b9b4fb8d8b20fea313079df53c609a78..e664b6af906eb2f2083baa6fdda0942d58b45664 100644
+index d148cbab1cc66b9ef0d719c4de6f59e2a66200fe..df7266e45a14726165a1c60a5ea3153be5c05a1e 100644
 --- a/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
 +++ b/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
-@@ -35,6 +35,8 @@ namespace {
+@@ -37,6 +37,8 @@ namespace {
  // we redirect to the safetyCheck page that interacts with these. On other
  // platforms it may be possible to download an updated browser via a site.
  const char* kUpdateBrowserRedirectUrl =
@@ -11,7 +11,7 @@ index 6599a889b9b4fb8d8b20fea313079df53c609a78..e664b6af906eb2f2083baa6fdda0942d
  #if BUILDFLAG(IS_CHROMEOS_LACROS)
      // The URL to be used to update Lacros-Chrome when auto-update failed
      // for too long.
-@@ -44,6 +46,7 @@ const char* kUpdateBrowserRedirectUrl =
+@@ -46,6 +48,7 @@ const char* kUpdateBrowserRedirectUrl =
      // too long.
      "https://www.google.com/chrome";
  #endif

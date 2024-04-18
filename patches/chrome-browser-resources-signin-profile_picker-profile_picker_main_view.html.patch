@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html
-index 69d97aa1cc72dc7e89b696a0dc6bf2ff88acf40e..4805488bc8443a72133a9ade613f268ebe61f548 100644
+index d129df04d1099585a4cfacd69af3930d9f05f8a9..ed2c1b1961699194960fb62ef45ac04cefef6886 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html
-@@ -163,7 +163,7 @@
+@@ -160,7 +160,7 @@
              class="profile-item" profile-state="[[item]]">
          </profile-card>
        </template>

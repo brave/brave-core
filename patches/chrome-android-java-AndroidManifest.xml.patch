@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 18390bd98a13ae6f7265cae36cd995ea4e510ecc..c8061fa62742e86d6c58441f7be63579fb42bde2 100644
+index 632b6fcfa2c68c2de6ac4289d744557a30dfc1f8..ce59bcb97a00310791b52a4745d85053398abdf2 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -48,7 +48,7 @@ index 18390bd98a13ae6f7265cae36cd995ea4e510ecc..c8061fa62742e86d6c58441f7be63579
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -137,7 +148,9 @@ by a child template that "extends" this file.
+@@ -140,7 +151,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -58,7 +58,7 @@ index 18390bd98a13ae6f7265cae36cd995ea4e510ecc..c8061fa62742e86d6c58441f7be63579
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -348,6 +361,7 @@ by a child template that "extends" this file.
+@@ -351,6 +364,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -66,7 +66,7 @@ index 18390bd98a13ae6f7265cae36cd995ea4e510ecc..c8061fa62742e86d6c58441f7be63579
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1221,6 +1235,7 @@ by a child template that "extends" this file.
+@@ -1222,6 +1236,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  
