@@ -30,6 +30,8 @@ enum class OrchardKind {
 class HDKeyZip32 {
  public:
   explicit HDKeyZip32(rust::Box<zcash::OrchardExtendedSpendingKeyResult> esk);
+  HDKeyZip32(const HDKeyZip32&) = delete;
+  HDKeyZip32& operator=(const HDKeyZip32&) = delete;
 
   ~HDKeyZip32();
 

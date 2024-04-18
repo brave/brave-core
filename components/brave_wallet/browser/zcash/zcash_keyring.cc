@@ -38,7 +38,7 @@ ZCashKeyring::ZCashKeyring(base::span<const uint8_t> seed, bool testnet)
 #endif
 }
 
-ZCashKeyring::~ZCashKeyring() {}
+ZCashKeyring::~ZCashKeyring() = default;
 
 mojom::ZCashAddressPtr ZCashKeyring::GetTransparentAddress(
     const mojom::ZCashKeyId& key_id) {

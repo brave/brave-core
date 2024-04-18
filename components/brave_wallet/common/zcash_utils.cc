@@ -32,9 +32,11 @@ constexpr size_t kPubKeyHashSize = 20;
 constexpr size_t kPrefixSize = 2;
 
 std::array<uint8_t, kPaddedHrpSize> GetPaddedHRP(bool is_testnet) {
+  static_assert(kPaddedHrpSize > sizeof(kTestnetHRP) &&
+                    kPaddedHrpSize > sizeof(kMainnetHRP),
+                "Wrong kPaddedHrpSize size");
   std::string hrp = is_testnet ? kTestnetHRP : kMainnetHRP;
-  std::array<uint8_t, kPaddedHrpSize> padded_hrp;
-  std::fill(std::begin(padded_hrp), std::end(padded_hrp), 0);
+  std::array<uint8_t, kPaddedHrpSize> padded_hrp = {};
   base::ranges::copy(base::make_span(hrp), padded_hrp.begin());
   return padded_hrp;
 }
@@ -261,7 +263,7 @@ std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
         return std::nullopt;
       }
       std::array<uint8_t, kOrchardRawBytesSize> result;
-      std::copy(part.second.begin(), part.second.end(), result.begin());
+      base::ranges::copy(part.second, result.begin());
       return result;
     }
   }
