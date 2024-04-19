@@ -114,7 +114,7 @@ const PlaceholderMarker = <Icon />
 
 export function Item(props: { id: FeedView, name: string }) {
   const { feedView, setFeedView, reportSidebarFilterUsage } = useBraveNews()
-  const topLevel = ['all', 'following'].includes(props.id)
+  const topLevel = ['all', 'following', 'latest'].includes(props.id)
   return <CustomButton
     selected={props.id === feedView}
     onClick={() => {
@@ -149,6 +149,7 @@ export default function Sidebar() {
   return <Container>
     <Item id='all' name={getLocale('braveNewsForYouFeed')} />
     <Item id='following' name={getLocale('braveNewsFollowingFeed')} />
+    <Item id='latest' name={'Latest'} />
     <Section open>
       <summary>
         {subscribedChannels.length ? Marker : PlaceholderMarker}

@@ -293,6 +293,17 @@ std::optional<size_t> PickFirstIndex(const ArticleInfos& articles) {
   return articles.empty() ? std::nullopt : std::make_optional(0);
 }
 
+std::optional<size_t> PickFirstSubscribed(const ArticleInfos& articles) {
+  for (size_t i = 0; i < articles.size(); ++i) {
+    auto& [article, weight] = articles.at(i);
+    if (!weight.subscribed) {
+      continue;
+    }
+    return i;
+  }
+  return std::nullopt;
+}
+
 // Picks an article with a probability article_weight/sum(article_weights).
 std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
                                                 GetWeighting get_weighting) {
@@ -1053,6 +1064,39 @@ void FeedV2Builder::BuildFollowingFeed(
                                  base::BindRepeating(&PickRoulette));
       }),
       std::move(callback));
+}
+
+void FeedV2Builder::BuildLatestFeed(const BraveNewsSubscriptions& subscriptions,
+                                    BuildFeedCallback callback) {
+  FeedItems raw_feed_items;
+  base::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
+                          [](const auto& item) { return item->Clone(); });
+  GenerateFeed(subscriptions, {.signals = true},
+               mojom::FeedV2Type::NewLatest(mojom::FeedV2LatestType::New()),
+               base::BindOnce([](FeedGenerationInfo info) {
+                 FeedItems items;
+
+                 for (const auto& item : info.feed_items) {
+                   if (!item->is_article()) {
+                     continue;
+                   }
+
+                   items.push_back(item->Clone());
+                 }
+
+                 // Sort by publish time.
+                 base::ranges::sort(items, [](const auto& a, const auto& b) {
+                   return a->get_article()->data->publish_time >
+                          b->get_article()->data->publish_time;
+                 });
+
+                 info.feed_items = std::move(items);
+
+                 return GenerateBasicFeed(std::move(info),
+                                          base::BindRepeating(&PickFirstSubscribed),
+                                          base::BindRepeating(&PickFirstSubscribed));
+               }),
+               std::move(callback));
 }
 
 void FeedV2Builder::BuildChannelFeed(

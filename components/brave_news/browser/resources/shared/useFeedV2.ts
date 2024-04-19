@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import getBraveNewsController, { FeedV2, FeedV2Type } from "./api";
 import { addFeedListener } from "./feedListener";
 
-export type FeedView = 'all' | 'following' | `publishers/${string}` | `channels/${string}`
+export type FeedView = 'all' | 'following' | 'latest' | `publishers/${string}` | `channels/${string}`
 
 // This is the cutoff age for loading a feed from local storage (1 hour)
 const MAX_AGE_FOR_LOCAL_STORAGE_FEED = 1000 * 60 * 60
@@ -16,6 +16,7 @@ const feedTypeToFeedView = (type: FeedV2Type | undefined): FeedView => {
   if (type?.channel) return `channels/${type.channel.channel}`
   if (type?.publisher) return `publishers/${type.publisher.publisherId}`
   if (type?.following) return `following`
+  if (type?.latest) return 'latest'
   return 'all'
 }
 
@@ -105,6 +106,8 @@ const fetchFeed = (feedView: FeedView) => {
     promise = getBraveNewsController().getChannelFeed(feedView.split('/')[1])
   } else if (feedView === 'following') {
     promise = getBraveNewsController().getFollowingFeed()
+  } else if (feedView === 'latest') {
+    promise = getBraveNewsController().getLatestFeed()
   } else {
     promise = getBraveNewsController().getFeedV2()
   }

@@ -192,6 +192,16 @@ void BraveNewsController::GetFollowingFeed(GetFollowingFeedCallback callback) {
                                        std::move(callback));
 }
 
+void BraveNewsController::GetLatestFeed(GetLatestFeedCallback callback) {
+  if (!MaybeInitFeedV2()) {
+    std::move(callback).Run(mojom::FeedV2::New());
+    return;
+  }
+
+  feed_v2_builder_->BuildLatestFeed(pref_manager_.GetSubscriptions(),
+                                    std::move(callback));
+}
+
 void BraveNewsController::GetChannelFeed(const std::string& channel,
                                          GetChannelFeedCallback callback) {
   if (!MaybeInitFeedV2()) {

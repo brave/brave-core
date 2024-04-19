@@ -76,6 +76,8 @@ class FeedV2Builder {
 
   void BuildFollowingFeed(const BraveNewsSubscriptions& subscriptions,
                           BuildFeedCallback callback);
+  void BuildLatestFeed(const BraveNewsSubscriptions& subscriptions,
+                       BuildFeedCallback callback);
   void BuildChannelFeed(const BraveNewsSubscriptions& subscriptions,
                         const std::string& channel,
                         BuildFeedCallback callback);

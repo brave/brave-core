@@ -195,6 +195,7 @@ union FeedItemV2 {
 
 struct FeedV2AllType {};
 struct FeedV2FollowingType {};
+struct FeedV2LatestType {};
 struct FeedV2PublisherType {
   string publisher_id;
 };
@@ -204,6 +205,7 @@ struct FeedV2ChannelType {
 union FeedV2Type {
   FeedV2AllType all;
   FeedV2FollowingType following;
+  FeedV2LatestType latest;
   FeedV2PublisherType publisher;
   FeedV2ChannelType channel;
 };
@@ -279,6 +281,7 @@ interface BraveNewsController {
 
   GetFeed() => (Feed feed);
   GetFollowingFeed() => (FeedV2 feed);
+  GetLatestFeed() => (FeedV2 feed);
   GetChannelFeed(string channel) => (FeedV2 feed);
   GetPublisherFeed(string publisher_id) => (FeedV2 feed);
   GetFeedV2() => (FeedV2 feed);
