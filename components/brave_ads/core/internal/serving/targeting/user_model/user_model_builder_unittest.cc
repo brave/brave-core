@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
@@ -48,10 +47,6 @@ class BraveAdsUserModelBuilderTest : public UnitTestBase {
 
   void SetUpFeatures() {
     std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-    enabled_features.emplace_back(
-        kEpsilonGreedyBanditFeature,
-        base::FieldTrialParams({{"epsilon_value", "0.0"}}));
 
     enabled_features.emplace_back(kPurchaseIntentFeature,
                                   base::FieldTrialParams({}));

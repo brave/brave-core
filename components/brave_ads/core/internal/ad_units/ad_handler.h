@@ -18,8 +18,6 @@
 #include "brave/components/brave_ads/core/internal/common/country_code/country_code.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/resource/epsilon_greedy_bandit_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
@@ -108,9 +106,6 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   PurchaseIntentResource purchase_intent_resource_;
   PurchaseIntentProcessor purchase_intent_processor_;
-
-  EpsilonGreedyBanditResource epsilon_greedy_bandit_resource_;
-  EpsilonGreedyBanditProcessor epsilon_greedy_bandit_processor_;
 
   TextClassificationResource text_classification_resource_;
   TextClassificationProcessor text_classification_processor_;

@@ -38,7 +38,6 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_new_tab_page_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_notification_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
@@ -72,9 +71,6 @@ struct ParamInfo final {
     {{switches::kEnableFeatures,
       base::StrCat({kAntiTargetingFeature.name, ":param/value"})},
      true},
-    {{switches::kEnableFeatures, base::StrCat({kEpsilonGreedyBanditFeature.name,
-                                               "<TrialName:param/value"})},
-     true},
     {{switches::kEnableFeatures,
       base::StrCat({kTextClassificationFeature.name,
                     "<TrialName.GroupName:param/value"})},
@@ -96,7 +92,6 @@ struct ParamInfo final {
       kCreativeNotificationAdModelBasedPredictorFeature.name},
      true},
     {{switches::kEnableFeatures, kEligibleAdFeature.name}, true},
-    {{switches::kEnableFeatures, kEpsilonGreedyBanditFeature.name}, true},
     {{switches::kEnableFeatures, kExclusionRulesFeature.name}, true},
     {{switches::kEnableFeatures, kHistoryFeature.name}, true},
     {{switches::kEnableFeatures, kInlineContentAdFeature.name}, true},
@@ -148,9 +143,6 @@ struct ParamInfo final {
       kCreativeNotificationAdModelBasedPredictorFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams, kEligibleAdFeature.name},
-     true},
-    {{variations::switches::kForceFieldTrialParams,
-      kEpsilonGreedyBanditFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
       kExclusionRulesFeature.name},

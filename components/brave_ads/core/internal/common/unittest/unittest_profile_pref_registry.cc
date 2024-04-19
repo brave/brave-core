@@ -45,9 +45,6 @@ void RegisterProfilePrefs() {
   RegisterProfileIntegerPref(prefs::kIssuerPing, 0);
   RegisterProfileListPref(prefs::kIssuers);
 
-  RegisterProfileDictPref(prefs::kEpsilonGreedyBanditArms);
-  RegisterProfileListPref(prefs::kEpsilonGreedyBanditEligibleSegments);
-
   RegisterProfileListPref(prefs::kNotificationAds);
   RegisterProfileTimePref(prefs::kServeAdAt, Now());
 

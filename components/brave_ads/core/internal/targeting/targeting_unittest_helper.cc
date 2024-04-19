@@ -39,12 +39,12 @@ IntentUserModelInfo TargetingHelper::IntentExpectation() {
 }
 
 void TargetingHelper::MockLatentInterest() {
-  epsilon_greedy_bandit_.Mock();
+  // Intentionally do nothing.
 }
 
 // static
 LatentInterestUserModelInfo TargetingHelper::LatentInterestExpectation() {
-  return LatentInterestUserModelInfo{EpsilonGreedyBanditHelper::Expectation()};
+  return LatentInterestUserModelInfo{};
 }
 
 void TargetingHelper::MockInterest() {

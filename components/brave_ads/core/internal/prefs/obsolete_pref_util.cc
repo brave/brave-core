@@ -17,6 +17,11 @@ constexpr char kNotificationAdLastNormalizedDisplayCoordinateX[] =
 constexpr char kNotificationAdLastNormalizedDisplayCoordinateY[] =
     "brave.brave_ads.ad_notification.last_normalized_display_coordinate_y";
 
+constexpr char kEpsilonGreedyBanditArms[] =
+    "brave.brave_ads.epsilon_greedy_bandit_arms.v2";
+constexpr char kEpsilonGreedyBanditEligibleSegments[] =
+    "brave.brave_ads.epsilon_greedy_bandit_eligible_segments.v2";
+
 }  // namespace
 
 void RegisterProfilePrefsForMigration(
@@ -26,12 +31,20 @@ void RegisterProfilePrefsForMigration(
                                0.0);
   registry->RegisterDoublePref(kNotificationAdLastNormalizedDisplayCoordinateY,
                                0.0);
+
+  // Added 04/2024.
+  registry->RegisterDictionaryPref(kEpsilonGreedyBanditArms);
+  registry->RegisterListPref(kEpsilonGreedyBanditEligibleSegments);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 11/2023.
   prefs->ClearPref(kNotificationAdLastNormalizedDisplayCoordinateX);
   prefs->ClearPref(kNotificationAdLastNormalizedDisplayCoordinateY);
+
+  // Added 04/2024.
+  prefs->ClearPref(kEpsilonGreedyBanditArms);
+  prefs->ClearPref(kEpsilonGreedyBanditEligibleSegments);
 }
 
 }  // namespace brave_ads
