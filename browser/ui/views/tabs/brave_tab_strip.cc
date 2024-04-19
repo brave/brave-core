@@ -169,12 +169,12 @@ void BraveTabStrip::MaybeStartDrag(
       // Make a pair of tabs in a tile selected together so that they move
       // together during drag and drop.
       auto* tab_strip_model = controller_->GetBrowser()->tab_strip_model();
-      auto index = tab_strip_model->GetIndexOfTab(
-          IsFirstTabInTile(tab) ? tile->second : tile->first);
-      DCHECK_NE(index, TabStripModel::kNoTab);
-      new_selection.AddIndexToSelection(index);
+      // Make sure both tiled tabs are in selection.
+      new_selection.AddIndexToSelection(
+          tab_strip_model->GetIndexOfTab(tile->first));
+      new_selection.AddIndexToSelection(
+          tab_strip_model->GetIndexOfTab(tile->second));
       tab_strip_model->SetSelectionFromModel(new_selection);
-      DCHECK(IsTabSelected(tab_at(index)));
     }
   }
 
