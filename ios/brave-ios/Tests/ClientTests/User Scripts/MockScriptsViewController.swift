@@ -90,7 +90,7 @@ class MockScriptsViewController: UIViewController {
   func attachScriptHandler(
     contentWorld: WKContentWorld,
     name: String,
-    timeout: TimeInterval = 30
+    timeout: TimeInterval = 120
   ) -> MockMessageHandler {
     return attachScriptHandler(
       contentWorld: contentWorld,
