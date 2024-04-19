@@ -83,12 +83,6 @@ inline constexpr char kCatalogLastUpdated[] =
 inline constexpr char kIssuerPing[] = "brave.brave_ads.issuer_ping";
 inline constexpr char kIssuers[] = "brave.brave_ads.issuers";
 
-// Stores epsilon greedy bandit
-inline constexpr char kEpsilonGreedyBanditArms[] =
-    "brave.brave_ads.epsilon_greedy_bandit_arms.v2";
-inline constexpr char kEpsilonGreedyBanditEligibleSegments[] =
-    "brave.brave_ads.epsilon_greedy_bandit_eligible_segments.v2";
-
 // Rewards
 inline constexpr char kNextTokenRedemptionAt[] =
     "brave.brave_ads.rewards.next_time_redemption_at";

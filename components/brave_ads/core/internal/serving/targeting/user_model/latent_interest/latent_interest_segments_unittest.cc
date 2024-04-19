@@ -7,11 +7,9 @@
 
 #include <memory>
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -31,10 +29,6 @@ class BraveAdsLatentInterestSegmentsTest : public UnitTestBase {
 
 TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
   // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kEpsilonGreedyBanditFeature, {{"epsilon_value", "0.0"}});
-
   NotifyDidInitializeAds();
 
   targeting_->MockLatentInterest();
@@ -48,9 +42,6 @@ TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
 TEST_F(BraveAdsLatentInterestSegmentsTest,
        BuildLatentInterestSegmentsIfNoTargeting) {
   // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(
-      kEpsilonGreedyBanditFeature);
-
   NotifyDidInitializeAds();
 
   // Act
@@ -63,9 +54,6 @@ TEST_F(BraveAdsLatentInterestSegmentsTest,
 TEST_F(BraveAdsLatentInterestSegmentsTest,
        DoNotBuildLatentInterestSegmentsIfFeatureIsDisabled) {
   // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kEpsilonGreedyBanditFeature);
-
   NotifyDidInitializeAds();
 
   targeting_->MockLatentInterest();

@@ -35,7 +35,6 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_new_tab_page_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_notification_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
@@ -61,7 +60,6 @@ const base::Feature* const kFeatures[] = {
     &kCreativeNewTabPageAdModelBasedPredictorFeature,
     &kCreativeNotificationAdModelBasedPredictorFeature,
     &kEligibleAdFeature,
-    &kEpsilonGreedyBanditFeature,
     &kExclusionRulesFeature,
     &kHistoryFeature,
     &kInlineContentAdFeature,

@@ -25,7 +25,6 @@ namespace brave_ads {
 AdHandler::AdHandler(Account& account)
     : account_(account),
       purchase_intent_processor_(purchase_intent_resource_),
-      epsilon_greedy_bandit_resource_(catalog_),
       text_classification_processor_(text_classification_resource_),
       inline_content_ad_handler_(account,
                                  site_visit_,
@@ -37,7 +36,6 @@ AdHandler::AdHandler(Account& account)
                                anti_targeting_resource_),
       notification_ad_handler_(account,
                                site_visit_,
-                               epsilon_greedy_bandit_processor_,
                                subdivision_targeting_,
                                anti_targeting_resource_),
       promoted_content_ad_handler_(account, site_visit_),
