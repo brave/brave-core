@@ -12,6 +12,7 @@ const l10nUtil = require('./l10nUtil')
 const Log = require('./logging')
 const assert = require('assert')
 const updateChromeVersion = require('./updateChromeVersion')
+const updateUnsafeBuffersPaths = require('./updateUnsafeBuffersPaths.js')
 const ActionGuard = require('./actionGuard')
 
 const mergeWithDefault = (options) => {
@@ -64,6 +65,8 @@ async function applyPatches() {
     Log.error('Exiting as not all patches were successful!')
     process.exit(1)
   }
+
+  await updateUnsafeBuffersPaths()
 
   updateChromeVersion()
   Log.progressFinish('apply patches')
