@@ -5,6 +5,7 @@
 
 module brave_wallet.mojom;
 
+import "brave/components/brave_wallet/common/meld_integration.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/origin.mojom";
@@ -454,76 +455,6 @@ struct AssetPrice {
   string asset_timeframe_change;
 };
 
-struct LogoImages {
-  string? dark_url;
-  string? dark_short_url;
-  string? light_url;
-  string? light_short_url;
-};
-
-struct ServiceProvider {
-  string? name;
-  string? service_provider;
-  string? status;
-  string? web_site_url;
-  array<string>? categories;
-  map<string, string>? category_statuses;
-  LogoImages? logo_images;
-};
-
-struct CryptoQuote {
-  string? transaction_type;
-  double? exchange_rate;
-  double? transaction_fee;
-  string? source_currency_code;
-  double? source_amount;
-  double? source_amount_without_fee;
-  double? fiat_amount_without_fees;
-  double? total_fee;
-  double? network_fee;
-  string? payment_method;
-  string? destination_currency_code;
-  double? destination_amount;
-  double? destination_amount_without_fees;
-  double? customer_score;
-  string? service_provider;
-  string? country_code;
-};
-
-struct PaymentMethod {
-  string? payment_method;
-  string? name;
-  string? payment_type;
-  LogoImages logo_images;
-};
-
-struct FiatCurrency {
-  string? currency_code;
-  string? name;
-  string? symbol_image_url;
-};
-
-struct CryptoCurrency {
-  string? currency_code;
-  string? name;
-  string? chain_code;
-  string? chain_name;
-  string? chain_id;
-  string? contract_address;
-  string? symbol_image_url;
-};
-
-struct Region {
-  string? region_code;
-  string? name;
-};
-
-struct Country {
-  string? country_code;
-  string? name;
-  string? flag_image_url;
-  array<Region>? regions;
-};
 
 struct CoinMarket {
   string id;

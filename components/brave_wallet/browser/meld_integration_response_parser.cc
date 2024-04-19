@@ -29,18 +29,18 @@ std::optional<brave_wallet::mojom::LogoImagesPtr> ParseMeldLogos(const std::opti
     return std::nullopt;
   }
 
-  std::optional<brave_wallet::mojom::LogoImagesPtr> logo_images = brave_wallet::mojom::LogoImages::New();
+  auto logo_images = brave_wallet::mojom::LogoImages::New();
   if (logos_value->dark && logos_value->dark->is_string()) {
-    (*logo_images)->dark_url = logos_value->dark->GetString();
+    logo_images->dark_url = logos_value->dark->GetString();
   }
   if (logos_value->dark_short && logos_value->dark_short->is_string()) {
-    (*logo_images)->dark_short_url = logos_value->dark_short->GetString();
+    logo_images->dark_short_url = logos_value->dark_short->GetString();
   }
   if (logos_value->light && logos_value->light->is_string()) {
-    (*logo_images)->light_url = logos_value->light->GetString();
+    logo_images->light_url = logos_value->light->GetString();
   }
   if (logos_value->light_short && logos_value->light_short->is_string()) {
-    (*logo_images)->light_short_url = logos_value->light_short->GetString();
+    logo_images->light_short_url = logos_value->light_short->GetString();
   }
 
   return logo_images;
