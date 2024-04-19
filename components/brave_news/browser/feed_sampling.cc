@@ -12,8 +12,8 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/rand_util.h"
-#include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
+#include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -99,8 +99,7 @@ ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
       // we use that to determine whether this Publisher has ever been visited.
       .visited = signals.at(0)->visit_weight != 0,
       .subscribed = subscribed_weight != 0,
-      .discoverable = discoverable
-  };
+      .discoverable = discoverable};
 }
 
 }  // namespace
@@ -244,9 +243,10 @@ ArticleInfos GetArticleInfos(const std::string& locale,
 
   for (const auto& [publisher_id, publisher] : publishers) {
     auto channels = GetChannelsForPublisher(locale, publisher);
-    if (base::ranges::any_of(kSensitiveChannels, [&](const std::string& channel) {
-          return base::Contains(channels, channel);
-        })) {
+    if (base::ranges::any_of(kSensitiveChannels,
+                             [&](const std::string& channel) {
+                               return base::Contains(channels, channel);
+                             })) {
       non_discoverable_publishers.insert(publisher_id);
     }
   }
@@ -277,12 +277,12 @@ ArticleInfos GetArticleInfos(const std::string& locale,
         continue;
       }
 
-      const bool discoverable = !base::Contains(non_discoverable_publishers, article->data->publisher_id);
+      const bool discoverable = !base::Contains(non_discoverable_publishers,
+                                                article->data->publisher_id);
 
-
-      ArticleInfo pair =
-          std::tuple(article->data->Clone(),
-                     GetArticleWeight(article->data, article_signals, discoverable));
+      ArticleInfo pair = std::tuple(
+          article->data->Clone(),
+          GetArticleWeight(article->data, article_signals, discoverable));
 
       articles.push_back(std::move(pair));
     }

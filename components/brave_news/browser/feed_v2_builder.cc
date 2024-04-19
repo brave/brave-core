@@ -92,11 +92,10 @@ std::tuple<std::string, size_t> GetFeedHashAndSubscribedCount(
 // Generates a standard block:
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
-std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
-    ArticleInfos& articles,
-    PickArticles hero_picker,
-    PickArticles article_picker,
-    double inline_discovery_ratio) {
+std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
+                                                PickArticles hero_picker,
+                                                PickArticles article_picker,
+                                                double inline_discovery_ratio) {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
   if (articles.empty()) {
@@ -158,9 +157,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
         }));
   });
 
-  return GenerateBlock(
-      articles, std::move(pick_hero), base::BindRepeating(&PickRoulette),
-      inline_discovery_ratio);
+  return GenerateBlock(articles, std::move(pick_hero),
+                       base::BindRepeating(&PickRoulette),
+                       inline_discovery_ratio);
 }
 
 // Generates a block from sampled content groups:
