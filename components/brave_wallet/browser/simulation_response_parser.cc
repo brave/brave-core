@@ -689,7 +689,7 @@ mojom::EVMSimulationResponsePtr ParseSimulationResponse(
     account_state_changes_value =
         expected_state_changes_value.FindList(base::ToLowerASCII(user_account));
     if (!account_state_changes_value) {
-      return nullptr;
+      return simulation_response;
     }
   }
 
