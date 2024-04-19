@@ -20,6 +20,7 @@ class NFTStoreTests: XCTestCase {
   let ethAccount2 = (BraveWallet.AccountInfo.mockEthAccount.copy() as! BraveWallet.AccountInfo).then
   {
     $0.address = "mock_eth_id_2"
+    $0.accountId.uniqueKey = $0.address
     $0.name = "Ethereum Account 2"
   }
   let unownedEthNFT =

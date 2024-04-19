@@ -74,8 +74,9 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
 
   private var allNetworks: [BraveWallet.NetworkInfo] = []
   private var balancesFetched: Bool = false
-  /// Cache of balances of each asset for each account. [account.address: [token.id: balance]]
-  private var balancesForAccountsCache: [String: [String: Double]] = [:]
+  private typealias TokenBalanceCache = [String: [String: Double]]
+  /// Cache of balances of each asset for each account. [account.id: [token.id: balance]]
+  private var balancesForAccountsCache: TokenBalanceCache = [:]
   /// Cache of prices of assets. The key(s) are the `BraveWallet.BlockchainToken.assetRatioId` lowercased.
   private var pricesForTokensCache: [String: String] = [:]
   /// Cache of metadata for NFTs. The key(s) is the token's `id`.
@@ -226,7 +227,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       self.isLoadingBalances = true
       defer { isLoadingBalances = false }
       let balancesForAccounts = await withTaskGroup(
-        of: [String: [String: Double]].self,
+        of: TokenBalanceCache.self,
         body: { group in
           for account in allAccounts {
             group.addTask {  // get balance for all tokens this account supports
@@ -235,11 +236,11 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
                   account: account,
                   networkAssets: networkAssets
                 )
-              return [account.address: balancesForTokens]
+              return [account.id: balancesForTokens]
             }
           }
           return await group.reduce(
-            into: [String: [String: Double]](),
+            into: TokenBalanceCache(),
             { partialResult, new in
               partialResult.merge(with: new)
             }
@@ -247,13 +248,13 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         }
       )
       for account in allAccounts {
-        if let updatedBalancesForAccount = balancesForAccounts[account.address] {
+        if let updatedBalancesForAccount = balancesForAccounts[account.id] {
           // if balance fetch failed that we already have cached, don't overwrite existing
-          if var existing = self.balancesForAccountsCache[account.address] {
+          if var existing = self.balancesForAccountsCache[account.id] {
             existing.merge(with: updatedBalancesForAccount)
-            self.balancesForAccountsCache[account.address] = existing
+            self.balancesForAccountsCache[account.id] = existing
           } else {
-            self.balancesForAccountsCache[account.address] = updatedBalancesForAccount
+            self.balancesForAccountsCache[account.id] = updatedBalancesForAccount
           }
         }
       }
@@ -304,7 +305,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     selectedNetworks: [BraveWallet.NetworkInfo],
     allAccounts: [BraveWallet.AccountInfo],
     userVisibleAssets: [BraveWallet.BlockchainToken],
-    balancesCache: [String: [String: Double]],
+    balancesCache: TokenBalanceCache,
     balancesFetched: Bool,
     pricesCache: [String: String],
     metadataCache: [String: NFTMetadata],
@@ -331,7 +332,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
             // network must support account keyring
             tokenNetwork.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
           {
-            let balance = balancesCache[account.address]?[token.id] ?? 0
+            let balance = balancesCache[account.id]?[token.id] ?? 0
             if hideZeroBalances, balance <= 0 {
               // token has no balance, user is hiding zero balance tokens.
               return nil

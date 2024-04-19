@@ -325,7 +325,7 @@ class AccountActivityStoreTests: XCTestCase {
           BraveWallet.BlockchainToken.mockERC721NFTToken.symbol
         )
         XCTAssertEqual(
-          lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.address],
+          lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.id],
           Int(mockNFTBalance)
         )
         XCTAssertEqual(
@@ -506,7 +506,7 @@ class AccountActivityStoreTests: XCTestCase {
           BraveWallet.BlockchainToken.mockSolanaNFTToken.symbol
         )
         XCTAssertEqual(
-          lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.address],
+          lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.id],
           Int(mockSolanaNFTTokenBalance)
         )
         XCTAssertEqual(

@@ -181,6 +181,26 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
       completion: completion
     )
   }
+
+  /// - Parameters:
+  ///     - account: `BraveWallet.AccountInfo`, the account that we need to update the value of `accountAddress`
+  public static func updateAccountAddress(
+    for account: BraveWallet.AccountInfo
+  ) async {
+    await withCheckedContinuation { continuation in
+      DataController.perform(context: .new(inMemory: false), save: false) { context in
+        let predicate = NSPredicate(
+          format: "accountAddress == %@",
+          account.address
+        )
+        if let asset = WalletUserAssetBalance.first(where: predicate, context: context) {
+          asset.accountAddress = account.accountId.uniqueKey
+          WalletUserAssetBalance.saveContext(context)
+        }
+        continuation.resume()
+      }
+    }
+  }
 }
 
 extension WalletUserAssetBalance {

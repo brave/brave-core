@@ -226,6 +226,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       )
 
       self.isLoadingAccountFiat = true
+      // TODO: cleanup with balance caching with issue
+      // https://github.com/brave/brave-browser/issues/36764
       var tokenBalances: [String: Double] = [:]
       if account.coin == .btc {
         let networkAsset = allUserNetworkAssets.first {
@@ -233,7 +235,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         }
         if let btc = networkAsset?.tokens.first,
           let btcBalance = await self.bitcoinWalletService.fetchBTCBalance(
-            accountId: account.accountId
+            accountId: account.accountId,
+            type: .total
           )
         {
           tokenBalances = [btc.id: btcBalance]
@@ -381,7 +384,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
               groupType: .none,
               token: token,
               network: networkAssets.network,
-              balanceForAccounts: [account.address: Int(tokenBalances[token.id] ?? 0)],
+              balanceForAccounts: [account.id: Int(tokenBalances[token.id] ?? 0)],
               nftMetadata: nftMetadata[token.id]
             )
           )
@@ -393,7 +396,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
               network: networkAssets.network,
               price: tokenPrices[token.assetRatioId.lowercased()] ?? "",
               history: [],
-              balanceForAccounts: [account.address: tokenBalances[token.id] ?? 0]
+              balanceForAccounts: [account.id: tokenBalances[token.id] ?? 0]
             )
           )
         }

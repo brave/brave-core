@@ -39,18 +39,21 @@ import XCTest
   let ethAccount2 = (BraveWallet.AccountInfo.mockEthAccount.copy() as! BraveWallet.AccountInfo).then
   {
     $0.address = "mock_eth_id_2"
+    $0.accountId.uniqueKey = $0.address
     $0.name = "Ethereum Account 2"
   }
   let solAccount1: BraveWallet.AccountInfo = .mockSolAccount
   let solAccount2 = (BraveWallet.AccountInfo.mockSolAccount.copy() as! BraveWallet.AccountInfo).then
   {
     $0.address = "mock_sol_id_2"
+    $0.accountId.uniqueKey = $0.address
     $0.name = "Solana Account 2"
   }
   let filAccount1: BraveWallet.AccountInfo = .mockFilAccount
   let filAccount2 = (BraveWallet.AccountInfo.mockFilAccount.copy() as! BraveWallet.AccountInfo).then
   {
     $0.address = "mock_fil_id_2"
+    $0.accountId.uniqueKey = $0.address
     $0.name = "Filecoin Account 2"
   }
   let filTestnetAccount: BraveWallet.AccountInfo = .mockFilTestnetAccount

@@ -121,7 +121,15 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _unlocked: { [weak self] in
-        self?.refreshBalances()
+        Task { @MainActor [self] in
+          // migrate `account.address` with `account.accountId.uniqueKey` (`account.id`)
+          if !Preferences.Wallet.migrateCacheKeyCompleted.value {
+            await self?.migrateCacheKey()
+            self?.refreshBalances()
+          } else {
+            self?.refreshBalances()
+          }
+        }
       },
       _accountsChanged: { [weak self] in
         self?.refreshBalances()
@@ -399,13 +407,14 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
                 }
                 if let btc = networkAssets?.tokens.first,
                   let btcBalance = await bitcoinWalletService.fetchBTCBalance(
-                    accountId: account.accountId
+                    accountId: account.accountId,
+                    type: .total
                   )
                 {
                   WalletUserAssetBalance.updateBalance(
                     for: btc,
                     balance: String(btcBalance),
-                    account: account.cacheBalanceKey
+                    account: account.id
                   )
                 }
               } else {
@@ -426,7 +435,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
                     WalletUserAssetBalance.updateBalance(
                       for: token,
                       balance: String(tokenBalanceForAccount.value),
-                      account: account.cacheBalanceKey
+                      account: account.id
                     )
                   }
                 }
@@ -488,7 +497,8 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
               var tokenBalance: Double?
               if account.coin == .btc {
                 tokenBalance = await bitcoinWalletService.fetchBTCBalance(
-                  accountId: account.accountId
+                  accountId: account.accountId,
+                  type: .total
                 )
               } else {
                 tokenBalance = await rpcService.balance(
@@ -500,7 +510,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
               WalletUserAssetBalance.updateBalance(
                 for: asset,
                 balance: String(tokenBalance ?? 0),
-                account: account.cacheBalanceKey
+                account: account.id
               )
             }
           }
@@ -549,6 +559,35 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
 
   private func retrieveAllDataObserver() -> [WalletUserAssetDataObserver] {
     return dataObservers.allObjects as? [WalletUserAssetDataObserver] ?? []
+  }
+
+  @MainActor private func migrateCacheKey() async {
+    let allAccounts = await keyringService.allAccountInfos()
+    // balance
+    if let allBalances = WalletUserAssetBalance.getBalances() {
+      await withTaskGroup(
+        of: Void.self,
+        body: { @MainActor group in
+          for balance in allBalances {
+            if let account = allAccounts.first(where: { $0.address == balance.accountAddress }) {
+              group.addTask { @MainActor in
+                await WalletUserAssetBalance.updateAccountAddress(for: account)
+              }
+            }
+          }
+        }
+      )
+    }
+    // nonSelectedAccountsFilter
+    var newAddresses: [String] = []
+    for address in Preferences.Wallet.nonSelectedAccountsFilter.value {
+      if let account = allAccounts.first(where: { $0.address == address }) {
+        newAddresses.append(account.id)
+      }
+    }
+    Preferences.Wallet.nonSelectedAccountsFilter.value = newAddresses
+
+    Preferences.Wallet.migrateCacheKeyCompleted.value = true
   }
 }
 

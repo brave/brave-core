@@ -62,7 +62,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockMainnet,
       price: "1000",
       history: [],
-      balanceForAccounts: [account1.cacheBalanceKey: 1]
+      balanceForAccounts: [account1.id: 1]
     )
     // USDC value $500
     let viewModel2: AssetViewModel = .init(
@@ -71,7 +71,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockMainnet,
       price: "500",
       history: [],
-      balanceForAccounts: [account1.cacheBalanceKey: 1]
+      balanceForAccounts: [account1.id: 1]
     )
     // SOL value $500
     let viewModel3: AssetViewModel = .init(
@@ -80,7 +80,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockSolana,
       price: "500",
       history: [],
-      balanceForAccounts: [account2.cacheBalanceKey: 1]
+      balanceForAccounts: [account2.id: 1]
     )
     // FIL value $100 on mainnet
     let viewModel4: AssetViewModel = .init(
@@ -89,7 +89,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockFilecoinMainnet,
       price: "100",
       history: [],
-      balanceForAccounts: [account3.cacheBalanceKey: 1]
+      balanceForAccounts: [account3.id: 1]
     )
     // BTC value $20000 on mainnet
     let viewModel5: AssetViewModel = .init(
@@ -98,7 +98,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockBitcoinMainnet,
       price: "20000",
       history: [],
-      balanceForAccounts: [account4.cacheBalanceKey: 1]
+      balanceForAccounts: [account4.id: 1]
     )
     // FIL value $100 on testnet
     let viewModel6: AssetViewModel = .init(
@@ -107,7 +107,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockFilecoinTestnet,
       price: "50",
       history: [],
-      balanceForAccounts: [testAccount1.cacheBalanceKey: 2]
+      balanceForAccounts: [testAccount1.id: 2]
     )
     // BTC value $40000 on testnet
     let viewModel7: AssetViewModel = .init(
@@ -116,7 +116,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockBitcoinTestnet,
       price: "20000",
       history: [],
-      balanceForAccounts: [testAccount2.cacheBalanceKey: 2]
+      balanceForAccounts: [testAccount2.id: 2]
     )
     let array: [AssetViewModel] = [
       viewModel1, viewModel2,
@@ -153,7 +153,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockMainnet,
       price: "1000",
       history: [],
-      balanceForAccounts: [account1.cacheBalanceKey: 1]
+      balanceForAccounts: [account1.id: 1]
     )
     // USDC value $500
     var viewModel2: AssetViewModel = .init(
@@ -162,7 +162,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockMainnet,
       price: "500",
       history: [],
-      balanceForAccounts: [account1.cacheBalanceKey: 1]
+      balanceForAccounts: [account1.id: 1]
     )
     // SOL value $100
     var viewModel3: AssetViewModel = .init(
@@ -171,7 +171,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockSolana,
       price: "100",
       history: [],
-      balanceForAccounts: [account2.cacheBalanceKey: 1]
+      balanceForAccounts: [account2.id: 1]
     )
     // FIL value $100 on mainnet
     var viewModel4: AssetViewModel = .init(
@@ -180,7 +180,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockFilecoinMainnet,
       price: "100",
       history: [],
-      balanceForAccounts: [account3.cacheBalanceKey: 1]
+      balanceForAccounts: [account3.id: 1]
     )
     // BTC value $20000 on mainnet
     var viewModel5: AssetViewModel = .init(
@@ -189,7 +189,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockBitcoinMainnet,
       price: "20000",
       history: [],
-      balanceForAccounts: [account4.cacheBalanceKey: 1]
+      balanceForAccounts: [account4.id: 1]
     )
     // FIL value $100 on testnet
     var viewModel6: AssetViewModel = .init(
@@ -198,7 +198,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockFilecoinTestnet,
       price: "50",
       history: [],
-      balanceForAccounts: [testAccount1.cacheBalanceKey: 2]
+      balanceForAccounts: [testAccount1.id: 2]
     )
     // BTC value $100 on testnet
     var viewModel7: AssetViewModel = .init(
@@ -207,7 +207,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockBitcoinTestnet,
       price: "20000",
       history: [],
-      balanceForAccounts: [testAccount2.cacheBalanceKey: 0.005]
+      balanceForAccounts: [testAccount2.id: 0.005]
     )
     var group1: AssetGroupViewModel = .init(
       groupType: .account(account1),
@@ -256,7 +256,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockMainnet,
       price: "1000",
       history: [],
-      balanceForAccounts: [account1.address: 1]
+      balanceForAccounts: [account1.id: 1]
     )
     // USDC value $500
     viewModel2 = .init(
@@ -265,7 +265,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockMainnet,
       price: "500",
       history: [],
-      balanceForAccounts: [account1.address: 1]
+      balanceForAccounts: [account1.id: 1]
     )
     // SOL value $100
     viewModel3 = .init(
@@ -274,7 +274,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockSolana,
       price: "100",
       history: [],
-      balanceForAccounts: [account2.address: 1]
+      balanceForAccounts: [account2.id: 1]
     )
     // FIL value $100 on mainnet
     viewModel4 = .init(
@@ -283,7 +283,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockFilecoinMainnet,
       price: "100",
       history: [],
-      balanceForAccounts: [account3.address: 1]
+      balanceForAccounts: [account3.id: 1]
     )
     // BTC value $20000 on mainnet
     viewModel5 = .init(
@@ -292,7 +292,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockBitcoinMainnet,
       price: "20000",
       history: [],
-      balanceForAccounts: [account4.address: 1]
+      balanceForAccounts: [account4.id: 1]
     )
     // FIL value $100 on testnet
     viewModel6 = .init(
@@ -301,7 +301,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockFilecoinTestnet,
       price: "50",
       history: [],
-      balanceForAccounts: [testAccount1.address: 2]
+      balanceForAccounts: [testAccount1.id: 2]
     )
     // BTC value $100 on testnet
     viewModel7 = .init(
@@ -310,7 +310,7 @@ class WalletArrayExtensionTests: XCTestCase {
       network: .mockBitcoinTestnet,
       price: "20000",
       history: [],
-      balanceForAccounts: [testAccount2.address: 0.005]
+      balanceForAccounts: [testAccount2.id: 0.005]
     )
     group1 = .init(
       groupType: .network(.mockMainnet),

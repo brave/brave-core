@@ -39,26 +39,31 @@ class TransactionParserTests: XCTestCase {
     (BraveWallet.AccountInfo.previewAccount.copy() as! BraveWallet.AccountInfo).then {
       $0.name = "Ethereum Account 2"
       $0.address = "0x0987654321098765432109876543210987654321"
+      $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "0x0987654321098765432109876543210987654321"
     },
     (BraveWallet.AccountInfo.mockSolAccount.copy() as! BraveWallet.AccountInfo).then {
       $0.name = "Solana Account 1"
       $0.address = "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd"
+      $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd"
     },
     (BraveWallet.AccountInfo.mockSolAccount.copy() as! BraveWallet.AccountInfo).then {
       $0.name = "Solana Account 2"
       $0.address = "0xeeeeeeeeeeffffffffff11111111112222222222"
+      $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "0xeeeeeeeeeeffffffffff11111111112222222222"
     },
     (BraveWallet.AccountInfo.mockFilTestnetAccount.copy() as! BraveWallet.AccountInfo).then {
       $0.name = "Filecoin Testnet 1"
       $0.address = "fil_testnet_address_1"
+      $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "fil_testnet_address_1"
     },
     (BraveWallet.AccountInfo.mockFilTestnetAccount.copy() as! BraveWallet.AccountInfo).then {
       $0.name = "Filecoin Testnet 2"
       $0.address = "fil_testnet_address_2"
+      $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "fil_testnet_address_2"
     },
   ]

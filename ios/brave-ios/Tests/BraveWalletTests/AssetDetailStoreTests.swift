@@ -94,25 +94,7 @@ class AssetDetailStoreTests: XCTestCase {
       $1(true)
     }
 
-    let mockBtcBalance: Double = 0.001
-    let btcBalanceSatoshi =
-      formatter.weiString(
-        from: mockBtcBalance,
-        radix: .decimal,
-        decimals: Int(BraveWallet.BlockchainToken.mockBTCToken.decimals)
-      ) ?? ""
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
-    bitcoinWalletService._balance = {
-      $1(
-        .init(
-          totalBalance: UInt64(btcBalanceSatoshi) ?? 0,
-          availableBalance: UInt64(btcBalanceSatoshi) ?? 0,
-          pendingBalance: 0,
-          balances: [:]
-        ),
-        nil
-      )
-    }
 
     // setup store
     let store = AssetDetailStore(
@@ -540,25 +522,7 @@ class AssetDetailStoreTests: XCTestCase {
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     let swapService = BraveWallet.TestSwapService()
 
-    let mockBtcBalance: Double = 0.001
-    let btcBalanceSatoshi =
-      formatter.weiString(
-        from: mockBtcBalance,
-        radix: .decimal,
-        decimals: Int(BraveWallet.BlockchainToken.mockBTCToken.decimals)
-      ) ?? ""
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
-    bitcoinWalletService._balance = {
-      $1(
-        .init(
-          totalBalance: UInt64(btcBalanceSatoshi) ?? 0,
-          availableBalance: UInt64(btcBalanceSatoshi) ?? 0,
-          pendingBalance: 0,
-          balances: [:]
-        ),
-        nil
-      )
-    }
 
     // setup store
     var store = AssetDetailStore(

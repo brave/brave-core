@@ -881,7 +881,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         for account in accounts {
           if let balancesForAccount = userAssetManager.getBalances(
             for: nil,
-            account: account.address
+            account: account.id
           ) {
             let balancesScopedForP3A = balancesForAccount.optionallyFilter(
               shouldFilter: !shouldCountTestNetworks,

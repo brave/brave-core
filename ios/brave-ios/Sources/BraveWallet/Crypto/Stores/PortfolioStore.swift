@@ -67,7 +67,7 @@ public struct AssetGroupViewModel: WalletAssetGroupViewModel, Identifiable, Equa
       let balance: Double
       switch groupType {
       case .account(let account):
-        balance = asset.balanceForAccounts[account.cacheBalanceKey] ?? 0
+        balance = asset.balanceForAccounts[account.id] ?? 0
       case .none, .network:
         balance = asset.totalBalance
       }
@@ -125,7 +125,7 @@ public struct AssetViewModel: Identifiable, Equatable {
     let balance: Double
     switch groupType {
     case .account(let account):
-      balance = balanceForAccounts[account.cacheBalanceKey] ?? 0
+      balance = balanceForAccounts[account.id] ?? 0
     case .none, .network:
       balance = totalBalance
     }
@@ -137,7 +137,7 @@ public struct AssetViewModel: Identifiable, Equatable {
     let balance: Double
     switch groupType {
     case .account(let account):
-      balance = balanceForAccounts[account.cacheBalanceKey] ?? 0
+      balance = balanceForAccounts[account.id] ?? 0
     case .none, .network:
       balance = totalBalance
     }
@@ -288,7 +288,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       accounts: allAccounts.map { account in
         .init(
           isSelected: !nonSelectedAccountAddresses.contains(
-            where: { $0 == account.filterAccountKey }
+            where: { $0 == account.id }
           ),
           model: account
         )
@@ -319,8 +319,9 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
 
   /// Cancellable for the last running `update()` Task.
   private var updateTask: Task<(), Never>?
+  private typealias TokenBalanceCache = [String: [String: Double]]
   /// Cache of token balances for each account. [token.id: [account.cacheBalanceKey: balance]]
-  private var tokenBalancesCache: [String: [String: Double]] = [:]
+  private var tokenBalancesCache: TokenBalanceCache = [:]
   /// Cache of prices for each token. The key is the token's `assetRatioId`.
   private var pricesCache: [String: String] = [:]
   /// Cache of priceHistories. The key is the token's `assetRatioId`.
@@ -510,7 +511,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
           // 2. Test Cases will come here, we will fetch balance using
           // a mock `rpcService` and `bitcoinWalletService`
           let fetchedTokenBalances = await withTaskGroup(
-            of: [String: [String: Double]].self,
+            of: TokenBalanceCache.self,
             body: {
               @MainActor
               [tokenBalancesCache, rpcService, bitcoinWalletService, assetManager]
@@ -528,7 +529,8 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                     )
                   {
                     balanceForToken = await bitcoinWalletService.fetchBTCBalance(
-                      accountId: account.accountId
+                      accountId: account.accountId,
+                      type: .total
                     )
                   } else {
                     balanceForToken = await rpcService.balance(
@@ -537,10 +539,10 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                       network: tokenNetworkAccounts.network
                     )
                   }
-                  tokenBalances.merge(with: [account.cacheBalanceKey: balanceForToken ?? 0])
+                  tokenBalances.merge(with: [account.id: balanceForToken ?? 0])
                   assetManager.updateBalance(
                     for: token,
-                    account: account.cacheBalanceKey,
+                    account: account.id,
                     balance: "\(balanceForToken ?? 0)",
                     completion: nil
                   )
@@ -548,7 +550,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                 return [token.id: tokenBalances]
               }
               return await group.reduce(
-                into: [String: [String: Double]](),
+                into: TokenBalanceCache(),
                 { partialResult, new in
                   partialResult.merge(with: new)
                 }
@@ -725,7 +727,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
               .filter { key, value in
                 // if we previously fetched balance for an account it will remain in cache.
                 // filter out to avoid including in total balance
-                selectedAccounts.contains(where: { $0.cacheBalanceKey == key })
+                selectedAccounts.contains(where: { $0.id == key })
               }
           )
         }
@@ -761,7 +763,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
               .filter { key, value in
                 // if we previously fetched balance for an account it will remain in cache.
                 // filter out to avoid including in total balance
-                selectedAccounts.contains(where: { $0.cacheBalanceKey == key })
+                selectedAccounts.contains(where: { $0.id == key })
               }
           )
         }
@@ -795,7 +797,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
               balanceForAccounts: tokenBalancesCache[token.id, default: [:]]
                 .filter { key, value in
                   // only provide grouped account balance
-                  key == account.cacheBalanceKey
+                  key == account.id
                 }
             )
           }
@@ -803,7 +805,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         .optionallyFilter(
           shouldFilter: filters.isHidingSmallBalances,
           isIncluded: { asset in
-            let balanceForAccount = asset.balanceForAccounts[account.cacheBalanceKey] ?? 0
+            let balanceForAccount = asset.balanceForAccounts[account.id] ?? 0
             let value = (Double(asset.price) ?? 0) * balanceForAccount
             return value >= 0.05
           }
