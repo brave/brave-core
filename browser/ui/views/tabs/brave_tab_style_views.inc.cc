@@ -222,12 +222,22 @@ SkPath BraveVerticalTabStyle::GetPath(
   }
 
   if (is_tab_tiled) {
-    constexpr auto padding_for_tile = 1;
-    tab_top += scale * padding_for_tile;
-    tab_bottom -= scale * padding_for_tile;
-    tab()->controller()->IsFirstTabInTile(tab())
-        ? tab_left += scale* padding_for_tile
-        : tab_right -= scale * padding_for_tile;
+    if (ShouldShowVerticalTabs()) {
+      constexpr auto kPaddingForVerticalTab = 4;
+      tab_top += scale * kPaddingForVerticalTab;
+      tab_bottom -= scale * kPaddingForVerticalTab;
+      tab_left += scale * kPaddingForVerticalTab;
+      tab_right -= scale * kPaddingForVerticalTab;
+    } else {
+      // As the horizontal tab has padding already we only gives 1 dip padding.
+      // Accumulative padding will be 4 dips.
+      constexpr auto kPaddingForHorizontalTab = 1;
+      tab_top += scale * kPaddingForHorizontalTab;
+      tab_bottom -= scale * kPaddingForHorizontalTab;
+      tab()->controller()->IsFirstTabInTile(tab())
+          ? tab_left += scale* kPaddingForHorizontalTab
+          : tab_right -= scale * kPaddingForHorizontalTab;
+    }
   }
 
   SkPath path;
