@@ -336,10 +336,13 @@ TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   task_environment_.RunUntilIdle();
 
+  std::unique_ptr<DataTypeManager> bak_data_type_manager =
+      std::move(brave_sync_service_impl()->data_type_manager_);
   // Replace DataTypeManager with mock who gives CONFIGURING result on state()
   // call. We need this to force SyncService::GetTransportState() give
   // TransportState::CONFIGURING status to test behavior
-  // BraveSyncServiceImpl::OnSelfDeviceInfoDeleted
+  // BraveSyncServiceImpl::OnSelfDeviceInfoDeleted.
+  // Save original DataTypeManager to revert it before test exit.
   NiceMock<DataTypeManagerMock> data_type_manager_mock;
   std::unique_ptr<DataTypeManager> data_type_manager_mock_ptr =
       std::unique_ptr<DataTypeManager>(&data_type_manager_mock);
@@ -363,9 +366,13 @@ TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
 
   brave_sync_service_impl()->RemoveObserver(&observer_mock);
 
-  // brave_sync_service_impl()->data_type_manager_ is owned by local var
-  // |data_type_manager_mock|, so release ownership for the correct destruction
-  brave_sync_service_impl()->data_type_manager_.release();
+  // Revert back brave_sync_service_impl()->data_type_manager_ and
+  // proper release local data_type_manager_mock_ptr
+  data_type_manager_mock_ptr =
+      std::move(brave_sync_service_impl()->data_type_manager_);
+  data_type_manager_mock_ptr.release();
+  brave_sync_service_impl()->data_type_manager_ =
+      std::move(bak_data_type_manager);
 
   OSCryptMocker::TearDown();
 }
