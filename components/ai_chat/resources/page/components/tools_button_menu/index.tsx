@@ -21,7 +21,7 @@ export default function ToolsButtonMenu(props: Props) {
     <ButtonMenu
       className={classnames({
         [styles.buttonMenu]: true,
-        [styles.selectFirstItem]:
+        [styles.highlightFirstItem]:
           context.isToolsMenuOpen && context.inputText.startsWith('/')
       })}
       isOpen={context.isToolsMenuOpen}

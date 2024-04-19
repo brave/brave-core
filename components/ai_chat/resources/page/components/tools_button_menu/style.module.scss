@@ -7,7 +7,7 @@
   --leo-menu-max-height: 320px;
 }
 
-.selectFirstItem {
+.highlightFirstItem {
   leo-menu-item {
     &:first-of-type {
       background: var(--leo-color-container-interactive);

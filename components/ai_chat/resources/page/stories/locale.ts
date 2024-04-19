@@ -92,8 +92,4 @@ provideStrings({
   shortenLabel: 'Shorten',
   maybeLaterLabel: 'Maybe later',
   menuManageSubscription: 'Manage subscription',
-  actionsSummarize: 'Summarize',
-  actionsExplain: 'Explain',
-  actionsParaphrase: 'Paraphrase',
-  actionsImprove: 'Improve'
 })
