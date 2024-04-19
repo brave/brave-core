@@ -17,18 +17,18 @@
 namespace brave_wallet {
 std::optional<std::vector<std::string>> ParseMeldErrorResponse(
     const base::Value& json_value);
-std::optional<std::vector<mojom::ServiceProviderPtr>> ParseServiceProviders(
+std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
     const base::Value& json_value);
-std::optional<std::vector<mojom::CryptoQuotePtr>> ParseCryptoQuotes(
+std::optional<std::vector<mojom::MeldCryptoQuotePtr>> ParseCryptoQuotes(
     const base::Value& json_value,
     std::string* error);
-std::optional<std::vector<mojom::PaymentMethodPtr>> ParsePaymentMethods(
+std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
     const base::Value& json_value);
-std::optional<std::vector<mojom::FiatCurrencyPtr>> ParseFiatCurrencies(
+std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> ParseFiatCurrencies(
     const base::Value& json_value);
-std::optional<std::vector<mojom::CryptoCurrencyPtr>> ParseCryptoCurrencies(
+std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
     const base::Value& json_value);
-std::optional<std::vector<mojom::CountryPtr>> ParseCountries(
+std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
     const base::Value& json_value);
 }  // namespace brave_wallet
 

@@ -18,7 +18,7 @@
 
 namespace {
 
-std::optional<brave_wallet::mojom::LogoImagesPtr> ParseMeldLogos(const std::optional<base::Value>& logos) {
+std::optional<brave_wallet::mojom::MeldLogoImagesPtr> ParseMeldLogos(const std::optional<base::Value>& logos) {
   if (!logos || !logos->is_dict()) {
     return std::nullopt;
   }
@@ -29,7 +29,7 @@ std::optional<brave_wallet::mojom::LogoImagesPtr> ParseMeldLogos(const std::opti
     return std::nullopt;
   }
 
-  auto logo_images = brave_wallet::mojom::LogoImages::New();
+  auto logo_images = brave_wallet::mojom::MeldLogoImages::New();
   if (logos_value->dark && logos_value->dark->is_string()) {
     logo_images->dark_url = logos_value->dark->GetString();
   }
@@ -73,13 +73,13 @@ std::optional<double> ParseOptionDouble(const std::optional<base::Value>& value)
 
 void ParseMeldRegions(
     const std::optional<base::Value>& idl_regions,
-    brave_wallet::mojom::Country* country) {
+    brave_wallet::mojom::MeldCountry* country) {
   if (!idl_regions || !idl_regions->is_list() || !country) {
     return;
   }
 
   if(!country->regions) {
-    country->regions = std::vector<brave_wallet::mojom::RegionPtr>();
+    country->regions = std::vector<brave_wallet::mojom::MeldRegionPtr>();
   }
 
   for(const auto& item : idl_regions->GetList()) {
@@ -89,7 +89,7 @@ void ParseMeldRegions(
       return;
     }
 
-    auto reg = brave_wallet::mojom::Region::New();
+    auto reg = brave_wallet::mojom::MeldRegion::New();
     reg->region_code = ParseOptionalString(region_value->region_code);
     reg->name = ParseOptionalString(region_value->name);
     country->regions->emplace_back(std::move(reg));
@@ -138,7 +138,7 @@ std::optional<base::flat_map<std::string, std::string>> ParseOptionalMapOfString
 
 namespace brave_wallet {
 
-std::optional<std::vector<mojom::ServiceProviderPtr>> ParseServiceProviders(
+std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
     const base::Value& json_value) {
   // Parses results like this:
   // {
@@ -166,9 +166,9 @@ std::optional<std::vector<mojom::ServiceProviderPtr>> ParseServiceProviders(
     return std::nullopt;
   }
 
-  std::vector<mojom::ServiceProviderPtr> service_providers;
+  std::vector<mojom::MeldServiceProviderPtr> service_providers;
   for (const auto& sp_item : json_value.GetList()) {
-    auto sp = mojom::ServiceProvider::New();
+    auto sp = mojom::MeldServiceProvider::New();
     const auto service_provider_value =
         meld_integration_responses::ServiceProvider::FromValue(sp_item);
     if (!service_provider_value) {
@@ -235,7 +235,7 @@ std::optional<std::vector<std::string>> ParseMeldErrorResponse(const base::Value
   return errors;
 }
 
-std::optional<std::vector<mojom::CryptoQuotePtr>> ParseCryptoQuotes(
+std::optional<std::vector<mojom::MeldCryptoQuotePtr>> ParseCryptoQuotes(
     const base::Value& json_value,
     std::string* error) {
   // Parses results like this:
@@ -279,7 +279,7 @@ std::optional<std::vector<mojom::CryptoQuotePtr>> ParseCryptoQuotes(
     return std::nullopt;
   }
 
-  std::vector<mojom::CryptoQuotePtr> quotes;
+  std::vector<mojom::MeldCryptoQuotePtr> quotes;
   for (const auto& item : quote_resp_value->quotes->GetList()) {
     const auto quote_value =
         meld_integration_responses::CryptoQuote::FromValue(item);
@@ -289,7 +289,7 @@ std::optional<std::vector<mojom::CryptoQuotePtr>> ParseCryptoQuotes(
       return std::nullopt;
     }
 
-    auto quote = mojom::CryptoQuote::New();
+    auto quote = mojom::MeldCryptoQuote::New();
 
     quote->transaction_type =
         ParseOptionalString(quote_value->transaction_type);
@@ -326,7 +326,7 @@ std::optional<std::vector<mojom::CryptoQuotePtr>> ParseCryptoQuotes(
   return quotes;
 }
 
-std::optional<std::vector<mojom::PaymentMethodPtr>> ParsePaymentMethods(
+std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
     const base::Value& json_value) {
   // Parses results like this:
   // [
@@ -344,7 +344,7 @@ std::optional<std::vector<mojom::PaymentMethodPtr>> ParsePaymentMethods(
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;
   }
-  std::vector<mojom::PaymentMethodPtr> payment_methods;
+  std::vector<mojom::MeldPaymentMethodPtr> payment_methods;
   for (const auto& pm_item : json_value.GetList()) {
     const auto payment_method_value =
         meld_integration_responses::PaymentMethod::FromValue(pm_item);
@@ -353,7 +353,7 @@ std::optional<std::vector<mojom::PaymentMethodPtr>> ParsePaymentMethods(
       return std::nullopt;
     }
 
-    auto pm = mojom::PaymentMethod::New();
+    auto pm = mojom::MeldPaymentMethod::New();
     pm->name = ParseOptionalString(payment_method_value->name);
     pm->payment_method = ParseOptionalString(payment_method_value->payment_method);
     pm->payment_type = ParseOptionalString(payment_method_value->payment_type);
@@ -372,7 +372,7 @@ std::optional<std::vector<mojom::PaymentMethodPtr>> ParsePaymentMethods(
   return payment_methods;
 }
 
-std::optional<std::vector<mojom::FiatCurrencyPtr>> ParseFiatCurrencies(
+std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> ParseFiatCurrencies(
     const base::Value& json_value) {
   // Parses results like this:
   // [
@@ -387,7 +387,7 @@ std::optional<std::vector<mojom::FiatCurrencyPtr>> ParseFiatCurrencies(
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;
   }
-  std::vector<mojom::FiatCurrencyPtr> fiat_currencies;
+  std::vector<mojom::MeldFiatCurrencyPtr> fiat_currencies;
   for (const auto& fc_item : json_value.GetList()) {
     const auto fiat_currency_value =
         meld_integration_responses::FiatCurrency::FromValue(fc_item);
@@ -396,7 +396,7 @@ std::optional<std::vector<mojom::FiatCurrencyPtr>> ParseFiatCurrencies(
       return std::nullopt;
     }
 
-    auto fc = mojom::FiatCurrency::New();
+    auto fc = mojom::MeldFiatCurrency::New();
     fc->name = ParseOptionalString(fiat_currency_value->name);
     fc->currency_code = ParseOptionalString(fiat_currency_value->currency_code);
     fc->symbol_image_url = ParseOptionalString(fiat_currency_value->symbol_image_url);
@@ -407,7 +407,7 @@ std::optional<std::vector<mojom::FiatCurrencyPtr>> ParseFiatCurrencies(
   return fiat_currencies;
 }
 
-std::optional<std::vector<mojom::CryptoCurrencyPtr>> ParseCryptoCurrencies(
+std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
     const base::Value& json_value) {
   // Parses results like this:
   // [
@@ -436,7 +436,7 @@ std::optional<std::vector<mojom::CryptoCurrencyPtr>> ParseCryptoCurrencies(
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;
   }
-  std::vector<mojom::CryptoCurrencyPtr> crypto_currencies;
+  std::vector<mojom::MeldCryptoCurrencyPtr> crypto_currencies;
   for (const auto& cc_item : json_value.GetList()) {
     const auto crypto_currency_value =
         meld_integration_responses::CryptoCurrency::FromValue(cc_item);
@@ -445,7 +445,7 @@ std::optional<std::vector<mojom::CryptoCurrencyPtr>> ParseCryptoCurrencies(
       return std::nullopt;
     }
 
-    auto cc = mojom::CryptoCurrency::New();
+    auto cc = mojom::MeldCryptoCurrency::New();
     cc->name = ParseOptionalString(crypto_currency_value->name);
     cc->currency_code = ParseOptionalString(crypto_currency_value->currency_code);
     cc->chain_code = ParseOptionalString(crypto_currency_value->chain_code);
@@ -460,7 +460,7 @@ std::optional<std::vector<mojom::CryptoCurrencyPtr>> ParseCryptoCurrencies(
   return crypto_currencies;
 }
 
-std::optional<std::vector<mojom::CountryPtr>> ParseCountries(
+std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
     const base::Value& json_value) {
   // Parses results like this:
   // [
@@ -481,7 +481,7 @@ std::optional<std::vector<mojom::CountryPtr>> ParseCountries(
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;
   }
-  std::vector<mojom::CountryPtr> countries;
+  std::vector<mojom::MeldCountryPtr> countries;
   for (const auto& country_item : json_value.GetList()) {
     const auto country_value =
         meld_integration_responses::Country::FromValue(country_item);
@@ -490,7 +490,7 @@ std::optional<std::vector<mojom::CountryPtr>> ParseCountries(
       return std::nullopt;
     }
 
-    auto country = mojom::Country::New();
+    auto country = mojom::MeldCountry::New();
     country->name = ParseOptionalString(country_value->name);
     country->country_code = ParseOptionalString(country_value->country_code);
     country->flag_image_url = ParseOptionalString(country_value->flag_image_url);

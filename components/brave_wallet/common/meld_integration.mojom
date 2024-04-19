@@ -7,24 +7,24 @@ module brave_wallet.mojom;
 
 import "mojo/public/mojom/base/time.mojom";
 
-struct LogoImages {
+struct MeldLogoImages {
     string? dark_url;
     string? dark_short_url;
     string? light_url;
     string? light_short_url;
 };  
 
-struct ServiceProvider {
+struct MeldServiceProvider {
     string? name;
     string? service_provider;
     string? status;
     string? web_site_url;
     array<string>? categories;
     map<string, string>? category_statuses;
-    LogoImages? logo_images;
+    MeldLogoImages? logo_images;
 };
 
-struct CryptoQuote {
+struct MeldCryptoQuote {
     string? transaction_type;
     double? exchange_rate;
     double? transaction_fee;
@@ -43,20 +43,20 @@ struct CryptoQuote {
     string? country_code;
 };
 
-struct PaymentMethod {
+struct MeldPaymentMethod {
     string? payment_method;
     string? name;
     string? payment_type;
-    LogoImages? logo_images;
+    MeldLogoImages? logo_images;
 };
   
-  struct FiatCurrency {
+  struct MeldFiatCurrency {
     string? currency_code;
     string? name;
     string? symbol_image_url;
   };
   
-  struct CryptoCurrency {
+  struct MeldCryptoCurrency {
     string? currency_code;
     string? name;
     string? chain_code;
@@ -66,14 +66,14 @@ struct PaymentMethod {
     string? symbol_image_url;
   };
   
-  struct Region {
+  struct MeldRegion {
     string? region_code;
     string? name;
   };
   
-  struct Country {
+  struct MeldCountry {
     string? country_code;
     string? name;
     string? flag_image_url;
-    array<Region>? regions;
+    array<MeldRegion>? regions;
   };
