@@ -63,7 +63,7 @@ TEST_F(DeviceInfoSyncBridgeTest, LocalDelete) {
   const std::string kLocalGuid = CacheGuidForSuffix(kLocalSuffix);
   ON_CALL(*processor(), IsEntityUnsynced(kLocalGuid))
       .WillByDefault(Return(false));
-  EXPECT_CALL(*processor(), Delete(kLocalGuid, _)).Times(1);
+  EXPECT_CALL(*processor(), Delete(kLocalGuid, _, _)).Times(1);
 
   bool deleted_device_info_sent = false;
   base::RunLoop loop;
@@ -100,7 +100,7 @@ TEST_F(DeviceInfoSyncBridgeTest, RemoteDelete) {
   const std::string kLocalGuid = CacheGuidForSuffix(kLocalSuffix);
   ON_CALL(*processor(), IsEntityUnsynced(specifics.cache_guid()))
       .WillByDefault(Return(false));
-  EXPECT_CALL(*processor(), Delete(specifics.cache_guid(), _)).Times(1);
+  EXPECT_CALL(*processor(), Delete(specifics.cache_guid(), _, _)).Times(1);
 
   bool deleted_device_info_sent = false;
   base::RunLoop loop;
@@ -140,7 +140,7 @@ TEST_F(DeviceInfoSyncBridgeTest, LocalDeleteWhenOffline) {
   // The statement below means that DeviceInfoSyncBridge::OnDeviceInfoDeleted
   // 5 times did check of IsEntityUnsynced for the entity being deleted
   EXPECT_CALL(*processor(), IsEntityUnsynced).Times(5);
-  EXPECT_CALL(*processor(), Delete(kLocalGuid, _)).Times(1);
+  EXPECT_CALL(*processor(), Delete(kLocalGuid, _, _)).Times(1);
 
   bool deleted_device_info_sent = false;
   base::RunLoop loop;
