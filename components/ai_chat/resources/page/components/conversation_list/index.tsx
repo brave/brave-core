@@ -133,11 +133,14 @@ function ConversationList(props: ConversationListProps) {
                 <div
                   className={styles.message}
                 >
-                  {!turn.selectedText ? (
-                    isAIAssistant
-                      ? <MarkdownRenderer text={turn.text} shouldShowTextCursor={shouldShowTextCursor} />
-                      : turn.text
-                  ) : null // If there is selectedText, don't render turn.text at all
+                  {
+                    !turn.selectedText &&
+                      (isAIAssistant ? (
+                        <MarkdownRenderer
+                          text={turn.text}
+                          shouldShowTextCursor={shouldShowTextCursor}
+                        />
+                      ) : (turn.text))
                   }
                   {turn.selectedText &&
                       <ActionTypeLabel actionType={turn.actionType} />}
