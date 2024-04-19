@@ -10,6 +10,7 @@
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -29,10 +30,6 @@ namespace brave_search_conversion {
 namespace {
 
 ConversionType GetConversionTypeFromBannerTypeParam(const std::string& param) {
-  if (param == "type_A") {
-    return ConversionType::kBannerTypeA;
-  }
-
   if (param == "type_B") {
     return ConversionType::kBannerTypeB;
   }
@@ -92,10 +89,6 @@ ConversionType GetConversionType(PrefService* prefs,
     return ConversionType::kNone;
   }
 
-  if (base::FeatureList::IsEnabled(features::kOmniboxButton)) {
-    return ConversionType::kButton;
-  }
-
   if (base::FeatureList::IsEnabled(features::kOmniboxBanner)) {
     // Give conversion type after 3d passed since maybe later clicked time.
     auto clicked_time = prefs->GetTime(prefs::kMaybeLaterClickedTime);
@@ -136,8 +129,7 @@ GURL GetPromoURL(const std::string& search_term) {
 }
 
 bool IsBraveSearchConversionFeatureEnabled() {
-  return base::FeatureList::IsEnabled(features::kOmniboxButton) ||
-         base::FeatureList::IsEnabled(features::kOmniboxBanner);
+  return base::FeatureList::IsEnabled(features::kOmniboxBanner);
 }
 
 }  // namespace brave_search_conversion

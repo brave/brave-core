@@ -16,8 +16,6 @@ namespace p3a {
 
 inline constexpr char kSearchPromoButtonHistogramName[] =
     "Brave.Search.Promo.Button";
-inline constexpr char kSearchPromoBannerAHistogramName[] =
-    "Brave.Search.Promo.BannerA";
 inline constexpr char kSearchPromoBannerBHistogramName[] =
     "Brave.Search.Promo.BannerB";
 inline constexpr char kSearchPromoBannerCHistogramName[] =
