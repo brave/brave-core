@@ -577,21 +577,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Don't ask me again
         </message>
         <!-- Brave search conversion promotion -->
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_INPUT_APPEND_LABEL" desc="The text that appended to the input query in button type match">
-          - Brave Search
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL" desc="The text for detailed description about brave search in promotion match">
-          Support independent search with better privacy. Brave search doesn't track you, your queries, or your clicks.
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL_FIRST_PART" desc="The text for finding the first sentence from above. Both should have the same translation.">
-          Support independent search with better privacy.
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_TITLE" desc="The text for the banner type title">
-          Time to ditch big tech.
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DESC" desc="The text for the banner type description">
-          Brave doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
-        </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_TITLE" desc="The text for the banner type title">
           Don't Google it. Can't Bing it. Just Brave it.
         </message>
