@@ -104,7 +104,9 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
                              ImportError* out_error) {
     ASSERT_NE(out_success, nullptr);
 
-    auto json = base::JSONReader::Read(json_str);
+    auto json =
+        base::JSONReader::Read(json_str, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                             base::JSON_ALLOW_CONTROL_CHARS);
     ASSERT_TRUE(json);
     {
       ExternalWalletsImporter importer(mojom::ExternalWalletType::CryptoWallets,
