@@ -77,11 +77,34 @@ RegisterPolymerTemplateModifications({
         <settings-toggle-button
           class="cr-row"
           pref="{{prefs.brave.enable_closing_last_tab}}"
-          label="${loadTimeData.getString('braveHelpTipsClosingLastTab')}"
+          label="${loadTimeData.getString('braveClosingLastTab')}"
         >
         </settings-toggle-button>
       `
     )
+
+    templateContent.appendChild(
+      html`
+        <settings-toggle-button
+          class="cr-row hr"
+          pref="{{prefs.brave.enable_window_closing_confirm}}"
+          label="${loadTimeData.getString('braveWarnBeforeClosingWindow')}">
+        </settings-toggle-button>
+      `
+    )
+
+    // <if expr="is_macosx">
+    templateContent.appendChild(
+      html`
+        <settings-toggle-button
+          class="cr-row hr"
+          pref="{{prefs.browser.confirm_to_quit}}"
+          label="${loadTimeData.getString('warnBeforeQuitting')}">
+        </settings-toggle-button>
+      `
+    )
+    // </if>
+
     // <if expr="enable_brave_vpn_wireguard">
     let showVpnPage = loadTimeData.getBoolean('isBraveVPNEnabled')
     // <if expr="is_macosx">
