@@ -9,8 +9,11 @@
 #include <numeric>
 #include <optional>
 
+#include "base/containers/contains.h"
+#include "base/containers/flat_set.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -218,6 +221,10 @@ mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
         articles,
         base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
                                const ArticleWeight& weight) {
+          if (!weight.discoverable) {
+            return 0.0;
+          }
+
           if (weight.subscribed) {
             return 0.0;
           }
@@ -237,7 +244,9 @@ ArticleInfos GetArticleInfos(const std::string& locale,
 
   for (const auto& [publisher_id, publisher] : publishers) {
     auto channels = GetChannelsForPublisher(locale, publisher);
-    if (base::Contains(channels, "Politics")) {
+    if (base::ranges::any_of(kSensitiveChannels, [&](const std::string& channel) {
+          return base::Contains(channels, channel);
+        })) {
       non_discoverable_publishers.insert(publisher_id);
     }
   }
