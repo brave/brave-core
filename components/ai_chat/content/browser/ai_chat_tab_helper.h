@@ -84,7 +84,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
    private:
     void AccessibilityEventReceived(
-        const content::AXEventNotificationDetails& details) override;
+        const ui::AXUpdatesAndEvents& details) override;
     raw_ptr<AIChatTabHelper> helper_;
   };
 
