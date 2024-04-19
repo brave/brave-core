@@ -16,7 +16,6 @@ class NodeDOMRoot final : public NodeHTMLElement {
  public:
   NodeDOMRoot(GraphItemContext* context,
               const blink::DOMNodeId dom_node_id,
-              const FrameId& frame_id,
               const String& tag_name);
 
   void SetURL(const String& url) { url_ = url; }
@@ -32,7 +31,6 @@ class NodeDOMRoot final : public NodeHTMLElement {
 
  private:
   String url_;
-  FrameId frame_id_;
 };
 
 }  // namespace brave_page_graph
