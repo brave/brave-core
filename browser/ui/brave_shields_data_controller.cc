@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -33,6 +34,9 @@ HostContentSettingsMap* GetHostContentSettingsMap(
   return HostContentSettingsMapFactory::GetForProfile(
       web_contents->GetBrowserContext());
 }
+
+constexpr char kShieldsAllowScriptOnceHistogramName[] =
+    "Brave.Shields.AllowScriptOnce";
 
 }  // namespace
 
@@ -413,6 +417,7 @@ void BraveShieldsDataController::AllowScriptsOnce(
   if (!observer) {
     return;
   }
+  UMA_HISTOGRAM_BOOLEAN(kShieldsAllowScriptOnceHistogramName, true);
   observer->AllowScriptsOnce(origins);
   ReloadWebContents();
 }
