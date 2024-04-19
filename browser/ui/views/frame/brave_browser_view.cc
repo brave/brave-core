@@ -141,7 +141,7 @@ class ActivatableContentsWebView : public ContentsWebView {
   // ContentsWebView:
   void OnFocus() override {
     ContentsWebView::OnFocus();
-    if (web_contents()) {
+    if (web_contents() && web_contents()->GetDelegate()) {
       web_contents()->GetDelegate()->ActivateContents(web_contents());
     }
   }
