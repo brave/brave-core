@@ -18,6 +18,7 @@ const chromiumPathFilter = (s) => s.length > 0 &&
   !s.endsWith('.svg') &&
   !s.endsWith('new_tab_page_view.xml') &&
   !s.endsWith('channel_constants.xml') &&
+  s !== 'build/config/unsafe_buffers_paths.txt' &&
   s !== 'chrome/VERSION' &&
   s !== 'ui/webui/resources/css/text_defaults_md.css'
 

@@ -12,6 +12,7 @@ const l10nUtil = require('./l10nUtil')
 const Log = require('./logging')
 const assert = require('assert')
 const updateChromeVersion = require('./updateChromeVersion')
+const updateUnsafeBuffersPaths = require('./updateUnsafeBuffersPaths.js')
 const ActionGuard = require('./actionGuard')
 
 const mergeWithDefault = (options) => {
@@ -66,6 +67,14 @@ async function applyPatches() {
   }
 
   updateChromeVersion()
+
+  // Let's reset the state of this file before patching it, to avoid
+  // duplicated patches.
+  await util.runGitAsync(
+      config.srcDir,
+      ['checkout', 'HEAD', 'build/config/unsafe_buffers_paths.txt'])
+  updateUnsafeBuffersPaths()
+
   Log.progressFinish('apply patches')
 }
 
