@@ -243,9 +243,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     component_updater::ComponentUpdateService* cus =
         GetApplicationContext()->GetComponentUpdateService();
     DCHECK(cus);
+    brave_component_updater::BraveOnDemandUpdater::GetInstance()
+        ->RegisterOnDemandUpdater(&cus->GetOnDemandUpdater());
+    [self registerComponentsForUpdate:cus];
 
     _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
-    [self registerComponentsForUpdate:cus];
 
     _backgroundImagesService = [[NTPBackgroundImagesService alloc]
         initWithBackgroundImagesService:
@@ -335,10 +337,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
 - (void)registerComponentsForUpdate:
     (component_updater::ComponentUpdateService*)cus {
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()
-      ->RegisterOnDemandUpdateCallback(
-          base::BindRepeating(&component_updater::BraveOnDemandUpdate));
-
   RegisterSafetyTipsComponent(cus);
   brave_wallet::WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponent(

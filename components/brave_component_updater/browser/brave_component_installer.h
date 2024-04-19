@@ -51,6 +51,7 @@ class BraveComponentInstallerPolicy
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
 
   std::string name_;
   std::string base64_public_key_;

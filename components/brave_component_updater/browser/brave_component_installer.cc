@@ -139,6 +139,10 @@ BraveComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
 
+bool BraveComponentInstallerPolicy::IsBraveComponent() const {
+  return true;
+}
+
 void RegisterComponent(component_updater::ComponentUpdateService* cus,
                        const std::string& name,
                        const std::string& base64_public_key,

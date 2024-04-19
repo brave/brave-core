@@ -53,6 +53,7 @@ class MediaDetectorComponentInstallerPolicy
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
 
  private:
   static constexpr size_t kHashSize = 32;
@@ -134,6 +135,10 @@ std::string MediaDetectorComponentInstallerPolicy::GetName() const {
 update_client::InstallerAttributes
 MediaDetectorComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
+}
+
+bool MediaDetectorComponentInstallerPolicy::IsBraveComponent() const {
+  return true;
 }
 
 void OnRegisteredToComponentUpdateService() {

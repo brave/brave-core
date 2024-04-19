@@ -6,8 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_INSTALLER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_INSTALLER_H_
 
-// Prevent CrxInstaller::OnUpdateError from being redefined by the below
-// #define.
 #include "components/update_client/update_client.h"
 
 // We can't redefine Register() here because that would change two methods at
@@ -22,10 +20,16 @@
       const base::Version& registered_version = base::Version(kNullVersion), \
       const base::Version& max_previous_product_version =                    \
           base::Version(kNullVersion));                                      \
+  bool IsBraveComponent() const override;                                    \
   void OnUpdateError
+
+#define AllowUpdatesOnMeteredConnections \
+  IsBraveComponent() const;              \
+  virtual bool AllowUpdatesOnMeteredConnections
 
 #include "src/components/component_updater/component_installer.h"  // IWYU pragma: export
 
 #undef OnUpdateError
+#undef AllowUpdatesOnMeteredConnections
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_INSTALLER_H_

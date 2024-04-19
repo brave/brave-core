@@ -82,6 +82,7 @@ class AdBlockComponentInstallerPolicy
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
 
  private:
   const std::string component_id_;
@@ -153,6 +154,10 @@ std::string AdBlockComponentInstallerPolicy::GetName() const {
 update_client::InstallerAttributes
 AdBlockComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
+}
+
+bool AdBlockComponentInstallerPolicy::IsBraveComponent() const {
+  return true;
 }
 
 void OnRegistered(const std::string& component_id) {

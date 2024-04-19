@@ -15,7 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -32,11 +32,14 @@
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #define FPL(x) FILE_PATH_LITERAL(x)
 
 namespace brave_wallet {
+
+namespace {
 
 constexpr char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
 
@@ -74,6 +77,8 @@ class MockBraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
                             ImportError::kNone);
   }
 };
+
+}  // namespace
 
 class WalletDataFilesInstallerUnitTest : public testing::Test {
  public:
@@ -189,35 +194,27 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   BlockchainRegistry* registry() { return BlockchainRegistry::GetInstance(); }
 
   void SetOnDemandUpdateCallbackWithComponentReady(const base::FilePath& path) {
-    brave_component_updater::BraveOnDemandUpdater::GetInstance()
-        ->RegisterOnDemandUpdateCallback(
-            base::BindLambdaForTesting([path, this](const std::string& id) {
-              if (id != kComponentId) {
-                return;
-              }
-
+    EXPECT_CALL(on_demand_updater_,
+                OnDemandUpdate(kComponentId, testing::_, testing::_))
+        .WillOnce(
+            [path, this](const std::string& id,
+                         component_updater::OnDemandUpdater::Priority priority,
+                         component_updater::Callback callback) {
               // Unblock CreateWallet once the component is registered.
               installer().OnComponentReady(path);
-            }));
-  }
-
-  void SetOnDemandUpdateCallbackWithEmptyCallback() {
-    brave_component_updater::BraveOnDemandUpdater::GetInstance()
-        ->RegisterOnDemandUpdateCallback(base::DoNothing());
+            });
   }
 
   void SetOnDemandUpdateCallbackWithComponentUpdateError() {
-    brave_component_updater::BraveOnDemandUpdater::GetInstance()
-        ->RegisterOnDemandUpdateCallback(
-            base::BindLambdaForTesting([&](const std::string& id) {
-              if (id != kComponentId) {
-                return;
-              }
-
-              installer().OnEvent(update_client::UpdateClient::Observer::
-                                      Events::COMPONENT_UPDATE_ERROR,
-                                  kComponentId);
-            }));
+    EXPECT_CALL(on_demand_updater_,
+                OnDemandUpdate(kComponentId, testing::_, testing::_))
+        .WillOnce([this](const std::string& id,
+                         component_updater::OnDemandUpdater::Priority priority,
+                         component_updater::Callback callback) {
+          installer().OnEvent(update_client::UpdateClient::Observer::Events::
+                                  COMPONENT_UPDATE_ERROR,
+                              kComponentId);
+        });
   }
 
  protected:
@@ -228,6 +225,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
 
  private:
   base::test::TaskEnvironment task_environment_;
+  brave_component_updater::MockOnDemandUpdater on_demand_updater_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
@@ -254,8 +252,6 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()
-      ->RegisterOnDemandUpdateCallback(base::DoNothing());
   // Mimic created wallets.
   local_state()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
   installer().MaybeRegisterWalletDataFilesComponent(updater(), local_state());

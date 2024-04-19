@@ -15,6 +15,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/ranges/algorithm.h"
 #include "base/values.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
@@ -22,6 +23,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
@@ -278,22 +280,19 @@ void AdBlockComponentServiceManager::UpdateFilterLists(
     return;
   }
 
-  // This callback will be executed by our barrier callback once all filter
-  // list components have been updated.
-  auto on_all_updated = [](decltype(callback) cb, std::vector<bool> results) {
-    std::move(cb).Run(
-        base::ranges::all_of(results, [](bool result) { return result; }));
+  std::vector<std::string> component_ids;
+  for (const auto& [key, provider] : component_filters_providers_) {
+    component_ids.push_back(provider->component_id());
+  }
+
+  auto on_updated = [](decltype(callback) cb, update_client::Error error) {
+    std::move(cb).Run(error == update_client::Error::NONE ||
+                      error == update_client::Error::UPDATE_IN_PROGRESS);
   };
 
-  // This barrier callback maintains a "completed count". When it has been
-  // called the expected number of times, it will execute `on_all_updated`.
-  auto barrier_callback = base::BarrierCallback<bool>(
-      component_filters_providers_.size(),
-      base::BindOnce(on_all_updated, std::move(callback)));
-
-  for (auto& [key, provider] : component_filters_providers_) {
-    provider->UpdateComponent(barrier_callback);
-  }
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+      component_ids, component_updater::OnDemandUpdater::Priority::FOREGROUND,
+      base::BindOnce(on_updated, std::move(callback)));
 }
 
 void AdBlockComponentServiceManager::SetFilterListCatalog(
