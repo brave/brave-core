@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-index fb0ab433103679bc21e7de4e28d84bf531db34bb..0d4263c56aadffbcb9f1f973484bd651592f8fde 100644
+index f0f381bad5d714b06585415c4701029b5d0d5c1c..70c2b53d5b4388aa6378f0ae79dc20d705d6e56a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 @@ -97,7 +97,7 @@ public class NotificationPlatformBridge {
-     // TODO(crbug.com/1521424): Fine tune this duration, and possibly turn it off for A11Y users.
+     // TODO(crbug.com/41494393): Fine tune this duration, and possibly turn it off for A11Y users.
      private static final long PROVISIONAL_UNSUBSCRIBE_DURATION_MS = 10 * 1000;
  
 -    private static NotificationPlatformBridge sInstance;
