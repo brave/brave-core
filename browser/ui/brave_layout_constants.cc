@@ -25,9 +25,21 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   switch (constant) {
     case TAB_HEIGHT: {
       if (HorizontalTabsUpdateEnabled()) {
-        return brave_tabs::kHorizontalTabViewHeight;
+        return brave_tabs::kHorizontalTabHeight;
       }
       return (touch ? 41 : 30) + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+    }
+    case TAB_STRIP_HEIGHT: {
+      if (HorizontalTabsUpdateEnabled()) {
+        return brave_tabs::kHorizontalTabStripHeight;
+      }
+      return std::nullopt;
+    }
+    case TAB_STRIP_PADDING: {
+      if (HorizontalTabsUpdateEnabled()) {
+        return brave_tabs::kHorizontalTabVerticalSpacing;
+      }
+      return std::nullopt;
     }
     case TABSTRIP_TOOLBAR_OVERLAP: {
       if (!HorizontalTabsUpdateEnabled()) {
