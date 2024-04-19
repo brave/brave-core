@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
-#include "brave/components/zcash/rs/lib.rs.h"
+#include "brave/components/brave_wallet/zcash/lib.rs.h"
 
 static_assert(BUILDFLAG(ENABLE_ORCHARD));
 
@@ -29,7 +29,7 @@ enum class OrchardKind {
 // https://zips.z.cash/zip-0032#orchard-child-key-derivation
 class HDKeyZip32 {
  public:
-  explicit HDKeyZip32(rust::Box<zcash::OrchardExtendedSpendingKeyResult> esk);
+  explicit HDKeyZip32(rust::Box<OrchardExtendedSpendingKeyResult> esk);
   HDKeyZip32(const HDKeyZip32&) = delete;
   HDKeyZip32& operator=(const HDKeyZip32&) = delete;
 
@@ -50,7 +50,7 @@ class HDKeyZip32 {
  private:
   // Extended spending key is a root key of an account, all other keys can be
   // derived from esk
-  rust::Box<zcash::OrchardExtendedSpendingKeyResult> extended_spending_key_;
+  rust::Box<OrchardExtendedSpendingKeyResult> extended_spending_key_;
 };
 
 }  // namespace brave_wallet

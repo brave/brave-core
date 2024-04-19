@@ -13,7 +13,7 @@ static_assert(BUILDFLAG(ENABLE_ORCHARD));
 
 namespace brave_wallet {
 
-HDKeyZip32::HDKeyZip32(rust::Box<zcash::OrchardExtendedSpendingKeyResult> esk)
+HDKeyZip32::HDKeyZip32(rust::Box<OrchardExtendedSpendingKeyResult> esk)
     : extended_spending_key_(std::move(esk)) {}
 
 HDKeyZip32::~HDKeyZip32() = default;
@@ -21,7 +21,7 @@ HDKeyZip32::~HDKeyZip32() = default;
 // static
 std::unique_ptr<HDKeyZip32> HDKeyZip32::GenerateFromSeed(
     base::span<const uint8_t> seed) {
-  auto mk = zcash::generate_orchard_extended_spending_key_from_seed(
+  auto mk = generate_orchard_extended_spending_key_from_seed(
       rust::Slice<const uint8_t>{seed.data(), seed.size()});
   if (mk->is_ok()) {
     return std::make_unique<HDKeyZip32>(std::move(mk));

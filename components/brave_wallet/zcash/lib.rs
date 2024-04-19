@@ -17,7 +17,7 @@ use brave_wallet_cxx::{
 };
 
 #[allow(unsafe_op_in_unsafe_fn)]
-#[cxx::bridge(namespace = zcash)]
+#[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
     extern "Rust" {
         type OrchardExtendedSpendingKey;
