@@ -30,6 +30,7 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
   void OnPaint(gfx::Canvas* canvas) override;
   int GetTopInset(bool restored) const override;
   int NonClientHitTest(const gfx::Point& point) override;
+  int FrameTopBorderThickness(bool restored) const override;
   bool ShouldShowWindowTitle(TitlebarType type) const override;
   void LayoutCaptionButtons() override;
 

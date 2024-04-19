@@ -9,6 +9,7 @@
 #define client_view_bounds_ \
   client_view_bounds_;      \
   friend class BraveBrowserFrameViewWin
+#define FrameTopBorderThickness virtual FrameTopBorderThickness
 #define ShouldShowWindowTitle virtual ShouldShowWindowTitle
 #define LayoutCaptionButtons virtual LayoutCaptionButtons
 
@@ -16,6 +17,7 @@
 
 #undef LayoutCaptionButtons
 #undef ShouldShowWindowTitle
+#undef FrameTopBorderThickness
 #undef client_view_bounds_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_VIEW_WIN_H_
