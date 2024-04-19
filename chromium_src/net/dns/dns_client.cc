@@ -17,7 +17,8 @@ namespace {
 
 constexpr auto kDohFallbackEndpointAddresses{
     base::MakeFixedFlatMap<DohFallbackEndpointType, const char*>({
-        {DohFallbackEndpointType::kQuad9, "https://dns.quad9.net/dns-query"},
+        {DohFallbackEndpointType::kQuad9,
+         "https://doh-brave.quad9.net/dns-query"},
         {DohFallbackEndpointType::kWikimedia,
          "https://wikimedia-dns.org/dns-query"},
         {DohFallbackEndpointType::kCloudflare,
