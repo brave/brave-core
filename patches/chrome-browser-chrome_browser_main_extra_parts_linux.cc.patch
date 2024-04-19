@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/chrome_browser_main_extra_parts_linux.cc b/chrome/browser/chrome_browser_main_extra_parts_linux.cc
+index dba7b116ecaa07b8dd085284b5bd38b172a8f250..ea0487022dcdcf45aac35bf6170a27141bcb1157 100644
+--- a/chrome/browser/chrome_browser_main_extra_parts_linux.cc
++++ b/chrome/browser/chrome_browser_main_extra_parts_linux.cc
+@@ -168,7 +168,13 @@ ChromeBrowserMainExtraPartsLinux::ChromeBrowserMainExtraPartsLinux() = default;
+ 
+ ChromeBrowserMainExtraPartsLinux::~ChromeBrowserMainExtraPartsLinux() = default;
+ 
+-void ChromeBrowserMainExtraPartsLinux::PreEarlyInitialization() {
++void ChromeBrowserMainExtraPartsLinux::PostBrowserStart() {
++  RecordDisplayServerProtocolSupport();
++  ChromeBrowserMainExtraPartsOzone::PostBrowserStart();
++}
++
++// static
++void ChromeBrowserMainExtraPartsLinux::InitOzonePlatformHint() {
+ #if BUILDFLAG(IS_LINUX)
+   // On the desktop, we fix the platform name if necessary.
+   // See https://crbug.com/1246928.
+@@ -189,8 +195,3 @@ void ChromeBrowserMainExtraPartsLinux::PreEarlyInitialization() {
+   }
+ #endif  // BUILDFLAG(IS_LINUX)
+ }
+-
+-void ChromeBrowserMainExtraPartsLinux::PostBrowserStart() {
+-  RecordDisplayServerProtocolSupport();
+-  ChromeBrowserMainExtraPartsOzone::PostBrowserStart();
+-}
