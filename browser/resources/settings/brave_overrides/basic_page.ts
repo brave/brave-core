@@ -11,7 +11,6 @@ import '../brave_content_page/playlist.js'
 import '../brave_content_page/speedreader.js'
 import '../brave_data_collection_page/brave_data_collection_page.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.js'
-import '../brave_help_tips_page/brave_help_tips_page.js'
 import '../brave_ipfs_page/brave_ipfs_page.js'
 import '../brave_new_tab_page/brave_new_tab_page.js'
 import '../brave_search_engines_page/brave_search_engines_page.js'
@@ -311,18 +310,6 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
-      const sectionHelpTips = document.createElement('template')
-      sectionHelpTips.setAttribute('is', 'dom-if')
-      sectionHelpTips.setAttribute('restamp', 'true')
-      sectionHelpTips.setAttribute('if', '[[showPage_(pageVisibility.braveHelpTips)]]')
-      sectionHelpTips.content.appendChild(createSectionElement(
-        'braveHelpTips',
-        'braveHelpTips',
-        'settings-brave-help-tips-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
       const sectionLeoAssist = document.createElement('template')
       sectionLeoAssist.setAttribute('is', 'dom-if')
       sectionLeoAssist.setAttribute('restamp', 'true')
@@ -477,12 +464,6 @@ RegisterPolymerTemplateModifications({
         if (sectionLanguages) {
           sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
         }
-      }
-      // Move help tips after downloads
-      const sectionDownloads =
-        getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
-      if (sectionDownloads) {
-        sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
       }
     }
   }

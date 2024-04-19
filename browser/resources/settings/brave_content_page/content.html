@@ -39,6 +39,13 @@
         label="$i18n{tabsToLinks}">
     </settings-toggle-button>
 </if>
+<if expr="enable_brave_wayback_machine">
+  <settings-toggle-button
+    class="cr-row"
+    pref="{{prefs.brave.wayback_machine_enabled}}"
+    label="$i18n{braveWaybackMachineLabel}">
+  </settings-toggle-button>
+</if>
 <settings-animated-pages id="pages" section="content">
     <template is="dom-if" route-path="/fonts">
         <settings-subpage associated-control="[[$$('#customize-fonts-subpage-trigger')]]"
