@@ -59,6 +59,7 @@
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
+#include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
@@ -128,6 +129,24 @@ class ContentsBackground : public views::View {
   }
 };
 BEGIN_METADATA(ContentsBackground)
+END_METADATA
+
+// A `ContentsWebView` that activates its contents when it gets focus.
+class ActivatableContentsWebView : public ContentsWebView {
+  METADATA_HEADER(ActivatableContentsWebView, ContentsWebView)
+ public:
+  using ContentsWebView::ContentsWebView;
+  ~ActivatableContentsWebView() override = default;
+
+  // ContentsWebView:
+  void OnFocus() override {
+    ContentsWebView::OnFocus();
+    if (web_contents() && web_contents()->GetDelegate()) {
+      web_contents()->GetDelegate()->ActivateContents(web_contents());
+    }
+  }
+};
+BEGIN_METADATA(ActivatableContentsWebView)
 END_METADATA
 
 }  // namespace
@@ -282,7 +301,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         std::make_unique<views::WebView>(browser_->profile());
     devtools_web_view->SetVisible(false);
     auto contents_web_view =
-        std::make_unique<ContentsWebView>(browser_->profile());
+        std::make_unique<ActivatableContentsWebView>(browser_->profile());
     contents_web_view->SetVisible(false);
 
     secondary_devtools_web_view_ =
