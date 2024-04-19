@@ -421,6 +421,7 @@ class NewTabPageViewController: UIViewController {
       videoPlayer?.resetPlayer()
     } else {
       videoPlayer?.createPlayer()
+      videoPlayer?.seekToStopFrame()
     }
     backgroundView.playerLayer.player = videoPlayer?.player
   }
@@ -455,7 +456,10 @@ class NewTabPageViewController: UIViewController {
     }
   }
 
-  private func fadeOutAndHideCollectionView() {
+  private func fadeOutCollectionViewAndShowVideoButtons() {
+    self.videoButtonsView.isHidden = false
+    self.gradientView.isHidden = true
+
     UIView.animate(
       withDuration: 0.3,
       animations: { [weak self] in
@@ -468,13 +472,16 @@ class NewTabPageViewController: UIViewController {
     )
   }
 
-  private func showAndFadeInCollectionView() {
+  private func fadeInCollectionViewAndShowVideoButtons() {
+    videoButtonsView.isHidden = true
+    gradientView.isHidden = false
     collectionView.isHidden = false
     collectionView.alpha = 0
     UIView.animate(
       withDuration: 0.3,
       animations: { [weak self] in
         self?.collectionView.alpha = 1
+        self?.videoPlayer?.seekToStopFrame()
       }
     )
   }
@@ -485,6 +492,7 @@ class NewTabPageViewController: UIViewController {
     guard let backgroundVideoPath = background.backgroundVideoPath else {
       return
     }
+    gradientView.isHidden = false
     videoPlayer = NewTabPageVideoPlayer(backgroundVideoPath)
     backgroundView.setupPlayerLayer(backgroundVideoPath, player: videoPlayer?.player)
 
@@ -500,21 +508,15 @@ class NewTabPageViewController: UIViewController {
 
     backgroundButtonsView.activeButton = .none
     backgroundButtonsView.tappedPlayButton = { [weak self] in
-      guard let self = self else { return }
-      self.videoButtonsView.isHidden = false
-      self.fadeOutAndHideCollectionView()
-      self.videoPlayer?.startPlayback()
+      self?.videoPlayer?.startPlayback()
     }
     backgroundButtonsView.tappedBackgroundDuringAutoplay = { [weak self] in
-      guard let self = self else { return }
-      self.collectionView.isHidden = true
-      self.videoButtonsView.isHidden = false
-      self.videoPlayer?.startPlayback()
+      self?.videoPlayer?.startPlayback()
     }
 
     videoPlayer?.didCancelPlaybackEvent = { [weak self] in
-      self?.videoButtonsView.isHidden = true
-      self?.showAndFadeInCollectionView()
+      guard let self = self else { return }
+      self.fadeInCollectionViewAndShowVideoButtons()
     }
     videoPlayer?.didStartAutoplayEvent = { [weak self] in
       self?.backgroundButtonsView.videoAutoplayStarted()
@@ -535,12 +537,13 @@ class NewTabPageViewController: UIViewController {
     }
     videoPlayer?.didFinishPlaybackEvent = { [weak self] in
       guard let self = self else { return }
-      self.videoButtonsView.isHidden = true
+      self.fadeInCollectionViewAndShowVideoButtons()
       self.reportSponsoredBackgroundEvent(.media100)
-      self.showAndFadeInCollectionView()
     }
     videoPlayer?.didStartPlaybackEvent = { [weak self] in
-      self?.reportSponsoredBackgroundEvent(.mediaPlay)
+      guard let self = self else { return }
+      self.fadeOutCollectionViewAndShowVideoButtons()
+      self.reportSponsoredBackgroundEvent(.mediaPlay)
     }
     videoPlayer?.didPlay25PercentEvent = { [weak self] in
       self?.reportSponsoredBackgroundEvent(.media25)

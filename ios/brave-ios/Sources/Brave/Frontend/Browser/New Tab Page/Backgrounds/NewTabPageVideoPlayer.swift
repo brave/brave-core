@@ -32,12 +32,12 @@ class NewTabPageVideoPlayer {
   private var timeObserver: Any?
   private var playerObserver: NSKeyValueObservation?
 
-  private let kMaxAutoplayDuration = 6.0
+  private let kMaxAutoplayDurationInSeconds = 6.0
   private let kMedia25Percent = 0.25
+  private let kStopFramePositionAdjustment = 0.5
 
-  private var stopFrame: Int?
-  private var frameRate: Float?
   private var duration: CMTime?
+  private var frameRate: Double?
 
   private var isPlaying: Bool {
     player?.timeControlStatus != .paused
@@ -45,7 +45,6 @@ class NewTabPageVideoPlayer {
 
   init(_ backgroundVideoPath: URL) {
     self.backgroundVideoPath = backgroundVideoPath
-    stopFrame = parseStopFrameFromFilename(filename: backgroundVideoPath.lastPathComponent)
     createPlayer()
   }
 
@@ -101,6 +100,10 @@ class NewTabPageVideoPlayer {
     didStartAutoplay = true
   }
 
+  func seekToStopFrame() {
+    player?.seek(to: stopFrameTime(), toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
+  }
+
   func maybeCancelPlay() {
     if !didFinishAutoplay {
       autoplayFinished()
@@ -135,6 +138,39 @@ class NewTabPageVideoPlayer {
     }
   }
 
+  private func stopFrameTime() -> CMTime {
+    var stopFrameTime = calculateStopFrameTime()
+
+    if let duration, stopFrameTime > duration {
+      stopFrameTime = duration
+    }
+
+    return stopFrameTime
+  }
+
+  private func calculateStopFrameTime() -> CMTime {
+    var stopFrameTime = CMTime(
+      seconds: kMaxAutoplayDurationInSeconds,
+      preferredTimescale: CMTimeScale(NSEC_PER_SEC)
+    )
+
+    let stopFrame = parseStopFrameFromFilename(
+      filename: backgroundVideoPath.lastPathComponent
+    )
+    if let stopFrame, let frameRate {
+      // Adjust the stop frame time to the middle of the stop frame.
+      let stopFrameTimeInSeconds = (stopFrame + kStopFramePositionAdjustment) / frameRate
+      if stopFrameTimeInSeconds < kMaxAutoplayDurationInSeconds {
+        stopFrameTime = CMTime(
+          seconds: stopFrameTimeInSeconds,
+          preferredTimescale: CMTimeScale(NSEC_PER_SEC)
+        )
+      }
+    }
+
+    return stopFrameTime
+  }
+
   private func loadTrackParams(_ backgroundVideoPath: URL) {
     Task {
       do {
@@ -154,7 +190,9 @@ class NewTabPageVideoPlayer {
   @MainActor
   private func loadedTrackParams(duration: CMTime?, frameRate: Float?) async {
     self.duration = duration
-    self.frameRate = frameRate
+    if let frameRate {
+      self.frameRate = Double(frameRate)
+    }
 
     startAutoplay()
   }
@@ -167,23 +205,11 @@ class NewTabPageVideoPlayer {
       return
     }
 
-    var autoplayLengthSeconds = self.kMaxAutoplayDuration
-    if let frameRate = frameRate,
-      let stopFrame = stopFrame
-    {
-      let stopFrameTime = Double(stopFrame) / Double(frameRate)
-      if stopFrameTime < autoplayLengthSeconds {
-        autoplayLengthSeconds = stopFrameTime
-      }
-    }
-
+    let forwardPlaybackEndTime = stopFrameTime()
     // If autoplay length is less then video duration then set forward playback
     // end time to stop the video at the specified time.
-    if autoplayLengthSeconds < CMTimeGetSeconds(duration) {
-      player?.currentItem?.forwardPlaybackEndTime = CMTime(
-        seconds: autoplayLengthSeconds,
-        preferredTimescale: CMTimeScale(NSEC_PER_SEC)
-      )
+    if forwardPlaybackEndTime < duration {
+      player?.currentItem?.forwardPlaybackEndTime = forwardPlaybackEndTime
     }
 
     // Detect if video was interrupted during autoplay and fire
@@ -242,12 +268,12 @@ class NewTabPageVideoPlayer {
     playerObserver?.invalidate()
   }
 
-  private func parseStopFrameFromFilename(filename: String) -> Int? {
-    var stopFrame: Int?
+  private func parseStopFrameFromFilename(filename: String) -> Double? {
+    var stopFrame: Double?
     if let range = filename.range(of: "\\.KF\\d+\\.", options: .regularExpression) {
       let numberString = filename[range].replacingOccurrences(of: ".KF", with: "")
         .replacingOccurrences(of: ".", with: "")
-      stopFrame = Int(numberString)
+      stopFrame = Double(numberString)
     }
     return stopFrame
   }

@@ -38,8 +38,8 @@ class NewTabPageVideoButtonsView: UIView {
     addGestureRecognizer(tapGesture)
 
     cancelButton.snp.makeConstraints {
-      $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(20)
-      $0.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20)
+      $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(10)
+      $0.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-10)
     }
     playPauseButtonImage.snp.makeConstraints {
       $0.centerX.equalToSuperview()
@@ -51,8 +51,8 @@ class NewTabPageVideoButtonsView: UIView {
     super.layoutSubviews()
 
     cancelButton.snp.remakeConstraints {
-      $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(20)
-      $0.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20)
+      $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(10)
+      $0.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-10)
     }
   }
 
@@ -73,14 +73,10 @@ class NewTabPageVideoButtonsView: UIView {
 
     if playStarted {
       playPauseButtonImage.imageView.image = UIImage(braveSystemNamed: "leo.play.circle")!
-        .applyingSymbolConfiguration(
-          .init(scale: .large)
-        )
+        .withAlignmentRectInsets(.zero)
     } else {
       playPauseButtonImage.imageView.image = UIImage(braveSystemNamed: "leo.pause.circle")!
-        .applyingSymbolConfiguration(
-          .init(scale: .large)
-        )
+        .withAlignmentRectInsets(.zero)
     }
     showAndFadeOutImage(imageView: playPauseButtonImage)
   }
@@ -113,16 +109,18 @@ class NewTabPageVideoButtonsView: UIView {
 extension NewTabPageVideoButtonsView {
   private class CancelButton: SpringButton {
     let imageView = UIImageView(
-      image: UIImage(braveSystemNamed: "leo.close")!.applyingSymbolConfiguration(
-        .init(scale: .small)
-      )
+      image: UIImage(braveSystemNamed: "leo.close")!
     ).then {
       $0.tintColor = .white
       $0.contentMode = .scaleAspectFit
+      $0.preferredSymbolConfiguration = .init(
+        font: .preferredFont(for: .title3, weight: .regular),
+        scale: .small
+      )
     }
 
     private let backgroundView = UIVisualEffectView(
-      effect: UIBlurEffect(style: .systemThinMaterialDark)
+      effect: UIBlurEffect(style: .systemUltraThinMaterialDark)
     ).then {
       $0.clipsToBounds = true
       $0.isUserInteractionEnabled = false
@@ -143,7 +141,7 @@ extension NewTabPageVideoButtonsView {
         $0.width.equalTo(self.snp.height)
       }
       imageView.snp.makeConstraints {
-        $0.edges.equalToSuperview().inset(UIEdgeInsets(equalInset: 4))
+        $0.edges.equalToSuperview().inset(UIEdgeInsets(equalInset: 3))
       }
     }
 
@@ -164,6 +162,10 @@ extension NewTabPageVideoButtonsView {
     let imageView = UIImageView().then {
       $0.tintColor = .white
       $0.contentMode = .scaleAspectFit
+      $0.preferredSymbolConfiguration = .init(
+        font: .preferredFont(for: .title1, weight: .regular),
+        scale: .large
+      )
     }
 
     init() {
