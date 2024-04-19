@@ -789,6 +789,7 @@ void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
       ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
       is_enabled ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
   RecordShieldsSettingChanged(local_state);
+  RecordForgetFirstPartySetting(map);
 }
 
 bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,

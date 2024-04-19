@@ -17,6 +17,8 @@ static_library("browser") {
     "ad_block_filters_provider.h",
     "ad_block_filters_provider_manager.cc",
     "ad_block_filters_provider_manager.h",
+    "ad_block_list_p3a.cc",
+    "ad_block_list_p3a.h",
     "ad_block_service_helper.cc",
     "ad_block_service_helper.h",
     "filter_list_catalog_entry.cc",

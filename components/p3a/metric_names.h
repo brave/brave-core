@@ -253,6 +253,8 @@ inline constexpr auto kCollectedSlowHistograms =
     "Brave.RequestOTR.SessionCount",
     "Brave.Rewards.PageViewCount",
     "Brave.Rewards.TipsSent.2",
+    "Brave.Shields.FilterLists",
+    "Brave.Shields.ForgetFirstParty",
     "Brave.Sync.EnabledTypes",
     "Brave.Sync.SyncedObjectsCount.2",
     "Brave.Today.ChannelCount",
