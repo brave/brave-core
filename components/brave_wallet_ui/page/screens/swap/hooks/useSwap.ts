@@ -16,8 +16,8 @@ import { useJupiter } from './useJupiter'
 import { useZeroEx } from './useZeroEx'
 import { useDebouncedCallback } from './useDebouncedCallback'
 import {
-  useBalancesFetcher //
-} from '../../../../common/hooks/use-balances-fetcher'
+  useScopedBalanceUpdater //
+} from '../../../../common/hooks/use-scoped-balance-updater'
 import { useQuery } from '../../../../common/hooks/use-query'
 
 // Types and constants
@@ -37,6 +37,7 @@ import { getLocale } from '$web-common/locale'
 import Amount from '../../../../utils/amount'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
 // FIXME(onyb): move makeNetworkAsset to utils/assets-utils
+import { isNativeAsset } from '../../../../utils/asset-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -200,20 +201,23 @@ export const useSwap = () => {
     AccountInfoEntity | undefined
   >(undefined)
 
-  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
-    useBalancesFetcher(
-      fromNetwork && fromAccount
-        ? {
-            networks: [fromNetwork],
-            accounts: [fromAccount]
-          }
-        : skipToken
-    )
-
   const nativeAsset = useMemo(
     () => makeNetworkAsset(fromNetwork),
     [fromNetwork]
   )
+
+  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
+    useScopedBalanceUpdater(
+      fromAccount && fromNetwork && fromToken && nativeAsset
+        ? {
+            network: fromNetwork,
+            accounts: [fromAccount],
+            tokens: isNativeAsset(fromToken)
+              ? [nativeAsset]
+              : [nativeAsset, fromToken]
+          }
+        : skipToken
+    )
 
   const tokenPriceIds = useMemo(
     () =>
