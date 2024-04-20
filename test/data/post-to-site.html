@@ -11,7 +11,7 @@ function redirectToDestination() {
     const urlParams = new URLSearchParams(window.location.search);
     const url = urlParams.get('url');
     let form = document.getElementById("form");
-    form.action = atob(url);
+    form.action = atob(url.replace(/\-/g, '+').replace(/\_/g, '/'));
     form.submit();
 }
 setTimeout(redirectToDestination, 100);
