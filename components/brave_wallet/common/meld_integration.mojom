@@ -26,19 +26,19 @@ struct MeldServiceProvider {
 
 struct MeldCryptoQuote {
     string? transaction_type;
-    double? exchange_rate;
-    double? transaction_fee;
+    string? exchange_rate;
+    string? transaction_fee;
     string? source_currency_code;
-    double? source_amount;
-    double? source_amount_without_fee;
-    double? fiat_amount_without_fees;
-    double? total_fee;
-    double? network_fee;
+    string? source_amount;
+    string? source_amount_without_fee;
+    string? fiat_amount_without_fees;
+    string? total_fee;
+    string? network_fee;
     string? payment_method;
     string? destination_currency_code;
-    double? destination_amount;
-    double? destination_amount_without_fees;
-    double? customer_score;
+    string? destination_amount;
+    string? destination_amount_without_fees;
+    string? customer_score;
     string? service_provider;
     string? country_code;
 };

@@ -5,84 +5,80 @@
 
 namespace meld_integration_responses {
     dictionary Logos {
-        any? dark;
-        any? light;
-        any? darkShort;
-        any? lightShort;
+        DOMString? dark;
+        DOMString? light;
+        DOMString? darkShort;
+        DOMString? lightShort;
     };
 
     dictionary Region {
-        any? regionCode;
-        any? name;
+        DOMString? regionCode;
+        DOMString? name;
     };
 
     dictionary Country {
-        any? countryCode;
-        any? name;
-        any? flagImageUrl;
-        // Region[]
-        any? regions;
+        DOMString? countryCode;
+        DOMString? name;
+        DOMString? flagImageUrl;
+        Region[]? regions;
     };
 
     dictionary CryptoCurrency {
-        any? currencyCode;
-        any? name;
-        any? chainCode;
-        any? chainName;
-        any? chainId;
-        any? contractAddress;
-        any? symbolImageUrl;
+        DOMString? currencyCode;
+        DOMString? name;
+        DOMString? chainCode;
+        DOMString? chainName;
+        DOMString? chainId;
+        DOMString? contractAddress;
+        DOMString? symbolImageUrl;
     };
 
     dictionary FiatCurrency {
-        any? currencyCode;
-        any? name;
-        any? symbolImageUrl;
+        DOMString? currencyCode;
+        DOMString? name;
+        DOMString? symbolImageUrl;
     };
 
     dictionary PaymentMethod {
-        any? paymentMethod;
-        any? name;
-        any? paymentType;
-        // Logos[]
-        any? logos;
+        DOMString? paymentMethod;
+        DOMString? name;
+        DOMString? paymentType;
+        Logos? logos;
     };
 
     dictionary CryptoQuote {
-        any? transactionType;
-        any? sourceAmount;
-        any? sourceAmountWithoutFees;
-        any? fiatAmountWithoutFees;
-        any? destinationAmountWithoutFees;
-        any? sourceCurrencyCode;
-        any? countryCode;
-        any? totalFee;
-        any? networkFee;
-        any? transactionFee;
-        any? destinationAmount;
-        any? destinationCurrencyCode;
-        any? exchangeRate;
-        any? paymentMethodType;
-        any? customerScore;
-        any? serviceProvider;
+        DOMString? transactionType;
+        DOMString? sourceAmount;
+        DOMString? sourceAmountWithoutFees;
+        DOMString? fiatAmountWithoutFees;
+        DOMString? destinationAmountWithoutFees;
+        DOMString? sourceCurrencyCode;
+        DOMString? countryCode;
+        DOMString? totalFee;
+        DOMString? networkFee;
+        DOMString? transactionFee;
+        DOMString? destinationAmount;
+        DOMString? destinationCurrencyCode;
+        DOMString? exchangeRate;
+        DOMString? paymentMethodType;
+        DOMString? customerScore;
+        DOMString? serviceProvider;
     };
 
     dictionary CryptoQuoteResponse {
-        // CryptoQuote[]
-        any? quotes;
-        any? message;
-        any? error;
+        CryptoQuote[]? quotes;
+        DOMString? message;
+        DOMString? error;
     };
 
     dictionary ServiceProvider {
-        any? serviceProvider;
-        any? name;
-        any? status;
-        any? categories;
+        DOMString? serviceProvider;
+        DOMString? name;
+        DOMString? status;
+        DOMString[]? categories;
         any? categoryStatuses;
-        any? websiteUrl;
-        // Logos[]
-        any? logos;
+        DOMString? websiteUrl;
+        Logos? logos;
     };
 
     dictionary MeldError {

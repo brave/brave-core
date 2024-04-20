@@ -17,9 +17,11 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "base/logging.h"
 
 namespace {
 
@@ -61,6 +63,21 @@ base::flat_map<std::string, std::string> MakeMeldApiHeaders() {
   return request_headers;
 }
 constexpr char kDefaultMeldStatuses[] = "LIVE,RECENTLY_ADDED";
+
+std::optional<std::string> SanitizeJson(const std::string& json) {
+  auto converted_json =
+      std::string(json::convert_all_numbers_to_string(json, ""));
+  if (converted_json.empty()) {
+    return std::nullopt;
+  }
+
+  converted_json = std::string(json::remove_all_null_values(converted_json, ""));
+  if (converted_json.empty()) {
+    return std::nullopt;
+  }
+
+  return converted_json;
+}
 
 }  // namespace
 
@@ -137,12 +154,14 @@ void MeldIntegrationService::GetServiceProviders(
       base::BindOnce(&MeldIntegrationService::OnGetServiceProviders,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
+  auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "GET",
       GetServiceProviderURL(countries, fiat_currencies, crypto_currencies,
                             service_providers, payment_method_types, statuses),
       "", "", std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = true});
+      {.auto_retry_on_network_change = true, .enable_cache = true},
+      std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetServiceProviders(
@@ -195,10 +214,12 @@ void MeldIntegrationService::GetCryptoQuotes(
       base::BindOnce(&MeldIntegrationService::OnGetCryptoQuotes,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
+  auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "POST", url, json_payload, "application/json",
       std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = false});
+      {.auto_retry_on_network_change = true, .enable_cache = false},
+      std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetCryptoQuotes(
@@ -283,12 +304,14 @@ void MeldIntegrationService::GetPaymentMethods(
       base::BindOnce(&MeldIntegrationService::OnGetPaymentMethods,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
+  auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "GET",
       GetPaymentMethodsURL(countries, fiat_currencies, crypto_currencies,
                            service_providers, payment_method_types, statuses),
       "", "", std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = true});
+      {.auto_retry_on_network_change = true, .enable_cache = true},
+      std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetPaymentMethods(
@@ -366,12 +389,14 @@ void MeldIntegrationService::GetFiatCurrencies(
       base::BindOnce(&MeldIntegrationService::OnGetFiatCurrencies,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
+  auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "GET",
       GetFiatCurrenciesURL(countries, fiat_currencies, crypto_currencies,
                            service_providers, payment_method_types, statuses),
       "", "", std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = true});
+      {.auto_retry_on_network_change = true, .enable_cache = true},
+      std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetFiatCurrencies(
@@ -450,12 +475,14 @@ void MeldIntegrationService::GetCryptoCurrencies(
       base::BindOnce(&MeldIntegrationService::OnGetCryptoCurrencies,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
+  auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "GET",
       GetCryptoCurrenciesURL(countries, fiat_currencies, crypto_currencies,
                              service_providers, payment_method_types, statuses),
       "", "", std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = true});
+      {.auto_retry_on_network_change = true, .enable_cache = true},
+      std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetCryptoCurrencies(
@@ -534,12 +561,14 @@ void MeldIntegrationService::GetCountries(
       base::BindOnce(&MeldIntegrationService::OnGetCountries,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
+  auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "GET",
       GetCountriesURL(countries, fiat_currencies, crypto_currencies,
                       service_providers, payment_method_types, statuses),
       "", "", std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = true});
+      {.auto_retry_on_network_change = true, .enable_cache = true},
+      std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetCountries(

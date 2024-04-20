@@ -18,96 +18,30 @@
 
 namespace {
 
-std::optional<brave_wallet::mojom::MeldLogoImagesPtr> ParseMeldLogos(const std::optional<base::Value>& logos) {
-  if (!logos || !logos->is_dict()) {
+std::optional<brave_wallet::mojom::MeldLogoImagesPtr> ParseMeldLogos(const std::optional<brave_wallet::meld_integration_responses::Logos>& logos) {
+  if (!logos) {
     return std::nullopt;
   }
 
-  const auto logos_value =
-      brave_wallet::meld_integration_responses::Logos::FromValue(*logos);
-  if (!logos_value) {
-    return std::nullopt;
-  }
+  auto logo_images = brave_wallet::mojom::MeldLogoImages::New(
+      logos->dark, logos->dark_short, logos->light, logos->light_short);
 
-  auto logo_images = brave_wallet::mojom::MeldLogoImages::New();
-  if (logos_value->dark && logos_value->dark->is_string()) {
-    logo_images->dark_url = logos_value->dark->GetString();
-  }
-  if (logos_value->dark_short && logos_value->dark_short->is_string()) {
-    logo_images->dark_short_url = logos_value->dark_short->GetString();
-  }
-  if (logos_value->light && logos_value->light->is_string()) {
-    logo_images->light_url = logos_value->light->GetString();
-  }
-  if (logos_value->light_short && logos_value->light_short->is_string()) {
-    logo_images->light_short_url = logos_value->light_short->GetString();
-  }
-
-  return logo_images;
+  return std::move(logo_images);
 }
 
-std::optional<std::string> ParseOptionalString(
-    const std::optional<base::Value>& value) {
-  if (!value || !value->is_string()) {
+std::optional<std::vector<brave_wallet::mojom::MeldRegionPtr>> ParseMeldRegions(
+    const std::optional<
+        std::vector<brave_wallet::meld_integration_responses::Region>>&
+        regions) {
+  if (!regions) {
     return std::nullopt;
   }
 
-  return value->GetString();
-}
-
-std::optional<double> ParseOptionDouble(const std::optional<base::Value>& value) {
-  if (!value) {
-    return std::nullopt;
-  }
-
-  if(value->is_double()) {
-    return value->GetDouble();
-  }
-
-  if(value->is_int()) {
-    return static_cast<double>(value->GetInt());
-  }
-
-  return std::nullopt;
-}
-
-void ParseMeldRegions(
-    const std::optional<base::Value>& idl_regions,
-    brave_wallet::mojom::MeldCountry* country) {
-  if (!idl_regions || !idl_regions->is_list() || !country) {
-    return;
-  }
-
-  if(!country->regions) {
-    country->regions = std::vector<brave_wallet::mojom::MeldRegionPtr>();
-  }
-
-  for(const auto& item : idl_regions->GetList()) {
-    const auto region_value =
-        brave_wallet::meld_integration_responses::Region::FromValue(item);
-    if (!region_value) {
-      return;
-    }
-
-    auto reg = brave_wallet::mojom::MeldRegion::New();
-    reg->region_code = ParseOptionalString(region_value->region_code);
-    reg->name = ParseOptionalString(region_value->name);
-    country->regions->emplace_back(std::move(reg));
-  }
-}
-
-std::optional<std::vector<std::string>> ParseOptionalVectorOfStrings(
-    const std::optional<base::Value>& val) {
-  if (!val || !val->is_list()) {
-    return std::nullopt;
-  }
-
-  std::vector<std::string> result;
-  for (const auto& item : val->GetList()) {
-    if (!item.is_string()) {
-      continue;
-    }
-    result.emplace_back(item.GetString());
+  std::vector<brave_wallet::mojom::MeldRegionPtr> result;
+  for (const auto& region_value : *regions) {
+    auto reg = brave_wallet::mojom::MeldRegion::New(region_value.region_code,
+                                                    region_value.name);
+    result.emplace_back(std::move(reg));
   }
 
   if (result.empty()) {
@@ -168,7 +102,6 @@ std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
 
   std::vector<mojom::MeldServiceProviderPtr> service_providers;
   for (const auto& sp_item : json_value.GetList()) {
-    auto sp = mojom::MeldServiceProvider::New();
     const auto service_provider_value =
         meld_integration_responses::ServiceProvider::FromValue(sp_item);
     if (!service_provider_value) {
@@ -177,16 +110,15 @@ std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
       return std::nullopt;
     }
 
-    sp->name = ParseOptionalString(service_provider_value->name);
-    sp->service_provider = ParseOptionalString(service_provider_value->service_provider);
-    sp->status = ParseOptionalString(service_provider_value->status);
-    sp->categories = ParseOptionalVectorOfStrings(service_provider_value->categories);
-    sp->web_site_url = ParseOptionalString(service_provider_value->website_url);
-    sp->category_statuses = ParseOptionalMapOfStrings(service_provider_value->category_statuses);
-
-    if(auto logo_images = ParseMeldLogos(service_provider_value->logos); logo_images) {
-      sp->logo_images = std::move(*logo_images);
-    }
+    auto logos = ParseMeldLogos(service_provider_value->logos);
+    auto sp = mojom::MeldServiceProvider::New(service_provider_value->name,
+      service_provider_value->service_provider,
+      service_provider_value->status,
+      service_provider_value->website_url,
+      service_provider_value->categories,
+      ParseOptionalMapOfStrings(service_provider_value->category_statuses),
+      std::move(logos).value_or(nullptr)
+    );
 
     service_providers.emplace_back(std::move(sp));
   }
@@ -271,51 +203,27 @@ std::optional<std::vector<mojom::MeldCryptoQuotePtr>> ParseCryptoQuotes(
     return std::nullopt;
   }
 
-  if (quote_resp_value->error && quote_resp_value->error->is_string()) {
-    *error = quote_resp_value->error->GetString();
+  if (quote_resp_value->error) {
+    *error = *quote_resp_value->error;
   }
 
-  if (!quote_resp_value->quotes || !quote_resp_value->quotes->is_list()) {
+  if (!quote_resp_value->quotes) {
     return std::nullopt;
   }
 
   std::vector<mojom::MeldCryptoQuotePtr> quotes;
-  for (const auto& item : quote_resp_value->quotes->GetList()) {
-    const auto quote_value =
-        meld_integration_responses::CryptoQuote::FromValue(item);
-    if (!quote_value) {
-      LOG(ERROR)
-          << "Invalid response, could not parse JSON, JSON is not a dict";
-      return std::nullopt;
-    }
+  for (const auto& quote_value : *quote_resp_value->quotes) {
+    auto quote = mojom::MeldCryptoQuote::New(
+        quote_value.transaction_type, quote_value.exchange_rate,
+        quote_value.transaction_fee, quote_value.source_currency_code,
+        quote_value.source_amount, quote_value.source_amount_without_fees,
+        quote_value.fiat_amount_without_fees, quote_value.total_fee,
+        quote_value.network_fee, quote_value.payment_method_type,
+        quote_value.destination_currency_code, quote_value.destination_amount,
+        quote_value.destination_amount_without_fees,
+        quote_value.customer_score, quote_value.service_provider,
+        quote_value.country_code);
 
-    auto quote = mojom::MeldCryptoQuote::New();
-
-    quote->transaction_type =
-        ParseOptionalString(quote_value->transaction_type);
-    quote->source_amount = ParseOptionDouble(quote_value->source_amount);
-    quote->source_amount_without_fee =
-        ParseOptionDouble(quote_value->source_amount_without_fees);
-    quote->fiat_amount_without_fees =
-        ParseOptionDouble(quote_value->fiat_amount_without_fees);
-    quote->destination_amount_without_fees =
-        ParseOptionDouble(quote_value->destination_amount_without_fees);
-    quote->source_currency_code =
-        ParseOptionalString(quote_value->source_currency_code);
-    quote->country_code = ParseOptionalString(quote_value->country_code);
-    quote->total_fee = ParseOptionDouble(quote_value->total_fee);
-    quote->network_fee = ParseOptionDouble(quote_value->network_fee);
-    quote->transaction_fee = ParseOptionDouble(quote_value->transaction_fee);
-    quote->destination_amount =
-        ParseOptionDouble(quote_value->destination_amount);
-    quote->destination_currency_code =
-        ParseOptionalString(quote_value->destination_currency_code);
-    quote->exchange_rate = ParseOptionDouble(quote_value->exchange_rate);
-    quote->payment_method =
-        ParseOptionalString(quote_value->payment_method_type);
-    quote->customer_score = ParseOptionDouble(quote_value->customer_score);
-    quote->service_provider =
-        ParseOptionalString(quote_value->service_provider);
     quotes.emplace_back(std::move(quote));
   }
 
@@ -353,14 +261,10 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
       return std::nullopt;
     }
 
-    auto pm = mojom::MeldPaymentMethod::New();
-    pm->name = ParseOptionalString(payment_method_value->name);
-    pm->payment_method = ParseOptionalString(payment_method_value->payment_method);
-    pm->payment_type = ParseOptionalString(payment_method_value->payment_type);
-
-    if(auto logo_images = ParseMeldLogos(payment_method_value->logos); logo_images) {
-      pm->logo_images = std::move(*logo_images);
-    }
+    auto logos = ParseMeldLogos(payment_method_value->logos);
+    auto pm = mojom::MeldPaymentMethod::New(
+        payment_method_value->payment_method, payment_method_value->name,
+        payment_method_value->payment_type, std::move(logos).value_or(nullptr));
     
     payment_methods.emplace_back(std::move(pm));
   }
@@ -396,10 +300,9 @@ std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> ParseFiatCurrencies(
       return std::nullopt;
     }
 
-    auto fc = mojom::MeldFiatCurrency::New();
-    fc->name = ParseOptionalString(fiat_currency_value->name);
-    fc->currency_code = ParseOptionalString(fiat_currency_value->currency_code);
-    fc->symbol_image_url = ParseOptionalString(fiat_currency_value->symbol_image_url);
+    auto fc = mojom::MeldFiatCurrency::New(
+        fiat_currency_value->currency_code, fiat_currency_value->name,
+        fiat_currency_value->symbol_image_url);
 
     fiat_currencies.emplace_back(std::move(fc));
   }
@@ -445,14 +348,12 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
       return std::nullopt;
     }
 
-    auto cc = mojom::MeldCryptoCurrency::New();
-    cc->name = ParseOptionalString(crypto_currency_value->name);
-    cc->currency_code = ParseOptionalString(crypto_currency_value->currency_code);
-    cc->chain_code = ParseOptionalString(crypto_currency_value->chain_code);
-    cc->chain_name = ParseOptionalString(crypto_currency_value->chain_name);
-    cc->chain_id = ParseOptionalString(crypto_currency_value->chain_id);
-    cc->contract_address = ParseOptionalString(crypto_currency_value->contract_address);
-    cc->symbol_image_url = ParseOptionalString(crypto_currency_value->symbol_image_url);
+    auto cc = mojom::MeldCryptoCurrency::New(
+        crypto_currency_value->currency_code, crypto_currency_value->name,
+        crypto_currency_value->chain_code, crypto_currency_value->chain_name,
+        crypto_currency_value->chain_id,
+        crypto_currency_value->contract_address,
+        crypto_currency_value->symbol_image_url);
 
     crypto_currencies.emplace_back(std::move(cc));
   }
@@ -490,13 +391,12 @@ std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
       return std::nullopt;
     }
 
-    auto country = mojom::MeldCountry::New();
-    country->name = ParseOptionalString(country_value->name);
-    country->country_code = ParseOptionalString(country_value->country_code);
-    country->flag_image_url = ParseOptionalString(country_value->flag_image_url);
-    ParseMeldRegions(country_value->regions, country.get());
+    auto country = mojom::MeldCountry::New(
+        country_value->country_code, country_value->name,
+        country_value->flag_image_url,
+        ParseMeldRegions(country_value->regions));
 
-   countries.emplace_back(std::move(country));
+    countries.emplace_back(std::move(country));
   }
 
   return countries;

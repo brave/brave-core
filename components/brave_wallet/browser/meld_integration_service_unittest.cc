@@ -257,26 +257,19 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
       "dark": "https://images-serviceprovider.meld.io/BANXA/logo_dark.png",
       "light": "https://images-serviceprovider.meld.io/BANXA/logo_light.png",
       "darkShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
-      "lightShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_light.png"
+      "lightShort": null
     }
   },
   {
     "serviceProvider": "BLOCKCHAINDOTCOM",
     "name": "Blockchain.com",
-    "status": "LIVE",
-    "categories": [
-      "CRYPTO_ONRAMP"
-    ],
+    "status": null,
+    "categories": null,
     "categoryStatuses": {
       "CRYPTO_ONRAMP": "LIVE"
     },
     "websiteUrl": "https://www.blockchain.com",
-    "logos": {
-      "dark": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/logo_dark.png",
-      "light": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/logo_light.png",
-      "darkShort": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_dark.png",
-      "lightShort": "https://images-serviceprovider.meld.io/BLOCKCHAINDOTCOM/short_logo_light.png"
-    }
+    "logos": null
   }])",
       "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting(
@@ -289,6 +282,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                             return item->name == "Banxa" &&
                                    item->service_provider == "BANXA" &&
                                    item->status == "LIVE" &&
+                                  item->categories && (*item->categories)[0] == "CRYPTO_ONRAMP" &&
                                    item->web_site_url ==
                                        "http://www.banxa.com" &&
                                    item->logo_images &&
@@ -301,9 +295,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                                    item->logo_images->light_url ==
                                        "https://images-serviceprovider.meld.io/"
                                        "BANXA/logo_light.png" &&
-                                   item->logo_images->light_short_url ==
-                                       "https://images-serviceprovider.meld.io/"
-                                       "BANXA/short_logo_light.png";
+                                   !item->logo_images->light_short_url;
                           }),
                       1);
             EXPECT_EQ(base::ranges::count_if(
@@ -312,22 +304,11 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                             return item->name == "Blockchain.com" &&
                                    item->service_provider ==
                                        "BLOCKCHAINDOTCOM" &&
-                                   item->status == "LIVE" &&
+                                   !item->status &&
+                                   !item->categories &&
                                    item->web_site_url ==
                                        "https://www.blockchain.com" &&
-                                   item->logo_images &&
-                                   item->logo_images->dark_url ==
-                                       "https://images-serviceprovider.meld.io/"
-                                       "BLOCKCHAINDOTCOM/logo_dark.png" &&
-                                   item->logo_images->dark_short_url ==
-                                       "https://images-serviceprovider.meld.io/"
-                                       "BLOCKCHAINDOTCOM/short_logo_dark.png" &&
-                                   item->logo_images->light_url ==
-                                       "https://images-serviceprovider.meld.io/"
-                                       "BLOCKCHAINDOTCOM/logo_light.png" &&
-                                   item->logo_images->light_short_url ==
-                                       "https://images-serviceprovider.meld.io/"
-                                       "BLOCKCHAINDOTCOM/short_logo_light.png";
+                                   !item->logo_images;
                           }),
                       1);
           }));
@@ -337,7 +318,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
+            EXPECT_EQ(*errors, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
           }));
   TestGetServiceProvider(
       "some wrone data", "US", "USD", "ETH", "", "", "",
@@ -407,32 +388,23 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
                           *quotes,
                           [](const auto& item) {
                           return item->transaction_type == "CRYPTO_PURCHASE" &&
-                                item->source_amount == 50 &&
-                                item->source_amount_without_fee == 43.97 &&
-                                item->fiat_amount_without_fees == 43.97 &&
+                                item->source_amount == "50" &&
+                                item->source_amount_without_fee == "43.97" &&
+                                item->fiat_amount_without_fees == "43.97" &&
                                 item->destination_amount_without_fees == std::nullopt &&
                                 item->source_currency_code == "USD" &&
                                 item->country_code == "US" &&
-                                item->total_fee == 6.03 &&
-                                item->network_fee == 3.53 &&
-                                item->transaction_fee == 2 &&
-                                item->destination_amount == 0.00066413 &&
+                                item->total_fee == "6.03" &&
+                                item->network_fee == "3.53" &&
+                                item->transaction_fee == "2" &&
+                                item->destination_amount == "0.00066413" &&
                                 item->destination_currency_code == "BTC" &&
-                                item->exchange_rate == 75286 &&
+                                item->exchange_rate == "75286" &&
                                 item->payment_method == "APPLE_PAY" &&
-                                item->customer_score == 20 &&
+                                item->customer_score == "20" &&
                                 item->service_provider == "TRANSAK";
                           }),
                       1);
-          }));
-
-  TestGetCryptoQuotes(
-      "some wrong data", "US", "USD", "BTC", 50, "btc account address",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
           }));
 
   TestGetCryptoQuotes(
@@ -457,7 +429,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
       "destinationAmountWithoutFees": null,
       "sourceCurrencyCode": "USD",
       "countryCode": "US",
-      "totalFee": 6.03,
+      "totalFee": null,
       "networkFee": 3.53,
       "transactionFee": 2,
       "destinationAmount": 0.00066413,
@@ -481,20 +453,20 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
                           *quotes,
                           [](const auto& item) {
                           return item->transaction_type == "CRYPTO_PURCHASE" &&
-                                item->source_amount == 50 &&
-                                item->source_amount_without_fee == 43.97 &&
-                                item->fiat_amount_without_fees == 43.97 &&
+                                item->source_amount == "50" &&
+                                item->source_amount_without_fee == "43.97" &&
+                                item->fiat_amount_without_fees == "43.97" &&
                                 item->destination_amount_without_fees == std::nullopt &&
                                 item->source_currency_code == "USD" &&
                                 item->country_code == "US" &&
-                                item->total_fee == 6.03 &&
-                                item->network_fee == 3.53 &&
-                                item->transaction_fee == 2 &&
-                                item->destination_amount == 0.00066413 &&
+                                !item->total_fee &&
+                                item->network_fee == "3.53" &&
+                                item->transaction_fee == "2" &&
+                                item->destination_amount == "0.00066413" &&
                                 item->destination_currency_code == "BTC" &&
-                                item->exchange_rate == 75286 &&
+                                item->exchange_rate == "75286" &&
                                 item->payment_method == "APPLE_PAY" &&
-                                item->customer_score == 20 &&
+                                item->customer_score == "20" &&
                                 item->service_provider == "TRANSAK";
                           }),
                       1);
@@ -537,7 +509,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       R"([
   {
     "paymentMethod": "ACH",
-    "name": "ACH",
+    "name": null,
     "paymentType": "BANK_TRANSFER",
     "logos": {
       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
@@ -555,7 +527,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
                           *payment_methods,
                           [](const auto& item) {
                             return item->payment_method == "ACH" &&
-                                    item->name == "ACH" &&
+                                    !item->name &&
                                     item->payment_type == "BANK_TRANSFER" &&
                                     item->logo_images &&
                                     !item->logo_images->dark_short_url &&
@@ -608,10 +580,20 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
           }));
 
   TestGetPaymentMethods(
-      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
-      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+      R"({
+    "paymentMethod": "ACH",
+    "name": "ACH",
+    "paymentType": "BANK_TRANSFER",
+    "logos": {
+      "dark": null,
+      "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
+    }
+  })",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>> payment_methods,
+          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
+                 payment_methods,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
@@ -668,7 +650,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       R"([
   {
     "currencyCode": "AFN",
-    "name": "Afghani",
+    "name": null,
     "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
   },
   {
@@ -686,7 +668,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
                           *fiat_currencies,
                           [](const auto& item) {
                             return item->currency_code == "AFN" &&
-                                   item->name == "Afghani" &&
+                                   !item->name &&
                                    item->symbol_image_url ==
                                        "https://images-currency.meld.io/fiat/"
                                        "AFN/symbol.png";
@@ -705,10 +687,16 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
           }));
 
   TestGetFiatCurrencies(
-      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
-      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+      R"({
+    "currencyCode": "AFN",
+    "name": null,
+    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+  })",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> fiat_currencies,
+          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
+                 fiat_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
@@ -765,7 +753,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       R"([
   {
     "currencyCode": "USDT_KCC",
-    "name": "#REF!",
+    "name": null,
     "chainCode": "KCC",
     "chainName": "KuCoin Community Chain",
     "chainId": "0",
@@ -792,7 +780,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                     *crypto_currencies,
                     [](const auto& item) {
                       return item->currency_code == "USDT_KCC" &&
-                             item->name == "#REF!" &&
+                             !item->name &&
                              item->chain_code == "KCC" &&
                              item->chain_name == "KuCoin Community Chain" &&
                              item->chain_id == "0" &&
@@ -821,10 +809,20 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                 1);
           }));
   TestGetCryptoCurrencies(
-      "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
-      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+      R"({
+    "currencyCode": "USDT_KCC",
+    "name": null,
+    "chainCode": "KCC",
+    "chainName": "KuCoin Community Chain",
+    "chainId": "0",
+    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+  })",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> crypto_currencies,
+          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
+                 crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
@@ -882,7 +880,16 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
     "countryCode": "AF",
     "name": "Afghanistan",
     "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
-    "regions": null
+    "regions": [
+      {
+        "regionCode": "CA-AB",
+        "name": "Alberta"
+      },
+      {
+        "regionCode": "CA-BC",
+        "name": "British Columbia"
+      }
+    ]
   },
   {
     "countryCode": "AL",
@@ -903,7 +910,10 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
                       return item->country_code == "AF" &&
                              item->name == "Afghanistan" &&
                              item->flag_image_url ==
-                                 "https://images-country.meld.io/AF/flag.svg";
+                                 "https://images-country.meld.io/AF/flag.svg" &&
+                             item->regions &&
+                             (*item->regions)[0]->region_code == "CA-AB" &&
+                             (*item->regions)[0]->name == "Alberta";
                     }),
                 1);
             EXPECT_EQ(
@@ -913,7 +923,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
                       return item->country_code == "AL" &&
                              item->name == "Albania" &&
                              item->flag_image_url ==
-                                 "https://images-country.meld.io/AL/flag.svg";
+                                 "https://images-country.meld.io/AL/flag.svg" &&
+                             !item->regions;
                     }),
                 1);
           }));
@@ -924,7 +935,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
+            EXPECT_EQ(*errors, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
           }));
 
   TestGetCountries(

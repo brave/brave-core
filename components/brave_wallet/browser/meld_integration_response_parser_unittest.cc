@@ -174,19 +174,19 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
                 *quotes,
                 [](const auto& item) {
                   return item->transaction_type == "CRYPTO_PURCHASE" &&
-                         item->source_amount == 50 &&
-                         item->source_amount_without_fee == 43.97 &&
-                         item->fiat_amount_without_fees == 43.97 &&
-                         item->destination_amount_without_fees == 11.01 &&
+                         item->source_amount == "50" &&
+                         item->source_amount_without_fee == "43.97" &&
+                         item->fiat_amount_without_fees == "43.97" &&
+                         item->destination_amount_without_fees == "11.01" &&
                          item->source_currency_code == "USD" &&
                          item->country_code == "US" &&
-                         item->total_fee == 6.03 && item->network_fee == 3.53 &&
-                         item->transaction_fee == 2 &&
-                         item->destination_amount == 0.00066413 &&
+                         item->total_fee == "6.03" && item->network_fee == "3.53" &&
+                         item->transaction_fee == "2" &&
+                         item->destination_amount == "0.00066413" &&
                          item->destination_currency_code == "BTC" &&
-                         item->exchange_rate == 75286 &&
+                         item->exchange_rate == "75286" &&
                          item->payment_method == "APPLE_PAY" &&
-                         item->customer_score == 20 &&
+                         item->customer_score == "20" &&
                          item->service_provider == "TRANSAK";
                 }),
             1);
