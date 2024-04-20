@@ -13,6 +13,7 @@ import Favicon
 import Foundation
 import Growth
 import LocalAuthentication
+import MarketplaceKit
 import Preferences
 import SafariServices
 import Shared
@@ -205,6 +206,12 @@ extension BrowserViewController: WKNavigationDelegate {
         navigationAction: navigationAction
       )
       return (shouldOpen ? .allow : .cancel, preferences)
+    }
+
+    if #available(iOS 17.4, *) {
+      if requestURL.scheme == MarketplaceKitURIScheme {
+        return (.allow, preferences)
+      }
     }
 
     if isStoreURL(requestURL) {
