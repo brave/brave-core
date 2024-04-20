@@ -24,6 +24,7 @@ source_set("unit_tests") {
     "//chrome/browser",
     "//chrome/common",
     "//chrome/test:test_support",
+    "//components/bookmarks/browser",
     "//components/prefs:test_support",
     "//testing/gtest",
   ]
