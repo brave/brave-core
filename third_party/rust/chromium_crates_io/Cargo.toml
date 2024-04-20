@@ -144,7 +144,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-1.0.8
 package = "proc-macro2"
 
 [patch.crates-io.quote_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/quote-1.0.35"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/quote-1.0.36"
 package = "quote"
 
 [patch.crates-io.rand_chacha_v0_3]
