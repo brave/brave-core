@@ -44,13 +44,8 @@ void SortBraveSearchPromotionMatch(AutocompleteResult* result) {
     return;
   }
 
-  // Put as a second match for button type. Otherwise, put at last.
-  const int target_index =
-      GetConversionTypeFromMatch(*brave_search_conversion_match) ==
-              ConversionType::kButton
-          ? 1
-          : -1;
-  result->ReorderMatch(brave_search_conversion_match, target_index);
+  // Put banner type match at last.
+  result->ReorderMatch(brave_search_conversion_match, -1);
 }
 
 bool IsBraveSearchPromotionMatch(const AutocompleteMatch& match) {
@@ -67,8 +62,7 @@ ConversionType GetConversionTypeFromMatch(const AutocompleteMatch& match) {
   if (!base::StringToInt(type_string, &type_int))
     return ConversionType::kNone;
   const ConversionType type = static_cast<ConversionType>(type_int);
-  DCHECK(type == ConversionType::kButton ||
-         (type >= ConversionType::kBannerTypeA &&
+  DCHECK((type >= ConversionType::kBannerTypeB &&
           type <= ConversionType::kBannerTypeD));
   return type;
 }

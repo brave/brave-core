@@ -9,6 +9,7 @@
 
 #include "base/time/time.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 #include "brave/browser/ui/views/omnibox/brave_search_conversion_promotion_view.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
@@ -37,7 +38,7 @@
 
 BraveOmniboxResultView::~BraveOmniboxResultView() = default;
 
-void BraveOmniboxResultView::ResetChildrenVisibility() {
+void BraveOmniboxResultView::ResetChildren() {
   // Reset children visibility. Their visibility could be configured later
   // based on |match_| and the current input.
   // NOTE: The first child in the result box is supposed to be the
@@ -45,17 +46,16 @@ void BraveOmniboxResultView::ResetChildrenVisibility() {
   children().front()->SetVisible(true);
   button_row_->SetVisible(true);
   if (brave_search_promotion_view_) {
-    brave_search_promotion_view_->SetVisible(false);
+    RemoveChildViewT(brave_search_promotion_view_);
+    brave_search_promotion_view_ = nullptr;
   }
 }
 
 void BraveOmniboxResultView::SetMatch(const AutocompleteMatch& match) {
-  ResetChildrenVisibility();
+  ResetChildren();
   OmniboxResultView::SetMatch(match);
 
-  if (IsBraveSearchPromotionMatch(match)) {
-    UpdateForBraveSearchConversion();
-  }
+  UpdateForBraveSearchConversion();
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   UpdateForLeoMatch();
@@ -100,6 +100,10 @@ void BraveOmniboxResultView::RefreshOmniboxResult() {
   controller->Start(controller->input());
 }
 
+BraveOmniboxPopupViewViews* BraveOmniboxResultView::GetPopupView() {
+  return static_cast<BraveOmniboxPopupViewViews*>(popup_view_);
+}
+
 void BraveOmniboxResultView::HandleSelectionStateChangedForPromotionView() {
   if (brave_search_promotion_view_ && IsBraveSearchPromotionMatch(match_)) {
     brave_search_promotion_view_->OnSelectionStateChanged(
@@ -109,7 +113,9 @@ void BraveOmniboxResultView::HandleSelectionStateChangedForPromotionView() {
 }
 
 void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
-  DCHECK(IsBraveSearchPromotionMatch(match_));
+  if (!IsBraveSearchPromotionMatch(match_)) {
+    return;
+  }
 
   // Hide upstream children and show our promotion view.
   // NOTE: The first child in the result box is supposed to be the
@@ -117,18 +123,17 @@ void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
   children().front()->SetVisible(false);
   button_row_->SetVisible(false);
 
-  if (!brave_search_promotion_view_) {
-    auto* controller = popup_view_->controller()->autocomplete_controller();
-    auto* prefs = controller->autocomplete_provider_client()->GetPrefs();
-    brave_search_promotion_view_ =
-        AddChildView(std::make_unique<BraveSearchConversionPromotionView>(
-            this, g_browser_process->local_state(), prefs));
-  }
+  CHECK(!brave_search_promotion_view_);
+  auto* controller = popup_view_->controller()->autocomplete_controller();
+  auto* prefs = controller->autocomplete_provider_client()->GetPrefs();
+  brave_search_promotion_view_ =
+      AddChildView(std::make_unique<BraveSearchConversionPromotionView>(
+          this, g_browser_process->local_state(), prefs));
 
-  brave_search_promotion_view_->SetVisible(true);
   brave_search_promotion_view_->SetTypeAndInput(
       GetConversionTypeFromMatch(match_),
       popup_view_->controller()->autocomplete_controller()->input().text());
+  HandleSelectionStateChangedForPromotionView();
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
