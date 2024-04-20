@@ -64,7 +64,6 @@ class BraveSearchConversionTest : public testing::Test {
 };
 
 TEST_F(BraveSearchConversionTest, DefaultValueTest) {
-  EXPECT_FALSE(base::FeatureList::IsEnabled(features::kOmniboxButton));
   EXPECT_FALSE(base::FeatureList::IsEnabled(features::kOmniboxBanner));
   EXPECT_FALSE(base::FeatureList::IsEnabled(features::kNTP));
   EXPECT_EQ(ConversionType::kNone,
@@ -78,8 +77,10 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
 
   ConfigureBingAsDefaultProvider();
 
-  feature_list.InitAndEnableFeature(features::kOmniboxButton);
-  EXPECT_EQ(ConversionType::kButton,
+  feature_list.InitAndEnableFeatureWithParameters(
+      brave_search_conversion::features::kOmniboxBanner,
+      {{brave_search_conversion::features::kBannerTypeParamName, "type_B"}});
+  EXPECT_EQ(ConversionType::kBannerTypeB,
             GetConversionType(&pref_service_, &template_url_service_));
 
   // Check do not conversion when brave search(tor) is set as a default
@@ -93,13 +94,6 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
 
   ConfigureBingAsDefaultProvider();
 
-  feature_list.Reset();
-  feature_list.InitAndEnableFeatureWithParameters(
-      brave_search_conversion::features::kOmniboxBanner,
-      {{brave_search_conversion::features::kBannerTypeParamName, "type_A"}});
-  EXPECT_EQ(ConversionType::kBannerTypeA,
-            GetConversionType(&pref_service_, &template_url_service_));
-
   // Check conversion type is set again after 3days passed.
   SetMaybeLater(&pref_service_);
   EXPECT_EQ(ConversionType::kNone,
@@ -110,7 +104,7 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
             GetConversionType(&pref_service_, &template_url_service_));
 
   task_environment_.AdvanceClock(base::Days(1) + base::Milliseconds(1));
-  EXPECT_EQ(ConversionType::kBannerTypeA,
+  EXPECT_EQ(ConversionType::kBannerTypeB,
             GetConversionType(&pref_service_, &template_url_service_));
 
   // Set dismissed.

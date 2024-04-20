@@ -20,10 +20,6 @@ struct ConversionTypeInfo {
 
 const ConversionTypeInfo type_infos[] = {
     {
-        .type = ConversionType::kBannerTypeA,
-        .histogram_name = kSearchPromoBannerAHistogramName,
-    },
-    {
         .type = ConversionType::kBannerTypeB,
         .histogram_name = kSearchPromoBannerBHistogramName,
     },
@@ -34,10 +30,6 @@ const ConversionTypeInfo type_infos[] = {
     {
         .type = ConversionType::kBannerTypeD,
         .histogram_name = kSearchPromoBannerDHistogramName,
-    },
-    {
-        .type = ConversionType::kButton,
-        .histogram_name = kSearchPromoButtonHistogramName,
     },
     {
         .type = ConversionType::kNTP,
