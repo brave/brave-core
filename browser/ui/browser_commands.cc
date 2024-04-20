@@ -110,12 +110,17 @@ bool CanTakeTabs(const Browser* from, const Browser* to) {
 
 void NewOffTheRecordWindowTor(Browser* browser) {
   CHECK(browser);
-  if (browser->profile()->IsTor()) {
-    chrome::OpenEmptyWindow(browser->profile());
+  NewOffTheRecordWindowTor(browser->profile());
+}
+
+void NewOffTheRecordWindowTor(Profile* profile) {
+  CHECK(profile);
+  if (profile->IsTor()) {
+    chrome::OpenEmptyWindow(profile);
     return;
   }
 
-  TorProfileManager::SwitchToTorProfile(browser->profile());
+  TorProfileManager::SwitchToTorProfile(profile);
 }
 
 void NewTorConnectionForSite(Browser* browser) {
