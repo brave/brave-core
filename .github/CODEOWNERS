@@ -173,6 +173,9 @@ build/ios/ @brave/ios
 # Android tests
 android/android_browser_tests.gni @brave/android-tests-reviewers
 
+# Android res
+android/java/res @deeppandya
+
 # BravePrefServiceBridge.java is going to be retired soon. We
 # have that owners record temporary to avoid people adding
 # new things there
