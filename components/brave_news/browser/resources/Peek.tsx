@@ -14,6 +14,7 @@ import { MetaInfo } from './feed/ArticleMetaRow';
 import Card, { SmallImage, Title } from './feed/Card';
 import { useBraveNews } from './shared/Context';
 import { useUnpaddedImageUrl } from './shared/useUnpaddedImageUrl';
+import { loadTimeData } from '$web-common/loadTimeData';
 
 const NewsButton = styled.button`
   cursor: pointer;
@@ -100,6 +101,12 @@ export default function Peek() {
   const data = (top?.hero ?? top?.article)?.data
   const imageUrl = useUnpaddedImageUrl(data?.image.paddedImageUrl?.url ?? data?.image.imageUrl?.url, undefined, true)
 
+  // Show the news button if:
+  // 1. We haven't opted in
+  // 2. We have a feed, and we aren't showing the search widget.
+  const showNewsButton = !isOptInPrefEnabled
+    || feedV2 && !loadTimeData.getBoolean('featureFlagSearchWidget')
+
   // For some reason |createGlobalStyle| doesn't seem to work in Brave Core
   // To get the background blur effect looking nice, we need to set the body
   // background to black - unfortunately we can't do this in root HTML file
@@ -111,7 +118,7 @@ export default function Peek() {
 
   return isShowOnNTPPrefEnabled
     ? <Container>
-      {(!isOptInPrefEnabled || feedV2) && <NewsButton onClick={scrollToNews}>
+      {showNewsButton && <NewsButton onClick={scrollToNews}>
         <Icon name='product-brave-news' />
         {getLocale('braveNewsNewsPeek')}
         <Icon name='carat-down' />
