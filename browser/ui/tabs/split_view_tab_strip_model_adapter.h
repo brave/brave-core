@@ -24,7 +24,7 @@ class SplitViewTabStripModelAdapter : public TabStripModelObserver {
 
   void MakeTiledTabsAdjacent(const SplitViewBrowserData::Tile& tile,
                              bool move_right_tab = true);
-  void SynchronizeGroupedState(const SplitViewBrowserData::Tile& tile,
+  bool SynchronizeGroupedState(const SplitViewBrowserData::Tile& tile,
                                const tabs::TabHandle& source,
                                std::optional<tab_groups::TabGroupId> group);
 

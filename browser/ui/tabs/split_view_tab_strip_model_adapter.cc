@@ -11,6 +11,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/tab_groups/tab_group_id.h"
@@ -53,7 +54,7 @@ void SplitViewTabStripModelAdapter::TabDragStarted() {
   is_in_tab_dragging_ = true;
 }
 
-void SplitViewTabStripModelAdapter::SynchronizeGroupedState(
+bool SplitViewTabStripModelAdapter::SynchronizeGroupedState(
     const SplitViewBrowserData::Tile& tile,
     const tabs::TabHandle& source,
     std::optional<tab_groups::TabGroupId> group) {
@@ -63,7 +64,7 @@ void SplitViewTabStripModelAdapter::SynchronizeGroupedState(
   auto other_tab_index = model_->GetIndexOfTab(other_tab);
   auto tab_group_for_secondary_tab = model_->GetTabGroupForTab(other_tab_index);
   if (group == tab_group_for_secondary_tab) {
-    return;
+    return false;
   }
 
   auto tab_index = model_->GetIndexOfTab(other_tab);
@@ -74,6 +75,7 @@ void SplitViewTabStripModelAdapter::SynchronizeGroupedState(
   }
 
   MakeTiledTabsAdjacent(tile, true);
+  return true;
 }
 
 void SplitViewTabStripModelAdapter::TabDragEnded() {
@@ -280,9 +282,17 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
-      base::BindOnce(&SplitViewTabStripModelAdapter::SynchronizeGroupedState,
-                     weak_ptr_factory_.GetWeakPtr(), *tile, changed_tab_handle,
-                     group));
+      base::BindOnce(
+          [](base::WeakPtr<SplitViewTabStripModelAdapter> adapter,
+             SplitViewBrowserData::Tile tile, const tabs::TabHandle& source,
+             std::optional<tab_groups::TabGroupId> group) {
+            if (!adapter) {
+              return;
+            }
+
+            adapter->SynchronizeGroupedState(tile, source, group);
+          },
+          weak_ptr_factory_.GetWeakPtr(), *tile, changed_tab_handle, group));
 }
 
 void SplitViewTabStripModelAdapter::OnTabRemoved(
