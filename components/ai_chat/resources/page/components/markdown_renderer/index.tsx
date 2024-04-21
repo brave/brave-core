@@ -16,6 +16,31 @@ const CodeInline = React.lazy(async () => ({
   default: (await import('../code_block')).default.Inline
 }))
 
+const allowedElements = [
+  'blockquote',
+  'br',
+  'code',
+  'del',
+  'em',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'hr',
+  'li',
+  'li',
+  'ol',
+  'ol',
+  'p',
+  'pre',
+  'section',
+  'strong',
+  'sup',
+  'ul'
+]
+
 interface MarkdownRendererProps {
   text: string
   shouldShowTextCursor: boolean
@@ -35,8 +60,8 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
   return (
     <div className={styles.markdownContainer}>
       <Markdown
+        allowedElements={allowedElements}
         rehypePlugins={[plugin]}
-        disallowedElements={['a', 'img']}
         unwrapDisallowed={true}
         children={mainProps.text}
         components={{
