@@ -246,7 +246,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           account: account,
           networkAssets: allUserNetworkAssets
         )
-        tokenBalanceCache.merge(with: tokenBalances)
       }
       tokenBalanceCache.merge(with: tokenBalances)
 
