@@ -289,13 +289,13 @@ ContentGroup SampleContentGroup(
 }
 
 // Picks the first article from the list - useful when the list has been sorted.
-int PickFirstIndex(const ArticleInfos& articles) {
-  return articles.empty() ? -1 : 0;
+std::optional<size_t> PickFirstIndex(const ArticleInfos& articles) {
+  return articles.empty() ? std::nullopt : std::make_optional(0);
 }
 
 // Picks an article with a probability article_weight/sum(article_weights).
-int PickRouletteWithWeighting(const ArticleInfos& articles,
-                              GetWeighting get_weighting) {
+std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
+                                                GetWeighting get_weighting) {
   std::vector<double> weights;
   base::ranges::transform(articles, std::back_inserter(weights),
                           [&get_weighting](const auto& article_info) {
@@ -307,24 +307,23 @@ int PickRouletteWithWeighting(const ArticleInfos& articles,
   const auto total_weight =
       std::accumulate(weights.begin(), weights.end(), 0.0);
   if (total_weight == 0) {
-    return -1;
+    return std::nullopt;
   }
 
   double picked_value = base::RandDouble() * total_weight;
   double current_weight = 0;
 
-  uint64_t i;
-  for (i = 0; i < weights.size(); ++i) {
+  for (size_t i = 0; i < weights.size(); ++i) {
     current_weight += weights[i];
-    if (current_weight > picked_value) {
-      break;
+    if (current_weight >= picked_value) {
+      return i;
     }
   }
 
-  return i;
+  return std::nullopt;
 }
 
-int PickRoulette(const ArticleInfos& articles) {
+std::optional<size_t> PickRoulette(const ArticleInfos& articles) {
   return PickRouletteWithWeighting(
       articles,
       base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
@@ -335,8 +334,18 @@ int PickRoulette(const ArticleInfos& articles) {
 
 mojom::FeedItemMetadataPtr PickAndRemove(ArticleInfos& articles,
                                          PickArticles picker) {
-  auto index = picker.Run(articles);
-  if (index == -1) {
+  auto maybe_index = picker.Run(articles);
+
+  // There won't be an index if there were no eligible articles.
+  if (!maybe_index.has_value()) {
+    return nullptr;
+  }
+
+  auto index = maybe_index.value();
+  if (index >= articles.size()) {
+    DCHECK(false) << "|index| should never be outside the bounds of |articles| "
+                     "(index: "
+                  << index << ", articles.size(): " << articles.size();
     return nullptr;
   }
 
