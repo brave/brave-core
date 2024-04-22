@@ -25,6 +25,7 @@
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
+#include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
@@ -370,6 +371,10 @@ void BraveTooltipView::UpdateOkButtonColors() {
   const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
   ok_button_->SetBackground(views::CreateRoundedRectBackground(
       kDefaultButtonColor, kButtonCornerRadius));
+  ok_button_->SetTextColor(views::Button::ButtonState::STATE_DISABLED,
+                           should_use_dark_colors
+                               ? kDarkModeDefaultButtonTextColor
+                               : kLightModeDefaultButtonTextColor);
   ok_button_->SetEnabledTextColors(should_use_dark_colors
                                        ? kDarkModeDefaultButtonTextColor
                                        : kLightModeDefaultButtonTextColor);
@@ -409,6 +414,10 @@ void BraveTooltipView::UpdateCancelButtonColors() {
   cancel_button_->SetBackground(views::CreateRoundedRectBackground(
       should_use_dark_colors ? kDarkModeButtonColor : kLightModeButtonColor,
       kButtonCornerRadius));
+  cancel_button_->SetTextColor(views::Button::ButtonState::STATE_DISABLED,
+                               should_use_dark_colors
+                                   ? kDarkModeButtonTextColor
+                                   : kLightModeButtonTextColor);
   cancel_button_->SetEnabledTextColors(should_use_dark_colors
                                            ? kDarkModeButtonTextColor
                                            : kLightModeButtonTextColor);

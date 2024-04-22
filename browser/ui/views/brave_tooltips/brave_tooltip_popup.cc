@@ -40,6 +40,8 @@
 
 namespace {
 
+constexpr gfx::Size kTooltipSize(434 + 15, 104 + 15);
+
 constexpr int kShadowElevation = 5;
 
 constexpr int kBorderThickness = 6;
@@ -267,17 +269,10 @@ void BraveTooltipPopup::CreatePopup() {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets()));
 
-  // Container
-  views::View* container_view = new views::View();
-  AddChildView(container_view);
-
   // Tooltip
   DCHECK(!tooltip_view_);
-  tooltip_view_ = container_view->AddChildView(
-      new BraveTooltipView(this, tooltip_->attributes()));
-
-  container_view->SetPosition(gfx::Point(0, 0));
-  container_view->SetSize(tooltip_view_->size());
+  tooltip_view_ =
+      AddChildView(new BraveTooltipView(this, tooltip_->attributes()));
 
   CreateWidgetView();
 }
@@ -318,6 +313,7 @@ gfx::Point BraveTooltipPopup::GetDefaultOriginForSize(const gfx::Size& size) {
 gfx::Rect BraveTooltipPopup::CalculateBounds(bool use_default_origin) {
   DCHECK(tooltip_view_);
   gfx::Size size = tooltip_view_->size();
+  size.set_height(kTooltipSize.height());
   DCHECK(!size.IsEmpty());
 
   const gfx::Point origin =
