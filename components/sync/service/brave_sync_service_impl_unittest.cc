@@ -303,21 +303,19 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   EXPECT_TRUE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
 
-  // By default Brave enables Bookmarks datatype when sync is enabled.
-  // This caused DCHECK at DataTypeManagerImpl::DataTypeManagerImpl
-  // after OnEngineInitialized(true, false) call.
+  // During the calls below:
+  //    DataTypeManagerImpl::SetConfigurer()
+  //    SyncServiceImpl::OnEngineInitialized()
+  //    BraveSyncServiceImpl::OnEngineInitialized()
+  // SetConfigurer method requires |DataTypeManagerImpl::state_| to be in a
+  // STOPPED state.
   // Current unit test is intended to verify fix for brave/brave-browser#22898
   // and is about set encryption passphrase later setup after right after
-  // enabling sync, for example when internet connection is unstable. Related
-  // Chromium commit 3241d114b8036bb6d53931ba34b3bf819258c29d Prior to this
-  // commit DataTypeManagerImpl wasn't created for bookmarks at
-  // ForcedSetDecryptionPassphrase test.
-  // Update Dec 2023: moved this workaround closer to OnEngineInitialized,
-  // with Chromium commit 33441a0f3f9a591693157f2fd16852ce072e6f9d the logic of
-  // SyncUserSettingsImpl::GetSelectedTypes had been changed and affected this
-  // test.
-  brave_sync_service_impl()->GetUserSettings()->SetSelectedTypes(
-      false, syncer::UserSelectableTypeSet());
+  // enabling sync, for example when internet connection is unstable.
+  // So we just make DataTypeManagerImpl::SetConfigurer requirements be
+  // satisfied.
+  // Related Chromium commit 7cdf92e9470fc73a09b871f99d14ff115edef652
+  brave_sync_service_impl()->data_type_manager_->Stop(KEEP_METADATA);
 
   brave_sync_service_impl()->OnEngineInitialized(true, false);
   EXPECT_FALSE(
