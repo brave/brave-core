@@ -425,7 +425,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   CHECK(browserStateManager);
 
   ChromeBrowserState* chromeBrowserState =
-      browserStateManager->GetLastUsedBrowserState();
+      browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
   CHECK(chromeBrowserState);
 
   _profilePrefService = chromeBrowserState->GetPrefs();

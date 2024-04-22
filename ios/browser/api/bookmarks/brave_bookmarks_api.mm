@@ -542,7 +542,7 @@
   ios::ChromeBrowserStateManager* browserStateManager =
       GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browserState =
-      browserStateManager->GetLastUsedBrowserState();
+      browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
 
   PrefService* prefs = user_prefs::UserPrefs::Get(browserState);
   return prefs->GetBoolean(bookmarks::prefs::kEditBookmarksEnabled);

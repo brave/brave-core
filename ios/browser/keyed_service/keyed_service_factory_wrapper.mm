@@ -21,7 +21,8 @@
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* browserStateManager =
       GetApplicationContext()->GetChromeBrowserStateManager();
-  auto* browserState = browserStateManager->GetLastUsedBrowserState();
+  auto* browserState =
+      browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
   if (isPrivateBrowsing) {
     browserState = browserState->GetOffTheRecordChromeBrowserState();
   }
