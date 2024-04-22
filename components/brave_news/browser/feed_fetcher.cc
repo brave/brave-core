@@ -155,7 +155,8 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(
         "GET", feed_url, "", "",
         base::BindOnce(&FeedFetcher::OnFetchFeedFetchedFeed,
                        weak_ptr_factory_.GetWeakPtr(), locale,
-                       downloaded_callback));
+                       downloaded_callback),
+        {}, {.timeout = GetDefaultRequestTimeout()});
   }
 
   for (const auto& direct_publisher : direct_publishers) {

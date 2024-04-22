@@ -22,6 +22,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
+#include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -248,9 +249,11 @@ void PublishersController::EnsurePublishersIsUpdating(
             std::make_unique<base::OneShotEvent>();
       },
       base::Unretained(this), subscriptions);
-  api_request_helper_->Request(
-      "GET", sources_url, "", "", std::move(on_request),
-      brave::private_cdn_headers, {.auto_retry_on_network_change = true});
+  api_request_helper_->Request("GET", sources_url, "", "",
+                               std::move(on_request),
+                               brave::private_cdn_headers,
+                               {.auto_retry_on_network_change = true,
+                                .timeout = GetDefaultRequestTimeout()});
 }
 
 void PublishersController::UpdateDefaultLocale() {

@@ -161,6 +161,7 @@ void DirectFeedFetcher::DownloadFeed(const GURL& url,
   url_loader->SetRetryOptions(
       1, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
              network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
+  url_loader->SetTimeoutDuration(GetDefaultRequestTimeout());
   url_loader->SetAllowHttpErrorResults(true);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
   iter->get()->DownloadToString(
@@ -179,6 +180,8 @@ void DirectFeedFetcher::OnFeedDownloaded(
     std::string publisher_id,
     std::unique_ptr<std::string> response_body) {
   auto* loader = iter->get();
+  loader->SetTimeoutDuration(GetDefaultRequestTimeout());
+
   auto response_code = -1;
 
   auto result = DirectFeedResponse();

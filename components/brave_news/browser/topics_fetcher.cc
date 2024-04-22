@@ -127,7 +127,10 @@ void TopicsFetcher::FetchTopicArticles(FetchState state) {
           &TopicsFetcher::OnFetchedTopicArticles,
           // Note: Unretained is safe here, because this class owns the
           // |api_request_helper_|, which uses WeakPtr internally.
-          base::Unretained(this), std::move(state)));
+          base::Unretained(this), std::move(state)),
+      {},
+      {.auto_retry_on_network_change = true,
+       .timeout = GetDefaultRequestTimeout()});
 }
 
 void TopicsFetcher::OnFetchedTopicArticles(
