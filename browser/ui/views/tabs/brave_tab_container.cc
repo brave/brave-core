@@ -297,11 +297,29 @@ void BraveTabContainer::PaintBoundingBoxForTiles(
 void BraveTabContainer::PaintBoundingBoxForTile(
     gfx::Canvas& canvas,
     const SplitViewBrowserData::Tile& tile) {
+  if (!GetTabCount()) {
+    return;
+  }
+
+  // Note that GetTabAtModelIndex() and IsValidModelIndex() is actually using
+  // "ViewModel" index. See TabContainerImpl::GetTabAtModelIndex(), and
+  // implementations in compound_tab_container.cc implementation. Thus, we need
+  // to add pinned tab count.
   auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
-  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first);
-  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second);
-  CHECK(controller_->IsValidModelIndex(tab1_index)) << tab1_index;
-  CHECK(controller_->IsValidModelIndex(tab2_index)) << tab2_index;
+  const bool is_pinned_tab_container =
+      tabs_view_model_.view_at(0)->data().pinned;
+  const int offset =
+      is_pinned_tab_container ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
+
+  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first) - offset;
+  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second) - offset;
+  if (!controller_->IsValidModelIndex(tab1_index) ||
+      !controller_->IsValidModelIndex(tab2_index)) {
+    // In case the tiled tab is not in this container, this can happen.
+    // For instance, this container is for pinned tabs but tabs in the tile are
+    // unpinned.
+    return;
+  }
 
   gfx::Rect bounding_rects;
   for (auto i : {tab1_index, tab2_index}) {
