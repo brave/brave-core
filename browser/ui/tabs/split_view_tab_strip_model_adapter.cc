@@ -5,11 +5,13 @@
 
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
 
+#include "base/auto_reset.h"
 #include "base/compiler_specific.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/tab_groups/tab_group_id.h"
@@ -50,6 +52,30 @@ void SplitViewTabStripModelAdapter::TabDragStarted() {
   }
 
   is_in_tab_dragging_ = true;
+}
+
+bool SplitViewTabStripModelAdapter::SynchronizeGroupedState(
+    const SplitViewBrowserData::Tile& tile,
+    const tabs::TabHandle& source,
+    std::optional<tab_groups::TabGroupId> group) {
+  DCHECK(!is_in_synch_grouped_state_);
+  base::AutoReset<bool> resetter(&is_in_synch_grouped_state_, true);
+  auto other_tab = tile.first == source ? tile.second : tile.first;
+  auto other_tab_index = model_->GetIndexOfTab(other_tab);
+  auto tab_group_for_secondary_tab = model_->GetTabGroupForTab(other_tab_index);
+  if (group == tab_group_for_secondary_tab) {
+    return false;
+  }
+
+  auto tab_index = model_->GetIndexOfTab(other_tab);
+  if (group) {
+    model_->AddToExistingGroup({tab_index}, group.value());
+  } else {
+    model_->RemoveFromGroup({tab_index});
+  }
+
+  MakeTiledTabsAdjacent(tile, true);
+  return true;
 }
 
 void SplitViewTabStripModelAdapter::TabDragEnded() {
@@ -242,6 +268,10 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
     std::optional<tab_groups::TabGroupId> group,
     content::WebContents* contents,
     int index) {
+  if (is_in_synch_grouped_state_) {
+    return;
+  }
+
   // In case a tiled tab is grouped or ungrouped, we need to synchronize the
   // other tab together.
   auto changed_tab_handle = model_->GetTabHandleAt(index);
@@ -250,39 +280,19 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
     return;
   }
 
-  auto [tab1, other_tab] = *tile;
-  if (tab1 != changed_tab_handle) {
-    std::swap(tab1, other_tab);
-    CHECK(tab1 == changed_tab_handle);
-  }
-
-  auto other_tab_index = model_->GetIndexOfTab(other_tab);
-  auto tab_group_for_secondary_tab = model_->GetTabGroupForTab(other_tab_index);
-  if (group == tab_group_for_secondary_tab) {
-    return;
-  }
-
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(
           [](base::WeakPtr<SplitViewTabStripModelAdapter> adapter,
-             std::optional<tab_groups::TabGroupId> group_id,
-             SplitViewBrowserData::Tile tile, tabs::TabHandle tab_to_move) {
+             SplitViewBrowserData::Tile tile, const tabs::TabHandle& source,
+             std::optional<tab_groups::TabGroupId> group) {
             if (!adapter) {
               return;
             }
 
-            auto tab_index = adapter->model_->GetIndexOfTab(tab_to_move);
-            if (group_id) {
-              adapter->model_->AddToExistingGroup({tab_index},
-                                                  group_id.value());
-            } else {
-              adapter->model_->RemoveFromGroup({tab_index});
-            }
-
-            adapter->MakeTiledTabsAdjacent(tile, true);
+            adapter->SynchronizeGroupedState(tile, source, group);
           },
-          weak_ptr_factory_.GetWeakPtr(), group, *tile, other_tab));
+          weak_ptr_factory_.GetWeakPtr(), *tile, changed_tab_handle, group));
 }
 
 void SplitViewTabStripModelAdapter::OnTabRemoved(

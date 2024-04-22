@@ -31,8 +31,9 @@ void SplitViewBrowserData::TileTabs(const Tile& tile) {
   CHECK(!IsTabTiled(tile.first));
   CHECK(!IsTabTiled(tile.second));
 
-  if (!is_testing_) {
-    auto* model = GetBrowser().tab_strip_model();
+  TabStripModel* model = is_testing_ ? tab_strip_model_for_testing_.get()
+                                     : GetBrowser().tab_strip_model();
+  if (model) {
     CHECK_LT(model->GetIndexOfTab(tile.first),
              model->GetIndexOfTab(tile.second));
   }
@@ -43,7 +44,15 @@ void SplitViewBrowserData::TileTabs(const Tile& tile) {
   tile_index_for_tab_[tile.second] = tiles_.size() - 1;
 
   if (tab_strip_model_adapter_) {
-    tab_strip_model_adapter_->MakeTiledTabsAdjacent(tile);
+    const bool synchronized_group =
+        model &&
+        tab_strip_model_adapter_->SynchronizeGroupedState(
+            tile, /*source=*/tile.first,
+            model->GetTabGroupForTab(model->GetIndexOfTab(tile.first)));
+
+    if (!synchronized_group) {
+      tab_strip_model_adapter_->MakeTiledTabsAdjacent(tile);
+    }
   }
 
   for (auto& observer : observers_) {

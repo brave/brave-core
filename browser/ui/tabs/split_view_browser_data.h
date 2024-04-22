@@ -89,6 +89,7 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   base::ObserverList<SplitViewBrowserDataObserver> observers_;
 
   bool is_testing_ = false;
+  raw_ptr<TabStripModel> tab_strip_model_for_testing_ = nullptr;
 
   base::WeakPtrFactory<SplitViewBrowserData> weak_ptr_factory_{this};
 

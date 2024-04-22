@@ -24,6 +24,9 @@ class SplitViewTabStripModelAdapter : public TabStripModelObserver {
 
   void MakeTiledTabsAdjacent(const SplitViewBrowserData::Tile& tile,
                              bool move_right_tab = true);
+  bool SynchronizeGroupedState(const SplitViewBrowserData::Tile& tile,
+                               const tabs::TabHandle& source,
+                               std::optional<tab_groups::TabGroupId> group);
 
   void TabDragStarted();
   void TabDragEnded();
@@ -57,6 +60,8 @@ class SplitViewTabStripModelAdapter : public TabStripModelObserver {
   raw_ref<TabStripModel> model_;
 
   bool is_in_tab_dragging_ = false;
+
+  bool is_in_synch_grouped_state_ = false;
 
   base::WeakPtrFactory<SplitViewTabStripModelAdapter> weak_ptr_factory_{this};
 };
