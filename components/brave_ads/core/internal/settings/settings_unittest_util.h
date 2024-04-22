@@ -17,6 +17,8 @@ void OptOutOfNewTabPageAds();
 void OptOutOfNotificationAds();
 void SetMaximumNotificationAdsPerHour(int max_ads_per_hour);
 
+void OptOutOfSearchResultAds();
+
 }  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SETTINGS_SETTINGS_UNITTEST_UTIL_H_

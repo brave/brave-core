@@ -36,8 +36,7 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
     }
 
     case AdType::kSearchResultAd: {
-      // Always.
-      return true;
+      return UserHasOptedInToSearchResultAds();
     }
 
     case AdType::kUndefined: {

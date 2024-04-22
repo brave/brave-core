@@ -484,6 +484,15 @@
       <message name="IDS_BRAVE_REWARDS_NOTIFICATION_AD_COUNT_LABEL" desc="">
         Notification ads
       </message>
+      <message name="IDS_BRAVE_REWARDS_SEARCH_AD_COUNT_LABEL" desc="">
+        Search ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_SEARCH_AD_INFO" desc="">
+        Brave Search Ads appear on <ph name="BEGIN_LINK">$1</ph>Brave Search<ph name="END_LINK">$2</ph>.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_SEARCH_AD_CONNECTED_INFO" desc="">
+        You cannot earn BAT from Brave Search Ads yet, but you help support Brave by having them on.
+      </message>
       <message name="IDS_BRAVE_REWARDS_NEWS_AD_COUNT_LABEL" desc="">
         Brave News ads
       </message>

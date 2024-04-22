@@ -435,6 +435,14 @@ void RewardsServiceImpl::CheckPreferences() {
     // utility process.
     StartEngineProcessIfNecessary();
   }
+
+  // If Rewards is enabled and the user has a linked account, then ensure that
+  // the "search result ads enabled" pref has the appropriate default value.
+  if (prefs->GetBoolean(prefs::kEnabled) &&
+      !prefs->GetString(prefs::kExternalWalletType).empty() &&
+      !prefs->HasPrefPath(brave_ads::prefs::kOptedInToSearchResultAds)) {
+    prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
+  }
 }
 
 void RewardsServiceImpl::StartEngineProcessIfNecessary() {
@@ -2394,6 +2402,10 @@ void RewardsServiceImpl::OnFilesDeletedForCompleteReset(
 }
 
 void RewardsServiceImpl::ExternalWalletConnected() {
+  // When the user connects an external wallet, turn off search result ads since
+  // users cannot earn BAT for them yet. The user can turn them on manually.
+  profile_->GetPrefs()->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds,
+                                   false);
   for (auto& observer : observers_) {
     observer.OnExternalWalletConnected();
   }

@@ -68,19 +68,20 @@ source_set("unit_tests") {
 
   sources = [
     "brave_ad_block_tp_network_delegate_helper_unittest.cc",
-    "brave_ads_status_header_network_delegate_helper_unittest.cc",
     "brave_block_safebrowsing_urls_unittest.cc",
     "brave_common_static_redirect_network_delegate_helper_unittest.cc",
     "brave_network_delegate_base_unittest.cc",
     "brave_site_hacks_network_delegate_helper_unittest.cc",
     "brave_static_redirect_network_delegate_helper_unittest.cc",
     "brave_system_request_handler_unittest.cc",
+    "search_ads_header_network_delegate_helper_unittest.cc",
   ]
 
   deps = [
     "//brave/browser/net:geolocation",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser:test_support",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common:features",
