@@ -11,7 +11,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/environment.h"
+#include "base/logging.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
@@ -21,7 +23,6 @@
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "base/logging.h"
 
 namespace {
 
@@ -58,7 +59,8 @@ base::flat_map<std::string, std::string> MakeMeldApiHeaders() {
   meld_api_key = base::StrCat({"BASIC", " ", meld_api_key});
   request_headers["Authorization"] = std::move(meld_api_key);
   request_headers["accept"] = "application/json";
-  request_headers[brave_wallet::kMeldRpcVersionHeader] = brave_wallet::kMeldRpcVersion;
+  request_headers[brave_wallet::kMeldRpcVersionHeader] =
+      brave_wallet::kMeldRpcVersion;
 
   return request_headers;
 }
@@ -71,12 +73,51 @@ std::optional<std::string> SanitizeJson(const std::string& json) {
     return std::nullopt;
   }
 
-  converted_json = std::string(json::remove_all_null_values(converted_json, ""));
+  converted_json =
+      std::string(json::remove_all_null_values(converted_json, ""));
   if (converted_json.empty()) {
     return std::nullopt;
   }
 
   return converted_json;
+}
+
+GURL AppendFilterParams(GURL url,
+                        const std::optional<std::string>& countries,
+                        const std::optional<std::string>& fiat_currencies,
+                        const std::optional<std::string>& crypto_currencies,
+                        const std::optional<std::string>& service_providers,
+                        const std::optional<std::string>& payment_method_types,
+                        const std::optional<std::string>& statuses,
+                        std::optional<base::flat_map<std::string,std::string>> def_params) {
+  if (def_params) {
+    for(const auto& [key, val] : *def_params) {
+      url = net::AppendQueryParameter(url, key, val);
+    }
+  }
+
+  url = net::AppendQueryParameter(url, "statuses",
+                                  statuses.value_or(kDefaultMeldStatuses));
+
+  if (countries) {
+    url = net::AppendQueryParameter(url, "countries", *countries);
+  }
+  if (fiat_currencies) {
+    url = net::AppendQueryParameter(url, "fiatCurrencies", *fiat_currencies);
+  }
+  if (crypto_currencies) {
+    url =
+        net::AppendQueryParameter(url, "cryptoCurrencies", *crypto_currencies);
+  }
+  if (service_providers) {
+    url =
+        net::AppendQueryParameter(url, "serviceProviders", *service_providers);
+  }
+  if (payment_method_types) {
+    url = net::AppendQueryParameter(url, "paymentMethodTypes",
+                                    *payment_method_types);
+  }
+  return url;
 }
 
 }  // namespace
@@ -113,33 +154,12 @@ GURL MeldIntegrationService::GetServiceProviderURL(
     const std::optional<std::string>& service_providers,
     const std::optional<std::string>& payment_method_types,
     const std::optional<std::string>& statuses) {
-  auto url = GURL(base::StringPrintf("%s/service-providers",
-                                     GetMeldAssetRatioBaseURL().c_str()));
-  url = net::AppendQueryParameter(url, "accountFilter", "false");
-
-  url = net::AppendQueryParameter(url, "statuses",
-                                  statuses.value_or(kDefaultMeldStatuses));
-
-  if (countries) {
-    url = net::AppendQueryParameter(url, "countries", *countries);
-  }
-  if (fiat_currencies) {
-    url = net::AppendQueryParameter(url, "fiatCurrencies", *fiat_currencies);
-  }
-  if (crypto_currencies) {
-    url =
-        net::AppendQueryParameter(url, "cryptoCurrencies", *crypto_currencies);
-  }
-  if (service_providers) {
-    url =
-        net::AppendQueryParameter(url, "serviceProviders", *service_providers);
-  }
-  if (payment_method_types) {
-    url = net::AppendQueryParameter(url, "paymentMethodTypes",
-                                    *payment_method_types);
-  }
-
-  return url;
+  return AppendFilterParams(
+      GURL(base::StringPrintf("%s/service-providers",
+                              GetMeldAssetRatioBaseURL().c_str())),
+      countries, fiat_currencies, crypto_currencies, service_providers,
+      payment_method_types, statuses,
+      base::flat_map<std::string, std::string>{{"accountFilter", "false"}});
 }
 
 void MeldIntegrationService::GetServiceProviders(
@@ -179,9 +199,11 @@ void MeldIntegrationService::OnGetServiceProviders(
     return;
   }
 
-  auto service_providers = ParseServiceProviders(api_request_result.value_body());
+  auto service_providers =
+      ParseServiceProviders(api_request_result.value_body());
   if (!service_providers) {
-    std::move(callback).Run(std::nullopt, std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(std::nullopt,
+                            std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
 
@@ -261,35 +283,14 @@ GURL MeldIntegrationService::GetPaymentMethodsURL(
     const std::optional<std::string>& service_providers,
     const std::optional<std::string>& payment_method_types,
     const std::optional<std::string>& statuses) {
-  auto url =
+  return AppendFilterParams(
       GURL(base::StringPrintf("%s/service-providers/properties/payment-methods",
-                              GetMeldAssetRatioBaseURL().c_str()));
-  url =
-      net::AppendQueryParameter(url, "includeServiceProviderDetails", "false");
-
-  url = net::AppendQueryParameter(url, "statuses",
-                                  statuses.value_or(kDefaultMeldStatuses));
-
-  if (countries) {
-    url = net::AppendQueryParameter(url, "countries", *countries);
-  }
-  if (fiat_currencies) {
-    url = net::AppendQueryParameter(url, "fiatCurrencies", *fiat_currencies);
-  }
-  if (crypto_currencies) {
-    url =
-        net::AppendQueryParameter(url, "cryptoCurrencies", *crypto_currencies);
-  }
-  if (service_providers) {
-    url =
-        net::AppendQueryParameter(url, "serviceProviders", *service_providers);
-  }
-  if (payment_method_types) {
-    url = net::AppendQueryParameter(url, "paymentMethodTypes",
-                                    *payment_method_types);
-  }
-
-  return url;
+                              GetMeldAssetRatioBaseURL().c_str())),
+      countries, fiat_currencies, crypto_currencies, service_providers,
+      payment_method_types, statuses,
+      base::flat_map<std::string, std::string>{
+          {"includeServiceProviderDetails", "false"},
+          {"accountFilter", "false"}});
 }
 
 void MeldIntegrationService::GetPaymentMethods(
@@ -331,7 +332,8 @@ void MeldIntegrationService::OnGetPaymentMethods(
 
   auto payment_methods = ParsePaymentMethods(api_request_result.value_body());
   if (!payment_methods) {
-    std::move(callback).Run(std::nullopt, std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(std::nullopt,
+                            std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
 
@@ -346,35 +348,14 @@ GURL MeldIntegrationService::GetFiatCurrenciesURL(
     const std::optional<std::string>& service_providers,
     const std::optional<std::string>& payment_method_types,
     const std::optional<std::string>& statuses) {
-  auto url =
+  return AppendFilterParams(
       GURL(base::StringPrintf("%s/service-providers/properties/fiat-currencies",
-                              GetMeldAssetRatioBaseURL().c_str()));
-  url =
-      net::AppendQueryParameter(url, "includeServiceProviderDetails", "false");
-
-  url = net::AppendQueryParameter(url, "statuses",
-                                  statuses.value_or(kDefaultMeldStatuses));
-
-  if (countries) {
-    url = net::AppendQueryParameter(url, "countries", *countries);
-  }
-  if (fiat_currencies) {
-    url = net::AppendQueryParameter(url, "fiatCurrencies", *fiat_currencies);
-  }
-  if (crypto_currencies) {
-    url =
-        net::AppendQueryParameter(url, "cryptoCurrencies", *crypto_currencies);
-  }
-  if (service_providers) {
-    url =
-        net::AppendQueryParameter(url, "serviceProviders", *service_providers);
-  }
-  if (payment_method_types) {
-    url = net::AppendQueryParameter(url, "paymentMethodTypes",
-                                    *payment_method_types);
-  }
-
-  return url;
+                              GetMeldAssetRatioBaseURL().c_str())),
+      countries, fiat_currencies, crypto_currencies, service_providers,
+      payment_method_types, statuses,
+      base::flat_map<std::string, std::string>{
+          {"includeServiceProviderDetails", "false"},
+          {"accountFilter", "false"}});
 }
 
 void MeldIntegrationService::GetFiatCurrencies(
@@ -416,7 +397,8 @@ void MeldIntegrationService::OnGetFiatCurrencies(
 
   auto fiat_currencies = ParseFiatCurrencies(api_request_result.value_body());
   if (!fiat_currencies) {
-    std::move(callback).Run(std::nullopt, std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(std::nullopt,
+                            std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
 
@@ -431,36 +413,15 @@ GURL MeldIntegrationService::GetCryptoCurrenciesURL(
     const std::optional<std::string>& service_providers,
     const std::optional<std::string>& payment_method_types,
     const std::optional<std::string>& statuses) {
-  auto url = GURL(
-      base::StringPrintf("%s/service-providers/properties/crypto-currencies",
-                         GetMeldAssetRatioBaseURL().c_str()));
-
-  url =
-      net::AppendQueryParameter(url, "includeServiceProviderDetails", "false");
-
-  url = net::AppendQueryParameter(url, "statuses",
-                                  statuses.value_or(kDefaultMeldStatuses));
-
-  if (countries) {
-    url = net::AppendQueryParameter(url, "countries", *countries);
-  }
-  if (fiat_currencies) {
-    url = net::AppendQueryParameter(url, "fiatCurrencies", *fiat_currencies);
-  }
-  if (crypto_currencies) {
-    url =
-        net::AppendQueryParameter(url, "cryptoCurrencies", *crypto_currencies);
-  }
-  if (service_providers) {
-    url =
-        net::AppendQueryParameter(url, "serviceProviders", *service_providers);
-  }
-  if (payment_method_types) {
-    url = net::AppendQueryParameter(url, "paymentMethodTypes",
-                                    *payment_method_types);
-  }
-
-  return url;
+  return AppendFilterParams(
+      GURL(base::StringPrintf(
+          "%s/service-providers/properties/crypto-currencies",
+          GetMeldAssetRatioBaseURL().c_str())),
+      countries, fiat_currencies, crypto_currencies, service_providers,
+      payment_method_types, statuses,
+      base::flat_map<std::string, std::string>{
+          {"includeServiceProviderDetails", "false"},
+          {"accountFilter", "false"}});
 }
 
 void MeldIntegrationService::GetCryptoCurrencies(
@@ -500,9 +461,11 @@ void MeldIntegrationService::OnGetCryptoCurrencies(
     return;
   }
 
-  auto crypto_currencies = ParseCryptoCurrencies(api_request_result.value_body());
+  auto crypto_currencies =
+      ParseCryptoCurrencies(api_request_result.value_body());
   if (!crypto_currencies) {
-    std::move(callback).Run(std::nullopt, std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(std::nullopt,
+                            std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
 
@@ -517,36 +480,14 @@ GURL MeldIntegrationService::GetCountriesURL(
     const std::optional<std::string>& service_providers,
     const std::optional<std::string>& payment_method_types,
     const std::optional<std::string>& statuses) {
-  auto url =
+  return AppendFilterParams(
       GURL(base::StringPrintf("%s/service-providers/properties/countries",
-                              GetMeldAssetRatioBaseURL().c_str()));
-
-  url =
-      net::AppendQueryParameter(url, "includeServiceProviderDetails", "false");
-
-  url = net::AppendQueryParameter(url, "statuses",
-                                  statuses.value_or(kDefaultMeldStatuses));
-
-  if (countries) {
-    url = net::AppendQueryParameter(url, "countries", *countries);
-  }
-  if (fiat_currencies) {
-    url = net::AppendQueryParameter(url, "fiatCurrencies", *fiat_currencies);
-  }
-  if (crypto_currencies) {
-    url =
-        net::AppendQueryParameter(url, "cryptoCurrencies", *crypto_currencies);
-  }
-  if (service_providers) {
-    url =
-        net::AppendQueryParameter(url, "serviceProviders", *service_providers);
-  }
-  if (payment_method_types) {
-    url = net::AppendQueryParameter(url, "paymentMethodTypes",
-                                    *payment_method_types);
-  }
-
-  return url;
+                              GetMeldAssetRatioBaseURL().c_str())),
+      countries, fiat_currencies, crypto_currencies, service_providers,
+      payment_method_types, statuses,
+      base::flat_map<std::string, std::string>{
+          {"includeServiceProviderDetails", "false"},
+          {"accountFilter", "false"}});
 }
 
 void MeldIntegrationService::GetCountries(
@@ -588,7 +529,8 @@ void MeldIntegrationService::OnGetCountries(
 
   auto countries = ParseCountries(api_request_result.value_body());
   if (!countries) {
-    std::move(callback).Run(std::nullopt, std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(std::nullopt,
+                            std::vector<std::string>{"PARSING_ERROR"});
     return;
   }
   std::move(callback).Run(std::move(countries), std::nullopt);

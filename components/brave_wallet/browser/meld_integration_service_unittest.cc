@@ -500,7 +500,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/payment-methods");
   EXPECT_EQ(url.query(),
-            "includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
+            "accountFilter=false&includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
@@ -640,7 +640,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/fiat-currencies");
   EXPECT_EQ(url.query(),
-            "includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
+            "accountFilter=false&includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
@@ -743,7 +743,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
   EXPECT_EQ(url.query(),
-            "includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
+            "accountFilter=false&includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
@@ -869,7 +869,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/countries");
   EXPECT_EQ(url.query(),
-            "includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
+            "accountFilter=false&includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
