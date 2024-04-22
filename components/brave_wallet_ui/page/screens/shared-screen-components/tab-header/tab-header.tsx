@@ -55,7 +55,7 @@ export const TabHeader = (props: Props) => {
       {!hideHeaderMenu && (
         <SettingsWrapper ref={settingsModalRef}>
           <SettingsButton onClick={() => setShowSettings((prev) => !prev)}>
-            <SettingsIcon name='more-horizontal' />
+            <SettingsIcon name='more-vertical' />
           </SettingsButton>
           {showSettings && (
             <WalletSettingsMenu

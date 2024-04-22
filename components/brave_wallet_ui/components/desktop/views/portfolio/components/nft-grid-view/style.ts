@@ -114,7 +114,7 @@ export const MoreButton = styled(WalletButton)`
 `
 
 export const MoreIcon = styled(Icon).attrs({
-  name: 'more-horizontal'
+  name: 'more-vertical'
 })`
   --leo-icon-size: 22px;
   color: ${leo.color.text.secondary};
