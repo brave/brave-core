@@ -89,8 +89,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
             return item->name == "Banxa" && item->service_provider == "BANXA" &&
                    item->status == "LIVE" &&
                    item->web_site_url == "http://www.banxa.com" &&
-                   !item->categories &&
-                   item->category_statuses &&
+                   !item->categories && item->category_statuses &&
                    item->category_statuses->contains("CRYPTO_ONRAMP") &&
                    (*item->category_statuses)["CRYPTO_ONRAMP"] == "LIVE" &&
                    !item->logo_images;
@@ -176,7 +175,8 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
                          item->destination_amount_without_fees == "11.01" &&
                          item->source_currency_code == "USD" &&
                          item->country_code == "US" &&
-                         item->total_fee == "6.03" && item->network_fee == "3.53" &&
+                         item->total_fee == "6.03" &&
+                         item->network_fee == "3.53" &&
                          item->transaction_fee == "2" &&
                          item->destination_amount == "0.00066413" &&
                          item->destination_currency_code == "BTC" &&
@@ -223,7 +223,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
                 [](const auto& item) {
                   return item->payment_method == "ACH" && item->name == "ACH" &&
                          item->payment_type == "BANK_TRANSFER" &&
-                          item->logo_images &&
+                         item->logo_images &&
                          !item->logo_images->dark_short_url &&
                          !item->logo_images->light_short_url &&
                          *(item->logo_images->dark_url) ==
@@ -231,8 +231,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
                              "logo_dark.png" &&
                          *(item->logo_images->light_url) ==
                              "https://images-paymentMethod.meld.io/ACH/"
-                             "logo_light.png"
-                             ;
+                             "logo_light.png";
                 }),
             1);
   std::string json_null_dark_logo(R"([
@@ -258,8 +257,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
                          !item->logo_images->dark_url &&
                          *(item->logo_images->light_url) ==
                              "https://images-paymentMethod.meld.io/ACH/"
-                             "logo_light.png"
-                             ;
+                             "logo_light.png";
                 }),
             1);
 
@@ -354,9 +352,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
                          item->name == "Afghanistan" &&
                          item->flag_image_url ==
                              "https://images-country.meld.io/AF/flag.svg" &&
-                         (*item->regions)[0]->region_code == "CA-AB" && (*item->regions)[0]->name == "Alberta" &&
-                         (*item->regions)[1]->region_code == "CA-BC" && (*item->regions)[1]->name == "British Columbia"
-                  ;
+                         (*item->regions)[0]->region_code == "CA-AB" &&
+                         (*item->regions)[0]->name == "Alberta" &&
+                         (*item->regions)[1]->region_code == "CA-BC" &&
+                         (*item->regions)[1]->name == "British Columbia";
                 }),
             1);
   EXPECT_FALSE(ParseCountries(base::Value()));

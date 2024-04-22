@@ -22,7 +22,8 @@ class SharedURLLoaderFactory;
 
 namespace brave_wallet {
 
-class MeldIntegrationService : public KeyedService, public mojom::MeldIntegrationService {
+class MeldIntegrationService : public KeyedService,
+                               public mojom::MeldIntegrationService {
  public:
   explicit MeldIntegrationService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -35,21 +36,16 @@ class MeldIntegrationService : public KeyedService, public mojom::MeldIntegratio
   mojo::PendingRemote<mojom::MeldIntegrationService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::MeldIntegrationService> receiver);
 
-  static GURL GetServiceProviderURL(const std::optional<std::string>& countries,
-                                    const std::optional<std::string>& fiat_currencies,
-                                    const std::optional<std::string>& crypto_currencies,
-                                    const std::optional<std::string>& service_providers,
-                                    const std::optional<std::string>& payment_method_types,
-                                    const std::optional<std::string>& statuses);
-
-  void GetServiceProviders(
+  static GURL GetServiceProviderURL(
       const std::optional<std::string>& countries,
       const std::optional<std::string>& fiat_currencies,
       const std::optional<std::string>& crypto_currencies,
       const std::optional<std::string>& service_providers,
       const std::optional<std::string>& payment_method_types,
-      const std::optional<std::string>& statuses,
-      GetServiceProvidersCallback callback) override;
+      const std::optional<std::string>& statuses);
+
+  void GetServiceProviders(mojom::MeldFilterPtr filter,
+                           GetServiceProvidersCallback callback) override;
 
   void GetCryptoQuotes(const std::string& country,
                        const std::string& source_currency_code,
@@ -58,65 +54,48 @@ class MeldIntegrationService : public KeyedService, public mojom::MeldIntegratio
                        const std::optional<std::string>& account,
                        GetCryptoQuotesCallback callback) override;
 
-  static GURL GetPaymentMethodsURL(const std::optional<std::string>& countries,
-                                      const std::optional<std::string>& fiat_currencies,
-                                      const std::optional<std::string>& crypto_currencies,
-                                      const std::optional<std::string>& service_providers,
-                                      const std::optional<std::string>& payment_method_types,
-                                      const std::optional<std::string>& statuses);
-
-  void GetPaymentMethods(const std::optional<std::string>& countries,
-                         const std::optional<std::string>& fiat_currencies,
-                         const std::optional<std::string>& crypto_currencies,
-                         const std::optional<std::string>& service_providers,
-                         const std::optional<std::string>& payment_method_types,
-                         const std::optional<std::string>& statuses,
-                         GetPaymentMethodsCallback callback) override;
-
-  static GURL GetFiatCurrenciesURL(const std::optional<std::string>& countries,
-                                   const std::optional<std::string>& fiat_currencies,
-                                   const std::optional<std::string>& crypto_currencies,
-                                   const std::optional<std::string>& service_providers,
-                                   const std::optional<std::string>& payment_method_types,
-                                   const std::optional<std::string>& statuses);
-
-  void GetFiatCurrencies(const std::optional<std::string>& countries,
-                         const std::optional<std::string>& fiat_currencies,
-                         const std::optional<std::string>& crypto_currencies,
-                         const std::optional<std::string>& service_providers,
-                         const std::optional<std::string>& payment_method_types,
-                         const std::optional<std::string>& statuses,
-                         GetFiatCurrenciesCallback callback) override;
-
-  static GURL GetCryptoCurrenciesURL(const std::optional<std::string>& countries,
-                                     const std::optional<std::string>& fiat_currencies,
-                                     const std::optional<std::string>& crypto_currencies,
-                                     const std::optional<std::string>& service_providers,
-                                     const std::optional<std::string>& payment_method_types,
-                                     const std::optional<std::string>& statuses);
-
-  void GetCryptoCurrencies(
+  static GURL GetPaymentMethodsURL(
       const std::optional<std::string>& countries,
       const std::optional<std::string>& fiat_currencies,
       const std::optional<std::string>& crypto_currencies,
       const std::optional<std::string>& service_providers,
       const std::optional<std::string>& payment_method_types,
-      const std::optional<std::string>& statuses,
-      GetCryptoCurrenciesCallback callback) override;
+      const std::optional<std::string>& statuses);
 
-  static GURL GetCountriesURL(const std::optional<std::string>& countries,
-                              const std::optional<std::string>& fiat_currencies,
-                              const std::optional<std::string>& crypto_currencies,
-                              const std::optional<std::string>& service_providers,
-                              const std::optional<std::string>& payment_method_types,
-                              const std::optional<std::string>& statuses);
+  void GetPaymentMethods(mojom::MeldFilterPtr filter,
+                         GetPaymentMethodsCallback callback) override;
 
-  void GetCountries(const std::optional<std::string>& countries,
-                    const std::optional<std::string>& fiat_currencies,
-                    const std::optional<std::string>& crypto_currencies,
-                    const std::optional<std::string>& service_providers,
-                    const std::optional<std::string>& payment_method_types,
-                    const std::optional<std::string>& statuses,
+  static GURL GetFiatCurrenciesURL(
+      const std::optional<std::string>& countries,
+      const std::optional<std::string>& fiat_currencies,
+      const std::optional<std::string>& crypto_currencies,
+      const std::optional<std::string>& service_providers,
+      const std::optional<std::string>& payment_method_types,
+      const std::optional<std::string>& statuses);
+
+  void GetFiatCurrencies(mojom::MeldFilterPtr filter,
+                         GetFiatCurrenciesCallback callback) override;
+
+  static GURL GetCryptoCurrenciesURL(
+      const std::optional<std::string>& countries,
+      const std::optional<std::string>& fiat_currencies,
+      const std::optional<std::string>& crypto_currencies,
+      const std::optional<std::string>& service_providers,
+      const std::optional<std::string>& payment_method_types,
+      const std::optional<std::string>& statuses);
+
+  void GetCryptoCurrencies(mojom::MeldFilterPtr filter,
+                           GetCryptoCurrenciesCallback callback) override;
+
+  static GURL GetCountriesURL(
+      const std::optional<std::string>& countries,
+      const std::optional<std::string>& fiat_currencies,
+      const std::optional<std::string>& crypto_currencies,
+      const std::optional<std::string>& service_providers,
+      const std::optional<std::string>& payment_method_types,
+      const std::optional<std::string>& statuses);
+
+  void GetCountries(mojom::MeldFilterPtr filter,
                     GetCountriesCallback callback) override;
 
  private:

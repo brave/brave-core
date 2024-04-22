@@ -18,7 +18,9 @@
 
 namespace {
 
-std::optional<brave_wallet::mojom::MeldLogoImagesPtr> ParseMeldLogos(const std::optional<brave_wallet::meld_integration_responses::Logos>& logos) {
+std::optional<brave_wallet::mojom::MeldLogoImagesPtr> ParseMeldLogos(
+    const std::optional<brave_wallet::meld_integration_responses::Logos>&
+        logos) {
   if (!logos) {
     return std::nullopt;
   }
@@ -51,8 +53,8 @@ std::optional<std::vector<brave_wallet::mojom::MeldRegionPtr>> ParseMeldRegions(
   return result;
 }
 
-std::optional<base::flat_map<std::string, std::string>> ParseOptionalMapOfStrings(
-    const std::optional<base::Value>& val) {
+std::optional<base::flat_map<std::string, std::string>>
+ParseOptionalMapOfStrings(const std::optional<base::Value>& val) {
   if (!val || !val->is_dict()) {
     return std::nullopt;
   }
@@ -111,26 +113,25 @@ std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
     }
 
     auto logos = ParseMeldLogos(service_provider_value->logos);
-    auto sp = mojom::MeldServiceProvider::New(service_provider_value->name,
-      service_provider_value->service_provider,
-      service_provider_value->status,
-      service_provider_value->website_url,
-      service_provider_value->categories,
-      ParseOptionalMapOfStrings(service_provider_value->category_statuses),
-      std::move(logos).value_or(nullptr)
-    );
+    auto sp = mojom::MeldServiceProvider::New(
+        service_provider_value->name, service_provider_value->service_provider,
+        service_provider_value->status, service_provider_value->website_url,
+        service_provider_value->categories,
+        ParseOptionalMapOfStrings(service_provider_value->category_statuses),
+        std::move(logos).value_or(nullptr));
 
     service_providers.emplace_back(std::move(sp));
   }
 
-  if(service_providers.empty()) {
+  if (service_providers.empty()) {
     return std::nullopt;
   }
 
   return service_providers;
 }
 
-std::optional<std::vector<std::string>> ParseMeldErrorResponse(const base::Value& json_value) {
+std::optional<std::vector<std::string>> ParseMeldErrorResponse(
+    const base::Value& json_value) {
   // Parses results like this:
   // {
   //     "code": "BAD_REQUEST",
@@ -141,7 +142,7 @@ std::optional<std::vector<std::string>> ParseMeldErrorResponse(const base::Value
   //     "requestId": "eb6aaa76bd7103cf6c5b090610c31913",
   //     "timestamp": "2022-01-19T20:32:30.784928Z"
   // }
-  
+
   const auto meld_error_value =
       meld_integration_responses::MeldError::FromValue(json_value);
   if (!meld_error_value) {
@@ -150,17 +151,16 @@ std::optional<std::vector<std::string>> ParseMeldErrorResponse(const base::Value
   }
 
   std::vector<std::string> errors;
-  if (meld_error_value->errors &&
-      !meld_error_value->errors->empty()) {
+  if (meld_error_value->errors && !meld_error_value->errors->empty()) {
     errors.assign(meld_error_value->errors->begin(),
-                   meld_error_value->errors->end());
+                  meld_error_value->errors->end());
   }
 
   if (meld_error_value->message.has_value() && errors.empty()) {
     errors.emplace_back(*meld_error_value->message);
   }
 
-  if(errors.empty()){
+  if (errors.empty()) {
     return std::nullopt;
   }
 
@@ -220,14 +220,13 @@ std::optional<std::vector<mojom::MeldCryptoQuotePtr>> ParseCryptoQuotes(
         quote_value.fiat_amount_without_fees, quote_value.total_fee,
         quote_value.network_fee, quote_value.payment_method_type,
         quote_value.destination_currency_code, quote_value.destination_amount,
-        quote_value.destination_amount_without_fees,
-        quote_value.customer_score, quote_value.service_provider,
-        quote_value.country_code);
+        quote_value.destination_amount_without_fees, quote_value.customer_score,
+        quote_value.service_provider, quote_value.country_code);
 
     quotes.emplace_back(std::move(quote));
   }
 
-  if(quotes.empty()) {
+  if (quotes.empty()) {
     return std::nullopt;
   }
 
@@ -257,7 +256,8 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
     const auto payment_method_value =
         meld_integration_responses::PaymentMethod::FromValue(pm_item);
     if (!payment_method_value) {
-      LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
+      LOG(ERROR)
+          << "Invalid response, could not parse JSON, JSON is not a dict";
       return std::nullopt;
     }
 
@@ -265,11 +265,11 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
     auto pm = mojom::MeldPaymentMethod::New(
         payment_method_value->payment_method, payment_method_value->name,
         payment_method_value->payment_type, std::move(logos).value_or(nullptr));
-    
+
     payment_methods.emplace_back(std::move(pm));
   }
 
-  if(payment_methods.empty()) {
+  if (payment_methods.empty()) {
     return std::nullopt;
   }
 

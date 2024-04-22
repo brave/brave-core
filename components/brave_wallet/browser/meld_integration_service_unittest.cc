@@ -59,8 +59,8 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
   void TestGetServiceProvider(
       const std::string& content,
       const std::string& countries,
-      const std::string& from_assets,
-      const std::string& to_assets,
+      const std::string& fiat_currencies,
+      const std::string& crypto_currencies,
       const std::string& service_providers,
       const std::string& payment_method_types,
       const std::string& statuses,
@@ -72,9 +72,12 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       SetErrorInterceptor("error");
     }
     base::RunLoop run_loop;
+    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
+                                         crypto_currencies, service_providers,
+                                         payment_method_types, statuses);
+
     asset_ratio_service_->GetServiceProviders(
-        countries, from_assets, to_assets, service_providers,
-        payment_method_types, statuses,
+        std::move(filter),
         base::BindLambdaForTesting(
             [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
                 const std::optional<std::vector<std::string>>& errors) {
@@ -84,14 +87,15 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void TestGetCryptoQuotes(const std::string& content,
-                           const std::string& country,
-                           const std::string& from_asset,
-                           const std::string& to_asset,
-                           const double source_amount,
-                           const std::string& account,
-                           MeldIntegrationService::GetCryptoQuotesCallback callback,
-                           const bool error_interceptor = false) {
+  void TestGetCryptoQuotes(
+      const std::string& content,
+      const std::string& country,
+      const std::string& from_asset,
+      const std::string& to_asset,
+      const double source_amount,
+      const std::string& account,
+      MeldIntegrationService::GetCryptoQuotesCallback callback,
+      const bool error_interceptor = false) {
     if (!error_interceptor) {
       SetInterceptor(content);
     } else {
@@ -125,11 +129,15 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       SetErrorInterceptor("error");
     }
     base::RunLoop run_loop;
+    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
+                                         crypto_currencies, service_providers,
+                                         payment_method_types, statuses);
+
     asset_ratio_service_->GetPaymentMethods(
-        countries, fiat_currencies, crypto_currencies, service_providers,
-        payment_method_types, statuses,
+        std::move(filter),
         base::BindLambdaForTesting(
-            [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>> payment_methods,
+            [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
+                    payment_methods,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(payment_methods), errors);
               run_loop.Quit();
@@ -153,11 +161,15 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       SetErrorInterceptor("error");
     }
     base::RunLoop run_loop;
+    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
+                                         crypto_currencies, service_providers,
+                                         payment_method_types, statuses);
+
     asset_ratio_service_->GetFiatCurrencies(
-        countries, fiat_currencies, crypto_currencies, service_providers,
-        payment_method_types, statuses,
+        std::move(filter),
         base::BindLambdaForTesting(
-            [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> fiat_currencies,
+            [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
+                    fiat_currencies,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(fiat_currencies), errors);
               run_loop.Quit();
@@ -181,11 +193,14 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       SetErrorInterceptor("error");
     }
     base::RunLoop run_loop;
+    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
+                                         crypto_currencies, service_providers,
+                                         payment_method_types, statuses);
     asset_ratio_service_->GetCryptoCurrencies(
-        countries, fiat_currencies, crypto_currencies, service_providers,
-        payment_method_types, statuses,
+        std::move(filter),
         base::BindLambdaForTesting(
-            [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> crypto_currencies,
+            [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
+                    crypto_currencies,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(crypto_currencies), errors);
               run_loop.Quit();
@@ -208,9 +223,11 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       SetErrorInterceptor("error");
     }
     base::RunLoop run_loop;
+    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
+                                         crypto_currencies, service_providers,
+                                         payment_method_types, statuses);
     asset_ratio_service_->GetCountries(
-        countries, fiat_currencies, crypto_currencies, service_providers,
-        payment_method_types, statuses,
+        std::move(filter),
         base::BindLambdaForTesting(
             [&](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
                 const std::optional<std::vector<std::string>>& errors) {
@@ -280,8 +297,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                           [](const auto& item) {
                             return item->name == "Banxa" &&
                                    item->service_provider == "BANXA" &&
-                                   item->status == "LIVE" &&
-                                  item->categories && (*item->categories)[0] == "CRYPTO_ONRAMP" &&
+                                   item->status == "LIVE" && item->categories &&
+                                   (*item->categories)[0] == "CRYPTO_ONRAMP" &&
                                    item->web_site_url ==
                                        "http://www.banxa.com" &&
                                    item->logo_images &&
@@ -303,8 +320,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                             return item->name == "Blockchain.com" &&
                                    item->service_provider ==
                                        "BLOCKCHAINDOTCOM" &&
-                                   !item->status &&
-                                   !item->categories &&
+                                   !item->status && !item->categories &&
                                    item->web_site_url ==
                                        "https://www.blockchain.com" &&
                                    !item->logo_images;
@@ -317,7 +333,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
           }));
   TestGetServiceProvider(
       "some wrone data", "US", "USD", "ETH", "", "", "",
@@ -386,22 +403,24 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
             EXPECT_EQ(base::ranges::count_if(
                           *quotes,
                           [](const auto& item) {
-                          return item->transaction_type == "CRYPTO_PURCHASE" &&
-                                item->source_amount == "50" &&
-                                item->source_amount_without_fee == "43.97" &&
-                                item->fiat_amount_without_fees == "43.97" &&
-                                item->destination_amount_without_fees == std::nullopt &&
-                                item->source_currency_code == "USD" &&
-                                item->country_code == "US" &&
-                                item->total_fee == "6.03" &&
-                                item->network_fee == "3.53" &&
-                                item->transaction_fee == "2" &&
-                                item->destination_amount == "0.00066413" &&
-                                item->destination_currency_code == "BTC" &&
-                                item->exchange_rate == "75286" &&
-                                item->payment_method == "APPLE_PAY" &&
-                                item->customer_score == "20" &&
-                                item->service_provider == "TRANSAK";
+                            return item->transaction_type ==
+                                       "CRYPTO_PURCHASE" &&
+                                   item->source_amount == "50" &&
+                                   item->source_amount_without_fee == "43.97" &&
+                                   item->fiat_amount_without_fees == "43.97" &&
+                                   item->destination_amount_without_fees ==
+                                       std::nullopt &&
+                                   item->source_currency_code == "USD" &&
+                                   item->country_code == "US" &&
+                                   item->total_fee == "6.03" &&
+                                   item->network_fee == "3.53" &&
+                                   item->transaction_fee == "2" &&
+                                   item->destination_amount == "0.00066413" &&
+                                   item->destination_currency_code == "BTC" &&
+                                   item->exchange_rate == "75286" &&
+                                   item->payment_method == "APPLE_PAY" &&
+                                   item->customer_score == "20" &&
+                                   item->service_provider == "TRANSAK";
                           }),
                       1);
           }));
@@ -448,27 +467,28 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>{"error description"});
-            EXPECT_EQ(base::ranges::count_if(
-                          *quotes,
-                          [](const auto& item) {
-                          return item->transaction_type == "CRYPTO_PURCHASE" &&
-                                item->source_amount == "50" &&
-                                item->source_amount_without_fee == "43.97" &&
-                                item->fiat_amount_without_fees == "43.97" &&
-                                item->destination_amount_without_fees == std::nullopt &&
-                                item->source_currency_code == "USD" &&
-                                item->country_code == "US" &&
-                                !item->total_fee &&
-                                item->network_fee == "3.53" &&
-                                item->transaction_fee == "2" &&
-                                item->destination_amount == "0.00066413" &&
-                                item->destination_currency_code == "BTC" &&
-                                item->exchange_rate == "75286" &&
-                                item->payment_method == "APPLE_PAY" &&
-                                item->customer_score == "20" &&
-                                item->service_provider == "TRANSAK";
-                          }),
-                      1);
+            EXPECT_EQ(
+                base::ranges::count_if(
+                    *quotes,
+                    [](const auto& item) {
+                      return item->transaction_type == "CRYPTO_PURCHASE" &&
+                             item->source_amount == "50" &&
+                             item->source_amount_without_fee == "43.97" &&
+                             item->fiat_amount_without_fees == "43.97" &&
+                             item->destination_amount_without_fees ==
+                                 std::nullopt &&
+                             item->source_currency_code == "USD" &&
+                             item->country_code == "US" && !item->total_fee &&
+                             item->network_fee == "3.53" &&
+                             item->transaction_fee == "2" &&
+                             item->destination_amount == "0.00066413" &&
+                             item->destination_currency_code == "BTC" &&
+                             item->exchange_rate == "75286" &&
+                             item->payment_method == "APPLE_PAY" &&
+                             item->customer_score == "20" &&
+                             item->service_provider == "TRANSAK";
+                    }),
+                1);
           }));
 
   TestGetCryptoQuotes(
@@ -500,7 +520,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/payment-methods");
   EXPECT_EQ(url.query(),
-            "accountFilter=false&includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
+            "accountFilter=false&includeServiceProviderDetails=false&statuses="
+            "LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
@@ -519,25 +540,25 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>> payment_methods,
+          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
+                 payment_methods,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(base::ranges::count_if(
                           *payment_methods,
                           [](const auto& item) {
                             return item->payment_method == "ACH" &&
-                                    !item->name &&
-                                    item->payment_type == "BANK_TRANSFER" &&
-                                    item->logo_images &&
-                                    !item->logo_images->dark_short_url &&
-                                    !item->logo_images->light_short_url &&
+                                   !item->name &&
+                                   item->payment_type == "BANK_TRANSFER" &&
+                                   item->logo_images &&
+                                   !item->logo_images->dark_short_url &&
+                                   !item->logo_images->light_short_url &&
                                    item->logo_images->dark_url ==
                                        "https://images-paymentMethod.meld.io/"
                                        "ACH/logo_dark.png" &&
                                    item->logo_images->light_url ==
                                        "https://images-paymentMethod.meld.io/"
-                                       "ACH/logo_light.png"
-                            ;
+                                       "ACH/logo_light.png";
                           }),
                       1);
           }));
@@ -557,23 +578,23 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>> payment_methods,
+          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
+                 payment_methods,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(base::ranges::count_if(
                           *payment_methods,
                           [](const auto& item) {
                             return item->payment_method == "ACH" &&
-                                    item->name == "ACH" &&
-                                    item->payment_type == "BANK_TRANSFER" &&
-                                    item->logo_images &&
-                                    !item->logo_images->dark_short_url &&
-                                    !item->logo_images->light_short_url &&
+                                   item->name == "ACH" &&
+                                   item->payment_type == "BANK_TRANSFER" &&
+                                   item->logo_images &&
+                                   !item->logo_images->dark_short_url &&
+                                   !item->logo_images->light_short_url &&
                                    !item->logo_images->dark_url &&
                                    item->logo_images->light_url ==
                                        "https://images-paymentMethod.meld.io/"
-                                       "ACH/logo_light.png"
-                            ;
+                                       "ACH/logo_light.png";
                           }),
                       1);
           }));
@@ -602,7 +623,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>> payment_methods,
+          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
+                 payment_methods,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
@@ -624,7 +646,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>> payment_methods,
+          [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
+                  payment_methods,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>(
@@ -640,7 +663,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/fiat-currencies");
   EXPECT_EQ(url.query(),
-            "accountFilter=false&includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
+            "accountFilter=false&includeServiceProviderDetails=false&statuses="
+            "LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
@@ -660,7 +684,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> fiat_currencies,
+          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
+                 fiat_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(base::ranges::count_if(
@@ -705,7 +730,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> fiat_currencies,
+          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
+                 fiat_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
@@ -727,7 +753,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> fiat_currencies,
+          [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
+                  fiat_currencies,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>(
@@ -743,7 +770,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
   EXPECT_EQ(url.query(),
-            "accountFilter=false&includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
+            "accountFilter=false&includeServiceProviderDetails=false&statuses="
+            "LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
@@ -771,15 +799,15 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "LIVE,RECENTLY_ADDED",
       base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> crypto_currencies,
+          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
+                 crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(
                 base::ranges::count_if(
                     *crypto_currencies,
                     [](const auto& item) {
-                      return item->currency_code == "USDT_KCC" &&
-                             !item->name &&
+                      return item->currency_code == "USDT_KCC" && !item->name &&
                              item->chain_code == "KCC" &&
                              item->chain_name == "KuCoin Community Chain" &&
                              item->chain_id == "0" &&
@@ -831,7 +859,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> crypto_currencies,
+          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
+                 crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
@@ -853,7 +882,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
-          [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> crypto_currencies,
+          [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
+                  crypto_currencies,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors, std::vector<std::string>(
@@ -869,7 +899,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
   EXPECT_EQ(url.path(), "/service-providers/properties/countries");
   EXPECT_EQ(url.query(),
-            "accountFilter=false&includeServiceProviderDetails=false&statuses=LIVE%2CRECENTLY_"
+            "accountFilter=false&includeServiceProviderDetails=false&statuses="
+            "LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
             "BTC%2CETH&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
@@ -934,7 +965,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
           }));
 
   TestGetCountries(

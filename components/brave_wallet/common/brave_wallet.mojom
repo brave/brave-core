@@ -1159,9 +1159,7 @@ interface AssetRatioService {
 interface MeldIntegrationService {
   // Obtains the list of Setvice Providers
   // All parameters are optional
-  GetServiceProviders(string? countries, string? fiat_currencies,
-    string? crypto_currencies, string? service_providers,
-    string? payment_method_types, string? statuses)
+  GetServiceProviders(MeldFilter? filter)
     => (array<MeldServiceProvider>? service_providers, array<string>? error);
 
   // Obtains the crypto quotes
@@ -1173,30 +1171,22 @@ interface MeldIntegrationService {
 
   // Obtains the list of payment methods
   // All parameters are optional
-  GetPaymentMethods(string? countries, string? fiat_currencies,
-    string? crypto_currencies, string? service_providers,
-    string? payment_method_types, string? statuses)
+  GetPaymentMethods(MeldFilter? filter)
     => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
 
   // Obtains the list of fiat currencies
   // All parameters are optional
-  GetFiatCurrencies(string? countries, string? fiat_currencies,
-    string? crypto_currencies, string? service_providers,
-    string? payment_method_types, string? statuses)
+  GetFiatCurrencies(MeldFilter? filter)
     => (array<MeldFiatCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of crypto currencies
   // All parameters are optional
-  GetCryptoCurrencies(string? countries, string? fiat_currencies,
-    string? crypto_currencies, string? service_providers,
-    string? payment_method_types, string? statuses)
+  GetCryptoCurrencies(MeldFilter? filter)
     => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of countries
   // All parameters are optional
-  GetCountries(string? countries, string? fiat_currencies,
-    string? crypto_currencies, string? service_providers,
-    string? payment_method_types, string? statuses)
+  GetCountries(MeldFilter? filter)
     => (array<MeldCountry>? countries, array<string>? error);
 };
 

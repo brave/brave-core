@@ -82,16 +82,17 @@ std::optional<std::string> SanitizeJson(const std::string& json) {
   return converted_json;
 }
 
-GURL AppendFilterParams(GURL url,
-                        const std::optional<std::string>& countries,
-                        const std::optional<std::string>& fiat_currencies,
-                        const std::optional<std::string>& crypto_currencies,
-                        const std::optional<std::string>& service_providers,
-                        const std::optional<std::string>& payment_method_types,
-                        const std::optional<std::string>& statuses,
-                        std::optional<base::flat_map<std::string,std::string>> def_params) {
+GURL AppendFilterParams(
+    GURL url,
+    const std::optional<std::string>& countries,
+    const std::optional<std::string>& fiat_currencies,
+    const std::optional<std::string>& crypto_currencies,
+    const std::optional<std::string>& service_providers,
+    const std::optional<std::string>& payment_method_types,
+    const std::optional<std::string>& statuses,
+    std::optional<base::flat_map<std::string, std::string>> def_params) {
   if (def_params) {
-    for(const auto& [key, val] : *def_params) {
+    for (const auto& [key, val] : *def_params) {
       url = net::AppendQueryParameter(url, key, val);
     }
   }
@@ -163,12 +164,7 @@ GURL MeldIntegrationService::GetServiceProviderURL(
 }
 
 void MeldIntegrationService::GetServiceProviders(
-    const std::optional<std::string>& countries,
-    const std::optional<std::string>& fiat_currencies,
-    const std::optional<std::string>& crypto_currencies,
-    const std::optional<std::string>& service_providers,
-    const std::optional<std::string>& payment_method_types,
-    const std::optional<std::string>& statuses,
+    mojom::MeldFilterPtr filter,
     GetServiceProvidersCallback callback) {
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnGetServiceProviders,
@@ -177,8 +173,13 @@ void MeldIntegrationService::GetServiceProviders(
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "GET",
-      GetServiceProviderURL(countries, fiat_currencies, crypto_currencies,
-                            service_providers, payment_method_types, statuses),
+      GetServiceProviderURL(
+          filter ? filter->countries : std::nullopt,
+          filter ? filter->fiat_currencies : std::nullopt,
+          filter ? filter->crypto_currencies : std::nullopt,
+          filter ? filter->service_providers : std::nullopt,
+          filter ? filter->payment_method_types : std::nullopt,
+          filter ? filter->statuses : std::nullopt),
       "", "", std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));
@@ -294,12 +295,7 @@ GURL MeldIntegrationService::GetPaymentMethodsURL(
 }
 
 void MeldIntegrationService::GetPaymentMethods(
-    const std::optional<std::string>& countries,
-    const std::optional<std::string>& fiat_currencies,
-    const std::optional<std::string>& crypto_currencies,
-    const std::optional<std::string>& service_providers,
-    const std::optional<std::string>& payment_method_types,
-    const std::optional<std::string>& statuses,
+    mojom::MeldFilterPtr filter,
     GetPaymentMethodsCallback callback) {
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnGetPaymentMethods,
@@ -308,8 +304,12 @@ void MeldIntegrationService::GetPaymentMethods(
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "GET",
-      GetPaymentMethodsURL(countries, fiat_currencies, crypto_currencies,
-                           service_providers, payment_method_types, statuses),
+      GetPaymentMethodsURL(filter ? filter->countries : std::nullopt,
+                           filter ? filter->fiat_currencies : std::nullopt,
+                           filter ? filter->crypto_currencies : std::nullopt,
+                           filter ? filter->service_providers : std::nullopt,
+                           filter ? filter->payment_method_types : std::nullopt,
+                           filter ? filter->statuses : std::nullopt),
       "", "", std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));
@@ -359,12 +359,7 @@ GURL MeldIntegrationService::GetFiatCurrenciesURL(
 }
 
 void MeldIntegrationService::GetFiatCurrencies(
-    const std::optional<std::string>& countries,
-    const std::optional<std::string>& fiat_currencies,
-    const std::optional<std::string>& crypto_currencies,
-    const std::optional<std::string>& service_providers,
-    const std::optional<std::string>& payment_method_types,
-    const std::optional<std::string>& statuses,
+    mojom::MeldFilterPtr filter,
     GetFiatCurrenciesCallback callback) {
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnGetFiatCurrencies,
@@ -373,8 +368,12 @@ void MeldIntegrationService::GetFiatCurrencies(
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "GET",
-      GetFiatCurrenciesURL(countries, fiat_currencies, crypto_currencies,
-                           service_providers, payment_method_types, statuses),
+      GetFiatCurrenciesURL(filter ? filter->countries : std::nullopt,
+                           filter ? filter->fiat_currencies : std::nullopt,
+                           filter ? filter->crypto_currencies : std::nullopt,
+                           filter ? filter->service_providers : std::nullopt,
+                           filter ? filter->payment_method_types : std::nullopt,
+                           filter ? filter->statuses : std::nullopt),
       "", "", std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));
@@ -425,12 +424,7 @@ GURL MeldIntegrationService::GetCryptoCurrenciesURL(
 }
 
 void MeldIntegrationService::GetCryptoCurrencies(
-    const std::optional<std::string>& countries,
-    const std::optional<std::string>& fiat_currencies,
-    const std::optional<std::string>& crypto_currencies,
-    const std::optional<std::string>& service_providers,
-    const std::optional<std::string>& payment_method_types,
-    const std::optional<std::string>& statuses,
+    mojom::MeldFilterPtr filter,
     GetCryptoCurrenciesCallback callback) {
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnGetCryptoCurrencies,
@@ -439,8 +433,13 @@ void MeldIntegrationService::GetCryptoCurrencies(
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "GET",
-      GetCryptoCurrenciesURL(countries, fiat_currencies, crypto_currencies,
-                             service_providers, payment_method_types, statuses),
+      GetCryptoCurrenciesURL(
+          filter ? filter->countries : std::nullopt,
+          filter ? filter->fiat_currencies : std::nullopt,
+          filter ? filter->crypto_currencies : std::nullopt,
+          filter ? filter->service_providers : std::nullopt,
+          filter ? filter->payment_method_types : std::nullopt,
+          filter ? filter->statuses : std::nullopt),
       "", "", std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));
@@ -490,14 +489,8 @@ GURL MeldIntegrationService::GetCountriesURL(
           {"accountFilter", "false"}});
 }
 
-void MeldIntegrationService::GetCountries(
-    const std::optional<std::string>& countries,
-    const std::optional<std::string>& fiat_currencies,
-    const std::optional<std::string>& crypto_currencies,
-    const std::optional<std::string>& service_providers,
-    const std::optional<std::string>& payment_method_types,
-    const std::optional<std::string>& statuses,
-    GetCountriesCallback callback) {
+void MeldIntegrationService::GetCountries(mojom::MeldFilterPtr filter,
+                                          GetCountriesCallback callback) {
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnGetCountries,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -505,8 +498,12 @@ void MeldIntegrationService::GetCountries(
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
       "GET",
-      GetCountriesURL(countries, fiat_currencies, crypto_currencies,
-                      service_providers, payment_method_types, statuses),
+      GetCountriesURL(filter ? filter->countries : std::nullopt,
+                      filter ? filter->fiat_currencies : std::nullopt,
+                      filter ? filter->crypto_currencies : std::nullopt,
+                      filter ? filter->service_providers : std::nullopt,
+                      filter ? filter->payment_method_types : std::nullopt,
+                      filter ? filter->statuses : std::nullopt),
       "", "", std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));

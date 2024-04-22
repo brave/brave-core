@@ -77,3 +77,13 @@ struct MeldPaymentMethod {
     string? flag_image_url;
     array<MeldRegion>? regions;
   };
+
+  struct MeldFilter {
+    string? countries;
+    string? fiat_currencies;
+    string? crypto_currencies;
+    string? service_providers;
+    string? payment_method_types;
+    string? statuses;
+  };
+  
