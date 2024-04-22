@@ -81,7 +81,7 @@ export const DefaultPanelHeader = (props: Props) => {
         <DAppConnectionSettings />
         <MenuWrapper ref={settingsMenuRef}>
           <Button onClick={() => setShowSettingsMenu((prev) => !prev)}>
-            <ButtonIcon name='more-horizontal' />
+            <ButtonIcon name='more-vertical' />
           </Button>
           {showSettingsMenu && <WalletSettingsMenu />}
         </MenuWrapper>
