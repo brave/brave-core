@@ -19,8 +19,17 @@ extension UINotificationFeedbackGenerator {
   public func vibrate(style: FeedbackType) -> Self {
     self.prepare()
     self.notificationOccurred(style)
-    // Returned in case wanted for retaining to re-impact
+    // Returned in case wanted for retaining to re-notify
     return self
   }
+}
 
+extension UISelectionFeedbackGenerator {
+  @discardableResult
+  public func vibrate() -> Self {
+    self.prepare()
+    self.selectionChanged()
+    // Return in case wanted for retaining re-selection
+    return self
+  }
 }
