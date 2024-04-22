@@ -75,12 +75,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
     "serviceProvider": "BANXA",
     "name": "Banxa",
     "status": "LIVE",
-    "categories": null,
     "categoryStatuses": {
       "CRYPTO_ONRAMP": "LIVE"
     },
-    "websiteUrl": "http://www.banxa.com",
-    "logos": null
+    "websiteUrl": "http://www.banxa.com"
   }])");
   service_providers = ParseServiceProviders(ParseJson(json_null_logos));
   EXPECT_TRUE(service_providers);
@@ -146,25 +144,23 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
   "quotes": [
     {
       "transactionType": "CRYPTO_PURCHASE",
-      "sourceAmount": 50,
-      "sourceAmountWithoutFees": 43.97,
-      "fiatAmountWithoutFees": 43.97,
-      "destinationAmountWithoutFees": 11.01,
+      "sourceAmount": "50",
+      "sourceAmountWithoutFees": "43.97",
+      "fiatAmountWithoutFees": "43.97",
+      "destinationAmountWithoutFees": "11.01",
       "sourceCurrencyCode": "USD",
       "countryCode": "US",
-      "totalFee": 6.03,
-      "networkFee": 3.53,
-      "transactionFee": 2,
-      "destinationAmount": 0.00066413,
+      "totalFee": "6.03",
+      "networkFee": "3.53",
+      "transactionFee": "2",
+      "destinationAmount": "0.00066413",
       "destinationCurrencyCode": "BTC",
-      "exchangeRate": 75286,
+      "exchangeRate": "75286",
       "paymentMethodType": "APPLE_PAY",
-      "customerScore": 20,
+      "customerScore": "20",
       "serviceProvider": "TRANSAK"
     }
-  ],
-  "message": null,
-  "error": null
+  ]
 })");
 
   std::string error;
@@ -194,8 +190,6 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
 
   error.clear();
   std::string json_null_quotes(R"({
-  "quotes": null,
-  "message": null,
   "error": "No Valid Quote Combinations Found For Provided Quote Request."
 })");
   EXPECT_FALSE(ParseCryptoQuotes(ParseJson(json_null_quotes), &error));
@@ -247,7 +241,6 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
     "name": "ACH",
     "paymentType": "BANK_TRANSFER",
     "logos": {
-      "dark": null,
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   }

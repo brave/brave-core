@@ -227,7 +227,6 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
  private:
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  //  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
