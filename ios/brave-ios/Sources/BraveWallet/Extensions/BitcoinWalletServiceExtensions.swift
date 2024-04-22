@@ -6,6 +6,12 @@
 import BraveCore
 import Foundation
 
+enum BTCBalanceType {
+  case total
+  case available
+  case pending
+}
+
 extension BraveWalletBitcoinWalletService {
 
   /// - Parameters:
@@ -35,5 +41,34 @@ extension BraveWalletBitcoinWalletService {
         )
       }
     )
+  }
+
+  /// - Parameters:
+  ///     - accountId: A list of `BraveWallet.AccountId`
+  ///     - type: `BTCBalanceType` which indicates which btc balance it should return
+  /// - Returns: The BTC balance of the given `BraveWallet.AccountId` in `Double`; Will return a nil if there is an issue fetching balance.
+  func fetchBTCBalance(accountId: BraveWallet.AccountId, type: BTCBalanceType) async -> Double? {
+    guard let btcBalance = await self.balance(accountId: accountId).0
+    else { return nil }
+
+    let balanceString: String
+    switch type {
+    case .total:
+      balanceString = String(btcBalance.totalBalance)
+    case .available:
+      balanceString = String(btcBalance.availableBalance)
+    case .pending:
+      balanceString = String(btcBalance.pendingBalance)
+    }
+    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8))
+    if let valueString = formatter.decimalString(
+      for: balanceString,
+      radix: .decimal,
+      decimals: 8
+    ) {
+      return Double(valueString)
+    } else {
+      return nil
+    }
   }
 }

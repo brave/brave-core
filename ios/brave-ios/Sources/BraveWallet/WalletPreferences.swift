@@ -164,6 +164,12 @@ extension Preferences {
       key: "wallet.is-bitcoin-testnet-enabled",
       default: false
     )
+
+    /// Used to track whether to migrate `account.address` to `account.accountId.uniqueKey` (`account.id`)
+    static let migrateCacheKeyCompleted = Option<Bool>(
+      key: "wallet.migrate-cache-key-completed",
+      default: false
+    )
   }
 }
 

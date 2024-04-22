@@ -33,8 +33,9 @@ class AccountsStore: ObservableObject, WalletObserverStore {
 
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
-  /// Cache of token balances for each account. [account.address: [token.id: balance]]
-  private var tokenBalancesCache: [String: [String: Double]] = [:]
+  private typealias TokenBalanceCache = [String: [String: Double]]
+  /// Cache of token balances for each account. [account.cacheBalanceKey: [token.id: balance]]
+  private var tokenBalancesCache: TokenBalanceCache = [:]
   /// Cache of prices for each token. The key is the token's `assetRatioId`.
   private var pricesCache: [String: String] = [:]
 
@@ -42,6 +43,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let userAssetManager: WalletUserAssetManagerType
 
   private var keyringServiceObserver: KeyringServiceObserver?
@@ -56,12 +58,14 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
     self.walletService = walletService
     self.assetRatioService = assetRatioService
+    self.bitcoinWalletService = bitcoinWalletService
     self.userAssetManager = userAssetManager
     self.setupObservers()
   }
@@ -139,19 +143,36 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     networkAssets allNetworkAssets: [NetworkAssets]
   ) async {
     let balancesForAccounts = await withTaskGroup(
-      of: [String: [String: Double]].self,
+      of: TokenBalanceCache.self,
       body: { group in
         for account in accounts {
           group.addTask {
-            let balancesForTokens: [String: Double] = await self.rpcService.fetchBalancesForTokens(
-              account: account,
-              networkAssets: allNetworkAssets
-            )
-            return [account.address: balancesForTokens]
+            // TODO: cleanup with balance caching with issue
+            // https://github.com/brave/brave-browser/issues/36764
+            var balancesForTokens: [String: Double] = [:]
+            if account.coin == .btc {
+              let networkAssets = allNetworkAssets.first {
+                $0.network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
+              }
+              if let btc = networkAssets?.tokens.first,
+                let btcBalance = await self.bitcoinWalletService.fetchBTCBalance(
+                  accountId: account.accountId,
+                  type: .total
+                )
+              {
+                balancesForTokens = [btc.id: btcBalance]
+              }
+            } else {
+              balancesForTokens = await self.rpcService.fetchBalancesForTokens(
+                account: account,
+                networkAssets: allNetworkAssets
+              )
+            }
+            return [account.id: balancesForTokens]
           }
         }
         return await group.reduce(
-          into: [String: [String: Double]](),
+          into: TokenBalanceCache(),
           { partialResult, new in
             partialResult.merge(with: new)
           }
@@ -159,13 +180,13 @@ class AccountsStore: ObservableObject, WalletObserverStore {
       }
     )
     for account in accounts {
-      if let updatedBalancesForAccount = balancesForAccounts[account.address] {
+      if let updatedBalancesForAccount = balancesForAccounts[account.id] {
         // if balance fetch failed that we already have cached, don't overwrite existing
-        if var existing = self.tokenBalancesCache[account.address] {
+        if var existing = self.tokenBalancesCache[account.id] {
           existing.merge(with: updatedBalancesForAccount)
-          self.tokenBalancesCache[account.address] = existing
+          self.tokenBalancesCache[account.id] = existing
         } else {
-          self.tokenBalancesCache[account.address] = updatedBalancesForAccount
+          self.tokenBalancesCache[account.id] = updatedBalancesForAccount
         }
       }
     }
@@ -223,7 +244,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     for account: BraveWallet.AccountInfo,
     tokens: [BraveWallet.BlockchainToken]
   ) -> [BraveWallet.BlockchainToken] {
-    guard let tokenBalancesForAccount = tokenBalancesCache[account.address] else {
+    guard let tokenBalancesForAccount = tokenBalancesCache[account.id] else {
       return []
     }
     var tokensFiatForAccount: [(token: BraveWallet.BlockchainToken, fiat: Double)] = []
@@ -247,7 +268,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     for account: BraveWallet.AccountInfo,
     tokens: [BraveWallet.BlockchainToken]
   ) -> Double {
-    guard let accountBalanceCache = tokenBalancesCache[account.address] else { return 0 }
+    guard let accountBalanceCache = tokenBalancesCache[account.id] else { return 0 }
     return accountBalanceCache.keys.reduce(0.0) { partialResult, tokenId in
       guard let tokenBalanceForAccount = tokenBalanceForAccount(tokenId: tokenId, account: account)
       else {
@@ -271,7 +292,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     tokenId: String,
     account: BraveWallet.AccountInfo
   ) -> Double? {
-    tokenBalancesCache[account.address]?[tokenId]
+    tokenBalancesCache[account.id]?[tokenId]
   }
 }
 

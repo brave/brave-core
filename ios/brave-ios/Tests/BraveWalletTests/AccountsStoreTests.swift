@@ -24,6 +24,7 @@ import XCTest
   let ethAccount2 = (BraveWallet.AccountInfo.mockEthAccount.copy() as! BraveWallet.AccountInfo).then
   {
     $0.address = "mock_eth_id_2"
+    $0.accountId.uniqueKey = $0.address
     $0.name = "Ethereum Account 2"
   }
   let solAccount1: BraveWallet.AccountInfo = .mockSolAccount
@@ -82,8 +83,6 @@ import XCTest
     BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken
   ]
 
-  // TODO: Update balance test once bitcoin balance fetching is integrated
-  // https://github.com/brave/brave-browser/issues/36966
   let mockBTCBalanceAccount1: Double = 0
   let mockBTCTestnetBalanceAccount1: Double = 0
   let mockBTCPrice: String = "65726.00"
@@ -180,8 +179,7 @@ import XCTest
         ].filter { $0.coin == coin }
       )
     }
-    // TODO: Update balance test once bitcoin balance fetching is integrated
-    // https://github.com/brave/brave-browser/issues/36966
+
     rpcService._balance = { accountAddress, coin, chainId, completion in
       if coin == .eth,
         chainId == BraveWallet.MainnetChainId,
@@ -284,11 +282,39 @@ import XCTest
       }
     }
 
+    let btcMainnetBalance: UInt64 = 1000
+    let btcTestnetBalance: UInt64 = 10000
+    let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+    bitcoinWalletService._balance = { accountId, completion in
+      if accountId.uniqueKey == self.btcAccount1.accountId.uniqueKey {
+        completion(
+          .init(
+            totalBalance: btcMainnetBalance,
+            availableBalance: btcMainnetBalance,
+            pendingBalance: 0,
+            balances: [:]
+          ),
+          nil
+        )
+      } else {
+        completion(
+          .init(
+            totalBalance: btcTestnetBalance,
+            availableBalance: btcTestnetBalance,
+            pendingBalance: 0,
+            balances: [:]
+          ),
+          nil
+        )
+      }
+    }
+
     let store = AccountsStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       userAssetManager: userAssetManager
     )
 
@@ -330,13 +356,13 @@ import XCTest
         XCTAssertEqual(accountDetails[safe: 4]?.totalBalanceFiat, "$4.00")
 
         XCTAssertEqual(accountDetails[safe: 5]?.account, self.btcAccount1)
-        XCTAssertEqual(accountDetails[safe: 5]?.tokensWithBalance, [])  // BTC 0 value
-        XCTAssertEqual(accountDetails[safe: 5]?.totalBalanceFiat, "$0.00")
+        XCTAssertEqual(accountDetails[safe: 5]?.tokensWithBalance, self.btcMainnetTokens)
+        XCTAssertEqual(accountDetails[safe: 5]?.totalBalanceFiat, "$0.66")
 
         if bitcoinTestnetEnabled {
           XCTAssertEqual(accountDetails[safe: 6]?.account, self.btcTestnetAccount)
-          XCTAssertEqual(accountDetails[safe: 6]?.tokensWithBalance, [])  // BTC 0 value
-          XCTAssertEqual(accountDetails[safe: 6]?.totalBalanceFiat, "$0.00")
+          XCTAssertEqual(accountDetails[safe: 6]?.tokensWithBalance, self.btcTestnetTokens)
+          XCTAssertEqual(accountDetails[safe: 6]?.totalBalanceFiat, "$6.57")
         }
       }.store(in: &cancellables)
 

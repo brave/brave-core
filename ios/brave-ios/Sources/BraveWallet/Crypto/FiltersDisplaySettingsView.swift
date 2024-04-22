@@ -88,7 +88,7 @@ struct Filters {
     Preferences.Wallet.nonSelectedAccountsFilter.value =
       accounts
       .filter({ !$0.isSelected })
-      .map(\.model.address)
+      .map(\.model.id)
     Preferences.Wallet.nonSelectedNetworksFilter.value =
       networks
       .filter({ !$0.isSelected })

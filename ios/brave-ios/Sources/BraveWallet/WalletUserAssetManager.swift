@@ -81,6 +81,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let txService: BraveWalletTxService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
 
   private var keyringServiceObserver: KeyringServiceObserver?
   private var txServiceObserver: TxServiceObserver?
@@ -95,12 +96,14 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
-    txService: BraveWalletTxService
+    txService: BraveWalletTxService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
     self.walletService = walletService
     self.txService = txService
+    self.bitcoinWalletService = bitcoinWalletService
 
     setupObservers()
 
@@ -118,7 +121,15 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _unlocked: { [weak self] in
-        self?.refreshBalances()
+        Task { @MainActor [self] in
+          // migrate `account.address` with `account.accountId.uniqueKey` (`account.id`)
+          if !Preferences.Wallet.migrateCacheKeyCompleted.value {
+            await self?.migrateCacheKey()
+            self?.refreshBalances()
+          } else {
+            self?.refreshBalances()
+          }
+        }
       },
       _accountsChanged: { [weak self] in
         self?.refreshBalances()
@@ -386,29 +397,47 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
       )
       await withTaskGroup(
         of: Void.self,
-        body: { @MainActor [rpcService] group in
+        body: { @MainActor [rpcService, bitcoinWalletService] group in
           for account in accounts {
             guard !Task.isCancelled else { return }
             group.addTask { @MainActor in
-              let allTokenBalanceForAccount = await rpcService.fetchBalancesForTokens(
-                account: account,
-                networkAssets: allUserAssets
-              )
-              for tokenBalanceForAccount in allTokenBalanceForAccount {
-                guard !Task.isCancelled else { return }
-                let networkAssets = allUserAssets.first { oneNetworkAssets in
-                  oneNetworkAssets.tokens.contains { asset in
-                    asset.id == tokenBalanceForAccount.key
-                  }
+              if account.coin == .btc {
+                let networkAssets = allUserAssets.first {
+                  $0.network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
                 }
-                if let token = networkAssets?.tokens.first(where: {
-                  $0.id == tokenBalanceForAccount.key
-                }) {
-                  WalletUserAssetBalance.updateBalance(
-                    for: token,
-                    balance: String(tokenBalanceForAccount.value),
-                    account: account.address
+                if let btc = networkAssets?.tokens.first,
+                  let btcBalance = await bitcoinWalletService.fetchBTCBalance(
+                    accountId: account.accountId,
+                    type: .total
                   )
+                {
+                  WalletUserAssetBalance.updateBalance(
+                    for: btc,
+                    balance: String(btcBalance),
+                    account: account.id
+                  )
+                }
+              } else {
+                let allTokenBalanceForAccount = await rpcService.fetchBalancesForTokens(
+                  account: account,
+                  networkAssets: allUserAssets
+                )
+                for tokenBalanceForAccount in allTokenBalanceForAccount {
+                  guard !Task.isCancelled else { return }
+                  let networkAssets = allUserAssets.first { oneNetworkAssets in
+                    oneNetworkAssets.tokens.contains { asset in
+                      asset.id == tokenBalanceForAccount.key
+                    }
+                  }
+                  if let token = networkAssets?.tokens.first(where: {
+                    $0.id == tokenBalanceForAccount.key
+                  }) {
+                    WalletUserAssetBalance.updateBalance(
+                      for: token,
+                      balance: String(tokenBalanceForAccount.value),
+                      account: account.id
+                    )
+                  }
                 }
               }
             }
@@ -454,26 +483,34 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     completion: (() -> Void)? = nil
   ) {
     Task { @MainActor in
-      let accounts = await keyringService.allAccounts().accounts.filter { $0.coin == asset.coin }
       let network = await rpcService.allNetworksForSupportedCoins().first {
         $0.chainId.lowercased() == asset.chainId.lowercased()
       }
-
       guard let network = network else { return }
+      let accounts = await keyringService.allAccounts().accounts.filter { $0.coin == asset.coin }
+
       await withTaskGroup(
         of: Void.self,
-        body: { @MainActor [rpcService] group in
+        body: { @MainActor [rpcService, bitcoinWalletService] group in
           for account in accounts {  // for each account
             group.addTask { @MainActor in
-              let assetBalance = await rpcService.balance(
-                for: asset,
-                in: account,
-                network: network
-              )
+              var tokenBalance: Double?
+              if account.coin == .btc {
+                tokenBalance = await bitcoinWalletService.fetchBTCBalance(
+                  accountId: account.accountId,
+                  type: .total
+                )
+              } else {
+                tokenBalance = await rpcService.balance(
+                  for: asset,
+                  in: account,
+                  network: network
+                )
+              }
               WalletUserAssetBalance.updateBalance(
                 for: asset,
-                balance: String(assetBalance ?? 0),
-                account: account.address
+                balance: String(tokenBalance ?? 0),
+                account: account.id
               )
             }
           }
@@ -522,6 +559,35 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
 
   private func retrieveAllDataObserver() -> [WalletUserAssetDataObserver] {
     return dataObservers.allObjects as? [WalletUserAssetDataObserver] ?? []
+  }
+
+  @MainActor private func migrateCacheKey() async {
+    let allAccounts = await keyringService.allAccountInfos()
+    // balance
+    if let allBalances = WalletUserAssetBalance.getBalances() {
+      await withTaskGroup(
+        of: Void.self,
+        body: { @MainActor group in
+          for balance in allBalances {
+            if let account = allAccounts.first(where: { $0.address == balance.accountAddress }) {
+              group.addTask { @MainActor in
+                await WalletUserAssetBalance.updateAccountAddress(for: account)
+              }
+            }
+          }
+        }
+      )
+    }
+    // nonSelectedAccountsFilter
+    var newAddresses: [String] = []
+    for address in Preferences.Wallet.nonSelectedAccountsFilter.value {
+      if let account = allAccounts.first(where: { $0.address == address }) {
+        newAddresses.append(account.id)
+      }
+    }
+    Preferences.Wallet.nonSelectedAccountsFilter.value = newAddresses
+
+    Preferences.Wallet.migrateCacheKeyCompleted.value = true
   }
 }
 

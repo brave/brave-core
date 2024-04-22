@@ -83,6 +83,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
   private let swapService: BraveWalletSwapService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let assetManager: WalletUserAssetManagerType
   /// A list of tokens that are supported with the current selected network for all supported
   /// on-ramp providers.
@@ -138,6 +139,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
     swapService: BraveWalletSwapService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     userAssetManager: WalletUserAssetManagerType,
     assetDetailType: AssetDetailType
   ) {
@@ -150,6 +152,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
     self.swapService = swapService
+    self.bitcoinWalletService = bitcoinWalletService
     self.assetManager = userAssetManager
     self.assetDetailType = assetDetailType
 
@@ -456,19 +459,29 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       @MainActor group -> [AccountBalance] in
       for accountAssetViewModel in accountAssetViewModels {
         group.addTask { @MainActor in
-          let balance = await self.rpcService.balance(
-            for: token,
-            in: accountAssetViewModel.account,
-            network: network
-          )
-          return [AccountBalance(accountAssetViewModel.account, balance)]
+          // TODO: cleanup with balance caching with issue
+          // https://github.com/brave/brave-browser/issues/36764
+          var tokenBalance: Double?
+          if accountAssetViewModel.account.coin == .btc {
+            tokenBalance = await self.bitcoinWalletService.fetchBTCBalance(
+              accountId: accountAssetViewModel.account.accountId,
+              type: .total
+            )
+          } else {
+            tokenBalance = await self.rpcService.balance(
+              for: token,
+              in: accountAssetViewModel.account,
+              network: network
+            )
+          }
+          return [AccountBalance(accountAssetViewModel.account, tokenBalance)]
         }
       }
       return await group.reduce([AccountBalance](), { $0 + $1 })
     }
     for tokenBalance in tokenBalances {
       if let index = accountAssetViewModels.firstIndex(where: {
-        $0.account.address == tokenBalance.account.address
+        $0.account.id == tokenBalance.account.id
       }) {
         accountAssetViewModels[index].decimalBalance = tokenBalance.balance ?? 0.0
         accountAssetViewModels[index].balance = String(format: "%.4f", tokenBalance.balance ?? 0.0)

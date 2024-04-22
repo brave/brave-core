@@ -165,7 +165,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      txService: txService
+      txService: txService,
+      bitcoinWalletService: bitcoinWalletService
     )
     self.origin = origin
 
@@ -184,6 +185,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
       ipfsApi: ipfsApi,
+      bitcoinWalletService: bitcoinWalletService,
       userAssetManager: userAssetManager
     )
     self.nftStore = .init(
@@ -213,6 +215,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       userAssetManager: userAssetManager
     )
     self.marketStore = .init(
@@ -504,6 +507,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
       swapService: swapService,
+      bitcoinWalletService: bitcoinWalletService,
       userAssetManager: userAssetManager,
       assetDetailType: assetDetailType
     )
@@ -541,6 +545,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
+      bitcoinWalletService: bitcoinWalletService,
       userAssetManager: userAssetManager
     )
     accountActivityStore = store
@@ -876,7 +881,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         for account in accounts {
           if let balancesForAccount = userAssetManager.getBalances(
             for: nil,
-            account: account.address
+            account: account.id
           ) {
             let balancesScopedForP3A = balancesForAccount.optionallyFilter(
               shouldFilter: !shouldCountTestNetworks,
