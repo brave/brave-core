@@ -5,8 +5,11 @@
 
 import * as React from 'react'
 import { useHistory, useLocation, useParams } from 'react-router'
-import Input, { InputEvents } from '@brave/leo/react/input'
-import Dropdown, { DropdownEvents } from '@brave/leo/react/dropdown'
+import Input, { InputEventDetail } from '@brave/leo/react/input'
+import Dropdown from '@brave/leo/react/dropdown'
+import {
+  SelectItemEventDetail //
+} from '@brave/leo/types/src/components/menu/menu.svelte'
 
 // utils
 import { getLocale } from '$web-common/locale'
@@ -147,29 +150,29 @@ export const CreateAccountModal = () => {
   }, [history])
 
   const handleAccountNameChanged = React.useCallback(
-    (event: InputEvents['input']) => {
-      setAccountName(event.detail.value)
+    (detail: InputEventDetail) => {
+      setAccountName(detail.value)
     },
     []
   )
 
   const onChangeFilecoinNetwork = React.useCallback(
-    (event: DropdownEvents['change']) => {
-      setFilecoinNetwork(event.detail.value as FilecoinNetwork)
+    (detail: SelectItemEventDetail) => {
+      setFilecoinNetwork(detail.value as FilecoinNetwork)
     },
     []
   )
 
   const onChangeBitcoinNetwork = React.useCallback(
-    (event: DropdownEvents['change']) => {
-      setBitcoinNetwork(event.detail.value as BitcoinNetwork)
+    (detail: SelectItemEventDetail) => {
+      setBitcoinNetwork(detail.value as BitcoinNetwork)
     },
     []
   )
 
   const onChangeZCashNetwork = React.useCallback(
-    (event: DropdownEvents['change']) => {
-      setZCashNetwork(event.detail.value as ZCashNetwork)
+    (detail: SelectItemEventDetail) => {
+      setZCashNetwork(detail.value as ZCashNetwork)
     },
     []
   )
@@ -199,10 +202,8 @@ export const CreateAccountModal = () => {
   ])
 
   const handleKeyDown = React.useCallback(
-    (event: InputEvents['keydown']) => {
-      if (
-        (event.detail.innerEvent as unknown as KeyboardEvent).key === 'Enter'
-      ) {
+    (detail: InputEventDetail) => {
+      if ((detail.innerEvent as unknown as KeyboardEvent).key === 'Enter') {
         onClickCreateAccount()
       }
     },

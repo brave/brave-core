@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query'
 import ProgressRingReact from '@brave/leo/react/progressRing'
-import Input, { InputEvents } from '@brave/leo/react/input'
+import Input, { InputEventDetail } from '@brave/leo/react/input'
 
 // redux
 import { useDispatch, useSelector } from 'react-redux'
@@ -167,8 +167,8 @@ export const AccountSettingsModal = () => {
     setPrivateKey('')
   }, [])
 
-  const handleAccountNameChanged = (event: InputEvents['input']) => {
-    setAccountName(event.detail.value)
+  const handleAccountNameChanged = (detail: InputEventDetail) => {
+    setAccountName(detail.value)
     setUpdateError(false)
   }
 
@@ -225,8 +225,8 @@ export const AccountSettingsModal = () => {
     onClose()
   }
 
-  const handleKeyDown = (event: InputEvents['keydown']) => {
-    if ((event.detail.innerEvent as unknown as KeyboardEvent).key === 'Enter') {
+  const handleKeyDown = (detail: InputEventDetail) => {
+    if ((detail.innerEvent as unknown as KeyboardEvent).key === 'Enter') {
       onSubmitUpdateName()
     }
   }

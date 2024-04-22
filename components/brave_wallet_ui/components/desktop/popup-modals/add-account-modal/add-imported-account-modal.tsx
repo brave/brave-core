@@ -6,8 +6,11 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
-import Input, { InputEvents } from '@brave/leo/react/input'
-import Dropdown, { DropdownEvents } from '@brave/leo/react/dropdown'
+import Input, { InputEventDetail } from '@brave/leo/react/input'
+import Dropdown from '@brave/leo/react/dropdown'
+import {
+  SelectItemEventDetail //
+} from '@brave/leo/types/src/components/menu/menu.svelte'
 
 // utils
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
@@ -133,23 +136,23 @@ export const ImportAccountModal = () => {
   }, [history])
 
   const handleAccountNameChanged = React.useCallback(
-    (event: InputEvents['input']) => {
-      setAccountName(event.detail.value)
+    (detail: InputEventDetail) => {
+      setAccountName(detail.value)
       setHasImportError(false)
     },
     []
   )
 
   const onChangeFilecoinNetwork = React.useCallback(
-    (event: DropdownEvents['change']) => {
-      setFilecoinNetwork(event.detail.value as FilecoinNetwork)
+    (detail: SelectItemEventDetail) => {
+      setFilecoinNetwork(detail.value as FilecoinNetwork)
     },
     []
   )
 
   const onChangeImportOption = React.useCallback(
-    (event: DropdownEvents['change']) => {
-      setImportOption(event.detail.value)
+    (detail: SelectItemEventDetail) => {
+      setImportOption(detail.value as string)
     },
     []
   )
@@ -159,9 +162,9 @@ export const ImportAccountModal = () => {
   }, [])
 
   const handlePrivateKeyChanged = React.useCallback(
-    (event: InputEvents['input']) => {
+    (detail: InputEventDetail) => {
       clearClipboard()
-      setPrivateKey(event.detail.value)
+      setPrivateKey(detail.value)
       setHasImportError(false)
     },
     [clearClipboard]
@@ -195,8 +198,8 @@ export const ImportAccountModal = () => {
   )
 
   const handlePasswordChanged = React.useCallback(
-    (event: InputEvents['input']) => {
-      setPassword(event.detail.value)
+    (detail: InputEventDetail) => {
+      setPassword(detail.value)
       setHasImportError(false)
       clearClipboard()
     },
@@ -266,13 +269,11 @@ export const ImportAccountModal = () => {
   ])
 
   const handleKeyDown = React.useCallback(
-    (event: InputEvents['keydown']) => {
+    (detail: InputEventDetail) => {
       if (isDisabled) {
         return
       }
-      if (
-        (event.detail.innerEvent as unknown as KeyboardEvent).key === 'Enter'
-      ) {
+      if ((detail.innerEvent as unknown as KeyboardEvent).key === 'Enter') {
         onClickCreateAccount()
       }
     },
