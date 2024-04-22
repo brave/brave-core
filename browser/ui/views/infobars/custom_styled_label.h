@@ -26,7 +26,6 @@ class CustomStyledLabel : public views::StyledLabel {
 
  private:
   // views::StyledLabel overrides:
-  void Layout(PassKey) override;
   std::unique_ptr<views::Label> CreateLabel(
       const std::u16string& text,
       const RangeStyleInfo& style_info,
