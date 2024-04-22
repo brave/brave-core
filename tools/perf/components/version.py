@@ -54,7 +54,7 @@ class BraveVersion:
         raise RuntimeError(f'Bad git revision {revision}')
     self._git_hash = git_hash
 
-    content = GetFileAtRevision('package.json', self.git_hash)
+    content = GetFileAtRevision('package.json', git_hash)
     assert content is not None
     package_json = json.loads(content)
 
@@ -63,8 +63,8 @@ class BraveVersion:
     else:
       self._last_tag = 'v' + package_json['version']
 
-    self._revision_number = _GetRevisionNumber(self.git_hash)
-    self._commit_date = _GetCommitDate(self.git_hash)
+    self._revision_number = _GetRevisionNumber(git_hash)
+    self._commit_date = _GetCommitDate(git_hash)
     self._chromium_version = ChromiumVersion(
         package_json['config']['projects']['chrome']['tag'])
 
@@ -76,13 +76,18 @@ class BraveVersion:
   def is_tag(self) -> bool:
     return self._is_tag
 
+  # Returns the revision in a human readable format:
+  # the last tag + the current commit
   def to_string(self) -> str:
     if self._is_tag:
       return self._last_tag
-    return f'{self._last_tag}_{self.git_hash[:8]}'
+    return f'{self._last_tag}+{self._git_hash[:8]}'
 
+  # Returns tag or git sha1 hash
   @property
-  def git_hash(self) -> str:
+  def git_revision(self) -> str:
+    if self._is_tag:
+      return self._last_tag
     return self._git_hash
 
   @property

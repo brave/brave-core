@@ -51,7 +51,7 @@ def _GetProfileHash(profile: str, version: BraveVersion) -> str:
     raise RuntimeError(
         f'Unknown profile {profile}, file {sha1_filepath}[.fallback] not found')
 
-  sha1 = GetFileAtRevision(sha1_filepath, version.git_hash)
+  sha1 = GetFileAtRevision(sha1_filepath, version.git_revision)
   if sha1 is None:
     logging.info('Using the fallback profile %s', sha1_fallback_filepath)
     if not os.path.isfile(sha1_fallback_filepath):
