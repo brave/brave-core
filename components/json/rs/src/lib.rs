@@ -333,21 +333,21 @@ pub fn convert_all_numbers_to_string(json: &str, path: &str) -> String {
 
 /// Parses and re-serializes json with all 'null' valued properties
 /// removed, applied recursively at the specified path.
-/// 
+///
 /// Non `null` valued properties are unchanged. The fields could be
 /// arbitrarily nested, as the conversion is applied to the entire JSON
 /// recursively. Returns an empty String if such conversion is not possible.
-/// 
+///
 /// # Arguments
 /// * `json` - A arbitrary JSON string
 /// * `path` - A JSON pointer path to the field where the conversion is applied
 ///   recursively. An empty string indicates the root of the JSON.
-/// 
+///
 /// # Examples
-/// 
+///
 /// ```js
 /// json={"a":1, "b":null, "c":"string"}, path="" -> {"a":1,"c":"string"}
-/// 
+///
 /// json={"a":1,"b":[{"bai1":1},{"bai2":null},{"bai3":"3"}],"c":"string",
 /// "d": null}, path="/b" -> {"a":1,"b":[{"bai1":1},{"bai3":"3"}],
 /// "c":"string","d":null}
@@ -363,9 +363,9 @@ pub fn remove_all_null_values(json: &str, path: &str) -> String {
                         return true;
                     }
                     return false;
-                }); 
+                });
             }
-            Value::Array(vec) => {                
+            Value::Array(vec) => {
                 for vec_item in vec.iter_mut() {
                     convert_recursively(vec_item);
                 }

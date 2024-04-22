@@ -12,11 +12,13 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
+#include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -334,7 +336,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
-                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }));
   TestGetServiceProvider(
       "some wrone data", "US", "USD", "ETH", "", "", "",
@@ -343,7 +346,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
-                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
       true);
   TestGetServiceProvider(
@@ -432,7 +436,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
-                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
       true);
 
@@ -616,7 +621,9 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
                  payment_methods,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
           }));
 
   TestGetPaymentMethods(
@@ -628,7 +635,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
-                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
       true);
 
@@ -723,7 +731,9 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
                  fiat_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
           }));
 
   TestGetFiatCurrencies(
@@ -735,7 +745,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
-                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
       true);
 
@@ -852,7 +863,9 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                  crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors, std::vector<std::string>{"PARSING_ERROR"});
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
           }));
 
   TestGetCryptoCurrencies(
@@ -864,7 +877,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
-                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
       true);
 
@@ -966,7 +980,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
-                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }));
 
   TestGetCountries(
@@ -977,7 +992,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_TRUE(errors.has_value());
             EXPECT_EQ(*errors,
-                      std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
       true);
 

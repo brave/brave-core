@@ -23,6 +23,7 @@
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -189,8 +190,9 @@ void MeldIntegrationService::OnGetServiceProviders(
     GetServiceProvidersCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -203,8 +205,9 @@ void MeldIntegrationService::OnGetServiceProviders(
   auto service_providers =
       ParseServiceProviders(api_request_result.value_body());
   if (!service_providers) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
     return;
   }
 
@@ -249,8 +252,9 @@ void MeldIntegrationService::OnGetCryptoQuotes(
     GetCryptoQuotesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -264,7 +268,8 @@ void MeldIntegrationService::OnGetCryptoQuotes(
   std::string error;
   auto quotes = ParseCryptoQuotes(api_request_result.value_body(), &error);
   if (!quotes) {
-    errors = std::vector<std::string>{"PARSING_ERROR"};
+    errors = std::vector<std::string>{
+        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)};
     std::move(callback).Run(std::nullopt, errors);
     return;
   }
@@ -319,8 +324,9 @@ void MeldIntegrationService::OnGetPaymentMethods(
     GetPaymentMethodsCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -332,8 +338,9 @@ void MeldIntegrationService::OnGetPaymentMethods(
 
   auto payment_methods = ParsePaymentMethods(api_request_result.value_body());
   if (!payment_methods) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
     return;
   }
 
@@ -383,8 +390,9 @@ void MeldIntegrationService::OnGetFiatCurrencies(
     GetFiatCurrenciesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -396,8 +404,9 @@ void MeldIntegrationService::OnGetFiatCurrencies(
 
   auto fiat_currencies = ParseFiatCurrencies(api_request_result.value_body());
   if (!fiat_currencies) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
     return;
   }
 
@@ -449,8 +458,9 @@ void MeldIntegrationService::OnGetCryptoCurrencies(
     GetCryptoCurrenciesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -463,8 +473,9 @@ void MeldIntegrationService::OnGetCryptoCurrencies(
   auto crypto_currencies =
       ParseCryptoCurrencies(api_request_result.value_body());
   if (!crypto_currencies) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
     return;
   }
 
@@ -513,8 +524,9 @@ void MeldIntegrationService::OnGetCountries(
     GetCountriesCallback callback,
     APIRequestResult api_request_result) const {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"INTERNAL_SERVICE_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -526,8 +538,9 @@ void MeldIntegrationService::OnGetCountries(
 
   auto countries = ParseCountries(api_request_result.value_body());
   if (!countries) {
-    std::move(callback).Run(std::nullopt,
-                            std::vector<std::string>{"PARSING_ERROR"});
+    std::move(callback).Run(
+        std::nullopt, std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
     return;
   }
   std::move(callback).Run(std::move(countries), std::nullopt);

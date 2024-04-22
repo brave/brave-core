@@ -30,7 +30,8 @@ class MeldIntegrationServiceFactory : public BrowserContextKeyedServiceFactory {
 
   MeldIntegrationServiceFactory();
   MeldIntegrationServiceFactory(const MeldIntegrationServiceFactory&) = delete;
-  MeldIntegrationServiceFactory& operator=(const MeldIntegrationServiceFactory&) = delete;
+  MeldIntegrationServiceFactory& operator=(
+      const MeldIntegrationServiceFactory&) = delete;
 
   ~MeldIntegrationServiceFactory() override;
 
