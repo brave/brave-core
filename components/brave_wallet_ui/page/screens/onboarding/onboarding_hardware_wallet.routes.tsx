@@ -33,7 +33,7 @@ import {
 } from './create-password/onboarding-create-password'
 import {
   OnboardingImportWalletType //
-} from './components/onboarding-import-wallet-type'
+} from './components/onboarding-import-wallet-type/import_wallet_type'
 import {
   OnboardingImportHardwareWalletWelcome //
 } from './import-hardware-wallet-welcome/import-hardware-wallet-welcome'

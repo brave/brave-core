@@ -9,7 +9,7 @@ import * as React from 'react'
 import {
   WalletPageStory //
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
-import { OnboardingImportWalletType } from '.'
+import { OnboardingImportWalletType } from './import_wallet_type'
 
 export const _OnboardingImportWalletType = () => {
   return (

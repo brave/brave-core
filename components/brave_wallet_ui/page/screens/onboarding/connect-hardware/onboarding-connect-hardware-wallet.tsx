@@ -57,7 +57,7 @@ export const OnboardingConnectHardwareWallet = () => {
     >
       {accountOptions.map((option, index) => {
         return (
-          <React.Fragment key={index}>
+          <React.Fragment key={option.name}>
             <AccountType
               title={option.name}
               description={option.description}

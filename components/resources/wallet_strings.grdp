@@ -145,11 +145,10 @@
   <message name="IDS_BRAVE_WALLET_WELCOME_NEW_WALLET_DESCRIPTION" desc="Onboarding welcome screen, new wallet action description">Get started with Brave Wallet in minutes.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_IMPORT_WALLET_TITLE" desc="Onboarding welcome screen, import wallet action title">Already have a wallet?</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_WATCH_ONLY_TITLE" desc="Onboarding welcome screen, create watch only wallet">I need a watch-only wallet</message>
-  <message name="IDS_BRAVE_WALLET_WELCOME_COPYRIGHT" desc="Onboarding welcome screen copyright">©2023 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_COPYRIGHT" desc="Onboarding welcome screen copyright">©2024 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_DIVIDER_TEXT" desc="Wallet onboarding welcome divider text">or</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_IMPORT_WALLET_DESCRIPTION" desc="Onboarding welcome screen, import wallet action description">Already have a wallet?</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title">Back up your crypto wallet</message>
-  <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_DESCRIPTION" desc="Backup screen description">In the next step you’ll see a <ph name="RECOVERY_PHRASE_LENGTH">$1</ph>-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TERMS" desc="Backup screen terms check box">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_SKIP" desc="Generic skip button">Skip</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_CANCEL" desc="Generic cancel action button">Cancel</message>
@@ -822,7 +821,7 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK_DESCRIPTION" desc="Secondary button text to restore from an existing MetaMask wallet">Use your MetaMask password to import your seed phrase</message>
   <message name="IDS_BRAVE_WALLET_CREATE_WALLET_INSTEAD_LINK" desc="A navigation link to create a new wallet">Never mind, I’ll create a new wallet</message>
   <message name="IDS_BRAVE_WALLET_RESTORE_ALTERNATE_LENGTH" desc="Button text to change recovery phrase length">I have a <ph name="LENGTH">$1</ph>-word recovery phrase</message>
-  <message name="IDS_BRAVE_WALLET_RESTORE_WALLET_ERROR" desc="Error message shown when recovery fails">Check you recovery phrase and try again.</message>
+  <message name="IDS_BRAVE_WALLET_RESTORE_WALLET_ERROR" desc="Error message shown when recovery fails">Check your recovery phrase and try again.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_WITH_RECOVERY_PHRASE" desc="Label for action to go back to import with recovery phrase">Import using your recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_METAMASK_DETECTED" desc="Metamask detected message">Metamask wallet detected!</message>
   <message name="IDS_BRAVE_WALLET_METAMASK_IMPORT_USE_PASSWORD" desc="Metamask import action message">Use password</message>

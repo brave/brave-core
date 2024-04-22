@@ -173,7 +173,7 @@ provideStrings({
   braveWalletWelcomeImportWalletDescription: 'Import your existing wallet.',
   braveWalletWelcomeWatchOnlyTitle: 'I need a watch-only wallet',
   braveWalletCopyright:
-    '©2023 Brave Software Inc. Brave and the Brave logo are registered ' +
+    '©2024 Brave Software Inc. Brave and the Brave logo are registered ' +
     'trademarks of Brave Software, Inc. Other product names and logos may be trademarks ' +
     'of their respective companies. All rights reserved.',
   braveWalletWelcomeDividerText: 'or',
@@ -210,7 +210,7 @@ provideStrings({
   braveWalletImportFromLegacy: 'Import from legacy Brave crypto wallets',
   braveWalletCreateWalletInsteadLink: 'Never mind, I’ll create a new wallet',
   braveWalletRestoreAlternateLength: 'I have a $1-word recovery phrase',
-  braveWalletRestoreWalletError: 'Check you recovery phrase and try again.',
+  braveWalletRestoreWalletError: 'Check your recovery phrase and try again.',
   braveWalletImportWithRecoveryPhrase: 'Import using your recovery phrase',
   braveWalletMetamaskDetected: 'Metamask wallet detected!',
   braveWalletMetamaskImportUsePassword: 'Use password',
@@ -221,7 +221,8 @@ provideStrings({
   braveWalletMetaMaskPasswordInputPlaceholder: 'Type MetaMask password',
   braveWalletImportFromMetaMaskSeedInstructions:
     'Type your MetaMask 12-24 word recovery phrase.',
-  braveWalletMetaMaskExtensionDetected: 'Import Metamask wallet',
+  braveWalletMetaMaskExtensionDetected: 'Import MetaMask wallet',  
+
   braveWalletMetaMaskExtensionImportDescription:
     'You can easily import your MetaMask wallet just by inputting ' +
     'your password.',
@@ -275,9 +276,6 @@ provideStrings({
 
   // Recovery Phrase Backup - Intro
   braveWalletBackupIntroTitle: 'Back up your crypto wallet',
-  braveWalletBackupIntroDescription:
-    'Keep it in a secure place that is not ' +
-    'accessible to others and avoid sharing it with anyone.',
   braveWalletBackupIntroTerms:
     'I understand that if I lose my recovery words, ' +
     'I will not be able to access my crypto wallet.',

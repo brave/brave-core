@@ -134,13 +134,12 @@ export const NewPasswordInput = ({
           fullWidth
           alignItems='flex-start'
         >
-          <Row justifyContent='flex-start'>
+          <Row justifyContent='flex-start' marginBottom='4px'>
             <InputLabel htmlFor='password-confirmation'>
               {getLocale('braveWalletConfirmPasswordInput')}
             </InputLabel>
             <Asterisk>*</Asterisk>
           </Row>
-          <VerticalSpace space='4px' />
           <PasswordInput
             autoFocus={false}
             error={''}

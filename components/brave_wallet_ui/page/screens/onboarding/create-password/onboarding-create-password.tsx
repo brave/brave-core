@@ -78,33 +78,23 @@ export const OnboardingCreatePassword = ({
     []
   )
 
+  const onAutoLockDurationChange = async (autoLockDuration: number) => {
+    setAutoLockDuration(autoLockDuration)
+    await setAutoLockMinutes(autoLockDuration)
+  }
+
   // effects
   React.useEffect(() => {
     report(BraveWallet.OnboardingAction.LegalAndPassword)
   }, [report])
 
   React.useEffect(() => {
-    const setupWallet = async () => {
-      // wait for redux before redirecting
-      // otherwise, the restricted routes in the router will not be available
-      if (!isCreatingWallet && isWalletCreated) {
-        try {
-          await setAutoLockMinutes(autoLockDuration)
-          onWalletCreated()
-        } catch (error) {
-          console.error('Failed to set auto-lock duration:', error)
-        }
-      }
+    // wait for redux before redirecting
+    // otherwise, the restricted routes in the router will not be available
+    if (!isCreatingWallet && isWalletCreated) {
+      onWalletCreated()
     }
-
-    setupWallet()
-  }, [
-    isWalletCreated,
-    onWalletCreated,
-    isCreatingWallet,
-    setAutoLockMinutes,
-    autoLockDuration
-  ])
+  }, [isWalletCreated, onWalletCreated, isCreatingWallet])
 
   if (isCreatingWallet) {
     return <OnboardingCreatingWallet />
@@ -127,7 +117,7 @@ export const OnboardingCreatePassword = ({
           autoLockOptions={autoLockOptions}
           onPasswordChange={handlePasswordChange}
           onSubmit={nextStep}
-          onAutoLockDurationChange={setAutoLockDuration}
+          onAutoLockDurationChange={onAutoLockDurationChange}
         />
       </Row>
 

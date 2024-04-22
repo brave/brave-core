@@ -40,11 +40,7 @@ import { VerificationProgress } from './components/verification-progress'
 import {
   Title //
 } from '../../onboarding/components/onboarding-content-layout/style'
-import {
-  Column,
-  Row,
-  VerticalSpace //
-} from '../../../../components/shared/style'
+import { Column, Row } from '../../../../components/shared/style'
 import { BackButton } from './verify-recovery-phrase.style'
 import { ContinueButton } from '../../onboarding/onboarding.style'
 
@@ -161,9 +157,11 @@ export const VerifyRecoveryPhrase = () => {
       >
         {getLocale('braveWalletVerifyRecoveryPhraseGoBack')}
       </BackButton>
-      <VerticalSpace space='100px' />
 
-      <Column gap='24px'>
+      <Column
+        margin='100px 0 0 0'
+        gap='24px'
+      >
         <ContinueButton
           isDisabled={enteredPhrase === ''}
           onClick={onContinue}

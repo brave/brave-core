@@ -295,8 +295,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletCopyright", IDS_BRAVE_WALLET_WELCOME_COPYRIGHT},
     {"braveWalletWelcomeDividerText", IDS_BRAVE_WALLET_WELCOME_DIVIDER_TEXT},
     {"braveWalletBackupIntroTitle", IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE},
-    {"braveWalletBackupIntroDescription",
-     IDS_BRAVE_WALLET_BACKUP_INTRO_DESCRIPTION},
     {"braveWalletBackupIntroTerms", IDS_BRAVE_WALLET_BACKUP_INTRO_TERMS},
     {"braveWalletButtonSkip", IDS_BRAVE_WALLET_BUTTON_SKIP},
     {"braveWalletButtonCancel", IDS_BRAVE_WALLET_BUTTON_CANCEL},

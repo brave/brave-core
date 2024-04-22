@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Tooltip from '@brave/leo/react/tooltip'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -15,7 +16,7 @@ import Amount from '../../../utils/amount'
 import { useGetHardwareAccountDiscoveryBalanceQuery } from '../../../common/slices/api.slice'
 import { useAddressOrb } from '../../../common/hooks/use-orb'
 
-// Components
+// Styles
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 
 // Styles
@@ -88,7 +89,12 @@ export const AccountListItem = ({
       <HardwareWalletAccountCircle orb={orb} />
       <HardwareWalletAccountListItemRow>
         <AddressBalanceWrapper>
-          <div>{reduceAddress(account.address)}</div>
+          <Tooltip
+            mode='default'
+            placement='top'
+          >
+            <div>{reduceAddress(account.address)}</div>
+          </Tooltip>
         </AddressBalanceWrapper>
         {isLoadingBalance ? (
           <Skeleton
