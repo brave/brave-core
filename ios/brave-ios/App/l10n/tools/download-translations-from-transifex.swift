@@ -30,7 +30,7 @@ struct LanguageMapping {
     LanguageMapping(source: "fr"),
     LanguageMapping(source: "pl"),
     LanguageMapping(source: "ru"),
-    LanguageMapping(source: "de", additionalTargets: ["gsw"]),
+    LanguageMapping(source: "de"),
     LanguageMapping(source: "zh"),
     LanguageMapping(source: "zh_TW"),
     LanguageMapping(source: "id_ID"),
