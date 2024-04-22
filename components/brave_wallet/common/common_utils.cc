@@ -47,9 +47,9 @@ bool IsZCashEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletZCashFeature);
 }
 
-bool IsZCashShieldedEnabled() {
+bool IsZCashShieldedTransactionsEnabled() {
 #if BUILDFLAG(ENABLE_ORCHARD)
-  return features::kZCashShieldedEnabled.Get();
+  return features::kZCashShieldedTransactionsEnabled.Get();
 #else
   return false;
 #endif

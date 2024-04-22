@@ -31,7 +31,7 @@ bool IsNativeWalletEnabled();
 bool IsNftPinningEnabled();
 bool IsBitcoinEnabled();
 bool IsZCashEnabled();
-bool IsZCashShieldedEnabled();
+bool IsZCashShieldedTransactionsEnabled();
 bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
 

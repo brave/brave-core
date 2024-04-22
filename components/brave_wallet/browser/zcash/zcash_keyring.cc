@@ -22,7 +22,7 @@ ZCashKeyring::ZCashKeyring(base::span<const uint8_t> seed, bool testnet)
                               : mojom::KeyringId::kZCashMainnet)),
       testnet_(testnet) {
 #if BUILDFLAG(ENABLE_ORCHARD)
-  if (!seed.empty() && IsZCashShieldedEnabled()) {
+  if (!seed.empty() && IsZCashShieldedTransactionsEnabled()) {
     auto orchard_key = HDKeyZip32::GenerateFromSeed(seed);
     if (!orchard_key) {
       return;
@@ -89,10 +89,11 @@ std::optional<std::string> ZCashKeyring::GetUnifiedAddress(
   }
 
   auto orchard_addr_bytes =
-      orchard_key_id.change ? esk->GetDiversifiedAddress(orchard_key_id.index,
-                                                         OrchardKind::Internal)
-                            : esk->GetDiversifiedAddress(orchard_key_id.index,
-                                                         OrchardKind::External);
+      orchard_key_id.change
+          ? esk->GetDiversifiedAddress(orchard_key_id.index,
+                                       OrchardAddressKind::Internal)
+          : esk->GetDiversifiedAddress(orchard_key_id.index,
+                                       OrchardAddressKind::External);
   if (!orchard_addr_bytes) {
     return std::nullopt;
   }
@@ -122,10 +123,11 @@ mojom::ZCashAddressPtr ZCashKeyring::GetShieldedAddress(
     return nullptr;
   }
 
-  auto addr_bytes =
-      key_id.change
-          ? esk->GetDiversifiedAddress(key_id.index, OrchardKind::Internal)
-          : esk->GetDiversifiedAddress(key_id.index, OrchardKind::External);
+  auto addr_bytes = key_id.change
+                        ? esk->GetDiversifiedAddress(
+                              key_id.index, OrchardAddressKind::Internal)
+                        : esk->GetDiversifiedAddress(
+                              key_id.index, OrchardAddressKind::External);
   if (!addr_bytes) {
     return nullptr;
   }
@@ -149,9 +151,10 @@ ZCashKeyring::GetOrchardRawBytes(const mojom::ZCashKeyId& key_id) {
   }
 
   auto orchard_addr_bytes =
-      key_id.change
-          ? esk->GetDiversifiedAddress(key_id.index, OrchardKind::Internal)
-          : esk->GetDiversifiedAddress(key_id.index, OrchardKind::External);
+      key_id.change ? esk->GetDiversifiedAddress(key_id.index,
+                                                 OrchardAddressKind::Internal)
+                    : esk->GetDiversifiedAddress(key_id.index,
+                                                 OrchardAddressKind::External);
   return orchard_addr_bytes;
 }
 #endif

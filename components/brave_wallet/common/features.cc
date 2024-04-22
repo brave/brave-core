@@ -47,8 +47,8 @@ BASE_FEATURE(kBraveWalletZCashFeature,
 #endif
 );
 
-const base::FeatureParam<bool> kZCashShieldedEnabled{
-    &kBraveWalletZCashFeature, "zcash_shielded_enabled", true};
+const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled{
+    &kBraveWalletZCashFeature, "zcash_shielded_transactions_enabled", false};
 
 BASE_FEATURE(kBraveWalletAnkrBalancesFeature,
              "BraveWalletAnkrBalances",

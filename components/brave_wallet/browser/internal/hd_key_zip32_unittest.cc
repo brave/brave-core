@@ -30,9 +30,10 @@ TEST(HDKeyZip32Test, GenerateFromSeed) {
         0xf7, 0x61, 0x7e, 0x6c, 0x1f, 0xb3, 0x82, 0x81, 0x9d, 0x7f, 0xc9,
         0x20, 0x0a, 0x1f, 0x42, 0x09, 0x2a, 0xc8, 0x4a, 0x30, 0x37, 0x8f,
         0x8c, 0x1f, 0xb9, 0x0d, 0xff, 0x71, 0xa6, 0xd5, 0x04, 0x2d};
-    EXPECT_EQ(expected, hd_key->DeriveHardenedChild(1)
-                            ->GetDiversifiedAddress(3, OrchardKind::External)
-                            .value());
+    EXPECT_EQ(expected,
+              hd_key->DeriveHardenedChild(1)
+                  ->GetDiversifiedAddress(3, OrchardAddressKind::External)
+                  .value());
   }
 
   {
@@ -41,9 +42,10 @@ TEST(HDKeyZip32Test, GenerateFromSeed) {
         0x05, 0x4a, 0xd3, 0x92, 0x41, 0x41, 0x1a, 0x28, 0xfd, 0xd5, 0x0e,
         0xe3, 0x5e, 0xfa, 0x91, 0x15, 0x2f, 0x60, 0xd5, 0xfa, 0x21, 0x17,
         0x2e, 0x5d, 0x45, 0x8d, 0xdb, 0xcb, 0x6b, 0x70, 0x98, 0x96};
-    EXPECT_EQ(expected, hd_key->DeriveHardenedChild(1)
-                            ->GetDiversifiedAddress(7, OrchardKind::External)
-                            .value());
+    EXPECT_EQ(expected,
+              hd_key->DeriveHardenedChild(1)
+                  ->GetDiversifiedAddress(7, OrchardAddressKind::External)
+                  .value());
   }
 
   {
@@ -52,9 +54,10 @@ TEST(HDKeyZip32Test, GenerateFromSeed) {
         0xf1, 0x3d, 0xb5, 0xb9, 0xb2, 0x7b, 0x5d, 0x0f, 0x2a, 0xca, 0x9d,
         0x58, 0x9a, 0x69, 0xe5, 0xbe, 0x00, 0xeb, 0x97, 0x86, 0x21, 0xe6,
         0x77, 0x6e, 0x87, 0xea, 0x32, 0x6d, 0x47, 0xa3, 0x4c, 0x1a};
-    EXPECT_EQ(expected, hd_key->DeriveHardenedChild(1)
-                            ->GetDiversifiedAddress(8, OrchardKind::External)
-                            .value());
+    EXPECT_EQ(expected,
+              hd_key->DeriveHardenedChild(1)
+                  ->GetDiversifiedAddress(8, OrchardAddressKind::External)
+                  .value());
   }
 
   {
@@ -63,9 +66,10 @@ TEST(HDKeyZip32Test, GenerateFromSeed) {
         0x99, 0x46, 0x2e, 0xbb, 0x27, 0x34, 0x89, 0x64, 0xb8, 0x92, 0xac,
         0xad, 0x10, 0x48, 0x2f, 0xe5, 0x02, 0xc9, 0x9f, 0x0d, 0x52, 0x49,
         0x59, 0xba, 0x7b, 0xe4, 0xf1, 0x88, 0xe3, 0xa2, 0x71, 0x38};
-    EXPECT_EQ(expected, hd_key->DeriveHardenedChild(2)
-                            ->GetDiversifiedAddress(0, OrchardKind::External)
-                            .value());
+    EXPECT_EQ(expected,
+              hd_key->DeriveHardenedChild(2)
+                  ->GetDiversifiedAddress(0, OrchardAddressKind::External)
+                  .value());
   }
 }
 

@@ -18,7 +18,7 @@ static_assert(BUILDFLAG(ENABLE_ORCHARD));
 
 namespace brave_wallet {
 
-enum class OrchardKind {
+enum class OrchardAddressKind {
   // External kind, can be used in account addresses
   External,
   // Internal "change" address
@@ -45,7 +45,7 @@ class HDKeyZip32 {
   // Returns public or internal address that may be used as a recipient address
   // in transactions
   std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
-  GetDiversifiedAddress(uint32_t div_index, OrchardKind kind);
+  GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind);
 
  private:
   // Extended spending key is a root key of an account, all other keys can be
