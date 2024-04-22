@@ -43,6 +43,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,8 +95,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -138,10 +138,17 @@ public class Utils {
         return recoveryPhrasesText.trim();
     }
 
+    /**
+     * Saves a given text to clipboard, shows a toast and clears it again after 60 seconds.
+     * @param context Context used to retrieve the clipboard service.
+     * @param textToCopy Text that will be copied to clipboard.
+     * @param textToShow String resource ID to display in the toast, or -1 to disable the toast.
+     * @param scheduleClear {@code true} to clear the clipboard after {@link #CLEAR_CLIPBOARD_INTERVAL}.
+     */
     public static void saveTextToClipboard(
             @NonNull final Context context,
             @NonNull final String textToCopy,
-            final int textToShow,
+            @StringRes final int textToShow,
             final boolean scheduleClear) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -153,7 +160,8 @@ public class Utils {
         if (!scheduleClear) {
             return;
         }
-        clearClipboard(textToCopy, CLEAR_CLIPBOARD_INTERVAL);
+
+        PostTask.postDelayedTask(TaskTraits.UI_DEFAULT, () -> clearClipboard(textToCopy), CLEAR_CLIPBOARD_INTERVAL);
     }
 
     public static String getTextFromClipboard(Context context) {
@@ -169,16 +177,15 @@ public class Utils {
         return "";
     }
 
-    public static void clearClipboard(String textToCompare, int delay) {
-        (new Timer()).schedule(new TimerTask() {
-            @Override
-            public void run() {
-                String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
-                if (textToCompare.equals(clipboardText)) {
-                    saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
-                }
-            }
-        }, delay);
+    /**
+     * Clears the clipboard and replaces it with "***" if it matches with a given text.
+     * @param textToCompare Text to compare that will trigger the clipboard clearing in case of match.
+     */
+    public static void clearClipboard(@NonNull final String textToCompare) {
+        String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
+        if (textToCompare.equals(clipboardText)) {
+            saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
+        }
     }
 
     public static boolean shouldShowCryptoOnboarding() {

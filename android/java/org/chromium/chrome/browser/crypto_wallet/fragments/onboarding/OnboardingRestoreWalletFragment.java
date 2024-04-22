@@ -188,9 +188,9 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                             }
                             Utils.setCryptoOnboarding(false);
                             Utils.clearClipboard(
-                                    recoveryPhrase.getText().toString().trim(), 0);
-                            Utils.clearClipboard(password, 0);
-                            Utils.clearClipboard(retypePasswordInput, 0);
+                                    recoveryPhrase.getText().toString().trim());
+                            Utils.clearClipboard(password);
+                            Utils.clearClipboard(retypePasswordInput);
 
                             cleanUp();
                         } else {
