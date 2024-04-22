@@ -69,6 +69,8 @@ const HISTORY_CARD_COUNT = 'bn-card-count'
 
 const CARD_COUNT_ATTRIBUTE = 'data-news-card-count'
 
+const HOUR_MS = 60 * 60 * 1000;
+
 const saveScrollPos = (itemId: React.Key) => () => {
   setHistoryState({
     [HISTORY_SCROLL_DATA]: {
@@ -121,6 +123,7 @@ export default function Component({ feed, onViewCountChange, onSessionStart }: P
   // Create intersection observer & relevant state to measure
   // the amount of viewed cards in the session.
   const lastViewedCardCount = React.useRef(0);
+  const lastUsageTime = React.useRef<Date | null>(null);
   const viewDepthIntersectionObserver = React.useRef(new IntersectionObserver(entries => {
     const inViewCounts = entries
       .filter(e => e.intersectionRatio === 1)
@@ -128,6 +131,12 @@ export default function Component({ feed, onViewCountChange, onSessionStart }: P
     if (!inViewCounts.length) {
       return;
     }
+    if (onSessionStart) {
+      if (!lastUsageTime.current || (new Date().getTime() - HOUR_MS) > lastUsageTime.current.getTime()) {
+        onSessionStart();
+      }
+    }
+    lastUsageTime.current = new Date();
     const largestCardCount = Math.max(...inViewCounts);
     // Ensure we only report increases in scroll depth
     // by comparing to the last scroll card count
@@ -135,9 +144,6 @@ export default function Component({ feed, onViewCountChange, onSessionStart }: P
       return;
     }
     const newViews = largestCardCount - lastViewedCardCount.current;
-    if (onSessionStart && lastViewedCardCount.current === 0 && newViews > 0) {
-      onSessionStart();
-    }
     lastViewedCardCount.current = largestCardCount;
     if (onViewCountChange) {
       onViewCountChange(newViews);
