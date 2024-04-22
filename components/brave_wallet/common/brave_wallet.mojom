@@ -365,7 +365,7 @@ interface PanelHandlerFactory {
                          brave_wallet_auto_pin_service,
                      pending_receiver<IpfsService>
                          brave_wallet_ipfs_service_receiver,
-                     pending_receiver<MeldIntegrationService> 
+                     pending_receiver<MeldIntegrationService>
                          meld_integration_service);
 };
 
@@ -391,7 +391,7 @@ interface PageHandlerFactory {
                     pending_receiver<WalletAutoPinService>
                         brave_wallet_auto_pin_service,
                     pending_receiver<IpfsService> brave_wallet_ipfs_service,
-                    pending_receiver<MeldIntegrationService> 
+                    pending_receiver<MeldIntegrationService>
                         meld_integration_service);
 };
 
