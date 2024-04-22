@@ -375,40 +375,30 @@ void SolanaTxManager::RetryTransaction(const std::string& tx_meta_id,
     return;
   }
 
-  if (!IsRetriableStatus(meta->status(), mojom::CoinType::SOL)) {
+  if (!meta->IsRetriable()) {
     std::move(callback).Run(
         false, "",
-        l10n_util::GetStringUTF8(
-            IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE_STATE));
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE));
     return;
   }
 
-  // For swap transactions, we need to get a fresh quote and start over from UI
-  // rather than directly retrying the transaction.
-  if (meta->tx()->tx_type() == mojom::TransactionType::SolanaSwap) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(
-            IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE_TYPE));
-    return;
-  }
-
-  // Set blockhash and last valid block height for retried transaction.
-  // Blockhash is kept as is for transactions using durable nonce, otherwise
-  // it's cleared to get a new blockhash when user approves.
-  // Last valid block height is cleared for all transactions, and will be
-  // updated when user approves.
   if (!meta->tx()->message()->UsesDurableNonce()) {
-    // Do not retry for transactions that are partially signed because this can
-    // only be retried from dApp side to re-sign the transaction.
-    if (meta->tx()->HasPartialSignedSignatures()) {
-      std::move(callback).Run(false, "",
-                              l10n_util::GetStringUTF8(
-                                  IDS_BRAVE_WALLET_TRANSACTION_PARTIAL_SIGNED));
-      return;
-    }
+    // Clear blockhash to trigger getting a new one when user approves.
     meta->tx()->message()->set_recent_blockhash("");
+
+    // Clear sign_tx_param because they're no longer relevant for transactions
+    // not using durable nonce, and clear this ensures we re-serialize the
+    // message using the new blockhash in
+    // SolanaTransacaction::GetSerializedMessage. sign_tx_param is not relevant
+    // anymore because all existing signatures will be invalid if the blockhash
+    // (message) changes, and we are the only one able to re-sign the new
+    // message so we don't need to worry about having a different account order
+    // than other implementations that dApp uses (Solana web3.js for example).
+    meta->tx()->set_sign_tx_param(nullptr);
   }
+
+  // Clear last valid block height for retried transaction, which will be
+  // updated when user approves.
   meta->tx()->message()->set_last_valid_block_height(0);
 
   // Reset necessary fields for retried transaction.

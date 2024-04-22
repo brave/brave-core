@@ -1688,6 +1688,7 @@ struct TransactionInfo {
   // and represents the final beneficiary of the transaction.
   // TODO(cypt4): Add for SOL
   string? effective_recipient;
+  bool is_retriable;
 };
 
 interface TxServiceObserver {

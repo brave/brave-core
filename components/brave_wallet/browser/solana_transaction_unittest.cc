@@ -929,4 +929,32 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   EXPECT_EQ(*result, expect_signed_tx_bytes);
 }
 
+TEST_F(SolanaTransactionUnitTest, IsPartialSigned) {
+  auto msg = SolanaMessage::CreateLegacyMessage("", 0, kFromAccount, {});
+  ASSERT_TRUE(msg);
+  auto tx = SolanaTransaction(std::move(*msg));
+  EXPECT_FALSE(tx.IsPartialSigned());
+
+  auto param = mojom::SolanaSignTransactionParam::New(
+      "encoded_serialized_message",
+      std::vector<mojom::SignaturePubkeyPairPtr>());
+  tx.set_sign_tx_param(param.Clone());
+  EXPECT_FALSE(tx.IsPartialSigned());
+
+  param->signatures.emplace_back(
+      mojom::SignaturePubkeyPair::New(std::nullopt, kFromAccount));
+  tx.set_sign_tx_param(param.Clone());
+  EXPECT_FALSE(tx.IsPartialSigned());
+
+  param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(
+      std::vector<uint8_t>(kSolanaSignatureSize, 0), kFromAccount));
+  tx.set_sign_tx_param(param.Clone());
+  EXPECT_FALSE(tx.IsPartialSigned());
+
+  param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(
+      std::vector<uint8_t>(kSolanaSignatureSize, 1), kFromAccount));
+  tx.set_sign_tx_param(param.Clone());
+  EXPECT_TRUE(tx.IsPartialSigned());
+}
+
 }  // namespace brave_wallet

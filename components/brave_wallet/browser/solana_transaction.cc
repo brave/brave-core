@@ -201,7 +201,7 @@ bool SolanaTransaction::operator!=(const SolanaTransaction& tx) const {
 
 // Get serialized message bytes and array of signers.
 // Serialized message will be the result of decoding
-// sign_tx_param_->encoded_serialized_msg if exists.
+// sign_tx_param_->encoded_serialized_msg if sign_tx_param_ exists.
 std::optional<std::pair<std::vector<uint8_t>, std::vector<std::string>>>
 SolanaTransaction::GetSerializedMessage() const {
   if (!sign_tx_param_) {
@@ -571,6 +571,23 @@ SolanaTransaction::FromSignedTransactionBytes(
 
   return std::make_unique<SolanaTransaction>(std::move(*message),
                                              std::move(signatures));
+}
+
+bool SolanaTransaction::IsPartialSigned() const {
+  if (!sign_tx_param_) {
+    return false;
+  }
+
+  for (const auto& sig_pubkey_pair : sign_tx_param_->signatures) {
+    // Has non-empty signature.
+    if (sig_pubkey_pair->signature && !sig_pubkey_pair->signature->empty() &&
+        sig_pubkey_pair->signature !=
+            std::vector<uint8_t>(kSolanaSignatureSize, 0)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 }  // namespace brave_wallet

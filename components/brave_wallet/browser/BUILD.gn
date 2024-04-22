@@ -425,6 +425,8 @@ source_set("transaction") {
 source_set("test_support") {
   testonly = true
   sources = [
+    "solana_test_utils.cc",
+    "solana_test_utils.h",
     "test_utils.cc",
     "test_utils.h",
   ]

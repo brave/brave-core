@@ -14,6 +14,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
+#include "brave/components/brave_wallet/browser/solana_test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -21,6 +22,53 @@
 #include "url/origin.h"
 
 namespace brave_wallet {
+
+TEST(SolanaTxMetaUnitTest, IsRetriable) {
+  auto tx = std::make_unique<SolanaTransaction>(GetTestLegacyMessage());
+  auto sol_account =
+      MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                    mojom::AccountKind::kDerived, kFromAccount);
+  SolanaTxMeta meta(sol_account, std::move(tx));
+
+  meta.set_status(mojom::TransactionStatus::Error);
+  meta.tx()->set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
+  auto param = mojom::SolanaSignTransactionParam::New(
+      "test", std::vector<mojom::SignaturePubkeyPairPtr>());
+  meta.tx()->set_sign_tx_param(param.Clone());
+
+  EXPECT_TRUE(meta.IsRetriable());
+
+  // Test non-retriable status.
+  meta.set_status(mojom::TransactionStatus::Confirmed);
+  EXPECT_FALSE(meta.IsRetriable());
+
+  // Reset transaction status.
+  meta.set_status(mojom::TransactionStatus::Error);
+  EXPECT_TRUE(meta.IsRetriable());
+
+  // Test non-retriable transaction type.
+  meta.tx()->set_tx_type(mojom::TransactionType::SolanaSwap);
+  EXPECT_FALSE(meta.IsRetriable());
+
+  // Reset transaction type.
+  meta.tx()->set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
+  EXPECT_TRUE(meta.IsRetriable());
+
+  // Test partial signed transaction with normal blockhash.
+  auto partial_signed_param = param.Clone();
+  partial_signed_param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(
+      std::vector<uint8_t>(kSolanaSignatureSize, 1), kFromAccount));
+  meta.tx()->set_sign_tx_param(partial_signed_param.Clone());
+  EXPECT_FALSE(meta.IsRetriable());
+
+  // Test partial signed transaction with durable nonce.
+  SolanaInstruction instruction = GetAdvanceNonceAccountInstruction();
+  std::vector<SolanaInstruction> vec;
+  vec.emplace_back(instruction);
+  vec.emplace_back(meta.tx()->message()->instructions()[0]);
+  meta.tx()->message()->SetInstructionsForTesting(vec);
+  EXPECT_TRUE(meta.IsRetriable());
+}
 
 TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";

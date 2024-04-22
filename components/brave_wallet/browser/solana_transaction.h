@@ -99,7 +99,7 @@ class SolanaTransaction {
       const std::vector<uint8_t>& bytes);
 
   void ClearRawSignatures() { raw_signatures_.clear(); }
-  bool HasPartialSignedSignatures() const { return !sign_tx_param_.is_null(); }
+  bool IsPartialSigned() const;
 
   std::string to_wallet_address() const { return to_wallet_address_; }
   std::string spl_token_mint_address() const { return spl_token_mint_address_; }

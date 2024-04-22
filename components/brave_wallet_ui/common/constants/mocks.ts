@@ -90,7 +90,8 @@ export const getMockedTransactionInfo =
         originSpec: 'https://brave.com',
         eTldPlusOne: 'brave.com'
       },
-      effectiveRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f'
+      effectiveRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
+      isRetriable: false
     }
   }
 
@@ -576,7 +577,8 @@ SerializableTransactionInfo = {
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app'
   },
-  effectiveRecipient: undefined
+  effectiveRecipient: undefined,
+  isRetriable: false
 }
 
 export const mockSolDappSignAllTransactionsRequest: //

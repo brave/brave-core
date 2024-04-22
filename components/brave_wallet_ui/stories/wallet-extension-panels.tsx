@@ -111,7 +111,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: Date.now() * 1000 - 1000 * 60 * 5 },
       confirmedTime: { microseconds: Date.now() * 1000 - 1000 * 60 * 5 },
       originInfo: mockOriginInfo,
-      effectiveRecipient: ''
+      effectiveRecipient: '',
+      isRetriable: false
     },
     {
       chainId: '',
@@ -148,7 +149,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      effectiveRecipient: ''
+      effectiveRecipient: '',
+      isRetriable: false
     },
     {
       chainId: '',
@@ -185,7 +187,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      effectiveRecipient: ''
+      effectiveRecipient: '',
+      isRetriable: false
     },
     {
       chainId: '',
@@ -222,7 +225,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      effectiveRecipient: ''
+      effectiveRecipient: '',
+      isRetriable: false
     },
     {
       chainId: '',
@@ -259,7 +263,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      effectiveRecipient: ''
+      effectiveRecipient: '',
+      isRetriable: false
     }
   ],
   [
@@ -298,7 +303,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      effectiveRecipient: ''
+      effectiveRecipient: '',
+      isRetriable: false
     },
     {
       chainId: '',
@@ -335,7 +341,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      effectiveRecipient: ''
+      effectiveRecipient: '',
+      isRetriable: false
     }
   ]
 ]
