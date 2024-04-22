@@ -758,15 +758,35 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
                             &BraveNewsController::Prefetch);
     }
 
+    // Notify listeners of the current publishers when BraveNews is enabled.
     GetPublishers(base::BindOnce(
-        [](BraveNewsController* controller, Publishers publishers) {
+        [](base::WeakPtr<BraveNewsController> controller,
+           Publishers publishers) {
+          if (!controller) {
+            return;
+          }
+
           auto event = brave_news::mojom::PublishersEvent::New();
           event->addedOrUpdated = std::move(publishers);
           for (const auto& listener : controller->publishers_listeners_) {
             listener->Changed(event->Clone());
           }
         },
-        base::Unretained(this)));
+        weak_ptr_factory_.GetWeakPtr()));
+
+    // Notify listeners of the current channels when BraveNews is enabled.
+    GetChannels(base::BindOnce(
+        [](base::WeakPtr<BraveNewsController> controller, Channels channels) {
+          if (!controller) {
+            return;
+          }
+          auto event = brave_news::mojom::ChannelsEvent::New();
+          event->addedOrUpdated = std::move(channels);
+          for (const auto& listener : controller->channels_listeners_) {
+            listener->Changed(event->Clone());
+          }
+        },
+        weak_ptr_factory_.GetWeakPtr()));
   } else {
     VLOG(1) << "STOPPING TIMERS";
     timer_feed_update_.Stop();
