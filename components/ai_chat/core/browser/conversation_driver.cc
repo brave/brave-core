@@ -269,7 +269,9 @@ void ConversationDriver::InitEngine() {
   auto* model = GetModel(model_key_);
   // Make sure we get a valid model, defaulting to static default or first.
   if (!model) {
-    NOTREACHED() << "Model was not part of static model list";
+    // It is unexpected that we get here. Dump a call stack
+    // to help figure out why it happens.
+    base::debug::DumpWithoutCrashing();
     // Use default
     model = GetModel(features::kAIModelsDefaultKey.Get());
     DCHECK(model);
