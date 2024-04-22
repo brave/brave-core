@@ -54,7 +54,7 @@ def MakeHistogramSetWithDiagnostics(original_function, histograms_file,
     for key, value in os.environ.items():
         s = key.split('DASHBOARD_EXTRA_DIAG_')
         if len(s) > 1:
-            diag = s[1]
+            diag = s[1].lower()
             logging.info('Extra diag: %s = %s', diag, value)
             revisions_dict['--' + diag] = value
 
