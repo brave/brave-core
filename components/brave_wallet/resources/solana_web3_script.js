@@ -3,16 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-/* Auto generated from @solana/web3.js 1.58.0 index.iife.min.js */
   
+/* Auto generated from @solana/web3.js 1.91.7 index.iife.min.js */
 var solanaWeb3 = $(function (exports) {
   "use strict";
 
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof __webpack_require__.g !== "undefined" ? __webpack_require__.g : typeof self !== "undefined" ? self : $Object.create(null, undefined);
+  function getDefaultExportFromCjs(x) {
+    return x && x.__esModule && $Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
+  }
+  $(getDefaultExportFromCjs);
   function getAugmentedNamespace(n) {
+    if (n.__esModule) return n;
     var f = n.default;
     if (typeof f == "function") {
-      var a = function () {
+      var a = function a() {
+        if (this instanceof a) {
+          return Reflect.construct(f, arguments, this.constructor);
+        }
         return f.apply(this, arguments);
       };
       $(a);
@@ -1811,90 +1819,95 @@ var solanaWeb3 = $(function (exports) {
     }
     $(BufferBigIntNotDefined);
   })(buffer);
-  function number$1(n) {
-    if (!Number.isSafeInteger(n) || n < 0) throw new Error(`Wrong positive integer: ${n}`);
+  function number$2(n) {
+    if (!Number.isSafeInteger(n) || n < 0) throw new Error(`positive integer expected, not ${n}`);
   }
-  $(number$1);
-  function bool(b) {
-    if (typeof b !== "boolean") throw new Error(`Expected boolean, not ${b}`);
+  $(number$2);
+  function isBytes$3(a) {
+    return a instanceof Uint8Array || a != null && typeof a === "object" && a.constructor.name === "Uint8Array";
   }
-  $(bool);
-  function bytes(b, ...lengths) {
-    if (!(b instanceof Uint8Array)) throw new TypeError("Expected Uint8Array");
-    if (lengths.length > 0 && !lengths.includes(b.length)) throw new TypeError(`Expected Uint8Array of length ${lengths}, not of length=${b.length}`);
+  $(isBytes$3);
+  function bytes$1(b, ...lengths) {
+    if (!isBytes$3(b)) throw new Error("Uint8Array expected");
+    if (lengths.length > 0 && !lengths.includes(b.length)) throw new Error(`Uint8Array expected of length ${lengths}, not of length=${b.length}`);
   }
-  $(bytes);
-  function hash(hash) {
-    if (typeof hash !== "function" || typeof hash.create !== "function") throw new Error("Hash should be wrapped by utils.wrapConstructor");
-    number$1(hash.outputLen);
-    number$1(hash.blockLen);
+  $(bytes$1);
+  function hash(h) {
+    if (typeof h !== "function" || typeof h.create !== "function") throw new Error("Hash should be wrapped by utils.wrapConstructor");
+    number$2(h.outputLen);
+    number$2(h.blockLen);
   }
   $(hash);
-  function exists(instance, checkFinished = true) {
+  function exists$1(instance, checkFinished = true) {
     if (instance.destroyed) throw new Error("Hash instance has been destroyed");
     if (checkFinished && instance.finished) throw new Error("Hash#digest() has already been called");
   }
-  $(exists);
-  function output(out, instance) {
-    bytes(out);
+  $(exists$1);
+  function output$1(out, instance) {
+    bytes$1(out);
     const min = instance.outputLen;
     if (out.length < min) {
       throw new Error(`digestInto() expects output buffer of length at least ${min}`);
     }
   }
-  $(output);
-  const assert$2 = $(function () {
-    let result = $Object.create(null, undefined);
-    result.number = number$1;
-    result.bool = bool;
-    result.bytes = bytes;
-    result.hash = hash;
-    result.exists = exists;
-    result.output = output;
-    return result;
-  })();
-  var assert$3 = assert$2;
+  $(output$1);
+  const crypto$1 = typeof globalThis === "object" && "crypto" in globalThis ? globalThis.crypto : undefined;
   /*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-  const createView = arr => new DataView(arr.buffer, arr.byteOffset, arr.byteLength);
-  $(createView);
-  const rotr = (word, shift) => word << 32 - shift | word >>> shift;
-  $(rotr);
-  const isLE = new Uint8Array(new Uint32Array($Array.of(287454020)).buffer)[0] === 68;
-  if (!isLE) throw new Error("Non little-endian hardware is not supported");
-  $Array.from($(function () {
-    let result = $Object.create(null, undefined);
-    result.length = 256;
-    return result;
-  })(), $((v, i) => i.toString(16).padStart(2, "0")));
-  function utf8ToBytes(str) {
-    if (typeof str !== "string") {
-      throw new TypeError(`utf8ToBytes expected string, got ${typeof str}`);
-    }
-    return new TextEncoder().encode(str);
+  const createView$1 = arr => new DataView(arr.buffer, arr.byteOffset, arr.byteLength);
+  $(createView$1);
+  const rotr$1 = (word, shift) => word << 32 - shift | word >>> shift;
+  $(rotr$1);
+  new Uint8Array(new Uint32Array($Array.of(287454020)).buffer)[0] === 68;
+  function utf8ToBytes$2(str) {
+    if (typeof str !== "string") throw new Error(`utf8ToBytes expected string, got ${typeof str}`);
+    return new Uint8Array(new TextEncoder().encode(str));
   }
-  $(utf8ToBytes);
-  function toBytes(data) {
-    if (typeof data === "string") data = utf8ToBytes(data);
-    if (!(data instanceof Uint8Array)) throw new TypeError(`Expected input type is Uint8Array (got ${typeof data})`);
+  $(utf8ToBytes$2);
+  function toBytes$1(data) {
+    if (typeof data === "string") data = utf8ToBytes$2(data);
+    bytes$1(data);
     return data;
   }
-  $(toBytes);
-  class Hash {
+  $(toBytes$1);
+  function concatBytes$1(...arrays) {
+    let sum = 0;
+    for (let i = 0; i < arrays.length; i++) {
+      const a = arrays[i];
+      bytes$1(a);
+      sum += a.length;
+    }
+    const res = new Uint8Array(sum);
+    for (let i = 0, pad = 0; i < arrays.length; i++) {
+      const a = arrays[i];
+      res.set(a, pad);
+      pad += a.length;
+    }
+    return res;
+  }
+  $(concatBytes$1);
+  let Hash$1 = class Hash {
     clone() {
       return this._cloneInto();
     }
-  }
-  function wrapConstructor(hashConstructor) {
-    const hashC = message => hashConstructor().update(toBytes(message)).digest();
+  };
+  function wrapConstructor$1(hashCons) {
+    const hashC = msg => hashCons().update(toBytes$1(msg)).digest();
     $(hashC);
-    const tmp = hashConstructor();
+    const tmp = hashCons();
     hashC.outputLen = tmp.outputLen;
     hashC.blockLen = tmp.blockLen;
-    hashC.create = $(() => hashConstructor());
+    hashC.create = $(() => hashCons());
     return hashC;
   }
-  $(wrapConstructor);
-  function setBigUint64(view, byteOffset, value, isLE) {
+  $(wrapConstructor$1);
+  function randomBytes(bytesLength = 32) {
+    if (crypto$1 && typeof crypto$1.getRandomValues === "function") {
+      return crypto$1.getRandomValues(new Uint8Array(bytesLength));
+    }
+    throw new Error("crypto.getRandomValues must be defined");
+  }
+  $(randomBytes);
+  function setBigUint64$1(view, byteOffset, value, isLE) {
     if (typeof view.setBigUint64 === "function") return view.setBigUint64(byteOffset, value, isLE);
     const _32n = BigInt(32);
     const _u32_max = BigInt(4294967295);
@@ -1905,8 +1918,12 @@ var solanaWeb3 = $(function (exports) {
     view.setUint32(byteOffset + h, wh, isLE);
     view.setUint32(byteOffset + l, wl, isLE);
   }
-  $(setBigUint64);
-  class SHA2 extends Hash {
+  $(setBigUint64$1);
+  const Chi$1 = (a, b, c) => a & b ^ ~a & c;
+  $(Chi$1);
+  const Maj$1 = (a, b, c) => a & b ^ a & c ^ b & c;
+  $(Maj$1);
+  class HashMD extends Hash$1 {
     constructor(blockLen, outputLen, padOffset, isLE) {
       super();
       this.blockLen = blockLen;
@@ -1918,21 +1935,21 @@ var solanaWeb3 = $(function (exports) {
       this.pos = 0;
       this.destroyed = false;
       this.buffer = new Uint8Array(blockLen);
-      this.view = createView(this.buffer);
+      this.view = createView$1(this.buffer);
     }
     update(data) {
-      assert$3.exists(this);
+      exists$1(this);
       const {
         view: view,
         buffer: buffer,
         blockLen: blockLen
       } = this;
-      data = toBytes(data);
+      data = toBytes$1(data);
       const len = data.length;
       for (let pos = 0; pos < len;) {
         const take = Math.min(blockLen - this.pos, len - pos);
         if (take === blockLen) {
-          const dataView = createView(data);
+          const dataView = createView$1(data);
           for (; blockLen <= len - pos; pos += blockLen) this.process(dataView, pos);
           continue;
         }
@@ -1949,8 +1966,8 @@ var solanaWeb3 = $(function (exports) {
       return this;
     }
     digestInto(out) {
-      assert$3.exists(this);
-      assert$3.output(out, this);
+      exists$1(this);
+      output$1(out, this);
       this.finished = true;
       const {
         buffer: buffer,
@@ -1968,10 +1985,15 @@ var solanaWeb3 = $(function (exports) {
         pos = 0;
       }
       for (let i = pos; i < blockLen; i++) buffer[i] = 0;
-      setBigUint64(view, blockLen - 8, BigInt(this.length * 8), isLE);
+      setBigUint64$1(view, blockLen - 8, BigInt(this.length * 8), isLE);
       this.process(view, 0);
-      const oview = createView(out);
-      this.get().forEach($((v, i) => oview.setUint32(4 * i, v, isLE)));
+      const oview = createView$1(out);
+      const len = this.outputLen;
+      if (len % 4) throw new Error("_sha2: outputLen should be aligned to 32bit");
+      const outLen = len / 4;
+      const state = this.get();
+      if (outLen > state.length) throw new Error("_sha2: outputLen bigger than state");
+      for (let i = 0; i < outLen; i++) oview.setUint32(4 * i, state[i], isLE);
     }
     digest() {
       const {
@@ -2002,39 +2024,39 @@ var solanaWeb3 = $(function (exports) {
       return to;
     }
   }
-  const U32_MASK64 = BigInt(2 ** 32 - 1);
-  const _32n = BigInt(32);
-  function fromBig(n, le = false) {
+  const U32_MASK64$1 = BigInt(2 ** 32 - 1);
+  const _32n$1 = BigInt(32);
+  function fromBig$1(n, le = false) {
     if (le) return $(function () {
       let result = $Object.create(null, undefined);
-      result.h = Number(n & U32_MASK64);
-      result.l = Number(n >> _32n & U32_MASK64);
+      result.h = Number(n & U32_MASK64$1);
+      result.l = Number(n >> _32n$1 & U32_MASK64$1);
       return result;
     })();
     return $(function () {
       let result = $Object.create(null, undefined);
-      result.h = Number(n >> _32n & U32_MASK64) | 0;
-      result.l = Number(n & U32_MASK64) | 0;
+      result.h = Number(n >> _32n$1 & U32_MASK64$1) | 0;
+      result.l = Number(n & U32_MASK64$1) | 0;
       return result;
     })();
   }
-  $(fromBig);
-  function split(lst, le = false) {
+  $(fromBig$1);
+  function split$1(lst, le = false) {
     let Ah = new Uint32Array(lst.length);
     let Al = new Uint32Array(lst.length);
     for (let i = 0; i < lst.length; i++) {
       const {
         h: h,
         l: l
-      } = fromBig(lst[i], le);
+      } = fromBig$1(lst[i], le);
       [Ah[i], Al[i]] = $Array.of(h, l);
     }
     return $Array.of(Ah, Al);
   }
-  $(split);
-  const toBig = (h, l) => BigInt(h >>> 0) << _32n | BigInt(l >>> 0);
+  $(split$1);
+  const toBig = (h, l) => BigInt(h >>> 0) << _32n$1 | BigInt(l >>> 0);
   $(toBig);
-  const shrSH = (h, l, s) => h >>> s;
+  const shrSH = (h, _l, s) => h >>> s;
   $(shrSH);
   const shrSL = (h, l, s) => h << 32 - s | l >>> s;
   $(shrSL);
@@ -2046,18 +2068,18 @@ var solanaWeb3 = $(function (exports) {
   $(rotrBH);
   const rotrBL = (h, l, s) => h >>> s - 32 | l << 64 - s;
   $(rotrBL);
-  const rotr32H = (h, l) => l;
+  const rotr32H = (_h, l) => l;
   $(rotr32H);
-  const rotr32L = (h, l) => h;
+  const rotr32L = (h, _l) => h;
   $(rotr32L);
-  const rotlSH = (h, l, s) => h << s | l >>> 32 - s;
-  $(rotlSH);
-  const rotlSL = (h, l, s) => l << s | h >>> 32 - s;
-  $(rotlSL);
-  const rotlBH = (h, l, s) => l << s - 32 | h >>> 64 - s;
-  $(rotlBH);
-  const rotlBL = (h, l, s) => h << s - 32 | l >>> 64 - s;
-  $(rotlBL);
+  const rotlSH$1 = (h, l, s) => h << s | l >>> 32 - s;
+  $(rotlSH$1);
+  const rotlSL$1 = (h, l, s) => l << s | h >>> 32 - s;
+  $(rotlSL$1);
+  const rotlBH$1 = (h, l, s) => l << s - 32 | h >>> 64 - s;
+  $(rotlBH$1);
+  const rotlBL$1 = (h, l, s) => h << s - 32 | l >>> 64 - s;
+  $(rotlBL$1);
   function add(Ah, Al, Bh, Bl) {
     const l = (Al >>> 0) + (Bl >>> 0);
     return $(function () {
@@ -2082,8 +2104,8 @@ var solanaWeb3 = $(function (exports) {
   $(add5H);
   const u64$1 = $(function () {
     let result = $Object.create(null, undefined);
-    result.fromBig = fromBig;
-    result.split = split;
+    result.fromBig = fromBig$1;
+    result.split = split$1;
     result.toBig = toBig;
     result.shrSH = shrSH;
     result.shrSL = shrSL;
@@ -2093,10 +2115,10 @@ var solanaWeb3 = $(function (exports) {
     result.rotrBL = rotrBL;
     result.rotr32H = rotr32H;
     result.rotr32L = rotr32L;
-    result.rotlSH = rotlSH;
-    result.rotlSL = rotlSL;
-    result.rotlBH = rotlBH;
-    result.rotlBL = rotlBL;
+    result.rotlSH = rotlSH$1;
+    result.rotlSL = rotlSL$1;
+    result.rotlBH = rotlBH$1;
+    result.rotlBL = rotlBL$1;
     result.add = add;
     result.add3L = add3L;
     result.add3H = add3H;
@@ -2106,11 +2128,10 @@ var solanaWeb3 = $(function (exports) {
     result.add5L = add5L;
     return result;
   })();
-  var u64$2 = u64$1;
-  const [SHA512_Kh, SHA512_Kl] = u64$2.split($Array.of("0x428a2f98d728ae22", "0x7137449123ef65cd", "0xb5c0fbcfec4d3b2f", "0xe9b5dba58189dbbc", "0x3956c25bf348b538", "0x59f111f1b605d019", "0x923f82a4af194f9b", "0xab1c5ed5da6d8118", "0xd807aa98a3030242", "0x12835b0145706fbe", "0x243185be4ee4b28c", "0x550c7dc3d5ffb4e2", "0x72be5d74f27b896f", "0x80deb1fe3b1696b1", "0x9bdc06a725c71235", "0xc19bf174cf692694", "0xe49b69c19ef14ad2", "0xefbe4786384f25e3", "0x0fc19dc68b8cd5b5", "0x240ca1cc77ac9c65", "0x2de92c6f592b0275", "0x4a7484aa6ea6e483", "0x5cb0a9dcbd41fbd4", "0x76f988da831153b5", "0x983e5152ee66dfab", "0xa831c66d2db43210", "0xb00327c898fb213f", "0xbf597fc7beef0ee4", "0xc6e00bf33da88fc2", "0xd5a79147930aa725", "0x06ca6351e003826f", "0x142929670a0e6e70", "0x27b70a8546d22ffc", "0x2e1b21385c26c926", "0x4d2c6dfc5ac42aed", "0x53380d139d95b3df", "0x650a73548baf63de", "0x766a0abb3c77b2a8", "0x81c2c92e47edaee6", "0x92722c851482353b", "0xa2bfe8a14cf10364", "0xa81a664bbc423001", "0xc24b8b70d0f89791", "0xc76c51a30654be30", "0xd192e819d6ef5218", "0xd69906245565a910", "0xf40e35855771202a", "0x106aa07032bbd1b8", "0x19a4c116b8d2d0c8", "0x1e376c085141ab53", "0x2748774cdf8eeb99", "0x34b0bcb5e19b48a8", "0x391c0cb3c5c95a63", "0x4ed8aa4ae3418acb", "0x5b9cca4f7763e373", "0x682e6ff3d6b2b8a3", "0x748f82ee5defb2fc", "0x78a5636f43172f60", "0x84c87814a1f0ab72", "0x8cc702081a6439ec", "0x90befffa23631e28", "0xa4506cebde82bde9", "0xbef9a3f7b2c67915", "0xc67178f2e372532b", "0xca273eceea26619c", "0xd186b8c721c0c207", "0xeada7dd6cde0eb1e", "0xf57d4f7fee6ed178", "0x06f067aa72176fba", "0x0a637dc5a2c898a6", "0x113f9804bef90dae", "0x1b710b35131c471b", "0x28db77f523047d84", "0x32caab7b40c72493", "0x3c9ebe0a15c9bebc", "0x431d67c49c100d4c", "0x4cc5d4becb3e42b6", "0x597f299cfc657e2a", "0x5fcb6fab3ad6faec", "0x6c44198c4a475817").map($(n => BigInt(n))));
+  const [SHA512_Kh, SHA512_Kl] = $(() => u64$1.split($Array.of("0x428a2f98d728ae22", "0x7137449123ef65cd", "0xb5c0fbcfec4d3b2f", "0xe9b5dba58189dbbc", "0x3956c25bf348b538", "0x59f111f1b605d019", "0x923f82a4af194f9b", "0xab1c5ed5da6d8118", "0xd807aa98a3030242", "0x12835b0145706fbe", "0x243185be4ee4b28c", "0x550c7dc3d5ffb4e2", "0x72be5d74f27b896f", "0x80deb1fe3b1696b1", "0x9bdc06a725c71235", "0xc19bf174cf692694", "0xe49b69c19ef14ad2", "0xefbe4786384f25e3", "0x0fc19dc68b8cd5b5", "0x240ca1cc77ac9c65", "0x2de92c6f592b0275", "0x4a7484aa6ea6e483", "0x5cb0a9dcbd41fbd4", "0x76f988da831153b5", "0x983e5152ee66dfab", "0xa831c66d2db43210", "0xb00327c898fb213f", "0xbf597fc7beef0ee4", "0xc6e00bf33da88fc2", "0xd5a79147930aa725", "0x06ca6351e003826f", "0x142929670a0e6e70", "0x27b70a8546d22ffc", "0x2e1b21385c26c926", "0x4d2c6dfc5ac42aed", "0x53380d139d95b3df", "0x650a73548baf63de", "0x766a0abb3c77b2a8", "0x81c2c92e47edaee6", "0x92722c851482353b", "0xa2bfe8a14cf10364", "0xa81a664bbc423001", "0xc24b8b70d0f89791", "0xc76c51a30654be30", "0xd192e819d6ef5218", "0xd69906245565a910", "0xf40e35855771202a", "0x106aa07032bbd1b8", "0x19a4c116b8d2d0c8", "0x1e376c085141ab53", "0x2748774cdf8eeb99", "0x34b0bcb5e19b48a8", "0x391c0cb3c5c95a63", "0x4ed8aa4ae3418acb", "0x5b9cca4f7763e373", "0x682e6ff3d6b2b8a3", "0x748f82ee5defb2fc", "0x78a5636f43172f60", "0x84c87814a1f0ab72", "0x8cc702081a6439ec", "0x90befffa23631e28", "0xa4506cebde82bde9", "0xbef9a3f7b2c67915", "0xc67178f2e372532b", "0xca273eceea26619c", "0xd186b8c721c0c207", "0xeada7dd6cde0eb1e", "0xf57d4f7fee6ed178", "0x06f067aa72176fba", "0x0a637dc5a2c898a6", "0x113f9804bef90dae", "0x1b710b35131c471b", "0x28db77f523047d84", "0x32caab7b40c72493", "0x3c9ebe0a15c9bebc", "0x431d67c49c100d4c", "0x4cc5d4becb3e42b6", "0x597f299cfc657e2a", "0x5fcb6fab3ad6faec", "0x6c44198c4a475817").map($(n => BigInt(n)))))();
   const SHA512_W_H = new Uint32Array(80);
   const SHA512_W_L = new Uint32Array(80);
-  class SHA512 extends SHA2 {
+  class SHA512 extends HashMD {
     constructor() {
       super(128, 64, 16, false);
       this.Ah = 1779033703 | 0;
@@ -2177,14 +2198,14 @@ var solanaWeb3 = $(function (exports) {
       for (let i = 16; i < 80; i++) {
         const W15h = SHA512_W_H[i - 15] | 0;
         const W15l = SHA512_W_L[i - 15] | 0;
-        const s0h = u64$2.rotrSH(W15h, W15l, 1) ^ u64$2.rotrSH(W15h, W15l, 8) ^ u64$2.shrSH(W15h, W15l, 7);
-        const s0l = u64$2.rotrSL(W15h, W15l, 1) ^ u64$2.rotrSL(W15h, W15l, 8) ^ u64$2.shrSL(W15h, W15l, 7);
+        const s0h = u64$1.rotrSH(W15h, W15l, 1) ^ u64$1.rotrSH(W15h, W15l, 8) ^ u64$1.shrSH(W15h, W15l, 7);
+        const s0l = u64$1.rotrSL(W15h, W15l, 1) ^ u64$1.rotrSL(W15h, W15l, 8) ^ u64$1.shrSL(W15h, W15l, 7);
         const W2h = SHA512_W_H[i - 2] | 0;
         const W2l = SHA512_W_L[i - 2] | 0;
-        const s1h = u64$2.rotrSH(W2h, W2l, 19) ^ u64$2.rotrBH(W2h, W2l, 61) ^ u64$2.shrSH(W2h, W2l, 6);
-        const s1l = u64$2.rotrSL(W2h, W2l, 19) ^ u64$2.rotrBL(W2h, W2l, 61) ^ u64$2.shrSL(W2h, W2l, 6);
-        const SUMl = u64$2.add4L(s0l, s1l, SHA512_W_L[i - 7], SHA512_W_L[i - 16]);
-        const SUMh = u64$2.add4H(SUMl, s0h, s1h, SHA512_W_H[i - 7], SHA512_W_H[i - 16]);
+        const s1h = u64$1.rotrSH(W2h, W2l, 19) ^ u64$1.rotrBH(W2h, W2l, 61) ^ u64$1.shrSH(W2h, W2l, 6);
+        const s1l = u64$1.rotrSL(W2h, W2l, 19) ^ u64$1.rotrBL(W2h, W2l, 61) ^ u64$1.shrSL(W2h, W2l, 6);
+        const SUMl = u64$1.add4L(s0l, s1l, SHA512_W_L[i - 7], SHA512_W_L[i - 16]);
+        const SUMh = u64$1.add4H(SUMl, s0h, s1h, SHA512_W_H[i - 7], SHA512_W_H[i - 16]);
         SHA512_W_H[i] = SUMh | 0;
         SHA512_W_L[i] = SUMl | 0;
       }
@@ -2207,15 +2228,15 @@ var solanaWeb3 = $(function (exports) {
         Hl: Hl
       } = this;
       for (let i = 0; i < 80; i++) {
-        const sigma1h = u64$2.rotrSH(Eh, El, 14) ^ u64$2.rotrSH(Eh, El, 18) ^ u64$2.rotrBH(Eh, El, 41);
-        const sigma1l = u64$2.rotrSL(Eh, El, 14) ^ u64$2.rotrSL(Eh, El, 18) ^ u64$2.rotrBL(Eh, El, 41);
+        const sigma1h = u64$1.rotrSH(Eh, El, 14) ^ u64$1.rotrSH(Eh, El, 18) ^ u64$1.rotrBH(Eh, El, 41);
+        const sigma1l = u64$1.rotrSL(Eh, El, 14) ^ u64$1.rotrSL(Eh, El, 18) ^ u64$1.rotrBL(Eh, El, 41);
         const CHIh = Eh & Fh ^ ~Eh & Gh;
         const CHIl = El & Fl ^ ~El & Gl;
-        const T1ll = u64$2.add5L(Hl, sigma1l, CHIl, SHA512_Kl[i], SHA512_W_L[i]);
-        const T1h = u64$2.add5H(T1ll, Hh, sigma1h, CHIh, SHA512_Kh[i], SHA512_W_H[i]);
+        const T1ll = u64$1.add5L(Hl, sigma1l, CHIl, SHA512_Kl[i], SHA512_W_L[i]);
+        const T1h = u64$1.add5H(T1ll, Hh, sigma1h, CHIh, SHA512_Kh[i], SHA512_W_H[i]);
         const T1l = T1ll | 0;
-        const sigma0h = u64$2.rotrSH(Ah, Al, 28) ^ u64$2.rotrBH(Ah, Al, 34) ^ u64$2.rotrBH(Ah, Al, 39);
-        const sigma0l = u64$2.rotrSL(Ah, Al, 28) ^ u64$2.rotrBL(Ah, Al, 34) ^ u64$2.rotrBL(Ah, Al, 39);
+        const sigma0h = u64$1.rotrSH(Ah, Al, 28) ^ u64$1.rotrBH(Ah, Al, 34) ^ u64$1.rotrBH(Ah, Al, 39);
+        const sigma0l = u64$1.rotrSL(Ah, Al, 28) ^ u64$1.rotrBL(Ah, Al, 34) ^ u64$1.rotrBL(Ah, Al, 39);
         const MAJh = Ah & Bh ^ Ah & Ch ^ Bh & Ch;
         const MAJl = Al & Bl ^ Al & Cl ^ Bl & Cl;
         Hh = Gh | 0;
@@ -2227,49 +2248,49 @@ var solanaWeb3 = $(function (exports) {
         ({
           h: Eh,
           l: El
-        } = u64$2.add(Dh | 0, Dl | 0, T1h | 0, T1l | 0));
+        } = u64$1.add(Dh | 0, Dl | 0, T1h | 0, T1l | 0));
         Dh = Ch | 0;
         Dl = Cl | 0;
         Ch = Bh | 0;
         Cl = Bl | 0;
         Bh = Ah | 0;
         Bl = Al | 0;
-        const All = u64$2.add3L(T1l, sigma0l, MAJl);
-        Ah = u64$2.add3H(All, T1h, sigma0h, MAJh);
+        const All = u64$1.add3L(T1l, sigma0l, MAJl);
+        Ah = u64$1.add3H(All, T1h, sigma0h, MAJh);
         Al = All | 0;
       }
       ({
         h: Ah,
         l: Al
-      } = u64$2.add(this.Ah | 0, this.Al | 0, Ah | 0, Al | 0));
+      } = u64$1.add(this.Ah | 0, this.Al | 0, Ah | 0, Al | 0));
       ({
         h: Bh,
         l: Bl
-      } = u64$2.add(this.Bh | 0, this.Bl | 0, Bh | 0, Bl | 0));
+      } = u64$1.add(this.Bh | 0, this.Bl | 0, Bh | 0, Bl | 0));
       ({
         h: Ch,
         l: Cl
-      } = u64$2.add(this.Ch | 0, this.Cl | 0, Ch | 0, Cl | 0));
+      } = u64$1.add(this.Ch | 0, this.Cl | 0, Ch | 0, Cl | 0));
       ({
         h: Dh,
         l: Dl
-      } = u64$2.add(this.Dh | 0, this.Dl | 0, Dh | 0, Dl | 0));
+      } = u64$1.add(this.Dh | 0, this.Dl | 0, Dh | 0, Dl | 0));
       ({
         h: Eh,
         l: El
-      } = u64$2.add(this.Eh | 0, this.El | 0, Eh | 0, El | 0));
+      } = u64$1.add(this.Eh | 0, this.El | 0, Eh | 0, El | 0));
       ({
         h: Fh,
         l: Fl
-      } = u64$2.add(this.Fh | 0, this.Fl | 0, Fh | 0, Fl | 0));
+      } = u64$1.add(this.Fh | 0, this.Fl | 0, Fh | 0, Fl | 0));
       ({
         h: Gh,
         l: Gl
-      } = u64$2.add(this.Gh | 0, this.Gl | 0, Gh | 0, Gl | 0));
+      } = u64$1.add(this.Gh | 0, this.Gl | 0, Gh | 0, Gl | 0));
       ({
         h: Hh,
         l: Hl
-      } = u64$2.add(this.Hh | 0, this.Hl | 0, Hh | 0, Hl | 0));
+      } = u64$1.add(this.Hh | 0, this.Hl | 0, Hh | 0, Hl | 0));
       this.set(Ah, Al, Bh, Bl, Ch, Cl, Dh, Dl, Eh, El, Fh, Fl, Gh, Gl, Hh, Hl);
     }
     roundClean() {
@@ -2281,537 +2302,1135 @@ var solanaWeb3 = $(function (exports) {
       this.set(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
   }
-  class SHA512_256 extends SHA512 {
-    constructor() {
-      super();
-      this.Ah = 573645204 | 0;
-      this.Al = 4230739756 | 0;
-      this.Bh = 2673172387 | 0;
-      this.Bl = 3360449730 | 0;
-      this.Ch = 596883563 | 0;
-      this.Cl = 1867755857 | 0;
-      this.Dh = 2520282905 | 0;
-      this.Dl = 1497426621 | 0;
-      this.Eh = 2519219938 | 0;
-      this.El = 2827943907 | 0;
-      this.Fh = 3193839141 | 0;
-      this.Fl = 1401305490 | 0;
-      this.Gh = 721525244 | 0;
-      this.Gl = 746961066 | 0;
-      this.Hh = 246885852 | 0;
-      this.Hl = 2177182882 | 0;
-      this.outputLen = 32;
-    }
+  const sha512 = wrapConstructor$1($(() => new SHA512()));
+  /*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+  const _0n$5 = BigInt(0);
+  const _1n$7 = BigInt(1);
+  const _2n$5 = BigInt(2);
+  function isBytes$2(a) {
+    return a instanceof Uint8Array || a != null && typeof a === "object" && a.constructor.name === "Uint8Array";
   }
-  class SHA384 extends SHA512 {
-    constructor() {
-      super();
-      this.Ah = 3418070365 | 0;
-      this.Al = 3238371032 | 0;
-      this.Bh = 1654270250 | 0;
-      this.Bl = 914150663 | 0;
-      this.Ch = 2438529370 | 0;
-      this.Cl = 812702999 | 0;
-      this.Dh = 355462360 | 0;
-      this.Dl = 4144912697 | 0;
-      this.Eh = 1731405415 | 0;
-      this.El = 4290775857 | 0;
-      this.Fh = 2394180231 | 0;
-      this.Fl = 1750603025 | 0;
-      this.Gh = 3675008525 | 0;
-      this.Gl = 1694076839 | 0;
-      this.Hh = 1203062813 | 0;
-      this.Hl = 3204075428 | 0;
-      this.outputLen = 48;
-    }
+  $(isBytes$2);
+  function abytes(item) {
+    if (!isBytes$2(item)) throw new Error("Uint8Array expected");
   }
-  const sha512 = wrapConstructor($(() => new SHA512()));
-  wrapConstructor($(() => new SHA512_256()));
-  wrapConstructor($(() => new SHA384()));
-  var _nodeResolve_empty = $Object.create(null, undefined);
-  var nodeCrypto = $Object.freeze($(function () {
-    let result = $Object.create(null, undefined);
-    result.__proto__ = null;
-    result.default = _nodeResolve_empty;
-    return result;
-  })());
-  /*! noble-ed25519 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
-  const _0n$1 = BigInt(0);
-  const _1n$1 = BigInt(1);
-  const _2n$1 = BigInt(2);
-  const _255n = BigInt(255);
-  const CURVE_ORDER = _2n$1 ** BigInt(252) + BigInt("27742317777372353535851937790883648493");
-  const CURVE$1 = $Object.freeze($(function () {
-    let result = $Object.create(null, undefined);
-    result.a = BigInt(-1);
-    result.d = BigInt("37095705934669439343138083508754565189542113879843219016388785533085940283555");
-    result.P = _2n$1 ** _255n - BigInt(19);
-    result.l = CURVE_ORDER;
-    result.n = CURVE_ORDER;
-    result.h = BigInt(8);
-    result.Gx = BigInt("15112221349535400772501151409588531511454012693041857206046113283949847762202");
-    result.Gy = BigInt("46316835694926478169428394003475163141307993866256225615783033603165251855960");
-    return result;
-  })());
-  const MAX_256B = _2n$1 ** BigInt(256);
-  const SQRT_M1 = BigInt("19681161376707505956807079304988542015446066515923890162744021073123829784752");
-  BigInt("6853475219497561581579357271197624642482790079785650197046958215289687604742");
-  BigInt("25063068953384623474111414158702152701244531502492656460079210482610430750235");
-  BigInt("54469307008909316920995813868745141605393597292927456921205312896311721017578");
-  BigInt("1159843021668779879193775521855586647937357759715417654439879720876111806838");
-  BigInt("40440834346308536858101042469323190826248399146238708352240133220865137265952");
-  class ExtendedPoint {
-    constructor(x, y, z, t) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-      this.t = t;
-    }
-    static fromAffine(p) {
-      if (!(p instanceof Point$1)) {
-        throw new TypeError("ExtendedPoint#fromAffine: expected Point");
-      }
-      if (p.equals(Point$1.ZERO)) return ExtendedPoint.ZERO;
-      return new ExtendedPoint(p.x, p.y, _1n$1, mod$1(p.x * p.y));
-    }
-    static toAffineBatch(points) {
-      const toInv = invertBatch$1(points.map($(p => p.z)));
-      return points.map($((p, i) => p.toAffine(toInv[i])));
-    }
-    static normalizeZ(points) {
-      return this.toAffineBatch(points).map(this.fromAffine);
-    }
-    equals(other) {
-      assertExtPoint(other);
-      const {
-        x: X1,
-        y: Y1,
-        z: Z1
-      } = this;
-      const {
-        x: X2,
-        y: Y2,
-        z: Z2
-      } = other;
-      const X1Z2 = mod$1(X1 * Z2);
-      const X2Z1 = mod$1(X2 * Z1);
-      const Y1Z2 = mod$1(Y1 * Z2);
-      const Y2Z1 = mod$1(Y2 * Z1);
-      return X1Z2 === X2Z1 && Y1Z2 === Y2Z1;
-    }
-    negate() {
-      return new ExtendedPoint(mod$1(-this.x), this.y, this.z, mod$1(-this.t));
-    }
-    double() {
-      const {
-        x: X1,
-        y: Y1,
-        z: Z1
-      } = this;
-      const {
-        a: a
-      } = CURVE$1;
-      const A = mod$1(X1 ** _2n$1);
-      const B = mod$1(Y1 ** _2n$1);
-      const C = mod$1(_2n$1 * mod$1(Z1 ** _2n$1));
-      const D = mod$1(a * A);
-      const E = mod$1(mod$1((X1 + Y1) ** _2n$1) - A - B);
-      const G = D + B;
-      const F = G - C;
-      const H = D - B;
-      const X3 = mod$1(E * F);
-      const Y3 = mod$1(G * H);
-      const T3 = mod$1(E * H);
-      const Z3 = mod$1(F * G);
-      return new ExtendedPoint(X3, Y3, Z3, T3);
-    }
-    add(other) {
-      assertExtPoint(other);
-      const {
-        x: X1,
-        y: Y1,
-        z: Z1,
-        t: T1
-      } = this;
-      const {
-        x: X2,
-        y: Y2,
-        z: Z2,
-        t: T2
-      } = other;
-      const A = mod$1((Y1 - X1) * (Y2 + X2));
-      const B = mod$1((Y1 + X1) * (Y2 - X2));
-      const F = mod$1(B - A);
-      if (F === _0n$1) return this.double();
-      const C = mod$1(Z1 * _2n$1 * T2);
-      const D = mod$1(T1 * _2n$1 * Z2);
-      const E = D + C;
-      const G = B + A;
-      const H = D - C;
-      const X3 = mod$1(E * F);
-      const Y3 = mod$1(G * H);
-      const T3 = mod$1(E * H);
-      const Z3 = mod$1(F * G);
-      return new ExtendedPoint(X3, Y3, Z3, T3);
-    }
-    subtract(other) {
-      return this.add(other.negate());
-    }
-    precomputeWindow(W) {
-      const windows = 1 + 256 / W;
-      const points = $Array.of();
-      let p = this;
-      let base = p;
-      for (let window = 0; window < windows; window++) {
-        base = p;
-        points.push(base);
-        for (let i = 1; i < 2 ** (W - 1); i++) {
-          base = base.add(p);
-          points.push(base);
-        }
-        p = base.double();
-      }
-      return points;
-    }
-    wNAF(n, affinePoint) {
-      if (!affinePoint && this.equals(ExtendedPoint.BASE)) affinePoint = Point$1.BASE;
-      const W = affinePoint && affinePoint._WINDOW_SIZE || 1;
-      if (256 % W) {
-        throw new Error("Point#wNAF: Invalid precomputation window, must be power of 2");
-      }
-      let precomputes = affinePoint && pointPrecomputes$1.get(affinePoint);
-      if (!precomputes) {
-        precomputes = this.precomputeWindow(W);
-        if (affinePoint && W !== 1) {
-          precomputes = ExtendedPoint.normalizeZ(precomputes);
-          pointPrecomputes$1.set(affinePoint, precomputes);
-        }
-      }
-      let p = ExtendedPoint.ZERO;
-      let f = ExtendedPoint.ZERO;
-      const windows = 1 + 256 / W;
-      const windowSize = 2 ** (W - 1);
-      const mask = BigInt(2 ** W - 1);
-      const maxNumber = 2 ** W;
-      const shiftBy = BigInt(W);
-      for (let window = 0; window < windows; window++) {
-        const offset = window * windowSize;
-        let wbits = Number(n & mask);
-        n >>= shiftBy;
-        if (wbits > windowSize) {
-          wbits -= maxNumber;
-          n += _1n$1;
-        }
-        if (wbits === 0) {
-          let pr = precomputes[offset];
-          if (window % 2) pr = pr.negate();
-          f = f.add(pr);
-        } else {
-          let cached = precomputes[offset + Math.abs(wbits) - 1];
-          if (wbits < 0) cached = cached.negate();
-          p = p.add(cached);
-        }
-      }
-      return ExtendedPoint.normalizeZ($Array.of(p, f))[0];
-    }
-    multiply(scalar, affinePoint) {
-      return this.wNAF(normalizeScalar$1(scalar, CURVE$1.l), affinePoint);
-    }
-    multiplyUnsafe(scalar) {
-      let n = normalizeScalar$1(scalar, CURVE$1.l, false);
-      const G = ExtendedPoint.BASE;
-      const P0 = ExtendedPoint.ZERO;
-      if (n === _0n$1) return P0;
-      if (this.equals(P0) || n === _1n$1) return this;
-      if (this.equals(G)) return this.wNAF(n);
-      let p = P0;
-      let d = this;
-      while (n > _0n$1) {
-        if (n & _1n$1) p = p.add(d);
-        d = d.double();
-        n >>= _1n$1;
-      }
-      return p;
-    }
-    isSmallOrder() {
-      return this.multiplyUnsafe(CURVE$1.h).equals(ExtendedPoint.ZERO);
-    }
-    isTorsionFree() {
-      return this.multiplyUnsafe(CURVE$1.l).equals(ExtendedPoint.ZERO);
-    }
-    toAffine(invZ = invert$1(this.z)) {
-      const {
-        x: x,
-        y: y,
-        z: z
-      } = this;
-      const ax = mod$1(x * invZ);
-      const ay = mod$1(y * invZ);
-      const zz = mod$1(z * invZ);
-      if (zz !== _1n$1) throw new Error("invZ was invalid");
-      return new Point$1(ax, ay);
-    }
-    fromRistrettoBytes() {
-      legacyRist();
-    }
-    toRistrettoBytes() {
-      legacyRist();
-    }
-    fromRistrettoHash() {
-      legacyRist();
-    }
-  }
-  ExtendedPoint.BASE = new ExtendedPoint(CURVE$1.Gx, CURVE$1.Gy, _1n$1, mod$1(CURVE$1.Gx * CURVE$1.Gy));
-  ExtendedPoint.ZERO = new ExtendedPoint(_0n$1, _1n$1, _1n$1, _0n$1);
-  function assertExtPoint(other) {
-    if (!(other instanceof ExtendedPoint)) throw new TypeError("ExtendedPoint expected");
-  }
-  $(assertExtPoint);
-  function legacyRist() {
-    throw new Error("Legacy method: switch to RistrettoPoint");
-  }
-  $(legacyRist);
-  const pointPrecomputes$1 = new WeakMap();
-  class Point$1 {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-    }
-    _setWindowSize(windowSize) {
-      this._WINDOW_SIZE = windowSize;
-      pointPrecomputes$1.delete(this);
-    }
-    static fromHex(hex, strict = true) {
-      const {
-        d: d,
-        P: P
-      } = CURVE$1;
-      hex = ensureBytes$1(hex, 32);
-      const normed = hex.slice();
-      normed[31] = hex[31] & ~128;
-      const y = bytesToNumberLE(normed);
-      if (strict && y >= P) throw new Error("Expected 0 < hex < P");
-      if (!strict && y >= MAX_256B) throw new Error("Expected 0 < hex < 2**256");
-      const y2 = mod$1(y * y);
-      const u = mod$1(y2 - _1n$1);
-      const v = mod$1(d * y2 + _1n$1);
-      let {
-        isValid: isValid,
-        value: x
-      } = uvRatio(u, v);
-      if (!isValid) throw new Error("Point.fromHex: invalid y coordinate");
-      const isXOdd = (x & _1n$1) === _1n$1;
-      const isLastByteOdd = (hex[31] & 128) !== 0;
-      if (isLastByteOdd !== isXOdd) {
-        x = mod$1(-x);
-      }
-      return new Point$1(x, y);
-    }
-    static async fromPrivateKey(privateKey) {
-      return (await getExtendedPublicKey(privateKey)).point;
-    }
-    toRawBytes() {
-      const bytes = numberTo32BytesLE(this.y);
-      bytes[31] |= this.x & _1n$1 ? 128 : 0;
-      return bytes;
-    }
-    toHex() {
-      return bytesToHex$1(this.toRawBytes());
-    }
-    toX25519() {
-      const {
-        y: y
-      } = this;
-      const u = mod$1((_1n$1 + y) * invert$1(_1n$1 - y));
-      return numberTo32BytesLE(u);
-    }
-    isTorsionFree() {
-      return ExtendedPoint.fromAffine(this).isTorsionFree();
-    }
-    equals(other) {
-      return this.x === other.x && this.y === other.y;
-    }
-    negate() {
-      return new Point$1(mod$1(-this.x), this.y);
-    }
-    add(other) {
-      return ExtendedPoint.fromAffine(this).add(ExtendedPoint.fromAffine(other)).toAffine();
-    }
-    subtract(other) {
-      return this.add(other.negate());
-    }
-    multiply(scalar) {
-      return ExtendedPoint.fromAffine(this).multiply(scalar, this).toAffine();
-    }
-  }
-  Point$1.BASE = new Point$1(CURVE$1.Gx, CURVE$1.Gy);
-  Point$1.ZERO = new Point$1(_0n$1, _1n$1);
-  class Signature$1 {
-    constructor(r, s) {
-      this.r = r;
-      this.s = s;
-      this.assertValidity();
-    }
-    static fromHex(hex) {
-      const bytes = ensureBytes$1(hex, 64);
-      const r = Point$1.fromHex(bytes.slice(0, 32), false);
-      const s = bytesToNumberLE(bytes.slice(32, 64));
-      return new Signature$1(r, s);
-    }
-    assertValidity() {
-      const {
-        r: r,
-        s: s
-      } = this;
-      if (!(r instanceof Point$1)) throw new Error("Expected Point instance");
-      normalizeScalar$1(s, CURVE$1.l, false);
-      return this;
-    }
-    toRawBytes() {
-      const u8 = new Uint8Array(64);
-      u8.set(this.r.toRawBytes());
-      u8.set(numberTo32BytesLE(this.s), 32);
-      return u8;
-    }
-    toHex() {
-      return bytesToHex$1(this.toRawBytes());
-    }
-  }
-  function concatBytes$1(...arrays) {
-    if (!arrays.every($(a => a instanceof Uint8Array))) throw new Error("Expected Uint8Array list");
-    if (arrays.length === 1) return arrays[0];
-    const length = arrays.reduce($((a, arr) => a + arr.length), 0);
-    const result = new Uint8Array(length);
-    for (let i = 0, pad = 0; i < arrays.length; i++) {
-      const arr = arrays[i];
-      result.set(arr, pad);
-      pad += arr.length;
-    }
-    return result;
-  }
-  $(concatBytes$1);
-  const hexes$1 = $Array.from($(function () {
+  $(abytes);
+  const hexes = $Array.from($(function () {
     let result = $Object.create(null, undefined);
     result.length = 256;
     return result;
-  })(), $((v, i) => i.toString(16).padStart(2, "0")));
-  function bytesToHex$1(uint8a) {
-    if (!(uint8a instanceof Uint8Array)) throw new Error("Uint8Array expected");
+  })(), $((_, i) => i.toString(16).padStart(2, "0")));
+  function bytesToHex(bytes) {
+    abytes(bytes);
     let hex = "";
-    for (let i = 0; i < uint8a.length; i++) {
-      hex += hexes$1[uint8a[i]];
+    for (let i = 0; i < bytes.length; i++) {
+      hex += hexes[bytes[i]];
     }
     return hex;
   }
-  $(bytesToHex$1);
-  function hexToBytes$1(hex) {
-    if (typeof hex !== "string") {
-      throw new TypeError("hexToBytes: expected string, got " + typeof hex);
-    }
-    if (hex.length % 2) throw new Error("hexToBytes: received invalid unpadded hex");
-    const array = new Uint8Array(hex.length / 2);
-    for (let i = 0; i < array.length; i++) {
-      const j = i * 2;
-      const hexByte = hex.slice(j, j + 2);
-      const byte = Number.parseInt(hexByte, 16);
-      if (Number.isNaN(byte) || byte < 0) throw new Error("Invalid byte sequence");
-      array[i] = byte;
+  $(bytesToHex);
+  function numberToHexUnpadded(num) {
+    const hex = num.toString(16);
+    return hex.length & 1 ? `0${hex}` : hex;
+  }
+  $(numberToHexUnpadded);
+  function hexToNumber(hex) {
+    if (typeof hex !== "string") throw new Error("hex string expected, got " + typeof hex);
+    return BigInt(hex === "" ? "0" : `0x${hex}`);
+  }
+  $(hexToNumber);
+  const asciis = $(function () {
+    let result = $Object.create(null, undefined);
+    result._0 = 48;
+    result._9 = 57;
+    result._A = 65;
+    result._F = 70;
+    result._a = 97;
+    result._f = 102;
+    return result;
+  })();
+  function asciiToBase16(char) {
+    if (char >= asciis._0 && char <= asciis._9) return char - asciis._0;
+    if (char >= asciis._A && char <= asciis._F) return char - (asciis._A - 10);
+    if (char >= asciis._a && char <= asciis._f) return char - (asciis._a - 10);
+    return;
+  }
+  $(asciiToBase16);
+  function hexToBytes(hex) {
+    if (typeof hex !== "string") throw new Error("hex string expected, got " + typeof hex);
+    const hl = hex.length;
+    const al = hl / 2;
+    if (hl % 2) throw new Error("padded hex string expected, got unpadded hex of length " + hl);
+    const array = new Uint8Array(al);
+    for (let ai = 0, hi = 0; ai < al; ai++, hi += 2) {
+      const n1 = asciiToBase16(hex.charCodeAt(hi));
+      const n2 = asciiToBase16(hex.charCodeAt(hi + 1));
+      if (n1 === undefined || n2 === undefined) {
+        const char = hex[hi] + hex[hi + 1];
+        throw new Error('hex string expected, got non-hex character "' + char + '" at index ' + hi);
+      }
+      array[ai] = n1 * 16 + n2;
     }
     return array;
   }
-  $(hexToBytes$1);
-  function numberTo32BytesBE(num) {
-    const length = 32;
-    const hex = num.toString(16).padStart(length * 2, "0");
-    return hexToBytes$1(hex);
+  $(hexToBytes);
+  function bytesToNumberBE(bytes) {
+    return hexToNumber(bytesToHex(bytes));
   }
-  $(numberTo32BytesBE);
-  function numberTo32BytesLE(num) {
-    return numberTo32BytesBE(num).reverse();
-  }
-  $(numberTo32BytesLE);
-  function edIsNegative(num) {
-    return (mod$1(num) & _1n$1) === _1n$1;
-  }
-  $(edIsNegative);
-  function bytesToNumberLE(uint8a) {
-    if (!(uint8a instanceof Uint8Array)) throw new Error("Expected Uint8Array");
-    return BigInt("0x" + bytesToHex$1(Uint8Array.from(uint8a).reverse()));
+  $(bytesToNumberBE);
+  function bytesToNumberLE(bytes) {
+    abytes(bytes);
+    return hexToNumber(bytesToHex(Uint8Array.from(bytes).reverse()));
   }
   $(bytesToNumberLE);
-  function mod$1(a, b = CURVE$1.P) {
-    const res = a % b;
-    return res >= _0n$1 ? res : b + res;
+  function numberToBytesBE(n, len) {
+    return hexToBytes(n.toString(16).padStart(len * 2, "0"));
   }
-  $(mod$1);
-  function invert$1(number, modulo = CURVE$1.P) {
-    if (number === _0n$1 || modulo <= _0n$1) {
+  $(numberToBytesBE);
+  function numberToBytesLE(n, len) {
+    return numberToBytesBE(n, len).reverse();
+  }
+  $(numberToBytesLE);
+  function numberToVarBytesBE(n) {
+    return hexToBytes(numberToHexUnpadded(n));
+  }
+  $(numberToVarBytesBE);
+  function ensureBytes(title, hex, expectedLength) {
+    let res;
+    if (typeof hex === "string") {
+      try {
+        res = hexToBytes(hex);
+      } catch (e) {
+        throw new Error(`${title} must be valid hex string, got "${hex}". Cause: ${e}`);
+      }
+    } else if (isBytes$2(hex)) {
+      res = Uint8Array.from(hex);
+    } else {
+      throw new Error(`${title} must be hex string or Uint8Array`);
+    }
+    const len = res.length;
+    if (typeof expectedLength === "number" && len !== expectedLength) throw new Error(`${title} expected ${expectedLength} bytes, got ${len}`);
+    return res;
+  }
+  $(ensureBytes);
+  function concatBytes(...arrays) {
+    let sum = 0;
+    for (let i = 0; i < arrays.length; i++) {
+      const a = arrays[i];
+      abytes(a);
+      sum += a.length;
+    }
+    const res = new Uint8Array(sum);
+    for (let i = 0, pad = 0; i < arrays.length; i++) {
+      const a = arrays[i];
+      res.set(a, pad);
+      pad += a.length;
+    }
+    return res;
+  }
+  $(concatBytes);
+  function equalBytes(a, b) {
+    if (a.length !== b.length) return false;
+    let diff = 0;
+    for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
+    return diff === 0;
+  }
+  $(equalBytes);
+  function utf8ToBytes$1(str) {
+    if (typeof str !== "string") throw new Error(`utf8ToBytes expected string, got ${typeof str}`);
+    return new Uint8Array(new TextEncoder().encode(str));
+  }
+  $(utf8ToBytes$1);
+  function bitLen(n) {
+    let len;
+    for (len = 0; n > _0n$5; n >>= _1n$7, len += 1);
+    return len;
+  }
+  $(bitLen);
+  function bitGet(n, pos) {
+    return n >> BigInt(pos) & _1n$7;
+  }
+  $(bitGet);
+  function bitSet(n, pos, value) {
+    return n | (value ? _1n$7 : _0n$5) << BigInt(pos);
+  }
+  $(bitSet);
+  const bitMask = n => (_2n$5 << BigInt(n - 1)) - _1n$7;
+  $(bitMask);
+  const u8n = data => new Uint8Array(data);
+  $(u8n);
+  const u8fr = arr => Uint8Array.from(arr);
+  $(u8fr);
+  function createHmacDrbg(hashLen, qByteLen, hmacFn) {
+    if (typeof hashLen !== "number" || hashLen < 2) throw new Error("hashLen must be a number");
+    if (typeof qByteLen !== "number" || qByteLen < 2) throw new Error("qByteLen must be a number");
+    if (typeof hmacFn !== "function") throw new Error("hmacFn must be a function");
+    let v = u8n(hashLen);
+    let k = u8n(hashLen);
+    let i = 0;
+    const reset = () => {
+      v.fill(1);
+      k.fill(0);
+      i = 0;
+    };
+    $(reset);
+    const h = (...b) => hmacFn(k, v, ...b);
+    $(h);
+    const reseed = (seed = u8n()) => {
+      k = h(u8fr($Array.of(0)), seed);
+      v = h();
+      if (seed.length === 0) return;
+      k = h(u8fr($Array.of(1)), seed);
+      v = h();
+    };
+    $(reseed);
+    const gen = () => {
+      if (i++ >= 1e3) throw new Error("drbg: tried 1000 values");
+      let len = 0;
+      const out = $Array.of();
+      while (len < qByteLen) {
+        v = h();
+        const sl = v.slice();
+        out.push(sl);
+        len += v.length;
+      }
+      return concatBytes(...out);
+    };
+    $(gen);
+    const genUntil = (seed, pred) => {
+      reset();
+      reseed(seed);
+      let res = undefined;
+      while (!(res = pred(gen()))) reseed();
+      reset();
+      return res;
+    };
+    $(genUntil);
+    return genUntil;
+  }
+  $(createHmacDrbg);
+  const validatorFns = $(function () {
+    let result = $Object.create(null, undefined);
+    result.bigint = $(val => typeof val === "bigint");
+    result.function = $(val => typeof val === "function");
+    result.boolean = $(val => typeof val === "boolean");
+    result.string = $(val => typeof val === "string");
+    result.stringOrUint8Array = $(val => typeof val === "string" || isBytes$2(val));
+    result.isSafeInteger = $(val => Number.isSafeInteger(val));
+    result.array = $(val => $Array.isArray(val));
+    result.field = $((val, object) => object.Fp.isValid(val));
+    result.hash = $(val => typeof val === "function" && Number.isSafeInteger(val.outputLen));
+    return result;
+  })();
+  function validateObject(object, validators, optValidators = $Object.create(null, undefined)) {
+    const checkField = (fieldName, type, isOptional) => {
+      const checkVal = validatorFns[type];
+      if (typeof checkVal !== "function") throw new Error(`Invalid validator "${type}", expected function`);
+      const val = object[fieldName];
+      if (isOptional && val === undefined) return;
+      if (!checkVal(val, object)) {
+        throw new Error(`Invalid param ${String(fieldName)}=${val} (${typeof val}), expected ${type}`);
+      }
+    };
+    $(checkField);
+    for (const [fieldName, type] of $Object.entries(validators)) checkField(fieldName, type, false);
+    for (const [fieldName, type] of $Object.entries(optValidators)) checkField(fieldName, type, true);
+    return object;
+  }
+  $(validateObject);
+  var ut = $Object.freeze($(function () {
+    let result = $Object.create(null, undefined);
+    result.__proto__ = null;
+    result.abytes = abytes;
+    result.bitGet = bitGet;
+    result.bitLen = bitLen;
+    result.bitMask = bitMask;
+    result.bitSet = bitSet;
+    result.bytesToHex = bytesToHex;
+    result.bytesToNumberBE = bytesToNumberBE;
+    result.bytesToNumberLE = bytesToNumberLE;
+    result.concatBytes = concatBytes;
+    result.createHmacDrbg = createHmacDrbg;
+    result.ensureBytes = ensureBytes;
+    result.equalBytes = equalBytes;
+    result.hexToBytes = hexToBytes;
+    result.hexToNumber = hexToNumber;
+    result.isBytes = isBytes$2;
+    result.numberToBytesBE = numberToBytesBE;
+    result.numberToBytesLE = numberToBytesLE;
+    result.numberToHexUnpadded = numberToHexUnpadded;
+    result.numberToVarBytesBE = numberToVarBytesBE;
+    result.utf8ToBytes = utf8ToBytes$1;
+    result.validateObject = validateObject;
+    return result;
+  })());
+  /*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+  const _0n$4 = BigInt(0),
+    _1n$6 = BigInt(1),
+    _2n$4 = BigInt(2),
+    _3n$1 = BigInt(3);
+  const _4n = BigInt(4),
+    _5n$1 = BigInt(5),
+    _8n$1 = BigInt(8);
+  BigInt(9);
+  BigInt(16);
+  function mod(a, b) {
+    const result = a % b;
+    return result >= _0n$4 ? result : b + result;
+  }
+  $(mod);
+  function pow(num, power, modulo) {
+    if (modulo <= _0n$4 || power < _0n$4) throw new Error("Expected power/modulo > 0");
+    if (modulo === _1n$6) return _0n$4;
+    let res = _1n$6;
+    while (power > _0n$4) {
+      if (power & _1n$6) res = res * num % modulo;
+      num = num * num % modulo;
+      power >>= _1n$6;
+    }
+    return res;
+  }
+  $(pow);
+  function pow2(x, power, modulo) {
+    let res = x;
+    while (power-- > _0n$4) {
+      res *= res;
+      res %= modulo;
+    }
+    return res;
+  }
+  $(pow2);
+  function invert(number, modulo) {
+    if (number === _0n$4 || modulo <= _0n$4) {
       throw new Error(`invert: expected positive integers, got n=${number} mod=${modulo}`);
     }
-    let a = mod$1(number, modulo);
+    let a = mod(number, modulo);
     let b = modulo;
-    let x = _0n$1,
-      u = _1n$1;
-    while (a !== _0n$1) {
+    let x = _0n$4,
+      u = _1n$6;
+    while (a !== _0n$4) {
       const q = b / a;
       const r = b % a;
       const m = x - u * q;
       b = a, a = r, x = u, u = m;
     }
     const gcd = b;
-    if (gcd !== _1n$1) throw new Error("invert: does not exist");
-    return mod$1(x, modulo);
+    if (gcd !== _1n$6) throw new Error("invert: does not exist");
+    return mod(x, modulo);
   }
-  $(invert$1);
-  function invertBatch$1(nums, p = CURVE$1.P) {
+  $(invert);
+  function tonelliShanks(P) {
+    const legendreC = (P - _1n$6) / _2n$4;
+    let Q, S, Z;
+    for (Q = P - _1n$6, S = 0; Q % _2n$4 === _0n$4; Q /= _2n$4, S++);
+    for (Z = _2n$4; Z < P && pow(Z, legendreC, P) !== P - _1n$6; Z++);
+    if (S === 1) {
+      const p1div4 = (P + _1n$6) / _4n;
+      return $(function tonelliFast(Fp, n) {
+        const root = Fp.pow(n, p1div4);
+        if (!Fp.eql(Fp.sqr(root), n)) throw new Error("Cannot find square root");
+        return root;
+      });
+    }
+    const Q1div2 = (Q + _1n$6) / _2n$4;
+    return $(function tonelliSlow(Fp, n) {
+      if (Fp.pow(n, legendreC) === Fp.neg(Fp.ONE)) throw new Error("Cannot find square root");
+      let r = S;
+      let g = Fp.pow(Fp.mul(Fp.ONE, Z), Q);
+      let x = Fp.pow(n, Q1div2);
+      let b = Fp.pow(n, Q);
+      while (!Fp.eql(b, Fp.ONE)) {
+        if (Fp.eql(b, Fp.ZERO)) return Fp.ZERO;
+        let m = 1;
+        for (let t2 = Fp.sqr(b); m < r; m++) {
+          if (Fp.eql(t2, Fp.ONE)) break;
+          t2 = Fp.sqr(t2);
+        }
+        const ge = Fp.pow(g, _1n$6 << BigInt(r - m - 1));
+        g = Fp.sqr(ge);
+        x = Fp.mul(x, ge);
+        b = Fp.mul(b, g);
+        r = m;
+      }
+      return x;
+    });
+  }
+  $(tonelliShanks);
+  function FpSqrt(P) {
+    if (P % _4n === _3n$1) {
+      const p1div4 = (P + _1n$6) / _4n;
+      return $(function sqrt3mod4(Fp, n) {
+        const root = Fp.pow(n, p1div4);
+        if (!Fp.eql(Fp.sqr(root), n)) throw new Error("Cannot find square root");
+        return root;
+      });
+    }
+    if (P % _8n$1 === _5n$1) {
+      const c1 = (P - _5n$1) / _8n$1;
+      return $(function sqrt5mod8(Fp, n) {
+        const n2 = Fp.mul(n, _2n$4);
+        const v = Fp.pow(n2, c1);
+        const nv = Fp.mul(n, v);
+        const i = Fp.mul(Fp.mul(nv, _2n$4), v);
+        const root = Fp.mul(nv, Fp.sub(i, Fp.ONE));
+        if (!Fp.eql(Fp.sqr(root), n)) throw new Error("Cannot find square root");
+        return root;
+      });
+    }
+    return tonelliShanks(P);
+  }
+  $(FpSqrt);
+  const isNegativeLE = (num, modulo) => (mod(num, modulo) & _1n$6) === _1n$6;
+  $(isNegativeLE);
+  const FIELD_FIELDS = $Array.of("create", "isValid", "is0", "neg", "inv", "sqrt", "sqr", "eql", "add", "sub", "mul", "pow", "div", "addN", "subN", "mulN", "sqrN");
+  function validateField(field) {
+    const initial = $(function () {
+      let result = $Object.create(null, undefined);
+      result.ORDER = "bigint";
+      result.MASK = "bigint";
+      result.BYTES = "isSafeInteger";
+      result.BITS = "isSafeInteger";
+      return result;
+    })();
+    const opts = FIELD_FIELDS.reduce($((map, val) => {
+      map[val] = "function";
+      return map;
+    }), initial);
+    return validateObject(field, opts);
+  }
+  $(validateField);
+  function FpPow(f, num, power) {
+    if (power < _0n$4) throw new Error("Expected power > 0");
+    if (power === _0n$4) return f.ONE;
+    if (power === _1n$6) return num;
+    let p = f.ONE;
+    let d = num;
+    while (power > _0n$4) {
+      if (power & _1n$6) p = f.mul(p, d);
+      d = f.sqr(d);
+      power >>= _1n$6;
+    }
+    return p;
+  }
+  $(FpPow);
+  function FpInvertBatch(f, nums) {
     const tmp = new Array(nums.length);
     const lastMultiplied = nums.reduce($((acc, num, i) => {
-      if (num === _0n$1) return acc;
+      if (f.is0(num)) return acc;
       tmp[i] = acc;
-      return mod$1(acc * num, p);
-    }), _1n$1);
-    const inverted = invert$1(lastMultiplied, p);
+      return f.mul(acc, num);
+    }), f.ONE);
+    const inverted = f.inv(lastMultiplied);
     nums.reduceRight($((acc, num, i) => {
-      if (num === _0n$1) return acc;
-      tmp[i] = mod$1(acc * tmp[i], p);
-      return mod$1(acc * num, p);
+      if (f.is0(num)) return acc;
+      tmp[i] = f.mul(acc, tmp[i]);
+      return f.mul(acc, num);
     }), inverted);
     return tmp;
   }
-  $(invertBatch$1);
-  function pow2$1(x, power) {
-    const {
-      P: P
-    } = CURVE$1;
-    let res = x;
-    while (power-- > _0n$1) {
-      res *= res;
-      res %= P;
-    }
-    return res;
+  $(FpInvertBatch);
+  function nLength(n, nBitLength) {
+    const _nBitLength = nBitLength !== undefined ? nBitLength : n.toString(2).length;
+    const nByteLength = Math.ceil(_nBitLength / 8);
+    return $(function () {
+      let result = $Object.create(null, undefined);
+      result.nBitLength = _nBitLength;
+      result.nByteLength = nByteLength;
+      return result;
+    })();
   }
-  $(pow2$1);
-  function pow_2_252_3(x) {
+  $(nLength);
+  function Field(ORDER, bitLen, isLE = false, redef = $Object.create(null, undefined)) {
+    if (ORDER <= _0n$4) throw new Error(`Expected Field ORDER > 0, got ${ORDER}`);
     const {
-      P: P
-    } = CURVE$1;
-    const _5n = BigInt(5);
-    const _10n = BigInt(10);
-    const _20n = BigInt(20);
-    const _40n = BigInt(40);
-    const _80n = BigInt(80);
+      nBitLength: BITS,
+      nByteLength: BYTES
+    } = nLength(ORDER, bitLen);
+    if (BYTES > 2048) throw new Error("Field lengths over 2048 bytes are not supported");
+    const sqrtP = FpSqrt(ORDER);
+    const f = $Object.freeze($(function () {
+      let result = $Object.create(null, undefined);
+      result.ORDER = ORDER;
+      result.BITS = BITS;
+      result.BYTES = BYTES;
+      result.MASK = bitMask(BITS);
+      result.ZERO = _0n$4;
+      result.ONE = _1n$6;
+      result.create = $(num => mod(num, ORDER));
+      result.isValid = $(num => {
+        if (typeof num !== "bigint") throw new Error(`Invalid field element: expected bigint, got ${typeof num}`);
+        return _0n$4 <= num && num < ORDER;
+      });
+      result.is0 = $(num => num === _0n$4);
+      result.isOdd = $(num => (num & _1n$6) === _1n$6);
+      result.neg = $(num => mod(-num, ORDER));
+      result.eql = $((lhs, rhs) => lhs === rhs);
+      result.sqr = $(num => mod(num * num, ORDER));
+      result.add = $((lhs, rhs) => mod(lhs + rhs, ORDER));
+      result.sub = $((lhs, rhs) => mod(lhs - rhs, ORDER));
+      result.mul = $((lhs, rhs) => mod(lhs * rhs, ORDER));
+      result.pow = $((num, power) => FpPow(f, num, power));
+      result.div = $((lhs, rhs) => mod(lhs * invert(rhs, ORDER), ORDER));
+      result.sqrN = $(num => num * num);
+      result.addN = $((lhs, rhs) => lhs + rhs);
+      result.subN = $((lhs, rhs) => lhs - rhs);
+      result.mulN = $((lhs, rhs) => lhs * rhs);
+      result.inv = $(num => invert(num, ORDER));
+      result.sqrt = redef.sqrt || $(n => sqrtP(f, n));
+      result.invertBatch = $(lst => FpInvertBatch(f, lst));
+      result.cmov = $((a, b, c) => c ? b : a);
+      result.toBytes = $(num => isLE ? numberToBytesLE(num, BYTES) : numberToBytesBE(num, BYTES));
+      result.fromBytes = $(bytes => {
+        if (bytes.length !== BYTES) throw new Error(`Fp.fromBytes: expected ${BYTES}, got ${bytes.length}`);
+        return isLE ? bytesToNumberLE(bytes) : bytesToNumberBE(bytes);
+      });
+      return result;
+    })());
+    return $Object.freeze(f);
+  }
+  $(Field);
+  function FpSqrtEven(Fp, elm) {
+    if (!Fp.isOdd) throw new Error(`Field doesn't have isOdd`);
+    const root = Fp.sqrt(elm);
+    return Fp.isOdd(root) ? Fp.neg(root) : root;
+  }
+  $(FpSqrtEven);
+  function getFieldBytesLength(fieldOrder) {
+    if (typeof fieldOrder !== "bigint") throw new Error("field order must be bigint");
+    const bitLength = fieldOrder.toString(2).length;
+    return Math.ceil(bitLength / 8);
+  }
+  $(getFieldBytesLength);
+  function getMinHashLength(fieldOrder) {
+    const length = getFieldBytesLength(fieldOrder);
+    return length + Math.ceil(length / 2);
+  }
+  $(getMinHashLength);
+  function mapHashToField(key, fieldOrder, isLE = false) {
+    const len = key.length;
+    const fieldLen = getFieldBytesLength(fieldOrder);
+    const minLen = getMinHashLength(fieldOrder);
+    if (len < 16 || len < minLen || len > 1024) throw new Error(`expected ${minLen}-1024 bytes of input, got ${len}`);
+    const num = isLE ? bytesToNumberBE(key) : bytesToNumberLE(key);
+    const reduced = mod(num, fieldOrder - _1n$6) + _1n$6;
+    return isLE ? numberToBytesLE(reduced, fieldLen) : numberToBytesBE(reduced, fieldLen);
+  }
+  /*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+  $(mapHashToField);
+  const _0n$3 = BigInt(0);
+  const _1n$5 = BigInt(1);
+  function wNAF(c, bits) {
+    const constTimeNegate = (condition, item) => {
+      const neg = item.negate();
+      return condition ? neg : item;
+    };
+    $(constTimeNegate);
+    const opts = W => {
+      const windows = Math.ceil(bits / W) + 1;
+      const windowSize = 2 ** (W - 1);
+      return $(function () {
+        let result = $Object.create(null, undefined);
+        result.windows = windows;
+        result.windowSize = windowSize;
+        return result;
+      })();
+    };
+    $(opts);
+    return $(function () {
+      let result = $Object.create(null, undefined);
+      result.constTimeNegate = constTimeNegate;
+      result.unsafeLadder = $(function (elm, n) {
+        let p = c.ZERO;
+        let d = elm;
+        while (n > _0n$3) {
+          if (n & _1n$5) p = p.add(d);
+          d = d.double();
+          n >>= _1n$5;
+        }
+        return p;
+      });
+      result.precomputeWindow = $(function (elm, W) {
+        const {
+          windows: windows,
+          windowSize: windowSize
+        } = opts(W);
+        const points = $Array.of();
+        let p = elm;
+        let base = p;
+        for (let window = 0; window < windows; window++) {
+          base = p;
+          points.push(base);
+          for (let i = 1; i < windowSize; i++) {
+            base = base.add(p);
+            points.push(base);
+          }
+          p = base.double();
+        }
+        return points;
+      });
+      result.wNAF = $(function (W, precomputes, n) {
+        const {
+          windows: windows,
+          windowSize: windowSize
+        } = opts(W);
+        let p = c.ZERO;
+        let f = c.BASE;
+        const mask = BigInt(2 ** W - 1);
+        const maxNumber = 2 ** W;
+        const shiftBy = BigInt(W);
+        for (let window = 0; window < windows; window++) {
+          const offset = window * windowSize;
+          let wbits = Number(n & mask);
+          n >>= shiftBy;
+          if (wbits > windowSize) {
+            wbits -= maxNumber;
+            n += _1n$5;
+          }
+          const offset1 = offset;
+          const offset2 = offset + Math.abs(wbits) - 1;
+          const cond1 = window % 2 !== 0;
+          const cond2 = wbits < 0;
+          if (wbits === 0) {
+            f = f.add(constTimeNegate(cond1, precomputes[offset1]));
+          } else {
+            p = p.add(constTimeNegate(cond2, precomputes[offset2]));
+          }
+        }
+        return $(function () {
+          let result = $Object.create(null, undefined);
+          result.p = p;
+          result.f = f;
+          return result;
+        })();
+      });
+      result.wNAFCached = $(function (P, precomputesMap, n, transform) {
+        const W = P._WINDOW_SIZE || 1;
+        let comp = precomputesMap.get(P);
+        if (!comp) {
+          comp = this.precomputeWindow(P, W);
+          if (W !== 1) {
+            precomputesMap.set(P, transform(comp));
+          }
+        }
+        return this.wNAF(W, comp, n);
+      });
+      return result;
+    })();
+  }
+  $(wNAF);
+  function validateBasic(curve) {
+    validateField(curve.Fp);
+    validateObject(curve, $(function () {
+      let result = $Object.create(null, undefined);
+      result.n = "bigint";
+      result.h = "bigint";
+      result.Gx = "field";
+      result.Gy = "field";
+      return result;
+    })(), $(function () {
+      let result = $Object.create(null, undefined);
+      result.nBitLength = "isSafeInteger";
+      result.nByteLength = "isSafeInteger";
+      return result;
+    })());
+    return $Object.freeze($(function () {
+      let result = $Object.create(null, undefined);
+      $Object.assign(result, nLength(curve.n, curve.nBitLength));
+      $Object.assign(result, curve);
+      $Object.assign(result, $(function () {
+        let result = $Object.create(null, undefined);
+        result.p = curve.Fp.ORDER;
+        return result;
+      })());
+      return result;
+    })());
+  }
+  /*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+  $(validateBasic);
+  const _0n$2 = BigInt(0),
+    _1n$4 = BigInt(1),
+    _2n$3 = BigInt(2),
+    _8n = BigInt(8);
+  const VERIFY_DEFAULT = $(function () {
+    let result = $Object.create(null, undefined);
+    result.zip215 = true;
+    return result;
+  })();
+  function validateOpts$1(curve) {
+    const opts = validateBasic(curve);
+    validateObject(curve, $(function () {
+      let result = $Object.create(null, undefined);
+      result.hash = "function";
+      result.a = "bigint";
+      result.d = "bigint";
+      result.randomBytes = "function";
+      return result;
+    })(), $(function () {
+      let result = $Object.create(null, undefined);
+      result.adjustScalarBytes = "function";
+      result.domain = "function";
+      result.uvRatio = "function";
+      result.mapToCurve = "function";
+      return result;
+    })());
+    return $Object.freeze($(function () {
+      let result = $Object.create(null, undefined);
+      $Object.assign(result, opts);
+      return result;
+    })());
+  }
+  $(validateOpts$1);
+  function twistedEdwards(curveDef) {
+    const CURVE = validateOpts$1(curveDef);
+    const {
+      Fp: Fp,
+      n: CURVE_ORDER,
+      prehash: prehash,
+      hash: cHash,
+      randomBytes: randomBytes,
+      nByteLength: nByteLength,
+      h: cofactor
+    } = CURVE;
+    const MASK = _2n$3 << BigInt(nByteLength * 8) - _1n$4;
+    const modP = Fp.create;
+    const uvRatio = CURVE.uvRatio || $((u, v) => {
+      try {
+        return $(function () {
+          let result = $Object.create(null, undefined);
+          result.isValid = true;
+          result.value = Fp.sqrt(u * Fp.inv(v));
+          return result;
+        })();
+      } catch (e) {
+        return $(function () {
+          let result = $Object.create(null, undefined);
+          result.isValid = false;
+          result.value = _0n$2;
+          return result;
+        })();
+      }
+    });
+    const adjustScalarBytes = CURVE.adjustScalarBytes || $(bytes => bytes);
+    const domain = CURVE.domain || $((data, ctx, phflag) => {
+      if (ctx.length || phflag) throw new Error("Contexts/pre-hash are not supported");
+      return data;
+    });
+    const inBig = n => typeof n === "bigint" && _0n$2 < n;
+    $(inBig);
+    const inRange = (n, max) => inBig(n) && inBig(max) && n < max;
+    $(inRange);
+    const in0MaskRange = n => n === _0n$2 || inRange(n, MASK);
+    $(in0MaskRange);
+    function assertInRange(n, max) {
+      if (inRange(n, max)) return n;
+      throw new Error(`Expected valid scalar < ${max}, got ${typeof n} ${n}`);
+    }
+    $(assertInRange);
+    function assertGE0(n) {
+      return n === _0n$2 ? n : assertInRange(n, CURVE_ORDER);
+    }
+    $(assertGE0);
+    const pointPrecomputes = new Map();
+    function isPoint(other) {
+      if (!(other instanceof Point)) throw new Error("ExtendedPoint expected");
+    }
+    $(isPoint);
+    class Point {
+      constructor(ex, ey, ez, et) {
+        this.ex = ex;
+        this.ey = ey;
+        this.ez = ez;
+        this.et = et;
+        if (!in0MaskRange(ex)) throw new Error("x required");
+        if (!in0MaskRange(ey)) throw new Error("y required");
+        if (!in0MaskRange(ez)) throw new Error("z required");
+        if (!in0MaskRange(et)) throw new Error("t required");
+      }
+      get x() {
+        return this.toAffine().x;
+      }
+      get y() {
+        return this.toAffine().y;
+      }
+      static fromAffine(p) {
+        if (p instanceof Point) throw new Error("extended point not allowed");
+        const {
+          x: x,
+          y: y
+        } = p || $Object.create(null, undefined);
+        if (!in0MaskRange(x) || !in0MaskRange(y)) throw new Error("invalid affine point");
+        return new Point(x, y, _1n$4, modP(x * y));
+      }
+      static normalizeZ(points) {
+        const toInv = Fp.invertBatch(points.map($(p => p.ez)));
+        return points.map($((p, i) => p.toAffine(toInv[i]))).map(Point.fromAffine);
+      }
+      _setWindowSize(windowSize) {
+        this._WINDOW_SIZE = windowSize;
+        pointPrecomputes.delete(this);
+      }
+      assertValidity() {
+        const {
+          a: a,
+          d: d
+        } = CURVE;
+        if (this.is0()) throw new Error("bad point: ZERO");
+        const {
+          ex: X,
+          ey: Y,
+          ez: Z,
+          et: T
+        } = this;
+        const X2 = modP(X * X);
+        const Y2 = modP(Y * Y);
+        const Z2 = modP(Z * Z);
+        const Z4 = modP(Z2 * Z2);
+        const aX2 = modP(X2 * a);
+        const left = modP(Z2 * modP(aX2 + Y2));
+        const right = modP(Z4 + modP(d * modP(X2 * Y2)));
+        if (left !== right) throw new Error("bad point: equation left != right (1)");
+        const XY = modP(X * Y);
+        const ZT = modP(Z * T);
+        if (XY !== ZT) throw new Error("bad point: equation left != right (2)");
+      }
+      equals(other) {
+        isPoint(other);
+        const {
+          ex: X1,
+          ey: Y1,
+          ez: Z1
+        } = this;
+        const {
+          ex: X2,
+          ey: Y2,
+          ez: Z2
+        } = other;
+        const X1Z2 = modP(X1 * Z2);
+        const X2Z1 = modP(X2 * Z1);
+        const Y1Z2 = modP(Y1 * Z2);
+        const Y2Z1 = modP(Y2 * Z1);
+        return X1Z2 === X2Z1 && Y1Z2 === Y2Z1;
+      }
+      is0() {
+        return this.equals(Point.ZERO);
+      }
+      negate() {
+        return new Point(modP(-this.ex), this.ey, this.ez, modP(-this.et));
+      }
+      double() {
+        const {
+          a: a
+        } = CURVE;
+        const {
+          ex: X1,
+          ey: Y1,
+          ez: Z1
+        } = this;
+        const A = modP(X1 * X1);
+        const B = modP(Y1 * Y1);
+        const C = modP(_2n$3 * modP(Z1 * Z1));
+        const D = modP(a * A);
+        const x1y1 = X1 + Y1;
+        const E = modP(modP(x1y1 * x1y1) - A - B);
+        const G = D + B;
+        const F = G - C;
+        const H = D - B;
+        const X3 = modP(E * F);
+        const Y3 = modP(G * H);
+        const T3 = modP(E * H);
+        const Z3 = modP(F * G);
+        return new Point(X3, Y3, Z3, T3);
+      }
+      add(other) {
+        isPoint(other);
+        const {
+          a: a,
+          d: d
+        } = CURVE;
+        const {
+          ex: X1,
+          ey: Y1,
+          ez: Z1,
+          et: T1
+        } = this;
+        const {
+          ex: X2,
+          ey: Y2,
+          ez: Z2,
+          et: T2
+        } = other;
+        if (a === BigInt(-1)) {
+          const A = modP((Y1 - X1) * (Y2 + X2));
+          const B = modP((Y1 + X1) * (Y2 - X2));
+          const F = modP(B - A);
+          if (F === _0n$2) return this.double();
+          const C = modP(Z1 * _2n$3 * T2);
+          const D = modP(T1 * _2n$3 * Z2);
+          const E = D + C;
+          const G = B + A;
+          const H = D - C;
+          const X3 = modP(E * F);
+          const Y3 = modP(G * H);
+          const T3 = modP(E * H);
+          const Z3 = modP(F * G);
+          return new Point(X3, Y3, Z3, T3);
+        }
+        const A = modP(X1 * X2);
+        const B = modP(Y1 * Y2);
+        const C = modP(T1 * d * T2);
+        const D = modP(Z1 * Z2);
+        const E = modP((X1 + Y1) * (X2 + Y2) - A - B);
+        const F = D - C;
+        const G = D + C;
+        const H = modP(B - a * A);
+        const X3 = modP(E * F);
+        const Y3 = modP(G * H);
+        const T3 = modP(E * H);
+        const Z3 = modP(F * G);
+        return new Point(X3, Y3, Z3, T3);
+      }
+      subtract(other) {
+        return this.add(other.negate());
+      }
+      wNAF(n) {
+        return wnaf.wNAFCached(this, pointPrecomputes, n, Point.normalizeZ);
+      }
+      multiply(scalar) {
+        const {
+          p: p,
+          f: f
+        } = this.wNAF(assertInRange(scalar, CURVE_ORDER));
+        return Point.normalizeZ($Array.of(p, f))[0];
+      }
+      multiplyUnsafe(scalar) {
+        let n = assertGE0(scalar);
+        if (n === _0n$2) return I;
+        if (this.equals(I) || n === _1n$4) return this;
+        if (this.equals(G)) return this.wNAF(n).p;
+        return wnaf.unsafeLadder(this, n);
+      }
+      isSmallOrder() {
+        return this.multiplyUnsafe(cofactor).is0();
+      }
+      isTorsionFree() {
+        return wnaf.unsafeLadder(this, CURVE_ORDER).is0();
+      }
+      toAffine(iz) {
+        const {
+          ex: x,
+          ey: y,
+          ez: z
+        } = this;
+        const is0 = this.is0();
+        if (iz == null) iz = is0 ? _8n : Fp.inv(z);
+        const ax = modP(x * iz);
+        const ay = modP(y * iz);
+        const zz = modP(z * iz);
+        if (is0) return $(function () {
+          let result = $Object.create(null, undefined);
+          result.x = _0n$2;
+          result.y = _1n$4;
+          return result;
+        })();
+        if (zz !== _1n$4) throw new Error("invZ was invalid");
+        return $(function () {
+          let result = $Object.create(null, undefined);
+          result.x = ax;
+          result.y = ay;
+          return result;
+        })();
+      }
+      clearCofactor() {
+        const {
+          h: cofactor
+        } = CURVE;
+        if (cofactor === _1n$4) return this;
+        return this.multiplyUnsafe(cofactor);
+      }
+      static fromHex(hex, zip215 = false) {
+        const {
+          d: d,
+          a: a
+        } = CURVE;
+        const len = Fp.BYTES;
+        hex = ensureBytes("pointHex", hex, len);
+        const normed = hex.slice();
+        const lastByte = hex[len - 1];
+        normed[len - 1] = lastByte & ~128;
+        const y = bytesToNumberLE(normed);
+        if (y === _0n$2) ;else {
+          if (zip215) assertInRange(y, MASK);else assertInRange(y, Fp.ORDER);
+        }
+        const y2 = modP(y * y);
+        const u = modP(y2 - _1n$4);
+        const v = modP(d * y2 - a);
+        let {
+          isValid: isValid,
+          value: x
+        } = uvRatio(u, v);
+        if (!isValid) throw new Error("Point.fromHex: invalid y coordinate");
+        const isXOdd = (x & _1n$4) === _1n$4;
+        const isLastByteOdd = (lastByte & 128) !== 0;
+        if (!zip215 && x === _0n$2 && isLastByteOdd) throw new Error("Point.fromHex: x=0 and x_0=1");
+        if (isLastByteOdd !== isXOdd) x = modP(-x);
+        return Point.fromAffine($(function () {
+          let result = $Object.create(null, undefined);
+          result.x = x;
+          result.y = y;
+          return result;
+        })());
+      }
+      static fromPrivateKey(privKey) {
+        return getExtendedPublicKey(privKey).point;
+      }
+      toRawBytes() {
+        const {
+          x: x,
+          y: y
+        } = this.toAffine();
+        const bytes = numberToBytesLE(y, Fp.BYTES);
+        bytes[bytes.length - 1] |= x & _1n$4 ? 128 : 0;
+        return bytes;
+      }
+      toHex() {
+        return bytesToHex(this.toRawBytes());
+      }
+    }
+    Point.BASE = new Point(CURVE.Gx, CURVE.Gy, _1n$4, modP(CURVE.Gx * CURVE.Gy));
+    Point.ZERO = new Point(_0n$2, _1n$4, _1n$4, _0n$2);
+    const {
+      BASE: G,
+      ZERO: I
+    } = Point;
+    const wnaf = wNAF(Point, nByteLength * 8);
+    function modN(a) {
+      return mod(a, CURVE_ORDER);
+    }
+    $(modN);
+    function modN_LE(hash) {
+      return modN(bytesToNumberLE(hash));
+    }
+    $(modN_LE);
+    function getExtendedPublicKey(key) {
+      const len = nByteLength;
+      key = ensureBytes("private key", key, len);
+      const hashed = ensureBytes("hashed private key", cHash(key), 2 * len);
+      const head = adjustScalarBytes(hashed.slice(0, len));
+      const prefix = hashed.slice(len, 2 * len);
+      const scalar = modN_LE(head);
+      const point = G.multiply(scalar);
+      const pointBytes = point.toRawBytes();
+      return $(function () {
+        let result = $Object.create(null, undefined);
+        result.head = head;
+        result.prefix = prefix;
+        result.scalar = scalar;
+        result.point = point;
+        result.pointBytes = pointBytes;
+        return result;
+      })();
+    }
+    $(getExtendedPublicKey);
+    function getPublicKey(privKey) {
+      return getExtendedPublicKey(privKey).pointBytes;
+    }
+    $(getPublicKey);
+    function hashDomainToScalar(context = new Uint8Array(), ...msgs) {
+      const msg = concatBytes(...msgs);
+      return modN_LE(cHash(domain(msg, ensureBytes("context", context), !!prehash)));
+    }
+    $(hashDomainToScalar);
+    function sign(msg, privKey, options = $Object.create(null, undefined)) {
+      msg = ensureBytes("message", msg);
+      if (prehash) msg = prehash(msg);
+      const {
+        prefix: prefix,
+        scalar: scalar,
+        pointBytes: pointBytes
+      } = getExtendedPublicKey(privKey);
+      const r = hashDomainToScalar(options.context, prefix, msg);
+      const R = G.multiply(r).toRawBytes();
+      const k = hashDomainToScalar(options.context, R, pointBytes, msg);
+      const s = modN(r + k * scalar);
+      assertGE0(s);
+      const res = concatBytes(R, numberToBytesLE(s, Fp.BYTES));
+      return ensureBytes("result", res, nByteLength * 2);
+    }
+    $(sign);
+    const verifyOpts = VERIFY_DEFAULT;
+    function verify(sig, msg, publicKey, options = verifyOpts) {
+      const {
+        context: context,
+        zip215: zip215
+      } = options;
+      const len = Fp.BYTES;
+      sig = ensureBytes("signature", sig, 2 * len);
+      msg = ensureBytes("message", msg);
+      if (prehash) msg = prehash(msg);
+      const s = bytesToNumberLE(sig.slice(len, 2 * len));
+      let A, R, SB;
+      try {
+        A = Point.fromHex(publicKey, zip215);
+        R = Point.fromHex(sig.slice(0, len), zip215);
+        SB = G.multiplyUnsafe(s);
+      } catch (error) {
+        return false;
+      }
+      if (!zip215 && A.isSmallOrder()) return false;
+      const k = hashDomainToScalar(context, R.toRawBytes(), A.toRawBytes(), msg);
+      const RkA = R.add(A.multiplyUnsafe(k));
+      return RkA.subtract(SB).clearCofactor().equals(Point.ZERO);
+    }
+    $(verify);
+    G._setWindowSize(8);
+    const utils = $(function () {
+      let result = $Object.create(null, undefined);
+      result.getExtendedPublicKey = getExtendedPublicKey;
+      result.randomPrivateKey = $(() => randomBytes(Fp.BYTES));
+      result.precompute = $(function (windowSize = 8, point = Point.BASE) {
+        point._setWindowSize(windowSize);
+        point.multiply(BigInt(3));
+        return point;
+      });
+      return result;
+    })();
+    return $(function () {
+      let result = $Object.create(null, undefined);
+      result.CURVE = CURVE;
+      result.getPublicKey = getPublicKey;
+      result.sign = sign;
+      result.verify = verify;
+      result.ExtendedPoint = Point;
+      result.utils = utils;
+      return result;
+    })();
+  }
+  /*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+  $(twistedEdwards);
+  const ED25519_P = BigInt("57896044618658097711785492504343953926634992332820282019728792003956564819949");
+  const ED25519_SQRT_M1 = BigInt("19681161376707505956807079304988542015446066515923890162744021073123829784752");
+  BigInt(0);
+  const _1n$3 = BigInt(1),
+    _2n$2 = BigInt(2),
+    _5n = BigInt(5);
+  const _10n = BigInt(10),
+    _20n = BigInt(20),
+    _40n = BigInt(40),
+    _80n = BigInt(80);
+  function ed25519_pow_2_252_3(x) {
+    const P = ED25519_P;
     const x2 = x * x % P;
     const b2 = x2 * x % P;
-    const b4 = pow2$1(b2, _2n$1) * b2 % P;
-    const b5 = pow2$1(b4, _1n$1) * x % P;
-    const b10 = pow2$1(b5, _5n) * b5 % P;
-    const b20 = pow2$1(b10, _10n) * b10 % P;
-    const b40 = pow2$1(b20, _20n) * b20 % P;
-    const b80 = pow2$1(b40, _40n) * b40 % P;
-    const b160 = pow2$1(b80, _80n) * b80 % P;
-    const b240 = pow2$1(b160, _80n) * b80 % P;
-    const b250 = pow2$1(b240, _10n) * b10 % P;
-    const pow_p_5_8 = pow2$1(b250, _2n$1) * x % P;
+    const b4 = pow2(b2, _2n$2, P) * b2 % P;
+    const b5 = pow2(b4, _1n$3, P) * x % P;
+    const b10 = pow2(b5, _5n, P) * b5 % P;
+    const b20 = pow2(b10, _10n, P) * b10 % P;
+    const b40 = pow2(b20, _20n, P) * b20 % P;
+    const b80 = pow2(b40, _40n, P) * b40 % P;
+    const b160 = pow2(b80, _80n, P) * b80 % P;
+    const b240 = pow2(b160, _80n, P) * b80 % P;
+    const b250 = pow2(b240, _10n, P) * b10 % P;
+    const pow_p_5_8 = pow2(b250, _2n$2, P) * x % P;
     return $(function () {
       let result = $Object.create(null, undefined);
       result.pow_p_5_8 = pow_p_5_8;
@@ -2819,21 +3438,29 @@ var solanaWeb3 = $(function (exports) {
       return result;
     })();
   }
-  $(pow_2_252_3);
+  $(ed25519_pow_2_252_3);
+  function adjustScalarBytes(bytes) {
+    bytes[0] &= 248;
+    bytes[31] &= 127;
+    bytes[31] |= 64;
+    return bytes;
+  }
+  $(adjustScalarBytes);
   function uvRatio(u, v) {
-    const v3 = mod$1(v * v * v);
-    const v7 = mod$1(v3 * v3 * v);
-    const pow = pow_2_252_3(u * v7).pow_p_5_8;
-    let x = mod$1(u * v3 * pow);
-    const vx2 = mod$1(v * x * x);
+    const P = ED25519_P;
+    const v3 = mod(v * v * v, P);
+    const v7 = mod(v3 * v3 * v, P);
+    const pow = ed25519_pow_2_252_3(u * v7).pow_p_5_8;
+    let x = mod(u * v3 * pow, P);
+    const vx2 = mod(v * x * x, P);
     const root1 = x;
-    const root2 = mod$1(x * SQRT_M1);
+    const root2 = mod(x * ED25519_SQRT_M1, P);
     const useRoot1 = vx2 === u;
-    const useRoot2 = vx2 === mod$1(-u);
-    const noRoot = vx2 === mod$1(-u * SQRT_M1);
+    const useRoot2 = vx2 === mod(-u, P);
+    const noRoot = vx2 === mod(-u * ED25519_SQRT_M1, P);
     if (useRoot1) x = root1;
     if (useRoot2 || noRoot) x = root2;
-    if (edIsNegative(x)) x = mod$1(-x);
+    if (isNegativeLE(x, P)) x = mod(-x, P);
     return $(function () {
       let result = $Object.create(null, undefined);
       result.isValid = useRoot1 || useRoot2;
@@ -2842,210 +3469,56 @@ var solanaWeb3 = $(function (exports) {
     })();
   }
   $(uvRatio);
-  function modlLE(hash) {
-    return mod$1(bytesToNumberLE(hash), CURVE$1.l);
-  }
-  $(modlLE);
-  function ensureBytes$1(hex, expectedLength) {
-    const bytes = hex instanceof Uint8Array ? Uint8Array.from(hex) : hexToBytes$1(hex);
-    if (typeof expectedLength === "number" && bytes.length !== expectedLength) throw new Error(`Expected ${expectedLength} bytes`);
-    return bytes;
-  }
-  $(ensureBytes$1);
-  function normalizeScalar$1(num, max, strict = true) {
-    if (!max) throw new TypeError("Specify max value");
-    if (typeof num === "number" && Number.isSafeInteger(num)) num = BigInt(num);
-    if (typeof num === "bigint" && num < max) {
-      if (strict) {
-        if (_0n$1 < num) return num;
-      } else {
-        if (_0n$1 <= num) return num;
-      }
-    }
-    throw new TypeError("Expected valid scalar: 0 < scalar < max");
-  }
-  $(normalizeScalar$1);
-  function adjustBytes25519(bytes) {
-    bytes[0] &= 248;
-    bytes[31] &= 127;
-    bytes[31] |= 64;
-    return bytes;
-  }
-  $(adjustBytes25519);
-  function checkPrivateKey(key) {
-    key = typeof key === "bigint" || typeof key === "number" ? numberTo32BytesBE(normalizeScalar$1(key, MAX_256B)) : ensureBytes$1(key);
-    if (key.length !== 32) throw new Error(`Expected 32 bytes`);
-    return key;
-  }
-  $(checkPrivateKey);
-  function getKeyFromHash(hashed) {
-    const head = adjustBytes25519(hashed.slice(0, 32));
-    const prefix = hashed.slice(32, 64);
-    const scalar = modlLE(head);
-    const point = Point$1.BASE.multiply(scalar);
-    const pointBytes = point.toRawBytes();
-    return $(function () {
-      let result = $Object.create(null, undefined);
-      result.head = head;
-      result.prefix = prefix;
-      result.scalar = scalar;
-      result.point = point;
-      result.pointBytes = pointBytes;
-      return result;
-    })();
-  }
-  $(getKeyFromHash);
-  let _sha512Sync;
-  function sha512s(...m) {
-    if (typeof _sha512Sync !== "function") throw new Error("utils.sha512Sync must be set to use sync methods");
-    return _sha512Sync(...m);
-  }
-  $(sha512s);
-  async function getExtendedPublicKey(key) {
-    return getKeyFromHash(await utils$1.sha512(checkPrivateKey(key)));
-  }
-  $(getExtendedPublicKey);
-  function getExtendedPublicKeySync(key) {
-    return getKeyFromHash(sha512s(checkPrivateKey(key)));
-  }
-  $(getExtendedPublicKeySync);
-  function getPublicKeySync(privateKey) {
-    return getExtendedPublicKeySync(privateKey).pointBytes;
-  }
-  $(getPublicKeySync);
-  function signSync$1(message, privateKey) {
-    message = ensureBytes$1(message);
-    const {
-      prefix: prefix,
-      scalar: scalar,
-      pointBytes: pointBytes
-    } = getExtendedPublicKeySync(privateKey);
-    const r = modlLE(sha512s(prefix, message));
-    const R = Point$1.BASE.multiply(r);
-    const k = modlLE(sha512s(R.toRawBytes(), pointBytes, message));
-    const s = mod$1(r + k * scalar, CURVE$1.l);
-    return new Signature$1(R, s).toRawBytes();
-  }
-  $(signSync$1);
-  function prepareVerification(sig, message, publicKey) {
-    message = ensureBytes$1(message);
-    if (!(publicKey instanceof Point$1)) publicKey = Point$1.fromHex(publicKey, false);
-    const {
-      r: r,
-      s: s
-    } = sig instanceof Signature$1 ? sig.assertValidity() : Signature$1.fromHex(sig);
-    const SB = ExtendedPoint.BASE.multiplyUnsafe(s);
-    return $(function () {
-      let result = $Object.create(null, undefined);
-      result.r = r;
-      result.s = s;
-      result.SB = SB;
-      result.pub = publicKey;
-      result.msg = message;
-      return result;
-    })();
-  }
-  $(prepareVerification);
-  function finishVerification(publicKey, r, SB, hashed) {
-    const k = modlLE(hashed);
-    const kA = ExtendedPoint.fromAffine(publicKey).multiplyUnsafe(k);
-    const RkA = ExtendedPoint.fromAffine(r).add(kA);
-    return RkA.subtract(SB).multiplyUnsafe(CURVE$1.h).equals(ExtendedPoint.ZERO);
-  }
-  $(finishVerification);
-  function verifySync(sig, message, publicKey) {
-    const {
-      r: r,
-      SB: SB,
-      msg: msg,
-      pub: pub
-    } = prepareVerification(sig, message, publicKey);
-    const hashed = sha512s(r.toRawBytes(), pub.toRawBytes(), msg);
-    return finishVerification(pub, r, SB, hashed);
-  }
-  $(verifySync);
-  const sync = $(function () {
+  const Fp$1 = Field(ED25519_P, undefined, true);
+  const ed25519Defaults = $(function () {
     let result = $Object.create(null, undefined);
-    result.getExtendedPublicKey = getExtendedPublicKeySync;
-    result.getPublicKey = getPublicKeySync;
-    result.sign = signSync$1;
-    result.verify = verifySync;
+    result.a = BigInt(-1);
+    result.d = BigInt("37095705934669439343138083508754565189542113879843219016388785533085940283555");
+    result.Fp = Fp$1;
+    result.n = BigInt("7237005577332262213973186563042994240857116359379907606001950938285454250989");
+    result.h = BigInt(8);
+    result.Gx = BigInt("15112221349535400772501151409588531511454012693041857206046113283949847762202");
+    result.Gy = BigInt("46316835694926478169428394003475163141307993866256225615783033603165251855960");
+    result.hash = sha512;
+    result.randomBytes = randomBytes;
+    result.adjustScalarBytes = adjustScalarBytes;
+    result.uvRatio = uvRatio;
     return result;
   })();
-  Point$1.BASE._setWindowSize(8);
-  const crypto$2 = $(function () {
+  const ed25519 = twistedEdwards(ed25519Defaults);
+  function ed25519_domain(data, ctx, phflag) {
+    if (ctx.length > 255) throw new Error("Context is too big");
+    return concatBytes$1(utf8ToBytes$2("SigEd25519 no Ed25519 collisions"), new Uint8Array($Array.of(phflag ? 1 : 0, ctx.length)), ctx, data);
+  }
+  $(ed25519_domain);
+  twistedEdwards($(function () {
     let result = $Object.create(null, undefined);
-    result.node = nodeCrypto;
-    result.web = typeof self === "object" && "crypto" in self ? self.crypto : undefined;
-    return result;
-  })();
-  const utils$1 = $(function () {
-    let result = $Object.create(null, undefined);
-    result.TORSION_SUBGROUP = $Array.of("0100000000000000000000000000000000000000000000000000000000000000", "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a", "0000000000000000000000000000000000000000000000000000000000000080", "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05", "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f", "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc85", "0000000000000000000000000000000000000000000000000000000000000000", "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac03fa");
-    result.bytesToHex = bytesToHex$1;
-    result.hexToBytes = hexToBytes$1;
-    result.concatBytes = concatBytes$1;
-    result.getExtendedPublicKey = getExtendedPublicKey;
-    result.mod = mod$1;
-    result.invert = invert$1;
-    result.hashToPrivateScalar = $(hash => {
-      hash = ensureBytes$1(hash);
-      if (hash.length < 40 || hash.length > 1024) throw new Error("Expected 40-1024 bytes of private key as per FIPS 186");
-      return mod$1(bytesToNumberLE(hash), CURVE$1.l - _1n$1) + _1n$1;
-    });
-    result.randomBytes = $((bytesLength = 32) => {
-      if (crypto$2.web) {
-        return crypto$2.web.getRandomValues(new Uint8Array(bytesLength));
-      } else if (crypto$2.node) {
-        const {
-          randomBytes: randomBytes
-        } = crypto$2.node;
-        return new Uint8Array(randomBytes(bytesLength).buffer);
-      } else {
-        throw new Error("The environment doesn't have randomBytes function");
-      }
-    });
-    result.randomPrivateKey = $(() => utils$1.randomBytes(32));
-    result.sha512 = $(async (...messages) => {
-      const message = concatBytes$1(...messages);
-      if (crypto$2.web) {
-        const buffer = await crypto$2.web.subtle.digest("SHA-512", message.buffer);
-        return new Uint8Array(buffer);
-      } else if (crypto$2.node) {
-        return Uint8Array.from(crypto$2.node.createHash("sha512").update(message).digest());
-      } else {
-        throw new Error("The environment doesn't have sha512 function");
-      }
-    });
-    result.precompute = $(function (windowSize = 8, point = Point$1.BASE) {
-      const cached = point.equals(Point$1.BASE) ? point : new Point$1(point.x, point.y);
-      cached._setWindowSize(windowSize);
-      cached.multiply(_2n$1);
-      return cached;
-    });
-    result.sha512Sync = undefined;
-    return result;
-  })();
-  $Object.defineProperties(utils$1, $(function () {
-    let result = $Object.create(null, undefined);
-    result.sha512Sync = $(function () {
-      let result = $Object.create(null, undefined);
-      result.configurable = false;
-      result.get = $(function () {
-        return _sha512Sync;
-      });
-      result.set = $(function (val) {
-        if (!_sha512Sync) _sha512Sync = val;
-      });
-      return result;
-    })();
+    $Object.assign(result, ed25519Defaults);
+    result.domain = ed25519_domain;
     return result;
   })());
-  utils$1.sha512Sync = $((...m) => sha512(utils$1.concatBytes(...m)));
-  const generatePrivateKey = utils$1.randomPrivateKey;
+  twistedEdwards($(function () {
+    let result = $Object.create(null, undefined);
+    $Object.assign(result, ed25519Defaults);
+    result.domain = ed25519_domain;
+    result.prehash = sha512;
+    return result;
+  })());
+  const ELL2_C1 = (Fp$1.ORDER + BigInt(3)) / BigInt(8);
+  Fp$1.pow(_2n$2, ELL2_C1);
+  Fp$1.sqrt(Fp$1.neg(Fp$1.ONE));
+  (Fp$1.ORDER - BigInt(5)) / BigInt(8);
+  BigInt(486662);
+  FpSqrtEven(Fp$1, Fp$1.neg(BigInt(486664)));
+  BigInt("25063068953384623474111414158702152701244531502492656460079210482610430750235");
+  BigInt("54469307008909316920995813868745141605393597292927456921205312896311721017578");
+  BigInt("1159843021668779879193775521855586647937357759715417654439879720876111806838");
+  BigInt("40440834346308536858101042469323190826248399146238708352240133220865137265952");
+  BigInt("0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+  const generatePrivateKey = ed25519.utils.randomPrivateKey;
   const generateKeypair = () => {
-    const privateScalar = utils$1.randomPrivateKey();
-    const publicKey = getPublicKey$1(privateScalar);
+    const privateScalar = ed25519.utils.randomPrivateKey();
+    const publicKey = getPublicKey(privateScalar);
     const secretKey = new Uint8Array(64);
     secretKey.set(privateScalar);
     secretKey.set(publicKey, 32);
@@ -3057,19 +3530,19 @@ var solanaWeb3 = $(function (exports) {
     })();
   };
   $(generateKeypair);
-  const getPublicKey$1 = sync.getPublicKey;
+  const getPublicKey = ed25519.getPublicKey;
   function isOnCurve(publicKey) {
     try {
-      Point$1.fromHex(publicKey, true);
+      ed25519.ExtendedPoint.fromHex(publicKey);
       return true;
     } catch {
       return false;
     }
   }
   $(isOnCurve);
-  const sign = (message, secretKey) => sync.sign(message, secretKey.slice(0, 32));
+  const sign = (message, secretKey) => ed25519.sign(message, secretKey.slice(0, 32));
   $(sign);
-  const verify = sync.verify;
+  const verify = ed25519.verify;
   const toBuffer = arr => {
     if (buffer.Buffer.isBuffer(arr)) {
       return arr;
@@ -3085,7 +3558,15 @@ var solanaWeb3 = $(function (exports) {
     result.exports = $Object.create(null, undefined);
     return result;
   })();
-  var require$$0$1 = getAugmentedNamespace(nodeCrypto);
+  var _nodeResolve_empty = $Object.create(null, undefined);
+  var _nodeResolve_empty$1 = $Object.freeze($(function () {
+    let result = $Object.create(null, undefined);
+    result.__proto__ = null;
+    result.default = _nodeResolve_empty;
+    return result;
+  })());
+  var require$$0$1 = getAugmentedNamespace(_nodeResolve_empty$1);
+  bn.exports;
   $(function (module) {
     $(function (module, exports) {
       function assert(val, msg) {
@@ -3417,15 +3898,15 @@ var solanaWeb3 = $(function (exports) {
             var w = this.words[i];
             var word = ((w << off | carry) & 16777215).toString(16);
             carry = w >>> 24 - off & 16777215;
-            if (carry !== 0 || i !== this.length - 1) {
-              out = zeros[6 - word.length] + word + out;
-            } else {
-              out = word + out;
-            }
             off += 2;
             if (off >= 26) {
               off -= 26;
               i--;
+            }
+            if (carry !== 0 || i !== this.length - 1) {
+              out = zeros[6 - word.length] + word + out;
+            } else {
+              out = word + out;
             }
           }
           if (carry !== 0) {
@@ -5738,7 +6219,8 @@ var solanaWeb3 = $(function (exports) {
       });
     })(module, commonjsGlobal);
   })(bn);
-  var BN = bn.exports;
+  var bnExports = bn.exports;
+  var BN = getDefaultExportFromCjs(bnExports);
   var safeBuffer = $(function () {
     let result = $Object.create(null, undefined);
     result.exports = $Object.create(null, undefined);
@@ -5801,7 +6283,8 @@ var solanaWeb3 = $(function (exports) {
       return buffer$1.SlowBuffer(size);
     });
   })(safeBuffer, safeBuffer.exports);
-  var _Buffer = safeBuffer.exports.Buffer;
+  var safeBufferExports = safeBuffer.exports;
+  var _Buffer = safeBufferExports.Buffer;
   function base(ALPHABET) {
     if (ALPHABET.length >= 255) {
       throw new TypeError("Alphabet too long");
@@ -5934,15 +6417,193 @@ var solanaWeb3 = $(function (exports) {
   var basex = src;
   var ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
   var bs58 = basex(ALPHABET);
-  var bs58$1 = bs58;
+  var bs58$1 = getDefaultExportFromCjs(bs58);
+  function number$1(n) {
+    if (!Number.isSafeInteger(n) || n < 0) throw new Error(`Wrong positive integer: ${n}`);
+  }
+  $(number$1);
+  function isBytes$1(a) {
+    return a instanceof Uint8Array || a != null && typeof a === "object" && a.constructor.name === "Uint8Array";
+  }
+  $(isBytes$1);
+  function bytes(b, ...lengths) {
+    if (!isBytes$1(b)) throw new Error("Expected Uint8Array");
+    if (lengths.length > 0 && !lengths.includes(b.length)) throw new Error(`Expected Uint8Array of length ${lengths}, not of length=${b.length}`);
+  }
+  $(bytes);
+  function exists(instance, checkFinished = true) {
+    if (instance.destroyed) throw new Error("Hash instance has been destroyed");
+    if (checkFinished && instance.finished) throw new Error("Hash#digest() has already been called");
+  }
+  $(exists);
+  function output(out, instance) {
+    bytes(out);
+    const min = instance.outputLen;
+    if (out.length < min) {
+      throw new Error(`digestInto() expects output buffer of length at least ${min}`);
+    }
+  }
+  /*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+  $(output);
+  const u32$1 = arr => new Uint32Array(arr.buffer, arr.byteOffset, Math.floor(arr.byteLength / 4));
+  $(u32$1);
+  function isBytes(a) {
+    return a instanceof Uint8Array || a != null && typeof a === "object" && a.constructor.name === "Uint8Array";
+  }
+  $(isBytes);
+  const createView = arr => new DataView(arr.buffer, arr.byteOffset, arr.byteLength);
+  $(createView);
+  const rotr = (word, shift) => word << 32 - shift | word >>> shift;
+  $(rotr);
+  const isLE = new Uint8Array(new Uint32Array($Array.of(287454020)).buffer)[0] === 68;
+  if (!isLE) throw new Error("Non little-endian hardware is not supported");
+  function utf8ToBytes(str) {
+    if (typeof str !== "string") throw new Error(`utf8ToBytes expected string, got ${typeof str}`);
+    return new Uint8Array(new TextEncoder().encode(str));
+  }
+  $(utf8ToBytes);
+  function toBytes(data) {
+    if (typeof data === "string") data = utf8ToBytes(data);
+    if (!isBytes(data)) throw new Error(`expected Uint8Array, got ${typeof data}`);
+    return data;
+  }
+  $(toBytes);
+  class Hash {
+    clone() {
+      return this._cloneInto();
+    }
+  }
+  function wrapConstructor(hashCons) {
+    const hashC = msg => hashCons().update(toBytes(msg)).digest();
+    $(hashC);
+    const tmp = hashCons();
+    hashC.outputLen = tmp.outputLen;
+    hashC.blockLen = tmp.blockLen;
+    hashC.create = $(() => hashCons());
+    return hashC;
+  }
+  $(wrapConstructor);
+  function setBigUint64(view, byteOffset, value, isLE) {
+    if (typeof view.setBigUint64 === "function") return view.setBigUint64(byteOffset, value, isLE);
+    const _32n = BigInt(32);
+    const _u32_max = BigInt(4294967295);
+    const wh = Number(value >> _32n & _u32_max);
+    const wl = Number(value & _u32_max);
+    const h = isLE ? 4 : 0;
+    const l = isLE ? 0 : 4;
+    view.setUint32(byteOffset + h, wh, isLE);
+    view.setUint32(byteOffset + l, wl, isLE);
+  }
+  $(setBigUint64);
+  class SHA2 extends Hash {
+    constructor(blockLen, outputLen, padOffset, isLE) {
+      super();
+      this.blockLen = blockLen;
+      this.outputLen = outputLen;
+      this.padOffset = padOffset;
+      this.isLE = isLE;
+      this.finished = false;
+      this.length = 0;
+      this.pos = 0;
+      this.destroyed = false;
+      this.buffer = new Uint8Array(blockLen);
+      this.view = createView(this.buffer);
+    }
+    update(data) {
+      exists(this);
+      const {
+        view: view,
+        buffer: buffer,
+        blockLen: blockLen
+      } = this;
+      data = toBytes(data);
+      const len = data.length;
+      for (let pos = 0; pos < len;) {
+        const take = Math.min(blockLen - this.pos, len - pos);
+        if (take === blockLen) {
+          const dataView = createView(data);
+          for (; blockLen <= len - pos; pos += blockLen) this.process(dataView, pos);
+          continue;
+        }
+        buffer.set(data.subarray(pos, pos + take), this.pos);
+        this.pos += take;
+        pos += take;
+        if (this.pos === blockLen) {
+          this.process(view, 0);
+          this.pos = 0;
+        }
+      }
+      this.length += data.length;
+      this.roundClean();
+      return this;
+    }
+    digestInto(out) {
+      exists(this);
+      output(out, this);
+      this.finished = true;
+      const {
+        buffer: buffer,
+        view: view,
+        blockLen: blockLen,
+        isLE: isLE
+      } = this;
+      let {
+        pos: pos
+      } = this;
+      buffer[pos++] = 128;
+      this.buffer.subarray(pos).fill(0);
+      if (this.padOffset > blockLen - pos) {
+        this.process(view, 0);
+        pos = 0;
+      }
+      for (let i = pos; i < blockLen; i++) buffer[i] = 0;
+      setBigUint64(view, blockLen - 8, BigInt(this.length * 8), isLE);
+      this.process(view, 0);
+      const oview = createView(out);
+      const len = this.outputLen;
+      if (len % 4) throw new Error("_sha2: outputLen should be aligned to 32bit");
+      const outLen = len / 4;
+      const state = this.get();
+      if (outLen > state.length) throw new Error("_sha2: outputLen bigger than state");
+      for (let i = 0; i < outLen; i++) oview.setUint32(4 * i, state[i], isLE);
+    }
+    digest() {
+      const {
+        buffer: buffer,
+        outputLen: outputLen
+      } = this;
+      this.digestInto(buffer);
+      const res = buffer.slice(0, outputLen);
+      this.destroy();
+      return res;
+    }
+    _cloneInto(to) {
+      to || (to = new this.constructor());
+      to.set(...this.get());
+      const {
+        blockLen: blockLen,
+        buffer: buffer,
+        length: length,
+        finished: finished,
+        destroyed: destroyed,
+        pos: pos
+      } = this;
+      to.length = length;
+      to.pos = pos;
+      to.finished = finished;
+      to.destroyed = destroyed;
+      if (length % blockLen) to.buffer.set(buffer);
+      return to;
+    }
+  }
   const Chi = (a, b, c) => a & b ^ ~a & c;
   $(Chi);
   const Maj = (a, b, c) => a & b ^ a & c ^ b & c;
   $(Maj);
-  const SHA256_K = new Uint32Array($Array.of(1116352408, 1899447441, 3049323471, 3921009573, 961987163, 1508970993, 2453635748, 2870763221, 3624381080, 310598401, 607225278, 1426881987, 1925078388, 2162078206, 2614888103, 3248222580, 3835390401, 4022224774, 264347078, 604807628, 770255983, 1249150122, 1555081692, 1996064986, 2554220882, 2821834349, 2952996808, 3210313671, 3336571891, 3584528711, 113926993, 338241895, 666307205, 773529912, 1294757372, 1396182291, 1695183700, 1986661051, 2177026350, 2456956037, 2730485921, 2820302411, 3259730800, 3345764771, 3516065817, 3600352804, 4094571909, 275423344, 430227734, 506948616, 659060556, 883997877, 958139571, 1322822218, 1537002063, 1747873779, 1955562222, 2024104815, 2227730452, 2361852424, 2428436474, 2756734187, 3204031479, 3329325298));
+  const SHA256_K$1 = new Uint32Array($Array.of(1116352408, 1899447441, 3049323471, 3921009573, 961987163, 1508970993, 2453635748, 2870763221, 3624381080, 310598401, 607225278, 1426881987, 1925078388, 2162078206, 2614888103, 3248222580, 3835390401, 4022224774, 264347078, 604807628, 770255983, 1249150122, 1555081692, 1996064986, 2554220882, 2821834349, 2952996808, 3210313671, 3336571891, 3584528711, 113926993, 338241895, 666307205, 773529912, 1294757372, 1396182291, 1695183700, 1986661051, 2177026350, 2456956037, 2730485921, 2820302411, 3259730800, 3345764771, 3516065817, 3600352804, 4094571909, 275423344, 430227734, 506948616, 659060556, 883997877, 958139571, 1322822218, 1537002063, 1747873779, 1955562222, 2024104815, 2227730452, 2361852424, 2428436474, 2756734187, 3204031479, 3329325298));
   const IV = new Uint32Array($Array.of(1779033703, 3144134277, 1013904242, 2773480762, 1359893119, 2600822924, 528734635, 1541459225));
-  const SHA256_W = new Uint32Array(64);
-  class SHA256 extends SHA2 {
+  const SHA256_W$1 = new Uint32Array(64);
+  let SHA256$1 = class SHA256 extends SHA2 {
     constructor() {
       super(64, 32, 8, false);
       this.A = IV[0] | 0;
@@ -5978,13 +6639,13 @@ var solanaWeb3 = $(function (exports) {
       this.H = H | 0;
     }
     process(view, offset) {
-      for (let i = 0; i < 16; i++, offset += 4) SHA256_W[i] = view.getUint32(offset, false);
+      for (let i = 0; i < 16; i++, offset += 4) SHA256_W$1[i] = view.getUint32(offset, false);
       for (let i = 16; i < 64; i++) {
-        const W15 = SHA256_W[i - 15];
-        const W2 = SHA256_W[i - 2];
+        const W15 = SHA256_W$1[i - 15];
+        const W2 = SHA256_W$1[i - 2];
         const s0 = rotr(W15, 7) ^ rotr(W15, 18) ^ W15 >>> 3;
         const s1 = rotr(W2, 17) ^ rotr(W2, 19) ^ W2 >>> 10;
-        SHA256_W[i] = s1 + SHA256_W[i - 7] + s0 + SHA256_W[i - 16] | 0;
+        SHA256_W$1[i] = s1 + SHA256_W$1[i - 7] + s0 + SHA256_W$1[i - 16] | 0;
       }
       let {
         A: A,
@@ -5998,7 +6659,7 @@ var solanaWeb3 = $(function (exports) {
       } = this;
       for (let i = 0; i < 64; i++) {
         const sigma1 = rotr(E, 6) ^ rotr(E, 11) ^ rotr(E, 25);
-        const T1 = H + sigma1 + Chi(E, F, G) + SHA256_K[i] + SHA256_W[i] | 0;
+        const T1 = H + sigma1 + Chi(E, F, G) + SHA256_K$1[i] + SHA256_W$1[i] | 0;
         const sigma0 = rotr(A, 2) ^ rotr(A, 13) ^ rotr(A, 22);
         const T2 = sigma0 + Maj(A, B, C) | 0;
         H = G;
@@ -6021,14 +6682,14 @@ var solanaWeb3 = $(function (exports) {
       this.set(A, B, C, D, E, F, G, H);
     }
     roundClean() {
-      SHA256_W.fill(0);
+      SHA256_W$1.fill(0);
     }
     destroy() {
       this.set(0, 0, 0, 0, 0, 0, 0, 0);
       this.buffer.fill(0);
     }
-  }
-  const sha256 = wrapConstructor($(() => new SHA256()));
+  };
+  const sha256$1 = wrapConstructor($(() => new SHA256$1()));
   var lib = $Object.create(null, undefined);
   var encoding_lib = $Object.create(null, undefined);
   function inRange(a, min, max) {
@@ -6390,7 +7051,7 @@ var solanaWeb3 = $(function (exports) {
     return result;
   })());
   var deserializeUnchecked_1 = lib.deserializeUnchecked = deserialize_1 = lib.deserialize = serialize_1 = lib.serialize = lib.BinaryReader = lib.BinaryWriter = lib.BorshError = lib.baseDecode = lib.baseEncode = void 0;
-  const bn_js_1 = __importDefault(bn.exports);
+  const bn_js_1 = __importDefault(bnExports);
   const bs58_1 = __importDefault(bs58);
   const encoding = __importStar(encoding_lib);
   const ResolvedTextDecoder = typeof TextDecoder !== "function" ? encoding.TextDecoder : TextDecoder;
@@ -6772,7 +7433,7 @@ var solanaWeb3 = $(function (exports) {
   }
   $(deserializeUnchecked);
   deserializeUnchecked_1 = lib.deserializeUnchecked = deserializeUnchecked;
-  class Struct$1 {
+  let Struct$1 = class Struct {
     constructor(properties) {
       $Object.assign(this, properties);
     }
@@ -6785,7 +7446,7 @@ var solanaWeb3 = $(function (exports) {
     static decodeUnchecked(data) {
       return deserializeUnchecked_1(SOLANA_SCHEMA, this, data);
     }
-  }
+  };
   class Enum extends Struct$1 {
     constructor(properties) {
       super(properties);
@@ -6799,6 +7460,8 @@ var solanaWeb3 = $(function (exports) {
     }
   }
   const SOLANA_SCHEMA = new Map();
+  var _class;
+  let _Symbol$toStringTag;
   const MAX_SEED_LENGTH = 32;
   const PUBLIC_KEY_LENGTH = 32;
   function isPublicKeyData(value) {
@@ -6806,6 +7469,7 @@ var solanaWeb3 = $(function (exports) {
   }
   $(isPublicKeyData);
   let uniquePublicKeyCounter = 1;
+  _Symbol$toStringTag = Symbol.toStringTag;
   class PublicKey extends Struct$1 {
     constructor(value) {
       super($Object.create(null, undefined));
@@ -6822,7 +7486,7 @@ var solanaWeb3 = $(function (exports) {
         } else {
           this._bn = new BN(value);
         }
-        if (this._bn.byteLength() > 32) {
+        if (this._bn.byteLength() > PUBLIC_KEY_LENGTH) {
           throw new Error(`Invalid public key input`);
         }
       }
@@ -6842,7 +7506,8 @@ var solanaWeb3 = $(function (exports) {
       return this.toBase58();
     }
     toBytes() {
-      return this.toBuffer();
+      const buf = this.toBuffer();
+      return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
     }
     toBuffer() {
       const b = this._bn.toArrayLike(buffer.Buffer);
@@ -6853,12 +7518,15 @@ var solanaWeb3 = $(function (exports) {
       b.copy(zeroPad, 32 - b.length);
       return zeroPad;
     }
+    get [_Symbol$toStringTag]() {
+      return `PublicKey(${this.toString()})`;
+    }
     toString() {
       return this.toBase58();
     }
     static async createWithSeed(fromPublicKey, seed, programId) {
       const buffer$1 = buffer.Buffer.concat($Array.of(fromPublicKey.toBuffer(), buffer.Buffer.from(seed), programId.toBuffer()));
-      const publicKeyBytes = sha256(buffer$1);
+      const publicKeyBytes = sha256$1(buffer$1);
       return new PublicKey(publicKeyBytes);
     }
     static createProgramAddressSync(seeds, programId) {
@@ -6870,7 +7538,7 @@ var solanaWeb3 = $(function (exports) {
         buffer$1 = buffer.Buffer.concat($Array.of(buffer$1, toBuffer(seed)));
       }));
       buffer$1 = buffer.Buffer.concat($Array.of(buffer$1, programId.toBuffer(), buffer.Buffer.from("ProgramDerivedAddress")));
-      const publicKeyBytes = sha256(buffer$1);
+      const publicKeyBytes = sha256$1(buffer$1);
       if (isOnCurve(publicKeyBytes)) {
         throw new Error(`Invalid seeds, address must fall off the curve`);
       }
@@ -6905,7 +7573,8 @@ var solanaWeb3 = $(function (exports) {
       return isOnCurve(pubkey.toBytes());
     }
   }
-  PublicKey.default = new PublicKey("11111111111111111111111111111111");
+  _class = PublicKey;
+  PublicKey.default = new _class("11111111111111111111111111111111");
   SOLANA_SCHEMA.set(PublicKey, $(function () {
     let result = $Object.create(null, undefined);
     result.kind = "struct";
@@ -6925,7 +7594,7 @@ var solanaWeb3 = $(function (exports) {
         this._secretKey = secretKeyBuffer.slice(0, 32);
       } else {
         this._secretKey = toBuffer(generatePrivateKey());
-        this._publicKey = toBuffer(getPublicKey$1(this._secretKey));
+        this._publicKey = toBuffer(getPublicKey(this._secretKey));
       }
     }
     get publicKey() {
@@ -7826,7 +8495,7 @@ var solanaWeb3 = $(function (exports) {
     }
   }
   Layout$1.BitField = BitField;
-  class Boolean$1 extends BitField {
+  let Boolean$1 = class Boolean extends BitField {
     constructor(container, property) {
       super(container, 1, property);
     }
@@ -7839,7 +8508,7 @@ var solanaWeb3 = $(function (exports) {
       }
       super.encode(value);
     }
-  }
+  };
   Layout$1.Boolean = Boolean$1;
   class Blob extends Layout {
     constructor(length, property) {
@@ -8042,6 +8711,18 @@ var solanaWeb3 = $(function (exports) {
     result.value = "TransactionExpiredTimeoutError";
     return result;
   })());
+  class TransactionExpiredNonceInvalidError extends Error {
+    constructor(signature) {
+      super(`Signature ${signature} has expired: the nonce is no longer valid.`);
+      this.signature = void 0;
+      this.signature = signature;
+    }
+  }
+  $Object.defineProperty(TransactionExpiredNonceInvalidError.prototype, "name", $(function () {
+    let result = $Object.create(null, undefined);
+    result.value = "TransactionExpiredNonceInvalidError";
+    return result;
+  })());
   class MessageAccountKeys {
     constructor(staticAccountKeys, accountKeysFromLookups) {
       this.staticAccountKeys = void 0;
@@ -8125,6 +8806,8 @@ var solanaWeb3 = $(function (exports) {
   $(lockup);
   const voteInit = (property = "voteInit") => struct($Array.of(publicKey("nodePubkey"), publicKey("authorizedVoter"), publicKey("authorizedWithdrawer"), u8("commission")), property);
   $(voteInit);
+  const voteAuthorizeWithSeedArgs = (property = "voteAuthorizeWithSeedArgs") => struct($Array.of(u32("voteAuthorizationType"), publicKey("currentAuthorityDerivedKeyOwnerPubkey"), rustString("currentAuthorityDerivedKeySeed"), publicKey("newAuthorized")), property);
+  $(voteAuthorizeWithSeedArgs);
   function getAlloc(type, fields) {
     const getItemAlloc = item => {
       if (item.span >= 0) {
@@ -8136,6 +8819,12 @@ var solanaWeb3 = $(function (exports) {
         if ($Array.isArray(field)) {
           return field.length * getItemAlloc(item.elementLayout);
         }
+      } else if ("fields" in item) {
+        return getAlloc($(function () {
+          let result = $Object.create(null, undefined);
+          result.layout = item;
+          return result;
+        })(), fields[item.property]);
       }
       return 0;
     };
@@ -8214,8 +8903,8 @@ var solanaWeb3 = $(function (exports) {
         getOrInsertDefault(ix.programId).isInvoked = true;
         for (const accountMeta of ix.keys) {
           const keyMeta = getOrInsertDefault(accountMeta.pubkey);
-          keyMeta.isSigner || (keyMeta.isSigner = accountMeta.isSigner);
-          keyMeta.isWritable || (keyMeta.isWritable = accountMeta.isWritable);
+          keyMeta.isSigner ||= accountMeta.isSigner;
+          keyMeta.isWritable ||= accountMeta.isWritable;
         }
       }
       return new CompiledKeys(payer, keyMetaMap);
@@ -8279,6 +8968,22 @@ var solanaWeb3 = $(function (exports) {
       return $Array.of(lookupTableIndexes, drainedKeys);
     }
   }
+  const END_OF_BUFFER_ERROR_MESSAGE = "Reached end of buffer unexpectedly";
+  function guardedShift(byteArray) {
+    if (byteArray.length === 0) {
+      throw new Error(END_OF_BUFFER_ERROR_MESSAGE);
+    }
+    return byteArray.shift();
+  }
+  $(guardedShift);
+  function guardedSplice(byteArray, ...args) {
+    const [start] = args;
+    if (args.length === 2 ? start + (args[1] ?? 0) > byteArray.length : start >= byteArray.length) {
+      throw new Error(END_OF_BUFFER_ERROR_MESSAGE);
+    }
+    return byteArray.splice(...args);
+  }
+  $(guardedSplice);
   class Message {
     constructor(args) {
       this.header = void 0;
@@ -8337,7 +9042,16 @@ var solanaWeb3 = $(function (exports) {
       return index < this.header.numRequiredSignatures;
     }
     isAccountWritable(index) {
-      return index < this.header.numRequiredSignatures - this.header.numReadonlySignedAccounts || index >= this.header.numRequiredSignatures && index < this.accountKeys.length - this.header.numReadonlyUnsignedAccounts;
+      const numSignedAccounts = this.header.numRequiredSignatures;
+      if (index >= this.header.numRequiredSignatures) {
+        const unsignedAccountIndex = index - numSignedAccounts;
+        const numUnsignedAccounts = this.accountKeys.length - numSignedAccounts;
+        const numWritableUnsignedAccounts = numUnsignedAccounts - this.header.numReadonlyUnsignedAccounts;
+        return unsignedAccountIndex < numWritableUnsignedAccounts;
+      } else {
+        const numWritableSignedAccounts = numSignedAccounts - this.header.numReadonlySignedAccounts;
+        return index < numWritableSignedAccounts;
+      }
     }
     isProgramId(index) {
       return this.indexToProgramIds.has(index);
@@ -8401,32 +9115,28 @@ var solanaWeb3 = $(function (exports) {
     }
     static from(buffer$1) {
       let byteArray = $Array.of(...buffer$1);
-      const numRequiredSignatures = byteArray.shift();
+      const numRequiredSignatures = guardedShift(byteArray);
       if (numRequiredSignatures !== (numRequiredSignatures & VERSION_PREFIX_MASK)) {
         throw new Error("Versioned messages must be deserialized with VersionedMessage.deserialize()");
       }
-      const numReadonlySignedAccounts = byteArray.shift();
-      const numReadonlyUnsignedAccounts = byteArray.shift();
+      const numReadonlySignedAccounts = guardedShift(byteArray);
+      const numReadonlyUnsignedAccounts = guardedShift(byteArray);
       const accountCount = decodeLength(byteArray);
       let accountKeys = $Array.of();
       for (let i = 0; i < accountCount; i++) {
-        const account = byteArray.slice(0, PUBLIC_KEY_LENGTH);
-        byteArray = byteArray.slice(PUBLIC_KEY_LENGTH);
+        const account = guardedSplice(byteArray, 0, PUBLIC_KEY_LENGTH);
         accountKeys.push(new PublicKey(buffer.Buffer.from(account)));
       }
-      const recentBlockhash = byteArray.slice(0, PUBLIC_KEY_LENGTH);
-      byteArray = byteArray.slice(PUBLIC_KEY_LENGTH);
+      const recentBlockhash = guardedSplice(byteArray, 0, PUBLIC_KEY_LENGTH);
       const instructionCount = decodeLength(byteArray);
       let instructions = $Array.of();
       for (let i = 0; i < instructionCount; i++) {
-        const programIdIndex = byteArray.shift();
+        const programIdIndex = guardedShift(byteArray);
         const accountCount = decodeLength(byteArray);
-        const accounts = byteArray.slice(0, accountCount);
-        byteArray = byteArray.slice(accountCount);
+        const accounts = guardedSplice(byteArray, 0, accountCount);
         const dataLength = decodeLength(byteArray);
-        const dataSlice = byteArray.slice(0, dataLength);
+        const dataSlice = guardedSplice(byteArray, 0, dataLength);
         const data = bs58$1.encode(buffer.Buffer.from(dataSlice));
-        byteArray = byteArray.slice(dataLength);
         instructions.push($(function () {
           let result = $Object.create(null, undefined);
           result.programIdIndex = programIdIndex;
@@ -8477,17 +9187,37 @@ var solanaWeb3 = $(function (exports) {
     }
     getAccountKeys(args) {
       let accountKeysFromLookups;
-      if (args && "accountKeysFromLookups" in args) {
+      if (args && "accountKeysFromLookups" in args && args.accountKeysFromLookups) {
         if (this.numAccountKeysFromLookups != args.accountKeysFromLookups.writable.length + args.accountKeysFromLookups.readonly.length) {
           throw new Error("Failed to get account keys because of a mismatch in the number of account keys from lookups");
         }
         accountKeysFromLookups = args.accountKeysFromLookups;
-      } else if (args && "addressLookupTableAccounts" in args) {
+      } else if (args && "addressLookupTableAccounts" in args && args.addressLookupTableAccounts) {
         accountKeysFromLookups = this.resolveAddressTableLookups(args.addressLookupTableAccounts);
       } else if (this.addressTableLookups.length > 0) {
         throw new Error("Failed to get account keys because address table lookups were not resolved");
       }
       return new MessageAccountKeys(this.staticAccountKeys, accountKeysFromLookups);
+    }
+    isAccountSigner(index) {
+      return index < this.header.numRequiredSignatures;
+    }
+    isAccountWritable(index) {
+      const numSignedAccounts = this.header.numRequiredSignatures;
+      const numStaticAccountKeys = this.staticAccountKeys.length;
+      if (index >= numStaticAccountKeys) {
+        const lookupAccountKeysIndex = index - numStaticAccountKeys;
+        const numWritableLookupAccountKeys = this.addressTableLookups.reduce($((count, lookup) => count + lookup.writableIndexes.length), 0);
+        return lookupAccountKeysIndex < numWritableLookupAccountKeys;
+      } else if (index >= this.header.numRequiredSignatures) {
+        const unsignedAccountIndex = index - numSignedAccounts;
+        const numUnsignedAccounts = numStaticAccountKeys - numSignedAccounts;
+        const numWritableUnsignedAccounts = numUnsignedAccounts - this.header.numReadonlyUnsignedAccounts;
+        return unsignedAccountIndex < numWritableUnsignedAccounts;
+      } else {
+        const numWritableSignedAccounts = numSignedAccounts - this.header.numReadonlySignedAccounts;
+        return index < numWritableSignedAccounts;
+      }
     }
     resolveAddressTableLookups(addressLookupTableAccounts) {
       const accountKeysFromLookups = $(function () {
@@ -8624,32 +9354,32 @@ var solanaWeb3 = $(function (exports) {
     }
     static deserialize(serializedMessage) {
       let byteArray = $Array.of(...serializedMessage);
-      const prefix = byteArray.shift();
+      const prefix = guardedShift(byteArray);
       const maskedPrefix = prefix & VERSION_PREFIX_MASK;
       assert$1(prefix !== maskedPrefix, `Expected versioned message but received legacy message`);
       const version = maskedPrefix;
       assert$1(version === 0, `Expected versioned message with version 0 but found version ${version}`);
       const header = $(function () {
         let result = $Object.create(null, undefined);
-        result.numRequiredSignatures = byteArray.shift();
-        result.numReadonlySignedAccounts = byteArray.shift();
-        result.numReadonlyUnsignedAccounts = byteArray.shift();
+        result.numRequiredSignatures = guardedShift(byteArray);
+        result.numReadonlySignedAccounts = guardedShift(byteArray);
+        result.numReadonlyUnsignedAccounts = guardedShift(byteArray);
         return result;
       })();
       const staticAccountKeys = $Array.of();
       const staticAccountKeysLength = decodeLength(byteArray);
       for (let i = 0; i < staticAccountKeysLength; i++) {
-        staticAccountKeys.push(new PublicKey(byteArray.splice(0, PUBLIC_KEY_LENGTH)));
+        staticAccountKeys.push(new PublicKey(guardedSplice(byteArray, 0, PUBLIC_KEY_LENGTH)));
       }
-      const recentBlockhash = bs58$1.encode(byteArray.splice(0, PUBLIC_KEY_LENGTH));
+      const recentBlockhash = bs58$1.encode(guardedSplice(byteArray, 0, PUBLIC_KEY_LENGTH));
       const instructionCount = decodeLength(byteArray);
       const compiledInstructions = $Array.of();
       for (let i = 0; i < instructionCount; i++) {
-        const programIdIndex = byteArray.shift();
+        const programIdIndex = guardedShift(byteArray);
         const accountKeyIndexesLength = decodeLength(byteArray);
-        const accountKeyIndexes = byteArray.splice(0, accountKeyIndexesLength);
+        const accountKeyIndexes = guardedSplice(byteArray, 0, accountKeyIndexesLength);
         const dataLength = decodeLength(byteArray);
-        const data = new Uint8Array(byteArray.splice(0, dataLength));
+        const data = new Uint8Array(guardedSplice(byteArray, 0, dataLength));
         compiledInstructions.push($(function () {
           let result = $Object.create(null, undefined);
           result.programIdIndex = programIdIndex;
@@ -8661,11 +9391,11 @@ var solanaWeb3 = $(function (exports) {
       const addressTableLookupsCount = decodeLength(byteArray);
       const addressTableLookups = $Array.of();
       for (let i = 0; i < addressTableLookupsCount; i++) {
-        const accountKey = new PublicKey(byteArray.splice(0, PUBLIC_KEY_LENGTH));
+        const accountKey = new PublicKey(guardedSplice(byteArray, 0, PUBLIC_KEY_LENGTH));
         const writableIndexesLength = decodeLength(byteArray);
-        const writableIndexes = byteArray.splice(0, writableIndexesLength);
+        const writableIndexes = guardedSplice(byteArray, 0, writableIndexesLength);
         const readonlyIndexesLength = decodeLength(byteArray);
-        const readonlyIndexes = byteArray.splice(0, readonlyIndexesLength);
+        const readonlyIndexes = guardedSplice(byteArray, 0, readonlyIndexesLength);
         addressTableLookups.push($(function () {
           let result = $Object.create(null, undefined);
           result.accountKey = accountKey;
@@ -8708,12 +9438,13 @@ var solanaWeb3 = $(function (exports) {
     });
     return result;
   })();
-  exports.TransactionStatus = void 0;
-  $(function (TransactionStatus) {
+  let TransactionStatus = $(function (TransactionStatus) {
     TransactionStatus[TransactionStatus["BLOCKHEIGHT_EXCEEDED"] = 0] = "BLOCKHEIGHT_EXCEEDED";
     TransactionStatus[TransactionStatus["PROCESSED"] = 1] = "PROCESSED";
     TransactionStatus[TransactionStatus["TIMED_OUT"] = 2] = "TIMED_OUT";
-  })(exports.TransactionStatus || (exports.TransactionStatus = $Object.create(null, undefined)));
+    TransactionStatus[TransactionStatus["NONCE_INVALID"] = 3] = "NONCE_INVALID";
+    return TransactionStatus;
+  })($Object.create(null, undefined));
   const DEFAULT_SIGNATURE = buffer.Buffer.alloc(SIGNATURE_LENGTH_IN_BYTES).fill(0);
   class TransactionInstruction {
     constructor(opts) {
@@ -8760,6 +9491,7 @@ var solanaWeb3 = $(function (exports) {
       this.recentBlockhash = void 0;
       this.lastValidBlockHeight = void 0;
       this.nonceInfo = void 0;
+      this.minNonceContextSlot = void 0;
       this._message = void 0;
       this._json = void 0;
       if (!opts) {
@@ -8771,7 +9503,14 @@ var solanaWeb3 = $(function (exports) {
       if (opts.signatures) {
         this.signatures = opts.signatures;
       }
-      if ($Object.prototype.hasOwnProperty.call(opts, "lastValidBlockHeight")) {
+      if ($Object.prototype.hasOwnProperty.call(opts, "nonceInfo")) {
+        const {
+          minContextSlot: minContextSlot,
+          nonceInfo: nonceInfo
+        } = opts;
+        this.minNonceContextSlot = minContextSlot;
+        this.nonceInfo = nonceInfo;
+      } else if ($Object.prototype.hasOwnProperty.call(opts, "lastValidBlockHeight")) {
         const {
           blockhash: blockhash,
           lastValidBlockHeight: lastValidBlockHeight
@@ -8900,7 +9639,17 @@ var solanaWeb3 = $(function (exports) {
         if (x.isWritable !== y.isWritable) {
           return x.isWritable ? -1 : 1;
         }
-        return x.pubkey.toBase58().localeCompare(y.pubkey.toBase58());
+        const options = $(function () {
+          let result = $Object.create(null, undefined);
+          result.localeMatcher = "best fit";
+          result.usage = "sort";
+          result.sensitivity = "variant";
+          result.ignorePunctuation = false;
+          result.numeric = false;
+          result.caseFirst = "lower";
+          return result;
+        })();
+        return x.pubkey.toBase58().localeCompare(y.pubkey.toBase58(), "en", options);
       }));
       const feePayerIndex = uniqueMetas.findIndex($(x => x.pubkey.equals(feePayer)));
       if (feePayerIndex > -1) {
@@ -9086,25 +9835,27 @@ var solanaWeb3 = $(function (exports) {
       }
       this.signatures[index].signature = buffer.Buffer.from(signature);
     }
-    verifySignatures() {
-      return this._verifySignatures(this.serializeMessage(), true);
+    verifySignatures(requireAllSignatures = true) {
+      const signatureErrors = this._getMessageSignednessErrors(this.serializeMessage(), requireAllSignatures);
+      return !signatureErrors;
     }
-    _verifySignatures(signData, requireAllSignatures) {
+    _getMessageSignednessErrors(message, requireAllSignatures) {
+      const errors = $Object.create(null, undefined);
       for (const {
         signature: signature,
         publicKey: publicKey
       } of this.signatures) {
         if (signature === null) {
           if (requireAllSignatures) {
-            return false;
+            (errors.missing ||= $Array.of()).push(publicKey);
           }
         } else {
-          if (!verify(signature, signData, publicKey.toBuffer())) {
-            return false;
+          if (!verify(signature, message, publicKey.toBytes())) {
+            (errors.invalid ||= $Array.of()).push(publicKey);
           }
         }
       }
-      return true;
+      return errors.invalid || errors.missing ? errors : undefined;
     }
     serialize(config) {
       const {
@@ -9117,8 +9868,18 @@ var solanaWeb3 = $(function (exports) {
         return result;
       })(), config);
       const signData = this.serializeMessage();
-      if (verifySignatures && !this._verifySignatures(signData, requireAllSignatures)) {
-        throw new Error("Signature verification failed");
+      if (verifySignatures) {
+        const sigErrors = this._getMessageSignednessErrors(signData, requireAllSignatures);
+        if (sigErrors) {
+          let errorMessage = "Signature verification failed.";
+          if (sigErrors.invalid) {
+            errorMessage += `\nInvalid signature for public key${sigErrors.invalid.length === 1 ? "" : "(s)"} [\`${sigErrors.invalid.map($(p => p.toBase58())).join("`, `")}\`].`;
+          }
+          if (sigErrors.missing) {
+            errorMessage += `\nMissing signature for public key${sigErrors.missing.length === 1 ? "" : "(s)"} [\`${sigErrors.missing.map($(p => p.toBase58())).join("`, `")}\`].`;
+          }
+          throw new Error(errorMessage);
+        }
       }
       return this._serialize(signData);
     }
@@ -9161,8 +9922,7 @@ var solanaWeb3 = $(function (exports) {
       const signatureCount = decodeLength(byteArray);
       let signatures = $Array.of();
       for (let i = 0; i < signatureCount; i++) {
-        const signature = byteArray.slice(0, SIGNATURE_LENGTH_IN_BYTES);
-        byteArray = byteArray.slice(SIGNATURE_LENGTH_IN_BYTES);
+        const signature = guardedSplice(byteArray, 0, SIGNATURE_LENGTH_IN_BYTES);
         signatures.push(bs58$1.encode(buffer.Buffer.from(signature)));
       }
       return Transaction.populate(Message.from(byteArray), signatures);
@@ -9208,10 +9968,10 @@ var solanaWeb3 = $(function (exports) {
   }
   class TransactionMessage {
     constructor(args) {
-      this.accountKeys = void 0;
+      this.payerKey = void 0;
       this.instructions = void 0;
       this.recentBlockhash = void 0;
-      this.accountKeys = args.accountKeys;
+      this.payerKey = args.payerKey;
       this.instructions = args.instructions;
       this.recentBlockhash = args.recentBlockhash;
     }
@@ -9228,9 +9988,13 @@ var solanaWeb3 = $(function (exports) {
       } = header;
       const numWritableSignedAccounts = numRequiredSignatures - numReadonlySignedAccounts;
       assert$1(numWritableSignedAccounts > 0, "Message header is invalid");
-      const numWritableUnsignedAccounts = message.staticAccountKeys.length - numReadonlyUnsignedAccounts;
+      const numWritableUnsignedAccounts = message.staticAccountKeys.length - numRequiredSignatures - numReadonlyUnsignedAccounts;
       assert$1(numWritableUnsignedAccounts >= 0, "Message header is invalid");
       const accountKeys = message.getAccountKeys(args);
+      const payerKey = accountKeys.get(0);
+      if (payerKey === undefined) {
+        throw new Error("Failed to decompile message because no account keys were found");
+      }
       const instructions = $Array.of();
       for (const compiledIx of compiledInstructions) {
         const keys = $Array.of();
@@ -9270,33 +10034,25 @@ var solanaWeb3 = $(function (exports) {
       }
       return new TransactionMessage($(function () {
         let result = $Object.create(null, undefined);
-        result.accountKeys = accountKeys;
+        result.payerKey = payerKey;
         result.instructions = instructions;
         result.recentBlockhash = recentBlockhash;
         return result;
       })());
     }
     compileToLegacyMessage() {
-      const payerKey = this.accountKeys.get(0);
-      if (payerKey === undefined) {
-        throw new Error("Failed to compile message because no account keys were found");
-      }
       return Message.compile($(function () {
         let result = $Object.create(null, undefined);
-        result.payerKey = payerKey;
+        result.payerKey = this.payerKey;
         result.recentBlockhash = this.recentBlockhash;
         result.instructions = this.instructions;
         return result;
       }).bind(this)());
     }
     compileToV0Message(addressLookupTableAccounts) {
-      const payerKey = this.accountKeys.get(0);
-      if (payerKey === undefined) {
-        throw new Error("Failed to compile message because no account keys were found");
-      }
       return MessageV0.compile($(function () {
         let result = $Object.create(null, undefined);
-        result.payerKey = payerKey;
+        result.payerKey = this.payerKey;
         result.recentBlockhash = this.recentBlockhash;
         result.instructions = this.instructions;
         result.addressLookupTableAccounts = addressLookupTableAccounts;
@@ -9305,6 +10061,9 @@ var solanaWeb3 = $(function (exports) {
     }
   }
   class VersionedTransaction {
+    get version() {
+      return this.message.version;
+    }
     constructor(message, signatures) {
       this.signatures = void 0;
       this.message = void 0;
@@ -9340,7 +10099,7 @@ var solanaWeb3 = $(function (exports) {
       const signatures = $Array.of();
       const signaturesLength = decodeLength(byteArray);
       for (let i = 0; i < signaturesLength; i++) {
-        signatures.push(new Uint8Array(byteArray.splice(0, SIGNATURE_LENGTH_IN_BYTES)));
+        signatures.push(new Uint8Array(guardedSplice(byteArray, 0, SIGNATURE_LENGTH_IN_BYTES)));
       }
       const message = VersionedMessage.deserialize(new Uint8Array(byteArray));
       return new VersionedTransaction(message, signatures);
@@ -9354,7 +10113,18 @@ var solanaWeb3 = $(function (exports) {
         this.signatures[signerIndex] = sign(messageData, signer.secretKey);
       }
     }
+    addSignature(publicKey, signature) {
+      assert$1(signature.byteLength === 64, "Signature must be 64 bytes long");
+      const signerPubkeys = this.message.staticAccountKeys.slice(0, this.message.header.numRequiredSignatures);
+      const signerIndex = signerPubkeys.findIndex($(pubkey => pubkey.equals(publicKey)));
+      assert$1(signerIndex >= 0, `Can not add signature; \`${publicKey.toBase58()}\` is not required to sign this transaction`);
+      this.signatures[signerIndex] = signature;
+    }
   }
+  const NUM_TICKS_PER_SECOND = 160;
+  const DEFAULT_TICKS_PER_SLOT = 64;
+  const NUM_SLOTS_PER_SECOND = NUM_TICKS_PER_SECOND / DEFAULT_TICKS_PER_SLOT;
+  const MS_PER_SLOT = 1e3 / NUM_SLOTS_PER_SECOND;
   const SYSVAR_CLOCK_PUBKEY = new PublicKey("SysvarC1ock11111111111111111111111111111111");
   const SYSVAR_EPOCH_SCHEDULE_PUBKEY = new PublicKey("SysvarEpochSchedu1e111111111111111111111111");
   const SYSVAR_INSTRUCTIONS_PUBKEY = new PublicKey("Sysvar1nstructions1111111111111111111111111");
@@ -9374,13 +10144,36 @@ var solanaWeb3 = $(function (exports) {
       return result;
     })();
     const signature = await connection.sendTransaction(transaction, signers, sendOptions);
-    const status = transaction.recentBlockhash != null && transaction.lastValidBlockHeight != null ? (await connection.confirmTransaction($(function () {
-      let result = $Object.create(null, undefined);
-      result.signature = signature;
-      result.blockhash = transaction.recentBlockhash;
-      result.lastValidBlockHeight = transaction.lastValidBlockHeight;
-      return result;
-    })(), options && options.commitment)).value : (await connection.confirmTransaction(signature, options && options.commitment)).value;
+    let status;
+    if (transaction.recentBlockhash != null && transaction.lastValidBlockHeight != null) {
+      status = (await connection.confirmTransaction($(function () {
+        let result = $Object.create(null, undefined);
+        result.abortSignal = options?.abortSignal;
+        result.signature = signature;
+        result.blockhash = transaction.recentBlockhash;
+        result.lastValidBlockHeight = transaction.lastValidBlockHeight;
+        return result;
+      })(), options && options.commitment)).value;
+    } else if (transaction.minNonceContextSlot != null && transaction.nonceInfo != null) {
+      const {
+        nonceInstruction: nonceInstruction
+      } = transaction.nonceInfo;
+      const nonceAccountPubkey = nonceInstruction.keys[0].pubkey;
+      status = (await connection.confirmTransaction($(function () {
+        let result = $Object.create(null, undefined);
+        result.abortSignal = options?.abortSignal;
+        result.minContextSlot = transaction.minNonceContextSlot;
+        result.nonceAccountPubkey = nonceAccountPubkey;
+        result.nonceValue = transaction.nonceInfo.nonce;
+        result.signature = signature;
+        return result;
+      })(), options && options.commitment)).value;
+    } else {
+      if (options?.abortSignal != null) {
+        console.warn("sendAndConfirmTransaction(): A transaction with a deprecated confirmation strategy was " + "supplied along with an `abortSignal`. Only transactions having `lastValidBlockHeight` " + "or a combination of `nonceInfo` and `minNonceContextSlot` are abortable.");
+      }
+      status = (await connection.confirmTransaction(signature, options && options.commitment)).value;
+    }
     if (status.err) {
       throw new Error(`Transaction ${signature} failed (${JSON.stringify(status)})`);
     }
@@ -10350,11 +11143,38 @@ var solanaWeb3 = $(function (exports) {
           result.data = data;
           return result;
         })());
-        await sendAndConfirmTransaction(connection, transaction, $Array.of(payer, program), $(function () {
+        const deployCommitment = "processed";
+        const finalizeSignature = await connection.sendTransaction(transaction, $Array.of(payer, program), $(function () {
           let result = $Object.create(null, undefined);
-          result.commitment = "confirmed";
+          result.preflightCommitment = deployCommitment;
           return result;
         })());
+        const {
+          context: context,
+          value: value
+        } = await connection.confirmTransaction($(function () {
+          let result = $Object.create(null, undefined);
+          result.signature = finalizeSignature;
+          result.lastValidBlockHeight = transaction.lastValidBlockHeight;
+          result.blockhash = transaction.recentBlockhash;
+          return result;
+        })(), deployCommitment);
+        if (value.err) {
+          throw new Error(`Transaction ${finalizeSignature} failed (${JSON.stringify(value)})`);
+        }
+        while (true) {
+          try {
+            const currentSlot = await connection.getSlot($(function () {
+              let result = $Object.create(null, undefined);
+              result.commitment = deployCommitment;
+              return result;
+            })());
+            if (currentSlot > context.slot) {
+              break;
+            }
+          } catch {}
+          await new Promise($(resolve => setTimeout(resolve, Math.round(MS_PER_SLOT / 2))));
+        }
       }
       return true;
     }
@@ -10441,7 +11261,7 @@ var solanaWeb3 = $(function (exports) {
     }
   };
   $(fastStableStringify);
-  var fastStableStringify$1 = fastStableStringify;
+  var fastStableStringify$1 = getDefaultExportFromCjs(fastStableStringify);
   class StructError extends TypeError {
     constructor(failure, failures) {
       let cached;
@@ -10893,1392 +11713,6 @@ var solanaWeb3 = $(function (exports) {
     })());
   }
   $(coerce);
-  var index_browser = $Object.create(null, undefined);
-  var interopRequireDefault = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  $(function (module) {
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : $(function () {
-        let result = $Object.create(null, undefined);
-        result.default = obj;
-        return result;
-      })();
-    }
-    $(_interopRequireDefault);
-    module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
-  })(interopRequireDefault);
-  var createClass = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var hasRequiredCreateClass;
-  function requireCreateClass() {
-    if (hasRequiredCreateClass) return createClass.exports;
-    hasRequiredCreateClass = 1;
-    $(function (module) {
-      function _defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-          var descriptor = props[i];
-          descriptor.enumerable = descriptor.enumerable || false;
-          descriptor.configurable = true;
-          if ("value" in descriptor) descriptor.writable = true;
-          $Object.defineProperty(target, descriptor.key, descriptor);
-        }
-      }
-      $(_defineProperties);
-      function _createClass(Constructor, protoProps, staticProps) {
-        if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-        if (staticProps) _defineProperties(Constructor, staticProps);
-        $Object.defineProperty(Constructor, "prototype", $(function () {
-          let result = $Object.create(null, undefined);
-          result.writable = false;
-          return result;
-        })());
-        return Constructor;
-      }
-      $(_createClass);
-      module.exports = _createClass, module.exports.__esModule = true, module.exports["default"] = module.exports;
-    })(createClass);
-    return createClass.exports;
-  }
-  $(requireCreateClass);
-  var classCallCheck = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var hasRequiredClassCallCheck;
-  function requireClassCallCheck() {
-    if (hasRequiredClassCallCheck) return classCallCheck.exports;
-    hasRequiredClassCallCheck = 1;
-    $(function (module) {
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
-        }
-      }
-      $(_classCallCheck);
-      module.exports = _classCallCheck, module.exports.__esModule = true, module.exports["default"] = module.exports;
-    })(classCallCheck);
-    return classCallCheck.exports;
-  }
-  $(requireClassCallCheck);
-  var inherits = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var setPrototypeOf = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var hasRequiredSetPrototypeOf;
-  function requireSetPrototypeOf() {
-    if (hasRequiredSetPrototypeOf) return setPrototypeOf.exports;
-    hasRequiredSetPrototypeOf = 1;
-    $(function (module) {
-      function _setPrototypeOf(o, p) {
-        module.exports = _setPrototypeOf = $Object.setPrototypeOf || $(function _setPrototypeOf(o, p) {
-          o.__proto__ = p;
-          return o;
-        }), module.exports.__esModule = true, module.exports["default"] = module.exports;
-        return _setPrototypeOf(o, p);
-      }
-      $(_setPrototypeOf);
-      module.exports = _setPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
-    })(setPrototypeOf);
-    return setPrototypeOf.exports;
-  }
-  $(requireSetPrototypeOf);
-  var hasRequiredInherits;
-  function requireInherits() {
-    if (hasRequiredInherits) return inherits.exports;
-    hasRequiredInherits = 1;
-    $(function (module) {
-      var setPrototypeOf = requireSetPrototypeOf();
-      function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-          throw new TypeError("Super expression must either be null or a function");
-        }
-        subClass.prototype = $Object.create(superClass && superClass.prototype, $(function () {
-          let result = $Object.create(null, undefined);
-          result.constructor = $(function () {
-            let result = $Object.create(null, undefined);
-            result.value = subClass;
-            result.writable = true;
-            result.configurable = true;
-            return result;
-          })();
-          return result;
-        })());
-        $Object.defineProperty(subClass, "prototype", $(function () {
-          let result = $Object.create(null, undefined);
-          result.writable = false;
-          return result;
-        })());
-        if (superClass) setPrototypeOf(subClass, superClass);
-      }
-      $(_inherits);
-      module.exports = _inherits, module.exports.__esModule = true, module.exports["default"] = module.exports;
-    })(inherits);
-    return inherits.exports;
-  }
-  $(requireInherits);
-  var possibleConstructorReturn = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var _typeof = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var hasRequired_typeof;
-  function require_typeof() {
-    if (hasRequired_typeof) return _typeof.exports;
-    hasRequired_typeof = 1;
-    $(function (module) {
-      function _typeof(obj) {
-        "@babel/helpers - typeof";
-
-        return module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? $(function (obj) {
-          return typeof obj;
-        }) : $(function (obj) {
-          return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        }), module.exports.__esModule = true, module.exports["default"] = module.exports, _typeof(obj);
-      }
-      $(_typeof);
-      module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
-    })(_typeof);
-    return _typeof.exports;
-  }
-  $(require_typeof);
-  var assertThisInitialized = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var hasRequiredAssertThisInitialized;
-  function requireAssertThisInitialized() {
-    if (hasRequiredAssertThisInitialized) return assertThisInitialized.exports;
-    hasRequiredAssertThisInitialized = 1;
-    $(function (module) {
-      function _assertThisInitialized(self) {
-        if (self === void 0) {
-          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }
-        return self;
-      }
-      $(_assertThisInitialized);
-      module.exports = _assertThisInitialized, module.exports.__esModule = true, module.exports["default"] = module.exports;
-    })(assertThisInitialized);
-    return assertThisInitialized.exports;
-  }
-  $(requireAssertThisInitialized);
-  var hasRequiredPossibleConstructorReturn;
-  function requirePossibleConstructorReturn() {
-    if (hasRequiredPossibleConstructorReturn) return possibleConstructorReturn.exports;
-    hasRequiredPossibleConstructorReturn = 1;
-    $(function (module) {
-      var _typeof = require_typeof()["default"];
-      var assertThisInitialized = requireAssertThisInitialized();
-      function _possibleConstructorReturn(self, call) {
-        if (call && (_typeof(call) === "object" || typeof call === "function")) {
-          return call;
-        } else if (call !== void 0) {
-          throw new TypeError("Derived constructors may only return object or undefined");
-        }
-        return assertThisInitialized(self);
-      }
-      $(_possibleConstructorReturn);
-      module.exports = _possibleConstructorReturn, module.exports.__esModule = true, module.exports["default"] = module.exports;
-    })(possibleConstructorReturn);
-    return possibleConstructorReturn.exports;
-  }
-  $(requirePossibleConstructorReturn);
-  var getPrototypeOf = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var hasRequiredGetPrototypeOf;
-  function requireGetPrototypeOf() {
-    if (hasRequiredGetPrototypeOf) return getPrototypeOf.exports;
-    hasRequiredGetPrototypeOf = 1;
-    $(function (module) {
-      function _getPrototypeOf(o) {
-        module.exports = _getPrototypeOf = $Object.setPrototypeOf ? $Object.getPrototypeOf : $(function _getPrototypeOf(o) {
-          return o.__proto__ || $Object.getPrototypeOf(o);
-        }), module.exports.__esModule = true, module.exports["default"] = module.exports;
-        return _getPrototypeOf(o);
-      }
-      $(_getPrototypeOf);
-      module.exports = _getPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
-    })(getPrototypeOf);
-    return getPrototypeOf.exports;
-  }
-  $(requireGetPrototypeOf);
-  var websocket_browser = $Object.create(null, undefined);
-  var eventemitter3 = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var hasRequiredEventemitter3;
-  function requireEventemitter3() {
-    if (hasRequiredEventemitter3) return eventemitter3.exports;
-    hasRequiredEventemitter3 = 1;
-    $(function (module) {
-      var has = $Object.prototype.hasOwnProperty,
-        prefix = "~";
-      function Events() {}
-      $(Events);
-      if ($Object.create) {
-        Events.prototype = $Object.create(null);
-        if (!new Events().__proto__) prefix = false;
-      }
-      function EE(fn, context, once) {
-        this.fn = fn;
-        this.context = context;
-        this.once = once || false;
-      }
-      $(EE);
-      function addListener(emitter, event, fn, context, once) {
-        if (typeof fn !== "function") {
-          throw new TypeError("The listener must be a function");
-        }
-        var listener = new EE(fn, context || emitter, once),
-          evt = prefix ? prefix + event : event;
-        if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);else emitter._events[evt] = $Array.of(emitter._events[evt], listener);
-        return emitter;
-      }
-      $(addListener);
-      function clearEvent(emitter, evt) {
-        if (--emitter._eventsCount === 0) emitter._events = new Events();else delete emitter._events[evt];
-      }
-      $(clearEvent);
-      function EventEmitter() {
-        this._events = new Events();
-        this._eventsCount = 0;
-      }
-      $(EventEmitter);
-      EventEmitter.prototype.eventNames = $(function eventNames() {
-        var names = $Array.of(),
-          events,
-          name;
-        if (this._eventsCount === 0) return names;
-        for (name in events = this._events) {
-          if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
-        }
-        if ($Object.getOwnPropertySymbols) {
-          return names.concat($Object.getOwnPropertySymbols(events));
-        }
-        return names;
-      });
-      EventEmitter.prototype.listeners = $(function listeners(event) {
-        var evt = prefix ? prefix + event : event,
-          handlers = this._events[evt];
-        if (!handlers) return $Array.of();
-        if (handlers.fn) return $Array.of(handlers.fn);
-        for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
-          ee[i] = handlers[i].fn;
-        }
-        return ee;
-      });
-      EventEmitter.prototype.listenerCount = $(function listenerCount(event) {
-        var evt = prefix ? prefix + event : event,
-          listeners = this._events[evt];
-        if (!listeners) return 0;
-        if (listeners.fn) return 1;
-        return listeners.length;
-      });
-      EventEmitter.prototype.emit = $(function emit(event, a1, a2, a3, a4, a5) {
-        var evt = prefix ? prefix + event : event;
-        if (!this._events[evt]) return false;
-        var listeners = this._events[evt],
-          len = arguments.length,
-          args,
-          i;
-        if (listeners.fn) {
-          if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);
-          switch (len) {
-            case 1:
-              return listeners.fn.call(listeners.context), true;
-            case 2:
-              return listeners.fn.call(listeners.context, a1), true;
-            case 3:
-              return listeners.fn.call(listeners.context, a1, a2), true;
-            case 4:
-              return listeners.fn.call(listeners.context, a1, a2, a3), true;
-            case 5:
-              return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
-            case 6:
-              return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
-          }
-          for (i = 1, args = new Array(len - 1); i < len; i++) {
-            args[i - 1] = arguments[i];
-          }
-          listeners.fn.apply(listeners.context, args);
-        } else {
-          var length = listeners.length,
-            j;
-          for (i = 0; i < length; i++) {
-            if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);
-            switch (len) {
-              case 1:
-                listeners[i].fn.call(listeners[i].context);
-                break;
-              case 2:
-                listeners[i].fn.call(listeners[i].context, a1);
-                break;
-              case 3:
-                listeners[i].fn.call(listeners[i].context, a1, a2);
-                break;
-              case 4:
-                listeners[i].fn.call(listeners[i].context, a1, a2, a3);
-                break;
-              default:
-                if (!args) for (j = 1, args = new Array(len - 1); j < len; j++) {
-                  args[j - 1] = arguments[j];
-                }
-                listeners[i].fn.apply(listeners[i].context, args);
-            }
-          }
-        }
-        return true;
-      });
-      EventEmitter.prototype.on = $(function on(event, fn, context) {
-        return addListener(this, event, fn, context, false);
-      });
-      EventEmitter.prototype.once = $(function once(event, fn, context) {
-        return addListener(this, event, fn, context, true);
-      });
-      EventEmitter.prototype.removeListener = $(function removeListener(event, fn, context, once) {
-        var evt = prefix ? prefix + event : event;
-        if (!this._events[evt]) return this;
-        if (!fn) {
-          clearEvent(this, evt);
-          return this;
-        }
-        var listeners = this._events[evt];
-        if (listeners.fn) {
-          if (listeners.fn === fn && (!once || listeners.once) && (!context || listeners.context === context)) {
-            clearEvent(this, evt);
-          }
-        } else {
-          for (var i = 0, events = $Array.of(), length = listeners.length; i < length; i++) {
-            if (listeners[i].fn !== fn || once && !listeners[i].once || context && listeners[i].context !== context) {
-              events.push(listeners[i]);
-            }
-          }
-          if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;else clearEvent(this, evt);
-        }
-        return this;
-      });
-      EventEmitter.prototype.removeAllListeners = $(function removeAllListeners(event) {
-        var evt;
-        if (event) {
-          evt = prefix ? prefix + event : event;
-          if (this._events[evt]) clearEvent(this, evt);
-        } else {
-          this._events = new Events();
-          this._eventsCount = 0;
-        }
-        return this;
-      });
-      EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
-      EventEmitter.prototype.addListener = EventEmitter.prototype.on;
-      EventEmitter.prefixed = prefix;
-      EventEmitter.EventEmitter = EventEmitter;
-      {
-        module.exports = EventEmitter;
-      }
-    })(eventemitter3);
-    return eventemitter3.exports;
-  }
-  $(requireEventemitter3);
-  var hasRequiredWebsocket_browser;
-  function requireWebsocket_browser() {
-    if (hasRequiredWebsocket_browser) return websocket_browser;
-    hasRequiredWebsocket_browser = 1;
-    $(function (exports) {
-      var _interopRequireDefault = interopRequireDefault.exports;
-      $Object.defineProperty(exports, "__esModule", $(function () {
-        let result = $Object.create(null, undefined);
-        result.value = true;
-        return result;
-      })());
-      exports["default"] = _default;
-      var _classCallCheck2 = _interopRequireDefault(requireClassCallCheck());
-      var _createClass2 = _interopRequireDefault(requireCreateClass());
-      var _inherits2 = _interopRequireDefault(requireInherits());
-      var _possibleConstructorReturn2 = _interopRequireDefault(requirePossibleConstructorReturn());
-      var _getPrototypeOf2 = _interopRequireDefault(requireGetPrototypeOf());
-      var _eventemitter = requireEventemitter3();
-      function _createSuper(Derived) {
-        var hasNativeReflectConstruct = _isNativeReflectConstruct();
-        return $(function _createSuperInternal() {
-          var Super = (0, _getPrototypeOf2["default"])(Derived),
-            result;
-          if (hasNativeReflectConstruct) {
-            var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor;
-            result = Reflect.construct(Super, arguments, NewTarget);
-          } else {
-            result = Super.apply(this, arguments);
-          }
-          return (0, _possibleConstructorReturn2["default"])(this, result);
-        });
-      }
-      $(_createSuper);
-      function _isNativeReflectConstruct() {
-        if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-        if (Reflect.construct.sham) return false;
-        if (typeof Proxy === "function") return true;
-        try {
-          Boolean.prototype.valueOf.call(Reflect.construct(Boolean, $Array.of(), $(function () {})));
-          return true;
-        } catch (e) {
-          return false;
-        }
-      }
-      $(_isNativeReflectConstruct);
-      var WebSocketBrowserImpl = $(function (_EventEmitter) {
-        (0, _inherits2["default"])(WebSocketBrowserImpl, _EventEmitter);
-        var _super = _createSuper(WebSocketBrowserImpl);
-        function WebSocketBrowserImpl(address, options, protocols) {
-          var _this;
-          (0, _classCallCheck2["default"])(this, WebSocketBrowserImpl);
-          _this = _super.call(this);
-          _this.socket = new window.WebSocket(address, protocols);
-          _this.socket.onopen = $(function () {
-            return _this.emit("open");
-          });
-          _this.socket.onmessage = $(function (event) {
-            return _this.emit("message", event.data);
-          });
-          _this.socket.onerror = $(function (error) {
-            return _this.emit("error", error);
-          });
-          _this.socket.onclose = $(function (event) {
-            _this.emit("close", event.code, event.reason);
-          });
-          return _this;
-        }
-        $(WebSocketBrowserImpl);
-        (0, _createClass2["default"])(WebSocketBrowserImpl, $Array.of($(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "send";
-          result.value = $(function send(data, optionsOrCallback, callback) {
-            var cb = callback || optionsOrCallback;
-            try {
-              this.socket.send(data);
-              cb();
-            } catch (error) {
-              cb(error);
-            }
-          });
-          return result;
-        })(), $(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "close";
-          result.value = $(function close(code, reason) {
-            this.socket.close(code, reason);
-          });
-          return result;
-        })(), $(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "addEventListener";
-          result.value = $(function addEventListener(type, listener, options) {
-            this.socket.addEventListener(type, listener, options);
-          });
-          return result;
-        })()));
-        return WebSocketBrowserImpl;
-      })(_eventemitter.EventEmitter);
-      function _default(address, options) {
-        return new WebSocketBrowserImpl(address, options);
-      }
-      $(_default);
-    })(websocket_browser);
-    return websocket_browser;
-  }
-  $(requireWebsocket_browser);
-  var client = $Object.create(null, undefined);
-  var regeneratorRuntime = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var hasRequiredRegeneratorRuntime;
-  function requireRegeneratorRuntime() {
-    if (hasRequiredRegeneratorRuntime) return regeneratorRuntime.exports;
-    hasRequiredRegeneratorRuntime = 1;
-    $(function (module) {
-      var _typeof = require_typeof()["default"];
-      function _regeneratorRuntime() {
-        /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
-        module.exports = _regeneratorRuntime = $(function _regeneratorRuntime() {
-          return exports;
-        }), module.exports.__esModule = true, module.exports["default"] = module.exports;
-        var exports = $Object.create(null, undefined),
-          Op = $Object.prototype,
-          hasOwn = Op.hasOwnProperty,
-          $Symbol = "function" == typeof Symbol ? Symbol : $Object.create(null, undefined),
-          iteratorSymbol = $Symbol.iterator || "@@iterator",
-          asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator",
-          toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-        function define(obj, key, value) {
-          return $Object.defineProperty(obj, key, $(function () {
-            let result = $Object.create(null, undefined);
-            result.value = value;
-            result.enumerable = !0;
-            result.configurable = !0;
-            result.writable = !0;
-            return result;
-          })()), obj[key];
-        }
-        $(define);
-        try {
-          define($Object.create(null, undefined), "");
-        } catch (err) {
-          define = $(function define(obj, key, value) {
-            return obj[key] = value;
-          });
-        }
-        function wrap(innerFn, outerFn, self, tryLocsList) {
-          var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
-            generator = $Object.create(protoGenerator.prototype),
-            context = new Context(tryLocsList || $Array.of());
-          return generator._invoke = $(function (innerFn, self, context) {
-            var state = "suspendedStart";
-            return $(function (method, arg) {
-              if ("executing" === state) throw new Error("Generator is already running");
-              if ("completed" === state) {
-                if ("throw" === method) throw arg;
-                return doneResult();
-              }
-              for (context.method = method, context.arg = arg;;) {
-                var delegate = context.delegate;
-                if (delegate) {
-                  var delegateResult = maybeInvokeDelegate(delegate, context);
-                  if (delegateResult) {
-                    if (delegateResult === ContinueSentinel) continue;
-                    return delegateResult;
-                  }
-                }
-                if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
-                  if ("suspendedStart" === state) throw state = "completed", context.arg;
-                  context.dispatchException(context.arg);
-                } else "return" === context.method && context.abrupt("return", context.arg);
-                state = "executing";
-                var record = tryCatch(innerFn, self, context);
-                if ("normal" === record.type) {
-                  if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
-                  return $(function () {
-                    let result = $Object.create(null, undefined);
-                    result.value = record.arg;
-                    result.done = context.done;
-                    return result;
-                  })();
-                }
-                "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
-              }
-            });
-          })(innerFn, self, context), generator;
-        }
-        $(wrap);
-        function tryCatch(fn, obj, arg) {
-          try {
-            return $(function () {
-              let result = $Object.create(null, undefined);
-              result.type = "normal";
-              result.arg = fn.call(obj, arg);
-              return result;
-            })();
-          } catch (err) {
-            return $(function () {
-              let result = $Object.create(null, undefined);
-              result.type = "throw";
-              result.arg = err;
-              return result;
-            })();
-          }
-        }
-        $(tryCatch);
-        exports.wrap = wrap;
-        var ContinueSentinel = $Object.create(null, undefined);
-        function Generator() {}
-        $(Generator);
-        function GeneratorFunction() {}
-        $(GeneratorFunction);
-        function GeneratorFunctionPrototype() {}
-        $(GeneratorFunctionPrototype);
-        var IteratorPrototype = $Object.create(null, undefined);
-        define(IteratorPrototype, iteratorSymbol, $(function () {
-          return this;
-        }));
-        var getProto = $Object.getPrototypeOf,
-          NativeIteratorPrototype = getProto && getProto(getProto(values($Array.of())));
-        NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
-        var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = $Object.create(IteratorPrototype);
-        function defineIteratorMethods(prototype) {
-          $Array.of("next", "throw", "return").forEach($(function (method) {
-            define(prototype, method, $(function (arg) {
-              return this._invoke(method, arg);
-            }));
-          }));
-        }
-        $(defineIteratorMethods);
-        function AsyncIterator(generator, PromiseImpl) {
-          function invoke(method, arg, resolve, reject) {
-            var record = tryCatch(generator[method], generator, arg);
-            if ("throw" !== record.type) {
-              var result = record.arg,
-                value = result.value;
-              return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then($(function (value) {
-                invoke("next", value, resolve, reject);
-              }), $(function (err) {
-                invoke("throw", err, resolve, reject);
-              })) : PromiseImpl.resolve(value).then($(function (unwrapped) {
-                result.value = unwrapped, resolve(result);
-              }), $(function (error) {
-                return invoke("throw", error, resolve, reject);
-              }));
-            }
-            reject(record.arg);
-          }
-          $(invoke);
-          var previousPromise;
-          this._invoke = $(function (method, arg) {
-            function callInvokeWithMethodAndArg() {
-              return new PromiseImpl($(function (resolve, reject) {
-                invoke(method, arg, resolve, reject);
-              }));
-            }
-            $(callInvokeWithMethodAndArg);
-            return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-          });
-        }
-        $(AsyncIterator);
-        function maybeInvokeDelegate(delegate, context) {
-          var method = delegate.iterator[context.method];
-          if (undefined === method) {
-            if (context.delegate = null, "throw" === context.method) {
-              if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel;
-              context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method");
-            }
-            return ContinueSentinel;
-          }
-          var record = tryCatch(method, delegate.iterator, context.arg);
-          if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
-          var info = record.arg;
-          return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel);
-        }
-        $(maybeInvokeDelegate);
-        function pushTryEntry(locs) {
-          var entry = $(function () {
-            let result = $Object.create(null, undefined);
-            result.tryLoc = locs[0];
-            return result;
-          })();
-          1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry);
-        }
-        $(pushTryEntry);
-        function resetTryEntry(entry) {
-          var record = entry.completion || $Object.create(null, undefined);
-          record.type = "normal", delete record.arg, entry.completion = record;
-        }
-        $(resetTryEntry);
-        function Context(tryLocsList) {
-          this.tryEntries = $Array.of($(function () {
-            let result = $Object.create(null, undefined);
-            result.tryLoc = "root";
-            return result;
-          })()), tryLocsList.forEach(pushTryEntry, this), this.reset(!0);
-        }
-        $(Context);
-        function values(iterable) {
-          if (iterable) {
-            var iteratorMethod = iterable[iteratorSymbol];
-            if (iteratorMethod) return iteratorMethod.call(iterable);
-            if ("function" == typeof iterable.next) return iterable;
-            if (!isNaN(iterable.length)) {
-              var i = -1,
-                next = function next() {
-                  for (; ++i < iterable.length;) {
-                    if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
-                  }
-                  return next.value = undefined, next.done = !0, next;
-                };
-              $(next);
-              return next.next = next;
-            }
-          }
-          return $(function () {
-            let result = $Object.create(null, undefined);
-            result.next = doneResult;
-            return result;
-          })();
-        }
-        $(values);
-        function doneResult() {
-          return $(function () {
-            let result = $Object.create(null, undefined);
-            result.value = undefined;
-            result.done = !0;
-            return result;
-          })();
-        }
-        $(doneResult);
-        return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = $(function (genFun) {
-          var ctor = "function" == typeof genFun && genFun.constructor;
-          return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
-        }), exports.mark = $(function (genFun) {
-          return $Object.setPrototypeOf ? $Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = $Object.create(Gp), genFun;
-        }), exports.awrap = $(function (arg) {
-          return $(function () {
-            let result = $Object.create(null, undefined);
-            result.__await = arg;
-            return result;
-          })();
-        }), defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, $(function () {
-          return this;
-        })), exports.AsyncIterator = AsyncIterator, exports.async = $(function (innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-          void 0 === PromiseImpl && (PromiseImpl = Promise);
-          var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
-          return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then($(function (result) {
-            return result.done ? result.value : iter.next();
-          }));
-        }), defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, $(function () {
-          return this;
-        })), define(Gp, "toString", $(function () {
-          return "[object Generator]";
-        })), exports.keys = $(function (object) {
-          var keys = $Array.of();
-          for (var key in object) {
-            keys.push(key);
-          }
-          return keys.reverse(), $(function next() {
-            for (; keys.length;) {
-              var key = keys.pop();
-              if (key in object) return next.value = key, next.done = !1, next;
-            }
-            return next.done = !0, next;
-          });
-        }), exports.values = values, Context.prototype = $(function () {
-          let result = $Object.create(null, undefined);
-          result.constructor = Context;
-          result.reset = $(function reset(skipTempReset) {
-            if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) {
-              "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
-            }
-          });
-          result.stop = $(function stop() {
-            this.done = !0;
-            var rootRecord = this.tryEntries[0].completion;
-            if ("throw" === rootRecord.type) throw rootRecord.arg;
-            return this.rval;
-          });
-          result.dispatchException = $(function dispatchException(exception) {
-            if (this.done) throw exception;
-            var context = this;
-            function handle(loc, caught) {
-              return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught;
-            }
-            $(handle);
-            for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-              var entry = this.tryEntries[i],
-                record = entry.completion;
-              if ("root" === entry.tryLoc) return handle("end");
-              if (entry.tryLoc <= this.prev) {
-                var hasCatch = hasOwn.call(entry, "catchLoc"),
-                  hasFinally = hasOwn.call(entry, "finallyLoc");
-                if (hasCatch && hasFinally) {
-                  if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-                  if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-                } else if (hasCatch) {
-                  if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-                } else {
-                  if (!hasFinally) throw new Error("try statement without catch or finally");
-                  if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-                }
-              }
-            }
-          });
-          result.abrupt = $(function abrupt(type, arg) {
-            for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-              var entry = this.tryEntries[i];
-              if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
-                var finallyEntry = entry;
-                break;
-              }
-            }
-            finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
-            var record = finallyEntry ? finallyEntry.completion : $Object.create(null, undefined);
-            return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record);
-          });
-          result.complete = $(function complete(record, afterLoc) {
-            if ("throw" === record.type) throw record.arg;
-            return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel;
-          });
-          result.finish = $(function finish(finallyLoc) {
-            for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-              var entry = this.tryEntries[i];
-              if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel;
-            }
-          });
-          result.catch = $(function _catch(tryLoc) {
-            for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-              var entry = this.tryEntries[i];
-              if (entry.tryLoc === tryLoc) {
-                var record = entry.completion;
-                if ("throw" === record.type) {
-                  var thrown = record.arg;
-                  resetTryEntry(entry);
-                }
-                return thrown;
-              }
-            }
-            throw new Error("illegal catch attempt");
-          });
-          result.delegateYield = $(function delegateYield(iterable, resultName, nextLoc) {
-            return this.delegate = $(function () {
-              let result = $Object.create(null, undefined);
-              result.iterator = values(iterable);
-              result.resultName = resultName;
-              result.nextLoc = nextLoc;
-              return result;
-            })(), "next" === this.method && (this.arg = undefined), ContinueSentinel;
-          });
-          return result;
-        })(), exports;
-      }
-      $(_regeneratorRuntime);
-      module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.exports["default"] = module.exports;
-    })(regeneratorRuntime);
-    return regeneratorRuntime.exports;
-  }
-  $(requireRegeneratorRuntime);
-  var regenerator;
-  var hasRequiredRegenerator;
-  function requireRegenerator() {
-    if (hasRequiredRegenerator) return regenerator;
-    hasRequiredRegenerator = 1;
-    regenerator = requireRegeneratorRuntime()();
-    return regenerator;
-  }
-  $(requireRegenerator);
-  var asyncToGenerator = $(function () {
-    let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  var hasRequiredAsyncToGenerator;
-  function requireAsyncToGenerator() {
-    if (hasRequiredAsyncToGenerator) return asyncToGenerator.exports;
-    hasRequiredAsyncToGenerator = 1;
-    $(function (module) {
-      function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-        try {
-          var info = gen[key](arg);
-          var value = info.value;
-        } catch (error) {
-          reject(error);
-          return;
-        }
-        if (info.done) {
-          resolve(value);
-        } else {
-          Promise.resolve(value).then(_next, _throw);
-        }
-      }
-      $(asyncGeneratorStep);
-      function _asyncToGenerator(fn) {
-        return $(function () {
-          var self = this,
-            args = arguments;
-          return new Promise($(function (resolve, reject) {
-            var gen = fn.apply(self, args);
-            function _next(value) {
-              asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-            }
-            $(_next);
-            function _throw(err) {
-              asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-            }
-            $(_throw);
-            _next(undefined);
-          }));
-        });
-      }
-      $(_asyncToGenerator);
-      module.exports = _asyncToGenerator, module.exports.__esModule = true, module.exports["default"] = module.exports;
-    })(asyncToGenerator);
-    return asyncToGenerator.exports;
-  }
-  $(requireAsyncToGenerator);
-  var hasRequiredClient;
-  function requireClient() {
-    if (hasRequiredClient) return client;
-    hasRequiredClient = 1;
-    $(function (exports) {
-      var _interopRequireDefault = interopRequireDefault.exports;
-      $Object.defineProperty(exports, "__esModule", $(function () {
-        let result = $Object.create(null, undefined);
-        result.value = true;
-        return result;
-      })());
-      exports["default"] = void 0;
-      var _regenerator = _interopRequireDefault(requireRegenerator());
-      var _asyncToGenerator2 = _interopRequireDefault(requireAsyncToGenerator());
-      var _typeof2 = _interopRequireDefault(require_typeof());
-      var _classCallCheck2 = _interopRequireDefault(requireClassCallCheck());
-      var _createClass2 = _interopRequireDefault(requireCreateClass());
-      var _inherits2 = _interopRequireDefault(requireInherits());
-      var _possibleConstructorReturn2 = _interopRequireDefault(requirePossibleConstructorReturn());
-      var _getPrototypeOf2 = _interopRequireDefault(requireGetPrototypeOf());
-      var _eventemitter = requireEventemitter3();
-      function _createSuper(Derived) {
-        var hasNativeReflectConstruct = _isNativeReflectConstruct();
-        return $(function _createSuperInternal() {
-          var Super = (0, _getPrototypeOf2["default"])(Derived),
-            result;
-          if (hasNativeReflectConstruct) {
-            var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor;
-            result = Reflect.construct(Super, arguments, NewTarget);
-          } else {
-            result = Super.apply(this, arguments);
-          }
-          return (0, _possibleConstructorReturn2["default"])(this, result);
-        });
-      }
-      $(_createSuper);
-      function _isNativeReflectConstruct() {
-        if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-        if (Reflect.construct.sham) return false;
-        if (typeof Proxy === "function") return true;
-        try {
-          Boolean.prototype.valueOf.call(Reflect.construct(Boolean, $Array.of(), $(function () {})));
-          return true;
-        } catch (e) {
-          return false;
-        }
-      }
-      $(_isNativeReflectConstruct);
-      var __rest = function (s, e) {
-        var t = $Object.create(null, undefined);
-        for (var p in s) {
-          if ($Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-        }
-        if (s != null && typeof $Object.getOwnPropertySymbols === "function") for (var i = 0, p = $Object.getOwnPropertySymbols(s); i < p.length; i++) {
-          if (e.indexOf(p[i]) < 0 && $Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-        }
-        return t;
-      };
-      $(__rest);
-      var CommonClient = $(function (_EventEmitter) {
-        (0, _inherits2["default"])(CommonClient, _EventEmitter);
-        var _super = _createSuper(CommonClient);
-        function CommonClient(webSocketFactory) {
-          var _this;
-          var address = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "ws://localhost:8080";
-          var _a = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : $Object.create(null, undefined);
-          var generate_request_id = arguments.length > 3 ? arguments[3] : undefined;
-          (0, _classCallCheck2["default"])(this, CommonClient);
-          var _a$autoconnect = _a.autoconnect,
-            autoconnect = _a$autoconnect === void 0 ? true : _a$autoconnect,
-            _a$reconnect = _a.reconnect,
-            reconnect = _a$reconnect === void 0 ? true : _a$reconnect,
-            _a$reconnect_interval = _a.reconnect_interval,
-            reconnect_interval = _a$reconnect_interval === void 0 ? 1e3 : _a$reconnect_interval,
-            _a$max_reconnects = _a.max_reconnects,
-            max_reconnects = _a$max_reconnects === void 0 ? 5 : _a$max_reconnects,
-            rest_options = __rest(_a, $Array.of("autoconnect", "reconnect", "reconnect_interval", "max_reconnects"));
-          _this = _super.call(this);
-          _this.webSocketFactory = webSocketFactory;
-          _this.queue = $Object.create(null, undefined);
-          _this.rpc_id = 0;
-          _this.address = address;
-          _this.autoconnect = autoconnect;
-          _this.ready = false;
-          _this.reconnect = reconnect;
-          _this.reconnect_interval = reconnect_interval;
-          _this.max_reconnects = max_reconnects;
-          _this.rest_options = rest_options;
-          _this.current_reconnects = 0;
-          _this.generate_request_id = generate_request_id || $(function () {
-            return ++_this.rpc_id;
-          });
-          if (_this.autoconnect) _this._connect(_this.address, $Object.assign($(function () {
-            let result = $Object.create(null, undefined);
-            result.autoconnect = _this.autoconnect;
-            result.reconnect = _this.reconnect;
-            result.reconnect_interval = _this.reconnect_interval;
-            result.max_reconnects = _this.max_reconnects;
-            return result;
-          })(), _this.rest_options));
-          return _this;
-        }
-        $(CommonClient);
-        (0, _createClass2["default"])(CommonClient, $Array.of($(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "connect";
-          result.value = $(function connect() {
-            if (this.socket) return;
-            this._connect(this.address, $Object.assign($(function () {
-              let result = $Object.create(null, undefined);
-              result.autoconnect = this.autoconnect;
-              result.reconnect = this.reconnect;
-              result.reconnect_interval = this.reconnect_interval;
-              result.max_reconnects = this.max_reconnects;
-              return result;
-            })(), this.rest_options));
-          });
-          return result;
-        })(), $(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "call";
-          result.value = $(function call(method, params, timeout, ws_opts) {
-            var _this2 = this;
-            if (!ws_opts && "object" === (0, _typeof2["default"])(timeout)) {
-              ws_opts = timeout;
-              timeout = null;
-            }
-            return new Promise($(function (resolve, reject) {
-              if (!_this2.ready) return reject(new Error("socket not ready"));
-              var rpc_id = _this2.generate_request_id(method, params);
-              var message = $(function () {
-                let result = $Object.create(null, undefined);
-                result.jsonrpc = "2.0";
-                result.method = method;
-                result.params = params || null;
-                result.id = rpc_id;
-                return result;
-              })();
-              _this2.socket.send(JSON.stringify(message), ws_opts, $(function (error) {
-                if (error) return reject(error);
-                _this2.queue[rpc_id] = $(function () {
-                  let result = $Object.create(null, undefined);
-                  result.promise = $Array.of(resolve, reject);
-                  return result;
-                })();
-                if (timeout) {
-                  _this2.queue[rpc_id].timeout = setTimeout($(function () {
-                    delete _this2.queue[rpc_id];
-                    reject(new Error("reply timeout"));
-                  }), timeout);
-                }
-              }));
-            }));
-          });
-          return result;
-        })(), $(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "login";
-          result.value = $(function () {
-            var _login = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark($(function _callee(params) {
-              var resp;
-              return _regenerator["default"].wrap($(function _callee$(_context) {
-                while (1) {
-                  switch (_context.prev = _context.next) {
-                    case 0:
-                      _context.next = 2;
-                      return this.call("rpc.login", params);
-                    case 2:
-                      resp = _context.sent;
-                      if (resp) {
-                        _context.next = 5;
-                        break;
-                      }
-                      throw new Error("authentication failed");
-                    case 5:
-                      return _context.abrupt("return", resp);
-                    case 6:
-                    case "end":
-                      return _context.stop();
-                  }
-                }
-              }), _callee, this);
-            })));
-            function login(_x) {
-              return _login.apply(this, arguments);
-            }
-            $(login);
-            return login;
-          })();
-          return result;
-        })(), $(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "listMethods";
-          result.value = $(function () {
-            var _listMethods = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark($(function _callee2() {
-              return _regenerator["default"].wrap($(function _callee2$(_context2) {
-                while (1) {
-                  switch (_context2.prev = _context2.next) {
-                    case 0:
-                      _context2.next = 2;
-                      return this.call("__listMethods");
-                    case 2:
-                      return _context2.abrupt("return", _context2.sent);
-                    case 3:
-                    case "end":
-                      return _context2.stop();
-                  }
-                }
-              }), _callee2, this);
-            })));
-            function listMethods() {
-              return _listMethods.apply(this, arguments);
-            }
-            $(listMethods);
-            return listMethods;
-          })();
-          return result;
-        })(), $(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "notify";
-          result.value = $(function notify(method, params) {
-            var _this3 = this;
-            return new Promise($(function (resolve, reject) {
-              if (!_this3.ready) return reject(new Error("socket not ready"));
-              var message = $(function () {
-                let result = $Object.create(null, undefined);
-                result.jsonrpc = "2.0";
-                result.method = method;
-                result.params = params || null;
-                return result;
-              })();
-              _this3.socket.send(JSON.stringify(message), $(function (error) {
-                if (error) return reject(error);
-                resolve();
-              }));
-            }));
-          });
-          return result;
-        })(), $(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "subscribe";
-          result.value = $(function () {
-            var _subscribe = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark($(function _callee3(event) {
-              var result;
-              return _regenerator["default"].wrap($(function _callee3$(_context3) {
-                while (1) {
-                  switch (_context3.prev = _context3.next) {
-                    case 0:
-                      if (typeof event === "string") event = $Array.of(event);
-                      _context3.next = 3;
-                      return this.call("rpc.on", event);
-                    case 3:
-                      result = _context3.sent;
-                      if (!(typeof event === "string" && result[event] !== "ok")) {
-                        _context3.next = 6;
-                        break;
-                      }
-                      throw new Error("Failed subscribing to an event '" + event + "' with: " + result[event]);
-                    case 6:
-                      return _context3.abrupt("return", result);
-                    case 7:
-                    case "end":
-                      return _context3.stop();
-                  }
-                }
-              }), _callee3, this);
-            })));
-            function subscribe(_x2) {
-              return _subscribe.apply(this, arguments);
-            }
-            $(subscribe);
-            return subscribe;
-          })();
-          return result;
-        })(), $(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "unsubscribe";
-          result.value = $(function () {
-            var _unsubscribe = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark($(function _callee4(event) {
-              var result;
-              return _regenerator["default"].wrap($(function _callee4$(_context4) {
-                while (1) {
-                  switch (_context4.prev = _context4.next) {
-                    case 0:
-                      if (typeof event === "string") event = $Array.of(event);
-                      _context4.next = 3;
-                      return this.call("rpc.off", event);
-                    case 3:
-                      result = _context4.sent;
-                      if (!(typeof event === "string" && result[event] !== "ok")) {
-                        _context4.next = 6;
-                        break;
-                      }
-                      throw new Error("Failed unsubscribing from an event with: " + result);
-                    case 6:
-                      return _context4.abrupt("return", result);
-                    case 7:
-                    case "end":
-                      return _context4.stop();
-                  }
-                }
-              }), _callee4, this);
-            })));
-            function unsubscribe(_x3) {
-              return _unsubscribe.apply(this, arguments);
-            }
-            $(unsubscribe);
-            return unsubscribe;
-          })();
-          return result;
-        })(), $(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "close";
-          result.value = $(function close(code, data) {
-            this.socket.close(code || 1e3, data);
-          });
-          return result;
-        })(), $(function () {
-          let result = $Object.create(null, undefined);
-          result.key = "_connect";
-          result.value = $(function _connect(address, options) {
-            var _this4 = this;
-            this.socket = this.webSocketFactory(address, options);
-            this.socket.addEventListener("open", $(function () {
-              _this4.ready = true;
-              _this4.emit("open");
-              _this4.current_reconnects = 0;
-            }));
-            this.socket.addEventListener("message", $(function (_ref) {
-              var message = _ref.data;
-              if (message instanceof ArrayBuffer) message = Buffer.from(message).toString();
-              try {
-                message = JSON.parse(message);
-              } catch (error) {
-                return;
-              }
-              if (message.notification && _this4.listeners(message.notification).length) {
-                if (!$Object.keys(message.params).length) return _this4.emit(message.notification);
-                var args = $Array.of(message.notification);
-                if (message.params.constructor === Object) args.push(message.params);else for (var i = 0; i < message.params.length; i++) {
-                  args.push(message.params[i]);
-                }
-                return Promise.resolve().then($(function () {
-                  _this4.emit.apply(_this4, args);
-                }));
-              }
-              if (!_this4.queue[message.id]) {
-                if (message.method && message.params) {
-                  return Promise.resolve().then($(function () {
-                    _this4.emit(message.method, message.params);
-                  }));
-                }
-                return;
-              }
-              if ("error" in message === "result" in message) _this4.queue[message.id].promise[1](new Error('Server response malformed. Response must include either "result"' + ' or "error", but not both.'));
-              if (_this4.queue[message.id].timeout) clearTimeout(_this4.queue[message.id].timeout);
-              if (message.error) _this4.queue[message.id].promise[1](message.error);else _this4.queue[message.id].promise[0](message.result);
-              delete _this4.queue[message.id];
-            }));
-            this.socket.addEventListener("error", $(function (error) {
-              return _this4.emit("error", error);
-            }));
-            this.socket.addEventListener("close", $(function (_ref2) {
-              var code = _ref2.code,
-                reason = _ref2.reason;
-              if (_this4.ready) setTimeout($(function () {
-                return _this4.emit("close", code, reason);
-              }), 0);
-              _this4.ready = false;
-              _this4.socket = undefined;
-              if (code === 1e3) return;
-              _this4.current_reconnects++;
-              if (_this4.reconnect && (_this4.max_reconnects > _this4.current_reconnects || _this4.max_reconnects === 0)) setTimeout($(function () {
-                return _this4._connect(address, options);
-              }), _this4.reconnect_interval);
-            }));
-          });
-          return result;
-        })()));
-        return CommonClient;
-      })(_eventemitter.EventEmitter);
-      exports["default"] = CommonClient;
-    })(client);
-    return client;
-  }
-  $(requireClient);
-  var _interopRequireDefault = interopRequireDefault.exports;
-  $Object.defineProperty(index_browser, "__esModule", $(function () {
-    let result = $Object.create(null, undefined);
-    result.value = true;
-    return result;
-  })());
-  var Client_1 = index_browser.Client = void 0;
-  var _createClass2 = _interopRequireDefault(requireCreateClass());
-  var _classCallCheck2 = _interopRequireDefault(requireClassCallCheck());
-  var _inherits2 = _interopRequireDefault(requireInherits());
-  var _possibleConstructorReturn2 = _interopRequireDefault(requirePossibleConstructorReturn());
-  var _getPrototypeOf2 = _interopRequireDefault(requireGetPrototypeOf());
-  var _websocket = _interopRequireDefault(requireWebsocket_browser());
-  var _client = _interopRequireDefault(requireClient());
-  function _createSuper(Derived) {
-    var hasNativeReflectConstruct = _isNativeReflectConstruct();
-    return $(function _createSuperInternal() {
-      var Super = (0, _getPrototypeOf2["default"])(Derived),
-        result;
-      if (hasNativeReflectConstruct) {
-        var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor;
-        result = Reflect.construct(Super, arguments, NewTarget);
-      } else {
-        result = Super.apply(this, arguments);
-      }
-      return (0, _possibleConstructorReturn2["default"])(this, result);
-    });
-  }
-  $(_createSuper);
-  function _isNativeReflectConstruct() {
-    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-    if (Reflect.construct.sham) return false;
-    if (typeof Proxy === "function") return true;
-    try {
-      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, $Array.of(), $(function () {})));
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-  $(_isNativeReflectConstruct);
-  var Client = $(function (_CommonClient) {
-    (0, _inherits2["default"])(Client, _CommonClient);
-    var _super = _createSuper(Client);
-    function Client() {
-      var address = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "ws://localhost:8080";
-      var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : $Object.create(null, undefined),
-        _ref$autoconnect = _ref.autoconnect,
-        autoconnect = _ref$autoconnect === void 0 ? true : _ref$autoconnect,
-        _ref$reconnect = _ref.reconnect,
-        reconnect = _ref$reconnect === void 0 ? true : _ref$reconnect,
-        _ref$reconnect_interv = _ref.reconnect_interval,
-        reconnect_interval = _ref$reconnect_interv === void 0 ? 1e3 : _ref$reconnect_interv,
-        _ref$max_reconnects = _ref.max_reconnects,
-        max_reconnects = _ref$max_reconnects === void 0 ? 5 : _ref$max_reconnects;
-      var generate_request_id = arguments.length > 2 ? arguments[2] : undefined;
-      (0, _classCallCheck2["default"])(this, Client);
-      return _super.call(this, _websocket["default"], address, $(function () {
-        let result = $Object.create(null, undefined);
-        result.autoconnect = autoconnect;
-        result.reconnect = reconnect;
-        result.reconnect_interval = reconnect_interval;
-        result.max_reconnects = max_reconnects;
-        return result;
-      })(), generate_request_id);
-    }
-    $(Client);
-    return (0, _createClass2["default"])(Client);
-  })(_client["default"]);
-  Client_1 = index_browser.Client = Client;
   var getRandomValues;
   var rnds8 = new Uint8Array(16);
   function rng() {
@@ -12690,15 +12124,15 @@ var solanaWeb3 = $(function (exports) {
   var esmBrowser = $Object.freeze($(function () {
     let result = $Object.create(null, undefined);
     result.__proto__ = null;
+    result.NIL = nil;
+    result.parse = parse;
+    result.stringify = stringify;
     result.v1 = v1;
     result.v3 = v3$1;
     result.v4 = v4;
     result.v5 = v5$1;
-    result.NIL = nil;
-    result.version = version;
     result.validate = validate;
-    result.stringify = stringify;
-    result.parse = parse;
+    result.version = version;
     return result;
   })());
   var require$$0 = getAugmentedNamespace(esmBrowser);
@@ -12843,7 +12277,7 @@ var solanaWeb3 = $(function (exports) {
     }
     callback(null, response);
   });
-  var RpcClient = browser;
+  var RpcClient = getDefaultExportFromCjs(browser);
   const MINIMUM_SLOT_PER_EPOCH = 32;
   function trailingZeros(n) {
     let trailingZeros = 0;
@@ -12956,10 +12390,1419 @@ var solanaWeb3 = $(function (exports) {
     }
   }
   var fetchImpl = globalThis.fetch;
-  const NUM_TICKS_PER_SECOND = 160;
-  const DEFAULT_TICKS_PER_SLOT = 64;
-  const NUM_SLOTS_PER_SECOND = NUM_TICKS_PER_SECOND / DEFAULT_TICKS_PER_SLOT;
-  const MS_PER_SLOT = 1e3 / NUM_SLOTS_PER_SECOND;
+  var client = $Object.create(null, undefined);
+  var interopRequireDefault = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  $(function (module) {
+    function _interopRequireDefault(obj) {
+      return obj && obj.__esModule ? obj : $(function () {
+        let result = $Object.create(null, undefined);
+        result.default = obj;
+        return result;
+      })();
+    }
+    $(_interopRequireDefault);
+    module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
+  })(interopRequireDefault);
+  var interopRequireDefaultExports = interopRequireDefault.exports;
+  var regeneratorRuntime$1 = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var _typeof = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var hasRequired_typeof;
+  function require_typeof() {
+    if (hasRequired_typeof) return _typeof.exports;
+    hasRequired_typeof = 1;
+    $(function (module) {
+      function _typeof(o) {
+        "@babel/helpers - typeof";
+
+        return module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? $(function (o) {
+          return typeof o;
+        }) : $(function (o) {
+          return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+        }), module.exports.__esModule = true, module.exports["default"] = module.exports, _typeof(o);
+      }
+      $(_typeof);
+      module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(_typeof);
+    return _typeof.exports;
+  }
+  $(require_typeof);
+  var hasRequiredRegeneratorRuntime;
+  function requireRegeneratorRuntime() {
+    if (hasRequiredRegeneratorRuntime) return regeneratorRuntime$1.exports;
+    hasRequiredRegeneratorRuntime = 1;
+    $(function (module) {
+      var _typeof = require_typeof()["default"];
+      function _regeneratorRuntime() {
+        module.exports = _regeneratorRuntime = $(function _regeneratorRuntime() {
+          return e;
+        }), module.exports.__esModule = true, module.exports["default"] = module.exports;
+        var t,
+          e = $Object.create(null, undefined),
+          r = $Object.prototype,
+          n = r.hasOwnProperty,
+          o = $Object.defineProperty || $(function (t, e, r) {
+            t[e] = r.value;
+          }),
+          i = "function" == typeof Symbol ? Symbol : $Object.create(null, undefined),
+          a = i.iterator || "@@iterator",
+          c = i.asyncIterator || "@@asyncIterator",
+          u = i.toStringTag || "@@toStringTag";
+        function define(t, e, r) {
+          return $Object.defineProperty(t, e, $(function () {
+            let result = $Object.create(null, undefined);
+            result.value = r;
+            result.enumerable = !0;
+            result.configurable = !0;
+            result.writable = !0;
+            return result;
+          })()), t[e];
+        }
+        $(define);
+        try {
+          define($Object.create(null, undefined), "");
+        } catch (t) {
+          define = $(function define(t, e, r) {
+            return t[e] = r;
+          });
+        }
+        function wrap(t, e, r, n) {
+          var i = e && e.prototype instanceof Generator ? e : Generator,
+            a = $Object.create(i.prototype),
+            c = new Context(n || $Array.of());
+          return o(a, "_invoke", $(function () {
+            let result = $Object.create(null, undefined);
+            result.value = makeInvokeMethod(t, r, c);
+            return result;
+          })()), a;
+        }
+        $(wrap);
+        function tryCatch(t, e, r) {
+          try {
+            return $(function () {
+              let result = $Object.create(null, undefined);
+              result.type = "normal";
+              result.arg = t.call(e, r);
+              return result;
+            })();
+          } catch (t) {
+            return $(function () {
+              let result = $Object.create(null, undefined);
+              result.type = "throw";
+              result.arg = t;
+              return result;
+            })();
+          }
+        }
+        $(tryCatch);
+        e.wrap = wrap;
+        var h = "suspendedStart",
+          l = "suspendedYield",
+          f = "executing",
+          s = "completed",
+          y = $Object.create(null, undefined);
+        function Generator() {}
+        $(Generator);
+        function GeneratorFunction() {}
+        $(GeneratorFunction);
+        function GeneratorFunctionPrototype() {}
+        $(GeneratorFunctionPrototype);
+        var p = $Object.create(null, undefined);
+        define(p, a, $(function () {
+          return this;
+        }));
+        var d = $Object.getPrototypeOf,
+          v = d && d(d(values($Array.of())));
+        v && v !== r && n.call(v, a) && (p = v);
+        var g = GeneratorFunctionPrototype.prototype = Generator.prototype = $Object.create(p);
+        function defineIteratorMethods(t) {
+          $Array.of("next", "throw", "return").forEach($(function (e) {
+            define(t, e, $(function (t) {
+              return this._invoke(e, t);
+            }));
+          }));
+        }
+        $(defineIteratorMethods);
+        function AsyncIterator(t, e) {
+          function invoke(r, o, i, a) {
+            var c = tryCatch(t[r], t, o);
+            if ("throw" !== c.type) {
+              var u = c.arg,
+                h = u.value;
+              return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then($(function (t) {
+                invoke("next", t, i, a);
+              }), $(function (t) {
+                invoke("throw", t, i, a);
+              })) : e.resolve(h).then($(function (t) {
+                u.value = t, i(u);
+              }), $(function (t) {
+                return invoke("throw", t, i, a);
+              }));
+            }
+            a(c.arg);
+          }
+          $(invoke);
+          var r;
+          o(this, "_invoke", $(function () {
+            let result = $Object.create(null, undefined);
+            result.value = $(function value(t, n) {
+              function callInvokeWithMethodAndArg() {
+                return new e($(function (e, r) {
+                  invoke(t, n, e, r);
+                }));
+              }
+              $(callInvokeWithMethodAndArg);
+              return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+            });
+            return result;
+          })());
+        }
+        $(AsyncIterator);
+        function makeInvokeMethod(e, r, n) {
+          var o = h;
+          return $(function (i, a) {
+            if (o === f) throw new Error("Generator is already running");
+            if (o === s) {
+              if ("throw" === i) throw a;
+              return $(function () {
+                let result = $Object.create(null, undefined);
+                result.value = t;
+                result.done = !0;
+                return result;
+              })();
+            }
+            for (n.method = i, n.arg = a;;) {
+              var c = n.delegate;
+              if (c) {
+                var u = maybeInvokeDelegate(c, n);
+                if (u) {
+                  if (u === y) continue;
+                  return u;
+                }
+              }
+              if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) {
+                if (o === h) throw o = s, n.arg;
+                n.dispatchException(n.arg);
+              } else "return" === n.method && n.abrupt("return", n.arg);
+              o = f;
+              var p = tryCatch(e, r, n);
+              if ("normal" === p.type) {
+                if (o = n.done ? s : l, p.arg === y) continue;
+                return $(function () {
+                  let result = $Object.create(null, undefined);
+                  result.value = p.arg;
+                  result.done = n.done;
+                  return result;
+                })();
+              }
+              "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg);
+            }
+          });
+        }
+        $(makeInvokeMethod);
+        function maybeInvokeDelegate(e, r) {
+          var n = r.method,
+            o = e.iterator[n];
+          if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y;
+          var i = tryCatch(o, e.iterator, r.arg);
+          if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y;
+          var a = i.arg;
+          return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y);
+        }
+        $(maybeInvokeDelegate);
+        function pushTryEntry(t) {
+          var e = $(function () {
+            let result = $Object.create(null, undefined);
+            result.tryLoc = t[0];
+            return result;
+          })();
+          1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e);
+        }
+        $(pushTryEntry);
+        function resetTryEntry(t) {
+          var e = t.completion || $Object.create(null, undefined);
+          e.type = "normal", delete e.arg, t.completion = e;
+        }
+        $(resetTryEntry);
+        function Context(t) {
+          this.tryEntries = $Array.of($(function () {
+            let result = $Object.create(null, undefined);
+            result.tryLoc = "root";
+            return result;
+          })()), t.forEach(pushTryEntry, this), this.reset(!0);
+        }
+        $(Context);
+        function values(e) {
+          if (e || "" === e) {
+            var r = e[a];
+            if (r) return r.call(e);
+            if ("function" == typeof e.next) return e;
+            if (!isNaN(e.length)) {
+              var o = -1,
+                i = function next() {
+                  for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next;
+                  return next.value = t, next.done = !0, next;
+                };
+              $(i);
+              return i.next = i;
+            }
+          }
+          throw new TypeError(_typeof(e) + " is not iterable");
+        }
+        $(values);
+        return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", $(function () {
+          let result = $Object.create(null, undefined);
+          result.value = GeneratorFunctionPrototype;
+          result.configurable = !0;
+          return result;
+        })()), o(GeneratorFunctionPrototype, "constructor", $(function () {
+          let result = $Object.create(null, undefined);
+          result.value = GeneratorFunction;
+          result.configurable = !0;
+          return result;
+        })()), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = $(function (t) {
+          var e = "function" == typeof t && t.constructor;
+          return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name));
+        }), e.mark = $(function (t) {
+          return $Object.setPrototypeOf ? $Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = $Object.create(g), t;
+        }), e.awrap = $(function (t) {
+          return $(function () {
+            let result = $Object.create(null, undefined);
+            result.__await = t;
+            return result;
+          })();
+        }), defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, $(function () {
+          return this;
+        })), e.AsyncIterator = AsyncIterator, e.async = $(function (t, r, n, o, i) {
+          void 0 === i && (i = Promise);
+          var a = new AsyncIterator(wrap(t, r, n, o), i);
+          return e.isGeneratorFunction(r) ? a : a.next().then($(function (t) {
+            return t.done ? t.value : a.next();
+          }));
+        }), defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, $(function () {
+          return this;
+        })), define(g, "toString", $(function () {
+          return "[object Generator]";
+        })), e.keys = $(function (t) {
+          var e = Object(t),
+            r = $Array.of();
+          for (var n in e) r.push(n);
+          return r.reverse(), $(function next() {
+            for (; r.length;) {
+              var t = r.pop();
+              if (t in e) return next.value = t, next.done = !1, next;
+            }
+            return next.done = !0, next;
+          });
+        }), e.values = values, Context.prototype = $(function () {
+          let result = $Object.create(null, undefined);
+          result.constructor = Context;
+          result.reset = $(function reset(e) {
+            if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t);
+          });
+          result.stop = $(function stop() {
+            this.done = !0;
+            var t = this.tryEntries[0].completion;
+            if ("throw" === t.type) throw t.arg;
+            return this.rval;
+          });
+          result.dispatchException = $(function dispatchException(e) {
+            if (this.done) throw e;
+            var r = this;
+            function handle(n, o) {
+              return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o;
+            }
+            $(handle);
+            for (var o = this.tryEntries.length - 1; o >= 0; --o) {
+              var i = this.tryEntries[o],
+                a = i.completion;
+              if ("root" === i.tryLoc) return handle("end");
+              if (i.tryLoc <= this.prev) {
+                var c = n.call(i, "catchLoc"),
+                  u = n.call(i, "finallyLoc");
+                if (c && u) {
+                  if (this.prev < i.catchLoc) return handle(i.catchLoc, !0);
+                  if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
+                } else if (c) {
+                  if (this.prev < i.catchLoc) return handle(i.catchLoc, !0);
+                } else {
+                  if (!u) throw new Error("try statement without catch or finally");
+                  if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
+                }
+              }
+            }
+          });
+          result.abrupt = $(function abrupt(t, e) {
+            for (var r = this.tryEntries.length - 1; r >= 0; --r) {
+              var o = this.tryEntries[r];
+              if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) {
+                var i = o;
+                break;
+              }
+            }
+            i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null);
+            var a = i ? i.completion : $Object.create(null, undefined);
+            return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a);
+          });
+          result.complete = $(function complete(t, e) {
+            if ("throw" === t.type) throw t.arg;
+            return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y;
+          });
+          result.finish = $(function finish(t) {
+            for (var e = this.tryEntries.length - 1; e >= 0; --e) {
+              var r = this.tryEntries[e];
+              if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y;
+            }
+          });
+          result.catch = $(function _catch(t) {
+            for (var e = this.tryEntries.length - 1; e >= 0; --e) {
+              var r = this.tryEntries[e];
+              if (r.tryLoc === t) {
+                var n = r.completion;
+                if ("throw" === n.type) {
+                  var o = n.arg;
+                  resetTryEntry(r);
+                }
+                return o;
+              }
+            }
+            throw new Error("illegal catch attempt");
+          });
+          result.delegateYield = $(function delegateYield(e, r, n) {
+            return this.delegate = $(function () {
+              let result = $Object.create(null, undefined);
+              result.iterator = values(e);
+              result.resultName = r;
+              result.nextLoc = n;
+              return result;
+            })(), "next" === this.method && (this.arg = t), y;
+          });
+          return result;
+        })(), e;
+      }
+      $(_regeneratorRuntime);
+      module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(regeneratorRuntime$1);
+    return regeneratorRuntime$1.exports;
+  }
+  $(requireRegeneratorRuntime);
+  var regenerator;
+  var hasRequiredRegenerator;
+  function requireRegenerator() {
+    if (hasRequiredRegenerator) return regenerator;
+    hasRequiredRegenerator = 1;
+    var runtime = requireRegeneratorRuntime()();
+    regenerator = runtime;
+    try {
+      regeneratorRuntime = runtime;
+    } catch (accidentalStrictMode) {
+      if (typeof globalThis === "object") {
+        globalThis.regeneratorRuntime = runtime;
+      } else {
+        Function("r", "regeneratorRuntime = r")(runtime);
+      }
+    }
+    return regenerator;
+  }
+  $(requireRegenerator);
+  var asyncToGenerator = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var hasRequiredAsyncToGenerator;
+  function requireAsyncToGenerator() {
+    if (hasRequiredAsyncToGenerator) return asyncToGenerator.exports;
+    hasRequiredAsyncToGenerator = 1;
+    $(function (module) {
+      function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+        try {
+          var info = gen[key](arg);
+          var value = info.value;
+        } catch (error) {
+          reject(error);
+          return;
+        }
+        if (info.done) {
+          resolve(value);
+        } else {
+          Promise.resolve(value).then(_next, _throw);
+        }
+      }
+      $(asyncGeneratorStep);
+      function _asyncToGenerator(fn) {
+        return $(function () {
+          var self = this,
+            args = arguments;
+          return new Promise($(function (resolve, reject) {
+            var gen = fn.apply(self, args);
+            function _next(value) {
+              asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+            }
+            $(_next);
+            function _throw(err) {
+              asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+            }
+            $(_throw);
+            _next(undefined);
+          }));
+        });
+      }
+      $(_asyncToGenerator);
+      module.exports = _asyncToGenerator, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(asyncToGenerator);
+    return asyncToGenerator.exports;
+  }
+  $(requireAsyncToGenerator);
+  var classCallCheck = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var hasRequiredClassCallCheck;
+  function requireClassCallCheck() {
+    if (hasRequiredClassCallCheck) return classCallCheck.exports;
+    hasRequiredClassCallCheck = 1;
+    $(function (module) {
+      function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+          throw new TypeError("Cannot call a class as a function");
+        }
+      }
+      $(_classCallCheck);
+      module.exports = _classCallCheck, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(classCallCheck);
+    return classCallCheck.exports;
+  }
+  $(requireClassCallCheck);
+  var createClass = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var toPropertyKey = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var toPrimitive = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var hasRequiredToPrimitive;
+  function requireToPrimitive() {
+    if (hasRequiredToPrimitive) return toPrimitive.exports;
+    hasRequiredToPrimitive = 1;
+    $(function (module) {
+      var _typeof = require_typeof()["default"];
+      function _toPrimitive(input, hint) {
+        if (_typeof(input) !== "object" || input === null) return input;
+        var prim = input[Symbol.toPrimitive];
+        if (prim !== undefined) {
+          var res = prim.call(input, hint || "default");
+          if (_typeof(res) !== "object") return res;
+          throw new TypeError("@@toPrimitive must return a primitive value.");
+        }
+        return (hint === "string" ? String : Number)(input);
+      }
+      $(_toPrimitive);
+      module.exports = _toPrimitive, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(toPrimitive);
+    return toPrimitive.exports;
+  }
+  $(requireToPrimitive);
+  var hasRequiredToPropertyKey;
+  function requireToPropertyKey() {
+    if (hasRequiredToPropertyKey) return toPropertyKey.exports;
+    hasRequiredToPropertyKey = 1;
+    $(function (module) {
+      var _typeof = require_typeof()["default"];
+      var toPrimitive = requireToPrimitive();
+      function _toPropertyKey(arg) {
+        var key = toPrimitive(arg, "string");
+        return _typeof(key) === "symbol" ? key : String(key);
+      }
+      $(_toPropertyKey);
+      module.exports = _toPropertyKey, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(toPropertyKey);
+    return toPropertyKey.exports;
+  }
+  $(requireToPropertyKey);
+  var hasRequiredCreateClass;
+  function requireCreateClass() {
+    if (hasRequiredCreateClass) return createClass.exports;
+    hasRequiredCreateClass = 1;
+    $(function (module) {
+      var toPropertyKey = requireToPropertyKey();
+      function _defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+          var descriptor = props[i];
+          descriptor.enumerable = descriptor.enumerable || false;
+          descriptor.configurable = true;
+          if ("value" in descriptor) descriptor.writable = true;
+          $Object.defineProperty(target, toPropertyKey(descriptor.key), descriptor);
+        }
+      }
+      $(_defineProperties);
+      function _createClass(Constructor, protoProps, staticProps) {
+        if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+        if (staticProps) _defineProperties(Constructor, staticProps);
+        $Object.defineProperty(Constructor, "prototype", $(function () {
+          let result = $Object.create(null, undefined);
+          result.writable = false;
+          return result;
+        })());
+        return Constructor;
+      }
+      $(_createClass);
+      module.exports = _createClass, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(createClass);
+    return createClass.exports;
+  }
+  $(requireCreateClass);
+  var inherits = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var setPrototypeOf = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var hasRequiredSetPrototypeOf;
+  function requireSetPrototypeOf() {
+    if (hasRequiredSetPrototypeOf) return setPrototypeOf.exports;
+    hasRequiredSetPrototypeOf = 1;
+    $(function (module) {
+      function _setPrototypeOf(o, p) {
+        module.exports = _setPrototypeOf = $Object.setPrototypeOf ? $Object.setPrototypeOf.bind() : $(function _setPrototypeOf(o, p) {
+          o.__proto__ = p;
+          return o;
+        }), module.exports.__esModule = true, module.exports["default"] = module.exports;
+        return _setPrototypeOf(o, p);
+      }
+      $(_setPrototypeOf);
+      module.exports = _setPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(setPrototypeOf);
+    return setPrototypeOf.exports;
+  }
+  $(requireSetPrototypeOf);
+  var hasRequiredInherits;
+  function requireInherits() {
+    if (hasRequiredInherits) return inherits.exports;
+    hasRequiredInherits = 1;
+    $(function (module) {
+      var setPrototypeOf = requireSetPrototypeOf();
+      function _inherits(subClass, superClass) {
+        if (typeof superClass !== "function" && superClass !== null) {
+          throw new TypeError("Super expression must either be null or a function");
+        }
+        subClass.prototype = $Object.create(superClass && superClass.prototype, $(function () {
+          let result = $Object.create(null, undefined);
+          result.constructor = $(function () {
+            let result = $Object.create(null, undefined);
+            result.value = subClass;
+            result.writable = true;
+            result.configurable = true;
+            return result;
+          })();
+          return result;
+        })());
+        $Object.defineProperty(subClass, "prototype", $(function () {
+          let result = $Object.create(null, undefined);
+          result.writable = false;
+          return result;
+        })());
+        if (superClass) setPrototypeOf(subClass, superClass);
+      }
+      $(_inherits);
+      module.exports = _inherits, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(inherits);
+    return inherits.exports;
+  }
+  $(requireInherits);
+  var possibleConstructorReturn = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var assertThisInitialized = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var hasRequiredAssertThisInitialized;
+  function requireAssertThisInitialized() {
+    if (hasRequiredAssertThisInitialized) return assertThisInitialized.exports;
+    hasRequiredAssertThisInitialized = 1;
+    $(function (module) {
+      function _assertThisInitialized(self) {
+        if (self === void 0) {
+          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+        }
+        return self;
+      }
+      $(_assertThisInitialized);
+      module.exports = _assertThisInitialized, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(assertThisInitialized);
+    return assertThisInitialized.exports;
+  }
+  $(requireAssertThisInitialized);
+  var hasRequiredPossibleConstructorReturn;
+  function requirePossibleConstructorReturn() {
+    if (hasRequiredPossibleConstructorReturn) return possibleConstructorReturn.exports;
+    hasRequiredPossibleConstructorReturn = 1;
+    $(function (module) {
+      var _typeof = require_typeof()["default"];
+      var assertThisInitialized = requireAssertThisInitialized();
+      function _possibleConstructorReturn(self, call) {
+        if (call && (_typeof(call) === "object" || typeof call === "function")) {
+          return call;
+        } else if (call !== void 0) {
+          throw new TypeError("Derived constructors may only return object or undefined");
+        }
+        return assertThisInitialized(self);
+      }
+      $(_possibleConstructorReturn);
+      module.exports = _possibleConstructorReturn, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(possibleConstructorReturn);
+    return possibleConstructorReturn.exports;
+  }
+  $(requirePossibleConstructorReturn);
+  var getPrototypeOf = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var hasRequiredGetPrototypeOf;
+  function requireGetPrototypeOf() {
+    if (hasRequiredGetPrototypeOf) return getPrototypeOf.exports;
+    hasRequiredGetPrototypeOf = 1;
+    $(function (module) {
+      function _getPrototypeOf(o) {
+        module.exports = _getPrototypeOf = $Object.setPrototypeOf ? $Object.getPrototypeOf.bind() : $(function _getPrototypeOf(o) {
+          return o.__proto__ || $Object.getPrototypeOf(o);
+        }), module.exports.__esModule = true, module.exports["default"] = module.exports;
+        return _getPrototypeOf(o);
+      }
+      $(_getPrototypeOf);
+      module.exports = _getPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
+    })(getPrototypeOf);
+    return getPrototypeOf.exports;
+  }
+  $(requireGetPrototypeOf);
+  var eventemitter3 = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  var hasRequiredEventemitter3;
+  function requireEventemitter3() {
+    if (hasRequiredEventemitter3) return eventemitter3.exports;
+    hasRequiredEventemitter3 = 1;
+    $(function (module) {
+      var has = $Object.prototype.hasOwnProperty,
+        prefix = "~";
+      function Events() {}
+      $(Events);
+      if ($Object.create) {
+        Events.prototype = $Object.create(null);
+        if (!new Events().__proto__) prefix = false;
+      }
+      function EE(fn, context, once) {
+        this.fn = fn;
+        this.context = context;
+        this.once = once || false;
+      }
+      $(EE);
+      function addListener(emitter, event, fn, context, once) {
+        if (typeof fn !== "function") {
+          throw new TypeError("The listener must be a function");
+        }
+        var listener = new EE(fn, context || emitter, once),
+          evt = prefix ? prefix + event : event;
+        if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);else emitter._events[evt] = $Array.of(emitter._events[evt], listener);
+        return emitter;
+      }
+      $(addListener);
+      function clearEvent(emitter, evt) {
+        if (--emitter._eventsCount === 0) emitter._events = new Events();else delete emitter._events[evt];
+      }
+      $(clearEvent);
+      function EventEmitter() {
+        this._events = new Events();
+        this._eventsCount = 0;
+      }
+      $(EventEmitter);
+      EventEmitter.prototype.eventNames = $(function eventNames() {
+        var names = $Array.of(),
+          events,
+          name;
+        if (this._eventsCount === 0) return names;
+        for (name in events = this._events) {
+          if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
+        }
+        if ($Object.getOwnPropertySymbols) {
+          return names.concat($Object.getOwnPropertySymbols(events));
+        }
+        return names;
+      });
+      EventEmitter.prototype.listeners = $(function listeners(event) {
+        var evt = prefix ? prefix + event : event,
+          handlers = this._events[evt];
+        if (!handlers) return $Array.of();
+        if (handlers.fn) return $Array.of(handlers.fn);
+        for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
+          ee[i] = handlers[i].fn;
+        }
+        return ee;
+      });
+      EventEmitter.prototype.listenerCount = $(function listenerCount(event) {
+        var evt = prefix ? prefix + event : event,
+          listeners = this._events[evt];
+        if (!listeners) return 0;
+        if (listeners.fn) return 1;
+        return listeners.length;
+      });
+      EventEmitter.prototype.emit = $(function emit(event, a1, a2, a3, a4, a5) {
+        var evt = prefix ? prefix + event : event;
+        if (!this._events[evt]) return false;
+        var listeners = this._events[evt],
+          len = arguments.length,
+          args,
+          i;
+        if (listeners.fn) {
+          if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);
+          switch (len) {
+            case 1:
+              return listeners.fn.call(listeners.context), true;
+            case 2:
+              return listeners.fn.call(listeners.context, a1), true;
+            case 3:
+              return listeners.fn.call(listeners.context, a1, a2), true;
+            case 4:
+              return listeners.fn.call(listeners.context, a1, a2, a3), true;
+            case 5:
+              return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
+            case 6:
+              return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
+          }
+          for (i = 1, args = new Array(len - 1); i < len; i++) {
+            args[i - 1] = arguments[i];
+          }
+          listeners.fn.apply(listeners.context, args);
+        } else {
+          var length = listeners.length,
+            j;
+          for (i = 0; i < length; i++) {
+            if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);
+            switch (len) {
+              case 1:
+                listeners[i].fn.call(listeners[i].context);
+                break;
+              case 2:
+                listeners[i].fn.call(listeners[i].context, a1);
+                break;
+              case 3:
+                listeners[i].fn.call(listeners[i].context, a1, a2);
+                break;
+              case 4:
+                listeners[i].fn.call(listeners[i].context, a1, a2, a3);
+                break;
+              default:
+                if (!args) for (j = 1, args = new Array(len - 1); j < len; j++) {
+                  args[j - 1] = arguments[j];
+                }
+                listeners[i].fn.apply(listeners[i].context, args);
+            }
+          }
+        }
+        return true;
+      });
+      EventEmitter.prototype.on = $(function on(event, fn, context) {
+        return addListener(this, event, fn, context, false);
+      });
+      EventEmitter.prototype.once = $(function once(event, fn, context) {
+        return addListener(this, event, fn, context, true);
+      });
+      EventEmitter.prototype.removeListener = $(function removeListener(event, fn, context, once) {
+        var evt = prefix ? prefix + event : event;
+        if (!this._events[evt]) return this;
+        if (!fn) {
+          clearEvent(this, evt);
+          return this;
+        }
+        var listeners = this._events[evt];
+        if (listeners.fn) {
+          if (listeners.fn === fn && (!once || listeners.once) && (!context || listeners.context === context)) {
+            clearEvent(this, evt);
+          }
+        } else {
+          for (var i = 0, events = $Array.of(), length = listeners.length; i < length; i++) {
+            if (listeners[i].fn !== fn || once && !listeners[i].once || context && listeners[i].context !== context) {
+              events.push(listeners[i]);
+            }
+          }
+          if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;else clearEvent(this, evt);
+        }
+        return this;
+      });
+      EventEmitter.prototype.removeAllListeners = $(function removeAllListeners(event) {
+        var evt;
+        if (event) {
+          evt = prefix ? prefix + event : event;
+          if (this._events[evt]) clearEvent(this, evt);
+        } else {
+          this._events = new Events();
+          this._eventsCount = 0;
+        }
+        return this;
+      });
+      EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+      EventEmitter.prototype.addListener = EventEmitter.prototype.on;
+      EventEmitter.prefixed = prefix;
+      EventEmitter.EventEmitter = EventEmitter;
+      {
+        module.exports = EventEmitter;
+      }
+    })(eventemitter3);
+    return eventemitter3.exports;
+  }
+  $(requireEventemitter3);
+  $(function (exports) {
+    var _interopRequireDefault = interopRequireDefaultExports;
+    $Object.defineProperty(exports, "__esModule", $(function () {
+      let result = $Object.create(null, undefined);
+      result.value = true;
+      return result;
+    })());
+    exports["default"] = void 0;
+    var _regenerator = _interopRequireDefault(requireRegenerator());
+    var _asyncToGenerator2 = _interopRequireDefault(requireAsyncToGenerator());
+    var _typeof2 = _interopRequireDefault(require_typeof());
+    var _classCallCheck2 = _interopRequireDefault(requireClassCallCheck());
+    var _createClass2 = _interopRequireDefault(requireCreateClass());
+    var _inherits2 = _interopRequireDefault(requireInherits());
+    var _possibleConstructorReturn2 = _interopRequireDefault(requirePossibleConstructorReturn());
+    var _getPrototypeOf2 = _interopRequireDefault(requireGetPrototypeOf());
+    var _eventemitter = requireEventemitter3();
+    function _createSuper(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct();
+      return $(function _createSuperInternal() {
+        var Super = (0, _getPrototypeOf2["default"])(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return (0, _possibleConstructorReturn2["default"])(this, result);
+      });
+    }
+    $(_createSuper);
+    function _isNativeReflectConstruct() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, $Array.of(), $(function () {})));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    $(_isNativeReflectConstruct);
+    var __rest = function (s, e) {
+      var t = $Object.create(null, undefined);
+      for (var p in s) {
+        if ($Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+      }
+      if (s != null && typeof $Object.getOwnPropertySymbols === "function") for (var i = 0, p = $Object.getOwnPropertySymbols(s); i < p.length; i++) {
+        if (e.indexOf(p[i]) < 0 && $Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+      }
+      return t;
+    };
+    $(__rest);
+    var CommonClient = $(function (_EventEmitter) {
+      (0, _inherits2["default"])(CommonClient, _EventEmitter);
+      var _super = _createSuper(CommonClient);
+      function CommonClient(webSocketFactory) {
+        var _this;
+        var address = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "ws://localhost:8080";
+        var _a = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : $Object.create(null, undefined);
+        var generate_request_id = arguments.length > 3 ? arguments[3] : undefined;
+        (0, _classCallCheck2["default"])(this, CommonClient);
+        var _a$autoconnect = _a.autoconnect,
+          autoconnect = _a$autoconnect === void 0 ? true : _a$autoconnect,
+          _a$reconnect = _a.reconnect,
+          reconnect = _a$reconnect === void 0 ? true : _a$reconnect,
+          _a$reconnect_interval = _a.reconnect_interval,
+          reconnect_interval = _a$reconnect_interval === void 0 ? 1e3 : _a$reconnect_interval,
+          _a$max_reconnects = _a.max_reconnects,
+          max_reconnects = _a$max_reconnects === void 0 ? 5 : _a$max_reconnects,
+          rest_options = __rest(_a, $Array.of("autoconnect", "reconnect", "reconnect_interval", "max_reconnects"));
+        _this = _super.call(this);
+        _this.webSocketFactory = webSocketFactory;
+        _this.queue = $Object.create(null, undefined);
+        _this.rpc_id = 0;
+        _this.address = address;
+        _this.autoconnect = autoconnect;
+        _this.ready = false;
+        _this.reconnect = reconnect;
+        _this.reconnect_timer_id = undefined;
+        _this.reconnect_interval = reconnect_interval;
+        _this.max_reconnects = max_reconnects;
+        _this.rest_options = rest_options;
+        _this.current_reconnects = 0;
+        _this.generate_request_id = generate_request_id || $(function () {
+          return ++_this.rpc_id;
+        });
+        if (_this.autoconnect) _this._connect(_this.address, $Object.assign($(function () {
+          let result = $Object.create(null, undefined);
+          result.autoconnect = _this.autoconnect;
+          result.reconnect = _this.reconnect;
+          result.reconnect_interval = _this.reconnect_interval;
+          result.max_reconnects = _this.max_reconnects;
+          return result;
+        })(), _this.rest_options));
+        return _this;
+      }
+      $(CommonClient);
+      (0, _createClass2["default"])(CommonClient, $Array.of($(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "connect";
+        result.value = $(function connect() {
+          if (this.socket) return;
+          this._connect(this.address, $Object.assign($(function () {
+            let result = $Object.create(null, undefined);
+            result.autoconnect = this.autoconnect;
+            result.reconnect = this.reconnect;
+            result.reconnect_interval = this.reconnect_interval;
+            result.max_reconnects = this.max_reconnects;
+            return result;
+          })(), this.rest_options));
+        });
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "call";
+        result.value = $(function call(method, params, timeout, ws_opts) {
+          var _this2 = this;
+          if (!ws_opts && "object" === (0, _typeof2["default"])(timeout)) {
+            ws_opts = timeout;
+            timeout = null;
+          }
+          return new Promise($(function (resolve, reject) {
+            if (!_this2.ready) return reject(new Error("socket not ready"));
+            var rpc_id = _this2.generate_request_id(method, params);
+            var message = $(function () {
+              let result = $Object.create(null, undefined);
+              result.jsonrpc = "2.0";
+              result.method = method;
+              result.params = params || null;
+              result.id = rpc_id;
+              return result;
+            })();
+            _this2.socket.send(JSON.stringify(message), ws_opts, $(function (error) {
+              if (error) return reject(error);
+              _this2.queue[rpc_id] = $(function () {
+                let result = $Object.create(null, undefined);
+                result.promise = $Array.of(resolve, reject);
+                return result;
+              })();
+              if (timeout) {
+                _this2.queue[rpc_id].timeout = setTimeout($(function () {
+                  delete _this2.queue[rpc_id];
+                  reject(new Error("reply timeout"));
+                }), timeout);
+              }
+            }));
+          }));
+        });
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "login";
+        result.value = $(function () {
+          var _login = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark($(function _callee(params) {
+            var resp;
+            return _regenerator["default"].wrap($(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    _context.next = 2;
+                    return this.call("rpc.login", params);
+                  case 2:
+                    resp = _context.sent;
+                    if (resp) {
+                      _context.next = 5;
+                      break;
+                    }
+                    throw new Error("authentication failed");
+                  case 5:
+                    return _context.abrupt("return", resp);
+                  case 6:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }), _callee, this);
+          })));
+          function login(_x) {
+            return _login.apply(this, arguments);
+          }
+          $(login);
+          return login;
+        })();
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "listMethods";
+        result.value = $(function () {
+          var _listMethods = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark($(function _callee2() {
+            return _regenerator["default"].wrap($(function _callee2$(_context2) {
+              while (1) {
+                switch (_context2.prev = _context2.next) {
+                  case 0:
+                    _context2.next = 2;
+                    return this.call("__listMethods");
+                  case 2:
+                    return _context2.abrupt("return", _context2.sent);
+                  case 3:
+                  case "end":
+                    return _context2.stop();
+                }
+              }
+            }), _callee2, this);
+          })));
+          function listMethods() {
+            return _listMethods.apply(this, arguments);
+          }
+          $(listMethods);
+          return listMethods;
+        })();
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "notify";
+        result.value = $(function notify(method, params) {
+          var _this3 = this;
+          return new Promise($(function (resolve, reject) {
+            if (!_this3.ready) return reject(new Error("socket not ready"));
+            var message = $(function () {
+              let result = $Object.create(null, undefined);
+              result.jsonrpc = "2.0";
+              result.method = method;
+              result.params = params || null;
+              return result;
+            })();
+            _this3.socket.send(JSON.stringify(message), $(function (error) {
+              if (error) return reject(error);
+              resolve();
+            }));
+          }));
+        });
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "subscribe";
+        result.value = $(function () {
+          var _subscribe = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark($(function _callee3(event) {
+            var result;
+            return _regenerator["default"].wrap($(function _callee3$(_context3) {
+              while (1) {
+                switch (_context3.prev = _context3.next) {
+                  case 0:
+                    if (typeof event === "string") event = $Array.of(event);
+                    _context3.next = 3;
+                    return this.call("rpc.on", event);
+                  case 3:
+                    result = _context3.sent;
+                    if (!(typeof event === "string" && result[event] !== "ok")) {
+                      _context3.next = 6;
+                      break;
+                    }
+                    throw new Error("Failed subscribing to an event '" + event + "' with: " + result[event]);
+                  case 6:
+                    return _context3.abrupt("return", result);
+                  case 7:
+                  case "end":
+                    return _context3.stop();
+                }
+              }
+            }), _callee3, this);
+          })));
+          function subscribe(_x2) {
+            return _subscribe.apply(this, arguments);
+          }
+          $(subscribe);
+          return subscribe;
+        })();
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "unsubscribe";
+        result.value = $(function () {
+          var _unsubscribe = (0, _asyncToGenerator2["default"])(_regenerator["default"].mark($(function _callee4(event) {
+            var result;
+            return _regenerator["default"].wrap($(function _callee4$(_context4) {
+              while (1) {
+                switch (_context4.prev = _context4.next) {
+                  case 0:
+                    if (typeof event === "string") event = $Array.of(event);
+                    _context4.next = 3;
+                    return this.call("rpc.off", event);
+                  case 3:
+                    result = _context4.sent;
+                    if (!(typeof event === "string" && result[event] !== "ok")) {
+                      _context4.next = 6;
+                      break;
+                    }
+                    throw new Error("Failed unsubscribing from an event with: " + result);
+                  case 6:
+                    return _context4.abrupt("return", result);
+                  case 7:
+                  case "end":
+                    return _context4.stop();
+                }
+              }
+            }), _callee4, this);
+          })));
+          function unsubscribe(_x3) {
+            return _unsubscribe.apply(this, arguments);
+          }
+          $(unsubscribe);
+          return unsubscribe;
+        })();
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "close";
+        result.value = $(function close(code, data) {
+          this.socket.close(code || 1e3, data);
+        });
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "_connect";
+        result.value = $(function _connect(address, options) {
+          var _this4 = this;
+          clearTimeout(this.reconnect_timer_id);
+          this.socket = this.webSocketFactory(address, options);
+          this.socket.addEventListener("open", $(function () {
+            _this4.ready = true;
+            _this4.emit("open");
+            _this4.current_reconnects = 0;
+          }));
+          this.socket.addEventListener("message", $(function (_ref) {
+            var message = _ref.data;
+            if (message instanceof ArrayBuffer) message = Buffer.from(message).toString();
+            try {
+              message = JSON.parse(message);
+            } catch (error) {
+              return;
+            }
+            if (message.notification && _this4.listeners(message.notification).length) {
+              if (!$Object.keys(message.params).length) return _this4.emit(message.notification);
+              var args = $Array.of(message.notification);
+              if (message.params.constructor === Object) args.push(message.params);else for (var i = 0; i < message.params.length; i++) {
+                args.push(message.params[i]);
+              }
+              return Promise.resolve().then($(function () {
+                _this4.emit.apply(_this4, args);
+              }));
+            }
+            if (!_this4.queue[message.id]) {
+              if (message.method && message.params) {
+                return Promise.resolve().then($(function () {
+                  _this4.emit(message.method, message.params);
+                }));
+              }
+              return;
+            }
+            if ("error" in message === "result" in message) _this4.queue[message.id].promise[1](new Error('Server response malformed. Response must include either "result"' + ' or "error", but not both.'));
+            if (_this4.queue[message.id].timeout) clearTimeout(_this4.queue[message.id].timeout);
+            if (message.error) _this4.queue[message.id].promise[1](message.error);else _this4.queue[message.id].promise[0](message.result);
+            delete _this4.queue[message.id];
+          }));
+          this.socket.addEventListener("error", $(function (error) {
+            return _this4.emit("error", error);
+          }));
+          this.socket.addEventListener("close", $(function (_ref2) {
+            var code = _ref2.code,
+              reason = _ref2.reason;
+            if (_this4.ready) setTimeout($(function () {
+              return _this4.emit("close", code, reason);
+            }), 0);
+            _this4.ready = false;
+            _this4.socket = undefined;
+            if (code === 1e3) return;
+            _this4.current_reconnects++;
+            if (_this4.reconnect && (_this4.max_reconnects > _this4.current_reconnects || _this4.max_reconnects === 0)) _this4.reconnect_timer_id = setTimeout($(function () {
+              return _this4._connect(address, options);
+            }), _this4.reconnect_interval);
+          }));
+        });
+        return result;
+      })()));
+      return CommonClient;
+    })(_eventemitter.EventEmitter);
+    exports["default"] = CommonClient;
+  })(client);
+  var RpcWebSocketCommonClient = getDefaultExportFromCjs(client);
+  var websocket_browser = $Object.create(null, undefined);
+  $(function (exports) {
+    var _interopRequireDefault = interopRequireDefaultExports;
+    $Object.defineProperty(exports, "__esModule", $(function () {
+      let result = $Object.create(null, undefined);
+      result.value = true;
+      return result;
+    })());
+    exports["default"] = _default;
+    var _classCallCheck2 = _interopRequireDefault(requireClassCallCheck());
+    var _createClass2 = _interopRequireDefault(requireCreateClass());
+    var _inherits2 = _interopRequireDefault(requireInherits());
+    var _possibleConstructorReturn2 = _interopRequireDefault(requirePossibleConstructorReturn());
+    var _getPrototypeOf2 = _interopRequireDefault(requireGetPrototypeOf());
+    var _eventemitter = requireEventemitter3();
+    function _createSuper(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct();
+      return $(function _createSuperInternal() {
+        var Super = (0, _getPrototypeOf2["default"])(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return (0, _possibleConstructorReturn2["default"])(this, result);
+      });
+    }
+    $(_createSuper);
+    function _isNativeReflectConstruct() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, $Array.of(), $(function () {})));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    $(_isNativeReflectConstruct);
+    var WebSocketBrowserImpl = $(function (_EventEmitter) {
+      (0, _inherits2["default"])(WebSocketBrowserImpl, _EventEmitter);
+      var _super = _createSuper(WebSocketBrowserImpl);
+      function WebSocketBrowserImpl(address, options, protocols) {
+        var _this;
+        (0, _classCallCheck2["default"])(this, WebSocketBrowserImpl);
+        _this = _super.call(this);
+        _this.socket = new window.WebSocket(address, protocols);
+        _this.socket.onopen = $(function () {
+          return _this.emit("open");
+        });
+        _this.socket.onmessage = $(function (event) {
+          return _this.emit("message", event.data);
+        });
+        _this.socket.onerror = $(function (error) {
+          return _this.emit("error", error);
+        });
+        _this.socket.onclose = $(function (event) {
+          _this.emit("close", event.code, event.reason);
+        });
+        return _this;
+      }
+      $(WebSocketBrowserImpl);
+      (0, _createClass2["default"])(WebSocketBrowserImpl, $Array.of($(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "send";
+        result.value = $(function send(data, optionsOrCallback, callback) {
+          var cb = callback || optionsOrCallback;
+          try {
+            this.socket.send(data);
+            cb();
+          } catch (error) {
+            cb(error);
+          }
+        });
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "close";
+        result.value = $(function close(code, reason) {
+          this.socket.close(code, reason);
+        });
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.key = "addEventListener";
+        result.value = $(function addEventListener(type, listener, options) {
+          this.socket.addEventListener(type, listener, options);
+        });
+        return result;
+      })()));
+      return WebSocketBrowserImpl;
+    })(_eventemitter.EventEmitter);
+    function _default(address, options) {
+      return new WebSocketBrowserImpl(address, options);
+    }
+    $(_default);
+  })(websocket_browser);
+  var createRpc = getDefaultExportFromCjs(websocket_browser);
+  class RpcWebSocketClient extends RpcWebSocketCommonClient {
+    constructor(address, options, generate_request_id) {
+      const webSocketFactory = url => {
+        const rpc = createRpc(url, $(function () {
+          let result = $Object.create(null, undefined);
+          result.autoconnect = true;
+          result.max_reconnects = 5;
+          result.reconnect = true;
+          result.reconnect_interval = 1e3;
+          $Object.assign(result, options);
+          return result;
+        })());
+        if ("socket" in rpc) {
+          this.underlyingSocket = rpc.socket;
+        } else {
+          this.underlyingSocket = rpc;
+        }
+        return rpc;
+      };
+      $(webSocketFactory);
+      super(webSocketFactory, address, options, generate_request_id);
+      this.underlyingSocket = void 0;
+    }
+    call(...args) {
+      const readyState = this.underlyingSocket?.readyState;
+      if (readyState === 1) {
+        return super.call(...args);
+      }
+      return Promise.reject(new Error("Tried to call a JSON-RPC method `" + args[0] + "` but the socket was not `CONNECTING` or `OPEN` (`readyState` was " + readyState + ")"));
+    }
+    notify(...args) {
+      const readyState = this.underlyingSocket?.readyState;
+      if (readyState === 1) {
+        return super.notify(...args);
+      }
+      return Promise.reject(new Error("Tried to send a JSON-RPC notification `" + args[0] + "` but the socket was not `CONNECTING` or `OPEN` (`readyState` was " + readyState + ")"));
+    }
+  }
   function decodeData(type, data) {
     let decoded;
     try {
@@ -12982,7 +13825,7 @@ var solanaWeb3 = $(function (exports) {
       this.state = args.state;
     }
     isActive() {
-      const U64_MAX = 2n ** 64n - 1n;
+      const U64_MAX = BigInt("0xffffffffffffffff");
       return this.state.deactivationSlot === U64_MAX;
     }
     static deserialize(accountData) {
@@ -13024,7 +13867,6 @@ var solanaWeb3 = $(function (exports) {
     return `${protocol}//${hostish}${websocketPort}${rest}`;
   }
   $(makeWebsocketUrl);
-  var _process$env$npm_pack;
   const PublicKeyFromString = coerce(instance(PublicKey), string(), $(value => new PublicKey(value)));
   const RawAccountDataResult = tuple($Array.of(string(), literal("base64")));
   const BufferFromRawAccountData = coerce(instance(buffer.Buffer), RawAccountDataResult, $(value => buffer.Buffer.from(value[0], "base64")));
@@ -13158,8 +14000,23 @@ var solanaWeb3 = $(function (exports) {
     result.effectiveSlot = number();
     result.amount = number();
     result.postBalance = number();
+    result.commission = optional(nullable(number()));
     return result;
   })()))));
+  const GetRecentPrioritizationFeesResult = array(type($(function () {
+    let result = $Object.create(null, undefined);
+    result.slot = number();
+    result.prioritizationFee = number();
+    return result;
+  })()));
+  const GetInflationRateResult = type($(function () {
+    let result = $Object.create(null, undefined);
+    result.total = number();
+    result.validator = number();
+    result.foundation = number();
+    result.epoch = number();
+    return result;
+  })());
   const GetEpochInfoResult = type($(function () {
     let result = $Object.create(null, undefined);
     result.epoch = number();
@@ -13226,8 +14083,14 @@ var solanaWeb3 = $(function (exports) {
     })());
     return result;
   })()));
-  function createRpcClient(url, httpHeaders, customFetch, fetchMiddleware, disableRetryOnRateLimit) {
+  function createRpcClient(url, httpHeaders, customFetch, fetchMiddleware, disableRetryOnRateLimit, httpAgent) {
     const fetch = customFetch ? customFetch : fetchImpl;
+    let agent;
+    {
+      if (httpAgent != null) {
+        console.warn("You have supplied an `httpAgent` when creating a `Connection` in a browser environment." + "It has been ignored; `httpAgent` is only used in Node environments.");
+      }
+    }
     let fetchWithMiddleware;
     if (fetchMiddleware) {
       fetchWithMiddleware = $(async (info, init) => {
@@ -13242,7 +14105,6 @@ var solanaWeb3 = $(function (exports) {
       });
     }
     const clientBrowser = new RpcClient($(async (request, callback) => {
-      const agent = undefined;
       const options = $(function () {
         let result = $Object.create(null, undefined);
         result.method = "POST";
@@ -13275,7 +14137,7 @@ var solanaWeb3 = $(function (exports) {
           if (too_many_requests_retries === 0) {
             break;
           }
-          console.log(`Server responded with ${res.status} ${res.statusText}.  Retrying after ${waitTime}ms delay...`);
+          console.error(`Server responded with ${res.status} ${res.statusText}.  Retrying after ${waitTime}ms delay...`);
           await sleep(waitTime);
           waitTime *= 2;
         }
@@ -13287,7 +14149,7 @@ var solanaWeb3 = $(function (exports) {
         }
       } catch (err) {
         if (err instanceof Error) callback(err);
-      } finally {}
+      }
     }), $Object.create(null, undefined));
     return clientBrowser;
   }
@@ -13319,6 +14181,8 @@ var solanaWeb3 = $(function (exports) {
   }
   $(createRpcBatchRequest);
   const GetInflationGovernorRpcResult = jsonRpcResult(GetInflationGovernorResult);
+  const GetInflationRateRpcResult = jsonRpcResult(GetInflationRateResult);
+  const GetRecentPrioritizationFeesRpcResult = jsonRpcResult(GetRecentPrioritizationFeesResult);
   const GetEpochInfoRpcResult = jsonRpcResult(GetEpochInfoResult);
   const GetEpochScheduleRpcResult = jsonRpcResult(GetEpochScheduleResult);
   const GetLeaderScheduleRpcResult = jsonRpcResult(GetLeaderScheduleResult);
@@ -13606,6 +14470,20 @@ var solanaWeb3 = $(function (exports) {
     })());
     return result;
   })());
+  const AnnotatedAccountKey = type($(function () {
+    let result = $Object.create(null, undefined);
+    result.pubkey = PublicKeyFromString;
+    result.signer = boolean();
+    result.writable = boolean();
+    result.source = optional(union($Array.of(literal("transaction"), literal("lookupTable"))));
+    return result;
+  })());
+  const ConfirmedTransactionAccountsModeResult = type($(function () {
+    let result = $Object.create(null, undefined);
+    result.accountKeys = array(AnnotatedAccountKey);
+    result.signatures = array(string());
+    return result;
+  })());
   const ParsedInstructionResult = type($(function () {
     let result = $Object.create(null, undefined);
     result.parsed = unknown();
@@ -13646,13 +14524,7 @@ var solanaWeb3 = $(function (exports) {
     result.signatures = array(string());
     result.message = type($(function () {
       let result = $Object.create(null, undefined);
-      result.accountKeys = array(type($(function () {
-        let result = $Object.create(null, undefined);
-        result.pubkey = PublicKeyFromString;
-        result.signer = boolean();
-        result.writable = boolean();
-        return result;
-      })()));
+      result.accountKeys = array(AnnotatedAccountKey);
       result.instructions = array(ParsedOrRawInstruction);
       result.recentBlockhash = string();
       result.addressTableLookups = optional(nullable(array(AddressTableLookupStruct)));
@@ -13719,6 +14591,15 @@ var solanaWeb3 = $(function (exports) {
     return result;
   })());
   const TransactionVersionStruct = union($Array.of(literal(0), literal("legacy")));
+  const RewardsResult = type($(function () {
+    let result = $Object.create(null, undefined);
+    result.pubkey = string();
+    result.lamports = number();
+    result.postBalance = nullable(number());
+    result.rewardType = nullable(string());
+    result.commission = optional(nullable(number()));
+    return result;
+  })());
   const GetBlockRpcResult = jsonRpcResult(nullable(type($(function () {
     let result = $Object.create(null, undefined);
     result.blockhash = string();
@@ -13731,14 +14612,78 @@ var solanaWeb3 = $(function (exports) {
       result.version = optional(TransactionVersionStruct);
       return result;
     })()));
-    result.rewards = optional(array(type($(function () {
+    result.rewards = optional(array(RewardsResult));
+    result.blockTime = nullable(number());
+    result.blockHeight = nullable(number());
+    return result;
+  })())));
+  const GetNoneModeBlockRpcResult = jsonRpcResult(nullable(type($(function () {
+    let result = $Object.create(null, undefined);
+    result.blockhash = string();
+    result.previousBlockhash = string();
+    result.parentSlot = number();
+    result.rewards = optional(array(RewardsResult));
+    result.blockTime = nullable(number());
+    result.blockHeight = nullable(number());
+    return result;
+  })())));
+  const GetAccountsModeBlockRpcResult = jsonRpcResult(nullable(type($(function () {
+    let result = $Object.create(null, undefined);
+    result.blockhash = string();
+    result.previousBlockhash = string();
+    result.parentSlot = number();
+    result.transactions = array(type($(function () {
       let result = $Object.create(null, undefined);
-      result.pubkey = string();
-      result.lamports = number();
-      result.postBalance = nullable(number());
-      result.rewardType = nullable(string());
+      result.transaction = ConfirmedTransactionAccountsModeResult;
+      result.meta = nullable(ConfirmedTransactionMetaResult);
+      result.version = optional(TransactionVersionStruct);
       return result;
-    })())));
+    })()));
+    result.rewards = optional(array(RewardsResult));
+    result.blockTime = nullable(number());
+    result.blockHeight = nullable(number());
+    return result;
+  })())));
+  const GetParsedBlockRpcResult = jsonRpcResult(nullable(type($(function () {
+    let result = $Object.create(null, undefined);
+    result.blockhash = string();
+    result.previousBlockhash = string();
+    result.parentSlot = number();
+    result.transactions = array(type($(function () {
+      let result = $Object.create(null, undefined);
+      result.transaction = ParsedConfirmedTransactionResult;
+      result.meta = nullable(ParsedConfirmedTransactionMetaResult);
+      result.version = optional(TransactionVersionStruct);
+      return result;
+    })()));
+    result.rewards = optional(array(RewardsResult));
+    result.blockTime = nullable(number());
+    result.blockHeight = nullable(number());
+    return result;
+  })())));
+  const GetParsedAccountsModeBlockRpcResult = jsonRpcResult(nullable(type($(function () {
+    let result = $Object.create(null, undefined);
+    result.blockhash = string();
+    result.previousBlockhash = string();
+    result.parentSlot = number();
+    result.transactions = array(type($(function () {
+      let result = $Object.create(null, undefined);
+      result.transaction = ConfirmedTransactionAccountsModeResult;
+      result.meta = nullable(ParsedConfirmedTransactionMetaResult);
+      result.version = optional(TransactionVersionStruct);
+      return result;
+    })()));
+    result.rewards = optional(array(RewardsResult));
+    result.blockTime = nullable(number());
+    result.blockHeight = nullable(number());
+    return result;
+  })())));
+  const GetParsedNoneModeBlockRpcResult = jsonRpcResult(nullable(type($(function () {
+    let result = $Object.create(null, undefined);
+    result.blockhash = string();
+    result.previousBlockhash = string();
+    result.parentSlot = number();
+    result.rewards = optional(array(RewardsResult));
     result.blockTime = nullable(number());
     result.blockHeight = nullable(number());
     return result;
@@ -13754,14 +14699,7 @@ var solanaWeb3 = $(function (exports) {
       result.meta = nullable(ConfirmedTransactionMetaResult);
       return result;
     })()));
-    result.rewards = optional(array(type($(function () {
-      let result = $Object.create(null, undefined);
-      result.pubkey = string();
-      result.lamports = number();
-      result.postBalance = nullable(number());
-      result.rewardType = nullable(string());
-      return result;
-    })())));
+    result.rewards = optional(array(RewardsResult));
     result.blockTime = nullable(number());
     return result;
   })())));
@@ -13777,7 +14715,7 @@ var solanaWeb3 = $(function (exports) {
   const GetTransactionRpcResult = jsonRpcResult(nullable(type($(function () {
     let result = $Object.create(null, undefined);
     result.slot = number();
-    result.meta = ConfirmedTransactionMetaResult;
+    result.meta = nullable(ConfirmedTransactionMetaResult);
     result.blockTime = optional(nullable(number()));
     result.transaction = ConfirmedTransactionResult;
     result.version = optional(TransactionVersionStruct);
@@ -13808,6 +14746,7 @@ var solanaWeb3 = $(function (exports) {
     result.lastValidBlockHeight = number();
     return result;
   })()));
+  const IsBlockhashValidRpcResult = jsonRpcResultAndContext(boolean());
   const PerfSampleResult = type($(function () {
     let result = $Object.create(null, undefined);
     result.slot = number();
@@ -13843,11 +14782,11 @@ var solanaWeb3 = $(function (exports) {
   })());
   const COMMON_HTTP_HEADERS = $(function () {
     let result = $Object.create(null, undefined);
-    result["solana-client"] = `js/${(_process$env$npm_pack = "0.0.0-development") !== null && _process$env$npm_pack !== void 0 ? _process$env$npm_pack : "UNKNOWN"}`;
+    result["solana-client"] = `js/${"0.0.0-development"}`;
     return result;
   })();
   class Connection {
-    constructor(endpoint, commitmentOrConfig) {
+    constructor(endpoint, _commitmentOrConfig) {
       this._commitment = void 0;
       this._confirmTransactionInitialTimeout = void 0;
       this._rpcEndpoint = void 0;
@@ -13872,31 +14811,59 @@ var solanaWeb3 = $(function (exports) {
       })();
       this._nextClientSubscriptionId = 0;
       this._subscriptionDisposeFunctionsByClientSubscriptionId = $Object.create(null, undefined);
+      this._subscriptionHashByClientSubscriptionId = $Object.create(null, undefined);
+      this._subscriptionStateChangeCallbacksByHash = $Object.create(null, undefined);
       this._subscriptionCallbacksByServerSubscriptionId = $Object.create(null, undefined);
       this._subscriptionsByHash = $Object.create(null, undefined);
       this._subscriptionsAutoDisposedByRpc = new Set();
+      this.getBlockHeight = $(() => {
+        const requestPromises = $Object.create(null, undefined);
+        return $(async commitmentOrConfig => {
+          const {
+            commitment: commitment,
+            config: config
+          } = extractCommitmentFromConfig(commitmentOrConfig);
+          const args = this._buildArgs($Array.of(), commitment, undefined, config);
+          const requestHash = fastStableStringify$1(args);
+          requestPromises[requestHash] = requestPromises[requestHash] ?? $(async () => {
+            try {
+              const unsafeRes = await this._rpcRequest("getBlockHeight", args);
+              const res = create(unsafeRes, jsonRpcResult(number()));
+              if ("error" in res) {
+                throw new SolanaJSONRPCError(res.error, "failed to get block height information");
+              }
+              return res.result;
+            } finally {
+              delete requestPromises[requestHash];
+            }
+          })();
+          return await requestPromises[requestHash];
+        });
+      })();
       let wsEndpoint;
       let httpHeaders;
       let fetch;
       let fetchMiddleware;
       let disableRetryOnRateLimit;
-      if (commitmentOrConfig && typeof commitmentOrConfig === "string") {
-        this._commitment = commitmentOrConfig;
-      } else if (commitmentOrConfig) {
-        this._commitment = commitmentOrConfig.commitment;
-        this._confirmTransactionInitialTimeout = commitmentOrConfig.confirmTransactionInitialTimeout;
-        wsEndpoint = commitmentOrConfig.wsEndpoint;
-        httpHeaders = commitmentOrConfig.httpHeaders;
-        fetch = commitmentOrConfig.fetch;
-        fetchMiddleware = commitmentOrConfig.fetchMiddleware;
-        disableRetryOnRateLimit = commitmentOrConfig.disableRetryOnRateLimit;
+      let httpAgent;
+      if (_commitmentOrConfig && typeof _commitmentOrConfig === "string") {
+        this._commitment = _commitmentOrConfig;
+      } else if (_commitmentOrConfig) {
+        this._commitment = _commitmentOrConfig.commitment;
+        this._confirmTransactionInitialTimeout = _commitmentOrConfig.confirmTransactionInitialTimeout;
+        wsEndpoint = _commitmentOrConfig.wsEndpoint;
+        httpHeaders = _commitmentOrConfig.httpHeaders;
+        fetch = _commitmentOrConfig.fetch;
+        fetchMiddleware = _commitmentOrConfig.fetchMiddleware;
+        disableRetryOnRateLimit = _commitmentOrConfig.disableRetryOnRateLimit;
+        httpAgent = _commitmentOrConfig.httpAgent;
       }
       this._rpcEndpoint = assertEndpointUrl(endpoint);
       this._rpcWsEndpoint = wsEndpoint || makeWebsocketUrl(endpoint);
-      this._rpcClient = createRpcClient(endpoint, httpHeaders, fetch, fetchMiddleware, disableRetryOnRateLimit);
+      this._rpcClient = createRpcClient(endpoint, httpHeaders, fetch, fetchMiddleware, disableRetryOnRateLimit, httpAgent);
       this._rpcRequest = createRpcRequest(this._rpcClient);
       this._rpcBatchRequest = createRpcBatchRequest(this._rpcClient);
-      this._rpcWebSocket = new Client_1(this._rpcWsEndpoint, $(function () {
+      this._rpcWebSocket = new RpcWebSocketClient(this._rpcWsEndpoint, $(function () {
         let result = $Object.create(null, undefined);
         result.autoconnect = false;
         result.max_reconnects = Infinity;
@@ -14116,6 +15083,20 @@ var solanaWeb3 = $(function (exports) {
         throw new Error("failed to get info about account " + publicKey.toBase58() + ": " + e);
       }
     }
+    async getMultipleParsedAccounts(publicKeys, rawConfig) {
+      const {
+        commitment: commitment,
+        config: config
+      } = extractCommitmentFromConfig(rawConfig);
+      const keys = publicKeys.map($(key => key.toBase58()));
+      const args = this._buildArgs($Array.of(keys), commitment, "jsonParsed", config);
+      const unsafeRes = await this._rpcRequest("getMultipleAccounts", args);
+      const res = create(unsafeRes, jsonRpcResultAndContext(array(nullable(ParsedAccountInfoResult))));
+      if ("error" in res) {
+        throw new SolanaJSONRPCError(res.error, `failed to get info for accounts ${keys}`);
+      }
+      return res.result;
+    }
     async getMultipleAccountsInfoAndContext(publicKeys, commitmentOrConfig) {
       const {
         commitment: commitment,
@@ -14142,7 +15123,7 @@ var solanaWeb3 = $(function (exports) {
       const args = this._buildArgs($Array.of(publicKey.toBase58()), commitment, undefined, $(function () {
         let result = $Object.create(null, undefined);
         $Object.assign(result, config);
-        result.epoch = epoch != null ? epoch : config === null || config === void 0 ? void 0 : config.epoch;
+        result.epoch = epoch != null ? epoch : config?.epoch;
         return result;
       })());
       const unsafeRes = await this._rpcRequest("getStakeActivation", args);
@@ -14163,7 +15144,8 @@ var solanaWeb3 = $(function (exports) {
       } = config || $Object.create(null, undefined);
       const args = this._buildArgs($Array.of(programId.toBase58()), commitment, encoding || "base64", configWithoutEncoding);
       const unsafeRes = await this._rpcRequest("getProgramAccounts", args);
-      const res = create(unsafeRes, jsonRpcResult(array(KeyedAccountInfoResult)));
+      const baseSchema = array(KeyedAccountInfoResult);
+      const res = configWithoutEncoding.withContext === true ? create(unsafeRes, jsonRpcResultAndContext(baseSchema)) : create(unsafeRes, jsonRpcResult(baseSchema));
       if ("error" in res) {
         throw new SolanaJSONRPCError(res.error, `failed to get accounts owned by program ${programId.toBase58()}`);
       }
@@ -14188,6 +15170,9 @@ var solanaWeb3 = $(function (exports) {
         rawSignature = strategy;
       } else {
         const config = strategy;
+        if (config.abortSignal?.aborted) {
+          return Promise.reject(config.abortSignal.reason);
+        }
         rawSignature = config.signature;
       }
       let decodedSignature;
@@ -14197,97 +15182,388 @@ var solanaWeb3 = $(function (exports) {
         throw new Error("signature must be base58 encoded: " + rawSignature);
       }
       assert$1(decodedSignature.length === 64, "signature has invalid length");
-      const subscriptionCommitment = commitment || this.commitment;
-      let timeoutId;
-      let subscriptionId;
+      if (typeof strategy === "string") {
+        return await this.confirmTransactionUsingLegacyTimeoutStrategy($(function () {
+          let result = $Object.create(null, undefined);
+          result.commitment = commitment || this.commitment;
+          result.signature = rawSignature;
+          return result;
+        }).bind(this)());
+      } else if ("lastValidBlockHeight" in strategy) {
+        return await this.confirmTransactionUsingBlockHeightExceedanceStrategy($(function () {
+          let result = $Object.create(null, undefined);
+          result.commitment = commitment || this.commitment;
+          result.strategy = strategy;
+          return result;
+        }).bind(this)());
+      } else {
+        return await this.confirmTransactionUsingDurableNonceStrategy($(function () {
+          let result = $Object.create(null, undefined);
+          result.commitment = commitment || this.commitment;
+          result.strategy = strategy;
+          return result;
+        }).bind(this)());
+      }
+    }
+    getCancellationPromise(signal) {
+      return new Promise($((_, reject) => {
+        if (signal == null) {
+          return;
+        }
+        if (signal.aborted) {
+          reject(signal.reason);
+        } else {
+          signal.addEventListener("abort", $(() => {
+            reject(signal.reason);
+          }));
+        }
+      }));
+    }
+    getTransactionConfirmationPromise({
+      commitment: commitment,
+      signature: signature
+    }) {
+      let signatureSubscriptionId;
+      let disposeSignatureSubscriptionStateChangeObserver;
       let done = false;
       const confirmationPromise = new Promise($((resolve, reject) => {
         try {
-          subscriptionId = this.onSignature(rawSignature, $((result, context) => {
-            subscriptionId = undefined;
+          signatureSubscriptionId = this.onSignature(signature, $((result, context) => {
+            signatureSubscriptionId = undefined;
             const response = $(function () {
               let result = $Object.create(null, undefined);
               result.context = context;
               result.value = result;
               return result;
             })();
-            done = true;
             resolve($(function () {
               let result = $Object.create(null, undefined);
-              result.__type = exports.TransactionStatus.PROCESSED;
+              result.__type = TransactionStatus.PROCESSED;
               result.response = response;
               return result;
             })());
-          }), subscriptionCommitment);
+          }), commitment);
+          const subscriptionSetupPromise = new Promise($(resolveSubscriptionSetup => {
+            if (signatureSubscriptionId == null) {
+              resolveSubscriptionSetup();
+            } else {
+              disposeSignatureSubscriptionStateChangeObserver = this._onSubscriptionStateChange(signatureSubscriptionId, $(nextState => {
+                if (nextState === "subscribed") {
+                  resolveSubscriptionSetup();
+                }
+              }));
+            }
+          }));
+          $(async () => {
+            await subscriptionSetupPromise;
+            if (done) return;
+            const response = await this.getSignatureStatus(signature);
+            if (done) return;
+            if (response == null) {
+              return;
+            }
+            const {
+              context: context,
+              value: value
+            } = response;
+            if (value == null) {
+              return;
+            }
+            if (value?.err) {
+              reject(value.err);
+            } else {
+              switch (commitment) {
+                case "confirmed":
+                case "single":
+                case "singleGossip":
+                  {
+                    if (value.confirmationStatus === "processed") {
+                      return;
+                    }
+                    break;
+                  }
+                case "finalized":
+                case "max":
+                case "root":
+                  {
+                    if (value.confirmationStatus === "processed" || value.confirmationStatus === "confirmed") {
+                      return;
+                    }
+                    break;
+                  }
+                case "processed":
+                case "recent":
+              }
+              done = true;
+              resolve($(function () {
+                let result = $Object.create(null, undefined);
+                result.__type = TransactionStatus.PROCESSED;
+                result.response = $(function () {
+                  let result = $Object.create(null, undefined);
+                  result.context = context;
+                  result.value = value;
+                  return result;
+                })();
+                return result;
+              })());
+            }
+          })();
         } catch (err) {
           reject(err);
         }
       }));
+      const abortConfirmation = () => {
+        if (disposeSignatureSubscriptionStateChangeObserver) {
+          disposeSignatureSubscriptionStateChangeObserver();
+          disposeSignatureSubscriptionStateChangeObserver = undefined;
+        }
+        if (signatureSubscriptionId != null) {
+          this.removeSignatureListener(signatureSubscriptionId);
+          signatureSubscriptionId = undefined;
+        }
+      };
+      $(abortConfirmation);
+      return $(function () {
+        let result = $Object.create(null, undefined);
+        result.abortConfirmation = abortConfirmation;
+        result.confirmationPromise = confirmationPromise;
+        return result;
+      })();
+    }
+    async confirmTransactionUsingBlockHeightExceedanceStrategy({
+      commitment: commitment,
+      strategy: {
+        abortSignal: abortSignal,
+        lastValidBlockHeight: lastValidBlockHeight,
+        signature: signature
+      }
+    }) {
+      let done = false;
       const expiryPromise = new Promise($(resolve => {
-        if (typeof strategy === "string") {
-          let timeoutMs = this._confirmTransactionInitialTimeout || 60 * 1e3;
-          switch (subscriptionCommitment) {
-            case "processed":
-            case "recent":
-            case "single":
-            case "confirmed":
-            case "singleGossip":
-              {
-                timeoutMs = this._confirmTransactionInitialTimeout || 30 * 1e3;
-                break;
-              }
+        const checkBlockHeight = async () => {
+          try {
+            const blockHeight = await this.getBlockHeight(commitment);
+            return blockHeight;
+          } catch (_e) {
+            return -1;
           }
-          timeoutId = setTimeout($(() => resolve($(function () {
-            let result = $Object.create(null, undefined);
-            result.__type = exports.TransactionStatus.TIMED_OUT;
-            result.timeoutMs = timeoutMs;
-            return result;
-          })())), timeoutMs);
-        } else {
-          let config = strategy;
-          const checkBlockHeight = async () => {
-            try {
-              const blockHeight = await this.getBlockHeight(commitment);
-              return blockHeight;
-            } catch (_e) {
-              return -1;
-            }
-          };
-          $(checkBlockHeight);
-          $(async () => {
-            let currentBlockHeight = await checkBlockHeight();
+        };
+        $(checkBlockHeight);
+        $(async () => {
+          let currentBlockHeight = await checkBlockHeight();
+          if (done) return;
+          while (currentBlockHeight <= lastValidBlockHeight) {
+            await sleep(1e3);
             if (done) return;
-            while (currentBlockHeight <= config.lastValidBlockHeight) {
-              await sleep(1e3);
-              if (done) return;
-              currentBlockHeight = await checkBlockHeight();
-              if (done) return;
-            }
-            resolve($(function () {
+            currentBlockHeight = await checkBlockHeight();
+            if (done) return;
+          }
+          resolve($(function () {
+            let result = $Object.create(null, undefined);
+            result.__type = TransactionStatus.BLOCKHEIGHT_EXCEEDED;
+            return result;
+          })());
+        })();
+      }));
+      const {
+        abortConfirmation: abortConfirmation,
+        confirmationPromise: confirmationPromise
+      } = this.getTransactionConfirmationPromise($(function () {
+        let result = $Object.create(null, undefined);
+        result.commitment = commitment;
+        result.signature = signature;
+        return result;
+      })());
+      const cancellationPromise = this.getCancellationPromise(abortSignal);
+      let result;
+      try {
+        const outcome = await Promise.race($Array.of(cancellationPromise, confirmationPromise, expiryPromise));
+        if (outcome.__type === TransactionStatus.PROCESSED) {
+          result = outcome.response;
+        } else {
+          throw new TransactionExpiredBlockheightExceededError(signature);
+        }
+      } finally {
+        done = true;
+        abortConfirmation();
+      }
+      return result;
+    }
+    async confirmTransactionUsingDurableNonceStrategy({
+      commitment: commitment,
+      strategy: {
+        abortSignal: abortSignal,
+        minContextSlot: minContextSlot,
+        nonceAccountPubkey: nonceAccountPubkey,
+        nonceValue: nonceValue,
+        signature: signature
+      }
+    }) {
+      let done = false;
+      const expiryPromise = new Promise($(resolve => {
+        let currentNonceValue = nonceValue;
+        let lastCheckedSlot = null;
+        const getCurrentNonceValue = async () => {
+          try {
+            const {
+              context: context,
+              value: nonceAccount
+            } = await this.getNonceAndContext(nonceAccountPubkey, $(function () {
               let result = $Object.create(null, undefined);
-              result.__type = exports.TransactionStatus.BLOCKHEIGHT_EXCEEDED;
+              result.commitment = commitment;
+              result.minContextSlot = minContextSlot;
               return result;
             })());
-          })();
-        }
+            lastCheckedSlot = context.slot;
+            return nonceAccount?.nonce;
+          } catch (e) {
+            return currentNonceValue;
+          }
+        };
+        $(getCurrentNonceValue);
+        $(async () => {
+          currentNonceValue = await getCurrentNonceValue();
+          if (done) return;
+          while (true) {
+            if (nonceValue !== currentNonceValue) {
+              resolve($(function () {
+                let result = $Object.create(null, undefined);
+                result.__type = TransactionStatus.NONCE_INVALID;
+                result.slotInWhichNonceDidAdvance = lastCheckedSlot;
+                return result;
+              })());
+              return;
+            }
+            await sleep(2e3);
+            if (done) return;
+            currentNonceValue = await getCurrentNonceValue();
+            if (done) return;
+          }
+        })();
       }));
+      const {
+        abortConfirmation: abortConfirmation,
+        confirmationPromise: confirmationPromise
+      } = this.getTransactionConfirmationPromise($(function () {
+        let result = $Object.create(null, undefined);
+        result.commitment = commitment;
+        result.signature = signature;
+        return result;
+      })());
+      const cancellationPromise = this.getCancellationPromise(abortSignal);
+      let result;
+      try {
+        const outcome = await Promise.race($Array.of(cancellationPromise, confirmationPromise, expiryPromise));
+        if (outcome.__type === TransactionStatus.PROCESSED) {
+          result = outcome.response;
+        } else {
+          let signatureStatus;
+          while (true) {
+            const status = await this.getSignatureStatus(signature);
+            if (status == null) {
+              break;
+            }
+            if (status.context.slot < (outcome.slotInWhichNonceDidAdvance ?? minContextSlot)) {
+              await sleep(400);
+              continue;
+            }
+            signatureStatus = status;
+            break;
+          }
+          if (signatureStatus?.value) {
+            const commitmentForStatus = commitment || "finalized";
+            const {
+              confirmationStatus: confirmationStatus
+            } = signatureStatus.value;
+            switch (commitmentForStatus) {
+              case "processed":
+              case "recent":
+                if (confirmationStatus !== "processed" && confirmationStatus !== "confirmed" && confirmationStatus !== "finalized") {
+                  throw new TransactionExpiredNonceInvalidError(signature);
+                }
+                break;
+              case "confirmed":
+              case "single":
+              case "singleGossip":
+                if (confirmationStatus !== "confirmed" && confirmationStatus !== "finalized") {
+                  throw new TransactionExpiredNonceInvalidError(signature);
+                }
+                break;
+              case "finalized":
+              case "max":
+              case "root":
+                if (confirmationStatus !== "finalized") {
+                  throw new TransactionExpiredNonceInvalidError(signature);
+                }
+                break;
+              default:
+                $(_ => {})(commitmentForStatus);
+            }
+            result = $(function () {
+              let result = $Object.create(null, undefined);
+              result.context = signatureStatus.context;
+              result.value = $(function () {
+                let result = $Object.create(null, undefined);
+                result.err = signatureStatus.value.err;
+                return result;
+              })();
+              return result;
+            })();
+          } else {
+            throw new TransactionExpiredNonceInvalidError(signature);
+          }
+        }
+      } finally {
+        done = true;
+        abortConfirmation();
+      }
+      return result;
+    }
+    async confirmTransactionUsingLegacyTimeoutStrategy({
+      commitment: commitment,
+      signature: signature
+    }) {
+      let timeoutId;
+      const expiryPromise = new Promise($(resolve => {
+        let timeoutMs = this._confirmTransactionInitialTimeout || 60 * 1e3;
+        switch (commitment) {
+          case "processed":
+          case "recent":
+          case "single":
+          case "confirmed":
+          case "singleGossip":
+            {
+              timeoutMs = this._confirmTransactionInitialTimeout || 30 * 1e3;
+              break;
+            }
+        }
+        timeoutId = setTimeout($(() => resolve($(function () {
+          let result = $Object.create(null, undefined);
+          result.__type = TransactionStatus.TIMED_OUT;
+          result.timeoutMs = timeoutMs;
+          return result;
+        })())), timeoutMs);
+      }));
+      const {
+        abortConfirmation: abortConfirmation,
+        confirmationPromise: confirmationPromise
+      } = this.getTransactionConfirmationPromise($(function () {
+        let result = $Object.create(null, undefined);
+        result.commitment = commitment;
+        result.signature = signature;
+        return result;
+      })());
       let result;
       try {
         const outcome = await Promise.race($Array.of(confirmationPromise, expiryPromise));
-        switch (outcome.__type) {
-          case exports.TransactionStatus.BLOCKHEIGHT_EXCEEDED:
-            throw new TransactionExpiredBlockheightExceededError(rawSignature);
-          case exports.TransactionStatus.PROCESSED:
-            result = outcome.response;
-            break;
-          case exports.TransactionStatus.TIMED_OUT:
-            throw new TransactionExpiredTimeoutError(rawSignature, outcome.timeoutMs / 1e3);
+        if (outcome.__type === TransactionStatus.PROCESSED) {
+          result = outcome.response;
+        } else {
+          throw new TransactionExpiredTimeoutError(signature, outcome.timeoutMs / 1e3);
         }
       } finally {
         clearTimeout(timeoutId);
-        if (subscriptionId) {
-          this.removeSignatureListener(subscriptionId);
-        }
+        abortConfirmation();
       }
       return result;
     }
@@ -14408,13 +15684,21 @@ var solanaWeb3 = $(function (exports) {
       const args = this._buildArgs($Array.of(addresses.map($(pubkey => pubkey.toBase58()))), commitment, undefined, $(function () {
         let result = $Object.create(null, undefined);
         $Object.assign(result, config);
-        result.epoch = epoch != null ? epoch : config === null || config === void 0 ? void 0 : config.epoch;
+        result.epoch = epoch != null ? epoch : config?.epoch;
         return result;
       })());
       const unsafeRes = await this._rpcRequest("getInflationReward", args);
       const res = create(unsafeRes, GetInflationRewardResult);
       if ("error" in res) {
         throw new SolanaJSONRPCError(res.error, "failed to get inflation reward");
+      }
+      return res.result;
+    }
+    async getInflationRate() {
+      const unsafeRes = await this._rpcRequest("getInflationRate", $Array.of());
+      const res = create(unsafeRes, GetInflationRateRpcResult);
+      if ("error" in res) {
+        throw new SolanaJSONRPCError(res.error, "failed to get inflation rate");
       }
       return res.result;
     }
@@ -14494,15 +15778,25 @@ var solanaWeb3 = $(function (exports) {
       })();
     }
     async getFeeForMessage(message, commitment) {
-      const wireMessage = message.serialize().toString("base64");
+      const wireMessage = toBuffer(message.serialize()).toString("base64");
       const args = this._buildArgs($Array.of(wireMessage), commitment);
       const unsafeRes = await this._rpcRequest("getFeeForMessage", args);
       const res = create(unsafeRes, jsonRpcResultAndContext(nullable(number())));
       if ("error" in res) {
-        throw new SolanaJSONRPCError(res.error, "failed to get slot");
+        throw new SolanaJSONRPCError(res.error, "failed to get fee for message");
       }
       if (res.result === null) {
         throw new Error("invalid blockhash");
+      }
+      return res.result;
+    }
+    async getRecentPrioritizationFees(config) {
+      const accounts = config?.lockedWritableAccounts?.map($(key => key.toBase58()));
+      const args = accounts?.length ? $Array.of(accounts) : $Array.of();
+      const unsafeRes = await this._rpcRequest("getRecentPrioritizationFees", args);
+      const res = create(unsafeRes, GetRecentPrioritizationFeesRpcResult);
+      if ("error" in res) {
+        throw new SolanaJSONRPCError(res.error, "failed to get recent prioritization fees");
       }
       return res.result;
     }
@@ -14535,6 +15829,19 @@ var solanaWeb3 = $(function (exports) {
       }
       return res.result;
     }
+    async isBlockhashValid(blockhash, rawConfig) {
+      const {
+        commitment: commitment,
+        config: config
+      } = extractCommitmentFromConfig(rawConfig);
+      const args = this._buildArgs($Array.of(blockhash), commitment, undefined, config);
+      const unsafeRes = await this._rpcRequest("isBlockhashValid", args);
+      const res = create(unsafeRes, IsBlockhashValidRpcResult);
+      if ("error" in res) {
+        throw new SolanaJSONRPCError(res.error, "failed to determine if the blockhash `" + blockhash + "`is valid");
+      }
+      return res.result;
+    }
     async getVersion() {
       const unsafeRes = await this._rpcRequest("getVersion", $Array.of());
       const res = create(unsafeRes, jsonRpcResult(VersionResult));
@@ -14558,46 +15865,97 @@ var solanaWeb3 = $(function (exports) {
       } = extractCommitmentFromConfig(rawConfig);
       const args = this._buildArgsAtLeastConfirmed($Array.of(slot), commitment, undefined, config);
       const unsafeRes = await this._rpcRequest("getBlock", args);
-      const res = create(unsafeRes, GetBlockRpcResult);
-      if ("error" in res) {
-        throw new SolanaJSONRPCError(res.error, "failed to get confirmed block");
+      try {
+        switch (config?.transactionDetails) {
+          case "accounts":
+            {
+              const res = create(unsafeRes, GetAccountsModeBlockRpcResult);
+              if ("error" in res) {
+                throw res.error;
+              }
+              return res.result;
+            }
+          case "none":
+            {
+              const res = create(unsafeRes, GetNoneModeBlockRpcResult);
+              if ("error" in res) {
+                throw res.error;
+              }
+              return res.result;
+            }
+          default:
+            {
+              const res = create(unsafeRes, GetBlockRpcResult);
+              if ("error" in res) {
+                throw res.error;
+              }
+              const {
+                result: result
+              } = res;
+              return result ? $(function () {
+                let result = $Object.create(null, undefined);
+                $Object.assign(result, result);
+                result.transactions = result.transactions.map($(({
+                  transaction: transaction,
+                  meta: meta,
+                  version: version
+                }) => $(function () {
+                  let result = $Object.create(null, undefined);
+                  result.meta = meta;
+                  result.transaction = $(function () {
+                    let result = $Object.create(null, undefined);
+                    $Object.assign(result, transaction);
+                    result.message = versionedMessageFromResponse(version, transaction.message);
+                    return result;
+                  })();
+                  result.version = version;
+                  return result;
+                })()));
+                return result;
+              })() : null;
+            }
+        }
+      } catch (e) {
+        throw new SolanaJSONRPCError(e, "failed to get confirmed block");
       }
-      const result = res.result;
-      if (!result) return result;
-      return $(function () {
-        let result = $Object.create(null, undefined);
-        $Object.assign(result, result);
-        result.transactions = result.transactions.map($(({
-          transaction: transaction,
-          meta: meta,
-          version: version
-        }) => $(function () {
-          let result = $Object.create(null, undefined);
-          result.meta = meta;
-          result.transaction = $(function () {
-            let result = $Object.create(null, undefined);
-            $Object.assign(result, transaction);
-            result.message = versionedMessageFromResponse(version, transaction.message);
-            return result;
-          })();
-          result.version = version;
-          return result;
-        })()));
-        return result;
-      })();
     }
-    async getBlockHeight(commitmentOrConfig) {
+    async getParsedBlock(slot, rawConfig) {
       const {
         commitment: commitment,
         config: config
-      } = extractCommitmentFromConfig(commitmentOrConfig);
-      const args = this._buildArgs($Array.of(), commitment, undefined, config);
-      const unsafeRes = await this._rpcRequest("getBlockHeight", args);
-      const res = create(unsafeRes, jsonRpcResult(number()));
-      if ("error" in res) {
-        throw new SolanaJSONRPCError(res.error, "failed to get block height information");
+      } = extractCommitmentFromConfig(rawConfig);
+      const args = this._buildArgsAtLeastConfirmed($Array.of(slot), commitment, "jsonParsed", config);
+      const unsafeRes = await this._rpcRequest("getBlock", args);
+      try {
+        switch (config?.transactionDetails) {
+          case "accounts":
+            {
+              const res = create(unsafeRes, GetParsedAccountsModeBlockRpcResult);
+              if ("error" in res) {
+                throw res.error;
+              }
+              return res.result;
+            }
+          case "none":
+            {
+              const res = create(unsafeRes, GetParsedNoneModeBlockRpcResult);
+              if ("error" in res) {
+                throw res.error;
+              }
+              return res.result;
+            }
+          default:
+            {
+              const res = create(unsafeRes, GetParsedBlockRpcResult);
+              if ("error" in res) {
+                throw res.error;
+              }
+              return res.result;
+            }
+        }
+      } catch (e) {
+        throw new SolanaJSONRPCError(e, "failed to get block");
       }
-      return res.result;
     }
     async getBlockProduction(configOrCommitment) {
       let extra;
@@ -14940,11 +16298,11 @@ var solanaWeb3 = $(function (exports) {
         return result;
       })();
     }
-    async getNonceAndContext(nonceAccount, commitment) {
+    async getNonceAndContext(nonceAccount, commitmentOrConfig) {
       const {
         context: context,
         value: accountInfo
-      } = await this.getAccountInfoAndContext(nonceAccount, commitment);
+      } = await this.getAccountInfoAndContext(nonceAccount, commitmentOrConfig);
       let value = null;
       if (accountInfo !== null) {
         value = NonceAccount.fromAccountData(accountInfo.data);
@@ -14956,8 +16314,8 @@ var solanaWeb3 = $(function (exports) {
         return result;
       })();
     }
-    async getNonce(nonceAccount, commitment) {
-      return await this.getNonceAndContext(nonceAccount, commitment).then($(x => x.value)).catch($(e => {
+    async getNonce(nonceAccount, commitmentOrConfig) {
+      return await this.getNonceAndContext(nonceAccount, commitmentOrConfig).then($(x => x.value)).catch($(e => {
         throw new Error("failed to get nonce for account " + nonceAccount.toBase58() + ": " + e);
       }));
     }
@@ -15120,12 +16478,12 @@ var solanaWeb3 = $(function (exports) {
       return res.result;
     }
     async sendTransaction(transaction, signersOrOptions, options) {
-      if ("message" in transaction) {
+      if ("version" in transaction) {
         if (signersOrOptions && $Array.isArray(signersOrOptions)) {
           throw new Error("Invalid arguments");
         }
         const wireTransaction = transaction.serialize();
-        return await this.sendRawTransaction(wireTransaction, options);
+        return await this.sendRawTransaction(wireTransaction, signersOrOptions);
       }
       if (signersOrOptions === undefined || !$Array.isArray(signersOrOptions)) {
         throw new Error("Invalid arguments");
@@ -15167,7 +16525,7 @@ var solanaWeb3 = $(function (exports) {
         return result;
       })();
       const skipPreflight = options && options.skipPreflight;
-      const preflightCommitment = options && options.preflightCommitment || this.commitment;
+      const preflightCommitment = skipPreflight === true ? "processed" : options && options.preflightCommitment || this.commitment;
       if (options && options.maxRetries != null) {
         config.maxRetries = options.maxRetries;
       }
@@ -15195,7 +16553,11 @@ var solanaWeb3 = $(function (exports) {
     _wsOnOpen() {
       this._rpcWebSocketConnected = true;
       this._rpcWebSocketHeartbeat = setInterval($(() => {
-        this._rpcWebSocket.notify("ping").catch($(() => {}));
+        $(async () => {
+          try {
+            await this._rpcWebSocket.notify("ping");
+          } catch {}
+        })();
       }), 5e3);
       this._updateSubscriptions();
     }
@@ -15205,7 +16567,7 @@ var solanaWeb3 = $(function (exports) {
     }
     _wsOnClose(code) {
       this._rpcWebSocketConnected = false;
-      this._rpcWebSocketGeneration++;
+      this._rpcWebSocketGeneration = (this._rpcWebSocketGeneration + 1) % Number.MAX_SAFE_INTEGER;
       if (this._rpcWebSocketIdleTimeout) {
         clearTimeout(this._rpcWebSocketIdleTimeout);
         this._rpcWebSocketIdleTimeout = null;
@@ -15220,13 +16582,41 @@ var solanaWeb3 = $(function (exports) {
       }
       this._subscriptionCallbacksByServerSubscriptionId = $Object.create(null, undefined);
       $Object.entries(this._subscriptionsByHash).forEach($(([hash, subscription]) => {
-        this._subscriptionsByHash[hash] = $(function () {
+        this._setSubscription(hash, $(function () {
           let result = $Object.create(null, undefined);
           $Object.assign(result, subscription);
           result.state = "pending";
           return result;
-        })();
+        })());
       }));
+    }
+    _setSubscription(hash, nextSubscription) {
+      const prevState = this._subscriptionsByHash[hash]?.state;
+      this._subscriptionsByHash[hash] = nextSubscription;
+      if (prevState !== nextSubscription.state) {
+        const stateChangeCallbacks = this._subscriptionStateChangeCallbacksByHash[hash];
+        if (stateChangeCallbacks) {
+          stateChangeCallbacks.forEach($(cb => {
+            try {
+              cb(nextSubscription.state);
+            } catch {}
+          }));
+        }
+      }
+    }
+    _onSubscriptionStateChange(clientSubscriptionId, callback) {
+      const hash = this._subscriptionHashByClientSubscriptionId[clientSubscriptionId];
+      if (hash == null) {
+        return $(() => {});
+      }
+      const stateChangeCallbacks = this._subscriptionStateChangeCallbacksByHash[hash] ||= new Set();
+      stateChangeCallbacks.add(callback);
+      return $(() => {
+        stateChangeCallbacks.delete(callback);
+        if (stateChangeCallbacks.size === 0) {
+          delete this._subscriptionStateChangeCallbacksByHash[hash];
+        }
+      });
     }
     async _updateSubscriptions() {
       if ($Object.keys(this._subscriptionsByHash).length === 0) {
@@ -15279,20 +16669,20 @@ var solanaWeb3 = $(function (exports) {
                 method: method
               } = subscription;
               try {
-                this._subscriptionsByHash[hash] = $(function () {
+                this._setSubscription(hash, $(function () {
                   let result = $Object.create(null, undefined);
                   $Object.assign(result, subscription);
                   result.state = "subscribing";
                   return result;
-                })();
+                })());
                 const serverSubscriptionId = await this._rpcWebSocket.call(method, args);
-                this._subscriptionsByHash[hash] = $(function () {
+                this._setSubscription(hash, $(function () {
                   let result = $Object.create(null, undefined);
                   $Object.assign(result, subscription);
                   result.serverSubscriptionId = serverSubscriptionId;
                   result.state = "subscribed";
                   return result;
-                })();
+                })());
                 this._subscriptionCallbacksByServerSubscriptionId[serverSubscriptionId] = subscription.callbacks;
                 await this._updateSubscriptions();
               } catch (e) {
@@ -15302,12 +16692,12 @@ var solanaWeb3 = $(function (exports) {
                 if (!isCurrentConnectionStillActive()) {
                   return;
                 }
-                this._subscriptionsByHash[hash] = $(function () {
+                this._setSubscription(hash, $(function () {
                   let result = $Object.create(null, undefined);
                   $Object.assign(result, subscription);
                   result.state = "pending";
                   return result;
-                })();
+                })());
                 await this._updateSubscriptions();
               }
             })();
@@ -15322,12 +16712,18 @@ var solanaWeb3 = $(function (exports) {
                 if (this._subscriptionsAutoDisposedByRpc.has(serverSubscriptionId)) {
                   this._subscriptionsAutoDisposedByRpc.delete(serverSubscriptionId);
                 } else {
-                  this._subscriptionsByHash[hash] = $(function () {
+                  this._setSubscription(hash, $(function () {
                     let result = $Object.create(null, undefined);
                     $Object.assign(result, subscription);
                     result.state = "unsubscribing";
                     return result;
-                  })();
+                  })());
+                  this._setSubscription(hash, $(function () {
+                    let result = $Object.create(null, undefined);
+                    $Object.assign(result, subscription);
+                    result.state = "unsubscribing";
+                    return result;
+                  })());
                   try {
                     await this._rpcWebSocket.call(unsubscribeMethod, $Array.of(serverSubscriptionId));
                   } catch (e) {
@@ -15337,22 +16733,22 @@ var solanaWeb3 = $(function (exports) {
                     if (!isCurrentConnectionStillActive()) {
                       return;
                     }
-                    this._subscriptionsByHash[hash] = $(function () {
+                    this._setSubscription(hash, $(function () {
                       let result = $Object.create(null, undefined);
                       $Object.assign(result, subscription);
                       result.state = "subscribed";
                       return result;
-                    })();
+                    })());
                     await this._updateSubscriptions();
                     return;
                   }
                 }
-                this._subscriptionsByHash[hash] = $(function () {
+                this._setSubscription(hash, $(function () {
                   let result = $Object.create(null, undefined);
                   $Object.assign(result, subscription);
                   result.state = "unsubscribed";
                   return result;
-                })();
+                })());
                 await this._updateSubscriptions();
               })();
             }
@@ -15382,7 +16778,7 @@ var solanaWeb3 = $(function (exports) {
     }
     _makeSubscription(subscriptionConfig, args) {
       const clientSubscriptionId = this._nextClientSubscriptionId++;
-      const hash = fastStableStringify$1($Array.of(subscriptionConfig.method, args), true);
+      const hash = fastStableStringify$1($Array.of(subscriptionConfig.method, args));
       const existingSubscription = this._subscriptionsByHash[hash];
       if (existingSubscription === undefined) {
         this._subscriptionsByHash[hash] = $(function () {
@@ -15396,8 +16792,10 @@ var solanaWeb3 = $(function (exports) {
       } else {
         existingSubscription.callbacks.add(subscriptionConfig.callback);
       }
+      this._subscriptionHashByClientSubscriptionId[clientSubscriptionId] = hash;
       this._subscriptionDisposeFunctionsByClientSubscriptionId[clientSubscriptionId] = $(async () => {
         delete this._subscriptionDisposeFunctionsByClientSubscriptionId[clientSubscriptionId];
+        delete this._subscriptionHashByClientSubscriptionId[clientSubscriptionId];
         const subscription = this._subscriptionsByHash[hash];
         assert$1(subscription !== undefined, `Could not find a \`Subscription\` when tearing down client subscription #${clientSubscriptionId}`);
         subscription.callbacks.delete(subscriptionConfig.callback);
@@ -15630,7 +17028,7 @@ var solanaWeb3 = $(function (exports) {
   class Keypair {
     constructor(keypair) {
       this._keypair = void 0;
-      this._keypair = keypair !== null && keypair !== void 0 ? keypair : generateKeypair();
+      this._keypair = keypair ?? generateKeypair();
     }
     static generate() {
       return new Keypair(generateKeypair());
@@ -15642,7 +17040,7 @@ var solanaWeb3 = $(function (exports) {
       const publicKey = secretKey.slice(32, 64);
       if (!options || !options.skipValidation) {
         const privateScalar = secretKey.slice(0, 32);
-        const computedPublicKey = getPublicKey$1(privateScalar);
+        const computedPublicKey = getPublicKey(privateScalar);
         for (let ii = 0; ii < 32; ii++) {
           if (publicKey[ii] !== computedPublicKey[ii]) {
             throw new Error("provided secretKey is invalid");
@@ -15657,7 +17055,7 @@ var solanaWeb3 = $(function (exports) {
       })());
     }
     static fromSeed(seed) {
-      const publicKey = getPublicKey$1(seed);
+      const publicKey = getPublicKey(seed);
       const secretKey = new Uint8Array(64);
       secretKey.set(seed);
       secretKey.set(publicKey, 32);
@@ -15672,7 +17070,7 @@ var solanaWeb3 = $(function (exports) {
       return new PublicKey(this._keypair.publicKey);
     }
     get secretKey() {
-      return this._keypair.secretKey;
+      return new Uint8Array(this._keypair.secretKey);
     }
   }
   const LOOKUP_TABLE_INSTRUCTION_LAYOUTS = $Object.freeze($(function () {
@@ -16187,713 +17585,1238 @@ var solanaWeb3 = $(function (exports) {
     }
   }
   Ed25519Program.programId = new PublicKey("Ed25519SigVerify111111111111111111111111111");
-  var sha3$1 = $(function () {
+  const U32_MASK64 = BigInt(2 ** 32 - 1);
+  const _32n = BigInt(32);
+  function fromBig(n, le = false) {
+    if (le) return $(function () {
+      let result = $Object.create(null, undefined);
+      result.h = Number(n & U32_MASK64);
+      result.l = Number(n >> _32n & U32_MASK64);
+      return result;
+    })();
+    return $(function () {
+      let result = $Object.create(null, undefined);
+      result.h = Number(n >> _32n & U32_MASK64) | 0;
+      result.l = Number(n & U32_MASK64) | 0;
+      return result;
+    })();
+  }
+  $(fromBig);
+  function split(lst, le = false) {
+    let Ah = new Uint32Array(lst.length);
+    let Al = new Uint32Array(lst.length);
+    for (let i = 0; i < lst.length; i++) {
+      const {
+        h: h,
+        l: l
+      } = fromBig(lst[i], le);
+      [Ah[i], Al[i]] = $Array.of(h, l);
+    }
+    return $Array.of(Ah, Al);
+  }
+  $(split);
+  const rotlSH = (h, l, s) => h << s | l >>> 32 - s;
+  $(rotlSH);
+  const rotlSL = (h, l, s) => l << s | h >>> 32 - s;
+  $(rotlSL);
+  const rotlBH = (h, l, s) => l << s - 32 | h >>> 64 - s;
+  $(rotlBH);
+  const rotlBL = (h, l, s) => h << s - 32 | l >>> 64 - s;
+  $(rotlBL);
+  const [SHA3_PI, SHA3_ROTL, _SHA3_IOTA] = $Array.of($Array.of(), $Array.of(), $Array.of());
+  const _0n$1 = BigInt(0);
+  const _1n$2 = BigInt(1);
+  const _2n$1 = BigInt(2);
+  const _7n = BigInt(7);
+  const _256n = BigInt(256);
+  const _0x71n = BigInt(113);
+  for (let round = 0, R = _1n$2, x = 1, y = 0; round < 24; round++) {
+    [x, y] = $Array.of(y, (2 * x + 3 * y) % 5);
+    SHA3_PI.push(2 * (5 * y + x));
+    SHA3_ROTL.push((round + 1) * (round + 2) / 2 % 64);
+    let t = _0n$1;
+    for (let j = 0; j < 7; j++) {
+      R = (R << _1n$2 ^ (R >> _7n) * _0x71n) % _256n;
+      if (R & _2n$1) t ^= _1n$2 << (_1n$2 << BigInt(j)) - _1n$2;
+    }
+    _SHA3_IOTA.push(t);
+  }
+  const [SHA3_IOTA_H, SHA3_IOTA_L] = split(_SHA3_IOTA, true);
+  const rotlH = (h, l, s) => s > 32 ? rotlBH(h, l, s) : rotlSH(h, l, s);
+  $(rotlH);
+  const rotlL = (h, l, s) => s > 32 ? rotlBL(h, l, s) : rotlSL(h, l, s);
+  $(rotlL);
+  function keccakP(s, rounds = 24) {
+    const B = new Uint32Array(5 * 2);
+    for (let round = 24 - rounds; round < 24; round++) {
+      for (let x = 0; x < 10; x++) B[x] = s[x] ^ s[x + 10] ^ s[x + 20] ^ s[x + 30] ^ s[x + 40];
+      for (let x = 0; x < 10; x += 2) {
+        const idx1 = (x + 8) % 10;
+        const idx0 = (x + 2) % 10;
+        const B0 = B[idx0];
+        const B1 = B[idx0 + 1];
+        const Th = rotlH(B0, B1, 1) ^ B[idx1];
+        const Tl = rotlL(B0, B1, 1) ^ B[idx1 + 1];
+        for (let y = 0; y < 50; y += 10) {
+          s[x + y] ^= Th;
+          s[x + y + 1] ^= Tl;
+        }
+      }
+      let curH = s[2];
+      let curL = s[3];
+      for (let t = 0; t < 24; t++) {
+        const shift = SHA3_ROTL[t];
+        const Th = rotlH(curH, curL, shift);
+        const Tl = rotlL(curH, curL, shift);
+        const PI = SHA3_PI[t];
+        curH = s[PI];
+        curL = s[PI + 1];
+        s[PI] = Th;
+        s[PI + 1] = Tl;
+      }
+      for (let y = 0; y < 50; y += 10) {
+        for (let x = 0; x < 10; x++) B[x] = s[y + x];
+        for (let x = 0; x < 10; x++) s[y + x] ^= ~B[(x + 2) % 10] & B[(x + 4) % 10];
+      }
+      s[0] ^= SHA3_IOTA_H[round];
+      s[1] ^= SHA3_IOTA_L[round];
+    }
+    B.fill(0);
+  }
+  $(keccakP);
+  class Keccak extends Hash {
+    constructor(blockLen, suffix, outputLen, enableXOF = false, rounds = 24) {
+      super();
+      this.blockLen = blockLen;
+      this.suffix = suffix;
+      this.outputLen = outputLen;
+      this.enableXOF = enableXOF;
+      this.rounds = rounds;
+      this.pos = 0;
+      this.posOut = 0;
+      this.finished = false;
+      this.destroyed = false;
+      number$1(outputLen);
+      if (0 >= this.blockLen || this.blockLen >= 200) throw new Error("Sha3 supports only keccak-f1600 function");
+      this.state = new Uint8Array(200);
+      this.state32 = u32$1(this.state);
+    }
+    keccak() {
+      keccakP(this.state32, this.rounds);
+      this.posOut = 0;
+      this.pos = 0;
+    }
+    update(data) {
+      exists(this);
+      const {
+        blockLen: blockLen,
+        state: state
+      } = this;
+      data = toBytes(data);
+      const len = data.length;
+      for (let pos = 0; pos < len;) {
+        const take = Math.min(blockLen - this.pos, len - pos);
+        for (let i = 0; i < take; i++) state[this.pos++] ^= data[pos++];
+        if (this.pos === blockLen) this.keccak();
+      }
+      return this;
+    }
+    finish() {
+      if (this.finished) return;
+      this.finished = true;
+      const {
+        state: state,
+        suffix: suffix,
+        pos: pos,
+        blockLen: blockLen
+      } = this;
+      state[pos] ^= suffix;
+      if ((suffix & 128) !== 0 && pos === blockLen - 1) this.keccak();
+      state[blockLen - 1] ^= 128;
+      this.keccak();
+    }
+    writeInto(out) {
+      exists(this, false);
+      bytes(out);
+      this.finish();
+      const bufferOut = this.state;
+      const {
+        blockLen: blockLen
+      } = this;
+      for (let pos = 0, len = out.length; pos < len;) {
+        if (this.posOut >= blockLen) this.keccak();
+        const take = Math.min(blockLen - this.posOut, len - pos);
+        out.set(bufferOut.subarray(this.posOut, this.posOut + take), pos);
+        this.posOut += take;
+        pos += take;
+      }
+      return out;
+    }
+    xofInto(out) {
+      if (!this.enableXOF) throw new Error("XOF is not possible for this instance");
+      return this.writeInto(out);
+    }
+    xof(bytes) {
+      number$1(bytes);
+      return this.xofInto(new Uint8Array(bytes));
+    }
+    digestInto(out) {
+      output(out, this);
+      if (this.finished) throw new Error("digest() was already called");
+      this.writeInto(out);
+      this.destroy();
+      return out;
+    }
+    digest() {
+      return this.digestInto(new Uint8Array(this.outputLen));
+    }
+    destroy() {
+      this.destroyed = true;
+      this.state.fill(0);
+    }
+    _cloneInto(to) {
+      const {
+        blockLen: blockLen,
+        suffix: suffix,
+        outputLen: outputLen,
+        rounds: rounds,
+        enableXOF: enableXOF
+      } = this;
+      to || (to = new Keccak(blockLen, suffix, outputLen, enableXOF, rounds));
+      to.state32.set(this.state32);
+      to.pos = this.pos;
+      to.posOut = this.posOut;
+      to.finished = this.finished;
+      to.rounds = rounds;
+      to.suffix = suffix;
+      to.outputLen = outputLen;
+      to.enableXOF = enableXOF;
+      to.destroyed = this.destroyed;
+      return to;
+    }
+  }
+  const gen = (suffix, blockLen, outputLen) => wrapConstructor($(() => new Keccak(blockLen, suffix, outputLen)));
+  $(gen);
+  const keccak_256 = gen(1, 136, 256 / 8);
+  const SHA256_K = new Uint32Array($Array.of(1116352408, 1899447441, 3049323471, 3921009573, 961987163, 1508970993, 2453635748, 2870763221, 3624381080, 310598401, 607225278, 1426881987, 1925078388, 2162078206, 2614888103, 3248222580, 3835390401, 4022224774, 264347078, 604807628, 770255983, 1249150122, 1555081692, 1996064986, 2554220882, 2821834349, 2952996808, 3210313671, 3336571891, 3584528711, 113926993, 338241895, 666307205, 773529912, 1294757372, 1396182291, 1695183700, 1986661051, 2177026350, 2456956037, 2730485921, 2820302411, 3259730800, 3345764771, 3516065817, 3600352804, 4094571909, 275423344, 430227734, 506948616, 659060556, 883997877, 958139571, 1322822218, 1537002063, 1747873779, 1955562222, 2024104815, 2227730452, 2361852424, 2428436474, 2756734187, 3204031479, 3329325298));
+  const SHA256_IV = new Uint32Array($Array.of(1779033703, 3144134277, 1013904242, 2773480762, 1359893119, 2600822924, 528734635, 1541459225));
+  const SHA256_W = new Uint32Array(64);
+  class SHA256 extends HashMD {
+    constructor() {
+      super(64, 32, 8, false);
+      this.A = SHA256_IV[0] | 0;
+      this.B = SHA256_IV[1] | 0;
+      this.C = SHA256_IV[2] | 0;
+      this.D = SHA256_IV[3] | 0;
+      this.E = SHA256_IV[4] | 0;
+      this.F = SHA256_IV[5] | 0;
+      this.G = SHA256_IV[6] | 0;
+      this.H = SHA256_IV[7] | 0;
+    }
+    get() {
+      const {
+        A: A,
+        B: B,
+        C: C,
+        D: D,
+        E: E,
+        F: F,
+        G: G,
+        H: H
+      } = this;
+      return $Array.of(A, B, C, D, E, F, G, H);
+    }
+    set(A, B, C, D, E, F, G, H) {
+      this.A = A | 0;
+      this.B = B | 0;
+      this.C = C | 0;
+      this.D = D | 0;
+      this.E = E | 0;
+      this.F = F | 0;
+      this.G = G | 0;
+      this.H = H | 0;
+    }
+    process(view, offset) {
+      for (let i = 0; i < 16; i++, offset += 4) SHA256_W[i] = view.getUint32(offset, false);
+      for (let i = 16; i < 64; i++) {
+        const W15 = SHA256_W[i - 15];
+        const W2 = SHA256_W[i - 2];
+        const s0 = rotr$1(W15, 7) ^ rotr$1(W15, 18) ^ W15 >>> 3;
+        const s1 = rotr$1(W2, 17) ^ rotr$1(W2, 19) ^ W2 >>> 10;
+        SHA256_W[i] = s1 + SHA256_W[i - 7] + s0 + SHA256_W[i - 16] | 0;
+      }
+      let {
+        A: A,
+        B: B,
+        C: C,
+        D: D,
+        E: E,
+        F: F,
+        G: G,
+        H: H
+      } = this;
+      for (let i = 0; i < 64; i++) {
+        const sigma1 = rotr$1(E, 6) ^ rotr$1(E, 11) ^ rotr$1(E, 25);
+        const T1 = H + sigma1 + Chi$1(E, F, G) + SHA256_K[i] + SHA256_W[i] | 0;
+        const sigma0 = rotr$1(A, 2) ^ rotr$1(A, 13) ^ rotr$1(A, 22);
+        const T2 = sigma0 + Maj$1(A, B, C) | 0;
+        H = G;
+        G = F;
+        F = E;
+        E = D + T1 | 0;
+        D = C;
+        C = B;
+        B = A;
+        A = T1 + T2 | 0;
+      }
+      A = A + this.A | 0;
+      B = B + this.B | 0;
+      C = C + this.C | 0;
+      D = D + this.D | 0;
+      E = E + this.E | 0;
+      F = F + this.F | 0;
+      G = G + this.G | 0;
+      H = H + this.H | 0;
+      this.set(A, B, C, D, E, F, G, H);
+    }
+    roundClean() {
+      SHA256_W.fill(0);
+    }
+    destroy() {
+      this.set(0, 0, 0, 0, 0, 0, 0, 0);
+      this.buffer.fill(0);
+    }
+  }
+  const sha256 = wrapConstructor$1($(() => new SHA256()));
+  /*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+  function validatePointOpts(curve) {
+    const opts = validateBasic(curve);
+    validateObject(opts, $(function () {
+      let result = $Object.create(null, undefined);
+      result.a = "field";
+      result.b = "field";
+      return result;
+    })(), $(function () {
+      let result = $Object.create(null, undefined);
+      result.allowedPrivateKeyLengths = "array";
+      result.wrapPrivateKey = "boolean";
+      result.isTorsionFree = "function";
+      result.clearCofactor = "function";
+      result.allowInfinityPoint = "boolean";
+      result.fromBytes = "function";
+      result.toBytes = "function";
+      return result;
+    })());
+    const {
+      endo: endo,
+      Fp: Fp,
+      a: a
+    } = opts;
+    if (endo) {
+      if (!Fp.eql(a, Fp.ZERO)) {
+        throw new Error("Endomorphism can only be defined for Koblitz curves that have a=0");
+      }
+      if (typeof endo !== "object" || typeof endo.beta !== "bigint" || typeof endo.splitScalar !== "function") {
+        throw new Error("Expected endomorphism with beta: bigint and splitScalar: function");
+      }
+    }
+    return $Object.freeze($(function () {
+      let result = $Object.create(null, undefined);
+      $Object.assign(result, opts);
+      return result;
+    })());
+  }
+  $(validatePointOpts);
+  const {
+    bytesToNumberBE: b2n,
+    hexToBytes: h2b
+  } = ut;
+  const DER = $(function () {
     let result = $Object.create(null, undefined);
-    result.exports = $Object.create(null, undefined);
-    return result;
-  })();
-  /**
-  	 * [js-sha3]{@link https://github.com/emn178/js-sha3}
-  	 *
-  	 * @version 0.8.0
-  	 * @author Chen, Yi-Cyuan [emn178@gmail.com]
-  	 * @copyright Chen, Yi-Cyuan 2015-2018
-  	 * @license MIT
-  	 */
-  $(function (module) {
-    $(function () {
-      var INPUT_ERROR = "input is invalid type";
-      var FINALIZE_ERROR = "finalize already called";
-      var WINDOW = typeof window === "object";
-      var root = WINDOW ? window : $Object.create(null, undefined);
-      if (root.JS_SHA3_NO_WINDOW) {
-        WINDOW = false;
+    result.Err = class DERErr extends Error {
+      constructor(m = "") {
+        super(m);
       }
-      var WEB_WORKER = !WINDOW && typeof self === "object";
-      var NODE_JS = !root.JS_SHA3_NO_NODE_JS && typeof process === "object" && process.versions && process.versions.node;
-      if (NODE_JS) {
-        root = commonjsGlobal;
-      } else if (WEB_WORKER) {
-        root = self;
-      }
-      var COMMON_JS = !root.JS_SHA3_NO_COMMON_JS && "object" === "object" && module.exports;
-      var ARRAY_BUFFER = !root.JS_SHA3_NO_ARRAY_BUFFER && typeof ArrayBuffer !== "undefined";
-      var HEX_CHARS = "0123456789abcdef".split("");
-      var SHAKE_PADDING = $Array.of(31, 7936, 2031616, 520093696);
-      var CSHAKE_PADDING = $Array.of(4, 1024, 262144, 67108864);
-      var KECCAK_PADDING = $Array.of(1, 256, 65536, 16777216);
-      var PADDING = $Array.of(6, 1536, 393216, 100663296);
-      var SHIFT = $Array.of(0, 8, 16, 24);
-      var RC = $Array.of(1, 0, 32898, 0, 32906, 2147483648, 2147516416, 2147483648, 32907, 0, 2147483649, 0, 2147516545, 2147483648, 32777, 2147483648, 138, 0, 136, 0, 2147516425, 0, 2147483658, 0, 2147516555, 0, 139, 2147483648, 32905, 2147483648, 32771, 2147483648, 32770, 2147483648, 128, 2147483648, 32778, 0, 2147483658, 2147483648, 2147516545, 2147483648, 32896, 2147483648, 2147483649, 0, 2147516424, 2147483648);
-      var BITS = $Array.of(224, 256, 384, 512);
-      var SHAKE_BITS = $Array.of(128, 256);
-      var OUTPUT_TYPES = $Array.of("hex", "buffer", "arrayBuffer", "array", "digest");
-      var CSHAKE_BYTEPAD = $(function () {
+    };
+    result._parseInt = $(function (data) {
+      const {
+        Err: E
+      } = DER;
+      if (data.length < 2 || data[0] !== 2) throw new E("Invalid signature integer tag");
+      const len = data[1];
+      const res = data.subarray(2, len + 2);
+      if (!len || res.length !== len) throw new E("Invalid signature integer: wrong length");
+      if (res[0] & 128) throw new E("Invalid signature integer: negative");
+      if (res[0] === 0 && !(res[1] & 128)) throw new E("Invalid signature integer: unnecessary leading zero");
+      return $(function () {
         let result = $Object.create(null, undefined);
-        result[128] = 168;
-        result[256] = 136;
+        result.d = b2n(res);
+        result.l = data.subarray(len + 2);
         return result;
       })();
-      if (root.JS_SHA3_NO_NODE_JS || !$Array.isArray) {
-        $Array.isArray = $(function (obj) {
-          return $Object.prototype.toString.call(obj) === "[object Array]";
-        });
+    });
+    result.toSig = $(function (hex) {
+      const {
+        Err: E
+      } = DER;
+      const data = typeof hex === "string" ? h2b(hex) : hex;
+      abytes(data);
+      let l = data.length;
+      if (l < 2 || data[0] != 48) throw new E("Invalid signature tag");
+      if (data[1] !== l - 2) throw new E("Invalid signature: incorrect length");
+      const {
+        d: r,
+        l: sBytes
+      } = DER._parseInt(data.subarray(2));
+      const {
+        d: s,
+        l: rBytesLeft
+      } = DER._parseInt(sBytes);
+      if (rBytesLeft.length) throw new E("Invalid signature: left bytes after parsing");
+      return $(function () {
+        let result = $Object.create(null, undefined);
+        result.r = r;
+        result.s = s;
+        return result;
+      })();
+    });
+    result.hexFromSig = $(function (sig) {
+      const slice = s => Number.parseInt(s[0], 16) & 8 ? "00" + s : s;
+      $(slice);
+      const h = num => {
+        const hex = num.toString(16);
+        return hex.length & 1 ? `0${hex}` : hex;
+      };
+      $(h);
+      const s = slice(h(sig.s));
+      const r = slice(h(sig.r));
+      const shl = s.length / 2;
+      const rhl = r.length / 2;
+      const sl = h(shl);
+      const rl = h(rhl);
+      return `30${h(rhl + shl + 4)}02${rl}${r}02${sl}${s}`;
+    });
+    return result;
+  })();
+  const _0n = BigInt(0),
+    _1n$1 = BigInt(1);
+  BigInt(2);
+  const _3n = BigInt(3);
+  BigInt(4);
+  function weierstrassPoints(opts) {
+    const CURVE = validatePointOpts(opts);
+    const {
+      Fp: Fp
+    } = CURVE;
+    const toBytes = CURVE.toBytes || $((_c, point, _isCompressed) => {
+      const a = point.toAffine();
+      return concatBytes(Uint8Array.from($Array.of(4)), Fp.toBytes(a.x), Fp.toBytes(a.y));
+    });
+    const fromBytes = CURVE.fromBytes || $(bytes => {
+      const tail = bytes.subarray(1);
+      const x = Fp.fromBytes(tail.subarray(0, Fp.BYTES));
+      const y = Fp.fromBytes(tail.subarray(Fp.BYTES, 2 * Fp.BYTES));
+      return $(function () {
+        let result = $Object.create(null, undefined);
+        result.x = x;
+        result.y = y;
+        return result;
+      })();
+    });
+    function weierstrassEquation(x) {
+      const {
+        a: a,
+        b: b
+      } = CURVE;
+      const x2 = Fp.sqr(x);
+      const x3 = Fp.mul(x2, x);
+      return Fp.add(Fp.add(x3, Fp.mul(x, a)), b);
+    }
+    $(weierstrassEquation);
+    if (!Fp.eql(Fp.sqr(CURVE.Gy), weierstrassEquation(CURVE.Gx))) throw new Error("bad generator point: equation left != right");
+    function isWithinCurveOrder(num) {
+      return typeof num === "bigint" && _0n < num && num < CURVE.n;
+    }
+    $(isWithinCurveOrder);
+    function assertGE(num) {
+      if (!isWithinCurveOrder(num)) throw new Error("Expected valid bigint: 0 < bigint < curve.n");
+    }
+    $(assertGE);
+    function normPrivateKeyToScalar(key) {
+      const {
+        allowedPrivateKeyLengths: lengths,
+        nByteLength: nByteLength,
+        wrapPrivateKey: wrapPrivateKey,
+        n: n
+      } = CURVE;
+      if (lengths && typeof key !== "bigint") {
+        if (isBytes$2(key)) key = bytesToHex(key);
+        if (typeof key !== "string" || !lengths.includes(key.length)) throw new Error("Invalid key");
+        key = key.padStart(nByteLength * 2, "0");
       }
-      if (ARRAY_BUFFER && (root.JS_SHA3_NO_ARRAY_BUFFER_IS_VIEW || !ArrayBuffer.isView)) {
-        ArrayBuffer.isView = $(function (obj) {
-          return typeof obj === "object" && obj.buffer && obj.buffer.constructor === ArrayBuffer;
-        });
+      let num;
+      try {
+        num = typeof key === "bigint" ? key : bytesToNumberBE(ensureBytes("private key", key, nByteLength));
+      } catch (error) {
+        throw new Error(`private key must be ${nByteLength} bytes, hex or bigint, not ${typeof key}`);
       }
-      var createOutputMethod = function (bits, padding, outputType) {
-        return $(function (message) {
-          return new Keccak(bits, padding, bits).update(message)[outputType]();
-        });
-      };
-      $(createOutputMethod);
-      var createShakeOutputMethod = function (bits, padding, outputType) {
-        return $(function (message, outputBits) {
-          return new Keccak(bits, padding, outputBits).update(message)[outputType]();
-        });
-      };
-      $(createShakeOutputMethod);
-      var createCshakeOutputMethod = function (bits, padding, outputType) {
-        return $(function (message, outputBits, n, s) {
-          return methods["cshake" + bits].update(message, outputBits, n, s)[outputType]();
-        });
-      };
-      $(createCshakeOutputMethod);
-      var createKmacOutputMethod = function (bits, padding, outputType) {
-        return $(function (key, message, outputBits, s) {
-          return methods["kmac" + bits].update(key, message, outputBits, s)[outputType]();
-        });
-      };
-      $(createKmacOutputMethod);
-      var createOutputMethods = function (method, createMethod, bits, padding) {
-        for (var i = 0; i < OUTPUT_TYPES.length; ++i) {
-          var type = OUTPUT_TYPES[i];
-          method[type] = createMethod(bits, padding, type);
-        }
-        return method;
-      };
-      $(createOutputMethods);
-      var createMethod = function (bits, padding) {
-        var method = createOutputMethod(bits, padding, "hex");
-        method.create = $(function () {
-          return new Keccak(bits, padding, bits);
-        });
-        method.update = $(function (message) {
-          return method.create().update(message);
-        });
-        return createOutputMethods(method, createOutputMethod, bits, padding);
-      };
-      $(createMethod);
-      var createShakeMethod = function (bits, padding) {
-        var method = createShakeOutputMethod(bits, padding, "hex");
-        method.create = $(function (outputBits) {
-          return new Keccak(bits, padding, outputBits);
-        });
-        method.update = $(function (message, outputBits) {
-          return method.create(outputBits).update(message);
-        });
-        return createOutputMethods(method, createShakeOutputMethod, bits, padding);
-      };
-      $(createShakeMethod);
-      var createCshakeMethod = function (bits, padding) {
-        var w = CSHAKE_BYTEPAD[bits];
-        var method = createCshakeOutputMethod(bits, padding, "hex");
-        method.create = $(function (outputBits, n, s) {
-          if (!n && !s) {
-            return methods["shake" + bits].create(outputBits);
-          } else {
-            return new Keccak(bits, padding, outputBits).bytepad($Array.of(n, s), w);
-          }
-        });
-        method.update = $(function (message, outputBits, n, s) {
-          return method.create(outputBits, n, s).update(message);
-        });
-        return createOutputMethods(method, createCshakeOutputMethod, bits, padding);
-      };
-      $(createCshakeMethod);
-      var createKmacMethod = function (bits, padding) {
-        var w = CSHAKE_BYTEPAD[bits];
-        var method = createKmacOutputMethod(bits, padding, "hex");
-        method.create = $(function (key, outputBits, s) {
-          return new Kmac(bits, padding, outputBits).bytepad($Array.of("KMAC", s), w).bytepad($Array.of(key), w);
-        });
-        method.update = $(function (key, message, outputBits, s) {
-          return method.create(key, outputBits, s).update(message);
-        });
-        return createOutputMethods(method, createKmacOutputMethod, bits, padding);
-      };
-      $(createKmacMethod);
-      var algorithms = $Array.of($(function () {
-        let result = $Object.create(null, undefined);
-        result.name = "keccak";
-        result.padding = KECCAK_PADDING;
-        result.bits = BITS;
-        result.createMethod = createMethod;
-        return result;
-      })(), $(function () {
-        let result = $Object.create(null, undefined);
-        result.name = "sha3";
-        result.padding = PADDING;
-        result.bits = BITS;
-        result.createMethod = createMethod;
-        return result;
-      })(), $(function () {
-        let result = $Object.create(null, undefined);
-        result.name = "shake";
-        result.padding = SHAKE_PADDING;
-        result.bits = SHAKE_BITS;
-        result.createMethod = createShakeMethod;
-        return result;
-      })(), $(function () {
-        let result = $Object.create(null, undefined);
-        result.name = "cshake";
-        result.padding = CSHAKE_PADDING;
-        result.bits = SHAKE_BITS;
-        result.createMethod = createCshakeMethod;
-        return result;
-      })(), $(function () {
-        let result = $Object.create(null, undefined);
-        result.name = "kmac";
-        result.padding = CSHAKE_PADDING;
-        result.bits = SHAKE_BITS;
-        result.createMethod = createKmacMethod;
-        return result;
-      })());
-      var methods = $Object.create(null, undefined),
-        methodNames = $Array.of();
-      for (var i = 0; i < algorithms.length; ++i) {
-        var algorithm = algorithms[i];
-        var bits = algorithm.bits;
-        for (var j = 0; j < bits.length; ++j) {
-          var methodName = algorithm.name + "_" + bits[j];
-          methodNames.push(methodName);
-          methods[methodName] = algorithm.createMethod(bits[j], algorithm.padding);
-          if (algorithm.name !== "sha3") {
-            var newMethodName = algorithm.name + bits[j];
-            methodNames.push(newMethodName);
-            methods[newMethodName] = methods[methodName];
-          }
-        }
+      if (wrapPrivateKey) num = mod(num, n);
+      assertGE(num);
+      return num;
+    }
+    $(normPrivateKeyToScalar);
+    const pointPrecomputes = new Map();
+    function assertPrjPoint(other) {
+      if (!(other instanceof Point)) throw new Error("ProjectivePoint expected");
+    }
+    $(assertPrjPoint);
+    class Point {
+      constructor(px, py, pz) {
+        this.px = px;
+        this.py = py;
+        this.pz = pz;
+        if (px == null || !Fp.isValid(px)) throw new Error("x required");
+        if (py == null || !Fp.isValid(py)) throw new Error("y required");
+        if (pz == null || !Fp.isValid(pz)) throw new Error("z required");
       }
-      function Keccak(bits, padding, outputBits) {
-        this.blocks = $Array.of();
-        this.s = $Array.of();
-        this.padding = padding;
-        this.outputBits = outputBits;
-        this.reset = true;
-        this.finalized = false;
-        this.block = 0;
-        this.start = 0;
-        this.blockCount = 1600 - (bits << 1) >> 5;
-        this.byteCount = this.blockCount << 2;
-        this.outputBlocks = outputBits >> 5;
-        this.extraBytes = (outputBits & 31) >> 3;
-        for (var i = 0; i < 50; ++i) {
-          this.s[i] = 0;
-        }
+      static fromAffine(p) {
+        const {
+          x: x,
+          y: y
+        } = p || $Object.create(null, undefined);
+        if (!p || !Fp.isValid(x) || !Fp.isValid(y)) throw new Error("invalid affine point");
+        if (p instanceof Point) throw new Error("projective point not allowed");
+        const is0 = i => Fp.eql(i, Fp.ZERO);
+        $(is0);
+        if (is0(x) && is0(y)) return Point.ZERO;
+        return new Point(x, y, Fp.ONE);
       }
-      $(Keccak);
-      Keccak.prototype.update = $(function (message) {
-        if (this.finalized) {
-          throw new Error(FINALIZE_ERROR);
+      get x() {
+        return this.toAffine().x;
+      }
+      get y() {
+        return this.toAffine().y;
+      }
+      static normalizeZ(points) {
+        const toInv = Fp.invertBatch(points.map($(p => p.pz)));
+        return points.map($((p, i) => p.toAffine(toInv[i]))).map(Point.fromAffine);
+      }
+      static fromHex(hex) {
+        const P = Point.fromAffine(fromBytes(ensureBytes("pointHex", hex)));
+        P.assertValidity();
+        return P;
+      }
+      static fromPrivateKey(privateKey) {
+        return Point.BASE.multiply(normPrivateKeyToScalar(privateKey));
+      }
+      _setWindowSize(windowSize) {
+        this._WINDOW_SIZE = windowSize;
+        pointPrecomputes.delete(this);
+      }
+      assertValidity() {
+        if (this.is0()) {
+          if (CURVE.allowInfinityPoint && !Fp.is0(this.py)) return;
+          throw new Error("bad point: ZERO");
         }
-        var notString,
-          type = typeof message;
-        if (type !== "string") {
-          if (type === "object") {
-            if (message === null) {
-              throw new Error(INPUT_ERROR);
-            } else if (ARRAY_BUFFER && message.constructor === ArrayBuffer) {
-              message = new Uint8Array(message);
-            } else if (!$Array.isArray(message)) {
-              if (!ARRAY_BUFFER || !ArrayBuffer.isView(message)) {
-                throw new Error(INPUT_ERROR);
-              }
-            }
-          } else {
-            throw new Error(INPUT_ERROR);
-          }
-          notString = true;
+        const {
+          x: x,
+          y: y
+        } = this.toAffine();
+        if (!Fp.isValid(x) || !Fp.isValid(y)) throw new Error("bad point: x or y not FE");
+        const left = Fp.sqr(y);
+        const right = weierstrassEquation(x);
+        if (!Fp.eql(left, right)) throw new Error("bad point: equation left != right");
+        if (!this.isTorsionFree()) throw new Error("bad point: not in prime-order subgroup");
+      }
+      hasEvenY() {
+        const {
+          y: y
+        } = this.toAffine();
+        if (Fp.isOdd) return !Fp.isOdd(y);
+        throw new Error("Field doesn't support isOdd");
+      }
+      equals(other) {
+        assertPrjPoint(other);
+        const {
+          px: X1,
+          py: Y1,
+          pz: Z1
+        } = this;
+        const {
+          px: X2,
+          py: Y2,
+          pz: Z2
+        } = other;
+        const U1 = Fp.eql(Fp.mul(X1, Z2), Fp.mul(X2, Z1));
+        const U2 = Fp.eql(Fp.mul(Y1, Z2), Fp.mul(Y2, Z1));
+        return U1 && U2;
+      }
+      negate() {
+        return new Point(this.px, Fp.neg(this.py), this.pz);
+      }
+      double() {
+        const {
+          a: a,
+          b: b
+        } = CURVE;
+        const b3 = Fp.mul(b, _3n);
+        const {
+          px: X1,
+          py: Y1,
+          pz: Z1
+        } = this;
+        let X3 = Fp.ZERO,
+          Y3 = Fp.ZERO,
+          Z3 = Fp.ZERO;
+        let t0 = Fp.mul(X1, X1);
+        let t1 = Fp.mul(Y1, Y1);
+        let t2 = Fp.mul(Z1, Z1);
+        let t3 = Fp.mul(X1, Y1);
+        t3 = Fp.add(t3, t3);
+        Z3 = Fp.mul(X1, Z1);
+        Z3 = Fp.add(Z3, Z3);
+        X3 = Fp.mul(a, Z3);
+        Y3 = Fp.mul(b3, t2);
+        Y3 = Fp.add(X3, Y3);
+        X3 = Fp.sub(t1, Y3);
+        Y3 = Fp.add(t1, Y3);
+        Y3 = Fp.mul(X3, Y3);
+        X3 = Fp.mul(t3, X3);
+        Z3 = Fp.mul(b3, Z3);
+        t2 = Fp.mul(a, t2);
+        t3 = Fp.sub(t0, t2);
+        t3 = Fp.mul(a, t3);
+        t3 = Fp.add(t3, Z3);
+        Z3 = Fp.add(t0, t0);
+        t0 = Fp.add(Z3, t0);
+        t0 = Fp.add(t0, t2);
+        t0 = Fp.mul(t0, t3);
+        Y3 = Fp.add(Y3, t0);
+        t2 = Fp.mul(Y1, Z1);
+        t2 = Fp.add(t2, t2);
+        t0 = Fp.mul(t2, t3);
+        X3 = Fp.sub(X3, t0);
+        Z3 = Fp.mul(t2, t1);
+        Z3 = Fp.add(Z3, Z3);
+        Z3 = Fp.add(Z3, Z3);
+        return new Point(X3, Y3, Z3);
+      }
+      add(other) {
+        assertPrjPoint(other);
+        const {
+          px: X1,
+          py: Y1,
+          pz: Z1
+        } = this;
+        const {
+          px: X2,
+          py: Y2,
+          pz: Z2
+        } = other;
+        let X3 = Fp.ZERO,
+          Y3 = Fp.ZERO,
+          Z3 = Fp.ZERO;
+        const a = CURVE.a;
+        const b3 = Fp.mul(CURVE.b, _3n);
+        let t0 = Fp.mul(X1, X2);
+        let t1 = Fp.mul(Y1, Y2);
+        let t2 = Fp.mul(Z1, Z2);
+        let t3 = Fp.add(X1, Y1);
+        let t4 = Fp.add(X2, Y2);
+        t3 = Fp.mul(t3, t4);
+        t4 = Fp.add(t0, t1);
+        t3 = Fp.sub(t3, t4);
+        t4 = Fp.add(X1, Z1);
+        let t5 = Fp.add(X2, Z2);
+        t4 = Fp.mul(t4, t5);
+        t5 = Fp.add(t0, t2);
+        t4 = Fp.sub(t4, t5);
+        t5 = Fp.add(Y1, Z1);
+        X3 = Fp.add(Y2, Z2);
+        t5 = Fp.mul(t5, X3);
+        X3 = Fp.add(t1, t2);
+        t5 = Fp.sub(t5, X3);
+        Z3 = Fp.mul(a, t4);
+        X3 = Fp.mul(b3, t2);
+        Z3 = Fp.add(X3, Z3);
+        X3 = Fp.sub(t1, Z3);
+        Z3 = Fp.add(t1, Z3);
+        Y3 = Fp.mul(X3, Z3);
+        t1 = Fp.add(t0, t0);
+        t1 = Fp.add(t1, t0);
+        t2 = Fp.mul(a, t2);
+        t4 = Fp.mul(b3, t4);
+        t1 = Fp.add(t1, t2);
+        t2 = Fp.sub(t0, t2);
+        t2 = Fp.mul(a, t2);
+        t4 = Fp.add(t4, t2);
+        t0 = Fp.mul(t1, t4);
+        Y3 = Fp.add(Y3, t0);
+        t0 = Fp.mul(t5, t4);
+        X3 = Fp.mul(t3, X3);
+        X3 = Fp.sub(X3, t0);
+        t0 = Fp.mul(t3, t1);
+        Z3 = Fp.mul(t5, Z3);
+        Z3 = Fp.add(Z3, t0);
+        return new Point(X3, Y3, Z3);
+      }
+      subtract(other) {
+        return this.add(other.negate());
+      }
+      is0() {
+        return this.equals(Point.ZERO);
+      }
+      wNAF(n) {
+        return wnaf.wNAFCached(this, pointPrecomputes, n, $(comp => {
+          const toInv = Fp.invertBatch(comp.map($(p => p.pz)));
+          return comp.map($((p, i) => p.toAffine(toInv[i]))).map(Point.fromAffine);
+        }));
+      }
+      multiplyUnsafe(n) {
+        const I = Point.ZERO;
+        if (n === _0n) return I;
+        assertGE(n);
+        if (n === _1n$1) return this;
+        const {
+          endo: endo
+        } = CURVE;
+        if (!endo) return wnaf.unsafeLadder(this, n);
+        let {
+          k1neg: k1neg,
+          k1: k1,
+          k2neg: k2neg,
+          k2: k2
+        } = endo.splitScalar(n);
+        let k1p = I;
+        let k2p = I;
+        let d = this;
+        while (k1 > _0n || k2 > _0n) {
+          if (k1 & _1n$1) k1p = k1p.add(d);
+          if (k2 & _1n$1) k2p = k2p.add(d);
+          d = d.double();
+          k1 >>= _1n$1;
+          k2 >>= _1n$1;
         }
-        var blocks = this.blocks,
-          byteCount = this.byteCount,
-          length = message.length,
-          blockCount = this.blockCount,
-          index = 0,
-          s = this.s,
-          i,
-          code;
-        while (index < length) {
-          if (this.reset) {
-            this.reset = false;
-            blocks[0] = this.block;
-            for (i = 1; i < blockCount + 1; ++i) {
-              blocks[i] = 0;
-            }
-          }
-          if (notString) {
-            for (i = this.start; index < length && i < byteCount; ++index) {
-              blocks[i >> 2] |= message[index] << SHIFT[i++ & 3];
-            }
-          } else {
-            for (i = this.start; index < length && i < byteCount; ++index) {
-              code = message.charCodeAt(index);
-              if (code < 128) {
-                blocks[i >> 2] |= code << SHIFT[i++ & 3];
-              } else if (code < 2048) {
-                blocks[i >> 2] |= (192 | code >> 6) << SHIFT[i++ & 3];
-                blocks[i >> 2] |= (128 | code & 63) << SHIFT[i++ & 3];
-              } else if (code < 55296 || code >= 57344) {
-                blocks[i >> 2] |= (224 | code >> 12) << SHIFT[i++ & 3];
-                blocks[i >> 2] |= (128 | code >> 6 & 63) << SHIFT[i++ & 3];
-                blocks[i >> 2] |= (128 | code & 63) << SHIFT[i++ & 3];
-              } else {
-                code = 65536 + ((code & 1023) << 10 | message.charCodeAt(++index) & 1023);
-                blocks[i >> 2] |= (240 | code >> 18) << SHIFT[i++ & 3];
-                blocks[i >> 2] |= (128 | code >> 12 & 63) << SHIFT[i++ & 3];
-                blocks[i >> 2] |= (128 | code >> 6 & 63) << SHIFT[i++ & 3];
-                blocks[i >> 2] |= (128 | code & 63) << SHIFT[i++ & 3];
-              }
-            }
-          }
-          this.lastByteIndex = i;
-          if (i >= byteCount) {
-            this.start = i - byteCount;
-            this.block = blocks[blockCount];
-            for (i = 0; i < blockCount; ++i) {
-              s[i] ^= blocks[i];
-            }
-            f(s);
-            this.reset = true;
-          } else {
-            this.start = i;
-          }
-        }
-        return this;
-      });
-      Keccak.prototype.encode = $(function (x, right) {
-        var o = x & 255,
-          n = 1;
-        var bytes = $Array.of(o);
-        x = x >> 8;
-        o = x & 255;
-        while (o > 0) {
-          bytes.unshift(o);
-          x = x >> 8;
-          o = x & 255;
-          ++n;
-        }
-        if (right) {
-          bytes.push(n);
+        if (k1neg) k1p = k1p.negate();
+        if (k2neg) k2p = k2p.negate();
+        k2p = new Point(Fp.mul(k2p.px, endo.beta), k2p.py, k2p.pz);
+        return k1p.add(k2p);
+      }
+      multiply(scalar) {
+        assertGE(scalar);
+        let n = scalar;
+        let point, fake;
+        const {
+          endo: endo
+        } = CURVE;
+        if (endo) {
+          const {
+            k1neg: k1neg,
+            k1: k1,
+            k2neg: k2neg,
+            k2: k2
+          } = endo.splitScalar(n);
+          let {
+            p: k1p,
+            f: f1p
+          } = this.wNAF(k1);
+          let {
+            p: k2p,
+            f: f2p
+          } = this.wNAF(k2);
+          k1p = wnaf.constTimeNegate(k1neg, k1p);
+          k2p = wnaf.constTimeNegate(k2neg, k2p);
+          k2p = new Point(Fp.mul(k2p.px, endo.beta), k2p.py, k2p.pz);
+          point = k1p.add(k2p);
+          fake = f1p.add(f2p);
         } else {
-          bytes.unshift(n);
+          const {
+            p: p,
+            f: f
+          } = this.wNAF(n);
+          point = p;
+          fake = f;
         }
-        this.update(bytes);
-        return bytes.length;
-      });
-      Keccak.prototype.encodeString = $(function (str) {
-        var notString,
-          type = typeof str;
-        if (type !== "string") {
-          if (type === "object") {
-            if (str === null) {
-              throw new Error(INPUT_ERROR);
-            } else if (ARRAY_BUFFER && str.constructor === ArrayBuffer) {
-              str = new Uint8Array(str);
-            } else if (!$Array.isArray(str)) {
-              if (!ARRAY_BUFFER || !ArrayBuffer.isView(str)) {
-                throw new Error(INPUT_ERROR);
-              }
-            }
-          } else {
-            throw new Error(INPUT_ERROR);
-          }
-          notString = true;
-        }
-        var bytes = 0,
-          length = str.length;
-        if (notString) {
-          bytes = length;
-        } else {
-          for (var i = 0; i < str.length; ++i) {
-            var code = str.charCodeAt(i);
-            if (code < 128) {
-              bytes += 1;
-            } else if (code < 2048) {
-              bytes += 2;
-            } else if (code < 55296 || code >= 57344) {
-              bytes += 3;
-            } else {
-              code = 65536 + ((code & 1023) << 10 | str.charCodeAt(++i) & 1023);
-              bytes += 4;
-            }
-          }
-        }
-        bytes += this.encode(bytes * 8);
-        this.update(str);
-        return bytes;
-      });
-      Keccak.prototype.bytepad = $(function (strs, w) {
-        var bytes = this.encode(w);
-        for (var i = 0; i < strs.length; ++i) {
-          bytes += this.encodeString(strs[i]);
-        }
-        var paddingBytes = w - bytes % w;
-        var zeros = $Array.of();
-        zeros.length = paddingBytes;
-        this.update(zeros);
-        return this;
-      });
-      Keccak.prototype.finalize = $(function () {
-        if (this.finalized) {
-          return;
-        }
-        this.finalized = true;
-        var blocks = this.blocks,
-          i = this.lastByteIndex,
-          blockCount = this.blockCount,
-          s = this.s;
-        blocks[i >> 2] |= this.padding[i & 3];
-        if (this.lastByteIndex === this.byteCount) {
-          blocks[0] = blocks[blockCount];
-          for (i = 1; i < blockCount + 1; ++i) {
-            blocks[i] = 0;
-          }
-        }
-        blocks[blockCount - 1] |= 2147483648;
-        for (i = 0; i < blockCount; ++i) {
-          s[i] ^= blocks[i];
-        }
-        f(s);
-      });
-      Keccak.prototype.toString = Keccak.prototype.hex = $(function () {
-        this.finalize();
-        var blockCount = this.blockCount,
-          s = this.s,
-          outputBlocks = this.outputBlocks,
-          extraBytes = this.extraBytes,
-          i = 0,
-          j = 0;
-        var hex = "",
-          block;
-        while (j < outputBlocks) {
-          for (i = 0; i < blockCount && j < outputBlocks; ++i, ++j) {
-            block = s[i];
-            hex += HEX_CHARS[block >> 4 & 15] + HEX_CHARS[block & 15] + HEX_CHARS[block >> 12 & 15] + HEX_CHARS[block >> 8 & 15] + HEX_CHARS[block >> 20 & 15] + HEX_CHARS[block >> 16 & 15] + HEX_CHARS[block >> 28 & 15] + HEX_CHARS[block >> 24 & 15];
-          }
-          if (j % blockCount === 0) {
-            f(s);
-            i = 0;
-          }
-        }
-        if (extraBytes) {
-          block = s[i];
-          hex += HEX_CHARS[block >> 4 & 15] + HEX_CHARS[block & 15];
-          if (extraBytes > 1) {
-            hex += HEX_CHARS[block >> 12 & 15] + HEX_CHARS[block >> 8 & 15];
-          }
-          if (extraBytes > 2) {
-            hex += HEX_CHARS[block >> 20 & 15] + HEX_CHARS[block >> 16 & 15];
-          }
-        }
-        return hex;
-      });
-      Keccak.prototype.arrayBuffer = $(function () {
-        this.finalize();
-        var blockCount = this.blockCount,
-          s = this.s,
-          outputBlocks = this.outputBlocks,
-          extraBytes = this.extraBytes,
-          i = 0,
-          j = 0;
-        var bytes = this.outputBits >> 3;
-        var buffer;
-        if (extraBytes) {
-          buffer = new ArrayBuffer(outputBlocks + 1 << 2);
-        } else {
-          buffer = new ArrayBuffer(bytes);
-        }
-        var array = new Uint32Array(buffer);
-        while (j < outputBlocks) {
-          for (i = 0; i < blockCount && j < outputBlocks; ++i, ++j) {
-            array[j] = s[i];
-          }
-          if (j % blockCount === 0) {
-            f(s);
-          }
-        }
-        if (extraBytes) {
-          array[i] = s[i];
-          buffer = buffer.slice(0, bytes);
-        }
-        return buffer;
-      });
-      Keccak.prototype.buffer = Keccak.prototype.arrayBuffer;
-      Keccak.prototype.digest = Keccak.prototype.array = $(function () {
-        this.finalize();
-        var blockCount = this.blockCount,
-          s = this.s,
-          outputBlocks = this.outputBlocks,
-          extraBytes = this.extraBytes,
-          i = 0,
-          j = 0;
-        var array = $Array.of(),
-          offset,
-          block;
-        while (j < outputBlocks) {
-          for (i = 0; i < blockCount && j < outputBlocks; ++i, ++j) {
-            offset = j << 2;
-            block = s[i];
-            array[offset] = block & 255;
-            array[offset + 1] = block >> 8 & 255;
-            array[offset + 2] = block >> 16 & 255;
-            array[offset + 3] = block >> 24 & 255;
-          }
-          if (j % blockCount === 0) {
-            f(s);
-          }
-        }
-        if (extraBytes) {
-          offset = j << 2;
-          block = s[i];
-          array[offset] = block & 255;
-          if (extraBytes > 1) {
-            array[offset + 1] = block >> 8 & 255;
-          }
-          if (extraBytes > 2) {
-            array[offset + 2] = block >> 16 & 255;
-          }
-        }
-        return array;
-      });
-      function Kmac(bits, padding, outputBits) {
-        Keccak.call(this, bits, padding, outputBits);
+        return Point.normalizeZ($Array.of(point, fake))[0];
       }
-      $(Kmac);
-      Kmac.prototype = new Keccak();
-      Kmac.prototype.finalize = $(function () {
-        this.encode(this.outputBits, true);
-        return Keccak.prototype.finalize.call(this);
-      });
-      var f = function (s) {
-        var h, l, n, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, b20, b21, b22, b23, b24, b25, b26, b27, b28, b29, b30, b31, b32, b33, b34, b35, b36, b37, b38, b39, b40, b41, b42, b43, b44, b45, b46, b47, b48, b49;
-        for (n = 0; n < 48; n += 2) {
-          c0 = s[0] ^ s[10] ^ s[20] ^ s[30] ^ s[40];
-          c1 = s[1] ^ s[11] ^ s[21] ^ s[31] ^ s[41];
-          c2 = s[2] ^ s[12] ^ s[22] ^ s[32] ^ s[42];
-          c3 = s[3] ^ s[13] ^ s[23] ^ s[33] ^ s[43];
-          c4 = s[4] ^ s[14] ^ s[24] ^ s[34] ^ s[44];
-          c5 = s[5] ^ s[15] ^ s[25] ^ s[35] ^ s[45];
-          c6 = s[6] ^ s[16] ^ s[26] ^ s[36] ^ s[46];
-          c7 = s[7] ^ s[17] ^ s[27] ^ s[37] ^ s[47];
-          c8 = s[8] ^ s[18] ^ s[28] ^ s[38] ^ s[48];
-          c9 = s[9] ^ s[19] ^ s[29] ^ s[39] ^ s[49];
-          h = c8 ^ (c2 << 1 | c3 >>> 31);
-          l = c9 ^ (c3 << 1 | c2 >>> 31);
-          s[0] ^= h;
-          s[1] ^= l;
-          s[10] ^= h;
-          s[11] ^= l;
-          s[20] ^= h;
-          s[21] ^= l;
-          s[30] ^= h;
-          s[31] ^= l;
-          s[40] ^= h;
-          s[41] ^= l;
-          h = c0 ^ (c4 << 1 | c5 >>> 31);
-          l = c1 ^ (c5 << 1 | c4 >>> 31);
-          s[2] ^= h;
-          s[3] ^= l;
-          s[12] ^= h;
-          s[13] ^= l;
-          s[22] ^= h;
-          s[23] ^= l;
-          s[32] ^= h;
-          s[33] ^= l;
-          s[42] ^= h;
-          s[43] ^= l;
-          h = c2 ^ (c6 << 1 | c7 >>> 31);
-          l = c3 ^ (c7 << 1 | c6 >>> 31);
-          s[4] ^= h;
-          s[5] ^= l;
-          s[14] ^= h;
-          s[15] ^= l;
-          s[24] ^= h;
-          s[25] ^= l;
-          s[34] ^= h;
-          s[35] ^= l;
-          s[44] ^= h;
-          s[45] ^= l;
-          h = c4 ^ (c8 << 1 | c9 >>> 31);
-          l = c5 ^ (c9 << 1 | c8 >>> 31);
-          s[6] ^= h;
-          s[7] ^= l;
-          s[16] ^= h;
-          s[17] ^= l;
-          s[26] ^= h;
-          s[27] ^= l;
-          s[36] ^= h;
-          s[37] ^= l;
-          s[46] ^= h;
-          s[47] ^= l;
-          h = c6 ^ (c0 << 1 | c1 >>> 31);
-          l = c7 ^ (c1 << 1 | c0 >>> 31);
-          s[8] ^= h;
-          s[9] ^= l;
-          s[18] ^= h;
-          s[19] ^= l;
-          s[28] ^= h;
-          s[29] ^= l;
-          s[38] ^= h;
-          s[39] ^= l;
-          s[48] ^= h;
-          s[49] ^= l;
-          b0 = s[0];
-          b1 = s[1];
-          b32 = s[11] << 4 | s[10] >>> 28;
-          b33 = s[10] << 4 | s[11] >>> 28;
-          b14 = s[20] << 3 | s[21] >>> 29;
-          b15 = s[21] << 3 | s[20] >>> 29;
-          b46 = s[31] << 9 | s[30] >>> 23;
-          b47 = s[30] << 9 | s[31] >>> 23;
-          b28 = s[40] << 18 | s[41] >>> 14;
-          b29 = s[41] << 18 | s[40] >>> 14;
-          b20 = s[2] << 1 | s[3] >>> 31;
-          b21 = s[3] << 1 | s[2] >>> 31;
-          b2 = s[13] << 12 | s[12] >>> 20;
-          b3 = s[12] << 12 | s[13] >>> 20;
-          b34 = s[22] << 10 | s[23] >>> 22;
-          b35 = s[23] << 10 | s[22] >>> 22;
-          b16 = s[33] << 13 | s[32] >>> 19;
-          b17 = s[32] << 13 | s[33] >>> 19;
-          b48 = s[42] << 2 | s[43] >>> 30;
-          b49 = s[43] << 2 | s[42] >>> 30;
-          b40 = s[5] << 30 | s[4] >>> 2;
-          b41 = s[4] << 30 | s[5] >>> 2;
-          b22 = s[14] << 6 | s[15] >>> 26;
-          b23 = s[15] << 6 | s[14] >>> 26;
-          b4 = s[25] << 11 | s[24] >>> 21;
-          b5 = s[24] << 11 | s[25] >>> 21;
-          b36 = s[34] << 15 | s[35] >>> 17;
-          b37 = s[35] << 15 | s[34] >>> 17;
-          b18 = s[45] << 29 | s[44] >>> 3;
-          b19 = s[44] << 29 | s[45] >>> 3;
-          b10 = s[6] << 28 | s[7] >>> 4;
-          b11 = s[7] << 28 | s[6] >>> 4;
-          b42 = s[17] << 23 | s[16] >>> 9;
-          b43 = s[16] << 23 | s[17] >>> 9;
-          b24 = s[26] << 25 | s[27] >>> 7;
-          b25 = s[27] << 25 | s[26] >>> 7;
-          b6 = s[36] << 21 | s[37] >>> 11;
-          b7 = s[37] << 21 | s[36] >>> 11;
-          b38 = s[47] << 24 | s[46] >>> 8;
-          b39 = s[46] << 24 | s[47] >>> 8;
-          b30 = s[8] << 27 | s[9] >>> 5;
-          b31 = s[9] << 27 | s[8] >>> 5;
-          b12 = s[18] << 20 | s[19] >>> 12;
-          b13 = s[19] << 20 | s[18] >>> 12;
-          b44 = s[29] << 7 | s[28] >>> 25;
-          b45 = s[28] << 7 | s[29] >>> 25;
-          b26 = s[38] << 8 | s[39] >>> 24;
-          b27 = s[39] << 8 | s[38] >>> 24;
-          b8 = s[48] << 14 | s[49] >>> 18;
-          b9 = s[49] << 14 | s[48] >>> 18;
-          s[0] = b0 ^ ~b2 & b4;
-          s[1] = b1 ^ ~b3 & b5;
-          s[10] = b10 ^ ~b12 & b14;
-          s[11] = b11 ^ ~b13 & b15;
-          s[20] = b20 ^ ~b22 & b24;
-          s[21] = b21 ^ ~b23 & b25;
-          s[30] = b30 ^ ~b32 & b34;
-          s[31] = b31 ^ ~b33 & b35;
-          s[40] = b40 ^ ~b42 & b44;
-          s[41] = b41 ^ ~b43 & b45;
-          s[2] = b2 ^ ~b4 & b6;
-          s[3] = b3 ^ ~b5 & b7;
-          s[12] = b12 ^ ~b14 & b16;
-          s[13] = b13 ^ ~b15 & b17;
-          s[22] = b22 ^ ~b24 & b26;
-          s[23] = b23 ^ ~b25 & b27;
-          s[32] = b32 ^ ~b34 & b36;
-          s[33] = b33 ^ ~b35 & b37;
-          s[42] = b42 ^ ~b44 & b46;
-          s[43] = b43 ^ ~b45 & b47;
-          s[4] = b4 ^ ~b6 & b8;
-          s[5] = b5 ^ ~b7 & b9;
-          s[14] = b14 ^ ~b16 & b18;
-          s[15] = b15 ^ ~b17 & b19;
-          s[24] = b24 ^ ~b26 & b28;
-          s[25] = b25 ^ ~b27 & b29;
-          s[34] = b34 ^ ~b36 & b38;
-          s[35] = b35 ^ ~b37 & b39;
-          s[44] = b44 ^ ~b46 & b48;
-          s[45] = b45 ^ ~b47 & b49;
-          s[6] = b6 ^ ~b8 & b0;
-          s[7] = b7 ^ ~b9 & b1;
-          s[16] = b16 ^ ~b18 & b10;
-          s[17] = b17 ^ ~b19 & b11;
-          s[26] = b26 ^ ~b28 & b20;
-          s[27] = b27 ^ ~b29 & b21;
-          s[36] = b36 ^ ~b38 & b30;
-          s[37] = b37 ^ ~b39 & b31;
-          s[46] = b46 ^ ~b48 & b40;
-          s[47] = b47 ^ ~b49 & b41;
-          s[8] = b8 ^ ~b0 & b2;
-          s[9] = b9 ^ ~b1 & b3;
-          s[18] = b18 ^ ~b10 & b12;
-          s[19] = b19 ^ ~b11 & b13;
-          s[28] = b28 ^ ~b20 & b22;
-          s[29] = b29 ^ ~b21 & b23;
-          s[38] = b38 ^ ~b30 & b32;
-          s[39] = b39 ^ ~b31 & b33;
-          s[48] = b48 ^ ~b40 & b42;
-          s[49] = b49 ^ ~b41 & b43;
-          s[0] ^= RC[n];
-          s[1] ^= RC[n + 1];
-        }
-      };
-      $(f);
-      if (COMMON_JS) {
-        module.exports = methods;
-      } else {
-        for (i = 0; i < methodNames.length; ++i) {
-          root[methodNames[i]] = methods[methodNames[i]];
-        }
+      multiplyAndAddUnsafe(Q, a, b) {
+        const G = Point.BASE;
+        const mul = (P, a) => a === _0n || a === _1n$1 || !P.equals(G) ? P.multiplyUnsafe(a) : P.multiply(a);
+        $(mul);
+        const sum = mul(this, a).add(mul(Q, b));
+        return sum.is0() ? undefined : sum;
       }
+      toAffine(iz) {
+        const {
+          px: x,
+          py: y,
+          pz: z
+        } = this;
+        const is0 = this.is0();
+        if (iz == null) iz = is0 ? Fp.ONE : Fp.inv(z);
+        const ax = Fp.mul(x, iz);
+        const ay = Fp.mul(y, iz);
+        const zz = Fp.mul(z, iz);
+        if (is0) return $(function () {
+          let result = $Object.create(null, undefined);
+          result.x = Fp.ZERO;
+          result.y = Fp.ZERO;
+          return result;
+        })();
+        if (!Fp.eql(zz, Fp.ONE)) throw new Error("invZ was invalid");
+        return $(function () {
+          let result = $Object.create(null, undefined);
+          result.x = ax;
+          result.y = ay;
+          return result;
+        })();
+      }
+      isTorsionFree() {
+        const {
+          h: cofactor,
+          isTorsionFree: isTorsionFree
+        } = CURVE;
+        if (cofactor === _1n$1) return true;
+        if (isTorsionFree) return isTorsionFree(Point, this);
+        throw new Error("isTorsionFree() has not been declared for the elliptic curve");
+      }
+      clearCofactor() {
+        const {
+          h: cofactor,
+          clearCofactor: clearCofactor
+        } = CURVE;
+        if (cofactor === _1n$1) return this;
+        if (clearCofactor) return clearCofactor(Point, this);
+        return this.multiplyUnsafe(CURVE.h);
+      }
+      toRawBytes(isCompressed = true) {
+        this.assertValidity();
+        return toBytes(Point, this, isCompressed);
+      }
+      toHex(isCompressed = true) {
+        return bytesToHex(this.toRawBytes(isCompressed));
+      }
+    }
+    Point.BASE = new Point(CURVE.Gx, CURVE.Gy, Fp.ONE);
+    Point.ZERO = new Point(Fp.ZERO, Fp.ONE, Fp.ZERO);
+    const _bits = CURVE.nBitLength;
+    const wnaf = wNAF(Point, CURVE.endo ? Math.ceil(_bits / 2) : _bits);
+    return $(function () {
+      let result = $Object.create(null, undefined);
+      result.CURVE = CURVE;
+      result.ProjectivePoint = Point;
+      result.normPrivateKeyToScalar = normPrivateKeyToScalar;
+      result.weierstrassEquation = weierstrassEquation;
+      result.isWithinCurveOrder = isWithinCurveOrder;
+      return result;
     })();
-  })(sha3$1);
-  var sha3 = sha3$1.exports;
-  class HMAC extends Hash {
-    constructor(hash, _key) {
+  }
+  $(weierstrassPoints);
+  function validateOpts(curve) {
+    const opts = validateBasic(curve);
+    validateObject(opts, $(function () {
+      let result = $Object.create(null, undefined);
+      result.hash = "hash";
+      result.hmac = "function";
+      result.randomBytes = "function";
+      return result;
+    })(), $(function () {
+      let result = $Object.create(null, undefined);
+      result.bits2int = "function";
+      result.bits2int_modN = "function";
+      result.lowS = "boolean";
+      return result;
+    })());
+    return $Object.freeze($(function () {
+      let result = $Object.create(null, undefined);
+      result.lowS = true;
+      $Object.assign(result, opts);
+      return result;
+    })());
+  }
+  $(validateOpts);
+  function weierstrass(curveDef) {
+    const CURVE = validateOpts(curveDef);
+    const {
+      Fp: Fp,
+      n: CURVE_ORDER
+    } = CURVE;
+    const compressedLen = Fp.BYTES + 1;
+    const uncompressedLen = 2 * Fp.BYTES + 1;
+    function isValidFieldElement(num) {
+      return _0n < num && num < Fp.ORDER;
+    }
+    $(isValidFieldElement);
+    function modN(a) {
+      return mod(a, CURVE_ORDER);
+    }
+    $(modN);
+    function invN(a) {
+      return invert(a, CURVE_ORDER);
+    }
+    $(invN);
+    const {
+      ProjectivePoint: Point,
+      normPrivateKeyToScalar: normPrivateKeyToScalar,
+      weierstrassEquation: weierstrassEquation,
+      isWithinCurveOrder: isWithinCurveOrder
+    } = weierstrassPoints($(function () {
+      let result = $Object.create(null, undefined);
+      $Object.assign(result, CURVE);
+      result.toBytes = $(function (_c, point, isCompressed) {
+        const a = point.toAffine();
+        const x = Fp.toBytes(a.x);
+        const cat = concatBytes;
+        if (isCompressed) {
+          return cat(Uint8Array.from($Array.of(point.hasEvenY() ? 2 : 3)), x);
+        } else {
+          return cat(Uint8Array.from($Array.of(4)), x, Fp.toBytes(a.y));
+        }
+      });
+      result.fromBytes = $(function (bytes) {
+        const len = bytes.length;
+        const head = bytes[0];
+        const tail = bytes.subarray(1);
+        if (len === compressedLen && (head === 2 || head === 3)) {
+          const x = bytesToNumberBE(tail);
+          if (!isValidFieldElement(x)) throw new Error("Point is not on curve");
+          const y2 = weierstrassEquation(x);
+          let y;
+          try {
+            y = Fp.sqrt(y2);
+          } catch (sqrtError) {
+            const suffix = sqrtError instanceof Error ? ": " + sqrtError.message : "";
+            throw new Error("Point is not on curve" + suffix);
+          }
+          const isYOdd = (y & _1n$1) === _1n$1;
+          const isHeadOdd = (head & 1) === 1;
+          if (isHeadOdd !== isYOdd) y = Fp.neg(y);
+          return $(function () {
+            let result = $Object.create(null, undefined);
+            result.x = x;
+            result.y = y;
+            return result;
+          })();
+        } else if (len === uncompressedLen && head === 4) {
+          const x = Fp.fromBytes(tail.subarray(0, Fp.BYTES));
+          const y = Fp.fromBytes(tail.subarray(Fp.BYTES, 2 * Fp.BYTES));
+          return $(function () {
+            let result = $Object.create(null, undefined);
+            result.x = x;
+            result.y = y;
+            return result;
+          })();
+        } else {
+          throw new Error(`Point of length ${len} was invalid. Expected ${compressedLen} compressed bytes or ${uncompressedLen} uncompressed bytes`);
+        }
+      });
+      return result;
+    })());
+    const numToNByteStr = num => bytesToHex(numberToBytesBE(num, CURVE.nByteLength));
+    $(numToNByteStr);
+    function isBiggerThanHalfOrder(number) {
+      const HALF = CURVE_ORDER >> _1n$1;
+      return number > HALF;
+    }
+    $(isBiggerThanHalfOrder);
+    function normalizeS(s) {
+      return isBiggerThanHalfOrder(s) ? modN(-s) : s;
+    }
+    $(normalizeS);
+    const slcNum = (b, from, to) => bytesToNumberBE(b.slice(from, to));
+    $(slcNum);
+    class Signature {
+      constructor(r, s, recovery) {
+        this.r = r;
+        this.s = s;
+        this.recovery = recovery;
+        this.assertValidity();
+      }
+      static fromCompact(hex) {
+        const l = CURVE.nByteLength;
+        hex = ensureBytes("compactSignature", hex, l * 2);
+        return new Signature(slcNum(hex, 0, l), slcNum(hex, l, 2 * l));
+      }
+      static fromDER(hex) {
+        const {
+          r: r,
+          s: s
+        } = DER.toSig(ensureBytes("DER", hex));
+        return new Signature(r, s);
+      }
+      assertValidity() {
+        if (!isWithinCurveOrder(this.r)) throw new Error("r must be 0 < r < CURVE.n");
+        if (!isWithinCurveOrder(this.s)) throw new Error("s must be 0 < s < CURVE.n");
+      }
+      addRecoveryBit(recovery) {
+        return new Signature(this.r, this.s, recovery);
+      }
+      recoverPublicKey(msgHash) {
+        const {
+          r: r,
+          s: s,
+          recovery: rec
+        } = this;
+        const h = bits2int_modN(ensureBytes("msgHash", msgHash));
+        if (rec == null || !$Array.of(0, 1, 2, 3).includes(rec)) throw new Error("recovery id invalid");
+        const radj = rec === 2 || rec === 3 ? r + CURVE.n : r;
+        if (radj >= Fp.ORDER) throw new Error("recovery id 2 or 3 invalid");
+        const prefix = (rec & 1) === 0 ? "02" : "03";
+        const R = Point.fromHex(prefix + numToNByteStr(radj));
+        const ir = invN(radj);
+        const u1 = modN(-h * ir);
+        const u2 = modN(s * ir);
+        const Q = Point.BASE.multiplyAndAddUnsafe(R, u1, u2);
+        if (!Q) throw new Error("point at infinify");
+        Q.assertValidity();
+        return Q;
+      }
+      hasHighS() {
+        return isBiggerThanHalfOrder(this.s);
+      }
+      normalizeS() {
+        return this.hasHighS() ? new Signature(this.r, modN(-this.s), this.recovery) : this;
+      }
+      toDERRawBytes() {
+        return hexToBytes(this.toDERHex());
+      }
+      toDERHex() {
+        return DER.hexFromSig($(function () {
+          let result = $Object.create(null, undefined);
+          result.r = this.r;
+          result.s = this.s;
+          return result;
+        }).bind(this)());
+      }
+      toCompactRawBytes() {
+        return hexToBytes(this.toCompactHex());
+      }
+      toCompactHex() {
+        return numToNByteStr(this.r) + numToNByteStr(this.s);
+      }
+    }
+    const utils = $(function () {
+      let result = $Object.create(null, undefined);
+      result.isValidPrivateKey = $(function (privateKey) {
+        try {
+          normPrivateKeyToScalar(privateKey);
+          return true;
+        } catch (error) {
+          return false;
+        }
+      });
+      result.normPrivateKeyToScalar = normPrivateKeyToScalar;
+      result.randomPrivateKey = $(() => {
+        const length = getMinHashLength(CURVE.n);
+        return mapHashToField(CURVE.randomBytes(length), CURVE.n);
+      });
+      result.precompute = $(function (windowSize = 8, point = Point.BASE) {
+        point._setWindowSize(windowSize);
+        point.multiply(BigInt(3));
+        return point;
+      });
+      return result;
+    })();
+    function getPublicKey(privateKey, isCompressed = true) {
+      return Point.fromPrivateKey(privateKey).toRawBytes(isCompressed);
+    }
+    $(getPublicKey);
+    function isProbPub(item) {
+      const arr = isBytes$2(item);
+      const str = typeof item === "string";
+      const len = (arr || str) && item.length;
+      if (arr) return len === compressedLen || len === uncompressedLen;
+      if (str) return len === 2 * compressedLen || len === 2 * uncompressedLen;
+      if (item instanceof Point) return true;
+      return false;
+    }
+    $(isProbPub);
+    function getSharedSecret(privateA, publicB, isCompressed = true) {
+      if (isProbPub(privateA)) throw new Error("first arg must be private key");
+      if (!isProbPub(publicB)) throw new Error("second arg must be public key");
+      const b = Point.fromHex(publicB);
+      return b.multiply(normPrivateKeyToScalar(privateA)).toRawBytes(isCompressed);
+    }
+    $(getSharedSecret);
+    const bits2int = CURVE.bits2int || $(function (bytes) {
+      const num = bytesToNumberBE(bytes);
+      const delta = bytes.length * 8 - CURVE.nBitLength;
+      return delta > 0 ? num >> BigInt(delta) : num;
+    });
+    const bits2int_modN = CURVE.bits2int_modN || $(function (bytes) {
+      return modN(bits2int(bytes));
+    });
+    const ORDER_MASK = bitMask(CURVE.nBitLength);
+    function int2octets(num) {
+      if (typeof num !== "bigint") throw new Error("bigint expected");
+      if (!(_0n <= num && num < ORDER_MASK)) throw new Error(`bigint expected < 2^${CURVE.nBitLength}`);
+      return numberToBytesBE(num, CURVE.nByteLength);
+    }
+    $(int2octets);
+    function prepSig(msgHash, privateKey, opts = defaultSigOpts) {
+      if ($Array.of("recovered", "canonical").some($(k => k in opts))) throw new Error("sign() legacy options not supported");
+      const {
+        hash: hash,
+        randomBytes: randomBytes
+      } = CURVE;
+      let {
+        lowS: lowS,
+        prehash: prehash,
+        extraEntropy: ent
+      } = opts;
+      if (lowS == null) lowS = true;
+      msgHash = ensureBytes("msgHash", msgHash);
+      if (prehash) msgHash = ensureBytes("prehashed msgHash", hash(msgHash));
+      const h1int = bits2int_modN(msgHash);
+      const d = normPrivateKeyToScalar(privateKey);
+      const seedArgs = $Array.of(int2octets(d), int2octets(h1int));
+      if (ent != null && ent !== false) {
+        const e = ent === true ? randomBytes(Fp.BYTES) : ent;
+        seedArgs.push(ensureBytes("extraEntropy", e));
+      }
+      const seed = concatBytes(...seedArgs);
+      const m = h1int;
+      function k2sig(kBytes) {
+        const k = bits2int(kBytes);
+        if (!isWithinCurveOrder(k)) return;
+        const ik = invN(k);
+        const q = Point.BASE.multiply(k).toAffine();
+        const r = modN(q.x);
+        if (r === _0n) return;
+        const s = modN(ik * modN(m + r * d));
+        if (s === _0n) return;
+        let recovery = (q.x === r ? 0 : 2) | Number(q.y & _1n$1);
+        let normS = s;
+        if (lowS && isBiggerThanHalfOrder(s)) {
+          normS = normalizeS(s);
+          recovery ^= 1;
+        }
+        return new Signature(r, normS, recovery);
+      }
+      $(k2sig);
+      return $(function () {
+        let result = $Object.create(null, undefined);
+        result.seed = seed;
+        result.k2sig = k2sig;
+        return result;
+      })();
+    }
+    $(prepSig);
+    const defaultSigOpts = $(function () {
+      let result = $Object.create(null, undefined);
+      result.lowS = CURVE.lowS;
+      result.prehash = false;
+      return result;
+    })();
+    const defaultVerOpts = $(function () {
+      let result = $Object.create(null, undefined);
+      result.lowS = CURVE.lowS;
+      result.prehash = false;
+      return result;
+    })();
+    function sign(msgHash, privKey, opts = defaultSigOpts) {
+      const {
+        seed: seed,
+        k2sig: k2sig
+      } = prepSig(msgHash, privKey, opts);
+      const C = CURVE;
+      const drbg = createHmacDrbg(C.hash.outputLen, C.nByteLength, C.hmac);
+      return drbg(seed, k2sig);
+    }
+    $(sign);
+    Point.BASE._setWindowSize(8);
+    function verify(signature, msgHash, publicKey, opts = defaultVerOpts) {
+      const sg = signature;
+      msgHash = ensureBytes("msgHash", msgHash);
+      publicKey = ensureBytes("publicKey", publicKey);
+      if ("strict" in opts) throw new Error("options.strict was renamed to lowS");
+      const {
+        lowS: lowS,
+        prehash: prehash
+      } = opts;
+      let _sig = undefined;
+      let P;
+      try {
+        if (typeof sg === "string" || isBytes$2(sg)) {
+          try {
+            _sig = Signature.fromDER(sg);
+          } catch (derError) {
+            if (!(derError instanceof DER.Err)) throw derError;
+            _sig = Signature.fromCompact(sg);
+          }
+        } else if (typeof sg === "object" && typeof sg.r === "bigint" && typeof sg.s === "bigint") {
+          const {
+            r: r,
+            s: s
+          } = sg;
+          _sig = new Signature(r, s);
+        } else {
+          throw new Error("PARSE");
+        }
+        P = Point.fromHex(publicKey);
+      } catch (error) {
+        if (error.message === "PARSE") throw new Error(`signature must be Signature instance, Uint8Array or hex string`);
+        return false;
+      }
+      if (lowS && _sig.hasHighS()) return false;
+      if (prehash) msgHash = CURVE.hash(msgHash);
+      const {
+        r: r,
+        s: s
+      } = _sig;
+      const h = bits2int_modN(msgHash);
+      const is = invN(s);
+      const u1 = modN(h * is);
+      const u2 = modN(r * is);
+      const R = Point.BASE.multiplyAndAddUnsafe(P, u1, u2)?.toAffine();
+      if (!R) return false;
+      const v = modN(R.x);
+      return v === r;
+    }
+    $(verify);
+    return $(function () {
+      let result = $Object.create(null, undefined);
+      result.CURVE = CURVE;
+      result.getPublicKey = getPublicKey;
+      result.getSharedSecret = getSharedSecret;
+      result.sign = sign;
+      result.verify = verify;
+      result.ProjectivePoint = Point;
+      result.Signature = Signature;
+      result.utils = utils;
+      return result;
+    })();
+  }
+  $(weierstrass);
+  class HMAC extends Hash$1 {
+    constructor(hash$1, _key) {
       super();
       this.finished = false;
       this.destroyed = false;
-      assert$3.hash(hash);
-      const key = toBytes(_key);
-      this.iHash = hash.create();
-      if (!(this.iHash instanceof Hash)) throw new TypeError("Expected instance of class which extends utils.Hash");
-      const blockLen = this.blockLen = this.iHash.blockLen;
+      hash(hash$1);
+      const key = toBytes$1(_key);
+      this.iHash = hash$1.create();
+      if (typeof this.iHash.update !== "function") throw new Error("Expected instance of class which extends utils.Hash");
+      this.blockLen = this.iHash.blockLen;
       this.outputLen = this.iHash.outputLen;
+      const blockLen = this.blockLen;
       const pad = new Uint8Array(blockLen);
-      pad.set(key.length > this.iHash.blockLen ? hash.create().update(key).digest() : key);
+      pad.set(key.length > blockLen ? hash$1.create().update(key).digest() : key);
       for (let i = 0; i < pad.length; i++) pad[i] ^= 54;
       this.iHash.update(pad);
-      this.oHash = hash.create();
+      this.oHash = hash$1.create();
       for (let i = 0; i < pad.length; i++) pad[i] ^= 54 ^ 92;
       this.oHash.update(pad);
       pad.fill(0);
     }
     update(buf) {
-      assert$3.exists(this);
+      exists$1(this);
       this.iHash.update(buf);
       return this;
     }
     digestInto(out) {
-      assert$3.exists(this);
-      assert$3.bytes(out, this.outputLen);
+      exists$1(this);
+      bytes$1(out, this.outputLen);
       this.finished = true;
       this.iHash.digestInto(out);
       this.oHash.update(out);
@@ -16933,1064 +18856,125 @@ var solanaWeb3 = $(function (exports) {
   const hmac = (hash, key, message) => new HMAC(hash, key).update(message).digest();
   $(hmac);
   hmac.create = $((hash, key) => new HMAC(hash, key))
-  /*! noble-secp256k1 - MIT License (c) 2019 Paul Miller (paulmillr.com) */;
-  const _0n = BigInt(0);
+  /*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */;
+  function getHash(hash) {
+    return $(function () {
+      let result = $Object.create(null, undefined);
+      result.hash = hash;
+      result.hmac = $((key, ...msgs) => hmac(hash, key, concatBytes$1(...msgs)));
+      result.randomBytes = randomBytes;
+      return result;
+    })();
+  }
+  $(getHash);
+  function createCurve(curveDef, defHash) {
+    const create = hash => weierstrass($(function () {
+      let result = $Object.create(null, undefined);
+      $Object.assign(result, curveDef);
+      $Object.assign(result, getHash(hash));
+      return result;
+    })());
+    $(create);
+    return $Object.freeze($(function () {
+      let result = $Object.create(null, undefined);
+      $Object.assign(result, create(defHash));
+      result.create = create;
+      return result;
+    })());
+  }
+  /*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+  $(createCurve);
+  const secp256k1P = BigInt("0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f");
+  const secp256k1N = BigInt("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
   const _1n = BigInt(1);
   const _2n = BigInt(2);
-  const _3n = BigInt(3);
-  const _8n = BigInt(8);
-  const POW_2_256 = _2n ** BigInt(256);
-  const CURVE = $(function () {
-    let result = $Object.create(null, undefined);
-    result.a = _0n;
-    result.b = BigInt(7);
-    result.P = POW_2_256 - _2n ** BigInt(32) - BigInt(977);
-    result.n = POW_2_256 - BigInt("432420386565659656852420866394968145599");
-    result.h = _1n;
-    result.Gx = BigInt("55066263022277343669578718895168534326250603453777594175500187360389116729240");
-    result.Gy = BigInt("32670510020758816978083085130507043184471273380659243275938904335757337482424");
-    result.beta = BigInt("0x7ae96a2b657c07106e64479eac3434e99cf0497512f58995c1396c28719501ee");
-    return result;
-  })();
-  function weistrass(x) {
-    const {
-      a: a,
-      b: b
-    } = CURVE;
-    const x2 = mod(x * x);
-    const x3 = mod(x2 * x);
-    return mod(x3 + a * x + b);
-  }
-  $(weistrass);
-  const USE_ENDOMORPHISM = CURVE.a === _0n;
-  class JacobianPoint {
-    constructor(x, y, z) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-    }
-    static fromAffine(p) {
-      if (!(p instanceof Point)) {
-        throw new TypeError("JacobianPoint#fromAffine: expected Point");
-      }
-      return new JacobianPoint(p.x, p.y, _1n);
-    }
-    static toAffineBatch(points) {
-      const toInv = invertBatch(points.map($(p => p.z)));
-      return points.map($((p, i) => p.toAffine(toInv[i])));
-    }
-    static normalizeZ(points) {
-      return JacobianPoint.toAffineBatch(points).map(JacobianPoint.fromAffine);
-    }
-    equals(other) {
-      if (!(other instanceof JacobianPoint)) throw new TypeError("JacobianPoint expected");
-      const {
-        x: X1,
-        y: Y1,
-        z: Z1
-      } = this;
-      const {
-        x: X2,
-        y: Y2,
-        z: Z2
-      } = other;
-      const Z1Z1 = mod(Z1 ** _2n);
-      const Z2Z2 = mod(Z2 ** _2n);
-      const U1 = mod(X1 * Z2Z2);
-      const U2 = mod(X2 * Z1Z1);
-      const S1 = mod(mod(Y1 * Z2) * Z2Z2);
-      const S2 = mod(mod(Y2 * Z1) * Z1Z1);
-      return U1 === U2 && S1 === S2;
-    }
-    negate() {
-      return new JacobianPoint(this.x, mod(-this.y), this.z);
-    }
-    double() {
-      const {
-        x: X1,
-        y: Y1,
-        z: Z1
-      } = this;
-      const A = mod(X1 ** _2n);
-      const B = mod(Y1 ** _2n);
-      const C = mod(B ** _2n);
-      const D = mod(_2n * (mod((X1 + B) ** _2n) - A - C));
-      const E = mod(_3n * A);
-      const F = mod(E ** _2n);
-      const X3 = mod(F - _2n * D);
-      const Y3 = mod(E * (D - X3) - _8n * C);
-      const Z3 = mod(_2n * Y1 * Z1);
-      return new JacobianPoint(X3, Y3, Z3);
-    }
-    add(other) {
-      if (!(other instanceof JacobianPoint)) throw new TypeError("JacobianPoint expected");
-      const {
-        x: X1,
-        y: Y1,
-        z: Z1
-      } = this;
-      const {
-        x: X2,
-        y: Y2,
-        z: Z2
-      } = other;
-      if (X2 === _0n || Y2 === _0n) return this;
-      if (X1 === _0n || Y1 === _0n) return other;
-      const Z1Z1 = mod(Z1 ** _2n);
-      const Z2Z2 = mod(Z2 ** _2n);
-      const U1 = mod(X1 * Z2Z2);
-      const U2 = mod(X2 * Z1Z1);
-      const S1 = mod(mod(Y1 * Z2) * Z2Z2);
-      const S2 = mod(mod(Y2 * Z1) * Z1Z1);
-      const H = mod(U2 - U1);
-      const r = mod(S2 - S1);
-      if (H === _0n) {
-        if (r === _0n) {
-          return this.double();
-        } else {
-          return JacobianPoint.ZERO;
-        }
-      }
-      const HH = mod(H ** _2n);
-      const HHH = mod(H * HH);
-      const V = mod(U1 * HH);
-      const X3 = mod(r ** _2n - HHH - _2n * V);
-      const Y3 = mod(r * (V - X3) - S1 * HHH);
-      const Z3 = mod(Z1 * Z2 * H);
-      return new JacobianPoint(X3, Y3, Z3);
-    }
-    subtract(other) {
-      return this.add(other.negate());
-    }
-    multiplyUnsafe(scalar) {
-      const P0 = JacobianPoint.ZERO;
-      if (typeof scalar === "bigint" && scalar === _0n) return P0;
-      let n = normalizeScalar(scalar);
-      if (n === _1n) return this;
-      if (!USE_ENDOMORPHISM) {
-        let p = P0;
-        let d = this;
-        while (n > _0n) {
-          if (n & _1n) p = p.add(d);
-          d = d.double();
-          n >>= _1n;
-        }
-        return p;
-      }
-      let {
-        k1neg: k1neg,
-        k1: k1,
-        k2neg: k2neg,
-        k2: k2
-      } = splitScalarEndo(n);
-      let k1p = P0;
-      let k2p = P0;
-      let d = this;
-      while (k1 > _0n || k2 > _0n) {
-        if (k1 & _1n) k1p = k1p.add(d);
-        if (k2 & _1n) k2p = k2p.add(d);
-        d = d.double();
-        k1 >>= _1n;
-        k2 >>= _1n;
-      }
-      if (k1neg) k1p = k1p.negate();
-      if (k2neg) k2p = k2p.negate();
-      k2p = new JacobianPoint(mod(k2p.x * CURVE.beta), k2p.y, k2p.z);
-      return k1p.add(k2p);
-    }
-    precomputeWindow(W) {
-      const windows = USE_ENDOMORPHISM ? 128 / W + 1 : 256 / W + 1;
-      const points = $Array.of();
-      let p = this;
-      let base = p;
-      for (let window = 0; window < windows; window++) {
-        base = p;
-        points.push(base);
-        for (let i = 1; i < 2 ** (W - 1); i++) {
-          base = base.add(p);
-          points.push(base);
-        }
-        p = base.double();
-      }
-      return points;
-    }
-    wNAF(n, affinePoint) {
-      if (!affinePoint && this.equals(JacobianPoint.BASE)) affinePoint = Point.BASE;
-      const W = affinePoint && affinePoint._WINDOW_SIZE || 1;
-      if (256 % W) {
-        throw new Error("Point#wNAF: Invalid precomputation window, must be power of 2");
-      }
-      let precomputes = affinePoint && pointPrecomputes.get(affinePoint);
-      if (!precomputes) {
-        precomputes = this.precomputeWindow(W);
-        if (affinePoint && W !== 1) {
-          precomputes = JacobianPoint.normalizeZ(precomputes);
-          pointPrecomputes.set(affinePoint, precomputes);
-        }
-      }
-      let p = JacobianPoint.ZERO;
-      let f = JacobianPoint.ZERO;
-      const windows = 1 + (USE_ENDOMORPHISM ? 128 / W : 256 / W);
-      const windowSize = 2 ** (W - 1);
-      const mask = BigInt(2 ** W - 1);
-      const maxNumber = 2 ** W;
-      const shiftBy = BigInt(W);
-      for (let window = 0; window < windows; window++) {
-        const offset = window * windowSize;
-        let wbits = Number(n & mask);
-        n >>= shiftBy;
-        if (wbits > windowSize) {
-          wbits -= maxNumber;
-          n += _1n;
-        }
-        if (wbits === 0) {
-          let pr = precomputes[offset];
-          if (window % 2) pr = pr.negate();
-          f = f.add(pr);
-        } else {
-          let cached = precomputes[offset + Math.abs(wbits) - 1];
-          if (wbits < 0) cached = cached.negate();
-          p = p.add(cached);
-        }
-      }
-      return $(function () {
-        let result = $Object.create(null, undefined);
-        result.p = p;
-        result.f = f;
-        return result;
-      })();
-    }
-    multiply(scalar, affinePoint) {
-      let n = normalizeScalar(scalar);
-      let point;
-      let fake;
-      if (USE_ENDOMORPHISM) {
-        const {
-          k1neg: k1neg,
-          k1: k1,
-          k2neg: k2neg,
-          k2: k2
-        } = splitScalarEndo(n);
-        let {
-          p: k1p,
-          f: f1p
-        } = this.wNAF(k1, affinePoint);
-        let {
-          p: k2p,
-          f: f2p
-        } = this.wNAF(k2, affinePoint);
-        if (k1neg) k1p = k1p.negate();
-        if (k2neg) k2p = k2p.negate();
-        k2p = new JacobianPoint(mod(k2p.x * CURVE.beta), k2p.y, k2p.z);
-        point = k1p.add(k2p);
-        fake = f1p.add(f2p);
-      } else {
-        const {
-          p: p,
-          f: f
-        } = this.wNAF(n, affinePoint);
-        point = p;
-        fake = f;
-      }
-      return JacobianPoint.normalizeZ($Array.of(point, fake))[0];
-    }
-    toAffine(invZ = invert(this.z)) {
-      const {
-        x: x,
-        y: y,
-        z: z
-      } = this;
-      const iz1 = invZ;
-      const iz2 = mod(iz1 * iz1);
-      const iz3 = mod(iz2 * iz1);
-      const ax = mod(x * iz2);
-      const ay = mod(y * iz3);
-      const zz = mod(z * iz1);
-      if (zz !== _1n) throw new Error("invZ was invalid");
-      return new Point(ax, ay);
-    }
-  }
-  JacobianPoint.BASE = new JacobianPoint(CURVE.Gx, CURVE.Gy, _1n);
-  JacobianPoint.ZERO = new JacobianPoint(_0n, _1n, _0n);
-  const pointPrecomputes = new WeakMap();
-  class Point {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-    }
-    _setWindowSize(windowSize) {
-      this._WINDOW_SIZE = windowSize;
-      pointPrecomputes.delete(this);
-    }
-    static fromCompressedHex(bytes) {
-      const isShort = bytes.length === 32;
-      const x = bytesToNumber(isShort ? bytes : bytes.subarray(1));
-      if (!isValidFieldElement(x)) throw new Error("Point is not on curve");
-      const y2 = weistrass(x);
-      let y = sqrtMod(y2);
-      const isYOdd = (y & _1n) === _1n;
-      if (isShort) {
-        if (isYOdd) y = mod(-y);
-      } else {
-        const isFirstByteOdd = (bytes[0] & 1) === 1;
-        if (isFirstByteOdd !== isYOdd) y = mod(-y);
-      }
-      const point = new Point(x, y);
-      point.assertValidity();
-      return point;
-    }
-    static fromUncompressedHex(bytes) {
-      const x = bytesToNumber(bytes.subarray(1, 33));
-      const y = bytesToNumber(bytes.subarray(33, 65));
-      const point = new Point(x, y);
-      point.assertValidity();
-      return point;
-    }
-    static fromHex(hex) {
-      const bytes = ensureBytes(hex);
-      const len = bytes.length;
-      const header = bytes[0];
-      if (len === 32 || len === 33 && (header === 2 || header === 3)) {
-        return this.fromCompressedHex(bytes);
-      }
-      if (len === 65 && header === 4) return this.fromUncompressedHex(bytes);
-      throw new Error(`Point.fromHex: received invalid point. Expected 32-33 compressed bytes or 65 uncompressed bytes, not ${len}`);
-    }
-    static fromPrivateKey(privateKey) {
-      return Point.BASE.multiply(normalizePrivateKey(privateKey));
-    }
-    static fromSignature(msgHash, signature, recovery) {
-      msgHash = ensureBytes(msgHash);
-      const h = truncateHash(msgHash);
-      const {
-        r: r,
-        s: s
-      } = normalizeSignature(signature);
-      if (recovery !== 0 && recovery !== 1) {
-        throw new Error("Cannot recover signature: invalid recovery bit");
-      }
-      const prefix = recovery & 1 ? "03" : "02";
-      const R = Point.fromHex(prefix + numTo32bStr(r));
-      const {
-        n: n
-      } = CURVE;
-      const rinv = invert(r, n);
-      const u1 = mod(-h * rinv, n);
-      const u2 = mod(s * rinv, n);
-      const Q = Point.BASE.multiplyAndAddUnsafe(R, u1, u2);
-      if (!Q) throw new Error("Cannot recover signature: point at infinify");
-      Q.assertValidity();
-      return Q;
-    }
-    toRawBytes(isCompressed = false) {
-      return hexToBytes(this.toHex(isCompressed));
-    }
-    toHex(isCompressed = false) {
-      const x = numTo32bStr(this.x);
-      if (isCompressed) {
-        const prefix = this.y & _1n ? "03" : "02";
-        return `${prefix}${x}`;
-      } else {
-        return `04${x}${numTo32bStr(this.y)}`;
-      }
-    }
-    toHexX() {
-      return this.toHex(true).slice(2);
-    }
-    toRawX() {
-      return this.toRawBytes(true).slice(1);
-    }
-    assertValidity() {
-      const msg = "Point is not on elliptic curve";
-      const {
-        x: x,
-        y: y
-      } = this;
-      if (!isValidFieldElement(x) || !isValidFieldElement(y)) throw new Error(msg);
-      const left = mod(y * y);
-      const right = weistrass(x);
-      if (mod(left - right) !== _0n) throw new Error(msg);
-    }
-    equals(other) {
-      return this.x === other.x && this.y === other.y;
-    }
-    negate() {
-      return new Point(this.x, mod(-this.y));
-    }
-    double() {
-      return JacobianPoint.fromAffine(this).double().toAffine();
-    }
-    add(other) {
-      return JacobianPoint.fromAffine(this).add(JacobianPoint.fromAffine(other)).toAffine();
-    }
-    subtract(other) {
-      return this.add(other.negate());
-    }
-    multiply(scalar) {
-      return JacobianPoint.fromAffine(this).multiply(scalar, this).toAffine();
-    }
-    multiplyAndAddUnsafe(Q, a, b) {
-      const P = JacobianPoint.fromAffine(this);
-      const aP = a === _0n || a === _1n || this !== Point.BASE ? P.multiplyUnsafe(a) : P.multiply(a);
-      const bQ = JacobianPoint.fromAffine(Q).multiplyUnsafe(b);
-      const sum = aP.add(bQ);
-      return sum.equals(JacobianPoint.ZERO) ? undefined : sum.toAffine();
-    }
-  }
-  Point.BASE = new Point(CURVE.Gx, CURVE.Gy);
-  Point.ZERO = new Point(_0n, _0n);
-  function sliceDER(s) {
-    return Number.parseInt(s[0], 16) >= 8 ? "00" + s : s;
-  }
-  $(sliceDER);
-  function parseDERInt(data) {
-    if (data.length < 2 || data[0] !== 2) {
-      throw new Error(`Invalid signature integer tag: ${bytesToHex(data)}`);
-    }
-    const len = data[1];
-    const res = data.subarray(2, len + 2);
-    if (!len || res.length !== len) {
-      throw new Error(`Invalid signature integer: wrong length`);
-    }
-    if (res[0] === 0 && res[1] <= 127) {
-      throw new Error("Invalid signature integer: trailing length");
-    }
-    return $(function () {
-      let result = $Object.create(null, undefined);
-      result.data = bytesToNumber(res);
-      result.left = data.subarray(len + 2);
-      return result;
-    })();
-  }
-  $(parseDERInt);
-  function parseDERSignature(data) {
-    if (data.length < 2 || data[0] != 48) {
-      throw new Error(`Invalid signature tag: ${bytesToHex(data)}`);
-    }
-    if (data[1] !== data.length - 2) {
-      throw new Error("Invalid signature: incorrect length");
-    }
-    const {
-      data: r,
-      left: sBytes
-    } = parseDERInt(data.subarray(2));
-    const {
-      data: s,
-      left: rBytesLeft
-    } = parseDERInt(sBytes);
-    if (rBytesLeft.length) {
-      throw new Error(`Invalid signature: left bytes after parsing: ${bytesToHex(rBytesLeft)}`);
-    }
-    return $(function () {
-      let result = $Object.create(null, undefined);
-      result.r = r;
-      result.s = s;
-      return result;
-    })();
-  }
-  $(parseDERSignature);
-  class Signature {
-    constructor(r, s) {
-      this.r = r;
-      this.s = s;
-      this.assertValidity();
-    }
-    static fromCompact(hex) {
-      const arr = isUint8a(hex);
-      const name = "Signature.fromCompact";
-      if (typeof hex !== "string" && !arr) throw new TypeError(`${name}: Expected string or Uint8Array`);
-      const str = arr ? bytesToHex(hex) : hex;
-      if (str.length !== 128) throw new Error(`${name}: Expected 64-byte hex`);
-      return new Signature(hexToNumber(str.slice(0, 64)), hexToNumber(str.slice(64, 128)));
-    }
-    static fromDER(hex) {
-      const arr = isUint8a(hex);
-      if (typeof hex !== "string" && !arr) throw new TypeError(`Signature.fromDER: Expected string or Uint8Array`);
-      const {
-        r: r,
-        s: s
-      } = parseDERSignature(arr ? hex : hexToBytes(hex));
-      return new Signature(r, s);
-    }
-    static fromHex(hex) {
-      return this.fromDER(hex);
-    }
-    assertValidity() {
-      const {
-        r: r,
-        s: s
-      } = this;
-      if (!isWithinCurveOrder(r)) throw new Error("Invalid Signature: r must be 0 < r < n");
-      if (!isWithinCurveOrder(s)) throw new Error("Invalid Signature: s must be 0 < s < n");
-    }
-    hasHighS() {
-      const HALF = CURVE.n >> _1n;
-      return this.s > HALF;
-    }
-    normalizeS() {
-      return this.hasHighS() ? new Signature(this.r, CURVE.n - this.s) : this;
-    }
-    toDERRawBytes(isCompressed = false) {
-      return hexToBytes(this.toDERHex(isCompressed));
-    }
-    toDERHex(isCompressed = false) {
-      const sHex = sliceDER(numberToHexUnpadded(this.s));
-      if (isCompressed) return sHex;
-      const rHex = sliceDER(numberToHexUnpadded(this.r));
-      const rLen = numberToHexUnpadded(rHex.length / 2);
-      const sLen = numberToHexUnpadded(sHex.length / 2);
-      const length = numberToHexUnpadded(rHex.length / 2 + sHex.length / 2 + 4);
-      return `30${length}02${rLen}${rHex}02${sLen}${sHex}`;
-    }
-    toRawBytes() {
-      return this.toDERRawBytes();
-    }
-    toHex() {
-      return this.toDERHex();
-    }
-    toCompactRawBytes() {
-      return hexToBytes(this.toCompactHex());
-    }
-    toCompactHex() {
-      return numTo32bStr(this.r) + numTo32bStr(this.s);
-    }
-  }
-  function concatBytes(...arrays) {
-    if (!arrays.every(isUint8a)) throw new Error("Uint8Array list expected");
-    if (arrays.length === 1) return arrays[0];
-    const length = arrays.reduce($((a, arr) => a + arr.length), 0);
-    const result = new Uint8Array(length);
-    for (let i = 0, pad = 0; i < arrays.length; i++) {
-      const arr = arrays[i];
-      result.set(arr, pad);
-      pad += arr.length;
-    }
-    return result;
-  }
-  $(concatBytes);
-  function isUint8a(bytes) {
-    return bytes instanceof Uint8Array;
-  }
-  $(isUint8a);
-  const hexes = $Array.from($(function () {
-    let result = $Object.create(null, undefined);
-    result.length = 256;
-    return result;
-  })(), $((v, i) => i.toString(16).padStart(2, "0")));
-  function bytesToHex(uint8a) {
-    if (!(uint8a instanceof Uint8Array)) throw new Error("Expected Uint8Array");
-    let hex = "";
-    for (let i = 0; i < uint8a.length; i++) {
-      hex += hexes[uint8a[i]];
-    }
-    return hex;
-  }
-  $(bytesToHex);
-  function numTo32bStr(num) {
-    if (num > POW_2_256) throw new Error("Expected number < 2^256");
-    return num.toString(16).padStart(64, "0");
-  }
-  $(numTo32bStr);
-  function numTo32b(num) {
-    return hexToBytes(numTo32bStr(num));
-  }
-  $(numTo32b);
-  function numberToHexUnpadded(num) {
-    const hex = num.toString(16);
-    return hex.length & 1 ? `0${hex}` : hex;
-  }
-  $(numberToHexUnpadded);
-  function hexToNumber(hex) {
-    if (typeof hex !== "string") {
-      throw new TypeError("hexToNumber: expected string, got " + typeof hex);
-    }
-    return BigInt(`0x${hex}`);
-  }
-  $(hexToNumber);
-  function hexToBytes(hex) {
-    if (typeof hex !== "string") {
-      throw new TypeError("hexToBytes: expected string, got " + typeof hex);
-    }
-    if (hex.length % 2) throw new Error("hexToBytes: received invalid unpadded hex" + hex.length);
-    const array = new Uint8Array(hex.length / 2);
-    for (let i = 0; i < array.length; i++) {
-      const j = i * 2;
-      const hexByte = hex.slice(j, j + 2);
-      const byte = Number.parseInt(hexByte, 16);
-      if (Number.isNaN(byte) || byte < 0) throw new Error("Invalid byte sequence");
-      array[i] = byte;
-    }
-    return array;
-  }
-  $(hexToBytes);
-  function bytesToNumber(bytes) {
-    return hexToNumber(bytesToHex(bytes));
-  }
-  $(bytesToNumber);
-  function ensureBytes(hex) {
-    return hex instanceof Uint8Array ? Uint8Array.from(hex) : hexToBytes(hex);
-  }
-  $(ensureBytes);
-  function normalizeScalar(num) {
-    if (typeof num === "number" && Number.isSafeInteger(num) && num > 0) return BigInt(num);
-    if (typeof num === "bigint" && isWithinCurveOrder(num)) return num;
-    throw new TypeError("Expected valid private scalar: 0 < scalar < curve.n");
-  }
-  $(normalizeScalar);
-  function mod(a, b = CURVE.P) {
-    const result = a % b;
-    return result >= _0n ? result : b + result;
-  }
-  $(mod);
-  function pow2(x, power) {
-    const {
-      P: P
-    } = CURVE;
-    let res = x;
-    while (power-- > _0n) {
-      res *= res;
-      res %= P;
-    }
-    return res;
-  }
-  $(pow2);
-  function sqrtMod(x) {
-    const {
-      P: P
-    } = CURVE;
-    const _6n = BigInt(6);
-    const _11n = BigInt(11);
-    const _22n = BigInt(22);
-    const _23n = BigInt(23);
-    const _44n = BigInt(44);
-    const _88n = BigInt(88);
-    const b2 = x * x * x % P;
-    const b3 = b2 * b2 * x % P;
-    const b6 = pow2(b3, _3n) * b3 % P;
-    const b9 = pow2(b6, _3n) * b3 % P;
-    const b11 = pow2(b9, _2n) * b2 % P;
-    const b22 = pow2(b11, _11n) * b11 % P;
-    const b44 = pow2(b22, _22n) * b22 % P;
-    const b88 = pow2(b44, _44n) * b44 % P;
-    const b176 = pow2(b88, _88n) * b88 % P;
-    const b220 = pow2(b176, _44n) * b44 % P;
-    const b223 = pow2(b220, _3n) * b3 % P;
-    const t1 = pow2(b223, _23n) * b22 % P;
-    const t2 = pow2(t1, _6n) * b2 % P;
-    return pow2(t2, _2n);
-  }
-  $(sqrtMod);
-  function invert(number, modulo = CURVE.P) {
-    if (number === _0n || modulo <= _0n) {
-      throw new Error(`invert: expected positive integers, got n=${number} mod=${modulo}`);
-    }
-    let a = mod(number, modulo);
-    let b = modulo;
-    let x = _0n,
-      u = _1n;
-    while (a !== _0n) {
-      const q = b / a;
-      const r = b % a;
-      const m = x - u * q;
-      b = a, a = r, x = u, u = m;
-    }
-    const gcd = b;
-    if (gcd !== _1n) throw new Error("invert: does not exist");
-    return mod(x, modulo);
-  }
-  $(invert);
-  function invertBatch(nums, p = CURVE.P) {
-    const scratch = new Array(nums.length);
-    const lastMultiplied = nums.reduce($((acc, num, i) => {
-      if (num === _0n) return acc;
-      scratch[i] = acc;
-      return mod(acc * num, p);
-    }), _1n);
-    const inverted = invert(lastMultiplied, p);
-    nums.reduceRight($((acc, num, i) => {
-      if (num === _0n) return acc;
-      scratch[i] = mod(acc * scratch[i], p);
-      return mod(acc * num, p);
-    }), inverted);
-    return scratch;
-  }
-  $(invertBatch);
   const divNearest = (a, b) => (a + b / _2n) / b;
   $(divNearest);
-  const POW_2_128 = _2n ** BigInt(128);
-  function splitScalarEndo(k) {
-    const {
-      n: n
-    } = CURVE;
-    const a1 = BigInt("0x3086d221a7d46bcde86c90e49284eb15");
-    const b1 = -_1n * BigInt("0xe4437ed6010e88286f547fa90abfe4c3");
-    const a2 = BigInt("0x114ca50f7a8e2f3f657c1108d9d44cfd8");
-    const b2 = a1;
-    const c1 = divNearest(b2 * k, n);
-    const c2 = divNearest(-b1 * k, n);
-    let k1 = mod(k - c1 * a1 - c2 * a2, n);
-    let k2 = mod(-c1 * b1 - c2 * b2, n);
-    const k1neg = k1 > POW_2_128;
-    const k2neg = k2 > POW_2_128;
-    if (k1neg) k1 = n - k1;
-    if (k2neg) k2 = n - k2;
-    if (k1 > POW_2_128 || k2 > POW_2_128) {
-      throw new Error("splitScalarEndo: Endomorphism failed, k=" + k);
-    }
-    return $(function () {
-      let result = $Object.create(null, undefined);
-      result.k1neg = k1neg;
-      result.k1 = k1;
-      result.k2neg = k2neg;
-      result.k2 = k2;
-      return result;
-    })();
+  function sqrtMod(y) {
+    const P = secp256k1P;
+    const _3n = BigInt(3),
+      _6n = BigInt(6),
+      _11n = BigInt(11),
+      _22n = BigInt(22);
+    const _23n = BigInt(23),
+      _44n = BigInt(44),
+      _88n = BigInt(88);
+    const b2 = y * y * y % P;
+    const b3 = b2 * b2 * y % P;
+    const b6 = pow2(b3, _3n, P) * b3 % P;
+    const b9 = pow2(b6, _3n, P) * b3 % P;
+    const b11 = pow2(b9, _2n, P) * b2 % P;
+    const b22 = pow2(b11, _11n, P) * b11 % P;
+    const b44 = pow2(b22, _22n, P) * b22 % P;
+    const b88 = pow2(b44, _44n, P) * b44 % P;
+    const b176 = pow2(b88, _88n, P) * b88 % P;
+    const b220 = pow2(b176, _44n, P) * b44 % P;
+    const b223 = pow2(b220, _3n, P) * b3 % P;
+    const t1 = pow2(b223, _23n, P) * b22 % P;
+    const t2 = pow2(t1, _6n, P) * b2 % P;
+    const root = pow2(t2, _2n, P);
+    if (!Fp.eql(Fp.sqr(root), y)) throw new Error("Cannot find square root");
+    return root;
   }
-  $(splitScalarEndo);
-  function truncateHash(hash) {
-    const {
-      n: n
-    } = CURVE;
-    const byteLength = hash.length;
-    const delta = byteLength * 8 - 256;
-    let h = bytesToNumber(hash);
-    if (delta > 0) h = h >> BigInt(delta);
-    if (h >= n) h -= n;
-    return h;
-  }
-  $(truncateHash);
-  class HmacDrbg {
-    constructor() {
-      this.v = new Uint8Array(32).fill(1);
-      this.k = new Uint8Array(32).fill(0);
-      this.counter = 0;
-    }
-    hmac(...values) {
-      return utils.hmacSha256(this.k, ...values);
-    }
-    hmacSync(...values) {
-      if (typeof utils.hmacSha256Sync !== "function") throw new Error("utils.hmacSha256Sync is undefined, you need to set it");
-      const res = utils.hmacSha256Sync(this.k, ...values);
-      if (res instanceof Promise) throw new Error("To use sync sign(), ensure utils.hmacSha256 is sync");
-      return res;
-    }
-    incr() {
-      if (this.counter >= 1e3) {
-        throw new Error("Tried 1,000 k values for sign(), all were invalid");
-      }
-      this.counter += 1;
-    }
-    async reseed(seed = new Uint8Array()) {
-      this.k = await this.hmac(this.v, Uint8Array.from($Array.of(0)), seed);
-      this.v = await this.hmac(this.v);
-      if (seed.length === 0) return;
-      this.k = await this.hmac(this.v, Uint8Array.from($Array.of(1)), seed);
-      this.v = await this.hmac(this.v);
-    }
-    reseedSync(seed = new Uint8Array()) {
-      this.k = this.hmacSync(this.v, Uint8Array.from($Array.of(0)), seed);
-      this.v = this.hmacSync(this.v);
-      if (seed.length === 0) return;
-      this.k = this.hmacSync(this.v, Uint8Array.from($Array.of(1)), seed);
-      this.v = this.hmacSync(this.v);
-    }
-    async generate() {
-      this.incr();
-      this.v = await this.hmac(this.v);
-      return this.v;
-    }
-    generateSync() {
-      this.incr();
-      this.v = this.hmacSync(this.v);
-      return this.v;
-    }
-  }
-  function isWithinCurveOrder(num) {
-    return _0n < num && num < CURVE.n;
-  }
-  $(isWithinCurveOrder);
-  function isValidFieldElement(num) {
-    return _0n < num && num < CURVE.P;
-  }
-  $(isValidFieldElement);
-  function kmdToSig(kBytes, m, d) {
-    const k = bytesToNumber(kBytes);
-    if (!isWithinCurveOrder(k)) return;
-    const {
-      n: n
-    } = CURVE;
-    const q = Point.BASE.multiply(k);
-    const r = mod(q.x, n);
-    if (r === _0n) return;
-    const s = mod(invert(k, n) * mod(m + d * r, n), n);
-    if (s === _0n) return;
-    const sig = new Signature(r, s);
-    const recovery = (q.x === sig.r ? 0 : 2) | Number(q.y & _1n);
-    return $(function () {
-      let result = $Object.create(null, undefined);
-      result.sig = sig;
-      result.recovery = recovery;
-      return result;
-    })();
-  }
-  $(kmdToSig);
-  function normalizePrivateKey(key) {
-    let num;
-    if (typeof key === "bigint") {
-      num = key;
-    } else if (typeof key === "number" && Number.isSafeInteger(key) && key > 0) {
-      num = BigInt(key);
-    } else if (typeof key === "string") {
-      if (key.length !== 64) throw new Error("Expected 32 bytes of private key");
-      num = hexToNumber(key);
-    } else if (isUint8a(key)) {
-      if (key.length !== 32) throw new Error("Expected 32 bytes of private key");
-      num = bytesToNumber(key);
-    } else {
-      throw new TypeError("Expected valid private key");
-    }
-    if (!isWithinCurveOrder(num)) throw new Error("Expected private key: 0 < key < n");
-    return num;
-  }
-  $(normalizePrivateKey);
-  function normalizeSignature(signature) {
-    if (signature instanceof Signature) {
-      signature.assertValidity();
-      return signature;
-    }
-    try {
-      return Signature.fromDER(signature);
-    } catch (error) {
-      return Signature.fromCompact(signature);
-    }
-  }
-  $(normalizeSignature);
-  function getPublicKey(privateKey, isCompressed = false) {
-    return Point.fromPrivateKey(privateKey).toRawBytes(isCompressed);
-  }
-  $(getPublicKey);
-  function bits2int(bytes) {
-    const slice = bytes.length > 32 ? bytes.slice(0, 32) : bytes;
-    return bytesToNumber(slice);
-  }
-  $(bits2int);
-  function bits2octets(bytes) {
-    const z1 = bits2int(bytes);
-    const z2 = mod(z1, CURVE.n);
-    return int2octets(z2 < _0n ? z1 : z2);
-  }
-  $(bits2octets);
-  function int2octets(num) {
-    if (typeof num !== "bigint") throw new Error("Expected bigint");
-    const hex = numTo32bStr(num);
-    return hexToBytes(hex);
-  }
-  $(int2octets);
-  function initSigArgs(msgHash, privateKey, extraEntropy) {
-    if (msgHash == null) throw new Error(`sign: expected valid message hash, not "${msgHash}"`);
-    const h1 = ensureBytes(msgHash);
-    const d = normalizePrivateKey(privateKey);
-    const seedArgs = $Array.of(int2octets(d), bits2octets(h1));
-    if (extraEntropy != null) {
-      if (extraEntropy === true) extraEntropy = utils.randomBytes(32);
-      const e = ensureBytes(extraEntropy);
-      if (e.length !== 32) throw new Error("sign: Expected 32 bytes of extra data");
-      seedArgs.push(e);
-    }
-    const seed = concatBytes(...seedArgs);
-    const m = bits2int(h1);
-    return $(function () {
-      let result = $Object.create(null, undefined);
-      result.seed = seed;
-      result.m = m;
-      result.d = d;
-      return result;
-    })();
-  }
-  $(initSigArgs);
-  function finalizeSig(recSig, opts) {
-    let {
-      sig: sig,
-      recovery: recovery
-    } = recSig;
-    const {
-      canonical: canonical,
-      der: der,
-      recovered: recovered
-    } = $Object.assign($(function () {
-      let result = $Object.create(null, undefined);
-      result.canonical = true;
-      result.der = true;
-      return result;
-    })(), opts);
-    if (canonical && sig.hasHighS()) {
-      sig = sig.normalizeS();
-      recovery ^= 1;
-    }
-    const hashed = der ? sig.toDERRawBytes() : sig.toCompactRawBytes();
-    return recovered ? $Array.of(hashed, recovery) : hashed;
-  }
-  $(finalizeSig);
-  function signSync(msgHash, privKey, opts = $Object.create(null, undefined)) {
-    const {
-      seed: seed,
-      m: m,
-      d: d
-    } = initSigArgs(msgHash, privKey, opts.extraEntropy);
-    let sig;
-    const drbg = new HmacDrbg();
-    drbg.reseedSync(seed);
-    while (!(sig = kmdToSig(drbg.generateSync(), m, d))) drbg.reseedSync();
-    return finalizeSig(sig, opts);
-  }
-  $(signSync);
-  Point.BASE._setWindowSize(8);
-  const crypto$1 = $(function () {
+  $(sqrtMod);
+  const Fp = Field(secp256k1P, undefined, undefined, $(function () {
     let result = $Object.create(null, undefined);
-    result.node = nodeCrypto;
-    result.web = typeof self === "object" && "crypto" in self ? self.crypto : undefined;
-    return result;
-  })();
-  const TAGGED_HASH_PREFIXES = $Object.create(null, undefined);
-  const utils = $(function () {
-    let result = $Object.create(null, undefined);
-    result.isValidPrivateKey = $(function (privateKey) {
-      try {
-        normalizePrivateKey(privateKey);
-        return true;
-      } catch (error) {
-        return false;
-      }
-    });
-    result.privateAdd = $((privateKey, tweak) => {
-      const p = normalizePrivateKey(privateKey);
-      const t = normalizePrivateKey(tweak);
-      return numTo32b(mod(p + t, CURVE.n));
-    });
-    result.privateNegate = $(privateKey => {
-      const p = normalizePrivateKey(privateKey);
-      return numTo32b(CURVE.n - p);
-    });
-    result.pointAddScalar = $((p, tweak, isCompressed) => {
-      const P = Point.fromHex(p);
-      const t = normalizePrivateKey(tweak);
-      const Q = Point.BASE.multiplyAndAddUnsafe(P, t, _1n);
-      if (!Q) throw new Error("Tweaked point at infinity");
-      return Q.toRawBytes(isCompressed);
-    });
-    result.pointMultiply = $((p, tweak, isCompressed) => {
-      const P = Point.fromHex(p);
-      const t = bytesToNumber(ensureBytes(tweak));
-      return P.multiply(t).toRawBytes(isCompressed);
-    });
-    result.hashToPrivateKey = $(hash => {
-      hash = ensureBytes(hash);
-      if (hash.length < 40 || hash.length > 1024) throw new Error("Expected 40-1024 bytes of private key as per FIPS 186");
-      const num = mod(bytesToNumber(hash), CURVE.n - _1n) + _1n;
-      return numTo32b(num);
-    });
-    result.randomBytes = $((bytesLength = 32) => {
-      if (crypto$1.web) {
-        return crypto$1.web.getRandomValues(new Uint8Array(bytesLength));
-      } else if (crypto$1.node) {
-        const {
-          randomBytes: randomBytes
-        } = crypto$1.node;
-        return Uint8Array.from(randomBytes(bytesLength));
-      } else {
-        throw new Error("The environment doesn't have randomBytes function");
-      }
-    });
-    result.randomPrivateKey = $(() => utils.hashToPrivateKey(utils.randomBytes(40)));
-    result.bytesToHex = bytesToHex;
-    result.hexToBytes = hexToBytes;
-    result.concatBytes = concatBytes;
-    result.mod = mod;
-    result.invert = invert;
-    result.sha256 = $(async (...messages) => {
-      if (crypto$1.web) {
-        const buffer = await crypto$1.web.subtle.digest("SHA-256", concatBytes(...messages));
-        return new Uint8Array(buffer);
-      } else if (crypto$1.node) {
-        const {
-          createHash: createHash
-        } = crypto$1.node;
-        const hash = createHash("sha256");
-        messages.forEach($(m => hash.update(m)));
-        return Uint8Array.from(hash.digest());
-      } else {
-        throw new Error("The environment doesn't have sha256 function");
-      }
-    });
-    result.hmacSha256 = $(async (key, ...messages) => {
-      if (crypto$1.web) {
-        const ckey = await crypto$1.web.subtle.importKey("raw", key, $(function () {
-          let result = $Object.create(null, undefined);
-          result.name = "HMAC";
-          result.hash = $(function () {
-            let result = $Object.create(null, undefined);
-            result.name = "SHA-256";
-            return result;
-          })();
-          return result;
-        })(), false, $Array.of("sign"));
-        const message = concatBytes(...messages);
-        const buffer = await crypto$1.web.subtle.sign("HMAC", ckey, message);
-        return new Uint8Array(buffer);
-      } else if (crypto$1.node) {
-        const {
-          createHmac: createHmac
-        } = crypto$1.node;
-        const hash = createHmac("sha256", key);
-        messages.forEach($(m => hash.update(m)));
-        return Uint8Array.from(hash.digest());
-      } else {
-        throw new Error("The environment doesn't have hmac-sha256 function");
-      }
-    });
-    result.sha256Sync = undefined;
-    result.hmacSha256Sync = undefined;
-    result.taggedHash = $(async (tag, ...messages) => {
-      let tagP = TAGGED_HASH_PREFIXES[tag];
-      if (tagP === undefined) {
-        const tagH = await utils.sha256(Uint8Array.from(tag, $(c => c.charCodeAt(0))));
-        tagP = concatBytes(tagH, tagH);
-        TAGGED_HASH_PREFIXES[tag] = tagP;
-      }
-      return utils.sha256(tagP, ...messages);
-    });
-    result.taggedHashSync = $((tag, ...messages) => {
-      if (typeof utils.sha256Sync !== "function") throw new Error("utils.sha256Sync is undefined, you need to set it");
-      let tagP = TAGGED_HASH_PREFIXES[tag];
-      if (tagP === undefined) {
-        const tagH = utils.sha256Sync(Uint8Array.from(tag, $(c => c.charCodeAt(0))));
-        tagP = concatBytes(tagH, tagH);
-        TAGGED_HASH_PREFIXES[tag] = tagP;
-      }
-      return utils.sha256Sync(tagP, ...messages);
-    });
-    result.precompute = $(function (windowSize = 8, point = Point.BASE) {
-      const cached = point === Point.BASE ? point : new Point(point.x, point.y);
-      cached._setWindowSize(windowSize);
-      cached.multiply(_3n);
-      return cached;
-    });
-    return result;
-  })();
-  utils.hmacSha256Sync = $((key, ...msgs) => {
-    const h = hmac.create(sha256, key);
-    msgs.forEach($(msg => h.update(msg)));
-    return h.digest();
-  });
-  const ecdsaSign = (msgHash, privKey) => signSync(msgHash, privKey, $(function () {
-    let result = $Object.create(null, undefined);
-    result.der = false;
-    result.recovered = true;
+    result.sqrt = sqrtMod;
     return result;
   })());
+  const secp256k1 = createCurve($(function () {
+    let result = $Object.create(null, undefined);
+    result.a = BigInt(0);
+    result.b = BigInt(7);
+    result.Fp = Fp;
+    result.n = secp256k1N;
+    result.Gx = BigInt("55066263022277343669578718895168534326250603453777594175500187360389116729240");
+    result.Gy = BigInt("32670510020758816978083085130507043184471273380659243275938904335757337482424");
+    result.h = BigInt(1);
+    result.lowS = true;
+    result.endo = $(function () {
+      let result = $Object.create(null, undefined);
+      result.beta = BigInt("0x7ae96a2b657c07106e64479eac3434e99cf0497512f58995c1396c28719501ee");
+      result.splitScalar = $(k => {
+        const n = secp256k1N;
+        const a1 = BigInt("0x3086d221a7d46bcde86c90e49284eb15");
+        const b1 = -_1n * BigInt("0xe4437ed6010e88286f547fa90abfe4c3");
+        const a2 = BigInt("0x114ca50f7a8e2f3f657c1108d9d44cfd8");
+        const b2 = a1;
+        const POW_2_128 = BigInt("0x100000000000000000000000000000000");
+        const c1 = divNearest(b2 * k, n);
+        const c2 = divNearest(-b1 * k, n);
+        let k1 = mod(k - c1 * a1 - c2 * a2, n);
+        let k2 = mod(-c1 * b1 - c2 * b2, n);
+        const k1neg = k1 > POW_2_128;
+        const k2neg = k2 > POW_2_128;
+        if (k1neg) k1 = n - k1;
+        if (k2neg) k2 = n - k2;
+        if (k1 > POW_2_128 || k2 > POW_2_128) {
+          throw new Error("splitScalar: Endomorphism failed, k=" + k);
+        }
+        return $(function () {
+          let result = $Object.create(null, undefined);
+          result.k1neg = k1neg;
+          result.k1 = k1;
+          result.k2neg = k2neg;
+          result.k2 = k2;
+          return result;
+        })();
+      });
+      return result;
+    })();
+    return result;
+  })(), sha256);
+  BigInt(0);
+  secp256k1.ProjectivePoint;
+  const ecdsaSign = (msgHash, privKey) => {
+    const signature = secp256k1.sign(msgHash, privKey);
+    return $Array.of(signature.toCompactRawBytes(), signature.recovery);
+  };
   $(ecdsaSign);
-  utils.isValidPrivateKey;
-  const publicKeyCreate = getPublicKey;
+  secp256k1.utils.isValidPrivateKey;
+  const publicKeyCreate = secp256k1.getPublicKey;
   const PRIVATE_KEY_BYTES = 32;
   const ETHEREUM_ADDRESS_BYTES = 20;
   const PUBLIC_KEY_BYTES = 64;
@@ -18001,7 +18985,7 @@ var solanaWeb3 = $(function (exports) {
     static publicKeyToEthAddress(publicKey) {
       assert$1(publicKey.length === PUBLIC_KEY_BYTES, `Public key must be ${PUBLIC_KEY_BYTES} bytes but received ${publicKey.length} bytes`);
       try {
-        return buffer.Buffer.from(sha3.keccak_256.update(toBuffer(publicKey)).digest()).slice(-ETHEREUM_ADDRESS_BYTES);
+        return buffer.Buffer.from(keccak_256(toBuffer(publicKey))).slice(-ETHEREUM_ADDRESS_BYTES);
       } catch (error) {
         throw new Error(`Error constructing Ethereum address: ${error}`);
       }
@@ -18083,7 +19067,7 @@ var solanaWeb3 = $(function (exports) {
       try {
         const privateKey = toBuffer(pkey);
         const publicKey = publicKeyCreate(privateKey, false).slice(1);
-        const messageHash = buffer.Buffer.from(sha3.keccak_256.update(toBuffer(message)).digest());
+        const messageHash = buffer.Buffer.from(keccak_256(toBuffer(message)));
         const [signature, recoveryId] = ecdsaSign(messageHash, privateKey);
         return this.createInstructionWithPublicKey($(function () {
           let result = $Object.create(null, undefined);
@@ -18100,6 +19084,7 @@ var solanaWeb3 = $(function (exports) {
     }
   }
   Secp256k1Program.programId = new PublicKey("KeccakSecp256k11111111111111111111111111111");
+  var _class2;
   const STAKE_CONFIG_ID = new PublicKey("StakeConfig11111111111111111111111111111111");
   class Authorized {
     constructor(staker, withdrawer) {
@@ -18119,7 +19104,8 @@ var solanaWeb3 = $(function (exports) {
       this.custodian = custodian;
     }
   }
-  Lockup.default = new Lockup(0, 0, PublicKey.default);
+  _class2 = Lockup;
+  Lockup.default = new _class2(0, 0, PublicKey.default);
   class StakeInstruction {
     constructor() {}
     static decodeInstructionType(instruction) {
@@ -18539,7 +19525,7 @@ var solanaWeb3 = $(function (exports) {
         keys.push($(function () {
           let result = $Object.create(null, undefined);
           result.pubkey = custodianPubkey;
-          result.isSigner = false;
+          result.isSigner = true;
           result.isWritable = false;
           return result;
         })());
@@ -18594,7 +19580,7 @@ var solanaWeb3 = $(function (exports) {
         keys.push($(function () {
           let result = $Object.create(null, undefined);
           result.pubkey = custodianPubkey;
-          result.isSigner = false;
+          result.isSigner = true;
           result.isWritable = false;
           return result;
         })());
@@ -18646,20 +19632,20 @@ var solanaWeb3 = $(function (exports) {
         return result;
       }).bind(this)());
     }
-    static split(params) {
+    static split(params, rentExemptReserve) {
       const transaction = new Transaction();
       transaction.add(SystemProgram.createAccount($(function () {
         let result = $Object.create(null, undefined);
         result.fromPubkey = params.authorizedPubkey;
         result.newAccountPubkey = params.splitStakePubkey;
-        result.lamports = 0;
+        result.lamports = rentExemptReserve;
         result.space = this.space;
         result.programId = this.programId;
         return result;
       }).bind(this)()));
       return transaction.add(this.splitInstruction(params));
     }
-    static splitWithSeed(params) {
+    static splitWithSeed(params, rentExemptReserve) {
       const {
         stakePubkey: stakePubkey,
         authorizedPubkey: authorizedPubkey,
@@ -18678,6 +19664,15 @@ var solanaWeb3 = $(function (exports) {
         result.programId = this.programId;
         return result;
       }).bind(this)()));
+      if (rentExemptReserve && rentExemptReserve > 0) {
+        transaction.add(SystemProgram.transfer($(function () {
+          let result = $Object.create(null, undefined);
+          result.fromPubkey = params.authorizedPubkey;
+          result.toPubkey = splitStakePubkey;
+          result.lamports = rentExemptReserve;
+          return result;
+        })()));
+      }
       return transaction.add(this.splitInstruction($(function () {
         let result = $Object.create(null, undefined);
         result.stakePubkey = stakePubkey;
@@ -18782,7 +19777,7 @@ var solanaWeb3 = $(function (exports) {
         keys.push($(function () {
           let result = $Object.create(null, undefined);
           result.pubkey = custodianPubkey;
-          result.isSigner = false;
+          result.isSigner = true;
           result.isWritable = false;
           return result;
         })());
@@ -18895,6 +19890,32 @@ var solanaWeb3 = $(function (exports) {
         return result;
       })();
     }
+    static decodeAuthorizeWithSeed(instruction) {
+      this.checkProgramId(instruction.programId);
+      this.checkKeyLength(instruction.keys, 3);
+      const {
+        voteAuthorizeWithSeedArgs: {
+          currentAuthorityDerivedKeyOwnerPubkey: currentAuthorityDerivedKeyOwnerPubkey,
+          currentAuthorityDerivedKeySeed: currentAuthorityDerivedKeySeed,
+          newAuthorized: newAuthorized,
+          voteAuthorizationType: voteAuthorizationType
+        }
+      } = decodeData$1(VOTE_INSTRUCTION_LAYOUTS.AuthorizeWithSeed, instruction.data);
+      return $(function () {
+        let result = $Object.create(null, undefined);
+        result.currentAuthorityDerivedKeyBasePubkey = instruction.keys[2].pubkey;
+        result.currentAuthorityDerivedKeyOwnerPubkey = new PublicKey(currentAuthorityDerivedKeyOwnerPubkey);
+        result.currentAuthorityDerivedKeySeed = currentAuthorityDerivedKeySeed;
+        result.newAuthorizedPubkey = new PublicKey(newAuthorized);
+        result.voteAuthorizationType = $(function () {
+          let result = $Object.create(null, undefined);
+          result.index = voteAuthorizationType;
+          return result;
+        })();
+        result.votePubkey = instruction.keys[0].pubkey;
+        return result;
+      })();
+    }
     static decodeWithdraw(instruction) {
       this.checkProgramId(instruction.programId);
       this.checkKeyLength(instruction.keys, 3);
@@ -18939,6 +19960,18 @@ var solanaWeb3 = $(function (exports) {
       let result = $Object.create(null, undefined);
       result.index = 3;
       result.layout = struct($Array.of(u32("instruction"), ns64("lamports")));
+      return result;
+    })();
+    result.UpdateValidatorIdentity = $(function () {
+      let result = $Object.create(null, undefined);
+      result.index = 4;
+      result.layout = struct($Array.of(u32("instruction")));
+      return result;
+    })();
+    result.AuthorizeWithSeed = $(function () {
+      let result = $Object.create(null, undefined);
+      result.index = 10;
+      result.layout = struct($Array.of(u32("instruction"), voteAuthorizeWithSeedArgs()));
       return result;
     })();
     return result;
@@ -19071,6 +20104,55 @@ var solanaWeb3 = $(function (exports) {
         return result;
       }).bind(this)());
     }
+    static authorizeWithSeed(params) {
+      const {
+        currentAuthorityDerivedKeyBasePubkey: currentAuthorityDerivedKeyBasePubkey,
+        currentAuthorityDerivedKeyOwnerPubkey: currentAuthorityDerivedKeyOwnerPubkey,
+        currentAuthorityDerivedKeySeed: currentAuthorityDerivedKeySeed,
+        newAuthorizedPubkey: newAuthorizedPubkey,
+        voteAuthorizationType: voteAuthorizationType,
+        votePubkey: votePubkey
+      } = params;
+      const type = VOTE_INSTRUCTION_LAYOUTS.AuthorizeWithSeed;
+      const data = encodeData(type, $(function () {
+        let result = $Object.create(null, undefined);
+        result.voteAuthorizeWithSeedArgs = $(function () {
+          let result = $Object.create(null, undefined);
+          result.currentAuthorityDerivedKeyOwnerPubkey = toBuffer(currentAuthorityDerivedKeyOwnerPubkey.toBuffer());
+          result.currentAuthorityDerivedKeySeed = currentAuthorityDerivedKeySeed;
+          result.newAuthorized = toBuffer(newAuthorizedPubkey.toBuffer());
+          result.voteAuthorizationType = voteAuthorizationType.index;
+          return result;
+        })();
+        return result;
+      })());
+      const keys = $Array.of($(function () {
+        let result = $Object.create(null, undefined);
+        result.pubkey = votePubkey;
+        result.isSigner = false;
+        result.isWritable = true;
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.pubkey = SYSVAR_CLOCK_PUBKEY;
+        result.isSigner = false;
+        result.isWritable = false;
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.pubkey = currentAuthorityDerivedKeyBasePubkey;
+        result.isSigner = true;
+        result.isWritable = false;
+        return result;
+      })());
+      return new Transaction().add($(function () {
+        let result = $Object.create(null, undefined);
+        result.keys = keys;
+        result.programId = this.programId;
+        result.data = data;
+        return result;
+      }).bind(this)());
+    }
     static withdraw(params) {
       const {
         votePubkey: votePubkey,
@@ -19113,13 +20195,48 @@ var solanaWeb3 = $(function (exports) {
     }
     static safeWithdraw(params, currentVoteAccountBalance, rentExemptMinimum) {
       if (params.lamports > currentVoteAccountBalance - rentExemptMinimum) {
-        throw new Error("Withdraw will leave vote account with insuffcient funds.");
+        throw new Error("Withdraw will leave vote account with insufficient funds.");
       }
       return VoteProgram.withdraw(params);
     }
+    static updateValidatorIdentity(params) {
+      const {
+        votePubkey: votePubkey,
+        authorizedWithdrawerPubkey: authorizedWithdrawerPubkey,
+        nodePubkey: nodePubkey
+      } = params;
+      const type = VOTE_INSTRUCTION_LAYOUTS.UpdateValidatorIdentity;
+      const data = encodeData(type);
+      const keys = $Array.of($(function () {
+        let result = $Object.create(null, undefined);
+        result.pubkey = votePubkey;
+        result.isSigner = false;
+        result.isWritable = true;
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.pubkey = nodePubkey;
+        result.isSigner = true;
+        result.isWritable = false;
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.pubkey = authorizedWithdrawerPubkey;
+        result.isSigner = true;
+        result.isWritable = false;
+        return result;
+      })());
+      return new Transaction().add($(function () {
+        let result = $Object.create(null, undefined);
+        result.keys = keys;
+        result.programId = this.programId;
+        result.data = data;
+        return result;
+      }).bind(this)());
+    }
   }
   VoteProgram.programId = new PublicKey("Vote111111111111111111111111111111111111111");
-  VoteProgram.space = 3731;
+  VoteProgram.space = 3762;
   const VALIDATOR_INFO_KEY = new PublicKey("Va1idator1nfo111111111111111111111111111111");
   const InfoString = type($(function () {
     let result = $Object.create(null, undefined);
@@ -19142,10 +20259,8 @@ var solanaWeb3 = $(function (exports) {
       if (configKeyCount !== 2) return null;
       const configKeys = $Array.of();
       for (let i = 0; i < 2; i++) {
-        const publicKey = new PublicKey(byteArray.slice(0, PUBLIC_KEY_LENGTH));
-        byteArray = byteArray.slice(PUBLIC_KEY_LENGTH);
-        const isSigner = byteArray.slice(0, 1)[0] === 1;
-        byteArray = byteArray.slice(1);
+        const publicKey = new PublicKey(guardedSplice(byteArray, 0, PUBLIC_KEY_LENGTH));
+        const isSigner = guardedShift(byteArray) === 1;
         configKeys.push($(function () {
           let result = $Object.create(null, undefined);
           result.publicKey = publicKey;
@@ -19282,6 +20397,9 @@ var solanaWeb3 = $(function (exports) {
     if (confirmationStrategyOrConfirmOptions && $Object.prototype.hasOwnProperty.call(confirmationStrategyOrConfirmOptions, "lastValidBlockHeight")) {
       confirmationStrategy = confirmationStrategyOrConfirmOptions;
       options = maybeConfirmOptions;
+    } else if (confirmationStrategyOrConfirmOptions && $Object.prototype.hasOwnProperty.call(confirmationStrategyOrConfirmOptions, "nonceValue")) {
+      confirmationStrategy = confirmationStrategyOrConfirmOptions;
+      options = maybeConfirmOptions;
     } else {
       options = confirmationStrategyOrConfirmOptions;
     }
@@ -19360,9 +20478,11 @@ var solanaWeb3 = $(function (exports) {
   exports.SystemProgram = SystemProgram;
   exports.Transaction = Transaction;
   exports.TransactionExpiredBlockheightExceededError = TransactionExpiredBlockheightExceededError;
+  exports.TransactionExpiredNonceInvalidError = TransactionExpiredNonceInvalidError;
   exports.TransactionExpiredTimeoutError = TransactionExpiredTimeoutError;
   exports.TransactionInstruction = TransactionInstruction;
   exports.TransactionMessage = TransactionMessage;
+  exports.TransactionStatus = TransactionStatus;
   exports.VALIDATOR_INFO_KEY = VALIDATOR_INFO_KEY;
   exports.VERSION_PREFIX_MASK = VERSION_PREFIX_MASK;
   exports.VOTE_PROGRAM_ID = VOTE_PROGRAM_ID;
@@ -19377,10 +20497,5 @@ var solanaWeb3 = $(function (exports) {
   exports.clusterApiUrl = clusterApiUrl;
   exports.sendAndConfirmRawTransaction = sendAndConfirmRawTransaction;
   exports.sendAndConfirmTransaction = sendAndConfirmTransaction;
-  $Object.defineProperty(exports, "__esModule", $(function () {
-    let result = $Object.create(null, undefined);
-    result.value = true;
-    return result;
-  })());
   return exports;
 })($Object.create(null, undefined));
