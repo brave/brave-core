@@ -14,9 +14,17 @@ import { ExploreNavOptions } from '../../../../options/nav-options'
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import { makeDappDetailsRoute } from '../../../../utils/routes-utils'
+import { useLocalStorage } from '../../../../common/hooks/use_local_storage'
+import { LOCAL_STORAGE_KEYS } from '../../../../common/constants/local-storage-keys'
 
 // Hooks
-import { useGetTopDappsQuery } from '../../../../common/slices/api.slice'
+import {
+  useGetTopDappsQuery,
+  useGetVisibleNetworksQuery
+} from '../../../../common/slices/api.slice'
+import {
+  networkEntityAdapter //
+} from '../../../../common/slices/entities/network.entity'
 
 // Components
 import {
@@ -26,11 +34,14 @@ import {
   HeaderControlBar //
 } from '../../../header_control_bar/header_control_bar'
 import { DividerLine } from '../../../extension/divider'
+import { Web3DappFilters } from '../../popup-modals/filter-modals/web3_dapp_filters_modal'
 
 // Styles
 import { Column, Row } from '../../../shared/style'
 import { ControlsRow } from '../portfolio/style'
 import { VirtualizedDappsList } from './virtualized_dapps_list'
+import { BraveWallet } from '../../../../constants/types'
+import { getDappNetworkIds } from '../../../../utils/dapp-utils'
 
 export const ExploreWeb3View = () => {
   // routing
@@ -38,40 +49,95 @@ export const ExploreWeb3View = () => {
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
+  const [showFilters, setShowFilters] = React.useState<boolean>(false)
+
+  // local storage
+  const [filteredOutCategories] = useLocalStorage<string[]>(
+    LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_CATEGORIES,
+    []
+  )
+  const [filteredOutNetworkKeys] = useLocalStorage<string[]>(
+    LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_NETWORK_KEYS,
+    []
+  )
 
   // queries
   const { isLoading, data: topDapps } = useGetTopDappsQuery(undefined)
+  const { data: networks } = useGetVisibleNetworksQuery()
 
   // memos
   const controls = React.useMemo(() => {
     return [
       {
         buttonIconName: 'funnel',
-        onClick: () => {
-          // TODO
-        }
+        onClick: () => setShowFilters(true)
       }
     ]
   }, [])
 
-  const searchedDapps = React.useMemo(() => {
+  const [visibleNetworks, visibleNetworkIds] = React.useMemo(() => {
+    const visibleNetworks = networks.filter(
+      (network) =>
+        !filteredOutNetworkKeys.includes(
+          networkEntityAdapter.selectId(network).toString()
+        )
+    )
+    return [visibleNetworks, visibleNetworks.map(networkEntityAdapter.selectId)]
+  }, [networks, filteredOutNetworkKeys])
+
+  const visibleDapps = React.useMemo(() => {
     if (!topDapps) {
+      return []
+    }
+
+    return topDapps.filter((dapp: BraveWallet.Dapp) => {
+      const dappNetworkIds = getDappNetworkIds(dapp.chains, visibleNetworks)
+      return (
+        !filteredOutCategories.some((category) =>
+          dapp.categories.includes(category)
+        ) ||
+        dappNetworkIds.some((networkId) =>
+          visibleNetworkIds.includes(networkId.toString())
+        )
+      )
+    })
+  }, [filteredOutCategories, topDapps, visibleNetworkIds, visibleNetworks])
+
+  const searchedDapps = React.useMemo(() => {
+    if (!visibleDapps) {
       return []
     }
 
     const searchValueLower = searchValue.toLowerCase().trim()
 
     if (!searchValueLower) {
-      return topDapps
+      return visibleDapps
     }
 
-    return topDapps.filter((dapp) => {
+    return visibleDapps.filter((dapp) => {
       return (
         dapp.name.toLowerCase().includes(searchValueLower) ||
         dapp.description.toLowerCase().includes(searchValueLower)
       )
     })
-  }, [topDapps, searchValue])
+  }, [visibleDapps, searchValue])
+
+  const dappCategories = React.useMemo(() => {
+    if (!topDapps) {
+      return []
+    }
+
+    const categories = new Set<string>()
+    topDapps.forEach((dapp) => {
+      dapp.categories.forEach((category) => {
+        categories.add(category)
+      })
+    })
+
+    return Array.from(categories)
+  }, [topDapps])
+
+  console.log(dappCategories)
 
   // render
   if (isLoading || !topDapps) {
@@ -86,40 +152,47 @@ export const ExploreWeb3View = () => {
   }
 
   return (
-    <Column
-      fullHeight
-      fullWidth
-      justifyContent='flex-start'
-    >
-      <ControlsRow>
-        <SegmentedControl
-          navOptions={ExploreNavOptions}
-          width={384}
+    <>
+      <Column
+        fullHeight
+        fullWidth
+        justifyContent='flex-start'
+      >
+        <ControlsRow>
+          <SegmentedControl
+            navOptions={ExploreNavOptions}
+            width={384}
+          />
+        </ControlsRow>
+        <HeaderControlBar
+          actions={controls}
+          onSearchValueChange={setSearchValue}
+          searchValue={searchValue}
+          title={getLocale('braveWalletWeb3')}
         />
-      </ControlsRow>
-      <HeaderControlBar
-        actions={controls}
-        onSearchValueChange={setSearchValue}
-        searchValue={searchValue}
-        title={getLocale('braveWalletWeb3')}
-      />
 
-      <DividerLine />
+        <DividerLine />
 
-      {searchedDapps.length ? (
-        <VirtualizedDappsList
-          dappsList={searchedDapps}
-          onClickDapp={(dappId) => {
-            history.push(makeDappDetailsRoute(dappId.toString()))
-          }}
+        {searchedDapps.length ? (
+          <VirtualizedDappsList
+            dappsList={searchedDapps}
+            onClickDapp={(dappId) => {
+              history.push(makeDappDetailsRoute(dappId.toString()))
+            }}
+          />
+        ) : (
+          <Row>
+            <h2>{getLocale('braveWalletNoDappsFounds')}</h2>
+          </Row>
+        )}
+      </Column>
+
+      {showFilters && (
+        <Web3DappFilters
+          categories={dappCategories}
+          onClose={() => setShowFilters(false)}
         />
-      ) : (
-        <Row>
-          <h2>
-            {getLocale('braveWalletNoDappsFounds')}
-          </h2>
-        </Row>
       )}
-    </Column>
+    </>
   )
 }
