@@ -184,7 +184,7 @@
     "@ledgerhq/hw-transport-webhid": "6.24.1",
     "@mozilla/readability": "^0.4.2",
     "@reduxjs/toolkit": "1.8.6",
-    "@solana/web3.js": "1.58.0",
+    "@solana/web3.js": "1.91.7",
     "@trezor/connect": "9.1.11",
     "@trezor/connect-web": "9.1.11",
     "@types/jszip": "^3.1.6",
