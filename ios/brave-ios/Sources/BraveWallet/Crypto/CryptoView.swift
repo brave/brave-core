@@ -132,7 +132,7 @@ public struct CryptoView: View {
                 AccountTransactionListView(
                   activityStore: store.accountActivityStore(
                     for: walletStore.keyringStore.selectedAccount,
-                    observeAccountUpdates: true
+                    isWalletPanel: true
                   ),
                   networkStore: store.networkStore
                 )

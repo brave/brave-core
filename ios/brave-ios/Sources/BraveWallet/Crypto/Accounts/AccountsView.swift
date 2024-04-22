@@ -87,7 +87,7 @@ struct AccountsView: View {
             AccountActivityView(
               store: cryptoStore.accountActivityStore(
                 for: account,
-                observeAccountUpdates: false
+                isWalletPanel: false
               ),
               cryptoStore: cryptoStore,
               keyringStore: keyringStore,

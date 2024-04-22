@@ -16,6 +16,7 @@ struct AccountTransactionListView: View {
   @State private var transactionDetails: TransactionDetailsStore?
   @State private var query: String = ""
   @State private var errorMessage: String?
+  @Environment(\.dismiss) private var dismiss
 
   private func emptyTextView(_ message: String) -> some View {
     Text(message)
@@ -43,6 +44,11 @@ struct AccountTransactionListView: View {
               transaction: transaction
             )
           else {
+            // If we're presenting tx history from wallet panel we need
+            // to dismiss tx history to present the new pending request
+            if activityStore.isWalletPanel {
+              dismiss()
+            }
             return
           }
           self.errorMessage = errorMessage

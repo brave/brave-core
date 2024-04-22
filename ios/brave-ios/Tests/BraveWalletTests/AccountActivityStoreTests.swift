@@ -244,7 +244,7 @@ class AccountActivityStoreTests: XCTestCase {
 
     let accountActivityStore = AccountActivityStore(
       account: account,
-      observeAccountUpdates: false,
+      isWalletPanel: false,
       keyringService: keyringService,
       walletService: walletService,
       rpcService: rpcService,
@@ -432,7 +432,7 @@ class AccountActivityStoreTests: XCTestCase {
 
     let accountActivityStore = AccountActivityStore(
       account: account,
-      observeAccountUpdates: false,
+      isWalletPanel: false,
       keyringService: keyringService,
       walletService: walletService,
       rpcService: rpcService,
@@ -634,7 +634,7 @@ class AccountActivityStoreTests: XCTestCase {
 
     let accountActivityStore = AccountActivityStore(
       account: account,
-      observeAccountUpdates: false,
+      isWalletPanel: false,
       keyringService: keyringService,
       walletService: walletService,
       rpcService: rpcService,
