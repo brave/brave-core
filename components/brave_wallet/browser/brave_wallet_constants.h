@@ -1508,6 +1508,7 @@ inline constexpr double kLiFiFeePercentage = 0.875;
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;
+constexpr int64_t kSolanaBlockTrackerTimeInSeconds = 5;
 
 inline constexpr char kPolygonMainnetEndpoint[] =
     "https://mainnet-polygon.brave.com/";

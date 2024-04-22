@@ -627,6 +627,7 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
         "lamports": "10000000",
         "amount": "0",
         "tx_type": 6,
+        "wired_tx": "",
         "send_options": {
           "maxRetries": "1",
           "preflightCommitment": "confirmed",

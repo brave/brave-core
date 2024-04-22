@@ -101,6 +101,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
                            DropTxWithInvalidBlockhash_DappBlockhash);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
+                           DropTxAfterSafeDropThreshold);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
                            GetTransactionMessageToSign);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
                            ProcessSolanaHardwareSignature);

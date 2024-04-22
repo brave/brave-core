@@ -293,6 +293,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
         "spl_token_mint_address": "",
         "lamports": "10000000",
         "amount": "0",
+        "wired_tx": "",
         "tx_type": 6
       },
       "signature_status": {
