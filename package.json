@@ -197,7 +197,7 @@
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
     "react-json-view-lite": "^0.9.5",
-    "react-markdown": "^9.0.1",
+    "react-markdown": "9.0.1",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
     "react-syntax-highlighter": "15.5.0",
