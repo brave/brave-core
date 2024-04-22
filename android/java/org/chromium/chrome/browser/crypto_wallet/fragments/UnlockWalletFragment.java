@@ -115,17 +115,12 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                     }
                 });
 
-        if (onNextPage.showBiometricPrompt()) {
-            if (KeystoreHelper.shouldUseBiometricToUnlock()
-                    && Utils.isBiometricSupported(requireContext())) {
+        if (KeystoreHelper.shouldUseBiometricToUnlock()
+                && Utils.isBiometricSupported(requireContext())) {
 
-                // noinspection NewApi
-                createBiometricPrompt();
-            } else {
-                showPasswordRelatedControls();
-            }
+            // noinspection NewApi
+            createBiometricPrompt();
         } else {
-            onNextPage.enableBiometricPrompt();
             showPasswordRelatedControls();
         }
     }
@@ -137,7 +132,6 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
             mOnNextPage.showCloseButton(false);
             mOnNextPage.showBackButton(false);
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)

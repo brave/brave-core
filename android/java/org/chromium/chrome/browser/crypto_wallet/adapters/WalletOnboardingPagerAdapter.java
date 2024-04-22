@@ -49,7 +49,6 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
     private final boolean mRestartRestoreAction;
 
     @NonNull private WalletAction mWalletAction;
-    private boolean mShowBiometricPrompt;
 
     public WalletOnboardingPagerAdapter(
             @NonNull final FragmentActivity fragmentActivity,
@@ -65,9 +64,6 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
 
     public void setWalletAction(@NonNull final WalletAction walletAction) {
         mWalletAction = walletAction;
-        mShowBiometricPrompt =
-                walletAction != WalletAction.ONBOARDING_RESTORE
-                        && walletAction != WalletAction.RESTORE;
 
         if (walletAction == WalletAction.ONBOARDING) {
             mBraveWalletP3A.reportOnboardingAction(OnboardingAction.SHOWN);
@@ -96,14 +92,6 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
         // For all the other cases, falling back to their position
         // is enough.
         return super.getItemId(position);
-    }
-
-    public void enableBiometricPrompt() {
-        mShowBiometricPrompt = true;
-    }
-
-    public boolean showBiometricPrompt() {
-        return mShowBiometricPrompt;
     }
 
     @NonNull
