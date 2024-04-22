@@ -93,32 +93,35 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                     }
                 });
 
-        mUnlockWalletRestoreButton.setOnClickListener(v -> {
-            if (mOnNextPage != null) {
-                mOnNextPage.gotoRestorePage(false);
-                mUnlockWalletPassword.getText().clear();
-            }
-        });
+        mUnlockWalletRestoreButton.setOnClickListener(
+                v -> {
+                    if (mOnNextPage != null) {
+                        mOnNextPage.gotoRestorePage(false);
+                        mUnlockWalletPassword.getText().clear();
+                    }
+                });
 
-        mBiometricUnlockWalletImage.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                    && Utils.isBiometricAvailable(getContext())) {
-                createBiometricPrompt();
-            }
-        });
+        mBiometricUnlockWalletImage.setOnClickListener(
+                v -> {
+                    if (Utils.isBiometricAvailable(requireContext())) {
+                        // noinspection NewApi
+                        createBiometricPrompt();
+                    }
+                });
 
-        if (mOnNextPage != null && mOnNextPage.showBiometricPrompt()) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
-                    || !KeystoreHelper.shouldUseBiometricOnUnlock()
-                    || !Utils.isBiometricAvailable(getContext())) {
-                showPasswordRelatedControls();
+        if (mOnNextPage != null) {
+            if (mOnNextPage.showBiometricPrompt()) {
+                if (KeystoreHelper.shouldUseBiometricOnUnlock()
+                        && Utils.isBiometricAvailable(requireContext())) {
+                    // noinspection NewApi
+                    createBiometricPrompt();
+                } else {
+                    showPasswordRelatedControls();
+                }
             } else {
-                createBiometricPrompt();
-
+                mOnNextPage.enableBiometricPrompt();
+                showPasswordRelatedControls();
             }
-        } else if (mOnNextPage != null) {
-            mOnNextPage.enableBiometricPrompt();
-            showPasswordRelatedControls();
         }
     }
 
@@ -201,8 +204,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
         mUnlockButton.setVisibility(View.VISIBLE);
         mUnlockWalletRestoreButton.setVisibility(View.VISIBLE);
         mUnlockWalletTitle.setVisibility(View.VISIBLE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                && Utils.isBiometricAvailable(getContext())
+        if (Utils.isBiometricAvailable(requireContext())
                 && KeystoreHelper.shouldUseBiometricOnUnlock()) {
             mBiometricUnlockWalletImage.setVisibility(View.VISIBLE);
         }

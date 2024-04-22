@@ -33,6 +33,9 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
 
     private List<String> mRecoveryPhrases;
     private boolean mIsOnboarding;
+    private TextView mCopyButton;
+    private RecyclerView mRecoveryPhraseRecyclerView;
+    private RecoveryPhraseAdapter mRecoveryPhraseAdapter;
 
     @NonNull
     public static OnboardingRecoveryPhraseFragment newInstance(final boolean isOnboarding) {
@@ -56,25 +59,24 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        KeyringService keyringService = getKeyringService();
-        if (keyringService != null) {
-            keyringService.getMnemonicForDefaultKeyring(
-                    mOnboardingViewModel.getPassword(),
-                    result -> {
-                        mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);
-                        setupRecoveryPhraseRecyclerView(view);
-                        TextView copyButton = view.findViewById(R.id.btn_copy);
-                        assert getActivity() != null;
-                        copyButton.setOnClickListener(
-                                v -> {
-                                    Utils.saveTextToClipboard(
-                                            getActivity(),
-                                            Utils.getRecoveryPhraseFromList(mRecoveryPhrases),
-                                            R.string.text_has_been_copied,
-                                            true);
-                                });
-                    });
-        }
+        mRecoveryPhraseRecyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
+        mRecoveryPhraseRecyclerView.addItemDecoration(
+                new ItemOffsetDecoration(requireContext(), R.dimen.zero_margin));
+
+        GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3);
+        mRecoveryPhraseRecyclerView.setLayoutManager(layoutManager);
+
+        mRecoveryPhraseAdapter = new RecoveryPhraseAdapter();
+
+        mCopyButton = view.findViewById(R.id.btn_copy);
+        mCopyButton.setEnabled(false);
+        mCopyButton.setOnClickListener(
+                v ->
+                        Utils.saveTextToClipboard(
+                                requireContext(),
+                                Utils.getRecoveryPhraseFromList(mRecoveryPhrases),
+                                R.string.text_has_been_copied,
+                                true));
 
         Button recoveryPhraseButton = view.findViewById(R.id.btn_recovery_phrase_continue);
         recoveryPhraseButton.setOnClickListener(
@@ -112,16 +114,27 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                 });
     }
 
-    private void setupRecoveryPhraseRecyclerView(@NonNull View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
-        assert getActivity() != null;
-        recyclerView.addItemDecoration(
-                new ItemOffsetDecoration(getActivity(), R.dimen.zero_margin));
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        recyclerView.setLayoutManager(layoutManager);
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        RecoveryPhraseAdapter recoveryPhraseAdapter = new RecoveryPhraseAdapter();
-        recoveryPhraseAdapter.setRecoveryPhraseList(mRecoveryPhrases);
-        recyclerView.setAdapter(recoveryPhraseAdapter);
+        KeyringService keyringService = getKeyringService();
+        if (keyringService != null) {
+            keyringService.getMnemonicForDefaultKeyring(
+                    mOnboardingViewModel.getPassword(),
+                    result -> {
+                        mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);
+                        mRecoveryPhraseAdapter.setRecoveryPhraseList(mRecoveryPhrases);
+                        mRecoveryPhraseRecyclerView.setAdapter(mRecoveryPhraseAdapter);
+                        mCopyButton.setEnabled(true);
+                    });
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mCopyButton.setEnabled(false);
     }
 }
