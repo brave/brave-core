@@ -17,28 +17,33 @@ const CodeInline = React.lazy(async () => ({
 }))
 
 const allowedElements = [
-  'blockquote',
-  'br',
-  'code',
-  'del',
-  'em',
+  // Headings
   'h1',
   'h2',
   'h3',
   'h4',
-  'h5',
-  'h6',
-  'hr',
-  'li',
+
+  // Text formatting
+  'blockquote',
+  'code',
+  'del',
+  'em',
+  'strong',
+  'sup',
+
+  // Lists
   'li',
   'ol',
-  'ol',
+  'ul',
+
+  // Structural elements
   'p',
   'pre',
   'section',
-  'strong',
-  'sup',
-  'ul'
+
+  // Line elements
+  'br',
+  'hr'
 ]
 
 interface MarkdownRendererProps {
