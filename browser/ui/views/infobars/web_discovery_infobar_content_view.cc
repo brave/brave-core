@@ -82,6 +82,8 @@ class InfoBarStyledLabel : public CustomStyledLabel {
   }
 
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override {
+    CustomStyledLabel::OnBoundsChanged(previous_bounds);
+
     auto height = GetHeightForWidth(width());
     SetSize({width(), height});
     SetPosition({x(), (parent()->height() - height) / 2});
