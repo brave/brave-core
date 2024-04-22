@@ -83,7 +83,7 @@ extension BraveWalletTxService {
   ) async -> String? {
     switch action {
     case .retry:
-      guard transaction.isRetryTransactionSupported else {
+      guard transaction.isRetriable else {
         return Strings.Wallet.unknownError
       }
       let (success, _, error) = await retryTransaction(
