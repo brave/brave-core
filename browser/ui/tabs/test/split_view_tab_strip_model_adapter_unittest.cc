@@ -154,6 +154,26 @@ TEST_F(SplitViewTabStripModelAdapterUnitTest,
 }
 
 TEST_F(SplitViewTabStripModelAdapterUnitTest,
+       TilingTabsSynchronizePinnedState_OnlyOneTabIsPinned) {
+  // Given that a tab is pinned
+  model().AddWebContents(CreateWebContents(), -1,
+                         ui::PageTransition::PAGE_TRANSITION_TYPED,
+                         /*add_types=*/0);
+  model().SetTabPinned(0, /*pinned*/ true);
+
+  // When tiling with unpinned tab
+  model().AppendWebContents(CreateWebContents(), /*foreground*/ true);
+  ASSERT_FALSE(model().IsTabPinned(1));
+  data().TileTabs({model().GetTabHandleAt(0), model().GetTabHandleAt(1)});
+  ASSERT_TRUE(data().IsTabTiled(model().GetTabHandleAt(0)));
+  ASSERT_TRUE(data().IsTabTiled(model().GetTabHandleAt(1)));
+  base::RunLoop().RunUntilIdle();
+
+  // Then the other tab should be pinned too
+  EXPECT_TRUE(model().IsTabPinned(1));
+}
+
+TEST_F(SplitViewTabStripModelAdapterUnitTest,
        OnTabInserted_MoveTabWhenInsertedBetweenTile) {
   // Given that two tabs are tiled
   model().AppendWebContents(CreateWebContents(), /*foreground*/ true);

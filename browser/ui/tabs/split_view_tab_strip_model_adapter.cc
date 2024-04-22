@@ -78,6 +78,27 @@ bool SplitViewTabStripModelAdapter::SynchronizeGroupedState(
   return true;
 }
 
+bool SplitViewTabStripModelAdapter::SynchronizePinnedState(
+    const SplitViewBrowserData::Tile& tile,
+    const tabs::TabHandle& source) {
+  auto [tab1, tab2] = tile;
+  if (tab1 != source) {
+    std::swap(tab1, tab2);
+    CHECK(tab1 == source);
+  }
+
+  const bool source_tab_is_pinned =
+      model_->IsTabPinned(model_->GetIndexOfTab(source));
+  if (source_tab_is_pinned ==
+      model_->IsTabPinned(model_->GetIndexOfTab(tab2))) {
+    return false;
+  }
+
+  model_->SetTabPinned(model_->GetIndexOfTab(tab2), source_tab_is_pinned);
+  MakeTiledTabsAdjacent(tile, true);
+  return true;
+}
+
 void SplitViewTabStripModelAdapter::TabDragEnded() {
   // Check if any tiles are separated after drag and drop session. Then break
   // the tiles.
@@ -236,32 +257,22 @@ void SplitViewTabStripModelAdapter::TabPinnedStateChanged(
     return;
   }
 
-  auto [tab1, other_tab] = *tile;
-  if (tab1 != changed_tab_handle) {
-    std::swap(tab1, other_tab);
-    CHECK(tab1 == changed_tab_handle);
-  }
-
-  if (model_->IsTabPinned(index) ==
-      model_->IsTabPinned(model_->GetIndexOfTab(other_tab))) {
-    return;
-  }
+  auto source_tab =
+      model_->GetTabHandleAt(model_->GetIndexOfWebContents(contents));
+  DCHECK(tile->first == source_tab || tile->second == source_tab);
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<SplitViewTabStripModelAdapter> adapter,
-                        SplitViewBrowserData::Tile tile, tabs::TabHandle tab,
-                        bool pinned) {
-                       if (!adapter) {
-                         return;
-                       }
+      FROM_HERE,
+      base::BindOnce(
+          [](base::WeakPtr<SplitViewTabStripModelAdapter> adapter,
+             SplitViewBrowserData::Tile tile, tabs::TabHandle source_tab) {
+            if (!adapter) {
+              return;
+            }
 
-                       adapter->model_->SetTabPinned(
-                           adapter->model_->GetIndexOfTab(tab), pinned);
-                       adapter->MakeTiledTabsAdjacent(tile, true);
-                     },
-                     weak_ptr_factory_.GetWeakPtr(), *tile, other_tab,
-                     model_->IsTabPinned(index)));
+            adapter->SynchronizePinnedState(tile, source_tab);
+          },
+          weak_ptr_factory_.GetWeakPtr(), *tile, source_tab));
 }
 
 void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
