@@ -18,7 +18,9 @@
                            PermanentlyDeleteAccount);                          \
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,                           \
                            OnAccountDeleted_FailureAndRetry);                  \
-  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinDeletedChain);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinDeletedChain);        \
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,                           \
+                           ForcedSetDecryptionPassphrase);
 
 // Forcing this include before define virtual to avoid error of
 // "duplicate 'virtual' declaration specifier" at SyncEngine's
