@@ -122,7 +122,6 @@ import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
-import org.chromium.components.browser_ui.site_settings.SiteSettingsDelegate;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
@@ -723,8 +722,7 @@ public class BytecodeTest {
                         true,
                         getClassForPath(
                                 "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
-                        int.class,
-                        SiteSettingsDelegate.class));
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
@@ -732,8 +730,7 @@ public class BytecodeTest {
                         true,
                         getClassForPath(
                                 "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
-                        int.class,
-                        SiteSettingsDelegate.class));
+                        int.class));
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
                 "getAddExceptionDialogMessage", true, String.class));
