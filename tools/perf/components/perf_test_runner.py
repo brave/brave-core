@@ -175,6 +175,8 @@ class RunableConfiguration:
       suffix = '.reference' if config.browser_type.report_as_reference else ''
       bench_out_dir = os.path.join(out_dir, benchmark_name,
                                    benchmark_name + suffix)
+      if os.path.exists(bench_out_dir):
+        shutil.rmtree(bench_out_dir)
 
       args.extend([
           f'--output-dir={bench_out_dir}', '--output-format=json-test-results',
@@ -260,13 +262,18 @@ class RunableConfiguration:
         test_out_dir = os.path.join(self.out_dir, 'results')
       logging.info('Running test %s', benchmark.name)
 
-      test_success = self.RunSingleTest(self.config, benchmark, test_out_dir,
-                                        self.common_options.local_run)
-
+      test_success: Optional[bool] = None
+      attempt: int = 0
+      while test_success != True and attempt <= self.common_options.retry_count:
+        attempt += 1
+        test_success = self.RunSingleTest(self.config, benchmark, test_out_dir,
+                                          self.common_options.local_run)
+        if not test_success:
+          error = (f'[attempt {attempt}] Test {benchmark.name}' +
+                   f' failed on binary {self.binary}')
+          self.logs.append(error)
       if not test_success:
         has_failure = True
-        error = f'Test {benchmark.name} failed on binary {self.binary}'
-        self.logs.append(error)
 
     spent_time = time.time() - start_time
     self.status_line += f'Run {spent_time:.2f}s '
