@@ -1,0 +1,27 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_CHROMIUM_SRC_UI_RESOURCES_GRIT_WEBUI_RESOURCES_H_
+#define BRAVE_CHROMIUM_SRC_UI_RESOURCES_GRIT_WEBUI_RESOURCES_H_
+
+#include "../gen/ui/resources/grit/webui_resources.h" // IWYU pragma: export
+
+// Override cr-button HTML
+#undef IDR_WEBUI_CR_ELEMENTS_CR_BUTTON_CR_BUTTON_HTML_JS
+#define IDR_WEBUI_CR_ELEMENTS_CR_BUTTON_CR_BUTTON_HTML_JS IDR_BRAVE_CR_ELEMENTS_CR_BUTTON_CR_BUTTON_HTML_JS
+
+// Override cr-button JS
+#undef IDR_WEBUI_CR_ELEMENTS_CR_BUTTON_CR_BUTTON_JS
+#define IDR_WEBUI_CR_ELEMENTS_CR_BUTTON_CR_BUTTON_JS IDR_BRAVE_CR_ELEMENTS_CR_BUTTON_CR_BUTTON_JS
+
+// Override cr-toggle HTML
+#undef IDR_WEBUI_CR_ELEMENTS_CR_TOGGLE_CR_TOGGLE_HTML_JS
+#define IDR_WEBUI_CR_ELEMENTS_CR_TOGGLE_CR_TOGGLE_HTML_JS IDR_BRAVE_CR_ELEMENTS_CR_TOGGLE_CR_TOGGLE_HTML_JS
+
+// Override cr-toggle JS
+#undef IDR_WEBUI_CR_ELEMENTS_CR_TOGGLE_CR_TOGGLE_JS
+#define IDR_WEBUI_CR_ELEMENTS_CR_TOGGLE_CR_TOGGLE_JS IDR_BRAVE_CR_ELEMENTS_CR_TOGGLE_CR_TOGGLE_JS
+
+#endif  // BRAVE_CHROMIUM_SRC_UI_RESOURCES_GRIT_WEBUI_RESOURCES_H_
