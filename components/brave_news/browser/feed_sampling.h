@@ -38,6 +38,11 @@ struct ArticleWeight {
   // Whether any sources/channels that could cause this article to be shown are
   // subscribed. At this point, disabled sources have already been filtered out.
   bool subscribed = false;
+
+  // Whether the source/channels of this article are "discoverable": this is a
+  // selection of articles outside the user's explicit interests. Sensitive
+  // content should not be used for discovery.
+  bool discoverable = false;
 };
 
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
