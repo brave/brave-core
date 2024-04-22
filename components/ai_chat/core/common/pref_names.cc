@@ -41,19 +41,25 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kObseleteBraveChatAutoGenerateQuestions, false);
+  if (ai_chat::features::IsAIChatEnabled()) {
+    registry->RegisterBooleanPref(kObseleteBraveChatAutoGenerateQuestions,
+                                  false);
+  }
 }
 
 void MigrateProfilePrefs(PrefService* profile_prefs) {
-  profile_prefs->ClearPref(kObseleteBraveChatAutoGenerateQuestions);
-  // migrate model key from "chat-default" to "chat-basic"
-  static const std::string kDefaultModelBasicFrom = "chat-default";
-  static const std::string kDefaultModelBasicTo = "chat-basic";
-  if (auto* default_model_value =
-          profile_prefs->GetUserPrefValue(kDefaultModelKey)) {
-    if (base::EqualsCaseInsensitiveASCII(default_model_value->GetString(),
-                                         kDefaultModelBasicFrom)) {
-      profile_prefs->SetString(kDefaultModelKey, kDefaultModelBasicTo);
+  if (ai_chat::features::IsAIChatEnabled()) {
+    profile_prefs->ClearPref(kObseleteBraveChatAutoGenerateQuestions);
+
+    // migrate model key from "chat-default" to "chat-basic"
+    static const std::string kDefaultModelBasicFrom = "chat-default";
+    static const std::string kDefaultModelBasicTo = "chat-basic";
+    if (auto* default_model_value =
+            profile_prefs->GetUserPrefValue(kDefaultModelKey)) {
+      if (base::EqualsCaseInsensitiveASCII(default_model_value->GetString(),
+                                           kDefaultModelBasicFrom)) {
+        profile_prefs->SetString(kDefaultModelKey, kDefaultModelBasicTo);
+      }
     }
   }
 }
