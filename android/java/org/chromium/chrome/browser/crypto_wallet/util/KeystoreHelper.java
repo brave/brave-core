@@ -88,7 +88,7 @@ public class KeystoreHelper {
                         BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_ENCRYPTED, encryptedBase64);
     }
 
-    public static boolean shouldUseBiometricOnUnlock() {
+    public static boolean shouldUseBiometricToUnlock() {
         return ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.BRAVE_USE_BIOMETRICS_FOR_WALLET, false);
     }

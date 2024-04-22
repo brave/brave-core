@@ -71,7 +71,7 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
     }
 
     private void proceedWithStrongPassword(@NonNull final String password) {
-        if (Utils.isBiometricAvailable(requireContext())) {
+        if (Utils.isBiometricSupported(requireContext())) {
             // noinspection NewApi
             setUpBiometric(password);
         } else {

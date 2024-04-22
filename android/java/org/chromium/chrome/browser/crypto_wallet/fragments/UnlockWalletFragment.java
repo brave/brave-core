@@ -25,9 +25,11 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
+import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
@@ -35,6 +37,9 @@ import org.chromium.ui.widget.Toast;
 import java.util.concurrent.Executor;
 
 public class UnlockWalletFragment extends BaseWalletNextPageFragment {
+
+    private static final String TAG = "UnlockWalletFragment";
+
     private EditText mUnlockWalletPassword;
     private Button mUnlockButton;
     private TextView mUnlockWalletRestoreButton;
@@ -59,6 +64,12 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        final OnNextPage onNextPage = mOnNextPage;
+        if (onNextPage == null) {
+            Log.e(TAG, "OnNextPage shouldn't be null.");
+            return;
+        }
         mUnlockWalletPassword = view.findViewById(R.id.unlock_wallet_password);
         mUnlockButton = view.findViewById(R.id.btn_unlock);
         mUnlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);
@@ -79,12 +90,9 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                                 result -> {
                                     if (result) {
                                         Utils.clearClipboard(
-                                                mUnlockWalletPassword.getText().toString(), 0);
+                                                mUnlockWalletPassword.getText().toString());
                                         mUnlockWalletPassword.setText(null);
-                                        if (mOnNextPage != null) {
-                                            Utils.hideKeyboard(requireActivity());
-                                            mOnNextPage.onboardingCompleted();
-                                        }
+                                        onNextPage.onboardingCompleted();
                                     } else {
                                         mUnlockWalletPassword.setError(
                                                 getString(R.string.incorrect_password_error));
@@ -95,33 +103,30 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
 
         mUnlockWalletRestoreButton.setOnClickListener(
                 v -> {
-                    if (mOnNextPage != null) {
-                        mOnNextPage.gotoRestorePage(false);
-                        mUnlockWalletPassword.getText().clear();
-                    }
+                    onNextPage.gotoRestorePage(false);
+                    mUnlockWalletPassword.getText().clear();
                 });
 
         mBiometricUnlockWalletImage.setOnClickListener(
                 v -> {
-                    if (Utils.isBiometricAvailable(requireContext())) {
+                    if (Utils.isBiometricSupported(requireContext())) {
                         // noinspection NewApi
                         createBiometricPrompt();
                     }
                 });
 
-        if (mOnNextPage != null) {
-            if (mOnNextPage.showBiometricPrompt()) {
-                if (KeystoreHelper.shouldUseBiometricOnUnlock()
-                        && Utils.isBiometricAvailable(requireContext())) {
-                    // noinspection NewApi
-                    createBiometricPrompt();
-                } else {
-                    showPasswordRelatedControls();
-                }
+        if (onNextPage.showBiometricPrompt()) {
+            if (KeystoreHelper.shouldUseBiometricToUnlock()
+                    && Utils.isBiometricSupported(requireContext())) {
+
+                // noinspection NewApi
+                createBiometricPrompt();
             } else {
-                mOnNextPage.enableBiometricPrompt();
                 showPasswordRelatedControls();
             }
+        } else {
+            onNextPage.enableBiometricPrompt();
+            showPasswordRelatedControls();
         }
     }
 
@@ -204,8 +209,8 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
         mUnlockButton.setVisibility(View.VISIBLE);
         mUnlockWalletRestoreButton.setVisibility(View.VISIBLE);
         mUnlockWalletTitle.setVisibility(View.VISIBLE);
-        if (Utils.isBiometricAvailable(requireContext())
-                && KeystoreHelper.shouldUseBiometricOnUnlock()) {
+        if (Utils.isBiometricSupported(requireContext())
+                && KeystoreHelper.shouldUseBiometricToUnlock()) {
             mBiometricUnlockWalletImage.setVisibility(View.VISIBLE);
         }
     }

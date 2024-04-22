@@ -1060,7 +1060,7 @@ public class Utils {
     }
 
     @SuppressLint("MissingPermission")
-    public static boolean isBiometricAvailable(@Nullable Context context) {
+    public static boolean isBiometricSupported(@Nullable Context context) {
         // Only Android versions 9 and above are supported.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || context == null) {
             return false;

@@ -181,7 +181,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                             Utils.hideKeyboard(requireActivity());
                             keyringService.notifyWalletBackupComplete();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                                    && Utils.isBiometricAvailable(getContext())) {
+                                    && Utils.isBiometricSupported(getContext())) {
                                 // Clear previously set bio-metric credentials
                                 KeystoreHelper.resetBiometric();
                                 enableBiometricLogin(retypePasswordInput);

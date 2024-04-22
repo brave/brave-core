@@ -111,8 +111,8 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
         mBackupWalletCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (!mIsOnboarding && !mBiometricExecuted
                     && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                    && Utils.isBiometricAvailable(getContext())
-                    && KeystoreHelper.shouldUseBiometricOnUnlock()) {
+                    && Utils.isBiometricSupported(getContext())
+                    && KeystoreHelper.shouldUseBiometricToUnlock()) {
                 createBiometricPrompt();
 
                 return;
@@ -131,7 +131,7 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
         });
         mBiometricBackupWalletImage.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                    && Utils.isBiometricAvailable(getContext())) {
+                    && Utils.isBiometricSupported(getContext())) {
                 showPasswordRelatedControls(false);
                 createBiometricPrompt();
             }
@@ -146,8 +146,8 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
 
     private void checkOnBiometric() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
-                || !KeystoreHelper.shouldUseBiometricOnUnlock()
-                || !Utils.isBiometricAvailable(getContext())) {
+                || !KeystoreHelper.shouldUseBiometricToUnlock()
+                || !Utils.isBiometricSupported(getContext())) {
             showPasswordRelatedControls(true);
         }
     }
@@ -159,8 +159,8 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
         mBackupWalletTitle.setVisibility(visibility);
         mBackupWalletPassword.setVisibility(visibility);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                && Utils.isBiometricAvailable(getContext())
-                && KeystoreHelper.shouldUseBiometricOnUnlock()) {
+                && Utils.isBiometricSupported(getContext())
+                && KeystoreHelper.shouldUseBiometricToUnlock()) {
             mBiometricBackupWalletImage.setVisibility(visibility);
         }
     }
