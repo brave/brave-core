@@ -62,7 +62,7 @@ class BookmarksSidePanelHeaderView : public views::View {
                                  views::MaximumFlexSizeRule::kPreferred));
 
     auto* header_label = AddChildView(std::make_unique<views::Label>(
-        l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_TITLE)));
+        l10n_util::GetStringUTF16(IDS_SIDEBAR_BOOKMARKS_PANEL_HEADER_TITLE)));
     header_label->SetFontList(gfx::FontList("Poppins, Semi-Bold 16px"));
     header_label->SetEnabledColorId(kColorSidebarPanelHeaderTitle);
     header_label->SetAutoColorReadabilityEnabled(false);
