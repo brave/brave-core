@@ -18,6 +18,7 @@ import AIChatDataContext, {
   defaultContext
 } from '../state/context'
 import { useArgs, useState } from '@storybook/addons'
+import FeedbackForm from '../components/feedback_form'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
@@ -270,6 +271,14 @@ export const _Panel = (props: {}) => {
   return (
     <div className={styles.container}>
       <Main />
+    </div>
+  )
+}
+
+export const _FeedbackForm = (props: {}) => {
+  return (
+    <div className={styles.container}>
+      <FeedbackForm />
     </div>
   )
 }

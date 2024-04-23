@@ -42,8 +42,8 @@ function FeedbackForm(props: FeedbackFormProps) {
     props.onSubmit?.(category, feedbackText, shouldSendUrl)
   }
 
-  const handleSelectOnChange = (e: any) => {
-    setCategory(e.detail.value)
+  const handleSelectOnChange = ({ value }: { value: string }) => {
+    setCategory(value)
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
