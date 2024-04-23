@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 import static android.hardware.biometrics.BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.hardware.biometrics.BiometricPrompt;
 import android.hardware.biometrics.BiometricPrompt.AuthenticationCallback;
 import android.hardware.biometrics.BiometricPrompt.AuthenticationResult;
@@ -51,8 +52,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 public class UnlockWalletFragment extends BaseWalletNextPageFragment {
-
-    private static final String TAG = "UnlockWalletFragment";
 
     private EditText mUnlockWalletPassword;
     private Button mUnlockButton;
@@ -202,10 +201,10 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
 
-                        if (!TextUtils.isEmpty(errString)) {
-                            Toast.makeText(requireActivity(), errString, Toast.LENGTH_SHORT).show();
+                        final Context context = getContext();
+                        if (!TextUtils.isEmpty(errString) && context != null) {
+                            Toast.makeText(context, errString, Toast.LENGTH_SHORT).show();
                         }
-                        // Even though we have an error, we still let to proceed
                         showPasswordRelatedControls();
                     }
                 };
