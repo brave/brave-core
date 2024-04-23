@@ -57,7 +57,8 @@ struct ArticleWeight {
 
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
-using PickArticles = base::RepeatingCallback<int(const ArticleInfos& infos)>;
+using PickArticles =
+    base::RepeatingCallback<std::optional<size_t>(const ArticleInfos& infos)>;
 
 class FeedV2Builder {
  public:
