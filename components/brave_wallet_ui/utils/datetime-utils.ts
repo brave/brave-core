@@ -67,16 +67,14 @@ export function serializedTimeDeltaToJSDate(
   return new Date(Number(timeDelta.microseconds) / 1000)
 }
 
+const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
+  month: 'numeric',
+  day: 'numeric',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric'
+})
+
 export const formatTimelineDate = (date: Date) => {
-  const formatedDate = new Date(date).toLocaleDateString('en-US', {
-    month: 'numeric',
-    day: 'numeric',
-    year: 'numeric'
-  })
-  const formatedTime = new Date(date).toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true
-  })
-  return `${formatedDate} ${formatedTime}`
+  return dateTimeFormatter.format(new Date(date))
 }
