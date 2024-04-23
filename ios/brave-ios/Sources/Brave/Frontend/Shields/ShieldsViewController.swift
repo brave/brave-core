@@ -85,6 +85,8 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
           view.toggleSwitch.isOn = Preferences.Shields.fingerprintingProtection.value
         case .noScript:
           view.toggleSwitch.isOn = Preferences.Shields.blockScripts.value
+        case .forgetMe:
+          view.toggleSwitch.isOn = BraveShield.forgetMe.globalPreference
         }
       }
     }
@@ -227,6 +229,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     (.adblockAndTp, shieldsView.advancedShieldView.adsTrackersControl),
     (.noScript, shieldsView.advancedShieldView.blockScriptsControl),
     (.fpProtection, shieldsView.advancedShieldView.fingerprintingControl),
+    (.forgetMe, shieldsView.advancedShieldView.forgetMeControl),
   ]
 
   var shieldsView: View {

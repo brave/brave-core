@@ -3547,6 +3547,13 @@ extension Strings {
     value: "Block Fingerprinting",
     comment: ""
   )
+  public static let forgetMeWhenICloseThisSite = NSLocalizedString(
+    "ForgetMeWhenICloseThisSite",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Forget Me When I Close This Site",
+    comment: "A toggle option that deletes website content when the site is closed"
+  )
   public static let fingerprintingProtectionDescription = NSLocalizedString(
     "FingerprintingProtectionDescription",
     tableName: "BraveShared",

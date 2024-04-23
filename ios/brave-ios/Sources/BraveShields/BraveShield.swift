@@ -11,6 +11,7 @@ public enum BraveShield {
   case adblockAndTp
   case fpProtection
   case noScript
+  case forgetMe
 
   public var globalPreference: Bool {
     switch self {
@@ -22,6 +23,8 @@ public enum BraveShield {
       return Preferences.Shields.fingerprintingProtection.value
     case .noScript:
       return Preferences.Shields.blockScripts.value
+    case .forgetMe:
+      return false
     }
   }
 }

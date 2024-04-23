@@ -326,6 +326,22 @@ extension BrowserViewController: WKNavigationDelegate {
         tab?.currentPageData = PageData(mainFrameURL: mainDocumentURL)
       }
 
+      // Handle the "forget me" feature on navigation
+      if let tab = tab, navigationAction.targetFrame?.isMainFrame == true {
+        // Cancel any forget data requests
+        tabManager.cancelForgetData(for: mainDocumentURL, in: tab)
+
+        // Forget any websites that have "forget me" enabled
+        // if we navigated away from the previous domain
+        if let currentURL = tab.url,
+          !InternalURL.isValid(url: currentURL),
+          let currentETLDP1 = currentURL.baseDomain,
+          mainDocumentURL.baseDomain != currentETLDP1
+        {
+          tabManager.forgetDataIfNeeded(for: currentURL, in: tab)
+        }
+      }
+
       let domainForMainFrame = Domain.getOrCreate(
         forUrl: mainDocumentURL,
         persistent: !isPrivateBrowsing

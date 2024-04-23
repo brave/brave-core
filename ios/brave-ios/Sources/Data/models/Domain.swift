@@ -44,6 +44,10 @@ public final class Domain: NSManagedObject, CRUD {
   // swift-format-ignore
   @NSManaged public var wallet_solanaPermittedAcccounts: String?
 
+  /// Option that allows the website to be forgotten when all tabs are closed
+  // swift-format-ignore
+  @NSManaged public var shield_forgetMe: Bool
+
   private var urlComponents: URLComponents? {
     return URLComponents(string: url ?? "")
   }
@@ -175,6 +179,8 @@ public final class Domain: NSManagedObject, CRUD {
           ?? Preferences.Shields.fingerprintingProtection.value
       case .noScript:
         return self.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value
+      case .forgetMe:
+        return self.shield_forgetMe
       }
     }()
 
@@ -472,6 +478,7 @@ extension Domain {
     case .adblockAndTp: shield_adblockAndTp = setting
     case .fpProtection: shield_fpProtection = setting
     case .noScript: shield_noScript = setting
+    case .forgetMe: shield_forgetMe = setting?.boolValue ?? false
     }
   }
 

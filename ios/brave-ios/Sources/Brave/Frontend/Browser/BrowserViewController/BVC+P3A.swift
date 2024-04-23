@@ -181,7 +181,7 @@ extension BrowserViewController {
         buckets: buckets,
         value: fingerprintingAboveGlobalCount
       )
-    case .allOff, .noScript:
+    case .allOff, .noScript, .forgetMe:
       break
     }
   }
