@@ -169,7 +169,7 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.6",
-    "@brave/leo": "github:brave/leo#58a07d5a8f3fea5aff6327d64ad0b58657111c29",
+    "@brave/leo": "github:brave/leo#15b203d78b11718314256234b7e369a73eef8ab9",
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#b667e73c79d1d5b4490eb2fa8925f0293b24c2f7",
     "@brave/wallet-standard-brave": "0.0.13",
     "@dnd-kit/core": "6.0.5",
