@@ -53,6 +53,12 @@ export class CrButtonElement extends PolymerElement {
     if (this.classList.contains('action-button')) {
       kind = 'filled'
     }
+
+    // Avatar buttons should not have a border
+    if (this.classList.contains('avatar') || this.classList.contains('plain')) {
+      kind = 'plain'
+    }
+
     this.$.button.setAttribute('kind', kind)
   }
 }
