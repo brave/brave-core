@@ -2147,10 +2147,16 @@ Are you sure you want to do this?
     <message name="IDS_PASSWORD" desc="Brave Wallet onboarding text">
       Password
     </message>
+    <message name="IDS_ENTER_YOUR_PASSWORD" desc="Brave Wallet onboarding password hint">
+      Enter your password
+    </message>
     <message name="IDS_ACCESSIBILITY_BIOMETRIC_UNLOCK" desc="Brave Wallet onboarding biometric image accessibility text">
       Biometric unlock
     </message>
     <message name="IDS_UNLOCK_WALLET_TITLE" desc="Brave Wallet onboarding text">
+      Unlock Wallet
+    </message>
+    <message name="IDS_UNLOCK_WALLET_SUBTITLE" desc="Brave Wallet onboarding subtitle">
       Enter password to unlock wallet
     </message>
     <message name="IDS_PASSWORD_TEXT" desc="Brave Wallet onboarding text">
