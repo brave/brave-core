@@ -432,8 +432,26 @@ extension BrowserViewController: TabManagerDelegate {
 
     var closeAllTabMenuChildren: [UIAction] = []
 
-    if tabManager.tabsForCurrentMode.count > 1 {
+    if FeatureList.kBraveShredFeature.enabled {
+      let shredDataAction = UIAction(
+        title: String(format: Strings.Shields.shredSitesData),
+        image: UIImage(braveSystemNamed: "leo.shred.data"),
+        attributes: .destructive,
+        handler: UIAction.deferredActionHandler { [weak self] _ in
+          let alert = UIAlertController.shredDataAlert { _ in
+            guard let tab = self?.tabManager.selectedTab else { return }
+            guard let url = tab.url else { return }
+            // TODO: Animate
+            self?.tabManager.shredData(for: url, in: tab)
+          }
 
+          self?.present(alert, animated: true)
+        }
+      )
+      closeAllTabMenuChildren.append(shredDataAction)
+    }
+
+    if tabManager.tabsForCurrentMode.count > 1 {
       func showCloseTabWarning(isActiveTabIncluded: Bool, _ completion: @escaping () -> Void) {
         let alert = UIAlertController(
           title: nil,

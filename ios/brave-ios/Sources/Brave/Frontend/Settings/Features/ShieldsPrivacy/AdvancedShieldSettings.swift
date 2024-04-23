@@ -74,6 +74,11 @@ import os
       ShieldPreferences.httpsUpgradeLevel = httpsUpgradeLevel
     }
   }
+  @Published var shredLevel: SiteShredLevel? {
+    didSet {
+      ShieldPreferences.shredLevel = shredLevel
+    }
+  }
 
   typealias ClearDataCallback = @MainActor (Bool, Bool) -> Void
   @Published var clearableSettings: [ClearableSetting]
@@ -105,6 +110,7 @@ import os
     self.httpsUpgradeLevel = ShieldPreferences.httpsUpgradeLevel
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
+    self.shredLevel = ShieldPreferences.shredLevel
 
     cookieConsentBlocking = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID

@@ -30,6 +30,8 @@ BASE_DECLARE_FEATURE(kBraveDomainBlock1PES);
 BASE_DECLARE_FEATURE(kBraveExtensionNetworkBlocking);
 BASE_DECLARE_FEATURE(kBraveLocalhostAccessPermission);
 BASE_DECLARE_FEATURE(kBraveReduceLanguage);
+// When enabled, brave shred feature will be available
+BASE_DECLARE_FEATURE(kBraveShredFeature);
 BASE_DECLARE_FEATURE(kBraveShowStrictFingerprintingMode);
 BASE_DECLARE_FEATURE(kCosmeticFilteringExtraPerfMetrics);
 BASE_DECLARE_FEATURE(kCosmeticFilteringJsPerformance);

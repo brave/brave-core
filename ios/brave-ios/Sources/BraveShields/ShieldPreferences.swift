@@ -25,6 +25,13 @@ public class ShieldPreferences {
     default: defaultHTTPsUpgradeLevel.rawValue
   )
 
+  /// Get the level of the https upgrade setting as a stored preference
+  /// - Warning: You should not access this directly but  through ``httpsUpgradeLevel``
+  private static var shredLevelRaw = Preferences.Option<String?>(
+    key: "shields.shred-level",
+    default: nil
+  )
+
   /// Get the level of the adblock and tracking protection
   public static var blockAdsAndTrackingLevel: ShieldLevel {
     get {
@@ -39,6 +46,21 @@ public class ShieldPreferences {
       HTTPSUpgradeLevel(rawValue: httpsUpgradeLevelRaw.value) ?? defaultHTTPsUpgradeLevel
     }
     set { httpsUpgradeLevelRaw.value = newValue.rawValue }
+  }
+
+  /// Get the global shred level value
+  public static var shredLevel: SiteShredLevel? {
+    get {
+      guard let shredLevelRaw = self.shredLevelRaw.value else { return nil }
+      return SiteShredLevel(rawValue: shredLevelRaw)
+    }
+    set {
+      guard let shredLevel = newValue else {
+        shredLevelRaw.value = nil
+        return
+      }
+      shredLevelRaw.value = shredLevel.rawValue
+    }
   }
 
   /// A boolean value inidicating if GPC is enabled
