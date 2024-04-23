@@ -280,12 +280,14 @@ extension NewTabPageBackgroundButtonsView {
   }
   private class PlayButton: SpringButton {
     let imageView = UIImageView(
-      image: UIImage(braveSystemNamed: "leo.play.circle")!.applyingSymbolConfiguration(
-        .init(scale: .large)
-      )
+      image: UIImage(braveSystemNamed: "leo.play.circle")!.withAlignmentRectInsets(.zero)
     ).then {
       $0.tintColor = .white
       $0.contentMode = .scaleAspectFit
+      $0.preferredSymbolConfiguration = .init(
+        font: .preferredFont(for: .title1, weight: .regular),
+        scale: .large
+      )
     }
 
     private let backgroundView = UIVisualEffectView(
