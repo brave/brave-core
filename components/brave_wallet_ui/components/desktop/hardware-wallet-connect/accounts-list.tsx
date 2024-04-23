@@ -202,6 +202,12 @@ export const HardwareWalletAccountsList = ({
     return `${pathLocale} "${devicePath}"`
   }
 
+  const onChangeDerivationScheme = (value?: string) => {
+    if (value) {
+      setSelectedDerivationScheme(value)
+    }
+  }
+
   // effects
   React.useEffect(() => {
     setFilteredAccountList(accounts)
@@ -235,7 +241,7 @@ export const HardwareWalletAccountsList = ({
           {coin === BraveWallet.CoinType.ETH ? (
             <Dropdown
               value={selectedDerivationScheme}
-              onChange={(e) => setSelectedDerivationScheme(e.detail.value)}
+              onChange={(e) => onChangeDerivationScheme(e.value)}
             >
               <Row
                 width='100%'
@@ -274,7 +280,7 @@ export const HardwareWalletAccountsList = ({
           {coin === BraveWallet.CoinType.SOL ? (
             <Dropdown
               value={selectedDerivationScheme}
-              onChange={(e) => setSelectedDerivationScheme(e.detail.value)}
+              onChange={(e) => onChangeDerivationScheme(e.value)}
             >
               <div slot='value'>{selectedDerivationScheme}</div>
               {Object.keys(solDerivationPathsEnum).map((path) => {

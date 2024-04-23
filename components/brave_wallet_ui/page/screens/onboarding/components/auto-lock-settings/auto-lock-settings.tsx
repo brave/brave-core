@@ -47,7 +47,7 @@ export const AutoLockSettings = ({ options, value, onChange }: Props) => {
       <DurationDropdown
         mode='filled'
         value={selectedOption?.minutes?.toString()}
-        onChange={(e) => onChange(parseInt(e.detail.value, 10))}
+        onChange={(e) => onChange(parseInt(e.value!, 10))}
       >
         <div slot='value'>{selectedOption?.label}</div>
         {options.map((option) => (

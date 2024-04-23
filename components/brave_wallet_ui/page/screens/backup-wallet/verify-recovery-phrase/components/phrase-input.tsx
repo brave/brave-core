@@ -53,7 +53,7 @@ export const PhraseInput = ({
     <Column margin='120px 0 18px' gap='25px'>
       <FormInput
         value={phrase}
-        onInput={(event) => onChange(event.detail.value)}
+        onInput={(event) => onChange(event.value)}
       >
         <FormLabel>
           {beforeTag}

@@ -222,8 +222,8 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                   ).replace('$1', `#${index + 1}`)}
                   value={phraseWords[index] || ''}
                   size='small'
-                  onChange={(e) => onPhraseWordChange(index, e.detail.value)}
-                  onInput={(e) => onPhraseWordChange(index, e.detail.value)}
+                  onChange={(e) => onPhraseWordChange(index, e.value)}
+                  onInput={(e) => onPhraseWordChange(index, e.value)}
                   type={revealPhrase ? 'text' : 'password'}
                 />
               ))}
