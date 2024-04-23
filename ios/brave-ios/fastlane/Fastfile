@@ -180,7 +180,8 @@ platform :ios do
       output_types: "junit",
       output_files: "junit.xml",
       derived_data_path: "../../../out/DerivedData",
-      number_of_retries: 1
+      number_of_retries: 1,
+      output_remove_retry_attempts: true
     }
   end
 
