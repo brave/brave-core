@@ -29,6 +29,11 @@ OBJC_EXPORT BraveWalletProviderScriptKey const
     BraveWalletProviderScriptKeyWalletStandard;
 
 OBJC_EXPORT
+@interface BraveWallet : NSObject
+- (instancetype)init NS_UNAVAILABLE;
+@end
+
+OBJC_EXPORT
 @interface BraveWalletAPI : NSObject
 
 @property(class, readonly) id<BraveWalletBlockchainRegistry> blockchainRegistry;

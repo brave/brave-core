@@ -615,14 +615,16 @@ TEST(JsonParser, ConvertAllNumbersToString) {
 TEST(JsonParser, ConvertAllNumbersToStringAndRemoveNullValues) {
   // OK: convert u64, f64, and i64 values to string
   std::string json(
-      R"({"a":[{"key":18446744073709551615},{"key":-2},{"key":3.14},{"key":null}]})");
+      R"({"a":[{"key":18446744073709551615},{"key":-2},{"key":3.14},
+      {"key":null}]})");
   EXPECT_EQ(
       std::string(
           json::convert_all_numbers_to_string_and_remove_null_values(json, "")),
       R"({"a":[{"key":"18446744073709551615"},{"key":"-2"},{"key":"3.14"}]})");
 
   json =
-      R"({"some":[{"deeply":{"nested":[{"path":123, "nullprop1": null}]}}], "nullprop2": null})";
+      R"({"some":[{"deeply":{"nested":[{"path":123, "nullprop1": null}]}}],
+       "nullprop2": null})";
   EXPECT_EQ(
       std::string(
           json::convert_all_numbers_to_string_and_remove_null_values(json, "")),

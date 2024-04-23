@@ -8,13 +8,14 @@
 #include <algorithm>
 #include <optional>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
+
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "content/public/browser/browser_thread.h"
 #include "tools/json_schema_compiler/util.h"
 
 namespace {
@@ -383,7 +384,6 @@ std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
   //     "regions": null
   //   }
   // ]
-  LOG(INFO) << "[MELD] isUI:" << content::BrowserThread::CurrentlyOn(content::BrowserThread::UI);
   if (!json_value.is_list()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;

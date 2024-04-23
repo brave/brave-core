@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -15,6 +16,7 @@
 #include "base/environment.h"
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
@@ -24,7 +26,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "base/task/thread_pool.h"
 
 namespace {
 
@@ -198,29 +199,29 @@ void MeldIntegrationService::OnGetServiceProviders(
   }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
-    FROM_HERE,
-    base::BindOnce(&ParseServiceProviders, api_request_result.TakeBody()),
-    base::BindOnce(
-        [](base::WeakPtr<const MeldIntegrationService>
-                meld_integration_service,  //
-            GetServiceProvidersCallback reply_callback,
-            std::optional<std::vector<mojom::MeldServiceProviderPtr>>
-                service_providers) {
-          if (!meld_integration_service) {
-            return;
-          }
+      FROM_HERE,
+      base::BindOnce(&ParseServiceProviders, api_request_result.TakeBody()),
+      base::BindOnce(
+          [](base::WeakPtr<const MeldIntegrationService>
+                 meld_integration_service,  //
+             GetServiceProvidersCallback reply_callback,
+             std::optional<std::vector<mojom::MeldServiceProviderPtr>>
+                 service_providers) {
+            if (!meld_integration_service) {
+              return;
+            }
 
-          if (!service_providers) {
+            if (!service_providers) {
+              std::move(reply_callback)
+                  .Run(std::nullopt,
+                       std::vector<std::string>{
+                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+              return;
+            }
             std::move(reply_callback)
-                .Run(std::nullopt,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-            return;
-          }
-          std::move(reply_callback)
-              .Run(std::move(service_providers), std::nullopt);
-        },
-        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                .Run(std::move(service_providers), std::nullopt);
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void MeldIntegrationService::GetCryptoQuotes(
@@ -278,9 +279,10 @@ void MeldIntegrationService::OnGetCryptoQuotes(
       base::BindOnce(&ParseCryptoQuotes, api_request_result.TakeBody()),
       base::BindOnce(
           [](base::WeakPtr<const MeldIntegrationService>
-                 meld_integration_service,  
+                 meld_integration_service,
              GetCryptoQuotesCallback reply_callback,
-             std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>, std::optional<std::string>> quotes_result) {
+             std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
+                        std::optional<std::string>> quotes_result) {
             if (!meld_integration_service) {
               return;
             }
@@ -298,8 +300,10 @@ void MeldIntegrationService::OnGetCryptoQuotes(
               errors = std::vector<std::string>{*error};
             }
 
-            auto& quotes = std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(quotes_result);
-            
+            auto& quotes =
+                std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(
+                    quotes_result);
+
             std::move(reply_callback).Run(std::move(quotes), errors);
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -361,29 +365,29 @@ void MeldIntegrationService::OnGetPaymentMethods(
   }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
-    FROM_HERE,
-    base::BindOnce(&ParsePaymentMethods, api_request_result.TakeBody()),
-    base::BindOnce(
-        [](base::WeakPtr<const MeldIntegrationService>
-                meld_integration_service,  //
-            GetPaymentMethodsCallback reply_callback,
-            std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
-                payment_methods) {
-          if (!meld_integration_service) {
-            return;
-          }
+      FROM_HERE,
+      base::BindOnce(&ParsePaymentMethods, api_request_result.TakeBody()),
+      base::BindOnce(
+          [](base::WeakPtr<const MeldIntegrationService>
+                 meld_integration_service,  //
+             GetPaymentMethodsCallback reply_callback,
+             std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
+                 payment_methods) {
+            if (!meld_integration_service) {
+              return;
+            }
 
-          if (!payment_methods) {
+            if (!payment_methods) {
+              std::move(reply_callback)
+                  .Run(std::nullopt,
+                       std::vector<std::string>{
+                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+              return;
+            }
             std::move(reply_callback)
-                .Run(std::nullopt,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-            return;
-          }
-          std::move(reply_callback)
-              .Run(std::move(payment_methods), std::nullopt);
-        },
-        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                .Run(std::move(payment_methods), std::nullopt);
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 // static

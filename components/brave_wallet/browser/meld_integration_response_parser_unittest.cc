@@ -164,7 +164,9 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
 
   auto quotes_result = ParseCryptoQuotes(ParseJson(json));
   std::optional<std::string> error{std::get<1>(quotes_result)};
-  auto& quotes = std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(quotes_result);
+  auto& quotes =
+      std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(
+          quotes_result);
   EXPECT_TRUE(quotes);
   EXPECT_EQ(base::ranges::count_if(
                 *quotes,
@@ -194,7 +196,9 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
 })");
 
   quotes_result = ParseCryptoQuotes(ParseJson(json_null_quotes));
-  auto const& quotes_json_nq = std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(quotes_result);
+  auto const& quotes_json_nq =
+      std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(
+          quotes_result);
   EXPECT_FALSE(quotes_json_nq);
   error = std::get<1>(quotes_result);
   EXPECT_TRUE(error);
@@ -202,12 +206,16 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
             "No Valid Quote Combinations Found For Provided Quote Request.");
 
   quotes_result = ParseCryptoQuotes(base::Value());
-  auto const& quotes_base_val = std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(quotes_result);
+  auto const& quotes_base_val =
+      std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(
+          quotes_result);
   EXPECT_FALSE(quotes_base_val);
 
   json = R"({})";
   quotes_result = ParseCryptoQuotes(ParseJson(json));
-  auto const& quotes_enpty_json = std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(quotes_result);
+  auto const& quotes_enpty_json =
+      std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(
+          quotes_result);
   EXPECT_FALSE(quotes_enpty_json);
 }
 

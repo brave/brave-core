@@ -354,7 +354,7 @@ pub fn convert_all_numbers_to_string(json: &str, path: &str) -> String {
 /// "d": null}, path="/b" -> {"a":"1","b":[{"bai1":"1"},{"bai3":"3"}],
 /// "c":"string","d":null}
 /// ```
-pub fn convert_all_numbers_to_string_and_remove_null_values(json: &str, 
+pub fn convert_all_numbers_to_string_and_remove_null_values(json: &str,
     path: &str) -> String {
     use serde_json::Value;
     fn convert_recursively(value: &mut Value) {
