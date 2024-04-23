@@ -79,9 +79,9 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
         setFilteredOutCategories(
           filteredOutCategories.filter((c) => c !== category)
         )
-      } else {
-        setFilteredOutCategories([...filteredOutCategories, category])
+        return
       }
+      setFilteredOutCategories([...filteredOutCategories, category])
     },
     [filteredOutCategories, isCategoryFilteredOut]
   )
