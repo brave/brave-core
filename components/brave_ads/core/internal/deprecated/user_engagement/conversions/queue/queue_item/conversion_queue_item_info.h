@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_USER_ENGAGEMENT_CONVERSIONS_QUEUE_QUEUE_ITEM_CONVERSION_QUEUE_ITEM_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_USER_ENGAGEMENT_CONVERSIONS_QUEUE_QUEUE_ITEM_CONVERSION_QUEUE_ITEM_INFO_H_
 
+#include <optional>
 #include <vector>
 
 #include "base/time/time.h"
@@ -29,7 +30,7 @@ struct ConversionQueueItemInfo final {
   [[nodiscard]] bool IsValid() const;
 
   ConversionInfo conversion;
-  base::Time process_at;
+  std::optional<base::Time> process_at;
   bool was_processed = false;
 };
 

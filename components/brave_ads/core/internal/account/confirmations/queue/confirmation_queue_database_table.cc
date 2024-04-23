@@ -74,6 +74,10 @@ size_t BindParameters(
 
   int index = 0;
   for (const auto& confirmation_queue_item : confirmation_queue_items) {
+    if (!confirmation_queue_item.IsValid()) {
+      continue;
+    }
+
     // The queue does not store dynamic user data for a confirmation due to the
     // token redemption process which rebuilds the confirmation. Hence, we must
     // regenerate the confirmation without the dynamic user data.
@@ -90,7 +94,8 @@ size_t BindParameters(
     BindString(command, index++, ToString(confirmation.ad_type));
 
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(confirmation.created_at));
+              ToChromeTimestampFromTime(
+                  confirmation.created_at.value_or(base::Time())));
 
     if (confirmation.reward) {
       BindString(command, index++,
@@ -125,7 +130,7 @@ size_t BindParameters(
     BindString(command, index++, user_data_json);
 
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(confirmation_queue_item.process_at));
+              ToChromeTimestampFromTime(*confirmation_queue_item.process_at));
 
     BindInt(command, index++, confirmation_queue_item.retry_count);
 
@@ -151,8 +156,11 @@ ConfirmationQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   confirmation_queue_item.confirmation.ad_type =
       ToAdType(ColumnString(record, 3));
 
-  confirmation_queue_item.confirmation.created_at =
+  const base::Time created_at =
       ToTimeFromChromeTimestamp(ColumnInt64(record, 4));
+  if (!created_at.is_null()) {
+    confirmation_queue_item.confirmation.created_at = created_at;
+  }
 
   const std::string token = ColumnString(record, 5);
   const std::string blinded_token = ColumnString(record, 6);
@@ -186,8 +194,11 @@ ConfirmationQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
       base::JSONReader::ReadDict(ColumnString(record, 11))
           .value_or(base::Value::Dict());
 
-  confirmation_queue_item.process_at =
+  const base::Time process_at =
       ToTimeFromChromeTimestamp(ColumnInt64(record, 12));
+  if (!process_at.is_null()) {
+    confirmation_queue_item.process_at = process_at;
+  }
 
   confirmation_queue_item.retry_count = ColumnInt(record, 13);
 

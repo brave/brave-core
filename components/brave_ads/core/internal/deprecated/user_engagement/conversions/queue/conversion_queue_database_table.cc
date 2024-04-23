@@ -86,7 +86,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
                          ->advertiser_public_key_base64
                    : "");
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(conversion_queue_item.process_at));
+              ToChromeTimestampFromTime(
+                  conversion_queue_item.process_at.value_or(base::Time())));
     BindBool(command, index++, conversion_queue_item.was_processed);
 
     ++count;
@@ -116,8 +117,12 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
     conversion_queue_item.conversion.verifiable = verifiable_conversion;
   }
 
-  conversion_queue_item.process_at =
+  const base::Time process_at =
       ToTimeFromChromeTimestamp(ColumnInt64(record, 9));
+  if (!process_at.is_null()) {
+    conversion_queue_item.process_at = process_at;
+  }
+
   conversion_queue_item.was_processed =
       static_cast<bool>(ColumnInt(record, 10));
 

@@ -51,6 +51,10 @@ size_t BindParameters(
 
   int index = 0;
   for (const auto& creative_set_conversion : creative_set_conversions) {
+    if (!creative_set_conversion.IsValid()) {
+      continue;
+    }
+
     BindString(command, index++, creative_set_conversion.id);
     BindString(command, index++, creative_set_conversion.url_pattern);
     BindString(command, index++,
@@ -59,7 +63,7 @@ size_t BindParameters(
     BindInt(command, index++,
             creative_set_conversion.observation_window.InDays());
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(creative_set_conversion.expire_at));
+              ToChromeTimestampFromTime(*creative_set_conversion.expire_at));
 
     ++count;
   }
@@ -81,8 +85,11 @@ CreativeSetConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
         verifiable_advertiser_public_key_base64;
   }
   creative_set_conversion.observation_window = base::Days(ColumnInt(record, 3));
-  creative_set_conversion.expire_at =
+  const base::Time expire_at =
       ToTimeFromChromeTimestamp(ColumnInt64(record, 4));
+  if (!expire_at.is_null()) {
+    creative_set_conversion.expire_at = expire_at;
+  }
 
   return creative_set_conversion;
 }

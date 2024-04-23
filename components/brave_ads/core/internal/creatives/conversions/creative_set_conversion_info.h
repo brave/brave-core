@@ -33,7 +33,7 @@ struct CreativeSetConversionInfo final {
   std::string url_pattern;
   std::optional<std::string> verifiable_advertiser_public_key_base64;
   base::TimeDelta observation_window;
-  base::Time expire_at;
+  std::optional<base::Time> expire_at;
 };
 
 using CreativeSetConversionList = std::vector<CreativeSetConversionInfo>;

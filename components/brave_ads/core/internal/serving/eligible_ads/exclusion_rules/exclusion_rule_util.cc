@@ -35,9 +35,11 @@ bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
       ad_events,
       [&creative_ad, confirmation_type, now,
        time_constraint](const AdEventInfo& ad_event) {
+        CHECK(ad_event.created_at);
+
         return ad_event.confirmation_type == confirmation_type &&
                ad_event.campaign_id == creative_ad.campaign_id &&
-               now - ad_event.created_at < time_constraint;
+               now - *ad_event.created_at < time_constraint;
       },
       cap);
 
@@ -67,9 +69,11 @@ bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
       ad_events,
       [&creative_ad, confirmation_type, now,
        time_constraint](const AdEventInfo& ad_event) {
+        CHECK(ad_event.created_at);
+
         return ad_event.confirmation_type == confirmation_type &&
                ad_event.creative_set_id == creative_ad.creative_set_id &&
-               now - ad_event.created_at < time_constraint;
+               now - *ad_event.created_at < time_constraint;
       },
       cap);
 
@@ -99,10 +103,12 @@ bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
       ad_events,
       [&creative_ad, confirmation_type, now,
        time_constraint](const AdEventInfo& ad_event) {
+        CHECK(ad_event.created_at);
+
         return ad_event.confirmation_type == confirmation_type &&
                ad_event.creative_instance_id ==
                    creative_ad.creative_instance_id &&
-               now - ad_event.created_at < time_constraint;
+               now - *ad_event.created_at < time_constraint;
       },
       cap);
 

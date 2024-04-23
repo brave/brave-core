@@ -29,7 +29,7 @@ TEST(BraveAdsValidationUtilTest, InvalidConversionQueueItem) {
 
   ConversionQueueItemList conversion_queue_items =
       test::BuildConversionQueueItems(conversion, /*count=*/1);
-  conversion_queue_items[0].process_at = base::Time();
+  conversion_queue_items[0].process_at.reset();
 
   // Act & Assert
   EXPECT_EQ("ad_type,process_at", GetConversionQueueItemInvalidFieldsNames(

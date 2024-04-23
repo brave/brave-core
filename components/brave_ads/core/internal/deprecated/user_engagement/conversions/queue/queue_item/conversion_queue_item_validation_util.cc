@@ -59,7 +59,7 @@ std::vector<std::string> GetInvalidFieldsNamesList(
     const ConversionQueueItemInfo& conversion_queue_item) {
   std::vector<std::string> invalid_fields =
       GetInvalidFieldsNamesList(conversion_queue_item.conversion);
-  if (conversion_queue_item.process_at.is_null()) {
+  if (!conversion_queue_item.process_at) {
     invalid_fields.emplace_back(kProcessAtFieldName);
   }
   return invalid_fields;

@@ -61,7 +61,9 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, ad_event.creative_instance_id);
     BindString(command, index++, ad_event.advertiser_id);
     BindString(command, index++, ad_event.segment);
-    BindInt64(command, index++, ToChromeTimestampFromTime(ad_event.created_at));
+    BindInt64(
+        command, index++,
+        ToChromeTimestampFromTime(ad_event.created_at.value_or(base::Time())));
 
     ++count;
   }
@@ -82,7 +84,11 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   ad_event.creative_instance_id = ColumnString(record, 5);
   ad_event.advertiser_id = ColumnString(record, 6);
   ad_event.segment = ColumnString(record, 7);
-  ad_event.created_at = ToTimeFromChromeTimestamp(ColumnInt64(record, 8));
+  const base::Time created_at =
+      ToTimeFromChromeTimestamp(ColumnInt64(record, 8));
+  if (!created_at.is_null()) {
+    ad_event.created_at = created_at;
+  }
 
   return ad_event;
 }

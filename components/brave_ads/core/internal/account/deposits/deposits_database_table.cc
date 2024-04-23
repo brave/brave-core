@@ -62,7 +62,7 @@ void BindParameters(mojom::DBCommandInfo* command, const DepositInfo& deposit) {
 
   BindString(command, 0, deposit.creative_instance_id);
   BindDouble(command, 1, deposit.value);
-  BindInt64(command, 2, ToChromeTimestampFromTime(deposit.expire_at));
+  BindInt64(command, 2, ToChromeTimestampFromTime(*deposit.expire_at));
 }
 
 DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
@@ -72,7 +72,11 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
   deposit.creative_instance_id = ColumnString(record, 0);
   deposit.value = ColumnDouble(record, 1);
-  deposit.expire_at = ToTimeFromChromeTimestamp(ColumnInt64(record, 2));
+  const base::Time expire_at =
+      ToTimeFromChromeTimestamp(ColumnInt64(record, 2));
+  if (!expire_at.is_null()) {
+    deposit.expire_at = expire_at;
+  }
 
   return deposit;
 }

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_DEPOSIT_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_DEPOSIT_INFO_H_
 
+#include <optional>
 #include <string>
 
 #include "base/time/time.h"
@@ -17,7 +18,7 @@ struct DepositInfo final {
 
   std::string creative_instance_id;
   double value = 0.0;
-  base::Time expire_at;
+  std::optional<base::Time> expire_at;
 };
 
 }  // namespace brave_ads
