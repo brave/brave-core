@@ -136,6 +136,8 @@ void RedeemPaymentTokens::SuccessfullyRedeemed(
 }
 
 void RedeemPaymentTokens::FailedToRedeem(const bool should_retry) {
+  is_redeeming_ = false;
+
   NotifyFailedToRedeemPaymentTokens();
 
   if (should_retry) {
@@ -167,8 +169,6 @@ void RedeemPaymentTokens::Retry() {
 
 void RedeemPaymentTokens::RetryCallback() {
   BLOG(1, "Retry redeeming payment tokens");
-
-  is_redeeming_ = false;
 
   NotifyDidRetryRedeemingPaymentTokens();
 
