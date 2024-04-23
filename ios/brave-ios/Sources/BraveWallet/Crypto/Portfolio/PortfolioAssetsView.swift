@@ -111,25 +111,15 @@ struct PortfolioAssetsView: View {
   /// Builds the list of assets without any grouping or expandable / collapse behaviour.
   @ViewBuilder private func ungroupedAssets(_ group: AssetGroupViewModel) -> some View {
     ForEach(group.assets) { asset in
-      Button {
-        selectedToken = asset.token
-      } label: {
-        PortfolioAssetView(
-          image: AssetIconView(
-            token: asset.token,
-            network: asset.network,
-            shouldShowNetworkIcon: true
-          ),
-          title: asset.token.name,
-          symbol: asset.token.symbol,
-          networkName: asset.network.chainName,
-          amount: asset.fiatAmount(currencyFormatter: portfolioStore.currencyFormatter),
-          quantity: asset.quantity,
-          shouldHideBalance: true
-        )
-      }
+      FungibleAssetButton(
+        asset: asset,
+        shouldShowContainerForBitcoin: true,
+        currencyFormatter: portfolioStore.currencyFormatter,
+        action: { token in
+          selectedToken = token
+        }
+      )
     }
-    .padding(.horizontal)
   }
 
   /// Builds the expandable/collapseable (expanded by default) section content for a given group.
@@ -145,23 +135,14 @@ struct PortfolioAssetsView: View {
       content: {
         LazyVStack(spacing: 8) {
           ForEach(group.assets) { asset in
-            Button {
-              selectedToken = asset.token
-            } label: {
-              PortfolioAssetView(
-                image: AssetIconView(
-                  token: asset.token,
-                  network: asset.network,
-                  shouldShowNetworkIcon: true
-                ),
-                title: asset.token.name,
-                symbol: asset.token.symbol,
-                networkName: asset.network.chainName,
-                amount: asset.fiatAmount(currencyFormatter: portfolioStore.currencyFormatter),
-                quantity: asset.quantity,
-                shouldHideBalance: true
-              )
-            }
+            FungibleAssetButton(
+              asset: asset,
+              shouldShowContainerForBitcoin: false,
+              currencyFormatter: portfolioStore.currencyFormatter,
+              action: { token in
+                selectedToken = token
+              }
+            )
           }
         }
       },

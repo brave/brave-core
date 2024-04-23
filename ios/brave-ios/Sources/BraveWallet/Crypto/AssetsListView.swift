@@ -9,6 +9,9 @@ import SwiftUI
 struct AssetsListView: View {
 
   let assets: [AssetViewModel]
+  /// If a container should be shown to around unavailable balance banner
+  /// for Bitcoin asset row (when there is a pending balance)
+  let shouldShowContainerForBitcoin: Bool
   let currencyFormatter: NumberFormatter
   let selectedAsset: (BraveWallet.BlockchainToken) -> Void
 
@@ -19,27 +22,16 @@ struct AssetsListView: View {
           emptyAssetsState
         } else {
           ForEach(assets) { asset in
-            Button {
-              selectedAsset(asset.token)
-            } label: {
-              PortfolioAssetView(
-                image: AssetIconView(
-                  token: asset.token,
-                  network: asset.network,
-                  shouldShowNetworkIcon: true
-                ),
-                title: asset.token.name,
-                symbol: asset.token.symbol,
-                networkName: asset.network.chainName,
-                amount: asset.fiatAmount(currencyFormatter: currencyFormatter),
-                quantity: asset.quantity,
-                shouldHideBalance: true
-              )
-            }
+            FungibleAssetButton(
+              asset: asset,
+              shouldShowContainerForBitcoin: shouldShowContainerForBitcoin,
+              currencyFormatter: currencyFormatter,
+              action: selectedAsset
+            )
           }
         }
       }
-      .padding()
+      .padding(.vertical)
     }
     .background(Color(braveSystemName: .containerBackground))
   }

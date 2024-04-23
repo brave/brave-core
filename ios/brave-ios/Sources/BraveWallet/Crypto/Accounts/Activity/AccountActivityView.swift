@@ -326,6 +326,7 @@ private struct AssetsListDetailView: View {
   var body: some View {
     AssetsListView(
       assets: store.userAssets,
+      shouldShowContainerForBitcoin: false,
       currencyFormatter: store.currencyFormatter,
       selectedAsset: { asset in
         assetForDetails = asset

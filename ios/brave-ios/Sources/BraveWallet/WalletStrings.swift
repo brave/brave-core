@@ -5509,5 +5509,54 @@ extension Strings {
       comment:
         "The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names."
     )
+    public static let btcPendingBalancesBannerDesc = NSLocalizedString(
+      "wallet.btcPendingBalancesBannerDesc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Some balances may be unavailable",
+      comment: "Banner description displayed below BTC rows displaying balance when there is a pending BTC balance."
+    )
+    public static let btcAvailableBalanceTitle = NSLocalizedString(
+      "wallet.btcAvailableBalanceTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Available",
+      comment: "Title displayed in row beside users available BTC balance."
+    )
+    public static let btcAvailableBalanceDesc = NSLocalizedString(
+      "wallet.btcAvailableBalanceDesc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Funds available for you to use.",
+      comment: "Description displayed in row beside users available balance."
+    )
+    public static let btcPendingBalanceTitle = NSLocalizedString(
+      "wallet.btcPendingBalanceTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Pending",
+      comment: "Title displayed in row beside users pending BTC balance."
+    )
+    public static let btcPendingBalanceDesc = NSLocalizedString(
+      "wallet.btcPendingBalanceDesc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "A pending change in your wallet balance.",
+      comment: "Description displayed in row beside users pending balance."
+    )
+    public static let btcTotalBalanceTitle = NSLocalizedString(
+      "wallet.btcTotalBalanceTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Total",
+      comment: "Title displayed in row beside users total BTC balance."
+    )
+    public static let btcTotalBalanceDesc = NSLocalizedString(
+      "wallet.btcTotalBalanceDesc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Your available funds plus any not-yet-confirmed transactions.",
+      comment: "Description displayed in row beside users total balance."
+    )
   }
 }

@@ -53,6 +53,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private var tokenPricesCache: [String: String] = [:]
   private var nftMetadataCache: [String: NFTMetadata] = [:]
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
+  private var btcBalancesCache: [BTCBalanceType: Double] = [:]
 
   private var keyringServiceObserver: KeyringServiceObserver?
   private var rpcServiceObserver: JsonRpcServiceObserver?
@@ -205,7 +206,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         userNetworkAssets: allUserNetworkAssets,
         tokenBalances: tokenBalanceCache,
         tokenPrices: tokenPricesCache,
-        nftMetadata: nftMetadataCache
+        nftMetadata: nftMetadataCache,
+        btcBalances: btcBalancesCache
       )
       let allAccountsForCoin = await keyringService.allAccounts().accounts.filter {
         $0.coin == account.coin
@@ -233,13 +235,13 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         let networkAsset = allUserNetworkAssets.first {
           $0.network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
         }
-        if let btc = networkAsset?.tokens.first,
-          let btcBalance = await self.bitcoinWalletService.fetchBTCBalance(
-            accountId: account.accountId,
-            type: .total
-          )
+        btcBalancesCache = await self.bitcoinWalletService.fetchBTCBalances(
+          accountId: account.accountId
+        )
+        if let btcToken = networkAsset?.tokens.first,
+          let btcTotalBalance = btcBalancesCache[.total]
         {
-          tokenBalances = [btc.id: btcBalance]
+          tokenBalances = [btcToken.id: btcTotalBalance]
         }
       } else {
         tokenBalances = await self.rpcService.fetchBalancesForTokens(
@@ -276,7 +278,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         userNetworkAssets: allUserNetworkAssets,
         tokenBalances: tokenBalanceCache,
         tokenPrices: tokenPricesCache,
-        nftMetadata: nftMetadataCache
+        nftMetadata: nftMetadataCache,
+        btcBalances: btcBalancesCache
       )
       self.transactionSections = buildTransactionSections(
         transactions: transactions,
@@ -301,7 +304,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         userNetworkAssets: allUserNetworkAssets,
         tokenBalances: tokenBalanceCache,
         tokenPrices: tokenPricesCache,
-        nftMetadata: nftMetadataCache
+        nftMetadata: nftMetadataCache,
+        btcBalances: btcBalancesCache
       )
       self.transactionSections = buildTransactionSections(
         transactions: transactions,
@@ -367,7 +371,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     userNetworkAssets: [NetworkAssets],
     tokenBalances: [String: Double],
     tokenPrices: [String: String],
-    nftMetadata: [String: NFTMetadata]
+    nftMetadata: [String: NFTMetadata],
+    btcBalances: [BTCBalanceType: Double]
   ) -> ([AssetViewModel], [NFTAssetViewModel]) {
     var updatedUserAssets: [AssetViewModel] = []
     var updatedUserNFTs: [NFTAssetViewModel] = []
@@ -395,7 +400,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
               network: networkAssets.network,
               price: tokenPrices[token.assetRatioId.lowercased()] ?? "",
               history: [],
-              balanceForAccounts: [account.id: tokenBalances[token.id] ?? 0]
+              balanceForAccounts: [account.id: tokenBalances[token.id] ?? 0],
+              btcBalances: token.coin == .btc ? [account.id: btcBalancesCache] : [:]
             )
           )
         }
