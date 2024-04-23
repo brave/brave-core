@@ -137,8 +137,6 @@ export const ExploreWeb3View = () => {
     return Array.from(categories)
   }, [topDapps])
 
-  console.log(dappCategories)
-
   // render
   if (isLoading || !topDapps) {
     return (
@@ -182,7 +180,7 @@ export const ExploreWeb3View = () => {
           />
         ) : (
           <Row>
-            <h2>{getLocale('braveWalletNoDappsFounds')}</h2>
+            <h2>{getLocale('braveWalletNoDappsFound')}</h2>
           </Row>
         )}
       </Column>

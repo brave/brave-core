@@ -71,7 +71,7 @@ export const CategoryCheckboxes = (props: Props) => {
             key={category}
           >
             <Checkbox
-              checked={isCategoryFilteredOut(category)}
+              checked={!isCategoryFilteredOut(category)}
               onChange={() => onCheckCategory(category)}
             >
               <CheckboxText
