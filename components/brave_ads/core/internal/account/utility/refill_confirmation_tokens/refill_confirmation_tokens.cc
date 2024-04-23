@@ -283,6 +283,8 @@ void RefillConfirmationTokens::SuccessfullyRefilled() {
 }
 
 void RefillConfirmationTokens::FailedToRefill(const bool should_retry) {
+  is_refilling_ = false;
+
   NotifyFailedToRefillConfirmationTokens();
 
   if (should_retry) {
