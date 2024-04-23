@@ -209,7 +209,14 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if #available(iOS 17.4, *) {
-      if requestURL.scheme == MarketplaceKitURIScheme {
+      if requestURL.scheme == MarketplaceKitURIScheme,
+        let queryItems = URLComponents(url: requestURL, resolvingAgainstBaseURL: false)?.queryItems,
+        let adpURL = queryItems.first(where: {
+          $0.name.caseInsensitiveCompare("alternativeDistributionPackage") == .orderedSame
+        })?.value?.asURL,
+        navigationAction.sourceFrame.isMainFrame,
+        adpURL.baseDomain == navigationAction.sourceFrame.request.url?.baseDomain
+      {
         return (.allow, preferences)
       }
     }
