@@ -6,25 +6,17 @@
 import 'chrome://resources/brave/leo.bundle.js'
 
 import {getHtml} from './cr_button.html.js';
-import {getCss} from './cr_button.css';
 import {CrLitElement} from '//resources/lit/v3_0/lit.rollup.js';
 import type {PropertyValues} from '//resources/lit/v3_0/lit.rollup.js';
 
-export interface CrButtonElement {
-  $: {
+export class CrButtonElement extends CrLitElement {
+  override $: {
     button: HTMLElement,
     prefixIcon: HTMLSlotElement,
     suffixIcon: HTMLSlotElement,
   };
-}
-
-export class CrButtonElement extends CrLitElement {
   static get is() {
     return 'cr-button';
-  }
-
-  static override get styles() {
-    return getCss();
   }
 
   override render() {
@@ -79,10 +71,10 @@ export class CrButtonElement extends CrLitElement {
   }
 }
 
-// declare global {
-//   interface HTMLElementTagNameMap {
-//     'cr-button': CrButtonElement;
-//   }
-// }
+declare global {
+  interface HTMLElementTagNameMap {
+    'cr-button': any;
+  }
+}
 
-customElements.define(CrButtonElement.is, CrButtonElement);
+customElements.define(CrButtonElement.is, CrButtonElement as any);

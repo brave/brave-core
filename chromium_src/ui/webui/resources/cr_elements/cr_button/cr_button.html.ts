@@ -5,7 +5,7 @@
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js';
 
-import type { CrButtonElement } from "./cr_button"
+import type { CrButtonElement } from "./cr_button.ts"
 
 export function getHtml(this: CrButtonElement) {
   return html`
