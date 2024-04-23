@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "content/public/browser/browser_thread.h"
 #include "tools/json_schema_compiler/util.h"
 
 namespace {
@@ -167,9 +168,9 @@ std::optional<std::vector<std::string>> ParseMeldErrorResponse(
   return errors;
 }
 
-std::optional<std::vector<mojom::MeldCryptoQuotePtr>> ParseCryptoQuotes(
-    const base::Value& json_value,
-    std::string* error) {
+std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
+           std::optional<std::string>>
+ParseCryptoQuotes(const base::Value& json_value) {
   // Parses results like this:
   // {
   //   "quotes": [
@@ -195,20 +196,22 @@ std::optional<std::vector<mojom::MeldCryptoQuotePtr>> ParseCryptoQuotes(
   //   "message": null,
   //   "error": null
   // }
-  DCHECK(error);
+  std::optional<std::string> error;
   const auto quote_resp_value =
       meld_integration_responses::CryptoQuoteResponse::FromValue(json_value);
   if (!quote_resp_value) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
-    return std::nullopt;
+    return std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
+                      std::optional<std::string>>{std::nullopt, error};
   }
 
   if (quote_resp_value->error) {
-    *error = *quote_resp_value->error;
+    error = *quote_resp_value->error;
   }
 
   if (!quote_resp_value->quotes) {
-    return std::nullopt;
+    return std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
+                      std::optional<std::string>>{std::nullopt, error};
   }
 
   std::vector<mojom::MeldCryptoQuotePtr> quotes;
@@ -227,10 +230,12 @@ std::optional<std::vector<mojom::MeldCryptoQuotePtr>> ParseCryptoQuotes(
   }
 
   if (quotes.empty()) {
-    return std::nullopt;
+    return std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
+                      std::optional<std::string>>{std::nullopt, error};
   }
 
-  return quotes;
+  return std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
+                    std::optional<std::string>>{std::move(quotes), error};
 }
 
 std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
@@ -378,6 +383,7 @@ std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
   //     "regions": null
   //   }
   // ]
+  LOG(INFO) << "[MELD] isUI:" << content::BrowserThread::CurrentlyOn(content::BrowserThread::UI);
   if (!json_value.is_list()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;

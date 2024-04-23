@@ -24,6 +24,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "base/task/thread_pool.h"
 
 namespace {
 
@@ -196,16 +197,30 @@ void MeldIntegrationService::OnGetServiceProviders(
     return;
   }
 
-  auto service_providers =
-      ParseServiceProviders(api_request_result.value_body());
-  if (!service_providers) {
-    std::move(callback).Run(
-        std::nullopt, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-    return;
-  }
+  base::ThreadPool::PostTaskAndReplyWithResult(
+    FROM_HERE,
+    base::BindOnce(&ParseServiceProviders, api_request_result.TakeBody()),
+    base::BindOnce(
+        [](base::WeakPtr<const MeldIntegrationService>
+                meld_integration_service,  //
+            GetServiceProvidersCallback reply_callback,
+            std::optional<std::vector<mojom::MeldServiceProviderPtr>>
+                service_providers) {
+          if (!meld_integration_service) {
+            return;
+          }
 
-  std::move(callback).Run(std::move(service_providers), std::nullopt);
+          if (!service_providers) {
+            std::move(reply_callback)
+                .Run(std::nullopt,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+            return;
+          }
+          std::move(reply_callback)
+              .Run(std::move(service_providers), std::nullopt);
+        },
+        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void MeldIntegrationService::GetCryptoQuotes(
@@ -258,21 +273,36 @@ void MeldIntegrationService::OnGetCryptoQuotes(
     return;
   }
 
-  std::optional<std::vector<std::string>> errors;
-  std::string error;
-  auto quotes = ParseCryptoQuotes(api_request_result.value_body(), &error);
-  if (!quotes) {
-    errors = std::vector<std::string>{
-        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)};
-    std::move(callback).Run(std::nullopt, errors);
-    return;
-  }
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&ParseCryptoQuotes, api_request_result.TakeBody()),
+      base::BindOnce(
+          [](base::WeakPtr<const MeldIntegrationService>
+                 meld_integration_service,  
+             GetCryptoQuotesCallback reply_callback,
+             std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>, std::optional<std::string>> quotes_result) {
+            if (!meld_integration_service) {
+              return;
+            }
 
-  if (!error.empty()) {
-    errors = std::vector<std::string>{error};
-  }
+            if (!std::get<0>(quotes_result)) {
+              std::move(reply_callback)
+                  .Run(std::nullopt,
+                       std::vector<std::string>{
+                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+              return;
+            }
 
-  std::move(callback).Run(std::move(quotes), errors);
+            std::optional<std::vector<std::string>> errors;
+            if (std::optional<std::string> error = std::get<1>(quotes_result)) {
+              errors = std::vector<std::string>{*error};
+            }
+
+            auto& quotes = std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(quotes_result);
+            
+            std::move(reply_callback).Run(std::move(quotes), errors);
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 // static
@@ -330,15 +360,30 @@ void MeldIntegrationService::OnGetPaymentMethods(
     return;
   }
 
-  auto payment_methods = ParsePaymentMethods(api_request_result.value_body());
-  if (!payment_methods) {
-    std::move(callback).Run(
-        std::nullopt, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-    return;
-  }
+  base::ThreadPool::PostTaskAndReplyWithResult(
+    FROM_HERE,
+    base::BindOnce(&ParsePaymentMethods, api_request_result.TakeBody()),
+    base::BindOnce(
+        [](base::WeakPtr<const MeldIntegrationService>
+                meld_integration_service,  //
+            GetPaymentMethodsCallback reply_callback,
+            std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
+                payment_methods) {
+          if (!meld_integration_service) {
+            return;
+          }
 
-  std::move(callback).Run(std::move(payment_methods), std::nullopt);
+          if (!payment_methods) {
+            std::move(reply_callback)
+                .Run(std::nullopt,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+            return;
+          }
+          std::move(reply_callback)
+              .Run(std::move(payment_methods), std::nullopt);
+        },
+        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 // static
@@ -396,15 +441,30 @@ void MeldIntegrationService::OnGetFiatCurrencies(
     return;
   }
 
-  auto fiat_currencies = ParseFiatCurrencies(api_request_result.value_body());
-  if (!fiat_currencies) {
-    std::move(callback).Run(
-        std::nullopt, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-    return;
-  }
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&ParseFiatCurrencies, api_request_result.TakeBody()),
+      base::BindOnce(
+          [](base::WeakPtr<const MeldIntegrationService>
+                 meld_integration_service,  //
+             GetFiatCurrenciesCallback reply_callback,
+             std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
+                 fiat_currencies) {
+            if (!meld_integration_service) {
+              return;
+            }
 
-  std::move(callback).Run(std::move(fiat_currencies), std::nullopt);
+            if (!fiat_currencies) {
+              std::move(reply_callback)
+                  .Run(std::nullopt,
+                       std::vector<std::string>{
+                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+              return;
+            }
+            std::move(reply_callback)
+                .Run(std::move(fiat_currencies), std::nullopt);
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 // static
@@ -464,16 +524,30 @@ void MeldIntegrationService::OnGetCryptoCurrencies(
     return;
   }
 
-  auto crypto_currencies =
-      ParseCryptoCurrencies(api_request_result.value_body());
-  if (!crypto_currencies) {
-    std::move(callback).Run(
-        std::nullopt, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-    return;
-  }
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&ParseCryptoCurrencies, api_request_result.TakeBody()),
+      base::BindOnce(
+          [](base::WeakPtr<const MeldIntegrationService>
+                 meld_integration_service,  //
+             GetCryptoCurrenciesCallback reply_callback,
+             std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
+                 crypto_currencies) {
+            if (!meld_integration_service) {
+              return;
+            }
 
-  std::move(callback).Run(std::move(crypto_currencies), std::nullopt);
+            if (!crypto_currencies) {
+              std::move(reply_callback)
+                  .Run(std::nullopt,
+                       std::vector<std::string>{
+                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+              return;
+            }
+            std::move(reply_callback)
+                .Run(std::move(crypto_currencies), std::nullopt);
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 // static
@@ -530,14 +604,27 @@ void MeldIntegrationService::OnGetCountries(
     return;
   }
 
-  auto countries = ParseCountries(api_request_result.value_body());
-  if (!countries) {
-    std::move(callback).Run(
-        std::nullopt, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-    return;
-  }
-  std::move(callback).Run(std::move(countries), std::nullopt);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&ParseCountries, api_request_result.TakeBody()),
+      base::BindOnce(
+          [](base::WeakPtr<const MeldIntegrationService>
+                 meld_integration_service,  //
+             GetCountriesCallback reply_callback,
+             std::optional<std::vector<mojom::MeldCountryPtr>> countries) {
+            if (!meld_integration_service) {
+              return;
+            }
+
+            if (!countries) {
+              std::move(reply_callback)
+                  .Run(std::nullopt,
+                       std::vector<std::string>{
+                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+              return;
+            }
+            std::move(reply_callback).Run(std::move(countries), std::nullopt);
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 }  // namespace brave_wallet

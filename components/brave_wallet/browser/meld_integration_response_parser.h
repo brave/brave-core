@@ -19,9 +19,9 @@ std::optional<std::vector<std::string>> ParseMeldErrorResponse(
     const base::Value& json_value);
 std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
     const base::Value& json_value);
-std::optional<std::vector<mojom::MeldCryptoQuotePtr>> ParseCryptoQuotes(
-    const base::Value& json_value,
-    std::string* error);
+std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
+           std::optional<std::string>>
+ParseCryptoQuotes(const base::Value& json_value);
 std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
     const base::Value& json_value);
 std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> ParseFiatCurrencies(
