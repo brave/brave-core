@@ -234,7 +234,7 @@ export default {
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
       const currentModel = MODELS.find(m => m.name === options.args.model)
-      const [inputText, setInputText_] = useState('')
+      const [inputText, setInputTextInternal] = useState('')
       const [selectedActionType, setSelectedActionType] = useState<mojom.ActionType | undefined>(undefined)
       const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false)
       const [actionsList, setActionsList] = useState(ACTIONS_LIST)
@@ -257,7 +257,7 @@ export default {
       }
 
       const setInputText = (text: string) => {
-        setInputText_(text)
+        setInputTextInternal(text)
 
         if (text.startsWith('/')) {
           setIsToolsMenuOpen(true)

@@ -94,12 +94,12 @@ function ActionTypeLabel (props: ActionTypeLabelProps) {
 
   let removeButtonElement = null
 
-  if (props?.removable) {
+  if (props.removable) {
     removeButtonElement = (
       <Button
         className={styles.removeButton} kind="plain-faint"
         title="remove action"
-        onClick={props?.onCloseClick}
+        onClick={props.onCloseClick}
       >
         <Icon name="close"/>
       </Button>

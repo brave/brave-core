@@ -87,7 +87,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
   const [showAgreementModal, setShowAgreementModal] = React.useState(false)
   const [shouldSendPageContents, setShouldSendPageContents] = React.useState(true)
-  const [inputText, setInputText_] = React.useState('')
+  const [inputText, setInputTextInternal] = React.useState('')
   const [selectedActionType, setSelectedActionType] = React.useState<mojom.ActionType | undefined>()
   const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
   const [actionsList, setActionsList] = React.useState(ACTIONS_LIST)
@@ -253,7 +253,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const setInputText = (text: string) => {
-    setInputText_(text)
+    setInputTextInternal(text)
 
     if (text.startsWith('/')) {
       setIsToolsMenuOpen(true)

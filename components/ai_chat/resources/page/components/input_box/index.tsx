@@ -22,12 +22,12 @@ function InputBox() {
     context.setInputText(e.target.value)
   }
 
-  const handleSubmit = (e: CustomEvent<any>) => {
+  const handleSubmit = (e: PointerEvent) => {
     e.preventDefault()
     context.submitInputTextToAPI()
   }
 
-  const handleMic = (e: CustomEvent<any>) => {
+  const handleMic = (e: PointerEvent) => {
     e.preventDefault()
     getPageHandlerInstance().pageHandler.handleVoiceRecognition()
   }
@@ -50,7 +50,7 @@ function InputBox() {
     }
   }
 
-  const handleFocus = (node: HTMLTextAreaElement | null) => {
+  const maybeAutofocus = (node: HTMLTextAreaElement | null) => {
     if (node && context.selectedActionType) {
       node.focus()
     }
@@ -72,7 +72,7 @@ function InputBox() {
         data-replicated-value={context.inputText}
       >
         <textarea
-          ref={handleFocus}
+          ref={maybeAutofocus}
           placeholder={getLocale('placeholderLabel')}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
@@ -98,14 +98,13 @@ function InputBox() {
             kind='plain-faint'
             onClick={() => context.setIsToolsMenuOpen(!context.isToolsMenuOpen)}
           >
-          <div
-            className={classnames({
-              [styles.slashIconActive]: context.isToolsMenuOpen
-            })}
-          >
-            <Icon name='slash' />
-          </div>
-        </Button>
+            <Icon
+              className={classnames({
+                [styles.slashIconActive]: context.isToolsMenuOpen
+              })}
+              name='slash'
+            />
+          </Button>
           {context.isMobile && (
             <Button
               kind='plain-faint'
