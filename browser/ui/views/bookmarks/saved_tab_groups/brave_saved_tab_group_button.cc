@@ -38,6 +38,17 @@ void BraveSavedTabGroupButton::Initialize() {
 }
 
 void BraveSavedTabGroupButton::UpdateButtonLayout() {
+  // This seems called after this class is removed from widget.
+  // If a tab is added to existing group and that tab is the only
+  // tab in the current window, it seems that window is closed
+  // when that group is in another window during this adding.
+  // I think SavedTabGroupBar should stop observing SavedTabGroupModel
+  // when it's removed from widget but it's upstream code and upstream
+  // doesn't have this issue.
+  if (!GetWidget()) {
+    return;
+  }
+
   auto* cp = GetColorProvider();
 
   // Note that upstream uses separate color IDs for the button background,
