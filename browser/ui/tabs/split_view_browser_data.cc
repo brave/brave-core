@@ -44,13 +44,16 @@ void SplitViewBrowserData::TileTabs(const Tile& tile) {
   tile_index_for_tab_[tile.second] = tiles_.size() - 1;
 
   if (tab_strip_model_adapter_) {
-    const bool synchronized_group =
-        model &&
-        tab_strip_model_adapter_->SynchronizeGroupedState(
-            tile, /*source=*/tile.first,
-            model->GetTabGroupForTab(model->GetIndexOfTab(tile.first)));
+    bool tabs_are_adjacent = false;
+    if (model) {
+      tabs_are_adjacent =
+          tab_strip_model_adapter_->SynchronizePinnedState(tile, tile.first);
+      tabs_are_adjacent |= tab_strip_model_adapter_->SynchronizeGroupedState(
+          tile, /*source=*/tile.first,
+          model->GetTabGroupForTab(model->GetIndexOfTab(tile.first)));
+    }
 
-    if (!synchronized_group) {
+    if (!tabs_are_adjacent) {
       tab_strip_model_adapter_->MakeTiledTabsAdjacent(tile);
     }
   }

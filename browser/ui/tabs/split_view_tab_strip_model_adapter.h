@@ -27,6 +27,8 @@ class SplitViewTabStripModelAdapter : public TabStripModelObserver {
   bool SynchronizeGroupedState(const SplitViewBrowserData::Tile& tile,
                                const tabs::TabHandle& source,
                                std::optional<tab_groups::TabGroupId> group);
+  bool SynchronizePinnedState(const SplitViewBrowserData::Tile& tile,
+                              const tabs::TabHandle& source);
 
   void TabDragStarted();
   void TabDragEnded();
