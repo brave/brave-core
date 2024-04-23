@@ -1159,7 +1159,7 @@ interface AssetRatioService {
 };
 
 interface MeldIntegrationService {
-  // Obtains the list of Setvice Providers
+  // Obtains the list of Service Providers
   // All parameters are optional
   GetServiceProviders(MeldFilter? filter)
     => (array<MeldServiceProvider>? service_providers, array<string>? error);
