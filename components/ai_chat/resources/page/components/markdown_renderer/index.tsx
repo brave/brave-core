@@ -87,7 +87,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
           },
           code: (props) => {
             const { children, className } = props
-            const match = /language-(\w+)/.exec(className || '')
+            const match = /language-([^ ]+)/.exec(className || '')
             return match ? (
               <React.Suspense fallback={'...'}>
                 <CodeBlock
