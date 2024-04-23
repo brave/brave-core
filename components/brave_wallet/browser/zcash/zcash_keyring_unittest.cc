@@ -9,9 +9,11 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -180,6 +182,11 @@ TEST(ZCashKeyringUnitTest, GetPubkey) {
 #if BUILDFLAG(ENABLE_ORCHARD)
 
 TEST(ZCashKeyringUnitTest, GetShieldedAddress) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
   ZCashKeyring keyring(
       std::vector<uint8_t>({0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                             0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
@@ -200,6 +207,11 @@ TEST(ZCashKeyringUnitTest, GetShieldedAddress) {
 }
 
 TEST(ZCashKeyringUnitTest, GetUnifiedAddress) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
   ZCashKeyring keyring(
       std::vector<uint8_t>({0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                             0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
