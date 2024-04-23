@@ -784,8 +784,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP" desc="Text of sidebar add item button tooltip">
           Add to Sidebar
         </message>
+        <message name="IDS_SIDEBAR_BOOKMARKS_PANEL_HEADER_TITLE" desc="Text of bookmarks panel header">
+          bookmarks
+        </message>
         <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_TITLE" desc="Text of readling list panel header">
-          Reading List
+          reading list
         </message>
         <message name="IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP" desc="Text of side panel's close button">
           Close

@@ -346,7 +346,7 @@ function PlaylistsCatalogHeader () {
     <>
       <GradientIcon name='product-playlist-bold-add-color' />
       <ProductNameContainer>
-        <ColoredSpan color={color.text.primary}>Playlist</ColoredSpan>
+        <ColoredSpan color={color.text.primary}>playlist</ColoredSpan>
       </ProductNameContainer>
       <NewPlaylistButton />
       <SettingButton />
