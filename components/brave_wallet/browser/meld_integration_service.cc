@@ -68,14 +68,8 @@ base::flat_map<std::string, std::string> MakeMeldApiHeaders() {
 constexpr char kDefaultMeldStatuses[] = "LIVE,RECENTLY_ADDED";
 
 std::optional<std::string> SanitizeJson(const std::string& json) {
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(json, ""));
-  if (converted_json.empty()) {
-    return std::nullopt;
-  }
-
-  converted_json =
-      std::string(json::remove_all_null_values(converted_json, ""));
+  auto converted_json = std::string(
+      json::convert_all_numbers_to_string_and_remove_null_values(json, ""));
   if (converted_json.empty()) {
     return std::nullopt;
   }

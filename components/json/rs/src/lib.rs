@@ -18,7 +18,7 @@ mod ffi {
             json: &str,
         ) -> String;
         fn convert_all_numbers_to_string(json: &str, path: &str) -> String;
-        fn remove_all_null_values(json: &str, path: &str) -> String;
+        fn convert_all_numbers_to_string_and_remove_null_values(json: &str, path: &str) -> String;
     }
 }
 
@@ -331,12 +331,14 @@ pub fn convert_all_numbers_to_string(json: &str, path: &str) -> String {
         .unwrap_or_else(|_| "".into())
 }
 
-/// Parses and re-serializes json with all 'null' valued properties
-/// removed, applied recursively at the specified path.
+/// Parses and re-serializes json with all numbers (`u64`/`i64`/`f64`)
+/// and 'null' valued properties removed, applied recursively
+/// at the specified path.
 ///
-/// Non `null` valued properties are unchanged. The fields could be
-/// arbitrarily nested, as the conversion is applied to the entire JSON
-/// recursively. Returns an empty String if such conversion is not possible.
+/// Non `null` and other than `u64`/`i64`/`f64` values are unchanged.
+/// The fields could be arbitrarily nested, as the conversion is applied
+/// to the entire JSON recursively. Returns an empty String if such
+/// conversion is not possible.
 ///
 /// # Arguments
 /// * `json` - A arbitrary JSON string
@@ -346,16 +348,20 @@ pub fn convert_all_numbers_to_string(json: &str, path: &str) -> String {
 /// # Examples
 ///
 /// ```js
-/// json={"a":1, "b":null, "c":"string"}, path="" -> {"a":1,"c":"string"}
+/// json={"a":1, "b":null, "c":"string"}, path="" -> {"a":"1","c":"string"}
 ///
 /// json={"a":1,"b":[{"bai1":1},{"bai2":null},{"bai3":"3"}],"c":"string",
-/// "d": null}, path="/b" -> {"a":1,"b":[{"bai1":1},{"bai3":"3"}],
+/// "d": null}, path="/b" -> {"a":"1","b":[{"bai1":"1"},{"bai3":"3"}],
 /// "c":"string","d":null}
 /// ```
-pub fn remove_all_null_values(json: &str, path: &str) -> String {
+pub fn convert_all_numbers_to_string_and_remove_null_values(json: &str, 
+    path: &str) -> String {
     use serde_json::Value;
     fn convert_recursively(value: &mut Value) {
         match value {
+            Value::Number(n) if n.is_u64() || n.is_i64() || n.is_f64() => {
+                *value = Value::String(n.to_string());
+            }
             Value::Object(map) => {
                 map.retain(|_, val| {
                     if !val.is_null() {
@@ -364,7 +370,7 @@ pub fn remove_all_null_values(json: &str, path: &str) -> String {
                     }
                     return false;
                 });
-            }
+            },
             Value::Array(vec) => {
                 for vec_item in vec.iter_mut() {
                     convert_recursively(vec_item);
@@ -375,7 +381,7 @@ pub fn remove_all_null_values(json: &str, path: &str) -> String {
                     }
                     return true;
                 });
-            }
+            },
             _ => ()
         }
     }
