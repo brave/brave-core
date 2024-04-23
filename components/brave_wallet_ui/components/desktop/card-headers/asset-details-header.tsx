@@ -179,7 +179,6 @@ export const AssetDetailsHeader = (props: Props) => {
     >
       <Row width='unset'>
         <MenuButton
-          size={28}
           marginRight={16}
           onClick={onBack}
         >

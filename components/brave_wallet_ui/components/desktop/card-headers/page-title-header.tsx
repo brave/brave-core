@@ -40,7 +40,6 @@ export const PageTitleHeader = ({ title, showBackButton, onBack }: Props) => {
     >
       {showBackButton && (
         <MenuButton
-          size={28}
           marginRight={16}
           onClick={onBack}
         >

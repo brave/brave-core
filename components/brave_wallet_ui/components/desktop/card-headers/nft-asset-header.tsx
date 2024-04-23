@@ -55,7 +55,6 @@ export const NftAssetHeader = ({
         margin='0px 6px 0px 0px'
       >
         <MenuButton
-          size={28}
           marginRight={16}
           onClick={onBack}
         >
