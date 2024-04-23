@@ -10,7 +10,6 @@ import("//ui/webui/resources/include_polymer.gni")
 # for Nala components.
 brave_override_cr_elements = [
   "cr_toggle",
-  "cr_button",
 ]
 
 # Extra GRDPs to give //ui/webui/resources:build_grd

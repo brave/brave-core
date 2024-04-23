@@ -5,35 +5,43 @@
 
 import 'chrome://resources/brave/leo.bundle.js'
 
-import { PolymerElement } from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import { getTemplate } from './cr_button.html.js';
+import {getHtml} from './cr_button.html.js';
+import {getCss} from './cr_button.css';
+import {CrLitElement} from '//resources/lit/v3_0/lit.rollup.js';
+import type {PropertyValues} from '//resources/lit/v3_0/lit.rollup.js';
 
 export interface CrButtonElement {
   $: {
-    button: HTMLElement
+    button: HTMLElement,
+    prefixIcon: HTMLSlotElement,
+    suffixIcon: HTMLSlotElement,
   };
 }
 
-export class CrButtonElement extends PolymerElement {
+export class CrButtonElement extends CrLitElement {
   static get is() {
     return 'cr-button';
   }
 
-  static get template() {
-    return getTemplate();
+  static override get styles() {
+    return getCss();
   }
 
-  static get properties() {
+  override render() {
+    return getHtml.bind(this)();
+  }
+
+  static override get properties() {
     return {
       disabled: {
         type: Boolean,
         value: false,
-        reflectToAttribute: true,
+        reflect: true,
       },
       class: {
         type: String,
         value: '',
-        reflectToAttribute: true,
+        reflect: true,
         observer: 'classChanged_'
       }
     };
@@ -41,6 +49,14 @@ export class CrButtonElement extends PolymerElement {
 
   disabled: boolean;
   class: string;
+
+  override updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('class')) {
+      this.classChanged_()
+    }
+  }
 
   private onClick_(e: Event) {
     if (this.disabled) {
@@ -63,10 +79,10 @@ export class CrButtonElement extends PolymerElement {
   }
 }
 
-declare global {
-  interface HTMLElementTagNameMap {
-    'cr-button': CrButtonElement;
-  }
-}
+// declare global {
+//   interface HTMLElementTagNameMap {
+//     'cr-button': CrButtonElement;
+//   }
+// }
 
 customElements.define(CrButtonElement.is, CrButtonElement);
