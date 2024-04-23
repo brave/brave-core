@@ -14,7 +14,6 @@ struct FocusSplashScreenView: View {
     GeometryReader { geometry in
       ZStack {
         braveLogo
-          .scaleEffect(isShimmering ? 1.015 : 1.0)
           .overlay(
             self.linearGradientView
               .frame(width: geometry.size.width, height: 2 * geometry.size.height)
@@ -22,7 +21,6 @@ struct FocusSplashScreenView: View {
                 x: geometry.size.width / 2,
                 y: isShimmering ? 2 * geometry.size.height : -geometry.size.height
               )
-              .scaleEffect(isShimmering ? 1.015 : 1.0)
               .mask(
                 braveLogo
               )

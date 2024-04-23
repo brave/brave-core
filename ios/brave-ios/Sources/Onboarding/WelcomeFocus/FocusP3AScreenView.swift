@@ -26,7 +26,7 @@ struct FocusP3AScreenView: View {
     return horizontalSizeClass == .regular && verticalSizeClass == .regular
   }
 
-  private let dynamicTypeRange = (...DynamicTypeSize.xLarge)
+  private let dynamicTypeRange = (...DynamicTypeSize.large)
 
   init(
     attributionManager: AttributionManager? = nil,
@@ -93,11 +93,11 @@ struct FocusP3AScreenView: View {
       )
       .resizable()
       .frame(
-        width: shouldUseExtendedDesign ? 198 : 184,
-        height: shouldUseExtendedDesign ? 242 : 214
+        width: shouldUseExtendedDesign ? 198 : 172,
+        height: shouldUseExtendedDesign ? 242 : 204
       )
       .aspectRatio(contentMode: .fit)
-      .padding(.bottom, 24)
+      .padding(.bottom, 20)
 
       VStack {
         VStack(spacing: 8) {
@@ -160,12 +160,12 @@ struct FocusP3AScreenView: View {
           }
         )
         .padding(.horizontal, 20)
-        .padding(.bottom, 20)
+        .padding(.bottom, 8)
         .sheet(isPresented: $isP3AHelpPresented) {
           FocusSafariControllerView(url: FocusOnboardingConstants.p3aHelpArticle)
         }
       }
-      .padding(.horizontal, shouldUseExtendedDesign ? 72 : 20)
+      .padding(.horizontal, shouldUseExtendedDesign ? 72 : 12)
 
       Spacer()
 

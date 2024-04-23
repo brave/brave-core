@@ -13,24 +13,31 @@ struct FocusAdTrackerSliderContentView: View {
   @Environment(\.colorScheme) private var colorScheme
 
   @State private var progress: CGFloat = 0.75
+  @State private var opacity = 0.0
 
   var body: some View {
     SwipeDifferenceView(progress: $progress) {
-      Image("focus-website-ads", bundle: .module)
-        .overlay(
-          LottieAnimationView(
-            name: colorScheme == .dark ? "moving-ads-dark" : "moving-ads-light",
-            bundle: .module
-          )
-          .loopMode(.loop)
-          .resizable()
+      ZStack {
+        Image("focus-website-ads", bundle: .module)
+
+        LottieAnimationView(
+          name: colorScheme == .dark ? "moving-ads-dark" : "moving-ads-light",
+          bundle: .module
         )
+        .loopMode(.loop)
+        .resizable()
+        .opacity(opacity)
+      }
     } trailing: {
       Image("focus-website-noads", bundle: .module)
         .aspectRatio(contentMode: .fit)
     }
     .frame(maxWidth: .infinity)
     .onAppear {
+      withAnimation(.easeInOut(duration: 0.15).delay(2.0)) {
+        opacity = 1.0
+      }
+
       Timer.scheduledTimer(withTimeInterval: 2.5, repeats: false) { _ in
         withAnimation(.easeInOut(duration: 1.5)) {
           progress = 0.85
@@ -70,8 +77,10 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
   private enum HapticsLevel: Float {
     case none = 0
     case low = 0.20
+    case lowMedium = 0.35
     case medium = 0.50
-    case high = 0.70
+    case highMedium = 0.65
+    case high = 0.80
     case intense = 1.0
   }
 
@@ -83,6 +92,7 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
   @State private var hapticsEngine: CHHapticEngine?
   @State private var hapticsPlayer: CHHapticPatternPlayer?
   @State private var hapticsLevel: HapticsLevel = .intense
+  @State private var hapticsTimer: Timer?
 
   var leading: Leading
   var trailing: Trailing
@@ -133,8 +143,19 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
           }
         }
     }
-    .onAppear(perform: prepareSliderHaptics)
+    .onAppear {
+      prepareSliderHaptics()
+
+      Task.delayed(bySeconds: 2.5) { @MainActor in
+        hapticsTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { _ in
+          createRandomHapticEffect()
+        }
+        hapticsTimer?.tolerance = 0.1
+      }
+    }
     .onDisappear(perform: {
+      hapticsTimer?.invalidate()
+
       Task { @MainActor in
         await stopAllHaptics()
       }
@@ -250,18 +271,49 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
     let progressPercentage = Int(progress * 100)
 
     switch progressPercentage {
-    case 0:
+    case 0..<5:
       return .none
-    case 1..<21:
+    case 5..<25:
       return .low
-    case 21..<71:
+    case 25..<41:
+      return .lowMedium
+    case 41..<61:
       return .medium
-    case 71..<95:
+    case 61..<75:
+      return .highMedium
+    case 75..<95:
       return .high
     case 95..<100:
       return .intense
     default:
       return .high
+    }
+  }
+
+  private func createRandomHapticEffect() {
+    guard progress > 0.05 else {
+      return
+    }
+
+    let randomEffect = Int.random(in: 0..<8)
+
+    switch randomEffect {
+    case 1:
+      UINotificationFeedbackGenerator().vibrate(style: .warning)
+    case 2:
+      UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    case 3:
+      UINotificationFeedbackGenerator().vibrate(style: .error)
+    case 4:
+      UISelectionFeedbackGenerator().vibrate()
+    case 5:
+      UINotificationFeedbackGenerator().vibrate(style: .success)
+    case 6:
+      UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+    case 7:
+      UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    default:
+      UINotificationFeedbackGenerator().vibrate(style: .error)
     }
   }
 }

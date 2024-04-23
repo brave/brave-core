@@ -82,7 +82,7 @@ struct FocusStepsView: View {
         FocusStepsPagingIndicator(totalPages: 4, activeIndex: $indicatorIndex)
           .opacity(opacity)
           .onAppear {
-            withAnimation(.easeInOut(duration: 1.5).delay(1.25)) {
+            withAnimation(.easeInOut(duration: 1.0).delay(1.25)) {
               opacity = 1.0
             }
           }
@@ -171,7 +171,7 @@ struct FocusStepsView: View {
       }
       .opacity(opacity)
       .onAppear {
-        withAnimation(.easeInOut(duration: 1.5).delay(1.25)) {
+        withAnimation(.easeInOut(duration: 1.0).delay(1.25)) {
           opacity = 1.0
         }
       }
