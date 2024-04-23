@@ -97,6 +97,25 @@ extension BrowserViewController: WKNavigationDelegate {
         hideReaderModeBar(animated: false)
       }
     }
+
+    resetRedirectChain(webView)
+
+    // Append source URL to redirect chain
+    appendUrlToRedirectChain(webView)
+  }
+
+  fileprivate func resetRedirectChain(_ webView: WKWebView) {
+    if let tab = tab(for: webView) {
+      tab.redirectChain = []
+    }
+  }
+
+  fileprivate func appendUrlToRedirectChain(_ webView: WKWebView) {
+    // The redirect chain MUST be sorted by the order of redirects with the
+    // first URL being the source URL.
+    if let tab = tab(for: webView), let url = webView.url {
+      tab.redirectChain.append(url)
+    }
   }
 
   // Recognize an Apple Maps URL. This will trigger the native app. But only if a search query is present.
@@ -638,11 +657,14 @@ extension BrowserViewController: WKNavigationDelegate {
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
 
-    if let tab = tab,
-      let responseURL = responseURL,
-      InternalURL(responseURL)?.isSessionRestore == true
-    {
-      tab.shouldClassifyLoadsForAds = false
+    if let tab = tab {
+      if let responseURL = responseURL,
+        InternalURL(responseURL)?.isSessionRestore == true
+      {
+        tab.isTabSessionRestored = true
+      } else {
+        tab.isTabSessionRestored = false
+      }
     }
 
     var request: URLRequest?
@@ -959,13 +981,13 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       navigateInTab(tab: tab, to: navigation)
-      if let url = tab.url, tab.shouldClassifyLoadsForAds {
+      if !tab.isTabSessionRestored, tab.navigationType != WKNavigationType.backForward {
         rewards.reportTabUpdated(
           tab: tab,
-          url: url,
           isSelected: tabManager.selectedTab == tab,
           isPrivate: privateBrowsingManager.isPrivateBrowsing
         )
+        tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
       }
 
       Task {
@@ -973,11 +995,7 @@ extension BrowserViewController: WKNavigationDelegate {
         await tab.updateSolanaProperties()
       }
 
-      tab.reportPageLoad(to: rewards, redirectionURLs: tab.redirectURLs)
-      tab.redirectURLs = []
       if webView.url?.isLocal == false {
-        // Reset should classify
-        tab.shouldClassifyLoadsForAds = true
         // Set rewards inter site url as new page load url.
         rewardsXHRLoadURL = webView.url
       }
@@ -998,8 +1016,7 @@ extension BrowserViewController: WKNavigationDelegate {
     _ webView: WKWebView,
     didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!
   ) {
-    guard let tab = tab(for: webView), let url = webView.url, rewards.isEnabled else { return }
-    tab.redirectURLs.append(url)
+    appendUrlToRedirectChain(webView)
   }
 
   /// Invoked when an error occurs while starting to load data for the main frame.

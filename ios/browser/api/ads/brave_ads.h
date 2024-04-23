@@ -145,12 +145,10 @@ OBJC_EXPORT
                           base64Seed:(NSString*)base64Seed;
 
 - (void)notifyTabTextContentDidChange:(NSInteger)tabId
-                                  url:(NSURL*)url
                         redirectChain:(NSArray<NSURL*>*)redirectChain
                                  text:(NSString*)text;
 
 - (void)notifyTabHtmlContentDidChange:(NSInteger)tabId
-                                  url:(NSURL*)url
                         redirectChain:(NSArray<NSURL*>*)redirectChain
                                  html:(NSString*)html;
 
@@ -159,7 +157,6 @@ OBJC_EXPORT
 - (void)notifyTabDidStopPlayingMedia:(NSInteger)tabId;
 
 - (void)notifyTabDidChange:(NSInteger)tabId
-                       url:(NSURL*)url
              redirectChain:(NSArray<NSURL*>*)redirectChain
                isErrorPage:(BOOL)isErrorPage
                 isSelected:(BOOL)isSelected;

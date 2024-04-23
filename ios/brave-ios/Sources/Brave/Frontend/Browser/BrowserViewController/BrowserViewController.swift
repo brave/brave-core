@@ -1972,7 +1972,7 @@ public class BrowserViewController: UIViewController {
         {
           tabManager.selectedTab?.reportPageNavigation(to: rewards)
           // Not passing redirection chain here, in page navigation should not use them.
-          tabManager.selectedTab?.reportPageLoad(to: rewards, redirectionURLs: [])
+          tabManager.selectedTab?.reportPageLoad(to: rewards, redirectChain: [])
         }
       }
 
