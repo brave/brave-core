@@ -76,6 +76,7 @@ public class WebcompatReporter {
       case languages
       case languageFarblingEnabled
       case braveVPNEnabled
+      case channel
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -117,19 +118,10 @@ public class WebcompatReporter {
       try container.encode(report.adBlockListTitles.joined(separator: ","), forKey: .adBlockLists)
       try container.encode(report.fingerprintProtectionLevel.reportLabel, forKey: .fpBlockSetting)
       try container.encode(report.adBlockLevel.reportLabel, forKey: .adBlockSetting)
+      try container.encode(AppConstants.buildChannel.webCompatReportName, forKey: .channel)
       try container.encode(apiKey, forKey: .apiKey)
     }
   }
-
-  private static var baseHost: String {
-    // TODO: Handle via brave-stats-updater-server switch and get URL from brave_stats_updater_url
-    if AppConstants.isOfficialBuild {
-      return "laptop-updates.brave.com"
-    }
-    return "laptop-updates.bravesoftware.com"
-  }
-
-  private static let version = "1"
 
   /// A custom user agent to send along with reports
   public static var userAgent: String?
@@ -151,13 +143,11 @@ public class WebcompatReporter {
     let apiKey = kBraveStatsAPIKey
     let payload = Payload(report: report, apiKey: apiKey, languageCode: currentLanguageCode)
 
-    var components = URLComponents()
-    components.scheme = "https"
-    components.host = baseHost
-    components.path = "/\(version)/webcompat"
-
-    guard let endpoint = components.url else {
-      Self.log.error("Failed to setup webcompat request")
+    guard !kWebcompatReportEndpoint.isEmpty, let endpoint = URL(string: kWebcompatReportEndpoint)
+    else {
+      Self.log.error(
+        "Failed to setup webcompat request: Invalid endpoint `\(kWebcompatReportEndpoint)`"
+      )
       return false
     }
 
@@ -203,5 +193,11 @@ extension ShieldLevel {
     case .standard: return "standard"
     case .disabled: return "allow"
     }
+  }
+}
+
+extension AppBuildChannel {
+  fileprivate var webCompatReportName: String {
+    return self == .debug ? "developer" : rawValue
   }
 }
