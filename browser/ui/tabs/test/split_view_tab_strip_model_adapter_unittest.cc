@@ -34,6 +34,7 @@ class SplitViewTabStripModelAdapterUnitTest
 
   TabStripModel& model() const { return *model_; }
   SplitViewBrowserData& data() const { return *split_view_browser_data_; }
+  SplitViewTabStripModelAdapter& adapter() const { return *adapter_; }
 
   std::unique_ptr<content::WebContents> CreateWebContents() {
     auto contents =
@@ -390,4 +391,40 @@ TEST_F(SplitViewTabStripModelAdapterUnitTest, TabGroupedStateChanged) {
   EXPECT_TRUE(model().GetTabGroupForTab(0));
   EXPECT_EQ(0, model().GetIndexOfTab(tab1));
   EXPECT_EQ(1, model().GetIndexOfTab(tab2));
+}
+
+TEST_F(SplitViewTabStripModelAdapterUnitTest,
+       OnTabMoved_TileShouldBeBrokenWhenTabMovedBetweenTile) {
+  // Given that two tabs are tiled and there's a non-tiled tab
+  model().AddWebContents(CreateWebContents(), -1,
+                         ui::PageTransition::PAGE_TRANSITION_TYPED,
+                         /*add_types=*/0);
+  model().AddWebContents(CreateWebContents(), -1,
+                         ui::PageTransition::PAGE_TRANSITION_TYPED,
+                         /*add_types=*/0);
+  model().AddWebContents(CreateWebContents(), -1,
+                         ui::PageTransition::PAGE_TRANSITION_TYPED,
+                         /*add_types=*/0);
+  data().TileTabs({model().GetTabHandleAt(0), model().GetTabHandleAt(1)});
+  ASSERT_TRUE(data().IsTabTiled(model().GetTabHandleAt(0)));
+  ASSERT_TRUE(data().IsTabTiled(model().GetTabHandleAt(1)));
+  ASSERT_FALSE(data().IsTabTiled(model().GetTabHandleAt(2)));
+
+  // When moving non-tiled tab between tiled tabs
+  adapter().TabDragStarted();
+  model().MoveWebContentsAt(2, 1, /*select_after_move*/ false);
+
+  // Then the tile should be kept during drag and drop session
+  EXPECT_TRUE(data().IsTabTiled(model().GetTabHandleAt(0)));
+  EXPECT_FALSE(data().IsTabTiled(model().GetTabHandleAt(1)));
+  EXPECT_TRUE(data().IsTabTiled(model().GetTabHandleAt(2)));
+
+  // When drag-and-drop session ends
+  adapter().TabDragEnded();
+
+  // Then the tile should be broken.
+  base::RunLoop().RunUntilIdle();
+  EXPECT_FALSE(data().IsTabTiled(model().GetTabHandleAt(0)));
+  EXPECT_FALSE(data().IsTabTiled(model().GetTabHandleAt(1)));
+  EXPECT_FALSE(data().IsTabTiled(model().GetTabHandleAt(2)));
 }
