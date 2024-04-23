@@ -108,17 +108,19 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
                 });
             }
         });
-        mBackupWalletCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (!mIsOnboarding && !mBiometricExecuted
-                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                    && Utils.isBiometricSupported(getContext())
-                    && KeystoreHelper.shouldUseBiometricToUnlock()) {
-                createBiometricPrompt();
+        mBackupWalletCheckbox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    if (!mIsOnboarding
+                            && !mBiometricExecuted
+                            && Utils.isBiometricSupported(getContext())
+                            && KeystoreHelper.shouldUseBiometricToUnlock()) {
+                        // noinspection NewApi
+                        createBiometricPrompt();
 
-                return;
-            }
-            enableDisableContinueButton(isChecked);
-        });
+                        return;
+                    }
+                    enableDisableContinueButton(isChecked);
+                });
         TextView backupWalletSkipButton = view.findViewById(R.id.btn_backup_wallet_skip);
         backupWalletSkipButton.setOnClickListener(v -> {
             BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
@@ -129,13 +131,14 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
                 mOnNextPage.onboardingCompleted();
             }
         });
-        mBiometricBackupWalletImage.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                    && Utils.isBiometricSupported(getContext())) {
-                showPasswordRelatedControls(false);
-                createBiometricPrompt();
-            }
-        });
+        mBiometricBackupWalletImage.setOnClickListener(
+                v -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+                            && Utils.isBiometricSupported(getContext())) {
+                        showPasswordRelatedControls(false);
+                        createBiometricPrompt();
+                    }
+                });
         checkOnBiometric();
     }
 
@@ -210,8 +213,6 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
                             enableDisableContinueButton(mBackupWalletCheckbox.isChecked());
                         } catch (Exception exc) {
                             showPasswordRelatedControls(true);
-
-                            return;
                         }
                     }
 

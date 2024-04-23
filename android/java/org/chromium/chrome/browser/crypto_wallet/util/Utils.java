@@ -43,8 +43,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
-import org.chromium.base.task.PostTask;
-import org.chromium.base.task.TaskTraits;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +52,8 @@ import org.chromium.base.Callbacks;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
@@ -140,10 +140,12 @@ public class Utils {
 
     /**
      * Saves a given text to clipboard, shows a toast and clears it again after 60 seconds.
+     *
      * @param context Context used to retrieve the clipboard service.
      * @param textToCopy Text that will be copied to clipboard.
      * @param textToShow String resource ID to display in the toast, or -1 to disable the toast.
-     * @param scheduleClear {@code true} to clear the clipboard after {@link #CLEAR_CLIPBOARD_INTERVAL}.
+     * @param scheduleClear {@code true} to clear the clipboard after {@link
+     *     #CLEAR_CLIPBOARD_INTERVAL}.
      */
     public static void saveTextToClipboard(
             @NonNull final Context context,
@@ -161,7 +163,8 @@ public class Utils {
             return;
         }
 
-        PostTask.postDelayedTask(TaskTraits.UI_DEFAULT, () -> clearClipboard(textToCopy), CLEAR_CLIPBOARD_INTERVAL);
+        PostTask.postDelayedTask(
+                TaskTraits.UI_DEFAULT, () -> clearClipboard(textToCopy), CLEAR_CLIPBOARD_INTERVAL);
     }
 
     public static String getTextFromClipboard(Context context) {
@@ -179,7 +182,9 @@ public class Utils {
 
     /**
      * Clears the clipboard and replaces it with "***" if it matches with a given text.
-     * @param textToCompare Text to compare that will trigger the clipboard clearing in case of match.
+     *
+     * @param textToCompare Text to compare that will trigger the clipboard clearing in case of
+     *     match.
      */
     public static void clearClipboard(@NonNull final String textToCompare) {
         String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
