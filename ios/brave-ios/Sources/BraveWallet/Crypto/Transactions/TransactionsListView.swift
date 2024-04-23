@@ -101,7 +101,7 @@ struct TransactionsListView: View {
                           )
                         }
                         .contextMenu(menuItems: {
-                          if parsedTransaction.transaction.isRetryTransactionSupported {
+                          if parsedTransaction.transaction.isRetriable {
                             Button {
                               transactionFollowUpActionTapped(.retry, parsedTransaction.transaction)
                             } label: {

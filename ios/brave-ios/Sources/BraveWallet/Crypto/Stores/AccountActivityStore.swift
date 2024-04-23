@@ -10,7 +10,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   /// If we want to observe selected account changes (ex. in `WalletPanelView`).
   /// In some cases, we do not want to update the account displayed when the
   /// selected account changes (ex. when removing an account).
-  let observeAccountUpdates: Bool
+  let isWalletPanel: Bool
   @Published private(set) var account: BraveWallet.AccountInfo {
     didSet {
       guard oldValue != account else { return }
@@ -66,7 +66,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
 
   init(
     account: BraveWallet.AccountInfo,
-    observeAccountUpdates: Bool,
+    isWalletPanel: Bool,
     keyringService: BraveWalletKeyringService,
     walletService: BraveWalletBraveWalletService,
     rpcService: BraveWalletJsonRpcService,
@@ -80,7 +80,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.account = account
-    self.observeAccountUpdates = observeAccountUpdates
+    self.isWalletPanel = isWalletPanel
     self.keyringService = keyringService
     self.walletService = walletService
     self.rpcService = rpcService
@@ -128,12 +128,12 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         }
       },
       _selectedWalletAccountChanged: { [weak self] account in
-        guard let self, self.observeAccountUpdates else { return }
+        guard let self, self.isWalletPanel else { return }
         self.account = account
         self.update()
       },
       _selectedDappAccountChanged: { [weak self] _, account in
-        guard let self, self.observeAccountUpdates, let account else { return }
+        guard let self, self.isWalletPanel, let account else { return }
         self.account = account
         self.update()
       }

@@ -195,7 +195,7 @@ extension AccountActivityStore {
   static var previewStore: AccountActivityStore {
     .init(
       account: .previewAccount,
-      observeAccountUpdates: false,
+      isWalletPanel: false,
       keyringService: MockKeyringService(),
       walletService: MockBraveWalletService(),
       rpcService: MockJsonRpcService(),

@@ -129,7 +129,7 @@ struct TransactionDetailsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
           }
 
-          if transactionDetailsStore.isRetryAvailable {
+          if transactionDetailsStore.transaction.isRetriable {
             Divider()
 
             WalletLoadingButton(

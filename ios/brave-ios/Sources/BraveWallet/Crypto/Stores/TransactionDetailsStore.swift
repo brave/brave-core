@@ -8,11 +8,10 @@ import SwiftUI
 
 class TransactionDetailsStore: ObservableObject, WalletObserverStore {
 
-  var transaction: BraveWallet.TransactionInfo
+  @Published private(set) var transaction: BraveWallet.TransactionInfo
   @Published private(set) var parsedTransaction: ParsedTransaction?
   @Published private(set) var network: BraveWallet.NetworkInfo?
   @Published private(set) var isLoadingTransactionAction: Bool = false
-  @Published private(set) var isRetryAvailable: Bool = false
   @Published private(set) var isCancelOrSpeedupAvailable: Bool = false
 
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
@@ -150,9 +149,6 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         }
       }
 
-      if transaction.isRetryTransactionSupported {
-        self.isRetryAvailable = true
-      }
       if transaction.isCancelOrSpeedUpTransactionSupported {
         self.isCancelOrSpeedupAvailable = true
       }
