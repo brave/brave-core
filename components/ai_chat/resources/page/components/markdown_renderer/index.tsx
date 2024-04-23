@@ -60,13 +60,15 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
     }
 
     return transformer
-  }, [mainProps.text])
+  }, [])
 
   return (
     <div className={styles.markdownContainer}>
       <Markdown
         allowedElements={allowedElements}
-        rehypePlugins={[plugin]}
+        // We only read the total lines value from AST
+        // if the component is allowed to show the text cursor.
+        rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : []}
         unwrapDisallowed={true}
         children={mainProps.text}
         components={{
