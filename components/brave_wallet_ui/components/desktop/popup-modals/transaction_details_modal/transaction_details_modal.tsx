@@ -34,8 +34,7 @@ import {
   getIsTxApprovalUnlimited,
   isSwapTransaction,
   isEthereumTransaction,
-  isSolanaTransaction,
-  isFilecoinTransaction
+  isSolanaTransaction
 } from '../../../../utils/tx-utils'
 import { serializedTimeDeltaToJSDate } from '../../../../utils/datetime-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
@@ -185,7 +184,6 @@ export const TransactionDetailsModal = (props: Props) => {
   const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
   const isEthereumTx = isEthereumTransaction(transaction)
   const isSolanaTx = isSolanaTransaction(transaction)
-  const isFilecoinTx = isFilecoinTransaction(transaction)
   const isSwapTx = isSwapTransaction(transaction)
   const isSolanaSwap = isSwapTx && isSolanaTx
 
@@ -245,15 +243,10 @@ export const TransactionDetailsModal = (props: Props) => {
         }).formatAsFiat(defaultFiatCurrency)
       : ''
 
-  const { txStatus, fromAddress } = transaction
+  const { txStatus, fromAddress, isRetriable } = transaction
 
   const showCancelSpeedupButtons =
     isEthereumTx && cancelSpeedupTxTypes.includes(transaction.txStatus)
-
-  const showRetryTransactionButton =
-    BraveWallet.TransactionStatus.Error === transaction.txStatus &&
-    !isSolanaTx &&
-    !isFilecoinTx
 
   const txCurrencyTotal =
     transaction.txType === BraveWallet.TransactionType.ERC20Approve
@@ -631,7 +624,7 @@ export const TransactionDetailsModal = (props: Props) => {
           </Row>
         )}
 
-        {showRetryTransactionButton && (
+        {isRetriable && (
           <Row padding='32px 0px 0px 0px'>
             <Button
               onClick={onClickRetryTransaction}
