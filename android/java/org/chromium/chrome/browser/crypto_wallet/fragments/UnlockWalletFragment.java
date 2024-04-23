@@ -5,8 +5,12 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import static android.hardware.biometrics.BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED;
+
 import android.annotation.SuppressLint;
 import android.hardware.biometrics.BiometricPrompt;
+import android.hardware.biometrics.BiometricPrompt.AuthenticationCallback;
+import android.hardware.biometrics.BiometricPrompt.AuthenticationResult;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
@@ -25,7 +29,6 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
@@ -34,7 +37,18 @@ import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
 
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import java.util.concurrent.Executor;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class UnlockWalletFragment extends BaseWalletNextPageFragment {
 
@@ -67,7 +81,9 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
 
         final OnNextPage onNextPage = mOnNextPage;
         if (onNextPage == null) {
-            Log.e(TAG, "OnNextPage shouldn't be null.");
+            // mOnNextPage might be {@code null} when detached from the screen.
+            // It's very unlikely to happen during on view creation but better be extra
+            // safe and return immediately.
             return;
         }
         mUnlockWalletPassword = view.findViewById(R.id.unlock_wallet_password);
@@ -83,7 +99,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                         return;
                     }
 
-                    KeyringService keyringService = getKeyringService();
+                    final KeyringService keyringService = getKeyringService();
                     if (keyringService != null) {
                         keyringService.unlock(
                                 mUnlockWalletPassword.getText().toString(),
@@ -136,36 +152,50 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void createBiometricPrompt() {
-        final BiometricPrompt.AuthenticationCallback authenticationCallback =
-                new BiometricPrompt.AuthenticationCallback() {
+        final AuthenticationCallback authenticationCallback =
+                new AuthenticationCallback() {
                     @Override
-                    public void onAuthenticationSucceeded(
-                            BiometricPrompt.AuthenticationResult result) {
+                    public void onAuthenticationSucceeded(AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-                        // We authenticated using fingerprint
-                        try {
-                            String unlockWalletPassword = KeystoreHelper.decryptText();
-                            if (unlockWalletPassword.isEmpty()) {
-                                showPasswordRelatedControls();
 
-                                return;
-                            }
-                            KeyringService keyringService = getKeyringService();
-                            assert keyringService != null;
-                            keyringService.unlock(unlockWalletPassword, unlockResult -> {
-                                if (unlockResult) {
-                                    if (mOnNextPage != null) {
-                                        mOnNextPage.onboardingCompleted();
-                                    }
-                                } else {
-                                    showPasswordRelatedControls();
-                                    mUnlockWalletPassword.setError(
-                                            getString(R.string.incorrect_password_error));
-                                }
-                            });
-                        } catch (Exception exc) {
+                        final KeyringService keyringService = getKeyringService();
+                        String unlockWalletPassword = null;
+
+                        try {
+                            unlockWalletPassword = KeystoreHelper.decryptText();
+                        } catch (InvalidAlgorithmParameterException
+                                | UnrecoverableEntryException
+                                | NoSuchPaddingException
+                                | IllegalBlockSizeException
+                                | CertificateException
+                                | KeyStoreException
+                                | NoSuchAlgorithmException
+                                | BadPaddingException
+                                | IOException
+                                | InvalidKeyException e) {
+                            // KeystoreHelper.decryptText() may throw a long list
+                            // of exceptions.
                             showPasswordRelatedControls();
                         }
+
+                        if (TextUtils.isEmpty(unlockWalletPassword) || keyringService == null) {
+                            showPasswordRelatedControls();
+                            return;
+                        }
+
+                        keyringService.unlock(
+                                unlockWalletPassword,
+                                unlockResult -> {
+                                    if (unlockResult) {
+                                        if (mOnNextPage != null) {
+                                            mOnNextPage.onboardingCompleted();
+                                        }
+                                    } else {
+                                        showPasswordRelatedControls();
+                                        mUnlockWalletPassword.setError(
+                                                getString(R.string.incorrect_password_error));
+                                    }
+                                });
                     }
 
                     @Override
@@ -185,15 +215,17 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
     @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void showFingerprintDialog(
-            @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {
-        Executor executor = ContextCompat.getMainExecutor(requireActivity());
-        new BiometricPrompt.Builder(requireActivity())
+            @NonNull final AuthenticationCallback authenticationCallback) {
+        Executor executor = ContextCompat.getMainExecutor(requireContext());
+        new BiometricPrompt.Builder(requireContext())
                 .setTitle(getResources().getString(R.string.fingerprint_unlock))
                 .setDescription(getResources().getString(R.string.use_fingerprint_text))
-                .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
-                        (dialog, which)
-                                -> authenticationCallback.onAuthenticationError(
-                                BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
+                .setNegativeButton(
+                        getResources().getString(android.R.string.cancel),
+                        executor,
+                        (dialog, which) ->
+                                authenticationCallback.onAuthenticationError(
+                                        BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
