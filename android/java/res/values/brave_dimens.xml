@@ -45,4 +45,7 @@
 
     <dimen name="onboarding_network_selection_item_width">103dp</dimen>
     <dimen name="onboarding_network_selection_item_height">96dp</dimen>
+
+    <dimen name="default_regular">14sp</dimen>
+    <dimen name="large_regular">16sp</dimen>
 </resources>
