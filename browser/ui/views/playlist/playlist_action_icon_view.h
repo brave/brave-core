@@ -8,8 +8,6 @@
 
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
@@ -26,7 +24,7 @@ struct VectorIcon;
 namespace playlist {
 class PlaylistBubblesController;
 class PlaylistTabHelper;
-}
+}  // namespace playlist
 
 class PlaylistActionIconView : public PageActionIconView,
                                public playlist::PlaylistTabHelperObserver {
@@ -68,8 +66,6 @@ class PlaylistActionIconView : public PageActionIconView,
   base::ScopedObservation<playlist::PlaylistTabHelper,
                           playlist::PlaylistTabHelperObserver>
       tab_helper_observation_{this};
-
-  base::WeakPtrFactory<PlaylistActionIconView> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_ICON_VIEW_H_

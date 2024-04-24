@@ -30,30 +30,14 @@ PlaylistActionIconView::~PlaylistActionIconView() = default;
 void PlaylistActionIconView::ShowPlaylistBubble() {
   DVLOG(2) << __FUNCTION__;
 
-  // if (playlist::PlaylistActionBubbleView::IsShowingBubble()) {
-  //   return;
-  // }
-
-  // auto* tab_helper = GetPlaylistTabHelper();
-  // if (!tab_helper) {
-  //   return;
-  // }
-
-  // playlist::PlaylistActionBubbleView::ShowBubble(
-  //     browser_, weak_ptr_factory_.GetWeakPtr(), tab_helper->GetWeakPtr());
-  auto* web_contents = GetWebContents();
-  CHECK(web_contents);
-  playlist::PlaylistBubblesController::CreateOrGetFromWebContents(web_contents)
-      ->ShowBubble(this);
+  if (auto* controller = GetController()) {
+    controller->ShowBubble(this);
+  }
 }
 
 views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {
   auto* controller = GetController();
-  if (!controller) {
-    return nullptr;
-  }
-
-  return controller->GetBubble();
+  return controller ? controller->GetBubble() : nullptr;
 }
 
 const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {
@@ -67,8 +51,6 @@ void PlaylistActionIconView::UpdateImpl() {
   if (!GetWebContents()) {
     return;
   }
-
-  // playlist::PlaylistActionBubbleView::MaybeCloseBubble();
 
   tab_helper_observation_.Reset();
   if (auto* tab_helper = GetPlaylistTabHelper()) {
@@ -95,34 +77,27 @@ void PlaylistActionIconView::OnFoundItemsChanged(
 void PlaylistActionIconView::OnAddedItemFromTabHelper(
     const std::vector<playlist::mojom::PlaylistItemPtr>&) {
   DVLOG(2) << __FUNCTION__;
-  // When this callback is invoked to this by a tab helper, it means that this
-  // view is now bound to the tab helper. So we don't have to check it again.
+
   if (auto* controller = GetController();
       controller && !controller->GetBubble()) {
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(&PlaylistActionIconView::ShowPlaylistBubble,
-                                  weak_ptr_factory_.GetWeakPtr()));
+    ShowPlaylistBubble();
   }
 }
 
 playlist::PlaylistBubblesController* PlaylistActionIconView::GetController()
     const {
   auto* web_contents = GetWebContents();
-  if (!web_contents) {
-    return nullptr;
-  }
-
-  return playlist::PlaylistBubblesController::CreateOrGetFromWebContents(
-      web_contents);
+  return web_contents
+             ? playlist::PlaylistBubblesController::CreateOrGetFromWebContents(
+                   web_contents)
+             : nullptr;
 }
 
 playlist::PlaylistTabHelper* PlaylistActionIconView::GetPlaylistTabHelper()
     const {
-  if (auto* contents = GetWebContents()) {
-    return playlist::PlaylistTabHelper::FromWebContents(contents);
-  }
-
-  return nullptr;
+  auto* contents = GetWebContents();
+  return contents ? playlist::PlaylistTabHelper::FromWebContents(contents)
+                  : nullptr;
 }
 
 void PlaylistActionIconView::UpdateState() {
