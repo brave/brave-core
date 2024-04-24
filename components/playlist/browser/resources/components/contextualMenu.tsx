@@ -47,18 +47,25 @@ export default function ContextualMenuAnchorButton ({
   onDismissMenu
 }: MenuProps) {
   const menuButtonProps: ButtonMenuProps = {}
-  // Force menu widget to be closed when the anchor button is not visible. In
-  // case where it's visible, the menuButtonProps doesn't contain isOpen property,
-  // so it won't affect the behavior of the menu.
-  if (!visible) menuButtonProps.isOpen = false
+  if (visible) {
+    // Let `ButtonMenu` of Nala handle the state.
+    menuButtonProps.isOpen = undefined
+  } else {
+    // Force menu widget to be closed when the anchor button is not visible. In
+    // case where it's visible, the menuButtonProps doesn't contain isOpen property,
+    // so it won't affect the behavior of the menu.
+    menuButtonProps.isOpen = false
+  }
 
-  // TODO(sko) We don't have event for opening menu widget. Once it's ready,
-  // wire onShowMenu and onDismissMenu to corresponding events.
   return (
     <StyledButtonMenu
       tabIndex={0}
       visible={visible}
       {...menuButtonProps}
+      onChange={({ isOpen }) => {
+        if (isOpen) onShowMenu?.()
+      }}
+      onClose={() => onDismissMenu?.()}
     >
       <div slot='anchor-content'>
         <Icon name='more-horizontal' />
