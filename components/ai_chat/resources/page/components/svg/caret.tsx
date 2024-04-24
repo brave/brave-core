@@ -13,7 +13,7 @@ const SvgComponent = (props: any) => (
     fill="none"
     {...props}
   >
-    <rect width={3} height={12} fill="#000" rx={1} />
+    <rect width={3} height={12} rx={1} />
   </svg>
 )
 

@@ -21,12 +21,16 @@
     font: var(--leo-font-heading-h4);
   }
 
+  h5, h6 {
+    font: var(--leo-font-large-semibold);
+  }
+
   ul,ol {
     padding-left: 15px;
   }
 
-  // Markdown elements have a margin which introduces additional space to the
-  // message layout
+  // Markdown elements have a margin which introduces additional space to the message layout.
+  // Removes the top margin of the first child and the bottom margin of the last child to align neatly.
   >*:first-child {
     margin-top: 0;
   }
