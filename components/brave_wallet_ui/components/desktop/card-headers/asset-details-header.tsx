@@ -23,6 +23,7 @@ import {
 import {
   externalWalletProviderFromString //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
 
 // Queries
 import {
@@ -39,6 +40,7 @@ import useExplorer from '../../../common/hooks/explorer'
 // Components
 import withPlaceholderIcon from '../../shared/create-placeholder-icon'
 import { AssetDetailsMenu } from '../wallet-menus/asset-details-menu'
+import { CreateNetworkIcon } from '../../shared/create-network-icon'
 
 // Styled Components
 import {
@@ -53,7 +55,9 @@ import {
   NetworkDescriptionText,
   PriceText,
   PercentChange,
-  UpDownIcon
+  UpDownIcon,
+  IconsWrapper,
+  NetworkIconWrapper
 } from './asset-details-header.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
@@ -192,10 +196,24 @@ export const AssetDetailsHeader = (props: Props) => {
           gap='8px'
         >
           {selectedAsset ? (
-            <AssetIconWithPlaceholder
-              asset={selectedAsset}
-              network={selectedAssetsNetwork}
-            />
+            <IconsWrapper>
+              <AssetIconWithPlaceholder
+                asset={selectedAsset}
+                network={selectedAssetsNetwork}
+              />
+              {selectedAssetsNetwork &&
+                checkIfTokenNeedsNetworkIcon(
+                  selectedAssetsNetwork,
+                  selectedAsset.contractAddress
+                ) && (
+                  <NetworkIconWrapper>
+                    <CreateNetworkIcon
+                      network={selectedAssetsNetwork}
+                      marginRight={0}
+                    />
+                  </NetworkIconWrapper>
+                )}
+            </IconsWrapper>
           ) : (
             <Skeleton
               height={'40px'}
