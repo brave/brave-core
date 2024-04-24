@@ -11,6 +11,8 @@ import {loadTimeData} from '../i18n_setup.js'
 import {getTemplate} from './brave_personalization_options.html.js'
 import {BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl} from './brave_privacy_page_browser_proxy.js'
 
+import '../privacy_page/do_not_track_toggle.js'
+
 const SettingsBravePersonalizationOptionsBase = BaseMixin(PolymerElement) as {
   new(): PolymerElement
 }
