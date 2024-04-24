@@ -1,0 +1,12 @@
+diff --git a/tools/grit/preprocess_if_expr.gni b/tools/grit/preprocess_if_expr.gni
+index 850bff9aa94b4..6af9549d8d843 100644
+--- a/tools/grit/preprocess_if_expr.gni
++++ b/tools/grit/preprocess_if_expr.gni
+@@ -47,6 +47,7 @@ template("preprocess_if_expr") {
+       }
+     }
+ 
++    inputs += ["//brave/script/gen_webui_override_additional_inputs.py"] + exec_script("//brave/script/gen_webui_override_additional_inputs.py", ["--in-folder", rebase_path(in_folder, root_build_dir), "--in-files"] + invoker.in_files, "list lines")
+     args = [
+              "--in-folder",
+              rebase_path(in_folder, root_build_dir),
