@@ -3,34 +3,39 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import * as AIChatUI from
-  'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
+import * as AIChatUI from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
+import { MockPageHandlerAPI } from './mock_page_handler'
 
- // Provide access to all the generated types
- export * from
-  'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
+// Provide access to all the generated types
+export * from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
 
- interface API {
-   pageHandler: AIChatUI.PageHandlerRemote
-   callbackRouter: AIChatUI.ChatUIPageCallbackRouter
- }
+interface API {
+  pageHandler: AIChatUI.PageHandlerRemote
+  callbackRouter: AIChatUI.ChatUIPageCallbackRouter
+}
 
- let apiInstance: API
+let apiInstance: API
 
- class PageHandlerAPI implements API {
-   pageHandler: AIChatUI.PageHandlerRemote
-   callbackRouter: AIChatUI.ChatUIPageCallbackRouter
+class PageHandlerAPI implements API {
+  pageHandler: AIChatUI.PageHandlerRemote
+  callbackRouter: AIChatUI.ChatUIPageCallbackRouter
 
-   constructor () {
-     this.pageHandler = AIChatUI.PageHandler.getRemote()
-     this.callbackRouter = new AIChatUI.ChatUIPageCallbackRouter()
-     this.pageHandler.setClientPage(this.callbackRouter.$.bindNewPipeAndPassRemote())
-   }
- }
+  constructor() {
+    this.pageHandler = AIChatUI.PageHandler.getRemote()
+    this.callbackRouter = new AIChatUI.ChatUIPageCallbackRouter()
+    this.pageHandler.setClientPage(
+      this.callbackRouter.$.bindNewPipeAndPassRemote()
+    )
+  }
+}
 
- export default function getPageHandlerInstance () {
-   if (!apiInstance) {
-     apiInstance = new PageHandlerAPI()
-   }
-   return apiInstance
- }
+export default function getPageHandlerInstance() {
+  if (!apiInstance) {
+    if ('IS_STORYBOOK' in window) {
+      apiInstance = new MockPageHandlerAPI() as any
+    } else {
+      apiInstance = new PageHandlerAPI()
+    }
+  }
+  return apiInstance
+}

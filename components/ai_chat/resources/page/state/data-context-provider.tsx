@@ -64,6 +64,7 @@ const ACTIONS_LIST = [
 
 interface DataContextProviderProps {
   children: React.ReactNode
+  store?: Partial<AIChatContext>
 }
 
 function DataContextProvider (props: DataContextProviderProps) {
@@ -438,6 +439,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     resetSelectedActionType,
     handleActionTypeClick,
     setIsToolsMenuOpen,
+    ...props.store,
   }
 
   return (

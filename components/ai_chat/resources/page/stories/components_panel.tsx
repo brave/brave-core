@@ -13,15 +13,9 @@ import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
 import * as mojom from '../api/page_handler'
-import AIChatDataContext, {
-  AIChatContext,
-  defaultContext
-} from '../state/context'
-import { useArgs, useState } from '@storybook/addons'
+import { useArgs } from '@storybook/addons'
 import FeedbackForm from '../components/feedback_form'
-
-const MAX_INPUT_CHAR = 2000
-const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
+import DataContextProvider from '../state/data-context-provider'
 
 const HISTORY: mojom.ConversationTurn[] = [
   {
@@ -146,26 +140,6 @@ const MODELS: mojom.Model[] = [
   }
 ]
 
-const ACTIONS_LIST = [
-  {
-    category: 'Quick actions',
-    actions: [{ label: 'Explain', type: mojom.ActionType.EXPLAIN }]
-  },
-  {
-    category: 'Rewrite',
-    actions: [
-      { label: 'Paraphrase', type: mojom.ActionType.PARAPHRASE },
-      { label: 'Improve', type: mojom.ActionType.IMPROVE },
-      { label: 'Change tone', type: -1 },
-      { label: 'Change tone / Academic', type: mojom.ActionType.ACADEMICIZE },
-      {
-        label: 'Change tone / Professional',
-        type: mojom.ActionType.PROFESSIONALIZE
-      },
-    ]
-  }
-]
-
 const SAMPLE_QUESTIONS = [
   'Summarize this article',
   'What was the score?',
@@ -219,10 +193,6 @@ export default {
   decorators: [
     (Story: any, options: any) => {
       const [, setArgs] = useArgs()
-      const [isGenerating] = useState(false)
-      const [favIconUrl] = useState<string>('https://brave.com/static-assets/images/brave-favicon.png')
-      const hasAcceptedAgreement = options.args.hasAcceptedAgreement
-
       const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new mojom.SiteInfo()
       const suggestedQuestions = options.args.hasSuggestedQuestions
         ? SAMPLE_QUESTIONS
@@ -232,122 +202,40 @@ export default {
 
       const currentError = mojom.APIError[options.args.currentErrorState]
       const apiHasError = currentError !== mojom.APIError.None
-      const shouldDisableUserInput = apiHasError || isGenerating
       const currentModel = MODELS.find(m => m.name === options.args.model)
-      const [inputText, setInputTextInternal] = useState('')
-      const [selectedActionType, setSelectedActionType] = useState<mojom.ActionType | undefined>(undefined)
-      const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false)
-      const [actionsList, setActionsList] = useState(ACTIONS_LIST)
 
       const switchToBasicModel = () => {
         const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
         setArgs({ model: nonPremiumModel })
       }
 
-      const resetSelectedActionType = () => {
-        setSelectedActionType(undefined)
-      }
-
-      const handleActionTypeClick = (actionType: mojom.ActionType) => {
-        setSelectedActionType(actionType)
-
-        if (inputText.startsWith('/')) {
-          setInputText('')
-        }
-      }
-
-      const setInputText = (text: string) => {
-        setInputTextInternal(text)
-
-        if (text.startsWith('/')) {
-          setIsToolsMenuOpen(true)
-
-          // effectively remove the leading slash before comparing it to the action labels.
-          const searchText = text.substring(1).toLocaleLowerCase()
-
-          const filteredList = ACTIONS_LIST.map(category => ({
-            ...category,
-            actions: category.actions.filter(action => {
-              // actionType with -1 is a subcategory so we skip
-              if (action.type === -1) return
-              return action.label.toLocaleLowerCase().includes(searchText)
-            })
-          })).filter(category => category.actions.length > 0)
-
-          setActionsList(filteredList)
-        } else {
-          setIsToolsMenuOpen(false)
-          setActionsList(ACTIONS_LIST)
-        }
-      }
-
-      const isUserSelectingActionType = () => {
-        if (
-          isToolsMenuOpen &&
-          inputText.startsWith('/') &&
-          actionsList.length > 0
-        ) {
-          setSelectedActionType(actionsList[0].actions[0].type)
-          setInputText('')
-          setIsToolsMenuOpen(false)
-          return true
-        }
-
-        return false
-      }
-
-      const submitInputTextToAPI = () => {
-        isUserSelectingActionType()
-      }
-
-      const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
-      const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
-      const inputTextCharCountDisplay = `${inputText.length} / ${MAX_INPUT_CHAR}`
-
-      const store: AIChatContext = {
-        // Don't error when new properties are added
-        ...defaultContext,
+      const store = {
         allModels: MODELS,
-        currentModel,
         conversationHistory: options.args.hasConversation ? HISTORY : [],
-        isGenerating,
         isPremiumStatusFetching: false,
-        suggestedQuestions,
         suggestionStatus: mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
-        siteInfo,
-        favIconUrl,
-        currentError,
-        hasAcceptedAgreement,
-        apiHasError,
-        shouldDisableUserInput,
         isPremiumUser: options.args.isPremiumUser,
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         showAgreementModal: options.args.showAgreementModal,
         isMobile: options.args.isMobile,
-        switchToBasicModel,
         shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
         shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
-        setInputText,
-        inputText,
-        isCharLimitExceeded,
-        isCharLimitApproaching,
-        inputTextCharCountDisplay,
-        selectedActionType,
-        resetSelectedActionType,
-        handleActionTypeClick,
-        isToolsMenuOpen,
-        setIsToolsMenuOpen,
-        actionsList,
-        submitInputTextToAPI,
+        currentModel,
+        suggestedQuestions,
+        siteInfo,
+        currentError,
+        hasAcceptedAgreement: options.args.hasAcceptedAgreement,
+        apiHasError,
+        switchToBasicModel,
       }
 
       return (
-        <AIChatDataContext.Provider value={store}>
+        <DataContextProvider store={store}>
           <ThemeProvider>
             <Story />
           </ThemeProvider>
-        </AIChatDataContext.Provider>
+        </DataContextProvider>
       )
     }
   ]
