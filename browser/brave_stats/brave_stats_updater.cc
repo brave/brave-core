@@ -115,7 +115,7 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
   }
   general_browser_usage_p3a_ =
       std::make_unique<misc_metrics::GeneralBrowserUsage>(
-          pref_service, day_zero_variant, first_run::IsChromeFirstRun(),
+          pref_service, day_zero_variant, IsFirstRun(pref_service),
           GetFirstRunTime(pref_service));
 
   if (profile_manager != nullptr) {
