@@ -197,15 +197,15 @@ ParseCryptoQuotes(const base::Value& json_value) {
   //   "message": null,
   //   "error": null
   // }
-  std::optional<std::string> error;
   const auto quote_resp_value =
       meld_integration_responses::CryptoQuoteResponse::FromValue(json_value);
   if (!quote_resp_value) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
     return std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
-                      std::optional<std::string>>{std::nullopt, error};
+                      std::optional<std::string>>{std::nullopt, std::nullopt};
   }
 
+  std::optional<std::string> error;
   if (quote_resp_value->error) {
     error = *quote_resp_value->error;
   }

@@ -39,22 +39,14 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
   }
 
   void SetInterceptor(const std::string& content,
-                      const std::string expected_header = "") {
+                      const net::HttpStatusCode http_status) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, content, expected_header](const network::ResourceRequest& request) {
+        [&, content, http_status](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          std::string header;
-          request.headers.GetHeader("Authorization", &header);
-          url_loader_factory_.AddResponse(request.url.spec(), content);
-        }));
-  }
-
-  void SetErrorInterceptor(const std::string& content) {
-    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, content](const network::ResourceRequest& request) {
-          url_loader_factory_.ClearResponses();
-          url_loader_factory_.AddResponse(request.url.spec(), content,
-                                          net::HTTP_REQUEST_TIMEOUT);
+            std::string header;
+            request.headers.GetHeader("Authorization", &header);
+            EXPECT_TRUE(header.starts_with("BASIC"));
+          url_loader_factory_.AddResponse(request.url.spec(), content, http_status);
         }));
   }
 
@@ -67,12 +59,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::string& payment_method_types,
       const std::string& statuses,
       MeldIntegrationService::GetServiceProvidersCallback callback,
-      const bool error_interceptor = false) {
-    if (!error_interceptor) {
-      SetInterceptor(content);
-    } else {
-      SetErrorInterceptor("error");
-    }
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status);
+
     base::RunLoop run_loop;
     auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
                                          crypto_currencies, service_providers,
@@ -97,12 +86,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const double source_amount,
       const std::string& account,
       MeldIntegrationService::GetCryptoQuotesCallback callback,
-      const bool error_interceptor = false) {
-    if (!error_interceptor) {
-      SetInterceptor(content);
-    } else {
-      SetErrorInterceptor("error");
-    }
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status);
+
     base::RunLoop run_loop;
     asset_ratio_service_->GetCryptoQuotes(
         country, from_asset, to_asset, source_amount, account,
@@ -124,12 +110,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::string& payment_method_types,
       const std::string& statuses,
       MeldIntegrationService::GetPaymentMethodsCallback callback,
-      const bool error_interceptor = false) {
-    if (!error_interceptor) {
-      SetInterceptor(content);
-    } else {
-      SetErrorInterceptor("error");
-    }
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status);
+
     base::RunLoop run_loop;
     auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
                                          crypto_currencies, service_providers,
@@ -156,12 +139,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::string& payment_method_types,
       const std::string& statuses,
       MeldIntegrationService::GetFiatCurrenciesCallback callback,
-      const bool error_interceptor = false) {
-    if (!error_interceptor) {
-      SetInterceptor(content);
-    } else {
-      SetErrorInterceptor("error");
-    }
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status);
+
     base::RunLoop run_loop;
     auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
                                          crypto_currencies, service_providers,
@@ -188,12 +168,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::string& payment_method_types,
       const std::string& statuses,
       MeldIntegrationService::GetCryptoCurrenciesCallback callback,
-      const bool error_interceptor = false) {
-    if (!error_interceptor) {
-      SetInterceptor(content);
-    } else {
-      SetErrorInterceptor("error");
-    }
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status);
+
     base::RunLoop run_loop;
     auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
                                          crypto_currencies, service_providers,
@@ -218,12 +195,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
                         const std::string& payment_method_types,
                         const std::string& statuses,
                         MeldIntegrationService::GetCountriesCallback callback,
-                        const bool error_interceptor = false) {
-    if (!error_interceptor) {
-      SetInterceptor(content);
-    } else {
-      SetErrorInterceptor("error");
-    }
+      const net::HttpStatusCode http_status = net::HTTP_OK) {
+    SetInterceptor(content, http_status);
+
     base::RunLoop run_loop;
     auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
                                          crypto_currencies, service_providers,
@@ -332,6 +306,19 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                       1);
           }));
   TestGetServiceProvider(
+      R"({
+  "code": "UNAUTHORIZED",
+  "message": "invalid profile or secret",
+  "requestId": "315a",
+  "timestamp": "2024-04-24T18:55:09.327818Z"
+})", "US", "USD", "ETH", "", "", "",
+      base::BindLambdaForTesting(
+          [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
+              const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>{"invalid profile or secret"});
+          }), net::HTTP_UNAUTHORIZED);
+  TestGetServiceProvider(
       "some wrone data", "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
@@ -351,7 +338,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                       std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
-      true);
+      net::HTTP_REQUEST_TIMEOUT);
   TestGetServiceProvider(
       R"({
     "code": "BAD_REQUEST",
@@ -360,7 +347,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
       "[sourceAmount] must not be null",
       "[sourceCurrencyCode] must not be blank"
     ],
-    "requestId": "356dd2b40fa55037bfe9d190b6438f59",
+    "requestId": "356d",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
       "US", "USD", "ETH", "", "", "",
@@ -371,8 +358,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
             EXPECT_EQ(*errors, std::vector<std::string>(
                                    {"[sourceAmount] must not be null",
                                     "[sourceCurrencyCode] must not be blank"}));
-          }),
-      false);
+          }), net::HTTP_BAD_REQUEST);
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
@@ -441,7 +427,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
                       std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
-      true);
+      net::HTTP_REQUEST_TIMEOUT);
 
   TestGetCryptoQuotes(
       R"({
@@ -517,8 +503,21 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
             EXPECT_EQ(*errors, std::vector<std::string>(
                                    {"[sourceAmount] must not be null",
                                     "[sourceCurrencyCode] must not be blank"}));
-          }),
-      false);
+          }), net::HTTP_BAD_REQUEST);
+  TestGetCryptoQuotes(
+      R"({
+  "quotes": null,
+  "message": null,
+  "error": "No Valid Quote Combinations Found For Provided Quote Request."
+})",
+      "US", "USD", "BTC", 50, "btc account address",
+      base::BindLambdaForTesting(
+          [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
+              const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors, std::vector<std::string>(
+                                   {"No Valid Quote Combinations Found For Provided Quote Request."}));
+          }), net::HTTP_BAD_REQUEST);
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
@@ -643,7 +642,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
                       std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
-      true);
+      net::HTTP_REQUEST_TIMEOUT);
 
   TestGetPaymentMethods(
       R"({
@@ -666,8 +665,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
             EXPECT_EQ(*errors, std::vector<std::string>(
                                    {"[sourceAmount] must not be null",
                                     "[sourceCurrencyCode] must not be blank"}));
-          }),
-      false);
+          }), net::HTTP_BAD_REQUEST);
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
@@ -755,7 +753,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
                       std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
-      true);
+      net::HTTP_REQUEST_TIMEOUT);
 
   TestGetFiatCurrencies(
       R"({
@@ -778,8 +776,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
             EXPECT_EQ(*errors, std::vector<std::string>(
                                    {"[sourceAmount] must not be null",
                                     "[sourceCurrencyCode] must not be blank"}));
-          }),
-      false);
+          }), net::HTTP_BAD_REQUEST);
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
@@ -889,7 +886,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                       std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
-      true);
+      net::HTTP_REQUEST_TIMEOUT);
 
   TestGetCryptoCurrencies(
       R"({
@@ -912,8 +909,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
             EXPECT_EQ(*errors, std::vector<std::string>(
                                    {"[sourceAmount] must not be null",
                                     "[sourceCurrencyCode] must not be blank"}));
-          }),
-      false);
+          }), net::HTTP_BAD_REQUEST);
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
@@ -1006,7 +1002,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
                       std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
-      true);
+      net::HTTP_REQUEST_TIMEOUT);
 
   TestGetCountries(
       R"({
@@ -1028,8 +1024,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
             EXPECT_EQ(*errors, std::vector<std::string>(
                                    {"[sourceAmount] must not be null",
                                     "[sourceCurrencyCode] must not be blank"}));
-          }),
-      false);
+          }), net::HTTP_BAD_REQUEST);
 }
 
 }  // namespace brave_wallet

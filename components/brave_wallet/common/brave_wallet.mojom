@@ -1160,7 +1160,7 @@ interface AssetRatioService {
 interface MeldIntegrationService {
   // Obtains the list of Service Providers
   // All parameters are optional
-  GetServiceProviders(MeldFilter? filter)
+  GetServiceProviders(MeldFilter filter)
     => (array<MeldServiceProvider>? service_providers, array<string>? error);
 
   // Obtains the crypto quotes
@@ -1172,22 +1172,22 @@ interface MeldIntegrationService {
 
   // Obtains the list of payment methods
   // All parameters are optional
-  GetPaymentMethods(MeldFilter? filter)
+  GetPaymentMethods(MeldFilter filter)
     => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
 
   // Obtains the list of fiat currencies
   // All parameters are optional
-  GetFiatCurrencies(MeldFilter? filter)
+  GetFiatCurrencies(MeldFilter filter)
     => (array<MeldFiatCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of crypto currencies
   // All parameters are optional
-  GetCryptoCurrencies(MeldFilter? filter)
+  GetCryptoCurrencies(MeldFilter filter)
     => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of countries
   // All parameters are optional
-  GetCountries(MeldFilter? filter)
+  GetCountries(MeldFilter filter)
     => (array<MeldCountry>? countries, array<string>? error);
 };
 

@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <tuple>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -16,6 +17,7 @@
 #include "base/environment.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -121,6 +123,13 @@ GURL AppendFilterParams(
   return url;
 }
 
+bool NeedsToParseResponse(const int& http_error_code) {
+  static const base::NoDestructor<std::unordered_set<int>> kRespCodesAllowedToContinueParsing({
+      400, 401, 403
+  });
+  return kRespCodesAllowedToContinueParsing->contains(http_error_code);
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -175,7 +184,8 @@ void MeldIntegrationService::GetServiceProviders(
 void MeldIntegrationService::OnGetServiceProviders(
     GetServiceProvidersCallback callback,
     APIRequestResult api_request_result) const {
-  if (!api_request_result.Is2XXResponseCode()) {
+  if (!api_request_result.Is2XXResponseCode() &&
+      !NeedsToParseResponse(api_request_result.response_code())) {
     std::move(callback).Run(
         std::nullopt, std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
@@ -245,7 +255,8 @@ void MeldIntegrationService::GetCryptoQuotes(
 void MeldIntegrationService::OnGetCryptoQuotes(
     GetCryptoQuotesCallback callback,
     APIRequestResult api_request_result) const {
-  if (!api_request_result.Is2XXResponseCode()) {
+  if (!api_request_result.Is2XXResponseCode() &&
+      !NeedsToParseResponse(api_request_result.response_code())) {
     std::move(callback).Run(
         std::nullopt, std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
@@ -269,7 +280,7 @@ void MeldIntegrationService::OnParseCryptoQuotes(
     GetCryptoQuotesCallback reply_callback,
     std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
                std::optional<std::string>> quotes_result) const {
-  if (!std::get<0>(quotes_result)) {
+  if (!std::get<0>(quotes_result) && !std::get<1>(quotes_result)) {
     std::move(reply_callback)
         .Run(std::nullopt, std::vector<std::string>{l10n_util::GetStringUTF8(
                                IDS_WALLET_PARSING_ERROR)});
@@ -318,7 +329,8 @@ void MeldIntegrationService::GetPaymentMethods(
 void MeldIntegrationService::OnGetPaymentMethods(
     GetPaymentMethodsCallback callback,
     APIRequestResult api_request_result) const {
-  if (!api_request_result.Is2XXResponseCode()) {
+  if (!api_request_result.Is2XXResponseCode() &&
+      !NeedsToParseResponse(api_request_result.response_code())) {
     std::move(callback).Run(
         std::nullopt, std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
@@ -381,7 +393,8 @@ void MeldIntegrationService::GetFiatCurrencies(
 void MeldIntegrationService::OnGetFiatCurrencies(
     GetFiatCurrenciesCallback callback,
     APIRequestResult api_request_result) const {
-  if (!api_request_result.Is2XXResponseCode()) {
+  if (!api_request_result.Is2XXResponseCode() &&
+      !NeedsToParseResponse(api_request_result.response_code())) {
     std::move(callback).Run(
         std::nullopt, std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
@@ -446,7 +459,8 @@ void MeldIntegrationService::GetCryptoCurrencies(
 void MeldIntegrationService::OnGetCryptoCurrencies(
     GetCryptoCurrenciesCallback callback,
     APIRequestResult api_request_result) const {
-  if (!api_request_result.Is2XXResponseCode()) {
+  if (!api_request_result.Is2XXResponseCode() &&
+      !NeedsToParseResponse(api_request_result.response_code())) {
     std::move(callback).Run(
         std::nullopt, std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
@@ -508,7 +522,8 @@ void MeldIntegrationService::GetCountries(mojom::MeldFilterPtr filter,
 void MeldIntegrationService::OnGetCountries(
     GetCountriesCallback callback,
     APIRequestResult api_request_result) const {
-  if (!api_request_result.Is2XXResponseCode()) {
+  if (!api_request_result.Is2XXResponseCode() &&
+      !NeedsToParseResponse(api_request_result.response_code())) {
     std::move(callback).Run(
         std::nullopt, std::vector<std::string>{
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
