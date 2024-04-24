@@ -335,7 +335,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             cardHeader={
               <PageTitleHeader title={getLocale('braveWalletTopNavExplore')} />
             }
-            useFullHeight={true}
           >
             <StyledWrapper>
               {banners}
