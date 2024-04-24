@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_card.html b/chrome/browser/resources/signin/profile_picker/profile_card.html
-index 2c239a2a7744a..06facf8a74833 100644
+index 2c239a2a7744a84ec3d853c599102ee41edac8dd..06facf8a74833919e61275c3b58080ebe16c865e 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_card.html
 +++ b/chrome/browser/resources/signin/profile_picker/profile_card.html
 @@ -134,7 +134,7 @@
