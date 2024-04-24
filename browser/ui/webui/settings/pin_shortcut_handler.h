@@ -31,6 +31,8 @@ class PinShortcutHandler : public settings::SettingsPageUIHandler {
   void HandlePinShortcut(const base::Value::List& args);
   void NotifyShortcutPinStateChangeToPage(bool pinned);
 
+  // |from_timer| is true when it's called for polling pinned state
+  // after requesting pin. Only valid on Windows.
   void CheckShortcutPinState(bool from_timer);
   void OnPinShortcut(bool pinned);
   void OnCheckShortcutPinState(bool from_timer, bool pinned);
@@ -38,7 +40,7 @@ class PinShortcutHandler : public settings::SettingsPageUIHandler {
 #if BUILDFLAG(IS_WIN)
   void OnPinStateCheckTimerFired();
 
-  int pin_state_check_count_ = 0;
+  int pin_state_check_count_down_ = 0;
   std::unique_ptr<base::RetainingOneShotTimer> pin_state_check_timer_;
 #endif
 

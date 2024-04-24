@@ -38,7 +38,7 @@ void PinShortcutHandler::HandleCheckShortcutPinState(
     const base::Value::List& args) {
   AllowJavascript();
 
-  CheckShortcutPinState(false);
+  CheckShortcutPinState(/*from_timer*/ false);
 }
 
 void PinShortcutHandler::CheckShortcutPinState(bool from_timer) {
@@ -49,12 +49,16 @@ void PinShortcutHandler::CheckShortcutPinState(bool from_timer) {
 
 #if BUILDFLAG(IS_WIN)
 void PinShortcutHandler::OnPinStateCheckTimerFired() {
-  CheckShortcutPinState(true);
+  CheckShortcutPinState(/*from_timer*/ true);
 }
 #endif
 
 void PinShortcutHandler::OnPinShortcut(bool pinned) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  if (!pinned) {
+    return;
+  }
 
 #if BUILDFLAG(IS_WIN)
   // On Windows, ignore |pinned| value as Windows asks to user via another
@@ -70,7 +74,7 @@ void PinShortcutHandler::OnPinShortcut(bool pinned) {
   // Maybe user will see os notification for pin right after clicking the Pin
   // button. If user doesn't click allow in 20s, we'll not monitor anymore as we
   // could give proper pin state after reloading.
-  pin_state_check_count_ = 10;
+  pin_state_check_count_down_ = 10;
   pin_state_check_timer_->Reset();
 #else
   NotifyShortcutPinStateChangeToPage(pinned);
@@ -82,10 +86,10 @@ void PinShortcutHandler::OnCheckShortcutPinState(bool from_timer, bool pinned) {
 
 #if BUILDFLAG(IS_WIN)
   if (from_timer) {
-    pin_state_check_count_--;
+    pin_state_check_count_down_--;
     // Clear if pinned or we did all try.
-    if (pinned || pin_state_check_count_ == 0) {
-      pin_state_check_count_ = 0;
+    if (pinned || pin_state_check_count_down_ == 0) {
+      pin_state_check_count_down_ = 0;
       pin_state_check_timer_.reset();
     } else {
       // Check again.
