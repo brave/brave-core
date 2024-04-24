@@ -83,8 +83,7 @@ void TextClassificationResource::Load() {
 void TextClassificationResource::LoadComponentResourceCallback(
     base::File file) {
   if (!file.IsValid()) {
-    BLOG(0, "Failed to load invalid resource file");
-    return;
+    return BLOG(0, "Failed to load invalid resource file");
   }
 
   text_processing_pipeline_.emplace(

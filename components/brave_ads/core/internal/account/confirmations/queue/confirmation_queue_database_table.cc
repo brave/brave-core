@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -75,6 +76,7 @@ size_t BindParameters(
   int index = 0;
   for (const auto& confirmation_queue_item : confirmation_queue_items) {
     if (!confirmation_queue_item.IsValid()) {
+      base::debug::DumpWithoutCrashing();
       continue;
     }
 
@@ -130,7 +132,8 @@ size_t BindParameters(
     BindString(command, index++, user_data_json);
 
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(*confirmation_queue_item.process_at));
+              ToChromeTimestampFromTime(
+                  confirmation_queue_item.process_at.value_or(base::Time())));
 
     BindInt(command, index++, confirmation_queue_item.retry_count);
 
@@ -222,6 +225,11 @@ void GetCallback(GetConfirmationQueueCallback callback,
   for (const auto& record : command_response->result->get_records()) {
     const ConfirmationQueueItemInfo confirmation_queue_item =
         GetFromRecord(&*record);
+    if (!confirmation_queue_item.IsValid()) {
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     confirmation_queue_items.push_back(confirmation_queue_item);
   }
 

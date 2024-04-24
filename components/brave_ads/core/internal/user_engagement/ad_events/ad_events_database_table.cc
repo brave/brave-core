@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -53,6 +54,11 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 
   int index = 0;
   for (const auto& ad_event : ad_events) {
+    if (!ad_event.IsValid()) {
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     BindString(command, index++, ad_event.placement_id);
     BindString(command, index++, ToString(ad_event.type));
     BindString(command, index++, ToString(ad_event.confirmation_type));
@@ -107,6 +113,11 @@ void GetCallback(GetAdEventsCallback callback,
   AdEventList ad_events;
   for (const auto& record : command_response->result->get_records()) {
     const AdEventInfo ad_event = GetFromRecord(&*record);
+    if (!ad_event.IsValid()) {
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     ad_events.push_back(ad_event);
   }
 

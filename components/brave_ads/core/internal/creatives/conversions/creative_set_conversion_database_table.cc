@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -52,6 +53,7 @@ size_t BindParameters(
   int index = 0;
   for (const auto& creative_set_conversion : creative_set_conversions) {
     if (!creative_set_conversion.IsValid()) {
+      base::debug::DumpWithoutCrashing();
       continue;
     }
 
@@ -63,7 +65,8 @@ size_t BindParameters(
     BindInt(command, index++,
             creative_set_conversion.observation_window.InDays());
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(*creative_set_conversion.expire_at));
+              ToChromeTimestampFromTime(
+                  creative_set_conversion.expire_at.value_or(base::Time())));
 
     ++count;
   }
@@ -111,6 +114,11 @@ void GetCallback(GetConversionsCallback callback,
   for (const auto& record : command_response->result->get_records()) {
     const CreativeSetConversionInfo creative_set_conversion =
         GetFromRecord(&*record);
+    if (!creative_set_conversion.IsValid()) {
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     creative_set_conversions.push_back(creative_set_conversion);
   }
 

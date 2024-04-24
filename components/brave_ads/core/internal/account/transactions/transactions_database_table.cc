@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -55,12 +56,14 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& transaction : transactions) {
     if (!transaction.IsValid()) {
+      base::debug::DumpWithoutCrashing();
       continue;
     }
 
     BindString(command, index++, transaction.id);
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(*transaction.created_at));
+              ToChromeTimestampFromTime(
+                  transaction.created_at.value_or(base::Time())));
     BindString(command, index++, transaction.creative_instance_id);
     BindDouble(command, index++, transaction.value);
     BindString(command, index++, transaction.segment);
@@ -116,6 +119,11 @@ void GetCallback(GetTransactionsCallback callback,
 
   for (const auto& record : command_response->result->get_records()) {
     const TransactionInfo transaction = GetFromRecord(&*record);
+    if (!transaction.IsValid()) {
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     transactions.push_back(transaction);
   }
 

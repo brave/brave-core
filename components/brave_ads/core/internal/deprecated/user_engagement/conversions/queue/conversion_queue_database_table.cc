@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
@@ -64,6 +63,11 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 
   int index = 0;
   for (const auto& conversion_queue_item : conversion_queue_items) {
+    if (!conversion_queue_item.IsValid()) {
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     BindString(command, index++,
                ToString(conversion_queue_item.conversion.ad_type));
     BindString(command, index++, conversion_queue_item.conversion.campaign_id);
@@ -146,12 +150,7 @@ void GetCallback(GetConversionQueueCallback callback,
   for (const auto& record : command_response->result->get_records()) {
     const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(&*record);
-    // TODO(https://github.com/brave/brave-browser/issues/33239): Validate all
-    // Brave Ads data when loading from database
     if (!conversion_queue_item.IsValid()) {
-      SCOPED_CRASH_KEY_STRING256(
-          "BraveAdsConversion", "invalidFieldsNames",
-          GetConversionQueueItemInvalidFieldsNames(conversion_queue_item));
       base::debug::DumpWithoutCrashing();
       continue;
     }
@@ -181,6 +180,11 @@ void GetForCreativeInstanceIdCallback(
   for (const auto& record : command_response->result->get_records()) {
     const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(&*record);
+    if (!conversion_queue_item.IsValid()) {
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     conversion_queue_items.push_back(conversion_queue_item);
   }
 
