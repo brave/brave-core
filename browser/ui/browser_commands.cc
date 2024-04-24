@@ -915,11 +915,15 @@ void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
   }
 
   auto* model = browser->tab_strip_model();
-  int tab_index = model->GetIndexOfTab(*tab);
-  chrome::AddTabAt(browser, GURL("chrome://newtab"), tab_index + 1,
+  const int tab_index = model->GetIndexOfTab(*tab);
+  const int new_tab_index = model->IsTabPinned(tab_index)
+                                ? model->IndexOfFirstNonPinnedTab()
+                                : tab_index + 1;
+
+  chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
                    /*foreground*/ true);
   split_view_data->TileTabs(std::make_pair(
-      model->GetTabHandleAt(tab_index), model->GetTabHandleAt(tab_index + 1)));
+      model->GetTabHandleAt(tab_index), model->GetTabHandleAt(new_tab_index)));
 }
 
 void CloseSplitViewForTab(Browser* browser,
