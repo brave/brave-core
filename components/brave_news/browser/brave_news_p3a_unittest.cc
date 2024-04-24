@@ -207,6 +207,7 @@ TEST_F(BraveNewsP3ATest, TestDirectFeedsTotal) {
   pref_manager_->AddDirectPublisher(GURL("https://bar.com"), "");
 
   histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 3);
+  histogram_tester_.ExpectBucketCount(kDirectFeedsTotalHistogramName, 1, 1);
   histogram_tester_.ExpectBucketCount(kDirectFeedsTotalHistogramName, 2, 1);
 }
 
