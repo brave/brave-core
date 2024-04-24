@@ -7,7 +7,7 @@ import * as React from 'react'
 import { loadTimeData } from '$web-common/loadTimeData'
 
 import getPageHandlerInstance, * as mojom from '../api/page_handler'
-import DataContext, { AIChatContext } from './context'
+import DataContext, { AIChatContext, ActionsList, Action } from './context'
 
 function toBlobURL(data: number[] | null) {
   if (!data) return undefined
@@ -19,7 +19,7 @@ function toBlobURL(data: number[] | null) {
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
 
-const ACTIONS_LIST = [
+const ACTIONS_LIST: ActionsList[] = [
   {
     category: 'Quick actions',
     actions: [{ label: 'Explain', type: mojom.ActionType.EXPLAIN }]
@@ -29,7 +29,7 @@ const ACTIONS_LIST = [
     actions: [
       { label: 'Paraphrase', type: mojom.ActionType.PARAPHRASE },
       { label: 'Improve', type: mojom.ActionType.IMPROVE },
-      { label: 'Change tone', type: -1 },
+      { label: 'Change tone' },
       { label: 'Change tone / Academic', type: mojom.ActionType.ACADEMICIZE },
       {
         label: 'Change tone / Professional',
@@ -49,7 +49,7 @@ const ACTIONS_LIST = [
     category: 'Create',
     actions: [
       { label: 'Tagline', type: mojom.ActionType.CREATE_TAGLINE },
-      { label: 'Social media', type: -1 },
+      { label: 'Social media' },
       {
         label: 'Social media / Short',
         type: mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_SHORT
@@ -61,6 +61,45 @@ const ACTIONS_LIST = [
     ]
   }
 ]
+
+function useActionsList() {
+  const [actionsList, setActionsList] = React.useState(ACTIONS_LIST)
+
+  const filterActionsByText = (searchText: string) => {
+    // effectively remove the leading slash (\) before comparing it to the action labels.
+    const text = searchText.substring(1).toLocaleLowerCase()
+
+    const filteredList = ACTIONS_LIST.map(actionList => ({
+      ...actionList,
+      actions: actionList.actions.filter(action => {
+        // we skip non action types in the list as they're meant for display heading
+        if (!('type' in action)) return
+        return action.label.toLocaleLowerCase().includes(text)
+      })
+    })).filter(actionList => actionList.actions.length > 0)
+
+    setActionsList(filteredList)
+  }
+
+  const resetActionsList = () => {
+    setActionsList(ACTIONS_LIST)
+  }
+
+  const getFirstValidAction = (): Action => {
+    const action = actionsList.flatMap(actionList => {
+      return actionList.actions
+    }).filter(actions => ('type' in actions))
+
+    return action[0] as Action
+  }
+
+  return {
+    actionsList,
+    filterActionsByText,
+    resetActionsList,
+    getFirstValidAction,
+  }
+}
 
 interface DataContextProviderProps {
   children: React.ReactNode
@@ -91,7 +130,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [inputText, setInputTextInternal] = React.useState('')
   const [selectedActionType, setSelectedActionType] = React.useState<mojom.ActionType | undefined>()
   const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
-  const [actionsList, setActionsList] = React.useState(ACTIONS_LIST)
+  const { actionsList, filterActionsByText, resetActionsList, getFirstValidAction } = useActionsList()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -258,23 +297,10 @@ function DataContextProvider (props: DataContextProviderProps) {
 
     if (text.startsWith('/')) {
       setIsToolsMenuOpen(true)
-
-      // effectively remove the leading slash before comparing it to the action labels.
-      const searchText = text.substring(1).toLocaleLowerCase()
-
-      const filteredList = ACTIONS_LIST.map(category => ({
-        ...category,
-        actions: category.actions.filter(action => {
-          // actionType with -1 is a subcategory so we skip
-          if (action.type === -1) return
-          return action.label.toLocaleLowerCase().includes(searchText)
-        })
-      })).filter(category => category.actions.length > 0)
-
-      setActionsList(filteredList)
+      filterActionsByText(text)
     } else {
       setIsToolsMenuOpen(false)
-      setActionsList(ACTIONS_LIST)
+      resetActionsList()
     }
   }
 
@@ -306,7 +332,7 @@ function DataContextProvider (props: DataContextProviderProps) {
       inputText.startsWith('/') &&
       actionsList.length > 0
     ) {
-      setSelectedActionType(actionsList[0].actions[0].type)
+      setSelectedActionType(getFirstValidAction().type)
       setInputText('')
       setIsToolsMenuOpen(false)
       return true

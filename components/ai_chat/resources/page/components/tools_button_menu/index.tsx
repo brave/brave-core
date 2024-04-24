@@ -32,8 +32,8 @@ export default function ToolsButtonMenu(props: Props) {
         return (
           <>
             <div className={styles.menuSectionTitle}>{entry.category}</div>
-            {entry.actions.map((action: any) => {
-              if (action.type === -1) {
+            {entry.actions.map((action) => {
+              if (!('type' in action)) {
                 return <div className={styles.menuSubtitle}>{action.label}</div>
               } else {
                 return (
