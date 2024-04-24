@@ -15,7 +15,6 @@
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 class Browser;
-class PlaylistActionIconView;
 
 namespace playlist {
 class PlaylistTabHelper;
@@ -30,7 +29,7 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
  protected:
   PlaylistActionBubbleView(
       Browser* browser,
-      base::WeakPtr<PlaylistActionIconView> anchor,
+      View* anchor_view,
       base::WeakPtr<PlaylistTabHelper> playlist_tab_helper);
 
   // views::WidgetDelegate:
@@ -38,7 +37,6 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
 
   base::WeakPtr<PlaylistBubblesController> controller_;
   raw_ptr<Browser> browser_ = nullptr;
-  base::WeakPtr<PlaylistActionIconView> action_icon_view_;  // Our anchor.
   base::WeakPtr<PlaylistTabHelper> tab_helper_;
 };
 }  // namespace playlist

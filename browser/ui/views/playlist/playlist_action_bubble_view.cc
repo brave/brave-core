@@ -28,17 +28,16 @@ void PlaylistActionBubbleView::Hide() {
 
 PlaylistActionBubbleView::PlaylistActionBubbleView(
     Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+    View* anchor_view,
     base::WeakPtr<PlaylistTabHelper> tab_helper)
-    : BubbleDialogDelegateView(action_icon_view.get(),
+    : BubbleDialogDelegateView(anchor_view,
                                views::BubbleBorder::Arrow::TOP_RIGHT),
       controller_(PlaylistBubblesController::CreateOrGetFromWebContents(
                       &tab_helper->GetWebContents())
                       ->AsWeakPtr()),
       browser_(browser),
-      action_icon_view_(std::move(action_icon_view)),
       tab_helper_(std::move(tab_helper)) {
-  CHECK(browser_ && action_icon_view_ && tab_helper_);
+  CHECK(browser_ && anchor_view && tab_helper_);
 }
 
 PlaylistActionBubbleView::~PlaylistActionBubbleView() = default;

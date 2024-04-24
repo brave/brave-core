@@ -72,10 +72,10 @@ END_METADATA
 
 PlaylistConfirmBubble::PlaylistConfirmBubble(
     Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+    View* anchor_view,
     base::WeakPtr<PlaylistTabHelper> tab_helper)
     : PlaylistActionBubbleView(browser,
-                               std::move(action_icon_view),
+                               anchor_view,
                                std::move(tab_helper)) {
   // What this looks like:
   // https://user-images.githubusercontent.com/5474642/243532057-4bbbe779-47a1-4c3a-bd34-ce1334cf1d1d.png
@@ -224,15 +224,14 @@ void PlaylistConfirmBubble::RemoveFromPlaylist() {
 }
 
 void PlaylistConfirmBubble::MoreMediaInContents() {
-  if (!action_icon_view_ || !tab_helper_ ||
+  if (!GetAnchorView() || !tab_helper_ ||
       !tab_helper_->found_items().size()) {
     return;
   }
 
   CHECK(controller_);
   controller_->ShowBubble(std::make_unique<PlaylistAddBubble>(
-      browser_, action_icon_view_, tab_helper_,
-      tab_helper_->GetUnsavedItems()));
+      browser_, GetAnchorView(), tab_helper_));
 }
 
 BEGIN_METADATA(PlaylistConfirmBubble)

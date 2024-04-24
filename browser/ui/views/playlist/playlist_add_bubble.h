@@ -40,12 +40,8 @@ class PlaylistAddBubble : public PlaylistActionBubbleView,
   static constexpr int kWidth = 288;
 
   PlaylistAddBubble(Browser* browser,
-                    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+                    View* anchor_view,
                     base::WeakPtr<PlaylistTabHelper> tab_helper);
-  PlaylistAddBubble(Browser* browser,
-                    base::WeakPtr<PlaylistActionIconView> action_icon_view,
-                    base::WeakPtr<PlaylistTabHelper> tab_helper,
-                    const std::vector<mojom::PlaylistItemPtr>& items);
   ~PlaylistAddBubble() override;
 
  private:

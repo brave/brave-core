@@ -41,10 +41,10 @@ void PlaylistBubblesController::ShowBubble(base::WeakPtr<PlaylistActionIconView>
 
   if (!tab_helper->saved_items().empty()) {
     ShowBubble(std::make_unique<PlaylistConfirmBubble>(
-        browser, std::move(anchor_view), tab_helper->GetWeakPtr()));
+        browser, anchor_view.get(), tab_helper->GetWeakPtr()));
   } else if (!tab_helper->found_items().empty()) {
     ShowBubble(std::make_unique<PlaylistAddBubble>(
-        browser, std::move(anchor_view), tab_helper->GetWeakPtr()));
+        browser, anchor_view.get(), tab_helper->GetWeakPtr()));
   }
 }
 

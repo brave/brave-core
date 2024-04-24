@@ -105,20 +105,10 @@ END_METADATA
 
 PlaylistAddBubble::PlaylistAddBubble(
     Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+    View* anchor_view,
     base::WeakPtr<PlaylistTabHelper> tab_helper)
-    : PlaylistAddBubble(browser,
-                        std::move(action_icon_view),
-                        tab_helper,
-                        tab_helper->found_items()) {}
-
-PlaylistAddBubble::PlaylistAddBubble(
-    Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> action_icon_view,
-    base::WeakPtr<PlaylistTabHelper> tab_helper,
-    const std::vector<mojom::PlaylistItemPtr>& items)
     : PlaylistActionBubbleView(browser,
-                               std::move(action_icon_view),
+                               anchor_view,
                                std::move(tab_helper)),
       thumbnail_provider_(
           std::make_unique<ThumbnailProvider>(tab_helper_.get())) {
@@ -179,13 +169,13 @@ void PlaylistAddBubble::OnAddedItemFromTabHelper(
   }
 
   CHECK(tab_helper_);
-  if (!action_icon_view_) {
+  if (!GetAnchorView()) {
     return;
   }
 
   CHECK(controller_);
   controller_->ShowBubble(std::make_unique<PlaylistConfirmBubble>(
-      browser_, action_icon_view_, tab_helper_));
+      browser_, GetAnchorView(), tab_helper_));
 }
 
 void PlaylistAddBubble::InitListView() {

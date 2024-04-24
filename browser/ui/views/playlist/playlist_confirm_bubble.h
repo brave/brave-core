@@ -16,7 +16,6 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class Browser;
-class PlaylistActionIconView;
 
 namespace playlist {
 // Shows when items were added to the current page.
@@ -26,7 +25,7 @@ class PlaylistConfirmBubble : public PlaylistActionBubbleView,
   METADATA_HEADER(PlaylistConfirmBubble, PlaylistActionBubbleView)
  public:
   PlaylistConfirmBubble(Browser* browser,
-                        base::WeakPtr<PlaylistActionIconView> action_icon_view,
+                        View* anchor_view,
                         base::WeakPtr<PlaylistTabHelper> tab_helper);
   ~PlaylistConfirmBubble() override;
 
