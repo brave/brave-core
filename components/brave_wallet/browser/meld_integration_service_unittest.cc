@@ -249,9 +249,11 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
 };
 
 TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
-  const auto url = MeldIntegrationService::GetServiceProviderURL(
+  auto filter = mojom::MeldFilter::New(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
+  const auto url =
+      MeldIntegrationService::GetServiceProviderURL(std::move(filter));
   EXPECT_EQ(url.path(), "/service-providers");
   EXPECT_EQ(url.query(),
             "accountFilter=false&statuses=LIVE%2CRECENTLY_ADDED&countries=US%"
@@ -520,9 +522,12 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
-  const auto url = MeldIntegrationService::GetPaymentMethodsURL(
+  auto filter = mojom::MeldFilter::New(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
+
+  const auto url =
+      MeldIntegrationService::GetPaymentMethodsURL(std::move(filter));
   EXPECT_EQ(url.path(), "/service-providers/properties/payment-methods");
   EXPECT_EQ(url.query(),
             "accountFilter=false&includeServiceProviderDetails=false&statuses="
@@ -666,9 +671,11 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
-  const auto url = MeldIntegrationService::GetFiatCurrenciesURL(
+  auto filter = mojom::MeldFilter::New(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
+  const auto url = MeldIntegrationService::GetFiatCurrenciesURL(
+      std::move(filter));
   EXPECT_EQ(url.path(), "/service-providers/properties/fiat-currencies");
   EXPECT_EQ(url.query(),
             "accountFilter=false&includeServiceProviderDetails=false&statuses="
@@ -776,9 +783,11 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
-  const auto url = MeldIntegrationService::GetCryptoCurrenciesURL(
+  auto filter = mojom::MeldFilter::New(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
+  const auto url = MeldIntegrationService::GetCryptoCurrenciesURL(
+      std::move(filter));
   EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
   EXPECT_EQ(url.query(),
             "accountFilter=false&includeServiceProviderDetails=false&statuses="
@@ -908,9 +917,11 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
-  const auto url = MeldIntegrationService::GetCountriesURL(
+  auto filter = mojom::MeldFilter::New(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
+  const auto url = MeldIntegrationService::GetCountriesURL(
+      std::move(filter));
   EXPECT_EQ(url.path(), "/service-providers/properties/countries");
   EXPECT_EQ(url.query(),
             "accountFilter=false&includeServiceProviderDetails=false&statuses="

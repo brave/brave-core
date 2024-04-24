@@ -36,13 +36,7 @@ class MeldIntegrationService : public KeyedService,
   mojo::PendingRemote<mojom::MeldIntegrationService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::MeldIntegrationService> receiver);
 
-  static GURL GetServiceProviderURL(
-      const std::optional<std::string>& countries,
-      const std::optional<std::string>& fiat_currencies,
-      const std::optional<std::string>& crypto_currencies,
-      const std::optional<std::string>& service_providers,
-      const std::optional<std::string>& payment_method_types,
-      const std::optional<std::string>& statuses);
+  static GURL GetServiceProviderURL(mojom::MeldFilterPtr filter);
 
   void GetServiceProviders(mojom::MeldFilterPtr filter,
                            GetServiceProvidersCallback callback) override;
@@ -54,46 +48,22 @@ class MeldIntegrationService : public KeyedService,
                        const std::optional<std::string>& account,
                        GetCryptoQuotesCallback callback) override;
 
-  static GURL GetPaymentMethodsURL(
-      const std::optional<std::string>& countries,
-      const std::optional<std::string>& fiat_currencies,
-      const std::optional<std::string>& crypto_currencies,
-      const std::optional<std::string>& service_providers,
-      const std::optional<std::string>& payment_method_types,
-      const std::optional<std::string>& statuses);
+  static GURL GetPaymentMethodsURL(mojom::MeldFilterPtr filter);
 
   void GetPaymentMethods(mojom::MeldFilterPtr filter,
                          GetPaymentMethodsCallback callback) override;
 
-  static GURL GetFiatCurrenciesURL(
-      const std::optional<std::string>& countries,
-      const std::optional<std::string>& fiat_currencies,
-      const std::optional<std::string>& crypto_currencies,
-      const std::optional<std::string>& service_providers,
-      const std::optional<std::string>& payment_method_types,
-      const std::optional<std::string>& statuses);
+  static GURL GetFiatCurrenciesURL(mojom::MeldFilterPtr filter);
 
   void GetFiatCurrencies(mojom::MeldFilterPtr filter,
                          GetFiatCurrenciesCallback callback) override;
 
-  static GURL GetCryptoCurrenciesURL(
-      const std::optional<std::string>& countries,
-      const std::optional<std::string>& fiat_currencies,
-      const std::optional<std::string>& crypto_currencies,
-      const std::optional<std::string>& service_providers,
-      const std::optional<std::string>& payment_method_types,
-      const std::optional<std::string>& statuses);
+  static GURL GetCryptoCurrenciesURL(mojom::MeldFilterPtr filter);
 
   void GetCryptoCurrencies(mojom::MeldFilterPtr filter,
                            GetCryptoCurrenciesCallback callback) override;
 
-  static GURL GetCountriesURL(
-      const std::optional<std::string>& countries,
-      const std::optional<std::string>& fiat_currencies,
-      const std::optional<std::string>& crypto_currencies,
-      const std::optional<std::string>& service_providers,
-      const std::optional<std::string>& payment_method_types,
-      const std::optional<std::string>& statuses);
+  static GURL GetCountriesURL(mojom::MeldFilterPtr filter);
 
   void GetCountries(mojom::MeldFilterPtr filter,
                     GetCountriesCallback callback) override;
@@ -104,21 +74,45 @@ class MeldIntegrationService : public KeyedService,
 
   void OnGetServiceProviders(GetServiceProvidersCallback callback,
                              APIRequestResult api_request_result) const;
+  void OnParseServiceProviders(
+      GetServiceProvidersCallback reply_callback,
+      std::optional<std::vector<mojom::MeldServiceProviderPtr>>
+          service_providers) const;
 
   void OnGetCryptoQuotes(GetCryptoQuotesCallback callback,
                          APIRequestResult api_request_result) const;
+  void OnParseCryptoQuotes(
+      GetCryptoQuotesCallback reply_callback,
+      std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
+                        std::optional<std::string>> quotes_result) const;
 
   void OnGetPaymentMethods(GetPaymentMethodsCallback callback,
                            APIRequestResult api_request_result) const;
+  void OnParsePaymentMethods(
+      GetPaymentMethodsCallback reply_callback,
+      std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
+                 payment_methods) const;
 
   void OnGetFiatCurrencies(GetFiatCurrenciesCallback callback,
                            APIRequestResult api_request_result) const;
+  void OnParseFiatCurrencies(
+      GetFiatCurrenciesCallback reply_callback,
+      std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
+                 fiat_currencies) const;
 
   void OnGetCryptoCurrencies(GetCryptoCurrenciesCallback callback,
                              APIRequestResult api_request_result) const;
+  void OnParseCryptoCurrencies(
+      GetCryptoCurrenciesCallback reply_callback,
+      std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
+                 crypto_currencies) const;
 
   void OnGetCountries(GetCountriesCallback callback,
                       APIRequestResult api_request_result) const;
+
+  void OnParseCountries(
+      GetCountriesCallback reply_callback,
+      std::optional<std::vector<mojom::MeldCountryPtr>> countries) const;
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<MeldIntegrationService> weak_ptr_factory_{this};
