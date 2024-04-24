@@ -29,7 +29,6 @@ const PANEL_TYPES: PanelTypes[] = [
   'settings',
   'sitePermissions',
   'swap',
-  'transactionDetails',
   'activity', // Transactions
   'transactionStatus'
 ]

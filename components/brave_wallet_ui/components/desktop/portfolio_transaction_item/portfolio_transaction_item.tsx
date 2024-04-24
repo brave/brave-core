@@ -56,9 +56,6 @@ import {
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 import { withPlaceholderIcon } from '../../shared/create-placeholder-icon'
-import {
-  TransactionDetailsModal //
-} from '../popup-modals/transaction_details_modal/transaction_details_modal'
 import { CreateNetworkIcon } from '../../shared/create-network-icon'
 
 // Styled Components
@@ -99,6 +96,9 @@ const noneTxStatusDisplayTypes = [
 export interface Props {
   transaction: BraveWallet.TransactionInfo | SerializableTransactionInfo
   isFocused?: boolean
+  onClick?: (
+    tx: Pick<BraveWallet.TransactionInfo | SerializableTransactionInfo, 'id'>
+  ) => void
 }
 
 const ICON_ASSET_CONFIG = {
@@ -119,11 +119,7 @@ const SwapIconWithPlaceholder = withPlaceholderIcon(SwapIcon, ICON_SWAP_CONFIG)
 const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_ASSET_CONFIG)
 
 export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
-  ({ transaction, isFocused }: Props, forwardedRef) => {
-    // State
-    const [showTransactionDetails, setShowTransactionDetails] =
-      React.useState<boolean>(false)
-
+  ({ transaction, isFocused, onClick }: Props, forwardedRef) => {
     // partial tx parsing
     const { isSolanaTx, recipient, approvalTarget, isSwap, txCoinType } =
       React.useMemo(() => {
@@ -175,22 +171,21 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       accountInfosRegistry
     )
 
-    const { buyToken, sellToken, buyAmount, sellAmount, buyAmountWei } =
-      React.useMemo(() => {
-        return transaction.txType === BraveWallet.TransactionType.ETHSwap
-          ? getETHSwapTransactionBuyAndSellTokens({
-              nativeAsset: networkAsset,
-              tokensList: combinedTokensList,
-              tx: transaction
-            })
-          : {
-              buyToken: undefined,
-              sellToken: txToken,
-              buyAmount: new Amount(''),
-              sellAmount: new Amount(''),
-              buyAmountWei: new Amount('')
-            }
-      }, [transaction, networkAsset, combinedTokensList, txToken])
+    const { buyToken, sellToken, buyAmount, sellAmount } = React.useMemo(() => {
+      return transaction.txType === BraveWallet.TransactionType.ETHSwap
+        ? getETHSwapTransactionBuyAndSellTokens({
+            nativeAsset: networkAsset,
+            tokensList: combinedTokensList,
+            tx: transaction
+          })
+        : {
+            buyToken: undefined,
+            sellToken: txToken,
+            buyAmount: new Amount(''),
+            sellAmount: new Amount(''),
+            buyAmountWei: new Amount('')
+          }
+    }, [transaction, networkAsset, combinedTokensList, txToken])
 
     const [normalizedTransferredValue, transferredValueWei] =
       React.useMemo(() => {
@@ -243,14 +238,6 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer
         ? networkAsset
         : txToken
-
-    const formattedBuyFiatValue = buyToken
-      ? computeFiatAmount({
-          spotPriceRegistry,
-          value: buyAmountWei.format(),
-          token: buyToken
-        }).formatAsFiat(defaultFiatCurrency)
-      : ''
 
     const computedSendFiatAmount = sendToken
       ? computeFiatAmount({
@@ -311,299 +298,273 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
     // render
     return (
-      <>
-        <PortfolioTransactionItemWrapper
-          ref={forwardedRef}
-          isFocused={isFocused}
-          onClick={() => setShowTransactionDetails(true)}
-        >
-          <Column fullWidth={true}>
+      <PortfolioTransactionItemWrapper
+        ref={forwardedRef}
+        isFocused={isFocused}
+        onClick={() => onClick?.(transaction)}
+      >
+        <Column fullWidth={true}>
+          <Row
+            justifyContent='flex-start'
+            padding='2px'
+            margin='0px 0px 4px 0px'
+          >
+            <DateText
+              textSize='12px'
+              isBold={false}
+            >
+              {formatDateAsRelative(
+                serializedTimeDeltaToJSDate(transaction.createdTime)
+              )}
+            </DateText>
+            <TransactionTypeIcon name={transactionTypeIcon} />
+            <TransactionTypeText
+              textSize='12px'
+              isBold={false}
+            >
+              {getLocale(transactionTypeLocale)}
+              {` `}
+              {getLocale(intentLabel)}
+            </TransactionTypeText>
+            <IntentAddressText
+              textSize='12px'
+              isBold={true}
+            >
+              {intentAddress}
+            </IntentAddressText>
+          </Row>
+          <Row justifyContent='space-between'>
             <Row
               justifyContent='flex-start'
-              padding='2px'
-              margin='0px 0px 4px 0px'
+              padding='5px 0px'
+              width='unset'
             >
-              <DateText
-                textSize='12px'
-                isBold={false}
-              >
-                {formatDateAsRelative(
-                  serializedTimeDeltaToJSDate(transaction.createdTime)
-                )}
-              </DateText>
-              <TransactionTypeIcon name={transactionTypeIcon} />
-              <TransactionTypeText
-                textSize='12px'
-                isBold={false}
-              >
-                {getLocale(transactionTypeLocale)}
-                {` `}
-                {getLocale(intentLabel)}
-              </TransactionTypeText>
-              <IntentAddressText
-                textSize='12px'
-                isBold={true}
-              >
-                {intentAddress}
-              </IntentAddressText>
-            </Row>
-            <Row justifyContent='space-between'>
-              <Row
-                justifyContent='flex-start'
-                padding='5px 0px'
-                width='unset'
-              >
-                <IconWrapper margin='0px 12px 0px 0px'>
-                  {isLoadingTokens ? (
-                    <>
-                      <Skeleton
-                        width={32}
-                        height={32}
-                        circle={true}
-                        enableAnimation={true}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      {isSwap ? (
-                        <SwapIconsWrapper>
-                          <SwapSellIcon>
-                            {isSolanaSwap ? (
-                              <SellIconPlaceholder>
-                                <SwapPlaceholderIcon />
-                              </SellIconPlaceholder>
-                            ) : (
-                              <SwapIconWithPlaceholder
-                                asset={sellToken}
-                                network={txNetwork}
-                              />
-                            )}
-                          </SwapSellIcon>
-                          <SwapBuyIcon>
-                            {isSolanaSwap ? (
-                              <BuyIconPlaceholder>
-                                <SwapPlaceholderIcon />
-                              </BuyIconPlaceholder>
-                            ) : (
-                              <SwapIconWithPlaceholder
-                                asset={buyToken}
-                                network={txNetwork}
-                              />
-                            )}
-                          </SwapBuyIcon>
-                        </SwapIconsWrapper>
-                      ) : (
-                        <>
-                          {isNonFungibleToken ? (
-                            <NftIconWithPlaceholder
-                              asset={sendToken}
-                              network={txNetwork}
-                            />
+              <IconWrapper margin='0px 12px 0px 0px'>
+                {isLoadingTokens ? (
+                  <>
+                    <Skeleton
+                      width={32}
+                      height={32}
+                      circle={true}
+                      enableAnimation={true}
+                    />
+                  </>
+                ) : (
+                  <>
+                    {isSwap ? (
+                      <SwapIconsWrapper>
+                        <SwapSellIcon>
+                          {isSolanaSwap ? (
+                            <SellIconPlaceholder>
+                              <SwapPlaceholderIcon />
+                            </SellIconPlaceholder>
                           ) : (
-                            <AssetIconWithPlaceholder
-                              asset={sendToken}
+                            <SwapIconWithPlaceholder
+                              asset={sellToken}
                               network={txNetwork}
                             />
                           )}
-                        </>
-                      )}
-                    </>
-                  )}
-                  {showTransactionStatus && (
-                    <StatusBubble status={transaction.txStatus}>
-                      {[
-                        BraveWallet.TransactionStatus.Submitted,
-                        BraveWallet.TransactionStatus.Unapproved
-                      ].includes(transaction.txStatus) ? (
-                        <LoadingIcon />
-                      ) : (
-                        <StatusIcon name='loading-spinner' />
-                      )}
-                    </StatusBubble>
-                  )}
-                  {showNetworkIcon && (
-                    <NetworkIconWrapper>
-                      <CreateNetworkIcon
-                        network={txNetwork}
-                        marginRight={0}
-                        size='small'
-                      />
-                    </NetworkIconWrapper>
-                  )}
-                </IconWrapper>
-                <Column alignItems='flex-start'>
-                  {isSwap ? (
-                    <Row>
-                      {isSolanaSwap ? (
+                        </SwapSellIcon>
+                        <SwapBuyIcon>
+                          {isSolanaSwap ? (
+                            <BuyIconPlaceholder>
+                              <SwapPlaceholderIcon />
+                            </BuyIconPlaceholder>
+                          ) : (
+                            <SwapIconWithPlaceholder
+                              asset={buyToken}
+                              network={txNetwork}
+                            />
+                          )}
+                        </SwapBuyIcon>
+                      </SwapIconsWrapper>
+                    ) : (
+                      <>
+                        {isNonFungibleToken ? (
+                          <NftIconWithPlaceholder
+                            asset={sendToken}
+                            network={txNetwork}
+                          />
+                        ) : (
+                          <AssetIconWithPlaceholder
+                            asset={sendToken}
+                            network={txNetwork}
+                          />
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+                {showTransactionStatus && (
+                  <StatusBubble status={transaction.txStatus}>
+                    {[
+                      BraveWallet.TransactionStatus.Submitted,
+                      BraveWallet.TransactionStatus.Unapproved
+                    ].includes(transaction.txStatus) ? (
+                      <LoadingIcon />
+                    ) : (
+                      <StatusIcon name='loading-spinner' />
+                    )}
+                  </StatusBubble>
+                )}
+                {showNetworkIcon && (
+                  <NetworkIconWrapper>
+                    <CreateNetworkIcon
+                      network={txNetwork}
+                      marginRight={0}
+                      size='small'
+                    />
+                  </NetworkIconWrapper>
+                )}
+              </IconWrapper>
+              <Column alignItems='flex-start'>
+                {isSwap ? (
+                  <Row>
+                    {isSolanaSwap ? (
+                      <TokenNameText
+                        textSize='14px'
+                        isBold={true}
+                        textAlign='left'
+                      >
+                        {getLocale('braveWalletSolanaSwap')}
+                      </TokenNameText>
+                    ) : (
+                      <>
+                        {isLoadingTokens ? (
+                          <>
+                            <Skeleton
+                              width={40}
+                              height={20}
+                              enableAnimation={true}
+                            />
+                            <ArrowIconWrapper>
+                              <ArrowIcon />
+                            </ArrowIconWrapper>
+                            <Skeleton
+                              width={40}
+                              height={20}
+                              enableAnimation={true}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <TokenNameText
+                              textSize='14px'
+                              isBold={true}
+                              textAlign='left'
+                            >
+                              {sellToken?.symbol ?? ''}
+                            </TokenNameText>
+                            <ArrowIconWrapper>
+                              <ArrowIcon />
+                            </ArrowIconWrapper>
+                            <TokenNameText
+                              textSize='14px'
+                              isBold={true}
+                              textAlign='left'
+                            >
+                              {buyToken?.symbol ?? ''}
+                            </TokenNameText>
+                          </>
+                        )}
+                      </>
+                    )}
+                  </Row>
+                ) : (
+                  <>
+                    {isLoadingTokens ? (
+                      <>
+                        <Skeleton
+                          height={20}
+                          width={100}
+                          enableAnimation={true}
+                        />
+                        <VerticalSpace space='4px' />
+                        <Skeleton
+                          height={16}
+                          width={60}
+                          enableAnimation={true}
+                        />
+                      </>
+                    ) : (
+                      <>
                         <TokenNameText
                           textSize='14px'
                           isBold={true}
                           textAlign='left'
                         >
-                          {getLocale('braveWalletSolanaSwap')}
+                          {sendToken?.name ?? ''}
                         </TokenNameText>
-                      ) : (
-                        <>
-                          {isLoadingTokens ? (
-                            <>
-                              <Skeleton
-                                width={40}
-                                height={20}
-                                enableAnimation={true}
-                              />
-                              <ArrowIconWrapper>
-                                <ArrowIcon />
-                              </ArrowIconWrapper>
-                              <Skeleton
-                                width={40}
-                                height={20}
-                                enableAnimation={true}
-                              />
-                            </>
-                          ) : (
-                            <>
-                              <TokenNameText
-                                textSize='14px'
-                                isBold={true}
-                                textAlign='left'
-                              >
-                                {sellToken?.symbol ?? ''}
-                              </TokenNameText>
-                              <ArrowIconWrapper>
-                                <ArrowIcon />
-                              </ArrowIconWrapper>
-                              <TokenNameText
-                                textSize='14px'
-                                isBold={true}
-                                textAlign='left'
-                              >
-                                {buyToken?.symbol ?? ''}
-                              </TokenNameText>
-                            </>
-                          )}
-                        </>
-                      )}
-                    </Row>
-                  ) : (
-                    <>
-                      {isLoadingTokens ? (
-                        <>
-                          <Skeleton
-                            height={20}
-                            width={100}
-                            enableAnimation={true}
-                          />
-                          <VerticalSpace space='4px' />
-                          <Skeleton
-                            height={16}
-                            width={60}
-                            enableAnimation={true}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <TokenNameText
-                            textSize='14px'
-                            isBold={true}
-                            textAlign='left'
-                          >
-                            {sendToken?.name ?? ''}
-                          </TokenNameText>
-                          <TokenSymbolText
-                            textSize='12px'
-                            isBold={false}
-                            textAlign='left'
-                          >
-                            {sendToken?.symbol ?? ''}
-                          </TokenSymbolText>
-                        </>
-                      )}
-                    </>
-                  )}
-                </Column>
-              </Row>
-              {showAmounts && (
-                <BalancesColumn
-                  width='unset'
-                  alignItems='flex-end'
-                >
-                  {isSwap ? (
-                    <>
+                        <TokenSymbolText
+                          textSize='12px'
+                          isBold={false}
+                          textAlign='left'
+                        >
+                          {sendToken?.symbol ?? ''}
+                        </TokenSymbolText>
+                      </>
+                    )}
+                  </>
+                )}
+              </Column>
+            </Row>
+            {showAmounts && (
+              <BalancesColumn
+                width='unset'
+                alignItems='flex-end'
+              >
+                {isSwap ? (
+                  <>
+                    <FiatValueText
+                      textSize='12px'
+                      isBold={false}
+                      textAlign='right'
+                    >
+                      {`-${formattedSellAmount}`}
+                    </FiatValueText>
+                    <AssetValueText
+                      textSize='14px'
+                      isBold={true}
+                      textAlign='right'
+                    >
+                      {`+${formattedBuyAmount}`}
+                    </AssetValueText>
+                  </>
+                ) : (
+                  <>
+                    <AssetValueText
+                      textSize='14px'
+                      isBold={true}
+                      textAlign='right'
+                    >
+                      {transaction.txType ===
+                      BraveWallet.TransactionType.ERC20Approve
+                        ? formattedApprovalAmount
+                        : `-${formattedSendCurrencyTotal}`}
+                    </AssetValueText>
+                    {isLoadingTxTokenSpotPrice &&
+                    isLoadingDefaultFiatCurrency ? (
+                      <Skeleton
+                        width={60}
+                        height={18}
+                        enableAnimation={true}
+                      />
+                    ) : (
                       <FiatValueText
                         textSize='12px'
                         isBold={false}
                         textAlign='right'
                       >
-                        {`-${formattedSellAmount}`}
+                        {formattedSendFiatValue}
                       </FiatValueText>
-                      <AssetValueText
-                        textSize='14px'
-                        isBold={true}
-                        textAlign='right'
-                      >
-                        {`+${formattedBuyAmount}`}
-                      </AssetValueText>
-                    </>
-                  ) : (
-                    <>
-                      <AssetValueText
-                        textSize='14px'
-                        isBold={true}
-                        textAlign='right'
-                      >
-                        {transaction.txType ===
-                        BraveWallet.TransactionType.ERC20Approve
-                          ? formattedApprovalAmount
-                          : `-${formattedSendCurrencyTotal}`}
-                      </AssetValueText>
-                      {isLoadingTxTokenSpotPrice &&
-                      isLoadingDefaultFiatCurrency ? (
-                        <Skeleton
-                          width={60}
-                          height={18}
-                          enableAnimation={true}
-                        />
-                      ) : (
-                        <FiatValueText
-                          textSize='12px'
-                          isBold={false}
-                          textAlign='right'
-                        >
-                          {formattedSendFiatValue}
-                        </FiatValueText>
-                      )}
-                    </>
-                  )}
-                </BalancesColumn>
-              )}
-            </Row>
-          </Column>
-        </PortfolioTransactionItemWrapper>
-
-        {showTransactionDetails && (
-          <TransactionDetailsModal
-            onClose={() => setShowTransactionDetails(false)}
-            transaction={transaction}
-            txNetwork={txNetwork}
-            txTypeLocale={transactionTypeLocale}
-            formattedSendCurrencyTotal={formattedSendCurrencyTotal}
-            formattedSendFiatValue={formattedSendFiatValue}
-            defaultFiatCurrency={defaultFiatCurrency}
-            networkAsset={networkAsset}
-            senderLabel={senderLabel}
-            recipient={recipient}
-            recipientLabel={recipientLabel}
-            approvalTargetLabel={approvalTargetLabel}
-            sendToken={sendToken}
-            buyToken={buyToken}
-            sellToken={sellToken}
-            formattedSellAmount={formattedSellAmount}
-            formattedBuyAmount={formattedBuyAmount}
-            formattedBuyFiatValue={formattedBuyFiatValue}
-            spotPriceRegistry={spotPriceRegistry}
-          />
-        )}
-      </>
+                    )}
+                  </>
+                )}
+              </BalancesColumn>
+            )}
+          </Row>
+        </Column>
+      </PortfolioTransactionItemWrapper>
     )
   }
 )

@@ -6,7 +6,12 @@
 import { createReducer } from 'redux-act'
 
 // types
-import { BraveWallet, PanelState, PanelTypes } from '../../constants/types'
+import {
+  BraveWallet,
+  PanelState,
+  PanelTypes,
+  TransactionInfoLookup
+} from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import { ShowConnectToSitePayload } from '../constants/action_types'
@@ -73,7 +78,10 @@ export const createPanelReducer = (initialState: PanelState) => {
 
   reducer.on(
     PanelActions.setSelectedTransactionId.type,
-    (state: PanelState, payload: string | undefined): PanelState => {
+    (
+      state: PanelState,
+      payload: TransactionInfoLookup | undefined
+    ): PanelState => {
       return {
         ...state,
         selectedTransactionId: payload

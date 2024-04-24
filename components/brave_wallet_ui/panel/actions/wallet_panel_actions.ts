@@ -5,7 +5,11 @@
 
 import { createAction } from '@reduxjs/toolkit'
 import { ShowConnectToSitePayload } from '../constants/action_types'
-import { BraveWallet, PanelTypes } from '../../constants/types'
+import {
+  BraveWallet,
+  PanelTypes,
+  TransactionInfoLookup
+} from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
@@ -19,9 +23,9 @@ export const setHardwareWalletInteractionError = createAction<
 >('setHardwareWalletInteractionError')
 export const cancelConnectHardwareWallet =
   createAction<BraveWallet.AccountInfo>('cancelConnectHardwareWallet')
-export const setSelectedTransactionId = createAction<string | undefined>(
-  'setSelectedTransactionId'
-)
+export const setSelectedTransactionId = createAction<
+  TransactionInfoLookup | undefined
+>('setSelectedTransactionId')
 export const setCloseOnDeactivate = createAction<boolean>(
   'setCloseOnDeactivate'
 )

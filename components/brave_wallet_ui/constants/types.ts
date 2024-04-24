@@ -100,7 +100,6 @@ export type PanelTypes =
   | 'settings'
   | 'sitePermissions'
   | 'swap'
-  | 'transactionDetails'
   | 'activity' // Transactions
   | 'transactionStatus'
 
@@ -176,6 +175,12 @@ export interface TokenRegistry {
   [chainID: string]: BraveWallet.BlockchainToken[]
 }
 
+export interface TransactionInfoLookup {
+  id: string
+  coin: BraveWallet.CoinType
+  chainId: string
+}
+
 export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
@@ -204,7 +209,7 @@ export interface PanelState {
   selectedPanel: PanelTypes
   connectingAccounts: string[]
   hardwareWalletCode?: HardwareWalletResponseCodeType
-  selectedTransactionId?: string
+  selectedTransactionId?: TransactionInfoLookup
 }
 
 export interface PageState {
