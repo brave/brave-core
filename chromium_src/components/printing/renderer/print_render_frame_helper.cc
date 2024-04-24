@@ -54,11 +54,10 @@ void PrintRenderFrameHelper::InitiatePrintPreview(
   // plugin node and print that instead.
   auto plugin = delegate_->GetPdfElement(frame);
   if (!plugin.IsNull()) {
-    PrintNode(plugin);
-    return;
+    print_preview_context_.InitWithNode(plugin);
+  } else {
+    print_preview_context_.InitWithFrame(frame);
   }
-
-  print_preview_context_.InitWithFrame(frame);
   print_in_progress_ = false;
 }
 

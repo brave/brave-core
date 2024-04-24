@@ -14,10 +14,12 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -83,6 +85,7 @@ class MockConversationDriver : public ConversationDriver {
               GetPageContent,
               (GetPageContentCallback, std::string_view),
               (override));
+  MOCK_METHOD(void, PrintPreviewFallback, (GetPageContentCallback), (override));
 };
 
 }  // namespace
@@ -103,6 +106,12 @@ class ConversationDriverUnitTest : public testing::Test {
     conversation_driver_ = std::make_unique<MockConversationDriver>(
         &prefs_, &local_state_, nullptr, skus_service_getter,
         shared_url_loader_factory_, "");
+  }
+
+  void EmulateUserOptedIn() {
+    // Mimic opening panel and user opted in.
+    conversation_driver_->OnConversationActiveChanged(true);
+    conversation_driver_->SetUserOptedIn(true);
   }
 
   void TearDown() override {}
@@ -139,9 +148,7 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
             network::URLLoaderCompletionStatus());
       }));
 
-  // Mimic opening panel and user opted in.
-  conversation_driver_->OnConversationActiveChanged(true);
-  conversation_driver_->SetUserOptedIn(true);
+  EmulateUserOptedIn();
 
   // 1. Test without page contents.
   EXPECT_TRUE(conversation_driver_->GetShouldSendPageContents());
@@ -165,7 +172,7 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
   // article_text_ and suggestions_ should be cleared when page content is
   // unlinked.
   EXPECT_FALSE(conversation_driver_->GetShouldSendPageContents());
-  EXPECT_TRUE(conversation_driver_->IsArticleTextEmptyForTesting());
+  EXPECT_TRUE(conversation_driver_->GetArticleTextForTesting().empty());
   EXPECT_TRUE(conversation_driver_->IsSuggestionsEmptyForTesting());
   auto& history = conversation_driver_->GetConversationHistory();
   EXPECT_EQ(
@@ -208,7 +215,7 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
   testing::Mock::VerifyAndClearExpectations(&observer);
 
   EXPECT_TRUE(conversation_driver_->GetShouldSendPageContents());
-  EXPECT_FALSE(conversation_driver_->IsArticleTextEmptyForTesting());
+  EXPECT_FALSE(conversation_driver_->GetArticleTextForTesting().empty());
   EXPECT_TRUE(conversation_driver_->IsSuggestionsEmptyForTesting());
   auto& history2 = conversation_driver_->GetConversationHistory();
   EXPECT_EQ(
@@ -236,6 +243,75 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
                                    mojom::ActionType::RESPONSE,
                                    mojom::ConversationTurnVisibility::VISIBLE,
                                    "This is the way.", std::nullopt)}));
+}
+
+TEST_F(ConversationDriverUnitTest, PrintPreviewFallback) {
+  // The only purpose of this interceptor is to make sure
+  // ConversationDriver::OnEngineCompletionDataReceived is called so we can run
+  // next SubmitSummarizationRequest
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        std::string body = network::GetUploadData(request);
+        // Set header for enabling SSE.
+        auto head = network::mojom::URLResponseHead::New();
+        head->mime_type = "text/event-stream";
+        url_loader_factory_.ClearResponses();
+        url_loader_factory_.AddResponse(
+            request.url, std::move(head),
+            R"(data: {"completion": "...", "stop": null})",
+            network::URLLoaderCompletionStatus());
+      }));
+  constexpr char expected_text[] = "This is the way.";
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(testing::Return(GURL("https://www.brave.com")));
+  EmulateUserOptedIn();
+
+  // Fallback iniatiated on empty string then succeeded.
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(base::test::RunOnceCallback<0>("", false, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback)
+      .WillOnce(base::test::RunOnceCallback<0>(expected_text, false, ""));
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), expected_text);
+  // Waiting for is_request_in_progress_ to be false.
+  task_environment_.RunUntilIdle();
+
+  // Fallback iniatiated on white spaces and line breaks then succeeded.
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(
+          base::test::RunOnceCallback<0>("       \n     \n  ", false, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback)
+      .WillOnce(base::test::RunOnceCallback<0>(expected_text, false, ""));
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), expected_text);
+  // Waiting for is_request_in_progress_ to be false.
+  task_environment_.RunUntilIdle();
+
+  // Fallback failed will not retrigger another fallback.
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(base::test::RunOnceCallback<0>("", false, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback)
+      .WillOnce(base::test::RunOnceCallback<0>("", false, ""));
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), "");
+  // Waiting for is_request_in_progress_ to be false.
+  task_environment_.RunUntilIdle();
+
+  // Fallback won't initiate for video content.
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(base::test::RunOnceCallback<0>("", true, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback).Times(0);
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), "");
+  // Waiting for is_request_in_progress_ to be false.
+  task_environment_.RunUntilIdle();
+
+  // Fallback won't initiate if we already have content
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(base::test::RunOnceCallback<0>(expected_text, false, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback).Times(0);
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), expected_text);
 }
 
 }  // namespace ai_chat

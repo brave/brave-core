@@ -390,10 +390,10 @@ void AIChatUIPageHandler::OnPageHasContent(mojom::SiteInfoPtr site_info) {
   }
 }
 
-void AIChatUIPageHandler::OnPrintPreviewRequested() {
+void AIChatUIPageHandler::OnPrintPreviewRequested(bool is_pdf) {
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   print_preview_extractor_ = std::make_unique<PrintPreviewExtractor>(
-      active_chat_tab_helper_->web_contents(), profile_);
+      active_chat_tab_helper_->web_contents(), profile_, is_pdf);
   print_preview_extractor_->CreatePrintPreview();
 #endif
 }

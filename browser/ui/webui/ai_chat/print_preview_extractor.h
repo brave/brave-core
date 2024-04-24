@@ -31,7 +31,9 @@ class PreviewPageTextExtractor;
 
 class PrintPreviewExtractor : public printing::mojom::PrintPreviewUI {
  public:
-  PrintPreviewExtractor(content::WebContents* web_contents, Profile* profile);
+  PrintPreviewExtractor(content::WebContents* web_contents,
+                        Profile* profile,
+                        bool is_pdf);
   ~PrintPreviewExtractor() override;
 
   PrintPreviewExtractor(const PrintPreviewExtractor&) = delete;
@@ -92,6 +94,7 @@ class PrintPreviewExtractor : public printing::mojom::PrintPreviewUI {
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
+  bool is_pdf_ = false;
   // unique id to avoid conflicts with other print preview UIs
   std::optional<int32_t> print_preview_ui_id_;
   mojo::AssociatedReceiver<PrintPreviewUI> print_preview_ui_receiver_{this};

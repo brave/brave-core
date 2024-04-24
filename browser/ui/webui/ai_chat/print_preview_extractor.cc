@@ -28,9 +28,16 @@
 #include "components/printing/browser/print_composite_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "pdf/buildflags.h"
 #include "printing/print_job_constants.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/skia/include/core/SkBitmap.h"
+
+#if BUILDFLAG(ENABLE_PDF)
+#include "base/feature_list.h"
+#include "chrome/browser/pdf/pdf_frame_util.h"
+#include "pdf/pdf_features.h"
+#endif  // BUILDFLAG(ENABLE_PDF)
 
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
@@ -38,6 +45,31 @@ using printing::PrintCompositeClient;
 using printing::mojom::PrintPreviewUI;
 
 namespace ai_chat {
+
+namespace {
+
+// chrome/browser/printing/print_view_manager_common.cc
+// Pick the right RenderFrameHost based on the WebContents.
+content::RenderFrameHost* GetRenderFrameHostToUse(
+    content::WebContents* contents) {
+#if BUILDFLAG(ENABLE_PDF)
+  // Pick the plugin frame host if `contents` is a PDF viewer guest. If using
+  // OOPIF PDF viewer, pick the PDF extension frame host.
+  content::RenderFrameHost* full_page_pdf_embedder_host =
+      base::FeatureList::IsEnabled(chrome_pdf::features::kPdfOopif)
+          ? pdf_frame_util::FindFullPagePdfExtensionHost(contents)
+          : printing::GetFullPagePlugin(contents);
+  content::RenderFrameHost* pdf_rfh = pdf_frame_util::FindPdfChildFrame(
+      full_page_pdf_embedder_host ? full_page_pdf_embedder_host
+                                  : contents->GetPrimaryMainFrame());
+  if (pdf_rfh) {
+    return pdf_rfh;
+  }
+#endif  // BUILDFLAG(ENABLE_PDF)
+  return printing::GetFrameToPrint(contents);
+}
+
+}  // namespace
 
 class PreviewPageTextExtractor {
  public:
@@ -139,10 +171,12 @@ class PreviewPageTextExtractor {
 };
 
 PrintPreviewExtractor::PrintPreviewExtractor(content::WebContents* web_contents,
-                                             Profile* profile)
+                                             Profile* profile,
+                                             bool is_pdf)
     : web_contents_(web_contents),
       profile_(profile),
-      active_chat_tab_helper_(AIChatTabHelper::FromWebContents(web_contents)) {
+      active_chat_tab_helper_(AIChatTabHelper::FromWebContents(web_contents)),
+      is_pdf_(is_pdf) {
   DCHECK(web_contents_);
 }
 
@@ -200,6 +234,9 @@ void PrintPreviewExtractor::DidPrepareDocumentForPreview(
     int32_t document_cookie,
     int32_t request_id) {
   DVLOG(3) << __func__ << ": id=" << request_id;
+  if (is_pdf_) {
+    return;
+  }
   // For case of print preview, page metafile is used to composite into
   // the document PDF at same time.  Need to indicate that this scenario
   // is at play for the compositor.
@@ -234,6 +271,12 @@ void PrintPreviewExtractor::DidPreviewPage(
       !content.metafile_data_region.IsValid()) {
     return;
   }
+  if (is_pdf_) {
+    OnCompositePdfPageDone(page_index, params->document_cookie, request_id,
+                           printing::mojom::PrintCompositor::Status::kSuccess,
+                           content.metafile_data_region.Duplicate());
+    return;
+  }
 
   auto* client = PrintCompositeClient::FromWebContents(web_contents_);
   DCHECK(client);
@@ -254,10 +297,18 @@ void PrintPreviewExtractor::DidPreviewPage(
           printing::mojom::PrintCompositor::Status::kCompositingFailure,
           base::ReadOnlySharedMemoryRegion()));
 }
+
 void PrintPreviewExtractor::MetafileReadyForPrinting(
     printing::mojom::DidPreviewDocumentParamsPtr params,
     int32_t request_id) {
   DVLOG(3) << __func__ << ": id=" << request_id;
+  // pdf content doesn't need to be composited into pdf
+  if (is_pdf_) {
+    OnCompositeToPdfDone(params->document_cookie, request_id,
+                         printing::mojom::PrintCompositor::Status::kSuccess,
+                         params->content->metafile_data_region.Duplicate());
+    return;
+  }
   auto callback = base::BindOnce(&PrintPreviewExtractor::OnCompositeToPdfDone,
                                  weak_ptr_factory_.GetWeakPtr(),
                                  params->document_cookie, request_id);
@@ -273,6 +324,7 @@ void PrintPreviewExtractor::MetafileReadyForPrinting(
           printing::mojom::PrintCompositor::Status::kCompositingFailure,
           base::ReadOnlySharedMemoryRegion()));
 }
+
 void PrintPreviewExtractor::PrintPreviewFailed(int32_t document_cookie,
                                                int32_t request_id) {
   DLOG(ERROR) << __func__ << ": id=" << request_id;
@@ -385,8 +437,7 @@ void PrintPreviewExtractor::CreatePrintPreview() {
     active_chat_tab_helper_->OnPreviewTextReady("");
     return;
   }
-  // TODO(darkdh): support pdf preview printing
-  content::RenderFrameHost* rfh = printing::GetFrameToPrint(web_contents_);
+  content::RenderFrameHost* rfh = GetRenderFrameHostToUse(web_contents_);
   if (rfh) {
     if (!print_render_frame_.is_bound()) {
       rfh->GetRemoteAssociatedInterfaces()->GetInterface(&print_render_frame_);
@@ -418,19 +469,15 @@ void PrintPreviewExtractor::CreatePrintPreview() {
    "landscape": false,
    "marginsType": 0,
    "mediaSize": {
-      "custom_display_name": "Letter",
       "height_microns": 279400,
       "imageable_area_bottom_microns": 0,
       "imageable_area_left_microns": 0,
       "imageable_area_right_microns": 215900,
       "imageable_area_top_microns": 279400,
-      "is_default": true,
-      "name": "NA_LETTER",
       "width_microns": 215900
    },
    "pageRange": [  ],
    "pagesPerSheet": 1,
-   "previewModifiable": true,
    "printerType": 2,
    "rasterizePDF": false,
    "scaleFactor": 100,
@@ -443,6 +490,7 @@ void PrintPreviewExtractor::CreatePrintPreview() {
     dict.Set(printing::kPreviewUIID, print_preview_ui_id_.value());
     dict.Set(printing::kPreviewRequestID, ++preview_request_id_);
     dict.Set(printing::kSettingHeaderFooterTitle, web_contents_->GetTitle());
+    dict.Set(printing::kSettingPreviewModifiable, !is_pdf_);
     auto url = web_contents_->GetLastCommittedURL();
     dict.Set(printing::kSettingHeaderFooterURL, url.spec());
     OnPrintPreviewRequest(preview_request_id_);

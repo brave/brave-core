@@ -118,6 +118,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   GURL GetPageURL() const override;
   void GetPageContent(GetPageContentCallback callback,
                       std::string_view invalidation_token) override;
+  void PrintPreviewFallback(GetPageContentCallback callback) override;
   std::u16string GetPageTitle() const override;
 
   void BindPageContentExtractorReceiver(
