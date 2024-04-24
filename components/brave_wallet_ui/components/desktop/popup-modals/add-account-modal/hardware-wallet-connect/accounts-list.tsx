@@ -265,11 +265,13 @@ export const HardwareWalletAccountsList = ({
           ) : null}
         </SelectWrapper>
       </SelectRow>
-      <DisclaimerWrapper>
-        <DisclaimerText>
-          {getLocale('braveWalletSwitchHDPathTextHardwareWallet')}
-        </DisclaimerText>
-      </DisclaimerWrapper>
+      {coin !== BraveWallet.CoinType.FIL && (
+        <DisclaimerWrapper>
+          <DisclaimerText>
+            {getLocale('braveWalletSwitchHDPathTextHardwareWallet')}
+          </DisclaimerText>
+        </DisclaimerWrapper>
+      )}
       <SearchBar
         placeholder={getLocale('braveWalletSearchScannedAccounts')}
         action={filterAccountList}
