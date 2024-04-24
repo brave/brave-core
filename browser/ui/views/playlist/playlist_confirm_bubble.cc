@@ -74,9 +74,7 @@ PlaylistConfirmBubble::PlaylistConfirmBubble(
     Browser* browser,
     View* anchor_view,
     base::WeakPtr<PlaylistTabHelper> tab_helper)
-    : PlaylistActionBubbleView(browser,
-                               anchor_view,
-                               std::move(tab_helper)) {
+    : PlaylistActionBubbleView(browser, anchor_view, std::move(tab_helper)) {
   // What this looks like:
   // https://user-images.githubusercontent.com/5474642/243532057-4bbbe779-47a1-4c3a-bd34-ce1334cf1d1d.png
   set_margins({});
@@ -224,8 +222,7 @@ void PlaylistConfirmBubble::RemoveFromPlaylist() {
 }
 
 void PlaylistConfirmBubble::MoreMediaInContents() {
-  if (!GetAnchorView() || !tab_helper_ ||
-      !tab_helper_->found_items().size()) {
+  if (!GetAnchorView() || !tab_helper_ || !tab_helper_->found_items().size()) {
     return;
   }
 

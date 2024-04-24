@@ -44,7 +44,7 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
   auto* web_contents = GetWebContents();
   CHECK(web_contents);
   playlist::PlaylistBubblesController::CreateOrGetFromWebContents(web_contents)
-      ->ShowBubble(weak_ptr_factory_.GetWeakPtr());
+      ->ShowBubble(this);
 }
 
 views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {

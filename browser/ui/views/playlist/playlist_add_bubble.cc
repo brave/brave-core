@@ -107,9 +107,7 @@ PlaylistAddBubble::PlaylistAddBubble(
     Browser* browser,
     View* anchor_view,
     base::WeakPtr<PlaylistTabHelper> tab_helper)
-    : PlaylistActionBubbleView(browser,
-                               anchor_view,
-                               std::move(tab_helper)),
+    : PlaylistActionBubbleView(browser, anchor_view, std::move(tab_helper)),
       thumbnail_provider_(
           std::make_unique<ThumbnailProvider>(tab_helper_.get())) {
   tab_helper_observation_.Observe(tab_helper_.get());
