@@ -53,6 +53,15 @@ PlaylistActionBubbleView* PlaylistActionBubbleView::GetBubble() {
   return g_bubble;
 }
 
+void PlaylistActionBubbleView::Hide() {
+  if (controller_) {
+    controller_->OnBubbleClosed();
+    controller_ = nullptr;
+  }
+
+  GetWidget()->Close();
+}
+
 // static
 void PlaylistActionBubbleView::ShowBubble(
     std::unique_ptr<PlaylistActionBubbleView> bubble) {
@@ -70,6 +79,9 @@ PlaylistActionBubbleView::PlaylistActionBubbleView(
     base::WeakPtr<PlaylistTabHelper> tab_helper)
     : BubbleDialogDelegateView(action_icon_view.get(),
                                views::BubbleBorder::Arrow::TOP_RIGHT),
+      controller_(PlaylistBubblesController::CreateOrGetFromWebContents(
+                      &tab_helper->GetWebContents())
+                      ->AsWeakPtr()),
       browser_(browser),
       action_icon_view_(std::move(action_icon_view)),
       tab_helper_(std::move(tab_helper)) {
@@ -80,6 +92,11 @@ PlaylistActionBubbleView::~PlaylistActionBubbleView() = default;
 
 void PlaylistActionBubbleView::WindowClosing() {
   BubbleDialogDelegateView::WindowClosing();
+
+  if (controller_) {
+    controller_->OnBubbleClosed();
+    controller_ = nullptr;
+  }
 
   if (g_bubble == this) {
     g_bubble = nullptr;

@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
@@ -29,6 +30,8 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   static void MaybeCloseBubble();
   static PlaylistActionBubbleView* GetBubble();
 
+  void Hide();
+
   ~PlaylistActionBubbleView() override;
 
  protected:
@@ -42,6 +45,7 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   // views::WidgetDelegate:
   void WindowClosing() override;
 
+  base::WeakPtr<PlaylistBubblesController> controller_;
   raw_ptr<Browser> browser_ = nullptr;
   base::WeakPtr<PlaylistActionIconView> action_icon_view_;  // Our anchor.
   base::WeakPtr<PlaylistTabHelper> tab_helper_;

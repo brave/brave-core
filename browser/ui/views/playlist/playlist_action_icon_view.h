@@ -34,7 +34,6 @@ class PlaylistActionIconView : public PageActionIconView,
  public:
   PlaylistActionIconView(
       CommandUpdater* command_updater,
-      Browser* browser,
       IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
       PageActionIconView::Delegate* page_action_icon_delegate);
   PlaylistActionIconView(const PlaylistActionIconView&) = delete;
@@ -61,8 +60,6 @@ class PlaylistActionIconView : public PageActionIconView,
 
   playlist::PlaylistTabHelper* GetPlaylistTabHelper() const;
   void UpdateState();
-
-  raw_ptr<Browser> browser_;
 
   enum class State { kNone, kSaved, kFound } state_ = State::kNone;
 

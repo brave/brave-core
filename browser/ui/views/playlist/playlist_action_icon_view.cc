@@ -8,6 +8,7 @@
 #include "base/logging.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -15,7 +16,6 @@
 
 PlaylistActionIconView::PlaylistActionIconView(
     CommandUpdater* command_updater,
-    Browser* browser,
     IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
     PageActionIconView::Delegate* page_action_icon_delegate)
     : PageActionIconView(command_updater,
@@ -23,25 +23,28 @@ PlaylistActionIconView::PlaylistActionIconView(
                          icon_label_bubble_delegate,
                          page_action_icon_delegate,
                          "PlaylistActionIconView",
-                         /*ephemeral=*/false),
-      browser_(browser) {}
+                         /*ephemeral=*/false) {}
 
 PlaylistActionIconView::~PlaylistActionIconView() = default;
 
 void PlaylistActionIconView::ShowPlaylistBubble() {
   DVLOG(2) << __FUNCTION__;
 
-  if (playlist::PlaylistActionBubbleView::IsShowingBubble()) {
-    return;
-  }
+  // if (playlist::PlaylistActionBubbleView::IsShowingBubble()) {
+  //   return;
+  // }
 
-  auto* tab_helper = GetPlaylistTabHelper();
-  if (!tab_helper) {
-    return;
-  }
+  // auto* tab_helper = GetPlaylistTabHelper();
+  // if (!tab_helper) {
+  //   return;
+  // }
 
-  playlist::PlaylistActionBubbleView::ShowBubble(
-      browser_, weak_ptr_factory_.GetWeakPtr(), tab_helper->GetWeakPtr());
+  // playlist::PlaylistActionBubbleView::ShowBubble(
+  //     browser_, weak_ptr_factory_.GetWeakPtr(), tab_helper->GetWeakPtr());
+  auto* web_contents = GetWebContents();
+  CHECK(web_contents);
+  playlist::PlaylistBubblesController::CreateOrGetFromWebContents(web_contents)
+      ->ShowBubble(weak_ptr_factory_.GetWeakPtr());
 }
 
 views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {

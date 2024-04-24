@@ -1215,6 +1215,8 @@ source_set("ui") {
       "views/playlist/playlist_action_bubble_view.h",
       "views/playlist/playlist_action_dialogs.cc",
       "views/playlist/playlist_action_dialogs.h",
+      "views/playlist/playlist_bubbles_controller.cc",
+      "views/playlist/playlist_bubbles_controller.h",
       "views/playlist/playlist_action_icon_view.cc",
       "views/playlist/playlist_action_icon_view.h",
       "views/playlist/playlist_add_bubble.cc",
