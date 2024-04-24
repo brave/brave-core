@@ -1,0 +1,10 @@
+diff --git a/.gn b/.gn
+index afe0b3e90fafb..2c1ca2dc250cc 100644
+--- a/.gn
++++ b/.gn
+@@ -167,4 +167,5 @@ exec_script_whitelist =
+ 
+       "//tools/grit/grit_rule.gni",
+       "//tools/gritsettings/BUILD.gn",
++      "//tools/grit/preprocess_if_expr.gni"
+     ]
