@@ -133,13 +133,16 @@ struct LanguageMapping {
   let fileManager = FileManager.default
   for languageCode in languageCodes {
     let xliffURL = fileManager.temporaryDirectory.appendingPathComponent("\(languageCode).xliff")
-    do {
-      try xliffData.write(to: xliffURL)
 
-      // If additional targets exist we have to update target language in the xliff xml.
+    do {
+      let dataToWrite: Data
       if languageCodes.count > 1 {
-        try updateTargetLanguage(inXLIFFFileAtPath: xliffURL.path, newLanguage: languageCode)
+        // Update the target-language only if there are additional target languages
+        dataToWrite = try updateTargetLanguage(xliffData: xliffData, newLanguage: languageCode)
+      } else {
+        dataToWrite = xliffData
       }
+      try dataToWrite.write(to: xliffURL)
     } catch {
       print("ERROR: Failed to write or modify xliff file for \(languageCode): \(error)")
       exit(EXIT_FAILURE)
@@ -177,10 +180,8 @@ struct LanguageMapping {
 /// This is required for languages which are not on the server but we want to support them locally.
 /// The server has a base language xliff which we then 'copy' to another language,
 /// only changing the target-language attr.
-func updateTargetLanguage(inXLIFFFileAtPath path: String, newLanguage: String) throws {
-  let url = URL(fileURLWithPath: path)
-  let xmlData = try Data(contentsOf: url)
-  let xmlDoc = try XMLDocument(data: xmlData, options: .nodePreserveWhitespace)
+@Sendable func updateTargetLanguage(xliffData: Data, newLanguage: String) throws -> Data {
+  let xmlDoc = try XMLDocument(data: xliffData, options: .nodePreserveWhitespace)
   let fileNodes = try xmlDoc.nodes(forXPath: "//file")
 
   for case let fileNode as XMLElement in fileNodes {
@@ -189,8 +190,7 @@ func updateTargetLanguage(inXLIFFFileAtPath path: String, newLanguage: String) t
     }
   }
 
-  let xmlOutputData = xmlDoc.xmlData(options: .nodePrettyPrint)
-  try xmlOutputData.write(to: url)
+  return xmlDoc.xmlData(options: .nodePrettyPrint)
 }
 
 let resourceURLs: [String: URL] = await {
