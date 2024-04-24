@@ -630,6 +630,14 @@ TEST(JsonParser, ConvertAllNumbersToStringAndRemoveNullValues) {
           json::convert_all_numbers_to_string_and_remove_null_values(json, "")),
       R"({"some":[{"deeply":{"nested":[{"path":"123"}]}}]})");
 
+  // OK: remove null values, empty strings, arrays, null values in array 
+  json = R"({"a":1,"outer":{"inner":2,"nullprop1":null,"arr_with_nulls":[null],
+    "empty_string":"","empty_array":[]},"nulprop2":null})";
+  EXPECT_EQ(
+      std::string(json::convert_all_numbers_to_string_and_remove_null_values(
+          json, "")),
+      R"({"a":"1","outer":{"inner":"2"}})");
+
   // OK: convert under specified JSON path only
   json = R"({"a":1,"outer":{"inner": 2, "nullprop1": null}, "nulprop2": null})";
 
@@ -638,7 +646,7 @@ TEST(JsonParser, ConvertAllNumbersToStringAndRemoveNullValues) {
           json, "/outer")),
       R"({"a":1,"nulprop2":null,"outer":{"inner":"2"}})");
 
-  // KO: invalid path has no effect on the JSON
+  // OK: invalid path has no effect on the JSON
   json = R"({"a":1,"outer":{"inner":2}})";
   EXPECT_EQ(
       std::string(json::convert_all_numbers_to_string_and_remove_null_values(
