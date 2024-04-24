@@ -205,6 +205,8 @@ static_library("internal") {
     "account/utility/redeem_confirmation/redeem_confirmation_factory.h",
     "account/utility/redeem_confirmation/reward/redeem_reward_confirmation.cc",
     "account/utility/redeem_confirmation/reward/redeem_reward_confirmation.h",
+    "account/utility/redeem_confirmation/reward/redeem_reward_confirmation_feature.cc",
+    "account/utility/redeem_confirmation/reward/redeem_reward_confirmation_feature.h",
     "account/utility/redeem_confirmation/reward/redeem_reward_confirmation_util.cc",
     "account/utility/redeem_confirmation/reward/redeem_reward_confirmation_util.h",
     "account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder.cc",

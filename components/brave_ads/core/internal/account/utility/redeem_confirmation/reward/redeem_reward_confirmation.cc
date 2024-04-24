@@ -12,11 +12,14 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder.h"
@@ -105,7 +108,20 @@ void RedeemRewardConfirmation::CreateConfirmationCallback(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  FetchPaymentToken(std::move(redeem_confirmation), confirmation);
+  FetchPaymentTokenAfter(kFetchPaymentTokenAfter.Get(),
+                         std::move(redeem_confirmation), confirmation);
+}
+
+// static
+void RedeemRewardConfirmation::FetchPaymentTokenAfter(
+    const base::TimeDelta delay,
+    RedeemRewardConfirmation redeem_confirmation,
+    const ConfirmationInfo& confirmation) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&RedeemRewardConfirmation::FetchPaymentToken,
+                     std::move(redeem_confirmation), confirmation),
+      delay);
 }
 
 // static
