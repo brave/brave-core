@@ -20,10 +20,6 @@ export { Url } from 'gen/url/mojom/url.mojom.m.js'
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
 
-export type RefreshOpts = {
-  skipBalancesRefresh?: boolean
-}
-
 /**
  * SpotPriceRegistry represents a mapping of a unique ID for a token to its
  * current spot price in default fiat currency terms. Use getPricingIdForToken
@@ -184,23 +180,15 @@ export interface UIState {
 }
 
 export interface WalletState {
-  hasInitialized: boolean
-  isBitcoinEnabled: boolean
-  isZCashEnabled: boolean
-  isWalletCreated: boolean
-  isWalletLocked: boolean
   addUserAssetError: boolean
   activeOrigin: BraveWallet.OriginInfo
   allowedNewWalletAccountTypeNetworkIds: EntityId[]
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
-  isNftPinningFeatureEnabled: boolean
-  isAnkrBalancesFeatureEnabled: boolean
   isRefreshingNetworksAndTokens: boolean
 }
 
 export interface PanelState {
-  hasInitialized: boolean
   connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
   connectingAccounts: string[]
@@ -211,7 +199,6 @@ export interface PanelState {
 }
 
 export interface PageState {
-  hasInitialized: boolean
   showRecoveryPhrase: boolean
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
@@ -234,11 +221,6 @@ export interface WalletPanelState {
   wallet: WalletState
   panel: PanelState
   ui: UIState
-}
-
-export interface WalletInitializedPayload {
-  walletInfo: BraveWallet.WalletInfo
-  allAccounts: BraveWallet.AllAccountsInfo
 }
 
 export type AmountValidationErrorType =

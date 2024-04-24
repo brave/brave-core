@@ -16,17 +16,14 @@ import { useSelector } from 'react-redux'
 // utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
 import { getLocale } from '../../../../../common/locale'
-import {
-  useSafeWalletSelector,
-  useSafeUISelector
-} from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors, UISelectors } from '../../../../common/selectors'
+import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../common/selectors'
 import { openWalletSettings } from '../../../../utils/routes-utils'
 import {
   useGetDefaultEthereumWalletQuery,
   useGetDefaultSolanaWalletQuery,
   useGetIsMetaMaskInstalledQuery,
-  useGetIsWalletBackedUpQuery //
+  useGetWalletInfoQuery
 } from '../../../../common/slices/api.slice'
 
 // types
@@ -74,9 +71,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
   // redux
-  const isNftPinningFeatureEnabled = useSafeWalletSelector(
-    WalletSelectors.isNftPinningFeatureEnabled
-  )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   const { accountToRemove, showAccountModal, selectedAccount } = useSelector(
@@ -94,10 +88,11 @@ export const CryptoView = ({ sessionRoute }: Props) => {
   } = useGetDefaultEthereumWalletQuery()
   const { data: defaultSolanaWallet, isLoading: isLoadingDefaultSolanaWallet } =
     useGetDefaultSolanaWalletQuery()
-  const {
-    data: isWalletBackedUp = false,
-    isLoading: isCheckingWalletBackupStatus
-  } = useGetIsWalletBackedUpQuery()
+  const { data: walletInfo, isLoading: isCheckingWalletBackupStatus } =
+    useGetWalletInfoQuery()
+  const isWalletBackedUp = walletInfo?.isWalletBackedUp ?? false
+  const isNftPinningFeatureEnabled =
+    walletInfo?.isNftPinningFeatureEnabled ?? false
 
   // state
   const [isBackupWarningDismissed, setDismissBackupWarning] =

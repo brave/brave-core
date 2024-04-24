@@ -5,14 +5,20 @@
 
 import * as React from 'react'
 import { Redirect, Route, Switch } from 'react-router'
+import { useDispatch } from 'react-redux'
 
 // types
 import { WalletRoutes } from '../../../constants/types'
 
-// utils
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+// redux
+import { PageSelectors } from '../../selectors'
+import { WalletPageActions } from '../../actions'
 
+// hooks
+import { useGetWalletInfoQuery } from '../../../common/slices/api.slice'
+import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
+
+// components
 import {
   WalletPageLayout //
 } from '../../../components/desktop/wallet-page-layout'
@@ -31,8 +37,23 @@ import {
 } from './onboarding_hardware_wallet.routes'
 
 export const OnboardingRoutes = () => {
+  // queries
+  const { data: walletInfo } = useGetWalletInfoQuery()
+  const isWalletCreated = walletInfo?.isWalletCreated ?? false
+
   // redux
-  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+  const dispatch = useDispatch()
+  const setupStillInProgress = useSafePageSelector(
+    PageSelectors.setupStillInProgress
+  )
+
+  // effects
+  React.useEffect(() => {
+    // start wallet setup
+    if (!setupStillInProgress) {
+      dispatch(WalletPageActions.walletSetupComplete(false))
+    }
+  }, [setupStillInProgress, dispatch])
 
   // render
   return (

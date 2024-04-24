@@ -8,18 +8,9 @@ import { WalletPageState } from '../../constants/types'
 type State = Omit<WalletPageState, 'page'>
 
 // safe selectors (primitive return types only)
-export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
-export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
-export const isZCashEnabled = ({ wallet }: State) => wallet.isZCashEnabled
-export const isWalletCreated = ({ wallet }: State) => wallet.isWalletCreated
-export const isWalletLocked = ({ wallet }: State) => wallet.isWalletLocked
 export const passwordAttempts = ({ wallet }: State) => wallet.passwordAttempts
 export const assetAutoDiscoveryCompleted = ({ wallet }: State) =>
   wallet.assetAutoDiscoveryCompleted
-export const isNftPinningFeatureEnabled = ({ wallet }: State) =>
-  wallet.isNftPinningFeatureEnabled
-export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
-  wallet.isAnkrBalancesFeatureEnabled
 export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
   wallet.isRefreshingNetworksAndTokens
 

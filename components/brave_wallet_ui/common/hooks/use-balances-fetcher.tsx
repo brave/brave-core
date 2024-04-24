@@ -5,13 +5,14 @@
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // hooks
-import { useSafeWalletSelector } from './use-safe-selector'
-import { useGetTokenBalancesRegistryQuery } from '../slices/api.slice'
+import {
+  useGetTokenBalancesRegistryQuery,
+  useGetWalletInfoQuery
+} from '../slices/api.slice'
 import { querySubscriptionOptions60s } from '../slices/constants'
 
 // Types
 import { BraveWallet } from '../../constants/types'
-import { WalletSelectors } from '../selectors'
 import {
   GetTokenBalancesRegistryArg //
 } from '../slices/endpoints/token_balances.endpoints'
@@ -21,19 +22,17 @@ type Arg = Pick<GetTokenBalancesRegistryArg, 'networks'> & {
 }
 
 export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
-  // redux
-  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
-  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-  const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
-  const useAnkrBalancesFeature = useSafeWalletSelector(
-    WalletSelectors.isAnkrBalancesFeatureEnabled
-  )
+  // queries
+  const { data: walletInfo } = useGetWalletInfoQuery()
+  const isWalletLocked = walletInfo?.isWalletLocked ?? true
+  const isWalletCreated = walletInfo?.isWalletCreated ?? false
+  const useAnkrBalancesFeature =
+    walletInfo?.isAnkrBalancesFeatureEnabled ?? false
 
   return useGetTokenBalancesRegistryQuery(
     arg !== skipToken &&
       !isWalletLocked &&
       isWalletCreated &&
-      hasInitialized &&
       arg.accounts.length &&
       arg.networks.length
       ? {

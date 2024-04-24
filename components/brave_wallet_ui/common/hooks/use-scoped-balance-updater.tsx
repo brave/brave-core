@@ -6,13 +6,14 @@ import { useMemo } from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // hooks
-import { useSafeWalletSelector } from './use-safe-selector'
-import { useGetTokenBalancesForChainIdQuery } from '../slices/api.slice'
+import {
+  useGetTokenBalancesForChainIdQuery,
+  useGetWalletInfoQuery
+} from '../slices/api.slice'
 import { defaultQuerySubscriptionOptions } from '../slices/constants'
 
 // Types / constants
 import { BraveWallet, CoinTypes } from '../../constants/types'
-import { WalletSelectors } from '../selectors'
 
 interface Arg {
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
@@ -29,10 +30,10 @@ const coinTypesMapping = {
 }
 
 export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
-  // redux
-  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
-  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-  const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
+  // queries
+  const { data: walletInfo } = useGetWalletInfoQuery()
+  const isWalletLocked = walletInfo?.isWalletLocked ?? true
+  const isWalletCreated = walletInfo?.isWalletCreated ?? false
 
   const args = useMemo(() => {
     if (arg === skipToken || !arg.accounts) {
@@ -79,7 +80,6 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
       ) &&
       !isWalletLocked &&
       isWalletCreated &&
-      hasInitialized &&
       args
       ? args
       : skipToken,

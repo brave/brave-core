@@ -34,6 +34,7 @@ import {
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetUserTokensRegistryQuery,
+  useGetWalletInfoQuery,
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
 import { getBalance } from '../../../../../utils/balance-utils'
@@ -113,9 +114,6 @@ export const Nfts = (props: Props) => {
   )
 
   // redux
-  const isNftPinningFeatureEnabled = useSafeWalletSelector(
-    WalletSelectors.isNftPinningFeatureEnabled
-  )
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted
   )
@@ -145,6 +143,9 @@ export const Nfts = (props: Props) => {
     tab === 'collected' || tab === 'hidden' ? tab : 'collected'
 
   // queries
+  const { data: walletInfo } = useGetWalletInfoQuery()
+  const isNftPinningFeatureEnabled =
+    walletInfo?.isNftPinningFeatureEnabled ?? false
   const { data: isNftAutoDiscoveryEnabled } =
     useGetNftDiscoveryEnabledStatusQuery()
   const { data: simpleHashSpamNfts = [] } = useGetSimpleHashSpamNftsQuery()
@@ -201,7 +202,7 @@ export const Nfts = (props: Props) => {
   }, [hideNftDiscoveryModal, setNftDiscovery])
 
   const onRefresh = React.useCallback(() => {
-    dispatch(WalletActions.refreshNetworksAndTokens({}))
+    dispatch(WalletActions.refreshNetworksAndTokens())
   }, [dispatch])
 
   const onSelectOption = React.useCallback(
@@ -464,7 +465,7 @@ export const Nfts = (props: Props) => {
 
   // effects
   React.useEffect(() => {
-    dispatch(WalletActions.refreshNetworksAndTokens({}))
+    dispatch(WalletActions.refreshNetworksAndTokens())
   }, [assetAutoDiscoveryCompleted, dispatch])
 
   return (

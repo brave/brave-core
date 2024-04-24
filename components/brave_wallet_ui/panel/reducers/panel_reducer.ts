@@ -30,7 +30,6 @@ const selectedPanel = isValidPanelNavigationOption(persistedSelectedPanelType)
   : 'main'
 
 const defaultState: PanelState = {
-  hasInitialized: false,
   connectToSiteOrigin: defaultOriginInfo,
   selectedPanel,
   connectingAccounts: [],

@@ -5,11 +5,6 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
-
-// redux
-import { WalletPageActions } from '../../../actions'
-import { PageSelectors } from '../../../selectors'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -50,21 +45,13 @@ export const OnboardingWelcome = () => {
   // routing
   const history = useHistory()
 
-  // redux
-  const dispatch = useDispatch()
-  const setupStillInProgress = useSelector(PageSelectors.setupStillInProgress)
-
   // mutations
   const [report] = useReportOnboardingActionMutation()
 
   // effects
   React.useEffect(() => {
-    // start wallet setup
-    if (!setupStillInProgress) {
-      report(BraveWallet.OnboardingAction.Shown)
-      dispatch(WalletPageActions.walletSetupComplete(false))
-    }
-  }, [setupStillInProgress, report, dispatch])
+    report(BraveWallet.OnboardingAction.Shown)
+  }, [report])
 
   return (
     <WalletPageLayout>

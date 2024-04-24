@@ -69,7 +69,7 @@ function App() {
 
 function initialize() {
   initLocale(loadTimeData.data_)
-  store.dispatch(WalletActions.initialize({}))
+  store.dispatch(WalletActions.initialize())
   render(<App />, document.getElementById('root'))
 }
 

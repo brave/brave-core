@@ -37,10 +37,8 @@ import { FullScreenWrapper } from '../page/screens/page-screen.styles'
 import { TransactionStatus } from '../components/extension/post-confirmation'
 import {
   useSafePanelSelector,
-  useSafeWalletSelector,
   useUnsafePanelSelector
 } from '../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
   useGetPendingAddChainRequestQuery,
@@ -49,7 +47,8 @@ import {
   useGetPendingSwitchChainRequestQuery,
   useGetPendingSignAllTransactionsRequestsQuery,
   useGetPendingTokenSuggestionRequestsQuery,
-  useGetPendingSignTransactionRequestsQuery
+  useGetPendingSignTransactionRequestsQuery,
+  useGetWalletInfoQuery
 } from '../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -75,11 +74,6 @@ import {
 }
 
 function Container() {
-  // wallet selectors (safe)
-  const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
-  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
-
   // panel selectors (safe)
   const selectedPanel = useSafePanelSelector(PanelSelectors.selectedPanel)
   const hardwareWalletCode = useSafePanelSelector(
@@ -102,6 +96,10 @@ function Container() {
   )
 
   // queries & mutations
+  const { data: walletInfo, isLoading: isInitializing } =
+    useGetWalletInfoQuery()
+  const isWalletCreated = walletInfo?.isWalletCreated ?? false
+  const isWalletLocked = walletInfo?.isWalletLocked ?? true
   const { accounts } = useAccountsQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: addChainRequest } = useGetPendingAddChainRequestQuery()
@@ -118,7 +116,7 @@ function Container() {
 
   const selectedPendingTransaction = useSelectedPendingTransaction()
 
-  if (!hasInitialized) {
+  if (isInitializing) {
     return (
       <PanelWrapper
         width={390}

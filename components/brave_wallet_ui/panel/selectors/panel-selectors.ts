@@ -8,7 +8,6 @@ import { WalletPanelState } from '../../constants/types'
 type State = Omit<WalletPanelState, 'wallet'>
 
 // safe selectors (primitive return types only)
-export const hasInitialized = ({ panel }: State) => panel.hasInitialized
 export const selectedPanel = ({ panel }: State) => panel.selectedPanel
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects

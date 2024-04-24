@@ -39,15 +39,12 @@ import { Select } from 'brave-ui/components'
 // style
 import { Input, StyledWrapper, SelectWrapper } from './style'
 
-// selectors
-import { WalletSelectors } from '../../../../common/selectors'
-
 // hooks
-import {
-  useSafeWalletSelector //
-} from '../../../../common/hooks/use-safe-selector'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
-import { useAddAccountMutation } from '../../../../common/slices/api.slice'
+import {
+  useAddAccountMutation,
+  useGetWalletInfoQuery
+} from '../../../../common/slices/api.slice'
 
 interface Params {
   accountTypeName: string
@@ -59,14 +56,9 @@ export const CreateAccountModal = () => {
   const { pathname: walletLocation } = useLocation()
   const { accountTypeName } = useParams<Params>()
 
-  // redux
-  const isBitcoinEnabled = useSafeWalletSelector(
-    WalletSelectors.isBitcoinEnabled
-  )
-  const isZCashEnabled = useSafeWalletSelector(WalletSelectors.isZCashEnabled)
-
   // queries
   const { accounts } = useAccountsQuery()
+  const { data: walletInfo } = useGetWalletInfoQuery()
 
   // mutations
   const [addAccount] = useAddAccountMutation()
@@ -85,11 +77,11 @@ export const CreateAccountModal = () => {
 
   // memos
   const createAccountOptions = React.useMemo(() => {
-    return CreateAccountOptions({
-      isBitcoinEnabled,
-      isZCashEnabled
-    })
-  }, [isBitcoinEnabled, isZCashEnabled])
+    if (walletInfo) {
+      return CreateAccountOptions(walletInfo)
+    }
+    return []
+  }, [walletInfo])
 
   const selectedAccountType = React.useMemo(() => {
     return createAccountOptions.find((option) => {
