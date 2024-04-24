@@ -254,4 +254,5 @@
 
     <color name="text_primary">#F3F5F7</color>
     <color name="text_secondary">#BECAD0</color>
+    <color name="primary_20">#2A118E</color>
 </resources>

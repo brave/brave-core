@@ -179,13 +179,14 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 });
 
         findPreference(PREF_SPLIT_TUNNELING)
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        BraveVpnUtils.openSplitTunnelActivity(getActivity());
-                        return true;
-                    }
-                });
+                .setOnPreferenceClickListener(
+                        new Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onPreferenceClick(Preference preference) {
+                                BraveVpnUtils.openSplitTunnelActivity(getActivity());
+                                return true;
+                            }
+                        });
         findPreference(PREF_ALWAYS_ON)
                 .setOnPreferenceClickListener(
                         new Preference.OnPreferenceClickListener() {
