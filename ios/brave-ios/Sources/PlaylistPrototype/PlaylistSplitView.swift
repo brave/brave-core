@@ -112,6 +112,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
 
   private func computeDetentHeights() {
     detentHeights = detents.map({ $0.heightInContext(detentContext) })
+      .filter { !$0.isZero && $0.isFinite }
     // The first time we get the max detent height we need to compute the starting point
     // for the bottom sheet layout
     if bottomSheetHeight.isZero {
@@ -145,6 +146,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
     let heights: [(detent: PlaylistSheetDetent, height: CGFloat)] =
       detents
       .map { ($0, $0.heightInContext(detentContext)) }
+      .filter { !$0.1.isZero && $0.1.isFinite }
       .sorted(using: KeyPathComparator(\.height, order: .reverse))
     let predictedEndHeight = startingBottomSheetHeight - predictedEndTranslation.height
     let restingDetent = {

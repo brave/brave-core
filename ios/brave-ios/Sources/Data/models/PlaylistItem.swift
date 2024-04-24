@@ -64,7 +64,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   }
 
   public var id: String {
-    objectID.uriRepresentation().absoluteString
+    uuid ?? UUID().uuidString
   }
 
   public class func frc() -> NSFetchedResultsController<PlaylistItem> {

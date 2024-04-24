@@ -24,6 +24,7 @@ final class PlayerModel: ObservableObject {
 
     setupPlayerKeyPathObservation()
     setupRemoteCommandCenterHandlers()
+    setupPlayerNotifications()
     updateSystemPlayer()
   }
 
@@ -54,8 +55,7 @@ final class PlayerModel: ObservableObject {
 
   var currentTime: TimeInterval {
     guard let item = player.currentItem else { return 0 }
-    let seconds = item.currentTime().seconds
-    return seconds.isNaN ? 0.0 : seconds
+    return max(0, min(duration, item.currentTime().seconds))
   }
 
   var duration: TimeInterval {
@@ -72,6 +72,9 @@ final class PlayerModel: ObservableObject {
     if isPlaying {
       return
     }
+    if currentTime == duration {
+      player.seek(to: .zero)
+    }
     player.play()
   }
 
@@ -82,9 +85,32 @@ final class PlayerModel: ObservableObject {
         guard let self else { return }
         continuation.yield(currentTime)
       }
-      self.cancellables.insert(observer)  // Should be tied to the View, but adding ane extra killswitch
+      // Should be tied to the View, but adding ane extra killswitch
+      self.cancellables.insert(observer)
       continuation.onTermination = { _ in
         observer.cancel()
+      }
+    }
+  }
+
+  var didPlayToEndStream: AsyncStream<Void> {
+    return .init { [weak self] continuation in
+      guard let self else { return }
+      let observer = NotificationCenter.default.addObserver(
+        forName: AVPlayerItem.didPlayToEndTimeNotification,
+        object: nil,
+        queue: .main
+      ) { [weak self] _ in
+        guard let self else { return }
+        continuation.yield()
+      }
+      let cancellable = AnyCancellable {
+        _ = observer
+      }
+      // Should be tied to the View, but adding ane extra killswitch
+      self.cancellables.insert(cancellable)
+      continuation.onTermination = { _ in
+        cancellable.cancel()
       }
     }
   }
@@ -207,14 +233,14 @@ final class PlayerModel: ObservableObject {
 
   // MARK: -
 
-  /*private*/ let player: AVPlayer = .init()
+  let player: AVQueuePlayer = .init()
   private let playerLayer: AVPlayerLayer = .init()
 
   private var cancellables: Set<AnyCancellable> = []
 
   /// Sets up KVO observations for AVPlayer properties which trigger the `objectWillChange` publisher
   private func setupPlayerKeyPathObservation() {
-    func subscriber<Value>(for keyPath: KeyPath<AVPlayer, Value>) -> AnyCancellable {
+    func subscriber<Value>(for keyPath: KeyPath<AVQueuePlayer, Value>) -> AnyCancellable {
       let observation = player.observe(keyPath, options: [.prior]) { [weak self] _, change in
         if change.isPrior {
           self?.objectWillChange.send()
@@ -228,6 +254,23 @@ final class PlayerModel: ObservableObject {
       subscriber(for: \.timeControlStatus)
       // FIXME: Add the rest
     ])
+  }
+
+  private func setupPlayerNotifications() {
+    let nc = NotificationCenter.default
+    let didPlayToEndTimeNotification = nc.addObserver(
+      forName: AVPlayerItem.didPlayToEndTimeNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      guard let self else { return }
+      player.pause()
+    }
+    cancellables.insert(
+      .init {
+        _ = didPlayToEndTimeNotification
+      }
+    )
   }
 }
 
@@ -257,8 +300,8 @@ extension PlayerModel {
     remoteCommandsCenter.skipForwardCommand.preferredIntervals = [.init(value: seekInterval)]
 
     let nowPlayingCenter: MPNowPlayingInfoCenter = .default()
-    nowPlayingCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] =
-      player.currentTime().seconds
+    // FIXME: Check if this is enough
+    nowPlayingCenter.nowPlayingInfo = player.currentItem?.nowPlayingInfo
   }
 
   private func setupRemoteCommandCenterHandlers() {

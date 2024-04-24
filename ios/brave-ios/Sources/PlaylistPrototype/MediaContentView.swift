@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVKit
+import Data
 import Foundation
 import SwiftUI
 
@@ -15,6 +16,7 @@ extension PlaylistSheetDetent.DetentAnchorID {
 @available(iOS 16.0, *)
 struct MediaContentView: View {
   @ObservedObject var model: PlayerModel
+  var selectedItem: PlaylistItem
 
   @Environment(\.interfaceOrientation) private var interfaceOrientation
   @Environment(\.isFullScreen) private var isFullScreen
@@ -27,7 +29,7 @@ struct MediaContentView: View {
         .zIndex(1)
         .playlistSheetDetentAnchor(id: .mediaPlayer)
       if !isFullScreen {
-        PlaybackControlsView(model: model)
+        PlaybackControlsView(model: model, selectedItemTitle: selectedItem.name)
           .padding(24)
       }
     }
@@ -37,7 +39,7 @@ struct MediaContentView: View {
     .onChange(of: isFullScreen) { newValue in
       // Automatically rotate the device orientation on iPhones when the video is not portrait
       if UIDevice.current.userInterfaceIdiom == .phone, !model.isPortraitVideo {
-        //        requestGeometryUpdate(orientation: newValue ? .landscapeLeft : .portrait)
+        requestGeometryUpdate(orientation: newValue ? .landscapeLeft : .portrait)
       }
     }
     .onChange(of: interfaceOrientation) { newValue in
@@ -55,6 +57,7 @@ struct MediaContentView: View {
 extension MediaContentView {
   struct PlaybackControlsView: View {
     @ObservedObject var model: PlayerModel
+    var selectedItemTitle: String
 
     @State private var currentTime: TimeInterval = 0
     @State private var isScrubbing: Bool = false
@@ -65,7 +68,7 @@ extension MediaContentView {
     var body: some View {
       VStack(spacing: 28) {
         HStack {
-          Text("Selected Item Title")
+          Text(selectedItemTitle)
             .foregroundStyle(Color(braveSystemName: .textPrimary))
             .font(.headline)
             .frame(maxWidth: .infinity, alignment: .leading)

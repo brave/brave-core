@@ -180,6 +180,7 @@ extension PlayerView {
             }
             .buttonStyle(.playbackControl)
           }
+          .tint(Color(braveSystemName: .iconInteractive))
         }
       }
       .padding(12)

@@ -11,8 +11,12 @@ import SwiftUI
 @available(iOS 16.0, *)
 struct PlaylistSidebarList: View {
   @FetchRequest private var items: FetchedResults<PlaylistItem>
+  @Binding var selectedItemID: PlaylistItem.ID?
 
-  init(folderID: PlaylistFolder.ID) {
+  init(
+    folderID: PlaylistFolder.ID,
+    selectedItemID: Binding<PlaylistItem.ID?>
+  ) {
     self._items = FetchRequest<PlaylistItem>(
       sortDescriptors: [
         .init(keyPath: \PlaylistItem.order, ascending: true),
@@ -20,6 +24,7 @@ struct PlaylistSidebarList: View {
       ],
       predicate: .init(format: "playlistFolder.uuid == %@", folderID)
     )
+    self._selectedItemID = selectedItemID
   }
 
   var body: some View {
@@ -29,12 +34,16 @@ struct PlaylistSidebarList: View {
         PlaylistSidebarContentUnavailableView()
       } else {
         ForEach(items) { item in
-          PlaylistItemView(
-            title: item.name,
-            assetURL: URL(string: item.mediaSrc),
-            duration: .seconds(item.duration),
-            isItemPlaying: false
-          )
+          Button {
+            selectedItemID = item.id
+          } label: {
+            PlaylistItemView(
+              title: item.name,
+              assetURL: URL(string: item.mediaSrc),
+              duration: .seconds(item.duration),
+              isItemPlaying: false
+            )
+          }
           .onAppear {
             // FIXME: Move this logic out of the UI and into PlaylistManager on item add
             // This is currently how the current UI functions but it would be better not to do it
@@ -49,29 +58,59 @@ struct PlaylistSidebarList: View {
 
 @available(iOS 16.0, *)
 struct PlaylistSidebarListHeader: View {
-  @ObservedObject var playerModel: PlayerModel
   var folders: [PlaylistFolder]
   @Binding var selectedFolder: PlaylistFolder
+  @Binding var isPlaying: Bool
+  @Binding var isNewPlaylistAlertPresented: Bool
 
-  @State private var isPresentingNewPlaylistAlert = false
-  @State private var newPlaylistName: String = ""
+  @State private var totalSizeOnDisk = Measurement<UnitInformationStorage>(value: 0, unit: .bytes)
+
+  @MainActor private func calculateTotalSizeOnDisk(for folder: PlaylistFolder) async {
+    // Since we're consuming CoreData we need to make sure those accesses happen on main
+    let items = folder.playlistItems ?? []
+    var totalSize: Int = 0
+    for item in items {
+      guard let cachedData = item.cachedData else { continue }
+      totalSize += await Task.detached {
+        // No CoreData usage allowed in here
+        do {
+          var isStale: Bool = false
+          let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
+          let values = try url.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey])
+          if values.isDirectory == true {
+            // This item is an HLS stream saved as a movpkg, get the size of the directory instead
+            return Int(try FileManager.default.directorySize(at: url) ?? 0)
+          }
+          return values.fileSize ?? 0
+        } catch {
+          return 0
+        }
+      }.value
+    }
+    totalSizeOnDisk = .init(value: Double(totalSize), unit: .bytes)
+  }
 
   var body: some View {
     HStack(spacing: 16) {
       Button {
-        if playerModel.isPlaying {
-          playerModel.pause()
-        } else {
-          playerModel.play()
-        }
+        isPlaying.toggle()
       } label: {
-        Label(
-          playerModel.isPlaying ? "Pause" : "Play",
-          braveSystemImage: playerModel.isPlaying ? "leo.play.pause" : "leo.play.circle"
-        )
-        .imageScale(.large)
-        .font(.title2)
+        if isPlaying {
+          Label(
+            "Pause",
+            braveSystemImage: "leo.pause.circle"
+          )
+          .transition(.playButtonTransition)
+        } else {
+          Label(
+            "Play",
+            braveSystemImage: "leo.play.circle"
+          )
+          .transition(.playButtonTransition)
+        }
       }
+      .imageScale(.large)
+      .font(.title2)
       .labelStyle(.iconOnly)
       .foregroundStyle(Color(braveSystemName: .textPrimary))
       VStack(alignment: .leading) {
@@ -85,7 +124,7 @@ struct PlaylistSidebarListHeader: View {
           .pickerStyle(.inline)
           Divider()
           Button {
-            isPresentingNewPlaylistAlert = true
+            isNewPlaylistAlertPresented = true
           } label: {
             Label("New Playlist", braveSystemImage: "leo.plus.add")
           }
@@ -95,26 +134,17 @@ struct PlaylistSidebarListHeader: View {
             .foregroundStyle(Color(braveSystemName: .textPrimary))
             .contentShape(.rect)
         }
-        .alert("New Playlist", isPresented: $isPresentingNewPlaylistAlert) {
-          TextField("My New Playlist", text: $newPlaylistName)
-          Button(role: .cancel) {
-            newPlaylistName = ""
-          } label: {
-            Text("Cancel")
-          }
-          Button {
-            // FIXME: Create playlist
-            newPlaylistName = ""
-          } label: {
-            Text("Create")
-          }
-          .disabled(newPlaylistName.isEmpty)
-        }
         HStack {
-          // FIXME: Pluralization
-          Text("\(selectedFolder.playlistItems?.count ?? 0) items")
-          Text("1h 35m")  // FIXME: Pull duration of folder somehow
-          Text("245 MB")  // FIXME: Pull on-device storage usage somehow
+          let items = selectedFolder.playlistItems ?? []
+          let totalDuration = Duration.seconds(items.reduce(0, { $0 + $1.duration }))
+          let totalSize = totalSizeOnDisk
+          Text("\(items.count) items")  // FIXME: Pluralization
+          if !items.isEmpty {
+            Text(totalDuration, format: .units(width: .narrow, maximumUnitCount: 2))
+          }
+          if !totalSize.value.isZero {
+            Text(totalSizeOnDisk, format: .byteCount(style: .file))
+          }
         }
         .font(.caption2)
       }
@@ -128,6 +158,14 @@ struct PlaylistSidebarListHeader: View {
       .foregroundStyle(Color(braveSystemName: .textPrimary))
     }
     .padding()
+    .task {
+      await calculateTotalSizeOnDisk(for: selectedFolder)
+    }
+    .onChange(of: selectedFolder) { newValue in
+      Task {
+        await calculateTotalSizeOnDisk(for: newValue)
+      }
+    }
   }
 }
 
@@ -152,6 +190,6 @@ struct PlaylistSidebarContentUnavailableView: View {
 @available(iOS 16.0, *)
 #Preview {
   // FIXME: Set up CoreData mock for Previews
-  PlaylistSidebarList(folderID: "")
+  PlaylistSidebarList(folderID: "", selectedItemID: .constant(nil))
 }
 #endif
