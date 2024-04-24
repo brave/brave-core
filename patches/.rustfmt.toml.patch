@@ -1,0 +1,10 @@
+diff --git a/.rustfmt.toml b/.rustfmt.toml
+index b0be00850d55ec480c3fd4475abea98c836add40..dd9ad89f5ec0f6723c68064b24c7bcae282d10f1 100644
+--- a/.rustfmt.toml
++++ b/.rustfmt.toml
+@@ -23,4 +23,5 @@ use_small_heuristics = "Max"
+ ignore = [
+   "third_party/rust/**/crate",
+   "third_party/rust/chromium_crates_io/vendor",
++  "brave/third_party/rust/**/crate",
+ ]
