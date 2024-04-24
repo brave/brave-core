@@ -557,6 +557,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART" desc="This is used for replacing SETTING_TEXT from above FOOTNOTE_TEXT.">
           this setting
         </message>
+
+        <!-- Geolocation permission bubble -->
+        <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_EXACT_LOCATION_LABEL" desc="The text for content part in the bubble">
+          You will share your <ph name="PART_ONE_START">$1</ph>exact location<ph name="PART_ONE_END">$2</ph> with this site. Location services are active, providing detailed data. Trust this site before proceeding. <ph name="PART_TWO">$3</ph>Learn more<ph name="PART_TWO_END">$4</ph>
+        </message>
+        <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_GENERAL_LOCATION_LABEL" desc="The text for content part in the bubble">
+          You will share your <ph name="PART_ONE_START">$1</ph>general location<ph name="PART_ONE_END">$2</ph> with this site. Location services are limited, enhancing privacy by only providing broad location data. <ph name="PART_TWO">$3</ph>Learn more<ph name="PART_TWO_END">$4</ph>
+        </message>
+
         <!-- Closing confirm dialog -->
         <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_OK_BUTTON_LABEL" desc="The text for ok button in the dialog">
           Close all

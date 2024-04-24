@@ -3,12 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.h"
+
 #include <vector>
 
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/strings/string_util.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/ui/views/dialog_footnote_utils.h"
+#include "brave/browser/ui/views/infobars/custom_styled_label.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -28,6 +33,7 @@
 #include "components/permissions/request_type.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
@@ -42,8 +48,24 @@
 #include "ui/views/window/dialog_client_view.h"
 #include "ui/views/window/dialog_delegate.h"
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/ui/geolocation/geolocation_utils_win.h"
+#endif
+
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_permission_request.h"
+#endif
+
+constexpr char kLearnMoreURL[] =
+#if BUILDFLAG(IS_WIN)
+    "https://support.microsoft.com/en-us/windows/"
+    "windows-location-service-and-privacy-3a8eee0a-5b0b-dc07-eede-"
+    "2a5ca1c49088";
+#elif BUILDFLAG(IS_MAC)
+    "https://support.apple.com/guide/mac-help/"
+    "allow-apps-to-detect-the-location-of-your-mac-mh35873/mac";
+#else
+    "https://help.ubuntu.com/stable/ubuntu-help/privacy-location.html";
 #endif
 
 namespace {
@@ -176,6 +198,104 @@ class PermissionLifetimeCombobox : public views::Combobox,
 BEGIN_METADATA(PermissionLifetimeCombobox)
 END_METADATA
 
+void AddGeolocationDescription(
+    views::BubbleDialogDelegateView* dialog_delegate_view,
+    Browser* browser,
+    bool use_exact_location_label) {
+  auto container = std::make_unique<views::View>();
+
+  constexpr int kPadding = 12;
+  container->SetLayoutManager(std::make_unique<views::BoxLayout>())
+      ->set_inside_border_insets(gfx::Insets::TLBR(kPadding, 0, 0, 0));
+
+  // We put placeholders to get target offsets.
+  const std::vector<std::u16string> placeholders{u"$1", u"$2", u"$3", u"$4"};
+  std::vector<size_t> offsets;
+  std::u16string contents_text = l10n_util::GetStringFUTF16(
+      use_exact_location_label
+          ? IDS_GEOLOCATION_PERMISSION_BUBBLE_EXACT_LOCATION_LABEL
+          : IDS_GEOLOCATION_PERMISSION_BUBBLE_GENERAL_LOCATION_LABEL,
+      placeholders, &offsets);
+  CHECK(offsets.size() == placeholders.size());
+
+  // Remove placeholers. It's used to get offsets.
+  for (const auto& placeholder : placeholders) {
+    base::RemoveChars(contents_text, placeholder, &contents_text);
+  }
+
+  // Need to adjust offests after removing placeholders.
+  int offset_diff = 0;
+  for (size_t i = 0; i < offsets.size(); i++) {
+    offsets[i] -= offset_diff;
+    offset_diff += placeholders[i].length();
+  }
+
+  auto* contents_label =
+      container->AddChildView(std::make_unique<views::StyledLabel>());
+  contents_label->SetTextContext(views::style::CONTEXT_LABEL);
+  contents_label->SetDefaultTextStyle(views::style::STYLE_PRIMARY);
+  contents_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+  contents_label->SetText(contents_text);
+  views::StyledLabel::RangeStyleInfo part_style;
+  part_style.text_style = views::style::STYLE_EMPHASIZED;
+  contents_label->AddStyleRange(gfx::Range(offsets[0], offsets[1]), part_style);
+
+  // It's ok to use |browser| in the link's callback as bubbble is tied with
+  // that |browser| and bubble is destroyed earlier than browser.
+  views::StyledLabel::RangeStyleInfo learn_more_style =
+      views::StyledLabel::RangeStyleInfo::CreateForLink(base::BindRepeating(
+          [](Browser* browser) {
+            chrome::AddSelectedTabWithURL(browser, GURL(kLearnMoreURL),
+                                          ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
+          },
+          browser));
+
+  contents_label->AddStyleRange(gfx::Range(offsets[2], offsets[3]),
+                                learn_more_style);
+
+  dialog_delegate_view->AddChildView(std::move(container));
+}
+
+void AddGeolocationDescriptionIfNeeded(
+    PermissionPromptBubbleBaseView* bubble_base_view,
+    permissions::PermissionPrompt::Delegate* delegate,
+    Browser* browser) {
+  auto requests = delegate->Requests();
+
+  // Geolocation permission is not grouped with others.
+  if (requests.empty() ||
+      requests[0]->request_type() != permissions::RequestType::kGeolocation) {
+    return;
+  }
+
+#if BUILDFLAG(IS_WIN)
+  // IsSystemLocationSettingEnabled() uses COM.
+  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE,
+          base::BindOnce(&geolocation::win::IsSystemLocationSettingEnabled),
+          base::BindOnce(
+              [](base::WeakPtr<views::WidgetDelegate> widget_delegate_weak_ptr,
+                 PermissionPromptBubbleBaseView* bubble_base_view,
+                 Browser* browser, bool settings_enabled) {
+                if (!widget_delegate_weak_ptr) {
+                  // Bubble is already gone.
+                  return;
+                }
+                AddGeolocationDescription(
+                    bubble_base_view, browser,
+                    /*use_exact_location_label*/ settings_enabled);
+
+                // To update widget layout after adding another child view.
+                bubble_base_view->UpdateAnchorPosition();
+              },
+              bubble_base_view->AsWeakPtr(), bubble_base_view, browser));
+#else
+  AddGeolocationDescription(bubble_base_view, browser,
+                            /*use_exact_location_label*/ false);
+#endif
+}
+
 views::View* AddPermissionLifetimeComboboxIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     permissions::PermissionPrompt::Delegate* delegate) {
@@ -257,7 +377,8 @@ void AddFootnoteViewIfNeeded(
                  permission_lifetime_view->GetPreferredSize().width()) +  \
         margins().width());                                               \
     set_should_ignore_snapping(true);                                     \
-  }
+  }                                                                       \
+  AddGeolocationDescriptionIfNeeded(this, delegate_.get(), browser_);
 
 #include "src/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc"
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW

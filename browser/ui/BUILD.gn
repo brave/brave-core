@@ -609,6 +609,13 @@ source_set("ui") {
     ]
   }
 
+  if (is_win) {
+    sources += [
+      "geolocation/geolocation_utils_win.cc",
+      "geolocation/geolocation_utils_win.h",
+    ]
+  }
+
   # brave's obsolete infobar is only used on Windows and Mac now.
   if (is_win || is_mac) {
     sources += [
