@@ -1,0 +1,13 @@
+[package]
+name = "anonymous-credentials-cxx"
+version = "0.1.0"
+edition = "2021"
+license = "MPL-2.0"
+
+[dependencies]
+anonymous-credentials = "0.1.2"
+cxx = "1"
+
+[lib]
+name = "anonymous_credentials_cxx"
+crate-type = ["rlib"]
