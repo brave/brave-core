@@ -23,20 +23,11 @@ class PlaylistTabHelper;
 class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   METADATA_HEADER(PlaylistActionBubbleView, views::BubbleDialogDelegateView)
  public:
-  static void ShowBubble(Browser* browser,
-                         base::WeakPtr<PlaylistActionIconView> anchor,
-                         base::WeakPtr<PlaylistTabHelper> playlist_tab_helper);
-  static bool IsShowingBubble();
-  static void MaybeCloseBubble();
-  static PlaylistActionBubbleView* GetBubble();
-
   void Hide();
 
   ~PlaylistActionBubbleView() override;
 
  protected:
-  static void ShowBubble(std::unique_ptr<PlaylistActionBubbleView> bubble);
-
   PlaylistActionBubbleView(
       Browser* browser,
       base::WeakPtr<PlaylistActionIconView> anchor,

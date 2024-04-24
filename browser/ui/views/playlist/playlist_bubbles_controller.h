@@ -30,6 +30,7 @@ class PlaylistBubblesController
   ~PlaylistBubblesController() override;
 
   void ShowBubble(base::WeakPtr<PlaylistActionIconView> anchor_view);
+  void ShowBubble(std::unique_ptr<PlaylistActionBubbleView> bubble);
   PlaylistActionBubbleView* GetBubble() const;
 
   base::WeakPtr<PlaylistBubblesController> AsWeakPtr() {

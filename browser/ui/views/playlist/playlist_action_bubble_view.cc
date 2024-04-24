@@ -16,42 +16,6 @@
 #include "ui/views/widget/widget.h"
 
 namespace playlist {
-namespace {
-PlaylistActionBubbleView* g_bubble = nullptr;
-}  // namespace
-
-// static
-void PlaylistActionBubbleView::ShowBubble(
-    Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> action_icon_view,
-    base::WeakPtr<PlaylistTabHelper> tab_helper) {
-  CHECK(tab_helper);
-  if (!tab_helper->saved_items().empty()) {
-    ShowBubble(std::make_unique<PlaylistConfirmBubble>(
-        browser, std::move(action_icon_view), std::move(tab_helper)));
-  } else if (!tab_helper->found_items().empty()) {
-    ShowBubble(std::make_unique<PlaylistAddBubble>(
-        browser, std::move(action_icon_view), std::move(tab_helper)));
-  }
-}
-
-// static
-bool PlaylistActionBubbleView::IsShowingBubble() {
-  return g_bubble && g_bubble->GetWidget() &&
-         !g_bubble->GetWidget()->IsClosed();
-}
-
-// static
-void PlaylistActionBubbleView::MaybeCloseBubble() {
-  if (IsShowingBubble()) {
-    g_bubble->GetWidget()->Close();
-  }
-}
-
-// static
-PlaylistActionBubbleView* PlaylistActionBubbleView::GetBubble() {
-  return g_bubble;
-}
 
 void PlaylistActionBubbleView::Hide() {
   if (controller_) {
@@ -60,17 +24,6 @@ void PlaylistActionBubbleView::Hide() {
   }
 
   GetWidget()->Close();
-}
-
-// static
-void PlaylistActionBubbleView::ShowBubble(
-    std::unique_ptr<PlaylistActionBubbleView> bubble) {
-  MaybeCloseBubble();
-
-  g_bubble = bubble.release();
-
-  auto* widget = views::BubbleDialogDelegateView::CreateBubble(g_bubble);
-  widget->Show();
 }
 
 PlaylistActionBubbleView::PlaylistActionBubbleView(
@@ -96,10 +49,6 @@ void PlaylistActionBubbleView::WindowClosing() {
   if (controller_) {
     controller_->OnBubbleClosed();
     controller_ = nullptr;
-  }
-
-  if (g_bubble == this) {
-    g_bubble = nullptr;
   }
 }
 

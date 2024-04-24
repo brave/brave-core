@@ -38,8 +38,21 @@ void PlaylistBubblesController::ShowBubble(base::WeakPtr<PlaylistActionIconView>
   CHECK(tab_helper);
 
   Browser* browser = chrome::FindBrowserWithTab(&GetWebContents());
-  playlist::PlaylistActionBubbleView::ShowBubble(browser, anchor_view,
-                                                 tab_helper->GetWeakPtr());
+
+  if (!tab_helper->saved_items().empty()) {
+    ShowBubble(std::make_unique<PlaylistConfirmBubble>(
+        browser, std::move(anchor_view), tab_helper->GetWeakPtr()));
+  } else if (!tab_helper->found_items().empty()) {
+    ShowBubble(std::make_unique<PlaylistAddBubble>(
+        browser, std::move(anchor_view), tab_helper->GetWeakPtr()));
+  }
+}
+
+void PlaylistBubblesController::ShowBubble(std::unique_ptr<PlaylistActionBubbleView> bubble) {
+  bubble_ = bubble.release();
+
+  auto* widget = views::BubbleDialogDelegateView::CreateBubble(bubble_);
+  widget->Show();
 }
 
 PlaylistActionBubbleView* PlaylistBubblesController::GetBubble() const {

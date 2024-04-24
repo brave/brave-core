@@ -24,6 +24,7 @@ struct VectorIcon;
 }
 
 namespace playlist {
+class PlaylistBubblesController;
 class PlaylistTabHelper;
 }
 
@@ -58,6 +59,7 @@ class PlaylistActionIconView : public PageActionIconView,
   void OnAddedItemFromTabHelper(
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
 
+  playlist::PlaylistBubblesController* GetController() const;
   playlist::PlaylistTabHelper* GetPlaylistTabHelper() const;
   void UpdateState();
 

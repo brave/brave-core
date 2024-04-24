@@ -48,7 +48,12 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
 }
 
 views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {
-  return playlist::PlaylistActionBubbleView::GetBubble();
+  auto* controller = GetController();
+  if (!controller) {
+    return nullptr;
+  }
+
+  return controller->GetBubble();
 }
 
 const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {
@@ -63,7 +68,7 @@ void PlaylistActionIconView::UpdateImpl() {
     return;
   }
 
-  playlist::PlaylistActionBubbleView::MaybeCloseBubble();
+  // playlist::PlaylistActionBubbleView::MaybeCloseBubble();
 
   tab_helper_observation_.Reset();
   if (auto* tab_helper = GetPlaylistTabHelper()) {
@@ -92,11 +97,23 @@ void PlaylistActionIconView::OnAddedItemFromTabHelper(
   DVLOG(2) << __FUNCTION__;
   // When this callback is invoked to this by a tab helper, it means that this
   // view is now bound to the tab helper. So we don't have to check it again.
-  if (!playlist::PlaylistActionBubbleView::IsShowingBubble()) {
+  if (auto* controller = GetController();
+      controller && !controller->GetBubble()) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&PlaylistActionIconView::ShowPlaylistBubble,
                                   weak_ptr_factory_.GetWeakPtr()));
   }
+}
+
+playlist::PlaylistBubblesController* PlaylistActionIconView::GetController()
+    const {
+  auto* web_contents = GetWebContents();
+  if (!web_contents) {
+    return nullptr;
+  }
+
+  return playlist::PlaylistBubblesController::CreateOrGetFromWebContents(
+      web_contents);
 }
 
 playlist::PlaylistTabHelper* PlaylistActionIconView::GetPlaylistTabHelper()

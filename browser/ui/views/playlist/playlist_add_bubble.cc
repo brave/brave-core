@@ -183,7 +183,8 @@ void PlaylistAddBubble::OnAddedItemFromTabHelper(
     return;
   }
 
-  ShowBubble(std::make_unique<PlaylistConfirmBubble>(
+  CHECK(controller_);
+  controller_->ShowBubble(std::make_unique<PlaylistConfirmBubble>(
       browser_, action_icon_view_, tab_helper_));
 }
 
