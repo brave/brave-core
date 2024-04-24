@@ -6,7 +6,12 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
+
+// Shared Styles
 import { WalletButton } from '../../shared/style'
+import {
+  layoutSmallWidth //
+} from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const HeaderTitle = styled.span<{
   isPanel?: boolean
@@ -25,7 +30,6 @@ export const MenuWrapper = styled.div`
 `
 
 export const MenuButton = styled(WalletButton)<{
-  size?: number
   marginRight?: number
 }>`
   --button-border-color: ${leo.color.divider.interactive};
@@ -38,9 +42,13 @@ export const MenuButton = styled(WalletButton)<{
   background-color: ${leo.color.container.background};
   border-radius: 8px;
   border: 1px solid var(--button-border-color);
-  height: ${(p) => (p.size !== undefined ? p.size : 36)}px;
-  width: ${(p) => (p.size !== undefined ? p.size : 36)}px;
+  height: 36px;
+  width: 36px;
   margin-right: ${(p) => (p.marginRight !== undefined ? p.marginRight : 0)}px;
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    height: 28px;
+    width: 28px;
+  }
 `
 
 export const ButtonIcon = styled(Icon)<{
