@@ -5,8 +5,9 @@
 
 import 'chrome://resources/brave/leo.bundle.js'
 
-import { PolymerElement } from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import { getTemplate } from './cr_toggle.html.js';
+import {CrLitElement} from '//resources/lit/v3_0/lit.rollup.js';
+import type {PropertyValues} from '//resources/lit/v3_0/lit.rollup.js';
+import {getHtml} from './cr_toggle.html.js';
 
 export interface CrToggleElement {
   $: {
@@ -14,38 +15,37 @@ export interface CrToggleElement {
   }
 }
 
-export class CrToggleElement extends PolymerElement {
+export class CrToggleElement extends CrLitElement {
   static get is() {
     return 'cr-toggle';
   }
 
-  static get template() {
-    return getTemplate();
+  override render() {
+    return getHtml.bind(this)();
   }
 
-  static get properties() {
+  static override get properties() {
     return {
       checked: {
         type: Boolean,
-        value: false,
-        reflectToAttribute: true,
+        reflect: true,
         notify: true,
       },
 
       disabled: {
         type: Boolean,
-        value: false,
-        reflectToAttribute: true,
+        reflect: true,
       },
     };
   }
 
-  checked: boolean;
-  disabled: boolean;
+  checked: boolean = false;
+  disabled: boolean = false;
 
   // The Nala event looks a bit different to the Chromium one, so we need to
   // convert it.
-  private onChange_(e: { checked: boolean }) {
+  onChange_(e: { checked: boolean }) {
+    console.log("Hit this!")
     this.checked = e.checked
     this.dispatchEvent(new CustomEvent('change', { detail: e.checked }))
   }
