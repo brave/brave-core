@@ -10,6 +10,9 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
   <div class="cr-row">
     <div class="flex cr-padded-text">
       <div>$i18n{canPinShortcut}</div>
+<if expr="is_win">
+      <div class="secondary">$i18n{pinShortcutSublabel}</div>
+</if>
     </div>
     <div class="separator"></div>
     <cr-button on-click="onPinShortcutTap_">
