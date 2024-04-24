@@ -33,15 +33,15 @@ import {
 import {
   HeaderControlBar //
 } from '../../../header_control_bar/header_control_bar'
-import { DividerLine } from '../../../extension/divider'
 import { Web3DappFilters } from '../../popup-modals/filter-modals/web3_dapp_filters_modal'
+import { DappListItem } from './dapp_list_item'
 
 // Styles
 import { Column, Row } from '../../../shared/style'
 import { ControlsRow } from '../portfolio/style'
-import { VirtualizedDappsList } from './virtualized_dapps_list'
 import { BraveWallet } from '../../../../constants/types'
-import { getDappNetworkIds } from '../../../../utils/dapp-utils'
+import { getDappNetworkIds, isMapEmpty } from '../../../../utils/dapp_utils'
+import { CategoryHeader, DappsGrid, ShowMore } from './explore_web3.style'
 
 export const ExploreWeb3View = () => {
   // routing
@@ -75,6 +75,26 @@ export const ExploreWeb3View = () => {
     ]
   }, [])
 
+  const [dappCategories, categoryDappsMap] = React.useMemo(() => {
+    if (!topDapps) return [[], new Map<string, BraveWallet.Dapp[]>()]
+
+    const categoriesSet = new Set<string>()
+    const categoriesMap = new Map<string, BraveWallet.Dapp[]>()
+
+    topDapps.forEach((dapp) => {
+      dapp.categories.forEach((category) => {
+        categoriesSet.add(category)
+        if (!categoriesMap.has(category)) {
+          categoriesMap.set(category, [])
+        }
+        categoriesMap.get(category)!.push(dapp)
+      })
+    })
+
+    const categoriesList = Array.from(categoriesSet)
+    return [categoriesList, categoriesMap]
+  }, [topDapps])
+
   const [visibleNetworks, visibleNetworkIds] = React.useMemo(() => {
     const visibleNetworks = networks.filter(
       (network) =>
@@ -85,57 +105,66 @@ export const ExploreWeb3View = () => {
     return [visibleNetworks, visibleNetworks.map(networkEntityAdapter.selectId)]
   }, [networks, filteredOutNetworkKeys])
 
-  const visibleDapps = React.useMemo(() => {
-    if (!topDapps) {
-      return []
+  const visibleDappsMap = React.useMemo(() => {
+    const filterResultsMap = new Map<string, BraveWallet.Dapp[]>()
+
+    if (isMapEmpty(categoryDappsMap)) {
+      return filterResultsMap
     }
 
-    return topDapps.filter((dapp: BraveWallet.Dapp) => {
-      const dappNetworkIds = getDappNetworkIds(dapp.chains, visibleNetworks)
-      return (
-        !filteredOutCategories.some((category) =>
-          dapp.categories.includes(category)
-        ) ||
-        dappNetworkIds.some((networkId) =>
-          visibleNetworkIds.includes(networkId.toString())
+    categoryDappsMap.forEach((dapps, category) => {
+      const categorySearchResults = dapps.filter((dapp) => {
+        const dappNetworkIds = getDappNetworkIds(dapp.chains, visibleNetworks)
+        return (
+          !filteredOutCategories.some((category) =>
+            dapp.categories.includes(category)
+          ) ||
+          dappNetworkIds.some((networkId) =>
+            visibleNetworkIds.includes(networkId.toString())
+          )
         )
-      )
-    })
-  }, [filteredOutCategories, topDapps, visibleNetworkIds, visibleNetworks])
+      })
 
-  const searchedDapps = React.useMemo(() => {
-    if (!visibleDapps) {
-      return []
+      if (categorySearchResults.length > 0) {
+        filterResultsMap.set(category, categorySearchResults)
+      }
+    })
+
+    return filterResultsMap
+  }, [
+    categoryDappsMap,
+    filteredOutCategories,
+    visibleNetworkIds,
+    visibleNetworks
+  ])
+
+  const searchedDappsMap = React.useMemo(() => {
+    const searchResultsMap = new Map<string, BraveWallet.Dapp[]>()
+
+    if (isMapEmpty(visibleDappsMap)) {
+      return searchResultsMap
     }
 
     const searchValueLower = searchValue.toLowerCase().trim()
 
     if (!searchValueLower) {
-      return visibleDapps
+      return categoryDappsMap
     }
 
-    return visibleDapps.filter((dapp) => {
-      return (
-        dapp.name.toLowerCase().includes(searchValueLower) ||
-        dapp.description.toLowerCase().includes(searchValueLower)
+    categoryDappsMap.forEach((dapps, category) => {
+      const categorySearchResults = dapps.filter(
+        (dapp) =>
+          dapp.name.toLowerCase().includes(searchValueLower) ||
+          dapp.description.toLowerCase().includes(searchValueLower)
       )
-    })
-  }, [visibleDapps, searchValue])
 
-  const dappCategories = React.useMemo(() => {
-    if (!topDapps) {
-      return []
-    }
-
-    const categories = new Set<string>()
-    topDapps.forEach((dapp) => {
-      dapp.categories.forEach((category) => {
-        categories.add(category)
-      })
+      if (categorySearchResults.length > 0) {
+        searchResultsMap.set(category, categorySearchResults)
+      }
     })
 
-    return Array.from(categories)
-  }, [topDapps])
+    return searchResultsMap
+  }, [categoryDappsMap, searchValue, visibleDappsMap])
 
   // render
   if (isLoading || !topDapps) {
@@ -169,15 +198,32 @@ export const ExploreWeb3View = () => {
           title={getLocale('braveWalletWeb3')}
         />
 
-        <DividerLine />
-
-        {searchedDapps.length ? (
-          <VirtualizedDappsList
-            dappsList={searchedDapps}
-            onClickDapp={(dappId) => {
-              history.push(makeDappDetailsRoute(dappId.toString()))
-            }}
-          />
+        {!isMapEmpty(searchedDappsMap) ? (
+          <DappsGrid>
+            {Array.from(searchedDappsMap).map(([category, dapps]) => (
+              <Column
+                key={category}
+                width='100%'
+                margin='0 0 32px 0'
+              >
+                <CategoryHeader>{category}</CategoryHeader>
+                <Column width='100%'>
+                  {dapps.slice(0, 3).map((dapp) => (
+                    <DappListItem
+                      key={dapp.id}
+                      dapp={dapp}
+                      onClick={() =>
+                        history.push(makeDappDetailsRoute(dapp.id.toString()))
+                      }
+                    />
+                  ))}
+                </Column>
+                <Row justifyContent='center'>
+                  <ShowMore>Show more</ShowMore>
+                </Row>
+              </Column>
+            ))}
+          </DappsGrid>
         ) : (
           <Row>
             <h2>{getLocale('braveWalletNoDappsFound')}</h2>

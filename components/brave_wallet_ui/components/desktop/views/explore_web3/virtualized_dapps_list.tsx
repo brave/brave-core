@@ -10,11 +10,8 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 // types
 import { BraveWallet } from '../../../../constants/types'
 
-// styles
-import { Column, Row, Text } from '../../../shared/style'
-import {
-  TextWithOverflowEllipsis //
-} from '../../../../page/screens/send/shared.styles'
+// components
+import { DappListItem } from './dapp_list_item'
 
 interface VirtualizedTokensListProps {
   dappsList: BraveWallet.Dapp[]
@@ -38,61 +35,6 @@ const defaultItemSizePx = 64
 const getListItemKey = (index: number, dappsList: BraveWallet.Dapp[]) => {
   return dappsList[index].id
 }
-
-const DappListItem = React.forwardRef<
-  HTMLDivElement,
-  {
-    dapp: BraveWallet.Dapp
-    ref: React.Ref<HTMLDivElement>
-    onClick?: (dappId: number) => void
-  }
->(({ dapp, onClick }, ref) => {
-  return (
-    <Row
-      ref={ref}
-      gap={'8px'}
-      padding={'12px 8px'}
-      width='100%'
-      justifyContent='flex-start'
-      onClick={
-        onClick
-          ? function () {
-              onClick(dapp.id)
-            }
-          : undefined
-      }
-    >
-      <Column>
-        <img
-          src={`chrome://image?${dapp.logo}`}
-          height={40}
-          width={40}
-        />
-      </Column>
-      <Column
-        alignItems='flex-start'
-        justifyContent='flex-start'
-      >
-        <Text
-          textAlign='left'
-          isBold
-          textSize='14px'
-        >
-          {dapp.name}
-        </Text>
-
-        <TextWithOverflowEllipsis
-          textSize='12px'
-          textAlign='left'
-          textColor='tertiary'
-          maxLines={1}
-        >
-          {dapp.description}
-        </TextWithOverflowEllipsis>
-      </Column>
-    </Row>
-  )
-})
 
 const ListItem = (props: ListItemProps) => {
   const { index, data, style, setSize, onClickDapp } = props
