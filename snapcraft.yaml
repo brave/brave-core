@@ -1,0 +1,140 @@
+name: brave
+version: 1.65.122
+grade: stable
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+summary: Browse faster and safer with Brave.
+description: |
+ The new Brave browser automatically blocks ads and trackers, making it
+ faster and safer than your current browser. Start supporting publishers
+ today with our new Brave Payments system.
+confinement: strict
+compression: lzo
+base: core22
+apps:
+  brave:
+    command: opt/brave.com/brave/brave-browser
+    desktop: usr/share/applications/brave.desktop
+    extensions:
+      - gnome
+    environment:
+      DISABLE_WAYLAND: 1
+      GTK_USE_PORTAL: 1
+      BRAVE_SNAP: 1
+      BRAVE_DESKTOP: brave.desktop
+      BRAVE_CONFIG_HOME: $SNAP_USER_COMMON
+      MAN_TEST_DISABLE_SYSTEM_CONFIG: 1
+      MANPATH: $SNAP/usr/share/man
+      GROFF_FONT_PATH: $SNAP/usr/share/groff/current/font
+      GROFF_TMAC_PATH: $SNAP/usr/share/groff/current/tmac
+    plugs:
+      - audio-playback
+      - audio-record
+      - bluez
+      - camera
+      - cups-control
+      - hardware-observe
+      - home
+      - joystick
+      - mount-observe
+      - network
+      - network-bind
+      - network-manager
+      - opengl
+      - password-manager-service
+      - pulseaudio
+      - raw-usb
+      - removable-media
+      - screen-inhibit-control
+      - system-packages-doc
+      - u2f-devices
+      - unity7
+      - upower-observe
+    slots:
+      - mpris
+plugs:
+  browser-sandbox:
+    interface: browser-support
+    allow-sandbox: true
+slots:
+  mpris:
+    interface: mpris
+    name: brave
+parts:
+  brave:
+    plugin: dump
+    source: https://github.com/brave/brave-browser/releases/download/v$SNAPCRAFT_PROJECT_VERSION/brave-browser_$SNAPCRAFT_PROJECT_VERSION_$SNAPCRAFT_TARGET_ARCH.deb
+    override-pull: |
+      set -eu
+      craftctl default
+      chmod 4555 ./opt/brave.com/brave/chrome-sandbox
+      rm -rf etc/cron.daily/ usr/bin/brave-browser usr/bin/brave-browser-stable
+      sed -i 's|Icon=brave-browser|Icon=/opt/brave.com/brave/product_logo_128\.png|g' usr/share/applications/brave-browser.desktop
+      mv usr/share/applications/brave-browser.desktop usr/share/applications/brave.desktop
+    prime:
+      - -etc/gss
+      - -etc/init.d
+      - -etc/sensors.d
+      - -etc/ucf.conf
+      - -etc/xdg
+      - -usr/include
+      - -usr/lib/tmpfiles.d
+      - -usr/share/apport
+      - -usr/share/bash-completion
+      - -usr/share/bug
+      - -usr/share/doc
+      - -usr/share/doc-base
+      - -usr/share/gettext
+      - -usr/share/gnome-control-center
+      - -usr/share/GConf
+      - -usr/share/icons
+      - -usr/share/lintian
+      - -usr/share/pam-configs
+      - -usr/share/pkgconfig
+      - -usr/share/polkit-1
+      - -usr/share/session-migration
+      - -usr/share/sounds
+      - -usr/share/ubuntu
+      - -usr/share/ubuntu-wayland
+      - -usr/share/upstart
+      - -usr/share/zsh
+      - -var
+    organize:
+      usr/share/man/man1/brave-browser.1.gz: usr/share/man/man1/brave.1.gz
+
+  # Create a symlink xdg-email -> xdg-open, as the latter is perfectly able to
+  # handle mailto: URLs (see https://launchpad.net/bugs/1849774).
+  # xdg-open is a wrapper provided by the core snap.
+  xdg-email:
+    plugin: nil
+    override-pull: "" 
+    override-prime: |
+      set -eux
+      mkdir -p usr/bin
+      cp /snap/core22/current/usr/bin/xdg-open usr/bin
+      cd usr/bin
+      ln -s xdg-open xdg-email
+
+  manpage:
+    plugin: nil
+    stage-packages:
+      - groff-base
+      - libgdbm6
+      - libpipeline1
+      - man-db
+    prime:
+      - -etc
+      - -usr/lib/tmpfiles.d
+      - -usr/lib/mime
+      - -usr/lib/groff
+      - -usr/share/bug
+      - -usr/share/calendar
+      - -usr/share/doc
+      - -usr/share/doc-base
+      - -usr/share/lintian
+      - -usr/share/man
+      - -usr/share/man-db
+      - -var
+    organize:
+      usr/lib/man-db: usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR
