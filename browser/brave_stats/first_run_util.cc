@@ -12,28 +12,58 @@
 
 namespace brave_stats {
 
-base::Time GetFirstRunTime(PrefService* local_state) {
 #if BUILDFLAG(IS_ANDROID)
+namespace {
+
+bool g_is_first_run = false;
+
+base::Time GetAndroidFirstRunTimePrefValue(PrefService* local_state) {
+  return local_state->GetTime(kReferralAndroidFirstRunTimestamp);
+}
+
+void InitAndroidFirstRunTime(PrefService* local_state) {
+  if (GetAndroidFirstRunTimePrefValue(local_state).is_null()) {
+    base::Time now = base::Time::Now();
+    local_state->SetTime(kReferralAndroidFirstRunTimestamp, now);
+    g_is_first_run = true;
+  }
+}
+
+}  // namespace
+
+void ResetAndroidFirstRunStateForTesting() {
+  g_is_first_run = false;
+}
+
+#endif  // #BUILDFLAG(IS_ANDROID)
+
+base::Time GetFirstRunTime([[maybe_unused]] PrefService* local_state) {
+#if BUILDFLAG(IS_ANDROID)
+  CHECK(local_state);
   // Android doesn't use a sentinel to track first run, so we use a
   // preference instead. kReferralAndroidFirstRunTimestamp is used because
   // previously only referrals needed to know the first run value.
-  base::Time first_run_timestamp =
-      local_state->GetTime(kReferralAndroidFirstRunTimestamp);
-  if (first_run_timestamp.is_null()) {
-    first_run_timestamp = base::Time::Now();
-    local_state->SetTime(kReferralAndroidFirstRunTimestamp,
-                         first_run_timestamp);
-  }
-  return first_run_timestamp;
+  InitAndroidFirstRunTime(local_state);
+  return GetAndroidFirstRunTimePrefValue(local_state);
 #else
-  (void)local_state;  // suppress unused warning
-
   // CreateSentinelIfNeeded() is called in chrome_browser_main.cc, making this a
   // non-blocking read of the cached sentinel value when running from production
   // code. However tests will never create the sentinel file due to being run
   // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
   base::ScopedAllowBlockingForTesting allow_blocking;
   return first_run::GetFirstRunSentinelCreationTime();
+#endif  // #BUILDFLAG(IS_ANDROID)
+}
+
+bool IsFirstRun([[maybe_unused]] PrefService* local_state) {
+#if BUILDFLAG(IS_ANDROID)
+  if (g_is_first_run) {
+    return true;
+  }
+  InitAndroidFirstRunTime(local_state);
+  return g_is_first_run;
+#else
+  return first_run::IsChromeFirstRun();
 #endif  // #BUILDFLAG(IS_ANDROID)
 }
 
