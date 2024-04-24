@@ -19,7 +19,7 @@ namespace misc_metrics {
 
 namespace {
 
-const base::TimeDelta kReportInterval = base::Days(1);
+const base::TimeDelta kReportInterval = base::Minutes(10);
 
 #if !BUILDFLAG(IS_ANDROID)
 constexpr int kProfileCountBuckets[] = {0, 1, 2, 3, 5};
@@ -64,7 +64,9 @@ void GeneralBrowserUsage::ReportWeeklyUse() {
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 void GeneralBrowserUsage::ReportInstallTime() {
-  int days_since_install = (base::Time::Now() - first_run_time_).InDays();
+  int days_since_install =
+      (base::Time::Now().LocalMidnight() - first_run_time_.LocalMidnight())
+          .InDays();
   if (days_since_install < 0 || days_since_install > 30) {
     return;
   }
