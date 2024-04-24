@@ -437,6 +437,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
       {"canPinShortcut", IDS_SETTINGS_CAN_PIN_SHORTCUT},
       {"pinShortcut", IDS_SETTINGS_PIN_SHORTCUT},
+#if BUILDFLAG(IS_WIN)
+      {"pinShortcutSublabel", IDS_SETTINGS_PIN_SHORTCUT_SUBLABEL},
+#endif
       {"shortcutPinned", IDS_SETTINGS_SHORTCUT_PINNED},
 #endif
       // Rewards page
