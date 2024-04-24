@@ -120,7 +120,8 @@
     E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
 
 #define BRAVE_SPLIT_VIEW_COLOR_IDS \
-    E_CPONLY(kColorBraveSplitViewTileBackground)
+    E_CPONLY(kColorBraveSplitViewTileBackground)        \
+    E_CPONLY(kColorBraveSplitViewInactiveWebViewBorder) \
 
 #define BRAVE_PLAYLIST_COLOR_IDS                                      \
     E_CPONLY(kColorBravePlaylistAddedIcon)                            \

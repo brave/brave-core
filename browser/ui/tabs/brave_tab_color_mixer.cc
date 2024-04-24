@@ -8,6 +8,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
+#include "brave/browser/ui/color/leo/colors.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_mixer.h"
 #include "ui/color/color_provider.h"
@@ -88,6 +89,9 @@ void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
     mixer[color_id] =
         GetCustomColorOrDefaultColor(key.custom_theme, color_id, default_color);
   }
+
+  mixer[kColorBraveSplitViewInactiveWebViewBorder] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
 }
 
 void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -121,6 +125,9 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
       mixer[color_id] = color;
     }
   }
+
+  mixer[kColorBraveSplitViewInactiveWebViewBorder] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
 }
 
 }  // namespace tabs

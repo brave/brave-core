@@ -51,7 +51,7 @@ void BraveContentsLayoutManager::LayoutImpl() {
       };
 
   gfx::Rect bounds = host_view()->GetLocalBounds();
-  bounds.set_width(bounds.width() / 2);
+  bounds.set_width((bounds.width() - kSpacingBetweenContentsWebViews) / 2);
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
                                      secondary_devtools_view_,
@@ -63,8 +63,9 @@ void BraveContentsLayoutManager::LayoutImpl() {
 
   // In case of odd width, give the remaining
   // width to the secondary contents view.
-  bounds.set_x(bounds.width());
-  bounds.set_width(host_view()->width() - bounds.width());
+  bounds.set_x(bounds.width() + kSpacingBetweenContentsWebViews);
+  bounds.set_width(host_view()->width() - bounds.width() -
+                   kSpacingBetweenContentsWebViews);
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, contents_view_, devtools_view_,
                                      strategy_);
