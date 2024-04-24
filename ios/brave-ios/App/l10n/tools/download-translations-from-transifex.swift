@@ -7,6 +7,48 @@ guard let apiKey = ProcessInfo.processInfo.environment["PASSWORD"] else {
   exit(EXIT_FAILURE)
 }
 
+struct LanguageMapping {
+  /// The language code on the server.
+  let source: String
+  /// Sometimes we may want to have one language code to be used in many languages or dialects.
+  /// This array has a list of those additional languages.
+  /// For example German may have Swiss-German variant as their additional target.
+  /// This list is empty if there is no additional targets.
+  let additionalTargets: [String]
+
+  /// Returns base language code and all additional targets we want to support.
+  var targets: [String] {
+    [source] + additionalTargets
+  }
+
+  init(source: String, additionalTargets: [String] = []) {
+    self.source = source
+    self.additionalTargets = additionalTargets
+  }
+
+  static let allMappings: [LanguageMapping] = [
+    LanguageMapping(source: "fr"),
+    LanguageMapping(source: "pl"),
+    LanguageMapping(source: "ru"),
+    LanguageMapping(source: "de"),
+    LanguageMapping(source: "zh"),
+    LanguageMapping(source: "zh_TW"),
+    LanguageMapping(source: "id_ID"),
+    LanguageMapping(source: "it"),
+    LanguageMapping(source: "ja"),
+    LanguageMapping(source: "ko_KR"),
+    LanguageMapping(source: "ms"),
+    LanguageMapping(source: "pt_BR"),
+    LanguageMapping(source: "es"),
+    LanguageMapping(source: "uk"),
+    LanguageMapping(source: "nb"),
+    LanguageMapping(source: "sv"),
+    LanguageMapping(source: "tr"),
+    LanguageMapping(source: "ca"),
+    LanguageMapping(source: "nl"),
+  ]
+}
+
 @Sendable func validateResponse(_ response: HTTPURLResponse) {
   if response.statusCode == 401 {
     print("ERROR: Unauthorized access")
@@ -87,62 +129,86 @@ guard let apiKey = ProcessInfo.processInfo.environment["PASSWORD"] else {
   }
 }
 
-@Sendable func cleanupAndWriteResourceToDisk(xliffData: Data, languageCode: String) async {
+@Sendable func cleanupAndWriteResourceToDisk(xliffData: Data, languageCodes: [String]) async {
   let fileManager = FileManager.default
-  let xliffURL = fileManager.temporaryDirectory.appendingPathComponent("\(languageCode).xliff")
-  do {
-    try xliffData.write(to: xliffURL)
-  } catch {
-    print("ERROR: Failed to write xliff file")
-    exit(EXIT_FAILURE)
-  }
+  for languageCode in languageCodes {
+    let xliffURL = fileManager.temporaryDirectory.appendingPathComponent("\(languageCode).xliff")
 
-  let process = Process()
-  process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-  process.arguments = ["python3", "xliff-cleanup.py", xliffURL.path]
-  do {
-    try process.run()
-    process.waitUntilExit()
-  } catch {
-    print("Failed to run python process to cleanup xliff")
-  }
-
-  do {
-    let outputPath = URL(fileURLWithPath: fileManager.currentDirectoryPath).appendingPathComponent(
-      "translated-xliffs"
-    )
-    if !fileManager.fileExists(atPath: outputPath.path) {
-      try fileManager.createDirectory(at: outputPath, withIntermediateDirectories: true)
+    do {
+      let dataToWrite: Data
+      if languageCodes.count > 1 {
+        // Update the target-language only if there are additional target languages
+        dataToWrite = try updateTargetLanguage(xliffData: xliffData, newLanguage: languageCode)
+      } else {
+        dataToWrite = xliffData
+      }
+      try dataToWrite.write(to: xliffURL)
+    } catch {
+      print("ERROR: Failed to write or modify xliff file for \(languageCode): \(error)")
+      exit(EXIT_FAILURE)
     }
-    try fileManager.moveItem(
-      at: xliffURL,
-      to: outputPath.appendingPathComponent("\(languageCode).xliff")
-    )
-  } catch {
-    print("ERROR: Failed to move files: \(String(describing: error))")
+
+    // Running an external Python script for XLIFF cleanup
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+    process.arguments = ["python3", "xliff-cleanup.py", xliffURL.path]
+    do {
+      try process.run()
+      process.waitUntilExit()
+    } catch {
+      print("Failed to run python process to cleanup xliff for \(languageCode): \(error)")
+    }
+
+    // Move the cleaned up XLIFF to a permanent directory
+    do {
+      let outputPath = URL(fileURLWithPath: fileManager.currentDirectoryPath)
+        .appendingPathComponent("translated-xliffs")
+      if !fileManager.fileExists(atPath: outputPath.path) {
+        try fileManager.createDirectory(at: outputPath, withIntermediateDirectories: true)
+      }
+      try fileManager.moveItem(
+        at: xliffURL,
+        to: outputPath.appendingPathComponent("\(languageCode).xliff")
+      )
+    } catch {
+      print("ERROR: Failed to move xliff file for \(languageCode): \(error)")
+    }
   }
 }
 
-let languageCodes = [
-  "fr", "pl", "ru", "de", "zh", "zh_TW", "id_ID", "it", "ja", "ko_KR", "ms", "pt_BR", "es", "uk",
-  "nb", "sv", "tr", "ca", "nl",
-]
+/// Replaces target language attribute in xliff to a new language.
+/// This is required for languages which are not on the server but we want to support them locally.
+/// The server has a base language xliff which we then 'copy' to another language,
+/// only changing the target-language attr.
+@Sendable func updateTargetLanguage(xliffData: Data, newLanguage: String) throws -> Data {
+  let xmlDoc = try XMLDocument(data: xliffData, options: .nodePreserveWhitespace)
+  let fileNodes = try xmlDoc.nodes(forXPath: "//file")
+
+  for case let fileNode as XMLElement in fileNodes {
+    if let targetLanguage = fileNode.attribute(forName: "target-language") {
+      targetLanguage.stringValue = newLanguage
+    }
+  }
+
+  return xmlDoc.xmlData(options: .nodePrettyPrint)
+}
+
 let resourceURLs: [String: URL] = await {
   var urls: [String: URL] = [:]
   // Prepare files for each language first
-  for code in languageCodes {
+  for mapping in LanguageMapping.allMappings {
     if Task.isCancelled {
       exit(EXIT_FAILURE)
     }
-    print("Preparing translations download for \(code)")
-    urls[code] = await fetchResourceURL(languageCode: code)
+    print("Preparing translations download for \(mapping.source)")
+    urls[mapping.source] = await fetchResourceURL(languageCode: mapping.source)
   }
   return urls
 }()
 
 // Then attempt to download each one
 try await withThrowingTaskGroup(of: Void.self) { group in
-  for code in languageCodes {
+  for code in LanguageMapping.allMappings.map(\.source) {
     guard let resourceURL = resourceURLs[code] else {
       return
     }
@@ -162,7 +228,9 @@ try await withThrowingTaskGroup(of: Void.self) { group in
           )
           try await Task.sleep(nanoseconds: NSEC_PER_SEC * 5)
         } catch {
-          await cleanupAndWriteResourceToDisk(xliffData: xliffData, languageCode: code)
+          // One language on the sever may may to multiple languages/dialects on the client.
+          let targets = LanguageMapping.allMappings.first { $0.source == code }?.targets ?? [code]
+          await cleanupAndWriteResourceToDisk(xliffData: xliffData, languageCodes: targets)
           print("Downloaded translations for \(code)")
           break
         }
