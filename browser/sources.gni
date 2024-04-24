@@ -204,6 +204,7 @@ brave_chrome_browser_deps = [
   "//brave/components/speedreader/common/buildflags",
   "//brave/components/tor/buildflags",
   "//brave/components/version_info",
+  "//brave/components/web_discovery_project/browser",
   "//brave/components/webcompat:core",
   "//brave/services/network/public/cpp",
   "//brave/third_party/blink/renderer",

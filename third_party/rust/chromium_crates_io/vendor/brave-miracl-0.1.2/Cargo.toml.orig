@@ -1,0 +1,18 @@
+[package]
+name = "brave-miracl"
+version = "0.1.2"
+edition = "2021"
+authors = ["Mike Scott <mike.scott@miracl.com>"]
+description = "Subset of the MIRACL Core library that includes the bn254 elliptic curve"
+license = "Apache-2.0"
+homepage = "https://github.com/miracl/core"
+repository = "https://github.com/brave-experiments/miracl-rs"
+keywords = ["bn254"]
+categories = ["cryptography"]
+exclude = ["/miracl-core", "generate.sh", "renovate.json"]
+
+[dependencies]
+
+[features]
+default = ["std"]
+std = []
