@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/playlist/playlist_confirm_bubble.h"
+#include "brave/browser/ui/views/playlist/playlist_edit_bubble_view.h"
 
 #include <memory>
 #include <string>
@@ -16,10 +16,12 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/playlist/playlist_action_dialogs.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
-#include "brave/browser/ui/views/playlist/playlist_add_bubble.h"
+#include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -70,13 +72,13 @@ BEGIN_METADATA(Row)
 END_METADATA
 }  // namespace
 
-PlaylistConfirmBubble::PlaylistConfirmBubble(
-    Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+PlaylistEditBubbleView::PlaylistEditBubbleView(
+    views::View* anchor_view,
     base::WeakPtr<PlaylistTabHelper> tab_helper)
-    : PlaylistActionBubbleView(browser,
-                               std::move(action_icon_view),
-                               std::move(tab_helper)) {
+    : PlaylistBubbleView(anchor_view, std::move(tab_helper)) {
+  browser_ = chrome::FindBrowserWithTab(&tab_helper_->GetWebContents());
+  CHECK(browser_);
+
   // What this looks like:
   // https://user-images.githubusercontent.com/5474642/243532057-4bbbe779-47a1-4c3a-bd34-ce1334cf1d1d.png
   set_margins({});
@@ -92,13 +94,13 @@ PlaylistConfirmBubble::PlaylistConfirmBubble(
   tab_helper_observation_.Observe(tab_helper_.get());
 }
 
-PlaylistConfirmBubble::~PlaylistConfirmBubble() = default;
+PlaylistEditBubbleView::~PlaylistEditBubbleView() = default;
 
-void PlaylistConfirmBubble::PlaylistTabHelperWillBeDestroyed() {
+void PlaylistEditBubbleView::PlaylistTabHelperWillBeDestroyed() {
   tab_helper_observation_.Reset();
 }
 
-void PlaylistConfirmBubble::OnSavedItemsChanged(
+void PlaylistEditBubbleView::OnSavedItemsChanged(
     const std::vector<mojom::PlaylistItemPtr>& items) {
   if (auto* widget = GetWidget(); !widget || widget->IsClosed()) {
     return;
@@ -108,7 +110,7 @@ void PlaylistConfirmBubble::OnSavedItemsChanged(
   SizeToContents();
 }
 
-void PlaylistConfirmBubble::ResetChildViews() {
+void PlaylistEditBubbleView::ResetChildViews() {
   RemoveAllChildViews();
 
   constexpr int kIconSize = 16;
@@ -138,7 +140,7 @@ void PlaylistConfirmBubble::ResetChildViews() {
         l10n_util::GetStringUTF16(IDS_PLAYLIST_OPEN_IN_PLAYLIST),
         ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
                                        ui::kColorMenuIcon, kIconSize),
-        base::BindRepeating(&PlaylistConfirmBubble::OpenInPlaylist,
+        base::BindRepeating(&PlaylistEditBubbleView::OpenInPlaylist,
                             base::Unretained(this))));
   }
 
@@ -148,7 +150,7 @@ void PlaylistConfirmBubble::ResetChildViews() {
         l10n_util::GetStringUTF16(IDS_PLAYLIST_CHANGE_FOLDER),
         ui::ImageModel::FromVectorIcon(kLeoFolderExchangeIcon,
                                        ui::kColorMenuIcon, kIconSize),
-        base::BindRepeating(&PlaylistConfirmBubble::ChangeFolder,
+        base::BindRepeating(&PlaylistEditBubbleView::ChangeFolder,
                             base::Unretained(this))));
   }
 
@@ -160,7 +162,7 @@ void PlaylistConfirmBubble::ResetChildViews() {
         l10n_util::GetStringUTF16(IDS_PLAYLIST_REMOVE_FROM_PLAYLIST),
         ui::ImageModel::FromVectorIcon(kLeoTrashIcon, ui::kColorMenuIcon,
                                        kIconSize),
-        base::BindRepeating(&PlaylistConfirmBubble::RemoveFromPlaylist,
+        base::BindRepeating(&PlaylistEditBubbleView::RemoveFromPlaylist,
                             base::Unretained(this))));
   }
 
@@ -170,12 +172,12 @@ void PlaylistConfirmBubble::ResetChildViews() {
         l10n_util::GetStringUTF16(IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE),
         ui::ImageModel::FromVectorIcon(kLeoProductPlaylistIcon,
                                        ui::kColorMenuIcon, kIconSize),
-        base::BindRepeating(&PlaylistConfirmBubble::MoreMediaInContents,
+        base::BindRepeating(&PlaylistEditBubbleView::MoreMediaInContents,
                             base::Unretained(this))));
   }
 }
 
-void PlaylistConfirmBubble::OpenInPlaylist() {
+void PlaylistEditBubbleView::OpenInPlaylist() {
   // Technically, the saved items could belong to multiple playlists
   // at the same time and their parent playlists could be different from each
   // other's. But for simplicity, we just open the first one assuming that most
@@ -202,12 +204,12 @@ void PlaylistConfirmBubble::OpenInPlaylist() {
   GetWidget()->Close();
 }
 
-void PlaylistConfirmBubble::ChangeFolder() {
+void PlaylistEditBubbleView::ChangeFolder() {
   PlaylistActionDialog::Show<PlaylistMoveDialog>(
       static_cast<BrowserView*>(browser_->window()), tab_helper_.get());
 }
 
-void PlaylistConfirmBubble::RemoveFromPlaylist() {
+void PlaylistEditBubbleView::RemoveFromPlaylist() {
   CHECK(tab_helper_);
   const auto& saved_items = tab_helper_->saved_items();
   CHECK(saved_items.size());
@@ -223,17 +225,14 @@ void PlaylistConfirmBubble::RemoveFromPlaylist() {
   GetWidget()->Close();
 }
 
-void PlaylistConfirmBubble::MoreMediaInContents() {
-  if (!action_icon_view_ || !tab_helper_ ||
-      !tab_helper_->found_items().size()) {
-    return;
+void PlaylistEditBubbleView::MoreMediaInContents() {
+  if (tab_helper_ && !tab_helper_->GetUnsavedItems().empty()) {
+    next_bubble_ = PlaylistBubblesController::BubbleType::kAdd;
   }
 
-  ShowBubble(std::make_unique<PlaylistAddBubble>(
-      browser_, action_icon_view_, tab_helper_,
-      tab_helper_->GetUnsavedItems()));
+  GetWidget()->Close();
 }
 
-BEGIN_METADATA(PlaylistConfirmBubble)
+BEGIN_METADATA(PlaylistEditBubbleView)
 END_METADATA
 }  // namespace playlist

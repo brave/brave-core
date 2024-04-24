@@ -7,7 +7,8 @@
 
 #include "base/logging.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
+#include "brave/browser/ui/views/playlist/playlist_bubble_view.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -15,7 +16,6 @@
 
 PlaylistActionIconView::PlaylistActionIconView(
     CommandUpdater* command_updater,
-    Browser* browser,
     IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
     PageActionIconView::Delegate* page_action_icon_delegate)
     : PageActionIconView(command_updater,
@@ -23,8 +23,7 @@ PlaylistActionIconView::PlaylistActionIconView(
                          icon_label_bubble_delegate,
                          page_action_icon_delegate,
                          "PlaylistActionIconView",
-                         /*ephemeral=*/false),
-      browser_(browser) {
+                         /*ephemeral=*/false) {
   SetVisible(false);
 }
 
@@ -33,21 +32,18 @@ PlaylistActionIconView::~PlaylistActionIconView() = default;
 void PlaylistActionIconView::ShowPlaylistBubble() {
   DVLOG(2) << __FUNCTION__;
 
-  if (playlist::PlaylistActionBubbleView::IsShowingBubble()) {
-    return;
+  if (auto* controller = GetController()) {
+    controller->ShowBubble(AsWeakPtr());
   }
+}
 
-  auto* tab_helper = GetPlaylistTabHelper();
-  if (!tab_helper) {
-    return;
-  }
-
-  playlist::PlaylistActionBubbleView::ShowBubble(
-      browser_, weak_ptr_factory_.GetWeakPtr(), tab_helper->GetWeakPtr());
+base::WeakPtr<PlaylistActionIconView> PlaylistActionIconView::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
 }
 
 views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {
-  return playlist::PlaylistActionBubbleView::GetBubble();
+  auto* controller = GetController();
+  return controller ? controller->GetBubble() : nullptr;
 }
 
 const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {
@@ -61,8 +57,6 @@ void PlaylistActionIconView::UpdateImpl() {
   if (!GetWebContents()) {
     return;
   }
-
-  playlist::PlaylistActionBubbleView::MaybeCloseBubble();
 
   tab_helper_observation_.Reset();
   if (auto* tab_helper = GetPlaylistTabHelper()) {
@@ -89,22 +83,28 @@ void PlaylistActionIconView::OnFoundItemsChanged(
 void PlaylistActionIconView::OnAddedItemFromTabHelper(
     const std::vector<playlist::mojom::PlaylistItemPtr>&) {
   DVLOG(2) << __FUNCTION__;
-  // When this callback is invoked to this by a tab helper, it means that this
-  // view is now bound to the tab helper. So we don't have to check it again.
-  if (!playlist::PlaylistActionBubbleView::IsShowingBubble()) {
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(&PlaylistActionIconView::ShowPlaylistBubble,
-                                  weak_ptr_factory_.GetWeakPtr()));
+
+  if (auto* controller = GetController();
+      controller && !controller->GetBubble()) {
+    ShowPlaylistBubble();
   }
+}
+
+playlist::PlaylistBubblesController* PlaylistActionIconView::GetController()
+    const {
+  auto* web_contents = GetWebContents();
+  return web_contents
+             ? playlist::PlaylistBubblesController::CreateOrGetFromWebContents(
+                   web_contents)
+             : nullptr;
 }
 
 const playlist::PlaylistTabHelper*
 PlaylistActionIconView::GetPlaylistTabHelper() const {
-  if (auto* contents = GetWebContents()) {
-    return playlist::PlaylistTabHelper::FromWebContents(contents);
-  }
-
-  return nullptr;
+  auto* web_contents = GetWebContents();
+  return web_contents
+             ? playlist::PlaylistTabHelper::FromWebContents(web_contents)
+             : nullptr;
 }
 
 playlist::PlaylistTabHelper* PlaylistActionIconView::GetPlaylistTabHelper() {

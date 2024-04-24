@@ -16,9 +16,10 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
-#include "brave/browser/ui/views/playlist/playlist_add_bubble.h"
+#include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
+#include "brave/browser/ui/views/playlist/playlist_bubble_view.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
@@ -55,6 +56,16 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
   content::WebContents* GetActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  PlaylistBubbleView* GetBubble() {
+    auto* web_contents = GetActiveWebContents();
+    if (!web_contents) {
+      return nullptr;
+    }
+
+    auto* controller = PlaylistBubblesController::FromWebContents(web_contents);
+    return controller ? controller->GetBubble() : nullptr;
   }
 
   void WaitUntil(base::RepeatingCallback<bool()> condition) {
@@ -181,13 +192,13 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
 
   // Show up bubble and add all found items.
   location_bar_view->ShowPlaylistBubble();
-  PlaylistActionBubbleView* action_bubble = nullptr;
+  PlaylistBubbleView* action_bubble = nullptr;
   WaitUntil(base::BindLambdaForTesting([&]() {
-    action_bubble = PlaylistActionBubbleView::GetBubble();
+    action_bubble = GetBubble();
     return !!action_bubble;
   }));
 
-  auto* add_bubble = views::AsViewClass<PlaylistAddBubble>(action_bubble);
+  auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(action_bubble);
   ASSERT_TRUE(add_bubble);
   // As we don't have to extract media from background web contents, spinner
   // shouldn't appear and items should be visible right away.
@@ -424,14 +435,13 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
   playlist_action_icon_view->ShowPlaylistBubble();
-  auto* add_bubble = views::AsViewClass<PlaylistAddBubble>(
-      PlaylistActionBubbleView::GetBubble());
+  auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
   EXPECT_TRUE(add_bubble);
   add_bubble->Accept();
 
-  WaitUntil(base::BindRepeating([] {
-    auto* bubble = PlaylistActionBubbleView::GetBubble();
-    return bubble && !views::IsViewClass<PlaylistAddBubble>(bubble);
+  WaitUntil(base::BindLambdaForTesting([&] {
+    auto* bubble = GetBubble();
+    return bubble && !views::IsViewClass<PlaylistAddBubbleView>(bubble);
   }));
 
   EXPECT_EQ(playlist_tab_helper->saved_items().size(), 1u);
@@ -474,15 +484,13 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
   playlist_action_icon_view->ShowPlaylistBubble();
-  auto* add_bubble = views::AsViewClass<PlaylistAddBubble>(
-      PlaylistActionBubbleView::GetBubble());
+  auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
   EXPECT_TRUE(add_bubble);
   add_bubble->Accept();
   EXPECT_TRUE(add_bubble->loading_spinner_->GetVisible());
 
-  WaitUntil(base::BindRepeating([] {
-    auto* add_bubble = views::AsViewClass<PlaylistAddBubble>(
-        PlaylistActionBubbleView::GetBubble());
+  WaitUntil(base::BindLambdaForTesting([&] {
+    auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
     return add_bubble ? !add_bubble->loading_spinner_->GetVisible() : false;
   }));
 
@@ -530,14 +538,13 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
 
   playlist_action_icon_view->ShowPlaylistBubble();
-  auto* add_bubble = views::AsViewClass<PlaylistAddBubble>(
-      PlaylistActionBubbleView::GetBubble());
+  auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
   EXPECT_TRUE(add_bubble);
   add_bubble->Accept();
 
-  WaitUntil(base::BindRepeating([] {
-    auto* bubble = PlaylistActionBubbleView::GetBubble();
-    return bubble && !views::IsViewClass<PlaylistAddBubble>(bubble);
+  WaitUntil(base::BindLambdaForTesting([&] {
+    auto* bubble = GetBubble();
+    return bubble && !views::IsViewClass<PlaylistAddBubbleView>(bubble);
   }));
 
   EXPECT_EQ(playlist_tab_helper->saved_items().size(), 1u);

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/playlist/playlist_add_bubble.h"
+#include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
 
 #include <utility>
 
@@ -15,7 +15,8 @@
 #include "base/time/time.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
-#include "brave/browser/ui/views/playlist/playlist_confirm_bubble.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
+#include "brave/browser/ui/views/playlist/playlist_edit_bubble_view.h"
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "chrome/grit/generated_resources.h"
@@ -103,23 +104,10 @@ BEGIN_METADATA(LoadingSpinner)
 END_METADATA
 }  // namespace
 
-PlaylistAddBubble::PlaylistAddBubble(
-    Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> action_icon_view,
+PlaylistAddBubbleView::PlaylistAddBubbleView(
+    views::View* anchor_view,
     base::WeakPtr<PlaylistTabHelper> tab_helper)
-    : PlaylistAddBubble(browser,
-                        std::move(action_icon_view),
-                        tab_helper,
-                        tab_helper->found_items()) {}
-
-PlaylistAddBubble::PlaylistAddBubble(
-    Browser* browser,
-    base::WeakPtr<PlaylistActionIconView> action_icon_view,
-    base::WeakPtr<PlaylistTabHelper> tab_helper,
-    const std::vector<mojom::PlaylistItemPtr>& items)
-    : PlaylistActionBubbleView(browser,
-                               std::move(action_icon_view),
-                               std::move(tab_helper)),
+    : PlaylistBubbleView(anchor_view, std::move(tab_helper)),
       thumbnail_provider_(
           std::make_unique<ThumbnailProvider>(tab_helper_.get())) {
   tab_helper_observation_.Observe(tab_helper_.get());
@@ -162,13 +150,13 @@ PlaylistAddBubble::PlaylistAddBubble(
   }
 }
 
-PlaylistAddBubble::~PlaylistAddBubble() = default;
+PlaylistAddBubbleView::~PlaylistAddBubbleView() = default;
 
-void PlaylistAddBubble::PlaylistTabHelperWillBeDestroyed() {
+void PlaylistAddBubbleView::PlaylistTabHelperWillBeDestroyed() {
   tab_helper_observation_.Reset();
 }
 
-void PlaylistAddBubble::OnAddedItemFromTabHelper(
+void PlaylistAddBubbleView::OnAddedItemFromTabHelper(
     const std::vector<mojom::PlaylistItemPtr>& items) {
   if (items.empty()) {
     AddChildView(std::make_unique<views::Label>(
@@ -178,28 +166,23 @@ void PlaylistAddBubble::OnAddedItemFromTabHelper(
     return SizeToContents();
   }
 
-  CHECK(tab_helper_);
-  if (!action_icon_view_) {
-    return;
-  }
-
-  ShowBubble(std::make_unique<PlaylistConfirmBubble>(
-      browser_, action_icon_view_, tab_helper_));
+  next_bubble_ = PlaylistBubblesController::BubbleType::kEdit;
+  GetWidget()->Close();
 }
 
-void PlaylistAddBubble::InitListView() {
+void PlaylistAddBubbleView::InitListView() {
   CHECK(scroll_view_);
   CHECK(!list_view_);
   loading_spinner_->SetVisible(false);
   scroll_view_->SetVisible(true);
   list_view_ = scroll_view_->SetContents(std::make_unique<SelectableItemsView>(
       thumbnail_provider_.get(), tab_helper_->found_items(),
-      base::BindRepeating(&PlaylistAddBubble::OnSelectionChanged,
+      base::BindRepeating(&PlaylistAddBubbleView::OnSelectionChanged,
                           base::Unretained(this))));
   list_view_->SetSelected(tab_helper_->found_items());
 
   SetAcceptCallbackWithClose(base::BindRepeating(
-      &PlaylistAddBubble::AddSelected, base::Unretained(this)));
+      &PlaylistAddBubbleView::AddSelected, base::Unretained(this)));
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, true);
   SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, true);
 
@@ -210,7 +193,7 @@ void PlaylistAddBubble::InitListView() {
   }
 }
 
-bool PlaylistAddBubble::AddSelected() {
+bool PlaylistAddBubbleView::AddSelected() {
   if (!tab_helper_ || tab_helper_->is_adding_items()) {
     return true;
   }
@@ -232,13 +215,13 @@ bool PlaylistAddBubble::AddSelected() {
   return false;
 }
 
-void PlaylistAddBubble::OnSelectionChanged() {
+void PlaylistAddBubbleView::OnSelectionChanged() {
   if (bool has_selected = list_view_->HasSelected();
       has_selected != IsDialogButtonEnabled(ui::DIALOG_BUTTON_OK)) {
     SetButtonEnabled(ui::DIALOG_BUTTON_OK, has_selected);
   }
 }
 
-BEGIN_METADATA(PlaylistAddBubble)
+BEGIN_METADATA(PlaylistAddBubbleView)
 END_METADATA
 }  // namespace playlist
