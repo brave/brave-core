@@ -263,7 +263,9 @@ class RewardsEngine : public mojom::RewardsEngine,
 
     // Occasionally during shutdown the engine can fail to read preferences from
     // the client, likely due to the complexities of sync mojo calls.
-    DUMP_WILL_BE_CHECK(ok) << "Unable to read state from Rewards engine client";
+    // TODO(https://github.com/brave/brave-browser/issues/37816): User pref
+    // access should be refactored to handle these errors gracefully.
+    DCHECK(ok) << "Unable to read state from Rewards engine client";
 
     return value;
   }
