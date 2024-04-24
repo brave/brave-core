@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 import Markdown from 'react-markdown'
+import { Root, Element, Properties } from 'hast'
+const visit = require('unist-util-visit/index')
 
 import styles from './style.module.scss'
 import CaretSVG from '../svg/caret'
@@ -15,6 +17,15 @@ const CodeBlock = React.lazy(async () => ({
 const CodeInline = React.lazy(async () => ({
   default: (await import('../code_block')).default.Inline
 }))
+
+// Any custom prop on DOM element must be a lowercase otherwise React will utilize it. The following gives hint:
+// Warning: React does not recognize the `%s` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `%s` instead.
+
+interface ElementWithData extends Element {
+  properties: Properties & {
+    'is-cursor-visible': string
+  }
+}
 
 const allowedElements = [
   // Headings
@@ -54,11 +65,22 @@ interface MarkdownRendererProps {
 }
 
 export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
-  const [lastLine, setLastLine] = React.useState(1)
-
   const plugin = React.useCallback(() => {
-    const transformer = (ast: any) => {
-      setLastLine(ast.position.end.line)
+    const transformer = (tree: Root) => {
+      const totalLines = tree.position?.end.line
+
+      visit(tree, 'element', (el: Element) => {
+        if (!('properties' in el)) {
+          el.properties = {}
+        }
+
+        const newEl = el as ElementWithData
+
+        newEl.properties = {
+          ...el.properties,
+          'is-cursor-visible': (totalLines === el.position?.end.line).toString()
+        }
+      })
     }
 
     return transformer
@@ -70,16 +92,19 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
         allowedElements={allowedElements}
         // We only read the total lines value from AST
         // if the component is allowed to show the text cursor.
-        rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : []}
+        rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : undefined}
         unwrapDisallowed={true}
         children={mainProps.text}
         components={{
           p: (props) => {
-            const currentLine = props.node?.position?.end.line
+            const el = props.node as ElementWithData
+            const isCursorVisible =
+              el.properties['is-cursor-visible'] === 'true'
+
             return (
               <p>
                 {props.children}
-                {currentLine === lastLine && mainProps.shouldShowTextCursor && (
+                {isCursorVisible && (
                   <span className={styles.textCursor}>
                     <CaretSVG />
                   </span>
