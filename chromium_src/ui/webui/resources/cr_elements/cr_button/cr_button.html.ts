@@ -20,7 +20,7 @@ export function getHtml(this: CrButtonElement) {
     height: 100%;
   }
 </style>
-<leo-button id="button" isDisabled="${this.disabled}" kind="outline" size="small">
+<leo-button id="button" ?isDisabled="${this.disabled}" kind="outline" size="small">
   <slot slot="icon-before" name="prefix-icon"></slot>
   <slot></slot>
   <slot slot="icon-after" name="suffix-icon"></slot>

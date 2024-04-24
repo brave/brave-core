@@ -27,20 +27,18 @@ export class CrButtonElement extends CrLitElement {
     return {
       disabled: {
         type: Boolean,
-        value: false,
         reflect: true,
       },
       class: {
         type: String,
-        value: '',
         reflect: true,
         observer: 'classChanged_'
       }
     };
   }
 
-  disabled: boolean;
-  class: string;
+  disabled: boolean = false;
+  class: string = '';
 
   override updated(changedProperties: PropertyValues<this>) {
     super.updated(changedProperties);
