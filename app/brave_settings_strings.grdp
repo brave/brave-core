@@ -347,13 +347,13 @@
     Block cookies
   </message>
   <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
-    Only cross-site
+    Block third-party cookies
   </message>
   <message name="IDS_SETTINGS_ALLOW_ALL_COOKIES" desc="Select value">
-    Disabled
+    Allow all cookies
   </message>
   <message name="IDS_SETTINGS_BLOCK_ALL_COOKIES" desc="Select value">
-    All
+    Block all cookies
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL" desc="Default Brave view title label">
     Default view
