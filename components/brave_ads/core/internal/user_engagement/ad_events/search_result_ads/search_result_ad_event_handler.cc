@@ -141,9 +141,7 @@ void SearchResultAdEventHandler::SaveCreativeSetConversion(
   CreativeSetConversionList creative_set_conversions;
   if (const std::optional<CreativeSetConversionInfo> creative_set_conversion =
           BuildCreativeSetConversion(ad_mojom)) {
-    if (creative_set_conversion->IsValid()) {
-      creative_set_conversions.push_back(*creative_set_conversion);
-    }
+    creative_set_conversions.push_back(*creative_set_conversion);
   }
 
   database::table::CreativeSetConversions database_table;
