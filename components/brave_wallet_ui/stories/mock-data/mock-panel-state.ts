@@ -8,23 +8,12 @@ import { PanelState } from '../../constants/types'
 
 // mocks
 import { mockOriginInfo } from './mock-origin-info'
-import { mockSignMessageRequest } from './mock-eth-requests'
 
 export const mockPanelState: PanelState = {
   hasInitialized: false,
   connectToSiteOrigin: mockOriginInfo,
   selectedPanel: 'main',
   connectingAccounts: [],
-  signMessageData: [mockSignMessageRequest],
   hardwareWalletCode: undefined,
-  selectedTransactionId: undefined,
-  signMessageErrorData: [
-    {
-      chainId: '1',
-      localizedErrMsg: 'This is an error message, unable to sign.',
-      type: 1,
-      id: '1',
-      originInfo: mockOriginInfo
-    }
-  ]
+  selectedTransactionId: undefined
 }

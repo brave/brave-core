@@ -86,8 +86,7 @@ export const makeInitialFilteredOutNetworkKeys = () => {
 export function isPersistanceOfPanelProhibited(panelType: PanelTypes) {
   return (
     panelType === 'connectWithSite' ||
-    panelType === 'connectHardwareWallet' ||
-    panelType === 'signData'
+    panelType === 'connectHardwareWallet'
   )
 }
 

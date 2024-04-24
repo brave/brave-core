@@ -64,6 +64,8 @@ import {
   mockAddChainRequest,
   mockDecryptRequest,
   mockGetEncryptionPublicKeyRequest,
+  mockSignMessageError,
+  mockSignMessageRequest,
   mockSwitchChainRequest
 } from '../../../stories/mock-data/mock-eth-requests'
 
@@ -471,6 +473,16 @@ export class MockedWalletApiProxy {
     ) => {
       this.signAllTransactionsRequests =
         this.signAllTransactionsRequests.filter((req) => req.id !== id)
+    },
+    getPendingSignMessageRequests: async () => {
+      return {
+        requests: [mockSignMessageRequest]
+      }
+    },
+    getPendingSignMessageErrors: async () => {
+      return {
+        errors: [mockSignMessageError]
+      }
     }
   }
 

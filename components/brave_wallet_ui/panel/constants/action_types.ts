@@ -14,11 +14,6 @@ export type ShowConnectToSitePayload = {
   originInfo: BraveWallet.OriginInfo
 }
 
-export type SignMessageHardwarePayload = {
-  request: BraveWallet.SignMessageRequest
-  account: BraveWallet.AccountInfo
-}
-
 export type SignMessageProcessedPayload = {
   approved: boolean
   id: number
