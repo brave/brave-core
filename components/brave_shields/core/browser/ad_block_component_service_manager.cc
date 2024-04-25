@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/barrier_callback.h"
 #include "base/feature_list.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
