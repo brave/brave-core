@@ -274,7 +274,7 @@ export const ExploreWeb3View = () => {
               isBold
               textSize='14px'
             >
-              Filters:
+              {getLocale('braveWalletWeb3Filters')}
             </Text>
             <Row
               gap='8px'
@@ -306,7 +306,9 @@ export const ExploreWeb3View = () => {
                 </FilterLabel>
               ))}
             </Row>
-            <PlainButton onClick={onClearFilters}>Clear filters</PlainButton>
+            <PlainButton onClick={onClearFilters}>
+              {getLocale('braveWalletClearFilters')}
+            </PlainButton>
           </Row>
         )}
 
