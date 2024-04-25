@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -83,29 +84,29 @@ class MeldIntegrationService : public KeyedService,
                          APIRequestResult api_request_result) const;
   void OnParseCryptoQuotes(
       GetCryptoQuotesCallback reply_callback,
-      base::expected<std::vector<mojom::MeldCryptoQuotePtr>,
-           std::string> quotes_result) const;
+      base::expected<std::vector<mojom::MeldCryptoQuotePtr>, std::string>
+          quotes_result) const;
 
   void OnGetPaymentMethods(GetPaymentMethodsCallback callback,
                            APIRequestResult api_request_result) const;
   void OnParsePaymentMethods(
       GetPaymentMethodsCallback reply_callback,
-      std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
-                 payment_methods) const;
+      std::optional<std::vector<mojom::MeldPaymentMethodPtr>> payment_methods)
+      const;
 
   void OnGetFiatCurrencies(GetFiatCurrenciesCallback callback,
                            APIRequestResult api_request_result) const;
   void OnParseFiatCurrencies(
       GetFiatCurrenciesCallback reply_callback,
-      std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
-                 fiat_currencies) const;
+      std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> fiat_currencies)
+      const;
 
   void OnGetCryptoCurrencies(GetCryptoCurrenciesCallback callback,
                              APIRequestResult api_request_result) const;
   void OnParseCryptoCurrencies(
       GetCryptoCurrenciesCallback reply_callback,
       std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
-                 crypto_currencies) const;
+          crypto_currencies) const;
 
   void OnGetCountries(GetCountriesCallback callback,
                       APIRequestResult api_request_result) const;

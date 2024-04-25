@@ -332,7 +332,7 @@ pub fn convert_all_numbers_to_string(json: &str, path: &str) -> String {
 }
 
 /// Parses and re-serializes json with all numbers (`u64`/`i64`/`f64`),
-/// empty arrays [], `null` values in anarray 
+/// empty arrays [], `null` values in anarray
 /// or `null` valued properties removed, applied recursively
 /// at the specified path.
 ///

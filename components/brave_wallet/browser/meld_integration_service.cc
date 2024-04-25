@@ -124,9 +124,8 @@ GURL AppendFilterParams(
 }
 
 bool NeedsToParseResponse(const int& http_error_code) {
-  static const base::NoDestructor<std::unordered_set<int>> kRespCodesAllowedToContinueParsing({
-      400, 401, 403
-  });
+  static const base::NoDestructor<std::unordered_set<int>>
+      kRespCodesAllowedToContinueParsing({400, 401, 403});
   return kRespCodesAllowedToContinueParsing->contains(http_error_code);
 }
 
@@ -157,7 +156,8 @@ void MeldIntegrationService::Bind(
 }
 
 // static
-GURL MeldIntegrationService::GetServiceProviderURL(mojom::MeldFilterPtr filter) {
+GURL MeldIntegrationService::GetServiceProviderURL(
+    mojom::MeldFilterPtr filter) {
   return AppendFilterParams(
       GURL(base::StringPrintf("%s/service-providers",
                               GetMeldAssetRatioBaseURL().c_str())),
@@ -174,9 +174,8 @@ void MeldIntegrationService::GetServiceProviders(
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET",
-      GetServiceProviderURL(std::move(filter)),
-      "", "", std::move(internal_callback), MakeMeldApiHeaders(),
+      "GET", GetServiceProviderURL(std::move(filter)), "", "",
+      std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));
 }
@@ -278,8 +277,8 @@ void MeldIntegrationService::OnGetCryptoQuotes(
 
 void MeldIntegrationService::OnParseCryptoQuotes(
     GetCryptoQuotesCallback reply_callback,
-    base::expected<std::vector<mojom::MeldCryptoQuotePtr>,
-           std::string> quotes_result) const {            
+    base::expected<std::vector<mojom::MeldCryptoQuotePtr>, std::string>
+        quotes_result) const {
   if (!quotes_result.has_value() && quotes_result.error().empty()) {
     std::move(reply_callback)
         .Run(std::nullopt, std::vector<std::string>{l10n_util::GetStringUTF8(
@@ -316,9 +315,8 @@ void MeldIntegrationService::GetPaymentMethods(
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET",
-      GetPaymentMethodsURL(std::move(filter)),
-      "", "", std::move(internal_callback), MakeMeldApiHeaders(),
+      "GET", GetPaymentMethodsURL(std::move(filter)), "", "",
+      std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));
 }
@@ -380,9 +378,8 @@ void MeldIntegrationService::GetFiatCurrencies(
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET",
-      GetFiatCurrenciesURL(std::move(filter)),
-      "", "", std::move(internal_callback), MakeMeldApiHeaders(),
+      "GET", GetFiatCurrenciesURL(std::move(filter)), "", "",
+      std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));
 }
@@ -425,7 +422,8 @@ void MeldIntegrationService::OnParseFiatCurrencies(
 }
 
 // static
-GURL MeldIntegrationService::GetCryptoCurrenciesURL(mojom::MeldFilterPtr filter) {
+GURL MeldIntegrationService::GetCryptoCurrenciesURL(
+    mojom::MeldFilterPtr filter) {
   return AppendFilterParams(
       GURL(base::StringPrintf(
           "%s/service-providers/properties/crypto-currencies",
@@ -445,10 +443,8 @@ void MeldIntegrationService::GetCryptoCurrencies(
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET",
-      GetCryptoCurrenciesURL(
-          std::move(filter)),
-      "", "", std::move(internal_callback), MakeMeldApiHeaders(),
+      "GET", GetCryptoCurrenciesURL(std::move(filter)), "", "",
+      std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));
 }
@@ -509,9 +505,8 @@ void MeldIntegrationService::GetCountries(mojom::MeldFilterPtr filter,
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET",
-      GetCountriesURL(std::move(filter)),
-      "", "", std::move(internal_callback), MakeMeldApiHeaders(),
+      "GET", GetCountriesURL(std::move(filter)), "", "",
+      std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));
 }

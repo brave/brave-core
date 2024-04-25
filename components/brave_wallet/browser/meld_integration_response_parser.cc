@@ -170,8 +170,7 @@ std::optional<std::vector<std::string>> ParseMeldErrorResponse(
   return errors;
 }
 
-base::expected<std::vector<mojom::MeldCryptoQuotePtr>,
-           std::string>
+base::expected<std::vector<mojom::MeldCryptoQuotePtr>, std::string>
 ParseCryptoQuotes(const base::Value& json_value) {
   // Parses results like this:
   // {

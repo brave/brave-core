@@ -14,7 +14,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
@@ -167,7 +166,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
   EXPECT_TRUE(quotes_result.has_value());
   EXPECT_EQ(base::ranges::count_if(
                 quotes_result.value(),
-                [](const auto& item) {                  
+                [](const auto& item) {
                   return item->transaction_type == "CRYPTO_PURCHASE" &&
                          item->source_amount == "50" &&
                          item->source_amount_without_fee == "43.97" &&
