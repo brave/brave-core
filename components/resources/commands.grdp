@@ -497,9 +497,6 @@
     <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
       New Split View
     </message>
-    <message name="IDS_IDC_CLOSE_SPLIT_VIEW" desc="The label of the 'Close Split View' tab context menu item">
-      Close Split View
-    </message>
     <message name="IDS_IDC_TILE_TABS" desc="The label of the 'Open in Split View' tab context menu item">
       Open in Split View
     </message>
@@ -510,9 +507,6 @@
   <if expr="not use_titlecase">
     <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
       New split view
-    </message>
-    <message name="IDS_IDC_CLOSE_SPLIT_VIEW" desc="The label of the 'Close Split View' tab context menu item">
-      Close split view
     </message>
     <message name="IDS_IDC_TILE_TABS" desc="The label of the 'Open in split view' tab context menu item">
       Open in split view

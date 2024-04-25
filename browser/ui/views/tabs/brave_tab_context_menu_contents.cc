@@ -180,8 +180,6 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
       [[fallthrough]];
     case BraveTabMenuModel::CommandNewSplitView:
       [[fallthrough]];
-    case BraveTabMenuModel::CommandCloseSplitView:
-      [[fallthrough]];
     case BraveTabMenuModel::CommandTileTabs:
       [[fallthrough]];
     case BraveTabMenuModel::CommandBreakTile:
@@ -235,9 +233,6 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandNewSplitView:
       NewSplitView();
       return;
-    case BraveTabMenuModel::CommandCloseSplitView:
-      CloseSplitView();
-      return;
     case BraveTabMenuModel::CommandTileTabs:
       TileSelectedTabs();
       return;
@@ -272,12 +267,6 @@ void BraveTabContextMenuContents::NewSplitView() {
   auto* model = browser_->tab_strip_model();
   auto tab = model->GetTabHandleAt(tab_index_);
   brave::NewSplitViewForTab(browser_, tab);
-}
-
-void BraveTabContextMenuContents::CloseSplitView() {
-  auto* model = browser_->tab_strip_model();
-  auto tab = model->GetTabHandleAt(tab_index_);
-  brave::CloseSplitViewForTab(browser_, tab);
 }
 
 void BraveTabContextMenuContents::TileSelectedTabs() {

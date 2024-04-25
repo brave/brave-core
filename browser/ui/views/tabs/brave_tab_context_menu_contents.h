@@ -67,7 +67,6 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   void OnMenuClosed();
 
   void NewSplitView();
-  void CloseSplitView();
   void TileSelectedTabs();
   void BreakSelectedTile();
 

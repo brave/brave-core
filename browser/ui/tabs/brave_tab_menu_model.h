@@ -33,7 +33,6 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandBringAllTabsToThisWindow,
     CommandCloseDuplicateTabs,
     CommandNewSplitView,
-    CommandCloseSplitView,
     CommandTileTabs,
     CommandBreakTile,
     CommandLast,
