@@ -12,10 +12,12 @@ import SwiftUI
 struct PlaylistSidebarList: View {
   @FetchRequest private var items: FetchedResults<PlaylistItem>
   @Binding var selectedItemID: PlaylistItem.ID?
+  var isPlaying: Bool
 
   init(
     folderID: PlaylistFolder.ID,
-    selectedItemID: Binding<PlaylistItem.ID?>
+    selectedItemID: Binding<PlaylistItem.ID?>,
+    isPlaying: Bool
   ) {
     self._items = FetchRequest<PlaylistItem>(
       sortDescriptors: [
@@ -25,6 +27,7 @@ struct PlaylistSidebarList: View {
       predicate: .init(format: "playlistFolder.uuid == %@", folderID)
     )
     self._selectedItemID = selectedItemID
+    self.isPlaying = isPlaying
   }
 
   var body: some View {
@@ -33,7 +36,14 @@ struct PlaylistSidebarList: View {
         // FIXME: Would be better as an overaly on the ScrollView itself, so it could grow to the height of the drawer but would have to get the PlaylistDrawerScrollView out of PlaylistSplitView somehow
         PlaylistSidebarContentUnavailableView()
       } else {
-        ForEach(items) { item in
+        // SwiftUI needs to be able to access the ID keypath off main for animation purposes, so
+        // we must identify CoreData objects by `objectID` in `ForEach` containers which are not
+        // context/thread bound.
+        //
+        // FIXME: Remove custom implementations of Identifable on PlaylistFolder & PlaylistItem
+        // PlaylistFolder.ID is used on old playlist design so will have to refactor that or wait
+        // until after its removed.
+        ForEach(items, id: \.objectID) { item in
           Button {
             selectedItemID = item.id
           } label: {
@@ -41,7 +51,7 @@ struct PlaylistSidebarList: View {
               title: item.name,
               assetURL: URL(string: item.mediaSrc),
               duration: .seconds(item.duration),
-              isItemPlaying: false
+              isItemPlaying: isPlaying && selectedItemID == item.id
             )
           }
           .onAppear {
@@ -188,6 +198,6 @@ struct PlaylistSidebarContentUnavailableView: View {
 @available(iOS 16.0, *)
 #Preview {
   // FIXME: Set up CoreData mock for Previews
-  PlaylistSidebarList(folderID: "", selectedItemID: .constant(nil))
+  PlaylistSidebarList(folderID: "", selectedItemID: .constant(nil), isPlaying: false)
 }
 #endif

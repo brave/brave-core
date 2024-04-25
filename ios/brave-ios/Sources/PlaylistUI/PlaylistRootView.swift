@@ -106,7 +106,8 @@ struct PlaylistContentView: View {
     PlaylistSplitView(selectedDetent: $selectedDetent) {
       PlaylistSidebarList(
         folderID: selectedFolderID,
-        selectedItemID: $selectedItemID
+        selectedItemID: $selectedItemID,
+        isPlaying: playerModel.isPlaying
       )
     } sidebarHeader: {
       if let selectedFolder = selectedFolder {
