@@ -8,18 +8,30 @@
 
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class Browser;
+class CommandUpdater;
+
+namespace gfx {
+struct VectorIcon;
+}
+
+namespace playlist {
+class PlaylistTabHelper;
+}
 
 class PlaylistActionIconView : public PageActionIconView,
                                public playlist::PlaylistTabHelperObserver {
   METADATA_HEADER(PlaylistActionIconView, PageActionIconView)
- public:
 
+ public:
   PlaylistActionIconView(
       CommandUpdater* command_updater,
       Browser* browser,
@@ -31,21 +43,12 @@ class PlaylistActionIconView : public PageActionIconView,
 
   void ShowPlaylistBubble();
 
-  base::WeakPtr<PlaylistActionIconView> GetWeakPtr();
-
+ private:
   // PageActionIconView:
   void OnExecuting(ExecuteSource execute_source) override {}
   views::BubbleDialogDelegate* GetBubble() const override;
   const gfx::VectorIcon& GetVectorIcon() const override;
   void UpdateImpl() override;
-
- private:
-  enum class State { kNone, kAdded, kFound };
-
-  playlist::PlaylistTabHelper* GetPlaylistTabHelper();
-
-  void UpdateState();
-  void UpdateVisibilityPerState();
 
   // PlaylistTabHelperObserver:
   void PlaylistTabHelperWillBeDestroyed() override;
@@ -56,13 +59,17 @@ class PlaylistActionIconView : public PageActionIconView,
   void OnAddedItemFromTabHelper(
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
 
-  raw_ptr<Browser> browser_ = nullptr;
+  const playlist::PlaylistTabHelper* GetPlaylistTabHelper() const;
+  playlist::PlaylistTabHelper* GetPlaylistTabHelper();
+  void UpdateState();
 
-  State state_ = State::kNone;
+  raw_ptr<Browser> browser_;
+
+  enum class State { kNone, kSaved, kFound } state_ = State::kNone;
 
   base::ScopedObservation<playlist::PlaylistTabHelper,
                           playlist::PlaylistTabHelperObserver>
-      playlist_tab_helper_observation_{this};
+      tab_helper_observation_{this};
 
   base::WeakPtrFactory<PlaylistActionIconView> weak_ptr_factory_{this};
 };
