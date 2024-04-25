@@ -46,6 +46,8 @@ static constexpr auto kSimpleQueryStringTrackers =
             "bsft_uid",
             // https://github.com/brave/brave-browser/issues/9879
             "dclid",
+            // https://github.com/brave/brave-browser/issues/37847
+            "et_rid",
             // https://github.com/brave/brave-browser/issues/33984
             "fb_action_ids",
             "fb_comment_id",
