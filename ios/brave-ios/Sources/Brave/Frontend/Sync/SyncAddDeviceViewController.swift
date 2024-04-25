@@ -16,7 +16,7 @@ enum SyncDeviceType {
 }
 
 class SyncAddDeviceViewController: SyncViewController {
-  
+
   // MARK: UX
 
   private var scrollViewContainer = UIScrollView()
@@ -94,6 +94,7 @@ class SyncAddDeviceViewController: SyncViewController {
     $0.numberOfLines = 0
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
+  
 
   private let actionButtonStackView = UIStackView().then {
     $0.axis = .vertical
@@ -126,6 +127,12 @@ class SyncAddDeviceViewController: SyncViewController {
 
   private var deviceType: SyncDeviceType = .mobile
 
+  private var isSyncCodeExpired = false {
+    didSet {
+      changeCodeDisplayStatus()
+    }
+  }
+
   private var copyButtonPressed = false {
     didSet {
       if copyButtonPressed {
@@ -137,7 +144,7 @@ class SyncAddDeviceViewController: SyncViewController {
   }
 
   private let syncAPI: BraveSyncAPI
-  
+
   var addDeviceHandler: (() -> Void)?
 
   // MARK: Lifecycle
@@ -266,6 +273,8 @@ class SyncAddDeviceViewController: SyncViewController {
       $0.left.right.equalTo(view).inset(24)
       $0.bottom.equalTo(view.safeArea.bottom).inset(24)
     }
+
+    changeCodeDisplayStatus()
   }
 
   // MARK: Private
@@ -332,31 +341,31 @@ class SyncAddDeviceViewController: SyncViewController {
       showCodewords()
     }
   }
-  
-  private func changeCodeDisplayStatus(isExpired: Bool) {
-    if isExpired {
+
+  private func changeCodeDisplayStatus() {
+    if isSyncCodeExpired {
       // Hide Active Status Elements
       qrCodeContainerView.isHidden = true
       codeWordsContainerView.isHidden = true
       copyPasteButton.isHidden = true
 
       // Reveal Expired Elements
-      
+
     } else {
-      
+      // Hide Active Status Elements
+
+
       // Reveal Active Status Elements
       changeSyncCodeStatus()
     }
   }
-  
+
   private func changeSyncCodeStatus() {
     let isFirstIndex = modeControl.selectedSegmentIndex == 0
 
     qrCodeContainerView.isHidden = !isFirstIndex
     codeWordsContainerView.isHidden = isFirstIndex
     copyPasteButton.isHidden = isFirstIndex
-
-    updateLabels()
   }
 }
 
@@ -376,7 +385,8 @@ extension SyncAddDeviceViewController {
   }
 
   @objc func changeMode() {
-    changeSyncCodeStatus()
+    changeCodeDisplayStatus()
+    updateLabels()
   }
 
   @objc func done() {
