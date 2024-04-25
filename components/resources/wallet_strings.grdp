@@ -1091,4 +1091,5 @@
   <message name="IDS_BRAVE_WALLET_VISIT_DAPP" desc="Visit dapp button text">Visit <ph name="VALUE">$1<ex>Raydium</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_FILTERS" desc="Filters label">Filters</message>
   <message name="IDS_BRAVE_WALLET_CLEAR_FILTERS" desc="Clear filters label">Clear filters</message>
+  <message name="IDS_BRAVE_WALLET_SHOW_MORE" desc="Show more label">Show more</message>
 </grit-part>

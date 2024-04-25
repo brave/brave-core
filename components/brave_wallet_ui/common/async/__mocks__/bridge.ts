@@ -1270,7 +1270,7 @@ function createDappParserForRange(
   range: string
 ): (value: DappListResult) => BraveWallet.Dapp {
   return (d) => ({
-    balance: d.metrics.balance || 0,
+    balance: d.metrics.balance ?? 0,
     categories: d.categories,
     chains: d.chains,
     description: d.description,
