@@ -911,15 +911,16 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                           content::WebContents* new_contents,
                                           int index,
                                           int reason) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
-      new_contents == secondary_contents_web_view_->web_contents()) {
+  const bool supports_split_view =
+      base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
+      browser()->is_type_normal();
+  if (supports_split_view) {
     secondary_contents_web_view_->SetWebContents(nullptr);
   }
 
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
-      browser()->is_type_normal()) {
+  if (supports_split_view) {
     // Setting nullptr doesn't detach the previous contents.
     UpdateSecondaryContentsWebViewVisibility();
   }
