@@ -2502,7 +2502,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "On your second mobile device, navigate to Sync in the Settings panel and tap the button \"Scan Sync Code\". Use your camera to scan the QR Code below.\n\n Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.",
+      "On your second mobile device, navigate to Sync in the Settings panel and tap the button \"Scan Sync Code\". Use your camera to scan the QR Code below.\n\nTreat this code like a password. If someone gets hold of it, they can read and modify your synced data.",
     comment: "Sync add device description"
   )
   public static let syncSwitchBackToCameraButton = NSLocalizedString(
@@ -2517,7 +2517,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "On your device, navigate to Sync in the Settings panel and tap the button \"%@\". Enter the sync chain code words shown below.\n\n Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.",
+      "On your device, navigate to Sync in the Settings panel and tap the button \"%@\". Enter the sync chain code words shown below.\n\nTreat this code like a password. If someone gets hold of it, they can read and modify your synced data.",
     comment: "Sync add device description"
   )
   public static let syncNoConnectionTitle = NSLocalizedString(

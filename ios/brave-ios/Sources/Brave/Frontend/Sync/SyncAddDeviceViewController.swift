@@ -16,14 +16,12 @@ enum SyncDeviceType {
 }
 
 class SyncAddDeviceViewController: SyncViewController {
-
+  
   // MARK: UX
-
-  private let barcodeSize: CGFloat = 300.0
 
   private var scrollViewContainer = UIScrollView()
 
-  private var stackView = UIStackView().then {
+  private var contentStackView = UIStackView().then {
     $0.axis = .vertical
     $0.spacing = 20
   }
@@ -32,77 +30,93 @@ class SyncAddDeviceViewController: SyncViewController {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.selectedSegmentIndex = 0
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-    $0.selectedSegmentTintColor = UIColor.braveBlurpleTint
-    $0.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+    $0.selectedSegmentTintColor = UIColor(braveSystemName: .containerBackground)
+    $0.setTitleTextAttributes(
+      [.foregroundColor: UIColor(braveSystemName: .textPrimary)],
+      for: .selected
+    )
   }
 
   private let titleDescriptionStackView = UIStackView().then {
     $0.axis = .vertical
-    $0.spacing = 2
-    $0.alignment = .center
+    $0.spacing = 20
+    $0.alignment = .leading
   }
 
   private var titleLabel = UILabel().then {
     $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
-    $0.textColor = .braveLabel
+    $0.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.semibold)
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
 
   private var descriptionLabel = UILabel().then {
     $0.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
     $0.lineBreakMode = .byTruncatingTail
-    $0.textAlignment = .center
     $0.adjustsFontSizeToFitWidth = true
     $0.minimumScaleFactor = 0.5
     $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
 
-  let syncDetailsContainerView = UIStackView().then {
+  private let syncDetailsContainerView = UIStackView().then {
     $0.axis = .vertical
     $0.alignment = .center
   }
 
-  // This view is created to create white frame around the QR code
+  // View is created to create white frame around the QR code
   // It is done to solve problems scanning QR code with Android devices
+  // Do not change how QR code is presented (size, background and inset)
+  // Or do not try to Brave Logo in the middle
   private let qrCodeContainerView = UIView().then {
     $0.backgroundColor = .white
   }
 
   private let qrCodeView: SyncQRCodeView
 
+  private let codeWordsContainerView = UIView().then {
+    $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
+    $0.layer.cornerRadius = 8
+    $0.layer.cornerCurve = .continuous
+    $0.layer.borderColor = UIColor(braveSystemName: .dividerSubtle).cgColor
+    $0.layer.borderWidth = 1.0
+    $0.isHidden = true
+  }
+
   private lazy var codewordsView = UILabel().then {
-    $0.font = UIFont.systemFont(ofSize: 18.0, weight: UIFont.Weight.medium)
+    $0.font = UIFont.monospacedSystemFont(ofSize: 15.0, weight: UIFont.Weight.regular)
     $0.lineBreakMode = NSLineBreakMode.byWordWrapping
-    $0.textAlignment = .center
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
+    $0.textAlignment = .left
     $0.numberOfLines = 0
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
 
-  private let doneEnterWordsStackView = UIStackView().then {
+  private let actionButtonStackView = UIStackView().then {
     $0.axis = .vertical
     $0.spacing = 4
     $0.distribution = .fillEqually
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
 
-  private var doneButton = RoundInterfaceButton(type: .roundedRect).then {
+  private var doneButton = UIButton().then {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.setTitle(Strings.done, for: .normal)
-    $0.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold)
+    $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
     $0.setTitleColor(.white, for: .normal)
-    $0.backgroundColor = .braveBlurpleTint
+    $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
+    $0.layer.cornerRadius = 12
+    $0.layer.cornerCurve = .continuous
   }
 
   private lazy var copyPasteButton = UIButton().then {
     $0.setTitle(Strings.copyToClipboard, for: .normal)
+    $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
     $0.addTarget(self, action: #selector(copyToClipboard), for: .touchUpInside)
-    $0.setTitleColor(UIColor.braveBlurpleTint, for: .normal)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    $0.setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
     $0.isHidden = true
   }
 
@@ -123,6 +137,7 @@ class SyncAddDeviceViewController: SyncViewController {
   }
 
   private let syncAPI: BraveSyncAPI
+  
   var addDeviceHandler: (() -> Void)?
 
   // MARK: Lifecycle
@@ -164,8 +179,8 @@ class SyncAddDeviceViewController: SyncViewController {
     super.viewDidLayoutSubviews()
 
     scrollViewContainer.contentSize = CGSize(
-      width: stackView.frame.width,
-      height: stackView.frame.height
+      width: contentStackView.frame.width,
+      height: contentStackView.frame.height
     )
     updateLabels()
   }
@@ -176,7 +191,6 @@ class SyncAddDeviceViewController: SyncViewController {
 
     codewordsView.do {
       $0.text = syncAPI.getTimeLimitedWords(fromWords: syncAPI.getSyncCode())
-      $0.isHidden = true
     }
 
     modeControl.do {
@@ -190,35 +204,35 @@ class SyncAddDeviceViewController: SyncViewController {
   private func doLayout() {
     // Scroll View
     view.addSubview(scrollViewContainer)
-    scrollViewContainer.snp.makeConstraints {
-      $0.top.equalTo(view.safeArea.top).inset(10)
-      $0.left.right.equalTo(view)
-      $0.bottom.equalTo(view.safeArea.bottom).inset(24)
-    }
+    view.addSubview(actionButtonStackView)
 
     // Content StackView
-    scrollViewContainer.addSubview(stackView)
-    stackView.snp.makeConstraints {
+    scrollViewContainer.addSubview(contentStackView)
+    contentStackView.snp.makeConstraints {
       $0.top.bottom.equalToSuperview()
-      $0.leading.trailing.equalTo(view).inset(16)
+      $0.leading.trailing.equalTo(view).inset(24)
       $0.width.equalToSuperview()
     }
 
     // Segmented Control
-    stackView.addArrangedSubview(modeControl)
+    contentStackView.addArrangedSubview(modeControl)
 
     // Title - Description Label
     titleDescriptionStackView.addArrangedSubview(titleLabel)
     titleDescriptionStackView.addArrangedSubview(descriptionLabel)
-    stackView.addArrangedSubview(titleDescriptionStackView)
+    contentStackView.addArrangedSubview(titleDescriptionStackView)
 
     // Code Words View - QR Code
     syncDetailsContainerView.addArrangedSubview(qrCodeContainerView)
-    syncDetailsContainerView.addArrangedSubview(codewordsView)
+    syncDetailsContainerView.addArrangedSubview(codeWordsContainerView)
 
     qrCodeContainerView.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview().inset(12)
+      $0.leading.trailing.equalToSuperview()
       $0.width.equalTo(qrCodeContainerView.snp.height)
+    }
+
+    codeWordsContainerView.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview()
     }
 
     qrCodeContainerView.addSubview(qrCodeView)
@@ -227,19 +241,31 @@ class SyncAddDeviceViewController: SyncViewController {
       $0.edges.equalToSuperview().inset(12)
     }
 
+    codeWordsContainerView.addSubview(codewordsView)
+
     codewordsView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.edges.equalToSuperview().inset(12)
     }
 
-    stackView.addArrangedSubview(syncDetailsContainerView)
+    contentStackView.addArrangedSubview(syncDetailsContainerView)
 
     // Copy - Paste - Done Button
     doneButton.snp.makeConstraints {
       $0.height.equalTo(40)
     }
-    doneEnterWordsStackView.addArrangedSubview(copyPasteButton)
-    doneEnterWordsStackView.addArrangedSubview(doneButton)
-    stackView.addArrangedSubview(doneEnterWordsStackView)
+    actionButtonStackView.addArrangedSubview(copyPasteButton)
+    actionButtonStackView.addArrangedSubview(doneButton)
+
+    scrollViewContainer.snp.makeConstraints {
+      $0.top.equalTo(view.safeArea.top).inset(10)
+      $0.left.right.equalTo(view)
+    }
+
+    actionButtonStackView.snp.makeConstraints {
+      $0.top.equalTo(scrollViewContainer.snp.bottom).inset(-24)
+      $0.left.right.equalTo(view).inset(24)
+      $0.bottom.equalTo(view.safeArea.bottom).inset(24)
+    }
   }
 
   // MARK: Private
@@ -258,9 +284,11 @@ class SyncAddDeviceViewController: SyncViewController {
       let attributedDescription = NSMutableAttributedString(string: description)
 
       if let lastSentenceRange = lastSentenceRange(text: description) {
-        attributedDescription.addAttribute(
-          .foregroundColor,
-          value: UIColor.braveErrorLabel,
+        attributedDescription.addAttributes(
+          [
+            .font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold),
+            .foregroundColor: UIColor.braveErrorLabel,
+          ],
           range: lastSentenceRange
         )
       }
@@ -281,9 +309,11 @@ class SyncAddDeviceViewController: SyncViewController {
       )
 
       if let lastSentenceRange = lastSentenceRange(text: addDeviceWords) {
-        description.addAttribute(
-          .foregroundColor,
-          value: UIColor.braveErrorLabel,
+        description.addAttributes(
+          [
+            .font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold),
+            .foregroundColor: UIColor.braveErrorLabel,
+          ],
           range: lastSentenceRange
         )
       }
@@ -301,6 +331,32 @@ class SyncAddDeviceViewController: SyncViewController {
     if deviceType == .computer {
       showCodewords()
     }
+  }
+  
+  private func changeCodeDisplayStatus(isExpired: Bool) {
+    if isExpired {
+      // Hide Active Status Elements
+      qrCodeContainerView.isHidden = true
+      codeWordsContainerView.isHidden = true
+      copyPasteButton.isHidden = true
+
+      // Reveal Expired Elements
+      
+    } else {
+      
+      // Reveal Active Status Elements
+      changeSyncCodeStatus()
+    }
+  }
+  
+  private func changeSyncCodeStatus() {
+    let isFirstIndex = modeControl.selectedSegmentIndex == 0
+
+    qrCodeContainerView.isHidden = !isFirstIndex
+    codeWordsContainerView.isHidden = isFirstIndex
+    copyPasteButton.isHidden = isFirstIndex
+
+    updateLabels()
   }
 }
 
@@ -320,13 +376,7 @@ extension SyncAddDeviceViewController {
   }
 
   @objc func changeMode() {
-    let isFirstIndex = modeControl.selectedSegmentIndex == 0
-
-    qrCodeContainerView.isHidden = !isFirstIndex
-    codewordsView.isHidden = isFirstIndex
-    copyPasteButton.isHidden = isFirstIndex
-
-    updateLabels()
+    changeSyncCodeStatus()
   }
 
   @objc func done() {
