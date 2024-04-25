@@ -77,24 +77,28 @@ struct PlaylistContentView: View {
   }
 
   private func playItem(_ item: PlaylistItem) {
-    if let cachedData = item.cachedData {
-      do {
-        var isStale: Bool = false
-        let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-        if FileManager.default.fileExists(atPath: url.path) {
-          playerModel.player.replaceCurrentItem(with: .init(url: url))
+    let itemToReplace: AVPlayerItem? = {
+      if let cachedData = item.cachedData {
+        do {
+          var isStale: Bool = false
+          let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
+          if FileManager.default.fileExists(atPath: url.path) {
+            return .init(url: url)
+          }
+        } catch {
         }
-      } catch {
+      } else if let url = URL(string: item.mediaSrc) {
+        return .init(asset: AVURLAsset(url: url))
       }
-    } else {
-      if let url = URL(string: item.mediaSrc) {
-        playerModel.player.replaceCurrentItem(with: .init(asset: AVURLAsset(url: url)))
+      return nil
+    }()
+    if let item = itemToReplace {
+      playerModel.player.replaceCurrentItem(with: item)
+      playerModel.play()
+      // Shrink it down?
+      withAnimation(.snappy) {
+        selectedDetent = .small
       }
-    }
-    playerModel.play()
-    // Shrink it down?
-    withAnimation(.snappy) {
-      selectedDetent = .small
     }
   }
 

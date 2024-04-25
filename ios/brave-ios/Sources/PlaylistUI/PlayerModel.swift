@@ -26,6 +26,10 @@ final class PlayerModel: ObservableObject {
     setupRemoteCommandCenterHandlers()
     setupPlayerNotifications()
     updateSystemPlayer()
+
+    DispatchQueue.global().async {
+      try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default) // .moviePlayback?
+    }
   }
 
   deinit {
