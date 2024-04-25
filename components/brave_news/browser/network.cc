@@ -3,12 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/brave_news/browser/network.h"
+
 #include <string>
 
-#include "brave/components/brave_news/browser/network.h"
+#include "base/time/time.h"
 
 namespace brave_news {
 
+base::TimeDelta GetDefaultRequestTimeout() {
+  return base::Seconds(30.0);
+}
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("brave_news_controller", R"(
       semantics {

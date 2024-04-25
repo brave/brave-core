@@ -5,10 +5,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_NETWORK_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_NETWORK_H_
 
+#include "base/time/time.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 
 namespace brave_news {
 
+base::TimeDelta GetDefaultRequestTimeout();
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag();
 
 }  // namespace brave_news

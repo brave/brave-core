@@ -21,6 +21,7 @@
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
@@ -313,7 +314,9 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
                                     std::make_unique<base::OneShotEvent>();
                               },
                               base::Unretained(controller), locale),
-                          {}, {.auto_retry_on_network_change = true});
+                          {},
+                          {.auto_retry_on_network_change = true,
+                           .timeout = GetDefaultRequestTimeout()});
                     },
                     base::Unretained(controller), locale));
           },
