@@ -100,8 +100,7 @@ final class PlayerModel: ObservableObject {
         forName: AVPlayerItem.didPlayToEndTimeNotification,
         object: nil,
         queue: .main
-      ) { [weak self] _ in
-        guard let self else { return }
+      ) { _ in
         continuation.yield()
       }
       let cancellable = AnyCancellable {

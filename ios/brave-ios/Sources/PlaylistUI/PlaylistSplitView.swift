@@ -113,19 +113,18 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
   private func computeDetentHeights() {
     detentHeights = detents.map({ $0.heightInContext(detentContext) })
       .filter { !$0.isZero && $0.isFinite }
-    // The first time we get the max detent height we need to compute the starting point
-    // for the bottom sheet layout
-    if bottomSheetHeight.isZero {
-      bottomSheetHeight = selectedDetent.heightInContext(detentContext)
-      startingBottomSheetHeight = bottomSheetHeight
-    }
   }
 
   private func handleBottomSheetDragGestureChanged(translation: CGSize) {
     if detents.isEmpty { return }
+    var dragState = activeSheetDragState ?? .init()
+    if activeSheetDragState == nil {
+      // Drag just started, setup initial height for calculations
+      dragState.initialHeight = selectedDetent.heightInContext(detentContext)
+    }
 
     let heights = detentHeights
-    let proposedHeight = (startingBottomSheetHeight - translation.height)
+    let proposedHeight = (dragState.initialHeight - translation.height)
     let clampedHeight = max(
       heights.min() ?? 0,
       min(heights.max() ?? maxDetentHeight, proposedHeight)
@@ -134,13 +133,14 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
     let sign = clampedHeight > proposedHeight ? -1.0 : 1.0
     // Since we want a more extreme resistant quicker we use 44 (the height of the toolbar) as the
     // dimension value.
-    bottomSheetHeight =
+    dragState.activeHeight =
       clampedHeight + sign
       * _computedOffsetBasedOnRubberBandingResistance(distance: distance, dimension: 44)
+    activeSheetDragState = dragState
   }
 
   private func handleBottomSheetDragGestureEnded(predictedEndTranslation: CGSize) {
-    if detents.isEmpty { return }
+    guard !detents.isEmpty, let dragState = activeSheetDragState else { return }
     // Compute the heights for all active detents and sort them in decending order (since we
     // compare in descending order)
     let heights: [(detent: PlaylistSheetDetent, height: CGFloat)] =
@@ -148,7 +148,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
       .map { ($0, $0.heightInContext(detentContext)) }
       .filter { !$0.1.isZero && $0.1.isFinite }
       .sorted(using: KeyPathComparator(\.height, order: .reverse))
-    let predictedEndHeight = startingBottomSheetHeight - predictedEndTranslation.height
+    let predictedEndHeight = dragState.initialHeight - predictedEndTranslation.height
     let restingDetent = {
       // Its actually the mid-points that determine the detent to rest on, for example if we had 2
       // detents, `medium` (50%) and `large` (100%), then if your predicted end location ended up
@@ -163,10 +163,9 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
       }
       return heights.last!.detent
     }()
-    selectedDetent = restingDetent
     withAnimation(.snappy) {
-      bottomSheetHeight = restingDetent.heightInContext(detentContext)
-      startingBottomSheetHeight = bottomSheetHeight
+      selectedDetent = restingDetent
+      activeSheetDragState = nil
     }
   }
 
@@ -194,8 +193,12 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
     return (x * d * c) / (d + c * x)
   }
 
-  @State private var bottomSheetHeight: CGFloat = 0
-  @State private var startingBottomSheetHeight: CGFloat = 0
+  private struct SheetDragState {
+    var activeHeight: CGFloat = 0
+    var initialHeight: CGFloat = 0
+  }
+
+  @State private var activeSheetDragState: SheetDragState?
   @State private var maxDetentHeight: CGFloat = 0
   @State private var sidebarScrollViewDragState: UIKitDragGestureValue = .empty
   @State private var detents: Set<PlaylistSheetDetent> = []
@@ -278,7 +281,10 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
             }
             .ignoresSafeArea(edges: .bottom)
         }
-        .frame(height: bottomSheetHeight)
+        .frame(
+          height: activeSheetDragState?.activeHeight
+            ?? selectedDetent.heightInContext(detentContext)
+        )
         .background(Color(braveSystemName: .gray10), ignoresSafeAreaEdges: .bottom)
         .containerShape(
           UnevenRoundedRectangle(

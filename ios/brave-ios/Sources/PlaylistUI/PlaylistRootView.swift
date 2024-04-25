@@ -76,6 +76,28 @@ struct PlaylistContentView: View {
     // FIXME: Handle the rest of the cases
   }
 
+  private func playItem(_ item: PlaylistItem) {
+    if let cachedData = item.cachedData {
+      do {
+        var isStale: Bool = false
+        let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
+        if FileManager.default.fileExists(atPath: url.path) {
+          playerModel.player.replaceCurrentItem(with: .init(url: url))
+        }
+      } catch {
+      }
+    } else {
+      if let url = URL(string: item.mediaSrc) {
+        playerModel.player.replaceCurrentItem(with: .init(asset: AVURLAsset(url: url)))
+      }
+    }
+    playerModel.play()
+    // Shrink it down?
+    withAnimation(.snappy) {
+      selectedDetent = .small
+    }
+  }
+
   public var body: some View {
     PlaylistSplitView(selectedDetent: $selectedDetent) {
       PlaylistSidebarList(
@@ -115,15 +137,19 @@ struct PlaylistContentView: View {
           // FIXME: Swap out for some sort of container for the selected item (shows different views if its webpage TTS for instance)
           MediaContentView(model: playerModel, selectedItem: selectedItem)
         } else {
-          // FIXME: Empty State
+          PlaylistContentUnavailableView(isPlaylistEmpty: PlaylistItem.count() == 0)
         }
       }
       .playlistSheetDetents([.small, .anchor(.mediaPlayer), .large])
     }
     .task {
+      // FIXME: Will have to adjust this in the future to handle end of TTS
       for await _ in playerModel.didPlayToEndStream {
         playNextItem()
       }
+    }
+    .onDisappear {
+      playerModel.stop()
     }
     .alert("New Playlist", isPresented: $isNewPlaylistAlertPresented) {
       TextField("My New Playlist", text: $newPlaylistName)
@@ -141,26 +167,30 @@ struct PlaylistContentView: View {
       .disabled(newPlaylistName.isEmpty)
     }
     .onChange(of: selectedItemID) { newValue in
-      if let id = newValue, let item = PlaylistItem.getItem(uuid: id) {
-        if let cachedData = item.cachedData {
-          do {
-            var isStale: Bool = false
-            let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-            if FileManager.default.fileExists(atPath: url.path) {
-              playerModel.player.replaceCurrentItem(with: .init(url: url))
-            }
-          } catch {
-          }
-        } else {
-          if let url = URL(string: item.mediaSrc) {
-            playerModel.player.replaceCurrentItem(with: .init(asset: AVURLAsset(url: url)))
-          }
-        }
-        playerModel.play()
-        // Shrink it down?
-        selectedDetent = .small
-      }
+      guard let id = newValue, let item = PlaylistItem.getItem(uuid: id) else { return }
+      playItem(item)
     }
+  }
+}
+
+/// Shown when the use has no playlist item selected
+@available(iOS 16.0, *)
+struct PlaylistContentUnavailableView: View {
+  var isPlaylistEmpty: Bool
+
+  var body: some View {
+    VStack(spacing: 24) {
+      Image(.emptyPlaylist)
+      Text(
+        isPlaylistEmpty
+          ? "Add videos to the playlist and play them here!"
+          : "Tap videos from your playlist to play."
+      )
+      .multilineTextAlignment(.center)
+      .foregroundStyle(Color(braveSystemName: .textTertiary))
+      .frame(maxWidth: .infinity)
+    }
+    .padding(40)
   }
 }
 

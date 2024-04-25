@@ -266,6 +266,10 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     all() ?? []
   }
 
+  public class func count() -> Int {
+    count() ?? 0
+  }
+
   public static func itemExists(pageSrc: String) -> Bool {
     if let count = PlaylistItem.count(predicate: NSPredicate(format: "pageSrc == %@", pageSrc)),
       count > 0

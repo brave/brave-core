@@ -173,13 +173,11 @@ struct PlaylistSidebarListHeader: View {
 struct PlaylistSidebarContentUnavailableView: View {
   var body: some View {
     VStack(spacing: 24) {
-      Image(.emptyPlaylist)
-      Text(
-        "Fun starts when you have media to play. Go find your favorite media and add them to this playlist."
-      )
-      .multilineTextAlignment(.center)
-      .foregroundStyle(Color(braveSystemName: .textTertiary))
-      .frame(maxWidth: .infinity)
+      // FIXME: Add social media icons here
+      Text("Add media from your favorite sites and it’ll play here.")
+        .multilineTextAlignment(.center)
+        .foregroundStyle(Color(braveSystemName: .textTertiary))
+        .frame(maxWidth: .infinity)
     }
     .padding(40)
   }
