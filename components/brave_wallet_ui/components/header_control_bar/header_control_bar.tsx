@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
 // utils
 import { getLocale } from '../../../common/locale'
@@ -19,6 +20,7 @@ import {
 } from '../desktop/views/portfolio/style'
 import { Row, Text } from '../shared/style'
 import {
+  BackButton,
   ControlBarWrapper,
   SearchBarWrapper
 } from './header_control_bar.styles'
@@ -26,16 +28,20 @@ import {
 interface Props {
   title: string
   searchValue: string
-  onSearchValueChange: (value: string) => void
+  showBackButton?: boolean
   actions: Array<{
     buttonIconName: string
     onClick: (() => void) | (() => Promise<void>)
   }>
+  onSearchValueChange: (value: string) => void
+  onClickBackButton?: () => void
 }
 
 export const HeaderControlBar: React.FC<Props> = ({
   actions,
+  showBackButton,
   onSearchValueChange,
+  onClickBackButton,
   searchValue,
   title
 }) => {
@@ -62,15 +68,24 @@ export const HeaderControlBar: React.FC<Props> = ({
       alignItems='center'
       showSearchBar={showSearchBar}
     >
-      {!showSearchBar && (
-        <Text
-          textSize='16px'
-          textAlign='left'
-          isBold={true}
-        >
-          {title}
-        </Text>
-      )}
+      <Row justifyContent='flex-start'>
+        {!showSearchBar && (
+          <>
+            {showBackButton ? (
+              <BackButton onClick={onClickBackButton}>
+                <Icon name='arrow-left' />
+              </BackButton>
+            ) : null}
+            <Text
+              textSize='16px'
+              textAlign='left'
+              isBold={true}
+            >
+              {title}
+            </Text>
+          </>
+        )}
+      </Row>
       <Row width={showSearchBar ? '100%' : 'unset'}>
         <SearchBarWrapper
           margin='0px 12px 0px 0px'

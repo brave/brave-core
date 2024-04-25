@@ -110,6 +110,8 @@ export const CryptoView = ({ sessionRoute }: Props) => {
   // routing
   const history = useHistory()
   const location = useLocation()
+  const params = new URLSearchParams(history.location.search)
+  const selectedDappCategory = params.get('dappCategory')
 
   // methods
   const onShowBackup = React.useCallback(() => {
@@ -351,6 +353,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             cardHeader={
               <PageTitleHeader title={getLocale('braveWalletTopNavExplore')} />
             }
+            useFullHeight={selectedDappCategory !== null}
           >
             <StyledWrapper>
               {banners}

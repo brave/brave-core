@@ -9,10 +9,11 @@ import * as React from 'react'
 import { BraveWallet } from '../../../../constants/types'
 
 // styles
-import { Column, Row, Text } from '../../../shared/style'
+import { Column, Text } from '../../../shared/style'
 import {
   TextWithOverflowEllipsis //
 } from '../../../../page/screens/send/shared.styles'
+import { StyledWrapper } from './dapp_list_item.styles'
 
 export const DappListItem = React.forwardRef<
   HTMLDivElement,
@@ -23,7 +24,7 @@ export const DappListItem = React.forwardRef<
   }
 >(({ dapp, onClick }, ref) => {
   return (
-    <Row
+    <StyledWrapper
       ref={ref}
       gap={'8px'}
       padding={'12px 8px'}
@@ -65,6 +66,6 @@ export const DappListItem = React.forwardRef<
           {dapp.description}
         </TextWithOverflowEllipsis>
       </Column>
-    </Row>
+    </StyledWrapper>
   )
 })

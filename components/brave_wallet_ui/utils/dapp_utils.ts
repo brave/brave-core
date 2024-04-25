@@ -26,18 +26,18 @@ export const getDappNetworkIds = (
   return dappNetworks
 }
 
-export function isMapEmpty<T, U>(map: Map<T, U[]>): boolean {
+export function isDappMapEmpty<T, U>(map: Map<T, U[]>): boolean {
   // Check if the map has no categories
   if (map.size === 0) {
-      return true;
+    return true
   }
 
   // Check if all categories have no items
   for (const [, items] of map) {
-      if (items.length > 0) {
-          return false;
-      }
+    if (items.length > 0) {
+      return false
+    }
   }
 
-  return true;
+  return true
 }

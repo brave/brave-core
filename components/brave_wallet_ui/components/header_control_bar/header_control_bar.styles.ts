@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+import Button from '@brave/leo/react/button'
 
 // shared styles
 import { Row } from '../shared/style'
@@ -32,4 +34,14 @@ export const SearchBarWrapper = styled(Row)<{
     display: ${(p) => (p.showSearchBar ? 'flex' : 'none')};
     width: 100%;
   }
+`
+
+export const BackButton = styled(Button).attrs({
+  kind: 'outline',
+  size: 'tiny'
+})`
+  --leo-button-radius: 8px;
+  --leo-button-color: ${leo.color.text.interactive};
+  margin-right: 12px;
+  flex-grow: 0;
 `
