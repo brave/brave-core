@@ -180,8 +180,6 @@ void DirectFeedFetcher::OnFeedDownloaded(
     std::string publisher_id,
     std::unique_ptr<std::string> response_body) {
   auto* loader = iter->get();
-  loader->SetTimeoutDuration(GetDefaultRequestTimeout());
-
   auto response_code = -1;
 
   auto result = DirectFeedResponse();
