@@ -1789,7 +1789,7 @@ export const mockDappsListMap = {
         'logo':
           'https://dashboard-assets.dappradar.com/geRRcWz9IdTwSrm1/document/24665/odosxyz-dapp-defi-ethereum-logo_bca2ab8b544c29ffdea509bd7a3fc20a.png',
         'link': 'https://dappradar.com/dapp/odos',
-        'website': 'http://app.odos.xyz',
+        'website': 'https://app.odos.xyz',
         'chains': [
           'arbitrum',
           'avalanche',
@@ -2790,7 +2790,7 @@ export const mockDappsListMap = {
         'logo':
           'https://dashboard-assets.dappradar.com/geRRcWz9IdTwSrm1/document/24665/odosxyz-dapp-defi-ethereum-logo_bca2ab8b544c29ffdea509bd7a3fc20a.png',
         'link': 'https://dappradar.com/dapp/odos',
-        'website': 'http://app.odos.xyz',
+        'website': 'https://app.odos.xyz',
         'chains': [
           'arbitrum',
           'avalanche',
@@ -3216,7 +3216,7 @@ export const mockDappsListMap = {
         'logo':
           'https://dashboard-assets.dappradar.com/geRRcWz9IdTwSrm1/document/24665/odosxyz-dapp-defi-ethereum-logo_bca2ab8b544c29ffdea509bd7a3fc20a.png',
         'link': 'https://dappradar.com/dapp/odos',
-        'website': 'http://app.odos.xyz',
+        'website': 'https://app.odos.xyz',
         'chains': [
           'arbitrum',
           'avalanche',

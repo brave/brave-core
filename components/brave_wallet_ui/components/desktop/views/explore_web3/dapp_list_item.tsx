@@ -43,6 +43,7 @@ export const DappListItem = React.forwardRef<
           src={`chrome://image?${dapp.logo}`}
           height={40}
           width={40}
+          alt={dapp.name}
         />
       </Column>
       <Column

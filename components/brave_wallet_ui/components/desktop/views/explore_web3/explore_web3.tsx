@@ -134,6 +134,22 @@ export const ExploreWeb3View = () => {
       ]
     }, [networks, filteredOutNetworkKeys])
 
+  const filterVisibleDapps = React.useCallback(
+    (dapps: BraveWallet.Dapp[], searchTerm: string) => {
+      return dapps.filter((dapp) => {
+        const dappNetworkIds = getDappNetworkIds(dapp.chains, visibleNetworks)
+        return (
+          dappNetworkIds.some((networkId) =>
+            visibleNetworkIds.includes(networkId.toString())
+          ) &&
+          (dapp.name.toLowerCase().includes(searchTerm) ||
+            dapp.description.toLowerCase().includes(searchTerm))
+        )
+      })
+    },
+    [visibleNetworkIds, visibleNetworks]
+  )
+
   const visibleDappsMap = React.useMemo(() => {
     if (isDappMapEmpty(categoryDappsMap)) {
       return categoryDappsMap
@@ -144,16 +160,10 @@ export const ExploreWeb3View = () => {
     categoryDappsMap.forEach((categoryDapps, category) => {
       if (!filteredOutCategories.includes(category)) {
         // filter items based on network and search term
-        const categoryVisibleDapps = categoryDapps.filter((dapp) => {
-          const dappNetworkIds = getDappNetworkIds(dapp.chains, visibleNetworks)
-          return (
-            dappNetworkIds.some((networkId) =>
-              visibleNetworkIds.includes(networkId.toString())
-            ) &&
-            (dapp.name.toLowerCase().includes(searchValueLower) ||
-              dapp.description.toLowerCase().includes(searchValueLower))
-          )
-        })
+        const categoryVisibleDapps = filterVisibleDapps(
+          categoryDapps,
+          searchValueLower
+        )
         if (categoryVisibleDapps.length > 0) {
           filterResultsMap.set(category, categoryVisibleDapps)
         }
@@ -161,13 +171,7 @@ export const ExploreWeb3View = () => {
     })
 
     return filterResultsMap
-  }, [
-    categoryDappsMap,
-    filteredOutCategories,
-    searchValue,
-    visibleNetworkIds,
-    visibleNetworks
-  ])
+  }, [categoryDappsMap, filterVisibleDapps, filteredOutCategories, searchValue])
 
   const selectedCategoryDapps = React.useMemo(() => {
     return selectedCategory ? visibleDappsMap.get(selectedCategory) : []
@@ -339,7 +343,7 @@ export const ExploreWeb3View = () => {
                   </Column>
                   <Row justifyContent='center'>
                     <PlainButton onClick={() => onSelectCategory(category)}>
-                      Show more
+                      {getLocale('braveWalletShowMore')}
                     </PlainButton>
                   </Row>
                 </Column>
