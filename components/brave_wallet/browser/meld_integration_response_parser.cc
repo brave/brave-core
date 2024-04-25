@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/ranges/algorithm.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -169,8 +170,8 @@ std::optional<std::vector<std::string>> ParseMeldErrorResponse(
   return errors;
 }
 
-std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
-           std::optional<std::string>>
+base::expected<std::vector<mojom::MeldCryptoQuotePtr>,
+           std::string>
 ParseCryptoQuotes(const base::Value& json_value) {
   // Parses results like this:
   // {
@@ -201,21 +202,18 @@ ParseCryptoQuotes(const base::Value& json_value) {
       meld_integration_responses::CryptoQuoteResponse::FromValue(json_value);
   if (!quote_resp_value) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
-    return std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
-                      std::optional<std::string>>{std::nullopt, std::nullopt};
+    return base::unexpected("");
   }
 
-  std::optional<std::string> error;
   if (quote_resp_value->error) {
-    error = *quote_resp_value->error;
-  }
-
-  if (!quote_resp_value->quotes) {
-    return std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
-                      std::optional<std::string>>{std::nullopt, error};
+    return base::unexpected(*quote_resp_value->error);
   }
 
   std::vector<mojom::MeldCryptoQuotePtr> quotes;
+  if (!quote_resp_value->quotes) {
+    return base::ok(std::move(quotes));
+  }
+
   for (const auto& quote_value : *quote_resp_value->quotes) {
     auto quote = mojom::MeldCryptoQuote::New(
         quote_value.transaction_type, quote_value.exchange_rate,
@@ -229,14 +227,7 @@ ParseCryptoQuotes(const base::Value& json_value) {
 
     quotes.emplace_back(std::move(quote));
   }
-
-  if (quotes.empty()) {
-    return std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
-                      std::optional<std::string>>{std::nullopt, error};
-  }
-
-  return std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
-                    std::optional<std::string>>{std::move(quotes), error};
+  return base::ok(std::move(quotes));
 }
 
 std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(

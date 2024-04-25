@@ -83,8 +83,8 @@ class MeldIntegrationService : public KeyedService,
                          APIRequestResult api_request_result) const;
   void OnParseCryptoQuotes(
       GetCryptoQuotesCallback reply_callback,
-      std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
-                        std::optional<std::string>> quotes_result) const;
+      base::expected<std::vector<mojom::MeldCryptoQuotePtr>,
+           std::string> quotes_result) const;
 
   void OnGetPaymentMethods(GetPaymentMethodsCallback callback,
                            APIRequestResult api_request_result) const;

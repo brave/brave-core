@@ -11,6 +11,7 @@
 #include <tuple>
 #include <vector>
 
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
@@ -20,8 +21,8 @@ std::optional<std::vector<std::string>> ParseMeldErrorResponse(
     const base::Value& json_value);
 std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
     const base::Value& json_value);
-std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
-           std::optional<std::string>>
+base::expected<std::vector<mojom::MeldCryptoQuotePtr>,
+           std::string>
 ParseCryptoQuotes(const base::Value& json_value);
 std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
     const base::Value& json_value);

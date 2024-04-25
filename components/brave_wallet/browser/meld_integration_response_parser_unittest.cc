@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
@@ -163,14 +164,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
 })");
 
   auto quotes_result = ParseCryptoQuotes(ParseJson(json));
-  std::optional<std::string> error{std::get<1>(quotes_result)};
-  auto& quotes =
-      std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(
-          quotes_result);
-  EXPECT_TRUE(quotes);
+  EXPECT_TRUE(quotes_result.has_value());
   EXPECT_EQ(base::ranges::count_if(
-                *quotes,
-                [](const auto& item) {
+                quotes_result.value(),
+                [](const auto& item) {                  
                   return item->transaction_type == "CRYPTO_PURCHASE" &&
                          item->source_amount == "50" &&
                          item->source_amount_without_fee == "43.97" &&
@@ -189,34 +186,23 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
                          item->service_provider == "TRANSAK";
                 }),
             1);
-  EXPECT_FALSE(error);
 
   std::string json_null_quotes(R"({
   "error": "No Valid Quote Combinations Found For Provided Quote Request."
 })");
 
   quotes_result = ParseCryptoQuotes(ParseJson(json_null_quotes));
-  auto const& quotes_json_nq =
-      std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(
-          quotes_result);
-  EXPECT_FALSE(quotes_json_nq);
-  error = std::get<1>(quotes_result);
-  EXPECT_TRUE(error);
-  EXPECT_EQ(error,
+  EXPECT_FALSE(quotes_result.has_value());
+  EXPECT_EQ(quotes_result.error(),
             "No Valid Quote Combinations Found For Provided Quote Request.");
 
   quotes_result = ParseCryptoQuotes(base::Value());
-  auto const& quotes_base_val =
-      std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(
-          quotes_result);
-  EXPECT_FALSE(quotes_base_val);
+  EXPECT_FALSE(quotes_result.has_value());
 
   json = R"({})";
   quotes_result = ParseCryptoQuotes(ParseJson(json));
-  auto const& quotes_enpty_json =
-      std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(
-          quotes_result);
-  EXPECT_FALSE(quotes_enpty_json);
+  EXPECT_TRUE(quotes_result.has_value());
+  EXPECT_TRUE(quotes_result.value().empty());
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {

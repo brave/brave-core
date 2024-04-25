@@ -278,25 +278,22 @@ void MeldIntegrationService::OnGetCryptoQuotes(
 
 void MeldIntegrationService::OnParseCryptoQuotes(
     GetCryptoQuotesCallback reply_callback,
-    std::tuple<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>,
-               std::optional<std::string>> quotes_result) const {
-  if (!std::get<0>(quotes_result) && !std::get<1>(quotes_result)) {
+    base::expected<std::vector<mojom::MeldCryptoQuotePtr>,
+           std::string> quotes_result) const {            
+  if (!quotes_result.has_value() && quotes_result.error().empty()) {
     std::move(reply_callback)
         .Run(std::nullopt, std::vector<std::string>{l10n_util::GetStringUTF8(
                                IDS_WALLET_PARSING_ERROR)});
     return;
   }
 
-  std::optional<std::vector<std::string>> errors;
-  if (std::optional<std::string> error = std::get<1>(quotes_result)) {
-    errors = std::vector<std::string>{*error};
+  if (!quotes_result.has_value()) {
+    std::move(reply_callback)
+        .Run(std::nullopt, std::vector<std::string>{quotes_result.error()});
+    return;
   }
 
-  auto& quotes =
-      std::get<std::optional<std::vector<mojom::MeldCryptoQuotePtr>>>(
-          quotes_result);
-
-  std::move(reply_callback).Run(std::move(quotes), errors);
+  std::move(reply_callback).Run(std::move(quotes_result.value()), std::nullopt);
 }
 
 // static
