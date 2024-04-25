@@ -36,9 +36,9 @@ import org.chromium.components.browser_ui.styles.ChromeColors;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
 
 /**
- * The coordinator for the browsing mode bottom toolbar. This class has two primary components,
- * an Android view that handles user actions and a composited texture that draws when the controls
- * are being scrolled off-screen. The Android version does not draw unless the controls offset is 0.
+ * The coordinator for the browsing mode bottom toolbar. This class has two primary components, an
+ * Android view that handles user actions and a composited texture that draws when the controls are
+ * being scrolled off-screen. The Android version does not draw unless the controls offset is 0.
  */
 public class BrowsingModeBottomToolbarCoordinator {
     private static final String TAG = "BrowsingMode";
