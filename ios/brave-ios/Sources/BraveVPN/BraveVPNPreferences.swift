@@ -42,5 +42,10 @@ extension Preferences {
       key: "skus.credential-domain",
       default: nil
     )
+    /// The Appstore ProductId of the product the user purchased
+    public static let subscriptionProductId = Option<String?>(
+      key: "vpn.subscription-product-id",
+      default: nil
+    )
   }
 }
