@@ -62,6 +62,9 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   };
   [[nodiscard]] OnTabDragEndedClosure TabDragStarted();
 
+  void TabsWillBeAttachedToNewBrowser(const std::vector<tabs::TabHandle>& tabs);
+  void TabsAttachedToNewBrowser(Browser* browser);
+
  private:
   friend BrowserUserData;
   friend class SplitViewBrowserDataUnitTest;
@@ -78,9 +81,12 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   std::vector<Tile>::const_iterator FindTile(const tabs::TabHandle& tab);
   std::vector<Tile>::const_iterator FindTile(const tabs::TabHandle& tab) const;
 
+  void Transfer(SplitViewBrowserData* other, std::vector<Tile> tiles);
+
   std::unique_ptr<SplitViewTabStripModelAdapter> tab_strip_model_adapter_;
 
   std::vector<Tile> tiles_;
+  std::vector<Tile> tiles_to_be_attached_to_new_window_;
 
   // As UI is likely to read more frequently than insert or delete, we cache
   // index for faster look up.
