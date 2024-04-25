@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 
 @available(iOS 16.0, *)
-public class PlaylistHostingController: UIHostingController<PlaylistPrototypeRootView> {
+public class PlaylistHostingController: UIHostingController<PlaylistRootView> {
   public init() {
-    super.init(rootView: PlaylistPrototypeRootView())
+    super.init(rootView: PlaylistRootView())
     modalPresentationStyle = .fullScreen
   }
 
@@ -29,7 +29,7 @@ public class PlaylistHostingController: UIHostingController<PlaylistPrototypeRoo
 }
 
 @available(iOS 16.0, *)
-public struct PlaylistPrototypeRootView: View {
+public struct PlaylistRootView: View {
   public init() {}
 
   public var body: some View {
@@ -182,6 +182,6 @@ extension View {
 // swift-format-ignore
 @available(iOS 16.0, *)
 #Preview {
-  PlaylistPrototypeRootView()
+  PlaylistRootView()
 }
 #endif

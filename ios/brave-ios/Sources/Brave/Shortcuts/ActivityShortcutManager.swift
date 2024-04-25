@@ -12,7 +12,7 @@ import Data
 import Growth
 import Intents
 import MobileCoreServices
-import PlaylistPrototype
+import PlaylistUI
 import Preferences
 import Shared
 import SwiftUI

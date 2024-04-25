@@ -9,7 +9,7 @@ import BraveVPN
 import BraveWallet
 import Data
 import Foundation
-import PlaylistPrototype
+import PlaylistUI
 import Preferences
 import Shared
 import SwiftUI

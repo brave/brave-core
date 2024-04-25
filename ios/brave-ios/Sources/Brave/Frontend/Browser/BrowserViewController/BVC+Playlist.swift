@@ -11,7 +11,7 @@ import Foundation
 import Growth
 import Onboarding
 import Playlist
-import PlaylistPrototype
+import PlaylistUI
 import Preferences
 import Shared
 import UIKit
