@@ -28,6 +28,13 @@ enum ZCashAddrType {
   kMaxValue = kOrchard
 };
 
+enum class OrchardAddressKind {
+  // External kind, can be used in account addresses
+  External,
+  // Internal "change" address
+  Internal
+};
+
 using ParsedAddress = std::pair<ZCashAddrType, std::vector<uint8_t>>;
 
 struct DecodedZCashAddress {

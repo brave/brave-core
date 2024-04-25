@@ -1,5 +1,5 @@
 [package]
-name = "brave-wallet"
+name = "brave_wallet"
 version = "1.0.0"
 edition = "2021"
 license = "MPL-2.0"

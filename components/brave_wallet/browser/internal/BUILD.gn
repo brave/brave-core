@@ -35,8 +35,8 @@ source_set("hd_key") {
       "hd_key_zip32.h",
     ]
     deps += [
+      "//brave/components/brave_wallet/browser/zcash/rust",
       "//brave/components/brave_wallet/common:buildflags",
-      "//brave/components/brave_wallet/zcash:rust_lib",
     ]
   }
 }

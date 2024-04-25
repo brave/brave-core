@@ -11,13 +11,53 @@ use orchard::{
     zip32::Error as Zip32Error,
     zip32::ExtendedSpendingKey};
 
-use brave_wallet_cxx::{
-  impl_result,
+use brave_wallet::{
   impl_error
 };
 
+// The rest of the wallet code should be updated to use this version of unwrap
+// and then this code can be removed
+#[macro_export]
+macro_rules! impl_result {
+    ($t:ident, $r:ident, $f:ident) => {
+        impl $r {
+            fn error_message(self: &$r) -> String {
+                match &self.0 {
+                    Err(e) => e.to_string(),
+                    Ok(_) => "".to_string(),
+                }
+            }
+
+            fn is_ok(self: &$r) -> bool {
+                match &self.0 {
+                    Err(_) => false,
+                    Ok(_) => true,
+                }
+            }
+
+            // Unfortunately cxx doesn't support passing $r by value here so
+            // we have to clone the inner value instead of passing ownership
+            // This is not really a big deal because eventually we want to
+            // replace this with mojo which would serialize this anyway
+            fn unwrap(self: &$r) -> Box<$t> {
+                Box::new(self.0.as_ref().expect(
+                    "Unhandled error before unwrap call").clone())
+            }
+        }
+
+        impl From<Result<$f, Error>> for $r {
+            fn from(result: Result<$f, Error>) -> Self {
+                match result {
+                    Ok(v) => Self(Ok($t(v))),
+                    Err(e) => Self(Err(e)),
+                }
+            }
+        }
+    };
+}
+
 #[allow(unsafe_op_in_unsafe_fn)]
-#[cxx::bridge(namespace = brave_wallet)]
+#[cxx::bridge(namespace = brave_wallet::orchard)]
 mod ffi {
     extern "Rust" {
         type OrchardExtendedSpendingKey;
@@ -30,7 +70,7 @@ mod ffi {
 
         fn is_ok(self: &OrchardExtendedSpendingKeyResult) -> bool;
         fn error_message(self: &OrchardExtendedSpendingKeyResult) -> String;
-        fn unwrap(self: &OrchardExtendedSpendingKeyResult) -> &OrchardExtendedSpendingKey;
+        fn unwrap(self: &OrchardExtendedSpendingKeyResult) -> Box<OrchardExtendedSpendingKey>;
 
         fn derive(
             self: &OrchardExtendedSpendingKey,
@@ -62,9 +102,9 @@ impl fmt::Display for Error {
     }
 }
 
+#[derive(Clone)]
 struct OrchardExtendedSpendingKey(ExtendedSpendingKey);
 struct OrchardExtendedSpendingKeyResult(Result<OrchardExtendedSpendingKey, Error>);
-
 impl_result!(OrchardExtendedSpendingKey, OrchardExtendedSpendingKeyResult, ExtendedSpendingKey);
 
 fn generate_orchard_extended_spending_key_from_seed(
@@ -104,4 +144,3 @@ impl OrchardExtendedSpendingKey {
         address.to_raw_address_bytes()
     }
 }
-

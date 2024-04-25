@@ -7,29 +7,20 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_ZIP32_H_
 
 #include <memory>
-#include <string>
-#include <vector>
 
-#include "brave/components/brave_wallet/common/buildflags.h"
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
-#include "brave/components/brave_wallet/zcash/lib.rs.h"
-
-static_assert(BUILDFLAG(ENABLE_ORCHARD));
 
 namespace brave_wallet {
 
-enum class OrchardAddressKind {
-  // External kind, can be used in account addresses
-  External,
-  // Internal "change" address
-  Internal
-};
+namespace orchard {
+class ExtendedSpendingKey;
+}  // namespace orchard
 
 // Implements Orchard key generation from
 // https://zips.z.cash/zip-0032#orchard-child-key-derivation
 class HDKeyZip32 {
  public:
-  explicit HDKeyZip32(rust::Box<OrchardExtendedSpendingKeyResult> esk);
   HDKeyZip32(const HDKeyZip32&) = delete;
   HDKeyZip32& operator=(const HDKeyZip32&) = delete;
 
@@ -48,9 +39,10 @@ class HDKeyZip32 {
   GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind);
 
  private:
+  explicit HDKeyZip32(std::unique_ptr<orchard::ExtendedSpendingKey> key);
   // Extended spending key is a root key of an account, all other keys can be
   // derived from esk
-  rust::Box<OrchardExtendedSpendingKeyResult> extended_spending_key_;
+  std::unique_ptr<orchard::ExtendedSpendingKey> extended_spending_key_;
 };
 
 }  // namespace brave_wallet
