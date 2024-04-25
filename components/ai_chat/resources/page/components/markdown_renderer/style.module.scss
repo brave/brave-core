@@ -5,6 +5,10 @@
 
 .markdownContainer {
 
+  h1,h2,h3,h4,h5,h6 {
+    margin: var(--leo-spacing-xl) 0;
+  }
+
   h1 {
     font: var(--leo-font-heading-h1);
   }
@@ -27,6 +31,10 @@
 
   ul,ol {
     padding-left: 15px;
+  }
+
+  p {
+    margin: var(--leo-spacing-xl) 0;
   }
 
   // Markdown elements have a margin which introduces additional space to the message layout.
