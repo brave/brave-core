@@ -12,6 +12,9 @@ class SplitViewBrowserData;
 
 class BraveContentsLayoutManager : public ContentsLayoutManager {
  public:
+  // Spacing between |contents_web_view_| and |secondary_contents_web_view_|.
+  static constexpr auto kSpacingBetweenContentsWebViews = 4;
+
   using ContentsLayoutManager::ContentsLayoutManager;
   ~BraveContentsLayoutManager() override;
 

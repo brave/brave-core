@@ -24,6 +24,7 @@
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/color/leo/colors.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
@@ -74,6 +75,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/events/event_observer.h"
+#include "ui/views/border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
 #include "ui/views/layout/fill_layout.h"
@@ -386,29 +388,75 @@ bool BraveBrowserView::IsActiveWebContentsTiled(
   return tile.first == active_tab_handle || tile.second == active_tab_handle;
 }
 
-void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
+void BraveBrowserView::UpdateContentsWebViewVisual() {
   auto* split_view_browser_data =
       SplitViewBrowserData::FromBrowser(browser_.get());
   if (!split_view_browser_data) {
     return;
   }
 
+  UpdateContentsWebViewBorder();
+  UpdateSecondaryContentsWebViewVisibility();
+}
+
+void BraveBrowserView::UpdateContentsWebViewBorder() {
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(browser_.get());
+  if (!split_view_browser_data) {
+    return;
+  }
+
+  if (browser()->tab_strip_model()->empty()) {
+    // Happens on startup
+    return;
+  }
+
+  if (browser()->IsBrowserClosing()) {
+    return;
+  }
+
+  DCHECK(split_view_browser_data);
+
+  constexpr auto kFocusRingThickness = 2;
+
+  // TODO(sko) This should be revisited when
+  // features::kBraveWebViewRoundedCorners is enabled
+  if (split_view_browser_data->GetTile(GetActiveTabHandle())) {
+    contents_web_view_->SetBorder(views::CreateSolidBorder(
+        kFocusRingThickness, leo::kColorPrimitivePrimary40));
+
+    if (auto* cp = GetColorProvider()) {
+      secondary_contents_web_view_->SetBorder(views::CreateSolidBorder(
+          kFocusRingThickness,
+          cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder)));
+    }
+  } else {
+    contents_web_view_->SetBorder(nullptr);
+    secondary_contents_web_view_->SetBorder(nullptr);
+  }
+}
+
+void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
   if (browser()->IsBrowserClosing()) {
     secondary_contents_web_view_->SetWebContents(nullptr);
     return;
   }
 
-  auto active_tab_handle = GetActiveTabHandle();
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(browser_.get());
+  DCHECK(split_view_browser_data);
 
+  auto active_tab_handle = GetActiveTabHandle();
   if (auto tile = split_view_browser_data->GetTile(active_tab_handle)) {
     const bool second_tile_is_active_web_contents =
         active_tab_handle == tile->second;
 
     // Active tab should be put in the original |contents_web_view_| as many
-    // other UI components are dependent on it. So, in case |tile.second| is the
-    // active tab, we let it be held by |contents_web_view_| and |tile.first| by
-    // |secondary_contents_web_view_|. But we should rotate the layout order.
-    // The layout rotation is done by BraveContentsLayoutManager.
+    // other UI components are dependent on it. So, in case |tile.second| is
+    // the active tab, we let it be held by |contents_web_view_| and
+    // |tile.first| by |secondary_contents_web_view_|. But we should rotate
+    // the layout order. The layout rotation is done by
+    // BraveContentsLayoutManager.
     //
     // ex1) When tile.first is the active tab
     //  Tiled tabs | tile.first(active) |         tile.second          |
@@ -596,7 +644,8 @@ void BraveBrowserView::ShowReaderModeToolbar() {
     AddChildView(reader_mode_toolbar_view_.get());
 
     // See the comment of same code in ctor.
-    // TODO(simonhong): Find more better way instead of calling multiple times.
+    // TODO(simonhong): Find more better way instead of calling multiple
+    // times.
     ReorderChildView(find_bar_host_view_, -1);
     GetBrowserViewLayout()->set_reader_mode_toolbar(
         reader_mode_toolbar_view_.get());
@@ -720,7 +769,7 @@ void BraveBrowserView::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
     return;
   }
 
-  UpdateSecondaryContentsWebViewVisibility();
+  UpdateContentsWebViewVisual();
 }
 
 void BraveBrowserView::OnWillBreakTile(const SplitViewBrowserData::Tile& tile) {
@@ -729,10 +778,8 @@ void BraveBrowserView::OnWillBreakTile(const SplitViewBrowserData::Tile& tile) {
   }
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          &BraveBrowserView::UpdateSecondaryContentsWebViewVisibility,
-          weak_ptr_.GetWeakPtr()));
+      FROM_HERE, base::BindOnce(&BraveBrowserView::UpdateContentsWebViewVisual,
+                                weak_ptr_.GetWeakPtr()));
 }
 
 void BraveBrowserView::CreateWalletBubble() {
@@ -914,8 +961,8 @@ void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
   // Talk item, sidebar Talk item should have activated state if other windows
   // have Talk tab. It would be complex to get updated when Talk tab is opened
   // from other windows. So, simply trying to update when window activation
-  // state is changed. With this, active window could have correct sidebar item
-  // state.
+  // state is changed. With this, active window could have correct sidebar
+  // item state.
   if (sidebar_container_view_) {
     sidebar_container_view_->UpdateSidebarItemsState();
   }
@@ -954,6 +1001,8 @@ void BraveBrowserView::OnThemeChanged() {
     vertical_tab_strip_host_view_->SetBackground(
         views::CreateSolidBackground(background_color));
   }
+
+  UpdateContentsWebViewBorder();
 }
 
 TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {
@@ -982,7 +1031,7 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 
   if (supports_split_view) {
     // Setting nullptr doesn't detach the previous contents.
-    UpdateSecondaryContentsWebViewVisibility();
+    UpdateContentsWebViewVisual();
   }
 }
 
