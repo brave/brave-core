@@ -6,16 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_BUBBLES_ICON_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_BUBBLES_ICON_CONTROLLER_H_
 
-#include <variant>
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
-
-class PlaylistActionIconView;
-
-namespace gfx {
-struct VectorIcon;
-}  // namespace gfx
 
 namespace views {
 class View;
@@ -24,7 +17,6 @@ class View;
 namespace playlist {
 
 class PlaylistActionBubbleView;
-class PlaylistTabHelper;
 
 class PlaylistBubblesController
     : public content::WebContentsUserData<PlaylistBubblesController> {
@@ -34,9 +26,7 @@ class PlaylistBubblesController
 
   ~PlaylistBubblesController() override;
 
-  void ShowBubble(
-      absl::variant<views::View*, std::unique_ptr<PlaylistActionBubbleView>>
-          view);
+  void ShowBubble(views::View* view, int type = 0);
   PlaylistActionBubbleView* GetBubble() const;
 
   base::WeakPtr<PlaylistBubblesController> AsWeakPtr() {

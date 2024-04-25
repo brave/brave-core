@@ -166,14 +166,8 @@ void PlaylistAddBubble::OnAddedItemFromTabHelper(
     return SizeToContents();
   }
 
-  CHECK(tab_helper_);
-  if (!GetAnchorView()) {
-    return;
-  }
-
-  CHECK(controller_);
-  controller_->ShowBubble(std::make_unique<PlaylistConfirmBubble>(
-      browser_, GetAnchorView(), tab_helper_));
+  next_bubble_ = 2;
+  GetWidget()->Close();
 }
 
 void PlaylistAddBubble::InitListView() {

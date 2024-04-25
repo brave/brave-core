@@ -197,7 +197,7 @@ void PlaylistConfirmBubble::OpenInPlaylist() {
 
   // Before closing widget, try resetting observer to avoid crash on Win11
   tab_helper_observation_.Reset();
-  Hide();
+  GetWidget()->Close();
 }
 
 void PlaylistConfirmBubble::ChangeFolder() {
@@ -218,7 +218,7 @@ void PlaylistConfirmBubble::RemoveFromPlaylist() {
   tab_helper_observation_.Reset();
 
   tab_helper_->RemoveItems(std::move(items));
-  Hide();
+  GetWidget()->Close();
 }
 
 void PlaylistConfirmBubble::MoreMediaInContents() {
@@ -226,9 +226,8 @@ void PlaylistConfirmBubble::MoreMediaInContents() {
     return;
   }
 
-  CHECK(controller_);
-  controller_->ShowBubble(std::make_unique<PlaylistAddBubble>(
-      browser_, GetAnchorView(), tab_helper_));
+  next_bubble_ = 1;
+  GetWidget()->Close();
 }
 
 BEGIN_METADATA(PlaylistConfirmBubble)

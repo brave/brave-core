@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_PLAYLIST_PLAYLIST_ACTION_BUBBLE_VIEW_H_
 
-#include <memory>
-
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
@@ -22,8 +20,6 @@ class PlaylistTabHelper;
 class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
   METADATA_HEADER(PlaylistActionBubbleView, views::BubbleDialogDelegateView)
  public:
-  void Hide();
-
   ~PlaylistActionBubbleView() override;
 
  protected:
@@ -32,12 +28,13 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
       View* anchor_view,
       base::WeakPtr<PlaylistTabHelper> playlist_tab_helper);
 
-  // views::WidgetDelegate:
-  void WindowClosing() override;
+  // BubbleDialogDelegate:
+  void OnWidgetDestroyed(views::Widget* widget) override;
 
   base::WeakPtr<PlaylistBubblesController> controller_;
   raw_ptr<Browser> browser_ = nullptr;
   base::WeakPtr<PlaylistTabHelper> tab_helper_;
+  int next_bubble_ = 0;
 };
 }  // namespace playlist
 

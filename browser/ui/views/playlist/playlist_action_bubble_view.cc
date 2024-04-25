@@ -17,15 +17,6 @@
 
 namespace playlist {
 
-void PlaylistActionBubbleView::Hide() {
-  if (controller_) {
-    controller_->OnBubbleClosed();
-    controller_ = nullptr;
-  }
-
-  GetWidget()->Close();
-}
-
 PlaylistActionBubbleView::PlaylistActionBubbleView(
     Browser* browser,
     View* anchor_view,
@@ -42,12 +33,14 @@ PlaylistActionBubbleView::PlaylistActionBubbleView(
 
 PlaylistActionBubbleView::~PlaylistActionBubbleView() = default;
 
-void PlaylistActionBubbleView::WindowClosing() {
-  BubbleDialogDelegateView::WindowClosing();
-
-  if (controller_) {
-    controller_->OnBubbleClosed();
-    controller_ = nullptr;
+void PlaylistActionBubbleView::OnWidgetDestroyed(views::Widget* widget) {
+  DVLOG(2) << __FUNCTION__;
+  controller_->OnBubbleClosed();
+  if (next_bubble_) {
+    // otherwise: "|anchor_view| has already anchored a focusable widget."
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&PlaylistBubblesController::ShowBubble,
+                                  controller_, GetAnchorView(), next_bubble_));
   }
 }
 

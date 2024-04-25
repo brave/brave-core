@@ -24,48 +24,42 @@ PlaylistBubblesController::CreateOrGetFromWebContents(
   return PlaylistBubblesController::FromWebContents(web_contents);
 }
 
-PlaylistBubblesController::~PlaylistBubblesController() {
-  if (bubble_) {
-    bubble_->Hide();
-  }
-}
+PlaylistBubblesController::~PlaylistBubblesController() = default;
 
-void PlaylistBubblesController::ShowBubble(
-    absl::variant<views::View*, std::unique_ptr<PlaylistActionBubbleView>>
-        view) {
+void PlaylistBubblesController::ShowBubble(views::View* anchor_view, int type) {
   DVLOG(2) << __FUNCTION__;
+  CHECK(!bubble_);
 
-  auto bubble = absl::visit(
-      base::Overloaded{
-          // user clicked on the action icon
-          [&](views::View* anchor_view) {
-            CHECK(!bubble_);
+  auto* browser = chrome::FindBrowserWithTab(&GetWebContents());
+  if (!browser) {
+    return;
+  }
 
-            std::unique_ptr<PlaylistActionBubbleView> bubble;
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(&GetWebContents());
+  CHECK(tab_helper);
 
-            if (auto* browser = chrome::FindBrowserWithTab(&GetWebContents())) {
-              auto* tab_helper =
-                  PlaylistTabHelper::FromWebContents(&GetWebContents());
-              CHECK(tab_helper);
+  std::unique_ptr<PlaylistActionBubbleView> bubble;
+  if (!type) {
+    if (!tab_helper->saved_items().empty()) {
+      bubble = std::make_unique<PlaylistConfirmBubble>(
+          browser, anchor_view, tab_helper->GetWeakPtr());
+    } else if (!tab_helper->found_items().empty()) {
+      bubble = std::make_unique<PlaylistAddBubble>(browser, anchor_view,
+                                                   tab_helper->GetWeakPtr());
+    }
+  } else {
+    switch (type) {
+      case 1:  // add
+        bubble = std::make_unique<PlaylistAddBubble>(browser, anchor_view,
+                                                     tab_helper->GetWeakPtr());
+        break;
+      case 2:  // confirm
+        bubble = std::make_unique<PlaylistConfirmBubble>(
+            browser, anchor_view, tab_helper->GetWeakPtr());
+        break;
+    }
+  }
 
-              if (!tab_helper->saved_items().empty()) {
-                bubble = std::make_unique<PlaylistConfirmBubble>(
-                    browser, anchor_view, tab_helper->GetWeakPtr());
-              } else if (!tab_helper->found_items().empty()) {
-                bubble = std::make_unique<PlaylistAddBubble>(
-                    browser, anchor_view, tab_helper->GetWeakPtr());
-              }
-            }
-
-            return bubble;
-          },
-          // user interacted with existing bubbles
-          [&](std::unique_ptr<PlaylistActionBubbleView> bubble) {
-            CHECK(bubble_);
-            bubble_->Hide();
-            return bubble;
-          }},
-      std::move(view));
   if (bubble) {
     views::BubbleDialogDelegateView::CreateBubble(bubble_ = bubble.release())
         ->Show();
