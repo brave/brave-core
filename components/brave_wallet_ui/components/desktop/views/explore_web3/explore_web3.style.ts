@@ -6,12 +6,19 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Button from '@brave/leo/react/button'
+import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+import Label from '@brave/leo/react/label'
+import Icon from '@brave/leo/react/icon'
 
 export const DappsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: ${leo.spacing['3Xl']};
   height: 100%;
+
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    grid-template-columns: 1fr;
+  }
 `
 
 export const CategoryHeader = styled.p`
@@ -24,10 +31,30 @@ export const CategoryHeader = styled.p`
   margin: 0;
 `
 
-export const ShowMore = styled(Button).attrs({
-    kind: 'plain'
+export const PlainButton = styled(Button).attrs({
+  kind: 'plain',
 })`
-    --leo-button-color: ${leo.color.text.interactive};
-    --leo-button-padding: 8px;
-    width: 100%;
+  --leo-button-color: ${leo.color.text.interactive};
+  --leo-button-padding: 8px;
+  white-space: nowrap;
+`
+
+export const FilterLabel = styled(Label).attrs({
+  color: 'gray',
+  mode: 'default'
+})`
+  --leo-label-padding: 8px;
+  --leo-label-icon-size: 14px;
+
+  color: ${leo.color.gray[50]};
+  font: ${leo.font.xSmall.regular};
+  font-weight: 700;
+  text-transform: uppercase;
+`
+
+export const FilterClose = styled(Icon).attrs({
+  name: 'close'
+})`
+  --leo-icon-size: 14px;
+  cursor: pointer;
 `

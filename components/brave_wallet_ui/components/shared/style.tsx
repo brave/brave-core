@@ -86,7 +86,7 @@ export const ErrorText = styled.span`
 type FlexProps = Partial<
   Pick<
     CSSProperties,
-    'flex' | 'alignItems' | 'justifyContent' | 'gap' | 'alignSelf'
+    'flex' | 'alignItems' | 'justifyContent' | 'gap' | 'alignSelf' | 'flexWrap'
   >
 >
 
@@ -178,6 +178,7 @@ export const Row = styled.div<
   ${makePaddingMixin(0)}
   box-sizing: border-box;
   gap: ${(p) => p.gap ?? 'unset'};
+  flex-wrap: ${(p) => p.flexWrap ?? 'unset'};
 `
 
 export const Column = styled.div<
