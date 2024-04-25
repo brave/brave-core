@@ -16,7 +16,9 @@ public class BraveTabUiThemeProviderClassAdapter extends BraveClassVisitor {
     public BraveTabUiThemeProviderClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(sTabUiThemeProviderClassName, "getActionButtonTintList",
+        changeMethodOwner(
+                sTabUiThemeProviderClassName,
+                "getActionButtonTintList",
                 sBraveTabUiThemeProviderClassName);
     }
 }

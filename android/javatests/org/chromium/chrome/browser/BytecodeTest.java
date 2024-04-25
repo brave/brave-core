@@ -286,8 +286,9 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_ui/TabUiThemeUtils"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_ui/BraveTabUiThemeUtils"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider"));
         Assert.assertTrue(
                 classExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher"));
         Assert.assertTrue(
@@ -585,27 +586,71 @@ public class BytecodeTest {
                         false,
                         null));
         Assert.assertTrue(
-                methodExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
-                        "get", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
-                "updateTilePlaceholderVisibility", true, void.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                "onPrimaryColorChanged", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                "updateButtonVisibility", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                "shouldShowDeleteButton", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
-                "shouldShowTabSwitcher", true, boolean.class, long.class, boolean.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
-                "getUrlForCustomTab", true, String.class, Intent.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
-                "getUrlForWebapp", true, String.class, Intent.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
-                "isJavascriptSchemeOrInvalidUrl", true, boolean.class, String.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
-                "extractUrlFromIntent", true, String.class, Intent.class));
+                methodExists(
+                        "org/chromium/components/variations/firstrun/VariationsSeedFetcher",
+                        "get",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                        "updateTilePlaceholderVisibility",
+                        true,
+                        void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                        "onPrimaryColorChanged",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                        "updateButtonVisibility",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                        "shouldShowDeleteButton",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
+                        "shouldShowTabSwitcher",
+                        true,
+                        boolean.class,
+                        long.class,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/IntentHandler",
+                        "getUrlForCustomTab",
+                        true,
+                        String.class,
+                        Intent.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/IntentHandler",
+                        "getUrlForWebapp",
+                        true,
+                        String.class,
+                        Intent.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/IntentHandler",
+                        "isJavascriptSchemeOrInvalidUrl",
+                        true,
+                        boolean.class,
+                        String.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/IntentHandler",
+                        "extractUrlFromIntent",
+                        true,
+                        String.class,
+                        Intent.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
@@ -731,15 +776,25 @@ public class BytecodeTest {
                         getClassForPath(
                                 "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
                         int.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                "getAddExceptionDialogMessage", true, String.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                "resetList", true, void.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "getPreferenceKey", true, String.class, int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                        "getAddExceptionDialogMessage",
+                        true,
+                        String.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                        "resetList",
+                        true,
+                        void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "getPreferenceKey",
+                        true,
+                        String.class,
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
@@ -1116,12 +1171,15 @@ public class BytecodeTest {
                         Runnable.class,
                         Runnable.class));
         Assert.assertTrue(
-                constructorsMatch("org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
+                constructorsMatch(
+                        "org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
                         "org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager",
-                        Tab.class, Supplier.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/crash/ChromePureJavaExceptionReporter",
-                "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
+                        Tab.class,
+                        Supplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/crash/ChromePureJavaExceptionReporter",
+                        "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",

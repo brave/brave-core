@@ -25,9 +25,7 @@ import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.ui.widget.ChromeImageButton;
 
-/**
- * The search accelerator.
- */
+/** The search accelerator. */
 class SearchAccelerator extends ChromeImageButton
         implements ThemeColorObserver, TintObserver, IncognitoStateObserver {
     /** The gray pill background behind the search icon. */

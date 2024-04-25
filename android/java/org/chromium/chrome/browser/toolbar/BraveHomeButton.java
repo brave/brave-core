@@ -18,9 +18,7 @@ import org.chromium.chrome.browser.theme.ThemeColorProvider.TintObserver;
 import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 
-/**
- * Brave's extension of HomeButton.
- */
+/** Brave's extension of HomeButton. */
 public class BraveHomeButton extends HomeButton implements TintObserver {
     private ThemeColorProvider mThemeColorProvider;
 

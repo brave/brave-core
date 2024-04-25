@@ -21,12 +21,11 @@ import org.chromium.chrome.browser.theme.ThemeColorProvider.TintObserver;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.ui.widget.ChromeImageButton;
 
-/**
- * The bookmarks button.
- */
+/** The bookmarks button. */
 public class BookmarksButton extends ChromeImageButton implements ThemeColorObserver, TintObserver {
-    /** A provider that notifies components when the theme color changes.*/
+    /** A provider that notifies components when the theme color changes. */
     private ThemeColorProvider mThemeColorProvider;
+
     private ColorStateList mCurrentTint;
 
     public BookmarksButton(Context context, AttributeSet attrs) {

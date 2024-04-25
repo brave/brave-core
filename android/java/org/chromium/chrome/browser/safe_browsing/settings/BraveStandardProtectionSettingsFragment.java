@@ -10,9 +10,7 @@ import android.os.Bundle;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 
-/**
- * Fragment containing standard protection settings.
- */
+/** Fragment containing standard protection settings. */
 public class BraveStandardProtectionSettingsFragment extends StandardProtectionSettingsFragment {
     @Override
     protected void onCreatePreferencesInternal(Bundle bundle, String rootKey) {
