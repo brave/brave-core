@@ -278,7 +278,7 @@ export const ExploreWeb3View = () => {
               isBold
               textSize='14px'
             >
-              {getLocale('braveWalletWeb3Filters')}
+              {getLocale('braveWalletFilters')}:
             </Text>
             <Row
               gap='8px'
