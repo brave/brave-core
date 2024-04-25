@@ -505,7 +505,7 @@ struct CustomNetworkDetailsView: View {
 
     var chainIdInHex = ""
     if let idValue = Int(model.networkId.input) {
-      chainIdInHex = "0x\(String(format: "%02x", idValue))"
+      chainIdInHex = "0x\(String(format: "%x", idValue))"
     }
     // Check if input chain id already existed for non-edit mode
     if !model.mode.isEditMode,
