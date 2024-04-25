@@ -99,6 +99,10 @@ struct PlaylistContentView: View {
       withAnimation(.snappy) {
         selectedDetent = .small
       }
+    } else {
+      withAnimation(.snappy) {
+        selectedDetent = .anchor(.mediaPlayer)
+      }
     }
   }
 
@@ -141,16 +145,25 @@ struct PlaylistContentView: View {
         if let selectedItem {
           // FIXME: Swap out for some sort of container for the selected item (shows different views if its webpage TTS for instance)
           MediaContentView(model: playerModel, selectedItem: selectedItem)
+            .playlistSheetDetents([.small, .anchor(.mediaPlayer), .large])
         } else {
           PlaylistContentUnavailableView(isPlaylistEmpty: PlaylistItem.count() == 0)
+            .playlistSheetDetents([.anchor(.emptyPlaylistContent), .large])
         }
       }
-      .playlistSheetDetents([.small, .anchor(.mediaPlayer), .large])
     }
     .task {
       // FIXME: Will have to adjust this in the future to handle end of TTS
       for await _ in playerModel.didPlayToEndStream {
         playNextItem()
+      }
+    }
+    .onAppear {
+      // FIXME: Handle Auto-Play and launching with a selected item here
+      if selectedItem != nil {
+        selectedDetent = .small
+      } else {
+        selectedDetent = .anchor(.emptyPlaylistContent)
       }
     }
     .onDisappear {
@@ -172,10 +185,20 @@ struct PlaylistContentView: View {
       .disabled(newPlaylistName.isEmpty)
     }
     .onChange(of: selectedItemID) { newValue in
-      guard let id = newValue, let item = PlaylistItem.getItem(uuid: id) else { return }
+      guard let id = newValue, let item = PlaylistItem.getItem(uuid: id) else {
+        withAnimation(.snappy) {
+          selectedDetent = .anchor(.emptyPlaylistContent)
+        }
+        playerModel.stop()
+        return
+      }
       playItem(item)
     }
   }
+}
+
+extension PlaylistSheetDetent.DetentAnchorID {
+  static let emptyPlaylistContent: Self = .init(id: "empty-playlist")
 }
 
 /// Shown when the use has no playlist item selected
@@ -196,6 +219,9 @@ struct PlaylistContentUnavailableView: View {
       .frame(maxWidth: .infinity)
     }
     .padding(40)
+    .playlistSheetDetentAnchor(id: .emptyPlaylistContent)
+    .frame(maxHeight: .infinity, alignment: .top)
+    .background(Color(braveSystemName: .containerBackground))
   }
 }
 

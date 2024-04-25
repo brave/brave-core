@@ -309,7 +309,10 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
       computeDetentHeights()
     }
     .onPreferenceChange(PlaylistSheetDetentAnchorPreferenceKey.self) { value in
-      detentAnchors = value
+      // Keep old values of detent anchors around for seamless adjustments when the underlying
+      // `detents` change (like switching views), which will allow us to update the `selectedDetent`
+      // even if an old anchor detent is not present in the new set of detents.
+      detentAnchors.merge(with: value)
       computeDetentHeights()
     }
     .onChange(of: maxDetentHeight) { _ in
