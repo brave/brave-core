@@ -48,4 +48,5 @@
 
     <dimen name="default_regular">14sp</dimen>
     <dimen name="large_regular">16sp</dimen>
+    <dimen name="default_semibold">14sp</dimen>
 </resources>

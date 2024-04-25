@@ -1,9 +1,12 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="18dp"
-    android:height="10dp"
-    android:viewportWidth="18"
-    android:viewportHeight="10">
-    <path
-        android:fillColor="@color/button_background"
-        android:pathData="M0,5C0,2.239 2.239,0 5,0H13C15.761,0 18,2.239 18,5C18,7.761 15.761,10 13,10H5C2.239,10 0,7.761 0,5Z" />
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thickness="6dp"
+            android:useLevel="false">
+            <solid android:color="@color/button_background"/>
+        </shape>
+    </item>
+</layer-list>

@@ -307,17 +307,29 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             @Override
             public void run() {
                 if (getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            findPreference(PREF_SERVER_CHANGE_LOCATION)
-                                    .setEnabled(BraveVpnPrefUtils.isSubscriptionPurchase());
-                            findPreference(PREF_SPLIT_TUNNELING)
-                                    .setEnabled(BraveVpnPrefUtils.isSubscriptionPurchase());
-                            findPreference(PREF_SUPPORT_TECHNICAL)
-                                    .setEnabled(BraveVpnPrefUtils.isSubscriptionPurchase());
-                        }
-                    });
+                    getActivity()
+                            .runOnUiThread(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            findPreference(PREF_SERVER_CHANGE_LOCATION)
+                                                    .setEnabled(
+                                                            BraveVpnPrefUtils
+                                                                    .isSubscriptionPurchase());
+                                            findPreference(PREF_SPLIT_TUNNELING)
+                                                    .setEnabled(
+                                                            BraveVpnPrefUtils
+                                                                    .isSubscriptionPurchase());
+                                            findPreference(PREF_ALWAYS_ON)
+                                                    .setEnabled(
+                                                            BraveVpnPrefUtils
+                                                                    .isSubscriptionPurchase());
+                                            findPreference(PREF_SUPPORT_TECHNICAL)
+                                                    .setEnabled(
+                                                            BraveVpnPrefUtils
+                                                                    .isSubscriptionPurchase());
+                                        }
+                                    });
                 }
             }
         }.start();

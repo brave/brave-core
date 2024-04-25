@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.vpn.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import org.chromium.chrome.R;
+import org.chromium.ui.text.SpanApplier;
+import org.chromium.ui.text.SpanApplier.SpanInfo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +50,26 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                 LayoutInflater.from(mContext)
                         .inflate(R.layout.kill_switch_tutorial_item_layout, null);
         TextView killSwitchTutorialText = view.findViewById(R.id.kill_switch_tutorial_text);
-        killSwitchTutorialText.setText(mContext.getResources().getString(mTexts.get(position)));
+        if (position == 2) {
+            String tutorialText = mContext.getResources().getString(mTexts.get(position));
+            SpannableString tutorialSpannableString =
+                    SpanApplier.applySpans(
+                            tutorialText,
+                            new SpanInfo(
+                                    "<always_on_tutorial>",
+                                    "</always_on_tutorial>",
+                                    null,
+                                    new StyleSpan(android.graphics.Typeface.BOLD)),
+                            new SpanInfo(
+                                    "<always_on_tutorial_2>",
+                                    "</always_on_tutorial_2>",
+                                    null,
+                                    new StyleSpan(android.graphics.Typeface.BOLD)));
+            killSwitchTutorialText.setText(tutorialSpannableString);
+        } else {
+            killSwitchTutorialText.setText(mContext.getResources().getString(mTexts.get(position)));
+        }
+
         ImageView killSwitchTutorialImage = view.findViewById(R.id.kill_switch_tutorial_image);
         killSwitchTutorialImage.setImageResource(mImageResources.get(position));
         collection.addView(view);

@@ -32,7 +32,7 @@ public class VpnAlwaysOnActivity extends AsyncInitializationActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getResources().getString(R.string.always_on_vpn));
+        actionBar.setTitle(getResources().getString(R.string.always_on_vpn_kill_switch));
 
         ViewPager killSwitchTutorialViewPager = findViewById(R.id.kill_switch_tutorial_view_pager);
 

@@ -3963,6 +3963,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ALWAYS_ON_VPN" desc="Vpn setting title for always on">
       Always-on VPN
     </message>
+    <message name="IDS_ALWAYS_ON_VPN_KILL_SWITCH" desc="Vpn setting title for always on">
+      Always-on VPN &amp; Kill switch
+    </message>
     <message name="IDS_HOW_TO_TURN_ON" desc="Vpn kill swicth tutorial text">
       How to turn on:
     </message>
@@ -3973,7 +3976,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       2. Find Brave VPN and tap on the settings icon to the right.
     </message>
     <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_3" desc="Vpn kill swicth tutorial text">
-      3. Toggle Always-on VPN to enable it.\n4. Toggle Block connections without VPN to enable the kill switch.
+      3. Toggle <ph name="ALWAYS_ON_TUTORIAL_START">&lt;always_on_tutorial&gt;</ph>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END">&lt;/always_on_tutorial&gt;</ph> to enable it.\n4. Toggle <ph name="ALWAYS_ON_TUTORIAL_2_START">&lt;always_on_tutorial_2&gt;</ph>Block connections without VPN<ph name="ALWAYS_ON_TUTORIAL_2_END">&lt;/always_on_tutorial_2&gt;</ph> to enable the kill switch.
     </message>
     <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_4" desc="Vpn kill swicth tutorial text">
       4. Toggle Block connections without VPN to enable the kill switch.
