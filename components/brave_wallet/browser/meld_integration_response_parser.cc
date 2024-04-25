@@ -13,10 +13,12 @@
 #include <vector>
 
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "tools/json_schema_compiler/util.h"
 
 namespace {
@@ -343,11 +345,17 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
       LOG(ERROR) << "Invalid response, could not parse JSON";
       return std::nullopt;
     }
+    std::optional<std::string> chain_id_hex;
+    int chain_id_as_num;
+    if (crypto_currency_value->chain_id &&
+        base::StringToInt(*crypto_currency_value->chain_id, &chain_id_as_num)) {
+      chain_id_hex = Uint256ValueToHex(chain_id_as_num);
+    }
 
     auto cc = mojom::MeldCryptoCurrency::New(
         crypto_currency_value->currency_code, crypto_currency_value->name,
         crypto_currency_value->chain_code, crypto_currency_value->chain_name,
-        crypto_currency_value->chain_id,
+        chain_id_hex,
         crypto_currency_value->contract_address,
         crypto_currency_value->symbol_image_url);
 

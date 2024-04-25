@@ -301,7 +301,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
     "name": "#REF!",
     "chainCode": "KCC",
     "chainName": "KuCoin Community Chain",
-    "chainId": "0",
+    "chainId": "56",
     "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
     "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
   }])");
@@ -313,7 +313,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
                   return item->currency_code == "USDT_KCC" &&
                          item->name == "#REF!" && item->chain_code == "KCC" &&
                          item->chain_name == "KuCoin Community Chain" &&
-                         item->chain_id == "0" &&
+                         item->chain_id == "0x38" &&
                          item->contract_address ==
                              "0xe41d2489571d322189246dafa5ebde1f4699f498" &&
                          item->symbol_image_url ==
