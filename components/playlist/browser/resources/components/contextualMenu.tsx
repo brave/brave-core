@@ -7,7 +7,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 
 import Icon from '@brave/leo/react/icon'
-import ButtonMenu, { ButtonMenuProps } from '@brave/leo/react/buttonMenu'
+import ButtonMenu from '@brave/leo/react/buttonMenu'
 import { color, spacing } from '@brave/leo/tokens/css'
 
 interface MenuItemProps {
@@ -46,26 +46,23 @@ export default function ContextualMenuAnchorButton ({
   onShowMenu,
   onDismissMenu
 }: MenuProps) {
-  const menuButtonProps: ButtonMenuProps = {}
-  if (visible) {
-    // Let `ButtonMenu` of Nala handle the state.
-    menuButtonProps.isOpen = undefined
-  } else {
-    // Force menu widget to be closed when the anchor button is not visible. In
-    // case where it's visible, the menuButtonProps doesn't contain isOpen property,
-    // so it won't affect the behavior of the menu.
-    menuButtonProps.isOpen = false
-  }
+  const [open, setOpen] = React.useState(false)
+
+  // When the anchor button isn't visible, hide the menu
+  React.useEffect(() => {
+    if (!visible) setOpen(false)
+  }, [visible])
 
   return (
     <StyledButtonMenu
       tabIndex={0}
       visible={visible}
-      {...menuButtonProps}
       onChange={({ isOpen }) => {
         if (isOpen) onShowMenu?.()
+        setOpen(isOpen)
       }}
       onClose={() => onDismissMenu?.()}
+      isOpen={open}
     >
       <div slot='anchor-content'>
         <Icon name='more-horizontal' />
