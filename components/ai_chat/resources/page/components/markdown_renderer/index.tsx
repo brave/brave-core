@@ -82,10 +82,14 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
 
   const plugin = React.useCallback(() => {
     const transformer = (tree: Root) => {
-      const totalLines = tree.position?.end.line
+      const lastElLineEndsAt = tree.position?.end.line
+      const lastElCharEndsAt = tree.position?.end.offset
 
       visit(tree, 'element', (el: HastElement) => {
-        if (totalLines === el.position?.end.line) {
+        if (
+          lastElLineEndsAt === el.position?.end.line &&
+          lastElCharEndsAt === el.position?.end.offset
+        ) {
           lastElementRef.current = el
         }
       })
