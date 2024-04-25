@@ -10,20 +10,30 @@
 #include "components/crx_file/crx_creator.h"
 
 namespace {
+
 const char kPublisherKeySwitch[] = "brave-extension-publisher-key";
+
+// A second publisher key; Useful for when we prepare to rotate the key:
+const char kAltPublisherKeySwitch[] = "brave-extension-publisher-key-alt";
+
 }  // namespace
 
-#define BRAVE_CREATE_CRX(output_path, zip_path, signing_key)        \
-  const auto* cmd = base::CommandLine::ForCurrentProcess();         \
-  std::unique_ptr<crypto::RSAPrivateKey> publisher_key;             \
-  if (cmd->HasSwitch(kPublisherKeySwitch)) {                        \
-    publisher_key =                                                 \
-        ReadInputKey(cmd->GetSwitchValuePath(kPublisherKeySwitch)); \
-    if (!publisher_key)                                             \
-      return false; /* error_message_ was set by ReadInputKey() */  \
-  }                                                                 \
-  result = crx_file::CreateWithPublisherKey(output_path, zip_path,  \
-                                            signing_key, publisher_key.get());
+#define BRAVE_CREATE_CRX(output_path, zip_path, signing_key)              \
+  std::vector<crypto::RSAPrivateKey*> keys{signing_key};                  \
+  std::vector<std::unique_ptr<crypto::RSAPrivateKey>> keep_keys_alive;    \
+  const auto* cmd = base::CommandLine::ForCurrentProcess();               \
+  const char* switches[] = {kPublisherKeySwitch, kAltPublisherKeySwitch}; \
+  for (const char* switch_name : switches) {                              \
+    if (cmd->HasSwitch(switch_name)) {                                    \
+      std::unique_ptr<crypto::RSAPrivateKey> key =                        \
+          ReadInputKey(cmd->GetSwitchValuePath(switch_name));             \
+      if (!key)                                                           \
+        return false; /* error_message_ was set by ReadInputKey() */      \
+      keys.push_back(key.get());                                          \
+      keep_keys_alive.push_back(std::move(key));                          \
+    }                                                                     \
+  }                                                                       \
+  result = crx_file::CreateWithMultipleKeys(output_path, zip_path, keys);
 
 #include "src/extensions/browser/extension_creator.cc"
 
