@@ -28,7 +28,8 @@ final class PlayerModel: ObservableObject {
     updateSystemPlayer()
 
     DispatchQueue.global().async {
-      try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default) // .moviePlayback?
+      // should mode be `.moviePlayback`?
+      try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
     }
   }
 

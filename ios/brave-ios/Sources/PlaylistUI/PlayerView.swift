@@ -107,6 +107,7 @@ struct PlayerView: View {
 extension PlayerView {
   /// Controls shown inside of the PlayerView, typically in fullscreen mode
   // FIXME: Find a way to share the actual control buttons?
+  // FIXME: Background is solid when tapped
   struct InlinePlaybackControlsView: View {
     @Environment(\.toggleFullScreen) private var toggleFullScreen
     @State private var currentTime: TimeInterval = 0

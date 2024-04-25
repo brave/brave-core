@@ -67,22 +67,14 @@ extension MediaContentView {
 
     var body: some View {
       VStack(spacing: 28) {
-        HStack {
+        HStack(alignment: .firstTextBaseline) {
           Text(selectedItemTitle)
             .foregroundStyle(Color(braveSystemName: .textPrimary))
             .font(.headline)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.leading)
             .lineLimit(1)
-          if model.isPictureInPictureSupported {
-            Button {
-
-            } label: {
-              Label("AirPlay", braveSystemImage: "leo.airplay.video")
-            }
-            .buttonStyle(.playbackControl)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
-            .transition(.opacity.animation(.default))
-          }
+          RoutePickerView()
         }
         MediaScrubber(
           currentTime: Binding(
