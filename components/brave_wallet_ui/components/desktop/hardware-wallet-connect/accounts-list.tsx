@@ -252,6 +252,7 @@ export const HardwareWalletAccountsList = ({
                 <HelpLink
                   href='https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
                   target='_blank'
+                  rel='noopener noreferrer'
                 >
                   {getLocale('braveWalletHelpCenter')}
                 </HelpLink>
