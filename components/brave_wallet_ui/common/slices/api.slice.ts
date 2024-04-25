@@ -247,6 +247,7 @@ export const {
   useGetTokenInfoQuery,
   useGetTokenSpotPricesQuery,
   useGetTokensRegistryQuery,
+  useGetTransactionQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
   useGetWalletsToImportQuery,

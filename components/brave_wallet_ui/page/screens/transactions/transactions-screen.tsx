@@ -4,10 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import {
+  BraveWallet,
+  SerializableTransactionInfo
+} from '../../../constants/types'
 
 // options
 import { AllNetworksOption } from '../../../options/network-filter-options'
@@ -50,6 +53,9 @@ import {
   ActivityPageHeader //
 } from '../../../components/desktop/card-headers/activity_page_header'
 import { SearchBar } from '../../../components/shared/search-bar'
+import {
+  TransactionDetailsModal //
+} from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 
 // styles
 import {
@@ -72,6 +78,8 @@ const txListItemSkeletonProps: LoadingSkeletonStyleProps = {
 export const TransactionsScreen: React.FC = () => {
   // routing
   const history = useHistory()
+  const { hash: selectedTransactionIdHash } = useLocation()
+  const selectedTransactionId = selectedTransactionIdHash.replace('#', '')
 
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -156,6 +164,10 @@ export const TransactionsScreen: React.FC = () => {
           }
     )
 
+  const selectedTransaction = txsForSelectedChain.find(
+    (tx) => tx.id === selectedTransactionId
+  )
+
   const combinedTokensList = React.useMemo(() => {
     return userTokensList.concat(knownTokensList)
   }, [userTokensList, knownTokensList])
@@ -192,6 +204,15 @@ export const TransactionsScreen: React.FC = () => {
       searchValue.toLowerCase()
     )
   }, [searchValue, searchableTransactions])
+
+  // methods
+  const onClickTransaction = (
+    tx: Pick<BraveWallet.TransactionInfo | SerializableTransactionInfo, 'id'>
+  ): void => {
+    history.push(
+      window.location.pathname + window.location.search + '#' + tx.id
+    )
+  }
 
   // render
   if (isLoadingAccounts || isLoadingTxsList) {
@@ -283,6 +304,7 @@ export const TransactionsScreen: React.FC = () => {
                 <PortfolioTransactionItem
                   key={tx.id}
                   transaction={tx}
+                  onClick={onClickTransaction}
                 />
               ))}
             </Column>
@@ -299,6 +321,15 @@ export const TransactionsScreen: React.FC = () => {
           </>
         )}
       </>
+      {selectedTransaction && (
+        <TransactionDetailsModal
+          onClose={() => {
+            // remove the transaction id from the URL hash
+            history.push(window.location.pathname + window.location.search)
+          }}
+          transaction={selectedTransaction}
+        />
+      )}
     </WalletPageWrapper>
   )
 }

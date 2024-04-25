@@ -490,7 +490,13 @@ export const usePendingTransactions = () => {
         })
       )
     } finally {
-      dispatch(PanelActions.setSelectedTransactionId(transactionInfo.id))
+      dispatch(
+        PanelActions.setSelectedTransactionId({
+          chainId: transactionInfo.chainId,
+          coin: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
+          id: transactionInfo.id
+        })
+      )
       dispatch(PanelActions.navigateTo('transactionStatus'))
     }
   }, [approveTransaction, dispatch, transactionInfo])

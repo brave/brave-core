@@ -87,11 +87,11 @@ function Container() {
   const hardwareWalletCode = useSafePanelSelector(
     PanelSelectors.hardwareWalletCode
   )
-  const selectedTransactionId = useSafePanelSelector(
-    PanelSelectors.selectedTransactionId
-  )
 
   // panel selectors (unsafe)
+  const selectedTransactionId = useUnsafePanelSelector(
+    PanelSelectors.selectedTransactionId
+  )
   const connectToSiteOrigin = useUnsafePanelSelector(
     PanelSelectors.connectToSiteOrigin
   )
@@ -267,7 +267,7 @@ function Container() {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
-          <TransactionStatus transactionId={selectedTransactionId} />
+          <TransactionStatus transactionLookup={selectedTransactionId} />
         </StyledExtensionWrapper>
       </PanelWrapper>
     )

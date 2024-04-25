@@ -253,6 +253,10 @@ export const makeSwapRoute = ({
   return `${WalletRoutes.Swap}?${params.toString()}`
 }
 
+export const makeTransactionDetailsRoute = (transactionId: string) => {
+  return WalletRoutes.Activity + `#${transactionId}`
+}
+
 export const makePortfolioAssetRoute = (isNft: boolean, assetId: string) => {
   return (
     isNft ? WalletRoutes.PortfolioNFTAsset : WalletRoutes.PortfolioAsset

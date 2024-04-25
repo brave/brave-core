@@ -18,7 +18,8 @@ import {
   SendSolTransactionParams,
   SendZecTransactionParams,
   SerializableTransactionInfo,
-  SPLTransferFromParams
+  SPLTransferFromParams,
+  TransactionInfoLookup
 } from '../../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
@@ -174,6 +175,34 @@ export const transactionEndpoints = ({
               ...TX_CACHE_TAGS.IDS((res || []).map(({ id }) => id))
             ]
     }),
+
+    getTransaction: query<
+      SerializableTransactionInfo | null,
+      TransactionInfoLookup
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { transactionInfo: tx } =
+            await api.txService.getTransactionInfo(
+              arg.coin,
+              arg.chainId,
+              arg.id
+            )
+          return {
+            data: tx ? makeSerializableTransaction(tx) : null
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to get transaction (${arg.id})`,
+            error
+          )
+        }
+      },
+      providesTags: (res, err, arg) => (err ? [] : [TX_CACHE_TAGS.ID(arg.id)])
+    }),
+
     invalidateTransactionsCache: mutation<boolean, void>({
       queryFn: () => {
         return { data: true }
@@ -1234,8 +1263,14 @@ export const transactionEndpoints = ({
                 throw new Error(`unsupported coin type for hardware approval`)
             }
             if (success) {
-              store.dispatch(PanelActions.setSelectedTransactionId(txInfo.id))
-              store.dispatch(PanelActions.navigateTo('transactionDetails'))
+              store.dispatch(
+                PanelActions.setSelectedTransactionId({
+                  chainId: txInfo.chainId,
+                  coin: getCoinFromTxDataUnion(txInfo.txDataUnion),
+                  id: txInfo.id
+                })
+              )
+              store.dispatch(PanelActions.navigateTo('transactionStatus'))
               apiProxy.panelHandler?.setCloseOnDeactivate(true)
               return {
                 data: { success: true }
@@ -1290,8 +1325,14 @@ export const transactionEndpoints = ({
               txInfo
             )
             if (success) {
-              store.dispatch(PanelActions.setSelectedTransactionId(txInfo.id))
-              store.dispatch(PanelActions.navigateTo('transactionDetails'))
+              store.dispatch(
+                PanelActions.setSelectedTransactionId({
+                  chainId: txInfo.chainId,
+                  coin: getCoinFromTxDataUnion(txInfo.txDataUnion),
+                  id: txInfo.id
+                })
+              )
+              store.dispatch(PanelActions.navigateTo('transactionStatus'))
               apiProxy.panelHandler?.setCloseOnDeactivate(true)
               // By default the focus is moved to the browser window
               // automatically when Trezor popup closed which triggers
