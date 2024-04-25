@@ -111,7 +111,7 @@ namespace swap_responses {
     // The following fields are mandatory for EVM -> any transfers.
     DOMString? from;
     DOMString? to;
-    DOMString? chainId;
+    long? chainId;
     DOMString? value;
     DOMString? gasPrice;
     DOMString? gasLimit;

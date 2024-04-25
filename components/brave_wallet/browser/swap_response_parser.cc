@@ -596,7 +596,7 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
       !value->transaction_request.value &&
       !value->transaction_request.gas_price &&
       !value->transaction_request.gas_limit &&
-      !value->transaction_request.chain_id) {
+      !value->transaction_request.chain_id.has_value()) {
     return mojom::LiFiTransactionUnion::NewSolanaTransaction(
         value->transaction_request.data);
   }
@@ -620,7 +620,7 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
       value->transaction_request.gas_limit->empty() ||
 
       !value->transaction_request.chain_id ||
-      value->transaction_request.chain_id->empty()) {
+      !value->transaction_request.chain_id.has_value()) {
     return nullptr;
   }
 
@@ -632,8 +632,9 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
   evm_transaction->gas_price = value->transaction_request.gas_price.value();
   evm_transaction->gas_limit = value->transaction_request.gas_limit.value();
 
-  if (value->transaction_request.chain_id) {
-    auto chain_id = ChainIdToHex(value->transaction_request.chain_id.value());
+  if (value->transaction_request.chain_id.has_value()) {
+    auto chain_id = ChainIdToHex(
+        base::NumberToString(value->transaction_request.chain_id.value()));
     if (!chain_id) {
       return nullptr;
     }

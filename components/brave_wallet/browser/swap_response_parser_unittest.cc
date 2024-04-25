@@ -1127,7 +1127,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiTransactionResponse) {
       "transactionRequest": {
         "from": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
         "to": "0x1111111254fb6c44bac0bed2854e76f90643097d",
-        "chainId": "100",
+        "chainId": 100,
         "data": "0x...",
         "value": "0x0de0b6b3a7640000",
         "gasPrice": "0xb2d05e00",
