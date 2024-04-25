@@ -138,9 +138,8 @@
 
 // Commands related to split view
 #define IDC_NEW_SPLIT_VIEW 56325
-#define IDC_CLOSE_SPLIT_VIEW 56326
-#define IDC_TILE_TABS 56327
-#define IDC_BREAK_TILE 56328
+#define IDC_TILE_TABS 56326
+#define IDC_BREAK_TILE 56327
 
 // Wayback machine
 #define IDC_SHOW_WAYBACK_MACHINE_BUBBLE 56350

@@ -926,27 +926,6 @@ void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
       model->GetTabHandleAt(tab_index), model->GetTabHandleAt(new_tab_index)));
 }
 
-void CloseSplitViewForTab(Browser* browser,
-                          std::optional<tabs::TabHandle> tab) {
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
-  if (!split_view_data) {
-    return;
-  }
-
-  if (!tab) {
-    tab = GetActiveTabHandle(browser);
-  }
-
-  auto* model = browser->tab_strip_model();
-  auto tile = split_view_data->GetTile(*tab);
-  if (!tile) {
-    return;
-  }
-
-  model->CloseWebContentsAt(model->GetIndexOfTab(tile->second),
-                            CLOSE_USER_GESTURE);
-}
-
 void TileTabs(Browser* browser, const std::vector<int>& indices) {
   auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
   if (!split_view_data) {

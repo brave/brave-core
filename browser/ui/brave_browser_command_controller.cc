@@ -432,8 +432,6 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
 
   UpdateCommandEnabled(IDC_NEW_SPLIT_VIEW, brave::CanOpenNewSplitViewForTab(
                                                std::to_address(browser_)));
-  UpdateCommandEnabled(IDC_CLOSE_SPLIT_VIEW, !brave::CanOpenNewSplitViewForTab(
-                                                 std::to_address(browser_)));
   UpdateCommandEnabled(IDC_TILE_TABS,
                        brave::CanTileTabs(std::to_address(browser_)));
   UpdateCommandEnabled(IDC_BREAK_TILE,
@@ -654,9 +652,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_NEW_SPLIT_VIEW:
       brave::NewSplitViewForTab(&*browser_);
-      break;
-    case IDC_CLOSE_SPLIT_VIEW:
-      brave::CloseSplitViewForTab(&*browser_);
       break;
     case IDC_TILE_TABS:
       brave::TileTabs(&*browser_);
