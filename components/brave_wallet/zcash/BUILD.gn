@@ -12,6 +12,8 @@ rust_static_library("rust_lib") {
   sources = [ "lib.rs" ]
   cxx_bindings = [ "lib.rs" ]
 
+  visibility = [ "//brave/components/brave_wallet/*" ]
+
   deps = [
     "//brave/components/brave_wallet/rust:rust_lib",
     "//brave/third_party/rust/orchard/v0_7:lib",
