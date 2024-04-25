@@ -37,64 +37,9 @@ class SyncAddDeviceViewController: SyncViewController {
     )
   }
 
-  private let titleDescriptionStackView = UIStackView().then {
-    $0.axis = .vertical
-    $0.spacing = 20
-    $0.alignment = .leading
-  }
+  private let titleDescriptionStackView = SyncAddDeviceInformationView()
 
-  private var titleLabel = UILabel().then {
-    $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.semibold)
-    $0.textColor = UIColor(braveSystemName: .textPrimary)
-    $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
-  }
-
-  private var descriptionLabel = UILabel().then {
-    $0.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
-    $0.textColor = UIColor(braveSystemName: .textPrimary)
-    $0.numberOfLines = 0
-    $0.lineBreakMode = .byTruncatingTail
-    $0.adjustsFontSizeToFitWidth = true
-    $0.minimumScaleFactor = 0.5
-    $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
-  }
-
-  private let syncDetailsContainerView = UIStackView().then {
-    $0.axis = .vertical
-    $0.alignment = .center
-  }
-
-  // View is created to create white frame around the QR code
-  // It is done to solve problems scanning QR code with Android devices
-  // Do not change how QR code is presented (size, background and inset)
-  // Or do not try to Brave Logo in the middle
-  private let qrCodeContainerView = UIView().then {
-    $0.backgroundColor = .white
-  }
-
-  private let qrCodeView: SyncQRCodeView
-
-  private let codeWordsContainerView = UIView().then {
-    $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
-    $0.layer.cornerRadius = 8
-    $0.layer.cornerCurve = .continuous
-    $0.layer.borderColor = UIColor(braveSystemName: .dividerSubtle).cgColor
-    $0.layer.borderWidth = 1.0
-    $0.isHidden = true
-  }
-
-  private lazy var codewordsView = UILabel().then {
-    $0.font = UIFont.monospacedSystemFont(ofSize: 15.0, weight: UIFont.Weight.regular)
-    $0.lineBreakMode = NSLineBreakMode.byWordWrapping
-    $0.textColor = UIColor(braveSystemName: .textPrimary)
-    $0.textAlignment = .left
-    $0.numberOfLines = 0
-    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
-  }
-  
+  private let codeDetailsStackView: SyncAddDeviceCodeView
 
   private let actionButtonStackView = UIStackView().then {
     $0.axis = .vertical
@@ -127,7 +72,7 @@ class SyncAddDeviceViewController: SyncViewController {
 
   private var deviceType: SyncDeviceType = .mobile
 
-  private var isSyncCodeExpired = false {
+  private var isSyncCodeExpired = true {
     didSet {
       changeCodeDisplayStatus()
     }
@@ -151,7 +96,7 @@ class SyncAddDeviceViewController: SyncViewController {
 
   init(title: String, type: SyncDeviceType, syncAPI: BraveSyncAPI) {
     self.syncAPI = syncAPI
-    qrCodeView = SyncQRCodeView(syncApi: syncAPI)
+    codeDetailsStackView = SyncAddDeviceCodeView(syncAPI: syncAPI)
     super.init()
 
     pageTitle = title
@@ -189,16 +134,13 @@ class SyncAddDeviceViewController: SyncViewController {
       width: contentStackView.frame.width,
       height: contentStackView.frame.height
     )
-    updateLabels()
+
+    titleDescriptionStackView.updateLabels(isFirstIndex: modeControl.selectedSegmentIndex == 0)
   }
 
   private func setTheme() {
     title =
       deviceType == .computer ? Strings.syncAddComputerTitle : Strings.syncAddTabletOrPhoneTitle
-
-    codewordsView.do {
-      $0.text = syncAPI.getTimeLimitedWords(fromWords: syncAPI.getSyncCode())
-    }
 
     modeControl.do {
       $0.isHidden = deviceType == .computer
@@ -225,36 +167,10 @@ class SyncAddDeviceViewController: SyncViewController {
     contentStackView.addArrangedSubview(modeControl)
 
     // Title - Description Label
-    titleDescriptionStackView.addArrangedSubview(titleLabel)
-    titleDescriptionStackView.addArrangedSubview(descriptionLabel)
     contentStackView.addArrangedSubview(titleDescriptionStackView)
 
     // Code Words View - QR Code
-    syncDetailsContainerView.addArrangedSubview(qrCodeContainerView)
-    syncDetailsContainerView.addArrangedSubview(codeWordsContainerView)
-
-    qrCodeContainerView.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview()
-      $0.width.equalTo(qrCodeContainerView.snp.height)
-    }
-
-    codeWordsContainerView.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview()
-    }
-
-    qrCodeContainerView.addSubview(qrCodeView)
-
-    qrCodeView.snp.makeConstraints {
-      $0.edges.equalToSuperview().inset(12)
-    }
-
-    codeWordsContainerView.addSubview(codewordsView)
-
-    codewordsView.snp.makeConstraints {
-      $0.edges.equalToSuperview().inset(12)
-    }
-
-    contentStackView.addArrangedSubview(syncDetailsContainerView)
+    contentStackView.addArrangedSubview(codeDetailsStackView)
 
     // Copy - Paste - Done Button
     doneButton.snp.makeConstraints {
@@ -283,59 +199,6 @@ class SyncAddDeviceViewController: SyncViewController {
     present(SyncAlerts.initializationError, animated: true)
   }
 
-  private func updateLabels() {
-    let isFirstIndex = modeControl.selectedSegmentIndex == 0
-
-    titleLabel.text = isFirstIndex ? Strings.syncAddDeviceScan : Strings.syncAddDeviceWords
-
-    if isFirstIndex {
-      let description = Strings.syncAddDeviceScanDescription
-      let attributedDescription = NSMutableAttributedString(string: description)
-
-      if let lastSentenceRange = lastSentenceRange(text: description) {
-        attributedDescription.addAttributes(
-          [
-            .font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold),
-            .foregroundColor: UIColor.braveErrorLabel,
-          ],
-          range: lastSentenceRange
-        )
-      }
-
-      descriptionLabel.attributedText = attributedDescription
-    } else {
-      // The button name should be the same as in codewords instructions.
-      let buttonName = Strings.scanSyncCode
-      let addDeviceWords = String(format: Strings.syncAddDeviceWordsDescription, buttonName)
-      let description = NSMutableAttributedString(string: addDeviceWords)
-      let fontSize = descriptionLabel.font.pointSize
-
-      let boldRange = (addDeviceWords as NSString).range(of: buttonName)
-      description.addAttribute(
-        .font,
-        value: UIFont.boldSystemFont(ofSize: fontSize),
-        range: boldRange
-      )
-
-      if let lastSentenceRange = lastSentenceRange(text: addDeviceWords) {
-        description.addAttributes(
-          [
-            .font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold),
-            .foregroundColor: UIColor.braveErrorLabel,
-          ],
-          range: lastSentenceRange
-        )
-      }
-
-      descriptionLabel.attributedText = description
-    }
-  }
-
-  private func lastSentenceRange(text: String) -> NSRange? {
-    guard let lastSentence = text.split(separator: "\n").last else { return nil }
-    return (text as NSString).range(of: String(lastSentence))
-  }
-
   private func enableDeviceType() {
     if deviceType == .computer {
       showCodewords()
@@ -345,15 +208,13 @@ class SyncAddDeviceViewController: SyncViewController {
   private func changeCodeDisplayStatus() {
     if isSyncCodeExpired {
       // Hide Active Status Elements
-      qrCodeContainerView.isHidden = true
-      codeWordsContainerView.isHidden = true
+      codeDetailsStackView.isHidden = true
       copyPasteButton.isHidden = true
 
       // Reveal Expired Elements
 
     } else {
       // Hide Active Status Elements
-
 
       // Reveal Active Status Elements
       changeSyncCodeStatus()
@@ -363,8 +224,7 @@ class SyncAddDeviceViewController: SyncViewController {
   private func changeSyncCodeStatus() {
     let isFirstIndex = modeControl.selectedSegmentIndex == 0
 
-    qrCodeContainerView.isHidden = !isFirstIndex
-    codeWordsContainerView.isHidden = isFirstIndex
+    codeDetailsStackView.swapCodeViewType(isFirstIndex)
     copyPasteButton.isHidden = isFirstIndex
   }
 }
@@ -378,7 +238,7 @@ extension SyncAddDeviceViewController {
   }
 
   @objc func copyToClipboard() {
-    if let words = self.codewordsView.text {
+    if let words = codeDetailsStackView.syncChainCode {
       UIPasteboard.general.setSecureString(words, expirationDate: Date().addingTimeInterval(30))
       copyButtonPressed = true
     }
@@ -386,7 +246,7 @@ extension SyncAddDeviceViewController {
 
   @objc func changeMode() {
     changeCodeDisplayStatus()
-    updateLabels()
+    titleDescriptionStackView.updateLabels(isFirstIndex: modeControl.selectedSegmentIndex == 0)
   }
 
   @objc func done() {
