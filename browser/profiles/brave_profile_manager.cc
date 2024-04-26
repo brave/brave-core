@@ -26,6 +26,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -44,6 +45,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_constants.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #endif
 
 using brave_shields::ControlType;
@@ -138,6 +143,10 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
   perf::MaybeEnableBraveFeatureForPerfTesting(profile);
   MigrateHttpsUpgradeSettings(profile);
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  web_discovery::WebDiscoveryService::SetExtensionPrefIfNativeDisabled(
+      profile->GetPrefs());
+#endif
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,

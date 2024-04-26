@@ -48,6 +48,7 @@ include_rules = [
   "+brave/components/url_sanitizer",
   "+brave/components/vector_icons",
   "+brave/components/version_info",
+  "+brave/components/web_discovery/common",
   "+brave/components/webcompat",
   "+brave/net",
   "+brave/services/network/public",

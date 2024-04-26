@@ -19,6 +19,7 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/web_discovery/common/features.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -49,7 +50,8 @@
     &brave_shields::features::kBraveLocalhostAccessPermission,          \
     &brave_shields::features::kBlockAllCookiesToggle,                   \
     &brave_shields::features::kBraveShieldsElementPicker,               \
-    &features::kNewAndroidOnboarding
+    &features::kNewAndroidOnboarding,                                   \
+    &web_discovery::features::kWebDiscoveryNative
 
 // clang-format on
 

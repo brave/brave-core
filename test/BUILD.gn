@@ -15,6 +15,7 @@ import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//brave/updater/config.gni")
 import("//chrome/common/features.gni")
@@ -371,6 +372,10 @@ test("brave_unit_tests") {
       "//brave/browser/playlist/test:unit_tests",
       "//brave/components/playlist/common:unit_tests",
     ]
+  }
+
+  if (enable_web_discovery_native) {
+    deps += [ "//brave/components/web_discovery/browser:unit_tests" ]
   }
 
   data = [ "data/" ]
