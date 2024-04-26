@@ -27,7 +27,6 @@ brave_settings_web_component_files = [
   "brave_data_collection_page/brave_data_collection_page.ts",
   "brave_default_extensions_page/brave_default_extensions_page.ts",
   "brave_default_extensions_page/brave_extensions_manifest_v2_subpage.ts",
-  "brave_help_tips_page/brave_help_tips_page.ts",
   "brave_ipfs_page/add_ipfs_peer_dialog.ts",
   "brave_ipfs_page/add_p2p_key_dialog.ts",
   "brave_ipfs_page/brave_ipfs_page.ts",

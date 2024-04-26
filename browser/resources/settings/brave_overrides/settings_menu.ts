@@ -297,15 +297,6 @@ RegisterPolymerTemplateModifications({
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
     languagesEl.insertAdjacentElement('beforebegin', autofillEl)
-    // Move HelpTips after downloads
-    const helpTipsEl = createMenuElement(
-      loadTimeData.getString('braveHelpTips'),
-      '/braveHelpTips',
-      'help-outline',
-      'braveHelpTips',
-    )
-    const downloadsEl = getMenuElement(templateContent, '/downloads')
-    downloadsEl.insertAdjacentElement('afterend', helpTipsEl)
     // Allow Accessibility to be removed :-(
     const a11yEl = getMenuElement(templateContent, '/accessibility')
     a11yEl.setAttribute('hidden', '[[!pageVisibility.a11y]')
