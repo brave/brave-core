@@ -20,6 +20,9 @@ class AddressTests: XCTestCase {
     let address = "0xabcdef0123456789"
     XCTAssertEqual(address.removingHexPrefix, "abcdef0123456789")
 
+    let addressCapitalX = "0Xabcdef0123456789"
+    XCTAssertEqual(address.removingHexPrefix, "abcdef0123456789")
+
     let prefixlessAddress = "abcdef0123456789"
     XCTAssertEqual(prefixlessAddress.removingHexPrefix, "abcdef0123456789")
   }
