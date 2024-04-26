@@ -860,3 +860,12 @@
     *** getApplicationLocale(...);
     *** setApplicationLocale(...);
 }
+
+-keep class org.chromium.chrome.browser.compositor.layouts.ToolbarSwipeLayout {
+    public <init>(...);
+    *** mMoveToolbar;
+}
+
+-keep class org.chromium.chrome.browser.compositor.layouts.BraveToolbarSwipeLayout {
+    public <init>(...);
+}

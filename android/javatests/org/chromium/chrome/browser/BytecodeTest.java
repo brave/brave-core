@@ -50,6 +50,8 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
+import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
+import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.contextmenu.ContextMenuItemDelegate;
 import org.chromium.chrome.browser.contextmenu.ContextMenuNativeDelegate;
@@ -64,6 +66,7 @@ import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
+import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.logo.CachedTintedBitmap;
 import org.chromium.chrome.browser.logo.LogoCoordinator;
@@ -1373,6 +1376,16 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/components/language/LocaleManagerDelegateImpl",
                         "org/chromium/components/language/BraveLocaleManagerDelegateImpl"));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/compositor/layouts/ToolbarSwipeLayout",
+                        "org/chromium/chrome/browser/compositor/layouts/BraveToolbarSwipeLayout",
+                        Context.class,
+                        LayoutUpdateHost.class,
+                        LayoutRenderHost.class,
+                        BrowserControlsStateProvider.class,
+                        LayoutManager.class,
+                        TopUiThemeColorProvider.class));
     }
 
     @Test
@@ -1738,6 +1751,10 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/customtabs/features/"
                                 + "partialcustomtab/PartialCustomTabBottomSheetStrategy",
                         "mTab"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/compositor/layouts/ToolbarSwipeLayout",
+                        "mMoveToolbar"));
     }
 
     @Test
