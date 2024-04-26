@@ -237,14 +237,14 @@ final class PlayerModel: ObservableObject {
 
   // MARK: -
 
-  let player: AVQueuePlayer = .init()
+  let player: AVPlayer = .init()
   private let playerLayer: AVPlayerLayer = .init()
 
   private var cancellables: Set<AnyCancellable> = []
 
   /// Sets up KVO observations for AVPlayer properties which trigger the `objectWillChange` publisher
   private func setupPlayerKeyPathObservation() {
-    func subscriber<Value>(for keyPath: KeyPath<AVQueuePlayer, Value>) -> AnyCancellable {
+    func subscriber<Value>(for keyPath: KeyPath<AVPlayer, Value>) -> AnyCancellable {
       let observation = player.observe(keyPath, options: [.prior]) { [weak self] _, change in
         if change.isPrior {
           self?.objectWillChange.send()

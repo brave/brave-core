@@ -66,6 +66,8 @@ struct PlaylistContentView: View {
   @FetchRequest(sortDescriptors: []) private var folders: FetchedResults<PlaylistFolder>
   @State private var selectedFolderID: PlaylistFolder.ID = PlaylistFolder.savedFolderUUID
   @State private var selectedItemID: PlaylistItem.ID?
+  // FIXME: OrderedSet?
+  @State private var itemQueue: [PlaylistItem.ID] = []
 
   @State private var selectedDetent: PlaylistSheetDetent = .small
   @State private var isNewPlaylistAlertPresented: Bool = false
@@ -76,13 +78,28 @@ struct PlaylistContentView: View {
   }
 
   private var selectedItem: PlaylistItem? {
+    // FIXME: When PlaylistItem.ID is no longer the uuid, this will have to change
     selectedItemID.flatMap { PlaylistItem.getItem(uuid: $0) }
+  }
+
+  // FIXME: Move all selected folder/item queue logic into a testable ObservableObject
+  private func makeItemQueue(selectedItemID: String?) {
+    var queue: [PlaylistItem.ID] = []
+    var items = PlaylistItem.getItems(parentFolder: selectedFolder).map(\.id)
+    if let selectedItemID {
+      items.removeAll(where: { $0 == selectedItemID })
+      queue.append(selectedItemID)
+    }
+    if playerModel.isShuffleEnabled {
+      queue.append(contentsOf: items.shuffled())
+    } else {
+      queue.append(contentsOf: items)
+    }
+    itemQueue = queue
   }
 
   private func playNextItem() {
     let repeatMode = playerModel.repeatMode
-    let isShuffleEnabled = playerModel.isShuffleEnabled
-    let currentItem = selectedItem
 
     if repeatMode == .one {
       // Replay the current video regardless of shuffle state/queue
@@ -90,7 +107,24 @@ struct PlaylistContentView: View {
       return
     }
 
-    // FIXME: Handle the rest of the cases
+    guard let currentItem = selectedItem else {
+      // FIXME: What should we do here if nothing is playing, play first item?
+      return
+    }
+
+    if currentItem.id == itemQueue.last {
+      if repeatMode == .all {
+        // Last item in the set and repeat mode is on, start from the beginning of the queue
+        selectedItemID = itemQueue.first
+      }
+      // Nothing to play if not repeating
+      return
+    }
+
+    if let currentItemIndex = itemQueue.firstIndex(of: currentItem.id) {
+      // This should be safe as we've already checked if the selected item is the last in the queue
+      selectedItemID = itemQueue[currentItemIndex + 1]
+    }
   }
 
   private func playItem(_ item: PlaylistItem) {
@@ -127,7 +161,17 @@ struct PlaylistContentView: View {
     PlaylistSplitView(selectedDetent: $selectedDetent) {
       PlaylistSidebarList(
         folderID: selectedFolderID,
-        selectedItemID: $selectedItemID,
+        selectedItemID: Binding(
+          get: {
+            selectedItemID
+          },
+          set: { newValue in
+            // Make the item queue prior to setting the `selectedItemID`, which will start playing
+            // said item
+            makeItemQueue(selectedItemID: newValue)
+            selectedItemID = newValue
+          }
+        ),
         isPlaying: playerModel.isPlaying
       )
     } sidebarHeader: {
@@ -210,6 +254,9 @@ struct PlaylistContentView: View {
         return
       }
       playItem(item)
+    }
+    .onChange(of: playerModel.isShuffleEnabled) { _ in
+      makeItemQueue(selectedItemID: selectedItemID)
     }
   }
 }
