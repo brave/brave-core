@@ -28,7 +28,7 @@ inline constexpr char kTotalCardViewsHistogramName[] =
 inline constexpr char kWeeklyDisplayAdsViewedHistogramName[] =
     "Brave.Today.WeeklyDisplayAdsViewedCount";
 inline constexpr char kDirectFeedsTotalHistogramName[] =
-    "Brave.Today.DirectFeedsTotal.2";
+    "Brave.Today.DirectFeedsTotal.3";
 inline constexpr char kWeeklyAddedDirectFeedsHistogramName[] =
     "Brave.Today.WeeklyAddedDirectFeedsCount";
 inline constexpr char kLastUsageTimeHistogramName[] =
@@ -41,9 +41,10 @@ inline constexpr char kSidebarFilterUsageHistogramName[] =
     "Brave.Today.SidebarFilterUsages";
 inline constexpr char kClickCardDepthHistogramName[] =
     "Brave.Today.ClickCardDepth";
-inline constexpr char kChannelCountHistogramName[] = "Brave.Today.ChannelCount";
+inline constexpr char kChannelCountHistogramName[] =
+    "Brave.Today.ChannelCount.2";
 inline constexpr char kPublisherCountHistogramName[] =
-    "Brave.Today.PublisherCount";
+    "Brave.Today.PublisherCount.2";
 inline constexpr char kIsEnabledHistogramName[] = "Brave.Today.IsEnabled";
 inline constexpr char kUsageMonthlyHistogramName[] = "Brave.Today.UsageMonthly";
 inline constexpr char kUsageDailyHistogramName[] = "Brave.Today.UsageDaily";

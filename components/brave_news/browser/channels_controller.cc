@@ -45,6 +45,7 @@ Channels ChannelsController::GetChannelsFromPublishers(
     const BraveNewsSubscriptions& subscriptions) {
   Channels channels;
   for (const auto& it : publishers) {
+    // Collect all channels from all locales first...
     for (const auto& locale_info : it.second->locales) {
       for (const auto& channel_id : locale_info->channels) {
         auto migrated_channel_id = GetMigratedChannel(channel_id);
@@ -53,16 +54,24 @@ Channels ChannelsController::GetChannelsFromPublishers(
           channel->channel_name = channel_id;
           channels[migrated_channel_id] = std::move(channel);
         }
-
-        auto& channel = channels[migrated_channel_id];
-
+      }
+    }
+    // ...and then check subscription statuses.
+    // We iterate twice (once above, and once here),
+    // just in case the user is subscribed to a channel
+    // that does not have sources for their locale. In that case,
+    // the channel struct could be created via occurence in another
+    // locale, which would result in potential missing subscription statuses
+    // if we only iterated once.
+    for (const auto& locale_info : it.second->locales) {
+      for (auto& [channel_id, channel] : channels) {
         // We already know we're subscribed to this channel in this locale.
         if (base::Contains(channel->subscribed_locales, locale_info->locale)) {
           continue;
         }
 
-        auto subscribed_in_locale = subscriptions.GetChannelSubscribed(
-            locale_info->locale, migrated_channel_id);
+        auto subscribed_in_locale =
+            subscriptions.GetChannelSubscribed(locale_info->locale, channel_id);
         if (subscribed_in_locale) {
           channel->subscribed_locales.push_back(locale_info->locale);
         }
