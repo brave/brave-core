@@ -100,6 +100,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
@@ -202,6 +203,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        // Make sure initial state matches previously set flags.
+        mIsBottomToolbarVisible =
+                BottomToolbarConfiguration.isBottomToolbarEnabled()
+                        && BraveMenuButtonCoordinator.isMenuFromBottom();
     }
 
     @Override
