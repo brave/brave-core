@@ -5,6 +5,17 @@
 
 import("//extensions/buildflags/buildflags.gni")
 
+source_set("web_discovery") {
+  sources = [
+    "wdp_service_factory.cc",
+    "wdp_service_factory.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/web_discovery/browser",
+  ]
+}
+
 source_set("unit_tests") {
   if (enable_extensions) {
     testonly = true

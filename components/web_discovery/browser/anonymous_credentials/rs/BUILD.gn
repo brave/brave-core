@@ -13,9 +13,7 @@ rust_static_library("rust_lib") {
   edition = "2021"
   sources = [ "src/lib.rs" ]
 
-  visibility = [
-    "//brave/components/web_discovery_project/browser:*",
-  ]
+  visibility = [ "//brave/components/web_discovery/browser:*" ]
 
   cxx_bindings = [ "src/lib.rs" ]
 

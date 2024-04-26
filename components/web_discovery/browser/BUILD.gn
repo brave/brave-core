@@ -4,7 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("browser") {
+  sources = [
+    "wdp_service.cc",
+    "wdp_service.h",
+  ]
   deps = [
-    "anonymous_credentials/rs:rust_lib"
+    "anonymous_credentials/rs:rust_lib",
+    "//base",
   ]
 }
