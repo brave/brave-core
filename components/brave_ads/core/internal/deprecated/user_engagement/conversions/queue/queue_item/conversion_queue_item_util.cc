@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/queue_item/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/queue_item/conversion_queue_item_util_constants.h"
@@ -21,7 +22,8 @@ std::optional<base::TimeDelta>
 base::TimeDelta DelayBeforeProcessingQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item,
     const base::Time time) {
-  return conversion_queue_item.process_at - time;
+  CHECK(conversion_queue_item.process_at);
+  return *conversion_queue_item.process_at - time;
 }
 
 bool ShouldHaveProcessedQueueItemInThePast(

@@ -72,21 +72,24 @@ TEST_F(BraveAdsAdEventCacheUtilTest, GetCachedAdEvents) {
   const AdEventInfo ad_event_1 =
       BuildAdEvent(ad, ConfirmationType::kServedImpression,
                    /*created_at=*/Now());
+  ASSERT_TRUE(ad_event_1.created_at);
   CacheAdEvent(ad_event_1);
 
   const AdEventInfo ad_event_2 =
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now());
+  ASSERT_TRUE(ad_event_2.created_at);
   CacheAdEvent(ad_event_2);
 
   const AdEventInfo ad_event_3 =
       BuildAdEvent(ad, ConfirmationType::kServedImpression,
                    /*created_at=*/Now() + base::Hours(1));
+  ASSERT_TRUE(ad_event_3.created_at);
   CacheAdEvent(ad_event_3);
 
   // Act & Assert
   const std::vector<base::Time> expected_cached_ad_events = {
-      ad_event_1.created_at, ad_event_3.created_at};
+      *ad_event_1.created_at, *ad_event_3.created_at};
   EXPECT_EQ(expected_cached_ad_events,
             GetCachedAdEvents(AdType::kNotificationAd,
                               ConfirmationType::kServedImpression));

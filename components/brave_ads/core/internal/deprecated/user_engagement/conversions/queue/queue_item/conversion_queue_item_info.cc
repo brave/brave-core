@@ -24,7 +24,7 @@ ConversionQueueItemInfo& ConversionQueueItemInfo::operator=(
 ConversionQueueItemInfo::~ConversionQueueItemInfo() = default;
 
 bool ConversionQueueItemInfo::IsValid() const {
-  return conversion.IsValid() && !process_at.is_null();
+  return conversion.IsValid() && process_at;
 }
 
 }  // namespace brave_ads

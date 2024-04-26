@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -62,7 +63,9 @@ void BindParameters(mojom::DBCommandInfo* command, const DepositInfo& deposit) {
 
   BindString(command, 0, deposit.creative_instance_id);
   BindDouble(command, 1, deposit.value);
-  BindInt64(command, 2, ToChromeTimestampFromTime(deposit.expire_at));
+  BindInt64(
+      command, 2,
+      ToChromeTimestampFromTime(deposit.expire_at.value_or(base::Time())));
 }
 
 DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
@@ -72,7 +75,11 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
   deposit.creative_instance_id = ColumnString(record, 0);
   deposit.value = ColumnDouble(record, 1);
-  deposit.expire_at = ToTimeFromChromeTimestamp(ColumnInt64(record, 2));
+  const base::Time expire_at =
+      ToTimeFromChromeTimestamp(ColumnInt64(record, 2));
+  if (!expire_at.is_null()) {
+    deposit.expire_at = expire_at;
+  }
 
   return deposit;
 }
@@ -98,6 +105,11 @@ void GetForCreativeInstanceIdCallback(
   const mojom::DBRecordInfoPtr record =
       std::move(command_response->result->get_records().front());
   DepositInfo deposit = GetFromRecord(&*record);
+  if (!deposit.IsValid()) {
+    base::debug::DumpWithoutCrashing();
+
+    return std::move(callback).Run(/*success=*/false, /*deposit=*/std::nullopt);
+  }
 
   std::move(callback).Run(/*success=*/true, std::move(deposit));
 }
@@ -142,6 +154,8 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
 
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
+    base::debug::DumpWithoutCrashing();
+
     return std::move(callback).Run(/*success=*/false);
   }
 

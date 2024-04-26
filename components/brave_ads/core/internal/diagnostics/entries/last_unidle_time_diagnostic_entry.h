@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_ENTRIES_LAST_UNIDLE_TIME_DIAGNOSTIC_ENTRY_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_ENTRIES_LAST_UNIDLE_TIME_DIAGNOSTIC_ENTRY_H_
 
+#include <optional>
 #include <string>
 
 #include "base/time/time.h"
@@ -24,7 +25,7 @@ class LastUnIdleTimeDiagnosticEntry final : public DiagnosticEntryInterface {
   std::string GetValue() const override;
 
  private:
-  base::Time last_unidle_at_;
+  std::optional<base::Time> last_unidle_at_;
 };
 
 }  // namespace brave_ads

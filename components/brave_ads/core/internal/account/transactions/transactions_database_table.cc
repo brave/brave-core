@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -54,16 +55,23 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 
   int index = 0;
   for (const auto& transaction : transactions) {
+    if (!transaction.IsValid()) {
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     BindString(command, index++, transaction.id);
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(transaction.created_at));
+              ToChromeTimestampFromTime(
+                  transaction.created_at.value_or(base::Time())));
     BindString(command, index++, transaction.creative_instance_id);
     BindDouble(command, index++, transaction.value);
     BindString(command, index++, transaction.segment);
     BindString(command, index++, ToString(transaction.ad_type));
     BindString(command, index++, ToString(transaction.confirmation_type));
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(transaction.reconciled_at));
+              ToChromeTimestampFromTime(
+                  transaction.reconciled_at.value_or(base::Time())));
 
     ++count;
   }
@@ -77,13 +85,21 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   TransactionInfo transaction;
 
   transaction.id = ColumnString(record, 0);
-  transaction.created_at = ToTimeFromChromeTimestamp(ColumnInt64(record, 1));
+  const base::Time created_at =
+      ToTimeFromChromeTimestamp(ColumnInt64(record, 1));
+  if (!created_at.is_null()) {
+    transaction.created_at = created_at;
+  }
   transaction.creative_instance_id = ColumnString(record, 2);
   transaction.value = ColumnDouble(record, 3);
   transaction.segment = ColumnString(record, 4);
   transaction.ad_type = ToAdType(ColumnString(record, 5));
   transaction.confirmation_type = ToConfirmationType(ColumnString(record, 6));
-  transaction.reconciled_at = ToTimeFromChromeTimestamp(ColumnInt64(record, 7));
+  const base::Time reconciled_at =
+      ToTimeFromChromeTimestamp(ColumnInt64(record, 7));
+  if (!reconciled_at.is_null()) {
+    transaction.reconciled_at = reconciled_at;
+  }
 
   return transaction;
 }
@@ -103,6 +119,11 @@ void GetCallback(GetTransactionsCallback callback,
 
   for (const auto& record : command_response->result->get_records()) {
     const TransactionInfo transaction = GetFromRecord(&*record);
+    if (!transaction.IsValid()) {
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     transactions.push_back(transaction);
   }
 

@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 
+#include "base/check.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -27,7 +28,8 @@ std::optional<base::TimeDelta>
 base::TimeDelta DelayBeforeProcessingQueueItem(
     const ConfirmationQueueItemInfo& confirmation_queue_item,
     const base::Time time) {
-  return confirmation_queue_item.process_at - time;
+  CHECK(confirmation_queue_item.process_at);
+  return *confirmation_queue_item.process_at - time;
 }
 
 bool ShouldHaveProcessedQueueItemInThePast(

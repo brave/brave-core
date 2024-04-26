@@ -8,6 +8,7 @@
 #include <iterator>
 #include <utility>
 
+#include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
@@ -52,16 +53,17 @@ AdEventList FilterAdEvents(const AdEventList& ad_events,
   base::ranges::copy_if(
       ad_events, std::back_inserter(filtered_ad_events),
       [now, time_constraint, &creative_ad](const AdEventInfo& ad_event) {
+        CHECK(ad_event.created_at);
+
         return (ad_event.confirmation_type == ConfirmationType::kClicked ||
                 ad_event.confirmation_type == ConfirmationType::kDismissed) &&
                ad_event.type == AdType::kNotificationAd &&
                ad_event.campaign_id == creative_ad.campaign_id &&
-               now - ad_event.created_at < time_constraint;
+               now - *ad_event.created_at < time_constraint;
       });
 
   return filtered_ad_events;
 }
-
 }  // namespace
 
 NotificationAdDismissedExclusionRule::NotificationAdDismissedExclusionRule(

@@ -32,7 +32,6 @@ void DeleteCreativeNewTabPageAdWallpapers() {
 
 void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads) {
   table::CreativeNewTabPageAds database_table;
-
   database_table.Save(creative_ads, base::BindOnce([](const bool success) {
                         if (!success) {
                           return BLOG(

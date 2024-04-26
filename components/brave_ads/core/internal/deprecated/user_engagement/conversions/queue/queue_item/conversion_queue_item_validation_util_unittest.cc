@@ -5,10 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/queue_item/conversion_queue_item_validation_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/conversion/conversion_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/queue_item/conversion_queue_item_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
@@ -29,7 +27,7 @@ TEST(BraveAdsValidationUtilTest, InvalidConversionQueueItem) {
 
   ConversionQueueItemList conversion_queue_items =
       test::BuildConversionQueueItems(conversion, /*count=*/1);
-  conversion_queue_items[0].process_at = base::Time();
+  conversion_queue_items[0].process_at.reset();
 
   // Act & Assert
   EXPECT_EQ("ad_type,process_at", GetConversionQueueItemInvalidFieldsNames(
