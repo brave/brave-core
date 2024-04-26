@@ -355,8 +355,7 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
     auto cc = mojom::MeldCryptoCurrency::New(
         crypto_currency_value->currency_code, crypto_currency_value->name,
         crypto_currency_value->chain_code, crypto_currency_value->chain_name,
-        chain_id_hex,
-        crypto_currency_value->contract_address,
+        chain_id_hex, crypto_currency_value->contract_address,
         crypto_currency_value->symbol_image_url);
 
     crypto_currencies.emplace_back(std::move(cc));
