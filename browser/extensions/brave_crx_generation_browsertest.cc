@@ -143,37 +143,42 @@ IN_PROC_BROWSER_TEST_F(BraveCrxGenerationTest,
   EXPECT_TRUE(InstallExtension(crx_path, crx_file::VerifierFormat::CRX3));
 }
 
-// Check the browser is able to generate a valid publisher proof for
-// crx(extensions and components).
+// Check the browser is able to generate .crx files (extensions and components)
+// with a valid publisher proof.
 IN_PROC_BROWSER_TEST_F(BraveCrxGenerationTest,
                        CrxVerificationWithPublisherProof) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
   {
-    // Generate CRX without the publisher proof.
+    // Generate CRX without publisher proof.
     const auto crx_path = CreateTestCrx();
 
-    // Extension should fail the verification with `CRX_REQUIRED_PROOF_MISSING'
-    // in the console.
+    // Extension should fail verification with `CRX_REQUIRED_PROOF_MISSING' in
+    // the console.
     EXPECT_FALSE(InstallExtension(
         crx_path, crx_file::VerifierFormat::CRX3_WITH_PUBLISHER_PROOF));
   }
 
   const auto publisher_test_key_path =
       GetTestDataDir().AppendASCII("extensions/test_publisher_proof_key.pem");
-  const auto public_key_hash = GetPublicKeyHash(publisher_test_key_path);
-  ASSERT_GT(public_key_hash.size(), 0u);
-  // Register it's hash as publisher proof key has (replacing the real one).
-  crx_file::SetBravePublisherKeyHashForTesting(public_key_hash);
 
   // Add the test key to the command line for using in crx generating process.
   base::CommandLine::ForCurrentProcess()->AppendSwitchPath(
       "brave-extension-publisher-key", publisher_test_key_path);
 
-  {
-    // Now generater CRX will have the publisher proof (using the command-line
-    // switch value).
+  // Also add the alternative test key.
+  const auto alt_publisher_test_key_path = GetTestDataDir().AppendASCII(
+      "extensions/test_publisher_proof_key_alt.pem");
+  base::CommandLine::ForCurrentProcess()->AppendSwitchPath(
+      "brave-extension-publisher-key-alt", alt_publisher_test_key_path);
+
+  // Make sure the extension now passes verification for each test key.
+  for (auto test_key : {publisher_test_key_path, alt_publisher_test_key_path}) {
+    const auto public_key_hash = GetPublicKeyHash(test_key);
+    ASSERT_GT(public_key_hash.size(), 0u);
+    crx_file::SetBravePublisherKeyHashForTesting(public_key_hash);
+
     const auto crx_path = CreateTestCrx();
 
-    // Extension should pass the verification.
     EXPECT_TRUE(InstallExtension(
         crx_path, crx_file::VerifierFormat::CRX3_WITH_PUBLISHER_PROOF));
   }
