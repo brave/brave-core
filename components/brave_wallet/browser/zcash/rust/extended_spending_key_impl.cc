@@ -5,6 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/zcash/rust/extended_spending_key_impl.h"
 
+#include <utility>
+
+#include "base/memory/ptr_util.h"
+
 namespace brave_wallet::orchard {
 
 ExtendedSpendingKeyImpl::ExtendedSpendingKeyImpl(
@@ -17,7 +21,7 @@ std::unique_ptr<ExtendedSpendingKey>
 ExtendedSpendingKeyImpl::DeriveHardenedChild(uint32_t index) {
   auto esk = extended_spending_key_->derive(index);
   if (esk->is_ok()) {
-    return std::unique_ptr<ExtendedSpendingKey>(
+    return base::WrapUnique<ExtendedSpendingKey>(
         new ExtendedSpendingKeyImpl(esk->unwrap()));
   }
   return nullptr;
@@ -37,7 +41,7 @@ std::unique_ptr<ExtendedSpendingKey> ExtendedSpendingKey::GenerateFromSeed(
   auto mk = generate_orchard_extended_spending_key_from_seed(
       rust::Slice<const uint8_t>{seed.data(), seed.size()});
   if (mk->is_ok()) {
-    return std::unique_ptr<ExtendedSpendingKey>(
+    return base::WrapUnique<ExtendedSpendingKey>(
         new ExtendedSpendingKeyImpl(mk->unwrap()));
   }
   return nullptr;

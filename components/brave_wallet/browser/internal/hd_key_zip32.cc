@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/memory/ptr_util.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/extended_spending_key.h"
 
 namespace brave_wallet {
@@ -19,12 +20,12 @@ HDKeyZip32::~HDKeyZip32() = default;
 // static
 std::unique_ptr<HDKeyZip32> HDKeyZip32::GenerateFromSeed(
     base::span<const uint8_t> seed) {
-  return std::unique_ptr<HDKeyZip32>(
+  return base::WrapUnique(
       new HDKeyZip32(orchard::ExtendedSpendingKey::GenerateFromSeed(seed)));
 }
 
 std::unique_ptr<HDKeyZip32> HDKeyZip32::DeriveHardenedChild(uint32_t index) {
-  return std::unique_ptr<HDKeyZip32>(
+  return base::WrapUnique(
       new HDKeyZip32(extended_spending_key_->DeriveHardenedChild(index)));
 }
 
