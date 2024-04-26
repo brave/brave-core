@@ -7,7 +7,7 @@ import * as React from 'react'
 import { loadTimeData } from '$web-common/loadTimeData'
 
 import getPageHandlerInstance, * as mojom from '../api/page_handler'
-import DataContext, { AIChatContext, ActionsList, Action } from './context'
+import DataContext, { AIChatContext } from './context'
 
 function toBlobURL(data: number[] | null) {
   if (!data) return undefined
@@ -19,84 +19,42 @@ function toBlobURL(data: number[] | null) {
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
 
-const ACTIONS_LIST: ActionsList[] = [
-  {
-    category: 'Quick actions',
-    actions: [{ label: 'Explain', type: mojom.ActionType.EXPLAIN }]
-  },
-  {
-    category: 'Rewrite',
-    actions: [
-      { label: 'Paraphrase', type: mojom.ActionType.PARAPHRASE },
-      { label: 'Improve', type: mojom.ActionType.IMPROVE },
-      { label: 'Change tone' },
-      { label: 'Change tone / Academic', type: mojom.ActionType.ACADEMICIZE },
-      {
-        label: 'Change tone / Professional',
-        type: mojom.ActionType.PROFESSIONALIZE
-      },
-      {
-        label: 'Change tone / Persuasive',
-        type: mojom.ActionType.PERSUASIVE_TONE
-      },
-      { label: 'Change tone / Casual', type: mojom.ActionType.CASUALIZE },
-      { label: 'Change tone / Funny', type: mojom.ActionType.FUNNY_TONE },
-      { label: 'Change length / Short', type: mojom.ActionType.SHORTEN },
-      { label: 'Change length / Expand', type: mojom.ActionType.EXPAND }
-    ]
-  },
-  {
-    category: 'Create',
-    actions: [
-      { label: 'Tagline', type: mojom.ActionType.CREATE_TAGLINE },
-      { label: 'Social media' },
-      {
-        label: 'Social media / Short',
-        type: mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_SHORT
-      },
-      {
-        label: 'Social media / Long',
-        type: mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG
-      }
-    ]
-  }
-]
-
-function useActionsList() {
-  const [actionsList, setActionsList] = React.useState(ACTIONS_LIST)
+function useActionMenu() {
+  const [actionList, setActionList] = React.useState<mojom.ActionGroup[]>([])
 
   const filterActionsByText = (searchText: string) => {
     // effectively remove the leading slash (\) before comparing it to the action labels.
     const text = searchText.substring(1).toLocaleLowerCase()
 
-    const filteredList = ACTIONS_LIST.map(actionList => ({
-      ...actionList,
-      actions: actionList.actions.filter(action => {
+    const filteredList = actionList.map(list => ({
+      ...list,
+      actions: list.actions.filter(action => {
         // we skip non action types in the list as they're meant for display heading
-        if (!('type' in action)) return
+        if (action.action.empty) return
         return action.label.toLocaleLowerCase().includes(text)
       })
     })).filter(actionList => actionList.actions.length > 0)
 
-    setActionsList(filteredList)
+    return filteredList
   }
 
-  const resetActionsList = () => {
-    setActionsList(ACTIONS_LIST)
+  const getFirstValidAction = (list: mojom.ActionGroup[]): mojom.Action => {
+    const action = list.flatMap(list => {
+      return list.actions
+    }).filter(action => action.action.type !== undefined)
+
+    return (action[0].action)
   }
 
-  const getFirstValidAction = (): Action => {
-    const action = actionsList.flatMap(actionList => {
-      return actionList.actions
-    }).filter(actions => ('type' in actions))
-
-    return action[0] as Action
-  }
+  React.useEffect(() => {
+    getPageHandlerInstance().pageHandler.getActionMenuList().then(resp => {
+      setActionList(resp.actionList)
+    })
+  }, [])
 
   return {
-    actionsList,
+    actionList,
     filterActionsByText,
-    resetActionsList,
     getFirstValidAction,
   }
 }
@@ -127,10 +85,10 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
   const [showAgreementModal, setShowAgreementModal] = React.useState(false)
   const [shouldSendPageContents, setShouldSendPageContents] = React.useState(true)
-  const [inputText, setInputTextInternal] = React.useState('')
+  const [inputText, setInputText] = React.useState('')
   const [selectedActionType, setSelectedActionType] = React.useState<mojom.ActionType | undefined>()
   const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
-  const { actionsList, filterActionsByText, resetActionsList, getFirstValidAction } = useActionsList()
+  const { actionList: initialActionList, filterActionsByText, getFirstValidAction } = useActionMenu()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -292,18 +250,6 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.managePremium()
   }
 
-  const setInputText = (text: string) => {
-    setInputTextInternal(text)
-
-    if (text.startsWith('/')) {
-      setIsToolsMenuOpen(true)
-      filterActionsByText(text)
-    } else {
-      setIsToolsMenuOpen(false)
-      resetActionsList()
-    }
-  }
-
   const handleMaybeLater = () => {
     getPageHandlerInstance().pageHandler.clearErrorAndGetFailedMessage()
       .then((res) => { setInputText(res.turn.text) })
@@ -320,19 +266,26 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const handleActionTypeClick = (actionType: mojom.ActionType) => {
     setSelectedActionType(actionType)
-
     if (inputText.startsWith('/')) {
       setInputText('')
     }
   }
 
-  const isUserSelectingActionType = () => {
-    if (
-      isToolsMenuOpen &&
-      inputText.startsWith('/') &&
-      actionsList.length > 0
-    ) {
-      setSelectedActionType(getFirstValidAction().type)
+  const actionList = React.useMemo(() => {
+    return inputText.startsWith('/')
+    ? filterActionsByText(inputText)
+    : initialActionList
+  }, [inputText, initialActionList, filterActionsByText])
+
+
+  React.useEffect(() => {
+    const isOpen = inputText.startsWith('/') && actionList.length > 0
+    setIsToolsMenuOpen(isOpen)
+  }, [inputText, actionList])
+
+  const handleFilterActivation = () => {
+    if (isToolsMenuOpen && inputText.startsWith('/')) {
+      setSelectedActionType(getFirstValidAction(actionList).type)
       setInputText('')
       setIsToolsMenuOpen(false)
       return true
@@ -345,7 +298,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     if (!inputText) return
     if (isCharLimitExceeded) return
     if (shouldDisableUserInput) return
-    if (isUserSelectingActionType()) return
+    if (handleFilterActivation()) return
 
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(
       inputText,
@@ -446,7 +399,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     inputTextCharCountDisplay,
     selectedActionType,
     isToolsMenuOpen,
-    actionsList,
+    actionList,
     setCurrentModel,
     switchToBasicModel,
     goPremium,

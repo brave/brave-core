@@ -468,6 +468,17 @@ void AIChatUIPageHandler::ClosePanel() {
 #endif
 }
 
+void AIChatUIPageHandler::GetActionMenuList(
+    GetActionMenuListCallback callback) {
+  if (!active_chat_tab_helper_) {
+    VLOG(2) << "Chat tab helper is not set";
+    std::move(callback).Run(std::vector<mojom::ActionGroupPtr>());
+    return;
+  }
+
+  std::move(callback).Run(active_chat_tab_helper_->GetActionMenuList());
+}
+
 void AIChatUIPageHandler::OnGetPremiumStatus(
     GetPremiumStatusCallback callback,
     ai_chat::mojom::PremiumStatus status,

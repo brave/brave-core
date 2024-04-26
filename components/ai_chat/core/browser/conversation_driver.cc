@@ -193,6 +193,92 @@ ConversationDriver::ConversationDriver(
 
 ConversationDriver::~ConversationDriver() = default;
 
+std::vector<mojom::ActionGroupPtr> ConversationDriver::GetActionMenuList() {
+  std::vector<mojom::ActionGroupPtr> action_list;
+
+  {
+    std::vector<mojom::LabeledActionPtr> actions;
+    mojom::ActionGroupPtr group =
+        mojom::ActionGroup::New("Quick actions", std::move(actions));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Explain", mojom::Action::NewType(mojom::ActionType::EXPLAIN)));
+
+    action_list.push_back(std::move(group));
+  }
+
+  {
+    std::vector<mojom::LabeledActionPtr> actions;
+    mojom::ActionGroupPtr group =
+        mojom::ActionGroup::New("Rewrite", std::move(actions));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Paraphrase", mojom::Action::NewType(mojom::ActionType::PARAPHRASE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Improve", mojom::Action::NewType(mojom::ActionType::IMPROVE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Change tone", mojom::Action::NewEmpty(true)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Change tone / Academic",
+        mojom::Action::NewType(mojom::ActionType::ACADEMICIZE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Change tone / Professional",
+        mojom::Action::NewType(mojom::ActionType::PROFESSIONALIZE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Change tone / Persuasive",
+        mojom::Action::NewType(mojom::ActionType::PERSUASIVE_TONE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Change tone / Casual",
+        mojom::Action::NewType(mojom::ActionType::CASUALIZE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Change tone / Funny",
+        mojom::Action::NewType(mojom::ActionType::FUNNY_TONE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Change tone / Short",
+        mojom::Action::NewType(mojom::ActionType::SHORTEN)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Change tone / Expand",
+        mojom::Action::NewType(mojom::ActionType::SHORTEN)));
+
+    action_list.push_back(std::move(group));
+  }
+
+  {
+    std::vector<mojom::LabeledActionPtr> actions;
+    mojom::ActionGroupPtr group =
+        mojom::ActionGroup::New("Create", std::move(actions));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Tagline", mojom::Action::NewType(mojom::ActionType::CREATE_TAGLINE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Social media", mojom::Action::NewEmpty(true)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Social media / Short",
+        mojom::Action::NewType(
+            mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        "Social media / Long",
+        mojom::Action::NewType(
+            mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG)));
+
+    action_list.push_back(std::move(group));
+  }
+
+  return action_list;
+}
+
 void ConversationDriver::ChangeModel(const std::string& model_key) {
   DCHECK(!model_key.empty());
   // Check that the key exists

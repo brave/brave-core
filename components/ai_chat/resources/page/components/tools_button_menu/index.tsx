@@ -6,6 +6,7 @@
 import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import classnames from '$web-common/classnames'
+import * as mojom from '../../api/page_handler'
 
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
@@ -28,17 +29,22 @@ export default function ToolsButtonMenu(props: Props) {
       onClose={() => context.setIsToolsMenuOpen(false)}
     >
       <div slot='anchor-content'>{props.children}</div>
-      {context.actionsList.map((entry) => {
+      {context.actionList.map((entry) => {
         return (
           <>
             <div className={styles.menuSectionTitle}>{entry.category}</div>
-            {entry.actions.map((action) => {
-              if (!('type' in action)) {
+            {entry.actions.map((action,i) => {
+              if (action.action.empty) {
                 return <div className={styles.menuSubtitle}>{action.label}</div>
               } else {
                 return (
                   <leo-menu-item
-                    onClick={() => context.handleActionTypeClick(action.type)}
+                    key={i}
+                    onClick={() =>
+                      context.handleActionTypeClick(
+                        action.action.type as mojom.ActionType
+                      )
+                    }
                   >
                     {action.label}
                   </leo-menu-item>

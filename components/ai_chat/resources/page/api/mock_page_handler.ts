@@ -12,6 +12,35 @@ import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.m
 
 type Public<T> = { [P in keyof T]: T[P] }
 
+const ACTIONS_LIST: mojom.ActionGroup[] = [
+  {
+    category: 'Quick actions',
+    actions: [
+      {
+        label: 'Explain',
+        action: { type: mojom.ActionType.EXPLAIN, empty: undefined }
+      }
+    ]
+  },
+  {
+    category: 'Rewrite',
+    actions: [
+      {
+        label: 'Paraphrase',
+        action: { type: mojom.ActionType.PARAPHRASE, empty: undefined }
+      },
+      { label: 'Change tone', action: { type: undefined, empty: true } },
+      {
+        label: 'Change tone / Academic',
+        action: { type: mojom.ActionType.ACADEMICIZE, empty: undefined }
+      },
+      {
+        label: 'Change tone / Professional',
+        action: { type: mojom.ActionType.PROFESSIONALIZE, empty: undefined }
+      }
+    ]
+  }
+]
 export class MockPageHandlerRemote implements Public<mojom.PageHandlerRemote> {
   constructor() {}
 
@@ -69,6 +98,10 @@ export class MockPageHandlerRemote implements Public<mojom.PageHandlerRemote> {
 
   sendFeedback() {
     return Promise.resolve({ isSuccess: true })
+  }
+
+  getActionMenuList(): Promise<{ actionList: mojom.ActionGroup[] }> {
+    return Promise.resolve({ actionList: ACTIONS_LIST })
   }
 
   onConnectionError() {}

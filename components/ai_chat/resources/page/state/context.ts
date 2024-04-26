@@ -6,12 +6,6 @@
 import * as React from 'react'
 import * as mojom from '../api/page_handler'
 
-export type Action = { type: mojom.ActionType }
-type ActionHeading = {}
-export interface ActionsList {
-  category: string
-  actions: Array<{ label: string } & (Action | ActionHeading)>
-}
 export interface AIChatContext {
   allModels: mojom.Model[]
   currentModel?: mojom.Model
@@ -40,7 +34,7 @@ export interface AIChatContext {
   inputTextCharCountDisplay: string
   selectedActionType: mojom.ActionType | undefined
   isToolsMenuOpen: boolean
-  actionsList: ActionsList[]
+  actionList: mojom.ActionGroup[]
   setCurrentModel: (model: mojom.Model) => void,
   switchToBasicModel: () => void,
   generateSuggestedQuestions: () => void
@@ -88,7 +82,7 @@ export const defaultContext: AIChatContext = {
   inputTextCharCountDisplay: '',
   selectedActionType: undefined,
   isToolsMenuOpen: false,
-  actionsList: [],
+  actionList: [],
   setCurrentModel: () => {},
   switchToBasicModel: () => {},
   generateSuggestedQuestions: () => {},

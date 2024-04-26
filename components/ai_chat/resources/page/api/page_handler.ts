@@ -31,7 +31,7 @@ class PageHandlerAPI implements API {
 
 export default function getPageHandlerInstance() {
   if (!apiInstance) {
-    if ('IS_STORYBOOK' in window) {
+    if (('IS_STORYBOOK' in window)) {
       apiInstance = new MockPageHandlerAPI() as any
     } else {
       apiInstance = new PageHandlerAPI()
