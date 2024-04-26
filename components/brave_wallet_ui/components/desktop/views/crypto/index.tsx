@@ -355,6 +355,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             cardHeader={
               <PageTitleHeader
                 title={getLocale('braveWalletAccountSettingsDetails')}
+                showBackButton
                 onBack={() => history.push(WalletRoutes.Web3)}
               />
             }

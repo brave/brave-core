@@ -32,7 +32,7 @@ export const CategoryHeader = styled.p`
 `
 
 export const PlainButton = styled(Button).attrs({
-  kind: 'plain',
+  kind: 'plain'
 })`
   --leo-button-color: ${leo.color.text.interactive};
   --leo-button-padding: 8px;
@@ -56,5 +56,13 @@ export const FilterClose = styled(Icon).attrs({
   name: 'close'
 })`
   --leo-icon-size: 14px;
-  cursor: pointer;
+`
+
+export const FilterButton = styled(Button).attrs({
+  kind: 'plain',
+  size: 'small'
+})`
+  --leo-button-padding: 0;
+  --leo-button-radius: 4px;
+  flex-grow: 0;
 `
