@@ -14,6 +14,7 @@ struct FungibleAssetButton: View {
   /// for Bitcoin asset row (when there is a pending balance)
   let shouldShowContainerForBitcoin: Bool
   let currencyFormatter: NumberFormatter
+  @Binding var bitcoinBalanceDetails: BitcoinBalanceDetails?
   let action: (BraveWallet.BlockchainToken) -> Void
   
   var body: some View {
@@ -24,7 +25,8 @@ struct FungibleAssetButton: View {
         
         UnavailableBTCBalanceView(
           btcBalances: asset.btcBalances,
-          btcPrice: Double(asset.price) ?? 0
+          btcPrice: Double(asset.price) ?? 0,
+          bitcoinBalanceDetails: $bitcoinBalanceDetails
         )
       }
       .padding()

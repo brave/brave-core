@@ -17,6 +17,7 @@ struct PortfolioAssetsView: View {
 
   @Binding var isPresentingEditUserAssets: Bool
   @Binding var isPresentingFilters: Bool
+  @Binding var bitcoinBalanceDetails: BitcoinBalanceDetails?
   @State private var selectedToken: BraveWallet.BlockchainToken?
   @State private var groupToggleState: [AssetGroupViewModel.ID: Bool] = [:]
   @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
@@ -115,6 +116,7 @@ struct PortfolioAssetsView: View {
         asset: asset,
         shouldShowContainerForBitcoin: true,
         currencyFormatter: portfolioStore.currencyFormatter,
+        bitcoinBalanceDetails: $bitcoinBalanceDetails,
         action: { token in
           selectedToken = token
         }
@@ -139,6 +141,7 @@ struct PortfolioAssetsView: View {
               asset: asset,
               shouldShowContainerForBitcoin: false,
               currencyFormatter: portfolioStore.currencyFormatter,
+              bitcoinBalanceDetails: $bitcoinBalanceDetails,
               action: { token in
                 selectedToken = token
               }

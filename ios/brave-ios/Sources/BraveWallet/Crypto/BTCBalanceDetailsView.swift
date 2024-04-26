@@ -12,15 +12,24 @@ struct UnavailableBTCBalanceView: View {
   let btcBalances: [String: [BTCBalanceType: Double]]
   let btcPrice: Double
 
+  // `.sheet()` inside LazyVStack/List sometimes doesn't present;
+  // need to pass details to root for presentation brave-ios#8709.
+  @Binding var bitcoinBalanceDetails: BitcoinBalanceDetails?
+
   private func total(for btcBalanceType: BTCBalanceType) -> Double {
     btcBalances.compactMap { $0.value[btcBalanceType] }.reduce(0.0, +)
   }
 
-  @State private var isShowingBalanceDetails: Bool = false
-
   var body: some View {
     Button(
-      action: { self.isShowingBalanceDetails = true },
+      action: {
+        self.bitcoinBalanceDetails = .init(
+          availableBalance: total(for: .available),
+          pendingBalance: total(for: .pending),
+          totalBalance: total(for: .total),
+          btcPrice: btcPrice
+        )
+      },
       label: {
         HStack(spacing: 16) {
           ProgressView()
@@ -39,15 +48,6 @@ struct UnavailableBTCBalanceView: View {
         .background(Color(braveSystemName: .blue20).cornerRadius(12))
       }
     )
-    .sheet(isPresented: $isShowingBalanceDetails) {
-      BTCBalanceDetailsView(
-        availableBalance: total(for: .available),
-        pendingBalance: total(for: .pending),
-        totalBalance: total(for: .total),
-        btcPrice: btcPrice,
-        currencyFormatter: .usdCurrencyFormatter
-      )
-    }
   }
 }
 
@@ -67,7 +67,8 @@ struct UnavailableBTCBalanceView_Previews: PreviewProvider {
           .total: 10,
         ],
       ],
-      btcPrice: 62_500
+      btcPrice: 62_500,
+      bitcoinBalanceDetails: .constant(nil)
     )
     .padding()
     .previewLayout(.sizeThatFits)
@@ -75,12 +76,16 @@ struct UnavailableBTCBalanceView_Previews: PreviewProvider {
 }
 #endif
 
-struct BTCBalanceDetailsView: View {
-
+struct BitcoinBalanceDetails: Equatable {
   let availableBalance: Double
   let pendingBalance: Double
   let totalBalance: Double
   let btcPrice: Double
+}
+
+struct BTCBalanceDetailsView: View {
+
+  let details: BitcoinBalanceDetails
   let currencyFormatter: NumberFormatter
 
   @Environment(\.dismiss) private var dismiss
@@ -108,23 +113,28 @@ struct BTCBalanceDetailsView: View {
         containerRow(
           title: Strings.Wallet.btcAvailableBalanceTitle,
           description: Strings.Wallet.btcAvailableBalanceDesc,
-          value: String(format: "%f", availableBalance),
-          price: currencyFormatter.string(from: .init(value: availableBalance * btcPrice))
-            ?? "$0.00"
+          value: String(format: "%f", details.availableBalance),
+          price: currencyFormatter.string(
+            from: .init(value: details.availableBalance * details.btcPrice)
+          ) ?? "$0.00"
         )
         DividerLine()
         containerRow(
           title: Strings.Wallet.btcPendingBalanceTitle,
           description: Strings.Wallet.btcPendingBalanceDesc,
-          value: String(format: "%f", pendingBalance),
-          price: currencyFormatter.string(from: .init(value: pendingBalance * btcPrice)) ?? "$0.00"
+          value: String(format: "%f", details.pendingBalance),
+          price: currencyFormatter.string(
+            from: .init(value: details.pendingBalance * details.btcPrice)
+          ) ?? "$0.00"
         )
         DividerLine()
         containerRow(
           title: Strings.Wallet.btcTotalBalanceTitle,
           description: Strings.Wallet.btcTotalBalanceDesc,
-          value: String(format: "%f", totalBalance),
-          price: currencyFormatter.string(from: .init(value: totalBalance * btcPrice)) ?? "$0.00"
+          value: String(format: "%f", details.totalBalance),
+          price: currencyFormatter.string(
+            from: .init(value: details.totalBalance * details.btcPrice)
+          ) ?? "$0.00"
         )
         .background(Color(braveSystemName: .containerHighlight))
         .containerShape(Rectangle())
@@ -189,10 +199,12 @@ struct BTCBalanceDetailsView: View {
 struct BTCBalanceDetailsView_Previews: PreviewProvider {
   static var previews: some View {
     BTCBalanceDetailsView(
-      availableBalance: 10,
-      pendingBalance: 5,
-      totalBalance: 15,
-      btcPrice: 62_500,
+      details: .init(
+        availableBalance: 10,
+        pendingBalance: 5,
+        totalBalance: 15,
+        btcPrice: 62_500
+      ),
       currencyFormatter: .usdCurrencyFormatter
     )
     .previewLayout(.sizeThatFits)
