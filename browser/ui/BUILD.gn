@@ -1142,6 +1142,8 @@ source_set("ui") {
       "webui/brave_wallet/ledger/ledger_ui.h",
       "webui/brave_wallet/page_handler/wallet_page_handler.cc",
       "webui/brave_wallet/page_handler/wallet_page_handler.h",
+      "webui/brave_wallet/panel_handler/wallet_panel_handler.cc",
+      "webui/brave_wallet/panel_handler/wallet_panel_handler.h",
       "webui/brave_wallet/trezor/trezor_ui.cc",
       "webui/brave_wallet/trezor/trezor_ui.h",
       "webui/brave_wallet/wallet_common_ui.cc",
@@ -1156,9 +1158,9 @@ source_set("ui") {
       "//brave/browser/resources/settings/shortcuts_page:generated_resources",
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
-      "//brave/browser/ui/webui/brave_wallet/panel_handler",
       "//brave/components/brave_news/browser",
       "//brave/components/brave_news/browser/resources:generated_resources",
+      "//brave/components/brave_wallet/browser:permission_utils",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",
@@ -1169,6 +1171,7 @@ source_set("ui") {
       "//brave/components/resources:strings_grit",
       "//components/permissions",
       "//components/pref_registry",
+      "//mojo/public/cpp/bindings",
     ]
   }
   if (is_android) {
