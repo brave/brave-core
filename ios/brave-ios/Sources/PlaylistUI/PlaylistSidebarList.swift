@@ -59,6 +59,13 @@ struct PlaylistSidebarList: View {
             // This is currently how the current UI functions but it would be better not to do it
             PlaylistManager.shared.getAssetDuration(item: .init(item: item)) { _ in }
           }
+          .contextMenu {
+            Button(role: .destructive) {
+              PlaylistItem.removeItem(uuid: item.id)
+            } label: {
+              Label("Delete", braveSystemImage: "leo.trash")
+            }
+          }
         }
       }
     }

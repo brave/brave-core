@@ -120,7 +120,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
     var dragState = activeSheetDragState ?? .init()
     if activeSheetDragState == nil {
       // Drag just started, setup initial height for calculations
-      dragState.initialHeight = selectedDetent.heightInContext(detentContext)
+      dragState.initialHeight = min(maxDetentHeight, selectedDetent.heightInContext(detentContext))
     }
 
     let heights = detentHeights
@@ -220,13 +220,6 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
       }
       content
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-          if sidebarLayoutMode == .bottomSheet {
-            Color.clear
-              // Fully collapsed position takes up available content space
-              .frame(height: detentHeights.min() ?? 0)
-          }
-        }
         .background {
           GeometryReader { proxy in
             Color.clear
@@ -283,7 +276,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
         }
         .frame(
           height: activeSheetDragState?.activeHeight
-            ?? selectedDetent.heightInContext(detentContext)
+            ?? min(maxDetentHeight, selectedDetent.heightInContext(detentContext))
         )
         .background(Color(braveSystemName: .gray10), ignoresSafeAreaEdges: .bottom)
         .containerShape(
