@@ -33,14 +33,16 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             ObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
-            MenuOrKeyboardActionController menuOrKeyboardActionController) {
+            MenuOrKeyboardActionController menuOrKeyboardActionController,
+            ObservableSupplier<Boolean> desktopWindowModeSupplier) {
         super(
                 activity,
                 tabModelOrchestratorSupplier,
                 multiWindowModeStateDispatcher,
                 activityLifecycleDispatcher,
                 modalDialogManagerSupplier,
-                menuOrKeyboardActionController);
+                menuOrKeyboardActionController,
+                desktopWindowModeSupplier);
     }
 
     @Override
