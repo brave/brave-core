@@ -359,8 +359,7 @@ extension BrowserViewController: WKNavigationDelegate {
           // Add Brave search result ads processing script
           // This script will process search result ads on the Brave search page.
           .searchResultAd: BraveAds.shouldSupportSearchResultAds()
-            && BraveSearchManager.isValidURL(requestURL) && !isPrivateBrowsing
-            && !rewards.isEnabled,
+            && BraveSearchManager.isValidURL(requestURL) && !isPrivateBrowsing,
         ])
       }
 
@@ -385,17 +384,6 @@ extension BrowserViewController: WKNavigationDelegate {
       BraveSearchManager.isValidURL(requestURL)
     {
 
-      // Add Brave Search headers if Rewards is enabled
-      if !isPrivateBrowsing && rewards.isEnabled
-        && navigationAction.request.allHTTPHeaderFields?["X-Brave-Ads-Enabled"] == nil
-      {
-        var modifiedRequest = URLRequest(url: requestURL)
-        modifiedRequest.setValue("1", forHTTPHeaderField: "X-Brave-Ads-Enabled")
-        tab?.loadRequest(modifiedRequest)
-        ContentBlockerManager.signpost.endInterval("decidePolicyFor", state, "Redirected to search")
-        return (.cancel, preferences)
-      }
-
       if let braveSearchResultAdManager = tab?.braveSearchResultAdManager,
         braveSearchResultAdManager.isSearchResultAdClickedURL(requestURL),
         navigationAction.navigationType == .linkActivated
@@ -403,6 +391,21 @@ extension BrowserViewController: WKNavigationDelegate {
         braveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(requestURL)
         tab?.braveSearchResultAdManager = nil
       } else {
+        // Add Brave Search headers if Rewards is enabled
+        if !isPrivateBrowsing && rewards.isEnabled
+          && navigationAction.request.allHTTPHeaderFields?["X-Brave-Ads-Enabled"] == nil
+        {
+          var modifiedRequest = URLRequest(url: requestURL)
+          modifiedRequest.setValue("1", forHTTPHeaderField: "X-Brave-Ads-Enabled")
+          tab?.loadRequest(modifiedRequest)
+          ContentBlockerManager.signpost.endInterval(
+            "decidePolicyFor",
+            state,
+            "Redirected to search"
+          )
+          return (.cancel, preferences)
+        }
+
         tab?.braveSearchResultAdManager = BraveSearchResultAdManager(
           url: requestURL,
           rewards: rewards,
