@@ -42,6 +42,7 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.components.web_discovery.WebDiscoveryPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -96,6 +97,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     public static final String PREF_FINGERPRINTING_PROTECTION2 = "fingerprinting_protection2";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     private static final String PREF_SEND_P3A = "send_p3a_analytics";
+    private static final String PREF_SEND_WEB_DISCOVERY = "send_web_discovery";
     private static final String PREF_SEND_CRASH_REPORTS = "send_crash_reports";
     private static final String PREF_BRAVE_STATS_USAGE_PING = "brave_stats_usage_ping";
     public static final String PREF_APP_LINKS = "app_links";
@@ -165,6 +167,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_PHONE_AS_A_SECURITY_KEY,
         PREF_CLOSE_TABS_ON_EXIT,
         PREF_SEND_P3A,
+        PREF_SEND_WEB_DISCOVERY,
         PREF_SEND_CRASH_REPORTS,
         PREF_BRAVE_STATS_USAGE_PING,
         PREF_USAGE_STATS,
@@ -193,6 +196,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mForgetFirstPartyStoragePref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
     private ChromeSwitchPreference mSendP3A;
+    private ChromeSwitchPreference mSendWebDiscovery;
     private ChromeSwitchPreference mSendCrashReports;
     private ChromeSwitchPreference mBraveStatsUsagePing;
     private ChromeSwitchPreference mBlockCookieConsentNoticesPref;
@@ -374,6 +378,14 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         mSendP3A = (ChromeSwitchPreference) findPreference(PREF_SEND_P3A);
         mSendP3A.setOnPreferenceChangeListener(this);
+
+        if (BraveConfig.WEB_DISCOVERY_ENABLED
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WEB_DISCOVERY_NATIVE)) {
+            mSendWebDiscovery = (ChromeSwitchPreference) findPreference(PREF_SEND_WEB_DISCOVERY);
+            mSendWebDiscovery.setOnPreferenceChangeListener(this);
+        } else {
+            removePreferenceIfPresent(PREF_SEND_WEB_DISCOVERY);
+        }
 
         mSendCrashReports = (ChromeSwitchPreference) findPreference(PREF_SEND_CRASH_REPORTS);
         mSendCrashReports.setOnPreferenceChangeListener(this);
@@ -598,6 +610,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else if (PREF_SEND_P3A.equals(key)) {
             BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, (boolean) newValue);
             BraveLocalState.commitPendingWrite();
+        } else if (PREF_SEND_WEB_DISCOVERY.equals(key)) {
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                    .setBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED, (boolean) newValue);
         } else if (PREF_SEND_CRASH_REPORTS.equals(key)) {
             UmaSessionStats.changeMetricsReportingConsent(
                     (boolean) newValue, ChangeMetricsReportingStateCalledFrom.UI_SETTINGS);
@@ -765,6 +780,16 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             mSendP3A.setChecked(BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED));
         } else {
             getPreferenceScreen().removePreference(mSendP3A);
+        }
+
+        if (mSendWebDiscovery != null) {
+            mSendWebDiscovery.setTitle(
+                    getActivity().getResources().getString(R.string.send_web_discovery_title));
+            mSendWebDiscovery.setSummary(
+                    getActivity().getResources().getString(R.string.send_web_discovery_summary));
+            mSendWebDiscovery.setChecked(
+                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                            .getBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED));
         }
 
         mSendCrashReports.setChecked(mPrivacyPrefManager.isUsageAndCrashReportingPermittedByUser());

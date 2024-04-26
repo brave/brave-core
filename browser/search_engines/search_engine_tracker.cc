@@ -179,7 +179,7 @@ SearchEngineTracker::SearchEngineTracker(
     }
   }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   RecordWebDiscoveryEnabledP3A();
   pref_change_registrar_.Init(profile_prefs);
   pref_change_registrar_.Add(
@@ -227,14 +227,14 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
   }
 }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
-  UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric,
-                        profile_prefs_->GetBoolean(kWebDiscoveryEnabled));
-  UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryAndAdsMetric,
-                        profile_prefs_->GetBoolean(kWebDiscoveryEnabled) &&
-                            profile_prefs_->GetBoolean(
-                                brave_ads::prefs::kOptedInToNotificationAds));
+  bool enabled = profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
+  UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric, enabled);
+  UMA_HISTOGRAM_BOOLEAN(
+      kWebDiscoveryAndAdsMetric,
+      enabled && profile_prefs_->GetBoolean(
+                     brave_ads::prefs::kOptedInToNotificationAds));
 }
 #endif
 

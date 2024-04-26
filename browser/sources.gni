@@ -49,6 +49,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_chrome_browser_visibility = [
@@ -218,6 +219,7 @@ brave_chrome_browser_deps = [
   "//brave/components/speedreader/common/buildflags",
   "//brave/components/tor/buildflags",
   "//brave/components/version_info",
+  "//brave/components/web_discovery/buildflags",
   "//brave/components/webcompat/content/browser",
   "//brave/components/webcompat/core/common",
   "//brave/services/network/public/cpp",
@@ -352,6 +354,14 @@ if (enable_request_otr) {
 
 if (enable_ai_rewriter) {
   brave_chrome_browser_deps += [ "//brave/components/ai_rewriter/common" ]
+}
+
+if (enable_web_discovery_native) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/web_discovery",
+    "//brave/components/web_discovery/browser",
+    "//brave/components/web_discovery/common",
+  ]
 }
 
 if (enable_brave_vpn) {

@@ -54,6 +54,8 @@ include_rules += [
   "+brave/components/skus/common",
   "+brave/components/speedreader",
   "-brave/components/speedreader/renderer",
+  "+brave/components/web_discovery/browser",
+  "+brave/components/web_discovery/buildflags",
   "+brave/components/webcompat/content/browser",
   "+brave/components/webcompat/core/common",
   "+brave/components/brave_vpn/browser",
