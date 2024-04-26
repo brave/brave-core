@@ -10,8 +10,9 @@ import SwiftUI
 
 @available(iOS 16.0, *)
 public class PlaylistHostingController: UIHostingController<PlaylistRootView> {
-  public init() {
-    super.init(rootView: PlaylistRootView())
+  // FIXME: Remove optional after refactoring creation to be in one place
+  public init(delegate: PlaylistRootView.Delegate? = nil) {
+    super.init(rootView: PlaylistRootView(delegate: delegate))
     modalPresentationStyle = .fullScreen
   }
 
@@ -30,7 +31,17 @@ public class PlaylistHostingController: UIHostingController<PlaylistRootView> {
 
 @available(iOS 16.0, *)
 public struct PlaylistRootView: View {
-  public init() {}
+  /// Methods for handling playlist related actions that the browser should handle
+  public struct Delegate {
+    /// Open a URL in a tab (optionally in private mode)
+    var openTabURL: (URL, _ isPrivate: Bool) -> Void
+  }
+
+  private var delegate: Delegate?
+
+  public init(delegate: Delegate?) {
+    self.delegate = delegate
+  }
 
   public var body: some View {
     PlaylistContentView()
@@ -38,6 +49,12 @@ public struct PlaylistRootView: View {
       .environment(\.managedObjectContext, DataController.swiftUIContext)
       .environment(\.colorScheme, .dark)
       .preferredColorScheme(.dark)
+      .environment(
+        \.openTabURL,
+        .init { url, isPrivate in
+          delegate?.openTabURL(url, isPrivate)
+        }
+      )
   }
 }
 
@@ -243,6 +260,10 @@ extension View {
 // swift-format-ignore
 @available(iOS 16.0, *)
 #Preview {
-  PlaylistRootView()
+  PlaylistRootView(
+    delegate: .init(
+      openTabURL: { _, _ in }
+    )
+  )
 }
 #endif

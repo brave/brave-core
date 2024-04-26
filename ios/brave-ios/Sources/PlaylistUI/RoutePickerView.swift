@@ -40,7 +40,7 @@ struct RoutePickerView: View {
       view.backgroundColor = .clear
       return view
     }
-    
+
     func updateUIView(_ uiView: AVRoutePickerView, context: Context) {
       DispatchQueue.main.async {
         // Dispatch off main to avoid updating state during body computation

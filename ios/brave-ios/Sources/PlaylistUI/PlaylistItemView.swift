@@ -18,6 +18,7 @@ struct PlaylistItemView: View {
   // FIXME: We'd need to support non-video specific entries as well eventually such as webpage TTS
   // those pages won't have duration, and they'll show a simple favicon in the center of the thumbnail
   var assetURL: URL?
+  var pageURL: URL?
   var duration: Duration
   var isItemPlaying: Bool
   var downloadState: DownloadState?
@@ -32,9 +33,8 @@ struct PlaylistItemView: View {
         .aspectRatio(1.333, contentMode: .fit)
         .frame(height: 90)
         .overlay {
-          if let assetURL {
-            // FIXME: Handle fallback of failed loads with favicons
-            MediaThumbnail(assetURL: assetURL)
+          if let assetURL, let pageURL {
+            MediaThumbnail(assetURL: assetURL, pageURL: pageURL)
           }
         }
         .background(Color(braveSystemName: .gray20))

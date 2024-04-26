@@ -10,6 +10,8 @@ import SwiftUI
 
 @available(iOS 16.0, *)
 struct PlaylistSidebarList: View {
+  @Environment(\.openTabURL) private var openTabURL
+
   @FetchRequest private var items: FetchedResults<PlaylistItem>
   @Binding var selectedItemID: PlaylistItem.ID?
   var isPlaying: Bool
@@ -50,6 +52,7 @@ struct PlaylistSidebarList: View {
             PlaylistItemView(
               title: item.name,
               assetURL: URL(string: item.mediaSrc),
+              pageURL: URL(string: item.pageSrc),
               duration: .seconds(item.duration),
               isItemPlaying: isPlaying && selectedItemID == item.id
             )
@@ -60,6 +63,22 @@ struct PlaylistSidebarList: View {
             PlaylistManager.shared.getAssetDuration(item: .init(item: item)) { _ in }
           }
           .contextMenu {
+            if let url = URL(string: item.pageSrc) {
+              Button {
+                openTabURL(url)
+              } label: {
+                Label("Open In New Tab", braveSystemImage: "leo.plus.add")
+              }
+              Button {
+                openTabURL(url, privateMode: true)
+              } label: {
+                Label("Open In New Private Tab", braveSystemImage: "leo.product.private-window")
+              }
+              ShareLink(item: url) {
+                Label("Share", braveSystemImage: "leo.share.macos")
+              }
+              Divider()
+            }
             Button(role: .destructive) {
               PlaylistItem.removeItem(uuid: item.id)
             } label: {
@@ -133,7 +152,7 @@ struct PlaylistSidebarListHeader: View {
       VStack(alignment: .leading) {
         Menu {
           Picker("", selection: $selectedFolder) {
-            ForEach(folders) { folder in
+            ForEach(folders, id: \.objectID) { folder in
               Label(folder.title ?? "", braveSystemImage: "leo.product.playlist")
                 .tag(folder)
             }

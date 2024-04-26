@@ -5,6 +5,7 @@
 
 import AVKit
 import CoreMedia
+import Favicon
 import Foundation
 import SDWebImage
 import SwiftUI
@@ -14,10 +15,14 @@ import SwiftUI
 private class MediaThumbnailLoader: ObservableObject {
   @Published var image: UIImage?
 
+  enum MediaThumbnailError: Error {
+    case invalidURL
+    case assetGenerationFailed
+  }
+
   @MainActor func loadThumbnail(assetURL: URL) async throws {
     if assetURL.scheme == "blob" {
-      // FIXME: Throw an error? Get favicon as fallback
-      return
+      throw MediaThumbnailError.invalidURL
     }
     if let cachedImage = SDImageCache.shared.imageFromCache(forKey: assetURL.absoluteString) {
       image = cachedImage
@@ -32,11 +37,14 @@ private class MediaThumbnailLoader: ObservableObject {
   }
 }
 
+// FIXME: Support oEmbed thumbnails
 @available(iOS 16.0, *)
 struct MediaThumbnail: View {
   @StateObject private var thumbnailLoader: MediaThumbnailLoader = .init()
+  @State private var displayFavicon: Bool = false
 
   var assetURL: URL
+  var pageURL: URL
 
   var body: some View {
     Color.clear
@@ -47,11 +55,16 @@ struct MediaThumbnail: View {
             .aspectRatio(contentMode: .fill)
         }
       }
+      .overlay {
+        if displayFavicon {
+          FaviconImage(url: pageURL.absoluteString, isPrivateBrowsing: false)
+        }
+      }
       .task(id: assetURL) {
         do {
           try await thumbnailLoader.loadThumbnail(assetURL: assetURL)
         } catch {
-          // FIXME: Fetch favicon as fallback
+          displayFavicon = true
         }
       }
   }
