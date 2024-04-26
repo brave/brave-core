@@ -33,7 +33,7 @@ RegisterStyleOverride(
         display: none !important;
       }
 
-      .cr-nav-menu-item paper-ripple {
+      .cr-nav-menu-item cr-ripple {
         display: none !important;
       }
     </style>
