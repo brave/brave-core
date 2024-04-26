@@ -3,13 +3,35 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
+
+if (enable_web_discovery_native) {
+  source_set("web_discovery") {
+    sources = [
+      "web_discovery_service_factory.cc",
+      "web_discovery_service_factory.h",
+    ]
+    deps = [
+      "//base",
+      "//brave/components/web_discovery/browser",
+      "//brave/components/web_discovery/common",
+      "//chrome/browser:browser_process",
+      "//chrome/common:constants",
+      "//components/keyed_service/content",
+      "//components/user_prefs",
+      "//content/public/browser",
+      "//third_party/re2",
+    ]
+  }
+}
 
 source_set("unit_tests") {
   if (enable_extensions) {
     testonly = true
 
     sources = [ "web_discovery_unittest.cc" ]
+
     deps = [
       "//brave/components/constants",
       "//brave/components/search_engines",
@@ -22,6 +44,14 @@ source_set("unit_tests") {
       "//content/test:test_support",
       "//testing/gtest",
     ]
+
+    if (enable_web_discovery_native) {
+      sources += [ "web_discovery_service_factory_unittest.cc" ]
+      deps += [
+        ":web_discovery",
+        "//brave/components/web_discovery/common",
+      ]
+    }
   }
 }
 

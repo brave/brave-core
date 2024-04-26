@@ -163,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 0, 1);
 
   PrefService* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(kWebDiscoveryEnabled, true);
+  prefs->SetBoolean(kWebDiscoveryExtensionEnabled, true);
 
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 1, 1);
 
@@ -171,7 +171,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
   prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
   histogram_tester_->ExpectBucketCount(kWebDiscoveryAndAdsMetric, 1, 1);
 
-  prefs->SetBoolean(kWebDiscoveryEnabled, false);
+  prefs->SetBoolean(kWebDiscoveryExtensionEnabled, false);
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 0, 2);
 
   histogram_tester_->ExpectBucketCount(kWebDiscoveryAndAdsMetric, 0, 3);
