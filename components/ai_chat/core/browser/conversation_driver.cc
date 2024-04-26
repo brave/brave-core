@@ -13,6 +13,7 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/debug/crash_logging.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
@@ -271,6 +272,7 @@ void ConversationDriver::InitEngine() {
   if (!model) {
     // It is unexpected that we get here. Dump a call stack
     // to help figure out why it happens.
+    SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key", model_key_);
     base::debug::DumpWithoutCrashing();
     // Use default
     model = GetModel(features::kAIModelsDefaultKey.Get());
