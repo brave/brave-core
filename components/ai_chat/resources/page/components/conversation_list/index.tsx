@@ -18,16 +18,7 @@ import SiteTitle from '../site_title'
 import Quote from '../quote'
 import ActionTypeLabel from '../action_type_label'
 import LongPageInfo from '../alerts/long_page_info'
-
-const CodeBlock = React.lazy(async () => ({ default: (await import('../code_block')).default.Block }))
-const CodeInline = React.lazy(async () => ({ default: (await import('../code_block')).default.Inline }))
-
-// Capture markdown-style code blocks and inline code.
-// It captures:
-// 1. Multiline code blocks with optional language specifiers (```lang\n...code...```).
-// 2. Inline code segments (`code`).
-// 3. Regular text outside of code segments.
-const codeFormatRegexp = /```([^\n`]+)?\n?([\s\S]*?)```|`(.*?)`|([^`]+)/gs
+import MarkdownRenderer from '../markdown_renderer'
 
 const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.CanGenerate,
@@ -38,38 +29,9 @@ interface ConversationListProps {
   onLastElementHeightChange: () => void
 }
 
-interface FormattedTextProps {
-  text: string
-}
-
-function FormattedTextRenderer(props: FormattedTextProps): JSX.Element {
-  const nodes = React.useMemo(() => {
-    const formattedNodes = Array.from(props.text.matchAll(codeFormatRegexp)).map((match: any) => {
-      if (match[0].substring(0,3).includes('```')) {
-        return (<React.Suspense fallback={'...'}>
-          <CodeBlock lang={match[1]} code={match[2].trim()} />
-        </React.Suspense>)
-      } else if (match[0].substring(0,1).includes('`')) {
-        return (
-          <React.Suspense fallback={'...'}>
-            <CodeInline code={match[3]}/>
-        </React.Suspense>
-        )
-      } else {
-        return match[0]
-      }
-    })
-
-    return <>{formattedNodes}</>
-  }, [props.text])
-
-  return nodes
-}
-
 function ConversationList(props: ConversationListProps) {
   const context = React.useContext(DataContext)
   const {
-    isGenerating,
     conversationHistory,
     suggestedQuestions,
     shouldDisableUserInput,
@@ -120,7 +82,7 @@ function ConversationList(props: ConversationListProps) {
       <div>
         {conversationHistory.map((turn, id) => {
           const isLastEntry = id === conversationHistory.length - 1
-          const isLoading = isLastEntry && isGenerating
+          const shouldShowTextCursor = isLastEntry && context.isGenerating
           const isHuman = turn.characterType === mojom.CharacterType.HUMAN
           const isAIAssistant = turn.characterType === mojom.CharacterType.ASSISTANT
           const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
@@ -171,11 +133,17 @@ function ConversationList(props: ConversationListProps) {
                 <div
                   className={styles.message}
                 >
-                  {!turn.selectedText &&
-                      <FormattedTextRenderer text={turn.text} />}
+                  {
+                    !turn.selectedText &&
+                      (isAIAssistant ? (
+                        <MarkdownRenderer
+                          text={turn.text}
+                          shouldShowTextCursor={shouldShowTextCursor}
+                        />
+                      ) : (turn.text))
+                  }
                   {turn.selectedText &&
                       <ActionTypeLabel actionType={turn.actionType} />}
-                  {isLoading && <span className={styles.caret} />}
                   {turn.selectedText && <Quote text={turn.selectedText} />}
                   {showSiteTitle && <div className={styles.siteTitleContainer}><SiteTitle size="default" /></div>}
                   {showLongPageContentInfo && <LongPageInfo />}

@@ -10,8 +10,8 @@
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   padding: 16px;
-  background-color: var(--leo-color-page-background);
   position: relative;
+  letter-spacing: -0.1px;
 }
 
 .turnContainerMobile {
@@ -25,14 +25,6 @@
 
 .turnAI {
   background-color: transparent;
-}
-
-.caret {
-  display: inline-block;
-  margin-left: 5px;
-  width: 8px;
-  height: 12px;
-  background-color: currentColor;
 }
 
 .suggestedQuestionsBox {
@@ -74,7 +66,6 @@
 
 .message {
   margin: 0;
-  white-space: pre-wrap;
   padding-top: 5px;
   width: 100%;
 }

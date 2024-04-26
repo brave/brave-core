@@ -1,0 +1,65 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.markdownContainer {
+
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0 0 var(--leo-spacing-xl) 0;
+  }
+
+  h1 {
+    font: var(--leo-font-heading-h1);
+  }
+
+  h2 {
+    font: var(--leo-font-heading-h2);
+  }
+
+  h3 {
+    font: var(--leo-font-heading-h3);
+  }
+
+  h4 {
+    font: var(--leo-font-heading-h4);
+  }
+
+  h5, h6 {
+    font: var(--leo-font-large-semibold);
+  }
+
+  ul,ol {
+    padding-left: 15px;
+  }
+
+  p {
+    margin: 0 0 var(--leo-spacing-xl)  0;
+  }
+
+  // Markdown elements have a margin which introduces additional space to the message layout.
+  // Removes the top margin of the first child and the bottom margin of the last child to align neatly.
+  >*:first-child {
+    margin-top: 0;
+  }
+
+  >*:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.textCursor {
+  display: inline-block;
+  position: relative;
+  width: 5px;
+  height: 10px;
+
+  svg {
+    position: absolute;
+    top: 0;
+
+    rect {
+      fill: var(--leo-color-primary-30);
+    }
+  }
+}
