@@ -7,18 +7,17 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
 namespace brave_ads {
 
-std::optional<base::Time> GetLastSeenAdAt(const AdEventList& ad_events,
-                                          const CreativeAdInfo& creative_ad) {
+std::optional<base::Time> GetLastSeenAdAt(
+    const AdEventList& ad_events,
+    const std::string& creative_instance_id) {
   const auto iter = base::ranges::find_if(
-      ad_events, [&creative_ad](const AdEventInfo& ad_event) {
+      ad_events, [&creative_instance_id](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type ==
                    ConfirmationType::kViewedImpression &&
-               ad_event.creative_instance_id ==
-                   creative_ad.creative_instance_id;
+               ad_event.creative_instance_id == creative_instance_id;
       });
 
   if (iter == ad_events.cend()) {

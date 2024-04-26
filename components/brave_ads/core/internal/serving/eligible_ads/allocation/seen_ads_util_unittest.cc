@@ -21,7 +21,8 @@ TEST(BraveAdsSeenAdsUtilTest, DoNotGetLastSeenAdAtForEmptyAdEvents) {
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
 
   // Act & Assert
-  EXPECT_FALSE(GetLastSeenAdAt(/*ad_events=*/{}, creative_ad));
+  EXPECT_FALSE(
+      GetLastSeenAdAt(/*ad_events=*/{}, creative_ad.creative_instance_id));
 }
 
 TEST(BraveAdsSeenAdsUtilTest, DoNotGetLastSeenAdAtForUnseenAd) {
@@ -41,7 +42,7 @@ TEST(BraveAdsSeenAdsUtilTest, DoNotGetLastSeenAdAtForUnseenAd) {
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
 
   // Act & Assert
-  EXPECT_FALSE(GetLastSeenAdAt(ad_events, creative_ad_2));
+  EXPECT_FALSE(GetLastSeenAdAt(ad_events, creative_ad_2.creative_instance_id));
 }
 
 TEST(BraveAdsSeenAdsUtilTest, GetLastSeenAdAt) {
@@ -80,7 +81,8 @@ TEST(BraveAdsSeenAdsUtilTest, GetLastSeenAdAt) {
   ad_events.push_back(ad_event_1);
 
   // Act & Assert
-  EXPECT_EQ(now - base::Hours(6), GetLastSeenAdAt(ad_events, creative_ad_1));
+  EXPECT_EQ(now - base::Hours(6),
+            GetLastSeenAdAt(ad_events, creative_ad_1.creative_instance_id));
 }
 
 }  // namespace brave_ads
