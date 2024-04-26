@@ -55,8 +55,8 @@ export const CategoryCheckboxes = (props: Props) => {
         </Title>
         <SelectAllButton onClick={onSelectOrDeselectAllCategories}>
           {isSelectAll
-            ? getLocale('braveWalletDeselectAll')
-            : getLocale('braveWalletSelectAll')}
+            ? getLocale('braveWalletSelectAll')
+            : getLocale('braveWalletDeselectAll')}
         </SelectAllButton>
       </Row>{' '}
       <CheckboxRow

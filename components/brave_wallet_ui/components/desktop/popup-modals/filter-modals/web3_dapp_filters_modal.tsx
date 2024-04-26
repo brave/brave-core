@@ -90,7 +90,7 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
   const isSelectAll = React.useMemo(() => {
     return (
       filteredOutCategories.length > 0 &&
-      categories.every((category) => filteredOutCategories.includes(category))
+      categories.some((category) => filteredOutCategories.includes(category))
     )
   }, [categories, filteredOutCategories])
 

@@ -85,25 +85,29 @@ export const ExploreWeb3View = () => {
   }, [])
 
   // group dapps into categories
-  const [dappCategories, categoryDappsMap] = React.useMemo(() => {
-    if (!topDapps) return [[], new Map<string, BraveWallet.Dapp[]>()]
+  const [dappCategories, categoryDappsMap, visibleCategories] =
+    React.useMemo(() => {
+      if (!topDapps) return [[], new Map<string, BraveWallet.Dapp[]>(), []]
 
-    const categoriesSet = new Set<string>()
-    const categoriesMap = new Map<string, BraveWallet.Dapp[]>()
+      const categoriesSet = new Set<string>()
+      const categoriesMap = new Map<string, BraveWallet.Dapp[]>()
 
-    topDapps.forEach((dapp) => {
-      dapp.categories.forEach((category) => {
-        categoriesSet.add(category)
-        if (!categoriesMap.has(category)) {
-          categoriesMap.set(category, [])
-        }
-        categoriesMap.get(category)!.push(dapp)
+      topDapps.forEach((dapp) => {
+        dapp.categories.forEach((category) => {
+          categoriesSet.add(category)
+          if (!categoriesMap.has(category)) {
+            categoriesMap.set(category, [])
+          }
+          categoriesMap.get(category)!.push(dapp)
+        })
       })
-    })
 
-    const categoriesList = Array.from(categoriesSet)
-    return [categoriesList, categoriesMap]
-  }, [topDapps])
+      const categoriesList = Array.from(categoriesSet)
+      const visibleCategories = categoriesList.filter(
+        (category) => !filteredOutCategories.includes(category)
+      )
+      return [categoriesList, categoriesMap, visibleCategories]
+    }, [filteredOutCategories, topDapps])
 
   const [visibleNetworks, visibleNetworkIds, filteredOutNetworks] =
     React.useMemo(() => {
@@ -199,20 +203,17 @@ export const ExploreWeb3View = () => {
 
   const onRemoveCategoryFilter = React.useCallback(
     (category: string) => {
-      const updatedCategories = filteredOutCategories.filter(
-        (c) => c !== category
-      )
-      setFilteredOutCategories(updatedCategories)
+      setFilteredOutCategories([...filteredOutCategories, category])
     },
     [filteredOutCategories, setFilteredOutCategories]
   )
 
   const onRemoveNetworkFilter = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
-      const updatedNetworksKeys = filteredOutNetworkKeys.filter(
-        (key) => key !== networkEntityAdapter.selectId(network).toString()
-      )
-      setFilteredOutNetworkKeys(updatedNetworksKeys)
+      setFilteredOutNetworkKeys([
+        ...filteredOutNetworkKeys,
+        networkEntityAdapter.selectId(network).toString()
+      ])
     },
     [filteredOutNetworkKeys, setFilteredOutNetworkKeys]
   )
@@ -322,21 +323,25 @@ export const ExploreWeb3View = () => {
               flexWrap='wrap'
               flex='0 1 auto'
             >
-              {filteredOutCategories.map((category) => (
-                <DappFilter
-                  key={category}
-                  label={category}
-                  onClick={() => onRemoveCategoryFilter(category)}
-                />
-              ))}
+              {filteredOutCategories.length > 0
+                ? visibleCategories.map((category) => (
+                    <DappFilter
+                      key={category}
+                      label={category}
+                      onClick={() => onRemoveCategoryFilter(category)}
+                    />
+                  ))
+                : null}
 
-              {filteredOutNetworks.map((network) => (
-                <DappFilter
-                  key={network.chainId}
-                  label={network.chainName}
-                  onClick={() => onRemoveNetworkFilter(network)}
-                />
-              ))}
+              {filteredOutNetworkKeys.length > 0
+                ? visibleNetworks.map((network) => (
+                    <DappFilter
+                      key={network.chainId}
+                      label={network.chainName}
+                      onClick={() => onRemoveNetworkFilter(network)}
+                    />
+                  ))
+                : null}
             </Row>
             <PlainButton onClick={onClearFilters}>
               {getLocale('braveWalletClearFilters')}
