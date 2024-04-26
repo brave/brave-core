@@ -38,3 +38,5 @@ const string kHideYoutubeRecommendedContentUuid
         = "2D57ADED-3531-419A-9DED-7F8868BC1561";
 const string kHideYoutubeDistractingElementsUuid
       = "BD308B90-D3BB-4041-9114-22E096B0BA77";
+const string kHideYoutubeShortsUuid
+      = "9E8EC586-4E17-4E5E-99D7-35172C4CEA74";
