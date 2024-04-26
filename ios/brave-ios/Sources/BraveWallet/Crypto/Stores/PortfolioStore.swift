@@ -495,6 +495,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         }
       }
 
+      guard !Task.isCancelled else { return }
       if selectedAccounts.contains(where: { $0.coin == .btc }) {
         /// We  need to know if user has pending balance to show/hide banner. Re-fetch on view load.
         self.accountsBTCBalances = await withTaskGroup(of: [String: [BTCBalanceType: Double]].self)
@@ -586,6 +587,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         }
       }
 
+      guard !Task.isCancelled else { return }
       // fetch price for every token
       let allTokens = allVisibleUserAssets.flatMap(\.tokens)
       let allAssetRatioIds = allTokens.map(\.assetRatioId)

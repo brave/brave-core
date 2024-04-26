@@ -48,6 +48,9 @@ struct PortfolioView: View {
         contentDrawer
       }
     }
+    .onAppear {
+      portfolioStore.update()
+    }
     .background(
       VStack(spacing: 0) {
         Color(braveSystemName: .pageBackground)  // top scroll rubberband area
