@@ -54,7 +54,6 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableTest,
   expected_input_variable.interest_segment.parent_matches.value = true;
   expected_input_variable.untargeted_segment.value = false;
   expected_input_variable.last_seen_ad.value = base::Hours(7);
-  expected_input_variable.last_seen_advertiser.value = base::Hours(7);
   EXPECT_EQ(expected_input_variable, input_variable);
 }
 

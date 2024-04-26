@@ -771,8 +771,6 @@ static_library("internal") {
     "serving/ad_serving_util.h",
     "serving/eligible_ads/allocation/seen_ads_util.cc",
     "serving/eligible_ads/allocation/seen_ads_util.h",
-    "serving/eligible_ads/allocation/seen_advertisers_util.cc",
-    "serving/eligible_ads/allocation/seen_advertisers_util.h",
     "serving/eligible_ads/eligible_ads_callback.h",
     "serving/eligible_ads/eligible_ads_feature.cc",
     "serving/eligible_ads/eligible_ads_feature.h",

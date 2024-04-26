@@ -32,9 +32,6 @@ struct CreativeAdModelBasedPredictorInputVariableInfo final {
 
   // The last time the user saw this ad.
   CreativeAdModelBasedPredictorLastSeenInputVariableInfo last_seen_ad;
-
-  // The last time the user saw an ad from this advertiser.
-  CreativeAdModelBasedPredictorLastSeenInputVariableInfo last_seen_advertiser;
 };
 
 }  // namespace brave_ads

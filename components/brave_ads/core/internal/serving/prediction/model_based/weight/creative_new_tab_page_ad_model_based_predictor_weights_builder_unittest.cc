@@ -31,7 +31,6 @@ TEST_F(BraveAdsCreativeNewTabPageAdModelBasedPredictorWeightsBuilderTest,
   expected_weights.interest_segment.parent = 0.0;
   expected_weights.untargeted_segment = 0.0001;
   expected_weights.last_seen_ad = 1.0;
-  expected_weights.last_seen_advertiser = 1.0;
   EXPECT_EQ(expected_weights, weights);
 }
 

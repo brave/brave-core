@@ -34,9 +34,6 @@ BuildCreativeNotificationAdModelBasedPredictorWeights() {
 
   weights.last_seen_ad = kNotificationAdLastSeenPredictorWeight.Get();
 
-  weights.last_seen_advertiser =
-      kNotificationAdLastSeenAdvertiserPredictorWeight.Get();
-
   return weights;
 }
 

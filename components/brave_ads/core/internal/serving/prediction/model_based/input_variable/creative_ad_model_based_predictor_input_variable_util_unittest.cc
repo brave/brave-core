@@ -218,42 +218,4 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
   EXPECT_FALSE(last_seen_ad_input_variable.value);
 }
 
-TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
-       ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable) {
-  // Arrange
-  const CreativeAdInfo creative_ad =
-      test::BuildCreativeAd(/*should_use_random_uuids=*/true);
-
-  AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewedImpression,
-      Now() - base::Hours(3),
-      /*should_use_random_uuids=*/true);
-  ad_events.push_back(ad_event);
-
-  const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
-      last_seen_advertiser_input_variable =
-          ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable(
-              creative_ad, ad_events, /*weight=*/0.0);
-
-  // Act & Assert
-  EXPECT_EQ(base::Hours(3), last_seen_advertiser_input_variable.value);
-}
-
-TEST_F(
-    BraveAdsCreativeAdModelBasedPredictorInputVariableUtilTest,
-    ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariableIfNeverSeen) {
-  // Arrange
-  const CreativeAdInfo creative_ad =
-      test::BuildCreativeAd(/*should_use_random_uuids=*/true);
-
-  const CreativeAdModelBasedPredictorLastSeenInputVariableInfo
-      last_seen_advertiser_input_variable =
-          ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable(
-              creative_ad, /*ad_events=*/{}, /*weight=*/0.0);
-
-  // Act & Assert
-  EXPECT_FALSE(last_seen_advertiser_input_variable.value);
-}
-
 }  // namespace brave_ads
