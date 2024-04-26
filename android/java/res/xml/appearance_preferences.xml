@@ -44,6 +44,11 @@
         android:summary="@string/enable_speedreader_summary"
         android:defaultValue="true" />
 
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="enable_multi_windows"
+        android:title="@string/enable_multi_windows_title"
+        android:summary="@string/enable_multi_windows_summary" />
+
     <Preference
         android:fragment="org.chromium.chrome.browser.night_mode.settings.BraveThemePreferences"
         android:key="ui_theme"

@@ -3932,6 +3932,27 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="Terms of service text for rewards panel">
       See <ph name="TOS_START">&lt;tos&gt;</ph>Brave Rewards Terms of Service<ph name="TOS_END">&lt;/tos&gt;</ph>
     </message>
+    <message name="IDS_ENABLE_MULTI_WINDOWS_TITLE" desc="Title for preference that enables or disables multiple windows.">
+      Enable multiple windows
+    </message>
+    <message name="IDS_ENABLE_MULTI_WINDOWS_SUMMARY" desc="Summary for preference that enables or disables multiple windows.">
+      Open up to 5 windows at a time and move tabs from one window to another
+    </message>
+    <message name="IDS_MULTI_WINDOWS_DIALOG_TITLE" desc="Title for multiwindows detected dialog.">
+      Multiple windows detected
+    </message>
+    <message name="IDS_MULTI_WINDOWS_DIALOG_SUMMARY" desc="Summary for multiwindows detected dialog.">
+      Please merge tabs to another Brave window, or close other Brave windows, before disabling the multiple-windows feature.
+    </message>
+    <message name="IDS_MERGE_WINDOWS" desc="Button text of merge windows for multiwindows dialog">
+      Merge windows
+    </message>
+    <message name="IDS_CLOSE_WINDOWS" desc="Button text of close windows for multiwindows dialog">
+      Close windows
+    </message>
+    <message name="IDS_MERGE_WINDOWS_SNACKBAR" desc="Text for merge windows snackbar">
+      Please merge other tabs to another Brave window. 
+    </message>
   </messages>
   </release>
 </grit>

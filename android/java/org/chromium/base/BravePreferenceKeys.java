@@ -54,6 +54,8 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_CLEAR_ON_EXIT = "clear_on_exit";
     public static final String BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES =
             "org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider.TILES";
+    public static final String ENABLE_MULTI_WINDOWS = "enable_multi_windows";
+    public static final String ENABLE_MULTI_WINDOWS_UPGRADE = "enable_multi_windows_upgrade";
 
     public static final String BRAVE_LEO_AUTOCOMPLETE =
             "org.chromium.chrome.browser.Brave_Leo_AutoComplete";

@@ -123,6 +123,9 @@ import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErrorHandler;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
+import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -1188,6 +1191,17 @@ public abstract class BraveActivity extends ChromeActivity
             calender.add(Calendar.DATE, DAYS_7);
             BraveRewardsHelper.setRewardsOnboardingIconTiming(calender.getTimeInMillis());
         }
+
+        // Check multiwindow toggle for upgrade case
+        if (!isFirstInstall
+                && !BraveMultiWindowUtils.isCheckUpgradeEnableMultiWindows()
+                && MultiWindowUtils.getInstanceCount() > 1
+                && !BraveMultiWindowUtils.shouldEnableMultiWindows()) {
+            BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
+            BraveMultiWindowUtils.updateEnableMultiWindows(true);
+        } else if (!BraveMultiWindowUtils.isCheckUpgradeEnableMultiWindows()) {
+            BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
+        }
     }
 
     @Override
@@ -2231,5 +2245,11 @@ public abstract class BraveActivity extends ChromeActivity
 
     public RootUiCoordinator getRootUiCoordinator() {
         return mRootUiCoordinator;
+    }
+
+    public MultiInstanceManager getMultiInstanceManager() {
+        return (MultiInstanceManager)
+                BraveReflectionUtil.getField(
+                        ChromeTabbedActivity.class, "mMultiInstanceManager", this);
     }
 }
