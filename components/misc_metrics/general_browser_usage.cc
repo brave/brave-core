@@ -41,9 +41,9 @@ GeneralBrowserUsage::GeneralBrowserUsage(
       local_state->SetString(kMiscMetricsDayZeroVariantAtInstall,
                              *day_zero_experiment_variant);
     }
-    if (first_run_time.is_null()) {
-      first_run_time_ = base::Time::Now();
-    }
+  }
+  if (first_run_time.is_null()) {
+    first_run_time_ = base::Time::Now();
   }
 
   Update();
