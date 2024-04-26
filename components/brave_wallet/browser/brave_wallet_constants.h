@@ -46,6 +46,7 @@ inline constexpr char kSimpleHashBraveProxyUrl[] =
     "https://simplehash.wallet.brave.com";
 
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletNoRoutesFound", IDS_BRAVE_WALLET_NO_ROUTES_FOUND},
     {"braveWalletFoundIssues", IDS_BRAVE_WALLET_FOUND_ISSUES},
     {"braveWalletContract", IDS_BRAVE_WALLET_CONTRACT},
     {"braveWalletFoundRisks", IDS_BRAVE_WALLET_FOUND_RISKS},
@@ -1449,8 +1450,10 @@ inline constexpr char kBlowfishAPIVersion[] = "2023-06-05";
 // LiFi constants
 inline constexpr char kLiFiBaseAPIURL[] = "https://lifi.wallet.brave.com";
 inline constexpr char kLiFiIntegratorID[] = "brave";
-inline constexpr char kLiFiNativeAssetContractAddress[] =
+inline constexpr char kLiFiNativeEVMAssetContractAddress[] =
     "0x0000000000000000000000000000000000000000";
+inline constexpr char kLiFiNativeSVMAssetContractAddress[] =
+    "So11111111111111111111111111111111111111112";
 inline constexpr double kLiFiFeePercentage = 0.875;
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;

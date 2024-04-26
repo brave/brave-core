@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/base/load_flags.h"
@@ -372,9 +373,11 @@ GURL SwapService::GetLiFiTransactionURL() {
 
 void SwapService::IsSwapSupported(const std::string& chain_id,
                                   IsSwapSupportedCallback callback) {
-  // TODO(onyb): Enable LiFi support when it's ready.
   std::move(callback).Run(IsNetworkSupportedByZeroEx(chain_id) ||
-                          IsNetworkSupportedByJupiter(chain_id));
+                          IsNetworkSupportedByJupiter(chain_id)
+                          // TODO(onyb): Enable LiFi support when it's ready.
+                          // || IsNetworkSupportedByLiFi(chain_id)
+  );
 }
 
 void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
@@ -521,6 +524,18 @@ void SwapService::OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
   }
 
   if (auto quote = lifi::ParseQuoteResponse(api_request_result.value_body())) {
+    if (quote->routes.empty()) {
+      auto error_response = mojom::LiFiError::New();
+      error_response->code = mojom::LiFiErrorCode::kNotFoundError;
+      error_response->message =
+          l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_NO_ROUTES_FOUND);
+
+      std::move(callback).Run(
+          nullptr, nullptr,
+          mojom::SwapErrorUnion::NewLifiError(std::move(error_response)), "");
+      return;
+    }
+
     std::move(callback).Run(
         mojom::SwapQuoteUnion::NewLifiQuote(std::move(quote)),
         std::move(swap_fee), nullptr, "");

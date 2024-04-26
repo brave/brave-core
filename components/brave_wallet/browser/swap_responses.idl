@@ -111,7 +111,7 @@ namespace swap_responses {
     // The following fields are mandatory for EVM -> any transfers.
     DOMString? from;
     DOMString? to;
-    DOMString? chainId;
+    long? chainId;
     DOMString? value;
     DOMString? gasPrice;
     DOMString? gasLimit;
@@ -122,9 +122,9 @@ namespace swap_responses {
     DOMString decimals;
     DOMString symbol;
     DOMString chainId;
-    DOMString coinKey;
     DOMString name;
-    DOMString logoURI;
+    DOMString? coinKey;
+    DOMString? logoURI;
   };
 
   dictionary LiFiFeeCost {
@@ -163,7 +163,7 @@ namespace swap_responses {
     DOMString toAmount;
     DOMString toAmountMin;
     DOMString approvalAddress;
-    LiFiFeeCost[] feeCosts;
+    LiFiFeeCost[]? feeCosts;
     LiFiGasCost[] gasCosts;
     DOMString executionDuration;
   };
@@ -193,6 +193,7 @@ namespace swap_responses {
 
   dictionary LiFiRoute {
     DOMString id;
+    boolean containsSwitchChain;
     DOMString fromChainId;
     DOMString fromAmount;
     LiFiToken fromToken;
@@ -219,5 +220,6 @@ namespace swap_responses {
 
   dictionary LiFiErrorResponse {
     DOMString message;
+    DOMString? code;
   };
 };

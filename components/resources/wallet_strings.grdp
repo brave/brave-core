@@ -1042,4 +1042,5 @@
   <message name="IDS_BRAVE_WALLET_UNTRUSTED_REQUEST_WARNING" desc="Warning that the pending request may be malicious">This request appears malicious, and may leave you vulnerable to theft. Do not continue unless you trust the app.</message>
   <message name="IDS_BRAVE_WALLET_PROCEED_BUTTON" desc="Proceed action button text">Proceed</message>
   <message name="IDS_BRAVE_WALLET_FOUND_ISSUES" desc="Notice that a number of issues were found">We found <ph name="VALUE">$1<ex>2</ex></ph> issues.</message>
+  <message name="IDS_BRAVE_WALLET_NO_ROUTES_FOUND" desc="Error message for when no swap routes could be found">No routes found</message>
 </grit-part>

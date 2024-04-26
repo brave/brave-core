@@ -132,6 +132,14 @@ export function getJupiterToAmount({
   return new Amount(quote.outAmount).divideByDecimals(toToken.decimals)
 }
 
+export function getLiFiFromAmount(route: BraveWallet.LiFiRoute): Amount {
+  return new Amount(route.fromAmount).divideByDecimals(route.fromToken.decimals)
+}
+
+export function getLiFiToAmount(route: BraveWallet.LiFiRoute): Amount {
+  return new Amount(route.toAmount).divideByDecimals(route.toToken.decimals)
+}
+
 export function getJupiterQuoteOptions({
   quote,
   fromNetwork,
@@ -190,4 +198,81 @@ export function getJupiterQuoteOptions({
             .formatAsFiat(defaultFiatCurrency)
     }
   ]
+}
+
+// LiFi
+
+export function getLiFiQuoteOptions({
+  quote,
+  fromNetwork,
+  fromToken,
+  toToken,
+  spotPrices,
+  defaultFiatCurrency
+}: {
+  quote: BraveWallet.LiFiQuote
+  fromNetwork: BraveWallet.NetworkInfo
+  spotPrices: SpotPriceRegistry
+  defaultFiatCurrency: string
+  fromToken: BraveWallet.BlockchainToken
+  toToken: BraveWallet.BlockchainToken
+}): QuoteOption[] {
+  return quote.routes.map((route) => {
+    const networkFee = route.steps[0].estimate.gasCosts
+      .reduce((total, cost) => {
+        return total.plus(cost.amount)
+      }, new Amount('0'))
+      .divideByDecimals(fromNetwork.decimals)
+
+    const fromAmount = new Amount(route.fromAmount).divideByDecimals(
+      fromToken.decimals
+    )
+
+    const toAmount = new Amount(route.toAmount).divideByDecimals(
+      route.toToken.decimals
+    )
+
+    const fromAmountFiat = fromAmount.times(
+      getTokenPriceAmountFromRegistry(spotPrices, fromToken)
+    )
+
+    const toAmountFiat = toAmount.times(
+      getTokenPriceAmountFromRegistry(spotPrices, toToken)
+    )
+
+    const fiatDiff = toAmountFiat.minus(fromAmountFiat)
+    const fiatDiffRatio = fiatDiff.div(fromAmountFiat)
+    const impact = fiatDiffRatio.times(100)
+
+    return {
+      fromAmount: fromAmount,
+      fromToken: fromToken,
+      impact,
+      minimumToAmount: new Amount(route.toAmountMin).divideByDecimals(
+        toToken.decimals
+      ),
+      networkFee,
+      networkFeeFiat: networkFee.isUndefined()
+        ? ''
+        : networkFee
+            .times(
+              getTokenPriceAmountFromRegistry(
+                spotPrices,
+                makeNetworkAsset(fromNetwork)
+              )
+            )
+            .formatAsFiat(defaultFiatCurrency),
+      rate: toAmount.div(fromAmount),
+      routing: 'flow', // TODO
+      sources: [
+        {
+          name: route.steps[0].toolDetails.name,
+          // TODO: assumption
+          proportion: new Amount(1)
+        }
+      ], // TODO
+      toAmount: toAmount,
+      toToken: toToken
+    }
+  })
 }

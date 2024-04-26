@@ -276,7 +276,7 @@ const char* GetLiFiQuoteTemplate() {
                   "toolDetails": {
                     "key": "verse-dex",
                     "name": "Verse Dex",
-                    "logoURI": "https://analytics.verse.bitcoin.com/logo.png"
+                    "logoURI": "verse.png"
                   }
                 },
                 {
@@ -360,7 +360,11 @@ const char* GetLiFiQuoteTemplate() {
             "FASTEST"
           ]
         }
-      ]
+      ],
+      "unavailableRoutes": {
+        "filteredOut": [],
+        "failed": []
+      }
     }
   )";
 }
@@ -666,7 +670,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   // OK: Jupiter transaction params with feeAccount
   auto expected_params_value = ParseJson(expected_params);
   ASSERT_NE(encoded_params, std::nullopt);
-  ASSERT_EQ(*encoded_params, GetJSON(expected_params_value));
+  ASSERT_EQ(ParseJson(*encoded_params), expected_params_value);
 
   // OK: Jupiter transaction params WITHOUT feeAccount
   params.quote->platform_fee = nullptr;
@@ -716,7 +720,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
     })";
   expected_params_value = ParseJson(expected_params);
   ASSERT_NE(encoded_params, std::nullopt);
-  ASSERT_EQ(*encoded_params, GetJSON(expected_params_value));
+  ASSERT_EQ(ParseJson(*encoded_params), expected_params_value);
 
   // KO: invalid output mint
   params.quote->output_mint = "invalid output mint";
@@ -765,7 +769,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiQuoteParams) {
       "toTokenAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
     }
   )");
-  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
 }
 
 TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
@@ -787,7 +791,8 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
       "tool": "optimism",
       "toolDetails": {
         "key": "optimism",
-        "name": "Optimism Gateway"
+        "name": "Optimism Gateway",
+        "logoURI": "optimism.png"
       },
       "action": {
         "fromToken": {
@@ -795,7 +800,8 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
           "chainId": "1",
           "symbol": "USDC",
           "decimals": 6,
-          "name": "USD Coin"
+          "name": "USD Coin",
+          "priceUSD": "0"
         },
         "fromAmount": "1000000",
         "toToken": {
@@ -803,7 +809,8 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
           "chainId": "10",
           "symbol": "USDT",
           "decimals": 6,
-          "name": "USDT"
+          "name": "USDT",
+          "priceUSD": "0"
         },
         "fromChainId": "1",
         "toChainId": "10",
@@ -826,9 +833,11 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
               "chainId": "1",
               "symbol": "USDC",
               "decimals": 6,
-              "name": "USD Coin"
+              "name": "USD Coin",
+              "priceUSD": "0"
             },
             "amount": "3000",
+            "amountUSD": "0",
             "percentage": "0.003",
             "included": true
           }
@@ -839,12 +848,15 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
             "estimate": "375000",
             "limit": "618000",
             "amount": "6608213244375000",
+            "amountUSD": "0",
+            "price": "0",
             "token": {
               "address": "0x0000000000000000000000000000000000000000",
               "chainId": "1",
               "symbol": "ETH",
               "decimals": 18,
-              "name": "ETH"
+              "name": "ETH",
+              "priceUSD": "0"
             }
           }
         ],
@@ -862,7 +874,8 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
               "chainId": "1",
               "symbol": "USDC",
               "decimals": 6,
-              "name": "USD Coin"
+              "name": "USD Coin",
+              "priceUSD": "0"
             },
             "toChainId": "1",
             "toToken": {
@@ -870,7 +883,8 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
               "chainId": "1",
               "symbol": "USDT",
               "decimals": 6,
-              "name": "USDT"
+              "name": "USDT",
+              "priceUSD": "0"
             },
             "slippage": 0.005
           },
@@ -890,9 +904,11 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
                   "chainId": "1",
                   "symbol": "USDC",
                   "decimals": 6,
-                  "name": "USD Coin"
+                  "name": "USD Coin",
+                  "priceUSD": "0"
                 },
                 "amount": "3000",
+                "amountUSD": "0",
                 "percentage": "0.003",
                 "included": true
               }
@@ -903,12 +919,15 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
                 "estimate": "200000",
                 "limit": "260000",
                 "amount": "3524380397000000",
+                "amountUSD": "0",
+                "price": "0",
                 "token": {
                   "address": "0x0000000000000000000000000000000000000000",
                   "chainId": "1",
                   "symbol": "ETH",
                   "decimals": 18,
-                  "name": "ETH"
+                  "name": "ETH",
+                  "priceUSD": "0"
                 }
               }
             ]
@@ -916,7 +935,8 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
           "tool": "verse-dex",
           "toolDetails": {
             "key": "verse-dex",
-            "name": "Verse Dex"
+            "name": "Verse Dex",
+            "logoURI": "verse.png"
           }
         },
         {
@@ -930,7 +950,8 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
               "chainId": "1",
               "symbol": "USDT",
               "decimals": 6,
-              "name": "USDT"
+              "name": "USDT",
+              "priceUSD": "0"
             },
             "toChainId": "10",
             "toToken": {
@@ -938,7 +959,8 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
               "chainId": "10",
               "symbol": "USDT",
               "decimals": 6,
-              "name": "USDT"
+              "name": "USDT",
+              "priceUSD": "0"
             },
             "slippage": 0.005,
             "destinationCallData": "0x0"
@@ -957,12 +979,15 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
                 "estimate": "175000",
                 "limit": "227500",
                 "amount": "3083832847375000",
+                "amountUSD": "0",
+                "price": "0",
                 "token": {
                   "address": "0x0000000000000000000000000000000000000000",
                   "chainId": "1",
                   "symbol": "ETH",
                   "decimals": 18,
-                  "name": "ETH"
+                  "name": "ETH",
+                  "priceUSD": "0"
                 }
               }
             ]
@@ -970,14 +995,15 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
           "tool": "optimism",
           "toolDetails": {
             "key": "optimism",
-            "name": "Optimism Gateway"
+            "name": "Optimism Gateway",
+            "logoURI": "optimism.png"
           }
         }
       ],
       "integrator": "jumper.exchange"
     }
   )");
-  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
 
   // OK: EVM -> SOL bridge quotes are correctly handled
   quote = lifi::ParseQuoteResponse(ParseJson(GetLiFiEvmToSolQuoteTemplate()));
@@ -996,7 +1022,8 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
       "tool": "allbridge",
       "toolDetails": {
         "key": "allbridge",
-        "name": "Allbridge"
+        "name": "Allbridge",
+        "logoURI": "allbridge.png"
       },
       "action": {
         "fromChainId": "137",
@@ -1010,14 +1037,16 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
           "chainId": "137",
           "symbol": "USDCe",
           "decimals": 6,
-          "name": "USDC.e"
+          "name": "USDC.e",
+          "priceUSD": "0"
         },
         "toToken": {
           "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
           "chainId": "SOL",
           "symbol": "USDC",
           "decimals": 6,
-          "name": "USD Coin"
+          "name": "USD Coin",
+          "priceUSD": "0"
         }
       },
       "estimate": {
@@ -1036,9 +1065,11 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
               "chainId": "137",
               "symbol": "USDCe",
               "decimals": 6,
-              "name": "USDC.e"
+              "name": "USDC.e",
+              "priceUSD": "0"
             },
             "amount": "853380",
+            "amountUSD": "0",
             "percentage": "0.4267",
             "included": true
           }
@@ -1049,12 +1080,15 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
             "estimate": "185000",
             "limit": "277500",
             "amount": "20720000000000000",
+            "amountUSD": "0",
+            "price": "0",
             "token": {
               "address": "0x0000000000000000000000000000000000000000",
               "chainId": "137",
               "symbol": "MATIC",
               "decimals": 18,
-              "name": "MATIC"
+              "name": "MATIC",
+              "priceUSD": "0"
             }
           }
         ]
@@ -1075,14 +1109,16 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
               "chainId": "137",
               "symbol": "USDCe",
               "decimals": 6,
-              "name": "USDC.e"
+              "name": "USDC.e",
+              "priceUSD": "0"
             },
             "toToken": {
               "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
               "chainId": "SOL",
               "symbol": "USDC",
               "decimals": 6,
-              "name": "USD Coin"
+              "name": "USD Coin",
+              "priceUSD": "0"
             }
           },
           "estimate": {
@@ -1101,9 +1137,11 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
                   "chainId": "137",
                   "symbol": "USDCe",
                   "decimals": 6,
-                  "name": "USDC.e"
+                  "name": "USDC.e",
+                  "priceUSD": "0"
                 },
                 "amount": "853380",
+                "amountUSD": "0",
                 "percentage": "0.4267",
                 "included": true
               }
@@ -1114,12 +1152,15 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
                 "estimate": "185000",
                 "limit": "277500",
                 "amount": "20720000000000000",
+                "amountUSD": "0",
+                "price": "0",
                 "token": {
                   "address": "0x0000000000000000000000000000000000000000",
                   "chainId": "137",
                   "symbol": "MATIC",
                   "decimals": 18,
-                  "name": "MATIC"
+                  "name": "MATIC",
+                  "priceUSD": "0"
                 }
               }
             ]
@@ -1127,13 +1168,14 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
           "tool": "allbridge",
           "toolDetails": {
             "key": "allbridge",
-            "name": "Allbridge"
+            "name": "Allbridge",
+            "logoURI": "allbridge.png"
           }
         }
       ]
     }
   )";
-  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
 }
 
 }  // namespace brave_wallet

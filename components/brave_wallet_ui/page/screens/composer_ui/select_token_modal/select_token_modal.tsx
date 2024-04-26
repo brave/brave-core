@@ -111,7 +111,8 @@ const getIsTokenSelected = (
 interface Props {
   onClose: () => void
   selectedSendOption: SendPageTabHashes
-  selectedToken?: BraveWallet.BlockchainToken
+  selectedFromToken?: BraveWallet.BlockchainToken
+  selectedToToken?: BraveWallet.BlockchainToken
   onSelectAsset: (
     asset: BraveWallet.BlockchainToken,
     account?: BraveWallet.AccountInfo
@@ -127,7 +128,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const {
       onClose,
       selectedSendOption,
-      selectedToken,
+      selectedFromToken,
+      selectedToToken,
       onSelectAsset,
       onSelectSendOption,
       selectedNetwork,
@@ -280,6 +282,11 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           return []
         }
         if (!account || showFullFlatTokenList) {
+          if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
+            return fullTokenList.filter(
+              (token) => !token.isNft && !token.isErc1155 && !token.isErc721
+            )
+          }
           return fullTokenList.filter(
             (token) =>
               token.chainId === selectedNetworkFilter.chainId &&
@@ -442,7 +449,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           <VirtualizedTokenList
             onSelectToken={handleSelectAsset}
             tokenList={getTokensBySearchValue()}
-            selectedToken={selectedToken}
+            selectedToToken={selectedToToken}
+            selectedFromToken={selectedFromToken}
           />
         )
       }
@@ -498,7 +506,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                   )}
                   isLoadingSpotPrice={isLoadingSpotPrices}
                   disabledText={
-                    getIsTokenSelected(token, selectedToken)
+                    getIsTokenSelected(token, selectedFromToken)
+                      ? 'braveWalletFromToken'
+                      : getIsTokenSelected(token, selectedToToken)
                       ? 'braveWalletToToken'
                       : undefined
                   }
@@ -524,11 +534,12 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       selectedSendOption,
       handleSelectAsset,
       getTokensBySearchValue,
-      selectedToken,
       isLoadingSpotPrices,
       getAccountFiatValue,
       tokenBalancesRegistry,
-      spotPriceRegistry
+      spotPriceRegistry,
+      selectedFromToken,
+      selectedToToken
     ])
 
     // computed

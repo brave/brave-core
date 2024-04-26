@@ -24,7 +24,8 @@ import {
 
 interface VirtualizedTokensListProps {
   tokenList: BraveWallet.BlockchainToken[]
-  selectedToken?: BraveWallet.BlockchainToken
+  selectedFromToken?: BraveWallet.BlockchainToken
+  selectedToToken?: BraveWallet.BlockchainToken
   onSelectToken: (token: BraveWallet.BlockchainToken) => void
 }
 
@@ -44,13 +45,26 @@ const getListItemKey = (
 }
 
 const ListItem = (props: ListItemProps) => {
-  const { index, data, onSelectToken, style, selectedToken, setSize } = props
+  const {
+    index,
+    data,
+    onSelectToken,
+    style,
+    selectedFromToken,
+    selectedToToken,
+    setSize
+  } = props
   const token = data[index]
 
   const disabledText =
-    selectedToken?.contractAddress === token.contractAddress &&
-    selectedToken?.coin === token.coin
+    selectedFromToken?.contractAddress === token.contractAddress &&
+    selectedFromToken?.coin === token.coin &&
+    selectedFromToken?.chainId === token.chainId
       ? 'braveWalletFromToken'
+      : selectedToToken?.contractAddress === token.contractAddress &&
+        selectedToToken?.coin === token.coin &&
+        selectedToToken?.chainId === token.chainId
+      ? 'braveWalletToToken'
       : undefined
 
   const handleSetSize = React.useCallback(
@@ -75,7 +89,7 @@ const ListItem = (props: ListItemProps) => {
 }
 
 export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
-  const { tokenList, onSelectToken, selectedToken } = props
+  const { tokenList, onSelectToken, selectedFromToken, selectedToToken } = props
 
   // Refs
   const listRef = React.useRef<List | null>(null)
@@ -134,7 +148,8 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
             children={(itemProps) => (
               <ListItem
                 {...itemProps}
-                selectedToken={selectedToken}
+                selectedFromToken={selectedFromToken}
+                selectedToToken={selectedToToken}
                 onSelectToken={onSelectToken}
                 setSize={setSize}
               />

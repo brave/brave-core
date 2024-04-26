@@ -639,7 +639,8 @@ struct JupiterError {
 enum LiFiStepType {
   kSwap,
   kCross,
-  kNative
+  kNative,
+  kProtocol
 };
 
 struct LiFiToolDetails {
@@ -688,7 +689,7 @@ struct LiFiStepEstimate {
   string to_amount_min;
   string approval_address;
   string execution_duration;
-  array<LiFiFeeCost> fee_costs;
+  array<LiFiFeeCost>? fee_costs;
   array<LiFiGasCost> gas_costs;
 };
 
@@ -738,8 +739,59 @@ struct LiFiEVMTransaction {
   string gas_limit;
 };
 
+enum LifiToolErrorCode {
+  // No route was found for this action.
+  kNoPossibleRoute = 0,
+  // The tool's liquidity is insufficient.
+  kInsufficientLiquidity = 1,
+  // The third-party tool timed out.
+  kToolTimeout = 2,
+  // An unknown error occurred.
+  kUnknownError = 3,
+  // There was a problem getting on-chain data. Please try again later.
+  kRpcError = 3,
+  // he initial amount is too low to transfer using this tool.
+  kAmountTooLow = 4,
+  // The initial amount is too high to transfer using this tool.
+  kAmountTooHigh = 5,
+  // The fees are higher than the initial amount.
+  // This would result in negative resulting token.
+  kFeesHigherThanAmount = 6,
+  // This tool does not support different recipient addresses.
+  kDifferentRecipientNotSupported = 7,
+  // The third-party tool returned an error.
+  kToolSpecificError = 8,
+  // The tool cannot guarantee that the minimum amount will be met.
+  kCannotGuaranteeMinAmount = 9
+};
+
+// https://github.com/lifinance/types/blob/main/src/errors.ts
+enum LiFiErrorCode {
+  kSuccess = 0,
+  kDefaultError = 1000,
+  kFailedToBuildTransactionError = 1001,
+  kNoQuoteError = 1002,
+  kNotFoundError = 1003,
+  kNotProcessableError = 1004,
+  kRateLimitError = 1005,
+  kServerError = 1006,
+  kSlippageError = 1007,
+  kThirdPartyError = 1008,
+  kTimeoutError = 1009,
+  kUnauthorizedError = 1010,
+  kValidationError = 1011,
+};
+
+struct LifiToolError {
+  string error_type;
+  string code;
+  string tool;
+  string message;
+};
+
 struct LiFiError {
   string message;
+  LiFiErrorCode code;
 };
 
 enum SwapDiscountCode {
