@@ -44,13 +44,8 @@ import { VirtualizedDappsList } from './virtualized_dapps_list'
 import { Column, Row, Text } from '../../../shared/style'
 import { ControlsRow } from '../portfolio/style'
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
-import {
-  CategoryHeader,
-  DappsGrid,
-  FilterLabel,
-  PlainButton,
-  FilterClose
-} from './explore_web3.style'
+import { CategoryHeader, DappsGrid, PlainButton } from './explore_web3.style'
+import { DappFilter } from './dapp_filter'
 
 export const ExploreWeb3View = () => {
   // routing
@@ -227,6 +222,47 @@ export const ExploreWeb3View = () => {
     setFilteredOutCategories([])
   }, [setFilteredOutCategories, setFilteredOutNetworkKeys])
 
+  const renderDappsList = React.useMemo(() => {
+    return selectedCategory ? (
+      <VirtualizedDappsList
+        dappsList={selectedCategoryDapps || []}
+        onClickDapp={onDappClick}
+      />
+    ) : (
+      <DappsGrid>
+        {Array.from(visibleDappsMap).map(([category, dapps]) => (
+          <Column
+            key={category}
+            width='100%'
+            margin='0 0 18px 0'
+          >
+            <CategoryHeader>{category}</CategoryHeader>
+            <Column width='100%'>
+              {dapps.slice(0, 3).map((dapp) => (
+                <DappListItem
+                  key={dapp.id}
+                  dapp={dapp}
+                  onClick={() => onDappClick(dapp.id)}
+                />
+              ))}
+            </Column>
+            <Row justifyContent='center'>
+              <PlainButton onClick={() => onSelectCategory(category)}>
+                {getLocale('braveWalletShowMore')}
+              </PlainButton>
+            </Row>
+          </Column>
+        ))}
+      </DappsGrid>
+    )
+  }, [
+    onDappClick,
+    onSelectCategory,
+    selectedCategory,
+    selectedCategoryDapps,
+    visibleDappsMap
+  ])
+
   // render
   if (isLoading || !topDapps) {
     return (
@@ -287,27 +323,19 @@ export const ExploreWeb3View = () => {
               flex='0 1 auto'
             >
               {filteredOutCategories.map((category) => (
-                <FilterLabel key={category}>
-                  {category}
-                  <div
-                    slot='icon-after'
-                    onClick={() => onRemoveCategoryFilter(category)}
-                  >
-                    <FilterClose />
-                  </div>
-                </FilterLabel>
+                <DappFilter
+                  key={category}
+                  label={category}
+                  onClick={() => onRemoveCategoryFilter(category)}
+                />
               ))}
 
               {filteredOutNetworks.map((network) => (
-                <FilterLabel key={network.chainId}>
-                  {network.chainName}
-                  <div
-                    slot='icon-after'
-                    onClick={() => onRemoveNetworkFilter(network)}
-                  >
-                    <FilterClose />
-                  </div>
-                </FilterLabel>
+                <DappFilter
+                  key={network.chainId}
+                  label={network.chainName}
+                  onClick={() => onRemoveNetworkFilter(network)}
+                />
               ))}
             </Row>
             <PlainButton onClick={onClearFilters}>
@@ -318,38 +346,7 @@ export const ExploreWeb3View = () => {
 
         {!isDappMapEmpty(visibleDappsMap) ||
         selectedCategoryDapps?.length === 0 ? (
-          selectedCategory ? (
-            <VirtualizedDappsList
-              dappsList={selectedCategoryDapps || []}
-              onClickDapp={onDappClick}
-            />
-          ) : (
-            <DappsGrid>
-              {Array.from(visibleDappsMap).map(([category, dapps]) => (
-                <Column
-                  key={category}
-                  width='100%'
-                  margin='0 0 18px 0'
-                >
-                  <CategoryHeader>{category}</CategoryHeader>
-                  <Column width='100%'>
-                    {dapps.slice(0, 3).map((dapp) => (
-                      <DappListItem
-                        key={dapp.id}
-                        dapp={dapp}
-                        onClick={() => onDappClick(dapp.id)}
-                      />
-                    ))}
-                  </Column>
-                  <Row justifyContent='center'>
-                    <PlainButton onClick={() => onSelectCategory(category)}>
-                      {getLocale('braveWalletShowMore')}
-                    </PlainButton>
-                  </Row>
-                </Column>
-              ))}
-            </DappsGrid>
-          )
+          <>{renderDappsList}</>
         ) : (
           <Row>
             <h2>{getLocale('braveWalletNoDappsFound')}</h2>
