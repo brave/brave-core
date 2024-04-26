@@ -20,6 +20,21 @@
   #root {
     height: 100%;
   }
+
+  ::-webkit-scrollbar {
+      width: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+      background: var(--leo-color-gray-40);
+      border-radius: var(--leo-spacing-m);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    ::-webkit-scrollbar-thumb {
+      background: var(--leo-color-gray-20);
+    }
+  }
 </style>
 </head>
 <body>
