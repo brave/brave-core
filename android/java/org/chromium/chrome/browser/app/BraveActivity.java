@@ -255,6 +255,8 @@ public abstract class BraveActivity extends ChromeActivity
     private static final int DAYS_7 = 7;
     private static final int DAYS_12 = 12;
 
+    private static final int MONTH_1 = 1;
+
     public static final int MAX_FAILED_CAPTCHA_ATTEMPTS = 10;
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
@@ -978,8 +980,6 @@ public abstract class BraveActivity extends ChromeActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-        checkAppUpdate();
-
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
@@ -1209,10 +1209,12 @@ public abstract class BraveActivity extends ChromeActivity
                 && ChromeSharedPreferences.getInstance()
                                 .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                         == 1) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_7);
-            BraveRewardsHelper.setRewardsOnboardingIconTiming(calender.getTimeInMillis());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, DAYS_7);
+            BraveRewardsHelper.setRewardsOnboardingIconTiming(calendar.getTimeInMillis());
+
+            setInAppUpdateTiming();
         }
 
         // Check multiwindow toggle for upgrade case
@@ -1225,6 +1227,19 @@ public abstract class BraveActivity extends ChromeActivity
         } else if (!BraveMultiWindowUtils.isCheckUpgradeEnableMultiWindows()) {
             BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
         }
+
+        if (System.currentTimeMillis() > ChromeSharedPreferences.getInstance().readLong(
+                    BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
+            checkAppUpdate();
+        }
+    }
+
+    private void setInAppUpdateTiming() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, MONTH_1);
+        ChromeSharedPreferences.getInstance().writeLong(
+                BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, calendar.getTimeInMillis());
     }
 
     private AppUpdateManager mAppUpdateManager;
@@ -1275,6 +1290,7 @@ public abstract class BraveActivity extends ChromeActivity
                     appUpdateType,
                     BraveActivity.this,
                     1);
+            setInAppUpdateTiming();
         } catch (IntentSender.SendIntentException e) {
             throw new RuntimeException(e);
         }
