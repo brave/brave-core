@@ -467,7 +467,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEncoding) {
                     .ExtractInt());
 }
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreader) {
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreaderA) {
   EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
   NavigateToPageSynchronously(kTestPageReadable);
 
@@ -486,7 +486,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreader) {
       tab_helper()->PageDistillState()));
   EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper()->PageDistillState()));
+}
 
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreaderB) {
+  NavigateToPageSynchronously(kTestPageReadable);
   ClickReaderButton();
   WaitDistilled();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
