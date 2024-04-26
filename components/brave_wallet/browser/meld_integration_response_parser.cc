@@ -5,35 +5,29 @@
 
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 
-#include <algorithm>
 #include <optional>
 #include <string>
-#include <tuple>
 #include <utility>
 #include <vector>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "tools/json_schema_compiler/util.h"
 
 namespace {
 
-std::optional<brave_wallet::mojom::MeldLogoImagesPtr> ParseMeldLogos(
+brave_wallet::mojom::MeldLogoImagesPtr ParseMeldLogos(
     const std::optional<brave_wallet::meld_integration_responses::Logos>&
         logos) {
   if (!logos) {
-    return std::nullopt;
+    return nullptr;
   }
 
-  auto logo_images = brave_wallet::mojom::MeldLogoImages::New(
+  return brave_wallet::mojom::MeldLogoImages::New(
       logos->dark, logos->dark_short, logos->light, logos->light_short);
-
-  return std::move(logo_images);
 }
 
 std::optional<std::vector<brave_wallet::mojom::MeldRegionPtr>> ParseMeldRegions(
@@ -49,10 +43,6 @@ std::optional<std::vector<brave_wallet::mojom::MeldRegionPtr>> ParseMeldRegions(
     auto reg = brave_wallet::mojom::MeldRegion::New(region_value.region_code,
                                                     region_value.name);
     result.emplace_back(std::move(reg));
-  }
-
-  if (result.empty()) {
-    return std::nullopt;
   }
 
   return result;
@@ -103,7 +93,6 @@ std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
   // }
 
   if (!json_value.is_list()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;
   }
 
@@ -112,8 +101,6 @@ std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
     const auto service_provider_value =
         meld_integration_responses::ServiceProvider::FromValue(sp_item);
     if (!service_provider_value) {
-      LOG(ERROR)
-          << "Invalid response, could not parse JSON, JSON is not a dict";
       return std::nullopt;
     }
 
@@ -123,7 +110,7 @@ std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
         service_provider_value->status, service_provider_value->website_url,
         service_provider_value->categories,
         ParseOptionalMapOfStrings(service_provider_value->category_statuses),
-        std::move(logos).value_or(nullptr));
+        std::move(logos));
 
     service_providers.emplace_back(std::move(sp));
   }
@@ -151,7 +138,6 @@ std::optional<std::vector<std::string>> ParseMeldErrorResponse(
   const auto meld_error_value =
       meld_integration_responses::MeldError::FromValue(json_value);
   if (!meld_error_value) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
     return std::nullopt;
   }
 
@@ -202,7 +188,6 @@ ParseCryptoQuotes(const base::Value& json_value) {
   const auto quote_resp_value =
       meld_integration_responses::CryptoQuoteResponse::FromValue(json_value);
   if (!quote_resp_value) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
     return base::unexpected("");
   }
 
@@ -246,7 +231,6 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
   //   }
   // ]
   if (!json_value.is_list()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;
   }
   std::vector<mojom::MeldPaymentMethodPtr> payment_methods;
@@ -254,15 +238,13 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
     const auto payment_method_value =
         meld_integration_responses::PaymentMethod::FromValue(pm_item);
     if (!payment_method_value) {
-      LOG(ERROR)
-          << "Invalid response, could not parse JSON, JSON is not a dict";
       return std::nullopt;
     }
 
     auto logos = ParseMeldLogos(payment_method_value->logos);
     auto pm = mojom::MeldPaymentMethod::New(
         payment_method_value->payment_method, payment_method_value->name,
-        payment_method_value->payment_type, std::move(logos).value_or(nullptr));
+        payment_method_value->payment_type, std::move(logos));
 
     payment_methods.emplace_back(std::move(pm));
   }
@@ -286,7 +268,6 @@ std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> ParseFiatCurrencies(
   // ]
 
   if (!json_value.is_list()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;
   }
   std::vector<mojom::MeldFiatCurrencyPtr> fiat_currencies;
@@ -294,7 +275,6 @@ std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> ParseFiatCurrencies(
     const auto fiat_currency_value =
         meld_integration_responses::FiatCurrency::FromValue(fc_item);
     if (!fiat_currency_value) {
-      LOG(ERROR) << "Invalid response, could not parse JSON";
       return std::nullopt;
     }
 
@@ -334,7 +314,6 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
   //   }
   // ]
   if (!json_value.is_list()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a list";
     return std::nullopt;
   }
   std::vector<mojom::MeldCryptoCurrencyPtr> crypto_currencies;
@@ -342,12 +321,11 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
     const auto crypto_currency_value =
         meld_integration_responses::CryptoCurrency::FromValue(cc_item);
     if (!crypto_currency_value) {
-      LOG(ERROR) << "Invalid response, could not parse JSON";
       return std::nullopt;
     }
     std::optional<std::string> chain_id_hex;
-    int chain_id_as_num;
-    if (crypto_currency_value->chain_id &&
+    if (int chain_id_as_num;
+        crypto_currency_value->chain_id &&
         base::StringToInt(*crypto_currency_value->chain_id, &chain_id_as_num)) {
       chain_id_hex = Uint256ValueToHex(chain_id_as_num);
     }

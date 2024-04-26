@@ -76,35 +76,35 @@ class MeldIntegrationService : public KeyedService,
   void OnGetServiceProviders(GetServiceProvidersCallback callback,
                              APIRequestResult api_request_result) const;
   void OnParseServiceProviders(
-      GetServiceProvidersCallback reply_callback,
+      GetServiceProvidersCallback callback,
       std::optional<std::vector<mojom::MeldServiceProviderPtr>>
           service_providers) const;
 
   void OnGetCryptoQuotes(GetCryptoQuotesCallback callback,
                          APIRequestResult api_request_result) const;
   void OnParseCryptoQuotes(
-      GetCryptoQuotesCallback reply_callback,
+      GetCryptoQuotesCallback callback,
       base::expected<std::vector<mojom::MeldCryptoQuotePtr>, std::string>
           quotes_result) const;
 
   void OnGetPaymentMethods(GetPaymentMethodsCallback callback,
                            APIRequestResult api_request_result) const;
   void OnParsePaymentMethods(
-      GetPaymentMethodsCallback reply_callback,
+      GetPaymentMethodsCallback callback,
       std::optional<std::vector<mojom::MeldPaymentMethodPtr>> payment_methods)
       const;
 
   void OnGetFiatCurrencies(GetFiatCurrenciesCallback callback,
                            APIRequestResult api_request_result) const;
   void OnParseFiatCurrencies(
-      GetFiatCurrenciesCallback reply_callback,
+      GetFiatCurrenciesCallback callback,
       std::optional<std::vector<mojom::MeldFiatCurrencyPtr>> fiat_currencies)
       const;
 
   void OnGetCryptoCurrencies(GetCryptoCurrenciesCallback callback,
                              APIRequestResult api_request_result) const;
   void OnParseCryptoCurrencies(
-      GetCryptoCurrenciesCallback reply_callback,
+      GetCryptoCurrenciesCallback callback,
       std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
           crypto_currencies) const;
 
@@ -112,7 +112,7 @@ class MeldIntegrationService : public KeyedService,
                       APIRequestResult api_request_result) const;
 
   void OnParseCountries(
-      GetCountriesCallback reply_callback,
+      GetCountriesCallback callback,
       std::optional<std::vector<mojom::MeldCountryPtr>> countries) const;
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
