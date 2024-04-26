@@ -165,6 +165,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing
     )
     PrivacyReportsManager.scheduleVPNAlertsTask()
+
+    // Handle Custom Activity and Intents
+    if let currentActivity = connectionOptions.userActivities.first {
+      handleCustomUserActivityActions(scene, userActivity: currentActivity)
+    }
   }
 
   private func present(
@@ -321,23 +326,42 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+    handleCustomUserActivityActions(scene, userActivity: userActivity)
+  }
+
+  func windowScene(
+    _ windowScene: UIWindowScene,
+    performActionFor shortcutItem: UIApplicationShortcutItem,
+    completionHandler: @escaping (Bool) -> Void
+  ) {
+    if let browserViewController = windowScene.browserViewController {
+      QuickActions.sharedInstance.handleShortCutItem(
+        shortcutItem,
+        withBrowserViewController: browserViewController
+      )
+      completionHandler(true)
+    } else {
+      completionHandler(false)
+    }
+  }
+
+  func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+    return scene.userActivity
+  }
+}
+
+extension SceneDelegate {
+
+  private func handleCustomUserActivityActions(_ scene: UIScene, userActivity: NSUserActivity) {
     guard let scene = scene as? UIWindowScene else {
       return
     }
 
-    if let url = userActivity.webpageURL {
-      switch UniversalLinkManager.universalLinkType(for: url, checkPath: false) {
-      case .buyVPN:
-        scene.browserViewController?.presentCorrespondingVPNViewController()
-        return
-      case .none:
-        break
-      }
+    handleCustomUserActivityTypes(scene, userActivity: userActivity)
+    handleCustomUserIntents(scene, userActivity: userActivity)
+  }
 
-      scene.browserViewController?.switchToTabForURLOrOpen(url, isPrivileged: true)
-      return
-    }
-
+  private func handleCustomUserActivityTypes(_ scene: UIWindowScene, userActivity: NSUserActivity) {
     switch userActivity.activityType {
     case CSSearchableItemActionType:
       // Otherwise, check if the `NSUserActivity` is a CoreSpotlight item and switch to its tab or
@@ -432,59 +456,54 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       break
     }
 
-    func switchToTabForIntentURL(intentURL: String?) {
-      if let browserViewController = scene.browserViewController {
-        guard let siteURL = intentURL, let url = URL(string: siteURL) else {
-          browserViewController.openBlankNewTab(
-            attemptLocationFieldFocus: false,
-            isPrivate: Preferences.Privacy.privateBrowsingOnly.value
-          )
-          return
-        }
-
-        browserViewController.switchToTabForURLOrOpen(
-          url,
-          isPrivate: Preferences.Privacy.privateBrowsingOnly.value,
-          isPrivileged: false
-        )
+    if let url = userActivity.webpageURL {
+      switch UniversalLinkManager.universalLinkType(for: url, checkPath: false) {
+      case .buyVPN:
+        scene.browserViewController?.presentCorrespondingVPNViewController()
+        return
+      case .none:
+        break
       }
+
+      scene.browserViewController?.switchToTabForURLOrOpen(url, isPrivileged: true)
       return
     }
+  }
 
+  private func handleCustomUserIntents(_ scene: UIWindowScene, userActivity: NSUserActivity) {
     if let intent = userActivity.interaction?.intent as? OpenWebsiteIntent {
-      switchToTabForIntentURL(intentURL: intent.websiteURL)
+      switchToTabForIntentURL(scene, intentURL: intent.websiteURL)
       return
     }
 
     if let intent = userActivity.interaction?.intent as? OpenHistoryWebsiteIntent {
-      switchToTabForIntentURL(intentURL: intent.websiteURL)
+      switchToTabForIntentURL(scene, intentURL: intent.websiteURL)
       return
     }
 
     if let intent = userActivity.interaction?.intent as? OpenBookmarkWebsiteIntent {
-      switchToTabForIntentURL(intentURL: intent.websiteURL)
+      switchToTabForIntentURL(scene, intentURL: intent.websiteURL)
       return
     }
   }
 
-  func windowScene(
-    _ windowScene: UIWindowScene,
-    performActionFor shortcutItem: UIApplicationShortcutItem,
-    completionHandler: @escaping (Bool) -> Void
-  ) {
-    if let browserViewController = windowScene.browserViewController {
-      QuickActions.sharedInstance.handleShortCutItem(
-        shortcutItem,
-        withBrowserViewController: browserViewController
-      )
-      completionHandler(true)
-    } else {
-      completionHandler(false)
-    }
-  }
+  private func switchToTabForIntentURL(_ scene: UIWindowScene, intentURL: String?) {
+    if let browserViewController = scene.browserViewController {
+      guard let siteURL = intentURL, let url = URL(string: siteURL) else {
+        browserViewController.openBlankNewTab(
+          attemptLocationFieldFocus: false,
+          isPrivate: Preferences.Privacy.privateBrowsingOnly.value
+        )
+        return
+      }
 
-  func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
-    return scene.userActivity
+      browserViewController.switchToTabForURLOrOpen(
+        url,
+        isPrivate: Preferences.Privacy.privateBrowsingOnly.value,
+        isPrivileged: false
+      )
+    }
+    return
   }
 }
 
