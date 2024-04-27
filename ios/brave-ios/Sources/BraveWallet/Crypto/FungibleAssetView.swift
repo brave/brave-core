@@ -17,9 +17,19 @@ struct FungibleAssetButton: View {
   @Binding var bitcoinBalanceDetails: BitcoinBalanceDetails?
   let action: (BraveWallet.BlockchainToken) -> Void
   
+  private var showUnavailableBTCBalanceBanner: Bool {
+    guard asset.token.coin == .btc else {
+      return false
+    }
+    let sumOfPendingBalances = asset.btcBalances
+      .compactMap({ $0.value[.pending] })
+      .reduce(0.0, +)
+    return sumOfPendingBalances != 0
+  }
+  
   var body: some View {
     // Avoid button inside a button for `UnavailableBTCBalanceView`
-    if asset.btcBalances.compactMap({ $0.value[.pending] }).reduce(0.0, +) > 0 {
+    if showUnavailableBTCBalanceBanner {
       VStack(spacing: 0) {
         assetViewButton
         
