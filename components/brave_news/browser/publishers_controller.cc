@@ -218,10 +218,14 @@ void PublishersController::EnsurePublishersIsUpdating(
   GURL sources_url(
       base::StrCat({"https://", brave_news::GetHostname(), "/sources.",
                     brave_news::kRegionUrlPart, "json"}));
+  VLOG(1) << "Fetching publishers from " << sources_url.spec();
+
   auto on_request = base::BindOnce(
       [](PublishersController* controller,
          const BraveNewsSubscriptions& subscriptions,
          api_request_helper::APIRequestResult api_request_result) {
+        VLOG(1) << "Publishers response status code: "
+                << api_request_result.response_code();
         // TODO(petemill): handle bad status or response
         std::optional<Publishers> publisher_list =
             ParseCombinedPublisherList(api_request_result.TakeBody());
