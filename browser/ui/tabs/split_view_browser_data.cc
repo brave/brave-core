@@ -204,21 +204,23 @@ void SplitViewBrowserData::TabsWillBeAttachedToNewBrowser(
     const std::vector<tabs::TabHandle>& tabs) {
   DCHECK(tiles_to_be_attached_to_new_window_.empty());
 
-  base::flat_set<Tile> tiles_to_be_attached_to_new_window;
   for (const auto& tab : tabs) {
     auto iter = FindTile(tab);
     if (iter == tiles_.end()) {
       continue;
     }
 
-    tiles_to_be_attached_to_new_window.insert(*iter);
+    tiles_to_be_attached_to_new_window_.push_back(*iter);
     // The tile in the |tile_| will be removed when they actually get detached
     // from the current tab strip model.
   }
 
-  tiles_to_be_attached_to_new_window_ =
-      std::vector(tiles_to_be_attached_to_new_window.begin(),
-                  tiles_to_be_attached_to_new_window.end());
+  if (tiles_to_be_attached_to_new_window_.size() > 1) {
+    base::ranges::sort(tiles_to_be_attached_to_new_window_);
+    tiles_to_be_attached_to_new_window_.erase(
+        base::ranges::unique(tiles_to_be_attached_to_new_window_),
+        tiles_to_be_attached_to_new_window_.end());
+  }
 }
 
 void SplitViewBrowserData::TabsAttachedToNewBrowser(Browser* browser) {
