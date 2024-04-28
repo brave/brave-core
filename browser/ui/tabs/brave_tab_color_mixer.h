@@ -10,10 +10,19 @@
 
 namespace tabs {
 
+// Called from
+// //brave/chromium_src/chrome/browser/ui/color/tab_strip_color_mixer.cc
 void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
                                      const ui::ColorProviderKey& key);
 void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
                                     const ui::ColorProviderKey& key);
+
+// Called from
+// //brave/browser/themes/brave_private_window_theme_supplier.cc
+void AddBraveTabPrivateThemeColorMixer(ui::ColorProvider* provider,
+                                       const ui::ColorProviderKey& key);
+void AddBraveTabTorThemeColorMixer(ui::ColorProvider* provider,
+                                   const ui::ColorProviderKey& key);
 
 }  // namespace tabs
 
