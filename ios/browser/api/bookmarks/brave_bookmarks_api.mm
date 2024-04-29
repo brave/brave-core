@@ -447,7 +447,8 @@
 - (void)remove {
   DCHECK(node_);
   DCHECK(model_);
-  model_->Remove(node_, bookmarks::metrics::BookmarkEditSource::kOther);
+  model_->Remove(node_, bookmarks::metrics::BookmarkEditSource::kOther,
+                 FROM_HERE);
   node_ = nil;
   model_ = nil;
 }
@@ -616,7 +617,7 @@
 
 - (void)removeAll {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  bookmark_model_->RemoveAllUserBookmarks();
+  bookmark_model_->RemoveAllUserBookmarks(FROM_HERE);
 }
 
 - (void)searchWithQuery:(NSString*)queryArg
