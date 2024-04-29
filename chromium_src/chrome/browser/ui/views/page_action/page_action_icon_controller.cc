@@ -42,8 +42,7 @@ constexpr bool kSupportsSpeedreaderActionIconView = false;
     if constexpr (kSupportsPlaylistActionIconView) {                           \
       playlist_action_icon_view_ = add_page_action_icon(                       \
           type, std::make_unique<PlaylistActionIconView>(                      \
-                    params.command_updater, params.browser,                    \
-                    params.icon_label_bubble_delegate,                         \
+                    params.command_updater, params.icon_label_bubble_delegate, \
                     params.page_action_icon_delegate));                        \
     }                                                                          \
     break;                                                                     \
