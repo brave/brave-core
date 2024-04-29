@@ -51,34 +51,33 @@ struct AIChatIntroMessageView: View {
   }
 
   var body: some View {
-    HStack(alignment: .top, spacing: 0.0) {
+    VStack(alignment: .leading, spacing: 0.0) {
       AIChatProductIcon(containerShape: Circle(), padding: 9.0)
         .font(.body)
         .padding(.trailing, 16.0)
+        .padding(.bottom, 8.0)
 
-      VStack(spacing: 0.0) {
-        Text(Strings.AIChat.introMessageTitle)
-          .font(.headline)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
-          .multilineTextAlignment(.leading)
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .fixedSize(horizontal: false, vertical: true)
+      Text(Strings.AIChat.introMessageTitle)
+        .font(.headline)
+        .foregroundStyle(Color(braveSystemName: .textPrimary))
+        .multilineTextAlignment(.leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
 
-        Text(modelDescription)
-          .font(.footnote)
-          .foregroundStyle(Color(braveSystemName: .textTertiary))
-          .multilineTextAlignment(.leading)
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .fixedSize(horizontal: false, vertical: true)
-          .padding(.bottom)
+      Text(modelDescription)
+        .font(.footnote)
+        .foregroundStyle(Color(braveSystemName: .textTertiary))
+        .multilineTextAlignment(.leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
+        .padding(.bottom)
 
-        Text(introMessage)
-          .font(.subheadline)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
-          .multilineTextAlignment(.leading)
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .fixedSize(horizontal: false, vertical: true)
-      }
+      Text(introMessage)
+        .font(.subheadline)
+        .foregroundStyle(Color(braveSystemName: .textPrimary))
+        .multilineTextAlignment(.leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
     }
   }
 }

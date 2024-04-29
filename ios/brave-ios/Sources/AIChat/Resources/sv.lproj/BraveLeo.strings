@@ -203,7 +203,7 @@
 "aichat.paywallUpsellCreativityTopicTitle" = "Frigör din kreativitet";
 
 /* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Prioriterad åtkomst till kraftfulla modeller med olika färdigheter";
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Prioriterad åtkomst till kraftfulla modeller med olika färdigheter.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Utforska olika AI-modeller";

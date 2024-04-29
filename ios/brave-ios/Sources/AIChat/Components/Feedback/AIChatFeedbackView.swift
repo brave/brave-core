@@ -309,17 +309,33 @@ private struct AIChatFeedbackLeoPremiumAdView: View {
 
 enum AIChatFeedbackOption: String, CaseIterable, Identifiable {
   case notHelpful
-  case notWorking
+  case incorrect
+  case unsafeHarmful
   case other
 
-  var id: RawValue { rawValue }
+  // These values are taken from: https://github.com/brave/brave-core/blob/master/components/ai_chat/resources/page/components/feedback_form/index.tsx#L16
+  // and must not be changed!
+  var id: RawValue {
+    switch self {
+    case .notHelpful:
+      return "not-helpful"
+    case .incorrect:
+      return "incorrect"
+    case .unsafeHarmful:
+      return "unsafe-harmful"
+    case .other:
+      return "other"
+    }
+  }
 
   var rawValue: String {
     switch self {
     case .notHelpful:
       return Strings.AIChat.feedbackOptionTitleNotHelpful
-    case .notWorking:
-      return Strings.AIChat.feedbackOptionTitleNotWorking
+    case .incorrect:
+      return Strings.AIChat.feedbackOptionTitleIncorrect
+    case .unsafeHarmful:
+      return Strings.AIChat.feedbackOptionTitleUnsafeHarmful
     case .other:
       return Strings.AIChat.feedbackOptionTitleOther
     }
@@ -381,7 +397,7 @@ struct AIChatFeedbackView: View {
         .padding()
 
         Button {
-          onSubmit(category.rawValue, feedbackText)
+          onSubmit(category.id, feedbackText)
         } label: {
           Text(Strings.AIChat.feedbackSubmitActionTitle)
         }
