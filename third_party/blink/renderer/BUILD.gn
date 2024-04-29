@@ -10,7 +10,10 @@ component("renderer") {
     "brave_font_whitelist.h",
   ]
 
-  deps = [ "//brave/components/brave_drm:brave_drm_blink" ]
+  deps = [
+    "//brave/components/brave_drm:brave_drm_blink",
+    "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission_blink",
+  ]
 
   defines = [ "BLINK_IMPLEMENTATION=1" ]
 

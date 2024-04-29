@@ -399,6 +399,14 @@ if (enable_brave_wayback_machine) {
   brave_chrome_browser_deps += [ "//brave/components/brave_wayback_machine" ]
 }
 
+if (!is_android) {
+  brave_chrome_browser_sources += [
+    "//brave/browser/brave_geolocation_permission_tab_helper.cc",
+    "//brave/browser/brave_geolocation_permission_tab_helper.h",
+  ]
+  brave_chrome_browser_deps += [ "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission" ]
+}
+
 if (enable_widevine) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_drm_tab_helper.cc",

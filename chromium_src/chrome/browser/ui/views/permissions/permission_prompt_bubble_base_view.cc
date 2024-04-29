@@ -12,6 +12,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/views/dialog_footnote_utils.h"
 #include "brave/browser/ui/views/infobars/custom_styled_label.h"
 #include "brave/components/constants/url_constants.h"
@@ -201,6 +202,7 @@ END_METADATA
 void AddGeolocationDescription(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     Browser* browser,
+    bool enable_high_accuracy,
     bool use_exact_location_label) {
   auto container = std::make_unique<views::View>();
 
@@ -212,7 +214,7 @@ void AddGeolocationDescription(
   const std::vector<std::u16string> placeholders{u"$1", u"$2", u"$3", u"$4"};
   std::vector<size_t> offsets;
   std::u16string contents_text = l10n_util::GetStringFUTF16(
-      use_exact_location_label
+      (use_exact_location_label && enable_high_accuracy)
           ? IDS_GEOLOCATION_PERMISSION_BUBBLE_EXACT_LOCATION_LABEL
           : IDS_GEOLOCATION_PERMISSION_BUBBLE_GENERAL_LOCATION_LABEL,
       placeholders, &offsets);
@@ -268,6 +270,15 @@ void AddGeolocationDescriptionIfNeeded(
     return;
   }
 
+  bool enable_high_accuracy = false;
+  if (auto* web_contents = delegate->GetAssociatedWebContents()) {
+    if (auto* geolocation_tab_helper =
+            BraveGeolocationPermissionTabHelper::FromWebContents(
+                web_contents)) {
+      enable_high_accuracy = geolocation_tab_helper->enable_high_accuracy();
+    }
+  }
+
 #if BUILDFLAG(IS_WIN)
   // IsSystemLocationSettingEnabled() uses COM.
   base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
@@ -277,22 +288,26 @@ void AddGeolocationDescriptionIfNeeded(
           base::BindOnce(
               [](base::WeakPtr<views::WidgetDelegate> widget_delegate_weak_ptr,
                  PermissionPromptBubbleBaseView* bubble_base_view,
-                 Browser* browser, bool settings_enabled) {
+                 Browser* browser, bool enable_high_accuracy,
+                 bool settings_enabled) {
                 if (!widget_delegate_weak_ptr) {
                   // Bubble is already gone.
                   return;
                 }
                 AddGeolocationDescription(
                     bubble_base_view, browser,
+                    /*enable_high_accuracy*/ enable_high_accuracy,
                     /*use_exact_location_label*/ settings_enabled);
 
                 // To update widget layout after adding another child view.
                 bubble_base_view->UpdateAnchorPosition();
               },
-              bubble_base_view->AsWeakPtr(), bubble_base_view, browser));
+              bubble_base_view->AsWeakPtr(), bubble_base_view, browser,
+              enable_high_accuracy));
 #else
   AddGeolocationDescription(bubble_base_view, browser,
-                            /*use_exact_location_label*/ false);
+                            /*use_exact_location_label*/ false,
+                            /*enable_high_accuracy*/ false);
 #endif
 }
 

@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/modules/geolocation/geolocation.cc b/third_party/blink/renderer/modules/geolocation/geolocation.cc
+index 1051a55224e0665e6b6672e53bdb423bd398f480..0488005f08dd53e277978856ed955a8fd06ae351 100644
+--- a/third_party/blink/renderer/modules/geolocation/geolocation.cc
++++ b/third_party/blink/renderer/modules/geolocation/geolocation.cc
+@@ -257,6 +257,7 @@ void Geolocation::StartRequest(GeoNotifier* notifier) {
+   if (HaveSuitableCachedPosition(notifier->Options())) {
+     notifier->SetUseCachedPosition();
+   } else {
++    BRAVE_START_REQUEST
+     StartUpdating(notifier);
+   }
+ }
