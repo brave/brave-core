@@ -81,6 +81,7 @@ default-features = false
 
 [dependencies.lazy_static]
 version = "1.4.0"
+features = ["spin_no_std"]
 optional = true
 
 [dependencies.rand]

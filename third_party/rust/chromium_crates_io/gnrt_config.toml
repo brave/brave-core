@@ -76,7 +76,10 @@ config_template = "vet_config.toml.hbs"
 
 [resolve]
 root = "chromium"
-remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', 'winapi-x86_64-pc-windows-gnu', 'minimal-lexical']
+# spin is added by pasta-curves lazy_static/spin_no_std, but we don't want to
+# use it and lazy_static is an upstream crate with a patch.crates-io so the
+# feature (and dependency) do not get added to the build anyway
+remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', 'winapi-x86_64-pc-windows-gnu', 'minimal-lexical', 'spin']
 
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
