@@ -399,12 +399,90 @@ class SolanaProviderTest : public InProcessBrowserTest {
     } else if (*method == "getBlockHeight") {
       std::string reply = R"({ "jsonrpc": "2.0", "id": 1, "result": 1233 })";
       http_response->set_content(reply);
+    } else if (*method == "getLatestBlockhash") {
+      std::string reply = R"({
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "context": {
+            "slot": 1069
+          },
+          "value": {
+            "blockhash": "EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N",
+            "lastValidBlockHeight": 18446744073709551615
+          }
+        }
+      })";
+      http_response->set_content(reply);
+    } else if (*method == "simulateTransaction") {
+      std::string reply = R"({
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "context": {
+            "apiVersion": "1.17.25",
+            "slot": 259225005
+          },
+          "value": {
+            "accounts": null,
+            "err": null,
+            "logs": [
+              "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY invoke [1]",
+              "Program log: Instruction: Transfer",
+              "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV invoke [2]",
+              "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV consumed 39 of 183791 compute units",
+              "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV success",
+              "Program cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK invoke [2]",
+              "Program log: Instruction: ReplaceLeaf",
+              "Program log: Attempting to fill in proof",
+              "Program consumption: 148976 units remaining",
+              "Program log: Active Index: 4",
+              "Program log: Rightmost Index: 1479308",
+              "Program log: Buffer Size: 64",
+              "Program log: Leaf Index: 885106",
+              "Program log: Fast-forwarding proof, starting index 4",
+              "Program consumption: 145902 units remaining",
+              "Program consumption: 145795 units remaining",
+              "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV invoke [3]",
+              "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV consumed 39 of 133311 compute units",
+              "Program noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV success",
+              "Program cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK consumed 36402 of 168927 compute units",
+              "Program cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK success",
+              "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY consumed 69017 of 200000 compute units",
+              "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY success"
+            ],
+            "returnData": null,
+            "unitsConsumed": 69017
+          }
+        }
+      })";
+      http_response->set_content(reply);
+    } else if (*method == "getSignatureStatuses") {
+      std::string reply =
+          R"({"jsonrpc":"2.0", "id":1, "result":"signature status not provided"})";
+      http_response->set_content(reply);
+    } else if (*method == "getFeeForMessage") {
+      std::string reply =
+          R"({"jsonrpc":"2.0", "id":1, "result":{"value":5000}})";
+      http_response->set_content(reply);
+    } else if (*method == "getRecentPrioritizationFees") {
+      std::string reply = R"({
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": [
+          {"prioritizationFee": 100, "slot": 293251906},
+          {"prioritizationFee": 200, "slot": 293251906},
+          {"prioritizationFee": 0, "slot": 293251805}
+        ]
+      })";
+      http_response->set_content(reply);
     } else {
-      http_response->set_content(R"({
-      "jsonrpc": "2.0",
-      "id": 1,
-      "result": "ns1aBL6AowxpiPzQL3ZeBK1RpCSLq1VfhqNw9KFSsytayARYdYrqrmbmhaizUTTkT4SXEnjnbVmPBrie3o9yuyB"
-    })");
+      std::string reply = R"({
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "ns1aBL6AowxpiPzQL3ZeBK1RpCSLq1VfhqNw9KFSsytayARYdYrqrmbmhaizUTTkT4SXEnjnbVmPBrie3o9yuyB"
+      })";
+      http_response->set_content(reply);
     }
     return std::move(http_response);
   }
