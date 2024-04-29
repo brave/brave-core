@@ -174,7 +174,7 @@ extension Tab {
       group.leave()
     }
 
-    if !isTabSessionRestored {
+    if shouldNotifyAdsServiceTabDidChange {
       group.enter()
       webView.evaluateSafeJavaScript(
         functionName: "document?.body?.innerText",
