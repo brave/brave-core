@@ -34,8 +34,7 @@ struct MediaContentView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: isFullScreen ? .center : .top)
-    //    .background(isFullScreen ? .black : Color(braveSystemName: .containerBackground))
-    .background(Color(braveSystemName: .containerBackground))
+    .background(isFullScreen ? .black : Color(braveSystemName: .containerBackground))
     .onChange(of: isFullScreen) { newValue in
       // Automatically rotate the device orientation on iPhones when the video is not portrait
       if UIDevice.current.userInterfaceIdiom == .phone, !model.isPortraitVideo {
@@ -43,8 +42,13 @@ struct MediaContentView: View {
       }
     }
     .onChange(of: interfaceOrientation) { newValue in
-      if UIDevice.current.userInterfaceIdiom == .phone, !model.isPortraitVideo {
-        toggleFullScreen(explicitFullScreenMode: newValue.isLandscape)
+      if UIDevice.current.userInterfaceIdiom == .phone {
+        if newValue.isLandscape {
+          // Always toggle fullscreen on landscape iPhone
+          toggleFullScreen(explicitFullScreenMode: true)
+        } else {
+          toggleFullScreen(explicitFullScreenMode: model.isPortraitVideo)
+        }
       }
     }
     .persistentSystemOverlays(isFullScreen ? .hidden : .automatic)

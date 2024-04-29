@@ -16,6 +16,7 @@ struct PlayerView: View {
   @State private var isControlsVisible: Bool = false
   @State private var autoHideControlsTask: Task<Void, Error>?
   @State private var dragOffset: CGSize = .zero
+  @State private var videoAmbianceDecorationImage: UIImage?
 
   @Environment(\.isFullScreen) private var isFullScreen
   @Environment(\.toggleFullScreen) private var toggleFullScreen
@@ -24,6 +25,15 @@ struct PlayerView: View {
     // FIXME: Will likely need a true AVPlayerLayer representable
     VideoPlayer(player: playerModel.player)
       .disabled(true)
+      .background {
+        if !isFullScreen, playerModel.isPlaying, let videoAmbianceDecorationImage {
+          Image(uiImage: videoAmbianceDecorationImage)
+            .resizable()
+            .blur(radius: 30)
+            .id(videoAmbianceDecorationImage)
+            .transition(.opacity)
+        }
+      }
       // For some reason this is required or the status bar breaks when touching anything on the
       // screen on an iPad...
       .statusBarHidden(isFullScreen && !isControlsVisible)
@@ -39,6 +49,13 @@ struct PlayerView: View {
       // FIXME: Better accessibility copy
       .accessibilityLabel(isFullScreen ? "Tap to toggle controls" : "Media player")
       .accessibilityAddTraits(isFullScreen ? .isButton : [])
+      .task {
+        for await image in playerModel.videoAmbianceImageStream {
+          withAnimation {
+            videoAmbianceDecorationImage = image
+          }
+        }
+      }
       .overlay {
         InlinePlaybackControlsView(model: playerModel)
           .background(

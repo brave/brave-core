@@ -82,6 +82,40 @@ final class PlayerModel: ObservableObject {
     player.play()
   }
 
+  /// A stream that yields downsampled thumbnails of the item currently playing.
+  var videoAmbianceImageStream: AsyncStream<UIImage> {
+    return .init { [weak self] continuation in
+      guard let self else { return }
+      let timeObserver = player.addCancellablePeriodicTimeObserver(
+        forInterval: 100,
+        queue: .global()
+      ) { [weak self] time in
+        guard let self,
+          self.isPlaying,
+          let buffer = self.videoDecorationOutput.copyPixelBuffer(
+            forItemTime: time,
+            itemTimeForDisplay: nil
+          )
+        else {
+          return
+        }
+        let ciImage = CIImage(cvPixelBuffer: buffer)
+          .transformed(by: .init(scaleX: 0.1, y: 0.1), highQualityDownsample: false)
+        if let cgImage = CIContext().createCGImage(ciImage, from: ciImage.extent) {
+          let uiImage = UIImage(cgImage: cgImage)
+          DispatchQueue.main.async {
+            continuation.yield(uiImage)
+          }
+        }
+      }
+      // Should be tied to the View, but adding ane extra killswitch
+      self.cancellables.insert(timeObserver)
+      continuation.onTermination = { _ in
+        timeObserver.cancel()
+      }
+    }
+  }
+
   var currentTimeStream: AsyncStream<TimeInterval> {
     return .init { [weak self] continuation in
       guard let self else { return }
@@ -249,6 +283,9 @@ final class PlayerModel: ObservableObject {
   // MARK: -
 
   let player: AVPlayer = .init()
+  private let videoDecorationOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: [
+    kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
+  ])
   var item: AVPlayerItem? {
     get {
       player.currentItem
@@ -256,6 +293,7 @@ final class PlayerModel: ObservableObject {
     set {
       player.replaceCurrentItem(with: newValue)
       setupPlayerItemKeyPathObservation()
+      newValue?.add(videoDecorationOutput)
     }
   }
   private let playerLayer: AVPlayerLayer = .init()
@@ -321,11 +359,12 @@ final class PlayerModel: ObservableObject {
 extension AVPlayer {
   fileprivate func addCancellablePeriodicTimeObserver(
     forInterval interval: TimeInterval,
+    queue: DispatchQueue = .main,
     using block: @escaping @Sendable (CMTime) -> Void
   ) -> AnyCancellable {
     let observer = addPeriodicTimeObserver(
       forInterval: CMTime(value: Int64(interval), timescale: 1000),
-      queue: .main,
+      queue: queue,
       using: block
     )
     return .init {
