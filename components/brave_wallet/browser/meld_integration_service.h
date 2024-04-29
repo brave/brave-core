@@ -37,7 +37,7 @@ class MeldIntegrationService : public KeyedService,
   mojo::PendingRemote<mojom::MeldIntegrationService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::MeldIntegrationService> receiver);
 
-  static GURL GetServiceProviderURL(mojom::MeldFilterPtr filter);
+  static GURL GetServiceProviderURL(const mojom::MeldFilterPtr& filter);
 
   void GetServiceProviders(mojom::MeldFilterPtr filter,
                            GetServiceProvidersCallback callback) override;
@@ -49,22 +49,22 @@ class MeldIntegrationService : public KeyedService,
                        const std::optional<std::string>& account,
                        GetCryptoQuotesCallback callback) override;
 
-  static GURL GetPaymentMethodsURL(mojom::MeldFilterPtr filter);
+  static GURL GetPaymentMethodsURL(const mojom::MeldFilterPtr& filter);
 
   void GetPaymentMethods(mojom::MeldFilterPtr filter,
                          GetPaymentMethodsCallback callback) override;
 
-  static GURL GetFiatCurrenciesURL(mojom::MeldFilterPtr filter);
+  static GURL GetFiatCurrenciesURL(const mojom::MeldFilterPtr& filter);
 
   void GetFiatCurrencies(mojom::MeldFilterPtr filter,
                          GetFiatCurrenciesCallback callback) override;
 
-  static GURL GetCryptoCurrenciesURL(mojom::MeldFilterPtr filter);
+  static GURL GetCryptoCurrenciesURL(const mojom::MeldFilterPtr& filter);
 
   void GetCryptoCurrencies(mojom::MeldFilterPtr filter,
                            GetCryptoCurrenciesCallback callback) override;
 
-  static GURL GetCountriesURL(mojom::MeldFilterPtr filter);
+  static GURL GetCountriesURL(const mojom::MeldFilterPtr& filter);
 
   void GetCountries(mojom::MeldFilterPtr filter,
                     GetCountriesCallback callback) override;

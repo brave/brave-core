@@ -36,7 +36,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
       semantics {
         sender: "Meld Integration Service"
         description:
-          "This service is used to obtain assets prices from the external Meld API  for the Brave wallet."
+          "This service is used to obtain assets prices from"
+          "the external Meld API  for the Brave wallet."
         trigger:
           "Triggered by uses of the native Brave wallet."
         data:
@@ -121,7 +122,7 @@ GURL AppendFilterParams(
   return url;
 }
 
-bool NeedsToParseResponse(const int& http_error_code) {
+bool NeedsToParseResponse(const int http_error_code) {
   static const base::NoDestructor<std::unordered_set<int>>
       kRespCodesAllowedToContinueParsing({400, 401, 403});
   return kRespCodesAllowedToContinueParsing->contains(http_error_code);
@@ -153,7 +154,7 @@ void MeldIntegrationService::Bind(
 
 // static
 GURL MeldIntegrationService::GetServiceProviderURL(
-    mojom::MeldFilterPtr filter) {
+    const mojom::MeldFilterPtr& filter) {
   return AppendFilterParams(
       GURL(base::StringPrintf("%s/service-providers",
                               GetMeldAssetRatioBaseURL().c_str())),
@@ -170,7 +171,7 @@ void MeldIntegrationService::GetServiceProviders(
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET", GetServiceProviderURL(std::move(filter)), "", "",
+      "GET", GetServiceProviderURL(filter), "", "",
       std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
@@ -290,7 +291,8 @@ void MeldIntegrationService::OnParseCryptoQuotes(
 }
 
 // static
-GURL MeldIntegrationService::GetPaymentMethodsURL(mojom::MeldFilterPtr filter) {
+GURL MeldIntegrationService::GetPaymentMethodsURL(
+    const mojom::MeldFilterPtr& filter) {
   return AppendFilterParams(
       GURL(base::StringPrintf("%s/service-providers/properties/payment-methods",
                               GetMeldAssetRatioBaseURL().c_str())),
@@ -309,9 +311,9 @@ void MeldIntegrationService::GetPaymentMethods(
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET", GetPaymentMethodsURL(std::move(filter)), "", "",
-      std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
+      "GET", GetPaymentMethodsURL(filter), "", "", std::move(internal_callback),
+      MakeMeldApiHeaders(), {.auto_retry_on_network_change = true},
+      std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetPaymentMethods(
@@ -352,7 +354,8 @@ void MeldIntegrationService::OnParsePaymentMethods(
 }
 
 // static
-GURL MeldIntegrationService::GetFiatCurrenciesURL(mojom::MeldFilterPtr filter) {
+GURL MeldIntegrationService::GetFiatCurrenciesURL(
+    const mojom::MeldFilterPtr& filter) {
   return AppendFilterParams(
       GURL(base::StringPrintf("%s/service-providers/properties/fiat-currencies",
                               GetMeldAssetRatioBaseURL().c_str())),
@@ -371,9 +374,9 @@ void MeldIntegrationService::GetFiatCurrencies(
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET", GetFiatCurrenciesURL(std::move(filter)), "", "",
-      std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
+      "GET", GetFiatCurrenciesURL(filter), "", "", std::move(internal_callback),
+      MakeMeldApiHeaders(), {.auto_retry_on_network_change = true},
+      std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetFiatCurrencies(
@@ -415,7 +418,7 @@ void MeldIntegrationService::OnParseFiatCurrencies(
 
 // static
 GURL MeldIntegrationService::GetCryptoCurrenciesURL(
-    mojom::MeldFilterPtr filter) {
+    const mojom::MeldFilterPtr& filter) {
   return AppendFilterParams(
       GURL(base::StringPrintf(
           "%s/service-providers/properties/crypto-currencies",
@@ -435,7 +438,7 @@ void MeldIntegrationService::GetCryptoCurrencies(
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET", GetCryptoCurrenciesURL(std::move(filter)), "", "",
+      "GET", GetCryptoCurrenciesURL(filter), "", "",
       std::move(internal_callback), MakeMeldApiHeaders(),
       {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
@@ -478,7 +481,8 @@ void MeldIntegrationService::OnParseCryptoCurrencies(
 }
 
 // static
-GURL MeldIntegrationService::GetCountriesURL(mojom::MeldFilterPtr filter) {
+GURL MeldIntegrationService::GetCountriesURL(
+    const mojom::MeldFilterPtr& filter) {
   return AppendFilterParams(
       GURL(base::StringPrintf("%s/service-providers/properties/countries",
                               GetMeldAssetRatioBaseURL().c_str())),
@@ -496,9 +500,9 @@ void MeldIntegrationService::GetCountries(mojom::MeldFilterPtr filter,
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET", GetCountriesURL(std::move(filter)), "", "",
-      std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
+      "GET", GetCountriesURL(filter), "", "", std::move(internal_callback),
+      MakeMeldApiHeaders(), {.auto_retry_on_network_change = true},
+      std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetCountries(

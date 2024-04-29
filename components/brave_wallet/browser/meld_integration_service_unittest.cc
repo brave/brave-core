@@ -28,7 +28,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
-    asset_ratio_service_ =
+    meld_integration_service_ =
         std::make_unique<MeldIntegrationService>(shared_url_loader_factory_);
   }
 
@@ -68,7 +68,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
                                          crypto_currencies, service_providers,
                                          payment_method_types, statuses);
 
-    asset_ratio_service_->GetServiceProviders(
+    meld_integration_service_->GetServiceProviders(
         std::move(filter),
         base::BindLambdaForTesting(
             [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
@@ -91,7 +91,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     SetInterceptor(content, http_status);
 
     base::RunLoop run_loop;
-    asset_ratio_service_->GetCryptoQuotes(
+    meld_integration_service_->GetCryptoQuotes(
         country, from_asset, to_asset, source_amount, account,
         base::BindLambdaForTesting(
             [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
@@ -119,7 +119,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
                                          crypto_currencies, service_providers,
                                          payment_method_types, statuses);
 
-    asset_ratio_service_->GetPaymentMethods(
+    meld_integration_service_->GetPaymentMethods(
         std::move(filter),
         base::BindLambdaForTesting(
             [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
@@ -148,7 +148,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
                                          crypto_currencies, service_providers,
                                          payment_method_types, statuses);
 
-    asset_ratio_service_->GetFiatCurrencies(
+    meld_integration_service_->GetFiatCurrencies(
         std::move(filter),
         base::BindLambdaForTesting(
             [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
@@ -176,7 +176,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
                                          crypto_currencies, service_providers,
                                          payment_method_types, statuses);
-    asset_ratio_service_->GetCryptoCurrencies(
+    meld_integration_service_->GetCryptoCurrencies(
         std::move(filter),
         base::BindLambdaForTesting(
             [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
@@ -203,7 +203,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
                                          crypto_currencies, service_providers,
                                          payment_method_types, statuses);
-    asset_ratio_service_->GetCountries(
+    meld_integration_service_->GetCountries(
         std::move(filter),
         base::BindLambdaForTesting(
             [&](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
@@ -215,7 +215,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
   }
 
  protected:
-  std::unique_ptr<MeldIntegrationService> asset_ratio_service_;
+  std::unique_ptr<MeldIntegrationService> meld_integration_service_;
   base::test::TaskEnvironment task_environment_;
 
  private:
@@ -227,8 +227,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
   auto filter = mojom::MeldFilter::New(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
-  const auto url =
-      MeldIntegrationService::GetServiceProviderURL(std::move(filter));
+  const auto url = MeldIntegrationService::GetServiceProviderURL(filter);
   EXPECT_EQ(url.path(), "/service-providers");
   EXPECT_EQ(url.query(),
             "accountFilter=false&statuses=LIVE%2CRECENTLY_ADDED&countries=US%"
@@ -308,11 +307,11 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
           }));
   TestGetServiceProvider(
       R"({
-  "code": "UNAUTHORIZED",
-  "message": "invalid profile or secret",
-  "requestId": "315a",
-  "timestamp": "2024-04-24T18:55:09.327818Z"
-})",
+    "code": "UNAUTHORIZED",
+    "message": "invalid profile or secret",
+    "requestId": "315a",
+    "timestamp": "2024-04-24T18:55:09.327818Z"
+  })",
       "US", "USD", "ETH", "", "", "",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
@@ -369,29 +368,29 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
   TestGetCryptoQuotes(
       R"({
-  "quotes": [
-    {
-      "transactionType": "CRYPTO_PURCHASE",
-      "sourceAmount": 50,
-      "sourceAmountWithoutFees": 43.97,
-      "fiatAmountWithoutFees": 43.97,
-      "destinationAmountWithoutFees": null,
-      "sourceCurrencyCode": "USD",
-      "countryCode": "US",
-      "totalFee": 6.03,
-      "networkFee": 3.53,
-      "transactionFee": 2,
-      "destinationAmount": 0.00066413,
-      "destinationCurrencyCode": "BTC",
-      "exchangeRate": 75286,
-      "paymentMethodType": "APPLE_PAY",
-      "customerScore": 20,
-      "serviceProvider": "TRANSAK"
-    }
-  ],
-  "message": null,
-  "error": null
-})",
+    "quotes": [
+      {
+        "transactionType": "CRYPTO_PURCHASE",
+        "sourceAmount": 50,
+        "sourceAmountWithoutFees": 43.97,
+        "fiatAmountWithoutFees": 43.97,
+        "destinationAmountWithoutFees": null,
+        "sourceCurrencyCode": "USD",
+        "countryCode": "US",
+        "totalFee": 6.03,
+        "networkFee": 3.53,
+        "transactionFee": 2,
+        "destinationAmount": 0.00066413,
+        "destinationCurrencyCode": "BTC",
+        "exchangeRate": 75286,
+        "paymentMethodType": "APPLE_PAY",
+        "customerScore": 20,
+        "serviceProvider": "TRANSAK"
+      }
+    ],
+    "message": null,
+    "error": null
+  })",
       "US", "USD", "BTC", 50, "btc account address",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
@@ -435,29 +434,29 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
 
   TestGetCryptoQuotes(
       R"({
-  "quotes": [
-    {
-      "transactionType": "CRYPTO_PURCHASE",
-      "sourceAmount": 50,
-      "sourceAmountWithoutFees": 43.97,
-      "fiatAmountWithoutFees": 43.97,
-      "destinationAmountWithoutFees": null,
-      "sourceCurrencyCode": "USD",
-      "countryCode": "US",
-      "totalFee": null,
-      "networkFee": 3.53,
-      "transactionFee": 2,
-      "destinationAmount": 0.00066413,
-      "destinationCurrencyCode": "BTC",
-      "exchangeRate": 75286,
-      "paymentMethodType": "APPLE_PAY",
-      "customerScore": 20,
-      "serviceProvider": "TRANSAK"
-    }
-  ],
-  "message": null,
-  "error": "error description"
-})",
+    "quotes": [
+      {
+        "transactionType": "CRYPTO_PURCHASE",
+        "sourceAmount": 50,
+        "sourceAmountWithoutFees": 43.97,
+        "fiatAmountWithoutFees": 43.97,
+        "destinationAmountWithoutFees": null,
+        "sourceCurrencyCode": "USD",
+        "countryCode": "US",
+        "totalFee": null,
+        "networkFee": 3.53,
+        "transactionFee": 2,
+        "destinationAmount": 0.00066413,
+        "destinationCurrencyCode": "BTC",
+        "exchangeRate": 75286,
+        "paymentMethodType": "APPLE_PAY",
+        "customerScore": 20,
+        "serviceProvider": "TRANSAK"
+      }
+    ],
+    "message": null,
+    "error": "error description"
+  })",
       "US", "USD", "BTC", 50, "btc account address",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
@@ -490,10 +489,10 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
       net::HTTP_BAD_REQUEST);
   TestGetCryptoQuotes(
       R"({
-  "quotes": null,
-  "message": null,
-  "error": "No Valid Quote Combinations Found For Provided Quote Request."
-})",
+    "quotes": null,
+    "message": null,
+    "error": "No Valid Quote Combinations Found For Provided Quote Request."
+  })",
       "US", "USD", "BTC", 50, "btc account address",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
@@ -511,8 +510,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
 
-  const auto url =
-      MeldIntegrationService::GetPaymentMethodsURL(std::move(filter));
+  const auto url = MeldIntegrationService::GetPaymentMethodsURL(filter);
   EXPECT_EQ(url.path(), "/service-providers/properties/payment-methods");
   EXPECT_EQ(url.query(),
             "accountFilter=false&includeServiceProviderDetails=false&statuses="
@@ -659,8 +657,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
   auto filter = mojom::MeldFilter::New(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
-  const auto url =
-      MeldIntegrationService::GetFiatCurrenciesURL(std::move(filter));
+  const auto url = MeldIntegrationService::GetFiatCurrenciesURL(filter);
   EXPECT_EQ(url.path(), "/service-providers/properties/fiat-currencies");
   EXPECT_EQ(url.query(),
             "accountFilter=false&includeServiceProviderDetails=false&statuses="
@@ -771,8 +768,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
   auto filter = mojom::MeldFilter::New(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
-  const auto url =
-      MeldIntegrationService::GetCryptoCurrenciesURL(std::move(filter));
+  const auto url = MeldIntegrationService::GetCryptoCurrenciesURL(filter);
   EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
   EXPECT_EQ(url.query(),
             "accountFilter=false&includeServiceProviderDetails=false&statuses="
@@ -905,7 +901,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
   auto filter = mojom::MeldFilter::New(
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", std::nullopt);
-  const auto url = MeldIntegrationService::GetCountriesURL(std::move(filter));
+  const auto url = MeldIntegrationService::GetCountriesURL(filter);
   EXPECT_EQ(url.path(), "/service-providers/properties/countries");
   EXPECT_EQ(url.query(),
             "accountFilter=false&includeServiceProviderDetails=false&statuses="

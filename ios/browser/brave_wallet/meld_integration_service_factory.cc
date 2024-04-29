@@ -1,9 +1,10 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
+#include <memory>
 
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
@@ -50,9 +51,8 @@ std::unique_ptr<KeyedService>
 MeldIntegrationServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  std::unique_ptr<MeldIntegrationService> meld_integration_service(
-      new MeldIntegrationService(browser_state->GetSharedURLLoaderFactory()));
-  return meld_integration_service;
+  return std::make_unique<MeldIntegrationService>(
+      browser_state->GetSharedURLLoaderFactory());
 }
 
 bool MeldIntegrationServiceFactory::ServiceIsNULLWhileTesting() const {
