@@ -7,10 +7,12 @@
 
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -195,4 +197,43 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, NewBrowser) {
       tab_strip_model_2->GetWebContentsAt(0)));
   EXPECT_FALSE(shared_pinned_tab_service->IsSharedContents(
       tab_strip_model_2->GetWebContentsAt(0)));
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, BringAllTabs) {
+  // Given that there're multiple windows with shared pinned tabs
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  auto* shared_pinned_tab_service = GetForBrowser(browser_1);
+  ASSERT_TRUE(shared_pinned_tab_service);
+  ASSERT_TRUE(shared_pinned_tab_service->IsSharedContents(
+      tab_strip_model_1->GetWebContentsAt(0)));
+
+  auto* browser_2 = CreateNewBrowser();
+  auto* tab_strip_model_2 = browser_2->tab_strip_model();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return tab_strip_model_2->count() > 1; }));
+  ASSERT_TRUE(tab_strip_model_2->IsTabPinned(0));
+  browser_2->ActivateContents(tab_strip_model_2->GetWebContentsAt(0));
+  browser_2->window()->Show();
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return shared_pinned_tab_service->IsSharedContents(
+        tab_strip_model_2->GetWebContentsAt(0));
+  }));
+  ASSERT_TRUE(shared_pinned_tab_service->IsDummyContents(
+      tab_strip_model_1->GetWebContentsAt(0)));
+
+  // When running "Bring all tabs to this window".
+  brave::BringAllTabs(browser_1);
+
+  // Then only the target browser should be left with shared contents.
+  auto* browser_list = BrowserList::GetInstance();
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return browser_list->size() == 1u; }));
+  EXPECT_EQ(browser_1, *browser_list->begin());
+  browser_1->window()->Show();
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return shared_pinned_tab_service->IsSharedContents(
+        tab_strip_model_1->GetWebContentsAt(0));
+  }));
 }

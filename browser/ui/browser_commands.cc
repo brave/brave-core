@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/functional/callback_helpers.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
@@ -683,6 +684,7 @@ void BringAllTabs(Browser* browser) {
 
   // Find all browsers with the same profile
   std::vector<Browser*> browsers;
+  base::flat_set<Browser*> browsers_to_close;
   base::ranges::copy_if(
       *BrowserList::GetInstance(), std::back_inserter(browsers),
       [&](const Browser* from) { return CanTakeTabs(from, browser); });
@@ -692,12 +694,23 @@ void BringAllTabs(Browser* browser) {
   std::stack<std::unique_ptr<tabs::TabModel>> detached_unpinned_tabs;
 
   base::ranges::for_each(browsers, [&detached_pinned_tabs,
-                                    &detached_unpinned_tabs](auto* other) {
+                                    &detached_unpinned_tabs,
+                                    &browsers_to_close](auto* other) {
     auto* tab_strip_model = other->tab_strip_model();
     const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();
     for (int i = tab_strip_model->count() - 1; i >= 0; --i) {
-      auto tab = tab_strip_model->DetachTabAtForInsertion(i);
       const bool is_pinned = i < pinned_tab_count;
+      if (is_pinned && base::FeatureList::IsEnabled(
+                           tabs::features::kBraveSharedPinnedTabs)) {
+        // SharedPinnedTabService is responsible for synchronizing pinned
+        // tabs, thus we shouldn't manually detach and attach tabs here.
+        // Meanwhile, the tab strips don't get empty when they have dummy
+        // contents, we should close the browsers manually.
+        browsers_to_close.insert(other);
+        continue;
+      }
+
+      auto tab = tab_strip_model->DetachTabAtForInsertion(i);
       if (is_pinned) {
         detached_pinned_tabs.push(std::move(tab));
       } else {
@@ -721,6 +734,11 @@ void BringAllTabs(Browser* browser) {
         tab_strip_model->count(), std::move(detached_unpinned_tabs.top()),
         AddTabTypes::ADD_NONE);
     detached_unpinned_tabs.pop();
+  }
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    base::ranges::for_each(browsers_to_close,
+                           [](auto* other) { other->window()->Close(); });
   }
 }
 
