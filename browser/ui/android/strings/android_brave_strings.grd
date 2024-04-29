@@ -1539,7 +1539,7 @@ Are you sure you want to do this?
         Block all cookies
       </message>
       <message name="IDS_BLOCK_COOKIES_OPTION_2" desc="Title for shields option.">
-        Block cross-site cookies
+        Block third-party cookies
       </message>
       <message name="IDS_BLOCK_COOKIES_OPTION_3" desc="Title for shields option.">
         Allow all cookies
