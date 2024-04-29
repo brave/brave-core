@@ -1,5 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Strings in this file use the Brave translation budget (and not PS). -->
+<!--
+  This file is deprecated in favor of the new Privacy Sandbox translation
+  pipeline found at //components/privacy_sandbox_strings.grd.
+  If you're considering making any changes to the strings here, please move them
+  over to the new file.
+-->
+<!-- LINT.IfChange -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
     <!-- Privacy Sandbox v4 - Consent EEA. -->
@@ -2302,6 +2308,14 @@
     Learn more about Tracking Protection availability
   </message>
 
+  <!-- Tracking Protection: Reminder -->
+  <message name="IDS_TRACKING_PROTECTION_REMINDER_LABEL" desc="Text on the tracking protection reminder in-product help mentioning that tracking protection is on." translateable="false">
+    Tracking Protection is on, which means Brave is limiting what sites can learn about you as you browse.
+  </message>
+  <message name="IDS_TRACKING_PROTECTION_REMINDER_A11Y_LABEL" desc="Text announced when the tracking protection reminder in-product is shown." translateable="false" is_accessibility_with_no_ui="true">
+    Tracking Protection is on, which means Brave is limiting what sites can learn about you as you browse.
+  </message>
+
   <message name="IDS_PRIVACY_SANDBOX_TRACKING_PROTECTION_BULLET_ONE_TITLE" desc="Title of the first explanatory bullet point on the Tracking Protection settings page." formatter_data="android_java">
     Brave automatically limits third-party cookies
   </message>
@@ -2354,3 +2368,4 @@
     Tracking Protection is temporarily unavailable. While Brave is updating this feature, sites can temporarily use third-party cookies unless you block them. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
   </message>
 </grit-part>
+<!-- LINT.ThenChange(/components/privacy_sandbox_strings.grd) -->
