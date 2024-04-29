@@ -271,8 +271,8 @@ void MdTextButton::UpdateBackgroundColor() {
       // patching it in via a #define.
       SkColor bg_color =
           GetColorProvider()->GetColor(ui::kColorDialogBackground);
-      if (GetBgColorOverride()) {
-        bg_color = *GetBgColorOverride();
+      if (GetBgColorOverrideDeprecated()) {
+        bg_color = *GetBgColorOverrideDeprecated();
       }
       if (GetState() == STATE_PRESSED) {
         bg_color = GetNativeTheme()->GetSystemButtonPressedColor(bg_color);
@@ -364,7 +364,7 @@ MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
   }
   const auto& style = it->second;
   return {.background_color = AddOpacity(
-              GetBgColorOverride().value_or(
+              GetBgColorOverrideDeprecated().value_or(
                   style.background_color.value_or(SK_ColorTRANSPARENT)),
               opacity),
           .stroke_color = AddOpacity(
