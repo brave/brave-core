@@ -33,7 +33,7 @@ inline constexpr char kPagesReloadedHistogramName[] =
 inline constexpr char kDomainsLoadedHistogramName[] =
     "Brave.Core.DomainsLoaded";
 inline constexpr char kFailedHTTPSUpgradesHistogramName[] =
-    "Brave.Core.FailedHTTPSUpgrades";
+    "Brave.Core.FailedHTTPSUpgrades.2";
 
 class PageMetrics {
  public:
