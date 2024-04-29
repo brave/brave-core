@@ -339,7 +339,7 @@ export function AutoContributePanel () {
         name: publisher.name,
         verified,
         provider: (publisher.provider ? publisher.provider : undefined),
-        src: `chrome://favicon/size/64@1x/${favIcon}`
+        src: `chrome://favicon2/size=64&pageUrl=${encodeURIComponent(favIcon)}`
       }
     }
 
