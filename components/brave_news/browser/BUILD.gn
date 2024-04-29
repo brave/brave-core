@@ -30,6 +30,8 @@ static_library("browser") {
     "feed_controller.h",
     "feed_fetcher.cc",
     "feed_fetcher.h",
+    "feed_generation_info.cc",
+    "feed_generation_info.h",
     "feed_sampling.cc",
     "feed_sampling.h",
     "feed_v2_builder.cc",

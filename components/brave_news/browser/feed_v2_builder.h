@@ -34,6 +34,8 @@ namespace brave_news {
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
 
+struct FeedGenerationInfo;
+
 class FeedV2Builder {
  public:
   FeedV2Builder(
@@ -66,8 +68,6 @@ class FeedV2Builder {
   void RecheckFeedHash(const BraveNewsSubscriptions& subscriptions);
 
  private:
-  struct FeedGenerationInfo;
-
   // FeedGenerator's will be called on a different thread. The data in
   // |FeedGenerationInfo| is a copy and can be safely modified.
   using FeedGenerator =

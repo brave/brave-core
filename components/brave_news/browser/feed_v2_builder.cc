@@ -33,6 +33,7 @@
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
+#include "brave/components/brave_news/browser/feed_generation_info.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
@@ -487,56 +488,6 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
 }
 
 }  // namespace
-
-struct FeedV2Builder::FeedGenerationInfo {
-  std::string locale;
-  FeedItems feed_items;
-  Publishers publishers;
-  std::vector<std::string> channels;
-  Signals signals;
-  std::vector<std::string> suggested_publisher_ids;
-  TopicsResult topics;
-  FeedGenerationInfo(const std::string& locale,
-                     const FeedItems& feed_items,
-                     const Publishers& publishers,
-                     std::vector<std::string> channels,
-                     const Signals& signals,
-                     const std::vector<std::string>& suggested_publisher_ids,
-                     const TopicsResult& topics)
-      : locale(locale),
-        channels(std::move(channels)),
-        suggested_publisher_ids(suggested_publisher_ids) {
-    this->feed_items.reserve(feed_items.size());
-    for (const auto& item : feed_items) {
-      this->feed_items.push_back(item->Clone());
-    }
-
-    this->publishers.reserve(publishers.size());
-    for (const auto& [id, publisher] : publishers) {
-      this->publishers[id] = publisher.Clone();
-    }
-
-    this->signals.reserve(signals.size());
-    for (const auto& [id, signal] : signals) {
-      this->signals[id] = signal->Clone();
-    }
-
-    this->topics.reserve(topics.size());
-    for (const auto& topic : topics) {
-      std::vector<api::topics::TopicArticle> articles;
-      articles.reserve(topic.second.size());
-      for (const auto& article : topic.second) {
-        articles.push_back(article.Clone());
-      }
-      this->topics.emplace_back(topic.first.Clone(), std::move(articles));
-    }
-  }
-  FeedGenerationInfo(const FeedGenerationInfo&) = delete;
-  FeedGenerationInfo& operator=(const FeedGenerationInfo&) = delete;
-  FeedGenerationInfo(FeedGenerationInfo&&) = default;
-  FeedGenerationInfo& operator=(FeedGenerationInfo&&) = default;
-  ~FeedGenerationInfo() = default;
-};
 
 FeedV2Builder::UpdateRequest::UpdateRequest(
     BraveNewsSubscriptions subscriptions,
