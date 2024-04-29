@@ -1,0 +1,10 @@
+diff --git a/third_party/rust/hex/v0_4/BUILD.gn b/third_party/rust/hex/v0_4/BUILD.gn
+index 01f9a8648b86f570c9ff4d52ecb99827a7b70d13..21562129c5a39fbcdf10d76770e18bc0b62e5dde 100644
+--- a/third_party/rust/hex/v0_4/BUILD.gn
++++ b/third_party/rust/hex/v0_4/BUILD.gn
+@@ -38,5 +38,4 @@ cargo_crate("lib") {
+     "alloc",
+     "std",
+   ]
+-  testonly = true
+ }

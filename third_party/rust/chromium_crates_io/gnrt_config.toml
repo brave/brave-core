@@ -76,7 +76,10 @@ config_template = "vet_config.toml.hbs"
 
 [resolve]
 root = "chromium"
-remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', 'winapi-x86_64-pc-windows-gnu', 'minimal-lexical']
+# spin is added by pasta-curves lazy_static/spin_no_std, but we don't want to
+# use it and lazy_static is an upstream crate with a patch.crates-io so the
+# feature (and dependency) do not get added to the build anyway
+remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', 'winapi-x86_64-pc-windows-gnu', 'minimal-lexical', 'spin']
 
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
@@ -197,3 +200,34 @@ if (is_ios) {
     deps += [ "//brave/third_party/rust/lifeguard/v0_6:lib" ]
   }
 '''}
+
+[crate.aes]
+extra_kv = { raw_gn = '''
+if (target_cpu == "x64" || target_cpu == "x86") {
+      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+''' }
+
+[crate.chacha20]
+extra_kv = { raw_gn = '''
+if (target_cpu == "x64" || target_cpu == "x86") {
+      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+''' }
+
+[crate.poly1305]
+extra_kv = { raw_gn = '''
+if (target_cpu == "x64" || target_cpu == "x86") {
+      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+''' }
+
+[crate.chacha20poly1305]
+extra_input_roots = [ "../README.md" ]
+
+[crate.reddsa]
+extra_input_roots = [ "../README.md" ]
+
+[crate.libm]
+extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
+

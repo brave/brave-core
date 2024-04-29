@@ -1,0 +1,19 @@
+{
+    "commit-ivk-bit-lengths": "design/circuit/commit-ivk.html#bit-length-constraints",
+    "commit-ivk-canonicity-ak": "design/circuit/commit-ivk.html#canonicity-ak",
+    "commit-ivk-canonicity-nk": "design/circuit/commit-ivk.html#canonicity-nk",
+    "commit-ivk-decompositions": "design/circuit/commit-ivk.html#constrain-bit-lengths",
+    "commit-ivk-region-layout": "design/circuit/commit-ivk.html#region-layout",
+    "note-commit-canonicity-g_d": "design/circuit/note-commit.html#canonicity-g_d",
+    "note-commit-canonicity-pk_d": "design/circuit/note-commit.html#canonicity-pk_d",
+    "note-commit-canonicity-psi": "design/circuit/note-commit.html#canonicity-psi",
+    "note-commit-canonicity-rho": "design/circuit/note-commit.html#canonicity-rho",
+    "note-commit-canonicity-v": "design/circuit/note-commit.html#canonicity-v",
+    "note-commit-canonicity-y": "design/circuit/note-commit.html#canonicity-y",
+    "note-commit-decomposition-b": "design/circuit/note-commit.html#decomposition-b",
+    "note-commit-decomposition-d": "design/circuit/note-commit.html#decomposition-d",
+    "note-commit-decomposition-e": "design/circuit/note-commit.html#decomposition-e",
+    "note-commit-decomposition-g": "design/circuit/note-commit.html#decomposition-g",
+    "note-commit-decomposition-h": "design/circuit/note-commit.html#decomposition-h",
+    "note-commit-decomposition-y": "design/circuit/note-commit.html#decomposition-y"
+}

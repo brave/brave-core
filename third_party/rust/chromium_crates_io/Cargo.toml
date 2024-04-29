@@ -25,6 +25,7 @@ brave-wallet-cxx = "1"
 adblock-cxx = { version = "1" }
 constellation-cxx = "0.1"
 challenge-bypass-ristretto-cxx = "1"
+orchard = { version = "0.7.0",  default-features = false }
 
 [patch.crates-io.futures-retry_v0_5]
 path = "../futures_retry/v0_5/crate"
@@ -114,6 +115,10 @@ package = "cxxbridge-macro"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/getrandom-0.2.12"
 package = "getrandom"
 
+[patch.crates-io.hex_v0_4]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/hex-0.4.3"
+package = "hex"
+
 [patch.crates-io.itoa_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/itoa-1.0.10"
 package = "itoa"
@@ -193,6 +198,10 @@ package = "serde_json"
 [patch.crates-io.serde_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/serde-1.0.197"
 package = "serde"
+
+[patch.crates-io.static_assertions_v0_1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/static_assertions-1.1.0"
+package = "static_assertions"
 
 [patch.crates-io.syn_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-1.0.109"
