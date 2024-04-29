@@ -287,7 +287,7 @@ class MockDownloadCoreService : public DownloadCoreService {
               ());
   MOCK_METHOD(bool, HasCreatedDownloadManager, ());
   MOCK_METHOD(int, BlockingShutdownCount, (), (const));
-  MOCK_METHOD(void, CancelDownloads, ());
+  MOCK_METHOD(void, CancelDownloads, (CancelDownloadsTrigger trigger));
   MOCK_METHOD(void,
               SetDownloadManagerDelegateForTesting,
               (std::unique_ptr<ChromeDownloadManagerDelegate> delegate));
