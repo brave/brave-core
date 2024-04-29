@@ -106,7 +106,7 @@ class SyncAddDeviceCodeView: UIStackView {
     $0.backgroundColor = .white
   }
 
-  private let qrCodeView: SyncQRCodeView
+  private let qrCodeView: SyncAddDeviceQRCodeView
 
   private let codeWordsContainerView = UIView().then {
     $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
@@ -131,7 +131,7 @@ class SyncAddDeviceCodeView: UIStackView {
   }
 
   required init(syncAPI: BraveSyncAPI) {
-    qrCodeView = SyncQRCodeView(syncApi: syncAPI)
+    qrCodeView = SyncAddDeviceQRCodeView(syncApi: syncAPI)
 
     super.init(frame: .zero)
 

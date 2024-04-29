@@ -4,7 +4,7 @@
 
 import BraveCore
 
-class SyncQRCodeView: UIImageView {
+class SyncAddDeviceQRCodeView: UIImageView {
 
   private let barcodeSize: CGFloat = 300.0
 
