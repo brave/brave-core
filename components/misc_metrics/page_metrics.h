@@ -42,7 +42,7 @@ inline constexpr char kPagesReloadedHistogramName[] =
 inline constexpr char kDomainsLoadedHistogramName[] =
     "Brave.Core.DomainsLoaded";
 inline constexpr char kFailedHTTPSUpgradesHistogramName[] =
-    "Brave.Core.FailedHTTPSUpgrades";
+    "Brave.Core.FailedHTTPSUpgrades.2";
 inline constexpr char kBookmarkCountHistogramName[] =
     "Brave.Core.BookmarkCount";
 

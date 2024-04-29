@@ -39,7 +39,7 @@ constexpr base::TimeDelta kInitReportDelay = base::Seconds(30);
 constexpr char kInterstitialDecisionHistogramName[] =
     "interstitial.https_first_mode.decision";
 
-constexpr size_t kMinDenominatorForFailedHTTPReport = 12;
+constexpr size_t kMinDenominatorForFailedHTTPReport = 100;
 
 }  // namespace
 
