@@ -532,21 +532,21 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
 TEST_F(SwapServiceUnitTest, GetZeroExQuoteError) {
   std::string error = R"(
     {
-      "code": 100,
+      "code": "100",
       "reason": "Validation Failed",
       "validationErrors": [
         {
-          "code": 1000,
+          "code": "1000",
           "field": "sellAmount",
           "reason": "should have required property 'sellAmount'"
         },
         {
-          "code": 1000,
+          "code": "1000",
           "field": "buyAmount",
           "reason": "should have required property 'buyAmount'"
         },
         {
-          "code": 1001,
+          "code": "1001",
           "field": "",
           "reason": "should match exactly one schema in oneOf"
         }
@@ -729,7 +729,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransaction) {
 
 TEST_F(SwapServiceUnitTest, GetZeroExTransactionError) {
   std::string error =
-      R"({"code":100,"reason":"Validation Failed","validationErrors":[{"code":1000,"field":"sellAmount","reason":"should have required property 'sellAmount'"},{"code":1000,"field":"buyAmount","reason":"should have required property 'buyAmount'"},{"code":1001,"field":"","reason":"should match exactly one schema in oneOf"}]})";
+      R"({"code":"100","reason":"Validation Failed","validationErrors":[{"code":"1000","field":"sellAmount","reason":"should have required property 'sellAmount'"},{"code":"1000","field":"buyAmount","reason":"should have required property 'buyAmount'"},{"code":"1001","field":"","reason":"should match exactly one schema in oneOf"}]})";
   SetErrorInterceptor(error);
 
   base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
@@ -1416,7 +1416,7 @@ TEST_F(SwapServiceUnitTest, GetLiFiTransaction) {
       "transactionRequest": {
         "from": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
         "to": "0x1111111254fb6c44bac0bed2854e76f90643097d",
-        "chainId": 100,
+        "chainId": "100",
         "data": "0x...",
         "value": "0x0de0b6b3a7640000",
         "gasPrice": "0xb2d05e00",

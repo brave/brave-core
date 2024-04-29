@@ -24,7 +24,7 @@
 
 namespace {
 
-constexpr int kSwapValidationErrorCode = 100;
+constexpr char kSwapValidationErrorCode[] = "100";
 constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
 constexpr char kJupiterNoRoutesMessage[] =
     "No routes found for the input and output mints";
@@ -171,21 +171,21 @@ mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
   // https://github.com/0xProject/0x-monorepo/blob/development/packages/json-schemas/schemas/relayer_api_error_response_schema.json
   //
   // {
-  // 	"code": 100,
+  // 	"code": "100",
   // 	"reason": "Validation Failed",
   // 	"validationErrors": [{
   // 			"field": "sellAmount",
-  // 			"code": 1001,
+  // 			"code": "1001",
   // 			"reason": "should match pattern \"^\\d+$\""
   // 		},
   // 		{
   // 			"field": "sellAmount",
-  // 			"code": 1001,
+  // 			"code": "1001",
   // 			"reason": "should be integer"
   // 		},
   // 		{
   // 			"field": "sellAmount",
-  // 			"code": 1001,
+  // 			"code": "1001",
   // 			"reason": "should match some schema in anyOf"
   // 		}
   // 	]
@@ -633,8 +633,7 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
   evm_transaction->gas_limit = value->transaction_request.gas_limit.value();
 
   if (value->transaction_request.chain_id.has_value()) {
-    auto chain_id = ChainIdToHex(
-        base::NumberToString(value->transaction_request.chain_id.value()));
+    auto chain_id = ChainIdToHex(value->transaction_request.chain_id.value());
     if (!chain_id) {
       return nullptr;
     }

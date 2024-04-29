@@ -494,23 +494,23 @@ TEST(SwapResponseParserUnitTest, ParseZeroExErrorResponse) {
   {
     std::string json(R"(
     {
-      "code": 100,
+      "code": "100",
       "reason": "Validation Failed",
       "validationErrors": [
         {
           "field": "buyAmount",
-          "code": 1004,
+          "code": "1004",
           "reason": "INSUFFICIENT_ASSET_LIQUIDITY"
         }
       ]
     })");
 
     auto swap_error = zeroex::ParseErrorResponse(ParseJson(json));
-    EXPECT_EQ(swap_error->code, 100);
+    EXPECT_EQ(swap_error->code, "100");
     EXPECT_EQ(swap_error->reason, "Validation Failed");
     EXPECT_EQ(swap_error->validation_errors.size(), 1u);
     EXPECT_EQ(swap_error->validation_errors.front()->field, "buyAmount");
-    EXPECT_EQ(swap_error->validation_errors.front()->code, 1004);
+    EXPECT_EQ(swap_error->validation_errors.front()->code, "1004");
     EXPECT_EQ(swap_error->validation_errors.front()->reason,
               "INSUFFICIENT_ASSET_LIQUIDITY");
 
@@ -519,23 +519,23 @@ TEST(SwapResponseParserUnitTest, ParseZeroExErrorResponse) {
   {
     std::string json(R"(
     {
-      "code": 100,
+      "code": "100",
       "reason": "Validation Failed",
       "validationErrors": [
         {
           "field": "buyAmount",
-          "code": 1004,
+          "code": "1004",
           "reason": "SOMETHING_ELSE"
         }
       ]
     })");
 
     auto swap_error = zeroex::ParseErrorResponse(ParseJson(json));
-    EXPECT_EQ(swap_error->code, 100);
+    EXPECT_EQ(swap_error->code, "100");
     EXPECT_EQ(swap_error->reason, "Validation Failed");
     EXPECT_EQ(swap_error->validation_errors.size(), 1u);
     EXPECT_EQ(swap_error->validation_errors.front()->field, "buyAmount");
-    EXPECT_EQ(swap_error->validation_errors.front()->code, 1004);
+    EXPECT_EQ(swap_error->validation_errors.front()->code, "1004");
     EXPECT_EQ(swap_error->validation_errors.front()->reason, "SOMETHING_ELSE");
 
     EXPECT_FALSE(swap_error->is_insufficient_liquidity);
@@ -1127,7 +1127,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiTransactionResponse) {
       "transactionRequest": {
         "from": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
         "to": "0x1111111254fb6c44bac0bed2854e76f90643097d",
-        "chainId": 100,
+        "chainId": "100",
         "data": "0x...",
         "value": "0x0de0b6b3a7640000",
         "gasPrice": "0xb2d05e00",
@@ -1266,6 +1266,24 @@ TEST(SwapResponseParserUnitTest, ParseLiFiTransactionResponse) {
         "from": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
         "to": "0x1111111254fb6c44bac0bed2854e76f90643097d",
         "chainId": "100",
+        "data": "0x...",
+        "value": "0x0de0b6b3a7640000",
+        "gasPrice": "0xb2d05e00"
+      }
+    })");
+
+    auto transaction = lifi::ParseTransactionResponse(ParseJson(json));
+    EXPECT_FALSE(transaction);
+  }
+
+  {
+    // KO: invalid chainId field
+    std::string json(R"(
+    {
+      "transactionRequest": {
+        "from": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+        "to": "0x1111111254fb6c44bac0bed2854e76f90643097d",
+        "chainId": "foobar",
         "data": "0x...",
         "value": "0x0de0b6b3a7640000",
         "gasPrice": "0xb2d05e00"

@@ -567,12 +567,12 @@ struct ZeroExQuote {
 
 struct ZeroExErrorItem {
   string field;
-  int32 code;
+  string code;
   string reason;
 };
 
 struct ZeroExError {
-  int32 code;
+  string code;
   string reason;
   array<ZeroExErrorItem> validation_errors;
   bool is_insufficient_liquidity;
