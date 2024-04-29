@@ -75,10 +75,27 @@
         <item name="buttonTint">@color/brave_wallet_checkbox_color</item>
     </style>
 
+    <style name="BraveWalletInputLayoutTheme">
+        <!-- Text selection handle color. -->
+        <!-- It must be set as a theme at component level -->
+        <!-- as we don't want to change it for the whole app. -->
+        <item name="colorControlActivated">@color/brave_wallet_semantic_icon_interactive</item>
+    </style>
+
     <style name="BraveWalletInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <!-- border color -->
-        <item name="boxStrokeColor">#3F39E8</item>
-        <item name="hintTextColor">#3F39E8</item>
+        <!-- Border color. -->
+        <item name="boxStrokeColor">@color/wallet_onboarding_input_field_stroke_color</item>
+        <!-- Hint text color that translates to the top of the view. -->
+        <item name="hintTextColor">@color/brave_wallet_semantic_text_primary</item>
+        <!-- Blinking cursor color. -->
+        <item name="cursorColor">@color/brave_wallet_semantic_icon_interactive</item>
+        <!-- Blinking cursor color on error state. -->
+        <item name="cursorErrorColor">@color/brave_wallet_semantic_system_feedback_error</item>
+    </style>
+
+    <style name="BraveWalletInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <!-- Text selection background color. -->
+        <item name="android:textColorHighlight">@color/brave_wallet_themable_primary_20</item>
     </style>
 
     <!--  Brave Wallet buttons  -->
@@ -98,6 +115,8 @@
 
     <style name="BraveWalletOnboardingButton" parent="BraveWalletButton">
         <item name="android:background">@drawable/crypto_wallet_onboarding_blue_button</item>
+        <item name="android:textColor">@color/crypto_wallet_onboarding_button_text_color</item>
+        <item name="android:foreground">@null</item>
     </style>
 
     <style name="BraveWalletTextButton" parent="Widget.AppCompat.Button">

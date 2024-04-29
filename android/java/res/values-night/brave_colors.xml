@@ -51,6 +51,14 @@
 
     <!-- Brave wallet 2.0 colors -->
     <color name="brave_wallet_dn_panel_bg">@color/wallet_bg</color>
+    <color name="brave_wallet_semantic_button_disabled">#4D687B85</color>
+    <color name="brave_wallet_semantic_text_disabled">#80EBEEF0</color>
+    <color name="brave_wallet_semantic_text_primary">#F3F5F7</color>
+    <color name="brave_wallet_semantic_icon_interactive">#7C91FF</color>
+    <color name="brave_wallet_themable_primary_20">#2A118E</color>
+    <color name="brave_wallet_semantic_divider_subtle">#66687B85</color>
+    <color name="brave_wallet_semantic_system_feedback_error">#FFB1B0</color>
+
 
     <color name="wallet_onboarding_gradient_start">#1d1d36</color>
     <color name="wallet_onboarding_gradient_center">#131221</color>
@@ -126,8 +134,6 @@
     <color name="brave_stats_empty_text_color">#F6F7F8</color>
     <color name="brave_blue_tint_color">#737ADE</color>
     <color name="brave_stats_ic_clock_color">#1075C9</color>
-
-
 
     <color name="wallet_text_color">#F6F7F8</color>
     <color name="wallet_secondary_text_color">#84889C</color>
