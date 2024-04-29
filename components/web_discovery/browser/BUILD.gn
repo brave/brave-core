@@ -5,11 +5,22 @@
 
 static_library("browser") {
   sources = [
+    "server_config_loader.cc",
+    "server_config_loader.h",
+    "util.cc",
+    "util.h",
     "wdp_service.cc",
     "wdp_service.h",
   ]
   deps = [
     "anonymous_credentials/rs:rust_lib",
     "//base",
+    "//brave/brave_domains",
+    "//brave/components/constants",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
   ]
 }
