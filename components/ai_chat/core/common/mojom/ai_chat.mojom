@@ -148,14 +148,15 @@ struct ModelWithSubtitle {
   string subtitle;
 };
 
-union Action {
+union ActionDetails {
   ActionType type;
+  // An empty field indicates that this is not a valid action and will be used for other purposes, such as a subheading.
   bool empty;
 };
 
 struct LabeledAction {
   string label;
-  Action action;
+  ActionDetails action_details;
 };
 
 struct ActionGroup {

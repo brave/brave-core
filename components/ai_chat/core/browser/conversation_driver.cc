@@ -198,79 +198,89 @@ std::vector<mojom::ActionGroupPtr> ConversationDriver::GetActionMenuList() {
 
   {
     std::vector<mojom::LabeledActionPtr> actions;
-    mojom::ActionGroupPtr group =
-        mojom::ActionGroup::New("Quick actions", std::move(actions));
+    mojom::ActionGroupPtr group = mojom::ActionGroup::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_QUICK_ACTIONS),
+        std::move(actions));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Explain", mojom::Action::NewType(mojom::ActionType::EXPLAIN)));
+        "Explain", mojom::ActionDetails::NewType(mojom::ActionType::EXPLAIN)));
 
     action_list.push_back(std::move(group));
   }
 
   {
     std::vector<mojom::LabeledActionPtr> actions;
-    mojom::ActionGroupPtr group =
-        mojom::ActionGroup::New("Rewrite", std::move(actions));
+    mojom::ActionGroupPtr group = mojom::ActionGroup::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_REWRITE),
+        std::move(actions));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Paraphrase", mojom::Action::NewType(mojom::ActionType::PARAPHRASE)));
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PARAPHRASE),
+        mojom::ActionDetails::NewType(mojom::ActionType::PARAPHRASE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Improve", mojom::Action::NewType(mojom::ActionType::IMPROVE)));
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_IMPROVE),
+        mojom::ActionDetails::NewType(mojom::ActionType::IMPROVE)));
 
+    // Subheading
     group->actions.push_back(mojom::LabeledAction::New(
-        "Change tone", mojom::Action::NewEmpty(true)));
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CHANGE_TONE),
+        mojom::ActionDetails::NewEmpty(true)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         "Change tone / Academic",
-        mojom::Action::NewType(mojom::ActionType::ACADEMICIZE)));
+        mojom::ActionDetails::NewType(mojom::ActionType::ACADEMICIZE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         "Change tone / Professional",
-        mojom::Action::NewType(mojom::ActionType::PROFESSIONALIZE)));
+        mojom::ActionDetails::NewType(mojom::ActionType::PROFESSIONALIZE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         "Change tone / Persuasive",
-        mojom::Action::NewType(mojom::ActionType::PERSUASIVE_TONE)));
+        mojom::ActionDetails::NewType(mojom::ActionType::PERSUASIVE_TONE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         "Change tone / Casual",
-        mojom::Action::NewType(mojom::ActionType::CASUALIZE)));
+        mojom::ActionDetails::NewType(mojom::ActionType::CASUALIZE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         "Change tone / Funny",
-        mojom::Action::NewType(mojom::ActionType::FUNNY_TONE)));
+        mojom::ActionDetails::NewType(mojom::ActionType::FUNNY_TONE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         "Change tone / Short",
-        mojom::Action::NewType(mojom::ActionType::SHORTEN)));
+        mojom::ActionDetails::NewType(mojom::ActionType::SHORTEN)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         "Change tone / Expand",
-        mojom::Action::NewType(mojom::ActionType::SHORTEN)));
+        mojom::ActionDetails::NewType(mojom::ActionType::SHORTEN)));
 
     action_list.push_back(std::move(group));
   }
 
   {
     std::vector<mojom::LabeledActionPtr> actions;
-    mojom::ActionGroupPtr group =
-        mojom::ActionGroup::New("Create", std::move(actions));
+    mojom::ActionGroupPtr group = mojom::ActionGroup::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE),
+        std::move(actions));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Tagline", mojom::Action::NewType(mojom::ActionType::CREATE_TAGLINE)));
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE_TAGLINE),
+        mojom::ActionDetails::NewType(mojom::ActionType::CREATE_TAGLINE)));
 
+    // Subheading
     group->actions.push_back(mojom::LabeledAction::New(
-        "Social media", mojom::Action::NewEmpty(true)));
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST),
+        mojom::ActionDetails::NewEmpty(true)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         "Social media / Short",
-        mojom::Action::NewType(
+        mojom::ActionDetails::NewType(
             mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         "Social media / Long",
-        mojom::Action::NewType(
+        mojom::ActionDetails::NewType(
             mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG)));
 
     action_list.push_back(std::move(group));
@@ -324,7 +334,8 @@ std::vector<mojom::ModelPtr> ConversationDriver::GetModels() {
   return models;
 }
 
-const std::vector<ConversationTurn>& ConversationDriver::GetConversationHistory() {
+const std::vector<ConversationTurn>&
+ConversationDriver::GetConversationHistory() {
   return chat_history_;
 }
 
@@ -344,7 +355,8 @@ ConversationDriver::GetVisibleConversationHistory() {
   return list;
 }
 
-void ConversationDriver::OnConversationActiveChanged(bool is_conversation_active) {
+void ConversationDriver::OnConversationActiveChanged(
+    bool is_conversation_active) {
   is_conversation_active_ = is_conversation_active;
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;
   MaybeSeedOrClearSuggestions();
@@ -414,7 +426,8 @@ void ConversationDriver::OnUserOptedIn() {
   }
 }
 
-void ConversationDriver::AddToConversationHistory(mojom::ConversationTurn turn) {
+void ConversationDriver::AddToConversationHistory(
+    mojom::ConversationTurn turn) {
   chat_history_.push_back(std::move(turn));
 
   for (auto& obs : observers_) {
@@ -432,7 +445,8 @@ void ConversationDriver::AddToConversationHistory(mojom::ConversationTurn turn) 
   }
 }
 
-void ConversationDriver::UpdateOrCreateLastAssistantEntry(std::string updated_text) {
+void ConversationDriver::UpdateOrCreateLastAssistantEntry(
+    std::string updated_text) {
   updated_text = base::TrimWhitespaceASCII(updated_text, base::TRIM_LEADING);
   if (chat_history_.empty() ||
       chat_history_.back().character_type != CharacterType::ASSISTANT) {
@@ -988,7 +1002,7 @@ bool ConversationDriver::IsRequestInProgress() {
 }
 
 void ConversationDriver::OnEngineCompletionDataReceived(int64_t navigation_id,
-                                                  std::string result) {
+                                                        std::string result) {
   if (navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;

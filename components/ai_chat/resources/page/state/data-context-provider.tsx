@@ -26,24 +26,24 @@ function useActionMenu() {
     // effectively remove the leading slash (\) before comparing it to the action labels.
     const text = searchText.substring(1).toLocaleLowerCase()
 
-    const filteredList = actionList.map(list => ({
-      ...list,
-      actions: list.actions.filter(action => {
+    const filteredList = actionList.map(actionGroup => ({
+      ...actionGroup,
+      actions: actionGroup.actions.filter(action => {
         // we skip non action types in the list as they're meant for display heading
-        if (action.action.empty) return
+        if (action.actionDetails.empty) return
         return action.label.toLocaleLowerCase().includes(text)
       })
-    })).filter(actionList => actionList.actions.length > 0)
+    })).filter(actionGroup => actionGroup.actions.length > 0)
 
     return filteredList
   }
 
-  const getFirstValidAction = (list: mojom.ActionGroup[]): mojom.Action => {
+  const getFirstValidAction = (list: mojom.ActionGroup[]): mojom.ActionDetails => {
     const action = list.flatMap(list => {
       return list.actions
-    }).filter(action => action.action.type !== undefined)
+    }).filter(action => action.actionDetails.type !== undefined)
 
-    return (action[0].action)
+    return (action[0].actionDetails)
   }
 
   React.useEffect(() => {
