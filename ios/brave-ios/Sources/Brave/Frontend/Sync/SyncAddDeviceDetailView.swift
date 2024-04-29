@@ -177,3 +177,75 @@ class SyncAddDeviceCodeView: UIStackView {
     codeWordsContainerView.isHidden = isFirstIndex
   }
 }
+
+class SyncAddDeviceActionView: UIStackView {
+
+  public protocol ActionDelegate: AnyObject {
+    func copyToClipboard()
+    func dismiss()
+  }
+
+  private lazy var doneButton = UIButton().then {
+    $0.setTitle(Strings.done, for: .normal)
+    $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
+    $0.addTarget(self, action: #selector(dismiss), for: .touchUpInside)
+    $0.setTitleColor(.white, for: .normal)
+    $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
+    $0.layer.cornerRadius = 12
+    $0.layer.cornerCurve = .continuous
+  }
+
+  private lazy var copyPasteButton = UIButton().then {
+    $0.setTitle(Strings.copyToClipboard, for: .normal)
+    $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
+    $0.addTarget(self, action: #selector(copyToClipboard), for: .touchUpInside)
+    $0.setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
+    $0.isHidden = true
+  }
+
+  private var copyButtonPressed = false {
+    didSet {
+      if copyButtonPressed {
+        copyPasteButton.setTitle(Strings.copiedToClipboard, for: .normal)
+      } else {
+        copyPasteButton.setTitle(Strings.copyToClipboard, for: .normal)
+      }
+    }
+  }
+
+  weak var delegate: ActionDelegate?
+
+  required init() {
+    super.init(frame: .zero)
+
+    axis = .vertical
+    spacing = 4
+    distribution = .fillEqually
+    setContentCompressionResistancePriority(.required, for: .vertical)
+
+    addArrangedSubview(copyPasteButton)
+    addArrangedSubview(doneButton)
+
+    doneButton.snp.makeConstraints {
+      $0.height.equalTo(40)
+    }
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
+  func swapCodeViewType(_ isFirstIndex: Bool) {
+    copyPasteButton.isHidden = isFirstIndex
+  }
+
+  @objc func copyToClipboard() {
+    copyButtonPressed = true
+    delegate?.copyToClipboard()
+  }
+
+  @objc func dismiss() {
+    delegate?.dismiss()
+  }
+}

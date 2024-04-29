@@ -41,30 +41,7 @@ class SyncAddDeviceViewController: SyncViewController {
 
   private let codeDetailsStackView: SyncAddDeviceCodeView
 
-  private let actionButtonStackView = UIStackView().then {
-    $0.axis = .vertical
-    $0.spacing = 4
-    $0.distribution = .fillEqually
-    $0.setContentCompressionResistancePriority(.required, for: .vertical)
-  }
-
-  private var doneButton = UIButton().then {
-    $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.setTitle(Strings.done, for: .normal)
-    $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
-    $0.setTitleColor(.white, for: .normal)
-    $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-    $0.layer.cornerRadius = 12
-    $0.layer.cornerCurve = .continuous
-  }
-
-  private lazy var copyPasteButton = UIButton().then {
-    $0.setTitle(Strings.copyToClipboard, for: .normal)
-    $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
-    $0.addTarget(self, action: #selector(copyToClipboard), for: .touchUpInside)
-    $0.setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
-    $0.isHidden = true
-  }
+  private let actionButtonStackView = SyncAddDeviceActionView()
 
   // MARK: Internal
 
@@ -72,19 +49,9 @@ class SyncAddDeviceViewController: SyncViewController {
 
   private var deviceType: SyncDeviceType = .mobile
 
-  private var isSyncCodeExpired = true {
+  private var isSyncCodeExpired = false {
     didSet {
       changeCodeDisplayStatus()
-    }
-  }
-
-  private var copyButtonPressed = false {
-    didSet {
-      if copyButtonPressed {
-        copyPasteButton.setTitle(Strings.copiedToClipboard, for: .normal)
-      } else {
-        copyPasteButton.setTitle(Strings.copyToClipboard, for: .normal)
-      }
     }
   }
 
@@ -147,11 +114,10 @@ class SyncAddDeviceViewController: SyncViewController {
       $0.addTarget(self, action: #selector(changeMode), for: .valueChanged)
     }
 
-    doneButton.addTarget(self, action: #selector(done), for: .touchUpInside)
+    actionButtonStackView.delegate = self
   }
 
   private func doLayout() {
-    // Scroll View
     view.addSubview(scrollViewContainer)
     view.addSubview(actionButtonStackView)
 
@@ -173,21 +139,16 @@ class SyncAddDeviceViewController: SyncViewController {
     contentStackView.addArrangedSubview(codeDetailsStackView)
 
     // Copy - Paste - Done Button
-    doneButton.snp.makeConstraints {
-      $0.height.equalTo(40)
-    }
-    actionButtonStackView.addArrangedSubview(copyPasteButton)
-    actionButtonStackView.addArrangedSubview(doneButton)
-
-    scrollViewContainer.snp.makeConstraints {
-      $0.top.equalTo(view.safeArea.top).inset(10)
-      $0.left.right.equalTo(view)
-    }
-
     actionButtonStackView.snp.makeConstraints {
       $0.top.equalTo(scrollViewContainer.snp.bottom).inset(-24)
       $0.left.right.equalTo(view).inset(24)
       $0.bottom.equalTo(view.safeArea.bottom).inset(24)
+    }
+
+    // Scroll View
+    scrollViewContainer.snp.makeConstraints {
+      $0.top.equalTo(view.safeArea.top).inset(10)
+      $0.left.right.equalTo(view)
     }
 
     changeCodeDisplayStatus()
@@ -209,7 +170,7 @@ class SyncAddDeviceViewController: SyncViewController {
     if isSyncCodeExpired {
       // Hide Active Status Elements
       codeDetailsStackView.isHidden = true
-      copyPasteButton.isHidden = true
+      actionButtonStackView.swapCodeViewType(true)
 
       // Reveal Expired Elements
 
@@ -225,31 +186,31 @@ class SyncAddDeviceViewController: SyncViewController {
     let isFirstIndex = modeControl.selectedSegmentIndex == 0
 
     codeDetailsStackView.swapCodeViewType(isFirstIndex)
-    copyPasteButton.isHidden = isFirstIndex
+    actionButtonStackView.swapCodeViewType(isFirstIndex)
   }
-}
 
-// MARK: Actions
-
-extension SyncAddDeviceViewController {
-  @objc func showCodewords() {
+  private func showCodewords() {
     modeControl.selectedSegmentIndex = 1
     changeMode()
   }
 
-  @objc func copyToClipboard() {
-    if let words = codeDetailsStackView.syncChainCode {
-      UIPasteboard.general.setSecureString(words, expirationDate: Date().addingTimeInterval(30))
-      copyButtonPressed = true
-    }
-  }
-
-  @objc func changeMode() {
+  @objc private func changeMode() {
     changeCodeDisplayStatus()
     titleDescriptionStackView.updateLabels(isFirstIndex: modeControl.selectedSegmentIndex == 0)
   }
+}
 
-  @objc func done() {
+// MARK: Action-Delegate
+
+extension SyncAddDeviceViewController: SyncAddDeviceActionView.ActionDelegate {
+
+  func copyToClipboard() {
+    if let words = codeDetailsStackView.syncChainCode {
+      UIPasteboard.general.setSecureString(words, expirationDate: Date().addingTimeInterval(30))
+    }
+  }
+
+  func dismiss() {
     addDeviceHandler?()
   }
 }
