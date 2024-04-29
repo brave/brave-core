@@ -83,7 +83,7 @@ void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
           {kColorBraveVerticalTabNTBTextColor, SkColorSetRGB(0x6B, 0x70, 0x84)},
           {kColorBraveVerticalTabNTBShortcutTextColor,
            SkColorSetRGB(0x85, 0x89, 0x89)},
-          {kColorBraveSplitViewTileBackground, SkColorSetRGB(0xDA, 0xDF, 0xD1)},
+          {kColorBraveSplitViewTileBackground, SkColorSetRGB(0xDA, 0xDF, 0xE1)},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
     mixer[color_id] =
@@ -111,7 +111,7 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
           {kColorBraveVerticalTabNTBTextColor, SkColorSetRGB(0x8C, 0x90, 0xA1)},
           {kColorBraveVerticalTabNTBShortcutTextColor,
            SkColorSetRGB(0x68, 0x6D, 0x7D)},
-          {kColorBraveSplitViewTileBackground, SkColorSetRGB(0x21, 0x27, 0x2A)},
+          {kColorBraveSplitViewTileBackground, SkColorSetRGB(0x0D, 0x12, 0x14)},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
     auto color =
@@ -128,6 +128,26 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorBraveSplitViewInactiveWebViewBorder] = {
       leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
+}
+
+void AddBraveTabPrivateThemeColorMixer(ui::ColorProvider* provider,
+                                       const ui::ColorProviderKey& key) {
+  auto& mixer = provider->AddMixer();
+  mixer[kColorBraveVerticalTabActiveBackground] = {
+      mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)};
+  mixer[kColorBraveVerticalTabInactiveBackground] = {
+      mixer.GetResultColor(kColorToolbar)};
+  mixer[kColorBraveSplitViewTileBackground] = {SkColorSetRGB(0x2A, 0xD, 0x58)};
+}
+
+void AddBraveTabTorThemeColorMixer(ui::ColorProvider* provider,
+                                   const ui::ColorProviderKey& key) {
+  auto& mixer = provider->AddMixer();
+  mixer[kColorBraveVerticalTabActiveBackground] = {
+      mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)};
+  mixer[kColorBraveVerticalTabInactiveBackground] = {
+      mixer.GetResultColor(kColorToolbar)};
+  mixer[kColorBraveSplitViewTileBackground] = {SkColorSetRGB(0x35, 0x0B, 0x49)};
 }
 
 }  // namespace tabs
