@@ -31,11 +31,13 @@
     color: var(--leo-color-text-tertiary);
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
   }
 }
 
 .tooltipButton {
+  --leo-button-padding: 0;
+
   leo-icon {
     --leo-icon-size: 14px;
     --leo-icon-color: var(--leo-color-text-tertiary);
@@ -44,6 +46,7 @@
 
 .tooltip {
   --leo-tooltip-padding: var(--leo-spacing-xl);
+  height: 14px;
 }
 
 .tooltipContent {
