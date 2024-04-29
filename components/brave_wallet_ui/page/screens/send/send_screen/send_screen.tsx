@@ -238,7 +238,7 @@ export const SendScreen = React.memo((props: Props) => {
       }
       setToAddressOrUrl('')
       if (account) {
-        history.push(makeSendRoute(asset, account))
+        history.replace(makeSendRoute(asset, account))
       }
     },
     [history]
