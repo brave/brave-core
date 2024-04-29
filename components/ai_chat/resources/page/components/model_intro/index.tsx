@@ -74,6 +74,7 @@ export default function ModelIntro() {
                   $1: (content) => {
                     return (
                         <a
+                          key={content}
                           onClick={handleUrlClick}
                           href={LEO_SUPPORT_URL}
                           target='_blank'
