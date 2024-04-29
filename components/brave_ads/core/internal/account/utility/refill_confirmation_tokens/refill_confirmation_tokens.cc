@@ -273,8 +273,6 @@ void RefillConfirmationTokens::ParseAndRequireCaptcha(
 }
 
 void RefillConfirmationTokens::SuccessfullyRefilled() {
-  StopRetrying();
-
   Reset();
 
   is_refilling_ = false;
@@ -316,6 +314,8 @@ void RefillConfirmationTokens::StopRetrying() {
 }
 
 void RefillConfirmationTokens::Reset() {
+  StopRetrying();
+
   nonce_.reset();
 
   tokens_.reset();
