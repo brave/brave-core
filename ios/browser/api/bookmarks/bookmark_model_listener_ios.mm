@@ -89,7 +89,8 @@ void BookmarkModelListener::BookmarkNodeRemoved(
     const bookmarks::BookmarkNode* parent,
     size_t old_index,
     const bookmarks::BookmarkNode* node,
-    const std::set<GURL>& removed_urls) {
+    const std::set<GURL>& removed_urls,
+    const base::Location& location) {
   IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node
                                                               model:model_];
   IOSBookmarkNode* ios_parent = [[IOSBookmarkNode alloc] initWithNode:parent
@@ -133,7 +134,8 @@ void BookmarkModelListener::BookmarkNodeChildrenReordered(
 }
 
 void BookmarkModelListener::BookmarkAllUserNodesRemoved(
-    const std::set<GURL>& removed_urls) {
+    const std::set<GURL>& removed_urls,
+    const base::Location& location) {
   if ([observer_ respondsToSelector:@selector(bookmarkModelRemovedAllNodes)]) {
     [observer_ bookmarkModelRemovedAllNodes];
   }

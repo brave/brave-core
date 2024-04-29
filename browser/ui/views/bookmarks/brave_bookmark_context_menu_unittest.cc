@@ -131,7 +131,8 @@ TEST_F(BraveBookmarkContextMenuTest,
   EXPECT_TRUE(bookmark_context_menu->IsCommandVisible(
       IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
 
-  model_->Remove(node, bookmarks::metrics::BookmarkEditSource::kOther);
+  model_->Remove(node, bookmarks::metrics::BookmarkEditSource::kOther,
+                 FROM_HERE);
   EXPECT_FALSE(bookmark_context_menu->IsCommandVisible(
       IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
 }
