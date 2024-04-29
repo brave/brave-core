@@ -86,13 +86,16 @@ struct PlaylistContentView: View {
   private func makeItemQueue(selectedItemID: String?) {
     var queue: [PlaylistItem.ID] = []
     var items = PlaylistItem.getItems(parentFolder: selectedFolder).map(\.id)
-    if let selectedItemID {
-      items.removeAll(where: { $0 == selectedItemID })
-      queue.append(selectedItemID)
-    }
     if playerModel.isShuffleEnabled {
+      if let selectedItemID {
+        items.removeAll(where: { $0 == selectedItemID })
+        queue.append(selectedItemID)
+      }
       queue.append(contentsOf: items.shuffled())
     } else {
+      if let selectedItemID {
+        items = Array(items.drop(while: { $0 != selectedItemID }))
+      }
       queue.append(contentsOf: items)
     }
     itemQueue = queue
