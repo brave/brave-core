@@ -143,7 +143,8 @@ class PrivacySandboxSettingsTest : public testing::Test {
         /*tpcd_metadata_manager=*/nullptr, "chrome-extension");
     tracking_protection_settings_ =
         std::make_unique<privacy_sandbox::TrackingProtectionSettings>(
-            &prefs_, nullptr, /*is_incognito=*/false);
+            &prefs_, host_content_settings_map_.get(),
+            /*onboarding_service=*/nullptr, /*is_incognito=*/false);
   }
   ~PrivacySandboxSettingsTest() override {
     host_content_settings_map()->ShutdownOnUIThread();
