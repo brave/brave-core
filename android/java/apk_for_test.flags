@@ -869,3 +869,11 @@
 -keep class org.chromium.chrome.browser.compositor.layouts.BraveToolbarSwipeLayout {
     public <init>(...);
 }
+
+-keep class org.chromium.components.embedder_support.view.ContentView {
+    protected <init>(...);
+}
+
+-keep class org.chromium.components.embedder_support.view.BraveContentView {
+    protected <init>(...);
+}
