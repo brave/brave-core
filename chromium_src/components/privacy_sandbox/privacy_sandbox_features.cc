@@ -10,7 +10,6 @@
 namespace privacy_sandbox {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kCookieSettingsUiAlignment, base::FEATURE_DISABLED_BY_DEFAULT},
     {kEnforcePrivacySandboxAttestations, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOverridePrivacySandboxSettingsLocalTesting,
      base::FEATURE_DISABLED_BY_DEFAULT},
