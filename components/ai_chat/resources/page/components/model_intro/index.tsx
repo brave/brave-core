@@ -4,15 +4,19 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import Icon from '@brave/leo/react/icon'
 import Tooltip from '@brave/leo/react/tooltip'
 import Button from '@brave/leo/react/button'
-import Link from '@brave/leo/react/link'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
-import * as mojom from '../../api/page_handler'
+
+import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import styles from './style.module.scss'
+
+const LEO_SUPPORT_URL =
+  'https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo'
 
 function getCategoryName(category: mojom.ModelCategory) {
   // To avoid problems when order of enum values change, we base the key
@@ -28,7 +32,6 @@ function getIntroMessage(model: mojom.Model) {
 }
 
 export default function ModelIntro() {
-  const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
   const context = React.useContext(DataContext)
 
   const model = context.currentModel
@@ -37,14 +40,10 @@ export default function ModelIntro() {
     return <></>
   }
 
-  const handleInfoIconTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsTooltipVisible(true)
-  }
-
-  const handleInfoIconTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsTooltipVisible(false)
+  const handleUrlClick = () => {
+    const mojomUrl = new Url()
+    mojomUrl.url = LEO_SUPPORT_URL
+    getPageHandlerInstance().pageHandler.openURL(mojomUrl)
   }
 
   return (
@@ -61,25 +60,33 @@ export default function ModelIntro() {
               $2: model.displayMaker
             }
           })}
-          <Tooltip visible={isTooltipVisible}>
+          <Tooltip
+            mode='default'
+            className={styles.tooltip}
+          >
             <div
               slot='content'
-              className={styles.tooltipContainer}
+              className={styles.tooltipContent}
             >
-              {getIntroMessage(model)}
-              <div>
-                <Link href='/'>Learn more</Link>
-              </div>
+              {formatMessage(getIntroMessage(model), {
+                tags: {
+                  $1: (content) => {
+                    return (
+                        <a
+                          onClick={handleUrlClick}
+                          href={LEO_SUPPORT_URL}
+                          target='_blank'
+                        >
+                          {content}
+                        </a>
+                    )
+                  }
+                }
+              })}
             </div>
             <Button
               kind='plain-faint'
               className={styles.tooltipButton}
-              onMouseOver={() => setIsTooltipVisible(true)}
-              onMouseOut={() => setIsTooltipVisible(false)}
-              onTouchStart={handleInfoIconTouchStart}
-              onTouchEnd={handleInfoIconTouchEnd}
-              onFocus={() => setIsTooltipVisible(true)}
-              onBlur={() => setIsTooltipVisible(false)}
             >
               <Icon name='info-outline' />
             </Button>
