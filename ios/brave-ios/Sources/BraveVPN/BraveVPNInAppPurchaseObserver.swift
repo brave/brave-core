@@ -52,6 +52,7 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
           // This should be always called, no matter if transaction is successful or not.
           SKPaymentQueue.default().finishTransaction(transaction)
           if callPurchaseDelegateOnce {
+            Preferences.VPN.subscriptionProductId.value = transaction.payment.productIdentifier
             self.delegate?.purchasedOrRestoredProduct(validateReceipt: true)
           }
           callPurchaseDelegateOnce = false
@@ -61,6 +62,8 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
           SKPaymentQueue.default().finishTransaction(transaction)
 
           if callPurchaseDelegateOnce {
+            Preferences.VPN.subscriptionProductId.value = transaction.payment.productIdentifier
+
             BraveVPN.validateReceiptData { [weak self] response in
               guard let self = self else { return }
 

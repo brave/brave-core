@@ -343,19 +343,27 @@ public class BraveStoreSDK: AppStoreSDK {
     Task { @MainActor [weak self] in
       guard let self = self else { return }
 
-      // Retrieve subscription statuses
+      // Retrieve subscriptions
       let vpnSubscriptions = products.filter({
         $0.id == BraveStoreProduct.vpnMonthly.rawValue
           || $0.id == BraveStoreProduct.vpnYearly.rawValue
-      }).compactMap({ $0.subscription })
+      })
+
       let leoSubscriptions = products.filter({
         $0.id == BraveStoreProduct.leoMonthly.rawValue
           || $0.id == BraveStoreProduct.leoYearly.rawValue
-      }).compactMap({ $0.subscription })
+      })
+
+      // Retrieve subscription statuses
+      let vpnSubscriptionStatuses = vpnSubscriptions.compactMap({ $0.subscription })
+      let leoSubscriptionsStatuses = leoSubscriptions.compactMap({ $0.subscription })
 
       // Statuses apply to the entire group
-      vpnSubscriptionStatus = try? await vpnSubscriptions.first?.status.first
-      leoSubscriptionStatus = try? await leoSubscriptions.first?.status.first
+      vpnSubscriptionStatus = try? await vpnSubscriptionStatuses.first?.status.first
+      leoSubscriptionStatus = try? await leoSubscriptionsStatuses.first?.status.first
+
+      // Save subscription Ids
+      Preferences.AIChat.subscriptionProductId.value = leoSubscriptions.first?.id
     }
   }
 
@@ -399,6 +407,7 @@ public class BraveStoreSDK: AppStoreSDK {
       return
     }
 
+    Preferences.AIChat.subscriptionProductId.value = product.rawValue
     Logger.module.info("[BraveStoreSDK] - Syncing Receipt")
 
     // Attempt to update the Application Bundle's receipt, by force

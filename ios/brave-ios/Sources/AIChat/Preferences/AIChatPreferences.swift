@@ -26,6 +26,11 @@ extension Preferences {
       default: nil
     )
 
+    public static let subscriptionProductId = Option<String?>(
+      key: "aichat.subscription-product-id",
+      default: nil
+    )
+
     /// A boolean indicating whether or not the user has URL-Bar/Search-Bar auto-complete for AI-Chat
     public static let autocompleteSuggestionsEnabled = Option<Bool>(
       key: "aichat.autocompletesuggestions-enabled",
