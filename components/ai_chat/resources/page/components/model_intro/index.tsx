@@ -63,6 +63,7 @@ export default function ModelIntro() {
           <Tooltip
             mode='default'
             className={styles.tooltip}
+            offset={4}
           >
             <div
               slot='content'
