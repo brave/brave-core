@@ -215,6 +215,23 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
   CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key2);
   EXPECT_NE(proxy_server.host_port_pair().password(), password);
+
+  const auto tag = ProxyConfigServiceTor::GetTorAnnotationTagForTesting();
+  // Empty config
+  const ProxyConfigWithAnnotation empty_config(ProxyConfig(), tag);
+  info = ProxyInfo();
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      empty_config, site_url, network_anonymization_key, service(), &info);
+  EXPECT_TRUE(info.is_empty());
+
+  // Empty proxy rules
+  const ProxyConfigWithAnnotation empty_proxy_rules_config(
+      ProxyConfig::CreateForTesting(ProxyList()), tag);
+  info = ProxyInfo();
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      empty_proxy_rules_config, site_url, network_anonymization_key, service(),
+      &info);
+  EXPECT_TRUE(info.is_empty());
 }
 
 TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization_Subresources) {
