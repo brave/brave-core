@@ -43,7 +43,7 @@ struct MediaContentView: View {
       }
     }
     .onChange(of: interfaceOrientation) { newValue in
-      if UIDevice.current.userInterfaceIdiom == .phone {
+      if UIDevice.current.userInterfaceIdiom == .phone, !model.isPortraitVideo {
         toggleFullScreen(explicitFullScreenMode: newValue.isLandscape)
       }
     }
@@ -74,7 +74,9 @@ extension MediaContentView {
             .frame(maxWidth: .infinity, alignment: .leading)
             .multilineTextAlignment(.leading)
             .lineLimit(1)
-          RoutePickerView()
+          if model.allowsExternalPlayback {
+            RoutePickerView()
+          }
         }
         MediaScrubber(
           currentTime: Binding(

@@ -11,7 +11,7 @@ import SwiftUI
 // FIXME: Add doc
 @available(iOS 16.0, *)
 struct PlayerView: View {
-  var playerModel: PlayerModel
+  @ObservedObject var playerModel: PlayerModel
 
   @State private var isControlsVisible: Bool = false
   @State private var autoHideControlsTask: Task<Void, Error>?
@@ -27,8 +27,7 @@ struct PlayerView: View {
       // For some reason this is required or the status bar breaks when touching anything on the
       // screen on an iPad...
       .statusBarHidden(isFullScreen && !isControlsVisible)
-      // FIXME: Need device ratio for potrait videos in portrait orientation
-      .aspectRatio(16 / 9, contentMode: .fit)
+      .aspectRatio(isFullScreen ? playerModel.aspectRatio : 16 / 9, contentMode: .fit)
       .offset(x: isFullScreen ? dragOffset.width : 0, y: isFullScreen ? dragOffset.height : 0.0)
       .scaleEffect(
         x: isFullScreen ? 1 - (abs(dragOffset.height) / 1000) : 1,

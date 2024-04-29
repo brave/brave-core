@@ -34,7 +34,6 @@ final class PlayerModel: ObservableObject {
   }
 
   deinit {
-    // FIXME: Make sure we call stop in UI layer onDisppear to avoid 17.0-17.2 bug
     if isPlaying {
       log.warning("PlayerModel deallocated without first stopping the underlying media.")
       stop()
@@ -131,7 +130,7 @@ final class PlayerModel: ObservableObject {
       return
     }
     player.pause()
-    player.replaceCurrentItem(with: nil)
+    item = nil
   }
 
   func playPreviousTrack() {
@@ -217,8 +216,16 @@ final class PlayerModel: ObservableObject {
   // MARK: - UI
 
   /// Whether or not the video that is currently loaded into the `AVPlayer` is a potrait video
-  // FIXME: Have to hook this up somehow to loading video tracks to get naturalSize
-  private(set) var isPortraitVideo: Bool = false
+  var isPortraitVideo: Bool {
+    guard let item = player.currentItem else { return false }
+    return item.presentationSize.height > item.presentationSize.width
+  }
+
+  /// The aspect ratio of the current video
+  var aspectRatio: Double {
+    guard let item = player.currentItem else { return 16 / 9 }
+    return item.presentationSize.width / item.presentationSize.height
+  }
 
   // MARK: - Picture in Picture
 
@@ -235,12 +242,26 @@ final class PlayerModel: ObservableObject {
 
   // MARK: - AirPlay
 
+  var allowsExternalPlayback: Bool {
+    player.allowsExternalPlayback
+  }
+
   // MARK: -
 
   let player: AVPlayer = .init()
+  var item: AVPlayerItem? {
+    get {
+      player.currentItem
+    }
+    set {
+      player.replaceCurrentItem(with: newValue)
+      setupPlayerItemKeyPathObservation()
+    }
+  }
   private let playerLayer: AVPlayerLayer = .init()
 
   private var cancellables: Set<AnyCancellable> = []
+  private var itemCancellables: Set<AnyCancellable> = []
 
   /// Sets up KVO observations for AVPlayer properties which trigger the `objectWillChange` publisher
   private func setupPlayerKeyPathObservation() {
@@ -255,8 +276,27 @@ final class PlayerModel: ObservableObject {
       }
     }
     cancellables.formUnion([
-      subscriber(for: \.timeControlStatus)
+      subscriber(for: \.timeControlStatus),
+      subscriber(for: \.allowsExternalPlayback),
       // FIXME: Add the rest
+    ])
+  }
+
+  private func setupPlayerItemKeyPathObservation() {
+    itemCancellables.removeAll()
+    guard let item = item else { return }
+    func subscriber<Value>(for keyPath: KeyPath<AVPlayerItem, Value>) -> AnyCancellable {
+      let observation = item.observe(keyPath, options: [.prior]) { [weak self] _, change in
+        if change.isPrior {
+          self?.objectWillChange.send()
+        }
+      }
+      return .init {
+        observation.invalidate()
+      }
+    }
+    itemCancellables.formUnion([
+      subscriber(for: \.presentationSize)
     ])
   }
 

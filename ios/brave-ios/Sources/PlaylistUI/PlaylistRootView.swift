@@ -144,7 +144,7 @@ struct PlaylistContentView: View {
       return nil
     }()
     if let item = itemToReplace {
-      playerModel.player.replaceCurrentItem(with: item)
+      playerModel.item = item
       playerModel.play()
       // Shrink it down?
       withAnimation(.snappy) {
