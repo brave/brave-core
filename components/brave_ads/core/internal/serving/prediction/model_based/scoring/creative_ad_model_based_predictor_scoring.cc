@@ -17,8 +17,7 @@ double ComputeCreativeAdModelBasedPredictorScore(
          ComputeSegmentScore(input_variable.latent_interest_segment) +
          ComputeSegmentScore(input_variable.interest_segment) +
          ComputeSegmentScore(input_variable.untargeted_segment) +
-         ComputeLastSeenScore(input_variable.last_seen_ad) +
-         ComputeLastSeenScore(input_variable.last_seen_advertiser);
+         ComputeLastSeenScore(input_variable.last_seen_ad);
 }
 
 }  // namespace brave_ads

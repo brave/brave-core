@@ -44,10 +44,6 @@ ComputeCreativeAdModelBasedPredictorInputVariable(
       ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariable(
           creative_ad, ad_events, weights.last_seen_ad);
 
-  input_variable.last_seen_advertiser =
-      ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable(
-          creative_ad, ad_events, weights.last_seen_advertiser);
-
   return input_variable;
 }
 

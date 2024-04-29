@@ -10,7 +10,6 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_ads_util.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_advertisers_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/last_seen/creative_ad_model_based_predictor_last_seen_input_variable_info.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/segment/creative_ad_model_based_predictor_segment_weight_info.h"
 
@@ -52,36 +51,15 @@ ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariable(
   CreativeAdModelBasedPredictorLastSeenInputVariableInfo
       last_seen_ad_input_variable;
 
-  const std::optional<base::Time> last_seen_at =
-      GetLastSeenAdAt(ad_events, creative_ad);
-  if (last_seen_at) {
-    last_seen_ad_input_variable.value = base::Time::Now() - *last_seen_at;
+  const std::optional<base::Time> last_seen_ad_at =
+      GetLastSeenAdAt(ad_events, creative_ad.creative_instance_id);
+  if (last_seen_ad_at) {
+    last_seen_ad_input_variable.value = base::Time::Now() - *last_seen_ad_at;
   }
 
   last_seen_ad_input_variable.weight = weight;
 
   return last_seen_ad_input_variable;
-}
-
-template <typename T>
-CreativeAdModelBasedPredictorLastSeenInputVariableInfo
-ComputeCreativeAdModelBasedPredictorLastSeenAdvertiserInputVariable(
-    const T& creative_ad,
-    const AdEventList& ad_events,
-    double weight) {
-  CreativeAdModelBasedPredictorLastSeenInputVariableInfo
-      last_seen_advertiser_input_variable;
-
-  const std::optional<base::Time> last_seen_at =
-      GetLastSeenAdvertiserAt(ad_events, creative_ad);
-  if (last_seen_at) {
-    last_seen_advertiser_input_variable.value =
-        base::Time::Now() - *last_seen_at;
-  }
-
-  last_seen_advertiser_input_variable.weight = weight;
-
-  return last_seen_advertiser_input_variable;
 }
 
 }  // namespace brave_ads

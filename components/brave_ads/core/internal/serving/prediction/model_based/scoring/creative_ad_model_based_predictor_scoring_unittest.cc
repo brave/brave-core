@@ -46,7 +46,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorScoringTest,
           test::BuildCreativeAdModelBasedPredictorWeights());
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(3.583333333333333,
+  EXPECT_DOUBLE_EQ(3.2916666666666665,
                    ComputeCreativeAdModelBasedPredictorScore(input_variable));
 }
 

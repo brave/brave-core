@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -176,8 +175,6 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdServedEvent(
   BLOG(3, "Served new tab page ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
-
-  ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdViewedEvent(
