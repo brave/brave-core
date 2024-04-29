@@ -258,7 +258,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &permissions::features::kPermissionOnDeviceNotificationPredictions,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
-      &privacy_sandbox::kCookieSettingsUiAlignment,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
