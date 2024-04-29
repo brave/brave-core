@@ -32,7 +32,6 @@
 #include "net/proxy_resolution/proxy_config_service.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
 
 namespace net {
 
@@ -197,8 +196,11 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
   // Adding username & password to global sock://127.0.0.1:[port] config
   // without actually modifying it when resolving proxy for each url.
   const std::string username = AnonymizationKeyToString(key);
-  const net::ProxyChain& chain =
-      config.value().proxy_rules().single_proxies.First();
+  const auto& proxy_rules = config.value().proxy_rules();
+  if (proxy_rules.empty() || proxy_rules.single_proxies.IsEmpty()) {
+    return;
+  }
+  const net::ProxyChain& chain = proxy_rules.single_proxies.First();
   CHECK(chain.is_single_proxy());
   const net::ProxyServer& server = chain.GetProxyServer(/*chain_index=*/0);
   const std::string& proxy_uri = net::ProxyServerToProxyUri(server);
@@ -256,6 +258,12 @@ ProxyConfigServiceTor::GetLatestProxyConfig(
 // static
 void ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(bool bypass) {
   bypass_tor_proxy_config_for_testing_ = bypass;
+}
+
+// static
+NetworkTrafficAnnotationTag
+ProxyConfigServiceTor::GetTorAnnotationTagForTesting() {
+  return kTorProxyTrafficAnnotation;
 }
 
 TorProxyMap::TorProxyMap() = default;
