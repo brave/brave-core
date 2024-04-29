@@ -139,9 +139,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
-  std::string json(R"({
-  "quotes": [
-    {
+  std::string json(R"({"quotes": [{
       "transactionType": "CRYPTO_PURCHASE",
       "sourceAmount": "50",
       "sourceAmountWithoutFees": "43.97",
@@ -157,10 +155,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
       "exchangeRate": "75286",
       "paymentMethodType": "APPLE_PAY",
       "customerScore": "20",
-      "serviceProvider": "TRANSAK"
-    }
-  ]
-})");
+      "serviceProvider": "TRANSAK"}]})");
 
   auto quotes_result = ParseCryptoQuotes(ParseJson(json));
   EXPECT_TRUE(quotes_result.has_value());
@@ -187,8 +182,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
             1);
 
   std::string json_null_quotes(R"({
-  "error": "No Valid Quote Combinations Found For Provided Quote Request."
-})");
+  "error": "No Valid Quote Combinations Found For Provided Quote Request."})");
 
   quotes_result = ParseCryptoQuotes(ParseJson(json_null_quotes));
   EXPECT_FALSE(quotes_result.has_value());

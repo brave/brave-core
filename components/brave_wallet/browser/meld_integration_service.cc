@@ -36,8 +36,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
       semantics {
         sender: "Meld Integration Service"
         description:
-          "This service is used to obtain assets prices from the external
- Meld API  for the Brave wallet."
+          "This service is used to obtain assets prices from the external Meld API  for the Brave wallet."
         trigger:
           "Triggered by uses of the native Brave wallet."
         data:
@@ -173,8 +172,7 @@ void MeldIntegrationService::GetServiceProviders(
   api_request_helper_->Request(
       "GET", GetServiceProviderURL(std::move(filter)), "", "",
       std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = true},
-      std::move(conversion_callback));
+      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetServiceProviders(
@@ -244,8 +242,7 @@ void MeldIntegrationService::GetCryptoQuotes(
   api_request_helper_->Request(
       "POST", url, json_payload, "application/json",
       std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = false},
-      std::move(conversion_callback));
+      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetCryptoQuotes(
@@ -314,8 +311,7 @@ void MeldIntegrationService::GetPaymentMethods(
   api_request_helper_->Request(
       "GET", GetPaymentMethodsURL(std::move(filter)), "", "",
       std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = true},
-      std::move(conversion_callback));
+      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetPaymentMethods(
@@ -377,8 +373,7 @@ void MeldIntegrationService::GetFiatCurrencies(
   api_request_helper_->Request(
       "GET", GetFiatCurrenciesURL(std::move(filter)), "", "",
       std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = true},
-      std::move(conversion_callback));
+      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetFiatCurrencies(
@@ -442,8 +437,7 @@ void MeldIntegrationService::GetCryptoCurrencies(
   api_request_helper_->Request(
       "GET", GetCryptoCurrenciesURL(std::move(filter)), "", "",
       std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = true},
-      std::move(conversion_callback));
+      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetCryptoCurrencies(
@@ -504,8 +498,7 @@ void MeldIntegrationService::GetCountries(mojom::MeldFilterPtr filter,
   api_request_helper_->Request(
       "GET", GetCountriesURL(std::move(filter)), "", "",
       std::move(internal_callback), MakeMeldApiHeaders(),
-      {.auto_retry_on_network_change = true, .enable_cache = true},
-      std::move(conversion_callback));
+      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetCountries(
