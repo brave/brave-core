@@ -63,9 +63,11 @@ struct PlaylistItemView: View {
               Label {
                 Text("Preparing")
               } icon: {
-                ProgressView(value: CGFloat(value), total: CGFloat(total))
-                  .progressViewStyle(.guage(lineWidth: gaugeLineWidth))
-                  .frame(width: progressViewSize, height: progressViewSize)
+                Gauge(value: Double(value), in: 0...Double(total)) {
+                  EmptyView()
+                }
+                .gaugeStyle(.circularCapacity(lineWidth: gaugeLineWidth))
+                .frame(width: progressViewSize, height: progressViewSize)
               }
               .foregroundColor(Color(braveSystemName: .primary50))
             case .completed:
