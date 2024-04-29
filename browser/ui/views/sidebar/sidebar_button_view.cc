@@ -47,7 +47,8 @@ void SidebarButtonView::OnThemeChanged() {
       this, gfx::Insets::VH(0, kMargin), radii);
 }
 
-gfx::Size SidebarButtonView::CalculatePreferredSize() const {
+gfx::Size SidebarButtonView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   return {kSidebarButtonSize + kMargin * 2, kSidebarButtonSize};
 }
 
