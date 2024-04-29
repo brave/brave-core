@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -100,23 +99,25 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
         mUnlockWalletTitle = view.findViewById(R.id.unlock_wallet_title);
         mBiometricUnlockWalletImage = view.findViewById(R.id.iv_biometric_unlock_wallet);
 
-        mUnlockWalletPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence text, int start, int count, int after) {
-                /* Not used. */
-            }
+        mUnlockWalletPassword.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence text, int start, int count, int after) {
+                        /* Not used. */
+                    }
 
-            @Override
-            public void onTextChanged(CharSequence text, int start, int before, int count) {
-                mUnlockButton.setEnabled(text.length() != 0);
-                mUnlockWalletPasswordLayout.setError(null);
-            }
+                    @Override
+                    public void onTextChanged(CharSequence text, int start, int before, int count) {
+                        mUnlockButton.setEnabled(text.length() != 0);
+                        mUnlockWalletPasswordLayout.setError(null);
+                    }
 
-            @Override
-            public void afterTextChanged(Editable text) {
-                /* Not used. */
-            }
-        });
+                    @Override
+                    public void afterTextChanged(Editable text) {
+                        /* Not used. */
+                    }
+                });
 
         mUnlockButton.setOnClickListener(
                 v -> {
