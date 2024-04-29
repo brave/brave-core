@@ -47,7 +47,8 @@ gfx::Size BraveNewTabButton::GetButtonSize() {
   return {28, 28};
 }
 
-gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
+gfx::Size BraveNewTabButton::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   // Overridden so that we use Brave's custom button size
   gfx::Size size = GetButtonSize();
   const auto insets = GetInsets();

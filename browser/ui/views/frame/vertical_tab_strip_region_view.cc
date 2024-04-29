@@ -356,8 +356,9 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     }
   }
 
-  gfx::Size CalculatePreferredSize() const override {
-    auto size = BraveNewTabButton::CalculatePreferredSize();
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override {
+    auto size = BraveNewTabButton::CalculatePreferredSize(available_size);
     if (tabs::utils::ShouldShowVerticalTabs(tab_strip()->GetBrowser())) {
       size.set_height(kHeight);
     }

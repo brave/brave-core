@@ -61,7 +61,8 @@ class SidebarItemsArrowView : public views::ImageButton {
   SidebarItemsArrowView(const SidebarItemsArrowView&) = delete;
   SidebarItemsArrowView& operator=(const SidebarItemsArrowView&) = delete;
 
-  gfx::Size CalculatePreferredSize() const override {
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override {
     return {
         SidebarButtonView::kSidebarButtonSize + SidebarButtonView::kMargin * 2,
         kArrowHeight};
@@ -186,7 +187,8 @@ void SidebarItemsScrollView::OnMouseEvent(ui::MouseEvent* event) {
   UpdateArrowViewsEnabledState();
 }
 
-gfx::Size SidebarItemsScrollView::CalculatePreferredSize() const {
+gfx::Size SidebarItemsScrollView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   DCHECK(contents_view_);
   return contents_view_->GetPreferredSize() + GetInsets().size();
 }

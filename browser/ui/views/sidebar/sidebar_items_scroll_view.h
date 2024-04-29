@@ -53,7 +53,8 @@ class SidebarItemsScrollView : public views::View,
   // views::View overrides:
   void Layout(PassKey) override;
   void OnMouseEvent(ui::MouseEvent* event) override;
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
   bool GetDropFormats(int* formats,
                       std::set<ui::ClipboardFormatType>* format_types) override;
