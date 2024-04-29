@@ -23,12 +23,10 @@ function InputBox() {
   }
 
   const handleSubmit = (e: PointerEvent) => {
-    e.preventDefault()
     context.submitInputTextToAPI()
   }
 
   const handleMic = (e: PointerEvent) => {
-    e.preventDefault()
     getPageHandlerInstance().pageHandler.handleVoiceRecognition()
   }
 
