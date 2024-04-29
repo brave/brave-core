@@ -57,13 +57,13 @@ class RefCountedMemMap : public base::RefCountedMemory {
 
   bool initialized() const { return initialized_; }
 
-  const unsigned char* front() const override {
-    return memory_mapped_file_.data();
-  }
-  size_t size() const override { return memory_mapped_file_.length(); }
-
  private:
   ~RefCountedMemMap() override = default;
+
+  // RefCountedMemory:
+  base::span<const uint8_t> AsSpan() const LIFETIME_BOUND override {
+    return memory_mapped_file_.bytes();
+  }
 
   base::MemoryMappedFile memory_mapped_file_;
   bool initialized_ = false;

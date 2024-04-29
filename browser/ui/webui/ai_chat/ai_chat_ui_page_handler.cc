@@ -431,10 +431,9 @@ void AIChatUIPageHandler::GetFaviconImageData(
           return;
         }
 
-        scoped_refptr<base::RefCountedMemory> bytes = result.bitmap_data;
-        std::vector<uint8_t> buffer(bytes->front_as<uint8_t>(),
-                                    bytes->front_as<uint8_t>() + bytes->size());
-        std::move(callback).Run(std::move(buffer));
+        std::vector<uint8_t> bytes(result.bitmap_data->begin(),
+                                   result.bitmap_data->end());
+        std::move(callback).Run(std::move(bytes));
       };
 
   favicon_service_->GetRawFaviconForPageURL(
