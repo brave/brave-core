@@ -189,7 +189,7 @@ extension MediaContentView {
             }
             Spacer()
             Button {
-              withAnimation {
+              withAnimation(.snappy(duration: 0.3)) {
                 toggleFullScreen()
               }
             } label: {
@@ -200,6 +200,7 @@ extension MediaContentView {
           .foregroundStyle(Color(braveSystemName: .textSecondary))
         }
         .font(.title3)
+        .backgroundStyle(Color(braveSystemName: .containerHighlight))
       }
       // FIXME: Figure out what to do in AX sizes, maybe second row in PlaybackControls?
       // XXXL may even have issues with DisplayZoom on

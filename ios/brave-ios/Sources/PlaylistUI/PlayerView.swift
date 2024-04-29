@@ -67,7 +67,7 @@ struct PlayerView: View {
                     .onEnded { value in
                       let finalOffset = value.predictedEndTranslation
                       if abs(finalOffset.height) > 200 {
-                        withAnimation(.snappy) {
+                        withAnimation(.snappy(duration: 0.3)) {
                           toggleFullScreen()
                         }
                       }
@@ -171,7 +171,7 @@ extension PlayerView {
               )
               Spacer()
               Button {
-                withAnimation {
+                withAnimation(.snappy(duration: 0.3)) {
                   toggleFullScreen()
                 }
               } label: {
@@ -216,6 +216,7 @@ extension PlayerView {
         .ignoresSafeArea(edges: .vertical)
       }
       .buttonStyle(.playbackControl)
+      .backgroundStyle(Color.white.opacity(0.2))
       // FIXME: Likely need to tie this to the ID of the current item via `task(id:_:)`
       .task {
         for await currentTime in model.currentTimeStream {
