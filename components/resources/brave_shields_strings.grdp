@@ -105,8 +105,8 @@
     Allow all trackers &amp; ads
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_CROSS_COOKIES_BLOCKED" desc="Menu option that would block cross website cookies.">
-    Block cross-site cookies
+  <message name="IDS_BRAVE_SHIELDS_THIRD_PARTY_COOKIES_BLOCKED" desc="Menu option that would block third-party cookies.">
+    Block third-party cookies
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_LABEL" desc="Shields panel toggle label that would forget first party website storage when enabled.">
