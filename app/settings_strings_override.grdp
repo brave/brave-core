@@ -17,7 +17,7 @@
       &lt;ul&gt;
         &lt;li&gt;&lt;em&gt;The best of Brave&lt;/em&gt;, for those who want it. For example, you can choose Brave Search as Brave’s default search engine and use Brave Password Manager to get all your passwords on any device. &lt;/li&gt;
         &lt;li&gt;&lt;em&gt;Meaningful choice&lt;/em&gt;: Brave offers you choice and control with settings, and information to help you make meaningful decisions.&lt;/li&gt;
-        &lt;li&gt;&lt;em&gt;Extensions&lt;/em&gt;: You can extend Brave functionality with over 100,000 extensions in the Web Store.&lt;/li&gt;
+        &lt;li&gt;&lt;em&gt;Extensions&lt;/em&gt;: You can extend Brave functionality with over 100,000 extensions in the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>.&lt;/li&gt;
       &lt;/ul&gt;
     </message>
     </if>

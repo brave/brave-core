@@ -910,12 +910,6 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
 
-      <if expr="is_win or is_macosx or is_linux">
-        <message name="IDS_RELAUNCH_TO_UPDATE_ALT" desc="Alternate text label of the relaunch to update Brave menu item" translateable="false">
-        Not used in Brave. Placeholder to keep resource maps in sync.
-        </message>
-      </if>
-
       <if expr="is_macosx">
         <message name="IDS_APP_MENU_PRODUCT_NAME" desc="The application's short name, used for the Mac's application menu, activity monitor, etc. This should be less than 16 characters. Example: Brave, not Brave." translateable="false">
           Brave
@@ -1058,6 +1052,9 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_UNSYNCED_BODY" translateable="false" desc="This is the subtitle of an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user has saved some data (like a password or payment method) to Brave, but Brave wasn't able to save the data to the user's Brave sync chain due to a sign-in error; but, the data has been saved locally to Brave. This subtitle is after the 'Some data isn’t saved yet' string. The tone should be cautionary, because we want to explain to the user that their data is not saved to their Brave sync chain. This string provides a path to resolution because it explains how the user can properly save their data before they sign out of Brave.">
           Some of your Brave data hasn't been saved in your Brave sync chain yet. Try waiting a few minutes before signing out.
+        </message>
+        <message name="IDS_CLOSE_WARNING_FOR_CLEAR_COOKIES_ON_EXIT_TEXT" desc="Body of a notice displayed when closing the last Brave window, to inform the user about a change in the way the 'Clear cookie on exit' setting works.">
+          You’ll be signed out of most sites when you close all Brave windows, except your Brave sync chain if you’re signed in to Brave. To let sites remember you, <ph name="SETTINGS_LINK">$1<ex>go to settings</ex></ph>.
         </message>
       </if>
 
@@ -1652,12 +1649,6 @@ Permissions you've already given to websites and apps may apply to this account.
           <message name="IDS_FRE_SIGN_IN_TITLE_0" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
             Sign in to Brave
           </message>
-          <message name="IDS_FRE_SIGN_IN_TITLE_1" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
-            Make Brave your own
-          </message>
-          <message name="IDS_FRE_SIGN_IN_TITLE_2" desc="This string appears as a heading on a full-page screen that tells users the benefits of signing in to Brave. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
-            Do more with Brave
-          </message>
         </if>
 
         <!-- Default Browser Promo -->
@@ -1689,6 +1680,14 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_PASSWORD_MANAGER_IPH_BODY_WEB_APP_PROFILE_SWITCH" desc="Body of the in Product Help for profile switching shown in the password manager web app.">
           You can switch to see passwords from another Brave profile
+        </message>
+
+        <!-- Web Signout Intercept IPH -->
+        <message name="IDS_SIGNOUT_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNOUT_IPH_TEXT" translateable="false" desc="This confirmation message is intended to help users to understand that signing out of a Brave service (like Gmail) will not sign them out of Brave. It appears in a blue in-product help bubble, which points to the Brave Profile Menu; it appears after the user signs out of a Brave service (like Gmail). The user can open the Profile Menu and sign out of Brave, if they wish to do so.">
+          To remove your Brave sync chain from Brave, sign out
+        </message>
+        <message name="IDS_SIGNOUT_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNOUT_IPH_TEXT_SCREENREADER" translateable="false" desc="Text announced by screenreaders related to the confirmation message is intended to help users to understand that signing out of a Brave service (like Gmail) will not sign them out of Brave. It appears in a blue in-product help bubble, which points to the Brave Profile Menu; it appears after the user signs out of a Brave service (like Gmail). The user can open the Profile Menu and sign out of Brave, if they wish to do so.">
+          To remove your Brave sync chain from Brave, sign out of Brave in the Settings page
         </message>
       </if>
 
@@ -1976,10 +1975,17 @@ Permissions you've already given to websites and apps may apply to this account.
         </if>
       </if>
 
-      <!-- Clear Browsing Data -->
-      <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_SIGNED_IN" desc="Description in the footer of the Clear Browsing Data dialog when the user is signed.">
-        To clear browsing data from this device only, while keeping it in your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign out of Brave<ph name="END_LINK">&lt;/a&gt;</ph>.
+      <!-- Delete Browsing Data -->
+      <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_SIGNED_IN" desc="Description in the footer of the Delete Browsing Data dialog when the user is signed.">
+        To delete browsing data from this device only, while keeping it in your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign out of Brave<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
+
+      <!-- New Create Shortcut View Strings -->
+      <if expr="not is_android and not is_chromeos">
+        <message name="IDS_CREATE_SHORTCUT_NOT_APPS_DIALOG_SUBTITLE" desc="Subtitle of the updated Create Shortcut dialog about how the site opens for Brave">
+          Shortcuts open in Brave
+        </message>
+      </if>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
         </message><message name="IDS_CHROME_SHORTCUT_NAME_DEV" desc="The Chrome shortcut name for dev channel">

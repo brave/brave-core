@@ -233,9 +233,6 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="chromeos_ash">
         </if>
 
-      <if expr="is_win or is_macosx or is_linux">
-        </if>
-
       <if expr="is_macosx">
         </if>
 
@@ -410,6 +407,8 @@ Permissions you've already given to websites and apps may apply to this account.
           </if>
       </if>
 
-      </messages>
+      <if expr="not is_android and not is_chromeos">
+        </if>
+    </messages>
   </release>
 </grit>

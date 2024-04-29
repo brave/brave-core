@@ -2,16 +2,10 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
 
-  <if expr="not is_ios">
-    <message name="IDS_AUTOFILL_CLEAR_FORM_MENU_ITEM" desc="The entry in the suggestions dropdown that clears an auto-filled form.">
-      Clear form
-    </message>
-  </if>
-  <if expr="is_ios">
-    <message name="IDS_AUTOFILL_CLEAR_FORM_MENU_ITEM" desc="iOS: The entry in the suggestions keyboard accessory that clears an auto-filled form. Title-cased.">
-      Clear Form
-    </message>
-  </if>
+  <!-- TODO(crbug.com/40266549): Remove when Undo launches on iOS. -->
+  <message name="IDS_AUTOFILL_CLEAR_FORM_MENU_ITEM" desc="iOS: The entry in the suggestions keyboard accessory that clears an auto-filled form. Title-cased.">
+    Clear Form
+  </message>
 
   <if expr="not is_ios">
     <message name="IDS_AUTOFILL_UNDO_MENU_ITEM" desc="The entry in the suggestions dropdown that undoes the last filling operation on a field.">
@@ -131,6 +125,7 @@
     The delete address option was selected
   </message>
 
+  <!-- TODO(crbug.com/40266549): Update when Undo launches on iOS. -->
   <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_CLEARED_FORM" desc="Screen reader announcement indicating that current form autofilled values were cleared.">
     The autofilled info was cleared from the form
   </message>
@@ -243,10 +238,10 @@
     You can now use addresses from your Brave sync chain
   </message>
   <message name="IDS_AUTOFILL_IPH_MANUAL_FALLBACK" desc="IPH bubble for triggering autofill from the context menu.">
-    Right click to add your saved info to any form
+    Right click to autofill saved info, like your name or address, on any form
   </message>
   <message name="IDS_AUTOFILL_IPH_MANUAL_FALLBACK_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text for the IPH bubble for triggering autofill from the context menu.">
-    Right click to add your saved info to any form
+    Right click to autofill saved info, like your name or address, on any form
   </message>
 
   <!-- Autofill suggestion label separator -->
@@ -400,19 +395,19 @@
     </else>
   </if>
   <if expr="is_android">
-    <!-- TODO(crbug.com/1469795): Use finalized string.-->
+    <!-- TODO(crbug.com/40068611): Use finalized string.-->
     <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_DEFAULT" desc="Title of the option to use the default Brave autofill experience." formatter_data="android_java">
       Default
     </message>
-    <!-- TODO(crbug.com/1469795): Use finalized string.-->
+    <!-- TODO(crbug.com/40068611): Use finalized string.-->
     <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_OPT_IN" desc="Title of the option to use third-party autofill in Brave." formatter_data="android_java">
       Use other providers
     </message>
-    <!-- TODO(crbug.com/1469795): Use finalized string.-->
+    <!-- TODO(crbug.com/40068611): Use finalized string.-->
     <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_DEFAULT_DESCRIPTION" desc="Description shown on the option to use the default Brave autofill experience." formatter_data="android_java">
       Use Brave Password Manager and Brave Autofill to save and fill passwords, passkeys, payment methods, and addresses
     </message>
-    <!-- TODO(crbug.com/1469795): Use finalized string.-->
+    <!-- TODO(crbug.com/40068611): Use finalized string.-->
     <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_OPT_IN_DESCRIPTION" desc="Description shown on the option enabling the use of third-party autofill in Brave." formatter_data="android_java">
       Use password managers and autofill services that are turned on in Android Settings
     </message>

@@ -208,6 +208,8 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="not is_android">
         <if expr="not use_titlecase">
+          <if expr="is_win or is_macosx or is_linux">
+          </if>
           <message name="IDS_NEW_INCOGNITO_TAB" desc="The text label of a menu item for opening a new private tab">
             New Private &amp;tab
           </message>
@@ -216,6 +218,8 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           </if>
         <if expr="use_titlecase">
+          <if expr="is_win or is_macosx or is_linux">
+              </if>
           <message name="IDS_NEW_INCOGNITO_TAB" desc="In Title Case: The text label of a menu item for opening a new private tab">
             New Private &amp;Tab
           </message>
@@ -341,6 +345,9 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="use_titlecase">
           </if>
+      <if expr="_google_chrome">
+        </if>
+
       <if expr="not is_android">
         </if>
 
@@ -587,6 +594,8 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos_lacros">
         </if>
 
+      <if expr="is_win or is_macosx">
+        </if>
       <if expr="is_win">
         </if>
 
@@ -686,7 +695,10 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -950,7 +962,11 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
-        </if>
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+      </if>
 
       <if expr="not chromeos_ash and not is_android">
         </if>
@@ -1195,8 +1211,8 @@ are declared in tools/grit/grit_rule.gni.
       Close Private
     </message>
 
-    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_PRIMARY_TEXT" desc="The primary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how Private users can clear the browsing data by closing all Private windows.">
-      To clear data, close all Private windows
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_PRIMARY_TEXT" desc="The primary text of the delete browsing data dialog which is shown in Private when users invokes a delete browsing data action in Private. The text describes how Private users can delete the browsing data by closing all Private windows.">
+      To delete data, close all Private windows
     </message>
     <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_SECONDARY_TEXT" desc="The secondary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how the clear browsing data action affects only the Private windows.">
       This only affects Private windows
@@ -1204,8 +1220,8 @@ are declared in tools/grit/grit_rule.gni.
     <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
     Sites you visit aren’t saved in Private
   </message>
-  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to clear Private browsing history from the device,">
-    To clear Private browsing history from your device, close all Private tabs
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device,">
+    To delete Private browsing history from your device, close all Private tabs
   </message>
   <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
     Close Private
