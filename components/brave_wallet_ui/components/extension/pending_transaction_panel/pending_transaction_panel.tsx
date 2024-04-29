@@ -36,6 +36,9 @@ import {
   useGetSolanaTransactionSimulationQuery
 } from '../../../common/slices/api.slice'
 
+// Style
+import { LongWrapper } from '../../../stories/style'
+
 // Components
 
 interface Props {
@@ -124,11 +127,13 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     evmTxSimulation
   ) {
     return (
-      <ConfirmSimulatedTransactionPanel
-        key={'EVM'}
-        simulationType={'EVM'}
-        txSimulation={evmTxSimulation}
-      />
+      <LongWrapper>
+        <ConfirmSimulatedTransactionPanel
+          key={'EVM'}
+          simulationType={'EVM'}
+          txSimulation={evmTxSimulation}
+        />
+      </LongWrapper>
     )
   }
 
@@ -142,11 +147,13 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     solanaTxSimulation
   ) {
     return (
-      <ConfirmSimulatedTransactionPanel
-        key={'SVM'}
-        simulationType={'SVM'}
-        txSimulation={solanaTxSimulation}
-      />
+      <LongWrapper>
+        <ConfirmSimulatedTransactionPanel
+          key={'SVM'}
+          simulationType={'SVM'}
+          txSimulation={solanaTxSimulation}
+        />
+      </LongWrapper>
     )
   }
 
@@ -155,29 +162,33 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     selectedPendingTransaction.txType === BraveWallet.TransactionType.ETHSwap
   ) {
     return (
-      <ConfirmSwapTransaction
-        retrySimulation={
-          isSimulationPermitted && hasEvmSimulationError
-            ? retryEvmSimulation
-            : undefined
-        }
-      />
+      <LongWrapper>
+        <ConfirmSwapTransaction
+          retrySimulation={
+            isSimulationPermitted && hasEvmSimulationError
+              ? retryEvmSimulation
+              : undefined
+          }
+        />
+      </LongWrapper>
     )
   }
 
   // Defaults
   return (
-    <ConfirmTransactionPanel
-      retrySimulation={
-        isSimulationPermitted
-          ? selectedPendingTxCoinType === CoinTypes.SOL &&
-            hasSolanaSimulationError
-            ? retrySolanaSimulation
-            : hasEvmSimulationError
-            ? retryEvmSimulation
+    <LongWrapper>
+      <ConfirmTransactionPanel
+        retrySimulation={
+          isSimulationPermitted
+            ? selectedPendingTxCoinType === CoinTypes.SOL &&
+              hasSolanaSimulationError
+              ? retrySolanaSimulation
+              : hasEvmSimulationError
+              ? retryEvmSimulation
+              : undefined
             : undefined
-          : undefined
-      }
-    />
+        }
+      />
+    </LongWrapper>
   )
 }

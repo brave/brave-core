@@ -29,6 +29,9 @@ import {
   SignSimulatedTransactionPanel //
 } from '../confirm-transaction-panel/sign_simulated_tx_panel'
 
+// Style
+import { LongWrapper } from '../../../stories/style'
+
 interface Props {
   signMode: 'signTx' | 'signAllTxs'
 }
@@ -96,10 +99,28 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
     solanaSimulation
   ) {
     return (
-      <SignSimulatedTransactionPanel
+      <LongWrapper>
+        <SignSimulatedTransactionPanel
+          signMode={signMode}
+          key={'SVM'}
+          txSimulation={solanaSimulation}
+          isSigningDisabled={isDisabled}
+          network={network}
+          queueLength={queueLength}
+          queueNextSignTransaction={queueNextSignTransaction}
+          queueNumber={queueNumber}
+          selectedQueueData={selectedQueueData}
+          signingAccount={signingAccount}
+        />
+      </LongWrapper>
+    )
+  }
+
+  // Default (not simulated)
+  return (
+    <LongWrapper>
+      <SignTransactionPanel
         signMode={signMode}
-        key={'SVM'}
-        txSimulation={solanaSimulation}
         isSigningDisabled={isDisabled}
         network={network}
         queueLength={queueLength}
@@ -108,21 +129,7 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
         selectedQueueData={selectedQueueData}
         signingAccount={signingAccount}
       />
-    )
-  }
-
-  // Default (not simulated)
-  return (
-    <SignTransactionPanel
-      signMode={signMode}
-      isSigningDisabled={isDisabled}
-      network={network}
-      queueLength={queueLength}
-      queueNextSignTransaction={queueNextSignTransaction}
-      queueNumber={queueNumber}
-      selectedQueueData={selectedQueueData}
-      signingAccount={signingAccount}
-    />
+    </LongWrapper>
   )
 }
 

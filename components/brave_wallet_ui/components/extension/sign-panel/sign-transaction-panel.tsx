@@ -135,9 +135,7 @@ export const SignTransactionPanel = ({
           </QueueStepRow>
         )}
       </TopRow>
-
       <AccountCircle orb={orb} />
-
       {selectedQueueData && (
         <URLText>
           <CreateSiteOrigin
@@ -146,16 +144,13 @@ export const SignTransactionPanel = ({
           />
         </URLText>
       )}
-
       <Tooltip
         text={selectedQueueData?.fromAddress || ''}
         isAddress
       >
         <AccountNameText>{signingAccount?.name ?? ''}</AccountNameText>
       </Tooltip>
-
       <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
-
       {signStep === SignDataSteps.SignRisk && (
         <WarningBox warningType='danger'>
           <WarningTitleRow>
@@ -170,7 +165,6 @@ export const SignTransactionPanel = ({
           </LearnMoreButton>
         </WarningBox>
       )}
-
       {signStep === SignDataSteps.SignData && (
         <>
           <TabRow>
