@@ -219,9 +219,33 @@ void TabDragController::DetachAndAttachToNewContext(
     TabDragContext* target_context,
     const gfx::Point& point_in_screen,
     bool set_capture) {
+  auto* browser_widget = GetAttachedBrowserWidget();
+  auto* browser = BrowserView::GetBrowserViewForNativeWindow(
+                      browser_widget->GetNativeWindow())
+                      ->browser();
+  SplitViewBrowserData* old_split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(browser);
+  if (old_split_view_browser_data) {
+    std::vector<tabs::TabHandle> tabs;
+    auto* tab_strip_model = browser->tab_strip_model();
+    DCHECK_EQ(tab_strip_model, attached_context_->GetTabStripModel());
+    for (const auto& tab_drag_data : drag_data_) {
+      tabs.push_back(tab_strip_model->GetTabHandleAt(
+          tab_strip_model->GetIndexOfWebContents(tab_drag_data.contents)));
+    }
+    old_split_view_browser_data->TabsWillBeAttachedToNewBrowser(tabs);
+  }
+
   if (!is_showing_vertical_tabs_) {
     TabDragControllerChromium::DetachAndAttachToNewContext(
         release_capture, target_context, point_in_screen, set_capture);
+
+    if (old_split_view_browser_data) {
+      auto* new_browser = BrowserView::GetBrowserViewForNativeWindow(
+                              GetAttachedBrowserWidget()->GetNativeWindow())
+                              ->browser();
+      old_split_view_browser_data->TabsAttachedToNewBrowser(new_browser);
+    }
     return;
   }
 
@@ -268,6 +292,13 @@ void TabDragController::DetachAndAttachToNewContext(
   attached_context_->LayoutDraggedViewsAt(
       std::move(views), source_view_drag_data()->attached_view, point_in_screen,
       initial_move_);
+
+  if (old_split_view_browser_data) {
+    auto* new_browser = BrowserView::GetBrowserViewForNativeWindow(
+                            GetAttachedBrowserWidget()->GetNativeWindow())
+                            ->browser();
+    old_split_view_browser_data->TabsAttachedToNewBrowser(new_browser);
+  }
 }
 
 gfx::Rect TabDragController::CalculateNonMaximizedDraggedBrowserBounds(

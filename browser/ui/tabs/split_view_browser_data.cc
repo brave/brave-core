@@ -6,11 +6,13 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 
 #include "base/check_is_test.h"
+#include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 
 SplitViewBrowserData::SplitViewBrowserData(Browser* browser)
     : BrowserUserData(*browser) {
@@ -103,6 +105,13 @@ SplitViewBrowserData::FindTile(const tabs::TabHandle& tab) const {
   return const_cast<SplitViewBrowserData*>(this)->FindTile(tab);
 }
 
+void SplitViewBrowserData::Transfer(SplitViewBrowserData* other,
+                                    std::vector<Tile> tiles) {
+  for (const auto& tile : tiles) {
+    other->TileTabs(tile);
+  }
+}
+
 bool SplitViewBrowserData::IsTabTiled(const tabs::TabHandle& tab) const {
   return base::Contains(tile_index_for_tab_, tab);
 }
@@ -189,6 +198,34 @@ SplitViewBrowserData::TabDragStarted() {
                   }
                 },
                 weak_ptr_factory_.GetWeakPtr()));
+}
+
+void SplitViewBrowserData::TabsWillBeAttachedToNewBrowser(
+    const std::vector<tabs::TabHandle>& tabs) {
+  DCHECK(tiles_to_be_attached_to_new_window_.empty());
+
+  for (const auto& tab : tabs) {
+    auto iter = FindTile(tab);
+    if (iter == tiles_.end()) {
+      continue;
+    }
+
+    tiles_to_be_attached_to_new_window_.push_back(*iter);
+    // The tile in the |tile_| will be removed when they actually get detached
+    // from the current tab strip model.
+  }
+
+  if (tiles_to_be_attached_to_new_window_.size() > 1) {
+    base::ranges::sort(tiles_to_be_attached_to_new_window_);
+    tiles_to_be_attached_to_new_window_.erase(
+        base::ranges::unique(tiles_to_be_attached_to_new_window_),
+        tiles_to_be_attached_to_new_window_.end());
+  }
+}
+
+void SplitViewBrowserData::TabsAttachedToNewBrowser(Browser* browser) {
+  Transfer(SplitViewBrowserData::FromBrowser(browser),
+           std::move(tiles_to_be_attached_to_new_window_));
 }
 
 BROWSER_USER_DATA_KEY_IMPL(SplitViewBrowserData);
