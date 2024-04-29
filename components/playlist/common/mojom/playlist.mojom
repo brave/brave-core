@@ -5,6 +5,7 @@
 
 module playlist.mojom;
 
+import "media/mojo/mojom/media_types.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
@@ -193,6 +194,7 @@ interface PlaylistServiceObserver {
 
 interface PlaylistMediaResponder {
   OnMediaDetected(array<PlaylistItem> items);
+  Log(array<media.mojom.MediaLogRecord> events);
 };
 
 interface PlaylistStreamingObserver {

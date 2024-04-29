@@ -1,0 +1,47 @@
+diff --git a/content/renderer/media/render_media_event_handler.cc b/content/renderer/media/render_media_event_handler.cc
+index 9048896eb17cc2a1d379275c0b574877895f27a3..ffa173dfbe1291b936c335ba58ca2a8ec00736d8 100644
+--- a/content/renderer/media/render_media_event_handler.cc
++++ b/content/renderer/media/render_media_event_handler.cc
+@@ -4,6 +4,8 @@
+ 
+ #include "content/renderer/media/render_media_event_handler.h"
+ #include "content/public/renderer/render_thread.h"
++#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
++#include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
+ 
+ namespace content {
+ 
+@@ -12,11 +14,15 @@ void RenderMediaEventHandler::SendQueuedMediaEvents(
+   for (auto& record : events_to_send)
+     record.id = log_id_;
+   GetMediaInternalRecordLogRemote().Log(events_to_send);
++  if (frame_) {
++    GetMediaResponder()->Log(events_to_send);
++  }
+ }
+ 
+ RenderMediaEventHandler::RenderMediaEventHandler(
+-    media::MediaPlayerLoggingID player_id)
+-    : log_id_(player_id) {
++    media::MediaPlayerLoggingID player_id,
++    RenderFrame* frame)
++    : log_id_(player_id), frame_(frame) {
+   DCHECK(RenderThread::Get())
+       << "RenderMediaEventHandler must be constructed on the render thread";
+ }
+@@ -36,4 +42,15 @@ RenderMediaEventHandler::GetMediaInternalRecordLogRemote() {
+   return *media_internal_log_remote_;
+ }
+ 
++const mojo::AssociatedRemote<playlist::mojom::PlaylistMediaResponder>&
++RenderMediaEventHandler::GetMediaResponder() {
++  if (!media_responder_) {
++    frame_->GetRemoteAssociatedInterfaces()->GetInterface(
++        &media_responder_);
++    media_responder_.reset_on_disconnect();
++  }
++
++  return media_responder_;
++}
++
+ }  // namespace content

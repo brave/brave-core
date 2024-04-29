@@ -2,7 +2,7 @@ diff --git a/ui/accessibility/platform/ax_platform_node_cocoa.mm b/ui/accessibil
 index 8b5753dfe97bff0186d1b6644a362c719b3c52f4..55ed4269b805c0da950cdc126718efcec57b8d8d 100644
 --- a/ui/accessibility/platform/ax_platform_node_cocoa.mm
 +++ b/ui/accessibility/platform/ax_platform_node_cocoa.mm
-@@ -2581,6 +2581,7 @@ void CollectAncestorRoles(
+@@ -2581,6 +2581,7 @@ - (NSAttributedString*)accessibilityAttributedStringForRange:(NSRange)range {
    if (!_node)
      return nil;
  

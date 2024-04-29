@@ -12,6 +12,7 @@ mojom("mojom") {
   generate_java = true
   sources = [ "playlist.mojom" ]
   public_deps = [
+    "//media/mojo/mojom",
     "//mojo/public/mojom/base",
     "//url/mojom:url_mojom_gurl",
   ]

@@ -1,0 +1,13 @@
+diff --git a/content/renderer/media/media_factory.cc b/content/renderer/media/media_factory.cc
+index 3bc07daab6ba1ca989961f7baafcf899ecd1e7f4..f742cfb9ccf6e4fa6ad4656ae6d492d0c5ea60f2 100644
+--- a/content/renderer/media/media_factory.cc
++++ b/content/renderer/media/media_factory.cc
+@@ -452,7 +452,7 @@ blink::WebMediaPlayer* MediaFactory::CreateMediaPlayer(
+   std::vector<std::unique_ptr<BatchingMediaLog::EventHandler>> handlers;
+   handlers.push_back(
+       std::make_unique<InspectorMediaEventHandler>(inspector_context));
+-  handlers.push_back(std::make_unique<RenderMediaEventHandler>(player_id));
++  handlers.push_back(std::make_unique<RenderMediaEventHandler>(player_id, render_frame_));
+ 
+   // This must be created for every new WebMediaPlayer
+   auto media_log = std::make_unique<BatchingMediaLog>(

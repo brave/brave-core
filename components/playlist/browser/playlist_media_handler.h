@@ -67,6 +67,7 @@ class PlaylistMediaHandler final
 
   // mojom::PlaylistMediaResponder:
   void OnMediaDetected(std::vector<mojom::PlaylistItemPtr> items) override;
+  void Log(const std::vector<::media::MediaLogRecord>& events) override;
 
   content::RenderFrameHostReceiverSet<mojom::PlaylistMediaResponder>
       media_responder_receivers_;

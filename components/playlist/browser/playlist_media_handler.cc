@@ -75,6 +75,26 @@ void PlaylistMediaHandler::OnMediaDetected(
       on_media_detected_callback_);
 }
 
+void PlaylistMediaHandler::Log(
+    const std::vector<::media::MediaLogRecord>& events) {
+  auto* render_frame_host = media_responder_receivers_.GetCurrentTargetFrame();
+
+  auto* web_contents =
+      content::WebContents::FromRenderFrameHost(render_frame_host);
+  if (!web_contents) {
+    return;
+  }
+
+  auto url = web_contents->GetLastCommittedURL();
+  if (!url.is_valid()) {
+    return;
+  }
+
+  for (auto& record : events) {
+    DVLOG(-1) << url << ": " << record.params;
+  }
+}
+
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistMediaHandler);
 
 }  // namespace playlist

@@ -1,0 +1,41 @@
+diff --git a/content/renderer/media/render_media_event_handler.h b/content/renderer/media/render_media_event_handler.h
+index 89e567073b8e0b6c5f4b04c17ad80110881002c7..3bb73b5dbe8cdd13beaba1adfa6beb7eec807778 100644
+--- a/content/renderer/media/render_media_event_handler.h
++++ b/content/renderer/media/render_media_event_handler.h
+@@ -7,10 +7,13 @@
+ 
+ #include <vector>
+ 
++#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+ #include "content/common/media/media_log_records.mojom.h"
++#include "content/public/renderer/render_frame.h"
+ #include "content/renderer/media/batching_media_log.h"
+ #include "media/base/media_player_logging_id.h"
+ #include "mojo/public/cpp/bindings/remote.h"
++#include "mojo/public/cpp/bindings/associated_remote.h"
+ 
+ namespace content {
+ 
+@@ -18,16 +21,21 @@ namespace content {
+ // BatchingMediaLog::EventHandler that forwards events to the browser process.
+ class RenderMediaEventHandler : public BatchingMediaLog::EventHandler {
+  public:
+-  explicit RenderMediaEventHandler(media::MediaPlayerLoggingID player_id);
++  RenderMediaEventHandler(media::MediaPlayerLoggingID player_id, RenderFrame* frame = nullptr);
+   ~RenderMediaEventHandler() override;
+   void SendQueuedMediaEvents(std::vector<media::MediaLogRecord>) override;
+   void OnWebMediaPlayerDestroyed() override;
+ 
+  private:
+   media::MediaPlayerLoggingID log_id_;
++  RenderFrame* frame_;
+   content::mojom::MediaInternalLogRecords& GetMediaInternalRecordLogRemote();
+   mojo::Remote<content::mojom::MediaInternalLogRecords>
+       media_internal_log_remote_;
++
++  const mojo::AssociatedRemote<playlist::mojom::PlaylistMediaResponder>&
++  GetMediaResponder();
++  mojo::AssociatedRemote<playlist::mojom::PlaylistMediaResponder> media_responder_;
+ };
+ 
+ }  // namespace content
