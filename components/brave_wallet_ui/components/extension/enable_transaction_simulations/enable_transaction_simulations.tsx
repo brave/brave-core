@@ -10,7 +10,8 @@ import Icon from '@brave/leo/react/icon'
 import { BraveWallet } from '../../../constants/types'
 
 // utils
-import { getLocale, getLocaleWithTag } from '../../../../common/locale'
+import { getLocale, getLocaleWithTags } from '../../../../common/locale'
+import { openTab } from '../../../utils/routes-utils'
 
 // hooks
 import {
@@ -21,112 +22,138 @@ import {
 import { LoadingPanel } from '../loading_panel/loading_panel'
 
 // styles
-import { LeoSquaredButton, Row, VerticalDivider } from '../../shared/style'
-import { Backdrop, Background, FloatingCard } from '../shared-panel-styles'
+import {
+  Column,
+  LeoSquaredButton,
+  Row,
+  VerticalDivider
+} from '../../shared/style'
 import {
   BulletPoints,
   CardContent,
   DashedHorizontalLine,
-  Header,
   HeadingText,
   IconContainer,
-  LearnMoreLink,
   OptionsRow,
   TermsText,
+  Title,
   errorIconColor
 } from './enable_transaction_simulations.styles'
-import { openTab } from '../../../utils/routes-utils'
 
-const CHANGE_IN_SETTINGS_TEXT = getLocaleWithTag(
-  'braveWalletChangeAnytimeInSettings'
-)
-
-const TX_SIMULATION_FEATURE_BULLETS = [
-  'braveWalletTransactionSimulationSeeEstimates',
-  'braveWalletTransactionSimulationDetectMalicious',
-  'braveWalletTransactionSimulationDetectPhishing'
-].map((key) => <li key={key}>{getLocale(key)}</li>)
-
-const TX_SIMULATION_TERMS_LINK =
+const TX_SIMULATION_LEARN_MORE_LINK =
   'https://github.com/brave/brave-browser/wiki/Transaction-Simulation'
+const BLOWFISH_PRIVACY_POLICY_URL = 'https://extension.blowfish.xyz/privacy'
+const BLOWFISH_TERMS_URL = 'https://extension.blowfish.xyz/terms'
 
-const openTxSimulationTermsUrl = () => openTab(TX_SIMULATION_TERMS_LINK)
+const openTxSimulationLearnMoreUrl = () =>
+  openTab(TX_SIMULATION_LEARN_MORE_LINK)
 
 export const EnableTransactionSimulations: React.FC = () => {
   // mutations
   const [optInOrOut] = useSetIsTxSimulationOptInStatusMutation()
 
   return (
-    <Background>
-      <Backdrop>
-        <FloatingCard>
-          <Header>
-            <Row
-              width='100%'
-              alignItems='center'
-              justifyContent='center'
-              gap={'4px'}
-            >
-              <IconContainer>
-                <Icon name={'product-brave-wallet'} />
-              </IconContainer>
-              <DashedHorizontalLine />
-              <IconContainer iconColor={errorIconColor}>
-                <Icon name={'warning-triangle-outline'} />
-              </IconContainer>
-            </Row>
-          </Header>
+    <>
+      <Title>{getLocale('braveWalletEnableTransactionSimulation')}</Title>
+      <CardContent>
+        <Column>
+          <Row
+            width='100%'
+            alignItems='center'
+            justifyContent='center'
+            gap={'4px'}
+            padding={'55px 0px'}
+          >
+            <IconContainer>
+              <Icon name={'product-brave-wallet'} />
+            </IconContainer>
+            <DashedHorizontalLine />
+            <IconContainer iconColor={errorIconColor}>
+              <Icon name={'warning-triangle-outline'} />
+            </IconContainer>
+          </Row>
 
-          <CardContent>
-            <div>
-              <HeadingText>
-                {getLocale('braveWalletEnableEnhancedTransactionDetailsTitle')}
-              </HeadingText>
+          <div>
+            <HeadingText>
+              {getLocale('braveWalletTransactionSimulationFeatureDescription')}
+            </HeadingText>
 
-              <BulletPoints>{TX_SIMULATION_FEATURE_BULLETS}</BulletPoints>
-
-              <VerticalDivider margin='4px 0px 8px 0px' />
-
-              <TermsText>
-                {getLocale('braveWalletTransactionSimulationTerms')}{' '}
-                <LearnMoreLink onClick={openTxSimulationTermsUrl}>
+            <BulletPoints>
+              <li key={'estimate'}>
+                {getLocale('braveWalletTransactionSimulationSeeEstimates')}
+              </li>
+              <li key={'detect'}>
+                {getLocale('braveWalletTransactionSimulationDetectMalicious')}
+              </li>
+              <li key={'phishing'}>
+                {getLocale('braveWalletTransactionSimulationDetectPhishing')}
+                {
+                  //
+                  ' '
+                }
+                <u onClick={openTxSimulationLearnMoreUrl}>
                   {getLocale('braveWalletLearnMore')}
-                </LearnMoreLink>
-              </TermsText>
+                </u>
+              </li>
+            </BulletPoints>
 
-              <TermsText>
-                {CHANGE_IN_SETTINGS_TEXT.beforeTag}
-                <strong>{CHANGE_IN_SETTINGS_TEXT.duringTag}</strong>
-                {CHANGE_IN_SETTINGS_TEXT.afterTag}
-              </TermsText>
-            </div>
+            <VerticalDivider margin='32px 0px' />
 
-            <OptionsRow>
-              <LeoSquaredButton
-                kind='plain-faint'
-                onClick={async () => {
-                  await optInOrOut(
-                    BraveWallet.BlowfishOptInStatus.kDenied
-                  ).unwrap()
-                }}
-              >
-                {getLocale('braveWalletButtonNoThanks')}
-              </LeoSquaredButton>
-              <LeoSquaredButton
-                kind='filled'
-                onClick={async () => {
-                  await optInOrOut(
-                    BraveWallet.BlowfishOptInStatus.kAllowed
-                  ).unwrap()
-                }}
-              >
-                {getLocale('braveWalletButtonEnable')}
-              </LeoSquaredButton>
-            </OptionsRow>
-          </CardContent>
-        </FloatingCard>
-      </Backdrop>
-    </Background>
+            <TermsText>
+              <span>
+                {getLocaleWithTags(
+                  'braveWalletTransactionSimulationTerms',
+                  3
+                ).map((text, index) => {
+                  return (
+                    <span key={text.duringTag || index}>
+                      {text.beforeTag}
+                      {index === 0 ? (
+                        <strong>{text.duringTag}</strong>
+                      ) : (
+                        <u
+                          onClick={() =>
+                            index === 1
+                              ? openTab(BLOWFISH_TERMS_URL)
+                              : openTab(BLOWFISH_PRIVACY_POLICY_URL)
+                          }
+                        >
+                          {text.duringTag}
+                        </u>
+                      )}
+                      {text.afterTag}
+                    </span>
+                  )
+                })}
+              </span>
+            </TermsText>
+          </div>
+
+          <OptionsRow>
+            <LeoSquaredButton
+              kind='outline'
+              onClick={async () => {
+                await optInOrOut(
+                  BraveWallet.BlowfishOptInStatus.kDenied
+                ).unwrap()
+              }}
+            >
+              {getLocale('braveWalletButtonNoThanks')}
+            </LeoSquaredButton>
+            <LeoSquaredButton
+              kind='filled'
+              onClick={async () => {
+                await optInOrOut(
+                  BraveWallet.BlowfishOptInStatus.kAllowed
+                ).unwrap()
+              }}
+            >
+              {getLocale('braveWalletButtonEnable')}
+            </LeoSquaredButton>
+          </OptionsRow>
+        </Column>
+      </CardContent>
+    </>
   )
 }
 

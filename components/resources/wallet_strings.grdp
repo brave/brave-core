@@ -1059,14 +1059,13 @@
   <message name="IDS_BRAVE_WALLET_FEATURED" desc="Grouping label/heading for featured options">Featured</message>
   <message name="IDS_BRAVE_WALLET_POPULAR" desc="Grouping label/heading for popular options">Popular</message>
   <message name="IDS_BRAVE_WALLET_TEST_NETWORK_ACCOUNT" desc="Partial account name suggestion for test network account">Test Network Account</message>
-  <message name="IDS_BRAVE_WALLET_ENABLE_ENHANCED_TRANSACTION_DETAILS_TITLE" desc="Heading text for Transaction Simulations Opt-in modal">Enable Enhanced Transaction Details to:</message>
-  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_SEE_ESTIMATES" desc="Bullet point for transaction-simulation feature (view balance changes)">See estimated balance change</message>
+  <message name="IDS_BRAVE_WALLET_ENABLE_TRANSACTION_SIMULATION" desc="Heading text for Transaction Simulations Opt-in modal">Enable transaction simulation</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_SEE_ESTIMATES" desc="Bullet point for transaction-simulation feature (view balance changes)">Preview your estimated balance change</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_DETECT_MALICIOUS" desc="Bullet point for transaction-simulation feature (detect malicious transactions)">Identify potentially malicious transactions</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_DETECT_PHISHING" desc="Bullet point for transaction-simulation feature (detect phishing attempts)">Help detect phishing attempts</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_NO_THANKS" desc="Button text for declining an action">No thanks</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_ENABLE" desc="Button text for enabling a feature">Enable</message>
-  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_TERMS" desc="Explaination of terms of service for transaction simulations">Brave works with a partner to provide this service. By enabling, you agree to share unsigned transactions and their DApp URLs with our partner.</message>
-  <message name="IDS_BRAVE_WALLET_CHANGE_ANYTIME_IN_SETTINGS" desc="Explains that something can be changed from within settings">Change anytime in <ph name="TAG_BEFORE">$1</ph>Settings<ph name="TAG_AFTER">$2</ph>.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_TERMS" desc="Explaination of terms of service for transaction simulations">This service is provided by <ph name="BOLD_BEFORE">$1</ph>Blowfish.xyz<ph name="BOLD_AFTER">$2</ph> and is subject to their <ph name="TERMS_LINK_BEFORE">$3</ph>Terms of Service<ph name="TERMS_LINK_AFTER">$4</ph> and <ph name="PRIVACY_POLICY_LINK_BEFORE">$5</ph>Privacy Policy<ph name="PRIVACY_POLICY_LINK_AFTER">$6</ph></message>
   <message name="IDS_BRAVE_WALLET_AVAILABLE" desc="Available balance label">Available</message>
   <message name="IDS_BRAVE_WALLET_AVAILABLE_BALANCE_DESCRIPTION" desc="Available balance tooltip description">Funds available for you to use.</message>
   <message name="IDS_BRAVE_WALLET_PENDING" desc="Pending balance label">Pending</message>
@@ -1134,4 +1133,5 @@
   <message name="IDS_BRAVE_WALLET_NO_CHANGES" desc="Heading text that is displayed when no changes were detected during transaction simulation">No changes</message>
   <message name="IDS_BRAVE_WALLET_NO_CHANGES_DETECTED" desc="Text to display when no changes were detected during transaction simulation">No changes detected</message>
   <message name="IDS_BRAVE_WALLET_OWNERSHIP_CHANGE" desc="Grouping header for estimated account ownership changes">Account ownership change</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_FEATURE_DESCRIPTION" desc="Description of the purpose of the transaction simulation feature ">Simulate how a transaction will behave before authorizing it</message>
 </grit-part>

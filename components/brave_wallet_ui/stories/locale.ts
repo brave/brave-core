@@ -1389,17 +1389,18 @@ provideStrings({
   braveWalletTestNetworkAccount: 'Test Network Account',
 
   // Transaction Simulations Opt-in
-  braveWalletEnableEnhancedTransactionDetailsTitle:
-    'Enable Enhanced Transaction Details to:',
-  braveWalletTransactionSimulationSeeEstimates: 'See estimated balance change',
+  braveWalletEnableTransactionSimulation: 'Enable transaction simulation',
+  braveWalletTransactionSimulationFeatureDescription:
+    'Simulate how a transaction will behave before authorizing it',
+  braveWalletTransactionSimulationSeeEstimates:
+    'Preview your estimated balance change',
   braveWalletTransactionSimulationDetectMalicious:
     'Identify potentially malicious transactions',
   braveWalletTransactionSimulationDetectPhishing:
     'Help detect phishing attempts',
   braveWalletTransactionSimulationTerms:
-    'Brave works with a partner to provide this service. ' +
-    'By enabling, you agree to share unsigned transactions ' +
-    'and their DApp URLs with our partner.',
+    'This service is provided by $1Blowfish.xyz$2 and is subject to their $3Terms ' +
+    'of Service$4 and $5Privacy Policy$6.',
 
   // Settings
   braveWalletChangeAnytimeInSettings: 'Change anytime in $1Settings$2.',
