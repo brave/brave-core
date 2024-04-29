@@ -156,7 +156,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kIdleDetection,
       &features::kKAnonymityService,
       &features::kKAnonymityServiceOHTTPRequests,
-      &features::kLegacyTechReportEnableCookieIssueReports,
       &features::kNewTabPageTriggerForPrerender2,
       &features::kNotificationTriggers,
       &features::kOmniboxTriggerForNoStatePrefetch,
