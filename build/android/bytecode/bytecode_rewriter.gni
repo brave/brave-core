@@ -40,6 +40,7 @@ brave_bytecode_jars = [
   "obj/chrome/browser/ui/android/toolbar/java.javac.jar",
   "obj/components/browser_ui/notifications/android/java.javac.jar",
   "obj/components/browser_ui/site_settings/android/java.javac.jar",
+  "obj/components/embedder_support/android/content_view_java.javac.jar",
   "obj/components/external_intents/android/java.javac.jar",
   "obj/components/permissions/android/java.javac.jar",
   "obj/components/sync/android/sync_java.javac.jar",

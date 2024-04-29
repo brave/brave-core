@@ -141,8 +141,10 @@ import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.content_public.browser.BrowserContextHandle;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.ActivityWindowAndroid;
+import org.chromium.ui.base.EventOffsetHandler;
 import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.base.WindowDelegate;
@@ -1386,6 +1388,13 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         LayoutManager.class,
                         TopUiThemeColorProvider.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/embedder_support/view/ContentView",
+                        "org/chromium/components/embedder_support/view/BraveContentView",
+                        Context.class,
+                        EventOffsetHandler.class,
+                        WebContents.class));
     }
 
     @Test
