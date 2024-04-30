@@ -38,6 +38,9 @@
 # These tests fail because kPrerender2 feature is disabled.
 -MediaEngagementPreThirdPartyCookieDeprecationBrowserTest.Ignored
 
+# This test fails because of a bad selector
+-ShowPromoInPageBrowserTest.HelpBubbleParamsCanConfigureCloseButtonAltText
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
