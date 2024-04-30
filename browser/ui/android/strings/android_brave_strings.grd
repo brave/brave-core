@@ -3959,6 +3959,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_MERGE_WINDOWS_SNACKBAR" desc="Text for merge windows snackbar">
       Please merge other tabs to another Brave window. 
     </message>
+    <message name="IDS_IN_APP_UPDATE_TEXT" desc="Text for in app update snackbar">
+      Update is downloaded.
+    </message>
   </messages>
   </release>
 </grit>
