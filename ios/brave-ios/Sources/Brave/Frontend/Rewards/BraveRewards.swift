@@ -184,10 +184,14 @@ public class BraveRewards: NSObject {
   /// Report that a tab with a given id was updated
   func reportTabUpdated(
     tab: Tab,
-    url: URL,
     isSelected: Bool,
     isPrivate: Bool
   ) {
+    // Don't report update for tabs that haven't finished loading.
+    guard let url = tab.redirectChain.last else {
+      return
+    }
+
     let tabId = Int(tab.rewardsId)
     if isSelected {
       rewardsAPI?.selectedTabId = UInt32(tabId)
@@ -196,8 +200,7 @@ public class BraveRewards: NSObject {
     if ads.isServiceRunning() && !isPrivate {
       ads.notifyTabDidChange(
         tabId,
-        url: url,
-        redirectChain: tab.redirectURLs,
+        redirectChain: tab.redirectChain,
         isErrorPage: InternalURL(url)?.isErrorPage ?? false,
         isSelected: isSelected
       )
@@ -209,24 +212,25 @@ public class BraveRewards: NSObject {
   /// - note: Send nil for `adsInnerText` if the load happened due to tabs restoring
   ///         after app launch
   func reportLoadedPage(
-    url: URL,
-    redirectionURLs: [URL]?,
+    redirectChain: [URL],
     tabId: Int,
     html: String,
     adsInnerText: String?
   ) {
+    guard let url = redirectChain.last else {
+      return
+    }
+
     tabRetrieved(tabId, url: url, html: html)
     if let innerText = adsInnerText, ads.isServiceRunning() {
       ads.notifyTabHtmlContentDidChange(
         tabId,
-        url: url,
-        redirectChain: redirectionURLs ?? [],
+        redirectChain: redirectChain.isEmpty ? [url] : redirectChain,
         html: html
       )
       ads.notifyTabTextContentDidChange(
         tabId,
-        url: url,
-        redirectChain: redirectionURLs ?? [],
+        redirectChain: redirectChain.isEmpty ? [url] : redirectChain,
         text: innerText
       )
     }

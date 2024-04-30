@@ -426,13 +426,6 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
     let response = navigationResponse.response
     let responseURL = response.url
 
-    if let responseURL = responseURL,
-      let internalURL = InternalURL(responseURL),
-      internalURL.isSessionRestore
-    {
-      tab.shouldClassifyLoadsForAds = false
-    }
-
     // We also add subframe urls in case a frame upgraded to https
     if let responseURL = responseURL,
       tab.currentPageData?.upgradeFrameURL(
