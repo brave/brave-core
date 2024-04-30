@@ -159,7 +159,11 @@ import Shared
         }
       },
       transcriptChunkReceived: { [weak self] data in
-        print(data)
+        Task {
+          await TranscriptManager.processMessage(dictionary: data)
+          // TODO: Inject the generated transcript into DOM main class with id? css-1aetez4
+          //await TranscriptManager.generateTranscript()
+        }
       }
     )
 
