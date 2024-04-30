@@ -308,6 +308,10 @@ void AddGeolocationDescriptionIfNeeded(
     PermissionPromptBubbleBaseView* bubble_base_view,
     permissions::PermissionPrompt::Delegate* delegate,
     Browser* browser) {
+  if (!geolocation::CanGiveDetailedGeolocationRequestInfo()) {
+    return;
+  }
+
   // Could be nullptr in unit test.
   if (!browser) {
     return;

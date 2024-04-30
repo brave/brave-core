@@ -7,8 +7,6 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-#include "base/logging.h"
-
 namespace geolocation {
 
 bool IsSystemLocationSettingEnabled() {
@@ -20,10 +18,17 @@ bool IsSystemLocationSettingEnabled() {
   CLLocationManager* manager = [[CLLocationManager alloc] init];
   if (@available(macOS 11.0, *)) {
     auto status = [manager authorizationStatus];
-    LOG(ERROR) << __func__ << " ##### " << (int)status;
     if (status == kCLAuthorizationStatusAuthorized) {
       return true;
     }
+  }
+
+  return false;
+}
+
+bool CanGiveDetailedGeolocationRequestInfo() {
+  if (@available(macOS 11.0, *)) {
+    return true;
   }
 
   return false;

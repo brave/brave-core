@@ -4,32 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_geolocation_permission/common/brave_geolocation_permission.mojom-blink.h"
+#include "build/build_config.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 
-namespace blink {
-namespace {
-
-void SetEnableHighAccuracy(LocalFrame* frame, bool enable_high_accuracy);
-
-}  // namespace
-}  // namespace blink
-
-// Pass enabledHighAccuracy bit to browser to make geolocation permission
-// bubble gives more detailed infos.
-// Renderer uses |Geolocation| mojo interface and it's used |WebContentsImpl|.
-// It means it's in internal content layer impls so hard to get about it from
-// client layer. Instead of touching |WebContents|, |Geolocation|,
-// |GeolocationContext| interfaces, it would be more simple to pass via
-// separated mojo interface.
-#define BRAVE_START_REQUEST \
-  SetEnableHighAccuracy(GetFrame(), notifier->Options()->enableHighAccuracy());
-
-#include "src/third_party/blink/renderer/modules/geolocation/geolocation.cc"
-
-#undef BRAVE_START_REQUEST
-
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 namespace blink {
 namespace {
 
@@ -48,3 +29,20 @@ void SetEnableHighAccuracy(LocalFrame* frame, bool enable_high_accuracy) {
 
 }  // namespace
 }  // namespace blink
+
+// Pass enabledHighAccuracy bit to browser to make geolocation permission
+// bubble gives more detailed infos.
+// Renderer uses |Geolocation| mojo interface and it's used |WebContentsImpl|.
+// It means it's in internal content layer impls so hard to get about it from
+// client layer. Instead of touching |WebContents|, |Geolocation|,
+// |GeolocationContext| interfaces, it would be more simple to pass via
+// separated mojo interface.
+#define BRAVE_START_REQUEST \
+  SetEnableHighAccuracy(GetFrame(), notifier->Options()->enableHighAccuracy());
+#else
+#define BRAVE_START_REQUEST
+#endif
+
+#include "src/third_party/blink/renderer/modules/geolocation/geolocation.cc"
+
+#undef BRAVE_START_REQUEST

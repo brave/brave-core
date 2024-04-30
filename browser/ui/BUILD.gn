@@ -610,10 +610,7 @@ source_set("ui") {
   }
 
   if (is_win || is_mac || is_linux) {
-    sources += [
-      "geolocation/geolocation_utils.cc",
-      "geolocation/geolocation_utils.h",
-    ]
+    sources += [ "geolocation/geolocation_utils.h" ]
 
     if (is_win) {
       sources += [ "geolocation/geolocation_utils_win.cc" ]
@@ -622,6 +619,10 @@ source_set("ui") {
     if (is_mac) {
       sources += [ "geolocation/geolocation_utils_mac.mm" ]
       frameworks = [ "CoreLocation.framework" ]
+    }
+
+    if (is_linux) {
+      sources += [ "geolocation/geolocation_utils_linux.cc" ]
     }
   }
 

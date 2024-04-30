@@ -11,6 +11,8 @@ namespace geolocation {
 // True when system location service is available to applications.
 bool IsSystemLocationSettingEnabled();
 
+bool CanGiveDetailedGeolocationRequestInfo();
+
 }  // namespace geolocation
 
 #endif  // BRAVE_BROWSER_UI_GEOLOCATION_GEOLOCATION_UTILS_H_

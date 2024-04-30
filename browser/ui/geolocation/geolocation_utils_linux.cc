@@ -5,14 +5,14 @@
 
 #include "brave/browser/ui/geolocation/geolocation_utils.h"
 
-#include "build/build_config.h"
-
 namespace geolocation {
 
-#if BUILDFLAG(IS_LINUX)
 bool IsSystemLocationSettingEnabled() {
   return false;
 }
-#endif
+
+bool CanGiveDetailedGeolocationRequestInfo() {
+  return false;
+}
 
 }  // namespace geolocation

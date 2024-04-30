@@ -49,4 +49,8 @@ bool IsSystemLocationSettingEnabled() {
            status == DeviceAccessStatus::DeviceAccessStatus_DeniedByUser);
 }
 
+bool CanGiveDetailedGeolocationRequestInfo() {
+  return true;
+}
+
 }  // namespace geolocation
