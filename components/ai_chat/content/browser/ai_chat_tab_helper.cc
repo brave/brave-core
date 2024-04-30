@@ -44,6 +44,10 @@ namespace ai_chat {
 
 namespace {
 std::optional<uint32_t> g_max_page_content_length_for_testing;
+
+bool IsPdf(content::WebContents* web_contents) {
+  return web_contents->GetContentsMimeType() == "application/pdf";
+}
 }  // namespace
 
 AIChatTabHelper::PDFA11yInfoLoadObserver::PDFA11yInfoLoadObserver(
@@ -200,8 +204,7 @@ void AIChatTabHelper::InnerWebContentsAttached(
     bool is_full_page) {
   // Setting a11y mode for PDF process which is dedicated for each
   // PDF so we don't have to unset it.
-  if (content::WebContents::FromRenderFrameHost(render_frame_host)
-          ->GetContentsMimeType() == "application/pdf") {
+  if (IsPdf(content::WebContents::FromRenderFrameHost(render_frame_host))) {
     // We need `AXMode::kNativeAPIs` for accessing pdf a11y info and
     // `AXMode::kWebContents` for observing a11y events from WebContents.
     bool mode_change_needed = false;
@@ -261,8 +264,7 @@ GURL AIChatTabHelper::GetPageURL() const {
 
 void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
                                      std::string_view invalidation_token) {
-  if (web_contents()->GetContentsMimeType() == "application/pdf" &&
-      !is_pdf_a11y_info_loaded_) {
+  if (IsPdf(web_contents()) && !is_pdf_a11y_info_loaded_) {
     if (pending_get_page_content_callback_) {
       std::move(pending_get_page_content_callback_).Run("", false, "");
     }
@@ -272,11 +274,16 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
     if (base::Contains(kPrintPreviewRetrievalHosts,
                        GetPageURL().host_piece())) {
       pending_get_page_content_callback_ = std::move(callback);
-      OnPrintPreviewRequested();
+      NotifyPrintPreviewRequested(false);
     } else {
       FetchPageContent(web_contents(), invalidation_token, std::move(callback));
     }
   }
+}
+
+void AIChatTabHelper::PrintPreviewFallback(GetPageContentCallback callback) {
+  pending_get_page_content_callback_ = std::move(callback);
+  NotifyPrintPreviewRequested(IsPdf(web_contents()));
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {

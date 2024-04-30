@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
@@ -205,6 +206,33 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
   content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
                               "window.print();");
   print_preview_observer.WaitUntilPreviewIsReady();
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewFallback) {
+  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"));
+
+  auto run_loop = std::make_unique<base::RunLoop>();
+  chat_tab_helper_->GeneratePageContent(
+      base::BindLambdaForTesting([&run_loop](std::string text, bool is_video,
+                                             std::string invalidation_token) {
+        EXPECT_FALSE(is_video);
+        EXPECT_EQ(
+            text,
+            "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
+        run_loop->Quit();
+      }));
+  run_loop->Run();
+  run_loop = std::make_unique<base::RunLoop>();
+
+  NavigateURL(https_server_.GetURL("a.com", "/canvas.html"));
+  chat_tab_helper_->GeneratePageContent(
+      base::BindLambdaForTesting([&run_loop](std::string text, bool is_video,
+                                             std::string invalidation_token) {
+        EXPECT_FALSE(is_video);
+        EXPECT_EQ(text, "this is the way");
+        run_loop->Quit();
+      }));
+  run_loop->Run();
 }
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 #endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION)

@@ -489,6 +489,18 @@ void ConversationDriver::OnGeneratePageContentComplete(
     return;
   }
 
+  if (base::CollapseWhitespaceASCII(contents_text, true).empty() &&
+      !is_print_preview_fallback_requested_ && !is_video) {
+    DVLOG(1) << "Initiating print preview fallback";
+    is_print_preview_fallback_requested_ = true;
+    PrintPreviewFallback(
+        base::BindOnce(&ConversationDriver::OnGeneratePageContentComplete,
+                       weak_ptr_factory_.GetWeakPtr(), current_navigation_id_,
+                       std::move(callback)));
+    return;
+  }
+  is_print_preview_fallback_requested_ = false;
+
   OnPageContentUpdated(contents_text, is_video, invalidation_token);
 
   std::move(callback).Run(article_text_, is_video_,
@@ -539,9 +551,9 @@ void ConversationDriver::OnNewPage(int64_t navigation_id) {
   CleanUp();
 }
 
-void ConversationDriver::OnPrintPreviewRequested() {
+void ConversationDriver::NotifyPrintPreviewRequested(bool is_pdf) {
   for (auto& obs : observers_) {
-    obs.OnPrintPreviewRequested();
+    obs.OnPrintPreviewRequested(is_pdf);
   }
 }
 
@@ -555,6 +567,7 @@ void ConversationDriver::CleanUp() {
   suggestions_.clear();
   pending_conversation_entry_.reset();
   is_page_text_fetch_in_progress_ = false;
+  is_print_preview_fallback_requested_ = false;
   is_request_in_progress_ = false;
   suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
   should_send_page_contents_ = true;

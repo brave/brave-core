@@ -67,6 +67,11 @@ void ConversationDriverIOS::GetPageContent(
       }];
 }
 
+void ConversationDriverIOS::PrintPreviewFallback(
+    ConversationDriver::GetPageContentCallback callback) {
+  std::move(callback).Run(std::string(), false, std::string());
+}
+
 // MARK: - ConversationDriver::Observer
 
 void ConversationDriverIOS::OnHistoryUpdate() {

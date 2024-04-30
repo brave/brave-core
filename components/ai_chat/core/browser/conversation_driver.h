@@ -12,6 +12,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/observer_list.h"
@@ -26,6 +27,7 @@
 
 class PrefService;
 
+FORWARD_DECLARE_TEST(AIChatUIBrowserTest, PrintPreviewFallback);
 namespace ai_chat {
 class AIChatMetrics;
 
@@ -53,7 +55,7 @@ class ConversationDriver {
         mojom::SuggestionGenerationStatus suggestion_generation_status) {}
     virtual void OnFaviconImageDataChanged() {}
     virtual void OnPageHasContent(mojom::SiteInfoPtr site_info) {}
-    virtual void OnPrintPreviewRequested() {}
+    virtual void OnPrintPreviewRequested(bool is_pdf) {}
   };
 
   ConversationDriver(
@@ -138,7 +140,7 @@ class ConversationDriver {
   // no existing chat history, the page content should not be linked.
   void MaybeUnlinkPageContent();
 
-  bool IsArticleTextEmptyForTesting() const { return article_text_.empty(); }
+  const std::string& GetArticleTextForTesting() const { return article_text_; }
   bool IsSuggestionsEmptyForTesting() const { return suggestions_.empty(); }
 
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
@@ -157,6 +159,8 @@ class ConversationDriver {
   virtual void GetPageContent(GetPageContentCallback callback,
                               std::string_view invalidation_token) = 0;
 
+  virtual void PrintPreviewFallback(GetPageContentCallback callback) = 0;
+
   virtual void OnFaviconImageDataChanged();
 
   // Implementer should call this when the content is updated in a way that
@@ -172,9 +176,11 @@ class ConversationDriver {
   // is expected.
   void OnNewPage(int64_t navigation_id);
 
-  void OnPrintPreviewRequested();
+  void NotifyPrintPreviewRequested(bool is_pdf);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(::AIChatUIBrowserTest, PrintPreviewFallback);
+
   void InitEngine();
   void OnUserOptedIn();
   bool MaybePopPendingRequests();
@@ -236,6 +242,7 @@ class ConversationDriver {
   std::string article_text_;
   std::string content_invalidation_token_;
   bool is_page_text_fetch_in_progress_ = false;
+  bool is_print_preview_fallback_requested_ = false;
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_;
 
   bool is_request_in_progress_ = false;
