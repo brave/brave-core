@@ -244,9 +244,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
 
-    /**
-     * Shows biometric authentication button if supported and if it was previously set.
-     */
+    /** Shows biometric authentication button if supported and if it was previously set. */
     private void showBiometricAuthenticationButton() {
         if (Utils.isBiometricSupported(requireContext())
                 && KeystoreHelper.shouldUseBiometricToUnlock()) {
