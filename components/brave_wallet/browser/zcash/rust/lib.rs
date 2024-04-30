@@ -97,7 +97,7 @@ impl_error!(Zip32Error, Zip32);
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
-            Error::Zip32(e) => write!(f, "Error: {}", e.to_string()),
+            Error::Zip32(e) => write!(f, "Zip32 Error: {e}"),
         }
     }
 }
@@ -111,7 +111,7 @@ fn generate_orchard_extended_spending_key_from_seed(
     bytes: &[u8]
 ) -> Box<OrchardExtendedSpendingKeyResult> {
   Box::new(OrchardExtendedSpendingKeyResult::from(
-    ExtendedSpendingKey::master(&bytes).map_err(Error::from))
+    ExtendedSpendingKey::master(bytes).map_err(Error::from))
   )
 }
 
