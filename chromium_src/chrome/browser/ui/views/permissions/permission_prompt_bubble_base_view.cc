@@ -308,6 +308,11 @@ void AddGeolocationDescriptionIfNeeded(
     PermissionPromptBubbleBaseView* bubble_base_view,
     permissions::PermissionPrompt::Delegate* delegate,
     Browser* browser) {
+  // Could be nullptr in unit test.
+  if (!browser) {
+    return;
+  }
+
   auto requests = delegate->Requests();
 
   // Geolocation permission is not grouped with others.
@@ -332,23 +337,25 @@ void AddGeolocationDescriptionIfNeeded(
           FROM_HERE,
           base::BindOnce(&geolocation::IsSystemLocationSettingEnabled),
           base::BindOnce(
-              [](base::WeakPtr<views::WidgetDelegate> widget_delegate_weak_ptr,
-                 PermissionPromptBubbleBaseView* bubble_base_view,
-                 Browser* browser, bool enable_high_accuracy,
+              [](base::WeakPtr<views::WidgetDelegate> widget_delegate,
+                 base::WeakPtr<Browser> browser, bool enable_high_accuracy,
                  bool settings_enabled) {
-                if (!widget_delegate_weak_ptr) {
-                  // Bubble is already gone.
+                // Browser or Bubble is already gone.
+                if (!browser || !widget_delegate) {
                   return;
                 }
+                PermissionPromptBubbleBaseView* bubble_base_view =
+                    static_cast<PermissionPromptBubbleBaseView*>(
+                        widget_delegate.get());
                 AddGeolocationDescription(
-                    bubble_base_view, browser,
+                    bubble_base_view, browser.get(),
                     /*enable_high_accuracy*/ enable_high_accuracy,
                     /*use_exact_location_label*/ settings_enabled);
 
                 // To update widget layout after adding another child view.
                 bubble_base_view->UpdateAnchorPosition();
               },
-              bubble_base_view->AsWeakPtr(), bubble_base_view, browser,
+              bubble_base_view->AsWeakPtr(), browser->AsWeakPtr(),
               enable_high_accuracy));
 #else
   AddGeolocationDescription(bubble_base_view, browser, enable_high_accuracy,
