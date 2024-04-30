@@ -750,7 +750,8 @@ public class BytecodeTest {
                         "getSharingAccountInfo",
                         MethodModifier.STATIC,
                         true,
-                        AccountInfo.class));
+                        AccountInfo.class,
+                        Profile.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
