@@ -273,11 +273,11 @@ void RefillConfirmationTokens::ParseAndRequireCaptcha(
 }
 
 void RefillConfirmationTokens::SuccessfullyRefilled() {
+  is_refilling_ = false;
+
   StopRetrying();
 
   Reset();
-
-  is_refilling_ = false;
 
   NotifyDidRefillConfirmationTokens();
 }
@@ -285,13 +285,17 @@ void RefillConfirmationTokens::SuccessfullyRefilled() {
 void RefillConfirmationTokens::FailedToRefill(const bool should_retry) {
   is_refilling_ = false;
 
+  if (!should_retry) {
+    StopRetrying();
+
+    Reset();
+  }
+
   NotifyFailedToRefillConfirmationTokens();
 
   if (should_retry) {
-    return Retry();
+    Retry();
   }
-
-  Reset();
 }
 
 void RefillConfirmationTokens::Retry() {

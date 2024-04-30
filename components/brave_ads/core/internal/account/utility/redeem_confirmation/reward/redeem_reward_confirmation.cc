@@ -117,6 +117,8 @@ void RedeemRewardConfirmation::FetchPaymentTokenAfter(
     const base::TimeDelta delay,
     RedeemRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
+  BLOG(1, "Fetch payment token in " << delay);
+
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&RedeemRewardConfirmation::FetchPaymentToken,

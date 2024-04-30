@@ -124,9 +124,9 @@ void CatalogUrlRequest::FetchAfterDelay() {
 }
 
 void CatalogUrlRequest::SuccessfullyFetchedCatalog(const CatalogInfo& catalog) {
-  StopRetrying();
-
   BLOG(1, "Successfully fetched catalog");
+
+  StopRetrying();
 
   NotifyDidFetchCatalog(catalog);
 
