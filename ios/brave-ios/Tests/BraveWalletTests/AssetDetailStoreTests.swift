@@ -47,7 +47,6 @@ class AssetDetailStoreTests: XCTestCase {
         radix: .hex,
         decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
       ) ?? ""
-    let formattedEthBalance = currencyFormatter.string(from: NSNumber(value: mockEthBalance)) ?? ""
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = {
       $1([.mockMainnet])
@@ -154,7 +153,7 @@ class AssetDetailStoreTests: XCTestCase {
       .dropFirst()
       .sink {
         defer { assetDetailException.fulfill() }
-        XCTAssertEqual($0, "$1.00")
+        XCTAssertEqual($0, 1.00)
       }
       .store(in: &cancellables)
     store.$priceIsDown
@@ -178,7 +177,7 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertEqual(accounts.count, 1)
         XCTAssertEqual(accounts[0].account, .mockEthAccount)
         XCTAssertEqual(accounts[0].balance, String(format: "%.4f", mockEthBalance))
-        XCTAssertEqual(accounts[0].fiatBalance, formattedEthBalance)
+        XCTAssertEqual(accounts[0].fiatBalance, "$1.00")
       }
       .store(in: &cancellables)
     store.$transactionSections
@@ -312,10 +311,6 @@ class AssetDetailStoreTests: XCTestCase {
         radix: .decimal,
         decimals: Int(BraveWallet.BlockchainToken.mockBTCToken.decimals)
       ) ?? ""
-    let formattedBthBalance =
-      currencyFormatter.string(
-        from: NSNumber(value: mockBtcBalance * mockBtcPrice)
-      ) ?? ""
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
     bitcoinWalletService._balance = {
       $1(
@@ -387,7 +382,7 @@ class AssetDetailStoreTests: XCTestCase {
       .dropFirst()
       .sink {
         defer { assetDetailException.fulfill() }
-        XCTAssertEqual($0, "$63,503.00")
+        XCTAssertEqual($0, 63_503.00)
       }
       .store(in: &cancellables)
     store.$priceIsDown
@@ -411,7 +406,7 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertEqual(accounts.count, 1)
         XCTAssertEqual(accounts[0].account, .mockBtcAccount)
         XCTAssertEqual(accounts[0].balance, String(format: "%.4f", mockBtcBalance))
-        XCTAssertEqual(accounts[0].fiatBalance, formattedBthBalance)
+        XCTAssertEqual(accounts[0].fiatBalance, "$6.35")
       }
       .store(in: &cancellables)
     store.$isLoadingPrice
@@ -575,7 +570,7 @@ class AssetDetailStoreTests: XCTestCase {
       .dropFirst()
       .sink {
         defer { assetDetailBitcoinException.fulfill() }
-        XCTAssertEqual($0, "$28,324.00")
+        XCTAssertEqual($0, 28_324.00)
       }
       .store(in: &cancellables)
     store.$priceIsDown
@@ -686,7 +681,7 @@ class AssetDetailStoreTests: XCTestCase {
       .dropFirst()
       .sink {
         defer { assetDetailNonBitcoinException.fulfill() }
-        XCTAssertEqual($0, "$1,860.57")
+        XCTAssertEqual($0, 1_860.57)
       }
       .store(in: &cancellables)
     store.$priceIsDown

@@ -155,16 +155,12 @@ struct AssetDetailView: View {
       let grids = [GridItem(.adaptive(minimum: 160), spacing: 8, alignment: .top)]
       let info: [CoinMarketInfo] = {
         let computedMarketCap =
-          assetDetailStore.currencyFormatter.string(
-            from: NSNumber(
-              value: BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.marketCap)
-            )
+          assetDetailStore.currencyFormatter.formatAsFiat(
+            BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.marketCap)
           ) ?? ""
         let computedTotalVolume =
-          assetDetailStore.currencyFormatter.string(
-            from: NSNumber(
-              value: BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.totalVolume)
-            )
+          assetDetailStore.currencyFormatter.formatAsFiat(
+            BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.totalVolume)
           ) ?? ""
         return [
           .init(title: Strings.Wallet.coinMarketRank, value: "#\(coinMarket.marketCapRank)"),
