@@ -21,11 +21,11 @@ skus-cxx = "0.1"
 json-cxx = "1"
 filecoin-cxx = "1"
 brave-news-cxx = "1"
-brave-wallet-cxx = "1"
+brave_wallet = "1"
 adblock-cxx = { version = "1" }
 constellation-cxx = "0.1"
 challenge-bypass-ristretto-cxx = "1"
-orchard = { version = "0.7.0",  default-features = false }
+zcash = "1"
 
 [patch.crates-io.futures-retry_v0_5]
 path = "../futures_retry/v0_5/crate"
@@ -63,9 +63,9 @@ package = "filecoin-cxx"
 path = "../../../components/brave_news/rust"
 package = "brave-news-cxx"
 
-[patch.crates-io.brave-wallet-cxx_v1]
+[patch.crates-io.brave_wallet_v1]
 path = "../../../components/brave_wallet/rust"
-package = "brave-wallet-cxx"
+package = "brave_wallet"
 
 [patch.crates-io.adblock-cxx_v1]
 path = "../../../components/brave_shields/adblock/rs"
@@ -218,3 +218,7 @@ package = "unicode-ident"
 [patch.crates-io.winapi_v0_3]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/winapi-0.3.9"
 package = "winapi"
+
+[patch.crates-io.zcash_v1]
+path = "../../../components/brave_wallet/browser/zcash/rust"
+package = "zcash"

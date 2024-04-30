@@ -1,0 +1,61 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/config.gni")
+import("//build/rust/rust_static_library.gni")
+
+assert(enable_orchard)
+
+group("rust") {
+  # This should only be used by internal wallet code
+  visibility = [ "//brave/components/brave_wallet/browser/internal:*" ]
+
+  public_deps = [ ":orchard_headers" ]
+
+  deps = [ ":orchard_impl" ]
+}
+
+source_set("orchard_headers") {
+  visibility = [ ":*" ]
+
+  sources = [ "extended_spending_key.h" ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_wallet/common",
+  ]
+}
+
+source_set("orchard_impl") {
+  visibility = [ ":rust" ]
+
+  sources = [
+    "extended_spending_key_impl.cc",
+    "extended_spending_key_impl.h",
+  ]
+
+  deps = [
+    ":orchard_headers",
+    ":rust_lib",
+    "//base",
+    "//brave/components/brave_wallet/common",
+    "//build/rust:cxx_cppdeps",
+  ]
+}
+
+rust_static_library("rust_lib") {
+  visibility = [ ":orchard_impl" ]
+
+  crate_name = "zcash"
+  crate_root = "lib.rs"
+  allow_unsafe = true
+  sources = [ "lib.rs" ]
+  cxx_bindings = [ "lib.rs" ]
+
+  deps = [
+    "//brave/components/brave_wallet/rust:rust_lib",
+    "//brave/third_party/rust/orchard/v0_7:lib",
+  ]
+}
