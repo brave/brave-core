@@ -16,6 +16,10 @@ function toBlobURL(data: number[] | null) {
   return URL.createObjectURL(blob)
 }
 
+function normalizeText(text: string) {
+  return text.trim().replace(/\s/g, '').toLocaleLowerCase()
+}
+
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
 
@@ -23,8 +27,8 @@ function useActionMenu() {
   const [actionList, setActionList] = React.useState<mojom.ActionGroup[]>([])
 
   const filterActionsByText = (searchText: string) => {
-    // effectively remove the leading slash (\) before comparing it to the action labels.
-    const text = searchText.substring(1).toLocaleLowerCase()
+    // effectively remove the leading slash (\), and normalize before comparing it to the action labels.
+    const text = normalizeText(searchText.substring(1))
 
     const filteredList = actionList
       .map((actionGroup) => ({
@@ -32,7 +36,7 @@ function useActionMenu() {
         actions: actionGroup.actions.filter((action) => {
           // Only apply filter to valid ActionType's label
           if (action.actionDetails.type) {
-            return action.label.toLocaleLowerCase().includes(text)
+            return normalizeText(action.label).includes(text)
           }
           // For other items, we dont return or show
           return false
@@ -282,8 +286,8 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const actionList = React.useMemo(() => {
-    // Filters the action list based on inputText
     // If inputText starts with '/' followed by word characters
+    // filter the action list based on inputText
     const reg = new RegExp(/^\/\w+/)
     return reg.test(inputText)
     ? filterActionsByText(inputText)

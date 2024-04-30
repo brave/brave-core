@@ -224,37 +224,50 @@ std::vector<mojom::ActionGroupPtr> ConversationDriver::GetActionMenuList() {
         mojom::ActionDetails::NewType(mojom::ActionType::IMPROVE)));
 
     // Subheading
-    group->actions.push_back(mojom::LabeledAction::New(
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CHANGE_TONE),
-        mojom::ActionDetails::NewEmpty(true)));
+    auto change_tone_subheading =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CHANGE_TONE);
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Change tone / Academic",
+        change_tone_subheading, mojom::ActionDetails::NewEmpty(true)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat(
+            {change_tone_subheading, " / ",
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_ACADEMICIZE)}),
         mojom::ActionDetails::NewType(mojom::ActionType::ACADEMICIZE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Change tone / Professional",
+        base::StrCat(
+            {change_tone_subheading, " / ",
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE)}),
         mojom::ActionDetails::NewType(mojom::ActionType::PROFESSIONALIZE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Change tone / Persuasive",
+        base::StrCat(
+            {change_tone_subheading, " / ",
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE)}),
         mojom::ActionDetails::NewType(mojom::ActionType::PERSUASIVE_TONE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Change tone / Casual",
+        base::StrCat({change_tone_subheading, " / ",
+                      l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CASUALIZE)}),
         mojom::ActionDetails::NewType(mojom::ActionType::CASUALIZE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Change tone / Funny",
+        base::StrCat(
+            {change_tone_subheading, " / ",
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_FUNNY_TONE)}),
         mojom::ActionDetails::NewType(mojom::ActionType::FUNNY_TONE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Change tone / Short",
+        base::StrCat({change_tone_subheading, " / ",
+                      l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_SHORTEN)}),
         mojom::ActionDetails::NewType(mojom::ActionType::SHORTEN)));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Change tone / Expand",
-        mojom::ActionDetails::NewType(mojom::ActionType::SHORTEN)));
+        base::StrCat({change_tone_subheading, " / ",
+                      l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPAND)}),
+        mojom::ActionDetails::NewType(mojom::ActionType::EXPAND)));
 
     action_list.push_back(std::move(group));
   }
@@ -270,17 +283,25 @@ std::vector<mojom::ActionGroupPtr> ConversationDriver::GetActionMenuList() {
         mojom::ActionDetails::NewType(mojom::ActionType::CREATE_TAGLINE)));
 
     // Subheading
-    group->actions.push_back(mojom::LabeledAction::New(
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST),
-        mojom::ActionDetails::NewEmpty(true)));
+    auto social_media_subheading =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST);
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Social media / Short",
+        social_media_subheading, mojom::ActionDetails::NewEmpty(true)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat(
+            {social_media_subheading, " / ",
+             l10n_util::GetStringUTF8(
+                 IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT)}),
         mojom::ActionDetails::NewType(
             mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT)));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Social media / Long",
+        base::StrCat(
+            {social_media_subheading, " / ",
+             l10n_util::GetStringUTF8(
+                 IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG)}),
         mojom::ActionDetails::NewType(
             mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG)));
 

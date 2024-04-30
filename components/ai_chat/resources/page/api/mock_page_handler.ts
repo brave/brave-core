@@ -36,7 +36,10 @@ const ACTIONS_LIST: mojom.ActionGroup[] = [
       },
       {
         label: 'Change tone / Professional',
-        actionDetails: { type: mojom.ActionType.PROFESSIONALIZE, empty: undefined }
+        actionDetails: {
+          type: mojom.ActionType.PROFESSIONALIZE,
+          empty: undefined
+        }
       }
     ]
   }
