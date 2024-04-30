@@ -42,6 +42,9 @@
     *** mLogoCoordinator;
     *** insertSiteSectionView(...);
     *** isScrollableMvtEnabled(...);
+    *** setSearchProviderTopMargin(...);
+    *** setSearchProviderBottomMargin(...);
+    *** getLogoMargin(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {

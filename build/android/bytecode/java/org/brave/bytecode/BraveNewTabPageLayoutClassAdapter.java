@@ -30,6 +30,18 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         addMethodAnnotation(
                 sBraveNewTabPageLayoutClassName, "isScrollableMvtEnabled", "Ljava/lang/Override;");
 
+        // TODO(AlexeyBarabash): cr126, ensure the test succeed
+        makePublicMethod(sNewTabPageLayoutClassName, "setSearchProviderTopMargin");
+        addMethodAnnotation(sBraveNewTabPageLayoutClassName, "setSearchProviderTopMargin", "Ljava/lang/Override;");
+
+        // TODO(AlexeyBarabash): cr126, ensure the test succeed
+        makePublicMethod(sNewTabPageLayoutClassName, "setSearchProviderBottomMargin");
+        addMethodAnnotation(sBraveNewTabPageLayoutClassName, "setSearchProviderBottomMargin", "Ljava/lang/Override;");
+
+        deleteMethod(sBraveNewTabPageLayoutClassName, "getLogoMargin");
+        makePublicMethod(sBraveNewTabPageLayoutClassName, "getLogoMargin");
+
+
         changeSuperName(sNewTabPageLayoutClassName, sNewTabPageLayoutSuperClassName);
     }
 }
