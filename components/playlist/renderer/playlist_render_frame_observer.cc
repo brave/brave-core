@@ -142,7 +142,7 @@ void PlaylistRenderFrameObserver::OnMediaDetected(base::Value::List media) {
     return;
   }
 
-  GetMediaResponder()->OnMediaDetected(std::move(items));
+  // GetMediaResponder()->OnMediaDetected(std::move(items));
 }
 
 }  // namespace playlist

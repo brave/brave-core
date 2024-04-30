@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/platform/media/web_media_player_impl.cc b/third_party/blink/renderer/platform/media/web_media_player_impl.cc
+index 11627b21ca7772d48983b4fb02f04e50ef94793d..2302c0f4fd24f489bd1b52f74d3ccc09f059a381 100644
+--- a/third_party/blink/renderer/platform/media/web_media_player_impl.cc
++++ b/third_party/blink/renderer/platform/media/web_media_player_impl.cc
+@@ -855,8 +855,7 @@ void WebMediaPlayerImpl::DoLoad(LoadType load_type,
+   SetReadyState(WebMediaPlayer::kReadyStateHaveNothing);
+ 
+   // Do a truncation to kMaxUrlLength+1 at most; we can add ellipsis later.
+-  media_log_->AddEvent<MediaLogEvent::kLoad>(
+-      url.GetString().Substring(0, media::kMaxUrlLength + 1).Utf8());
++  media_log_->AddEvent<MediaLogEvent::kLoad>(url.GetString().Utf8());
+   load_start_time_ = base::TimeTicks::Now();
+ 
+   // If we're adapting, then restart the smoothness experiment.

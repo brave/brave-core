@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_HANDLER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_HANDLER_H_
 
+#include <map>
 #include <variant>
 #include <vector>
 
@@ -69,6 +70,7 @@ class PlaylistMediaHandler final
   void OnMediaDetected(std::vector<mojom::PlaylistItemPtr> items) override;
   void Log(const std::vector<::media::MediaLogRecord>& events) override;
 
+  std::map<int32_t, base::Value::Dict> detected_;
   content::RenderFrameHostReceiverSet<mojom::PlaylistMediaResponder>
       media_responder_receivers_;
   OnMediaDetectedCallback on_media_detected_callback_;

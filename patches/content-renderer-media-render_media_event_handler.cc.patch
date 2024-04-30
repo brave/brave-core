@@ -1,5 +1,5 @@
 diff --git a/content/renderer/media/render_media_event_handler.cc b/content/renderer/media/render_media_event_handler.cc
-index 9048896eb17cc2a1d379275c0b574877895f27a3..ffa173dfbe1291b936c335ba58ca2a8ec00736d8 100644
+index 9048896eb17cc2a1d379275c0b574877895f27a3..699a3644524202f75c421d49564000103103b678 100644
 --- a/content/renderer/media/render_media_event_handler.cc
 +++ b/content/renderer/media/render_media_event_handler.cc
 @@ -4,6 +4,8 @@
@@ -15,7 +15,7 @@ index 9048896eb17cc2a1d379275c0b574877895f27a3..ffa173dfbe1291b936c335ba58ca2a8e
    for (auto& record : events_to_send)
      record.id = log_id_;
    GetMediaInternalRecordLogRemote().Log(events_to_send);
-+  if (frame_) {
++  if (frame_) {  // TODO(sszaloki): use weak ptrs
 +    GetMediaResponder()->Log(events_to_send);
 +  }
  }

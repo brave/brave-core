@@ -1,0 +1,13 @@
+diff --git a/media/base/media_log_events.h b/media/base/media_log_events.h
+index 7f74b458cdfd7d7e6b27acd1880dc9c33ed50769..f67cf3c193325dd99036d46284c75fe226e72f3f 100644
+--- a/media/base/media_log_events.h
++++ b/media/base/media_log_events.h
+@@ -86,7 +86,7 @@ MEDIA_LOG_EVENT_NAMED_DATA(kSeek, double, "seek_target");
+ MEDIA_LOG_EVENT_NAMED_DATA(kVideoSizeChanged, gfx::Size, "dimensions");
+ MEDIA_LOG_EVENT_NAMED_DATA(kDurationChanged, base::TimeDelta, "duration");
+ MEDIA_LOG_EVENT_NAMED_DATA(kPipelineStateChange, std::string, "pipeline_state");
+-MEDIA_LOG_EVENT_NAMED_DATA_OP(kLoad, std::string, "url", TruncateUrlString);
++MEDIA_LOG_EVENT_NAMED_DATA(kLoad, std::string, "url");
+ MEDIA_LOG_EVENT_NAMED_DATA_OP(kWebMediaPlayerCreated,
+                               std::string,
+                               "origin_url",

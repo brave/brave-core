@@ -10,8 +10,11 @@
 #include "base/check.h"
 #include "base/functional/callback.h"
 #include "base/functional/overloaded.h"
+#include "base/values.h"
+#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "media/base/media_log_record.h"
 #include "url/gurl.h"
 
 namespace playlist {
@@ -90,8 +93,47 @@ void PlaylistMediaHandler::Log(
     return;
   }
 
+  auto to_string = [](media::MediaLogRecord::Type type) {
+    switch (type) {
+      case media::MediaLogRecord::Type::kMessage:
+        return "kMessage";
+      case media::MediaLogRecord::Type::kMediaPropertyChange:
+        return "kMediaPropertyChange";
+      case media::MediaLogRecord::Type::kMediaEventTriggered:
+        return "kMediaEventTriggered";
+      case media::MediaLogRecord::Type::kMediaStatus:
+        return "kMediaStatus";
+    }
+  };
+
   for (auto& record : events) {
-    DVLOG(-1) << url << ": " << record.params;
+    DVLOG(-1) << "Player ID: " << record.id
+              << ", message: " << to_string(record.type) << " (" << url
+              << "):\n"
+              << record.params;
+
+    if (auto* string = record.params.FindString("kFrameUrl")) {
+      detected_[record.id].Set("pageSrc", *string);
+    } else if ((string = record.params.FindString("kFrameTitle"))) {
+      detected_[record.id].Set("name", *string);
+    } else if ((string = record.params.FindString("url")) &&
+               !string->ends_with(".mp3")) {
+      detected_[record.id].Set("src", *string);
+    }
+
+    if (detected_[record.id].size() == 3) {
+      auto* string = detected_[record.id].FindString("src");
+      CHECK(string);
+      detected_[record.id].Set("srcIsMediaSourceObjectURL",
+                               string->starts_with("blob:"));
+      auto node = detected_.extract(record.id);
+      auto items = ExtractPlaylistItems(
+          url, base::Value::List().Append(std::move(node.mapped())));
+      if (!items.empty()) {
+        OnMediaDetected(std::move(items));
+        break;
+      }
+    }
   }
 }
 
