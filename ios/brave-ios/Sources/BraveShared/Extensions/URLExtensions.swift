@@ -28,10 +28,7 @@ extension URL {
   ///
   /// Returns the original url without  internal parameters
   public var strippedInternalURL: URL? {
-    if InternalURL.isValid(url: self),
-      let internalURL = InternalURL(self)
-    {
-
+    if let internalURL = InternalURL(self) {
       switch internalURL.urlType {
       case .errorPage:
         return internalURL.originalURLFromErrorPage
@@ -39,6 +36,8 @@ extension URL {
         return internalURL.extractedUrlParam
       case .blockedPage:
         return decodeEmbeddedInternalURL(for: .blocked)
+      case .httpBlockedPage:
+        return decodeEmbeddedInternalURL(for: .httpBlocked)
       case .readerModePage:
         return decodeEmbeddedInternalURL(for: .readermode)
       default:
@@ -69,7 +68,8 @@ extension URL {
     }
 
     if let internalUrl = InternalURL(self),
-      internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isBlockedPage
+      internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isHTTPBlockedPage
+        || internalUrl.isBlockedPage
     {
       return internalUrl.extractedUrlParam?.displayURL
     }
@@ -138,6 +138,7 @@ extension InternalURL {
 
   enum URLType {
     case blockedPage
+    case httpBlockedPage
     case sessionRestorePage
     case errorPage
     case readerModePage
@@ -147,6 +148,13 @@ extension InternalURL {
   }
 
   var urlType: URLType {
+    // This needs to be before `isBlockedPage`
+    // because http-blocked has the word "blocked" in it
+    // We should refactor this code because its really iffy.
+    if isHTTPBlockedPage {
+      return .httpBlockedPage
+    }
+
     if isBlockedPage {
       return .blockedPage
     }

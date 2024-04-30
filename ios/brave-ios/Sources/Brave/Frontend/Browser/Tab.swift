@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import BraveWallet
 import CertificateUtilities
 import Data
@@ -463,7 +464,7 @@ class Tab: NSObject {
       configuration!.allowsInlineMediaPlayback = true
       // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
       configuration!.ignoresViewportScaleLimits = true
-      configuration!.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsEverywhere.value
+      configuration!.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
       configuration!.enablePageTopColorSampling()
 
       if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {

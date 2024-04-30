@@ -24,6 +24,7 @@ public class Migration {
     Preferences.migratePreferences(keyPrefix: keyPrefix)
     Preferences.migrateWalletPreferences()
     Preferences.migrateAdAndTrackingProtection()
+    Preferences.migrateHTTPSUpgradeLevel()
 
     if Preferences.General.isFirstLaunch.value {
       if UIDevice.current.userInterfaceIdiom == .phone {
@@ -169,6 +170,12 @@ extension Preferences {
       key: "shields.block-ads-and-tracking",
       default: true
     )
+
+    /// Websites will be upgraded to HTTPS if a loaded page attempts to use HTTP
+    public static let httpsEverywhere = Option<Bool>(
+      key: "shields.https-everywhere",
+      default: true
+    )
   }
 
   /// Migration preferences
@@ -195,6 +202,13 @@ extension Preferences {
     /// allows a user to select between `standard`, `aggressive` and `disabled` instead of a simple on/off `Bool`
     static let adBlockAndTrackingProtectionShieldLevelCompleted = Option<Bool>(
       key: "migration.ad-block-and-tracking-protection-shield-level-completed",
+      default: false
+    )
+
+    /// A more complicated https upgrades preference
+    /// allows a user to select between `standard`, `strict` and `disabled` instead of a simple on/off `Bool`
+    static let httpsUpgradesLivelCompleted = Option<Bool>(
+      key: "migration.https-upgrades-level-completed",
       default: false
     )
 
@@ -271,7 +285,7 @@ extension Preferences {
 
     // Shields
     migrate(key: "braveBlockAdsAndTracking", to: DeprecatedPreferences.blockAdsAndTracking)
-    migrate(key: "braveHttpsEverywhere", to: Preferences.Shields.httpsEverywhere)
+    migrate(key: "braveHttpsEverywhere", to: DeprecatedPreferences.httpsEverywhere)
     migrate(key: "noscript_on", to: Preferences.Shields.blockScripts)
     migrate(key: "fingerprintprotection_on", to: Preferences.Shields.fingerprintingProtection)
     migrate(key: "braveAdblockUseRegional", to: Preferences.Shields.useRegionAdBlock)
@@ -308,6 +322,17 @@ extension Preferences {
         // We only need to migrate `disabled`. `standard` is the default.
         ShieldPreferences.blockAdsAndTrackingLevel = .disabled
       }
+    }
+
+    Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true
+  }
+
+  fileprivate class func migrateHTTPSUpgradeLevel() {
+    guard !Migration.httpsUpgradesLivelCompleted.value else { return }
+
+    // Migrate old tracking protection setting to new BraveShields setting
+    DeprecatedPreferences.httpsEverywhere.migrate { isEnabled in
+      ShieldPreferences.httpsUpgradeLevel = isEnabled ? .standard : .disabled
     }
 
     Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true

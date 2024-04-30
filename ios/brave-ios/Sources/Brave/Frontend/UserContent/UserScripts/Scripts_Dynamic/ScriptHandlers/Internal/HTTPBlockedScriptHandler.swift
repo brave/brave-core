@@ -3,18 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import Shared
 import WebKit
 
-class BlockedDomainScriptHandler: TabContentScript {
+class HTTPBlockedScriptHandler: TabContentScript {
   private weak var tab: Tab?
+  private weak var exceptionService: HTTPSUpgradeExceptionsService?
 
-  required init(tab: Tab) {
+  required init(tab: Tab, exceptionService: HTTPSUpgradeExceptionsService) {
     self.tab = tab
+    self.exceptionService = exceptionService
   }
 
-  static let scriptName = "BlockedDomainScript"
+  static let scriptName = "HTTPBlockedScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
   static let scriptSandbox: WKContentWorld = .page
@@ -41,44 +44,45 @@ class BlockedDomainScriptHandler: TabContentScript {
 
     switch action {
     case "didProceed":
-      blockedDomainDidProceed()
+      didProceed()
     case "didGoBack":
-      blockedDomainDidGoBack()
+      didGoBack()
     default:
       assertionFailure("Unhandled action `\(action)`")
     }
   }
 
-  private func blockedDomainDidProceed() {
-    guard let url = tab?.url?.strippedInternalURL, let etldP1 = url.baseDomain else {
-      assertionFailure(
-        "There should be no way this method can be triggered if the tab is not on an internal url"
-      )
+  private func didProceed() {
+    guard let url = tab?.upgradedHTTPSRequest?.url ?? tab?.url?.strippedInternalURL else {
+      //      assertionFailure(
+      //        "There should be no way this method can be triggered if the tab is not on an internal url"
+      //      )
       return
     }
 
-    let request = URLRequest(url: url)
-    tab?.proceedAnywaysDomainList.insert(etldP1)
+    // When restoring the page, `upgradedHTTPSRequest` will be nil
+    // So we default to the embedded internal page URL
+    let request = tab?.upgradedHTTPSRequest ?? URLRequest(url: url)
+    exceptionService?.addException(for: url)
     tab?.loadRequest(request)
   }
 
-  private func blockedDomainDidGoBack() {
-    guard let url = tab?.url?.strippedInternalURL else {
-      assertionFailure(
-        "There should be no way this method can be triggered if the tab is not on an internal url"
-      )
-      return
-    }
+  private func didGoBack() {
+    let etldP1 =
+      tab?.upgradedHTTPSRequest?.url?.baseDomain
+      ?? tab?.url?.strippedInternalURL?.baseDomain
 
-    guard let listItem = tab?.backList?.reversed().first(where: { $0.url != url }) else {
-      // How is this even possible?
-      // All testing indicates no, so we will not handle.
-      // If we find it is, then we need to disable or hide the "Go Back" button in these cases.
-      // But this would require heavy changes or ugly mechanisms to InternalSchemeHandler.
+    guard
+      let listItem = tab?.backList?.reversed().first(where: {
+        // It is not the blocked page or the internal page
+        $0.url.baseDomain != etldP1 && $0.url != tab?.webView?.url
+      })
+    else {
       tab?.goBack()
       return
     }
 
+    tab?.upgradedHTTPSRequest = nil
     tab?.goToBackForwardListItem(listItem)
   }
 }
