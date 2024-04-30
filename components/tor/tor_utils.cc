@@ -135,12 +135,15 @@ const std::vector<std::string>& BridgesConfig::GetBuiltinBridges() const {
 }
 
 void BridgesConfig::UpdateBuiltinBridges(const base::Value::Dict& dict) {
-  builtin_bridges[BuiltinType::kSnowflake] = LoadBridgesList(
-      dict.FindList(GetBuiltinTypeName(BuiltinType::kSnowflake)));
-  builtin_bridges[BuiltinType::kObfs4] =
-      LoadBridgesList(dict.FindList(GetBuiltinTypeName(BuiltinType::kObfs4)));
-  builtin_bridges[BuiltinType::kMeekAzure] = LoadBridgesList(
-      dict.FindList(GetBuiltinTypeName(BuiltinType::kMeekAzure)));
+  auto load_builtin = [&](BuiltinType type) {
+    auto list = LoadBridgesList(dict.FindList(GetBuiltinTypeName(type)));
+    if (!list.empty()) {
+      builtin_bridges[type] = std::move(list);
+    }
+  };
+  load_builtin(BuiltinType::kSnowflake);
+  load_builtin(BuiltinType::kObfs4);
+  load_builtin(BuiltinType::kMeekAzure);
 }
 
 // static
