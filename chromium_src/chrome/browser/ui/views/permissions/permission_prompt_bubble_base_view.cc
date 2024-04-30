@@ -13,6 +13,7 @@
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_geolocation_permission_tab_helper.h"
+#include "brave/browser/ui/geolocation/geolocation_utils.h"
 #include "brave/browser/ui/views/dialog_footnote_utils.h"
 #include "brave/browser/ui/views/infobars/custom_styled_label.h"
 #include "brave/components/constants/url_constants.h"
@@ -51,10 +52,6 @@
 #include "ui/views/style/typography.h"
 #include "ui/views/window/dialog_client_view.h"
 #include "ui/views/window/dialog_delegate.h"
-
-#if BUILDFLAG(IS_WIN)
-#include "brave/browser/ui/geolocation/geolocation_utils_win.h"
-#endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_permission_request.h"
@@ -333,7 +330,7 @@ void AddGeolocationDescriptionIfNeeded(
   base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
       ->PostTaskAndReplyWithResult(
           FROM_HERE,
-          base::BindOnce(&geolocation::win::IsSystemLocationSettingEnabled),
+          base::BindOnce(&geolocation::IsSystemLocationSettingEnabled),
           base::BindOnce(
               [](base::WeakPtr<views::WidgetDelegate> widget_delegate_weak_ptr,
                  PermissionPromptBubbleBaseView* bubble_base_view,
@@ -354,9 +351,8 @@ void AddGeolocationDescriptionIfNeeded(
               bubble_base_view->AsWeakPtr(), bubble_base_view, browser,
               enable_high_accuracy));
 #else
-  AddGeolocationDescription(bubble_base_view, browser,
-                            /*use_exact_location_label*/ false,
-                            /*enable_high_accuracy*/ false);
+  AddGeolocationDescription(bubble_base_view, browser, enable_high_accuracy,
+                            geolocation::IsSystemLocationSettingEnabled());
 #endif
 }
 

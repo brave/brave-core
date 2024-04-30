@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_GEOLOCATION_GEOLOCATION_UTILS_WIN_H_
-#define BRAVE_BROWSER_UI_GEOLOCATION_GEOLOCATION_UTILS_WIN_H_
+#ifndef BRAVE_BROWSER_UI_GEOLOCATION_GEOLOCATION_UTILS_H_
+#define BRAVE_BROWSER_UI_GEOLOCATION_GEOLOCATION_UTILS_H_
 
-namespace geolocation::win {
+namespace geolocation {
 
 // True when system location service is available to applications.
 bool IsSystemLocationSettingEnabled();
 
-}  // namespace geolocation::win
+}  // namespace geolocation
 
-#endif  // BRAVE_BROWSER_UI_GEOLOCATION_GEOLOCATION_UTILS_WIN_H_
+#endif  // BRAVE_BROWSER_UI_GEOLOCATION_GEOLOCATION_UTILS_H_

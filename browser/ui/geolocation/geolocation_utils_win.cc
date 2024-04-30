@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/geolocation/geolocation_utils_win.h"
+#include "brave/browser/ui/geolocation/geolocation_utils.h"
 
 #include <windows.h>
 
@@ -20,7 +20,7 @@ using ABI::Windows::Devices::Enumeration::IDeviceAccessInformation;
 using ABI::Windows::Devices::Enumeration::IDeviceAccessInformationStatics;
 using Microsoft::WRL::ComPtr;
 
-namespace geolocation::win {
+namespace geolocation {
 
 // Copied from services/device/geolocation/win/location_provider_winrt.cc
 bool IsSystemLocationSettingEnabled() {
@@ -49,4 +49,4 @@ bool IsSystemLocationSettingEnabled() {
            status == DeviceAccessStatus::DeviceAccessStatus_DeniedByUser);
 }
 
-}  // namespace geolocation::win
+}  // namespace geolocation
