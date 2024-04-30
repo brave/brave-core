@@ -16,7 +16,6 @@ struct PlayerView: View {
   @State private var isControlsVisible: Bool = false
   @State private var autoHideControlsTask: Task<Void, Error>?
   @State private var dragOffset: CGSize = .zero
-  @State private var videoAmbianceDecorationImage: UIImage?
   @GestureState private var isTouchingInlineControls: Bool = false
 
   @Environment(\.isFullScreen) private var isFullScreen
@@ -42,12 +41,8 @@ struct PlayerView: View {
     VideoPlayer(player: playerModel.player)
       .disabled(true)
       .background {
-        if !isFullScreen, playerModel.isPlaying, let videoAmbianceDecorationImage {
-          Image(uiImage: videoAmbianceDecorationImage)
-            .resizable()
-            .blur(radius: 30)
-            .id(videoAmbianceDecorationImage)
-            .transition(.opacity)
+        if !isFullScreen, playerModel.isPlaying {
+          VideoAmbianceBackground(playerModel: playerModel)
         }
       }
       // For some reason this is required or the status bar breaks when touching anything on the
@@ -65,13 +60,6 @@ struct PlayerView: View {
       // FIXME: Better accessibility copy
       .accessibilityLabel(isFullScreen ? "Tap to toggle controls" : "Media player")
       .accessibilityAddTraits(isFullScreen ? .isButton : [])
-      .task {
-        for await image in playerModel.videoAmbianceImageStream {
-          withAnimation {
-            videoAmbianceDecorationImage = image
-          }
-        }
-      }
       .overlay {
         InlinePlaybackControlsView(model: playerModel)
           .background(
@@ -262,6 +250,32 @@ extension PlayerView {
       .task {
         for await currentTime in model.currentTimeStream {
           self.currentTime = currentTime
+        }
+      }
+    }
+  }
+}
+
+@available(iOS 16.0, *)
+struct VideoAmbianceBackground: View {
+  var playerModel: PlayerModel
+
+  @State private var videoAmbianceDecorationImage: UIImage?
+
+  var body: some View {
+    VStack {
+      if let videoAmbianceDecorationImage {
+        Image(uiImage: videoAmbianceDecorationImage)
+          .resizable()
+          .blur(radius: 30)
+          .id(videoAmbianceDecorationImage)
+          .transition(.opacity)
+      }
+    }
+    .task(priority: .medium) {
+      for await image in playerModel.videoAmbianceImageStream {
+        withAnimation {
+          videoAmbianceDecorationImage = image
         }
       }
     }
