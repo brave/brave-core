@@ -74,6 +74,8 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
     public static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION = "recyclerview_offset_position_";
 
+    public static final String BRAVE_IN_APP_UPDATE_TIMING = "in_app_update_timing";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider

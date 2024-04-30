@@ -12,6 +12,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -40,6 +41,14 @@ import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 import com.brave.playlist.util.PlaylistUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
 import org.jni_zero.JNINamespace;
@@ -172,6 +181,10 @@ import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
+import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
@@ -245,6 +258,8 @@ public abstract class BraveActivity extends ChromeActivity
     private static final int DAYS_7 = 7;
     private static final int DAYS_12 = 12;
 
+    private static final int MONTH_1 = 1;
+
     public static final int MAX_FAILED_CAPTCHA_ATTEMPTS = 10;
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
@@ -292,9 +307,9 @@ public abstract class BraveActivity extends ChromeActivity
     private BraveNewsConnectionErrorHandler mBraveNewsConnectionErrorHandler;
     private MiscAndroidMetricsConnectionErrorHandler mMiscAndroidMetricsConnectionErrorHandler;
 
-    /**
-     * Serves as a general exception for failed attempts to get BraveActivity.
-     */
+    private AppUpdateManager mAppUpdateManager;
+
+    /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
         public BraveActivityNotFoundException(String message) {
             super(message);
@@ -331,6 +346,18 @@ public abstract class BraveActivity extends ChromeActivity
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_SAFE_BROWSING);
 
         executeInitSafeBrowsing(0);
+
+        if (mAppUpdateManager == null) {
+            mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
+        }
+        mAppUpdateManager
+                .getAppUpdateInfo()
+                .addOnSuccessListener(
+                        appUpdateInfo -> {
+                            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                                completeUpdateSnackbar();
+                            }
+                        });
     }
 
     @Override
@@ -443,6 +470,9 @@ public abstract class BraveActivity extends ChromeActivity
             mNotificationPermissionController = null;
         }
         BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
+        if (mAppUpdateManager != null) {
+            mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+        }
         super.onDestroyInternal();
         cleanUpBraveNewsController();
         cleanUpWalletNativeServices();
@@ -1183,10 +1213,12 @@ public abstract class BraveActivity extends ChromeActivity
                 && ChromeSharedPreferences.getInstance()
                                 .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                         == 1) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_7);
-            BraveRewardsHelper.setRewardsOnboardingIconTiming(calender.getTimeInMillis());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, DAYS_7);
+            BraveRewardsHelper.setRewardsOnboardingIconTiming(calendar.getTimeInMillis());
+
+            setInAppUpdateTiming();
         }
 
         // Check multiwindow toggle for upgrade case
@@ -1198,6 +1230,84 @@ public abstract class BraveActivity extends ChromeActivity
             BraveMultiWindowUtils.updateEnableMultiWindows(true);
         } else if (!BraveMultiWindowUtils.isCheckUpgradeEnableMultiWindows()) {
             BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
+        }
+
+        if (System.currentTimeMillis()
+                > ChromeSharedPreferences.getInstance()
+                        .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
+            checkAppUpdate();
+        }
+    }
+
+    private void setInAppUpdateTiming() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, MONTH_1);
+        ChromeSharedPreferences.getInstance()
+                .writeLong(
+                        BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, calendar.getTimeInMillis());
+    }
+
+    private void completeUpdateSnackbar() {
+        Snackbar snackbar =
+                Snackbar.make(
+                                getResources().getString(R.string.in_app_update_text),
+                                new SnackbarController() {
+                                    @Override
+                                    public void onDismissNoAction(Object actionData) {}
+
+                                    @Override
+                                    public void onAction(Object actionData) {
+                                        if (mAppUpdateManager != null) {
+                                            mAppUpdateManager.completeUpdate();
+                                            mAppUpdateManager.unregisterListener(
+                                                    installStateUpdatedListener);
+                                        }
+                                    }
+                                },
+                                Snackbar.TYPE_ACTION,
+                                Snackbar.UMA_UNKNOWN)
+                        .setAction(getResources().getString(R.string.update), null)
+                        .setSingleLine(false)
+                        .setDuration(10000);
+        SnackbarManager snackbarManager =
+                SnackbarManagerProvider.from(getActivityTab().getWindowAndroid());
+        snackbarManager.showSnackbar(snackbar);
+    }
+
+    private final InstallStateUpdatedListener installStateUpdatedListener =
+            installState -> {
+                if (installState.installStatus() == InstallStatus.DOWNLOADED) {
+                    completeUpdateSnackbar();
+                }
+            };
+
+    private void checkAppUpdate() {
+        mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
+        mAppUpdateManager.registerListener(installStateUpdatedListener);
+
+        Task<AppUpdateInfo> appUpdateInfoTask = mAppUpdateManager.getAppUpdateInfo();
+
+        appUpdateInfoTask.addOnSuccessListener(
+                appUpdateInfo -> {
+                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                        if (appUpdateInfo.updatePriority() >= 4 /* high priority */
+                                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                            startAppUpdateFlow(appUpdateInfo, AppUpdateType.IMMEDIATE);
+                        } else {
+                            startAppUpdateFlow(appUpdateInfo, AppUpdateType.FLEXIBLE);
+                        }
+                    }
+                });
+    }
+
+    private void startAppUpdateFlow(AppUpdateInfo appUpdateInfo, int appUpdateType) {
+        try {
+            mAppUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo, appUpdateType, BraveActivity.this, 1);
+            setInAppUpdateTiming();
+        } catch (IntentSender.SendIntentException e) {
+            throw new RuntimeException(e);
         }
     }
 
