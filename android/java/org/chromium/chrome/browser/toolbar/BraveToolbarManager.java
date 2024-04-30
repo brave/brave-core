@@ -68,6 +68,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
@@ -179,7 +180,7 @@ public class BraveToolbarManager extends ToolbarManager {
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             @Nullable View baseChromeLayout,
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
-            OneshotSupplier<AppHeaderCoordinator> appHeaderCoordinatorSupplier) {
+            @Nullable DesktopWindowStateProvider desktopWindowStateProvider) {
         super(
                 activity,
                 controlsSizer,
@@ -228,7 +229,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 overviewColorSupplier,
                 baseChromeLayout,
                 readAloudControllerSupplier,
-                appHeaderCoordinatorSupplier);
+                desktopWindowStateProvider);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
