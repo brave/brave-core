@@ -20,6 +20,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/components/permissions/permission_widevine_utils.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -38,10 +39,12 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
+#include "ui/base/models/image_model.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/combobox/combobox.h"
+#include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
@@ -199,25 +202,25 @@ class PermissionLifetimeCombobox : public views::Combobox,
 BEGIN_METADATA(PermissionLifetimeCombobox)
 END_METADATA
 
-void AddGeolocationDescription(
-    views::BubbleDialogDelegateView* dialog_delegate_view,
+std::unique_ptr<views::View> CreateGeolocationDescLabel(
     Browser* browser,
     bool enable_high_accuracy,
-    bool use_exact_location_label) {
-  auto container = std::make_unique<views::View>();
-
-  constexpr int kPadding = 12;
-  container->SetLayoutManager(std::make_unique<views::BoxLayout>())
-      ->set_inside_border_insets(gfx::Insets::TLBR(kPadding, 0, 0, 0));
-
-  // We put placeholders to get target offsets.
-  const std::vector<std::u16string> placeholders{u"$1", u"$2", u"$3", u"$4"};
+    bool location_service_is_on) {
+  // We put placeholders raw string to get target offsets.
+  std::vector<std::u16string> placeholders{u"$1", u"$2", u"$3", u"$4"};
+  if (enable_high_accuracy && !location_service_is_on) {
+    placeholders.insert(placeholders.end(), {u"$5", u"$6", u"$7", u"$8"});
+  }
+  int string_id = IDS_GEOLOCATION_PERMISSION_BUBBLE_LOW_ACCURACY_LABEL;
+  if (enable_high_accuracy) {
+    string_id =
+        location_service_is_on
+            ? IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITH_LOCATION_SERVICE_LABEL
+            : IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITHOUT_LOCATION_SERVICE_LABEL;
+  }
   std::vector<size_t> offsets;
-  std::u16string contents_text = l10n_util::GetStringFUTF16(
-      (use_exact_location_label && enable_high_accuracy)
-          ? IDS_GEOLOCATION_PERMISSION_BUBBLE_EXACT_LOCATION_LABEL
-          : IDS_GEOLOCATION_PERMISSION_BUBBLE_GENERAL_LOCATION_LABEL,
-      placeholders, &offsets);
+  std::u16string contents_text =
+      l10n_util::GetStringFUTF16(string_id, placeholders, &offsets);
   CHECK(offsets.size() == placeholders.size());
 
   // Remove placeholers. It's used to get offsets.
@@ -232,15 +235,21 @@ void AddGeolocationDescription(
     offset_diff += placeholders[i].length();
   }
 
-  auto* contents_label =
-      container->AddChildView(std::make_unique<views::StyledLabel>());
+  auto contents_label = std::make_unique<views::StyledLabel>();
   contents_label->SetTextContext(views::style::CONTEXT_LABEL);
   contents_label->SetDefaultTextStyle(views::style::STYLE_PRIMARY);
   contents_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   contents_label->SetText(contents_text);
   views::StyledLabel::RangeStyleInfo part_style;
   part_style.text_style = views::style::STYLE_EMPHASIZED;
-  contents_label->AddStyleRange(gfx::Range(offsets[0], offsets[1]), part_style);
+  const int part_count_except_learn_more = placeholders.size() / 2 - 1;
+  for (int i = 0; i < part_count_except_learn_more; ++i) {
+    // Each part has start/end offset pair.
+    const int part_start_offset = i * 2;
+    contents_label->AddStyleRange(
+        gfx::Range(offsets[part_start_offset], offsets[part_start_offset + 1]),
+        part_style);
+  }
 
   // It's ok to use |browser| in the link's callback as bubbble is tied with
   // that |browser| and bubble is destroyed earlier than browser.
@@ -252,9 +261,49 @@ void AddGeolocationDescription(
           },
           browser));
 
-  contents_label->AddStyleRange(gfx::Range(offsets[2], offsets[3]),
-                                learn_more_style);
+  // Learn more is last part.
+  const int learn_more_offset = placeholders.size() - 2;
+  contents_label->AddStyleRange(
+      gfx::Range(offsets[learn_more_offset], offsets[learn_more_offset + 1]),
+      learn_more_style);
+  constexpr int kFixedLabelWidth = 290;
+  contents_label->SizeToFit(kFixedLabelWidth);
+  return contents_label;
+}
 
+std::unique_ptr<views::View> CreateGeolocationDescIcon(
+    bool enable_high_accuracy,
+    bool location_service_is_on) {
+  const bool use_high_accuracy = enable_high_accuracy && location_service_is_on;
+  constexpr int kIconSize = 16;
+  auto icon_view =
+      std::make_unique<views::ImageView>(ui::ImageModel::FromVectorIcon(
+          use_high_accuracy ? kLeoWarningTriangleOutlineIcon
+                            : kLeoInfoOutlineIcon,
+          ui::ColorIds::kColorMenuIcon, kIconSize));
+  // To align with text more precisely.
+  icon_view->SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(2, 0, 0, 0)));
+  return icon_view;
+}
+
+void AddGeolocationDescription(
+    views::BubbleDialogDelegateView* dialog_delegate_view,
+    Browser* browser,
+    bool enable_high_accuracy,
+    bool location_service_is_on) {
+  auto container = std::make_unique<views::View>();
+  constexpr int kPadding = 12;
+  constexpr int kChildSpacing = 6;
+  container
+      ->SetLayoutManager(std::make_unique<views::BoxLayout>(
+          views::BoxLayout::Orientation::kHorizontal,
+          gfx::Insets::TLBR(kPadding, 0, 0, 0), kChildSpacing))
+      ->set_cross_axis_alignment(views::BoxLayout::CrossAxisAlignment::kStart);
+
+  container->AddChildView(
+      CreateGeolocationDescIcon(enable_high_accuracy, location_service_is_on));
+  container->AddChildView(CreateGeolocationDescLabel(
+      browser, enable_high_accuracy, location_service_is_on));
   dialog_delegate_view->AddChildView(std::move(container));
 }
 
