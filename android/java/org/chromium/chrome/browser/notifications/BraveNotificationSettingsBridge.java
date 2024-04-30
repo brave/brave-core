@@ -20,6 +20,6 @@ public class BraveNotificationSettingsBridge {
     @TargetApi(Build.VERSION_CODES.O)
     @CalledByNative
     static @NotificationChannelStatus int getChannelStatus(String channelId) {
-        return NotificationSettingsBridge.getChannelStatus(channelId);
+        return NotificationChannelStatus.UNAVAILABLE;
     }
 }
