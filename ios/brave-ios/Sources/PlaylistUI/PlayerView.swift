@@ -173,18 +173,23 @@ extension PlayerView {
         VStack {
           MediaScrubber(
             currentTime: Binding(
-              get: { .seconds(currentTime) },
+              get: {
+                if isScrubbing {
+                  return model.currentTime
+                }
+                return currentTime
+              },
               set: { newValue in
-                Task { await model.seek(to: TimeInterval(newValue.components.seconds)) }
+                Task { await model.seek(to: newValue, accurately: true) }
               }
             ),
-            duration: .seconds(model.duration),
+            duration: model.duration,
             isScrubbing: $isScrubbing
           ) {
             HStack {
               CompactMediaScrubberLabel(
-                currentTime: .seconds(currentTime),
-                duration: .seconds(model.duration)
+                currentTime: currentTime,
+                duration: model.duration
               )
               Spacer()
               Button {
@@ -246,15 +251,15 @@ extension PlayerView {
 
 @available(iOS 16.0, *)
 struct CompactMediaScrubberLabel: View {
-  var currentTime: Duration
-  var duration: Duration
+  var currentTime: TimeInterval
+  var duration: TimeInterval
 
   private var currentValueLabel: Text {
-    return Text(currentTime, format: .time(pattern: .minuteSecond))
+    return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
   }
 
   private var remainingTimeLabel: Text {
-    let value = Text(duration - currentTime, format: .time(pattern: .minuteSecond))
+    let value = Text(.seconds(duration - currentTime), format: .time(pattern: .minuteSecond))
     return Text("-\(value)")
   }
 

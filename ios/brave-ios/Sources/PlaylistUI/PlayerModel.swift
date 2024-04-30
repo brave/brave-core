@@ -191,7 +191,7 @@ final class PlayerModel: ObservableObject {
     await seek(to: currentItem.currentTime().seconds + seekInterval)
   }
 
-  func seek(to time: TimeInterval) async {
+  func seek(to time: TimeInterval, accurately: Bool = false) async {
     guard let currentItem = player.currentItem else {
       return
     }
@@ -199,7 +199,11 @@ final class PlayerModel: ObservableObject {
       max(0.0, min(currentItem.duration.seconds, time)),
       preferredTimescale: currentItem.currentTime().timescale
     )
-    await player.seek(to: seekTime)
+    await player.seek(
+      to: seekTime,
+      toleranceBefore: accurately ? .zero : .positiveInfinity,
+      toleranceAfter: accurately ? .zero : .positiveInfinity
+    )
   }
 
   // MARK: - Playback Extras

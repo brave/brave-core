@@ -84,12 +84,18 @@ extension MediaContentView {
         }
         MediaScrubber(
           currentTime: Binding(
-            get: { .seconds(currentTime) },
+            get: {
+              if isScrubbing {
+                return model.currentTime
+              } else {
+                return self.currentTime
+              }
+            },
             set: { newValue in
-              Task { await model.seek(to: TimeInterval(newValue.components.seconds)) }
+              Task { await model.seek(to: newValue, accurately: true) }
             }
           ),
-          duration: .seconds(model.duration),
+          duration: model.duration,
           isScrubbing: $isScrubbing
         )
         .tint(Color(braveSystemName: .iconInteractive))

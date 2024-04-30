@@ -11,14 +11,14 @@ import SwiftUI
 /// FIXME: Support RTL layout direction
 @available(iOS 16.0, *)
 struct MediaScrubber<Label: View>: View {
-  @Binding var currentTime: Duration
-  var duration: Duration
+  @Binding var currentTime: TimeInterval
+  var duration: TimeInterval
   @Binding var isScrubbing: Bool
   var label: Label
 
   init(
-    currentTime: Binding<Duration>,
-    duration: Duration,
+    currentTime: Binding<TimeInterval>,
+    duration: TimeInterval,
     isScrubbing: Binding<Bool>,
     @ViewBuilder label: () -> Label
   ) {
@@ -33,16 +33,16 @@ struct MediaScrubber<Label: View>: View {
   @ScaledMetric private var thumbSize = 12
 
   private var currentValueLabel: Text {
-    return Text(currentTime, format: .time(pattern: .minuteSecond))
+    return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
   }
 
   private var remainingTimeLabel: Text {
-    let value = Text(duration - currentTime, format: .time(pattern: .minuteSecond))
+    let value = Text(.seconds(duration - currentTime), format: .time(pattern: .minuteSecond))
     return Text("-\(value)")
   }
 
   private var durationLabel: Text {
-    Text(duration, format: .time(pattern: .minuteSecond))
+    Text(.seconds(duration), format: .time(pattern: .minuteSecond))
   }
 
   private var barShape: some InsettableShape {
@@ -57,7 +57,7 @@ struct MediaScrubber<Label: View>: View {
         .foregroundStyle(.tint)
         .frame(height: barHeight)
         .overlay {
-          if duration.isValid {
+          if duration > 0 {
             // Active value
             GeometryReader { proxy in
               barShape
@@ -65,7 +65,7 @@ struct MediaScrubber<Label: View>: View {
                 .frame(
                   width: min(
                     proxy.size.width,
-                    CGFloat(currentTime.seconds / duration.seconds) * proxy.size.width
+                    CGFloat(currentTime / duration) * proxy.size.width
                   ),
                   alignment: .leading
                 )
@@ -75,7 +75,7 @@ struct MediaScrubber<Label: View>: View {
         }
         .padding(.vertical, (thumbSize - barHeight) / 2)
         .overlay {
-          if duration.isValid {
+          if duration > 0 {
             // Thumb
             GeometryReader { proxy in
               Circle()
@@ -86,7 +86,7 @@ struct MediaScrubber<Label: View>: View {
                 .offset(
                   x: min(
                     proxy.size.width,
-                    (CGFloat(currentTime.seconds / duration.seconds) * proxy.size.width)
+                    (CGFloat(currentTime / duration) * proxy.size.width)
                   ) - (thumbSize / 2)
                 )
                 .animation(.linear(duration: 0.1), value: currentTime)
@@ -102,27 +102,27 @@ struct MediaScrubber<Label: View>: View {
                       let seconds = max(
                         0,
                         min(
-                          duration.seconds,
-                          (state.location.x / proxy.size.width) * CGFloat(duration.seconds)
+                          duration,
+                          (state.location.x / proxy.size.width) * CGFloat(duration)
                         )
                       )
-                      currentTime = .seconds(seconds)
+                      currentTime = seconds
                     }
                 )
             }
           }
         }
-        .disabled(!duration.isValid)
+        .disabled(duration.isZero)
       label
     }
     .onChange(of: isScrubbingState) { newValue in
       isScrubbing = newValue
     }
     .accessibilityRepresentation {
-      if duration.isValid {
+      if duration > 0 {
         Slider(
-          value: Binding(get: { currentTime.seconds }, set: { currentTime = .seconds($0) }),
-          in: 0.0...duration.seconds,
+          value: $currentTime,
+          in: 0.0...duration,
           step: 1
         ) {
           Text("Current Media Time")  // TODO: Localize
@@ -139,8 +139,8 @@ struct MediaScrubber<Label: View>: View {
 @available(iOS 16.0, *)
 extension MediaScrubber where Label == DefaultMediaScrubberLabel {
   init(
-    currentTime: Binding<Duration>,
-    duration: Duration,
+    currentTime: Binding<TimeInterval>,
+    duration: TimeInterval,
     isScrubbing: Binding<Bool>
   ) {
     self._currentTime = currentTime
@@ -155,22 +155,22 @@ extension MediaScrubber where Label == DefaultMediaScrubberLabel {
 
 @available(iOS 16.0, *)
 struct DefaultMediaScrubberLabel: View {
-  var currentTime: Duration
-  var duration: Duration
+  var currentTime: TimeInterval
+  var duration: TimeInterval
 
   @State private var isShowingTotalTime: Bool = false
 
   private var currentValueLabel: Text {
-    return Text(currentTime, format: .time(pattern: .minuteSecond))
+    return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
   }
 
   private var remainingTimeLabel: Text {
-    let value = Text(duration - currentTime, format: .time(pattern: .minuteSecond))
+    let value = Text(.seconds(duration - currentTime), format: .time(pattern: .minuteSecond))
     return Text("-\(value)")
   }
 
   private var durationLabel: Text {
-    Text(duration, format: .time(pattern: .minuteSecond))
+    Text(.seconds(duration), format: .time(pattern: .minuteSecond))
   }
 
   var body: some View {
@@ -208,20 +208,20 @@ extension Duration {
 #if DEBUG
 @available(iOS 16.0, *)
 private struct MediaScrubberPreview: View {
-  @State private var currentTime: Duration = .seconds(0)
+  @State private var currentTime: TimeInterval = 0
   @State private var isScrubbing: Bool = false
 
   var body: some View {
     VStack {
       MediaScrubber(
         currentTime: $currentTime,
-        duration: .seconds(1000),
+        duration: 1000,
         isScrubbing: $isScrubbing
       )
       .padding()
       MediaScrubber(
         currentTime: $currentTime,
-        duration: .seconds(1000),
+        duration: 1000,
         isScrubbing: $isScrubbing
       )
       .tint(.red)
@@ -232,7 +232,7 @@ private struct MediaScrubberPreview: View {
       Button {
         // FIXME: Currently animation is linear(0.1) based on animations in the actual MediaScrubber, see if its possible to only use those animations while scrubbing
         //        withAnimation(.spring()) {
-        currentTime = .seconds(500)
+        currentTime = 500
         //        }
       } label: {
         Text("Go to 50%")
