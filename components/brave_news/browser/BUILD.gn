@@ -36,6 +36,8 @@ static_library("browser") {
     "feed_v2_builder.h",
     "html_parsing.cc",
     "html_parsing.h",
+    "initialization_promise.cc",
+    "initialization_promise.h",
     "locales_helper.cc",
     "locales_helper.h",
     "network.cc",

@@ -224,11 +224,15 @@ void PublishersController::EnsurePublishersIsUpdating(
       [](PublishersController* controller,
          const BraveNewsSubscriptions& subscriptions,
          api_request_helper::APIRequestResult api_request_result) {
+        static int calls = 0;
+        LOG(ERROR) << "Calls: " << calls++;
         VLOG(1) << "Publishers response status code: "
                 << api_request_result.response_code();
         // TODO(petemill): handle bad status or response
         std::optional<Publishers> publisher_list =
-            ParseCombinedPublisherList(api_request_result.TakeBody());
+            calls >= 3
+                ? ParseCombinedPublisherList(api_request_result.TakeBody())
+                : std::nullopt;
 
         // Update failed, we'll just reuse whatever publishers we had before.
         if (!publisher_list) {
