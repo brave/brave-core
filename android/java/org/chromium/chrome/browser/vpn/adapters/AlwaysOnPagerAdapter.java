@@ -51,7 +51,11 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                         .inflate(R.layout.kill_switch_tutorial_item_layout, null);
         TextView killSwitchTutorialText = view.findViewById(R.id.kill_switch_tutorial_text);
         if (position == 2) {
-            String tutorialText = mContext.getResources().getString(mTexts.get(position));
+            String tutorialText =
+                    mContext.getResources().getString(R.string.kill_switch_tutorial_text_3)
+                            + "\n"
+                            + mContext.getResources()
+                                    .getString(R.string.kill_switch_tutorial_text_4);
             SpannableString tutorialSpannableString =
                     SpanApplier.applySpans(
                             tutorialText,

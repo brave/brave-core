@@ -3938,7 +3938,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="Terms of service text for rewards panel">
       See <ph name="TOS_START">&lt;tos&gt;</ph>Brave Rewards Terms of Service<ph name="TOS_END">&lt;/tos&gt;</ph>
     </message>
-<<<<<<< HEAD
     <message name="IDS_ENABLE_MULTI_WINDOWS_TITLE" desc="Title for preference that enables or disables multiple windows.">
       Enable multiple windows
     </message>
@@ -3976,10 +3975,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       2. Find Brave VPN and tap on the settings icon to the right.
     </message>
     <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_3" desc="Vpn kill swicth tutorial text">
-      3. Toggle <ph name="ALWAYS_ON_TUTORIAL_START">&lt;always_on_tutorial&gt;</ph>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END">&lt;/always_on_tutorial&gt;</ph> to enable it.\n4. Toggle <ph name="ALWAYS_ON_TUTORIAL_2_START">&lt;always_on_tutorial_2&gt;</ph>Block connections without VPN<ph name="ALWAYS_ON_TUTORIAL_2_END">&lt;/always_on_tutorial_2&gt;</ph> to enable the kill switch.
+      3. Toggle <ph name="ALWAYS_ON_TUTORIAL_START">&lt;always_on_tutorial&gt;</ph>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END">&lt;/always_on_tutorial&gt;</ph> to enable it.
     </message>
     <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_4" desc="Vpn kill swicth tutorial text">
-      4. Toggle Block connections without VPN to enable the kill switch.
+      4. Toggle <ph name="ALWAYS_ON_TUTORIAL_2_START">&lt;always_on_tutorial_2&gt;</ph>Block connections without VPN<ph name="ALWAYS_ON_TUTORIAL_2_END">&lt;/always_on_tutorial_2&gt;</ph> to enable the kill switch.
     </message>
     <message name="IDS_KILL_SWITCH_TEXT" desc="Vpn kill swicth tutorial text">
       Kill switch will disable split tunneling. It also prevents connections from outside the VPN tunnel.

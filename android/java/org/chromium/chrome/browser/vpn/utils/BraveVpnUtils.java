@@ -94,7 +94,6 @@ public class BraveVpnUtils {
 
     public static void openAlwaysOnActivity(Activity activity) {
         Intent vpnAlwaysOnActivityIntent = new Intent(activity, VpnAlwaysOnActivity.class);
-        vpnAlwaysOnActivityIntent.setAction(Intent.ACTION_VIEW);
         activity.startActivity(vpnAlwaysOnActivityIntent);
     }
 
