@@ -109,8 +109,10 @@ public struct AssetViewModel: Identifiable, Equatable {
   let network: BraveWallet.NetworkInfo
   let price: String
   let history: [BraveWallet.AssetTimePrice]
-  /// Balance for each account for this asset. The key is the account.cacheBalanceKey.
+  /// Balance for each account for this asset. The key is the account.id.
   let balanceForAccounts: [String: Double]
+  /// All BTC balance types for each account. Key is `account.id`.
+  let btcBalances: [String: [BTCBalanceType: Double]]
   /// The total balance for all accounts for this asset.
   var totalBalance: Double {
     balanceForAccounts.values.reduce(0, +)
@@ -242,6 +244,8 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   @Published private(set) var historicalBalances: [BalanceTimePrice] = []
   /// Whether or not balances are still currently loading
   @Published private(set) var isLoadingBalances: Bool = false
+  /// The BTC balances for each Bitcoin account.  Key is `account.id`.
+  @Published private(set) var accountsBTCBalances: [String: [BTCBalanceType: Double]] = [:]
   /// The current default base currency code
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
@@ -491,6 +495,28 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         }
       }
 
+      guard !Task.isCancelled else { return }
+      if selectedAccounts.contains(where: { $0.coin == .btc }) {
+        /// We  need to know if user has pending balance to show/hide banner. Re-fetch on view load.
+        self.accountsBTCBalances = await withTaskGroup(of: [String: [BTCBalanceType: Double]].self)
+        {
+          [bitcoinWalletService] group in
+          for account in selectedAccounts where account.coin == .btc {
+            group.addTask {
+              let btcBalances = await bitcoinWalletService.fetchBTCBalances(
+                accountId: account.accountId
+              )
+              return [account.id: btcBalances]
+            }
+          }
+          var accountsBTCBalances: [String: [BTCBalanceType: Double]] = [:]
+          for await accountBTCBalances in group {
+            accountsBTCBalances.merge(with: accountBTCBalances)
+          }
+          return accountsBTCBalances
+        }
+      }
+
       // Looping through `allTokenNetworkAccounts` to get token's cached balance
       for tokenNetworkAccounts in allTokenNetworkAccounts {
         if let tokenBalances = assetManager.getBalances(
@@ -561,6 +587,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         }
       }
 
+      guard !Task.isCancelled else { return }
       // fetch price for every token
       let allTokens = allVisibleUserAssets.flatMap(\.tokens)
       let allAssetRatioIds = allTokens.map(\.assetRatioId)
@@ -664,6 +691,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
           groupType: .none,
           assets: buildAssetViewModels(
             for: .none,
+            accounts: selectedAccounts,
             allVisibleUserAssets: allVisibleUserAssets
           )
         )
@@ -673,6 +701,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         let groupType: AssetGroupType = .account(account)
         let assets = buildAssetViewModels(
           for: .account(account),
+          accounts: selectedAccounts,
           allVisibleUserAssets: allVisibleUserAssets
         )
         return AssetGroupViewModel(
@@ -685,6 +714,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         let groupType: AssetGroupType = .network(network)
         let assets = buildAssetViewModels(
           for: groupType,
+          accounts: selectedAccounts,
           allVisibleUserAssets: allVisibleUserAssets
         )
         return AssetGroupViewModel(
@@ -710,6 +740,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
 
   private func buildAssetViewModels(
     for groupType: AssetGroupType,
+    accounts: [BraveWallet.AccountInfo],
     allVisibleUserAssets: [NetworkAssets]
   ) -> [AssetViewModel] {
     let selectedAccounts = self.filters.accounts.filter(\.isSelected).map(\.model)
@@ -717,7 +748,20 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     case .none:
       return allVisibleUserAssets.flatMap { networkAssets in
         networkAssets.tokens.map { token in
-          AssetViewModel(
+          var btcBalancesForToken: [String: [BTCBalanceType: Double]] = [:]
+          if token.coin == .btc {
+            let keyringIdForToken = BraveWallet.KeyringId.keyringId(for: .btc, on: token.chainId)
+            let accountIdsForToken =
+              accounts
+              .filter({ $0.keyringId == keyringIdForToken })
+              .map(\.accountId)
+            btcBalancesForToken = accountsBTCBalances.filter({ item in
+              accountIdsForToken.contains(where: { accountId in
+                item.key == accountId.uniqueKey
+              })
+            })
+          }
+          return AssetViewModel(
             groupType: groupType,
             token: token,
             network: networkAssets.network,
@@ -728,7 +772,8 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                 // if we previously fetched balance for an account it will remain in cache.
                 // filter out to avoid including in total balance
                 selectedAccounts.contains(where: { $0.id == key })
-              }
+              },
+            btcBalances: btcBalancesForToken
           )
         }
       }
@@ -751,6 +796,19 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       else {
         return []
       }
+      var btcBalancesForNetwork: [String: [BTCBalanceType: Double]] = [:]
+      if network.coin == .btc {
+        let keyringIdForNetwork = BraveWallet.KeyringId.keyringId(for: .btc, on: network.chainId)
+        let accountIdsForToken =
+          accounts
+          .filter({ $0.keyringId == keyringIdForNetwork })
+          .map(\.accountId)
+        btcBalancesForNetwork = accountsBTCBalances.filter({ item in
+          accountIdsForToken.contains(where: { accountId in
+            item.key == accountId.uniqueKey
+          })
+        })
+      }
       return networkAssets.tokens
         .map { token in
           AssetViewModel(
@@ -764,7 +822,8 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                 // if we previously fetched balance for an account it will remain in cache.
                 // filter out to avoid including in total balance
                 selectedAccounts.contains(where: { $0.id == key })
-              }
+              },
+            btcBalances: btcBalancesForNetwork
           )
         }
         .optionallyFilter(
@@ -798,7 +857,8 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                 .filter { key, value in
                   // only provide grouped account balance
                   key == account.id
-                }
+                },
+              btcBalances: accountsBTCBalances.filter({ $0.key == account.id })
             )
           }
         }

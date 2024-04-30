@@ -31,6 +31,7 @@ struct PortfolioView: View {
   @State private var isPresentingAssetsFilters: Bool = false
   @State private var isPresentingAddCustomNFT: Bool = false
   @State private var isPresentingNFTsFilters: Bool = false
+  @State private var bitcoinBalanceDetails: BitcoinBalanceDetails?
 
   var body: some View {
     ScrollView {
@@ -46,6 +47,9 @@ struct PortfolioView: View {
         )
         contentDrawer
       }
+    }
+    .onAppear {
+      portfolioStore.update()
     }
     .background(
       VStack(spacing: 0) {
@@ -123,6 +127,26 @@ struct PortfolioView: View {
           })
         }
     )
+    .background(
+      Color.clear
+        .sheet(
+          isPresented: Binding(
+            get: { bitcoinBalanceDetails != nil },
+            set: {
+              if !$0 {
+                bitcoinBalanceDetails = nil
+              }
+            }
+          )
+        ) {
+          if let bitcoinBalanceDetails {
+            BTCBalanceDetailsView(
+              details: bitcoinBalanceDetails,
+              currencyFormatter: .usdCurrencyFormatter
+            )
+          }
+        }
+    )
   }
 
   private var contentDrawer: some View {
@@ -140,7 +164,8 @@ struct PortfolioView: View {
             networkStore: networkStore,
             portfolioStore: portfolioStore,
             isPresentingEditUserAssets: $isPresentingEditUserAssets,
-            isPresentingFilters: $isPresentingAssetsFilters
+            isPresentingFilters: $isPresentingAssetsFilters,
+            bitcoinBalanceDetails: $bitcoinBalanceDetails
           )
           .padding(.horizontal, 8)
         } else {

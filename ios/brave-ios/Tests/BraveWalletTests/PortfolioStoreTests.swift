@@ -131,7 +131,10 @@ import XCTest
   // FIL Asset, balance on filecoin testnet
   let mockFILBalanceTestnet: Double = 100  // FIL value on testnet = $400.00
 
-  let mockBTCBalanceAccount1: Double = 0.0000001
+  let mockAvailableBTCBalanceAccount1: Double = 0.00000005
+  let mockPendingBTCBalanceAccount1: Double = 0.00000005
+  lazy var mockBTCBalanceAccount1: Double =
+    mockAvailableBTCBalanceAccount1 + mockPendingBTCBalanceAccount1
   let mockBTCPrice: String = "65726.00"
   lazy var mockBTCAssetPrice: BraveWallet.AssetPrice = .init(
     fromAsset: "btc",
@@ -304,8 +307,6 @@ import XCTest
           completion(mockFilTestnetBalanceInWei, .success, "")
         }
       } else {
-        // TODO: Bitcoin balance will be fetched from BraveWalletBitcoinWalletService. Update this!
-        // https://github.com/brave/brave-browser/issues/36966
         completion("", .success, "")
       }
     }
@@ -400,6 +401,18 @@ import XCTest
       ].filter { networkAsset in networks.contains(where: { $0 == networkAsset.network }) }
     }
 
+    let btcAvailableBalanceInSatoshi =
+      formatter.weiString(
+        from: mockAvailableBTCBalanceAccount1,
+        radix: .decimal,
+        decimals: Int(BraveWallet.BlockchainToken.mockBTCToken.decimals)
+      ) ?? ""
+    let btcPendingBalanceInSatoshi =
+      formatter.weiString(
+        from: mockPendingBTCBalanceAccount1,
+        radix: .decimal,
+        decimals: Int(BraveWallet.BlockchainToken.mockBTCToken.decimals)
+      ) ?? ""
     let btcBalanceInSatoshi =
       formatter.weiString(
         from: mockBTCBalanceAccount1,
@@ -418,8 +431,8 @@ import XCTest
         completion(
           .init(
             totalBalance: UInt64(btcBalanceInSatoshi) ?? 0,
-            availableBalance: UInt64(btcBalanceInSatoshi) ?? 0,
-            pendingBalance: 0,
+            availableBalance: UInt64(btcAvailableBalanceInSatoshi) ?? 0,
+            pendingBalance: Int64(btcPendingBalanceInSatoshi) ?? 0,
             balances: [:]
           ),
           nil
@@ -503,6 +516,10 @@ import XCTest
           group.assets[safe: 0]?.quantity,
           String(format: "%.04f", self.mockETHBalanceAccount1)
         )
+        XCTAssertEqual(
+          group.assets[safe: 0]?.btcBalances,
+          [:]  // ETH so no btcBalances
+        )
 
         // SOL (value = $775.3)
         XCTAssertEqual(
@@ -539,6 +556,10 @@ import XCTest
           group.assets[safe: 2]?.quantity,
           String(format: "%.04f", self.mockFILBalanceAccount1)
         )
+        XCTAssertEqual(
+          group.assets[safe: 0]?.btcBalances,
+          [:]  // FIL so no btcBalances
+        )
 
         // USDC (value $0.04)
         XCTAssertEqual(
@@ -573,6 +594,21 @@ import XCTest
         XCTAssertEqual(
           group.assets[safe: 4]?.quantity,
           String(format: "%.04f", self.mockBTCBalanceAccount1)
+        )
+        XCTAssertEqual(
+          group.assets[safe: 4]?.btcBalances,
+          [
+            self.btcAccount1.id: [
+              .available: self.mockAvailableBTCBalanceAccount1,
+              .pending: self.mockPendingBTCBalanceAccount1,
+              .total: self.mockBTCBalanceAccount1,
+            ],
+            self.btcAccount2.id: [
+              .available: 0,
+              .pending: 0,
+              .total: 0,
+            ],
+          ]
         )
 
         // ETH Goerli (value = 0), hidden because test networks not selected by default
@@ -1188,6 +1224,16 @@ import XCTest
             btcTestnetAccountGroup.assets[safe: 0]?.quantity,
             String(format: "%.04f", 0)
           )
+          XCTAssertEqual(
+            btcTestnetAccountGroup.assets[safe: 0]?.btcBalances,
+            [
+              self.btcTestnetAccount.id: [
+                .available: self.mockBTCBalanceTestnet,
+                .pending: 0,
+                .total: self.mockBTCBalanceTestnet,
+              ]
+            ]
+          )
         }
 
         XCTAssertEqual(ethAccount1Group.groupType, .account(self.ethAccount1))
@@ -1435,6 +1481,16 @@ import XCTest
           XCTAssertEqual(
             btcTestnetAccountGroup.assets[safe: 0]?.quantity,
             String(format: "%.04f", self.mockBTCBalanceTestnet)
+          )
+          XCTAssertEqual(
+            btcTestnetAccountGroup.assets[safe: 0]?.btcBalances,
+            [
+              self.btcTestnetAccount.id: [
+                .available: self.mockBTCBalanceTestnet,
+                .pending: 0,
+                .total: self.mockBTCBalanceTestnet,
+              ]
+            ]
           )
         }
 

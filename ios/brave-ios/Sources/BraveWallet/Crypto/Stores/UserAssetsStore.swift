@@ -296,7 +296,8 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
           network: networkAssets.network,
           price: "",
           history: [],
-          balanceForAccounts: [:]
+          balanceForAccounts: [:],
+          btcBalances: [:]
         )
       }
     }

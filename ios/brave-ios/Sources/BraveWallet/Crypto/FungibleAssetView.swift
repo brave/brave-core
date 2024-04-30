@@ -5,15 +5,86 @@
 
 import Preferences
 import SwiftUI
+import BraveCore
 
-struct PortfolioAssetView: View {
+// View used to display `FungibleAssetView` as a button.
+struct FungibleAssetButton: View {
+  let asset: AssetViewModel
+  /// If a container should be shown to around unavailable balance banner
+  /// for Bitcoin asset row (when there is a pending balance)
+  let shouldShowContainerForBitcoin: Bool
+  let currencyFormatter: NumberFormatter
+  @Binding var bitcoinBalanceDetails: BitcoinBalanceDetails?
+  let action: (BraveWallet.BlockchainToken) -> Void
+  
+  private var showUnavailableBTCBalanceBanner: Bool {
+    guard asset.token.coin == .btc else {
+      return false
+    }
+    let sumOfPendingBalances = asset.btcBalances
+      .compactMap({ $0.value[.pending] })
+      .reduce(0.0, +)
+    return sumOfPendingBalances != 0
+  }
+  
+  var body: some View {
+    // Avoid button inside a button for `UnavailableBTCBalanceView`
+    if showUnavailableBTCBalanceBanner {
+      VStack(spacing: 0) {
+        assetViewButton
+        
+        UnavailableBTCBalanceView(
+          btcBalances: asset.btcBalances,
+          btcPrice: Double(asset.price) ?? 0,
+          bitcoinBalanceDetails: $bitcoinBalanceDetails
+        )
+      }
+      .padding()
+      .overlay {
+        if shouldShowContainerForBitcoin {
+          ContainerRelativeShape()
+            .strokeBorder(Color(braveSystemName: .dividerSubtle))
+        }
+      }
+      .containerShape(RoundedRectangle(cornerRadius: 12))
+    } else {
+      assetViewButton
+        .padding(.horizontal)
+    }
+  }
+  
+  private var assetViewButton: some View {
+    Button {
+      action(asset.token)
+    } label: {
+      FungibleAssetView(
+        image: AssetIconView(
+          token: asset.token,
+          network: asset.network,
+          shouldShowNetworkIcon: true
+        ),
+        title: asset.token.name,
+        symbol: asset.token.symbol,
+        networkName: asset.network.chainName,
+        fiat: asset.fiatAmount(currencyFormatter: currencyFormatter),
+        balance: asset.quantity,
+        shouldHideBalance: true,
+        btcBalances: asset.btcBalances
+      )
+    }
+  }
+}
+
+struct FungibleAssetView: View {
   var image: AssetIconView
   var title: String
   var symbol: String
   let networkName: String
-  var amount: String
-  var quantity: String
+  var fiat: String
+  var balance: String
   let shouldHideBalance: Bool
+  /// All BTC balance types (only there is a pending balance to indicate to user)
+  let btcBalances: [String: [BTCBalanceType: Double]]?
 
   @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
 
@@ -22,17 +93,19 @@ struct PortfolioAssetView: View {
     title: String,
     symbol: String,
     networkName: String,
-    amount: String,
-    quantity: String,
-    shouldHideBalance: Bool = false
+    fiat: String,
+    balance: String,
+    shouldHideBalance: Bool = false,
+    btcBalances: [String: [BTCBalanceType: Double]]? = nil
   ) {
     self.image = image
     self.title = title
     self.symbol = symbol
     self.networkName = networkName
-    self.amount = amount
-    self.quantity = quantity
+    self.fiat = fiat
+    self.balance = balance
     self.shouldHideBalance = shouldHideBalance
+    self.btcBalances = btcBalances
   }
 
   var body: some View {
@@ -47,9 +120,9 @@ struct PortfolioAssetView: View {
             Text("****")
           } else {
             VStack(alignment: .trailing) {
-              Text(amount.isEmpty ? "0.0" : amount)
+              Text(fiat.isEmpty ? "0.0" : fiat)
                 .fontWeight(.semibold)
-              Text(verbatim: "\(quantity) \(symbol)")
+              Text(verbatim: "\(balance) \(symbol)")
             }
             .multilineTextAlignment(.trailing)
           }
@@ -58,20 +131,20 @@ struct PortfolioAssetView: View {
         .foregroundColor(Color(.braveLabel))
       }
     )
-    .accessibilityLabel("\(title), \(quantity) \(symbol), \(amount)")
+    .accessibilityLabel("\(title), \(balance) \(symbol), \(fiat)")
   }
 }
 
 #if DEBUG
-struct PortfolioAssetView_Previews: PreviewProvider {
+struct FungibleAssetView_Previews: PreviewProvider {
   static var previews: some View {
-    PortfolioAssetView(
+    FungibleAssetView(
       image: AssetIconView(token: .previewToken, network: .mockMainnet),
       title: "Basic Attention Token",
       symbol: "BAT",
       networkName: "Ethereum Mainnet Beta",
-      amount: "$10,402.22",
-      quantity: "10303"
+      fiat: "$10,402.22",
+      balance: "10303"
     )
     .previewLayout(.sizeThatFits)
     .previewColorSchemes()

@@ -6,7 +6,7 @@
 import BraveCore
 import Foundation
 
-enum BTCBalanceType {
+enum BTCBalanceType: CaseIterable {
   case total
   case available
   case pending
@@ -43,32 +43,43 @@ extension BraveWalletBitcoinWalletService {
     )
   }
 
+  /// Fetch BTC balance for a given account & `BTCBalanceType`.
   /// - Parameters:
-  ///     - accountId: A list of `BraveWallet.AccountId`
+  ///     - accountId: The `BraveWallet.AccountId` for the account
   ///     - type: `BTCBalanceType` which indicates which btc balance it should return
   /// - Returns: The BTC balance of the given `BraveWallet.AccountId` in `Double`; Will return a nil if there is an issue fetching balance.
   func fetchBTCBalance(accountId: BraveWallet.AccountId, type: BTCBalanceType) async -> Double? {
-    guard let btcBalance = await self.balance(accountId: accountId).0
-    else { return nil }
+    await fetchBTCBalances(accountId: accountId)[type]
+  }
 
-    let balanceString: String
-    switch type {
-    case .total:
-      balanceString = String(btcBalance.totalBalance)
-    case .available:
-      balanceString = String(btcBalance.availableBalance)
-    case .pending:
-      balanceString = String(btcBalance.pendingBalance)
-    }
+  /// Fetch all bitcoin balance types (total, available, pending) for a given account.
+  /// - Parameters:
+  ///     - accountId: The `BraveWallet.AccountId` for the account
+  /// - Returns: The BTC balances of the given `BraveWallet.AccountId` in `Double`; Will return a nil if there is an issue fetching balance.
+  func fetchBTCBalances(accountId: BraveWallet.AccountId) async -> [BTCBalanceType: Double] {
+    guard let btcBalance = await self.balance(accountId: accountId).0
+    else { return [:] }
+
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8))
-    if let valueString = formatter.decimalString(
-      for: balanceString,
-      radix: .decimal,
-      decimals: 8
-    ) {
-      return Double(valueString)
-    } else {
-      return nil
+    var balances: [BTCBalanceType: Double] = [:]
+    for type in BTCBalanceType.allCases {
+      let balanceString: String
+      switch type {
+      case .total:
+        balanceString = String(btcBalance.totalBalance)
+      case .available:
+        balanceString = String(btcBalance.availableBalance)
+      case .pending:
+        balanceString = String(btcBalance.pendingBalance)
+      }
+      if let valueString = formatter.decimalString(
+        for: balanceString,
+        radix: .decimal,
+        decimals: 8
+      ) {
+        balances[type] = Double(valueString)
+      }
     }
+    return balances
   }
 }
