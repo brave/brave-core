@@ -546,11 +546,11 @@ void SharedPinnedTabService::OnTabUnpinned(
     DCHECK_NE(iter->contents_owner_model, tab_strip_model);
 
     auto unique_shared_contents =
-        iter->contents_owner_model->ReplaceWebContentsAt(
+        iter->contents_owner_model->DiscardWebContentsAt(
             previous_index, CreateDummyWebContents(shared_contents));
     SharedContentsData::RemoveFromWebContents(unique_shared_contents.get());
 
-    tab_strip_model->ReplaceWebContentsAt(index,
+    tab_strip_model->DiscardWebContentsAt(index,
                                           std::move(unique_shared_contents));
   } else {
     SharedContentsData::RemoveFromWebContents(contents.get());
@@ -699,7 +699,7 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
   if (pinned_tab_data.contents_owner_model) {
     std::unique_ptr<content::WebContents> unique_shared_contents;
     unique_shared_contents =
-        pinned_tab_data.contents_owner_model->ReplaceWebContentsAt(
+        pinned_tab_data.contents_owner_model->DiscardWebContentsAt(
             index, CreateDummyWebContents(pinned_tab_data.shared_contents));
     DCHECK_EQ(pinned_tab_data.shared_contents, unique_shared_contents.get());
     pinned_tab_data.contents_owner_model = tab_strip_model;
@@ -711,7 +711,7 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
     DCHECK(dummy_contents_data);
     dummy_contents_data->stop_propagation();
 
-    pinned_tab_data.contents_owner_model->ReplaceWebContentsAt(
+    pinned_tab_data.contents_owner_model->DiscardWebContentsAt(
         index, std::move(unique_shared_contents));
   } else {
     // Restore a shared pinned tab from a closed browser.
