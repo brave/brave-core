@@ -26,7 +26,7 @@ export const TopRow = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  padding: 15px 15px 0px 15px;
+  padding: 15px 0px;
 `
 
 export const AccountCircle = styled.div<Partial<StyleProps>>`
