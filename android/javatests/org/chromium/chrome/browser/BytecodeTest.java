@@ -380,13 +380,34 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         false,
                         null));
-
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
                         "isScrollableMvtEnabled",
                         MethodModifier.REGULAR,
                         true,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "setSearchProviderTopMargin",
+                        MethodModifier.REGULAR,
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "setSearchProviderBottomMargin",
+                        MethodModifier.REGULAR,
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "getLogoMargin",
+                        MethodModifier.REGULAR,
+                        true,
+                        int.class,
                         boolean.class));
 
         Assert.assertTrue(
