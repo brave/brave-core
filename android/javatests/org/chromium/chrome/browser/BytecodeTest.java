@@ -696,7 +696,8 @@ public class BytecodeTest {
                                 + "send_tab_to_self/ManageAccountDevicesLinkView",
                         "getSharingAccountInfo",
                         true,
-                        AccountInfo.class));
+                        AccountInfo.class,
+                        Profile.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
