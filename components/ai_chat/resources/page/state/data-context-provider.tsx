@@ -26,24 +26,32 @@ function useActionMenu() {
     // effectively remove the leading slash (\) before comparing it to the action labels.
     const text = searchText.substring(1).toLocaleLowerCase()
 
-    const filteredList = actionList.map(actionGroup => ({
-      ...actionGroup,
-      actions: actionGroup.actions.filter(action => {
-        // we skip non action types in the list as they're meant for display heading
-        if (action.actionDetails.empty) return
-        return action.label.toLocaleLowerCase().includes(text)
-      })
-    })).filter(actionGroup => actionGroup.actions.length > 0)
+    const filteredList = actionList
+      .map((actionGroup) => ({
+        ...actionGroup,
+        actions: actionGroup.actions.filter((action) => {
+          // Only apply filter to valid ActionType's label
+          if (action.actionDetails.type) {
+            return action.label.toLocaleLowerCase().includes(text)
+          }
+          // For other items, we dont return or show
+          return false
+        })
+      })).filter((actionGroup) => actionGroup.actions.length > 0)
 
     return filteredList
   }
 
-  const getFirstValidAction = (list: mojom.ActionGroup[]): mojom.ActionDetails => {
-    const action = list.flatMap(list => {
-      return list.actions
-    }).filter(action => action.actionDetails.type !== undefined)
+  const getFirstValidAction = (
+    list: mojom.ActionGroup[]
+  ): mojom.ActionDetails => {
+    const action = list
+      .flatMap((list) => {
+        return list.actions
+      })
+      .filter((action) => action.actionDetails.type !== undefined)
 
-    return (action[0].actionDetails)
+    return action[0].actionDetails
   }
 
   React.useEffect(() => {
@@ -274,7 +282,10 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const actionList = React.useMemo(() => {
-    return inputText.startsWith('/')
+    // Filters the action list based on inputText
+    // If inputText starts with '/' followed by word characters
+    const reg = new RegExp(/^\/\w+/)
+    return reg.test(inputText)
     ? filterActionsByText(inputText)
     : initialActionList
   }, [inputText, initialActionList, filterActionsByText])

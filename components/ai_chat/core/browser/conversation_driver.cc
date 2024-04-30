@@ -203,7 +203,8 @@ std::vector<mojom::ActionGroupPtr> ConversationDriver::GetActionMenuList() {
         std::move(actions));
 
     group->actions.push_back(mojom::LabeledAction::New(
-        "Explain", mojom::ActionDetails::NewType(mojom::ActionType::EXPLAIN)));
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPLAIN),
+        mojom::ActionDetails::NewType(mojom::ActionType::EXPLAIN)));
 
     action_list.push_back(std::move(group));
   }

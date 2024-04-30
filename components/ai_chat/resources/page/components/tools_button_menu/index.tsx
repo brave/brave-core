@@ -29,19 +29,23 @@ export default function ToolsButtonMenu(props: Props) {
       onClose={() => context.setIsToolsMenuOpen(false)}
     >
       <div slot='anchor-content'>{props.children}</div>
-      {context.actionList.map((entry) => {
+      {context.actionList.map((actionGroup) => {
         return (
           <>
-            <div className={styles.menuSectionTitle}>{entry.category}</div>
-            {entry.actions.map((action,i) => {
-              if (action.actionDetails.empty) {
+            <div className={styles.menuSectionTitle}>
+              {actionGroup.category}
+            </div>
+            {actionGroup.actions.map((action, i) => {
+              if (action.actionDetails.empty === true) {
                 return <div className={styles.menuSubtitle}>{action.label}</div>
               } else {
                 return (
                   <leo-menu-item
                     key={i}
                     onClick={() =>
-                      context.handleActionTypeClick((action.actionDetails.type as mojom.ActionType))
+                      context.handleActionTypeClick(
+                        action.actionDetails.type as mojom.ActionType
+                      )
                     }
                   >
                     {action.label}
