@@ -76,9 +76,10 @@ BraveDownloadItemView::~BraveDownloadItemView() = default;
 
 // View overrides.
 
-gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
+gfx::Size BraveDownloadItemView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   // Call base class to get the width.
-  gfx::Size size = DownloadItemView::CalculatePreferredSize();
+  gfx::Size size = DownloadItemView::CalculatePreferredSize(available_size);
   // Calculate the height accounting for the extra line.
   int child_height = file_name_label_->GetLineHeight() +
                      kBraveVerticalTextPadding +
