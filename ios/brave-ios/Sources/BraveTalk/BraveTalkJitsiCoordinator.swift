@@ -116,6 +116,9 @@ import Shared
 
     // Only create the RN bridge when the user joins a call
     JitsiMeet.sharedInstance().instantiateReactNativeBridge()
+    
+    // Clearn transcripts, possibly from a previous call.
+    TranscriptManager.transcripts.removeAll()
 
     // Call this right away instead of waiting for the conference to join so that we can stop the page load
     // faster.
