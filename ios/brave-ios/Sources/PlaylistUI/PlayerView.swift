@@ -17,9 +17,25 @@ struct PlayerView: View {
   @State private var autoHideControlsTask: Task<Void, Error>?
   @State private var dragOffset: CGSize = .zero
   @State private var videoAmbianceDecorationImage: UIImage?
+  @GestureState private var isTouchingInlineControls: Bool = false
 
   @Environment(\.isFullScreen) private var isFullScreen
   @Environment(\.toggleFullScreen) private var toggleFullScreen
+
+  /// A 0-distance DragGesture to tracks if the user is touching the screen in any way
+  private var activeTouchGesture: some Gesture {
+    DragGesture(minimumDistance: 0)
+      .updating($isTouchingInlineControls, body: { _, state, _ in state = true })
+  }
+
+  private func hideControlsAfterDelay() {
+    autoHideControlsTask = Task {
+      try await Task.sleep(for: .seconds(3))
+      withAnimation(.linear(duration: 0.1)) {
+        isControlsVisible = false
+      }
+    }
+  }
 
   var body: some View {
     // FIXME: Will likely need a true AVPlayerLayer representable
@@ -63,6 +79,7 @@ struct PlayerView: View {
               .allowsHitTesting(false)
               .ignoresSafeArea()
           )
+          .simultaneousGesture(activeTouchGesture)
           .opacity(isControlsVisible && isFullScreen ? 1 : 0)
           .accessibilityHidden(isControlsVisible && isFullScreen)
           .background {
@@ -76,6 +93,7 @@ struct PlayerView: View {
                     }
                   }
                 )
+                .simultaneousGesture(activeTouchGesture)
                 .simultaneousGesture(
                   DragGesture()
                     .onChanged { value in
@@ -103,17 +121,18 @@ struct PlayerView: View {
         withAnimation(.linear(duration: 0.1).delay(newValue ? 0.25 : 0.0)) {
           isControlsVisible = newValue
         }
-      }
-      .onChange(of: isControlsVisible) { newValue in
-        // FIXME: We should cancel hiding when the users finger is touching the screen
-        autoHideControlsTask?.cancel()
         if newValue {
-          autoHideControlsTask = Task {
-            try await Task.sleep(for: .seconds(3))
-            withAnimation(.linear(duration: 0.1)) {
-              isControlsVisible = false
-            }
-          }
+          hideControlsAfterDelay()
+        }
+      }
+      .onChange(of: isTouchingInlineControls) { newValue in
+        if !isControlsVisible {
+          return
+        }
+        if newValue {
+          autoHideControlsTask?.cancel()
+        } else {
+          hideControlsAfterDelay()
         }
       }
   }
