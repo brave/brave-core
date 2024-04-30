@@ -100,9 +100,9 @@ void IssuersUrlRequest::FetchCallback(
 }
 
 void IssuersUrlRequest::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
-  StopRetrying();
-
   BLOG(1, "Successfully fetched issuers");
+
+  StopRetrying();
 
   NotifyDidFetchIssuers(issuers);
 

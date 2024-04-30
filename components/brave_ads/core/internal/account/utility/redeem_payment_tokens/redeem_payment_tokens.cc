@@ -138,6 +138,10 @@ void RedeemPaymentTokens::SuccessfullyRedeemed(
 void RedeemPaymentTokens::FailedToRedeem(const bool should_retry) {
   is_redeeming_ = false;
 
+  if (!should_retry) {
+    StopRetrying();
+  }
+
   NotifyFailedToRedeemPaymentTokens();
 
   if (should_retry) {

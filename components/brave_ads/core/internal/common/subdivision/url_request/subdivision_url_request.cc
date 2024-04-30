@@ -106,9 +106,9 @@ void SubdivisionUrlRequest::FetchAfterDelay() {
 
 void SubdivisionUrlRequest::SuccessfullyFetchedSubdivision(
     const std::string& subdivision) {
-  StopRetrying();
-
   BLOG(1, "Successfully fetched subdivision");
+
+  StopRetrying();
 
   NotifyDidFetchSubdivision(subdivision);
 
