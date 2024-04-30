@@ -88,18 +88,6 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
         return inflater.inflate(R.layout.brave_rating_dialog_fragment, container, false);
     }
 
-    // @SuppressLint("RestrictedApi")
-    // @Override
-    // public void setupDialog(@NonNull Dialog dialog, int style) {
-    //     super.setupDialog(dialog, style);
-
-    //     final View view = LayoutInflater.from(getContext())
-    //                               .inflate(R.layout.brave_rating_dialog_fragment, null);
-    //     clickOnHappyImageView(view);
-    //     clickOnSadImageView(view);
-    //     dialog.setContentView(view);
-    // }
-
     private void clickOnHappyImageView(View view) {
         ImageView happyImageView = view.findViewById(R.id.happyImageView);
         happyImageView.setOnClickListener(
