@@ -80,6 +80,8 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
     public static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION = "recyclerview_offset_position_";
 
+    public static final String BRAVE_IN_APP_UPDATE_TIMING = "in_app_update_timing";
+
     /*
      * Returns the list of Brave's preference keys.
      */
