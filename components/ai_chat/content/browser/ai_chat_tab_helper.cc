@@ -18,6 +18,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
+#include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -45,9 +46,6 @@ namespace ai_chat {
 namespace {
 std::optional<uint32_t> g_max_page_content_length_for_testing;
 
-bool IsPdf(content::WebContents* web_contents) {
-  return web_contents->GetContentsMimeType() == "application/pdf";
-}
 }  // namespace
 
 AIChatTabHelper::PDFA11yInfoLoadObserver::PDFA11yInfoLoadObserver(
@@ -119,9 +117,7 @@ AIChatTabHelper::AIChatTabHelper(
           web_contents->GetBrowserContext()
               ->GetDefaultStoragePartition()
               ->GetURLLoaderFactoryForBrowserProcess(),
-          channel_name),
-      pdf_load_observer_(
-          std::make_unique<PDFA11yInfoLoadObserver>(nullptr, this)) {
+          channel_name) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
 }
@@ -134,7 +130,7 @@ void AIChatTabHelper::SetOnPDFA11yInfoLoadedCallbackForTesting(
 }
 
 void AIChatTabHelper::OnPDFA11yInfoLoaded() {
-  DVLOG(3) << "PDF Loaded";
+  DVLOG(3) << " PDF Loaded: " << GetPageURL();
   is_pdf_a11y_info_loaded_ = true;
   if (pending_get_page_content_callback_) {
     FetchPageContent(web_contents(), "",
@@ -229,6 +225,18 @@ void AIChatTabHelper::InnerWebContentsAttached(
   }
 }
 
+void AIChatTabHelper::OnWebContentsFocused(
+    content::RenderWidgetHost* render_widget_host) {
+  if (IsPdf(web_contents())) {
+    CheckPDFA11yTree(web_contents()->GetPrimaryMainFrame());
+  }
+}
+
+void AIChatTabHelper::OnWebContentsLostFocus(
+    content::RenderWidgetHost* render_widget_host) {
+  check_pdf_a11y_tree_attempts_ = 0;
+}
+
 // favicon::FaviconDriverObserver
 
 void AIChatTabHelper::OnFaviconUpdated(
@@ -301,6 +309,31 @@ uint32_t AIChatTabHelper::GetMaxPageContentLength() {
     return *g_max_page_content_length_for_testing;
   }
   return GetCurrentModel().max_page_content_length;
+}
+
+void AIChatTabHelper::CheckPDFA11yTree(content::RenderFrameHost* primary_rfh) {
+  DVLOG(3) << __func__ << ": " << GetPageURL();
+  if (!primary_rfh || is_pdf_a11y_info_loaded_) {
+    return;
+  }
+
+  auto* pdf_root = GetPdfRoot(primary_rfh);
+  if (!IsPdfLoaded(pdf_root)) {
+    DVLOG(4) << "Waiting for PDF a11y tree ready, scheduled next check.";
+    if (++check_pdf_a11y_tree_attempts_ >= 5) {
+      DVLOG(4) << "PDF a11y tree not ready after 5 attempts.";
+      // Reset the counter for next OnWebContentsFocused
+      check_pdf_a11y_tree_attempts_ = 0;
+      return;
+    }
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&AIChatTabHelper::CheckPDFA11yTree,
+                       weak_ptr_factory_.GetWeakPtr(), primary_rfh),
+        base::Seconds(3));
+    return;
+  }
+  OnPDFA11yInfoLoaded();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

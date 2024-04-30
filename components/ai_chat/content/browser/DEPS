@@ -1,3 +1,5 @@
 include_rules = [
   "+brave/services/printing",
+  "+content/public/browser",
+  "+ui/accessibility",
 ]

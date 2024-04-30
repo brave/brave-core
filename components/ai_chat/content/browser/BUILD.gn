@@ -16,6 +16,8 @@ static_library("browser") {
     "ai_chat_throttle.h",
     "page_content_fetcher.cc",
     "page_content_fetcher.h",
+    "pdf_utils.cc",
+    "pdf_utils.h",
   ]
 
   deps = [

@@ -106,6 +106,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void InnerWebContentsAttached(content::WebContents* inner_web_contents,
                                 content::RenderFrameHost* render_frame_host,
                                 bool is_full_page) override;
+  void OnWebContentsFocused(
+      content::RenderWidgetHost* render_widget_host) override;
+  void OnWebContentsLostFocus(
+      content::RenderWidgetHost* render_widget_host) override;
 
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
@@ -125,11 +129,15 @@ class AIChatTabHelper : public content::WebContentsObserver,
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
           receiver);
 
+  // Traverse through a11y tree to check existence of status node.
+  void CheckPDFA11yTree(content::RenderFrameHost*);
+
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
   bool is_same_document_navigation_ = false;
   int64_t pending_navigation_id_;
   bool is_pdf_a11y_info_loaded_ = false;
+  uint8_t check_pdf_a11y_tree_attempts_ = 0;
   GetPageContentCallback pending_get_page_content_callback_;
 
   std::unique_ptr<PDFA11yInfoLoadObserver> pdf_load_observer_;
