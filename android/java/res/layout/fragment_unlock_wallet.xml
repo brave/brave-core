@@ -54,17 +54,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/iv_biometric_unlock_wallet"
-        android:layout_width="48dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="2dp"
-        android:contentDescription="@string/accessibility_biometric_unlock"
-        android:padding="6dp"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_fingerprint"
-        app:tint="@color/brave_action_color" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_unlock"
         style="@style/BraveWalletOnboardingButton"
@@ -79,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="40dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
@@ -88,5 +77,20 @@
         android:textColor="@color/brave_wallet_dn_button_color"
         android:textStyle="bold"
         android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/biometric_unlock_wallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_biometric_login"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:background="@drawable/wallet_hollow_button_background"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="@null"
+        android:visibility="gone"/>
 
 </LinearLayout>

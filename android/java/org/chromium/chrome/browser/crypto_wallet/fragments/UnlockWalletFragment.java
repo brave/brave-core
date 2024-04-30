@@ -61,8 +61,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
     private TextInputLayout mUnlockWalletPasswordLayout;
     private Button mUnlockButton;
     private TextView mUnlockWalletRestoreButton;
-    private TextView mUnlockWalletTitle;
-    private ImageView mBiometricUnlockWalletImage;
+    private ImageView mBiometricUnlockButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,8 +95,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
         mUnlockButton = view.findViewById(R.id.btn_unlock);
         mUnlockButton.setEnabled(false);
         mUnlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);
-        mUnlockWalletTitle = view.findViewById(R.id.unlock_wallet_title);
-        mBiometricUnlockWalletImage = view.findViewById(R.id.iv_biometric_unlock_wallet);
+        mBiometricUnlockButton = view.findViewById(R.id.biometric_unlock_wallet);
 
         mUnlockWalletPassword.addTextChangedListener(
                 new TextWatcher() {
@@ -122,7 +120,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
         mUnlockButton.setOnClickListener(
                 v -> {
                     final KeyringService keyringService = getKeyringService();
-                    if (keyringService != null) {
+                    if (keyringService != null && mUnlockWalletPassword.getText() != null) {
                         keyringService.unlock(
                                 mUnlockWalletPassword.getText().toString(),
                                 result -> {
@@ -145,21 +143,20 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                     mUnlockWalletPassword.setText(null);
                 });
 
-        mBiometricUnlockWalletImage.setOnClickListener(
+        mBiometricUnlockButton.setOnClickListener(
                 v -> {
                     if (Utils.isBiometricSupported(requireContext())) {
                         // noinspection NewApi
-                        createBiometricPrompt();
+                        showBiometricAuthenticationDialog();
                     }
                 });
 
         if (KeystoreHelper.shouldUseBiometricToUnlock()
                 && Utils.isBiometricSupported(requireContext())) {
 
+            mBiometricUnlockButton.setVisibility(View.VISIBLE);
             // noinspection NewApi
-            createBiometricPrompt();
-        } else {
-            showPasswordRelatedControls();
+            showBiometricAuthenticationDialog();
         }
     }
 
@@ -172,8 +169,9 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
         }
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
-    private void createBiometricPrompt() {
+    private void showBiometricAuthenticationDialog() {
         final AuthenticationCallback authenticationCallback =
                 new AuthenticationCallback() {
                     @Override
@@ -181,7 +179,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                         super.onAuthenticationSucceeded(result);
 
                         final KeyringService keyringService = getKeyringService();
-                        String unlockWalletPassword = null;
+                        String unlockWalletPassword;
 
                         try {
                             unlockWalletPassword = KeystoreHelper.decryptText();
@@ -197,11 +195,12 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                                 | InvalidKeyException e) {
                             // KeystoreHelper.decryptText() may throw a long list
                             // of exceptions.
-                            showPasswordRelatedControls();
+                            showBiometricAuthenticationButton();
+                            return;
                         }
 
                         if (TextUtils.isEmpty(unlockWalletPassword) || keyringService == null) {
-                            showPasswordRelatedControls();
+                            showBiometricAuthenticationButton();
                             return;
                         }
 
@@ -213,7 +212,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                                             mOnNextPage.onboardingCompleted();
                                         }
                                     } else {
-                                        showPasswordRelatedControls();
+                                        showBiometricAuthenticationButton();
                                         mUnlockWalletPassword.setError(
                                                 getString(R.string.incorrect_password_error));
                                     }
@@ -228,16 +227,9 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                         if (!TextUtils.isEmpty(errString) && context != null) {
                             Toast.makeText(context, errString, Toast.LENGTH_SHORT).show();
                         }
-                        showPasswordRelatedControls();
+                        showBiometricAuthenticationButton();
                     }
                 };
-        showFingerprintDialog(authenticationCallback);
-    }
-
-    @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    private void showFingerprintDialog(
-            @NonNull final AuthenticationCallback authenticationCallback) {
         Executor executor = ContextCompat.getMainExecutor(requireContext());
         new BiometricPrompt.Builder(requireContext())
                 .setTitle(getResources().getString(R.string.fingerprint_unlock))
@@ -252,14 +244,15 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
 
-    private void showPasswordRelatedControls() {
-        mUnlockWalletPasswordLayout.setVisibility(View.VISIBLE);
-        mUnlockButton.setVisibility(View.VISIBLE);
-        mUnlockWalletRestoreButton.setVisibility(View.VISIBLE);
-        mUnlockWalletTitle.setVisibility(View.VISIBLE);
+    /**
+     * Shows biometric authentication button if supported and if it was previously set.
+     */
+    private void showBiometricAuthenticationButton() {
         if (Utils.isBiometricSupported(requireContext())
                 && KeystoreHelper.shouldUseBiometricToUnlock()) {
-            mBiometricUnlockWalletImage.setVisibility(View.VISIBLE);
+            mBiometricUnlockButton.setVisibility(View.VISIBLE);
+        } else {
+            mBiometricUnlockButton.setVisibility(View.GONE);
         }
     }
 }

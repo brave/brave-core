@@ -408,6 +408,8 @@ brave_java_resources = [
   "java/res/drawable/ic_addresses.xml",
   "java/res/drawable/ic_always_on_info.xml",
   "java/res/drawable/ic_appearance.xml",
+  "java/res/drawable/ic_biometric_login.xml",
+  "java/res/drawable/wallet_hollow_button_background.xml",
   "java/res/drawable/ic_arrow_circle_right.xml",
   "java/res/drawable/ic_arrow_clock.xml",
   "java/res/drawable/ic_arrow_down.xml",
