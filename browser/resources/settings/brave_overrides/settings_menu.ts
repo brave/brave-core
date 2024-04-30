@@ -183,6 +183,10 @@ RegisterStyleOverride(
         margin-bottom: 20px !important;
       }
 
+      #autofill {
+        margin-top: 20px !important;
+      }
+
       #about-menu {
         display: flex;
         flex-direction: row;
