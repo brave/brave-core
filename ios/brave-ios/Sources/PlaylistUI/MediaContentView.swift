@@ -170,24 +170,25 @@ extension MediaContentView {
             }
             Spacer()
             Menu {
+              // FIXME: We need some sort of design to show when its active and how much time is left
               Section {
                 Button {
-                  //                  stopPlaybackDate = .now.addingTimeInterval(10 * 60)
+                  model.sleepTimerFireDate = .now.addingTimeInterval(10 * 60)
                 } label: {
                   Text("10 minutes")
                 }
                 Button {
-                  //                  stopPlaybackDate = .now.addingTimeInterval(20 * 60)
+                  model.sleepTimerFireDate = .now.addingTimeInterval(20 * 60)
                 } label: {
                   Text("20 minutes")
                 }
                 Button {
-                  //                  stopPlaybackDate = .now.addingTimeInterval(30 * 60)
+                  model.sleepTimerFireDate = .now.addingTimeInterval(30 * 60)
                 } label: {
                   Text("30 minutes")
                 }
                 Button {
-                  //                  stopPlaybackDate = .now.addingTimeInterval(60 * 60)
+                  model.sleepTimerFireDate = .now.addingTimeInterval(60 * 60)
                 } label: {
                   Text("1 hour")
                 }

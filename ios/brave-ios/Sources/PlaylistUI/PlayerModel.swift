@@ -41,7 +41,7 @@ final class PlayerModel: ObservableObject {
 
   private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "PlayerModel")
 
-  // MARK: - Player Controls
+  // MARK: - Player Status
 
   var isPlaying: Bool {
     get {
@@ -69,50 +69,6 @@ final class PlayerModel: ObservableObject {
       method: .roundHalfAwayFromZero
     ).seconds
     return seconds.isNaN ? 0.0 : seconds
-  }
-
-  func play() {
-    if isPlaying {
-      return
-    }
-    if currentTime == duration {
-      player.seek(to: .zero)
-    }
-    player.play()
-  }
-
-  /// A stream that yields downsampled thumbnails of the item currently playing.
-  var videoAmbianceImageStream: AsyncStream<UIImage> {
-    return .init { [weak self] continuation in
-      guard let self else { return }
-      let timeObserver = player.addCancellablePeriodicTimeObserver(
-        forInterval: 100,
-        queue: .global()
-      ) { [weak self] time in
-        guard let self,
-          self.isPlaying,
-          let buffer = self.videoDecorationOutput.copyPixelBuffer(
-            forItemTime: time,
-            itemTimeForDisplay: nil
-          )
-        else {
-          return
-        }
-        let ciImage = CIImage(cvPixelBuffer: buffer)
-          .transformed(by: .init(scaleX: 0.1, y: 0.1), highQualityDownsample: false)
-        if let cgImage = CIContext().createCGImage(ciImage, from: ciImage.extent) {
-          let uiImage = UIImage(cgImage: cgImage)
-          DispatchQueue.main.async {
-            continuation.yield(uiImage)
-          }
-        }
-      }
-      // Should be tied to the View, but adding ane extra killswitch
-      self.cancellables.insert(timeObserver)
-      continuation.onTermination = { _ in
-        timeObserver.cancel()
-      }
-    }
   }
 
   var currentTimeStream: AsyncStream<TimeInterval> {
@@ -151,6 +107,18 @@ final class PlayerModel: ObservableObject {
     }
   }
 
+  // MARK: - Player Controls
+
+  func play() {
+    if isPlaying {
+      return
+    }
+    if currentTime == duration {
+      player.seek(to: .zero)
+    }
+    player.play()
+  }
+
   func pause() {
     if !isPlaying {
       return
@@ -164,14 +132,6 @@ final class PlayerModel: ObservableObject {
     }
     player.pause()
     item = nil
-  }
-
-  func playPreviousTrack() {
-    // Implement
-  }
-
-  func playNextTrack() {
-    // Implement
   }
 
   private let seekInterval: TimeInterval = 15.0
@@ -250,6 +210,23 @@ final class PlayerModel: ObservableObject {
     }
   }
 
+  private var sleepTimer: Timer?
+  @Published var sleepTimerFireDate: Date? {
+    didSet {
+      sleepTimer?.invalidate()
+      if let sleepTimerFireDate {
+        sleepTimer = .init(
+          fire: sleepTimerFireDate,
+          interval: 0,
+          repeats: false,
+          block: { [weak self] _ in
+            self?.pause()
+          }
+        )
+      }
+    }
+  }
+
   // MARK: - UI
 
   /// Whether or not the video that is currently loaded into the `AVPlayer` is a potrait video
@@ -262,6 +239,40 @@ final class PlayerModel: ObservableObject {
   var aspectRatio: Double {
     guard let item = player.currentItem else { return 16 / 9 }
     return item.presentationSize.width / item.presentationSize.height
+  }
+
+  /// A stream that yields downsampled thumbnails of the item currently playing.
+  var videoAmbianceImageStream: AsyncStream<UIImage> {
+    return .init { [weak self] continuation in
+      guard let self else { return }
+      let timeObserver = player.addCancellablePeriodicTimeObserver(
+        forInterval: 100,
+        queue: .global()
+      ) { [weak self] time in
+        guard let self,
+              self.isPlaying,
+              let buffer = self.videoDecorationOutput.copyPixelBuffer(
+                forItemTime: time,
+                itemTimeForDisplay: nil
+              )
+        else {
+          return
+        }
+        let ciImage = CIImage(cvPixelBuffer: buffer)
+          .transformed(by: .init(scaleX: 0.1, y: 0.1), highQualityDownsample: false)
+        if let cgImage = CIContext().createCGImage(ciImage, from: ciImage.extent) {
+          let uiImage = UIImage(cgImage: cgImage)
+          DispatchQueue.main.async {
+            continuation.yield(uiImage)
+          }
+        }
+      }
+      // Should be tied to the View, but adding ane extra killswitch
+      self.cancellables.insert(timeObserver)
+      continuation.onTermination = { _ in
+        timeObserver.cancel()
+      }
+    }
   }
 
   // MARK: - Picture in Picture
