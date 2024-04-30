@@ -99,7 +99,8 @@ export const OriginRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 255px;
+  padding: 0px 24px;
+  width: 100%;
 `
 
 export const SimulationInfoColumn = styled.div`
