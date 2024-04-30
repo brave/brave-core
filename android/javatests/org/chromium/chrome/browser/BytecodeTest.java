@@ -1379,7 +1379,6 @@ public class BytecodeTest {
                         PropertyModel.class,
                         boolean.class,
                         Callback.class,
-                        boolean.class,
                         LogoCoordinator.VisibilityObserver.class,
                         CachedTintedBitmap.class));
         Assert.assertTrue(
