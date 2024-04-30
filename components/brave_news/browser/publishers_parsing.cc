@@ -23,7 +23,7 @@ namespace brave_news {
 
 std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
   if (!value.is_list()) {
-    LOG(ERROR) << "Publisher data expected to be a list";
+    LOG(ERROR) << "Publisher data expected to be a list: " << value;
     return std::nullopt;
   }
 
