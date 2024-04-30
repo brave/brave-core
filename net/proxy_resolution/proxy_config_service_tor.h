@@ -12,6 +12,7 @@
 #include "net/base/net_export.h"
 #include "net/base/proxy_server.h"
 #include "net/proxy_resolution/proxy_config_service.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 
 class GURL;
 
@@ -52,6 +53,8 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
   // This is useful when we want to test mock requests/responses in tor context
   // with embedded test server.
   static void SetBypassTorProxyConfigForTesting(bool bypass);
+
+  static NetworkTrafficAnnotationTag GetTorAnnotationTagForTesting();
 
  private:
   static bool bypass_tor_proxy_config_for_testing_;
