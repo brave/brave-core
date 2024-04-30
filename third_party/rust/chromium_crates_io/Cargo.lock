@@ -379,9 +379,9 @@ dependencies = [
  "constellation-cxx",
  "filecoin-cxx",
  "json-cxx",
- "orchard",
  "skus-cxx",
  "speedreader-ffi",
+ "zcash",
 ]
 
 [[package]]
@@ -2800,6 +2800,14 @@ version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "tap",
+]
+
+[[package]]
+name = "zcash"
+version = "1.0.0"
+dependencies = [
+ "cxx",
+ "orchard",
 ]
 
 [[package]]

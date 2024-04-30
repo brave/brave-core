@@ -388,6 +388,7 @@ source_set("hd_keyring") {
     "internal:hd_key",
     "//base",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/filecoin/rs:rust_lib",

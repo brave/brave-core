@@ -2469,7 +2469,7 @@ KeyringService::GetZCashAddresses(const mojom::AccountIdPtr& account_id) {
        ++i) {
     auto key_id = mojom::ZCashKeyId::New(account_id->bitcoin_account_index,
                                          kBitcoinReceiveIndex, i);
-    auto address = zcash_keyring->GetAddress(*key_id);
+    auto address = zcash_keyring->GetTransparentAddress(*key_id);
     if (!address) {
       return std::nullopt;
     }
@@ -2480,7 +2480,7 @@ KeyringService::GetZCashAddresses(const mojom::AccountIdPtr& account_id) {
        ++i) {
     auto key_id = mojom::ZCashKeyId::New(account_id->bitcoin_account_index,
                                          kBitcoinChangeIndex, i);
-    auto address = zcash_keyring->GetAddress(*key_id);
+    auto address = zcash_keyring->GetTransparentAddress(*key_id);
     if (!address) {
       return std::nullopt;
     }
@@ -2501,7 +2501,7 @@ mojom::ZCashAddressPtr KeyringService::GetZCashAddress(
     return nullptr;
   }
 
-  return zcash_keyring->GetAddress(key_id);
+  return zcash_keyring->GetTransparentAddress(key_id);
 }
 
 std::optional<std::vector<uint8_t>> KeyringService::GetZCashPubKey(
@@ -2764,7 +2764,8 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
     auto receive_key_id = mojom::ZCashKeyId::New(
         account_id->bitcoin_account_index, kBitcoinReceiveIndex,
         derived_account_info.bitcoin_next_receive_address_index.value_or(0));
-    auto receive_address = zcash_keyring->GetAddress(*receive_key_id);
+    auto receive_address =
+        zcash_keyring->GetTransparentAddress(*receive_key_id);
     if (!receive_address) {
       return {};
     }
@@ -2773,7 +2774,7 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
     auto change_key_id = mojom::ZCashKeyId::New(
         account_id->bitcoin_account_index, kBitcoinChangeIndex,
         derived_account_info.bitcoin_next_change_address_index.value_or(0));
-    auto change_address = zcash_keyring->GetAddress(*change_key_id);
+    auto change_address = zcash_keyring->GetTransparentAddress(*change_key_id);
     if (!change_address) {
       return {};
     }

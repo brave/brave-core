@@ -8,11 +8,34 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/span.h"
 
 namespace brave_wallet {
+
+inline constexpr size_t kOrchardRawBytesSize = 43;
+inline constexpr uint32_t kZip32Purpose = 32u;
+inline constexpr uint32_t kTestnetCoinType = 1u;
+
+// https://zips.z.cash/zip-0316#encoding-of-unified-addresses
+enum ZCashAddrType {
+  kP2PKH = 0x00,
+  kP2PSH = 0x01,
+  kSapling = 0x02,
+  kOrchard = 0x03,
+  kMaxValue = kOrchard
+};
+
+enum class OrchardAddressKind {
+  // External kind, can be used in account addresses
+  External,
+  // Internal "change" address
+  Internal
+};
+
+using ParsedAddress = std::pair<ZCashAddrType, std::vector<uint8_t>>;
 
 struct DecodedZCashAddress {
   DecodedZCashAddress();
@@ -34,7 +57,7 @@ std::string PubkeyToTransparentAddress(base::span<const uint8_t> pubkey,
 
 std::optional<std::string> PubkeyHashToTransparentAddress(
     base::span<const uint8_t> pubkey_hash,
-    bool testnet);
+    bool is_testnet);
 
 std::optional<DecodedZCashAddress> DecodeZCashAddress(
     const std::string& address);
@@ -42,7 +65,31 @@ std::optional<DecodedZCashAddress> DecodeZCashAddress(
 std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
                                                 bool testnet);
 
+std::optional<std::string> GetMergedUnifiedAddress(
+    const std::vector<ParsedAddress>& parts,
+    bool is_testnet);
+
+std::optional<std::string> GetOrchardUnifiedAddress(
+    base::span<const uint8_t> orchard_part,
+    bool is_testnet);
+
+std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
+    const std::string& unified_address,
+    bool is_testnet);
+
+std::optional<std::vector<uint8_t>> GetTransparentRawBytes(
+    const std::string& unified_address,
+    bool is_testnet);
+
+std::optional<std::vector<ParsedAddress>> ExtractParsedAddresses(
+    const std::string& unified_address,
+    bool is_testnet);
+
 std::optional<std::string> ExtractTransparentPart(
+    const std::string& unified_address,
+    bool is_testnet);
+
+std::optional<std::string> ExtractOrchardPart(
     const std::string& unified_address,
     bool is_testnet);
 
