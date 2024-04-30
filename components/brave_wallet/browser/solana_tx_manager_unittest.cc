@@ -88,7 +88,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
     gas_estimation1_ = mojom::SolanaGasEstimation::New();
     gas_estimation1_->base_fee = 5000;
     gas_estimation1_->compute_units = 69017 + 300;
-    gas_estimation1_->fee_per_compute_unit = 101;
+    gas_estimation1_->fee_per_compute_unit = 100;
 
     SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_, "",
                    false, last_valid_block_height1_);
@@ -686,7 +686,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
                                    // estimate
   tx->message()->AddPriorityFee(
       69017 + 300,
-      101);  // Added priority automatically in AddUnapprovedTransaction
+      100);  // Added priority automatically in AddUnapprovedTransaction
   tx->set_gas_estimation(gas_estimation1_.Clone());
   EXPECT_EQ(*tx_meta1->tx(), *tx);
   EXPECT_EQ(tx_meta1->signature_status(), SolanaSignatureStatus());
@@ -1530,7 +1530,7 @@ TEST_F(SolanaTxManagerUnitTest, GetTransactionMessageToSign) {
       "aezhZAMzywrLOSju1o9VJQ5KaB2lsblgqvdjtkDFlmZHz4KQDBkZv5SEXMv/"
       "srbpyw5vnvIzlu8X3EmssQ5s6QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       "AzEkOkozS44c7s0P8ldozF5ymD02/"
-      "RsLDbpEpnVXU5rkDAgAFAsUOAQACAAkDZQAAAAAAAAADAgABDAIAAAABAAAAAAAAAA==");
+      "RsLDbpEpnVXU5rkDAgAFAsUOAQACAAkDZAAAAAAAAAADAgABDAIAAAABAAAAAAAAAA==");
   TestGetTransactionMessageToSign(system_transfer_meta_id, message);
 
   // Valid cached latest blockhash
@@ -1654,7 +1654,7 @@ TEST_F(SolanaTxManagerUnitTest, GetSolanaGasEstimation) {
       mojom::SolanaGasEstimation::New();
   expected_estimate->base_fee = 5000;
   expected_estimate->compute_units = 69017 + 300;
-  expected_estimate->fee_per_compute_unit = 101;
+  expected_estimate->fee_per_compute_unit = 100;
   TestGetSolanaGasEstimation(mojom::kSolanaMainnet, meta.id(),
                              std::move(expected_estimate),
                              mojom::SolanaProviderError::kSuccess, "");

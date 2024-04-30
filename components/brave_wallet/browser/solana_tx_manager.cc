@@ -36,6 +36,7 @@ constexpr int kValidBlockHeightThreshold = 150;
 // The number of compute units required to modify the compute
 // units and add a priority fee.
 constexpr int kAddPriorityFeeComputeUnits = 300;
+constexpr int kMininumFeePerComputeUnits = 1;
 
 SolanaTxManager::SolanaTxManager(
     TxService* tx_service,
@@ -165,7 +166,12 @@ void SolanaTxManager::OnGetRecentSolanaPrioritizationFees(
   // The simulation was performed without the instructions that set a compute
   // budget and priority fee, so we must add those as well.
   estimation->compute_units = compute_units + kAddPriorityFeeComputeUnits;
-  estimation->fee_per_compute_unit = median + 1;
+
+  if (median == 0) {
+    estimation->fee_per_compute_unit = kMininumFeePerComputeUnits;
+  } else {
+    estimation->fee_per_compute_unit = median;
+  }
 
   std::move(callback).Run(std::move(meta), std::move(estimation),
                           mojom::SolanaProviderError::kSuccess, "");
