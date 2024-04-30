@@ -5,13 +5,20 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 
 import { Row } from '../../../shared/style'
 
 export const StyledWrapper = styled(Row)`
-    border-radius: 8px;
+  border-radius: 8px;
 
-    &:hover {
-        background-color: ${leo.color.container.highlight};
-    }
+  &:hover {
+    background-color: ${leo.color.container.highlight};
+  }
+`
+
+export const PlaceholderImage = styled(Icon).attrs({
+    name: 'image'
+})<{ size?: number }>`
+  --leo-icon-size: ${(p) => p.size || 40}px;
 `

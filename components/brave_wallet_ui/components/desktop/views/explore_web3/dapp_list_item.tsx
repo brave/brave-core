@@ -8,12 +8,15 @@ import * as React from 'react'
 // types
 import { BraveWallet } from '../../../../constants/types'
 
+// utils
+import { isHttpsUrl } from '../../../../utils/string-utils'
+
 // styles
 import { Column, Text } from '../../../shared/style'
 import {
   TextWithOverflowEllipsis //
 } from '../../../../page/screens/send/shared.styles'
-import { StyledWrapper } from './dapp_list_item.styles'
+import { PlaceholderImage, StyledWrapper } from './dapp_list_item.styles'
 
 export const DappListItem = React.forwardRef<
   HTMLDivElement,
@@ -39,12 +42,16 @@ export const DappListItem = React.forwardRef<
       }
     >
       <Column>
-        <img
-          src={`chrome://image?${dapp.logo}`}
-          height={40}
-          width={40}
-          alt={dapp.name}
-        />
+        {isHttpsUrl(dapp.logo) ? (
+          <img
+            src={`chrome://image?${dapp.logo}`}
+            height={40}
+            width={40}
+            alt={dapp.name}
+          />
+        ) : (
+          <PlaceholderImage />
+        )}
       </Column>
       <Column
         alignItems='flex-start'

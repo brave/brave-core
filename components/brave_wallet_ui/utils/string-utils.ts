@@ -89,7 +89,7 @@ export const formatAsDouble = (value: string): string =>
   // Removes all characters except numbers, commas and decimals
   value.replace(/[^0-9.,]+/g, '')
 
-export const isValidateUrl = (url: string) => {
+export const isHttpsUrl = (url: string) => {
   const re = /^\s*https?:\/\//
   return re.test(url)
 }

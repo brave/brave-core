@@ -20,6 +20,7 @@ import { CurrencySymbols } from '../../../../utils/currency-symbols'
 import { getLocale } from '../../../../../common/locale'
 import { WalletRoutes } from '../../../../constants/types'
 import { openTab } from '../../../../utils/routes-utils'
+import { isHttpsUrl } from '../../../../utils/string-utils'
 
 // Components
 import { NavButton } from '../../../extension/buttons'
@@ -31,6 +32,7 @@ import {
   DappCategoryLabel,
   DappMetricContainer
 } from './web3_dapp_details.styles'
+import { PlaceholderImage } from './dapp_list_item.styles'
 
 export const DappDetails = () => {
   // routing
@@ -80,11 +82,15 @@ export const DappDetails = () => {
         alignItems='center'
         margin={'32px 0px 0px 0px'}
       >
-        <img
-          src={`chrome://image?${dapp.logo}`}
-          width={72}
-          height={72}
-        />
+        {isHttpsUrl(dapp.logo) ? (
+          <img
+            src={`chrome://image?${dapp.logo}`}
+            width={72}
+            height={72}
+          />
+        ) : (
+          <PlaceholderImage size={72} />
+        )}
 
         <Text>{dapp.name}</Text>
 
@@ -164,7 +170,9 @@ export const DappDetails = () => {
         isExternalLink
         buttonType='primary'
         onSubmit={() => {
-          openTab(dapp.website)
+          if (isHttpsUrl(dapp.website)) {
+            openTab(dapp.website)
+          }
         }}
         text={getLocale('braveWalletVisitDapp').replace('$1', dapp.name)}
       />
