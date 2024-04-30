@@ -370,13 +370,16 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
                 browser.seekTo(position, 0)
                 browser.shuffleModeEnabled = isShuffle
                 browser.prepare()
-                browser.play()
+                // browser.play()
         //     }
         // }
         // val playlistPlayerFragment = PlaylistPlayerFragment.newInstance(mPlaylistModel)
         // parentFragmentManager.beginTransaction()
         //     .replace(android.R.id.content, playlistPlayerFragment)
         //     .addToBackStack(PlaylistFragment::class.simpleName).commit()
+        val playlistPlayerActivityIntent = Intent(this@PlaylistActivity, PlaylistPlayerActivity::class.java)
+        playlistPlayerActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, mPlaylistId);
+        startActivity(playlistPlayerActivityIntent)
     }
 
     private fun deletePlaylistItems(playlistItems : List<PlaylistItem>) {
