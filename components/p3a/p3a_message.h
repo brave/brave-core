@@ -32,6 +32,8 @@ class MessageMetainfo {
 
   void Update();
 
+  const std::string& GetCountryCodeForNormalMetrics() const;
+
   std::string platform;
   std::string version;
   std::string channel;
@@ -40,6 +42,7 @@ class MessageMetainfo {
   int woi;  // Week of install. Remove this occasionally and extract from above.
   std::string country_code_from_timezone;
   std::string country_code_from_locale;
+  std::string country_code_from_locale_raw;
   // May contain 'none', a 'BRV'-prefixed refcode, or 'other'.
   std::string ref;
 
@@ -50,8 +53,9 @@ class MessageMetainfo {
 
   void InitRef();
 
-  // Ensures that country represent the big enough cohort that will not
-  // let anybody identify the sender.
+  // Ensures that country represent the big enough cohort to
+  // maximize STAR recovery rate for the country code & week of install
+  // attributes.
   void MaybeStripCountry();
 
   raw_ptr<PrefService> local_state_ = nullptr;
