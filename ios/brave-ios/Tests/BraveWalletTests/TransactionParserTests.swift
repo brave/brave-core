@@ -138,7 +138,7 @@ class TransactionParserTests: XCTestCase {
           fromToken: network.nativeToken,
           fromValue: "0x1b667a56d488000",
           fromAmount: "0.1234",
-          fromFiat: "$0.12",
+          fromFiat: "$0.123",
           fromTokenMetadata: nil,
           gasFee: .init(
             fee: "0.000031",
@@ -240,7 +240,7 @@ class TransactionParserTests: XCTestCase {
           fromToken: .previewDaiToken,
           fromValue: "0x5ff20a91f724000",
           fromAmount: "0.4321",
-          fromFiat: "$0.86",
+          fromFiat: "$0.864",
           fromTokenMetadata: nil,
           gasFee: .init(
             fee: "0.000078",
@@ -332,7 +332,7 @@ class TransactionParserTests: XCTestCase {
           fromToken: .previewToken,
           fromValue: "0x1b6951ef585a000",
           fromAmount: "0.12345",
-          fromFiat: "$0.12",
+          fromFiat: "$0.123",
           toToken: .previewDaiToken,
           minBuyValue: "0x5c6f2d76e910358b",
           minBuyAmount: "6.660592362643797387",
@@ -431,7 +431,7 @@ class TransactionParserTests: XCTestCase {
           toToken: .previewDaiToken,
           minBuyValue: "0x1bd02ca9a7c244e",
           minBuyAmount: "0.125259433834718286",
-          minBuyAmountFiat: "$0.25",
+          minBuyAmountFiat: "$0.251",
           gasFee: .init(
             fee: "0.000466",
             fiat: "$0.000466"
@@ -1250,7 +1250,7 @@ class TransactionParserTests: XCTestCase {
           gasFeeCap: "0.000000000000101965",
           gasFee: GasFee(
             fee: "0.000000155797727645",
-            fiat: "$0.0000003116"
+            fiat: "$0.000000312"
           )
         )
       )

@@ -162,7 +162,7 @@ import XCTest
     let totalBalanceValue =
       totalEthBalanceValue + totalSolBalanceValue + totalUSDCBalanceValue
       + totalFilBalanceValue + totalBtcBalanceValue
-    return currencyFormatter.string(from: NSNumber(value: totalBalanceValue)) ?? ""
+    return currencyFormatter.formatAsFiat(totalBalanceValue) ?? ""
   }
 
   private func setupStore() -> PortfolioStore {

@@ -330,11 +330,11 @@ class TransactionsActivityStoreTests: XCTestCase {
         // verify gas fee fiat
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 0]?.transactions[safe: 0]?.gasFee?.fiat,
-          "$0.0000006232"
+          "$0.000000623"
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 1]?.transactions[safe: 0]?.gasFee?.fiat,
-          "$0.0000006232"
+          "$0.000000623"
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 1]?.transactions[safe: 1]?.gasFee?.fiat,
@@ -346,15 +346,15 @@ class TransactionsActivityStoreTests: XCTestCase {
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 2]?.transactions[safe: 1]?.gasFee?.fiat,
-          "$255.03792654"
+          "$255.04"
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 3]?.transactions[safe: 0]?.gasFee?.fiat,
-          "$10.41008598"
+          "$10.41"
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 3]?.transactions[safe: 1]?.gasFee?.fiat,
-          "$10.19894667"
+          "$10.20"
         )
       }
       .store(in: &cancellables)

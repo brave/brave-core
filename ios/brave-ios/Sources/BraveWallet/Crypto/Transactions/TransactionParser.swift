@@ -17,16 +17,6 @@ enum TransactionParser {
     currencyFormatter: NumberFormatter
   ) -> GasFee? {
     var gasFee: GasFee?
-    let existingMinimumFractionDigits = currencyFormatter.minimumFractionDigits
-    let existingMaximumFractionDigits = currencyFormatter.maximumFractionDigits
-    // Show additional decimal places for gas fee calculations (Solana has low tx fees).
-    currencyFormatter.minimumFractionDigits = 2
-    currencyFormatter.maximumFractionDigits = 10
-    defer {
-      // Restore previous fraction digits
-      currencyFormatter.minimumFractionDigits = existingMinimumFractionDigits
-      currencyFormatter.maximumFractionDigits = existingMaximumFractionDigits
-    }
     switch network.coin {
     case .eth:
       let isEIP1559Transaction = transaction.isEIP1559Transaction
@@ -44,7 +34,7 @@ enum TransactionParser {
       )?.trimmingTrailingZeros {
         if let doubleValue = Double(value),
           let assetRatio = assetRatios[network.symbol.lowercased()],
-          let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio))
+          let fiat = currencyFormatter.formatAsFiat(doubleValue * assetRatio)
         {
           gasFee = .init(fee: value, fiat: fiat)
         } else {
@@ -62,7 +52,7 @@ enum TransactionParser {
       )?.trimmingTrailingZeros {
         if let doubleValue = Double(value),
           let assetRatio = assetRatios[network.symbol.lowercased()],
-          let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio))
+          let fiat = currencyFormatter.formatAsFiat(doubleValue * assetRatio)
         {
           gasFee = .init(fee: value, fiat: fiat)
         } else {
@@ -88,7 +78,7 @@ enum TransactionParser {
         ).trimmingTrailingZeros
         if let doubleValue = Double(gasFeeString),
           let assetRatio = assetRatios[network.symbol.lowercased()],
-          let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio))
+          let fiat = currencyFormatter.formatAsFiat(doubleValue * assetRatio)
         {
           gasFee = .init(fee: gasFeeString, fiat: fiat)
         } else {
@@ -143,11 +133,9 @@ enum TransactionParser {
             decimals: Int(network.nativeToken.decimals)
           )?.trimmingTrailingZeros ?? ""
         sendFiat =
-          currencyFormatter.string(
-            from: NSNumber(
-              value: assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
-                * (Double(sendValueFormatted) ?? 0)
-            )
+          currencyFormatter.formatAsFiat(
+            assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
+              * (Double(sendValueFormatted) ?? 0)
           ) ?? "$0.00"
         let gasLimitValueFormatted =
           formatter.decimalString(
@@ -218,11 +206,9 @@ enum TransactionParser {
             decimals: Int(network.decimals)
           )?.trimmingTrailingZeros ?? ""
         let fromFiat =
-          currencyFormatter.string(
-            from: NSNumber(
-              value: assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
-                * (Double(fromValueFormatted) ?? 0)
-            )
+          currencyFormatter.formatAsFiat(
+            assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
+              * (Double(fromValueFormatted) ?? 0)
           ) ?? "$0.00"
         // Example:
         // Send 0.1234 ETH
@@ -285,11 +271,9 @@ enum TransactionParser {
             decimals: Int(token.decimals)
           )?.trimmingTrailingZeros ?? ""
         fromFiat =
-          currencyFormatter.string(
-            from: NSNumber(
-              value: assetRatios[token.assetRatioId.lowercased(), default: 0]
-                * (Double(fromAmount) ?? 0)
-            )
+          currencyFormatter.formatAsFiat(
+            assetRatios[token.assetRatioId.lowercased(), default: 0]
+              * (Double(fromAmount) ?? 0)
           ) ?? "$0.00"
       }
       // fromAddress="0x882F5a2c1C429e6592D801486566D0753BC1dD04"
@@ -362,18 +346,14 @@ enum TransactionParser {
         )?.trimmingTrailingZeros ?? ""
 
       let fromFiat =
-        currencyFormatter.string(
-          from: NSNumber(
-            value: assetRatios[fromToken?.assetRatioId.lowercased() ?? "", default: 0]
-              * (Double(formattedSellAmount) ?? 0)
-          )
+        currencyFormatter.formatAsFiat(
+          assetRatios[fromToken?.assetRatioId.lowercased() ?? "", default: 0]
+            * (Double(formattedSellAmount) ?? 0)
         ) ?? "$0.00"
       let minBuyAmountFiat =
-        currencyFormatter.string(
-          from: NSNumber(
-            value: assetRatios[toToken?.assetRatioId.lowercased() ?? "", default: 0]
-              * (Double(formattedMinBuyAmount) ?? 0)
-          )
+        currencyFormatter.formatAsFiat(
+          assetRatios[toToken?.assetRatioId.lowercased() ?? "", default: 0]
+            * (Double(formattedMinBuyAmount) ?? 0)
         ) ?? "$0.00"
       // Example:
       // USDC -> DAI
@@ -449,11 +429,9 @@ enum TransactionParser {
             decimals: Int(token?.decimals ?? network.decimals)
           )?.trimmingTrailingZeros ?? ""
         approvalFiat =
-          currencyFormatter.string(
-            from: NSNumber(
-              value: assetRatios[token?.assetRatioId.lowercased() ?? "", default: 0]
-                * (Double(approvalAmount) ?? 0)
-            )
+          currencyFormatter.formatAsFiat(
+            assetRatios[token?.assetRatioId.lowercased() ?? "", default: 0]
+              * (Double(approvalAmount) ?? 0)
           ) ?? "$0.00"
       }
       // Example:
@@ -556,11 +534,9 @@ enum TransactionParser {
         formatter.decimalString(for: fromValue, radix: .decimal, decimals: Int(network.decimals))?
         .trimmingTrailingZeros ?? ""
       let fromFiat =
-        currencyFormatter.string(
-          from: NSNumber(
-            value: assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
-              * (Double(fromValueFormatted) ?? 0)
-          )
+        currencyFormatter.formatAsFiat(
+          assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
+            * (Double(fromValueFormatted) ?? 0)
         ) ?? "$0.00"
       // Example:
       // Send 0.1234 SOL
@@ -628,11 +604,9 @@ enum TransactionParser {
           fromFiat = ""  // don't show fiat for NFTs
         } else {
           fromFiat =
-            currencyFormatter.string(
-              from: NSNumber(
-                value: assetRatios[token.assetRatioId.lowercased(), default: 0]
-                  * (Double(fromValueFormatted) ?? 0)
-              )
+            currencyFormatter.formatAsFiat(
+              assetRatios[token.assetRatioId.lowercased(), default: 0]
+                * (Double(fromValueFormatted) ?? 0)
             ) ?? "$0.00"
         }
       }
