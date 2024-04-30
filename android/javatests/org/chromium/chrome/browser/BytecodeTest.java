@@ -754,7 +754,8 @@ public class BytecodeTest {
                         true,
                         ViewProvider.class,
                         Context.class,
-                        MVCListAdapter.ModelList.class));
+                        MVCListAdapter.ModelList.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
