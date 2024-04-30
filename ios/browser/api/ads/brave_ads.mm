@@ -359,15 +359,12 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
 #pragma mark - URLs
 
-- (std::vector<GURL>)GURLsWithNSURLs:(NSURL*)url
-                       redirectChain:(NSArray<NSURL*>*)redirectChain {
+- (std::vector<GURL>)GURLsWithNSURLs:(NSArray<NSURL*>*)redirectChain {
   std::vector<GURL> urls;
 
   for (NSURL* redirect_chain_url in redirectChain) {
     urls.push_back(net::GURLWithNSURL(redirect_chain_url));
   }
-
-  urls.push_back(net::GURLWithNSURL(url));
 
   return urls;
 }
@@ -1855,30 +1852,26 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)notifyTabTextContentDidChange:(NSInteger)tabId
-                                  url:(NSURL*)url
                         redirectChain:(NSArray<NSURL*>*)redirectChain
                                  text:(NSString*)text {
   if (![self isServiceRunning]) {
     return;
   }
 
-  const std::vector<GURL> urls = [self GURLsWithNSURLs:url
-                                         redirectChain:redirectChain];
+  const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
 
   adsClientNotifier->NotifyTabTextContentDidChange(
       (int32_t)tabId, urls, base::SysNSStringToUTF8(text));
 }
 
 - (void)notifyTabHtmlContentDidChange:(NSInteger)tabId
-                                  url:(NSURL*)url
                         redirectChain:(NSArray<NSURL*>*)redirectChain
                                  html:(NSString*)html {
   if (![self isServiceRunning]) {
     return;
   }
 
-  const std::vector<GURL> urls = [self GURLsWithNSURLs:url
-                                         redirectChain:redirectChain];
+  const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
 
   adsClientNotifier->NotifyTabHtmlContentDidChange(
       (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
@@ -1897,15 +1890,13 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)notifyTabDidChange:(NSInteger)tabId
-                       url:(NSURL*)url
              redirectChain:(NSArray<NSURL*>*)redirectChain
                 isSelected:(BOOL)isSelected {
   if (![self isServiceRunning]) {
     return;
   }
 
-  const std::vector<GURL> urls = [self GURLsWithNSURLs:url
-                                         redirectChain:redirectChain];
+  const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
 
   const bool isVisible = isSelected && [self isBrowserActive];
 
