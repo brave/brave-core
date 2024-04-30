@@ -75,8 +75,10 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/events/event_observer.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/controls/native/native_view_host.h"
 #include "ui/views/event_monitor.h"
 #include "ui/views/layout/fill_layout.h"
 
@@ -417,17 +419,22 @@ void BraveBrowserView::UpdateContentsWebViewBorder() {
 
   DCHECK(split_view_browser_data);
 
-  constexpr auto kFocusRingThickness = 2;
-
-  // TODO(sko) This should be revisited when
-  // features::kBraveWebViewRoundedCorners is enabled
   if (split_view_browser_data->GetTile(GetActiveTabHandle())) {
-    contents_web_view_->SetBorder(views::CreateSolidBorder(
-        kFocusRingThickness, leo::kColorPrimitivePrimary40));
+    auto create_border = [this](SkColor color) {
+      constexpr auto kFocusRingThickness = 2;
+      return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())
+                 ? views::CreateRoundedRectBorder(
+                       kFocusRingThickness,
+                       BraveContentsViewUtil::kBorderRadius +
+                           kFocusRingThickness / 2,
+                       color)
+                 : views::CreateSolidBorder(kFocusRingThickness, color);
+    };
+
+    contents_web_view_->SetBorder(create_border(leo::kColorPrimitivePrimary40));
 
     if (auto* cp = GetColorProvider()) {
-      secondary_contents_web_view_->SetBorder(views::CreateSolidBorder(
-          kFocusRingThickness,
+      secondary_contents_web_view_->SetBorder(create_border(
           cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder)));
     }
   } else {
@@ -1064,39 +1071,63 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   // contents and devtools.
   contents_container_->layer()->SetRoundedCornerRadius(corners);
 
-  // In addition to giving the contents container rounded corners, we also
-  // need to round the corners of the native view holder that displays the web
-  // contents.
+  const auto in_split_view_mode =
+      !!SplitViewBrowserData::FromBrowser(browser_.get());
 
-  // Devtools lies underneath the contents webview. Round all four corners.
-  if (devtools_web_view_->holder()) {
-    devtools_web_view_->holder()->SetCornerRadii(corners);
-  }
+  auto update_corner_radius = [in_split_view_mode](
+                                  views::NativeViewHost* contents_holder,
+                                  views::NativeViewHost* devtools_holder,
+                                  DevToolsDockedPlacement devtools_placement,
+                                  gfx::RoundedCornersF corners) {
+    // In addition to giving the contents container rounded corners, we also
+    // need to round the corners of the native view holder that displays the web
+    // contents.
 
-  // In order to make the contents web view and devtools apear to be contained
-  // within a single rounded-corner view, square the contents webview corners
-  // that are adjacent to devtools.
-  switch (devtools_docked_placement()) {
-    case DevToolsDockedPlacement::kLeft:
-      corners.set_upper_left(0);
-      corners.set_lower_left(0);
-      break;
-    case DevToolsDockedPlacement::kRight:
-      corners.set_upper_right(0);
-      corners.set_lower_right(0);
-      break;
-    case DevToolsDockedPlacement::kBottom:
-      corners.set_lower_left(0);
-      corners.set_lower_right(0);
-      break;
-    case DevToolsDockedPlacement::kNone:
-      break;
-    case DevToolsDockedPlacement::kUnknown:
-      break;
-  }
+    // Devtools lies underneath the contents webview. Round all four corners.
+    if (devtools_holder) {
+      devtools_holder->SetCornerRadii(corners);
+    }
 
-  if (contents_web_view_->holder()) {
-    contents_web_view_->holder()->SetCornerRadii(corners);
+    if (!in_split_view_mode) {
+      // In order to make the contents web view and devtools appear to be
+      // contained within a single rounded-corner view, square the contents
+      // webview corners that are adjacent to devtools.
+      // TODO(sko) We need to override
+      // BrowserView::GetDevToolsDockedPlacement(). It depends on coordinate of
+      // it but in split view mode, the calculation is not correct.
+      switch (devtools_placement) {
+        case DevToolsDockedPlacement::kLeft:
+          corners.set_upper_left(0);
+          corners.set_lower_left(0);
+          break;
+        case DevToolsDockedPlacement::kRight:
+          corners.set_upper_right(0);
+          corners.set_lower_right(0);
+          break;
+        case DevToolsDockedPlacement::kBottom:
+          corners.set_lower_left(0);
+          corners.set_lower_right(0);
+          break;
+        case DevToolsDockedPlacement::kNone:
+          break;
+        case DevToolsDockedPlacement::kUnknown:
+          break;
+      }
+    }
+
+    if (contents_holder) {
+      contents_holder->SetCornerRadii(corners);
+    }
+  };
+
+  update_corner_radius(contents_web_view_->holder(),
+                       devtools_web_view_->holder(),
+                       devtools_docked_placement(), corners);
+
+  if (in_split_view_mode) {
+    update_corner_radius(secondary_contents_web_view_->holder(),
+                         secondary_devtools_web_view_->holder(),
+                         DevToolsDockedPlacement::kNone, corners);
   }
 }
 
