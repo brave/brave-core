@@ -183,8 +183,8 @@ public class Utils {
     /**
      * Clears the clipboard and replaces it with "***" if it matches a given text.
      *
-     * @param textToCompare Text to compare that will trigger the clipboard clearing in case of
-     *     a match.
+     * @param textToCompare Text to compare that will trigger the clipboard clearing in case of a
+     *     match.
      */
     public static void clearClipboard(@NonNull final String textToCompare) {
         String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
