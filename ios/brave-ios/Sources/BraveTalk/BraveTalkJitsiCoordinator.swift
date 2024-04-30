@@ -157,7 +157,8 @@ import Shared
             onExitCall()
           }
         }
-      }, transcriptChunkReceived: { [weak self] data in
+      },
+      transcriptChunkReceived: { [weak self] data in
         print(data)
       }
     )
@@ -189,7 +190,7 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinator
   var exitedPiP: () -> Void
   var audioIsMuted: (Bool) -> Void
   var readyToClose: () -> Void
-  var transcriptChunkReceived: ([AnyHashable : Any]) -> Void
+  var transcriptChunkReceived: ([AnyHashable: Any]) -> Void
 
   init(
     conferenceWillJoin: @escaping () -> Void,
@@ -199,7 +200,7 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinator
     exitedPictureInPicture: @escaping () -> Void,
     audioIsMuted: @escaping (Bool) -> Void,
     readyToClose: @escaping () -> Void,
-    transcriptChunkReceived: @escaping ([AnyHashable : Any]) -> Void
+    transcriptChunkReceived: @escaping ([AnyHashable: Any]) -> Void
   ) {
     self.conferenceWillJoin = conferenceWillJoin
     self.conferenceJoined = conferenceJoined
@@ -243,8 +244,8 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinator
   func ready(toClose data: [AnyHashable: Any]!) {
     readyToClose()
   }
-  
-  func transcriptionChunkReceived(_ data: [AnyHashable : Any]!) {
+
+  func transcriptionChunkReceived(_ data: [AnyHashable: Any]!) {
     transcriptChunkReceived(data)
   }
 }

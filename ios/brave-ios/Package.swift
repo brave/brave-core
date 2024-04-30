@@ -590,7 +590,13 @@ if isNativeTalkEnabled {
       dependencies: ["Shared", "Preferences", "JitsiMeet"],
       plugins: ["LoggerPlugin"]
     ),
-    .testTarget(name: "BraveTalkTests", dependencies: ["BraveTalk", "Shared"]),
+    .testTarget(
+      name: "BraveTalkTests",
+      dependencies: [
+        "BraveTalk", "Shared",
+        .product(name: "Collections", package: "swift-collections"),
+      ]
+    ),
   ])
 }
 
