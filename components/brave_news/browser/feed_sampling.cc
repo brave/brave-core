@@ -186,29 +186,6 @@ std::optional<size_t> PickRoulette(const ArticleInfos& articles) {
       }));
 }
 
-mojom::FeedItemMetadataPtr PickAndRemove(ArticleInfos& articles,
-                                         PickArticles picker) {
-  auto maybe_index = picker.Run(articles);
-
-  // There won't be an index if there were no eligible articles.
-  if (!maybe_index.has_value()) {
-    return nullptr;
-  }
-
-  auto index = maybe_index.value();
-  if (index >= articles.size()) {
-    DCHECK(false) << "|index| should never be outside the bounds of |articles| "
-                     "(index: "
-                  << index << ", articles.size(): " << articles.size();
-    return nullptr;
-  }
-
-  auto [article, weight] = std::move(articles[index]);
-  articles.erase(articles.begin() + index);
-
-  return std::move(article);
-}
-
 // Picking a discovery article works the same way as as a normal roulette
 // selection, but we only consider articles that:
 // 1. The user hasn't subscribed to.

@@ -259,16 +259,14 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
 // articles are filtered to only be from the specified channel.
 // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.kxe6xeqm2vfn
 std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
-    const std::string& locale,
-    const Publishers& publishers,
-    const std::string& channel,
-    ArticleInfos& articles) {
+    FeedGenerationInfo& info,
+    const std::string& channel) {
   DVLOG(1) << __FUNCTION__;
   // First, create a set of all publishers in this channel.
   base::flat_set<std::string> allowed_publishers;
-  for (const auto& [id, publisher] : publishers) {
+  for (const auto& [id, publisher] : info.publishers) {
     for (const auto& locale_info : publisher->locales) {
-      if (locale != locale_info->locale) {
+      if (info.locale != locale_info->locale) {
         continue;
       }
 
@@ -283,8 +281,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
 
   // now, filter articles to only include articles in the channel.
   ArticleInfos allowed_articles;
-  for (auto i = 0u; i < articles.size(); ++i) {
-    auto& article_info = articles[i];
+  for (auto i = 0u; i < info.GetArticleInfos().size(); ++i) {
+    auto& article_info = info.GetArticleInfos()[i];
     if (!base::Contains(allowed_publishers,
                         std::get<0>(article_info)->publisher_id)) {
       continue;
@@ -566,8 +564,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
   DVLOG(1) << __FUNCTION__;
   DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
-  auto articles = GetArticleInfos(info.locale, info.feed_items, info.publishers,
-                                  info.signals);
+  const auto& articles = info.GetArticleInfos();
   auto feed = mojom::FeedV2::New();
 
   base::span<const TopicAndArticles> topics_span = base::make_span(info.topics);
