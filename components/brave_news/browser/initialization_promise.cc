@@ -5,16 +5,19 @@
 
 #include "brave/components/brave_news/browser/initialization_promise.h"
 
+#include <algorithm>
 #include <iterator>
+#include <string>
+#include <utility>
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/location.h"
+#include "base/memory/raw_ref.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "partition_alloc/pointers/raw_ref.h"
 
 namespace brave_news {
 
@@ -89,12 +92,14 @@ void InitializationPromise::OnGotLocale(const std::string& locale) {
 
   // Determine how long we should wait based on the number of times we've
   // retried.
-  int delay_index = std::min(attempts_, kNumBackoffs - 1);
+  int retry_delay = no_retry_delay_for_testing_
+                        ? 0
+                        : kBackoffs[std::min(attempts_, kNumBackoffs - 1)];
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&InitializationPromise::Initialize,
                      weak_ptr_factory_.GetWeakPtr()),
-      base::Seconds(kBackoffs[delay_index]));
+      base::Seconds(retry_delay));
 }
 
 }  // namespace brave_news

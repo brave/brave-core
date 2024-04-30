@@ -822,15 +822,6 @@ void BraveNewsController::OnInitializingPrefsComplete() {
       })
           .Then(base::BindOnce(&BraveNewsController::NotifyChannelsChanged,
                                weak_ptr_factory_.GetWeakPtr())));
-
-  GetPublishers(
-      base::BindOnce([](Publishers publishers) {
-        auto event = brave_news::mojom::PublishersEvent::New();
-        event->addedOrUpdated = std::move(publishers);
-        return event;
-      })
-          .Then(base::BindOnce(&BraveNewsController::NotifyPublishersChanged,
-                               weak_ptr_factory_.GetWeakPtr())));
 }
 
 void BraveNewsController::OnNetworkChanged(

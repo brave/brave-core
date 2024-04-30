@@ -1,11 +1,18 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_INITIALIZATION_PROMISE_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_INITIALIZATION_PROMISE_H_
 
+#include <string>
+
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "partition_alloc/pointers/raw_ref.h"
 
 namespace brave_news {
 
@@ -23,8 +30,15 @@ class InitializationPromise {
 
   void OnceInitialized(base::OnceClosure on_initialized);
 
+  State state() { return state_; }
   bool failed() { return state_ == InitializationPromise::State::kFailed; }
   bool complete() { return on_initializing_prefs_complete_.is_signaled(); }
+
+  void set_no_retry_delay_for_testing(bool no_retry_delay) {
+    no_retry_delay_for_testing_ = no_retry_delay;
+  }
+
+  size_t attempts_for_testing() { return attempts_; }
 
  private:
   void Initialize();
@@ -36,6 +50,8 @@ class InitializationPromise {
   raw_ref<PublishersController> publishers_controller_;
 
   base::OneShotEvent on_initializing_prefs_complete_;
+
+  bool no_retry_delay_for_testing_ = false;
 
   size_t max_retries_ = 0;
   size_t attempts_ = 0;
