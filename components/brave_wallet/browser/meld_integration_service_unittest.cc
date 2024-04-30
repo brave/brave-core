@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 #include "components/grit/brave_components_strings.h"
@@ -64,18 +65,21 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     SetInterceptor(content, http_status);
 
     base::RunLoop run_loop;
-    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
-                                         crypto_currencies, service_providers,
-                                         payment_method_types, statuses);
-
-    meld_integration_service_->GetServiceProviders(
-        std::move(filter),
-        base::BindLambdaForTesting(
+    base::MockCallback<MeldIntegrationService::GetServiceProvidersCallback>
+        mock_callback;
+    EXPECT_CALL(mock_callback, Run)
+        .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(sps), errors);
               run_loop.Quit();
-            }));
+            });
+    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
+                                         crypto_currencies, service_providers,
+                                         payment_method_types, statuses);
+
+    meld_integration_service_->GetServiceProviders(std::move(filter),
+                                                   mock_callback.Get());
     run_loop.Run();
   }
 
@@ -91,14 +95,19 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     SetInterceptor(content, http_status);
 
     base::RunLoop run_loop;
-    meld_integration_service_->GetCryptoQuotes(
-        country, from_asset, to_asset, source_amount, account,
-        base::BindLambdaForTesting(
+    base::MockCallback<MeldIntegrationService::GetCryptoQuotesCallback>
+        mock_callback;
+    EXPECT_CALL(mock_callback, Run)
+        .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(quotes), errors);
               run_loop.Quit();
-            }));
+            });
+
+    meld_integration_service_->GetCryptoQuotes(country, from_asset, to_asset,
+                                               source_amount, account,
+                                               mock_callback.Get());
     run_loop.Run();
   }
 
@@ -115,19 +124,23 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     SetInterceptor(content, http_status);
 
     base::RunLoop run_loop;
-    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
-                                         crypto_currencies, service_providers,
-                                         payment_method_types, statuses);
-
-    meld_integration_service_->GetPaymentMethods(
-        std::move(filter),
-        base::BindLambdaForTesting(
+    base::MockCallback<MeldIntegrationService::GetPaymentMethodsCallback>
+        mock_callback;
+    EXPECT_CALL(mock_callback, Run)
+        .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                     payment_methods,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(payment_methods), errors);
               run_loop.Quit();
-            }));
+            });
+
+    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
+                                         crypto_currencies, service_providers,
+                                         payment_method_types, statuses);
+
+    meld_integration_service_->GetPaymentMethods(std::move(filter),
+                                                 mock_callback.Get());
     run_loop.Run();
   }
 
@@ -144,19 +157,22 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     SetInterceptor(content, http_status);
 
     base::RunLoop run_loop;
-    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
-                                         crypto_currencies, service_providers,
-                                         payment_method_types, statuses);
-
-    meld_integration_service_->GetFiatCurrencies(
-        std::move(filter),
-        base::BindLambdaForTesting(
+    base::MockCallback<MeldIntegrationService::GetFiatCurrenciesCallback>
+        mock_callback;
+    EXPECT_CALL(mock_callback, Run)
+        .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                     fiat_currencies,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(fiat_currencies), errors);
               run_loop.Quit();
-            }));
+            });
+    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
+                                         crypto_currencies, service_providers,
+                                         payment_method_types, statuses);
+
+    meld_integration_service_->GetFiatCurrencies(std::move(filter),
+                                                 mock_callback.Get());
     run_loop.Run();
   }
 
@@ -173,18 +189,21 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     SetInterceptor(content, http_status);
 
     base::RunLoop run_loop;
-    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
-                                         crypto_currencies, service_providers,
-                                         payment_method_types, statuses);
-    meld_integration_service_->GetCryptoCurrencies(
-        std::move(filter),
-        base::BindLambdaForTesting(
+    base::MockCallback<MeldIntegrationService::GetCryptoCurrenciesCallback>
+        mock_callback;
+    EXPECT_CALL(mock_callback, Run)
+        .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                     crypto_currencies,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(crypto_currencies), errors);
               run_loop.Quit();
-            }));
+            });
+    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
+                                         crypto_currencies, service_providers,
+                                         payment_method_types, statuses);
+    meld_integration_service_->GetCryptoCurrencies(std::move(filter),
+                                                   mock_callback.Get());
     run_loop.Run();
   }
 
@@ -200,17 +219,20 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     SetInterceptor(content, http_status);
 
     base::RunLoop run_loop;
-    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
-                                         crypto_currencies, service_providers,
-                                         payment_method_types, statuses);
-    meld_integration_service_->GetCountries(
-        std::move(filter),
-        base::BindLambdaForTesting(
+    base::MockCallback<MeldIntegrationService::GetCountriesCallback>
+        mock_callback;
+    EXPECT_CALL(mock_callback, Run)
+        .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
                 const std::optional<std::vector<std::string>>& errors) {
               std::move(callback).Run(std::move(countries), errors);
               run_loop.Quit();
-            }));
+            });
+    auto filter = mojom::MeldFilter::New(countries, fiat_currencies,
+                                         crypto_currencies, service_providers,
+                                         payment_method_types, statuses);
+    meld_integration_service_->GetCountries(std::move(filter),
+                                            mock_callback.Get());
     run_loop.Run();
   }
 
