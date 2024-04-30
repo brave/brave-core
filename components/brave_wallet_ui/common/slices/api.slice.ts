@@ -208,6 +208,7 @@ export const {
   useGetFVMAddressQuery,
   useGetGasEstimation1559Query,
   useGetHardwareAccountDiscoveryBalanceQuery,
+  useGetHasTransactionSimulationSupportQuery,
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
   useGetIsMetaMaskInstalledQuery,

@@ -58,6 +58,33 @@ export const transactionSimulationEndpoints = ({
       invalidatesTags: ['TransactionSimulationsOptIn']
     }),
 
+    getHasTransactionSimulationSupport: query<
+      boolean,
+      { chainId: string; coinType: BraveWallet.CoinType }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { result } =
+            await api.simulationService.hasTransactionScanSupport(
+              arg.chainId,
+              arg.coinType
+            )
+          return {
+            data: result
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to check if this network (${
+              arg.chainId //
+            }) has transaction simulation support`,
+            error
+          )
+        }
+      }
+    }),
+
     getEVMTransactionSimulation: query<
       BraveWallet.EVMSimulationResponse,
       Pick<SerializableTransactionInfo, 'chainId' | 'id'> & {
