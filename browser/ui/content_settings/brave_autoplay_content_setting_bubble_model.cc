@@ -25,8 +25,8 @@
 
 using content_settings::SettingInfo;
 using content_settings::SettingSource;
-using content_settings::SETTING_SOURCE_USER;
-using content_settings::SETTING_SOURCE_NONE;
+using SettingSource::kNone;
+using SettingSource::kUser;
 
 BraveAutoplayContentSettingBubbleModel::BraveAutoplayContentSettingBubbleModel(
     Delegate* delegate,
@@ -84,7 +84,7 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
   radio_group.radio_items.push_back(radio_block_label);
 
   ContentSetting setting;
-  SettingSource setting_source = SETTING_SOURCE_NONE;
+  SettingSource setting_source = SettingSource::kNone;
 
   SettingInfo info;
   HostContentSettingsMap* map =
@@ -103,7 +103,7 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
 
   // Prevent creation of content settings for illegal urls like about:blank
   bool is_valid = map->CanSetNarrowestContentSetting(url, url, content_type());
-  set_is_user_modifiable(is_valid && setting_source == SETTING_SOURCE_USER);
+  set_is_user_modifiable(is_valid && setting_source == SettingSource::kUser);
   set_radio_group(radio_group);
 }
 
