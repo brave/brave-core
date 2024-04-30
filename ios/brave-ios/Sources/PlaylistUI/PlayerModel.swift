@@ -24,7 +24,6 @@ final class PlayerModel: ObservableObject {
 
     setupPlayerKeyPathObservation()
     setupRemoteCommandCenterHandlers()
-    setupPlayerNotifications()
     updateSystemPlayer()
 
     DispatchQueue.global().async {
@@ -340,23 +339,6 @@ final class PlayerModel: ObservableObject {
     itemCancellables.formUnion([
       subscriber(for: \.presentationSize)
     ])
-  }
-
-  private func setupPlayerNotifications() {
-    let nc = NotificationCenter.default
-    let didPlayToEndTimeNotification = nc.addObserver(
-      forName: AVPlayerItem.didPlayToEndTimeNotification,
-      object: nil,
-      queue: .main
-    ) { [weak self] _ in
-      guard let self else { return }
-      player.pause()
-    }
-    cancellables.insert(
-      .init {
-        _ = didPlayToEndTimeNotification
-      }
-    )
   }
 }
 

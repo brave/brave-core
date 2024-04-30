@@ -121,6 +121,7 @@ struct PlaylistContentView: View {
         selectedItemID = itemQueue.first
       }
       // Nothing to play if not repeating
+      playerModel.pause()
       return
     }
 
