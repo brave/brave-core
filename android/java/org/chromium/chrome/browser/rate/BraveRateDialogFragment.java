@@ -26,7 +26,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 
 public class BraveRateDialogFragment extends BottomSheetDialogFragment {
-    final public static String TAG_FRAGMENT = "brave_rating_dialog_tag";
+    public static final String TAG_FRAGMENT = "brave_rating_dialog_tag";
     private static final String TAG = "RateDialogFragment";
     private boolean mIsFromSettings;
 
@@ -102,13 +102,15 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
 
     private void clickOnHappyImageView(View view) {
         ImageView happyImageView = view.findViewById(R.id.happyImageView);
-        happyImageView.setOnClickListener((v) -> {
-            dismiss();
-            BraveAskPlayStoreRatingDialog fragment =
-                    BraveAskPlayStoreRatingDialog.newInstance(mIsFromSettings);
-            fragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
-                    BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
-        });
+        happyImageView.setOnClickListener(
+                (v) -> {
+                    dismiss();
+                    BraveAskPlayStoreRatingDialog fragment =
+                            BraveAskPlayStoreRatingDialog.newInstance(mIsFromSettings);
+                    fragment.show(
+                            ((AppCompatActivity) getActivity()).getSupportFragmentManager(),
+                            BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
+                });
     }
 
     private void clickOnSadImageView(View view) {
