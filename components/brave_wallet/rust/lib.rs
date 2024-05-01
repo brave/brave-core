@@ -18,7 +18,6 @@ use ed25519_dalek_bip32::Error as Ed25519Bip32Error;
 use ed25519_dalek_bip32::{ChildIndex, ExtendedSecretKey};
 use ffi::Bech32DecodeVariant;
 
-#[macro_export]
 macro_rules! impl_result {
     ($t:ident, $r:ident, $f:ident) => {
         impl $r {
@@ -52,7 +51,6 @@ macro_rules! impl_result {
     };
 }
 
-#[macro_export]
 macro_rules! impl_error {
     ($t:ident, $n:ident) => {
         impl From<$t> for Error {

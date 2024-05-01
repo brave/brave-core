@@ -9,7 +9,6 @@
 
 #include "base/feature_list.h"
 #include "base/notreached.h"
-#include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "build/build_config.h"
@@ -45,14 +44,6 @@ bool IsBitcoinEnabled() {
 
 bool IsZCashEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletZCashFeature);
-}
-
-bool IsZCashShieldedTransactionsEnabled() {
-#if BUILDFLAG(ENABLE_ORCHARD)
-  return features::kZCashShieldedTransactionsEnabled.Get();
-#else
-  return false;
-#endif
 }
 
 bool IsAnkrBalancesEnabled() {
