@@ -4,6 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+<<<<<<< HEAD
+=======
+import("//brave/components/brave_wallet/common/config.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+>>>>>>> ba76581610f (Build fix)
 import("//build/config/features.gni")
 import("//third_party/protobuf/proto_library.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
@@ -291,6 +296,10 @@ static_library("browser") {
   ]
 
   public_deps = [ "//brave/components/api_request_helper" ]
+
+  if (enable_orchard) {
+    deps += [ "//brave/components/brave_wallet/browser/zcash/rust:rust_lib" ]
+  }
 
   configs += [ ":sardine_config" ]
 }

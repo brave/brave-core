@@ -409,13 +409,21 @@ void ZCashWalletService::ShieldFunds(const std::string& chain_id,
                                      mojom::AccountIdPtr account_id,
                                      ShieldFundsCallback callback) {
 #if BUILDFLAG(ENABLE_ORCHARD)
-  CreateShieldAllTransaction(
-      chain_id, account_id.Clone(),
-      base::BindOnce(&ZCashWalletService::CreateShieldTransactionTaskDone,
-                     weak_ptr_factory_.GetWeakPtr(), chain_id,
-                     account_id.Clone(), std::move(callback)));
+  if (IsZCashShieldedTransactionsEnabled()) {
+    CreateShieldAllTransaction(
+        chain_id, account_id.Clone(),
+        base::BindOnce(&ZCashWalletService::CreateShieldTransactionTaskDone,
+                       weak_ptr_factory_.GetWeakPtr(), chain_id,
+                       account_id.Clone(), std::move(callback)));
+  } else {
+    std::move(callback).Run(
+        std::nullopt,
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
+  }
 #else
-  std::move(callback).Run(base::unexpected("Unsupported"));
+  std::move(callback).Run(
+      std::nullopt,
+      l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
 #endif
 }
 
@@ -425,14 +433,8 @@ void ZCashWalletService::CreateShieldAllTransaction(
     const std::string& chain_id,
     mojom::AccountIdPtr account_id,
     CreateTransactionCallback callback) {
-  if (!IsZCashShieldedTransactionsEnabled()) {
-    NOTREACHED();
-    std::move(callback).Run(
-        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-    return;
-  }
-
-  if (shield_funds_task_ || !create_transaction_tasks_.empty()) {
+  CHECK(IsZCashShieldedTransactionsEnabled());
+  if (shield_funds_task_) {
     std::move(callback).Run(
         base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     return;
