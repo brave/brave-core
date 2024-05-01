@@ -52,6 +52,7 @@ import {
   PhraseCardBody,
   PhraseCardBottomRow
 } from '../../onboarding/onboarding.style'
+import { ScrollableColumn } from '../../../../components/shared/style'
 
 export const BackupRecoveryPhrase = () => {
   // state
@@ -94,7 +95,7 @@ export const BackupRecoveryPhrase = () => {
 
   // render
   return (
-    <>
+    <ScrollableColumn>
       <OnboardingContentLayout
         title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
         subTitle=''
@@ -160,6 +161,6 @@ export const BackupRecoveryPhrase = () => {
         onBack={() => setIsSkipWarningOpen(false)}
         onSkip={skipBackup}
       />
-    </>
+    </ScrollableColumn>
   )
 }
