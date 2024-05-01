@@ -19,7 +19,7 @@ export const _PasswordStrengthTooltip = () => {
       />
       <Button
         onClick={() => {
-          setIsVisible(!isVisible)
+          setIsVisible((prev) => !prev)
         }}
       >
         Hover

@@ -9,9 +9,7 @@ import * as React from 'react'
 import NewPasswordInput, {
   NewPasswordValues
 } from '../../../../../components/shared/password-input/new-password-input'
-import {
-  AutoLockSettings
-} from '../../components/auto-lock-settings/auto-lock-settings'
+import { AutoLockSettings } from '../../components/auto_lock_settings/auto_lock_settings'
 
 // styles
 import { Column } from '../../../../../components/shared/style'
@@ -33,7 +31,11 @@ export function CreatePassword({
   onAutoLockDurationChange
 }: Props) {
   return (
-    <Column justifyContent='center' alignItems='center' gap='68px'>
+    <Column
+      justifyContent='center'
+      alignItems='center'
+      gap='68px'
+    >
       <NewPasswordInput
         autoFocus={true}
         onSubmit={onSubmit}

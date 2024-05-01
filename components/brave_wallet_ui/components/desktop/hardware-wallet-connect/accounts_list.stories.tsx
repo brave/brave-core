@@ -12,7 +12,7 @@ import {
 import {
   WalletPageStory //
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
-import { HardwareWalletAccountsList } from './accounts-list'
+import { HardwareWalletAccountsList } from './accounts_list'
 
 export const _HardwareAccountsList = () => {
   return (

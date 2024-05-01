@@ -27,10 +27,10 @@ import {
 } from '../../../../components/shared/password-input/new-password-input'
 import {
   OnboardingCreatingWallet //
-} from '../creating-wallet/onboarding-creating-wallet'
+} from '../creating_wallet/onboarding_creating_wallet'
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout/content-layout'
+} from '../components/onboarding_content_layout/content_layout'
 import { CreatePassword } from './components/create-password'
 
 // styles

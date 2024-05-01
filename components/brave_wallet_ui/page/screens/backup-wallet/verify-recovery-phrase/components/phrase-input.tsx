@@ -46,8 +46,6 @@ export const PhraseInput = ({
     1
   )
 
-  console.log(beforeTag, wordPosition, afterTag)
-
   return (
     <Column
       margin='120px 0 18px'

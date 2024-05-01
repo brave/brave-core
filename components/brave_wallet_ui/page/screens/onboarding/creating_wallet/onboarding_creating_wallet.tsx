@@ -10,13 +10,15 @@ import { getLocale } from '../../../../../common/locale'
 
 // components
 import {
+  OnboardingContentLayout //
+} from '../components/onboarding_content_layout/content_layout'
+
+// Style
+import {
   CreatingWalletText,
   LoadingIcon
-} from './onboarding-creating-wallet.style'
+} from './onboarding_creating_wallet.style'
 import { Column } from '../../../../components/shared/style'
-import {
-  OnboardingContentLayout //
-} from '../components/onboarding-content-layout/content-layout'
 
 export const OnboardingCreatingWallet = () => {
   return (

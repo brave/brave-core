@@ -8,20 +8,18 @@ import * as React from 'react'
 import {
   WalletPageStory //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
-import {
-  OnboardingImportHardwareWalletWelcome //
-} from './import-hardware-wallet-welcome'
+import { OnboardingCreatingWallet } from './onboarding_creating_wallet'
 
-export const _OnboardingImportOrRestoreWallet = () => {
+export const _OnboardingCreatingWallet = () => {
   return (
     <WalletPageStory>
-      <OnboardingImportHardwareWalletWelcome />
+      <OnboardingCreatingWallet />
     </WalletPageStory>
   )
 }
 
-_OnboardingImportOrRestoreWallet.story = {
-  name: 'Import Hardware Wallet Welcome'
+_OnboardingCreatingWallet.story = {
+  name: 'Creating Wallet'
 }
 
-export default _OnboardingImportOrRestoreWallet
+export default _OnboardingCreatingWallet

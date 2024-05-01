@@ -20,6 +20,7 @@ import {
   useRestoreWalletMutation,
   useSetAutoLockMinutesMutation
 } from '../../../../common/slices/api.slice'
+import { clearClipboard } from '../../../../utils/copy-to-clipboard'
 
 // components
 import {
@@ -27,10 +28,10 @@ import {
 } from '../../../../components/shared/password-input/new-password-input'
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout/content-layout'
+} from '../components/onboarding_content_layout/content_layout'
 import {
   OnboardingCreatingWallet //
-} from '../creating-wallet/onboarding-creating-wallet'
+} from '../creating_wallet/onboarding_creating_wallet'
 import { CreatePassword } from '../create-password/components/create-password'
 
 // options
@@ -107,7 +108,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
   // methods
   const onPhraseWordChange = React.useCallback(
-    (index: number, value: string) => {
+    async (index: number, value: string) => {
       // when the a recovery phrase is pasted,
       // split the words and fill the input fields
       if (value.includes(' ')) {
@@ -121,6 +122,9 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
           })
           return newValues
         })
+
+        // clear clipboard
+        await clearClipboard()
       } else {
         // update the word at the index with the new value entered
         setPhraseWords((prev) => {

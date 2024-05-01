@@ -12,7 +12,7 @@ import {
   Title,
   ArrowIcon,
   Description
-} from './hardware-button.style'
+} from './hardware_button.style'
 
 interface Props {
   title: string

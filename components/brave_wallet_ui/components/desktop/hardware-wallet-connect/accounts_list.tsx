@@ -19,7 +19,7 @@ import {
   HardwareWalletDerivationPathLocaleMapping,
   HardwareWalletDerivationPathsMapping,
   SolHardwareWalletDerivationPathLocaleMapping
-} from './types'
+} from './hardware_wallet_connect.types'
 import { HardwareVendor } from '../../../common/api/hardware_keyrings'
 
 // Utils
@@ -41,7 +41,7 @@ import {
 // Components
 import { SearchBar } from '../../shared/search-bar/index'
 import { NetworkFilterSelector } from '../network-filter-selector'
-import { AccountListItem } from './account-list-item'
+import { AccountListItem } from './account_list_item'
 
 // Styles
 import {
@@ -61,7 +61,7 @@ import {
   AccountListContent,
   DropdownLabel,
   HelpLink
-} from './style'
+} from './hardware_wallet_connect.styles'
 import {
   ContinueButton //
 } from '../../../page/screens/onboarding/onboarding.style'

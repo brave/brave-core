@@ -10,23 +10,30 @@ import { getLocale } from '../../../../common/locale'
 import { onConnectHardwareWallet } from '../../../common/async/hardware'
 
 // components
-import { HardwareWalletAccountsList } from './accounts-list'
+import { HardwareWalletAccountsList } from './accounts_list'
 import {
   AuthorizeHardwareDeviceIFrame //
 } from '../../shared/authorize-hardware-device/authorize-hardware-device'
 import {
   HardwareButton //
-} from '../popup-modals/add-account-modal/hardware-button/hardware-button'
+} from '../popup-modals/add-account-modal/hardware-button/hardware_button'
 
 // Styled Components
-import { HardwareWalletGraphic, Instructions, Divider } from './style'
+import {
+  HardwareWalletGraphic,
+  Instructions,
+  Divider
+} from './hardware_wallet_connect.styles'
 import { Column, VerticalSpace } from '../../shared/style'
 import {
   ContinueButton //
 } from '../../../page/screens/onboarding/onboarding.style'
 
 // Custom types
-import { ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
+import {
+  ErrorMessage,
+  HardwareWalletDerivationPathsMapping
+} from './hardware_wallet_connect.types'
 import {
   HardwareDerivationScheme,
   LedgerDerivationPaths,

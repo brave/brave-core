@@ -21,11 +21,11 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 // components
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout/content-layout'
+} from '../components/onboarding_content_layout/content_layout'
 
 // styles
 import { Column, VerticalSpace } from '../../../../components/shared/style'
-import { IntroImg, Title, SubTitle } from './onboarding-success.style'
+import { IntroImg, Title, SubTitle } from './onboarding_success.style'
 import { ContinueButton } from '../onboarding.style'
 
 export const OnboardingSuccess = () => {

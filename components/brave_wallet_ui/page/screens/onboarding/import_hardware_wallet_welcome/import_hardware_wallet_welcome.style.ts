@@ -6,8 +6,8 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
-import HardwareGraphicLightSvg from './images/hardware-graphic-light.svg'
-import HardwareGraphicDarkSvg from './images/hardware-graphic-dark.svg'
+import HardwareGraphicLightSvg from './images/hardware_graphic_light.svg'
+import HardwareGraphicDarkSvg from './images/hardware_graphic_dark.svg'
 
 export const HardwareGraphic = styled.img.attrs({
   src: window.matchMedia('(prefers-color-scheme: dark)').matches

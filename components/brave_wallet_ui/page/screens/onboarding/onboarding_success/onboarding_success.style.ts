@@ -7,8 +7,8 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
 // images
-import CompleteGraphicLight from './images/complete-light.svg'
-import CompleteGraphicDark from './images/complete-dark.svg'
+import CompleteGraphicLight from './images/complete_light.svg'
+import CompleteGraphicDark from './images/complete_dark.svg'
 
 export const IntroImg = styled.img.attrs({
   src: window.matchMedia('(prefers-color-scheme: dark)').matches

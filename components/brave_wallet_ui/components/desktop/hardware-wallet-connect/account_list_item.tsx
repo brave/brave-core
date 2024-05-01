@@ -26,7 +26,7 @@ import {
   HardwareWalletAccountListItemRow,
   AddressBalanceWrapper,
   AccountCheckbox
-} from './style'
+} from './hardware_wallet_connect.styles'
 
 interface AccountListItemProps {
   account: BraveWallet.HardwareWalletAccount

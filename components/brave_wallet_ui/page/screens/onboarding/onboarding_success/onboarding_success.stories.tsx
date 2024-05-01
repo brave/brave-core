@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { WalletPageStory } from '../../../../stories/wrappers/wallet-page-story-wrapper'
-import { OnboardingSuccess } from './onboarding-success'
+import { OnboardingSuccess } from './onboarding_success'
 
 export const _OnboardingSuccess = () => {
   return (

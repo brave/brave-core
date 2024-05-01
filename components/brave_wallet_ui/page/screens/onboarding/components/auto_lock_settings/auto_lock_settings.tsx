@@ -16,7 +16,7 @@ import {
   LockIconContainer,
   SettingDescription,
   OptionLabel
-} from './auto-lock-settings.style'
+} from './auto_lock_settings.style'
 import { getLocale } from '../../../../../../common/locale'
 
 interface Props {

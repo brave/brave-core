@@ -16,16 +16,16 @@ import {
 import {
   CreateAccountOptions //
 } from '../../../../options/create-account-options'
+import { getLocale } from '../../../../../common/locale'
 
 // components
 import { AccountType } from './components/account-type'
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout/content-layout'
+} from '../components/onboarding_content_layout/content_layout'
 
 // styles
 import { Divider } from './components/account-type.style'
-import { getLocale } from '../../../../../common/locale'
 
 const accountOptions = CreateAccountOptions({
   isBitcoinEnabled: false, // No bitcoin hardware accounts by now.

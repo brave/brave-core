@@ -13,14 +13,14 @@ import { WalletRoutes } from '../../../../constants/types'
 // components
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout/content-layout'
+} from '../components/onboarding_content_layout/content_layout'
 
 // styles
 import {
   Bold,
   Description,
   HardwareGraphic
-} from './import-hardware-wallet-welcome.style'
+} from './import_hardware_wallet_welcome.style'
 import { ContinueButton } from '../onboarding.style'
 import { Column, VerticalSpace } from '../../../../components/shared/style'
 

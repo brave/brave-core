@@ -36,10 +36,10 @@ import {
 } from './components/onboarding-import-wallet-type/import_wallet_type'
 import {
   OnboardingImportHardwareWalletWelcome //
-} from './import-hardware-wallet-welcome/import-hardware-wallet-welcome'
+} from './import_hardware_wallet_welcome/import_hardware_wallet_welcome'
 import {
   OnboardingSelectWalletDevice //
-} from './select-wallet-device/onboarding-select-wallet-device'
+} from './select_wallet_device/onboarding_select_wallet_device'
 
 export const OnboardingHardwareWalletRoutes = () => {
   // routing

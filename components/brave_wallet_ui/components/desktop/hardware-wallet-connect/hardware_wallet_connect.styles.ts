@@ -9,10 +9,10 @@ import * as leo from '@brave/leo/tokens/css'
 import { HardwareVendor } from '../../../common/api/hardware_keyrings'
 import Checkbox from '@brave/leo/react/checkbox'
 
-import TrezorLight from './images/trezor-light.svg'
-import TrezorDark from './images/trezor-dark.svg'
-import LedgerLight from './images/ledger-light.svg'
-import LedgerDark from './images/ledger-dark.svg'
+import TrezorLight from './images/trezor_light.svg'
+import TrezorDark from './images/trezor_dark.svg'
+import LedgerLight from './images/ledger_light.svg'
+import LedgerDark from './images/ledger_dark.svg'
 
 export const HardwareWalletGraphic = styled.div<{
   hardwareVendor: HardwareVendor

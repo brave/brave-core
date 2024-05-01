@@ -32,7 +32,7 @@ import {
 } from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 import {
   OnboardingContentLayout //
-} from '../../onboarding/components/onboarding-content-layout/content-layout'
+} from '../../onboarding/components/onboarding_content_layout/content_layout'
 import {
   SkipWarningDialog //
 } from '../explain-recovery-phrase/skip-warning-dialog'

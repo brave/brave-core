@@ -25,7 +25,7 @@ import { NextButtonRow, ContinueButton } from '../onboarding.style'
 import { CheckboxText, TermsLink } from './disclosures.style'
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout/content-layout'
+} from '../components/onboarding_content_layout/content_layout'
 
 const TermsOfUseText: React.FC<{}> = () => {
   const text = getLocaleWithTag('braveWalletTermsOfServiceCheckboxText')

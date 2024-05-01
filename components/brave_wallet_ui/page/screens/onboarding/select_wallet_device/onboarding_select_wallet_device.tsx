@@ -16,10 +16,10 @@ import { HardwareVendor } from '../../../../common/api/hardware_keyrings'
 // components
 import {
   OnboardingContentLayout //
-} from '../components/onboarding-content-layout/content-layout'
+} from '../components/onboarding_content_layout/content_layout'
 import {
   HardwareWalletConnect //
-} from '../../../../components/desktop/hardware-wallet-connect'
+} from '../../../../components/desktop/hardware-wallet-connect/hardware_wallet_connect'
 import { getLocale } from '../../../../../common/locale'
 
 interface Params {

@@ -8,7 +8,7 @@ import * as React from 'react'
 import {
   WalletPageStory //
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
-import { AutoLockSettings } from './auto-lock-settings'
+import { AutoLockSettings } from './auto_lock_settings'
 import { Row } from '../../../../../components/shared/style'
 import { autoLockOptions } from '../../../../../options/auto-lock-options'
 
