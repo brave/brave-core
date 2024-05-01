@@ -228,25 +228,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       this.$.forgetFirstPartyStorageControlType.checked
     )
   }
-
-  private onCookiesClick_ () {
-    Router.getInstance().navigateTo(routes.COOKIES)
-  }
-
-  private computeThirdPartyCookiesSublabel_ (): string {
-    const currentCookieSetting =
-        this.getPref('profile.cookie_controls_mode').value
-    switch (currentCookieSetting) {
-      case CookieControlsMode.OFF:
-        return this.i18n('thirdPartyCookiesLinkRowSublabelEnabled')
-      case CookieControlsMode.INCOGNITO_ONLY:
-        return this.i18n('thirdPartyCookiesLinkRowSublabelDisabledIncognito')
-      case CookieControlsMode.BLOCK_THIRD_PARTY:
-        return this.i18n('thirdPartyCookiesLinkRowSublabelDisabled')
-      default:
-        assertNotReached()
-    }
-  }
 }
 
 customElements.define(

@@ -21,7 +21,7 @@ const adBlockModeOptions = [
 
 const cookieBlockModeOptions = [
   { value: CookieBlockMode.BLOCKED, text: getLocale('braveShieldsCookiesBlockAll') },
-  { value: CookieBlockMode.CROSS_SITE_BLOCKED, text: getLocale('braveShieldsCrossCookiesBlocked') },
+  { value: CookieBlockMode.CROSS_SITE_BLOCKED, text: getLocale('braveShieldsThirdPartyCookiesBlocked') },
   { value: CookieBlockMode.ALLOW, text: getLocale('braveShieldsCookiesAllowedAll') }
 ]
 
