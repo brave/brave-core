@@ -16,10 +16,7 @@ import {
   CloseButton,
   CloseIcon
 } from '../verify-recovery-phrase.style'
-import {
-  Column,
-  VerticalSpace
-} from '../../../../../components/shared/style'
+import { Column, VerticalSpace } from '../../../../../components/shared/style'
 import { InfoAlert } from './verification-progress.style'
 import { AlertWrapper } from '../../../onboarding/onboarding.style'
 
@@ -49,18 +46,22 @@ export const PhraseInput = ({
     1
   )
 
+  console.log(beforeTag, wordPosition, afterTag)
+
   return (
-    <Column margin='120px 0 18px' gap='25px'>
+    <Column
+      margin='120px 0 18px'
+      gap='25px'
+    >
+      <FormLabel>
+        {beforeTag}
+        <Bold>{wordPosition}</Bold>
+        {afterTag}
+      </FormLabel>
       <FormInput
         value={phrase}
         onInput={(event) => onChange(event.value)}
-      >
-        <FormLabel>
-          {beforeTag}
-          <Bold>{wordPosition}</Bold>
-          {afterTag}
-        </FormLabel>
-      </FormInput>
+      ></FormInput>
       {showError ? (
         <AlertWrapper>
           <InfoAlert
