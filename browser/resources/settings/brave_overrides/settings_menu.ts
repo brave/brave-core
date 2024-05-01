@@ -183,6 +183,10 @@ RegisterStyleOverride(
         margin-bottom: 20px !important;
       }
 
+      #autofill {
+        margin-top: 20px !important;
+      }
+
       #about-menu {
         display: flex;
         flex-direction: row;
@@ -318,6 +322,7 @@ RegisterPolymerTemplateModifications({
     const newAboutEl = document.createElement('a')
     newAboutEl.setAttribute('href', '/help')
     newAboutEl.setAttribute('id', aboutEl.id)
+    newAboutEl.setAttribute('role', 'menuitem')
 
     const graphicsEl = document.createElement('div')
     graphicsEl.setAttribute('class', 'brave-about-graphic')
