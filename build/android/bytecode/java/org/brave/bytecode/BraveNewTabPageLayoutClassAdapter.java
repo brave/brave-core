@@ -39,8 +39,7 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         addMethodAnnotation(sBraveNewTabPageLayoutClassName, "setSearchProviderBottomMargin", "Ljava/lang/Override;");
 
         deleteMethod(sBraveNewTabPageLayoutClassName, "getLogoMargin");
-        makePublicMethod(sBraveNewTabPageLayoutClassName, "getLogoMargin");
-
+        makePublicMethod(sNewTabPageLayoutClassName, "getLogoMargin");
 
         changeSuperName(sNewTabPageLayoutClassName, sNewTabPageLayoutSuperClassName);
     }
