@@ -202,7 +202,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     reportVisit,
     reportSidebarFilterUsage,
     reportSessionStart
-  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart])
+  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}
