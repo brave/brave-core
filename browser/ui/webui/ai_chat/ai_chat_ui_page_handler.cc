@@ -128,21 +128,25 @@ void AIChatUIPageHandler::ChangeModel(const std::string& model_key) {
 }
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(
-    const std::string& input,
-    std::optional<mojom::ActionType> action_type) {
+    const std::string& input) {
   DCHECK(!active_chat_tab_helper_->IsRequestInProgress())
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
-
-  if (action_type.has_value()) {
-    active_chat_tab_helper_->SubmitSelectedText(input, action_type.value());
-    return;
-  }
 
   mojom::ConversationTurn turn = {
       CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       ConversationTurnVisibility::VISIBLE, input, std::nullopt};
   active_chat_tab_helper_->SubmitHumanConversationEntry(std::move(turn));
+}
+
+void AIChatUIPageHandler::SubmitHumanConversationEntryWithAction(
+    const std::string& input,
+    mojom::ActionType action_type) {
+  DCHECK(!active_chat_tab_helper_->IsRequestInProgress())
+      << "Should not be able to submit more"
+      << "than a single human conversation turn at a time.";
+
+  active_chat_tab_helper_->SubmitSelectedText(input, action_type);
 }
 
 void AIChatUIPageHandler::SubmitSummarizationRequest() {

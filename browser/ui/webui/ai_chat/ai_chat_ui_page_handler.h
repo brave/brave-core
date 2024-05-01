@@ -58,9 +58,10 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       mojo::PendingRemote<ai_chat::mojom::ChatUIPage> page) override;
   void GetModels(GetModelsCallback callback) override;
   void ChangeModel(const std::string& model_key) override;
-  void SubmitHumanConversationEntry(
+  void SubmitHumanConversationEntry(const std::string& input) override;
+  void SubmitHumanConversationEntryWithAction(
       const std::string& input,
-      std::optional<mojom::ActionType> action_type) override;
+      mojom::ActionType action_type) override;
   void SubmitSummarizationRequest() override;
   void HandleVoiceRecognition() override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;

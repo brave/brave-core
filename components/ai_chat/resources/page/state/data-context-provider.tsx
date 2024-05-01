@@ -317,10 +317,12 @@ function DataContextProvider (props: DataContextProviderProps) {
     if (shouldDisableUserInput) return
     if (handleFilterActivation()) return
 
-    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(
-      inputText,
-      selectedActionType ?? null
-    )
+    if (selectedActionType) {
+      getPageHandlerInstance().pageHandler.submitHumanConversationEntryWithAction(inputText, selectedActionType)
+    } else {
+      getPageHandlerInstance().pageHandler.submitHumanConversationEntry(inputText)
+    }
+
     setInputText('')
     resetSelectedActionType()
   }

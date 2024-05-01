@@ -181,7 +181,8 @@ interface PageHandler {
   // are ready.
   GenerateQuestions();
 
-  SubmitHumanConversationEntry(string input, ActionType? action_type);
+  SubmitHumanConversationEntry(string input);
+  SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
   HandleVoiceRecognition();
   SubmitSummarizationRequest();
   MarkAgreementAccepted();

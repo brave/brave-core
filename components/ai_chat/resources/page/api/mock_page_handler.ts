@@ -112,6 +112,7 @@ export class MockPageHandlerRemote implements Public<mojom.PageHandlerRemote> {
   changeModel() {}
   getConversationhistory() {}
   submitHumanConversationEntry() {}
+  submitHumanConversationEntryWithAction() {}
   handleVoiceRecognition() {}
   submitSummarizationRequest() {}
   markAgreementAccepted() {}
