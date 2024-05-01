@@ -230,6 +230,7 @@
 -All/PrerenderNewTabPageBrowserTest.DestroyedOnNavigatedAway/*
 -All/PrerenderNewTabPageBrowserTest.NewTabPagePrerenderNonHttps/*
 -All/PrerenderNewTabPageBrowserTest.PrerenderTriggeredByNewTabPageAndActivate/*
+-All/PrerenderNewTabPageBrowserTest.PrerenderTriggeredCancelAndRetrigger/*
 -All/PrerenderNewTabPageBrowserTest.PrerenderTriggeredCanceled/*
 -All/PrerenderOmniboxSearchSuggestionReloadBrowserTest.*
 -All/PrintPrerenderBrowserTest.*
@@ -378,6 +379,7 @@
 -PrivacySandboxSettingsEventReportingBrowserTest.ReportEventDestinationNotEnrolled
 
 # These tests fail because we disable privacy_sandbox::kPrivacySandboxSettings4
+-PrivacySandboxRestrictedNoticeConfirmationTest.RestrictedNoticeTest/*
 -PrivacySandboxSettingsEventReportingBrowserTest/PrivacySandboxSettingsEventReportingBrowserTest.AutomaticBeaconDestinationEnrollment/*
 -PrivacySandboxSettingsEventReportingBrowserTest/PrivacySandboxSettingsEventReportingBrowserTest.ReportEventCustomURLDestinationEnrollment/*
 -PrivacySandboxSettingsEventReportingBrowserTest/PrivacySandboxSettingsEventReportingBrowserTest.ReportEventDestinationEnrollment/*
@@ -453,11 +455,15 @@
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsNotAccessibleForChild
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
 -DiceBrowserTextWithExplicitSignin.SigninWithChoiceRemembered_*
+-EnclaveAuthenticatorBrowserTest.GpmPinRegistrationPersistAcrossRestart
 -EnclaveAuthenticatorBrowserTest.MakeCredential_RecoverWithGPMPIN_Success
 -EnclaveAuthenticatorBrowserTest.MakeCredential_RecoverWithLSKF_Success
 -EnclaveAuthenticatorBrowserTest.RecoverWithLSKF_GetAssertion_Success
 -EnclaveAuthenticatorBrowserTest.RegisterDeviceWithGpmPin_MakeCredentialWithUV_Success
 -EnclaveAuthenticatorBrowserTest.RegisterDeviceWithGpmPin_MakeCredential_Success
+-EnclaveAuthenticatorBrowserTest.RegisterDeviceWithGpmPin_UVRequestsWithWrongPIN
+-EnclaveAuthenticatorWithoutPinBrowserTest.*
+-EnclaveAuthenticatorWithPinBrowserTest.*
 -LocalWebApprovalsEnabled/SupervisedUserIframeFilterTest.*/*
 -PasswordStatusCheckServiceBaseTest.CheckTimeUpdatedAfterRunScheduledInThePast
 -PowerBookmarkBubbleViewBrowserTest.InvokeUi_bookmark_details_on_trackable_product
@@ -552,6 +558,8 @@
 -RequestStorageAccessForOriginWithFirstPartySetsDisabledBrowserTest.*
 -RequestStorageAccessForWithFirstPartySetsBrowserTest.PermissionQueryCrossSiteFrame
 -RequestStorageAccessForWithFirstPartySetsBrowserTest.Permission_AutodeniedForServiceDomain
+-StorageAccessAPIAutograntsWithFedCMBrowserTest.*
+-StorageAccessAPIAutograntsWithFedCMOriginTrialBrowserTest.*
 -StorageAccessAPIBrowserTest.Permission_Denied_WithoutInteraction/*
 -StorageAccessAPIForOriginBrowserTest.*
 -StorageAccessAPIForOriginWithFirstPartySetsBrowserTest.*
@@ -581,6 +589,7 @@
 -BackgroundPage/ExtensionPreferenceApiTest.ThirdPartyCookiesAllowed/0
 -EventPage/ExtensionPreferenceApiEventPageTest.ThirdPartyCookiesAllowed/0
 -HTTPErrProcBrowserTest.*
+-ManagerBrowserTest.TpcdDtGracePeriodEnforced_InValidDtToken
 -PageLoadMetricsPre3pcdBrowserTest.NoStatePrefetchMetrics
 -PageSpecificSiteDataDialogPre3pcdBrowserTest.PartitionedCookiesAndAllowedThirdParty
 -ProfileNetworkContextServiceResourceBlocklistBrowsertest.ThirdPartyCookiesAllowed
@@ -813,6 +822,7 @@
 
 # These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
+-All/ProfileMenuViewSignoutTestWithExplicitBrowserSigninFeature.*/*
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.WorkBadgeNonTransientModeAndSyncPause
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.WorkBadgeTransientModeAndSyncPause
 -AvatarToolbarButtonWithExplicitBrowserSigninBrowserTest.SigninPaused*
@@ -857,6 +867,7 @@
 -All/SupervisedUserServiceBrowserTest.LocalPolicies/*
 -All/SupervisedUserServiceBrowserTest.ProfileName/*
 -All/SupervisionRemovalExtensionTest.RemoveCustodianApprovalRequirement/*
+-All/UserGellerizationExtensionTest.*/*
 -IpProtectionAuthTokenProviderBrowserTest.NetworkServiceCanRequestTokens
 -IpProtectionConfigProviderBrowserTest.BackoffTimeResetAfterProfileAvailabilityChange
 -IpProtectionConfigProviderBrowserTest.ExpectedReceiverSetStateAfterNetworkServiceCrash
@@ -897,13 +908,14 @@
 -DisallowManagedProfileSignoutFeature/UserPolicySigninServiceTest.*
 
 # These tests fail because we disable DIPS via features::kDIPS
+-All/DIPSDataDeletionBrowserTest.*
+-All/DIPSPrivacySandboxDataPreservationTest.*
 -All/DIPSPrivacySandboxDataTest.DontClearAttributionReportingApiData/*
 -All/DIPSSiteDataAccessDetectorTest.AttributeSameSiteIframesSiteDataAccessTo1P/*
 -All/DIPSSiteDataAccessDetectorTest.AttributeSameSiteNestedIframesSiteDataAccessTo1P/*
 -All/DIPSSiteDataAccessDetectorTest.DetectSiteDataAccess_Storages/*
 -All/DIPSSiteDataAccessDetectorTest.DiscardFencedFrameCookieClientAccess/*
 -All/DIPSSiteDataAccessDetectorTest.DiscardPrerenderedPageCookieClientAccess/*
--All/DIPSDataDeletionBrowserTest.*
 -All/DIPSTabHelperBrowserTest.*/*
 -All/OpenerHeuristicBackfillGrantBrowserTest.TrackingProtectionOnboardingCreatesBackfillGrants/*
 -All/OpenerHeuristicCurrentInteractionGrantBrowserTest.AdTaggedPopupInteractionWithStorageAccessGrant/*
@@ -919,6 +931,7 @@
 -AllSitesFollowingFirstPartyTest.SiteNotFollowingFirstPartyNotIncluded
 -DIPSBounceDetectorBrowserTest.*
 -DIPSBounceTrackingDevToolsIssueTest.BounceTrackingDevToolsIssue
+-DIPSPrivacySandboxApiInteractionTest.*
 -DIPSThrottlingBrowserTest.*
 -DIPSWebAuthnBrowserTest.ReportRedirectorsInChain_OmitSitesWithWebAuthnAssertions
 -DIPSWebAuthnBrowserTest.WebAuthnAssertion_ConfirmWCOCallback
@@ -1092,6 +1105,7 @@
 # (BraveIsAllowedThirdParty)
 -ChromeSharedDictionaryBrowserTest.BlockReadingCrossOrigin
 -ChromeSharedDictionaryBrowserTest.BlockWritingCrossOrigin
+-SharedDictionaryDevToolsBrowserTest.WriteErrorDisallowedBySettings
 
 # These fail because we disable kFirstPartySets
 -RequestStorageAccessForBrowserTest.ThirdPartyGrantsExpireOverIPC
@@ -1147,8 +1161,8 @@
 -CompanionPage*
 -SidePanelCompanion2BrowserEnabledTest.FeatureEnabled
 
-# These tests fail because they enable the kChromeRefresh2023 feature, which our
-# code is not expecting.
+# These tests fail because they enable (or require) the kChromeRefresh2023
+# feature, which our code is not expecting.
 -All/BrowserFrameColorProviderTest.BaselineThemeIgnoresNativeThemeColor/1
 -All/BrowserFrameColorProviderTest.BrowserFrameTracksBrowserColorVariant/1
 -All/BrowserFrameColorProviderTest.BrowserFrameTracksIsGrayscale/1
@@ -1179,6 +1193,7 @@
 -PinnedToolbarActionsModelBrowserTest.*
 -ProfileMenuViewPixelTest.InvokeUi_default/*
 -ProfilePickerUIPixelTest.InvokeUi_default/CR2023
+-ProductSpecificationsButtonBrowserTest.*
 -RealboxHandlerIconTest/BrowserTestWithParam.ActionVectorIcons/0
 -RealboxHandlerIconTest/BrowserTestWithParam.ActionVectorIcons/2
 -RealboxHandlerIconTest/BrowserTestWithParam.AnswerVectorIcons/0
@@ -1444,6 +1459,13 @@
 -All/NavigationPredictorPreconnectClientBrowserTestWithSearch.PreconnectSearchWithFeature/*
 -All/SearchEnginePreconnectorEnabledOnlyBrowserTest.AllowedSearch/*
 -All/SearchEnginePreconnectorNoDelaysBrowserTest.PreconnectOnlyInForeground/*
+
+# Marked as consistently failing upstream, see crbug.com/336983096
+-BrowserUserEducationServiceBrowserTest.FeatureConfigurationConsistencyCheck
+
+# This test fails because we rename profile names from (for example) "Person 1"
+# to "Profile 1"
+-CreateDesktopShortcutDialogViewBrowserTest.InvokeUi_TitleHasProfileNameInfoMultiProfile
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
@@ -1737,6 +1759,7 @@
 -GuestStartupBrowserCreatorPickerTest.*
 -HangoutServicesBrowserTest.*
 -HeadlessModeCommandBrowserTest_DumpDomWithBeforeUnloadPreventDefault.DumpDomWithBeforeUnloadPreventDefault
+-HeadlessModeCommandBrowserTest_PrintToPdfWithLazyLoading.PrintToPdfWithLazyLoading
 -HeadlessModeDumpDomCommandBrowserTest.HeadlessDumpDom*
 -HeadlessModeDumpDomCommandBrowserTestWithTimeout.HeadlessDumpDomWithTimeout
 -HeadlessModeLazyLoadingPrintToPdfCommandBrowserTest.HeadlessLazyLoadingPrintToPdf
@@ -1969,7 +1992,6 @@
 -ProfileMenuClickTest_WithUnconsentedPrimaryAccount.*
 -ProfileMenuViewExtensionsTest.*
 -ProfileMenuViewSignoutTest.*
--ProfileMenuViewSignoutTestWithExplicitBrowserSigninFeature.*
 -ProfileMenuViewSignoutTestWithNetwork.Signout/*
 -ProfileMenuViewSyncErrorButtonTest.*
 -ProfileNetworkContextServiceBrowsertest.*
@@ -2031,6 +2053,7 @@
 -SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstream.*
 -SaveCardBubbleViewsFullFormBrowserTestWithLoadingAndConfirmation.*
 -SaveCardBubbleViewsSyncTransportFullFormBrowserTest.*
+-SaveCardBubbleViewsSyncTransportFullFormBrowserTest/*
 -SavePageBrowserTest.*
 -SCTReportingServiceBrowserTest.ReportsSentAfterNetworkServiceRestart
 -SearchApiTest.*

@@ -42,6 +42,7 @@
 -All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
 -All/PrintContentAnalysisUtilsTest.*/*
 -All/SyncConfirmationHandlerTest.*
+-All/TabStripModelTest.NavigationForgettingDoesntAffectNewTab/*
 -ApcScrimManagerImplTest.DisabledScrimCannotBeShown
 -ApcScrimManagerImplTest.HideDoesNotImmediatelySetOriginalAxMode
 -ApcScrimManagerImplTest.HideFocusOnTheWebContent
@@ -64,6 +65,7 @@
 -BrowserCommandControllerWithBookmarksTest.BookmarkAllTabsUpdatesOnTabStripChanges
 -BrowserFeaturePromoControllerPolicyTest.*
 -BrowserFeaturePromoControllerPriorityTest.*
+-BrowserFeaturePromoControllerRotatingPromoTest.*
 -BrowserFeaturePromoControllerViewsTest.*
 -BrowserFinderTest.ScheduledForDeletion
 -BrowserViewPipTest.CanFullscreenPolicyDoesNotEnableFullscreen
@@ -88,6 +90,7 @@
 -CookieControlsIconViewUnitTest.*
 -CookieControlsUserBypassTest.SiteCounts
 -CoreTabHelperWindowUnitTest.SearchWithLens_LensPingEnabled_TriggersLensPing
+-CpuHealthTrackerBrowserTest.*
 -CustomCursorSuppressorTest.*
 -CustomizeChromeFeaturePromoHelperTest.*
 -DefaultBrowserPromptManagerTest.*
@@ -202,6 +205,7 @@
 -SidePanelPinningCoordinatorTest.SidePanelPinButtonsHideInGuestMode
 -SidePanelPinningCoordinatorTest.SidePanelTitleUpdates
 -SidePanelToolbarContainerTest.*
+-SiteAccessRequestsHelperUnittest.*
 -TabHelperUnitTest.ClearsExtensionOnUnload
 -TabHelperUnitTest.ReloadRequired_BlockAllExtensions
 -TabHelperUnitTest.ReloadRequired_CustomizeByExtension
@@ -561,8 +565,8 @@
 -BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToFalse
 -BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToTrue
 
-# This test fails a CalledOnValidSequence check in brave_sync::Prefs::GetSeed
--PeopleHandlerWithExplicitBrowserSigninTest.ChromeSigninUserInfoUpdateOnSync
+# These tests fail a CalledOnValidSequence check in brave_sync::Prefs::GetSeed
+-PeopleHandlerWithExplicitBrowserSigninTest.*
 
 # These tests fail because of disabled kCookieDeprecationFacilitatedTesting and/
 # or TrackingProtectionOnboardingFactory.
@@ -651,6 +655,15 @@
 -StorageAccessAPIServiceImplTest.PermissionDenial_NotRenewed
 -StorageAccessAPIServiceImplTest.RenewPermissionGrant
 -StorageAccessGrantPermissionContextAPIWithFedCMConnectionTest.AutoResolveWithConnection
+
+# This test fails because our badge doesn't match the upstream badge
+-IconBadgingTest.VerifyFromDisk
+
+# These tests fail because they no longer modify their expectations when
+# kForYouFre is disabled
+-StartupBrowserCreatorImplTest.DetermineStartupTabs
+-StartupBrowserCreatorImplTest.DetermineStartupTabs_NewFeaturesPage
+-StartupBrowserCreatorImplTest.DetermineStartupTabs_PrivacySandbox
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
