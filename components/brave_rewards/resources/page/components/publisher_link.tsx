@@ -26,13 +26,15 @@ export function PublisherLink (props: Props) {
   const { getString } = React.useContext(LocaleContext)
 
   const iconPath = props.verified && props.icon || props.url
+  const iconSrc =
+    `chrome://favicon2/?size=64&pageUrl=${encodeURIComponent(iconPath)}`
   const platformName = lookupPublisherPlatformName(props.platform)
 
   return (
     <style.root>
       <NewTabLink href={props.url}>
         <style.icon>
-          <img src={`chrome://favicon/size/64@1x/${iconPath}`} />
+          <img src={iconSrc} />
           {
             props.verified &&
               <style.verified data-test-id='verified-icon'>

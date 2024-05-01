@@ -124,7 +124,9 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest,
   // contains the expected favicon
   {
     const std::string favicon =
-        "chrome://favicon/size/64@1x/https://" + publisher;
+        "chrome://favicon2/?"
+        "size=64&amp;"
+        "pageUrl=https%3A%2F%2Fduckduckgo.com%2F";
     test_util::WaitForElementToContainHTML(popup_contents.get(), card_selector,
                                            favicon);
   }
