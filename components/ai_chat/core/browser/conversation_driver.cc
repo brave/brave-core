@@ -204,7 +204,7 @@ std::vector<mojom::ActionGroupPtr> ConversationDriver::GetActionMenuList() {
 
     group->actions.push_back(mojom::LabeledAction::New(
         l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPLAIN),
-        mojom::ActionDetails::NewType(mojom::ActionType::EXPLAIN)));
+        mojom::ActionDetails::New(mojom::ActionType::EXPLAIN)));
 
     action_list.push_back(std::move(group));
   }
@@ -217,57 +217,57 @@ std::vector<mojom::ActionGroupPtr> ConversationDriver::GetActionMenuList() {
 
     group->actions.push_back(mojom::LabeledAction::New(
         l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PARAPHRASE),
-        mojom::ActionDetails::NewType(mojom::ActionType::PARAPHRASE)));
+        mojom::ActionDetails::New(mojom::ActionType::PARAPHRASE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_IMPROVE),
-        mojom::ActionDetails::NewType(mojom::ActionType::IMPROVE)));
+        mojom::ActionDetails::New(mojom::ActionType::IMPROVE)));
 
     // Subheading
     auto change_tone_subheading =
         l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CHANGE_TONE);
 
-    group->actions.push_back(mojom::LabeledAction::New(
-        change_tone_subheading, mojom::ActionDetails::NewEmpty(true)));
+    group->actions.push_back(
+        mojom::LabeledAction::New(change_tone_subheading, nullptr));
 
     group->actions.push_back(mojom::LabeledAction::New(
         base::StrCat(
             {change_tone_subheading, " / ",
              l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_ACADEMICIZE)}),
-        mojom::ActionDetails::NewType(mojom::ActionType::ACADEMICIZE)));
+        mojom::ActionDetails::New(mojom::ActionType::ACADEMICIZE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         base::StrCat(
             {change_tone_subheading, " / ",
              l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE)}),
-        mojom::ActionDetails::NewType(mojom::ActionType::PROFESSIONALIZE)));
+        mojom::ActionDetails::New(mojom::ActionType::PROFESSIONALIZE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         base::StrCat(
             {change_tone_subheading, " / ",
              l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE)}),
-        mojom::ActionDetails::NewType(mojom::ActionType::PERSUASIVE_TONE)));
+        mojom::ActionDetails::New(mojom::ActionType::PERSUASIVE_TONE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         base::StrCat({change_tone_subheading, " / ",
                       l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CASUALIZE)}),
-        mojom::ActionDetails::NewType(mojom::ActionType::CASUALIZE)));
+        mojom::ActionDetails::New(mojom::ActionType::CASUALIZE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         base::StrCat(
             {change_tone_subheading, " / ",
              l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_FUNNY_TONE)}),
-        mojom::ActionDetails::NewType(mojom::ActionType::FUNNY_TONE)));
+        mojom::ActionDetails::New(mojom::ActionType::FUNNY_TONE)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         base::StrCat({change_tone_subheading, " / ",
                       l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_SHORTEN)}),
-        mojom::ActionDetails::NewType(mojom::ActionType::SHORTEN)));
+        mojom::ActionDetails::New(mojom::ActionType::SHORTEN)));
 
     group->actions.push_back(mojom::LabeledAction::New(
         base::StrCat({change_tone_subheading, " / ",
                       l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPAND)}),
-        mojom::ActionDetails::NewType(mojom::ActionType::EXPAND)));
+        mojom::ActionDetails::New(mojom::ActionType::EXPAND)));
 
     action_list.push_back(std::move(group));
   }
@@ -280,21 +280,21 @@ std::vector<mojom::ActionGroupPtr> ConversationDriver::GetActionMenuList() {
 
     group->actions.push_back(mojom::LabeledAction::New(
         l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE_TAGLINE),
-        mojom::ActionDetails::NewType(mojom::ActionType::CREATE_TAGLINE)));
+        mojom::ActionDetails::New(mojom::ActionType::CREATE_TAGLINE)));
 
     // Subheading
     auto social_media_subheading =
         l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST);
 
-    group->actions.push_back(mojom::LabeledAction::New(
-        social_media_subheading, mojom::ActionDetails::NewEmpty(true)));
+    group->actions.push_back(
+        mojom::LabeledAction::New(social_media_subheading, nullptr));
 
     group->actions.push_back(mojom::LabeledAction::New(
         base::StrCat(
             {social_media_subheading, " / ",
              l10n_util::GetStringUTF8(
                  IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT)}),
-        mojom::ActionDetails::NewType(
+        mojom::ActionDetails::New(
             mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT)));
 
     group->actions.push_back(mojom::LabeledAction::New(
@@ -302,7 +302,7 @@ std::vector<mojom::ActionGroupPtr> ConversationDriver::GetActionMenuList() {
             {social_media_subheading, " / ",
              l10n_util::GetStringUTF8(
                  IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG)}),
-        mojom::ActionDetails::NewType(
+        mojom::ActionDetails::New(
             mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG)));
 
     action_list.push_back(std::move(group));

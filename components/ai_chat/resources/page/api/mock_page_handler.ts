@@ -18,7 +18,7 @@ const ACTIONS_LIST: mojom.ActionGroup[] = [
     actions: [
       {
         label: 'Explain',
-        actionDetails: { type: mojom.ActionType.EXPLAIN, empty: undefined }
+        actionDetails: { type: mojom.ActionType.EXPLAIN }
       }
     ]
   },
@@ -27,18 +27,17 @@ const ACTIONS_LIST: mojom.ActionGroup[] = [
     actions: [
       {
         label: 'Paraphrase',
-        actionDetails: { type: mojom.ActionType.PARAPHRASE, empty: undefined }
+        actionDetails: { type: mojom.ActionType.PARAPHRASE }
       },
-      { label: 'Change tone', actionDetails: { type: undefined, empty: true } },
+      { label: 'Change tone', actionDetails: undefined },
       {
         label: 'Change tone / Academic',
-        actionDetails: { type: mojom.ActionType.ACADEMICIZE, empty: undefined }
+        actionDetails: { type: mojom.ActionType.ACADEMICIZE }
       },
       {
         label: 'Change tone / Professional',
         actionDetails: {
-          type: mojom.ActionType.PROFESSIONALIZE,
-          empty: undefined
+          type: mojom.ActionType.PROFESSIONALIZE
         }
       }
     ]

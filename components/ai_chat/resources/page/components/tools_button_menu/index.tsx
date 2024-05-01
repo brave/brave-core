@@ -36,7 +36,7 @@ export default function ToolsButtonMenu(props: Props) {
               {actionGroup.category}
             </div>
             {actionGroup.actions.map((action, i) => {
-              if (action.actionDetails.empty === true) {
+              if (!action.actionDetails) {
                 return <div className={styles.menuSubtitle}>{action.label}</div>
               } else {
                 return (
@@ -44,7 +44,7 @@ export default function ToolsButtonMenu(props: Props) {
                     key={i}
                     onClick={() =>
                       context.handleActionTypeClick(
-                        action.actionDetails.type as mojom.ActionType
+                        action.actionDetails?.type as mojom.ActionType
                       )
                     }
                   >

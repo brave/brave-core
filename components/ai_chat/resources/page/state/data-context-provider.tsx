@@ -35,7 +35,7 @@ function useActionMenu() {
         ...actionGroup,
         actions: actionGroup.actions.filter((action) => {
           // Only apply filter to valid ActionType's label
-          if (action.actionDetails.type) {
+          if (action.actionDetails) {
             return normalizeText(action.label).includes(text)
           }
           // For other items, we dont return or show
@@ -46,14 +46,10 @@ function useActionMenu() {
     return filteredList
   }
 
-  const getFirstValidAction = (
-    list: mojom.ActionGroup[]
-  ): mojom.ActionDetails => {
+  const getFirstValidAction = (list: mojom.ActionGroup[]) => {
     const action = list
-      .flatMap((list) => {
-        return list.actions
-      })
-      .filter((action) => action.actionDetails.type !== undefined)
+      .flatMap((list) => list.actions)
+      .filter((action) => action.actionDetails !== undefined)
 
     return action[0].actionDetails
   }
@@ -302,7 +298,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const handleFilterActivation = () => {
     if (isToolsMenuOpen && inputText.startsWith('/')) {
-      setSelectedActionType(getFirstValidAction(actionList).type)
+      setSelectedActionType(getFirstValidAction(actionList)?.type)
       setInputText('')
       setIsToolsMenuOpen(false)
       return true
