@@ -16,6 +16,10 @@ struct PlaylistSidebarList: View {
   @Binding var selectedItemID: PlaylistItem.ID?
   var isPlaying: Bool
 
+  private typealias PlaylistItemUUID = String
+  @State private var downloadStates: [PlaylistItemUUID: PlaylistDownloadManager.DownloadState] = [:]
+  @State private var downloadProgress: [PlaylistItemUUID: Double] = [:]
+
   init(
     folderID: PlaylistFolder.ID,
     selectedItemID: Binding<PlaylistItem.ID?>,
@@ -54,7 +58,23 @@ struct PlaylistSidebarList: View {
               assetURL: URL(string: item.mediaSrc),
               pageURL: URL(string: item.pageSrc),
               duration: .seconds(item.duration),
-              isItemPlaying: isPlaying && selectedItemID == item.id
+              isItemPlaying: isPlaying && selectedItemID == item.id,
+              downloadState: {
+                if let uuid = item.uuid, let state = downloadStates[uuid] {
+                  if state == .downloaded {
+                    return .completed
+                  }
+                  if state == .inProgress {
+                    // PlaylistDownloadManager reports percent as 0...100 not 0...1
+                    let percentCompleted = downloadProgress[uuid, default: 0.0] / 100.0
+                    return .downloading(percentComplete: percentCompleted)
+                  }
+                }
+                if let cachedData = item.cachedData, !cachedData.isEmpty {
+                  return .completed
+                }
+                return nil
+              }()
             )
           }
           .onAppear {
@@ -63,6 +83,20 @@ struct PlaylistSidebarList: View {
             PlaylistManager.shared.getAssetDuration(item: .init(item: item)) { _ in }
           }
           .contextMenu {
+            if let cachedData = item.cachedData, !cachedData.isEmpty {
+              Button {
+                PlaylistManager.shared.deleteCache(item: .init(item: item))
+              } label: {
+                Label("Remove Offline Data", braveSystemImage: "leo.cloud.off")
+              }
+            } else {
+              Button {
+                PlaylistManager.shared.download(item: .init(item: item))
+              } label: {
+                Label("Save Offline Data", braveSystemImage: "leo.cloud.download")
+              }
+            }
+            Divider()
             if let url = URL(string: item.pageSrc) {
               Button {
                 openTabURL(url)
@@ -80,7 +114,10 @@ struct PlaylistSidebarList: View {
               Divider()
             }
             Button(role: .destructive) {
-              PlaylistItem.removeItem(uuid: item.id)
+              PlaylistManager.shared.delete(item: .init(item: item))
+              if selectedItemID == item.id {
+                selectedItemID = nil
+              }
             } label: {
               Label("Delete", braveSystemImage: "leo.trash")
             }
@@ -89,6 +126,18 @@ struct PlaylistSidebarList: View {
       }
     }
     .frame(maxWidth: .infinity, alignment: .leading)
+    .onAppear {
+      for item in items {
+        guard let uuid = item.uuid else { continue }
+        downloadStates[uuid] = PlaylistManager.shared.state(for: uuid)
+      }
+    }
+    .onReceive(PlaylistManager.shared.downloadStateChanged) { output in
+      downloadStates[output.id] = output.state
+    }
+    .onReceive(PlaylistManager.shared.downloadProgressUpdated) { output in
+      downloadProgress[output.id] = output.percentComplete
+    }
   }
 }
 

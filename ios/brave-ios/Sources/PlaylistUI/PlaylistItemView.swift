@@ -8,8 +8,8 @@ import SwiftUI
 
 // FIXME: Move to item view model
 enum DownloadState {
-  case downloading(value: Int64, total: Int64)
-  case completed(_ sizeOnDisk: Int64)  // FIXME: Probably dont need size on disk here anymore
+  case downloading(percentComplete: Double)
+  case completed
 }
 
 @available(iOS 16.0, *)
@@ -59,11 +59,11 @@ struct PlaylistItemView: View {
           Text(duration, format: .time(pattern: .minuteSecond))
           if let downloadState {
             switch downloadState {
-            case .downloading(let value, let total):
+            case .downloading(let percentCompleted):
               Label {
                 Text("Preparing")
               } icon: {
-                Gauge(value: Double(value), in: 0...Double(total)) {
+                Gauge(value: percentCompleted) {
                   EmptyView()
                 }
                 .gaugeStyle(.circularCapacity(lineWidth: gaugeLineWidth))
@@ -159,11 +159,11 @@ struct LeoPlayingSoundView: View {
     }
     Button {
     } label: {
-      PlaylistItemView(title: "1 Hour of Epic Final Fantasy Remixes", duration: .seconds(3081), isItemPlaying: false, downloadState: .completed(10))
+      PlaylistItemView(title: "1 Hour of Epic Final Fantasy Remixes", duration: .seconds(3081), isItemPlaying: false, downloadState: .completed)
     }
     Button {
     } label: {
-      PlaylistItemView(title: "Conan O'Brien Needs a Doctor While Eating Spicy Wings | Hot Ones", duration: .seconds(1641), isItemPlaying: false, downloadState: .downloading(value: 33, total: 100))
+      PlaylistItemView(title: "Conan O'Brien Needs a Doctor While Eating Spicy Wings | Hot Ones", duration: .seconds(1641), isItemPlaying: false, downloadState: .downloading(percentComplete: 0.33))
     }
   }
   .buttonStyle(.spring(scale: 0.9))

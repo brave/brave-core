@@ -250,11 +250,11 @@ final class PlayerModel: ObservableObject {
         queue: .global()
       ) { [weak self] time in
         guard let self,
-              self.isPlaying,
-              let buffer = self.videoDecorationOutput.copyPixelBuffer(
-                forItemTime: time,
-                itemTimeForDisplay: nil
-              )
+          self.isPlaying,
+          let buffer = self.videoDecorationOutput.copyPixelBuffer(
+            forItemTime: time,
+            itemTimeForDisplay: nil
+          )
         else {
           return
         }

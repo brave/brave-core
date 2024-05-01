@@ -142,7 +142,9 @@ struct PlaylistContentView: View {
           }
         } catch {
         }
-      } else if let url = URL(string: item.mediaSrc) {
+      }
+      // FIXME: Handle streaming for blob URLs
+      if let url = URL(string: item.mediaSrc) {
         return .init(asset: AVURLAsset(url: url))
       }
       return nil
