@@ -104,6 +104,10 @@ class SyncAddDeviceCodeView: UIStackView {
   // Or do not try to Brave Logo in the middle
   private let qrCodeContainerView = UIView().then {
     $0.backgroundColor = .white
+    $0.layer.cornerRadius = 8
+    $0.layer.cornerCurve = .continuous
+    $0.layer.borderColor = UIColor(braveSystemName: .dividerSubtle).cgColor
+    $0.layer.borderWidth = 1.0
   }
 
   private let qrCodeView: SyncAddDeviceQRCodeView
@@ -146,7 +150,8 @@ class SyncAddDeviceCodeView: UIStackView {
     addArrangedSubview(codeWordsContainerView)
 
     qrCodeContainerView.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview()
+      $0.centerX.equalToSuperview()
+      $0.width.equalToSuperview().multipliedBy(0.75)
       $0.width.equalTo(qrCodeContainerView.snp.height)
     }
 
@@ -172,9 +177,9 @@ class SyncAddDeviceCodeView: UIStackView {
     fatalError()
   }
 
-  func swapCodeViewType(_ isFirstIndex: Bool) {
-    qrCodeContainerView.isHidden = !isFirstIndex
-    codeWordsContainerView.isHidden = isFirstIndex
+  func swapCodeViewType(_ isSyncCodePresented: Bool) {
+    qrCodeContainerView.isHidden = !isSyncCodePresented
+    codeWordsContainerView.isHidden = isSyncCodePresented
   }
 }
 
@@ -203,6 +208,19 @@ class SyncAddDeviceActionView: UIStackView {
     $0.isHidden = true
   }
 
+  private lazy var generateNewCodeButton = UIButton().then {
+    $0.setTitle("Generate New Code", for: .normal)
+    $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
+    $0.addTarget(self, action: #selector(copyToClipboard), for: .touchUpInside)
+    $0.setTitleColor(UIColor(braveSystemName: .textInteractive), for: .normal)
+    $0.backgroundColor = .clear
+    $0.isHidden = true
+    $0.layer.cornerRadius = 12
+    $0.layer.cornerCurve = .continuous
+    $0.layer.borderColor = UIColor(braveSystemName: .dividerInteractive).cgColor
+    $0.layer.borderWidth = 1.0
+  }
+
   private var copyButtonPressed = false {
     didSet {
       if copyButtonPressed {
@@ -219,12 +237,17 @@ class SyncAddDeviceActionView: UIStackView {
     super.init(frame: .zero)
 
     axis = .vertical
-    spacing = 4
+    spacing = 8
     distribution = .fillEqually
     setContentCompressionResistancePriority(.required, for: .vertical)
 
+    addArrangedSubview(generateNewCodeButton)
     addArrangedSubview(copyPasteButton)
     addArrangedSubview(doneButton)
+
+    generateNewCodeButton.snp.makeConstraints {
+      $0.height.equalTo(40)
+    }
 
     doneButton.snp.makeConstraints {
       $0.height.equalTo(40)
@@ -236,8 +259,13 @@ class SyncAddDeviceActionView: UIStackView {
     fatalError()
   }
 
-  func swapCodeViewType(_ isFirstIndex: Bool) {
-    copyPasteButton.isHidden = isFirstIndex
+  func swapCodeViewType(_ isSyncCodePresented: Bool) {
+    copyPasteButton.isHidden = isSyncCodePresented
+  }
+
+  func swapCodeExpirationType(isSyncCodePresented: Bool, isExpired: Bool) {
+    copyPasteButton.isHidden = isSyncCodePresented || isExpired
+    generateNewCodeButton.isHidden = !isExpired
   }
 
   @objc func copyToClipboard() {
@@ -247,5 +275,124 @@ class SyncAddDeviceActionView: UIStackView {
 
   @objc func dismiss() {
     delegate?.dismiss()
+  }
+}
+
+class SyncAddDeviceCodeExpirationView: UIStackView {
+
+  private let timeRemainingContainerView = UIView().then {
+    $0.backgroundColor = UIColor(braveSystemName: .systemfeedbackInfoBackground)
+    $0.layer.cornerRadius = 8
+    $0.layer.cornerCurve = .continuous
+  }
+
+  private let timeRemainingStackView = UIStackView().then {
+    $0.axis = .horizontal
+    $0.spacing = 20
+    $0.alignment = .center
+    $0.setContentCompressionResistancePriority(.required, for: .vertical)
+  }
+
+  private let timeRemainingTitleLabel = UILabel().then {
+    $0.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.regular)
+    $0.lineBreakMode = NSLineBreakMode.byWordWrapping
+    $0.textColor = UIColor(braveSystemName: .systemfeedbackInfoText)
+    $0.textAlignment = .left
+    $0.numberOfLines = 0
+    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
+  }
+
+  private let timeRemainingIconImageView = UIImageView().then {
+    $0.image = UIImage(braveSystemNamed: "leo.timer")
+    $0.snp.makeConstraints {
+      $0.size.equalTo(20)
+    }
+    $0.setContentHuggingPriority(.required, for: .horizontal)
+  }
+
+  private let codeExpirationContainerView = UIView().then {
+    $0.backgroundColor = UIColor(braveSystemName: .systemfeedbackErrorBackground)
+    $0.layer.cornerRadius = 8
+    $0.layer.cornerCurve = .continuous
+    $0.isHidden = true
+  }
+
+  private let codeExpirationStackView = UIStackView().then {
+    $0.axis = .horizontal
+    $0.spacing = 20
+    $0.alignment = .center
+    $0.setContentCompressionResistancePriority(.required, for: .vertical)
+  }
+
+  private let codeExpirationTitleLabel = UILabel().then {
+    $0.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.regular)
+    $0.lineBreakMode = NSLineBreakMode.byWordWrapping
+    $0.textColor = UIColor(braveSystemName: .systemfeedbackErrorText)
+    $0.textAlignment = .left
+    $0.numberOfLines = 0
+    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
+  }
+
+  private let codeExpirationIconImageView = UIImageView().then {
+    $0.image = UIImage(braveSystemNamed: "leo.warning.circle-filled")?.template
+    $0.tintColor = UIColor(braveSystemName: .systemfeedbackErrorIcon)
+    $0.snp.makeConstraints {
+      $0.size.equalTo(20)
+    }
+    $0.setContentHuggingPriority(.required, for: .horizontal)
+  }
+
+  required init() {
+    super.init(frame: .zero)
+
+    updateLabels()
+
+    axis = .vertical
+    alignment = .center
+
+    addArrangedSubview(timeRemainingContainerView)
+    addArrangedSubview(codeExpirationContainerView)
+
+    timeRemainingContainerView.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview()
+    }
+
+    codeExpirationContainerView.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview()
+    }
+
+    timeRemainingContainerView.addSubview(timeRemainingStackView)
+
+    timeRemainingStackView.snp.makeConstraints {
+      $0.edges.equalToSuperview().inset(16)
+    }
+
+    timeRemainingStackView.addArrangedSubview(timeRemainingIconImageView)
+    timeRemainingStackView.addArrangedSubview(timeRemainingTitleLabel)
+
+    codeExpirationContainerView.addSubview(codeExpirationStackView)
+
+    codeExpirationStackView.snp.makeConstraints {
+      $0.edges.equalToSuperview().inset(16)
+    }
+
+    codeExpirationStackView.addArrangedSubview(codeExpirationIconImageView)
+    codeExpirationStackView.addArrangedSubview(codeExpirationTitleLabel)
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
+  private func updateLabels() {
+    timeRemainingTitleLabel.text =
+      "This temporary code is valid for the next 1 hour 52 min 5 seconds"
+    codeExpirationTitleLabel.text = "Code expired. Generate a new one by clicking the button below."
+  }
+
+  func swapCodeExpirationType(_ isExpired: Bool) {
+    timeRemainingContainerView.isHidden = isExpired
+    codeExpirationContainerView.isHidden = !isExpired
   }
 }

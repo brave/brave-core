@@ -18,7 +18,7 @@ class SyncAddDeviceQRCodeView: UIImageView {
       QRCodeGenerator.Options(
         data: json,
         shouldRender: true,
-        renderLogoInCenter: false,
+        renderLogoInCenter: true,
         renderModuleStyle: .circles,
         renderLocatorStyle: .rounded
       )

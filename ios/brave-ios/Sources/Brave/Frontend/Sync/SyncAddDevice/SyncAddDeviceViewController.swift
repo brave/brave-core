@@ -41,6 +41,8 @@ class SyncAddDeviceViewController: SyncViewController {
 
   private let codeDetailsStackView: SyncAddDeviceCodeView
 
+  private let codeExpirationStackView = SyncAddDeviceCodeExpirationView()
+
   private let actionButtonStackView = SyncAddDeviceActionView()
 
   // MARK: Internal
@@ -53,6 +55,10 @@ class SyncAddDeviceViewController: SyncViewController {
     didSet {
       changeCodeDisplayStatus()
     }
+  }
+
+  private var isSyncCodePresented: Bool {
+    modeControl.selectedSegmentIndex == 0
   }
 
   private let syncAPI: BraveSyncAPI
@@ -138,6 +144,9 @@ class SyncAddDeviceViewController: SyncViewController {
     // Code Words View - QR Code
     contentStackView.addArrangedSubview(codeDetailsStackView)
 
+    // Code Expiration Label Image
+    contentStackView.addArrangedSubview(codeExpirationStackView)
+
     // Copy - Paste - Done Button
     actionButtonStackView.snp.makeConstraints {
       $0.top.equalTo(scrollViewContainer.snp.bottom).inset(-24)
@@ -168,25 +177,22 @@ class SyncAddDeviceViewController: SyncViewController {
 
   private func changeCodeDisplayStatus() {
     if isSyncCodeExpired {
-      // Hide Active Status Elements
       codeDetailsStackView.isHidden = true
       actionButtonStackView.swapCodeViewType(true)
-
-      // Reveal Expired Elements
-
     } else {
-      // Hide Active Status Elements
-
-      // Reveal Active Status Elements
       changeSyncCodeStatus()
     }
+
+    codeExpirationStackView.swapCodeExpirationType(isSyncCodeExpired)
+    actionButtonStackView.swapCodeExpirationType(
+      isSyncCodePresented: isSyncCodePresented,
+      isExpired: isSyncCodeExpired
+    )
   }
 
   private func changeSyncCodeStatus() {
-    let isFirstIndex = modeControl.selectedSegmentIndex == 0
-
-    codeDetailsStackView.swapCodeViewType(isFirstIndex)
-    actionButtonStackView.swapCodeViewType(isFirstIndex)
+    codeDetailsStackView.swapCodeViewType(isSyncCodePresented)
+    actionButtonStackView.swapCodeViewType(isSyncCodePresented)
   }
 
   private func showCodewords() {
