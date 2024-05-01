@@ -41,6 +41,8 @@ static constexpr auto kSimpleQueryStringTrackers =
             // https://github.com/brave/brave-browser/issues/32488
             "at_recipient_id",
             "at_recipient_list",
+            // https://github.com/brave/brave-browser/issues/37971
+            "bbeml",
             // https://github.com/brave/brave-browser/issues/25238
             "bsft_clkid",
             "bsft_uid",
