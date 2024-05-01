@@ -55,10 +55,6 @@ global.chrome.extension = {
   inIncognitoContext: false
 }
 
-if (window) {
-  (window as any).IS_STORYBOOK = true
-}
-
 export default {
   decorators: [
     (Story: () => JSX.Element) => (

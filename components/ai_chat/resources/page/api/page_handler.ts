@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as AIChatUI from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
-import { MockPageHandlerAPI } from './mock_page_handler'
 
 // Provide access to all the generated types
 export * from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
@@ -29,13 +28,13 @@ class PageHandlerAPI implements API {
   }
 }
 
+export function setPageHandlerAPIForTesting(instance: API) {
+  apiInstance = instance
+}
+
 export default function getPageHandlerInstance() {
   if (!apiInstance) {
-    if (('IS_STORYBOOK' in window)) {
-      apiInstance = new MockPageHandlerAPI() as any
-    } else {
-      apiInstance = new PageHandlerAPI()
-    }
+    apiInstance = new PageHandlerAPI()
   }
   return apiInstance
 }

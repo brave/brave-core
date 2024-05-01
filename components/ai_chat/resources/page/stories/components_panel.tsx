@@ -16,6 +16,11 @@ import * as mojom from '../api/page_handler'
 import { useArgs } from '@storybook/addons'
 import FeedbackForm from '../components/feedback_form'
 import DataContextProvider from '../state/data-context-provider'
+import { setPageHandlerAPIForTesting } from '../api/page_handler'
+import { MockPageHandlerAPI } from '../api/mock_page_handler'
+
+const mockAPIHandler = new MockPageHandlerAPI()
+setPageHandlerAPIForTesting(mockAPIHandler as any)
 
 const HISTORY: mojom.ConversationTurn[] = [
   {
