@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/constants/brave_services_key.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -57,12 +58,11 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 base::flat_map<std::string, std::string> MakeMeldApiHeaders() {
   base::flat_map<std::string, std::string> request_headers;
   std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string meld_api_key(BUILDFLAG(MELD_API_KEY));
-  if (env->HasVar("MELD_API_KEY")) {
-    env->GetVar("MELD_API_KEY", &meld_api_key);
+  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
+  if (env->HasVar("BRAVE_SERVICES_KEY")) {
+    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
   }
-  meld_api_key = base::StrCat({"BASIC", " ", meld_api_key});
-  request_headers["Authorization"] = std::move(meld_api_key);
+  request_headers["Authorization"] = base::StrCat({"BASIC", " ", brave_key});
   request_headers["accept"] = "application/json";
   request_headers[brave_wallet::kMeldRpcVersionHeader] =
       brave_wallet::kMeldRpcVersion;

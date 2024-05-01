@@ -68,6 +68,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     base::MockCallback<MeldIntegrationService::GetServiceProvidersCallback>
         mock_callback;
     EXPECT_CALL(mock_callback, Run)
+        .Times(1)
         .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
                 const std::optional<std::vector<std::string>>& errors) {
@@ -98,6 +99,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     base::MockCallback<MeldIntegrationService::GetCryptoQuotesCallback>
         mock_callback;
     EXPECT_CALL(mock_callback, Run)
+        .Times(1)
         .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
                 const std::optional<std::vector<std::string>>& errors) {
@@ -127,6 +129,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     base::MockCallback<MeldIntegrationService::GetPaymentMethodsCallback>
         mock_callback;
     EXPECT_CALL(mock_callback, Run)
+        .Times(1)
         .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                     payment_methods,
@@ -160,6 +163,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     base::MockCallback<MeldIntegrationService::GetFiatCurrenciesCallback>
         mock_callback;
     EXPECT_CALL(mock_callback, Run)
+        .Times(1)
         .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                     fiat_currencies,
@@ -192,6 +196,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     base::MockCallback<MeldIntegrationService::GetCryptoCurrenciesCallback>
         mock_callback;
     EXPECT_CALL(mock_callback, Run)
+        .Times(1)
         .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                     crypto_currencies,
@@ -222,6 +227,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
     base::MockCallback<MeldIntegrationService::GetCountriesCallback>
         mock_callback;
     EXPECT_CALL(mock_callback, Run)
+        .Times(1)
         .WillRepeatedly(
             [&](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
                 const std::optional<std::vector<std::string>>& errors) {
