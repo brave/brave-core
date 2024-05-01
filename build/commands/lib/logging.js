@@ -29,6 +29,16 @@ const cmdArrowStyle = chalk.magenta
 
 if (tsm) {
   tsm.autoFlowId = false
+  // Ensure that the output is not buffered when using Teamcity Service
+  // Messages. If it is buffered, console.log() output may not display in
+  // real-time, leading to a mix-up of service messages and external process
+  // outputs.
+  //
+  // This is a known Node.js fix for issues caused by *Sync functions blocking
+  // the event loop. Ideally, we should switch to async/await and wait for the
+  // "drain" event.
+  process.stdout._handle.setBlocking(true)
+  process.stderr._handle.setBlocking(true)
 }
 
 function progressStart(message) {
