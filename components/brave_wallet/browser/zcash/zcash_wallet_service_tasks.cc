@@ -370,17 +370,17 @@ CreateShieldAllTransactionTask::CreateShieldAllTransactionTask(
 
 CreateShieldAllTransactionTask::~CreateShieldAllTransactionTask() = default;
 
-::rust::Box<OrchardBuilderResult>
-CreateShieldAllTransactionTask::CreateOrchardBuilder(
+::rust::Box<orchard::OrchardUnauthorizedBundleResult>
+CreateShieldAllTransactionTask::CreateOrchardUnauthorizedBundle(
     ::rust::Slice<const uint8_t> tree_state,
-    ::rust::Vec<OrchardOutput> outputs) {
+    ::rust::Vec<orchard::OrchardOutput> outputs) {
   if (random_seed_for_testing_) {
     CHECK_IS_TEST();
-    return create_testing_orchard_builder(std::move(tree_state),
-                                          std::move(outputs),
-                                          random_seed_for_testing_.value());
+    return create_testing_orchard_bundle(std::move(tree_state),
+                                         std::move(outputs),
+                                         random_seed_for_testing_.value());
   } else {
-    return create_orchard_builder(std::move(tree_state), std::move(outputs));
+    return create_orchard_bundle(std::move(tree_state), std::move(outputs));
   }
 }
 
@@ -486,23 +486,23 @@ bool CreateShieldAllTransactionTask::CompleteTransaction() {
     return false;
   }
 
-  ::rust::Vec<OrchardOutput> outputs;
+  ::rust::Vec<orchard::OrchardOutput> outputs;
   for (const auto& output : transaction_->orchard_part().outputs) {
-    outputs.push_back(OrchardOutput{output.value, output.address});
+    outputs.push_back(orchard::OrchardOutput{output.value, output.address});
   }
 
-  auto orchard_bundle = CreateOrchardBuilder(
+  auto unauthorized_orchard_bundle = CreateOrchardUnauthorizedBundle(
       ::rust::Slice<const uint8_t>{state_tree_bytes->data(),
                                    state_tree_bytes->size()},
       std::move(outputs));
 
-  if (!orchard_bundle->is_ok()) {
+  if (!unauthorized_orchard_bundle->is_ok()) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     return false;
   }
 
   transaction_->orchard_part().digest =
-      orchard_bundle->unwrap().orchard_digest();
+      unauthorized_orchard_bundle->unwrap()->orchard_digest();
 
   // Calculate Orchard sighash
   auto sighash = ZCashSerializer::CalculateSignatureDigest(transaction_.value(),
@@ -510,14 +510,15 @@ bool CreateShieldAllTransactionTask::CompleteTransaction() {
 
   {
     // TODO(cypt4) : Move on background process
-    auto complete_bundle = orchard_bundle->unwrap().complete(sighash);
+    auto complete_orchard_bundle =
+        unauthorized_orchard_bundle->unwrap()->complete(sighash);
 
-    if (!complete_bundle->is_ok()) {
+    if (!complete_orchard_bundle->is_ok()) {
       error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
       return false;
     }
 
-    auto orchard_raw_part = complete_bundle->unwrap().raw_tx();
+    auto orchard_raw_part = complete_orchard_bundle->unwrap()->raw_tx();
 
     transaction_->orchard_part().raw_tx =
         std::vector<uint8_t>(orchard_raw_part.begin(), orchard_raw_part.end());

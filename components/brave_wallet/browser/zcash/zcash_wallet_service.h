@@ -204,6 +204,7 @@ class ZCashWalletService : public KeyedService,
 
   std::list<std::unique_ptr<CreateTransparentTransactionTask>>
       create_transaction_tasks_;
+
 #if BUILDFLAG(ENABLE_ORCHARD)
   std::optional<uint64_t> random_seed_for_testing_;
   std::unique_ptr<CreateShieldAllTransactionTask> shield_funds_task_;

@@ -378,7 +378,6 @@ dependencies = [
  "challenge-bypass-ristretto-cxx",
  "constellation-cxx",
  "filecoin-cxx",
- "incrementalmerkletree",
  "json-cxx",
  "skus-cxx",
  "speedreader-ffi",
@@ -2809,6 +2808,8 @@ version = "1.0.0"
 dependencies = [
  "brave_wallet",
  "cxx",
+ "incrementalmerkletree",
+ "memuse",
  "orchard",
 ]
 

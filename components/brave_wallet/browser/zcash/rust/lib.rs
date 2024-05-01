@@ -105,29 +105,34 @@ impl RngCore for MockRng {
 #[cxx::bridge(namespace = brave_wallet::orchard)]
 mod ffi {
     struct OrchardOutput {
+        // Amount of zashi being spend
         value: u64,
-        addr: [u8; 43]  // Array size should match kOrchardRawBytesSize
+        // Recipient raw Orchard address.
+        // Array size should match kOrchardRawBytesSize
+        addr: [u8; 43]
     }
 
     extern "Rust" {
         type OrchardExtendedSpendingKey;
-        type OrchardBundleValue;
-        type OrchardBuilderValue;
+        type OrchardUnauthorizedBundle;
+        type OrchardAuthorizedBundle;
 
         type OrchardExtendedSpendingKeyResult;
-        type OrchardBundleResult;
-        type OrchardBuilderResult;
+        type OrchardUnauthorizedBundleResult;
+        type OrchardAuthorizedBundleResult;
 
-        fn create_orchard_builder(
+        // OsRng is used
+        fn create_orchard_bundle(
             tree_state: &[u8],
             outputs: Vec<OrchardOutput>
-        ) -> Box<OrchardBuilderResult>;
+        ) -> Box<OrchardUnauthorizedBundleResult>;
 
-        fn create_testing_orchard_builder(
+        // Testing rng is used with the provided rng_seed
+        fn create_testing_orchard_bundle(
             tree_state: &[u8],
             outputs: Vec<OrchardOutput>,
             rng_seed: u64
-        ) -> Box<OrchardBuilderResult>;
+        ) -> Box<OrchardUnauthorizedBundleResult>;
 
         fn generate_orchard_extended_spending_key_from_seed(
             bytes: &[u8]
@@ -141,27 +146,37 @@ mod ffi {
             self: &OrchardExtendedSpendingKey,
             index: u32
         ) -> Box<OrchardExtendedSpendingKeyResult>;
+        // External addresses can be used for receiving funds from external
+        // senders.
         fn external_address(
             self: &OrchardExtendedSpendingKey,
             diversifier_index: u32
         ) -> [u8; 43];  // Array size should match kOrchardRawBytesSize
+        // Internal addresses are used for change or internal shielding and
+        // shouldn't be exposed to public.
         fn internal_address(
             self: &OrchardExtendedSpendingKey,
             diversifier_index: u32
         ) -> [u8; 43];  // Array size should match kOrchardRawBytesSize
 
-        fn is_ok(self: &OrchardBundleResult) -> bool;
-        fn error_message(self: &OrchardBundleResult) -> String;
-        fn unwrap(self: &OrchardBundleResult) -> &OrchardBundleValue;
+        fn is_ok(self: &OrchardAuthorizedBundleResult) -> bool;
+        fn error_message(self: &OrchardAuthorizedBundleResult) -> String;
+        fn unwrap(self: &OrchardAuthorizedBundleResult) -> Box<OrchardAuthorizedBundle>;
 
-        fn is_ok(self: &OrchardBuilderResult) -> bool;
-        fn error_message(self: &OrchardBuilderResult) -> String;
-        fn unwrap(self: &OrchardBuilderResult) -> &OrchardBuilderValue;
+        fn is_ok(self: &OrchardUnauthorizedBundleResult) -> bool;
+        fn error_message(self: &OrchardUnauthorizedBundleResult) -> String;
+        fn unwrap(self: &OrchardUnauthorizedBundleResult) -> Box<OrchardUnauthorizedBundle>;
 
-        fn orchard_digest(self: &OrchardBuilderValue) -> [u8; 32];  // Array size should match kZCashDigestSize
-        fn complete(self: &OrchardBuilderValue, sighash: [u8; 32]) -> Box<OrchardBundleResult>;  // Array size should match kZCashDigestSize
+        // Orchard digest is desribed here https://zips.z.cash/zip-0244#t-4-orchard-digest
+        // Used in constructing signature digest and tx id
+        fn orchard_digest(self: &OrchardUnauthorizedBundle) -> [u8; 32];  // Array size should match kZCashDigestSize
+        // Completes unauthorized bundle to authorized state
+        // Signature digest should be constructed as desribed in https://zips.z.cash/zip-0244#signature-digest
+        fn complete(self: &OrchardUnauthorizedBundle, sighash: [u8; 32]) -> Box<OrchardAuthorizedBundleResult>;  // Array size should match kZCashDigestSize
 
-        fn raw_tx(self: &OrchardBundleValue) -> Vec<u8>;
+        // Orchard part of v5 transaction as described in
+        // https://zips.z.cash/zip-0225
+        fn raw_tx(self: &OrchardAuthorizedBundle) -> Vec<u8>;
     }
 }
 
@@ -187,32 +202,44 @@ impl fmt::Display for Error {
     }
 }
 
+// Different random sources are used for testing and for release
+// Since Orchard uses randomness we need to mock it to get
+// deterministic resuluts in tests.
 #[derive(Clone)]
 enum OrchardRandomSource {
     OsRng(OsRng),
     MockRng(MockRng),
 }
 
-pub struct OrchardBuilder {
+// Unauthorized bundle is a bundle without generated proof, but it
+// contains Orchard digest needed to calculate tx signature digests.
+#[derive(Clone)]
+pub struct OrchardUnauthorizedBundleValue {
     unauthorized_bundle: Bundle<InProgress<Unproven, Unauthorized>, Amount>,
     rng: OrchardRandomSource
 }
 
-pub struct OrchardBundle {
+// Authorized bundle is a bundle where inputs are signed with signature digests
+// and proof is generated.
+#[derive(Clone)]
+pub struct OrchardAuthorizedBundleValue {
     raw_tx: Vec<u8>
 }
 
+#[derive(Clone)]
 struct OrchardExtendedSpendingKey(ExtendedSpendingKey);
-struct OrchardBundleValue(OrchardBundle);
-struct OrchardBuilderValue(OrchardBuilder);
+#[derive(Clone)]
+struct OrchardAuthorizedBundle(OrchardAuthorizedBundleValue);
+#[derive(Clone)]
+struct OrchardUnauthorizedBundle(OrchardUnauthorizedBundleValue);
 
 struct OrchardExtendedSpendingKeyResult(Result<OrchardExtendedSpendingKey, Error>);
-struct OrchardBundleResult(Result<OrchardBundleValue, Error>);
-struct OrchardBuilderResult(Result<OrchardBuilderValue, Error>);
+struct OrchardAuthorizedBundleResult(Result<OrchardAuthorizedBundle, Error>);
+struct OrchardUnauthorizedBundleResult(Result<OrchardUnauthorizedBundle, Error>);
 
 impl_result!(OrchardExtendedSpendingKey, OrchardExtendedSpendingKeyResult, ExtendedSpendingKey);
-impl_result!(OrchardBundleValue, OrchardBundleResult, OrchardBundle);
-impl_result!(OrchardBuilderValue, OrchardBuilderResult, OrchardBuilder);
+impl_result!(OrchardAuthorizedBundle, OrchardAuthorizedBundleResult, OrchardAuthorizedBundleValue);
+impl_result!(OrchardUnauthorizedBundle, OrchardUnauthorizedBundleResult, OrchardUnauthorizedBundleValue);
 
 fn generate_orchard_extended_spending_key_from_seed(
     bytes: &[u8]
@@ -252,8 +279,8 @@ impl OrchardExtendedSpendingKey {
     }
 }
 
-impl OrchardBundleValue {
-    fn raw_tx(self: &OrchardBundleValue) -> Vec<u8> {
+impl OrchardAuthorizedBundle {
+    fn raw_tx(self: &OrchardAuthorizedBundle) -> Vec<u8> {
         self.0.raw_tx.clone()
     }
 }
@@ -262,15 +289,17 @@ fn create_orchard_builder_internal(
     orchard_tree_bytes: &[u8],
     outputs: Vec<OrchardOutput>,
     random_source: OrchardRandomSource
-) -> Box<OrchardBuilderResult> {
+) -> Box<OrchardUnauthorizedBundleResult> {
     use orchard::Anchor;
     use crate::librustzcash::merkle_tree::read_commitment_tree;
 
+    // To construct transaction orchard tree state of some block should be provided
+    // But in tests we can use empty anchor.
     let anchor = if orchard_tree_bytes.len() > 0 {
         match read_commitment_tree::<MerkleHashOrchard, _, { orchard::NOTE_COMMITMENT_TREE_DEPTH as u8 }>(
                 &orchard_tree_bytes[..]) {
             Ok(tree) => Anchor::from(tree.root()),
-            Err(_e) => return Box::new(OrchardBuilderResult::from(Err(Error::from(OrchardBuildError::AnchorMismatch)))),
+            Err(_e) => return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::from(OrchardBuildError::AnchorMismatch)))),
         }
     } else {
         orchard::Anchor::empty_tree()
@@ -286,53 +315,55 @@ fn create_orchard_builder_internal(
                 builder.add_output(None, addr,
                     orchard::value::NoteValue::from_raw(out.value), None)
             },
-            None => return Box::new(OrchardBuilderResult::from(Err(Error::WrongOutputError)))
+            None => return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::WrongOutputError)))
         };
     }
 
-    Box::new(OrchardBuilderResult::from(match random_source {
+    Box::new(OrchardUnauthorizedBundleResult::from(match random_source {
         OrchardRandomSource::OsRng(mut rng) => {
             builder.build(&mut rng)
                 .map_err(Error::from)
                 .and_then(|builder| {
-                    builder.map(|bundle| OrchardBuilder { unauthorized_bundle: bundle.0, rng: OrchardRandomSource::OsRng(rng) })
-                        .ok_or(Error::BuildError)
+                    builder.map(|bundle| OrchardUnauthorizedBundleValue {
+                        unauthorized_bundle: bundle.0,
+                        rng: OrchardRandomSource::OsRng(rng) }).ok_or(Error::BuildError)
                 })
         },
         OrchardRandomSource::MockRng(mut rng) => {
             builder.build(&mut rng)
                 .map_err(Error::from)
                 .and_then(|builder| {
-                    builder.map(|bundle| OrchardBuilder { unauthorized_bundle: bundle.0, rng: OrchardRandomSource::MockRng(rng) })
-                        .ok_or(Error::BuildError)
+                    builder.map(|bundle| OrchardUnauthorizedBundleValue {
+                        unauthorized_bundle: bundle.0,
+                        rng: OrchardRandomSource::MockRng(rng) }).ok_or(Error::BuildError)
                 })
         }
     }))
 }
 
-fn create_orchard_builder(
+fn create_orchard_bundle(
     orchard_tree_bytes: &[u8],
     outputs: Vec<OrchardOutput>
-) -> Box<OrchardBuilderResult> {
+) -> Box<OrchardUnauthorizedBundleResult> {
     create_orchard_builder_internal(orchard_tree_bytes, outputs, OrchardRandomSource::OsRng(OsRng))
 }
 
-fn create_testing_orchard_builder(
+fn create_testing_orchard_bundle(
     orchard_tree_bytes: &[u8],
     outputs: Vec<OrchardOutput>,
     rng_seed: u64
-) -> Box<OrchardBuilderResult> {
+) -> Box<OrchardUnauthorizedBundleResult> {
     create_orchard_builder_internal(orchard_tree_bytes, outputs, OrchardRandomSource::MockRng(MockRng(rng_seed)))
 }
 
-impl OrchardBuilderValue {
-    fn orchard_digest(self: &OrchardBuilderValue) -> [u8; 32] {
+impl OrchardUnauthorizedBundle {
+    fn orchard_digest(self: &OrchardUnauthorizedBundle) -> [u8; 32] {
         self.0.unauthorized_bundle.commitment().into()
     }
 
-    fn complete(self: &OrchardBuilderValue, sighash: [u8; 32]) -> Box<OrchardBundleResult> {
+    fn complete(self: &OrchardUnauthorizedBundle, sighash: [u8; 32]) -> Box<OrchardAuthorizedBundleResult> {
         use crate::librustzcash::orchard::write_v5_bundle;
-        Box::new(OrchardBundleResult::from(match self.0.rng.clone() {
+        Box::new(OrchardAuthorizedBundleResult::from(match self.0.rng.clone() {
             OrchardRandomSource::OsRng(mut rng) => {
                 self.0.unauthorized_bundle.clone()
                 .create_proof(&orchard::circuit::ProvingKey::build(), &mut rng)
@@ -356,7 +387,7 @@ impl OrchardBuilderValue {
                         })
             }
         }.map_err(Error::from).and_then(|authorized_bundle| {
-            let mut result = OrchardBundle {raw_tx : vec![]};
+            let mut result = OrchardAuthorizedBundleValue {raw_tx : vec![]};
             let _ = write_v5_bundle(Some(&authorized_bundle), &mut result.raw_tx);
             Ok(result)
         })))
