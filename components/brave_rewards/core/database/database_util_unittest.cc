@@ -6,14 +6,11 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=DatabaseUtil.*
+namespace brave_rewards::internal::database {
 
-namespace brave_rewards::internal {
-namespace database {
+class RewardsDatabaseUtilTest : public testing::Test {};
 
-class DatabaseUtil : public testing::Test {};
-
-TEST(DatabaseUtil, GenerateStringInCase) {
+TEST(RewardsDatabaseUtilTest, GenerateStringInCase) {
   // empty list
   std::string result = GenerateStringInCase({});
   ASSERT_EQ(result, "");
@@ -27,5 +24,4 @@ TEST(DatabaseUtil, GenerateStringInCase) {
   ASSERT_EQ(result, "'id_1', 'id_2', 'id_3'");
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

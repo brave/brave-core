@@ -5,13 +5,18 @@
 
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
-#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 
 namespace brave_rewards::internal {
 
 RewardsEngineTest::RewardsEngineTest()
-    : engine_(client_receiver_.BindNewEndpointAndPassDedicatedRemote(),
+    : RewardsEngineTest(std::make_unique<TestRewardsEngineClient>()) {}
+
+RewardsEngineTest::RewardsEngineTest(
+    std::unique_ptr<TestRewardsEngineClient> client)
+    : client_(std::move(client)),
+      client_receiver_(client_.get()),
+      engine_(client_receiver_.BindNewEndpointAndPassDedicatedRemote(),
               mojom::RewardsEngineOptions()) {
   engine().Get<EnvironmentConfig>().AllowDefaultValuesForTesting();
 }
@@ -19,21 +24,9 @@ RewardsEngineTest::RewardsEngineTest()
 RewardsEngineTest::~RewardsEngineTest() = default;
 
 void RewardsEngineTest::InitializeEngine() {
-  const auto result = mojom::RewardsEngineAsyncWaiter(&engine_).Initialize();
+  auto result = WaitFor<mojom::Result>(
+      [&](auto callback) { engine().Initialize(std::move(callback)); });
   DCHECK(result == mojom::Result::OK);
-}
-
-void RewardsEngineTest::AddNetworkResultForTesting(
-    const std::string& url,
-    mojom::UrlMethod method,
-    mojom::UrlResponsePtr response) {
-  DCHECK(response);
-  client_.AddNetworkResultForTesting(url, method, std::move(response));
-}
-
-void RewardsEngineTest::SetLogCallbackForTesting(
-    TestRewardsEngineClient::LogCallback callback) {
-  client_.SetLogCallbackForTesting(callback);
 }
 
 }  // namespace brave_rewards::internal

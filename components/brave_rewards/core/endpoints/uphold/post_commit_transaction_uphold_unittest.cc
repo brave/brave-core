@@ -3,156 +3,122 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/endpoints/uphold/post_commit_transaction_uphold.h"
+
 #include <string>
 #include <tuple>
 #include <utility>
 
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
-#include "brave/components/brave_rewards/core/endpoints/uphold/post_commit_transaction_uphold.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=*PostCommitTransactionUphold*
-
-using ::testing::_;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
-namespace brave_rewards::internal::endpoints::test {
-using Error = PostCommitTransactionUphold::Error;
-using Result = PostCommitTransactionUphold::Result;
+namespace brave_rewards::internal {
 
-// clang-format off
+using Error = endpoints::PostCommitTransactionUphold::Error;
+using Result = endpoints::PostCommitTransactionUphold::Result;
+
 using PostCommitTransactionUpholdParamType = std::tuple<
     std::string,          // test name suffix
     net::HttpStatusCode,  // post commit transaction endpoint status code
     std::string,          // post commit transaction endpoint response body
     Result                // expected result
 >;
-// clang-format on
 
-class PostCommitTransactionUphold
-    : public TestWithParam<PostCommitTransactionUpholdParamType> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-};
+class RewardsPostCommitTransactionUpholdTest
+    : public RewardsEngineTest,
+      public WithParamInterface<PostCommitTransactionUpholdParamType> {};
 
-TEST_P(PostCommitTransactionUphold, Paths) {
+TEST_P(RewardsPostCommitTransactionUpholdTest, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = status_code;
-        response->body = body;
-        std::move(callback).Run(std::move(response));
-      });
+  auto request_url = engine().Get<EnvironmentConfig>().uphold_api_url().Resolve(
+      "/v0/me/cards/address/transactions/transaction_id/commit");
 
-  base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
-  EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
+  auto response = mojom::UrlResponse::New();
+  response->status_code = status_code;
+  response->body = body;
 
-  RequestFor<endpoints::PostCommitTransactionUphold>(
-      mock_engine_impl_, "token", "address",
-      mojom::ExternalTransaction::New("transaction_id", "contribution_id",
-                                      "destination", "amount"))
-      .Send(callback.Get());
+  client().AddNetworkResultForTesting(
+      request_url.spec(), mojom::UrlMethod::POST, std::move(response));
 
-  task_environment_.RunUntilIdle();
+  auto result = WaitFor<Result&&>([&](auto callback) {
+    endpoints::RequestFor<endpoints::PostCommitTransactionUphold>(
+        engine(), "token", "address",
+        mojom::ExternalTransaction::New("transaction_id", "contribution_id",
+                                        "destination", "amount"))
+        .Send(std::move(callback));
+  });
+
+  EXPECT_EQ(result, expected_result);
 }
 
-// clang-format off
 INSTANTIATE_TEST_SUITE_P(
-  Endpoints,
-  PostCommitTransactionUphold,
-  Values(
-    PostCommitTransactionUpholdParamType{
-      "HTTP_200_response_not_a_dict",
-      net::HTTP_OK,
-      R"(
+    RewardsPostCommitTransactionUpholdTest,
+    RewardsPostCommitTransactionUpholdTest,
+    Values(
+        PostCommitTransactionUpholdParamType{
+            "HTTP_200_response_not_a_dict", net::HTTP_OK,
+            R"(
         [
           "status": "completed"
         ]
       )",
-      base::unexpected(Error::kFailedToParseBody)
-    },
-    PostCommitTransactionUpholdParamType{
-      "HTTP_200_status_wrong_case",
-      net::HTTP_OK,
-      R"(
+            base::unexpected(Error::kFailedToParseBody)},
+        PostCommitTransactionUpholdParamType{
+            "HTTP_200_status_wrong_case", net::HTTP_OK,
+            R"(
         {
           "STATUS": "completed"
         }
       )",
-      base::unexpected(Error::kFailedToParseBody)
-    },
-    PostCommitTransactionUpholdParamType{
-      "HTTP_200_transaction_pending",
-      net::HTTP_OK,
-      R"(
+            base::unexpected(Error::kFailedToParseBody)},
+        PostCommitTransactionUpholdParamType{
+            "HTTP_200_transaction_pending", net::HTTP_OK,
+            R"(
         {
           "status": "processing"
         }
       )",
-      base::unexpected(Error::kTransactionPending)
-    },
-    PostCommitTransactionUpholdParamType{
-      "HTTP_200_unexpected_transaction_status",
-      net::HTTP_OK,
-      R"(
+            base::unexpected(Error::kTransactionPending)},
+        PostCommitTransactionUpholdParamType{
+            "HTTP_200_unexpected_transaction_status", net::HTTP_OK,
+            R"(
         {
           "status": "failed"
         }
       )",
-      base::unexpected(Error::kUnexpectedTransactionStatus)
-    },
-    PostCommitTransactionUpholdParamType{
-      "HTTP_200_transaction_completed",
-      net::HTTP_OK,
-      R"(
+            base::unexpected(Error::kUnexpectedTransactionStatus)},
+        PostCommitTransactionUpholdParamType{"HTTP_200_transaction_completed",
+                                             net::HTTP_OK,
+                                             R"(
         {
           "status": "completed"
         }
       )",
-      {}
-    },
-    PostCommitTransactionUpholdParamType{
-      "HTTP_2xx_transaction_completed",
-      net::HTTP_PARTIAL_CONTENT,
-      R"(
+                                             {}},
+        PostCommitTransactionUpholdParamType{"HTTP_2xx_transaction_completed",
+                                             net::HTTP_PARTIAL_CONTENT,
+                                             R"(
         {
           "status": "completed"
         }
       )",
-      {}
-    },
-    PostCommitTransactionUpholdParamType{
-      "HTTP_401_access_token_expired",
-      net::HTTP_UNAUTHORIZED,
-      "",
-      base::unexpected(Error::kAccessTokenExpired)
-    },
-    PostCommitTransactionUpholdParamType{
-      "HTTP_404_transaction_not_found",
-      net::HTTP_NOT_FOUND,
-      "",
-      base::unexpected(Error::kTransactionNotFound)
-    },
-    PostCommitTransactionUpholdParamType{
-      "HTTP_500_unexpected_status_code",
-      net::HTTP_INTERNAL_SERVER_ERROR,
-      "",
-      base::unexpected(Error::kUnexpectedStatusCode)
-    }),
-  [](const auto& info) {
-    return std::get<0>(info.param);
-  }
-);
-// clang-format on
+                                             {}},
+        PostCommitTransactionUpholdParamType{
+            "HTTP_401_access_token_expired", net::HTTP_UNAUTHORIZED, "",
+            base::unexpected(Error::kAccessTokenExpired)},
+        PostCommitTransactionUpholdParamType{
+            "HTTP_404_transaction_not_found", net::HTTP_NOT_FOUND, "",
+            base::unexpected(Error::kTransactionNotFound)},
+        PostCommitTransactionUpholdParamType{
+            "HTTP_500_unexpected_status_code", net::HTTP_INTERNAL_SERVER_ERROR,
+            "", base::unexpected(Error::kUnexpectedStatusCode)}),
+    [](const auto& info) { return std::get<0>(info.param); });
 
-}  // namespace brave_rewards::internal::endpoints::test
+}  // namespace brave_rewards::internal

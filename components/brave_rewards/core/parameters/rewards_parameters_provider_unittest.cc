@@ -108,7 +108,8 @@ class RewardsParametersProviderTest : public RewardsEngineTest {
                           .Resolve("/v1/parameters")
                           .spec();
 
-    AddNetworkResultForTesting(url, mojom::UrlMethod::GET, std::move(response));
+    client().AddNetworkResultForTesting(url, mojom::UrlMethod::GET,
+                                        std::move(response));
   }
 };
 
@@ -140,7 +141,7 @@ TEST_F(RewardsParametersProviderTest, GetParametersCached) {
   engine().SetState(state::kParameters,
                     *base::JSONReader::Read(kCachedParametersJSON));
 
-  auto [params] = WaitFor<mojom::RewardsParametersPtr>([&](auto callback) {
+  auto params = WaitFor<mojom::RewardsParametersPtr>([&](auto callback) {
     engine().Get<RewardsParametersProvider>().GetParameters(
         std::move(callback));
   });
@@ -157,7 +158,7 @@ TEST_F(RewardsParametersProviderTest, GetParameters) {
 
   auto& provider = engine().Get<RewardsParametersProvider>();
 
-  auto [params] = WaitFor<mojom::RewardsParametersPtr>(
+  auto params = WaitFor<mojom::RewardsParametersPtr>(
       [&](auto callback) { provider.GetParameters(std::move(callback)); });
 
   ASSERT_TRUE(params);
@@ -178,7 +179,7 @@ TEST_F(RewardsParametersProviderTest, EndpointError) {
 
   auto& provider = engine().Get<RewardsParametersProvider>();
 
-  auto [params] = WaitFor<mojom::RewardsParametersPtr>(
+  auto params = WaitFor<mojom::RewardsParametersPtr>(
       [&](auto callback) { provider.GetParameters(std::move(callback)); });
 
   ASSERT_TRUE(params);

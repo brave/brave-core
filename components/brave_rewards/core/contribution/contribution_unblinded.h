@@ -13,7 +13,6 @@
 #include <string>
 #include <vector>
 
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
@@ -37,9 +36,12 @@ class Unblinded {
              mojom::ContributionInfoPtr contribution,
              ResultCallback callback);
 
- private:
-  FRIEND_TEST_ALL_PREFIXES(UnblindedTest, GetStatisticalVotingWinner);
+  std::string GetStatisticalVotingWinnerForTesting(
+      double dart,
+      double amount,
+      const std::vector<mojom::ContributionPublisherPtr>& publisher_list);
 
+ private:
   using GetContributionInfoAndUnblindedTokensCallback = base::OnceCallback<void(
       mojom::ContributionInfoPtr contribution,
       std::vector<mojom::UnblindedToken> unblinded_tokens)>;
@@ -124,11 +126,6 @@ class Unblinded {
       mojom::ContributionInfoPtr contribution,
       ResultCallback callback,
       std::vector<mojom::UnblindedTokenPtr> unblinded_tokens);
-
-  std::string GetStatisticalVotingWinnerForTesting(
-      double dart,
-      double amount,
-      const std::vector<mojom::ContributionPublisherPtr>& publisher_list);
 
   const raw_ref<RewardsEngine> engine_;
   credential::CredentialsSKU credentials_sku_;

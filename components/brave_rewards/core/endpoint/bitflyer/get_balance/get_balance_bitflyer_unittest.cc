@@ -3,156 +3,129 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <string>
-#include <utility>
-#include <vector>
-
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/get_balance/get_balance_bitflyer.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-#include "net/http/http_status_code.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=GetBalanceTest.*
+#include <utility>
 
-using ::testing::_;
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
 namespace brave_rewards::internal {
-namespace endpoint {
-namespace bitflyer {
 
-class GetBalanceTest : public testing::Test {
+class RewardsGetBalanceBitflyerTest : public RewardsEngineTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-  GetBalance balance_{mock_engine_impl_};
+  auto Request(mojom::UrlResponsePtr response) {
+    auto request_url = engine().Get<EnvironmentConfig>().bitflyer_url().Resolve(
+        "/api/link/v1/account/inventory");
+
+    client().AddNetworkResultForTesting(
+        request_url.spec(), mojom::UrlMethod::GET, std::move(response));
+
+    endpoint::bitflyer::GetBalance endpoint(engine());
+
+    return WaitForValues<mojom::Result, double>([&](auto callback) {
+      endpoint.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                       std::move(callback));
+    });
+  }
 };
 
-TEST_F(GetBalanceTest, ServerOK) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 200;
-        response->url = request->url;
-        response->body = R"({
-              "account_hash": "ad0fd9160be16790893ff021b2f9ccf7f14b5a9f",
-              "inventory": [
-                {
-                  "currency_code": "JPY",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "BTC",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "BCH",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "ETH",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "ETC",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "LTC",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "MONA",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "LSK",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "XRP",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "BAT",
-                  "amount": 4.0,
-                  "available": 4.0
-                },
-                {
-                  "currency_code": "XLM",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "XEM",
-                  "amount": 0.0,
-                  "available": 0.0
-                },
-                {
-                  "currency_code": "XTZ",
-                  "amount": 0.0,
-                  "available": 0.0
-                }
-              ]
-            })";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGetBalanceBitflyerTest, ServerOK) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 200;
+  response->body = R"({
+        "account_hash": "ad0fd9160be16790893ff021b2f9ccf7f14b5a9f",
+        "inventory": [
+          {
+            "currency_code": "JPY",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "BTC",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "BCH",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "ETH",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "ETC",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "LTC",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "MONA",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "LSK",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "XRP",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "BAT",
+            "amount": 4.0,
+            "available": 4.0
+          },
+          {
+            "currency_code": "XLM",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "XEM",
+            "amount": 0.0,
+            "available": 0.0
+          },
+          {
+            "currency_code": "XTZ",
+            "amount": 0.0,
+            "available": 0.0
+          }
+        ]
+      })";
 
-  base::MockCallback<GetBalanceCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::OK, 4.0)).Times(1);
-  balance_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+  auto [result, balance] = Request(std::move(response));
 
-  task_environment_.RunUntilIdle();
+  EXPECT_EQ(result, mojom::Result::OK);
+  EXPECT_EQ(balance, 4.0);
 }
 
-TEST_F(GetBalanceTest, ServerError401) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 401;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGetBalanceBitflyerTest, ServerError401) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 401;
 
-  base::MockCallback<GetBalanceCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, 0.0)).Times(1);
-  balance_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, balance] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+  EXPECT_EQ(balance, 0.0);
 }
 
-TEST_F(GetBalanceTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 453;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGetBalanceBitflyerTest, ServerErrorRandom) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 453;
 
-  base::MockCallback<GetBalanceCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::FAILED, 0.0)).Times(1);
-  balance_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, balance] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::FAILED);
+  EXPECT_EQ(balance, 0.0);
 }
 
-}  // namespace bitflyer
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

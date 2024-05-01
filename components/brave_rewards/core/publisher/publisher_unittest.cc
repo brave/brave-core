@@ -3,27 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
+
 #include <iostream>
 #include <utility>
 
 #include "base/containers/flat_map.h"
-#include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/database/database_mock.h"
-#include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
-using ::testing::_;
+namespace brave_rewards::internal::publisher {
 
-// npm run test -- brave_unit_tests --filter=PublisherTest.*
-
-namespace brave_rewards::internal {
-namespace publisher {
-
-class PublisherTest : public testing::Test {
+class RewardsPublisherTest : public RewardsEngineTest {
  protected:
   void CreatePublisherInfoList(std::vector<mojom::PublisherInfoPtr>* list) {
     double prev_score;
@@ -43,73 +35,35 @@ class PublisherTest : public testing::Test {
     }
   }
 
-  void SetUp() override {
-    ON_CALL(*mock_engine_impl_.mock_client(), GetDoubleState(state::kScoreA, _))
-        .WillByDefault([this](const std::string&, auto callback) {
-          std::move(callback).Run(a_);
-        });
+  double GetA() { return engine().GetState<double>(state::kScoreA); }
 
-    ON_CALL(*mock_engine_impl_.mock_client(), GetDoubleState(state::kScoreB, _))
-        .WillByDefault([this](const std::string&, auto callback) {
-          std::move(callback).Run(b_);
-        });
+  double GetB() { return engine().GetState<double>(state::kScoreB); }
 
-    ON_CALL(*mock_engine_impl_.mock_client(), SetDoubleState(_, _, _))
-        .WillByDefault(
-            [this](const std::string& key, double value, auto callback) {
-              if (key == state::kScoreA) {
-                a_ = value;
-                std::move(callback).Run();
-              }
-
-              if (key == state::kScoreB) {
-                b_ = value;
-                std::move(callback).Run();
-              }
-            });
-
-    ON_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
-        .WillByDefault([](mojom::DBTransactionPtr, auto callback) {
-          std::move(callback).Run(db_error_response->Clone());
-        });
-  }
-
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-  Publisher publisher_{mock_engine_impl_};
-
-  double a_ = 0;
-  double b_ = 0;
+  Publisher publisher_{engine()};
 };
 
-TEST_F(PublisherTest, CalcScoreConsts5) {
+TEST_F(RewardsPublisherTest, CalcScoreConsts5) {
   publisher_.CalcScoreConsts(5);
 
-  ASSERT_EQ(a_, 14500);
-  ASSERT_EQ(b_, -14000);
-
-  task_environment_.RunUntilIdle();
+  ASSERT_EQ(GetA(), 14500);
+  ASSERT_EQ(GetB(), -14000);
 }
 
-TEST_F(PublisherTest, CalcScoreConsts8) {
+TEST_F(RewardsPublisherTest, CalcScoreConsts8) {
   publisher_.CalcScoreConsts(8);
 
-  ASSERT_EQ(a_, 14200);
-  ASSERT_EQ(b_, -13400);
-
-  task_environment_.RunUntilIdle();
+  ASSERT_EQ(GetA(), 14200);
+  ASSERT_EQ(GetB(), -13400);
 }
 
-TEST_F(PublisherTest, CalcScoreConsts60) {
+TEST_F(RewardsPublisherTest, CalcScoreConsts60) {
   publisher_.CalcScoreConsts(60);
 
-  ASSERT_EQ(a_, 9000);
-  ASSERT_EQ(b_, -3000);
-
-  task_environment_.RunUntilIdle();
+  ASSERT_EQ(GetA(), 9000);
+  ASSERT_EQ(GetB(), -3000);
 }
 
-TEST_F(PublisherTest, concaveScore) {
+TEST_F(RewardsPublisherTest, concaveScore) {
   publisher_.CalcScoreConsts(5);
   EXPECT_NEAR(publisher_.concaveScore(5), 1, 0.001f);
   EXPECT_NEAR(publisher_.concaveScore(15), 1.06285, 0.001f);
@@ -136,11 +90,9 @@ TEST_F(PublisherTest, concaveScore) {
   EXPECT_NEAR(publisher_.concaveScore(10000), 10.7089, 0.001f);
   EXPECT_NEAR(publisher_.concaveScore(150000), 40.9918, 0.001f);
   EXPECT_NEAR(publisher_.concaveScore(500000), 74.7025, 0.001f);
-
-  task_environment_.RunUntilIdle();
 }
 
-TEST_F(PublisherTest, synopsisNormalizerInternal) {
+TEST_F(RewardsPublisherTest, synopsisNormalizerInternal) {
   // create test PublisherInfo list
   std::vector<mojom::PublisherInfoPtr> new_list;
   std::vector<mojom::PublisherInfoPtr> list;
@@ -165,11 +117,9 @@ TEST_F(PublisherTest, synopsisNormalizerInternal) {
     ASSERT_GE((int32_t)element->percent, 0);
     ASSERT_LE((int32_t)element->percent, 100);
   }
-
-  task_environment_.RunUntilIdle();
 }
 
-TEST_F(PublisherTest, GetShareURL) {
+TEST_F(RewardsPublisherTest, GetShareURL) {
   base::flat_map<std::string, std::string> args;
 
   // Ensure that missing args results in no output
@@ -192,5 +142,4 @@ TEST_F(PublisherTest, GetShareURL) {
             "&url=https://twitter.com/brave/status/794221010484502528");
 }
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher

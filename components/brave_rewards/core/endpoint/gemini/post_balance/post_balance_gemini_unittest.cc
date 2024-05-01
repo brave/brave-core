@@ -3,134 +3,100 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/endpoint/gemini/post_balance/post_balance_gemini.h"
+
 #include <string>
 #include <utility>
 
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/endpoint/gemini/post_balance/post_balance_gemini.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-#include "net/http/http_status_code.h"
-#include "testing/gtest/include/gtest/gtest.h"
-
-// npm run test -- brave_unit_tests --filter=GeminiPostBalanceTest.*
-
-using ::testing::_;
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
 namespace brave_rewards::internal {
-namespace endpoint {
-namespace gemini {
 
-class GeminiPostBalanceTest : public testing::Test {
+class RewardsGeminiPostBalanceTest : public RewardsEngineTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-  PostBalance balance_{mock_engine_impl_};
+  auto Request(mojom::UrlResponsePtr response) {
+    auto request_url =
+        engine().Get<EnvironmentConfig>().gemini_api_url().Resolve(
+            "/v1/balances");
+
+    client().AddNetworkResultForTesting(
+        request_url.spec(), mojom::UrlMethod::POST, std::move(response));
+
+    endpoint::gemini::PostBalance endpoint(engine());
+
+    return WaitForValues<mojom::Result, double>([&](auto callback) {
+      endpoint.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                       std::move(callback));
+    });
+  }
 };
 
-TEST_F(GeminiPostBalanceTest, ServerOK) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_OK;
-        response->url = request->url;
-        response->body = R"([
-              {
-                  "type": "exchange",
-                  "currency": "BTC",
-                  "amount": "1000.01195318",
-                  "available": "1000.01195318",
-                  "availableForWithdrawal": "1000.01195318"
-              },
-              {
-                  "type": "exchange",
-                  "currency": "ETH",
-                  "amount": "20000",
-                  "available": "20000",
-                  "availableForWithdrawal": "20000"
-              },
-              {
-                  "type": "exchange",
-                  "currency": "BAT",
-                  "amount": "5000",
-                  "available": "5000",
-                  "availableForWithdrawal": "5000"
-              },
-              {
-                  "type": "exchange",
-                  "currency": "USD",
-                  "amount": "93687.50",
-                  "available": "93677.40",
-                  "availableForWithdrawal": "93677.40"
-              }
-            ])";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostBalanceTest, ServerOK) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 200;
+  response->body = R"([
+        {
+            "type": "exchange",
+            "currency": "BTC",
+            "amount": "1000.01195318",
+            "available": "1000.01195318",
+            "availableForWithdrawal": "1000.01195318"
+        },
+        {
+            "type": "exchange",
+            "currency": "ETH",
+            "amount": "20000",
+            "available": "20000",
+            "availableForWithdrawal": "20000"
+        },
+        {
+            "type": "exchange",
+            "currency": "BAT",
+            "amount": "5000",
+            "available": "5000",
+            "availableForWithdrawal": "5000"
+        },
+        {
+            "type": "exchange",
+            "currency": "USD",
+            "amount": "93687.50",
+            "available": "93677.40",
+            "availableForWithdrawal": "93677.40"
+        }
+      ])";
 
-  base::MockCallback<PostBalanceCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::OK, 5000.0)).Times(1);
-  balance_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+  auto [result, balance] = Request(std::move(response));
 
-  task_environment_.RunUntilIdle();
+  EXPECT_EQ(result, mojom::Result::OK);
+  EXPECT_EQ(balance, 5000.0);
 }
 
-TEST_F(GeminiPostBalanceTest, ServerError401) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_UNAUTHORIZED;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostBalanceTest, ServerError401) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 401;
 
-  base::MockCallback<PostBalanceCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, 0.0)).Times(1);
-  balance_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, balance] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+  EXPECT_EQ(balance, 0.0);
 }
 
-TEST_F(GeminiPostBalanceTest, ServerError403) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_FORBIDDEN;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostBalanceTest, ServerError403) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 403;
 
-  base::MockCallback<PostBalanceCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, 0.0)).Times(1);
-  balance_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, balance] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+  EXPECT_EQ(balance, 0.0);
 }
 
-TEST_F(GeminiPostBalanceTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 418;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostBalanceTest, ServerErrorRandom) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 418;
 
-  base::MockCallback<PostBalanceCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::FAILED, 0.0)).Times(1);
-  balance_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, balance] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::FAILED);
+  EXPECT_EQ(balance, 0.0);
 }
 
-}  // namespace gemini
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

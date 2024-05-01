@@ -114,19 +114,19 @@ class GitHub {
                               int64_t* result);
 
   // For testing purposes
-  friend class MediaGitHubTest;
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetLinkType);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetProfileURL);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetProfileAPIURL);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetProfileImageURL);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetPublisherKey);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetMediaKey);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetUserNameFromURL);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetUserName);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetUserId);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetPublisherName);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONStringValue);
-  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONIntValue);
+  friend class RewardsMediaGitHubTest;
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetLinkType);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetProfileURL);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetProfileAPIURL);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetProfileImageURL);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetPublisherKey);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetMediaKey);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetUserNameFromURL);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetUserName);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetUserId);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetPublisherName);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetJSONStringValue);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaGitHubTest, GetJSONIntValue);
 
   const raw_ref<RewardsEngine> engine_;
   base::WeakPtrFactory<GitHub> weak_factory_{this};
