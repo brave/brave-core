@@ -36,6 +36,11 @@
             android:title="@string/block_youtube_distracting_elements"
             android:summary="@string/block_youtube_distracting_elements_description"
             android:defaultValue="true" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="hide_youtube_shorts"
+            android:title="@string/block_youtube_shorts"
+            android:summary="@string/block_youtube_shorts_description"
+            android:defaultValue="false" />
     </PreferenceCategory>
 
 </PreferenceScreen>

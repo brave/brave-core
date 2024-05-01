@@ -440,6 +440,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BLOCK_YOUTUBE_DISTRACTING_ELEMENTS_DESCRIPTION" desc="Hides the sign in, menu, comments and video info elements on YouTube.">
         Blocks the sign in, menu, comments, and video info elements on youtube.com.
       </message>
+      <message name="IDS_BLOCK_YOUTUBE_SHORTS" desc="Hide YouTube shorts">
+        Block YouTube Shorts
+      </message>
+      <message name="IDS_BLOCK_YOUTUBE_SHORTS_DESCRIPTION" desc="Hides shorts on YouTube.">
+        Blocks Shorts from the home page, trending page and search results on youtube.com.
+      </message>
       <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TITLE" desc="Title for social media blocking.">
         Social Media Blocking
       </message>
