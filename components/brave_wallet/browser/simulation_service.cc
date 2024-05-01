@@ -66,31 +66,55 @@ namespace {
 
 std::string GetRelativeScanPath(const std::string& chain_id,
                                 mojom::CoinType coin) {
-  if (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaMainnet) {
-    return "solana/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::SOL &&
-             chain_id == mojom::kSolanaTestnet) {
-    return "solana/v0/testnet/scan";
-  } else if (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaDevnet) {
-    return "solana/v0/devnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kMainnetChainId) {
-    return "ethereum/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kGoerliChainId) {
-    return "ethereum/v0/goerli/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kPolygonMainnetChainId) {
-    return "polygon/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kBnbSmartChainMainnetChainId) {
-    return "bnb/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kArbitrumMainnetChainId) {
-    return "arbitrum/v0/one/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kBaseMainnetChainId) {
-    return "base/v0/mainnet/scan";
+  if (coin == mojom::CoinType::SOL) {
+    if (chain_id == mojom::kSolanaMainnet) {
+      return "solana/v0/mainnet/scan";
+    } else if (chain_id == mojom::kSolanaTestnet) {
+      return "solana/v0/testnet/scan";
+    } else if (chain_id == mojom::kSolanaDevnet) {
+      return "solana/v0/devnet/scan";
+    }
+    return "";
+  }
+
+  if (coin == mojom::CoinType::ETH) {
+    if (chain_id == mojom::kArbitrumMainnetChainId) {
+      return "arbitrum/v0/one/scan";
+    } else if (chain_id == mojom::kArbitrumSepoliaChainId) {
+      return "arbitrum/v0/sepolia/scan";
+    } else if (chain_id == mojom::kAvalancheFujiTestnetChainId) {
+      return "avalanche/v0/fuji/scan";
+    } else if (chain_id == mojom::kAvalancheMainnetChainId) {
+      return "avalanche/v0/mainnet/scan";
+    } else if (chain_id == mojom::kBaseMainnetChainId) {
+      return "base/v0/mainnet/scan";
+    } else if (chain_id == mojom::kBaseSepoliaTestnetChainId) {
+      return "base/v0/sepolia/scan";
+    } else if (chain_id == mojom::kBlastMainnetChainId) {
+      return "blast/v0/mainnet/scan";
+    } else if (chain_id == mojom::kBlastSepoliaTestnetChainId) {
+      return "blast/v0/sepolia/scan";
+    } else if (chain_id == mojom::kBnbSmartChainMainnetChainId) {
+      return "bnb/v0/mainnet/scan";
+    } else if (chain_id == mojom::kDegenChainId) {
+      return "degen/v0/mainnet/scan";
+    } else if (chain_id == mojom::kMainnetChainId) {
+      return "ethereum/v0/mainnet/scan";
+    } else if (chain_id == mojom::kGnosisChainId) {
+      return "gnosis/v0/mainnet/scan";
+    } else if (chain_id == mojom::kLineaChainId) {
+      return "linea/v0/mainnet/scan";
+    } else if (chain_id == mojom::kOptimismMainnetChainId) {
+      return "optimism/v0/mainnet/scan";
+    } else if (chain_id == mojom::kOptimismSepoliaChainId) {
+      return "optimism/v0/sepolia/scan";
+    } else if (chain_id == mojom::kPolygonMainnetChainId) {
+      return "polygon/v0/mainnet/scan";
+    } else if (chain_id == mojom::kSepoliaChainId) {
+      return "ethereum/v0/sepolia/scan";
+    } else if (chain_id == mojom::kZoraChainId) {
+      return "zora/v0/mainnet/scan";
+    }
   }
 
   return "";
@@ -98,31 +122,16 @@ std::string GetRelativeScanPath(const std::string& chain_id,
 
 bool HasTransactionScanSupportInternal(const std::string& chain_id,
                                        mojom::CoinType coin) {
-  return (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaMainnet) ||
-         (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaTestnet) ||
-         (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaDevnet) ||
-         (coin == mojom::CoinType::ETH && chain_id == mojom::kMainnetChainId) ||
-         (coin == mojom::CoinType::ETH && chain_id == mojom::kGoerliChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kPolygonMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kBnbSmartChainMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kArbitrumMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kBaseMainnetChainId);
+  return !GetRelativeScanPath(chain_id, coin).empty();
 }
 
 bool HasMessageScanSupportInternal(const std::string& chain_id,
                                    mojom::CoinType coin) {
-  return (coin == mojom::CoinType::ETH && chain_id == mojom::kMainnetChainId) ||
-         (coin == mojom::CoinType::ETH && chain_id == mojom::kGoerliChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kPolygonMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kBnbSmartChainMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kArbitrumMainnetChainId);
+  if (coin == mojom::CoinType::ETH) {
+    return !GetRelativeScanPath(chain_id, coin).empty();
+  }
+
+  return false;
 }
 
 const base::flat_map<std::string, std::string> GetHeaders() {

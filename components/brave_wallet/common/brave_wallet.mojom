@@ -1278,6 +1278,15 @@ const string kBaseMainnetChainId = "0x2105";
 const string kFlareMainnetChainId = "0xe";
 const string kRolluxMainnetChainId = "0x23a";
 const string kSyscoinMainnetChainId = "0x39";
+const string kArbitrumSepoliaChainId = "0x66eee";
+const string kAvalancheFujiTestnetChainId = "0xa869";
+const string kBaseSepoliaTestnetChainId = "0x14a34";
+const string kBlastMainnetChainId = "0xee";
+const string kBlastSepoliaTestnetChainId = "0xa0c71fd";
+const string kDegenChainId = "0x27bc86aa";
+const string kLineaChainId = "0xe708";
+const string kOptimismSepoliaChainId = "0xaa37dc";
+const string kZoraChainId = "0x76adf1";
 
 // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
