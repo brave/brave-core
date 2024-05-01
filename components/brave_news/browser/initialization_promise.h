@@ -30,15 +30,19 @@ class InitializationPromise {
 
   void OnceInitialized(base::OnceClosure on_initialized);
 
-  State state() { return state_; }
-  bool failed() { return state_ == InitializationPromise::State::kFailed; }
-  bool complete() { return on_initializing_prefs_complete_.is_signaled(); }
+  State state() const { return state_; }
+  bool failed() const {
+    return state_ == InitializationPromise::State::kFailed;
+  }
+  bool complete() const {
+    return on_initializing_prefs_complete_.is_signaled();
+  }
 
   void set_no_retry_delay_for_testing(bool no_retry_delay) {
     no_retry_delay_for_testing_ = no_retry_delay;
   }
 
-  size_t attempts_for_testing() { return attempts_; }
+  size_t attempts_for_testing() const { return attempts_; }
 
  private:
   void Initialize();
@@ -53,7 +57,7 @@ class InitializationPromise {
 
   bool no_retry_delay_for_testing_ = false;
 
-  size_t max_retries_ = 0;
+  const size_t max_retries_ = 0;
   size_t attempts_ = 0;
 
   State state_ = InitializationPromise::State::kNone;

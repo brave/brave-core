@@ -73,7 +73,8 @@ class BraveNewsInitializationPromiseTest : public testing::Test {
     }
     return channels.begin()->first;
   }
-  std::string GetSourcesUrl() {
+
+  static std::string GetSourcesUrl() {
     return "https://" + brave_news::GetHostname() + "/sources." +
            brave_news::kRegionUrlPart + "json";
   }

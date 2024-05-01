@@ -72,6 +72,8 @@ void InitializationPromise::Initialize() {
 }
 
 void InitializationPromise::OnGotLocale(const std::string& locale) {
+  CHECK_EQ(State::kInitializing, state_);
+
   // Keep track of which attempt this is.
   attempts_++;
 
