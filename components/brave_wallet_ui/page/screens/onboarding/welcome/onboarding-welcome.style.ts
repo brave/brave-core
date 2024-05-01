@@ -22,7 +22,7 @@ export const WelcomePageBackground = styled.div`
   background-image: url(${backgroundImageLight});
   background-repeat: no-repeat;
   background-size: cover;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
