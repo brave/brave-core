@@ -877,3 +877,11 @@
 -keep class org.chromium.components.embedder_support.view.BraveContentView {
     protected <init>(...);
 }
+
+-keep class org.chromium.components.signin.SystemAccountManagerDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.signin.BraveSystemAccountManagerDelegate {
+    public <init>(...);
+}

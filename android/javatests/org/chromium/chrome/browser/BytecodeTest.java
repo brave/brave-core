@@ -1395,6 +1395,10 @@ public class BytecodeTest {
                         Context.class,
                         EventOffsetHandler.class,
                         WebContents.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/signin/SystemAccountManagerDelegate",
+                        "org/chromium/components/signin/BraveSystemAccountManagerDelegate"));
     }
 
     @Test
