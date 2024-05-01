@@ -12,7 +12,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/brave_geolocation_permission_tab_helper.h"
+#include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/geolocation/geolocation_utils.h"
 #include "brave/browser/ui/views/dialog_footnote_utils.h"
 #include "brave/browser/ui/views/infobars/custom_styled_label.h"
@@ -66,7 +66,8 @@ constexpr char kLearnMoreURL[] =
     "https://support.apple.com/guide/mac-help/"
     "allow-apps-to-detect-the-location-of-your-mac-mh35873/mac";
 #else
-    "https://help.ubuntu.com/stable/ubuntu-help/privacy-location.html";
+    // Not used now. Set proper link when detailed bubble is enabled on linux.
+    "https://www.brave.com/";
 #endif
 
 namespace {

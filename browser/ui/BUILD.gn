@@ -610,7 +610,13 @@ source_set("ui") {
   }
 
   if (is_win || is_mac || is_linux) {
-    sources += [ "geolocation/geolocation_utils.h" ]
+    sources += [
+      "geolocation/brave_geolocation_permission_tab_helper.cc",
+      "geolocation/brave_geolocation_permission_tab_helper.h",
+      "geolocation/geolocation_utils.h",
+    ]
+
+    deps += [ "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission" ]
 
     if (is_win) {
       sources += [ "geolocation/geolocation_utils_win.cc" ]

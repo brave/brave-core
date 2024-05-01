@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_GEOLOCATION_PERMISSION_TAB_HELPER_H_
-#define BRAVE_BROWSER_BRAVE_GEOLOCATION_PERMISSION_TAB_HELPER_H_
+#ifndef BRAVE_BROWSER_UI_GEOLOCATION_BRAVE_GEOLOCATION_PERMISSION_TAB_HELPER_H_
+#define BRAVE_BROWSER_UI_GEOLOCATION_BRAVE_GEOLOCATION_PERMISSION_TAB_HELPER_H_
 
 #include "brave/components/brave_geolocation_permission/common/brave_geolocation_permission.mojom.h"
 #include "content/public/browser/render_frame_host_receiver_set.h"
@@ -42,4 +42,4 @@ class BraveGeolocationPermissionTabHelper final
   bool enable_high_accuracy_ = false;
 };
 
-#endif  // BRAVE_BROWSER_BRAVE_GEOLOCATION_PERMISSION_TAB_HELPER_H_
+#endif  // BRAVE_BROWSER_UI_GEOLOCATION_BRAVE_GEOLOCATION_PERMISSION_TAB_HELPER_H_

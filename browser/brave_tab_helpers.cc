@@ -55,8 +55,8 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #endif
 
