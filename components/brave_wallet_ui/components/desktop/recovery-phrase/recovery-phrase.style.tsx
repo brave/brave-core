@@ -18,7 +18,7 @@ export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
   flex-wrap: wrap;
   padding: 16px;
   width: 100%;
-  height: 208px;
+  height: 230px;
   overflow-y: ${(p) => (p.phraseLength > 12 ? 'auto' : 'hidden')};
 
   &::-webkit-scrollbar {
@@ -37,6 +37,7 @@ export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
 
   @media screen and (max-width: ${layoutSmallWidth}px) {
     grid-template-columns: repeat(2, 1fr);
+    overflow-y: auto;
   }
 `
 
