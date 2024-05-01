@@ -416,18 +416,43 @@ public class BytecodeTest {
                 "createBookmarkItem", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/LaunchIntentDispatcher",
                 "isCustomTabIntent", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/homepage/HomepageManager",
-                "shouldCloseAppWithZeroTabs", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                "insertSiteSectionView", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                "isScrollableMvtEnabled", true, boolean.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                "setSearchProviderTopMargin", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                "setSearchProviderBottomMargin", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                "getLogoMargin", true, int.class, boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/HomepageManager",
+                        "shouldCloseAppWithZeroTabs",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "insertSiteSectionView",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "isScrollableMvtEnabled",
+                        true,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "setSearchProviderTopMargin",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "setSearchProviderBottomMargin",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "getLogoMargin",
+                        true,
+                        int.class,
+                        boolean.class));
 
         Assert.assertTrue(
                 methodExists(
