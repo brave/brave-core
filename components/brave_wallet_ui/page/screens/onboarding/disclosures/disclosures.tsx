@@ -103,6 +103,8 @@ export const OnboardingDisclosures = () => {
             history.push(
               onboardingType === 'hardware'
                 ? WalletRoutes.OnboardingHardwareWalletNetworkSelection
+                : onboardingType === 'import'
+                ? WalletRoutes.OnboardingImportNetworkSelection
                 : WalletRoutes.OnboardingNewWalletNetworkSelection
             )
           }}
