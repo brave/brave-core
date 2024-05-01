@@ -41,7 +41,7 @@ class EngineConsumerClaudeUnitTest : public testing::Test {
   ~EngineConsumerClaudeUnitTest() override = default;
 
   void SetUp() override {
-    auto* model = GetModel("chat-claude-instant");
+    auto* model = GetModel("chat-claude-haiku");
     ASSERT_TRUE(model);
     engine_ =
         std::make_unique<EngineConsumerClaudeRemote>(*model, nullptr, nullptr);
