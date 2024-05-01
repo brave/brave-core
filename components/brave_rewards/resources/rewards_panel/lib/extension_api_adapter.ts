@@ -272,6 +272,13 @@ function isPublisherURL (url: string) {
   return parsedURL && /^https?:$/.test(parsedURL.protocol)
 }
 
+function iconURL (url: string) {
+  if (url) {
+    return `chrome://favicon2/?size=64&pageUrl=${encodeURIComponent(url)}`
+  }
+  return ''
+}
+
 function defaultPublisherInfo (url: string): PublisherInfo | null {
   const parsedURL = parseURL(url)
   if (!parsedURL) {
@@ -282,7 +289,7 @@ function defaultPublisherInfo (url: string): PublisherInfo | null {
     id: parsedURL.hostname,
     name: parsedURL.hostname,
     verified: false,
-    icon: origin ? `chrome://favicon/size/64@1x/${parsedURL.origin}` : '',
+    icon: iconURL(parsedURL.origin),
     platform: null,
     attentionScore: 0,
     autoContributeEnabled: true,
@@ -346,13 +353,11 @@ export async function getPublisherInfo (tabId: number) {
       break
   }
 
-  const iconPath = String(publisher.favIconUrl || publisher.url || '')
-
   const info: PublisherInfo = {
     id: publisherKey,
     name: String(publisher.name || ''),
     verified,
-    icon: iconPath ? `chrome://favicon/size/64@1x/${iconPath}` : '',
+    icon: iconURL(String(publisher.favIconUrl || publisher.url || '')),
     platform: getPublisherPlatform(String(publisher.provider || '')),
     attentionScore: Number(publisher.percentage) / 100 || 0,
     autoContributeEnabled: !publisher.excluded,
