@@ -79,27 +79,31 @@ struct SendTokenView: View {
           header: WalletListHeaderView {
             HStack {
               Text(
-                "\(Strings.Wallet.sendCryptoFromTitle): \(keyringStore.selectedAccount.name) (\(keyringStore.selectedAccount.address.truncatedAddress))"
+                "\(Strings.Wallet.sendCryptoFromTitle): \(keyringStore.selectedAccount.accountNameDisplay)"
               )
               Spacer()
-              Menu(
-                content: {
-                  Text(keyringStore.selectedAccount.address.zwspOutput)
-                  Button {
-                    UIPasteboard.general.string = keyringStore.selectedAccount.address
-                  } label: {
-                    Label(
-                      Strings.Wallet.copyAddressButtonTitle,
-                      braveSystemImage: "leo.copy.plain-text"
-                    )
+              // User doesn't need from BTC account receive address in Send
+              // Can either use Deposit or Select Token modal
+              if keyringStore.selectedAccount.coin != .btc {
+                Menu(
+                  content: {
+                    Text(keyringStore.selectedAccount.address.zwspOutput)
+                    Button {
+                      UIPasteboard.general.string = keyringStore.selectedAccount.address
+                    } label: {
+                      Label(
+                        Strings.Wallet.copyAddressButtonTitle,
+                        braveSystemImage: "leo.copy.plain-text"
+                      )
+                    }
+                  },
+                  label: {
+                    Image(braveSystemName: "leo.more.horizontal")
+                      .padding(6)
+                      .clipShape(Rectangle())
                   }
-                },
-                label: {
-                  Image(braveSystemName: "leo.more.horizontal")
-                    .padding(6)
-                    .clipShape(Rectangle())
-                }
-              )
+                )
+              }
             }
           }
         ) {

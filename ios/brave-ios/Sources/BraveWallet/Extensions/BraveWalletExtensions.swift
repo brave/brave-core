@@ -170,6 +170,16 @@ extension BraveWallet.AccountInfo {
     address.isEmpty ? accountId.uniqueKey.sha256 : address
   }
 
+  /// Displays as `Account Name (truncated address)`, ex `Ethereum Account 1 (0x1234...5678)`
+  /// or `Account Name` for Bitcoin.
+  var accountNameDisplay: String {
+    if coin == .btc {
+      return name
+    } else {
+      return "\(name) (\(address.truncatedAddress))"
+    }
+  }
+
   public func sort(
     with other: BraveWallet.AccountInfo,
     parentOrder: Bool

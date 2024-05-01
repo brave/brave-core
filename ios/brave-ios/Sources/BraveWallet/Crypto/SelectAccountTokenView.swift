@@ -145,12 +145,11 @@ struct SelectAccountTokenView: View {
         header: {
           WalletListHeaderView {
             HStack {
-              Text(
-                "\(accountSection.account.name) (\(accountSection.account.address.truncatedAddress))"
-              )
+              Text(accountSection.account.accountNameDisplay)
               Spacer()
               Menu(
                 content: {
+                  // TODO: for BTC, this should display & copy nextReceiveAddress
                   Text(accountSection.account.address.zwspOutput)
                   Button {
                     UIPasteboard.general.string = accountSection.account.address

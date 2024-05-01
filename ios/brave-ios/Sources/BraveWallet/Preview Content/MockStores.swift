@@ -134,6 +134,7 @@ extension SendTokenStore {
       assetRatioService: MockAssetRatioService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+      bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: TestableWalletUserAssetManager()

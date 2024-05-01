@@ -144,6 +144,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     rpcService: rpcService,
     walletService: walletService,
     assetRatioService: assetRatioService,
+    bitcoinWalletService: bitcoinWalletService,
     ipfsApi: ipfsApi,
     userAssetManager: assetManager,
     query: prefilledToken?.symbol
@@ -157,6 +158,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   private let assetRatioService: BraveWalletAssetRatioService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private var sendAddressUpdatedTimer: Timer?
   private var sendAmountUpdatedTimer: Timer?
@@ -180,6 +182,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     assetRatioService: BraveWalletAssetRatioService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     prefilledToken: BraveWallet.BlockchainToken?,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
@@ -192,6 +195,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     self.assetRatioService = assetRatioService
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
+    self.bitcoinWalletService = bitcoinWalletService
     self.prefilledToken = prefilledToken
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
