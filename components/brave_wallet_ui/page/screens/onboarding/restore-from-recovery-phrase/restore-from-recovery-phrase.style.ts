@@ -17,7 +17,7 @@ export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  height: 195px;
+  height: 230px;
   padding: 2px;
   overflow-y: ${(p) => (p.phraseLength > 12 ? 'auto' : 'hidden')};
 
