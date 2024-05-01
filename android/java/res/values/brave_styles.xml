@@ -328,4 +328,33 @@
     <style name="BraveRewardsActionColor" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/rewards_panel_action_color</item>
     </style>
+
+    <!-- Nala tokens styles  -->
+
+    <style name="DefaultRegular">
+        <!-- Default Brave UI size -->
+        <item name="android:fontFamily">@font/roboto_flex</item>
+        <item name="android:textSize">@dimen/default_regular</item>
+        <item name="lineHeight">20sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">400</item>
+    </style>
+
+    <style name="LargeRegular">
+        <!-- Default browser size for fonts -->
+        <item name="android:fontFamily">@font/roboto_flex</item>
+        <item name="android:textSize">@dimen/large_regular</item>
+        <item name="lineHeight">24sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">400</item>
+    </style>
+
+    <style name="DefaultSemibold">
+        <!-- Default Brave UI size -->
+        <item name="android:fontFamily">@font/roboto_flex</item>
+        <item name="android:textSize">@dimen/default_semibold</item>
+        <item name="lineHeight">20sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">600</item>
+    </style>
 </resources>

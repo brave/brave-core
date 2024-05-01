@@ -97,6 +97,14 @@
     tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
 
 <activity
+    android:name="org.chromium.chrome.browser.vpn.activities.VpnAlwaysOnActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:noHistory="true"
+    android:launchMode="singleTask"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+
+<activity
     android:name="org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"

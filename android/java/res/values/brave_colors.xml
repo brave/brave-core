@@ -383,4 +383,9 @@
     <color name="brave_leo_plans_tips_border">#4100C1</color>
     <color name="brave_leo_plans_tips_desc">#BFC3FE</color>
     <!-- End Brave Leo colors-->
+
+    <color name="text_primary">#0d1214</color>
+    <color name="text_secondary">#3f4e55</color>
+    <color name="primary_20">#d5dcff</color>
+    <color name="button_background">#3F39E8</color>
 </resources>

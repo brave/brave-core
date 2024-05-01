@@ -45,6 +45,10 @@
             android:title="@string/change_location"/>
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="always_on"
+            android:title="@string/always_on_vpn"/>
+
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:key="split_tunneling"
             android:title="@string/split_tunneling"/>
 

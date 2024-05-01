@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
+import org.chromium.chrome.browser.vpn.activities.VpnAlwaysOnActivity;
 import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
@@ -89,6 +90,17 @@ public class BraveVpnUtils {
         Intent braveVpnSupportIntent = new Intent(activity, SplitTunnelActivity.class);
         braveVpnSupportIntent.setAction(Intent.ACTION_VIEW);
         activity.startActivity(braveVpnSupportIntent);
+    }
+
+    public static void openAlwaysOnActivity(Activity activity) {
+        Intent vpnAlwaysOnActivityIntent = new Intent(activity, VpnAlwaysOnActivity.class);
+        activity.startActivity(vpnAlwaysOnActivityIntent);
+    }
+
+    public static void openVpnSettings(Activity activity) {
+        Intent vpnSettingsIntent = new Intent("android.net.vpn.SETTINGS");
+        vpnSettingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(vpnSettingsIntent);
     }
 
     public static void openVpnServerSelectionActivity(Activity activity) {
