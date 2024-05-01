@@ -131,8 +131,7 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PinAndUnpinTabs) {
       tab_strip_model_2->GetWebContentsAt(0)));
 }
 
-IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
-                       DISABLED_ActivatePinnedTab) {
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, ActivatePinnedTab) {
   // Precondition
   auto* browser_1 = browser();
   auto* tab_strip_model_1 = browser_1->tab_strip_model();
@@ -200,8 +199,7 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, NewBrowser) {
       tab_strip_model_2->GetWebContentsAt(0)));
 }
 
-IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
-                       DISABLED_BringAllTabs) {
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, BringAllTabs) {
   // Given that there're multiple windows with shared pinned tabs
   auto* browser_1 = browser();
   auto* tab_strip_model_1 = browser_1->tab_strip_model();

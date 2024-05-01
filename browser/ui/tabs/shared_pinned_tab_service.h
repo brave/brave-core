@@ -12,6 +12,7 @@
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_renderer_data.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -55,10 +56,6 @@ class SharedPinnedTabService : public KeyedService,
       int index,
       content::WebContents* maybe_dummy_contents);
 
-  void CacheWebContentsIfNeeded(
-      Browser* browser,
-      const std::vector<std::unique_ptr<DetachedWebContents>>& web_contents);
-
   // KeyedService:
   void Shutdown() override;
 
@@ -84,6 +81,10 @@ class SharedPinnedTabService : public KeyedService,
   void OnProfileWillBeDestroyed(Profile* profile) override;
 
  private:
+  void CacheWebContentsIfNeeded(
+      Browser* browser,
+      std::vector<std::unique_ptr<tabs::TabModel>> pinned_tabs);
+
   void OnTabAdded(TabStripModel* tab_strip_model,
                   const TabStripModelChange::Insert* insert);
   void OnTabMoved(TabStripModel* tab_strip_model,
