@@ -301,7 +301,7 @@ export const TransactionSimulationInfo = ({
           key='No-changes'
         >
           <TransactionChangeCollapseTitle slot='title'>
-            {getLocale('braveWalletNoChanges')}
+            {getLocale('braveWalletEstimatedBalanceChange')}
           </TransactionChangeCollapseTitle>
           <TransactionChangeCollapseContent>
             <CollapseHeaderDivider key={'NoChanges-Divider'} />

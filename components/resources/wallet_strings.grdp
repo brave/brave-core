@@ -1130,7 +1130,6 @@
   <message name="IDS_BRAVE_WALLET_SIMULATION_ERROR_INSUFFICIENT_FUNDS" desc="Error explaining that the user does not have enough funds to continue">Insufficient funds to complete the transaction.</message>
   <message name="IDS_BRAVE_WALLET_SIMULATION_ERROR_TRANSACTION_REVERTED" desc="Error explaining that the transaction is likely to revert if submitted">Transaction is likely to fail and revert. Attempting will still incur gas costs.</message>
   <message name="IDS_BRAVE_WALLET_SIMULATION_UNEXPECTED_ERROR" desc="Generic error explaining that the transaction simulation failed">Unexpected error with transaction preview. Approving may be unsafe.</message>
-  <message name="IDS_BRAVE_WALLET_NO_CHANGES" desc="Heading text that is displayed when no changes were detected during transaction simulation">No changes</message>
   <message name="IDS_BRAVE_WALLET_NO_CHANGES_DETECTED" desc="Text to display when no changes were detected during transaction simulation">No changes detected</message>
   <message name="IDS_BRAVE_WALLET_OWNERSHIP_CHANGE" desc="Grouping header for estimated account ownership changes">Account ownership change</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_FEATURE_DESCRIPTION" desc="Description of the purpose of the transaction simulation feature ">Simulate how a transaction will behave before authorizing it</message>
