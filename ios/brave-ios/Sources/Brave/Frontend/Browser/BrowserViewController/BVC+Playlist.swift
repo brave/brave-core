@@ -307,23 +307,17 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     playbackOffset: Double,
     folderSharingPageUrl: String? = nil
   ) {
-    if #available(iOS 16.0, *), FeatureList.kNewPlaylistUI.enabled {
-      // FIXME: P3A
-      // FIXME: Pass in current time
-      let controller = PlaylistHostingController()
-      dismiss(animated: true) {
-        self.present(controller, animated: true)
-      }
-      return
-    }
     let playlistController = PlaylistCarplayManager.shared.getPlaylistController(
       tab: tab,
       initialItem: item,
       initialItemPlaybackOffset: playbackOffset
     )
     playlistController.modalPresentationStyle = .fullScreen
-    if let folderSharingPageUrl = folderSharingPageUrl {
-      playlistController.setFolderSharingUrl(folderSharingPageUrl)
+    // Legacy UI set up for shared playlists
+    if let playlistController = playlistController as? PlaylistViewController {
+      if let folderSharingPageUrl = folderSharingPageUrl {
+        playlistController.setFolderSharingUrl(folderSharingPageUrl)
+      }
     }
 
     // Donate Open Playlist Activity for suggestions
@@ -333,8 +327,11 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     PlaylistP3A.recordUsage()
 
     present(playlistController, animated: true) {
-      if let folderSharingPageUrl = folderSharingPageUrl {
-        playlistController.setFolderSharingUrl(folderSharingPageUrl)
+      // Legacy UI set up for shared playlists
+      if let playlistController = playlistController as? PlaylistViewController {
+        if let folderSharingPageUrl = folderSharingPageUrl {
+          playlistController.setFolderSharingUrl(folderSharingPageUrl)
+        }
       }
     }
   }

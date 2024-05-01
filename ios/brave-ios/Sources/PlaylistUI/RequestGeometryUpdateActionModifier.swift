@@ -70,7 +70,7 @@ extension EnvironmentValues {
 
   /// The action to allow you to request geometry updates to the window scene of this environment
   ///
-  /// - Note: This environment value will be not work unless a parent View uses
+  /// - Note: This environment value will not work unless a parent View uses
   ///         the `creatingRequestGeometryUpdateAction` modifier.
   var requestGeometryUpdate: RequestGeometryUpdateAction {
     self[RequestGeometryUpdateActionKey.self]

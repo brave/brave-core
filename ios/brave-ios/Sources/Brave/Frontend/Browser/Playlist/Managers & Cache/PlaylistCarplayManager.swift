@@ -3,12 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import CarPlay
 import Combine
 import Data
 import Foundation
 import MediaPlayer
 import Playlist
+import PlaylistUI
 import Preferences
 import Shared
 import os.log
@@ -119,13 +121,30 @@ public class PlaylistCarplayManager: NSObject {
     tab: Tab?,
     initialItem: PlaylistInfo?,
     initialItemPlaybackOffset: Double
-  ) -> PlaylistViewController {
+  ) -> UIViewController {
 
     // If background playback is enabled (on iPhone), tabs will continue to play media
     // Even if another controller is presented and even when PIP is enabled in playlist.
     // Therefore we need to stop the page/tab from playing when using playlist.
     // On iPad, media will continue to play with or without the background play setting.
     tab?.stopMediaPlayback()
+
+    if #available(iOS 16.0, *), FeatureList.kNewPlaylistUI.enabled {
+      // FIXME: Pass in initial item & time
+      return PlaylistHostingController(
+        delegate: .init(
+          openTabURL: { [weak browserController] url, isPrivate in
+            browserController?.openURLInNewTab(url, isPrivate: isPrivate, isPrivileged: false)
+          },
+          webLoaderFactory: {
+            LivePlaylistWebLoaderFactory()
+          },
+          onDismissal: { [weak self] in
+            self?.isPlaylistControllerPresented = false
+          }
+        )
+      )
+    }
 
     // If there is no media player, create one,
     // pass it to the play-list controller
@@ -146,7 +165,7 @@ public class PlaylistCarplayManager: NSObject {
     return playlistController
   }
 
-  func getPlaylistController(tab: Tab?, completion: @escaping (PlaylistViewController) -> Void) {
+  func getPlaylistController(tab: Tab?, completion: @escaping (UIViewController) -> Void) {
     if let playlistController = self.playlistController {
       return completion(playlistController)
     }

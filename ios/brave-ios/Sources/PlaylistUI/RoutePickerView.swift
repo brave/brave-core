@@ -10,6 +10,7 @@ import SwiftUI
 /// Displays controls for picking playback routes such as AirPlay
 @available(iOS 16.0, *)
 struct RoutePickerView: View {
+  // FIXME: WeakBox?
   @State private var underlyingRoutePickerControl: UIControl?
 
   var body: some View {
@@ -20,6 +21,7 @@ struct RoutePickerView: View {
     }
     .labelStyle(.iconOnly)
     .buttonStyle(.playbackControl)
+    .backgroundStyle(Color(braveSystemName: .containerHighlight))
     .tint(Color(braveSystemName: .textSecondary))
     .background {
       Representable(control: $underlyingRoutePickerControl)
@@ -29,7 +31,6 @@ struct RoutePickerView: View {
   }
 
   struct Representable: UIViewRepresentable {
-    // FIXME: WeakBox?
     @Binding var control: UIControl?
 
     func makeUIView(context: Context) -> AVRoutePickerView {

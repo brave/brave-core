@@ -6,12 +6,12 @@
 import AVFoundation
 import Data
 import Foundation
+import Playlist
 import SwiftUI
 
 @available(iOS 16.0, *)
 public class PlaylistHostingController: UIHostingController<PlaylistRootView> {
-  // FIXME: Remove optional after refactoring creation to be in one place
-  public init(delegate: PlaylistRootView.Delegate? = nil) {
+  public init(delegate: PlaylistRootView.Delegate) {
     super.init(rootView: PlaylistRootView(delegate: delegate))
     modalPresentationStyle = .fullScreen
   }
@@ -27,6 +27,11 @@ public class PlaylistHostingController: UIHostingController<PlaylistRootView> {
     // SwiftUI will handle the background
     view.backgroundColor = .clear
   }
+
+  deinit {
+    // FIXME: Remove in the future
+    print("PlaylistHostingController deinit")
+  }
 }
 
 @available(iOS 16.0, *)
@@ -34,32 +39,52 @@ public struct PlaylistRootView: View {
   /// Methods for handling playlist related actions that the browser should handle
   public struct Delegate {
     /// Open a URL in a tab (optionally in private mode)
-    var openTabURL: (URL, _ isPrivate: Bool) -> Void
+    public var openTabURL: (URL, _ isPrivate: Bool) -> Void
+    /// Returns the neccessary web loader for handling reloading streams
+    public var webLoaderFactory: () -> PlaylistWebLoaderFactory
+    /// Called when playlist is dismissed
+    public var onDismissal: () -> Void
+
+    public init(
+      openTabURL: @escaping (URL, _ isPrivate: Bool) -> Void,
+      webLoaderFactory: @escaping () -> PlaylistWebLoaderFactory,
+      onDismissal: @escaping () -> Void
+    ) {
+      self.openTabURL = openTabURL
+      self.webLoaderFactory = webLoaderFactory
+      self.onDismissal = onDismissal
+    }
   }
 
-  private var delegate: Delegate?
+  private var delegate: Delegate
 
-  public init(delegate: Delegate?) {
+  public init(delegate: Delegate) {
     self.delegate = delegate
   }
 
   public var body: some View {
     PlaylistContentView()
       .preparePlaylistEnvironment()
+      .prepareMediaStreamer(webLoaderFactory: delegate.webLoaderFactory())
       .environment(\.managedObjectContext, DataController.swiftUIContext)
       .environment(\.colorScheme, .dark)
       .preferredColorScheme(.dark)
       .environment(
         \.openTabURL,
         .init { url, isPrivate in
-          delegate?.openTabURL(url, isPrivate)
+          delegate.openTabURL(url, isPrivate)
         }
       )
+      .onDisappear {
+        delegate.onDismissal()
+      }
   }
 }
 
 @available(iOS 16.0, *)
 struct PlaylistContentView: View {
+  @Environment(\.loadMediaStreamingAsset) private var loadMediaStreamingAsset
+
   // FIXME: Will this have to be an ObservedObject instead to handle PiP?
   @StateObject private var playerModel: PlayerModel = .init()
 
@@ -131,8 +156,12 @@ struct PlaylistContentView: View {
     }
   }
 
-  private func playItem(_ item: PlaylistItem) {
-    let itemToReplace: AVPlayerItem? = {
+  @MainActor private func playItem(_ item: PlaylistItem) async {
+    // Shrink it down?
+    withAnimation(.snappy) {
+      selectedDetent = .small
+    }
+    let itemToReplace: AVPlayerItem? = await {
       if let cachedData = item.cachedData {
         do {
           var isStale: Bool = false
@@ -143,8 +172,9 @@ struct PlaylistContentView: View {
         } catch {
         }
       }
-      // FIXME: Handle streaming for blob URLs
-      if let url = URL(string: item.mediaSrc) {
+      if let newItem = try? await loadMediaStreamingAsset(item: .init(item: item)),
+        let url = URL(string: newItem.src)
+      {
         return .init(asset: AVURLAsset(url: url))
       }
       return nil
@@ -152,14 +182,6 @@ struct PlaylistContentView: View {
     if let item = itemToReplace {
       playerModel.item = item
       playerModel.play()
-      // Shrink it down?
-      withAnimation(.snappy) {
-        selectedDetent = .small
-      }
-    } else {
-      withAnimation(.snappy) {
-        selectedDetent = .anchor(.mediaPlayer)
-      }
     }
   }
 
@@ -175,6 +197,16 @@ struct PlaylistContentView: View {
             // Make the item queue prior to setting the `selectedItemID`, which will start playing
             // said item
             makeItemQueue(selectedItemID: newValue)
+            if selectedItemID == newValue {
+              // Already selected, restart it (based on prior behaviour)
+              withAnimation(.snappy) {
+                selectedDetent = .small
+              }
+              Task {
+                await playerModel.seek(to: 0, accurately: true)
+                playerModel.play()
+              }
+            }
             selectedItemID = newValue
           }
         ),
@@ -259,7 +291,9 @@ struct PlaylistContentView: View {
         playerModel.stop()
         return
       }
-      playItem(item)
+      Task {
+        await playItem(item)
+      }
     }
     .onChange(of: playerModel.isShuffleEnabled) { _ in
       makeItemQueue(selectedItemID: selectedItemID)
@@ -310,12 +344,23 @@ extension View {
 }
 
 #if DEBUG
+class PreviewWebLoaderFactory: PlaylistWebLoaderFactory {
+  class PreviewWebLoader: UIView, PlaylistWebLoader {
+    func load(url: URL) async -> PlaylistInfo? { return nil }
+    func stop() {}
+  }
+  func makeWebLoader() -> any PlaylistWebLoader {
+    PreviewWebLoader()
+  }
+}
 // swift-format-ignore
 @available(iOS 16.0, *)
 #Preview {
   PlaylistRootView(
     delegate: .init(
-      openTabURL: { _, _ in }
+      openTabURL: { _, _ in },
+      webLoaderFactory: { PreviewWebLoaderFactory() },
+      onDismissal: { }
     )
   )
 }

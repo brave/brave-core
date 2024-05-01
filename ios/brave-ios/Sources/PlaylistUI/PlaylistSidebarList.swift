@@ -86,6 +86,7 @@ struct PlaylistSidebarList: View {
             if let cachedData = item.cachedData, !cachedData.isEmpty {
               Button {
                 PlaylistManager.shared.deleteCache(item: .init(item: item))
+                downloadStates.removeValue(forKey: item.id)
               } label: {
                 Label("Remove Offline Data", braveSystemImage: "leo.cloud.off")
               }
@@ -246,9 +247,10 @@ struct PlaylistSidebarListHeader: View {
     .task {
       await calculateTotalSizeOnDisk(for: selectedFolder)
     }
-    .onChange(of: selectedFolder) { newValue in
+    .onChange(of: selectedFolder.playlistItems) { newValue in
+      // FIXME: Need to recalculate size on disk when an item is saved for offline/or cache deleted
       Task {
-        await calculateTotalSizeOnDisk(for: newValue)
+        await calculateTotalSizeOnDisk(for: selectedFolder)
       }
     }
   }

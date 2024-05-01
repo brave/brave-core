@@ -20,11 +20,11 @@ private class MediaThumbnailLoader: ObservableObject {
     case assetGenerationFailed
   }
 
-  @MainActor func loadThumbnail(assetURL: URL) async throws {
+  @MainActor func loadThumbnail(assetURL: URL, cacheKey: String) async throws {
     if assetURL.scheme == "blob" {
       throw MediaThumbnailError.invalidURL
     }
-    if let cachedImage = SDImageCache.shared.imageFromCache(forKey: assetURL.absoluteString) {
+    if let cachedImage = SDImageCache.shared.imageFromCache(forKey: cacheKey) {
       image = cachedImage
       return
     }
@@ -33,7 +33,7 @@ private class MediaThumbnailLoader: ObservableObject {
     image = UIImage(
       cgImage: try await generator.image(at: .init(seconds: 3, preferredTimescale: 1)).image
     )
-    await SDImageCache.shared.store(image, forKey: assetURL.absoluteString)
+    await SDImageCache.shared.store(image, forKey: cacheKey)
   }
 }
 
@@ -63,7 +63,13 @@ struct MediaThumbnail: View {
       }
       .task(id: assetURL) {
         do {
-          try await thumbnailLoader.loadThumbnail(assetURL: assetURL)
+          try await thumbnailLoader.loadThumbnail(
+            assetURL: assetURL,
+            // The page URL is more stable than the asset URL for most sites, but we don't want to
+            // pick up favicons so prefix theh cache key.
+            cacheKey: "playlist-\(pageURL.absoluteString)"
+          )
+          displayFavicon = false
         } catch {
           displayFavicon = true
         }

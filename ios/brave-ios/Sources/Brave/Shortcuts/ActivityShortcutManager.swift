@@ -231,14 +231,6 @@ public class ActivityShortcutManager: NSObject {
       bvc.popToBVC()
 
       let tab = bvc.tabManager.selectedTab
-
-      if #available(iOS 16.0, *), FeatureList.kNewPlaylistUI.enabled {
-        // FIXME: P3A
-        // FIXME: Pass in current time
-        let controller = PlaylistHostingController()
-        bvc.present(controller, animated: true)
-        return
-      }
       PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { playlistController in
         playlistController.modalPresentationStyle = .fullScreen
         PlaylistP3A.recordUsage()
