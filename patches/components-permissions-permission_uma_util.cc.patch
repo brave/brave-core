@@ -10,3 +10,11 @@ index 9d616e78b266a74c067749c8e8b990f5bee51a54..c021ed2cd8c5abfad772b0ac4f6daca3
    }
  }
  
+@@ -175,6 +176,7 @@ RequestTypeForUma GetUmaValueForRequests(
+     return RequestTypeForUma::MULTIPLE_KEYBOARD_AND_POINTER_LOCK;
+   }
+ #endif
++  BRAVE_GET_UMA_VALUE_FOR_REQUESTS
+   return RequestTypeForUma::UNKNOWN;
+ }
+ 
