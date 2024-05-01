@@ -161,12 +161,6 @@
 -WebHidWebViewTest.PermissionsAPIEmbedderHasAccessCloseWindowHid
 -WebHidWebViewTest.PermissionsAPIEmbedderHasAccessDenyHid
 
-# This test fails with the message:
-# Terminating render process for bad Mojo message: Received bad user message:
-# No binder found for interface brave_news.mojom.BraveNewsController for the
-# frame/document scope
--SearchEngineChoiceBrowserTest.DialogNotShownOverSpecificBrowserTypes
-
 # These tests fail because we stub search_engines::IsChoiceScreenFlagEnabled to
 # always return false
 -SearchEngineChoiceDialogBrowserTest.*
