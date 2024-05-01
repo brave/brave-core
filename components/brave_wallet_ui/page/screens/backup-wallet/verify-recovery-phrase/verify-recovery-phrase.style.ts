@@ -26,7 +26,6 @@ export const ErrorTextRow = styled.div<{
 export const FormLabel = styled.span`
   font: ${leo.font.default.regular};
   color: ${leo.color.text.primary};
-  margin-bottom: 30px;
 `
 
 export const Bold = styled(FormLabel)`

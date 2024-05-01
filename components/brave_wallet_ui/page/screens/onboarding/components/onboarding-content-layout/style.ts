@@ -8,14 +8,11 @@ import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 
 export const StyledWrapper = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  position: relative;
+  width: 100%;
 
   @media (min-width: 768px) {
-    overflow: hidden;
+    overflow-x: hidden;
   }
 `
 
@@ -43,7 +40,7 @@ export const ContentWrapper = styled.div`
   backdrop-filter: blur(400px);
   width: 100%;
   z-index: 2;
-  margin: 100px auto 0;
+  margin: 100px auto 50px;
   padding: ${leo.spacing['2Xl']};
 
   @media (max-width: 767px) {
