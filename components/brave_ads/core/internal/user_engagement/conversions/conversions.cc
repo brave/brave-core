@@ -33,7 +33,6 @@ namespace brave_ads {
 
 Conversions::Conversions() {
   TabManager::GetInstance().AddObserver(this);
-  queue_.SetDelegate(this);
 }
 
 Conversions::~Conversions() {
@@ -231,14 +230,6 @@ void Conversions::NotifyFailedToConvertAd(
   for (ConversionsObserver& observer : observers_) {
     observer.OnFailedToConvertAd(creative_instance_id);
   }
-}
-
-void Conversions::OnDidProcessConversionQueue(
-    const ConversionInfo& conversion) {
-  // TODO(https://github.com/brave/brave-browser/issues/37375): Transition
-  // legacy conversions. `ConversionQueueDelegate` should be removed after
-  // several browser releases. This is a no-op for new conversions.
-  NotifyDidConvertAd(conversion);
 }
 
 void Conversions::OnHtmlContentDidChange(

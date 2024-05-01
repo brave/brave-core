@@ -55,6 +55,7 @@ class ConfirmationQueue final : public TableInterface {
 
  private:
   void MigrateToV36(mojom::DBTransactionInfo* transaction) const;
+  void MigrateToV38(mojom::DBTransactionInfo* transaction) const;
 
   void InsertOrUpdate(
       mojom::DBTransactionInfo* transaction,

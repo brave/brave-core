@@ -120,7 +120,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
                                     // `DumpWithoutCrashing`.
                                     SCOPED_CRASH_KEY_STRING64(
                                         "Issue32066", "failure_reason",
-                                        "Failed to parse confirmation state");
+                                        "Failed to save confirmation state");
                                     base::debug::DumpWithoutCrashing();
 
                                     BLOG(0,
