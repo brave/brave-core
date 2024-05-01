@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <message name="IDS_APP_META_KEY" desc="The name of the Windows/Command/Meta key on Linux">
+    Meta
+  </message>
   <!--
     Please reuse existing strings as much as possible rather than adding new
     strings here.
