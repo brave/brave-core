@@ -225,7 +225,9 @@ void PublishersController::EnsurePublishersIsUpdating(
          const BraveNewsSubscriptions& subscriptions,
          api_request_helper::APIRequestResult api_request_result) {
         VLOG(1) << "Publishers response status code: "
-                << api_request_result.response_code();
+                << api_request_result.response_code()
+                << ", error code: " << api_request_result.error_code()
+                << ", final_url: " << api_request_result.final_url();
         // TODO(petemill): handle bad status or response
         std::optional<Publishers> publisher_list =
             ParseCombinedPublisherList(api_request_result.TakeBody());
