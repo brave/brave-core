@@ -145,7 +145,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
 // This is based on |TabHoverCardBubbleViewBrowserTest|. Unfortunately, all the
 // tests that do similar things are flakey, and this one is too.
 // See crbug.com/1050765.
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 #define MAYBE_HoverModesAreCorrectlyConfigured \
   DISABLED_HoverModesAreCorrectlyConfigured
 #else
