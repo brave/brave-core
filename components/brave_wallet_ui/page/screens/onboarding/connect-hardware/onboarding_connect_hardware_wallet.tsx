@@ -61,7 +61,7 @@ export const OnboardingConnectHardwareWallet = () => {
             <AccountType
               title={option.name}
               description={option.description}
-              icons={option.chainIcons ? option.chainIcons : []}
+              icons={option.chainIcons || []}
               onClick={onSelectAccountType(option)}
             />
             {index !== accountOptions.length - 1 && <Divider />}
