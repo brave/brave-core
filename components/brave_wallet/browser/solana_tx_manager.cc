@@ -859,6 +859,7 @@ void SolanaTxManager::GetEstimatedTxFeeAndMeta(
   auto chain_id = meta->chain_id();
   const std::string blockhash = meta->tx()->message()->recent_blockhash();
   if (blockhash.empty()) {
+    LOG(ERROR) << "Blockhash is empty";
     GetSolanaBlockTracker()->GetLatestBlockhash(
         chain_id,
         base::BindOnce(
@@ -867,6 +868,7 @@ void SolanaTxManager::GetEstimatedTxFeeAndMeta(
             std::move(callback)),
         true);
   } else {
+    LOG(ERROR) << "Blockhash is not empty";
     const std::string base64_encoded_message =
         meta->tx()->GetBase64EncodedMessage();
     json_rpc_service_->GetSolanaFeeForMessage(
