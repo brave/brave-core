@@ -837,6 +837,8 @@ GURL MaybeAddInfuraProjectId(const GURL& url) {
 mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
                                     const std::string& chain_id,
                                     mojom::CoinType coin) {
+  LOG(ERROR) << "GetKnownChain 0";
+  LOG(ERROR) << "GetKnownChain 1 : " << chain_id;
   if (coin == mojom::CoinType::ETH) {
     for (const auto* network : GetKnownEthNetworks()) {
       if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) != 0) {
