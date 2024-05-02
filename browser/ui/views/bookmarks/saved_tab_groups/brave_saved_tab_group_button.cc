@@ -81,7 +81,7 @@ void BraveSavedTabGroupButton::UpdateButtonLayout() {
   if (GetText().empty()) {
     SetPreferredSize(gfx::Size(kButtonSize, kButtonSize));
   } else {
-    SetPreferredSize(CalculatePreferredSize());
+    SetPreferredSize(CalculatePreferredSize({}));
   }
 }
 
