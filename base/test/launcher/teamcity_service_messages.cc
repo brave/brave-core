@@ -16,7 +16,7 @@ namespace {
 // https://www.jetbrains.com/help/teamcity/service-messages.html#Escaped+Values
 std::string_view TeamcityValueEscape(std::string_view s, std::string& result) {
   static constexpr char kSymbolsToEscape[] = "\n\r'|[]";
-  const char* s_char = base::ranges::find_first_of(s, kSymbolsToEscape);
+  const char* s_char = ranges::find_first_of(s, kSymbolsToEscape);
   if (s_char == s.end()) {
     return s;
   }
@@ -110,11 +110,10 @@ void TeamcityServiceMessages::TestIgnored(std::string_view name,
 }
 
 void TeamcityServiceMessages::TestFinished(std::string_view name,
-                                           base::TimeDelta duration) {
+                                           TimeDelta duration) {
   Message(*ostream_, "testFinished")
       .WriteProperty("name", name)
-      .WriteProperty("duration",
-                     base::NumberToString(duration.InMilliseconds()));
+      .WriteProperty("duration", NumberToString(duration.InMilliseconds()));
 }
 
 }  // namespace base

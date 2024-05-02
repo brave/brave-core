@@ -30,7 +30,7 @@ constexpr char kTestLauncherNoTeamcityReporter[] =
 
 // Returns the name of the current executable, excluding the extension.
 std::string GetExecutableName() {
-  base::FilePath file_exe = base::PathService::CheckedGet(base::FILE_EXE);
+  FilePath file_exe = PathService::CheckedGet(FILE_EXE);
   file_exe = file_exe.BaseName().RemoveFinalExtension();
   return file_exe.AsUTF8Unsafe();
 }

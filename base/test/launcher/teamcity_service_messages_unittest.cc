@@ -89,7 +89,7 @@ TEST_F(TeamcityServiceMessagesTest, TestIgnored) {
 }
 
 TEST_F(TeamcityServiceMessagesTest, TestFinished) {
-  tsm_->TestFinished("Test1", base::Milliseconds(100));
+  tsm_->TestFinished("Test1", Milliseconds(100));
   EXPECT_EQ(GetStr(), "##teamcity[testFinished name='Test1' duration='100']\n");
 }
 
