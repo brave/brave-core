@@ -6,6 +6,7 @@
 #include "brave/components/brave_sync/time_limited_words.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/strings/strcat.h"
 #include "base/time/time_override.h"
@@ -231,6 +232,33 @@ TEST(TimeLimitedWordsTest, ParseIgnoreDate) {
     EXPECT_TRUE(pure_words_with_status.has_value());
     EXPECT_EQ(pure_words_with_status.value(), kValidSyncCode);
   }
+}
+
+TEST(TimeLimitedWordsTest, GetNotAfter) {
+  const base::Time anchorDayForWordsV2 =
+      TimeLimitedWords::GetWordsV2Epoch() + base::Days(20);
+
+  const auto& generate_result =
+      TimeLimitedWords::GenerateForDate(kValidSyncCode, anchorDayForWordsV2);
+  EXPECT_TRUE(generate_result.has_value());
+
+  base::Time not_after = TimeLimitedWords::GetNotAfter(generate_result.value());
+
+  // We must able to connect before |not_after| and we must be rejected after
+  // |not_after|
+  std::pair<int, bool> hours_to_result_data[] = {
+      {-12, true}, {-1, true}, {1, false}};
+
+  for (const auto& hours_to_result : hours_to_result_data) {
+    auto time_override =
+        OverrideWithTimeNow(not_after + base::Hours(hours_to_result.first));
+    auto parse_status = TimeLimitedWords::Parse(generate_result.value());
+    EXPECT_EQ(parse_status.has_value(), hours_to_result.second);
+  }
+}
+
+TEST(TimeLimitedWordsTest, GetNotAfterForPureWords) {
+  EXPECT_EQ(TimeLimitedWords::GetNotAfter(kValidSyncCode), base::Time());
 }
 
 }  // namespace brave_sync
