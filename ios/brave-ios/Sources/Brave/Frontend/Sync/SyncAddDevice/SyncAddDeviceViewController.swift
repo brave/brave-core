@@ -41,7 +41,7 @@ class SyncAddDeviceViewController: SyncViewController {
 
   private let codeDetailsStackView: SyncAddDeviceCodeView
 
-  private let codeExpirationStackView = SyncAddDeviceCodeExpirationView()
+  private let codeExpirationStackView: SyncAddDeviceCodeExpirationView
 
   private let actionButtonStackView = SyncAddDeviceActionView()
 
@@ -70,6 +70,9 @@ class SyncAddDeviceViewController: SyncViewController {
   init(title: String, type: SyncDeviceType, syncAPI: BraveSyncAPI) {
     self.syncAPI = syncAPI
     codeDetailsStackView = SyncAddDeviceCodeView(syncAPI: syncAPI)
+    let expiryDate = Date() + 30.seconds
+    codeExpirationStackView = SyncAddDeviceCodeExpirationView(expirationTime: expiryDate)
+
     super.init()
 
     pageTitle = title
@@ -120,6 +123,7 @@ class SyncAddDeviceViewController: SyncViewController {
       $0.addTarget(self, action: #selector(changeMode), for: .valueChanged)
     }
 
+    codeExpirationStackView.delegate = self
     actionButtonStackView.delegate = self
   }
 
@@ -180,6 +184,7 @@ class SyncAddDeviceViewController: SyncViewController {
       codeDetailsStackView.isHidden = true
       actionButtonStackView.swapCodeViewType(true)
     } else {
+      codeDetailsStackView.isHidden = false
       changeSyncCodeStatus()
     }
 
@@ -218,5 +223,24 @@ extension SyncAddDeviceViewController: SyncAddDeviceActionView.ActionDelegate {
 
   func dismiss() {
     addDeviceHandler?()
+  }
+
+  func generateNewCode() {
+    codeDetailsStackView.refreshSyncCodeViews()
+    // Refresh with proper API
+    let expiryDate = Date() + 30.seconds
+    codeExpirationStackView.resetExpiration(expirationTime: expiryDate)
+
+    isSyncCodeExpired = false
+
+    changeCodeDisplayStatus()
+  }
+}
+
+extension SyncAddDeviceViewController: SyncAddDeviceCodeExpirationView.ActionDelegate {
+
+  func codeExpired() {
+    isSyncCodeExpired = true
+    changeCodeDisplayStatus()
   }
 }

@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Shared
 import UIKit
 
@@ -110,7 +111,7 @@ class SyncAddDeviceCodeView: UIStackView {
     $0.layer.borderWidth = 1.0
   }
 
-  private let qrCodeView: SyncAddDeviceQRCodeView
+  private lazy var qrCodeView = SyncAddDeviceQRCodeView(frame: .zero)
 
   private let codeWordsContainerView = UIView().then {
     $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
@@ -133,22 +134,31 @@ class SyncAddDeviceCodeView: UIStackView {
   var syncChainCode: String? {
     return codewordsView.text
   }
+  
+  private let syncAPI: BraveSyncAPI
 
   required init(syncAPI: BraveSyncAPI) {
-    qrCodeView = SyncAddDeviceQRCodeView(syncApi: syncAPI)
-
+    self.syncAPI = syncAPI
+    
     super.init(frame: .zero)
-
-    codewordsView.do {
-      $0.text = syncAPI.getTimeLimitedWords(fromWords: syncAPI.getSyncCode())
-    }
-
+    
     axis = .vertical
     alignment = .center
 
+    createSyncCodeViews(syncAPI: syncAPI)
+
+    doLayout()
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+  
+  private func doLayout() {
     addArrangedSubview(qrCodeContainerView)
     addArrangedSubview(codeWordsContainerView)
-
+    
     qrCodeContainerView.snp.makeConstraints {
       $0.centerX.equalToSuperview()
       $0.width.equalToSuperview().multipliedBy(0.75)
@@ -171,15 +181,27 @@ class SyncAddDeviceCodeView: UIStackView {
       $0.edges.equalToSuperview().inset(12)
     }
   }
+  
+  private func createSyncCodeViews(syncAPI: BraveSyncAPI) {
+    qrCodeView = SyncAddDeviceQRCodeView(syncApi: syncAPI)
 
-  @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
+    codewordsView.do {
+      $0.text = syncAPI.getTimeLimitedWords(fromWords: syncAPI.getSyncCode())
+    }
   }
 
   func swapCodeViewType(_ isSyncCodePresented: Bool) {
     qrCodeContainerView.isHidden = !isSyncCodePresented
     codeWordsContainerView.isHidden = isSyncCodePresented
+  }
+  
+  func refreshSyncCodeViews() {
+    removeArrangedSubview(qrCodeContainerView)
+    removeArrangedSubview(codeWordsContainerView)
+    
+    createSyncCodeViews(syncAPI: syncAPI)
+    
+    doLayout()
   }
 }
 
@@ -188,6 +210,7 @@ class SyncAddDeviceActionView: UIStackView {
   public protocol ActionDelegate: AnyObject {
     func copyToClipboard()
     func dismiss()
+    func generateNewCode()
   }
 
   private lazy var doneButton = UIButton().then {
@@ -211,7 +234,7 @@ class SyncAddDeviceActionView: UIStackView {
   private lazy var generateNewCodeButton = UIButton().then {
     $0.setTitle("Generate New Code", for: .normal)
     $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
-    $0.addTarget(self, action: #selector(copyToClipboard), for: .touchUpInside)
+    $0.addTarget(self, action: #selector(generateNewCode), for: .touchUpInside)
     $0.setTitleColor(UIColor(braveSystemName: .textInteractive), for: .normal)
     $0.backgroundColor = .clear
     $0.isHidden = true
@@ -268,17 +291,26 @@ class SyncAddDeviceActionView: UIStackView {
     generateNewCodeButton.isHidden = !isExpired
   }
 
-  @objc func copyToClipboard() {
+  @objc private func copyToClipboard() {
     copyButtonPressed = true
     delegate?.copyToClipboard()
   }
 
-  @objc func dismiss() {
+  @objc private func dismiss() {
     delegate?.dismiss()
+  }
+  @objc private func generateNewCode() {
+    delegate?.generateNewCode()
   }
 }
 
 class SyncAddDeviceCodeExpirationView: UIStackView {
+
+  public protocol ActionDelegate: AnyObject {
+    func codeExpired()
+  }
+
+  // MARK: UX
 
   private let timeRemainingContainerView = UIView().then {
     $0.backgroundColor = UIColor(braveSystemName: .systemfeedbackInfoBackground)
@@ -326,6 +358,7 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
 
   private let codeExpirationTitleLabel = UILabel().then {
     $0.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.regular)
+    $0.text = "Code expired. Generate a new one by clicking the button below."
     $0.lineBreakMode = NSLineBreakMode.byWordWrapping
     $0.textColor = UIColor(braveSystemName: .systemfeedbackErrorText)
     $0.textAlignment = .left
@@ -342,10 +375,24 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
     $0.setContentHuggingPriority(.required, for: .horizontal)
   }
 
-  required init() {
+  // MARK: Internal
+
+  private var expirationTime: Date
+
+  private var remainingInterval: TimeInterval {
+    expirationTime.timeIntervalSinceReferenceDate - Date().timeIntervalSinceReferenceDate
+  }
+
+  private var codeExpiryTimer: Timer?
+
+  weak var delegate: ActionDelegate?
+
+  required init(expirationTime: Date) {
+    self.expirationTime = expirationTime
+
     super.init(frame: .zero)
 
-    updateLabels()
+    startExpirationTimer()
 
     axis = .vertical
     alignment = .center
@@ -385,14 +432,53 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
     fatalError()
   }
 
-  private func updateLabels() {
-    timeRemainingTitleLabel.text =
-      "This temporary code is valid for the next 1 hour 52 min 5 seconds"
-    codeExpirationTitleLabel.text = "Code expired. Generate a new one by clicking the button below."
+  private func startExpirationTimer() {
+    codeExpiryTimer =
+      Timer.scheduledTimer(
+        timeInterval: 1,
+        target: self,
+        selector: #selector(updateRemainingTime),
+        userInfo: nil,
+        repeats: true
+      )
+
+    updateRemainingTime()
+  }
+
+  @objc private func updateRemainingTime() {
+    let timeRemainingString = fetchRemainingTimeString(time: remainingInterval)
+
+    if Int(remainingInterval) < 0 {
+      swapCodeExpirationType(true)
+      codeExpiryTimer?.invalidate()
+      delegate?.codeExpired()
+    } else {
+      timeRemainingTitleLabel.text =
+        "This temporary code is valid for the next \(timeRemainingString)"
+    }
+  }
+
+  private func fetchRemainingTimeString(time: TimeInterval) -> String {
+    let hours = Int(time) / 3600
+    let minutes = Int(time) / 60 % 60
+    let seconds = Int(time) % 60
+
+    let hoursText = hours > 1 ? "\(hours) hours" : "\(hours) hour"
+    let minutesText = "\(minutes) min"
+    let secondsText = seconds > 1 ? "\(seconds) seconds" : "\(seconds) second"
+
+    return "\(hoursText) \(minutesText) \(secondsText)"
+  }
+
+  func resetExpiration(expirationTime: Date) {
+    self.expirationTime = expirationTime
+
+    startExpirationTimer()
   }
 
   func swapCodeExpirationType(_ isExpired: Bool) {
     timeRemainingContainerView.isHidden = isExpired
     codeExpirationContainerView.isHidden = !isExpired
   }
+
 }
