@@ -904,8 +904,9 @@ mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
     if (auto opt_chain_id =
             brave_wallet::ExtractChainIdFromValue(it.GetIfDict())) {
       // Log whether the chain_id has a value
-      LOG(ERROR) << " chain_id " << chain_id << " has value: " << opt_chain_id.has_value();
+      LOG(ERROR) << "let's see here...";
       LOG(ERROR) << " chain_id value: " << opt_chain_id.value();
+      LOG(ERROR) << " chain_id " << chain_id;
       if (base::CompareCaseInsensitiveASCII(chain_id, *opt_chain_id) == 0) {
         return brave_wallet::ValueToNetworkInfo(it);
       }
