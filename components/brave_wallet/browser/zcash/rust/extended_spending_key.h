@@ -26,12 +26,12 @@ class ExtendedSpendingKey {
 
   // Derives hardened key using index and the current key
   virtual std::unique_ptr<ExtendedSpendingKey> DeriveHardenedChild(
-      uint32_t index);
+      uint32_t index) = 0;
 
   // Returns public or internal address that may be used as a recipient address
   // in transactions
   virtual std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
-  GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind);
+  GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind) = 0;
 };
 
 }  // namespace brave_wallet::orchard
