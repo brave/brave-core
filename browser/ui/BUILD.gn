@@ -171,6 +171,8 @@ source_set("ui") {
       "sidebar/sidebar_tab_helper.h",
       "sidebar/sidebar_utils.cc",
       "sidebar/sidebar_utils.h",
+      "startup/brave_startup_tab_provider_impl.cc",
+      "startup/brave_startup_tab_provider_impl.h",
       "tabs/brave_tab_color_mixer.cc",
       "tabs/brave_tab_color_mixer.h",
       "tabs/brave_tab_layout_constants.h",

@@ -205,9 +205,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::internal::kOmniboxAction,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
       &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
-#if !BUILDFLAG(IS_ANDROID)
-      &kForYouFre,
-#endif
 #if BUILDFLAG(ENABLE_DICE_SUPPORT)
       &kPreconnectAccountCapabilitiesBeforeSignIn,
 #endif

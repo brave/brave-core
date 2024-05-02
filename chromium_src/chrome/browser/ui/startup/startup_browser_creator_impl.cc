@@ -3,8 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#define BRAVE_STARTUPBROWSERCREATORIMPL_DETERMINEURLSANDLAUNCH \
-  welcome_enabled = true;
+#include "brave/browser/ui/startup/brave_startup_tab_provider_impl.h"
+#include "chrome/browser/ui/startup/startup_browser_creator.h"
+#include "chrome/browser/ui/startup/startup_tab_provider.h"
+
+#define StartupTabProviderImpl BraveStartupTabProviderImpl
 
 #include "src/chrome/browser/ui/startup/startup_browser_creator_impl.cc"
-#undef BRAVE_STARTUPBROWSERCREATORIMPL_DETERMINEURLSANDLAUNCH
+
+#undef StartupTabProviderImpl
