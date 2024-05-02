@@ -855,6 +855,7 @@ void SolanaTxManager::GetEstimatedTxFee(const std::string& tx_meta_id,
 void SolanaTxManager::GetEstimatedTxFeeAndMeta(
     std::unique_ptr<SolanaTxMeta> meta,
     GetEstimatedTxFeeAndMetaCallback callback) {
+  LOG(INFO) << "SolanaTxManager::GetEstimatedTxFeeAndMeta 0";
   auto chain_id = meta->chain_id();
   const std::string blockhash = meta->tx()->message()->recent_blockhash();
   if (blockhash.empty()) {
@@ -883,6 +884,7 @@ void SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee(
     uint64_t last_valid_block_height,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
+  LOG(INFO) << "SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee 0";
   if (error != mojom::SolanaProviderError::kSuccess) {
     std::move(callback).Run({}, 0, error, error_message);
     return;
@@ -905,6 +907,7 @@ void SolanaTxManager::OnGetFeeForMessage(
     uint64_t tx_fee,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
+  LOG(ERROR) << "SolanaTxManager::OnGetFeeForMessage 0";
   std::move(callback).Run(std::move(meta), tx_fee, error, error_message);
 }
 
