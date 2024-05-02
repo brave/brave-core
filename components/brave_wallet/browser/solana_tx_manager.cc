@@ -126,6 +126,8 @@ void SolanaTxManager::OnSimulateSolanaTransaction(
     uint64_t compute_units_consumed,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
+  LOG(ERROR) << "SolanaTxManager::OnSimulateSolanaTransaction 0";
+  LOG(ERROR) << "SolanaTxManager::OnSimulateSolanaTransaction 1 " << chain_id;
   if (error != mojom::SolanaProviderError::kSuccess) {
     std::move(callback).Run({}, {}, error, error_message);
     return;
@@ -872,7 +874,7 @@ void SolanaTxManager::GetEstimatedTxFeeAndMeta(
     const std::string base64_encoded_message =
         meta->tx()->GetBase64EncodedMessage();
     json_rpc_service_->GetSolanaFeeForMessage(
-        meta->chain_id(), base64_encoded_message,
+        chain_id, base64_encoded_message,
         base::BindOnce(&SolanaTxManager::OnGetFeeForMessage,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                        std::move(meta)));
