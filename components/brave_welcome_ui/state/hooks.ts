@@ -78,8 +78,6 @@ interface ViewTypeState {
   fail?: ViewType;
 }
 
-const showHelpWDP = loadTimeData.getBoolean('showHelpWDP')
-
 export function useViewTypeTransition(currentViewType: ViewType | undefined) : ViewTypeState {
   const { browserProfiles, currentSelectedBrowserProfiles} = React.useContext(DataContext)
 
@@ -90,11 +88,11 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
             ViewType.ImportSelectTheme : ViewType.ImportSelectBrowser
       },
       [ViewType.ImportSelectTheme]: {
-        forward: showHelpWDP ? ViewType.HelpWDP : ViewType.HelpImprove
+        forward: ViewType.HelpWDP
       },
       [ViewType.ImportSelectBrowser]: {
         forward: currentSelectedBrowserProfiles && currentSelectedBrowserProfiles.length > 1 ? ViewType.ImportSelectProfile : ViewType.ImportInProgress,
-        skip: showHelpWDP ? ViewType.HelpWDP : ViewType.HelpImprove,
+        skip: ViewType.HelpWDP,
       },
       [ViewType.ImportSelectProfile]: {
         forward: ViewType.ImportInProgress,
@@ -105,10 +103,10 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
         fail: ViewType.ImportFailed,
       },
       [ViewType.ImportSucceeded]: {
-        forward: showHelpWDP ? ViewType.HelpWDP : ViewType.HelpImprove
+        forward: ViewType.HelpWDP
       },
       [ViewType.ImportFailed]: {
-        forward: showHelpWDP ? ViewType.HelpWDP : ViewType.HelpImprove
+        forward: ViewType.HelpWDP
       },
       [ViewType.HelpWDP]: {
         forward: ViewType.HelpImprove

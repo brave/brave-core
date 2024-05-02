@@ -48,10 +48,4 @@ const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant{
     /*name=*/"variant",
     /*default_value=*/""};
 
-// Shows "Help WDP" in brave://welcome page. If this is off,
-// the page shows up only when country code is Japan
-BASE_FEATURE(kBraveShowHelpWDPInWelcomePage,
-             "brave-show-help-wdp-in-welcome-page",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 }  // namespace features

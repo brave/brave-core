@@ -21,8 +21,6 @@ BASE_DECLARE_FEATURE(kBraveWebViewRoundedCorners);
 BASE_DECLARE_FEATURE(kBraveDayZeroExperiment);
 extern const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant;
 
-BASE_DECLARE_FEATURE(kBraveShowHelpWDPInWelcomePage);
-
 }  // namespace features
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_FEATURES_H_
