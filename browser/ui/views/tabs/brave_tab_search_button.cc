@@ -36,7 +36,8 @@ BraveTabSearchButton::BraveTabSearchButton(
 
 BraveTabSearchButton::~BraveTabSearchButton() = default;
 
-gfx::Size BraveTabSearchButton::CalculatePreferredSize() const {
+gfx::Size BraveTabSearchButton::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   auto size = BraveNewTabButton::GetButtonSize();
   if (tabs::features::HorizontalTabsUpdateEnabled()) {
     auto insets = GetInsets();

@@ -122,7 +122,8 @@ void BraveTabContainer::AddedToWidget() {
   }
 }
 
-gfx::Size BraveTabContainer::CalculatePreferredSize() const {
+gfx::Size BraveTabContainer::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   // Note that we check this before checking currently we're in vertical tab
   // strip mode. We might be in the middle of changing orientation.
   if (layout_locked_) {
@@ -131,7 +132,7 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
 
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
-    return TabContainerImpl::CalculatePreferredSize();
+    return TabContainerImpl::CalculatePreferredSize(available_size);
   }
 
   const int tab_count = tabs_view_model_.view_size();
