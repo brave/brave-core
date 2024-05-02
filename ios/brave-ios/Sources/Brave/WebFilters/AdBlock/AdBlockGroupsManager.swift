@@ -125,10 +125,15 @@ import os
     updateIfNeeded(resourcesInfo: resourcesInfo)
   }
 
+  /// Handle updated of multiple filter list infos
+  /// - Parameters:
+  ///   - fileInfos: The file infos to update on the appropriate engine manager
+  ///   - engineType: The type of engine to use
+  ///   - compileDelayed: Setting this to `false` will not compile the engine. This should always be set to `true` and false is an option available only for tests.
   func update(
     fileInfos: [AdBlockEngineManager.FileInfo],
     engineType: GroupedAdBlockEngine.EngineType,
-    compileDelayed: Bool = true
+    compileDelayed: Bool
   ) {
     let manager = getManager(for: engineType)
     let enabledSources = sourceProvider.enabledSources(for: engineType)
@@ -153,10 +158,14 @@ import os
   }
 
   /// Handle updated filter list info
+  /// - Parameters:
+  ///   - fileInfo: The file info to update on the appropriate engine manager
+  ///   - engineType: The type of engine to use
+  ///   - compileDelayed: Setting this to `false` will not compile the engine. This should always be set to `true` and false is an option available only for tests.
   func update(
     fileInfo: AdBlockEngineManager.FileInfo,
     engineType: GroupedAdBlockEngine.EngineType,
-    compileDelayed: Bool = true
+    compileDelayed: Bool
   ) {
     update(fileInfos: [fileInfo], engineType: engineType, compileDelayed: compileDelayed)
   }

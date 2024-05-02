@@ -115,7 +115,8 @@ public actor FilterListResourceDownloader {
 
     await AdBlockGroupsManager.shared.update(
       fileInfo: fileInfo,
-      engineType: engineType
+      engineType: engineType,
+      compileDelayed: true
     )
   }
 
