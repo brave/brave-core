@@ -152,6 +152,7 @@ struct PlaylistSidebarListHeader: View {
   @Binding var isNewPlaylistAlertPresented: Bool
 
   @State private var totalSizeOnDisk = Measurement<UnitInformationStorage>(value: 0, unit: .bytes)
+  @State private var isDeletePlaylistConfirmationActive: Bool = false
 
   @MainActor private func calculateTotalSizeOnDisk(for folder: PlaylistFolder) async {
     // Since we're consuming CoreData we need to make sure those accesses happen on main
@@ -238,11 +239,19 @@ struct PlaylistSidebarListHeader: View {
         .font(.caption2)
       }
       Spacer()
-      Button {
-
+      Menu {
+        if selectedFolder.uuid != PlaylistFolder.savedFolderUUID {
+          Button(role: .destructive) {
+            isDeletePlaylistConfirmationActive = true
+          } label: {
+            Label("Delete Playlist…", braveSystemImage: "leo.trash")
+          }
+        }
       } label: {
         Text("Edit")
           .fontWeight(.semibold)
+      } primaryAction: {
+        // FIXME: Show edit UI
       }
       .foregroundStyle(Color(braveSystemName: .textPrimary))
     }
@@ -255,6 +264,22 @@ struct PlaylistSidebarListHeader: View {
       Task {
         await calculateTotalSizeOnDisk(for: newValue)
       }
+    }
+    .confirmationDialog(
+      "All videos on this playlist will be removed",
+      isPresented: $isDeletePlaylistConfirmationActive,
+      titleVisibility: .visible
+    ) {
+      Button(role: .destructive) {
+        PlaylistManager.shared.delete(folder: selectedFolder)
+      } label: {
+        Text("Delete Playlist")
+      }
+      Button(role: .cancel) {
+      } label: {
+        Text("Cancel")
+      }
+      .keyboardShortcut(.cancelAction)
     }
   }
 }

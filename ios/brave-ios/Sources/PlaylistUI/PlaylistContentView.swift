@@ -6,6 +6,7 @@
 import AVFoundation
 import Data
 import Foundation
+import Playlist
 import SwiftUI
 
 @available(iOS 16.0, *)
@@ -104,7 +105,7 @@ struct PlaylistContentView: View {
         }
       }
       if let newItem = try? await loadMediaStreamingAsset(item: .init(item: item)),
-         let url = URL(string: newItem.src)
+        let url = URL(string: newItem.src)
       {
         return .init(asset: AVURLAsset(url: url))
       }
@@ -212,13 +213,32 @@ struct PlaylistContentView: View {
       } label: {
         Text("Cancel")
       }
+      .keyboardShortcut(.cancelAction)
       Button {
-        // FIXME: Create playlist
+        if !newPlaylistName.isEmpty {
+          // See comment below about .disabled modifier
+          return
+        }
+        PlaylistFolder.addFolder(title: newPlaylistName) { uuid in
+          if let newFolder = PlaylistFolder.getFolder(uuid: uuid) {
+            selectedFolderID = newFolder.id
+          }
+        }
+        if let defaultFolderItems = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID)?
+          .playlistItems, !defaultFolderItems.isEmpty
+        {
+          // FIXME: Display move default items sheet
+        }
         newPlaylistName = ""
       } label: {
         Text("Create")
       }
-      .disabled(newPlaylistName.isEmpty)
+      .keyboardShortcut(.defaultAction)
+      // Unfortunately we can't disable this button due to _many_ SwiftUI bugs.
+      // - On iOS 16, the button simply does not get added to the alert at all.
+      // - On iOS 17 (tested to 17.4), the button shows up but tapping it does not execute the
+      //   action even when the button is enabled.
+      // .disabled(newPlaylistName.isEmpty)
     }
     .onChange(of: selectedItemID) { newValue in
       guard let id = newValue, let item = PlaylistItem.getItem(uuid: id) else {
@@ -234,6 +254,12 @@ struct PlaylistContentView: View {
     }
     .onChange(of: playerModel.isShuffleEnabled) { _ in
       makeItemQueue(selectedItemID: selectedItemID)
+    }
+    .onChange(of: Array(folders)) { newValue in
+      if !newValue.map(\.id).contains(selectedFolderID) {
+        // Reset the selected folder if the user deletes the folder they had selected
+        selectedFolderID = PlaylistFolder.savedFolderUUID
+      }
     }
   }
 }
@@ -252,8 +278,8 @@ struct PlaylistContentUnavailableView: View {
       Image(.emptyPlaylist)
       Text(
         isPlaylistEmpty
-        ? "Add videos to the playlist and play them here!"
-        : "Tap videos from your playlist to play."
+          ? "Add videos to the playlist and play them here!"
+          : "Tap videos from your playlist to play."
       )
       .multilineTextAlignment(.center)
       .foregroundStyle(Color(braveSystemName: .textTertiary))
