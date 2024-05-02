@@ -63,6 +63,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kShowScrollableMVTOnNTPAndroid, base::FEATURE_ENABLED_BY_DEFAULT},
     {kStartSurfaceAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSurfacePolish, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kAdaptiveButtonInTopToolbarCustomizationV2,
+     base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace android

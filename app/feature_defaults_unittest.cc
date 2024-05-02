@@ -56,6 +56,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "android_webview/common/aw_features.h"
+#include "chrome/browser/flags/android/chrome_feature_list.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #else
 #include "chrome/browser/apps/link_capturing/link_capturing_features.h"
@@ -112,6 +113,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kSharedStorageSelectURLLimit,
       &blink::features::kSpeculationRulesPrefetchFuture,
       &blink::features::kTextFragmentAnchor,
+#if BUILDFLAG(IS_ANDROID)
+      &chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2,
+#endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
