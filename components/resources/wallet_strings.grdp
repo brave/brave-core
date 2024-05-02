@@ -298,8 +298,6 @@
   <message name="IDS_BRAVE_WALLET_NETWORK_TEST" desc="Network Test Network title">Test Network</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_GOERLI" desc="Network Goerli title">Goerli</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_SEPOLIA" desc="Network Sepolia title">Sepolia</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_BINANCE" desc="Network Binance Smart Chain title">Binance Smart Chain</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_BINANCE_ABBR" desc="Network BSC abbreviation title">BSC</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_LOCALHOST" desc="Network Localhost title">Localhost</message>
   <message name="IDS_BRAVE_WALLET_SELECT_ACCOUNT" desc="Select Account tab title">Select account</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_ACCOUNT" desc="Search Accounts tab search placeholder">Search accounts</message>

@@ -63,7 +63,7 @@ export const getRampNetworkPrefix = (chainId: string, isOfframp?: boolean) => {
       return isOfframp ? 'ETH' : ''
     case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID:
       return 'AVAXC'
-    case BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+    case BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID:
       return 'BSC'
     case BraveWallet.POLYGON_MAINNET_CHAIN_ID:
       return 'MATIC'

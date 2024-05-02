@@ -513,8 +513,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNetworkTest", IDS_BRAVE_WALLET_NETWORK_TEST},
     {"braveWalletNetworkGoerli", IDS_BRAVE_WALLET_NETWORK_GOERLI},
     {"braveWalletNetworkSepolia", IDS_BRAVE_WALLET_NETWORK_SEPOLIA},
-    {"braveWalletNetworkBinance", IDS_BRAVE_WALLET_NETWORK_BINANCE},
-    {"braveWalletNetworkBinanceAbbr", IDS_BRAVE_WALLET_NETWORK_BINANCE_ABBR},
     {"braveWalletNetworkLocalhost", IDS_BRAVE_WALLET_NETWORK_LOCALHOST},
     {"braveWalletSelectAccount", IDS_BRAVE_WALLET_SELECT_ACCOUNT},
     {"braveWalletSearchAccount", IDS_BRAVE_WALLET_SEARCH_ACCOUNT},

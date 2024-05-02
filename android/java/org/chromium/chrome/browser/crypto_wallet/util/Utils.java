@@ -934,7 +934,7 @@ public class Utils {
             case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
                 logo = "matic.png";
                 break;
-            case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.BNB_SMART_CHAIN_MAINNET_CHAIN_ID:
                 logo = "bnb.png";
                 break;
             case BraveWalletConstants.SOLANA_MAINNET:

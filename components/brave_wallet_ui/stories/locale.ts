@@ -537,8 +537,6 @@ provideStrings({
   braveWalletNetworkMain: 'Mainnet',
   braveWalletNetworkTest: 'Test Network',
   braveWalletNetworkGoerli: 'Goerli',
-  braveWalletNetworkBinance: 'Binance Smart Chain',
-  braveWalletNetworkBinanceAbbr: 'BSC',
   braveWalletNetworkLocalhost: 'Localhost',
   braveWalletAddNetworksAnytimeInSettings:
     'You can add networks anytime in Settings.',

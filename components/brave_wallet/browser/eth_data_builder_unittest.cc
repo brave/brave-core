@@ -259,7 +259,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_ETH) {
   }
   {
     auto call = GetWalletAddr("test.crypto", mojom::CoinType::ETH, "USDT",
-                              mojom::kBinanceSmartChainMainnetChainId);
+                              mojom::kBnbSmartChainMainnetChainId);
 
     auto [selector, args] =
         eth_abi::ExtractFunctionSelectorAndArgsFromCall(call);
