@@ -1,12 +1,30 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.cc b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-index 07dc31daf2d0b7c398b38a6146e275b55a80ebec..230c9e2b25d69696761e7a6eae6394dc16a56fdb 100644
+index 497ba7b735c47ccdc47ea3c85baf236fd9607d91..abb46f52d8b73b92ccaadac7222b4fa7660bc3c1 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-@@ -411,6 +411,7 @@ StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
-   welcome_enabled =
-       welcome::IsEnabled(profile_) && welcome::HasModulesToShow(profile_);
- #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
-+  BRAVE_STARTUPBROWSERCREATORIMPL_DETERMINEURLSANDLAUNCH
+@@ -524,6 +524,7 @@ StartupBrowserCreatorImpl::DetermineStartupTabs(
+       }
+ #endif
  
-   const bool whats_new_enabled =
-       whats_new::ShouldShowForState(local_state, promotional_tabs_enabled);
++      BRAVE_STARTUPBROWSERCREATORIMPL_DETERMINESTARTUPTABS
+       // Potentially add the What's New Page. Note that the What's New page
+       // should never be shown in the same session as any first-run onboarding
+       // tabs. It also shouldn't be shown with reset tabs that are required to
+@@ -547,7 +548,7 @@ StartupBrowserCreatorImpl::DetermineStartupTabs(
+     // Note that URLs from preferences are explicitly meant to override showing
+     // the NTP.
+     if (prefs_tabs.empty()) {
+-      AppendTabs(provider.GetNewTabPageTabs(*command_line_, profile_), &tabs);
++      if (!has_first_run_experience) AppendTabs(provider.GetNewTabPageTabs(*command_line_, profile_), &tabs);
+     }
+ 
+     // Potentially add a tab appropriate to display the Privacy Sandbox
+@@ -555,7 +556,7 @@ StartupBrowserCreatorImpl::DetermineStartupTabs(
+     // in |tabs|, and no additional tab will be required.
+     if (privacy_sandbox_dialog_required &&
+         launch_result == LaunchResult::kNormally) {
+-      AppendTabs(provider.GetPrivacySandboxTabs(profile_, tabs), &tabs);
++      if (!has_first_run_experience) AppendTabs(provider.GetPrivacySandboxTabs(profile_, tabs), &tabs);
+     }
+   }
+ 

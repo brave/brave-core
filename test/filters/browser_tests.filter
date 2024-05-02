@@ -1467,6 +1467,12 @@
 # to "Profile 1"
 -CreateDesktopShortcutDialogViewBrowserTest.InvokeUi_TitleHasProfileNameInfoMultiProfile
 
+# These tests fail because they no longer modify their expectations when
+# kForYouFre is disabled
+-StartupBrowserCreatorImplTest.DetermineStartupTabs
+-StartupBrowserCreatorImplTest.DetermineStartupTabs_NewFeaturesPage
+-StartupBrowserCreatorImplTest.DetermineStartupTabs_PrivacySandbox
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
