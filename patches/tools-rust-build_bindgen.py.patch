@@ -1,0 +1,13 @@
+diff --git a/tools/rust/build_bindgen.py b/tools/rust/build_bindgen.py
+index 42f98416587c390647d47eb6d39549386d03e7da..75d9ee5e59b4323d26d0f9a85889897d89665c88 100755
+--- a/tools/rust/build_bindgen.py
++++ b/tools/rust/build_bindgen.py
+@@ -27,7 +27,7 @@ from build import (CheckoutGitRepo, DownloadAndUnpack, LLVM_BUILD_TOOLS_DIR,
+ from update import (RmTree)
+ 
+ # The git hash to use.
+-BINDGEN_GIT_VERSION = '97e29b49bebaba4d067d4f5f2270748c7d28a557'
++BINDGEN_GIT_VERSION = 'f93d5dfa6d5d7409bea584f3eab38e1fc52b8360'
+ BINDGEN_GIT_REPO = ('https://chromium.googlesource.com/external/' +
+                     'github.com/rust-lang/rust-bindgen')
+ 

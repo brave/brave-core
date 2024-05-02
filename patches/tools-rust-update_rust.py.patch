@@ -1,0 +1,23 @@
+diff --git a/tools/rust/update_rust.py b/tools/rust/update_rust.py
+index 9e73894f18a38c02887a6e49f48c481c49c6c2d7..ff568792f5378647019651bcfa3bccd73c8e63f0 100755
+--- a/tools/rust/update_rust.py
++++ b/tools/rust/update_rust.py
+@@ -35,7 +35,7 @@ sys.path.append(
+ # In the case that a Rust roll fails and you want to roll Clang alone, reset
+ # this back to its previous value _AND_ set `OVERRIDE_CLANG_REVISION` below
+ # to the `CLANG_REVISION` that was in place before the roll.
+-RUST_REVISION = 'ab71ee7a9214c2793108a41efb065aa77aeb7326'
++RUST_REVISION = '31e6e8c6c5b6ce62656c922c7384d3376018c980'
+ RUST_SUB_REVISION = 1
+ 
+ # If not None, this overrides the `CLANG_REVISION` in
+@@ -71,7 +71,8 @@ VERSION_STAMP_PATH = os.path.join(RUST_TOOLCHAIN_OUT_DIR, 'INSTALLED_VERSION')
+ def GetRustClangRevision():
+     from update import CLANG_REVISION
+     c = OVERRIDE_CLANG_REVISION if OVERRIDE_CLANG_REVISION else CLANG_REVISION
+-    return (f'{RUST_REVISION}-{RUST_SUB_REVISION}' f'-{c}')
++    return (f'{RUST_REVISION}-{RUST_SUB_REVISION}'
++            f'-{c}')
+ 
+ 
+ # Get the version of the toolchain package we already have.
