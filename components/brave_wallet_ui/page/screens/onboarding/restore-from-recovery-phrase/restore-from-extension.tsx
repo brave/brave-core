@@ -27,6 +27,7 @@ import {
   Row
 } from '../../../../components/shared/style'
 import { ContinueButton, NextButtonRow } from '../onboarding.style'
+import { InputLabel } from './restore-from-recovery-phrase.style'
 
 // components
 import {
@@ -45,9 +46,6 @@ import {
 import {
   OnboardingContentLayout //
 } from '../components/onboarding_content_layout/content_layout'
-
-// styles
-import { InputLabel } from './restore-from-recovery-phrase.style'
 
 type RestoreFromExtensionSteps = 'newPassword' | 'currentPassword'
 
