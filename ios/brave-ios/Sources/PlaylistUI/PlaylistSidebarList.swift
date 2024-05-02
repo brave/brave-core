@@ -58,7 +58,8 @@ struct PlaylistSidebarList: View {
               assetURL: URL(string: item.mediaSrc),
               pageURL: URL(string: item.pageSrc),
               duration: .seconds(item.duration),
-              isItemPlaying: isPlaying && selectedItemID == item.id,
+              isSelected: selectedItemID == item.id,
+              isPlaying: isPlaying,
               downloadState: {
                 if let uuid = item.uuid, let state = downloadStates[uuid] {
                   if state == .downloaded {
@@ -146,6 +147,7 @@ struct PlaylistSidebarList: View {
 struct PlaylistSidebarListHeader: View {
   var folders: [PlaylistFolder]
   @Binding var selectedFolder: PlaylistFolder
+  var selectedItemID: PlaylistItem.ID?
   @Binding var isPlaying: Bool
   @Binding var isNewPlaylistAlertPresented: Bool
 
@@ -198,8 +200,8 @@ struct PlaylistSidebarListHeader: View {
       .imageScale(.large)
       .font(.title2)
       .labelStyle(.iconOnly)
-      .foregroundStyle(Color(braveSystemName: .textPrimary))
-      .disabled((selectedFolder.playlistItems ?? Set()).isEmpty)
+      .tint(Color(braveSystemName: .textPrimary))
+      .disabled(selectedItemID == nil && (selectedFolder.playlistItems ?? Set()).isEmpty)
       VStack(alignment: .leading) {
         Menu {
           Picker("", selection: $selectedFolder) {
@@ -248,10 +250,10 @@ struct PlaylistSidebarListHeader: View {
     .task {
       await calculateTotalSizeOnDisk(for: selectedFolder)
     }
-    .onChange(of: selectedFolder.playlistItems) { newValue in
+    .onChange(of: selectedFolder) { newValue in
       // FIXME: Need to recalculate size on disk when an item is saved for offline/or cache deleted
       Task {
-        await calculateTotalSizeOnDisk(for: selectedFolder)
+        await calculateTotalSizeOnDisk(for: newValue)
       }
     }
   }

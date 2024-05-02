@@ -155,6 +155,7 @@ struct PlaylistContentView: View {
               selectedFolderID = $0.id
             }
           ),
+          selectedItemID: selectedItemID,
           isPlaying: Binding(
             get: {
               playerModel.isPlaying

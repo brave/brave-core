@@ -20,7 +20,8 @@ struct PlaylistItemView: View {
   var assetURL: URL?
   var pageURL: URL?
   var duration: Duration
-  var isItemPlaying: Bool
+  var isSelected: Bool
+  var isPlaying: Bool
   var downloadState: DownloadState?
 
   @ScaledMetric private var progressViewSize = 16
@@ -48,11 +49,14 @@ struct PlaylistItemView: View {
             .fixedSize(horizontal: false, vertical: true)
             .font(.callout.weight(.semibold))
             .foregroundColor(Color(braveSystemName: .textPrimary))
-          if isItemPlaying {
-            LeoPlayingSoundView()
+          if isSelected {
+            LeoPlayingSoundView(isAnimating: isPlaying)
               // FIXME: Should this scale? Its just cosmetic
               .frame(width: 16, height: 16)
-              .foregroundStyle(Color(braveSystemName: .primary50))
+              .foregroundStyle(
+                isPlaying
+                  ? Color(braveSystemName: .primary50) : Color(braveSystemName: .iconDisabled)
+              )
           }
         }
         HStack(alignment: .firstTextBaseline) {
@@ -93,7 +97,18 @@ struct PlaylistItemView: View {
 
 // FIXME: Replace with a TimelineView variant if possible
 struct LeoPlayingSoundView: View {
-  @State private var barHeights: SIMD4<Double> = .init(x: 0.45, y: 1, z: 0.6, w: 0.8)
+  var isAnimating: Bool
+
+  @State private var barHeights: SIMD4<Double> = .init(x: 0.1, y: 0.1, z: 0.1, w: 0.1)
+
+  private func randomizeBarHeights() {
+    barHeights = .init(
+      x: Double.random(in: 0.2...0.45),
+      y: Double.random(in: 0.3...1),
+      z: Double.random(in: 0.4...0.75),
+      w: Double.random(in: 0.5...0.9)
+    )
+  }
 
   var body: some View {
     LeoPlayingSoundShape(barHeights: barHeights)
@@ -101,14 +116,27 @@ struct LeoPlayingSoundView: View {
       .onReceive(
         Timer.publish(every: 0.3, on: .main, in: .default).autoconnect(),
         perform: { _ in
-          barHeights = .init(
-            x: Double.random(in: 0.2...0.45),
-            y: Double.random(in: 0.3...1),
-            z: Double.random(in: 0.4...0.75),
-            w: Double.random(in: 0.5...0.9)
-          )
+          if !isAnimating { return }
+          randomizeBarHeights()
         }
       )
+      .onAppear {
+        if isAnimating {
+          randomizeBarHeights()
+        }
+      }
+      .onChange(of: isAnimating) { newValue in
+        if newValue {
+          randomizeBarHeights()
+        } else {
+          barHeights = .init(
+            x: 0.1,
+            y: 0.1,
+            z: 0.1,
+            w: 0.1
+          )
+        }
+      }
   }
 
   struct LeoPlayingSoundShape: Shape {
@@ -155,15 +183,15 @@ struct LeoPlayingSoundView: View {
   LazyVStack(spacing: 0) {
     Button {
     } label: {
-      PlaylistItemView(title: "The Worst Product I've Ever Reviewed... For Now", duration: .seconds(1504), isItemPlaying: true)
+      PlaylistItemView(title: "The Worst Product I've Ever Reviewed... For Now", duration: .seconds(1504), isSelected: true, isPlaying: true)
     }
     Button {
     } label: {
-      PlaylistItemView(title: "1 Hour of Epic Final Fantasy Remixes", duration: .seconds(3081), isItemPlaying: false, downloadState: .completed)
+      PlaylistItemView(title: "1 Hour of Epic Final Fantasy Remixes", duration: .seconds(3081), isSelected: true, isPlaying: false, downloadState: .completed)
     }
     Button {
     } label: {
-      PlaylistItemView(title: "Conan O'Brien Needs a Doctor While Eating Spicy Wings | Hot Ones", duration: .seconds(1641), isItemPlaying: false, downloadState: .downloading(percentComplete: 0.33))
+      PlaylistItemView(title: "Conan O'Brien Needs a Doctor While Eating Spicy Wings | Hot Ones", duration: .seconds(1641), isSelected: false, isPlaying: false, downloadState: .downloading(percentComplete: 0.33))
     }
   }
   .buttonStyle(.spring(scale: 0.9))
