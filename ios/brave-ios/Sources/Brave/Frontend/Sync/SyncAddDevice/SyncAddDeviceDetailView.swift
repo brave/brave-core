@@ -134,14 +134,14 @@ class SyncAddDeviceCodeView: UIStackView {
   var syncChainCode: String? {
     return codewordsView.text
   }
-  
+
   private let syncAPI: BraveSyncAPI
 
   required init(syncAPI: BraveSyncAPI) {
     self.syncAPI = syncAPI
-    
+
     super.init(frame: .zero)
-    
+
     axis = .vertical
     alignment = .center
 
@@ -154,11 +154,11 @@ class SyncAddDeviceCodeView: UIStackView {
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   private func doLayout() {
     addArrangedSubview(qrCodeContainerView)
     addArrangedSubview(codeWordsContainerView)
-    
+
     qrCodeContainerView.snp.makeConstraints {
       $0.centerX.equalToSuperview()
       $0.width.equalToSuperview().multipliedBy(0.75)
@@ -181,7 +181,7 @@ class SyncAddDeviceCodeView: UIStackView {
       $0.edges.equalToSuperview().inset(12)
     }
   }
-  
+
   private func createSyncCodeViews(syncAPI: BraveSyncAPI) {
     qrCodeView = SyncAddDeviceQRCodeView(syncApi: syncAPI)
 
@@ -194,13 +194,13 @@ class SyncAddDeviceCodeView: UIStackView {
     qrCodeContainerView.isHidden = !isSyncCodePresented
     codeWordsContainerView.isHidden = isSyncCodePresented
   }
-  
+
   func refreshSyncCodeViews() {
     removeArrangedSubview(qrCodeContainerView)
     removeArrangedSubview(codeWordsContainerView)
-    
+
     createSyncCodeViews(syncAPI: syncAPI)
-    
+
     doLayout()
   }
 }
@@ -377,7 +377,7 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
 
   // MARK: Internal
 
-  private var expirationTime: Date
+  private var expirationTime = Date()
 
   private var remainingInterval: TimeInterval {
     expirationTime.timeIntervalSinceReferenceDate - Date().timeIntervalSinceReferenceDate
@@ -387,12 +387,8 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
 
   weak var delegate: ActionDelegate?
 
-  required init(expirationTime: Date) {
-    self.expirationTime = expirationTime
-
+  required init() {
     super.init(frame: .zero)
-
-    startExpirationTimer()
 
     axis = .vertical
     alignment = .center
