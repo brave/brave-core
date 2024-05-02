@@ -23,6 +23,11 @@ namespace {
 constexpr char kTestLauncherTeamcityReporter[] =
     "test-launcher-teamcity-reporter";
 
+// This switch disables the TeamcityReporter even when the TEAMCITY_VERSION
+// environment variable is set.
+constexpr char kTestLauncherNoTeamcityReporter[] =
+    "test-launcher-no-teamcity-reporter";
+
 // Returns the name of the current executable, excluding the extension.
 std::string GetExecutableName() {
   base::FilePath file_exe = base::PathService::CheckedGet(base::FILE_EXE);
@@ -34,9 +39,17 @@ std::string GetExecutableName() {
 
 // static
 std::unique_ptr<TeamcityReporter> TeamcityReporter::MaybeCreate() {
-  if (base::Environment::Create()->HasVar("TEAMCITY_VERSION") ||
-      base::CommandLine::ForCurrentProcess()->HasSwitch(
-          kTestLauncherTeamcityReporter)) {
+  const auto environment = Environment::Create();
+  const CommandLine* command_line = CommandLine::ForCurrentProcess();
+
+  const bool should_enable =
+      environment->HasVar("TEAMCITY_VERSION") ||
+      command_line->HasSwitch(kTestLauncherTeamcityReporter);
+
+  const bool should_disable =
+      command_line->HasSwitch(kTestLauncherNoTeamcityReporter);
+
+  if (should_enable && !should_disable) {
     return std::make_unique<TeamcityReporter>(std::cout, GetExecutableName());
   }
 
