@@ -897,6 +897,7 @@ mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
                                      mojom::CoinType coin) {
   LOG(ERROR) << "GetCustomChain 0";
   const base::Value::List* custom_list = GetCustomNetworksList(prefs, coin);
+  LOG(ERROR) << "GetCustomChain 0.5";
   if (!custom_list) {
     return nullptr;
   }
