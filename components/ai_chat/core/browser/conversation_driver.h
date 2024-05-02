@@ -71,7 +71,6 @@ class ConversationDriver {
   ConversationDriver(const ConversationDriver&) = delete;
   ConversationDriver& operator=(const ConversationDriver&) = delete;
 
-  std::vector<mojom::ActionGroupPtr> GetActionMenuList();
   void ChangeModel(const std::string& model_key);
   std::string GetDefaultModel();
   void SetDefaultModel(const std::string& model_key);

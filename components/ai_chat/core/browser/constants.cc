@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "base/strings/strcat.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
 
@@ -140,6 +141,124 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"maybeLaterLabel", IDS_AI_CHAT_MAYBE_LATER_LABEL}};
 
   return kLocalizedStrings;
+}
+
+std::vector<mojom::ActionGroupPtr> GetActionMenuList() {
+  std::vector<mojom::ActionGroupPtr> action_list;
+
+  {
+    std::vector<mojom::LabeledActionPtr> actions;
+    mojom::ActionGroupPtr group = mojom::ActionGroup::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_QUICK_ACTIONS),
+        std::move(actions));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPLAIN),
+        mojom::ActionDetails::New(mojom::ActionType::EXPLAIN)));
+
+    action_list.push_back(std::move(group));
+  }
+
+  {
+    std::vector<mojom::LabeledActionPtr> actions;
+    mojom::ActionGroupPtr group = mojom::ActionGroup::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_REWRITE),
+        std::move(actions));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PARAPHRASE),
+        mojom::ActionDetails::New(mojom::ActionType::PARAPHRASE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_IMPROVE),
+        mojom::ActionDetails::New(mojom::ActionType::IMPROVE)));
+
+    // Subheading
+    auto change_tone_subheading =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CHANGE_TONE);
+
+    group->actions.push_back(
+        mojom::LabeledAction::New(change_tone_subheading, nullptr));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat(
+            {change_tone_subheading, " / ",
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_ACADEMICIZE)}),
+        mojom::ActionDetails::New(mojom::ActionType::ACADEMICIZE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat(
+            {change_tone_subheading, " / ",
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE)}),
+        mojom::ActionDetails::New(mojom::ActionType::PROFESSIONALIZE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat(
+            {change_tone_subheading, " / ",
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE)}),
+        mojom::ActionDetails::New(mojom::ActionType::PERSUASIVE_TONE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat({change_tone_subheading, " / ",
+                      l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CASUALIZE)}),
+        mojom::ActionDetails::New(mojom::ActionType::CASUALIZE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat(
+            {change_tone_subheading, " / ",
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_FUNNY_TONE)}),
+        mojom::ActionDetails::New(mojom::ActionType::FUNNY_TONE)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat({change_tone_subheading, " / ",
+                      l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_SHORTEN)}),
+        mojom::ActionDetails::New(mojom::ActionType::SHORTEN)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat({change_tone_subheading, " / ",
+                      l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPAND)}),
+        mojom::ActionDetails::New(mojom::ActionType::EXPAND)));
+
+    action_list.push_back(std::move(group));
+  }
+
+  {
+    std::vector<mojom::LabeledActionPtr> actions;
+    mojom::ActionGroupPtr group = mojom::ActionGroup::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE),
+        std::move(actions));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE_TAGLINE),
+        mojom::ActionDetails::New(mojom::ActionType::CREATE_TAGLINE)));
+
+    // Subheading
+    auto social_media_subheading =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST);
+
+    group->actions.push_back(
+        mojom::LabeledAction::New(social_media_subheading, nullptr));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat(
+            {social_media_subheading, " / ",
+             l10n_util::GetStringUTF8(
+                 IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT)}),
+        mojom::ActionDetails::New(
+            mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT)));
+
+    group->actions.push_back(mojom::LabeledAction::New(
+        base::StrCat(
+            {social_media_subheading, " / ",
+             l10n_util::GetStringUTF8(
+                 IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG)}),
+        mojom::ActionDetails::New(
+            mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG)));
+
+    action_list.push_back(std::move(group));
+  }
+
+  return action_list;
 }
 
 const base::fixed_flat_set<std::string_view, 1> kPrintPreviewRetrievalHosts =
