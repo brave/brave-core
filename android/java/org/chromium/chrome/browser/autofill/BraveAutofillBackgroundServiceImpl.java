@@ -348,7 +348,7 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
         // First try the explicit autofill hints...
 
         String[] hints = node.getAutofillHints();
-        if (hints != null && hints.length > 0) {
+        if (hints != null && hints.length > 0 && hints[0] != null && !hints[0].isEmpty()) {
             return hints[0].toLowerCase(Locale.getDefault());
         }
 
