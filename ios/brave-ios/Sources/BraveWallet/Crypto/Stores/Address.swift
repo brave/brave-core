@@ -26,7 +26,7 @@ extension String {
 
   /// Removes the `0x` prefix that may exist on the string
   public var removingHexPrefix: String {
-    hasPrefix("0x") ? String(dropFirst(2)) : self
+    (hasPrefix("0x") || hasPrefix("0X")) ? String(dropFirst(2)) : self
   }
 
   /// Adds the `0x` prefix that if it does not exist on the string

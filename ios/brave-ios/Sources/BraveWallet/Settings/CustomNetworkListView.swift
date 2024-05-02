@@ -45,7 +45,7 @@ struct CustomNetworkListView: View {
             Group {
               if sizeCategory.isAccessibilityCategory {
                 VStack(alignment: .leading) {
-                  Text(network.id)
+                  Text(network.chainId)
                   if let rpcEndpoint = network.rpcEndpoints[
                     safe: Int(network.activeRpcEndpointIndex)
                   ]?.absoluteString {
@@ -54,7 +54,7 @@ struct CustomNetworkListView: View {
                 }
               } else {
                 HStack {
-                  Text(network.id)
+                  Text(network.chainId)
                   if let rpcEndpoint = network.rpcEndpoints[
                     safe: Int(network.activeRpcEndpointIndex)
                   ]?.absoluteString {
