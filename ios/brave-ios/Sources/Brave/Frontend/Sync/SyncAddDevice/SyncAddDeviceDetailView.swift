@@ -358,7 +358,7 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
 
   private let codeExpirationTitleLabel = UILabel().then {
     $0.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.regular)
-    $0.text = "Code expired. Generate a new one by clicking the button below."
+    $0.text = Strings.syncCodeExpirationTitleLabel
     $0.lineBreakMode = NSLineBreakMode.byWordWrapping
     $0.textColor = UIColor(braveSystemName: .systemfeedbackErrorText)
     $0.textAlignment = .left
@@ -449,8 +449,10 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
       codeExpiryTimer?.invalidate()
       delegate?.codeExpired()
     } else {
-      timeRemainingTitleLabel.text =
-        "This temporary code is valid for the next \(timeRemainingString)"
+      timeRemainingTitleLabel.text = String(
+        format: Strings.syncCodeTimeRemainingTitleLabel,
+        timeRemainingString
+      )
     }
   }
 

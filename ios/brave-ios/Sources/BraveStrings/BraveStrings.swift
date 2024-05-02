@@ -2867,6 +2867,20 @@ extension Strings {
     value: "Invalid sync code, please check and try again.",
     comment: "Generic error message for when the sync code is invalid"
   )
+  public static let syncCodeExpirationTitleLabel = NSLocalizedString(
+    "SyncCodeExpirationTitleLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Code expired. Generate a new one by clicking the button below.",
+    comment: "Error title explaining the sync code is expired and it must be genrated all over again."
+  )
+  public static let syncCodeTimeRemainingTitleLabel = NSLocalizedString(
+    "SyncCodeTimeRemainingTitleLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "This temporary code is valid for the next %@",
+    comment: "Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second"
+  )
 }
 
 extension Strings {
