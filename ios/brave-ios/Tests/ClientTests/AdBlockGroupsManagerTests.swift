@@ -71,8 +71,8 @@ final class AdBlockGroupsManagerTests: XCTestCase {
       enabled: true
     )
     groupsManager.updateIfNeeded(resourcesInfo: resourcesInfo)
-    groupsManager.update(fileInfo: fileInfos[1], engineType: .standard)
-    groupsManager.update(fileInfos: fileInfos, engineType: .aggressive)
+    groupsManager.update(fileInfo: fileInfos[1], engineType: .standard, compileDelayed: false)
+    groupsManager.update(fileInfos: fileInfos, engineType: .aggressive, compileDelayed: false)
     await groupsManager.compileEnginesIfNeeded()
 
     // Then
@@ -153,7 +153,7 @@ final class AdBlockGroupsManagerTests: XCTestCase {
       enabled: true
     )
     groupsManager.updateIfNeeded(resourcesInfo: resourcesInfo)
-    groupsManager.update(fileInfo: fileInfo, engineType: .standard)
+    groupsManager.update(fileInfo: fileInfo, engineType: .standard, compileDelayed: false)
     await groupsManager.compileEnginesIfNeeded()
 
     let mainFrameURL = URL(string: "https://dev-pages.bravesoftware.com")!
@@ -217,7 +217,7 @@ final class AdBlockGroupsManagerTests: XCTestCase {
 
     // When
     // Adding an aggressive filter list
-    groupsManager.update(fileInfo: fileInfo, engineType: .aggressive)
+    groupsManager.update(fileInfo: fileInfo, engineType: .aggressive, compileDelayed: false)
     await groupsManager.compileEnginesIfNeeded()
 
     // Then
@@ -262,6 +262,13 @@ class TestSourceProvider: AdBlockGroupsManager.SourceProvider {
       guard _enabledSources.contains(fileInfo.filterListInfo.source) else { return nil }
       return fileInfo.filterListInfo.source
     }
+  }
+
+  /// Return all engabled sources for the given engine type
+  func enabledSources(
+    for engineType: GroupedAdBlockEngine.EngineType
+  ) -> [GroupedAdBlockEngine.Source] {
+    return enabledSources
   }
 
   func legacyCacheFiles(

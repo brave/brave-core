@@ -159,8 +159,9 @@ import os
 
     // Restart the task
     delayTask = Task {
-      let hasAllInfo = checkHasAllInfo(for: enabledSources)
-      try await Task.sleep(seconds: hasAllInfo ? 5 : 60)
+      if !checkHasAllInfo(for: enabledSources) {
+        try await Task.sleep(seconds: 60)
+      }
 
       await compileAvailableIfNeeded(
         for: enabledSources,
