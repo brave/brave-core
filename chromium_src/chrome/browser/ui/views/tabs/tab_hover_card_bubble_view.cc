@@ -18,17 +18,9 @@
 #include "content/public/common/url_constants.h"
 #include "ui/views/controls/label.h"
 
-// In addition to the feature flag, we also enable hover card previews when
-// the tab hover mode is CARD_WITH_PREVIEW.
-#define AreHoverCardImagesEnabled()       \
-  AreHoverCardImagesEnabled() ||          \
-      brave_tabs::AreCardPreviewsEnabled( \
-          tab->controller()->GetBrowser()->profile()->GetPrefs())
-
 #define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
 #include "src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.cc"
 #undef TabHoverCardBubbleView
-#undef AreHoverCardImagesEnabled
 
 void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(
     const Tab* tab) {
