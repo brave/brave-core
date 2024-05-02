@@ -63,7 +63,6 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
     explicit MockColorProviderSource(bool is_dark) {
       key_.color_mode = is_dark ? ui::ColorProviderKey::ColorMode::kDark
                                 : ui::ColorProviderKey::ColorMode::kLight;
-      provider_.GenerateColorMap();
     }
     MockColorProviderSource(const MockColorProviderSource&) = delete;
     MockColorProviderSource& operator=(const MockColorProviderSource&) = delete;
