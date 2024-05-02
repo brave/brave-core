@@ -905,14 +905,8 @@ const util = {
   },
 
   writeFileIfModified: (filePath, content) => {
-    if (
-      !fs.existsSync(filePath) ||
-      fs.readFileSync(filePath, { encoding: 'utf-8' }) !== content
-    ) {
-      const dirName = path.dirname(filePath)
-      if (dirName) {
-        fs.mkdirpSync(dirName)
-      }
+    fs.ensureFileSync(filePath)
+    if (fs.readFileSync(filePath, { encoding: 'utf-8' }) !== content) {
       fs.writeFileSync(filePath, content)
       return true
     }
