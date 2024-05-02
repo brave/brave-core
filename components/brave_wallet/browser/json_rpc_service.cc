@@ -3110,6 +3110,8 @@ void JsonRpcService::GetSolanaFeeForMessage(
     const std::string& chain_id,
     const std::string& message,
     GetSolanaFeeForMessageCallback callback) {
+  LOG(ERROR) << "JsonRpcService::GetSolanaFeeForMessage 0";
+  LOG(ERROR) << "JsonRpcService::GetSolanaFeeForMessage 0: chain Id" << chain_id;
   if (message.empty() || !base::Base64Decode(message)) {
     std::move(callback).Run(
         0, mojom::SolanaProviderError::kInvalidParams,
