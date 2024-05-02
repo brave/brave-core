@@ -678,7 +678,9 @@ constexpr const char kEnsRegistryContractAddress[] =
 
 const base::Value::List* GetCustomNetworksList(PrefService* prefs,
                                                mojom::CoinType coin) {
+  LOG(ERROR) << "GetCustomNetworksList 0";
   const auto& custom_networks = prefs->GetDict(kBraveWalletCustomNetworks);
+  LOG(ERROR) << "GetCustomNetworksList 1";
   return custom_networks.FindList(GetPrefKeyForCoinType(coin));
 }
 
@@ -896,6 +898,7 @@ mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
                                      const std::string& chain_id,
                                      mojom::CoinType coin) {
   LOG(ERROR) << "GetCustomChain 0";
+  LOG(ERROR) << "GetCustomChain 0.1:" << coin;
   const base::Value::List* custom_list = GetCustomNetworksList(prefs, coin);
   LOG(ERROR) << "GetCustomChain 0.5";
   if (!custom_list) {
