@@ -1,3 +1,8 @@
+// Copyright (c) 2017 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 const path = require('path')
 const fs = require('fs-extra')
 const util = require('../lib/util')
@@ -6,7 +11,8 @@ const desiredReplacementSeparator = '-'
 const patchExtension = '.patch'
 
 async function getModifiedPaths (gitRepoPath) {
-  const modifiedDiffArgs = ['diff', '--diff-filter=M', '--name-only', '--ignore-space-at-eol']
+  const modifiedDiffArgs = ['diff', '--ignore-submodules', '--diff-filter=M',
+      '--name-only', '--ignore-space-at-eol']
   const cmdOutput = await util.runAsync('git', modifiedDiffArgs, { cwd: gitRepoPath })
   return cmdOutput.split('\n').filter(s => s)
 }
@@ -48,7 +54,7 @@ async function writePatchFiles (modifiedPaths, gitRepoPath, patchDirPath) {
   return patchFilenames
 }
 
-const readDirPromise = (pathName) => new Promise((resolve, reject) => 
+const readDirPromise = (pathName) => new Promise((resolve, reject) =>
   fs.readdir(pathName, (err, fileList) => {
     if (err) {
       return reject(err)
