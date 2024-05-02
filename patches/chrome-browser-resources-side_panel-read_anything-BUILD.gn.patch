@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/side_panel/read_anything/BUILD.gn b/chrome/browser/resources/side_panel/read_anything/BUILD.gn
+index 22549e7de5e3a77c9eb8b0c4a34f54e3fe6a5808..888f315ddf2005e665affd3b89f21d942430af42 100644
+--- a/chrome/browser/resources/side_panel/read_anything/BUILD.gn
++++ b/chrome/browser/resources/side_panel/read_anything/BUILD.gn
+@@ -48,7 +48,7 @@ build_webui("build") {
+             target_gen_dir) ]
+ 
+   webui_context_type = "untrusted"
+-  optimize = optimize_webui
++  optimize = false
+   if (optimize) {
+     optimize_webui_host =
+         "chrome-untrusted://read-anything-side-panel.top-chrome"
