@@ -167,28 +167,31 @@ export default class ReportView extends React.PureComponent<Props, State> {
           {!isIneligiblePage ?
           <>
             <PaddedButton
-              text={getLocale('cancel')}
-              level={'secondary'}
-              type={'default'}
-              size={'small'}
+              isTertiary
+              isCallToAction
+              scale='small'
               onClick={onClose}
-            />
+            >
+              {getLocale('cancel')}
+            </PaddedButton>
             <PaddedButton
-              text={getLocale('submit')}
-              level={'primary'}
-              type={'accent'}
-              size={'small'}
+              isPrimary
+              isCallToAction
+              scale='small'
               onClick={() => onSubmitReport(details, contact, attachScreenshot)}
-            />
+            >
+              {getLocale('submit')}
+            </PaddedButton>
           </>
         :
           <PaddedButton
-            text={getLocale('close')}
-            level={'primary'}
-            type={'accent'}
-            size={'small'}
+            isPrimary
+            isCallToAction
+            scale='small'
             onClick={onClose}
-          />
+          >
+            {getLocale('close')}
+          </PaddedButton>
         }
         </SideBySideButtons>
       </ModalLayout>

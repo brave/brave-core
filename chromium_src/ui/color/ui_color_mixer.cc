@@ -9,6 +9,7 @@
 
 namespace ui {
 
+// TODO(simonhong): Use nala color if it's available from UI layer.
 void AddBraveUiColorMixer(ColorProvider* provider,
                           const ColorProviderKey& key) {
   ColorMixer& mixer = provider->AddMixer();
@@ -20,8 +21,8 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // --------------------------------------------------------------------------
   // For deprecated kColorId_FocusedBorderColor
   mixer[kColorFocusableBorderFocused] = {
-      dark_mode ? SkColorSetARGB(0x66, 0x3F, 0x39, 0xE8)
-                : SkColorSetARGB(0x99, 0x3F, 0x39, 0xE8)};
+      dark_mode ? SkColorSetA(gfx::kBraveColorBrand, 0x66)
+                : SkColorSetA(gfx::kBraveColorBrand, 0x99)};
 
   // --------------------------------------------------------------------------
   // Button colors
@@ -52,7 +53,7 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // Link colors
   // --------------------------------------------------------------------------
   // For deprecated kColorId_LinkEnabled & kColorId_LinkPressed
-  mixer[kColorLinkForeground] = {dark_mode ? gfx::kBraveColorOrange300
+  mixer[kColorLinkForeground] = {dark_mode ? gfx::kBraveColorBrandDark
                                            : gfx::kBraveColorBrand};
   mixer[kColorLinkForegroundPressed] = {kColorLinkForeground};
 

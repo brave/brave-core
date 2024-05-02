@@ -42,7 +42,7 @@ export const DisclaimerText = styled(TextSection)`
 
 export const NonInteractiveURL = styled('p')<{}>`
   box-sizing: border-box;
-  color: ${p => p.theme.color.brandBrave};
+  color: ${p => p.theme.color.interactive05};
   font-size: 14px;
   font-weight: 500;
   display: inline-block;

@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
 import styled from 'styled-components'
-import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
+import Button from '$web-components/button'
 
 export const SideBySideButtons = styled('div')<{}>`
   box-sizing: border-box;
@@ -24,7 +23,7 @@ export const ModalLayout = styled('div')<{}>`
   min-height: 100px;
 `
 
-export const PaddedButton = styled(Button as React.ComponentType<ButtonProps>)`
+export const PaddedButton = styled(Button)<{}>`
   margin: 5px;
 `
 
