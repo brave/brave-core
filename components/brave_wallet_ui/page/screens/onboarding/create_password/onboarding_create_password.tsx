@@ -19,7 +19,7 @@ import {
   useSafeWalletSelector //
 } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
-import { autoLockOptions } from '../../../../options/auto-lock-options'
+import { autoLockOptions } from '../../../../options/auto_lock_options'
 
 // components
 import {
@@ -31,7 +31,7 @@ import {
 import {
   OnboardingContentLayout //
 } from '../components/onboarding_content_layout/content_layout'
-import { CreatePassword } from './components/create-password'
+import { CreatePassword } from './components/create_password'
 
 // styles
 import { ContinueButton, NextButtonRow } from '../onboarding.style'

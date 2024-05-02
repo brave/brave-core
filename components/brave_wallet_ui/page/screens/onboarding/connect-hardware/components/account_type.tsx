@@ -14,7 +14,7 @@ import {
   ArrowIcon,
   NetworkIcons,
   Description
-} from './account-type.style'
+} from './account_type.style'
 
 interface Props {
   title: string

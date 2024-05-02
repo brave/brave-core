@@ -19,7 +19,7 @@ import {
   TitleIcon,
   IconWrapper,
   WalletIcon
-} from './welcome-action.style'
+} from './welcome_action.style'
 
 interface Props {
   iconName: string

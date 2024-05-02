@@ -8,8 +8,8 @@ import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css'
 
 // assets
-import backgroundImageLight from '../../../../assets/svg-icons/onboarding/welcome-background-light.svg'
-import backgroundImageDark from '../../../../assets/svg-icons/onboarding/welcome-background-dark.svg'
+import backgroundImageLight from '../../../../assets/svg-icons/onboarding/welcome_background_light.svg'
+import backgroundImageDark from '../../../../assets/svg-icons/onboarding/welcome_background_dark.svg'
 // styles
 import { Column } from '../../../../components/shared/style'
 import { layoutPanelWidth } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'

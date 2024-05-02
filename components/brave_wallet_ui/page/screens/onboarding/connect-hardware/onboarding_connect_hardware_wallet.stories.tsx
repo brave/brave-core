@@ -11,7 +11,7 @@ import {
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import {
   OnboardingConnectHardwareWallet //
-} from './onboarding-connect-hardware-wallet'
+} from './onboarding_connect_hardware_wallet'
 
 export const _OnboardingConnectHardwareWallet = () => {
   return (

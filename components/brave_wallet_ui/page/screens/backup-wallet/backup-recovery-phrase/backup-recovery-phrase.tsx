@@ -35,7 +35,7 @@ import {
 } from '../../onboarding/components/onboarding_content_layout/content_layout'
 import {
   SkipWarningDialog //
-} from '../explain-recovery-phrase/skip-warning-dialog'
+} from '../explain-recovery-phrase/skip_warning_dialog'
 
 // styles
 import {

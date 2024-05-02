@@ -18,7 +18,7 @@ import {
 } from '../../../../common/slices/api.slice'
 
 // components
-import { WelcomeAction } from '../components/welcome-action/welcome-action'
+import { WelcomeAction } from '../components/welcome_action/welcome_action'
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'

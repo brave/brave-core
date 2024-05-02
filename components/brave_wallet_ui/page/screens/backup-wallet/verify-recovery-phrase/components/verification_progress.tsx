@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // styles
-import { Wrapper, Rectangle } from './verification-progress.style'
+import { Wrapper, Rectangle } from './verification_progress.style'
 
 interface Props {
   steps: number

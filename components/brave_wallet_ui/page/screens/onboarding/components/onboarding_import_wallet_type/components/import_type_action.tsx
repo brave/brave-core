@@ -13,7 +13,7 @@ import {
   RightArrow,
   Subtitle,
   Title
-} from './import-type-action.style'
+} from './import_type_action.style'
 import { Row, VerticalSpace } from '../../../../../../components/shared/style'
 
 interface Props {

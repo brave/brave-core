@@ -36,7 +36,7 @@ import {
 } from './restore-from-recovery-phrase/restore-from-extension'
 import {
   OnboardingImportWalletType //
-} from './components/onboarding-import-wallet-type/import_wallet_type'
+} from './components/onboarding_import_wallet_type/import_wallet_type'
 
 export const OnboardingImportWalletRoutes = () => {
   // redux

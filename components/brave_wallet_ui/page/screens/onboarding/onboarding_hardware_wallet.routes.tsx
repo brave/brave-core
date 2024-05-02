@@ -27,13 +27,13 @@ import {
 } from './network_selection/onboarding_network_selection'
 import {
   OnboardingConnectHardwareWallet //
-} from './connect-hardware/onboarding-connect-hardware-wallet'
+} from './connect-hardware/onboarding_connect_hardware_wallet'
 import {
   OnboardingCreatePassword //
-} from './create-password/onboarding-create-password'
+} from './create_password/onboarding_create_password'
 import {
   OnboardingImportWalletType //
-} from './components/onboarding-import-wallet-type/import_wallet_type'
+} from './components/onboarding_import_wallet_type/import_wallet_type'
 import {
   OnboardingImportHardwareWalletWelcome //
 } from './import_hardware_wallet_welcome/import_hardware_wallet_welcome'

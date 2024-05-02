@@ -24,13 +24,13 @@ import {
 } from '../backup-wallet/backup-recovery-phrase/backup-recovery-phrase'
 import {
   OnboardingCreatePassword //
-} from './create-password/onboarding-create-password'
+} from './create_password/onboarding_create_password'
 import {
   RecoveryPhraseExplainer //
 } from '../backup-wallet/explain-recovery-phrase/explain-recovery-phrase'
 import {
   VerifyRecoveryPhrase //
-} from '../backup-wallet/verify-recovery-phrase/verify-recovery-phrase'
+} from '../backup-wallet/verify-recovery-phrase/verify_recovery_phrase'
 import {
   ProtectedRoute //
 } from '../../../components/shared/protected-routing/protected-route'

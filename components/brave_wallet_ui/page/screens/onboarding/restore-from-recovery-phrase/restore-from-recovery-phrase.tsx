@@ -32,10 +32,10 @@ import {
 import {
   OnboardingCreatingWallet //
 } from '../creating_wallet/onboarding_creating_wallet'
-import { CreatePassword } from '../create-password/components/create-password'
+import { CreatePassword } from '../create_password/components/create_password'
 
 // options
-import { autoLockOptions } from '../../../../options/auto-lock-options'
+import { autoLockOptions } from '../../../../options/auto_lock_options'
 
 // styles
 import {

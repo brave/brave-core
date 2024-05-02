@@ -20,7 +20,7 @@ import {
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // components
-import { SkipWarningDialog } from './skip-warning-dialog'
+import { SkipWarningDialog } from './skip_warning_dialog'
 
 // style
 import { ContinueButton } from '../../onboarding/onboarding.style'

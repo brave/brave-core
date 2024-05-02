@@ -10,7 +10,7 @@ import {
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 import { AutoLockSettings } from './auto_lock_settings'
 import { Row } from '../../../../../components/shared/style'
-import { autoLockOptions } from '../../../../../options/auto-lock-options'
+import { autoLockOptions } from '../../../../../options/auto_lock_options'
 
 export const _AutoLockSettings = () => {
   const [value, setValue] = React.useState(autoLockOptions[0].minutes)

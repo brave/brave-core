@@ -6,18 +6,14 @@
 import * as React from 'react'
 
 import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrapper'
-import OnboardingCreatePassword from './onboarding-create-password'
+import { VerifyRecoveryPhrase } from './verify_recovery_phrase'
 
-export const _OnboardingCreatePassword = () => {
+export const _VerifyRecoveryPhrase = () => {
   return (
     <WalletPageStory>
-      <OnboardingCreatePassword onWalletCreated={() => {}} />
+      <VerifyRecoveryPhrase />
     </WalletPageStory>
   )
 }
 
-_OnboardingCreatePassword.story = {
-  name: 'Create Password'
-}
-
-export default _OnboardingCreatePassword
+export default _VerifyRecoveryPhrase

@@ -10,8 +10,8 @@ import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css'
 
 import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circle-outline-icon.svg'
-import ExamplePhraseLight from './images/example-recovery-phrase-light.png'
-import ExamplePhraseDark from './images/example-recovery-phrase-dark.png'
+import ExamplePhraseLight from './images/example_recovery_phrase_light.png'
+import ExamplePhraseDark from './images/example_recovery_phrase_dark.png'
 
 export const BannerCard = styled.div`
   margin-top: 24px;

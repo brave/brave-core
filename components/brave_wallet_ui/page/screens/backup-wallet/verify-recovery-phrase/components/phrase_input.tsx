@@ -15,9 +15,9 @@ import {
   FormInput,
   CloseButton,
   CloseIcon
-} from '../verify-recovery-phrase.style'
+} from '../verify_recovery_phrase.style'
 import { Column, VerticalSpace } from '../../../../../components/shared/style'
-import { InfoAlert } from './verification-progress.style'
+import { InfoAlert } from './verification_progress.style'
 import { AlertWrapper } from '../../../onboarding/onboarding.style'
 
 const alertSlotStyle = {
