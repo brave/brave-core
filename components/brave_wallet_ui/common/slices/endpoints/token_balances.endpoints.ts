@@ -95,10 +95,12 @@ export type GetTokenBalancesRegistryArg = {
 }
 
 function mergeTokenBalancesRegistry(
-  a: TokenBalancesRegistry,
+  a: TokenBalancesRegistry | { accounts?: undefined },
   b: TokenBalancesRegistry
 ): TokenBalancesRegistry {
-  const result: TokenBalancesRegistry = { ...a }
+  const result: TokenBalancesRegistry = a?.accounts
+    ? { ...a }
+    : { accounts: {} }
 
   for (const accountId of Object.keys(b.accounts)) {
     const accountBalances = b.accounts[accountId]
