@@ -889,6 +889,7 @@ void SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee(
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   LOG(INFO) << "SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee 0";
+  LOG(INFO) << "SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee 0 meta->chain_id()=" << meta->chain_id();
   if (error != mojom::SolanaProviderError::kSuccess) {
     std::move(callback).Run({}, 0, error, error_message);
     return;
