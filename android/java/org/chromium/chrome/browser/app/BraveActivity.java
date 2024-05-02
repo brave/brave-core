@@ -1221,17 +1221,6 @@ public abstract class BraveActivity extends ChromeActivity
             setInAppUpdateTiming();
         }
 
-        // Check multiwindow toggle for upgrade case
-        if (!isFirstInstall
-                && !BraveMultiWindowUtils.isCheckUpgradeEnableMultiWindows()
-                && MultiWindowUtils.getInstanceCount() > 1
-                && !BraveMultiWindowUtils.shouldEnableMultiWindows()) {
-            BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
-            BraveMultiWindowUtils.updateEnableMultiWindows(true);
-        } else if (!BraveMultiWindowUtils.isCheckUpgradeEnableMultiWindows()) {
-            BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
-        }
-
         if (System.currentTimeMillis()
                 > ChromeSharedPreferences.getInstance()
                         .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
