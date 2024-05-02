@@ -36,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -850,9 +849,9 @@ public class Utils {
     }
 
     @DrawableRes
-    public static int getNetworkIconDrawable(@NonNull final String chainId, @CoinType.EnumType final int coin) {
-        @DrawableRes
-        int logo;
+    public static int getNetworkIconDrawable(
+            @NonNull final String chainId, @CoinType.EnumType final int coin) {
+        @DrawableRes int logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
             case BraveWalletConstants.GOERLI_CHAIN_ID:
@@ -923,7 +922,8 @@ public class Utils {
     }
 
     @NonNull
-    public static String getNetworkIconName(@NonNull final String chainId, @CoinType.EnumType final int coin) {
+    public static String getNetworkIconName(
+            @NonNull final String chainId, @CoinType.EnumType final int coin) {
         String logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
