@@ -199,6 +199,7 @@ struct PlaylistSidebarListHeader: View {
       .font(.title2)
       .labelStyle(.iconOnly)
       .foregroundStyle(Color(braveSystemName: .textPrimary))
+      .disabled((selectedFolder.playlistItems ?? Set()).isEmpty)
       VStack(alignment: .leading) {
         Menu {
           Picker("", selection: $selectedFolder) {

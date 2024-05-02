@@ -161,6 +161,10 @@ struct PlaylistContentView: View {
     withAnimation(.snappy) {
       selectedDetent = .small
     }
+    // FIXME: Need a possible loading state here
+    // Loading a media streaming asset may take time, need some sort of intermediate state where
+    // we stop the current playback and show a loader even if the selected item is not fully ready
+    // yet
     let itemToReplace: AVPlayerItem? = await {
       if let cachedData = item.cachedData {
         do {
@@ -230,7 +234,11 @@ struct PlaylistContentView: View {
             },
             set: { newValue in
               if newValue {
-                playerModel.play()
+                if selectedItemID == nil {
+                  selectedItemID = itemQueue.first
+                } else {
+                  playerModel.play()
+                }
               } else {
                 playerModel.pause()
               }
@@ -264,6 +272,7 @@ struct PlaylistContentView: View {
       } else {
         selectedDetent = .anchor(.emptyPlaylistContent)
       }
+      makeItemQueue(selectedItemID: nil)
     }
     .onDisappear {
       playerModel.stop()
