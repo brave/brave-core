@@ -126,9 +126,12 @@ void AIChatUI::BindInterface(
 
   content::WebContents* web_contents = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
-  raw_ptr<Browser> browser =
+  Browser* browser =
       ai_chat::GetBrowserForWebContents(web_ui()->GetWebContents());
-  DCHECK(browser);
+  if (!browser) {
+    return;
+  }
+
   TabStripModel* tab_strip_model = browser->tab_strip_model();
   DCHECK(tab_strip_model);
   web_contents = tab_strip_model->GetActiveWebContents();
