@@ -858,7 +858,7 @@ void SolanaTxManager::GetEstimatedTxFeeAndMeta(
     std::unique_ptr<SolanaTxMeta> meta,
     GetEstimatedTxFeeAndMetaCallback callback) {
   LOG(INFO) << "SolanaTxManager::GetEstimatedTxFeeAndMeta 0";
-  auto chain_id = meta->chain_id();
+  const std::string chain_id = meta->chain_id();
   const std::string blockhash = meta->tx()->message()->recent_blockhash();
   if (blockhash.empty()) {
     LOG(ERROR) << "Blockhash is empty";
@@ -895,12 +895,13 @@ void SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee(
     return;
   }
 
+  const std::string chain_id = meta->chain_id();
   meta->tx()->message()->set_recent_blockhash(latest_blockhash);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
   const std::string base64_encoded_message =
       meta->tx()->GetBase64EncodedMessage();
   json_rpc_service_->GetSolanaFeeForMessage(
-      meta->chain_id(), base64_encoded_message,
+      chain_id, base64_encoded_message,
       base::BindOnce(&SolanaTxManager::OnGetFeeForMessage,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(meta)));
