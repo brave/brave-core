@@ -496,6 +496,7 @@ void SolanaProviderImpl::SignAndSendTransaction(
     mojom::SolanaSignTransactionParamPtr param,
     std::optional<base::Value::Dict> send_options,
     SignAndSendTransactionCallback callback) {
+  LOG(ERROR) << "SignAndSendTransaction 0";
   auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
@@ -503,6 +504,8 @@ void SolanaProviderImpl::SignAndSendTransaction(
                             base::Value::Dict());
     return;
   }
+
+  LOG(ERROR) << "SignAndSendTransaction 1";
   if (!IsAccountConnected(*account)) {
     std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
                             l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
@@ -510,6 +513,7 @@ void SolanaProviderImpl::SignAndSendTransaction(
     return;
   }
 
+  LOG(ERROR) << "SignAndSendTransaction 2";
   auto msg_pair = GetDeserializedMessage(param->encoded_serialized_msg);
   if (!msg_pair) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
@@ -518,6 +522,7 @@ void SolanaProviderImpl::SignAndSendTransaction(
     return;
   }
 
+  LOG(ERROR) << "SignAndSendTransaction 3";
   SolanaTransaction tx =
       SolanaTransaction(std::move(msg_pair->first), std::move(param));
   tx.set_tx_type(mojom::TransactionType::SolanaDappSignAndSendTransaction);

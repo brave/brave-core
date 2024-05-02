@@ -212,6 +212,7 @@ void TxService::AddUnapprovedTransactionWithOrigin(
     mojom::AccountIdPtr from,
     const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
+  LOG(ERROR) << "TxService::AddUnapprovedTransactionWithOrigin 0";
   if (!account_resolver_delegate_->ValidateAccountId(from)) {
     std::move(callback).Run(
         false, "",

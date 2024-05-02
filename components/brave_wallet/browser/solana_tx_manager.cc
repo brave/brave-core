@@ -68,6 +68,7 @@ void SolanaTxManager::AddUnapprovedTransaction(
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
+  LOG(ERROR) << "SolanaTxManager::AddUnapprovedTransaction 0";
   DCHECK(tx_data_union->is_solana_tx_data());
 
   auto tx = SolanaTransaction::FromSolanaTxData(
@@ -79,6 +80,8 @@ void SolanaTxManager::AddUnapprovedTransaction(
     return;
   }
 
+  LOG(ERROR) << "SolanaTxManager::AddUnapprovedTransaction 1";
+
   auto meta = std::make_unique<SolanaTxMeta>(from, std::move(tx));
   meta->set_id(TxMeta::GenerateMetaID());
   meta->set_origin(
@@ -86,6 +89,8 @@ void SolanaTxManager::AddUnapprovedTransaction(
   meta->set_created_time(base::Time::Now());
   meta->set_status(mojom::TransactionStatus::Unapproved);
   meta->set_chain_id(chain_id);
+
+  LOG(ERROR) << "SolanaTxManager::AddUnapprovedTransaction 2";
 
   // If the transaction is partially signed, we can't modify the instructions
   // to add a priority fee.
@@ -99,11 +104,15 @@ void SolanaTxManager::AddUnapprovedTransaction(
     return;
   }
 
+  LOG(ERROR) << "SolanaTxManager::AddUnapprovedTransaction 3";
+
   // Fetch the compute units used for priority fee estimation
   // by using the simulateTransaction API.
   auto internal_callback =
       base::BindOnce(&SolanaTxManager::ContinueAddUnapprovedTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  LOG(ERROR) << "SolanaTxManager::AddUnapprovedTransaction 4";
 
   GetSolanaGasEstimationAndMeta(chain_id, std::move(meta),
                                 std::move(internal_callback));
@@ -139,6 +148,7 @@ void SolanaTxManager::OnGetRecentSolanaPrioritizationFees(
     std::vector<std::pair<uint64_t, uint64_t>> recent_fees,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
+  LOG(ERROR) << "SolanaTxManager::OnGetRecentSolanaPrioritizationFees 0";
   if (error != mojom::SolanaProviderError::kSuccess) {
     std::move(callback).Run({}, {}, error, error_message);
     return;
@@ -161,6 +171,7 @@ void SolanaTxManager::OnGetRecentSolanaPrioritizationFees(
     }
   }
 
+  LOG(ERROR) << "SolanaTxManager::OnGetRecentSolanaPrioritizationFees 1";
   mojom::SolanaGasEstimationPtr estimation = mojom::SolanaGasEstimation::New();
   estimation->base_fee = base_fee;
   // The simulation was performed without the instructions that set a compute
@@ -172,6 +183,8 @@ void SolanaTxManager::OnGetRecentSolanaPrioritizationFees(
   } else {
     estimation->fee_per_compute_unit = median;
   }
+
+  LOG(ERROR) << "SolanaTxManager::OnGetRecentSolanaPrioritizationFees 2";
 
   std::move(callback).Run(std::move(meta), std::move(estimation),
                           mojom::SolanaProviderError::kSuccess, "");
@@ -222,6 +235,7 @@ void SolanaTxManager::ContinueAddUnapprovedTransaction(
     mojom::SolanaGasEstimationPtr estimation,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
+  LOG(ERROR) << "SolanaTxManager::ContinueAddUnapprovedTransaction";
   if (error != mojom::SolanaProviderError::kSuccess) {
     std::move(callback).Run(false, "", error_message);
     return;
