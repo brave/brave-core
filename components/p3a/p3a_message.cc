@@ -101,7 +101,7 @@ base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
   result.Set(kYoiAttributeName, install_exploded.year);
 
   // Fill meta.
-  result.Set(kCountryCodeAttributeName, meta.country_code_from_timezone);
+  result.Set(kCountryCodeAttributeName, meta.GetCountryCodeForNormalMetrics());
   result.Set(kVersionAttributeName, meta.version);
   result.Set(kWoiAttributeName, meta.woi);
 
@@ -146,7 +146,7 @@ std::string GenerateP3AConstellationMessage(std::string_view metric_name,
         {kMetricValueAttributeName, base::NumberToString(metric_value)},
         {kChannelAttributeName, meta.channel},
         {kPlatformAttributeName, meta.platform},
-        {kCountryCodeAttributeName, meta.country_code_from_locale},
+        {kCountryCodeAttributeName, meta.country_code_from_locale_raw},
     }};
   } else {
     attributes = {{
@@ -156,7 +156,7 @@ std::string GenerateP3AConstellationMessage(std::string_view metric_name,
         {kYoiAttributeName, base::NumberToString(exploded.year)},
         {kChannelAttributeName, meta.channel},
         {kPlatformAttributeName, meta.platform},
-        {kCountryCodeAttributeName, meta.country_code_from_timezone},
+        {kCountryCodeAttributeName, meta.GetCountryCodeForNormalMetrics()},
         {kWoiAttributeName, base::NumberToString(meta.woi)},
     }};
   }
@@ -198,7 +198,8 @@ void MessageMetainfo::Init(PrefService* local_state,
   if (local_state->FindPreference(brave_l10n::prefs::kCountryCode)) {
     // Since the country code pref is not available in unit tests,
     // only load it if it's available.
-    country_code_from_locale = brave_l10n::GetCountryCode(local_state);
+    country_code_from_locale_raw = brave_l10n::GetCountryCode(local_state);
+    country_code_from_locale = country_code_from_locale_raw;
   }
   MaybeStripCountry();
 
@@ -266,7 +267,18 @@ void MessageMetainfo::MaybeStripCountry() {
     if (kNotableCountries.count(country_code_from_timezone) == 0) {
       country_code_from_timezone = kCountryOther;
     }
+    if (kNotableCountries.count(country_code_from_locale) == 0) {
+      country_code_from_locale = kCountryOther;
+    }
   }
+}
+
+const std::string& MessageMetainfo::GetCountryCodeForNormalMetrics() const {
+#if BUILDFLAG(IS_IOS)
+  return country_code_from_locale;
+#else
+  return country_code_from_timezone;
+#endif  // BUILDFLAG(IS_IOS)
 }
 
 }  // namespace p3a
