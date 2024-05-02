@@ -9,6 +9,7 @@ import { EntityId } from '@reduxjs/toolkit'
 import { useHistory } from 'react-router'
 import Checkbox from '@brave/leo/react/checkbox'
 import ProgressRing from '@brave/leo/react/progressRing'
+import * as leo from '@brave/leo/tokens/css'
 
 // context
 import {
@@ -43,40 +44,29 @@ import {
 } from '../../../../constants/types'
 
 // components
-import {
-  NavButton //
-} from '../../../../components/extension/buttons/nav-button/index'
 import { SearchBar } from '../../../../components/shared/search-bar'
 import {
   CreateNetworkIcon //
 } from '../../../../components/shared/create-network-icon'
 import {
-  CenteredPageLayout //
-} from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import {
-  OnboardingStepsNavigation //
-} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+  OnboardingContentLayout //
+} from '../components/onboarding_content_layout/content_layout'
 
 // styles
 import {
   Column,
   MutedLinkText,
   Row,
-  ScrollableColumn,
   Text,
   VerticalSpace
 } from '../../../../components/shared/style'
-import {
-  StyledWrapper,
-  Title,
-  Description,
-  NextButtonRow,
-  MainWrapper,
-  TitleAndDescriptionContainer
-} from '../onboarding.style'
+import { ContinueButton, NextButtonRow } from '../onboarding.style'
 import {
   SelectAllText,
-  GroupingText
+  GroupingText,
+  NetworkSelectionContainer,
+  NetworkSelectionGrid,
+  ScrollableColumn
 } from './onboarding_network_selection.style'
 import { WalletActions } from '../../../../common/actions'
 
@@ -109,33 +99,41 @@ function NetworkCheckbox({
   const chainIdentifier = getNetworkId(network)
   const isChecked = selectedChains.includes(chainIdentifier)
 
+  // methods
+  const onChange = React.useCallback(
+    () =>
+      selectChains((prev) =>
+        isChecked
+          ? prev.filter((id) => id !== chainIdentifier)
+          : prev.concat(chainIdentifier)
+      ),
+    [isChecked, selectChains, chainIdentifier]
+  )
+
   // render
   return (
-    <Column margin={'0px 0px 16px 0px'}>
+    <NetworkSelectionContainer
+      disabled={isDisabled}
+      onClick={onChange}
+    >
       <Checkbox
         isDisabled={isDisabled}
         checked={isChecked}
-        onChange={() =>
-          selectChains((prev) =>
-            isChecked
-              ? prev.filter((id) => id !== chainIdentifier)
-              : prev.concat(chainIdentifier)
-          )
-        }
+        onChange={onChange}
+      />
+
+      <CreateNetworkIcon
+        network={network}
+        marginRight={0}
+        size='big'
+      />
+      <Text
+        textSize='14px'
+        isBold={false}
       >
-        <CreateNetworkIcon
-          network={network}
-          marginRight={0}
-          size='big'
-        />
-        <Text
-          textSize='14px'
-          isBold={false}
-        >
-          {network.chainName}
-        </Text>
-      </Checkbox>
-    </Column>
+        {network.chainName}
+      </Text>
+    </NetworkSelectionContainer>
   )
 }
 
@@ -275,7 +273,7 @@ export const OnboardingNetworkSelection = () => {
       onboardingType === 'hardware'
         ? WalletRoutes.OnboardingHardwareWalletCreatePassword
         : onboardingType === 'import'
-        ? WalletRoutes.OnboardingImportOrRestore
+        ? WalletRoutes.OnboardingRestoreWallet
         : WalletRoutes.OnboardingNewWalletCreatePassword
     )
   }, [
@@ -305,140 +303,137 @@ export const OnboardingNetworkSelection = () => {
 
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-          <OnboardingStepsNavigation preventSkipAhead />
-
-          <TitleAndDescriptionContainer>
-            <Title>{getLocale('braveWalletSupportedNetworks')}</Title>
-            <Description>
-              {getLocale('braveWalletChooseChainsToUse')}
-            </Description>
-          </TitleAndDescriptionContainer>
-
-          <Column
-            fullWidth
-            alignItems='flex-start'
+    <OnboardingContentLayout
+      title={getLocale('braveWalletSupportedNetworks')}
+      subTitle={getLocale('braveWalletChooseChainsToUse')}
+      padding='44px 0 0'
+    >
+      <Column
+        fullWidth
+        alignItems='flex-start'
+      >
+        <SearchBar
+          value={searchText}
+          action={(e) => {
+            setSearchText(e.target.value)
+          }}
+          placeholder='Search networks'
+          autoFocus
+          isV2
+        />
+        <Row
+          justifyContent='flex-end'
+          margin='8px 0'
+        >
+          <Checkbox
+            checked={showTestNets}
+            onChange={() => setShowTestNets((prev) => !prev)}
           >
-            <SearchBar
-              value={searchText}
-              action={(e) => {
-                setSearchText(e.target.value)
-              }}
-              placeholder='Search networks'
-              autoFocus
-            />
-            <Row justifyContent='flex-end'>
-              <Checkbox
-                checked={showTestNets}
-                onChange={() => setShowTestNets((prev) => !prev)}
-              >
-                <Text
-                  textSize='14px'
-                  isBold={false}
-                >
-                  {getLocale('braveWalletShowTestnets')}
-                </Text>
-              </Checkbox>
-            </Row>
-
-            <ScrollableColumn
-              maxHeight={'300px'}
-              padding={'0px 8px 0px 0px'}
+            <Text
+              textSize='12px'
+              isBold={false}
+              color={leo.color.text.primary}
             >
-              <ChainSelectionContextProvider value={selectedChainsContext}>
-                {isLoadingNetworks ? (
-                  <Column
-                    fullHeight
-                    fullWidth
-                  >
-                    <ProgressRing mode='indeterminate' />
-                  </Column>
-                ) : (
-                  <>
-                    {filteredFeaturedNetworks.length > 0 ? (
-                      <GroupingText>
-                        {getLocale('braveWalletFeatured')}
-                      </GroupingText>
-                    ) : null}
-                    {filteredFeaturedNetworks.map((net) => {
-                      return (
-                        <NetworkCheckbox
-                          isDisabled={mandatoryChainIds.includes(net.chainId)}
-                          key={getNetworkId(net)}
-                          network={net}
-                        />
-                      )
-                    })}
-                    <Row
-                      alignItems='center'
-                      justifyContent='space-between'
-                    >
-                      <GroupingText>
-                        {getLocale('braveWalletPopular')}
-                      </GroupingText>
-                      {networks && (
-                        <SelectAllText
-                          onClick={() => {
-                            areAllChainsSelected
-                              ? setSelectedChainIds(mandatoryChainIds)
-                              : setSelectedChainIds(
-                                  showTestNets ? networkIds : mainnetChainIds
-                                )
-                          }}
-                        >
-                          {getLocale(
-                            areAllChainsSelected
-                              ? 'braveWalletDeselectAll'
-                              : 'braveWalletSelectAll'
-                          )}
-                        </SelectAllText>
-                      )}
-                    </Row>
-                    {filteredPopularNetworks.map((net) => (
+              {getLocale('braveWalletShowTestnets')}
+            </Text>
+          </Checkbox>
+        </Row>
+
+        <ScrollableColumn
+          maxHeight={'300px'}
+          padding={'0px 8px 0px 0px'}
+        >
+          <ChainSelectionContextProvider value={selectedChainsContext}>
+            {isLoadingNetworks ? (
+              <Column
+                fullHeight
+                fullWidth
+              >
+                <ProgressRing mode='indeterminate' />
+              </Column>
+            ) : (
+              <>
+                {filteredFeaturedNetworks.length > 0 ? (
+                  <GroupingText>
+                    {getLocale('braveWalletFeatured')}
+                  </GroupingText>
+                ) : null}
+
+                <NetworkSelectionGrid>
+                  {filteredFeaturedNetworks.map((net) => {
+                    return (
                       <NetworkCheckbox
+                        isDisabled={mandatoryChainIds.includes(net.chainId)}
                         key={getNetworkId(net)}
                         network={net}
                       />
-                    ))}
-                  </>
-                )}
-              </ChainSelectionContextProvider>
-            </ScrollableColumn>
+                    )
+                  })}
+                </NetworkSelectionGrid>
 
-            <VerticalSpace space='44px' />
-          </Column>
-
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={
-                visibleSelectedChainIds.length
-                  ? getLocale('braveWalletContinueWithXItems')
-                      .replace(
-                        '$1', // Number of items
-                        visibleSelectedChainIds.length.toString()
-                      )
-                      .replace(
-                        '$2', // Item name (maybe plural)
-                        visibleSelectedChainIds.length > 1
-                          ? getLocale('braveWalletNetworks')
-                          : getLocale(
-                              'braveWalletAllowAddNetworkNetworkPanelTitle'
+                <Row
+                  alignItems='center'
+                  justifyContent='space-between'
+                >
+                  <GroupingText>{getLocale('braveWalletPopular')}</GroupingText>
+                  {networks && (
+                    <SelectAllText
+                      onClick={() => {
+                        areAllChainsSelected
+                          ? setSelectedChainIds(mandatoryChainIds)
+                          : setSelectedChainIds(
+                              showTestNets ? networkIds : mainnetChainIds
                             )
-                      )
-                  : getLocale('braveWalletButtonContinue')
-              }
-              onSubmit={onSubmit}
-              disabled={visibleSelectedChainIds.length === 0}
-            />
-          </NextButtonRow>
-          <MutedLinkText onClick={openNetworkSettings}>
-            {getLocale('braveWalletAddNetworksAnytimeInSettings')}
-          </MutedLinkText>
-        </StyledWrapper>
-      </MainWrapper>
-    </CenteredPageLayout>
+                      }}
+                    >
+                      {getLocale(
+                        areAllChainsSelected
+                          ? 'braveWalletDeselectAll'
+                          : 'braveWalletSelectAll'
+                      )}
+                    </SelectAllText>
+                  )}
+                </Row>
+
+                <NetworkSelectionGrid>
+                  {filteredPopularNetworks.map((net) => (
+                    <NetworkCheckbox
+                      key={getNetworkId(net)}
+                      network={net}
+                    />
+                  ))}
+                </NetworkSelectionGrid>
+              </>
+            )}
+          </ChainSelectionContextProvider>
+        </ScrollableColumn>
+      </Column>
+
+      <VerticalSpace space='24px' />
+
+      <NextButtonRow>
+        <ContinueButton
+          onClick={onSubmit}
+          disabled={visibleSelectedChainIds.length === 0}
+        >
+          {visibleSelectedChainIds.length
+            ? getLocale('braveWalletContinueWithXItems')
+                .replace(
+                  '$1', // Number of items
+                  visibleSelectedChainIds.length.toString()
+                )
+                .replace(
+                  '$2', // Item name (maybe plural)
+                  visibleSelectedChainIds.length > 1
+                    ? getLocale('braveWalletNetworks')
+                    : getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')
+                )
+            : getLocale('braveWalletButtonContinue')}
+        </ContinueButton>
+      </NextButtonRow>
+      <MutedLinkText onClick={openNetworkSettings}>
+        {getLocale('braveWalletAddNetworksAnytimeInSettings')}
+      </MutedLinkText>
+    </OnboardingContentLayout>
   )
 }

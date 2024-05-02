@@ -4,11 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { mockRecoveryPhrase } from '../stories/mock-data/user-accounts'
-import { getWordIndicesToVerfy } from './ordinal-utils'
+import { getWordIndicesToVerify } from './ordinal-utils'
 
 describe('getWordIndicesToVerfy', () => {
   it('creates a list 3 of unique numbers', () => {
-    const indices = getWordIndicesToVerfy(mockRecoveryPhrase.length)
+    const indices = getWordIndicesToVerify(mockRecoveryPhrase.length)
     expect(new Set(indices).size).toBe(3)
   })
 })

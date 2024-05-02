@@ -366,6 +366,19 @@ leo_icons = [
   "window-tab-new.svg",
   "window.svg",
   "windows-open.svg",
+  "import-arrow.svg",
+  "metamask-color.svg",
+  "phantom-color.svg",
+  "coinbase-color.svg",
+  "trezor-color.svg",
+  "wallet-ledger.svg",
+  "close-circle.svg",
+  "eth-color.svg",
+  "matic-color.svg",
+  "op-color.svg",
+  "aurora-color.svg",
+  "sol-color.svg",
+  "filecoin-color.svg",
 ]
 
 if (enable_brave_vpn_panel) {

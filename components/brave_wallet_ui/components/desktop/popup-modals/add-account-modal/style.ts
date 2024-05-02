@@ -59,7 +59,7 @@ export const SelectWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 250px;
+  width: 100%;
   margin-bottom: 15px;
 `
 
@@ -70,8 +70,9 @@ export const DisclaimerWrapper = styled.div`
   justify-content: center;
   width: 100%;
   background-color: ${(p) => p.theme.color.warningBackground};
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 10px;
+  margin-bottom: 10px;
 `
 
 export const DisclaimerText = styled.span`
@@ -81,6 +82,9 @@ export const DisclaimerText = styled.span`
   letter-spacing: 0.01em;
   text-align: center;
   color: ${(p) => p.theme.color.text02};
+  text-transform: none;
+  font-weight: 400;
+  width: 100%;
 `
 
 export const InfoIcon = styled.div`

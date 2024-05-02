@@ -4,37 +4,44 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-
-// svgs
-import CheckmarkSvg from '../../../assets/svg-icons/big-checkmark.svg'
+import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 
 export const PasswordMatchRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: right;
+  justify-content: flex-start;
   width: 100%;
-  padding: 0px 12px;
+  height: 20px;
 `
 
-export const PasswordMatchText = styled.p`
-  color: ${(p) => p.theme.color.interactive05};
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
-  text-align: right;
-  letter-spacing: 0.01em;
+export const PasswordValidationText = styled.p<{ isMatch: boolean }>`
+  color: ${(p) =>
+    p.isMatch
+      ? leo.color.text.interactive
+      : leo.color.systemfeedback.errorText};
+  font: ${leo.font.small.regular};
+  margin: 0;
+  padding: 0;
 `
 
-export const PasswordMatchCheckmark = styled.div`
+export const PasswordValidationIcon = styled(Icon)<{ isMatch: boolean }>`
+  --leo-icon-size: 14px;
+  --leo-icon-color: ${(p) =>
+    p.isMatch
+      ? leo.color.text.interactive
+      : leo.color.systemfeedback.errorIcon};
+
   display: inline-block;
-  width: 10px;
-  height: 10px;
   margin-right: 4px;
-  background-color: ${(p) => p.theme.color.interactive05};
-  mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
-  mask-size: contain;
   vertical-align: middle;
+`
+
+export const TooltipWrapper = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: calc(100% - 90px);
 `

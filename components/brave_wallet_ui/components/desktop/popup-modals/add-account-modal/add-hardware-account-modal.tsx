@@ -10,7 +10,9 @@ import { useHistory, useParams } from 'react-router'
 import { getLocale } from '$web-common/locale'
 
 // options
-import { CreateAccountOptions } from '../../../../options/create-account-options'
+import {
+  CreateAccountOptions
+} from '../../../../options/create-account-options'
 
 // types
 import {
@@ -21,7 +23,9 @@ import {
 // components
 import { DividerLine } from '../../../extension/divider/index'
 import PopupModal from '..'
-import { HardwareWalletConnect } from './hardware-wallet-connect'
+import {
+  HardwareWalletConnect //
+} from '../../hardware-wallet-connect/hardware_wallet_connect'
 import { SelectAccountType } from './select-account-type/select-account-type'
 
 // style

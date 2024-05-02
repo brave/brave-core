@@ -12,10 +12,18 @@ import { WalletRoutes } from '../../../constants/types'
 import { PageSelectors } from '../../selectors'
 
 // components
-import { BackupEnterPassword } from './backup-enter-password/backup-enter-password'
-import { BackupRecoveryPhrase } from './backup-recovery-phrase/backup-recovery-phrase'
-import { RecoveryPhraseExplainer } from './explain-recovery-phrase/explain-recovery-phrase'
-import { VerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase'
+import {
+  BackupEnterPassword //
+} from './backup-enter-password/backup-enter-password'
+import {
+  BackupRecoveryPhrase //
+} from './backup-recovery-phrase/backup-recovery-phrase'
+import {
+  RecoveryPhraseExplainer //
+} from './explain-recovery-phrase/explain-recovery-phrase'
+import {
+  VerifyRecoveryPhrase //
+} from './verify-recovery-phrase/verify_recovery_phrase'
 
 export const WALLET_BACKUP_STEPS = [
   WalletRoutes.Backup,

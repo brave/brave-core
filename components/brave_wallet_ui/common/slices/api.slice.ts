@@ -341,6 +341,7 @@ export const {
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
+  useSetAutoLockMinutesMutation,
   useValidateUnifiedAddressQuery
 } = walletApi
 

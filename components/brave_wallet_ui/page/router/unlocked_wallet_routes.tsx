@@ -23,7 +23,7 @@ import { FundWalletScreen } from '../screens/fund-wallet/fund-wallet'
 import { SimplePageWrapper } from '../screens/page-screen.styles'
 import {
   OnboardingSuccess //
-} from '../screens/onboarding/onboarding-success/onboarding-success'
+} from '../screens/onboarding/onboarding_success/onboarding_success'
 
 export const UnlockedWalletRoutes = ({
   sessionRoute

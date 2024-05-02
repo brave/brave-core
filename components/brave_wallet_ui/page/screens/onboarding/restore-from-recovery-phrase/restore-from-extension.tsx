@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -21,18 +22,12 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // styles
 import {
-  LoadingIcon,
   VerticalSpace,
-  ErrorText
+  ErrorText,
+  Row
 } from '../../../../components/shared/style'
-import {
-  Description,
-  MainWrapper,
-  NextButtonRow,
-  StyledWrapper,
-  Title,
-  TitleAndDescriptionContainer
-} from '../onboarding.style'
+import { ContinueButton, NextButtonRow } from '../onboarding.style'
+import { InputLabel } from './restore-from-recovery-phrase.style'
 
 // components
 import {
@@ -40,21 +35,17 @@ import {
 } from '../../../../components/shared/loading-skeleton/index'
 import {
   PasswordInput //
-} from '../../../../components/shared/password-input/index'
+} from '../../../../components/shared/password-input/password-input-v2'
 import {
   NewPasswordInput,
   NewPasswordValues
 } from '../../../../components/shared/password-input/new-password-input'
 import {
-  NavButton //
-} from '../../../../components/extension/buttons/nav-button/index'
+  OnboardingCreatingWallet //
+} from '../creating_wallet/onboarding_creating_wallet'
 import {
-  CenteredPageLayout //
-} from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import { CreatingWallet } from '../creating_wallet/creating_wallet'
-import {
-  OnboardingStepsNavigation //
-} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+  OnboardingContentLayout //
+} from '../components/onboarding_content_layout/content_layout'
 
 type RestoreFromExtensionSteps = 'newPassword' | 'currentPassword'
 
@@ -225,102 +216,93 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
 
   // render
   if (isCreatingWallet) {
-    return <CreatingWallet />
+    return <OnboardingCreatingWallet />
   }
 
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-          <OnboardingStepsNavigation />
+    <OnboardingContentLayout
+      title={pageText.title}
+      subTitle={pageText.description}
+    >
+      {isCheckingExtensions && (
+        <>
+          <LoadingSkeleton
+            width={375}
+            height={168}
+          />
+          <VerticalSpace space={'100px'} />
+        </>
+      )}
 
-          <TitleAndDescriptionContainer>
-            {isCheckingExtensions ? (
-              <>
-                <Title>
-                  {getLocale('braveWalletCheckingInstalledExtensions')}
-                </Title>
-              </>
-            ) : (
-              <>
-                <Title>{pageText.title}</Title>
-                <Description>{pageText.description}</Description>
-              </>
-            )}
-          </TitleAndDescriptionContainer>
+      {!isCheckingExtensions && currentStep === 'currentPassword' && (
+        <>
+          <Row
+            justifyContent='flex-start'
+            padding='118px 0 0'
+            marginBottom={4}
+          >
+            <InputLabel
+              textSize='12px'
+              isBold={true}
+            >
+              {getLocale('braveWalletInputLabelPassword')}
+            </InputLabel>
+          </Row>
+          <PasswordInput
+            autoFocus={true}
+            onChange={(password) => {
+              setExtensionPassword(password)
+              setExtensionPasswordError('')
+            }}
+            value={extensionPassword}
+            error={importWalletError || ''}
+            hasError={!!importWalletError}
+            onKeyDown={handleKeyDown}
+            placeholder={
+              restoreFrom === 'metamask'
+                ? getLocale('braveWalletMetaMaskPasswordInputPlaceholder')
+                : getLocale('braveWalletImportBraveLegacyInput')
+            }
+            name='extensionPassword'
+          />
 
-          {isCheckingExtensions && (
-            <>
-              <LoadingSkeleton
-                width={375}
-                height={168}
-              />
-              <VerticalSpace space={'100px'} />
-            </>
-          )}
+          <VerticalSpace space='88px' />
+          <Button
+            kind='plain'
+            onClick={() => history.push(WalletRoutes.OnboardingRestoreWallet)}
+          >
+            {getLocale('braveWalletImportWithRecoveryPhrase')}
+          </Button>
+          <VerticalSpace space='85px' />
+        </>
+      )}
 
-          {!isCheckingExtensions && currentStep === 'currentPassword' && (
-            <>
-              <PasswordInput
-                autoFocus={true}
-                onChange={(password) => {
-                  setExtensionPassword(password)
-                  setExtensionPasswordError('')
-                }}
-                value={extensionPassword}
-                error={importWalletError || ''}
-                hasError={!!importWalletError}
-                onKeyDown={handleKeyDown}
-                placeholder={
-                  restoreFrom === 'metamask'
-                    ? getLocale('braveWalletMetaMaskPasswordInputPlaceholder')
-                    : getLocale('braveWalletImportBraveLegacyInput')
-                }
-                name='extensionPassword'
-                label={getLocale('braveWalletInputLabelPassword')}
-              />
+      {currentStep === 'newPassword' && (
+        <>
+          <NewPasswordInput
+            autoFocus={true}
+            onSubmit={restoreWallet}
+            onChange={handlePasswordChange}
+          />
+          {importWalletError && <ErrorText>{importWalletError}</ErrorText>}
+        </>
+      )}
 
-              <VerticalSpace space='100px' />
-            </>
-          )}
-
-          {currentStep === 'newPassword' && (
-            <>
-              <NewPasswordInput
-                autoFocus={true}
-                onSubmit={restoreWallet}
-                onChange={handlePasswordChange}
-              />
-              {importWalletError && <ErrorText>{importWalletError}</ErrorText>}
-            </>
-          )}
-
-          {!isCheckingExtensions && (
-            <NextButtonRow>
-              <NavButton
-                buttonType='primary'
-                text={
-                  isCheckingImportPassword
-                    ? ((
-                        <LoadingIcon
-                          size='24px'
-                          opacity={0.8}
-                          color='interactive08'
-                        />
-                      ) as unknown as string)
-                    : getLocale('braveWalletButtonContinue')
-                }
-                onSubmit={onContinueClicked}
-                disabled={
-                  isCheckingImportPassword ||
-                  (currentStep === 'currentPassword' && !extensionPassword) ||
-                  (currentStep === 'newPassword' && !isPasswordValid)
-                }
-              />
-            </NextButtonRow>
-          )}
-        </StyledWrapper>
-      </MainWrapper>
-    </CenteredPageLayout>
+      {!isCheckingExtensions && (
+        <NextButtonRow>
+          <ContinueButton
+            onClick={onContinueClicked}
+            isDisabled={
+              isCheckingImportPassword ||
+              (currentStep === 'currentPassword' && !extensionPassword) ||
+              (currentStep === 'newPassword' && !isPasswordValid)
+            }
+            isLoading={isCheckingImportPassword}
+          >
+            {getLocale('braveWalletButtonContinue')}
+          </ContinueButton>
+        </NextButtonRow>
+      )}
+    </OnboardingContentLayout>
   )
 }

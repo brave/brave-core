@@ -528,6 +528,7 @@ export enum WalletRoutes {
 
   // onboarding (import & restore)
   OnboardingImportStart = '/crypto/onboarding/import',
+  OnboardingImportSelectWalletType = '/crypto/onboarding/import/select',
   OnboardingImportTerms = '/crypto/onboarding/import/terms',
   OnboardingImportOrRestore = '/crypto/onboarding/import/choose',
   OnboardingImportNetworkSelection = '/crypto/onboarding/import/networks',
@@ -543,9 +544,11 @@ export enum WalletRoutes {
 
   // onboarding (connect hardware wallet)
   OnboardingHardwareWalletStart = '/crypto/onboarding/hardware',
+  OnboardingImportHardwareWalletWelcome = '/crypto/onboarding/hardware/welcome',
   OnboardingHardwareWalletTerms = '/crypto/onboarding/hardware/terms',
-  OnboardingHardwareWalletConnect = '/crypto/onboarding/hardware/connect' +
-    '/:accountTypeName?',
+  OnboardingHardwareWalletConnect = '/crypto/onboarding/hardware/connect',
+  OnboardingHardwareWalletConnectSelectDevice = '/crypto/onboarding/' +
+    'hardware/select-device/:accountTypeName?',
   OnboardingHardwareWalletNetworkSelection = '/crypto/onboarding/hardware' +
     '/networks',
   OnboardingHardwareWalletCreatePassword = '/crypto/onboarding/' +
@@ -650,6 +653,7 @@ export interface CreateAccountOptionsType {
   description: string
   coin: BraveWallet.CoinType
   icon: string
+  chainIcons?: string[]
 }
 
 export interface NFTAttribute {
@@ -1052,6 +1056,11 @@ export interface BraveRewardsInfo {
   rewardsAccount: BraveWallet.AccountInfo | undefined
   rewardsNetwork: BraveWallet.NetworkInfo | undefined
   accountLink: string | undefined
+}
+
+export type AutoLockOption = {
+  minutes: number
+  label: string
 }
 
 export type BitcoinBalances = {

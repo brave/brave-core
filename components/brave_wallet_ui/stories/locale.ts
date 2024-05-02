@@ -144,7 +144,7 @@ provideStrings({
   braveWalletButtonContinue: 'Continue',
   braveWalletContinueWithXItems: 'Continue with $1 $2',
   braveWalletButtonNext: 'Next',
-  braveWalletButtonGotIt: 'Got it',
+  braveWalletButtonVerifyPhrase: 'Show my recovery phrase',
   braveWalletButtonCopy: 'Copy',
   braveWalletButtonCopied: 'Copied!',
   braveWalletButtonVerify: 'Verify',
@@ -160,30 +160,40 @@ provideStrings({
   braveWalletProceedButton: 'Proceed',
 
   // Onboarding - Welcome
-  braveWalletWelcomeTitle:
-    'Secure. Multi-chain. And oh-so-easy to use. ' +
-    'Your Brave Wallet is just a few clicks away',
-  braveWalletWelcomeButton: 'Create new wallet',
-  braveWalletLearnMoreAboutBraveWallet: 'Learn more about Brave Wallet',
-  braveWalletImportExistingWallet: 'Import existing wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
-  braveWalletConnectHardwareWallet: 'Connect hardware wallet',
+  braveWalletWelcomeTitle: 'Browser-native. Self-custody. And multi-chain.',
+  braveWalletWelcomeDescription:
+    'Take control of your crypto and NFTs. ' +
+    'Brave Wallet supports Ethereum, EVM chains, ' +
+    'Solana, Filecoin, Bitcoin, and more.',
+  braveWalletWelcomeNewWalletTitle: 'Need a new wallet?',
+  braveWalletWelcomeNewWalletDescription:
+    'Get started with Brave Wallet in minutes.',
+  braveWalletWelcomeImportWalletTitle: 'Already have a wallet?',
+  braveWalletWelcomeImportWalletDescription: 'Import your existing wallet.',
+  braveWalletWelcomeWatchOnlyTitle: 'I need a watch-only wallet',
+  braveWalletCopyright:
+    '©2024 Brave Software Inc. Brave and the Brave logo are registered ' +
+    'trademarks of Brave Software, Inc. Other product names and logos may be ' +
+    'trademarks of their respective companies. All rights reserved.',
   braveWalletWelcomeDividerText: 'or',
 
   // Onboarding - Disclosures
-  braveWalletDisclosuresTitle: 'Legal stuff',
-  braveWalletDisclosuresDescription: 'Please acknowledge the following:',
+  braveWalletDisclosuresTitle: 'Before we begin',
+  braveWalletDisclosuresDescription:
+    'We require that you acknowledge the items below',
   braveWalletSelfCustodyDisclosureCheckboxText:
-    'I understand this is a self-custody wallet, ' +
-    'and that I alone am responsible for any associated funds, ' +
-    'assets, or accounts, and for taking appropriate action to secure, ' +
-    'protect and backup my wallet. ' +
-    'I understand that Brave can NOT access my wallet or reverse ' +
-    'transactions on my behalf, and that my recovery phrase ' +
-    'is the ONLY way to regain access in the event of a lost password, ' +
-    'stolen device, or similar circumstance.',
+    'I understand that this is a self-custody wallet, ' +
+    'and that I am solely responsible for any associated funds, assets, ' +
+    'or accounts, and for taking any appropriate action to ' +
+    'secure, protect, and back up my wallet. ' +
+    'I understand that Brave cannot access my wallet or ' +
+    'reverse transactions on my behalf, ' +
+    'and that my recovery phrase is the ONLY way to ' +
+    'regain access in the event of a ' +
+    'lost password, stolen device, or similar circumstance.',
   braveWalletTermsOfServiceCheckboxText:
-    'I have read and agree to the $1Terms of use$2',
+    'I have read and agree to the $1Terms of use$2.',
 
   // Onboarding import or restore wallet page
   braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
@@ -192,40 +202,57 @@ provideStrings({
     'To connect a wallet you already have, ' +
     'you may need to enter your recovery phrase. At this time we support ' +
     'restoring / importing from Ethereum and Solana wallets.',
-  braveWalletRestoreMyBraveWallet: 'Restore from seed phrase',
+  braveWalletRestoreMyBraveWallet: 'Import an existing wallet',
   braveWalletRestoreMyBraveWalletDescription: '12-24 words',
   braveWalletImportFromMetaMask: 'Import from MetaMask',
   braveWalletImportFromMetaMaskDescription:
     'Use your MetaMask password to import your seed phrase',
   braveWalletImportFromLegacy: 'Import from legacy Brave crypto wallets',
   braveWalletCreateWalletInsteadLink: 'Never mind, I’ll create a new wallet',
+  braveWalletRestoreAlternateLength: 'I have a $1-word recovery phrase',
+  braveWalletRestoreWalletError: 'Check your recovery phrase and try again.',
+  braveWalletImportWithRecoveryPhrase: 'Import using your recovery phrase',
+  braveWalletMetamaskDetected: 'Metamask wallet detected!',
+  braveWalletMetamaskImportUsePassword: 'Use password',
+  braveWalletRecoveryPhraseWord: 'Word $1',
 
   // onboarding import wallet screen
   braveWalletImportPasswordError: 'Password is not correct',
   braveWalletMetaMaskPasswordInputPlaceholder: 'Type MetaMask password',
   braveWalletImportFromMetaMaskSeedInstructions:
     'Type your MetaMask 12-24 word recovery phrase.',
-  braveWalletMetaMaskExtensionDetected:
-    'We detected the MetaMask extension in your browser',
+  braveWalletMetaMaskExtensionDetected: 'Import MetaMask wallet',
+
   braveWalletMetaMaskExtensionImportDescription:
-    'Enter your MetaMask wallet password to easily import to Brave Wallet.',
+    'You can easily import your MetaMask wallet just by inputting ' +
+    'your password.',
   braveWalletRestoreMyBraveWalletInstructions:
-    'Type your Brave Wallet 12-24 word recovery phrase.',
+    'You can paste your entire recovery phrase into any field.',
   braveWalletRecoveryPhraseLengthError:
     'Recovery phrase must be 12, 15, 18, 21, or 24 words long',
   braveWalletInvalidMnemonicError:
     'The mnemonic being imported is not valid for Brave Wallet',
+  braveWalletImportWalletTypeTitle:
+    'Which type of wallet would you like to import?',
+  braveWalletImportWalletTypeHotWalletTitle: 'Ethereum/Solana/Filecoin wallet',
+  braveWalletImportWalletTypeHotWalletDescription:
+    'Import your seed phrase from an existing wallet',
+  braveWalletImportWalletTypeHardwareWalletTitle: 'Hardware wallet',
+  braveWalletImportWalletTypeHardwareWalletDescription:
+    'Connect your hardware wallet with Brave',
 
   // Onboarding - Backup Wallet - Intro
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle:
-    'Before you start backing up wallet',
+    'Save your recovery phrase',
   braveWalletOnboardingRecoveryPhraseBackupIntroDescription:
-    'The 12-24 word recovery phrase is a private key you can use to regain ' +
-    'access to your wallet in case you lose a connected device(s). ' +
-    'Store it someplace safe, and in the exact order it appears below.',
+    'Your recovery phrase is the key to access your wallet in case you ' +
+    'forget your password or lose your device.',
   braveWalletRecoveryPhraseBackupWarningImportant:
-    '$1Important:$2 Never share your recovery phrase. ' +
-    'Anyone with this phrase can take your assets forever.',
+    'Keep it in a secure place that is not accessible to others and avoid ' +
+    'sharing it with anyone.',
+  braveWalletRecoveryWordInstructions:
+    'Enter the word in position $1 from your recovery phrase.',
+  braveWalletVerifyRecoveryPhraseGoBack: 'Forgot to save? Go back',
 
   // Onboarding - Backup Wallet - Recovery Phrase Backup
   braveWalletRecoveryPhraseBackupTitle: 'Back up your wallet recovery phrase',
@@ -234,9 +261,14 @@ provideStrings({
     'Keep it safe, and never share it with anyone else.',
   braveWalletCopiedToClipboard: 'Copied to clipboard',
   braveWalletClickToSeeRecoveryPhrase: 'Click to see your phrase',
+  braveWalletSkipBackupWarning:
+    'You can skip this step now, but you still need to back up your recovery ' +
+    'phrase to ensure account security.',
+  braveWalletSkipBackup: 'I’ll back up later',
+  braveWalletGoBack: 'Go back',
 
   // Onboarding - Backup Wallet - Verify Recovery Phrase
-  braveWalletVerifyRecoveryPhraseTitle: 'Verify your recovery phrase',
+  braveWalletVerifyRecoveryPhraseTitle: "Let's check",
   braveWalletVerifyRecoveryPhraseInstructions:
     'Click the $1$7 ($8)$2, $3$9 ($10)$4, and $5$11 ($12)$6 words of ' +
     'your recovery phrase.',
@@ -244,12 +276,6 @@ provideStrings({
 
   // Recovery Phrase Backup - Intro
   braveWalletBackupIntroTitle: 'Back up your crypto wallet',
-  braveWalletBackupIntroDescription:
-    'In the next step you’ll see a $1-word recovery phrase, ' +
-    'which you can use to recover your primary crypto accounts. ' +
-    'Save it someplace safe. Your recovery phrase is the only way to ' +
-    'regain account access in case of forgotten password, ' +
-    'lost or stolen device, or you want to switch wallets.',
   braveWalletBackupIntroTerms:
     'I understand that if I lose my recovery words, ' +
     'I will not be able to access my crypto wallet.',
@@ -276,32 +302,34 @@ provideStrings({
   // Create Password
   braveWalletCreatePasswordTitle: 'Create a new password',
   braveWalletCreatePasswordDescription:
-    "You'll use this password each time you access your wallet.",
+    "You'll use this password to access your wallet.",
   braveWalletCreatePasswordInput: 'Enter new password',
   braveWalletConfirmPasswordInput: 'Re-enter password',
   braveWalletCreatePasswordError: "Password criteria doesn't match.",
   braveWalletConfirmPasswordError: 'Passwords do not match',
-  braveWalletPasswordMatch: 'Match!',
+  braveWalletPasswordMatch: 'Passwords match',
   braveWalletPasswordIsStrong: 'Strong!',
   braveWalletPasswordIsMediumStrength: 'Medium',
   braveWalletPasswordIsWeak: 'Weak',
+  braveWalletAutoLockTitle: 'Brave Wallet will auto-lock after',
+  braveWalletAutoLockDurationMinutes: '$1 minutes',
+  braveWalletAutoLockDurationHours: '$1 hour(s)',
 
   // Creating Wallet
   braveWalletCreatingWallet: 'Creating Wallet...',
 
-  // Create Password - Stength Tooltip
-  braveWalletPasswordStrengthTooltipHeading: 'At least:',
-  braveWalletPasswordStrengthTooltipIsLongEnough: '8 characters',
+  // Create Password - Strength Tooltip
+  braveWalletPasswordStrengthTooltipHeading: 'Password should have:',
+  braveWalletPasswordStrengthTooltipIsLongEnough: 'At least 8 characters',
 
   // Onboarding Success
-  braveWalletOnboardingSuccessTitle:
-    'Congratulations! Your Brave Wallet is ready to go!',
+  braveWalletOnboardingSuccessTitle: 'You’re all set!',
   braveWalletOnboardingSuccessDescription:
-    'To access your wallet, just click the wallet icon at the top right ' +
-    'of any Brave browser window.',
+    'Your Brave Wallet is now set up and ready for use.',
   braveWalletBuyCryptoButton: 'Buy crypto',
   braveWalletDepositCryptoButton: 'Deposit',
   braveWalletLearnAboutMyWallet: 'Learn more about my new wallet',
+  braveWalletOnboardingSuccessGoToPortfolio: 'Go to portfolio',
 
   // Wallet Article Links
   braveWalletArticleLinkWhatsARecoveryPhrase: 'What’s a recovery phrase?',
@@ -346,8 +374,9 @@ provideStrings({
 
   // Clipboard
   braveWalletToolTipCopyToClipboard: 'Copy to Clipboard',
-  braveWalletToolTipCopiedToClipboard: 'Copied!',
+  braveWalletToolTipCopiedToClipboard: 'Copied',
   braveWalletPasteFromClipboard: 'Paste from clipboard',
+  braveWalletClickToCopy: 'Click to copy',
 
   // Accounts Tab
   braveWalletAccountsPrimary: 'Primary crypto accounts',
@@ -396,13 +425,16 @@ provideStrings({
   braveWalletConnectHardwareInfo2: 'Unlock your device and select the $1 app.',
   braveWalletConnectHardwareTrezor: 'Trezor',
   braveWalletConnectHardwareLedger: 'Ledger',
+  braveWalletConnectHardwareDeviceDescription:
+    'Connect your $1 device to Brave Wallet',
   braveWalletConnectHardwareAuthorizationNeeded:
-    'Grant Brave access to your Ledger device.',
+    'Grant Brave access to your $1 device.',
   braveWalletConnectingHardwareWallet: 'Connecting...',
   braveWalletAddCheckedAccountsHardwareWallet: 'Add checked accounts',
   braveWalletLoadMoreAccountsHardwareWallet: 'Load more',
   braveWalletLoadingMoreAccountsHardwareWallet: 'Loading more...',
   braveWalletSearchScannedAccounts: 'Search account',
+  braveWalletHDPath: 'HD path',
   braveWalletSwitchHDPathTextHardwareWallet:
     'Try switching HD path (above) if you ' +
     'cannot find the account you are looking for.',
@@ -411,6 +443,15 @@ provideStrings({
   braveWalletUnknownInternalError:
     'Unknown error, please reconnect your hardware wallet and try again.',
   braveWalletConnectHardwareSearchNothingFound: 'No results found.',
+  braveWalletAuthorizeHardwareWallet: 'Authorize your wallet',
+  braveWalletConnectHardwareWallet: 'Connect hardware wallet',
+  braveWallectConnectHardwareDescription:
+    'We currently support $1 and $2 devices.',
+  braveWalletImportHardwareWalletDescription:
+    'Connect your hardware wallet to manage your assets directly ' +
+    'from Brave Wallet',
+  braveWalletConnectHardwareWalletSelectBlockchain:
+    'Select a blockchain to import your hardware wallet',
 
   // Account Settings Modal
   braveWalletAccountSettingsDetails: 'Details',

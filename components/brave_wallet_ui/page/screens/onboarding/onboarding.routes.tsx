@@ -22,7 +22,7 @@ import {
 import {
   ProtectedRoute //
 } from '../../../components/shared/protected-routing/protected-route'
-import { OnboardingSuccess } from './onboarding-success/onboarding-success'
+import { OnboardingSuccess } from './onboarding_success/onboarding_success'
 import { OnboardingNewWalletRoutes } from './onboarding_new_wallet.routes'
 import { OnboardingWelcome } from './welcome/onboarding-welcome'
 import { OnboardingImportWalletRoutes } from './onboarding_import_wallet.routes'

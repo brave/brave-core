@@ -6,8 +6,6 @@
 import * as React from 'react'
 
 // utils
-import { getLocale } from '../../../../common/locale'
-import { formatOrdinals } from '../../../utils/ordinal-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
 
 // styles
@@ -17,7 +15,8 @@ import {
   FrostedGlass,
   HiddenPhraseContainer,
   EyeOffIcon,
-  RecoveryBubbleBadge
+  IconWrapper,
+  WordPos
 } from './recovery-phrase.style'
 
 export interface SelectedPhraseWord {
@@ -26,91 +25,18 @@ export interface SelectedPhraseWord {
 }
 
 interface Props {
-  hidden: boolean
   recoveryPhrase: string[]
-  verificationIndices?: number[]
-  onClickReveal?: () => void
   verificationModeEnabled?: boolean
-  onSelectedWordListChange?: (
-    words: SelectedPhraseWord[],
-    doesWordOrderMatch: boolean
-  ) => void
 }
 
 const FAKE_PHRASE_WORDS = new Array(12).fill('Fake')
 
-const getNewSelectedWordsList = (
-  prevWords: SelectedPhraseWord[],
-  word: SelectedPhraseWord
-): SelectedPhraseWord[] => {
-  // remove from list if word already selected
-  if (prevWords.find((prevWord) => prevWord.index === word.index)) {
-    return prevWords.filter((prevWord) => prevWord.index !== word.index)
-  }
-
-  // 3 words selected max
-  if (prevWords.length > 2) {
-    return prevWords
-  }
-
-  // add word to list
-  return [...prevWords, word]
-}
-
 export const RecoveryPhrase: React.FC<Props> = ({
-  hidden,
-  onClickReveal,
-  onSelectedWordListChange,
   recoveryPhrase,
-  verificationModeEnabled,
-  verificationIndices
+  verificationModeEnabled
 }) => {
   // state
-  const [selectedWords, setSelectedWords] = React.useState<
-    SelectedPhraseWord[]
-  >([])
-
-  // methods
-  const makeOnClickWord = React.useCallback(
-    (word: SelectedPhraseWord) => () => {
-      if (verificationModeEnabled && verificationIndices) {
-        const newSelectedWords = getNewSelectedWordsList(selectedWords, word)
-
-        setSelectedWords(newSelectedWords)
-
-        if (!onSelectedWordListChange) {
-          return
-        }
-
-        // wrong length
-        if (newSelectedWords.length !== 3) {
-          onSelectedWordListChange(newSelectedWords, false)
-          return
-        }
-
-        // check order
-        const firstWordMatch =
-          newSelectedWords[0].value === recoveryPhrase[verificationIndices[0]]
-
-        const secondWordMatch =
-          selectedWords[1].value === recoveryPhrase[verificationIndices[1]]
-
-        const lastWordMatch =
-          newSelectedWords[2].value === recoveryPhrase[verificationIndices[2]]
-
-        const match = firstWordMatch && secondWordMatch && lastWordMatch
-
-        onSelectedWordListChange(newSelectedWords, match)
-      }
-    },
-    [
-      verificationModeEnabled,
-      selectedWords,
-      verificationIndices,
-      onSelectedWordListChange,
-      recoveryPhrase
-    ]
-  )
+  const [hidden, setHidden] = React.useState(true)
 
   // memos
   const shuffledPhrase: string[] = React.useMemo(() => {
@@ -134,19 +60,17 @@ export const RecoveryPhrase: React.FC<Props> = ({
   // render
   if (hidden) {
     return (
-      <HiddenPhraseContainer onClick={onClickReveal}>
+      <HiddenPhraseContainer onMouseEnter={() => setHidden(false)}>
         <FrostedGlass>
-          <EyeOffIcon />
-          <p>{getLocale('braveWalletClickToSeeRecoveryPhrase')}</p>
+          <IconWrapper>
+            <EyeOffIcon />
+          </IconWrapper>
         </FrostedGlass>
-        <RecoveryPhraseContainer>
+        <RecoveryPhraseContainer phraseLength={FAKE_PHRASE_WORDS.length}>
           {FAKE_PHRASE_WORDS.map((word, index) => (
-            <RecoveryBubble
-              key={index}
-              verificationModeEnabled={verificationModeEnabled}
-            >
+            <RecoveryBubble key={index}>
               <span>
-                {index + 1}. {word}
+                #{index + 1}. {word}
               </span>
             </RecoveryBubble>
           ))}
@@ -156,35 +80,18 @@ export const RecoveryPhrase: React.FC<Props> = ({
   }
 
   return (
-    <RecoveryPhraseContainer>
-      {phraseWordsToDisplay.map((word) => {
-        const wordIndex = selectedWords?.findIndex(
-          (selectedWord) =>
-            selectedWord.index === word.index &&
-            selectedWord.value === word.value
-        )
-        const isWordSelected = wordIndex > -1
-        return (
-          <RecoveryBubble
-            key={`${word.index}-${word.value}`}
-            verificationModeEnabled={verificationModeEnabled}
-            onClick={makeOnClickWord(word)}
-            selected={isWordSelected}
-          >
-            {isWordSelected && verificationIndices && (
-              <RecoveryBubbleBadge>
-                {formatOrdinals(verificationIndices[wordIndex] + 1)}
-              </RecoveryBubbleBadge>
-            )}
-
-            <span>
-              {verificationModeEnabled
-                ? word.value
-                : `${word.index + 1}. ${word.value}`}
-            </span>
-          </RecoveryBubble>
-        )
-      })}
+    <RecoveryPhraseContainer
+      phraseLength={recoveryPhrase.length}
+      onMouseLeave={() => setHidden(true)}
+    >
+      {phraseWordsToDisplay.map((word) => (
+        <RecoveryBubble key={`${word.index}-${word.value}`}>
+          <span>
+            <WordPos>#{word.index + 1}.</WordPos>
+            {word.value}
+          </span>
+        </RecoveryBubble>
+      ))}
     </RecoveryPhraseContainer>
   )
 }

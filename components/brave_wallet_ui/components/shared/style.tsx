@@ -72,6 +72,7 @@ export const MutedLinkText = styled(LinkText)`
   font-size: 12px;
   font-weight: 400;
   color: ${leo.color.text.tertiary};
+  line-height: 20px;
 `
 
 export const ErrorText = styled.span`
@@ -148,6 +149,7 @@ export const Row = styled.div<
     marginBottom?: number | string
     // https://styled-components.com/docs/api#transient-props
     $wrap?: boolean
+    gap?: string
   }
 >`
   font-family: 'Poppins';
@@ -174,6 +176,7 @@ export const Row = styled.div<
   position: relative;
   ${makePaddingMixin(0)}
   box-sizing: border-box;
+  gap: ${(p) => p.gap ?? 'unset'};
 `
 
 export const Column = styled.div<
@@ -562,10 +565,11 @@ export const InputLabelText = styled.label`
   width: 100%;
 `
 
-export const VerticalDivider = styled.div`
+export const VerticalDivider = styled.div<{ margin?: string }>`
   height: 1px;
   width: 100%;
   background-color: ${leo.color.divider.subtle};
+  margin: ${(p) => p.margin || 0};
 `
 
 export const BraveRewardsIndicator = styled.div`

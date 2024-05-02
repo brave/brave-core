@@ -4,8 +4,14 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import Dialog from '@brave/leo/react/dialog'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import * as leo from '@brave/leo/tokens/css'
 
 import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circle-outline-icon.svg'
+import ExamplePhraseLight from './images/example_recovery_phrase_light.png'
+import ExamplePhraseDark from './images/example_recovery_phrase_dark.png'
 
 export const BannerCard = styled.div`
   margin-top: 24px;
@@ -58,4 +64,69 @@ export const WarningCircle = styled.div`
   mask-position: center;
   background-color: ${(p) => p.theme.color.errorBorder};
   margin-right: 16px;
+`
+
+export const Subtitle = styled.p`
+  color: ${leo.color.text.secondary};
+  text-align: left;
+  font: ${leo.font.large.regular};
+  margin: 0;
+  padding: 16px 0 0 0;
+  line-height: 26px;
+`
+
+export const BackupInstructions = styled.p`
+  color: ${leo.color.text.primary};
+  font: ${leo.font.large.semibold};
+  padding: 0;
+  margin: 14px 0 0;
+`
+
+export const ExampleRecoveryPhrase = styled.img.attrs(() => ({
+  src: window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? ExamplePhraseDark
+    : ExamplePhraseLight
+}))`
+  width: 100%;
+  height: 208px;
+  margin: 54px 0;
+`
+
+export const SkipDialog = styled(Dialog).attrs({
+  modal: true,
+  showClose: true,
+  backdropClickCloses: true
+})`
+  --leo-dialog-background: ${leo.color.container.background};
+  --leo-dialog-border-radius: 16px;
+  --leo-dialog-color: ${leo.color.text.primary};
+  --leo-dialog-padding: ${leo.spacing['4Xl']};
+  --leo-dialog-width: 480px;
+`
+
+export const WarningText = styled.p`
+  color: --leo-color-text-primary;
+  font: ${leo.font.large.regular};
+  padding: 0;
+  margin: 0;
+`
+
+export const CopyButton = styled(Button).attrs({
+  kind: 'plain'
+})<{ isCopied?: boolean }>`
+  --leo-button-color: ${(p) =>
+    p.isCopied ? leo.color.systemfeedback.successText : leo.color.icon.default};
+`
+
+export const CopyText = styled.span`
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 400 !important;
+`
+
+export const CopiedTick = styled(Icon).attrs({
+  name: 'check-normal'
+})`
+  --leo-icon-size: 16px;
+  --leo-icon-color: ${leo.color.systemfeedback.successText};
 `
