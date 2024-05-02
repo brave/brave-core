@@ -203,7 +203,7 @@
 "aichat.paywallUpsellCreativityTopicTitle" = "Розкрийте свій творчий потенціал";
 
 /* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Пріоритетний доступ до потужних моделей із різними навичками";
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Пріоритетний доступ до потужних моделей із різними навичками.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Досліджуйте різні ШІ-моделі";
