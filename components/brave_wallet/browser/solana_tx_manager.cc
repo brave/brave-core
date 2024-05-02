@@ -90,7 +90,7 @@ void SolanaTxManager::AddUnapprovedTransaction(
   meta->set_status(mojom::TransactionStatus::Unapproved);
   meta->set_chain_id(chain_id);
 
-  LOG(ERROR) << "SolanaTxManager::AddUnapprovedTransaction 2";
+  LOG(ERROR) << "SolanaTxManager::AddUnapprovedTransaction 2 : chain_id" << chain_id;
 
   // If the transaction is partially signed, we can't modify the instructions
   // to add a priority fee.
@@ -939,6 +939,8 @@ void SolanaTxManager::GetSolanaGasEstimationAndMeta(
     const std::string& chain_id,
     std::unique_ptr<SolanaTxMeta> meta,
     GetSolanaGasEstimationAndMetaCallback callback) {
+  LOG(ERROR) << "SolanaTxManager::GetSolanaGasEstimationAndMeta 0";
+  LOG(ERROR) << "SolanaTxManager::GetSolanaGasEstimationAndMeta 1 chian_id " << chain_id;
   auto internal_callback = base::BindOnce(
       &SolanaTxManager::OnGetEstimatedTxFeeAndMeta,
       weak_ptr_factory_.GetWeakPtr(), chain_id, std::move(callback));
