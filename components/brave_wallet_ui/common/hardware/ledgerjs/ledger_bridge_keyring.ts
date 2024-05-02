@@ -110,13 +110,19 @@ export default class LedgerBridgeKeyring {
       case LedgerBridgeErrorCodes.BridgeNotReady:
         return {
           success: false,
-          error: getLocale('braveWalletBridgeNotReady').replace('$1', deviceName) ,
+          error: getLocale('braveWalletBridgeNotReady').replace(
+            '$1',
+            deviceName
+          ),
           code: code
         }
       case LedgerBridgeErrorCodes.CommandInProgress:
         return {
           success: false,
-          error: getLocale('braveWalletBridgeCommandInProgress').replace('$1', deviceName),
+          error: getLocale('braveWalletBridgeCommandInProgress').replace(
+            '$1',
+            deviceName
+          ),
           code: code
         }
     }

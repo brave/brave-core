@@ -11,11 +11,16 @@ import { WalletRoutes } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
 
 // components
-import { OnboardingContentLayout } from '../onboarding_content_layout/content_layout'
+import {
+  OnboardingContentLayout //
+} from '../onboarding_content_layout/content_layout'
 import { ImportTypeAction } from './components/import_type_action'
 
 // styles
-import { Column, VerticalDivider } from '../../../../../components/shared/style'
+import {
+  Column, //
+  VerticalDivider
+} from '../../../../../components/shared/style'
 
 const softwareWalletIcons = [
   'brave-icon-release-color',

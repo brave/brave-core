@@ -174,8 +174,8 @@ provideStrings({
   braveWalletWelcomeWatchOnlyTitle: 'I need a watch-only wallet',
   braveWalletCopyright:
     '©2024 Brave Software Inc. Brave and the Brave logo are registered ' +
-    'trademarks of Brave Software, Inc. Other product names and logos may be trademarks ' +
-    'of their respective companies. All rights reserved.',
+    'trademarks of Brave Software, Inc. Other product names and logos may be ' +
+    'trademarks of their respective companies. All rights reserved.',
   braveWalletWelcomeDividerText: 'or',
 
   // Onboarding - Disclosures
@@ -221,7 +221,7 @@ provideStrings({
   braveWalletMetaMaskPasswordInputPlaceholder: 'Type MetaMask password',
   braveWalletImportFromMetaMaskSeedInstructions:
     'Type your MetaMask 12-24 word recovery phrase.',
-  braveWalletMetaMaskExtensionDetected: 'Import MetaMask wallet',  
+  braveWalletMetaMaskExtensionDetected: 'Import MetaMask wallet',
 
   braveWalletMetaMaskExtensionImportDescription:
     'You can easily import your MetaMask wallet just by inputting ' +

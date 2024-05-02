@@ -30,7 +30,9 @@ import {
   ExampleRecoveryPhrase
 } from './explain-recovery-phrase.style'
 import { Column, VerticalSpace } from '../../../../components/shared/style'
-import { OnboardingContentLayout } from '../../onboarding/components/onboarding_content_layout/content_layout'
+import {
+  OnboardingContentLayout //
+} from '../../onboarding/components/onboarding_content_layout/content_layout'
 
 export const RecoveryPhraseExplainer = () => {
   // state

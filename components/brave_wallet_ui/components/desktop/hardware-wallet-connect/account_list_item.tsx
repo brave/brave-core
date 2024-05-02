@@ -13,7 +13,9 @@ import { BraveWallet } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
 
-import { useGetHardwareAccountDiscoveryBalanceQuery } from '../../../common/slices/api.slice'
+import {
+  useGetHardwareAccountDiscoveryBalanceQuery //
+} from '../../../common/slices/api.slice'
 import { useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Styles
