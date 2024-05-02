@@ -24,6 +24,8 @@ enum ScriptSourceType {
   case selectorsPoller
   /// Global Privacy Control script
   case gpc
+  /// A script to be used on youtube when engines are not yet ready
+  case youtube
 
   var fileName: String {
     switch self {
@@ -32,6 +34,7 @@ enum ScriptSourceType {
     case .frameCheckWrapper: return "FrameCheckWrapper"
     case .selectorsPoller: return "SelectorsPollerScript"
     case .gpc: return "gpc"
+    case .youtube: return "youtube"
     }
   }
 

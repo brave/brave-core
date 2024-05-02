@@ -153,6 +153,27 @@ struct PageData {
     )
 
     let allEngineScripts = await (mainFrame: engineScripts, subFrames: additionalScriptTypes)
+
+    /// For first launch when we don't have engines ready, ensure we load the bundled youtube script
+    if allEngineScripts.mainFrame.isEmpty && mainFrameURL.baseDomain == "youtube.com" {
+      do {
+        let source = try ScriptSourceType.youtube.loadScript()
+        let scriptType = UserScriptType.engineScript(
+          UserScriptType.EngineScriptConfiguration(
+            frameURL: mainFrameURL,
+            isMainFrame: true,
+            source: source,
+            order: 0,
+            isDeAMPEnabled: isDeAmpEnabled,
+            isBundled: true
+          )
+        )
+        return allEngineScripts.subFrames.union([scriptType])
+      } catch {
+        assertionFailure("A bundled script should not fail")
+      }
+    }
+
     return allEngineScripts.mainFrame.union(allEngineScripts.subFrames)
   }
 }

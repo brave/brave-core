@@ -47,6 +47,8 @@ enum UserScriptType: Hashable {
     let order: Int
     /// We need to pass this setting over to the javascript code
     let isDeAMPEnabled: Bool
+    /// Wether this script is bundled
+    let isBundled: Bool
   }
 
   /// A script that informs iOS of site state changes
@@ -86,7 +88,12 @@ extension UserScriptType: CustomDebugStringConvertible {
     case .domainUserScript(let domainUserScript):
       return "domainUserScript(\(domainUserScript.associatedDomains.joined(separator: ", ")))"
     case .engineScript(let configuration):
-      return "engineScript(\(configuration.frameURL))"
+      let url = configuration.frameURL.displayURL ?? configuration.frameURL
+      if configuration.isBundled {
+        return "engineScript(\(url)) (bundled)"
+      } else {
+        return "engineScript(\(url))"
+      }
     case .farblingProtection(let etld):
       return "farblingProtection(\(etld))"
     case .nacl:

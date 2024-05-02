@@ -45,7 +45,7 @@ public actor GroupedAdBlockEngine {
       case .aggressive: return true
       }
     }
-    
+
     public var debugDescription: String {
       switch self {
       case .aggressive: return "aggressive"
@@ -180,7 +180,8 @@ public actor GroupedAdBlockEngine {
         isMainFrame: isMainFrame,
         source: source,
         order: index,
-        isDeAMPEnabled: isDeAmpEnabled
+        isDeAMPEnabled: isDeAmpEnabled,
+        isBundled: false
       )
 
       userScriptTypes.insert(.engineScript(configuration))
