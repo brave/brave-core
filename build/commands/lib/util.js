@@ -624,7 +624,7 @@ const util = {
     // Store extraGnGenOpts in buildArgs as a comment to rerun gn gen on change.
     assert(Array.isArray(extraGnGenOpts))
     if (extraGnGenOpts.length) {
-      buildArgs['# extraGnGenOpts'] = extraGnGenOpts
+      buildArgs[`# Extra gn gen options: ${extraGnGenOpts.join(' ')}`] = null
     }
 
     // Guard to check if gn gen was successful last time.
