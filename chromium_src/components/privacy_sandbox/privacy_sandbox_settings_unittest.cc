@@ -83,10 +83,11 @@ void SetupTestState(
   }
 
   content_settings::TestUtils::OverrideProvider(
-      map, std::move(user_provider), HostContentSettingsMap::DEFAULT_PROVIDER);
+      map, std::move(user_provider),
+      content_settings::ProviderType::kDefaultProvider);
   content_settings::TestUtils::OverrideProvider(
       map, std::move(managed_provider),
-      HostContentSettingsMap::POLICY_PROVIDER);
+      content_settings::ProviderType::kPolicyProvider);
 }
 
 }  // namespace
