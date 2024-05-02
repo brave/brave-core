@@ -12,10 +12,17 @@
 namespace ai_chat {
 
 Browser* GetBrowserForWebContents(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return nullptr;
+  }
+
   auto* browser_window =
       BrowserWindow::FindBrowserWindowWithWebContents(web_contents);
   auto* browser_view = static_cast<BrowserView*>(browser_window);
-  CHECK(browser_view);
+  if (!browser_view) {
+    return nullptr;
+  }
+
   return browser_view->browser();
 }
 
