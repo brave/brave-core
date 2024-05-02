@@ -51,7 +51,6 @@
 
     <!-- Brave wallet 2.0 colors -->
     <color name="brave_wallet_dn_panel_bg">@color/wallet_bg</color>
-    <color name="brave_wallet_semantic_button_disabled">#4D687B85</color>
     <color name="brave_wallet_semantic_text_disabled">#80EBEEF0</color>
     <color name="brave_wallet_semantic_text_primary">#F3F5F7</color>
     <color name="brave_wallet_semantic_icon_interactive">#7C91FF</color>
