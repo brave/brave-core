@@ -1,0 +1,17 @@
+diff --git a/tools/rust/config.toml.template b/tools/rust/config.toml.template
+index c32f90fc343f7e28028ae52fa855ddb868a54198..928f49b9cde38f80b324726184e095168a86c6e1 100644
+--- a/tools/rust/config.toml.template
++++ b/tools/rust/config.toml.template
+@@ -3,7 +3,6 @@
+ # found in the LICENSE file.
+ 
+ # Suppress x.py warning about configuration changes
+-changelog-seen = 2
+ 
+ [llvm]
+ # We use LLVM that we've built ourselves.
+@@ -73,4 +72,3 @@ ar = "$LLVM_BIN/llvm-ar"
+ cc = "$LLVM_BIN/clang"
+ cxx = "$LLVM_BIN/clang++"
+ linker = "$LLVM_BIN/clang"
+-
