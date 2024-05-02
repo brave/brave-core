@@ -45,7 +45,7 @@ class TeamcityServiceMessages {
                   std::string_view details = std::string_view());
   void TestIgnored(std::string_view name,
                    std::string_view message = std::string_view());
-  void TestFinished(std::string_view name, base::TimeDelta duration);
+  void TestFinished(std::string_view name, TimeDelta duration);
 
  private:
   raw_ref<std::ostream> ostream_;

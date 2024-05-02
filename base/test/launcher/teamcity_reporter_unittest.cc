@@ -49,7 +49,7 @@ TEST_F(TeamcityReporterTest, TestSuccessful) {
   TestResult result;
   result.full_name = "TestSuite.TestName";
   result.status = TestResult::TEST_SUCCESS;
-  result.elapsed_time = base::Milliseconds(100);
+  result.elapsed_time = Milliseconds(100);
   teamcity_reporter_->OnTestStarted(result);
   teamcity_reporter_->OnTestResult(result);
   teamcity_reporter_->OnTestFinished(result);
@@ -64,7 +64,7 @@ TEST_F(TeamcityReporterTest, TestFailed) {
   TestResult result;
   result.full_name = "TestSuite.TestName";
   result.status = TestResult::TEST_FAILURE;
-  result.elapsed_time = base::Milliseconds(100);
+  result.elapsed_time = Milliseconds(100);
   teamcity_reporter_->OnTestStarted(result);
   teamcity_reporter_->OnTestResult(result);
   teamcity_reporter_->OnTestFinished(result);
@@ -80,7 +80,7 @@ TEST_F(TeamcityReporterTest, TestSkipped) {
   TestResult result;
   result.full_name = "TestSuite.TestName";
   result.status = TestResult::TEST_SKIPPED;
-  result.elapsed_time = base::Milliseconds(100);
+  result.elapsed_time = Milliseconds(100);
   teamcity_reporter_->OnTestStarted(result);
   teamcity_reporter_->OnTestFinished(result);
   EXPECT_EQ(
