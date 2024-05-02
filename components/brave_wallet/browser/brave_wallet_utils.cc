@@ -895,6 +895,7 @@ mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
 mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
                                      const std::string& chain_id,
                                      mojom::CoinType coin) {
+  LOG(ERROR) << "GetCustomChain";
   const base::Value::List* custom_list = GetCustomNetworksList(prefs, coin);
   if (!custom_list) {
     return nullptr;
@@ -903,7 +904,8 @@ mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
     if (auto opt_chain_id =
             brave_wallet::ExtractChainIdFromValue(it.GetIfDict())) {
       // Log whether the chain_id has a value
-      LOG(ERROR) << " chain_id has value: " << opt_chain_id.has_value();
+      LOG(ERROR) << " chain_id " << chain_id << " has value: " << opt_chain_id.has_value();
+      LOG(ERROR) << " chain_id value: " << opt_chain_id.value();
       if (base::CompareCaseInsensitiveASCII(chain_id, *opt_chain_id) == 0) {
         return brave_wallet::ValueToNetworkInfo(it);
       }

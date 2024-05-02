@@ -1451,6 +1451,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
+  LOG(ERROR) << "Request 1";
   RestoreWallet();
   auto account_0 = GetAccountUtils().EnsureSolAccount(0);
   SetSelectedAccount(account_0->account_id);
@@ -1468,12 +1469,14 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(), account_0->address);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
+  LOG(ERROR) << "Request 2";
 
   // disconnect
   CallSolanaRequest(R"({method: "disconnect"})");
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(), "success");
   ASSERT_FALSE(IsSolanaConnected(web_contents()));
+  LOG(ERROR) << "Request 3";
 
   // eagerly connect
   CallSolanaRequest(R"({method: "connect", params: { onlyIfTrusted: true }})");
@@ -1484,11 +1487,15 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   EXPECT_EQ(GetRequestResult(), account_0->address);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
+  LOG(ERROR) << "Request 4";
+
   // signMessage
   CallSolanaRequest(base::StringPrintf(R"(
     {method: "signMessage", params: { message: new Uint8Array([%s]) }})",
                                        kEncodedMessage));
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
+
+  LOG(ERROR) << "Request 5";
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, 0, nullptr,
                                                            std::nullopt);
@@ -1505,6 +1512,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(), kEncodedSignature);
 
+  LOG(ERROR) << "Request 6";
   // signAndSendTransaction
   auto observer = CreateObserver();
   const std::string send_options =
@@ -1514,6 +1522,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
                                        kEncodedUnsignedTxArrayStr,
                                        send_options.c_str()));
   observer->WaitForNewUnapprovedTx();
+  LOG(ERROR) << "Request 7";
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   auto infos = GetAllTransactionInfo(account_0->account_id);
   ASSERT_EQ(infos.size(), 1u);
