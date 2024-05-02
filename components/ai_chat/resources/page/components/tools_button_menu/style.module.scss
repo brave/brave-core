@@ -25,9 +25,10 @@
 }
 
 .menuSubtitle {
+  margin: 0 var(--leo-spacing-s);
   padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
   color: var(--leo-color-text-tertiary);
   font: var(--leo-font-components-label);
   text-transform: uppercase;
-  border-bottom: 1px solid var(--leo-color-divider-subtle);
+  border-top: 1px solid var(--leo-color-divider-subtle);
 }
