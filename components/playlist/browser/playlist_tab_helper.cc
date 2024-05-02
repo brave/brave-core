@@ -5,6 +5,7 @@
 
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 
+#include <sstream>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -16,12 +17,16 @@
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "components/global_media_controls/public/constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/media_session.h"
+#include "content/public/browser/media_session_service.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "services/media_session/public/cpp/media_image_manager.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -45,11 +50,32 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
   Observe(contents);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
 
+  // content::MediaSession::Get(contents)->AddObserver(
+  //     observer_receiver_.BindNewPipeAndPassRemote());
+
   playlist_enabled_pref_.Init(
       kPlaylistEnabledPref,
       user_prefs::UserPrefs::Get(contents->GetBrowserContext()),
       base::BindRepeating(&PlaylistTabHelper::OnPlaylistEnabledPrefChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+
+  mojo::Remote<media_session::mojom::MediaControllerManager>
+      controller_manager_remote;
+  content::GetMediaSessionService().BindAudioFocusManager(
+      audio_focus_manager_.BindNewPipeAndPassReceiver());
+  audio_focus_manager_->AddObserver(
+      audio_focus_observer_receiver_.BindNewPipeAndPassRemote());
+  // TODO(sszaloki): handle connection error, just like
+  // web_app_system_media_controls_manager.cc
+
+  // content::GetMediaSessionService().BindMediaControllerManager(
+  //     controller_manager_remote.BindNewPipeAndPassReceiver());
+  // controller_manager_remote->CreateActiveMediaController(
+  //     media_controller_remote_.BindNewPipeAndPassReceiver());
+
+  // media_controller_remote_->ObserveImages(
+  //     media_session::mojom::MediaSessionImageType::kArtwork, 71, 150,
+  //     media_controller_image_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 PlaylistTabHelper::~PlaylistTabHelper() {
@@ -291,6 +317,223 @@ void PlaylistTabHelper::OnMediaFilesUpdated(
     observer.OnFoundItemsChanged(found_items_);
   }
 }
+
+void PlaylistTabHelper::OnFocusGained(
+    media_session::mojom::AudioFocusRequestStatePtr state) {
+  if (media_session_observer_receiver_.is_bound()) {
+    return;
+  }
+
+  const std::optional<base::UnguessableToken>& maybe_id = state->request_id;
+  if (!maybe_id.has_value()) {
+    return;
+  }
+
+  auto* contents = web_contents();
+  if (!contents) {
+    return;
+  }
+
+  if (contents !=
+      content::MediaSession::GetWebContentsFromRequestId(*maybe_id)) {
+    return;
+  }
+
+  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+
+  // mojo::Remote<media_session::mojom::MediaControllerManager>
+  //     controller_manager_remote;
+  // content::GetMediaSessionService().BindMediaControllerManager(
+  //     controller_manager_remote.BindNewPipeAndPassReceiver());
+  // controller_manager_remote->CreateMediaControllerForSession(
+  //     media_controller_remote_.BindNewPipeAndPassReceiver(), *maybe_id);
+  // media_controller_remote_->AddObserver(
+  //     media_controller_observer_receiver_.BindNewPipeAndPassRemote());
+  // media_controller_remote_->ObserveImages(
+  //     media_session::mojom::MediaSessionImageType::kArtwork,
+  //     global_media_controls::kMediaItemArtworkMinSize,
+  //     global_media_controls::kMediaItemArtworkDesiredSize,
+  //     media_controller_image_observer_receiver_.BindNewPipeAndPassRemote());
+  content::MediaSession::Get(web_contents())
+      ->AddObserver(
+          media_session_observer_receiver_.BindNewPipeAndPassRemote());
+}
+
+void PlaylistTabHelper::OnFocusLost(
+    media_session::mojom::AudioFocusRequestStatePtr state) {
+  if (!media_session_observer_receiver_.is_bound()) {
+    return;
+  }
+
+  const std::optional<base::UnguessableToken>& maybe_id = state->request_id;
+  if (!maybe_id.has_value()) {
+    return;
+  }
+
+  auto* contents = web_contents();
+  if (!contents) {
+    return;
+  }
+
+  if (contents !=
+      content::MediaSession::GetWebContentsFromRequestId(*maybe_id)) {
+    return;
+  }
+
+  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+
+  // media_controller_image_observer_receiver_.reset();
+  // media_controller_remote_.reset();
+  media_session_observer_receiver_.reset();
+}
+
+void PlaylistTabHelper::OnRequestIdReleased(
+    const base::UnguessableToken& request_id) {
+  auto* contents = web_contents();
+  if (!contents) {
+    return;
+  }
+
+  if (contents !=
+      content::MediaSession::GetWebContentsFromRequestId(request_id)) {
+    return;
+  }
+
+  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+}
+
+void PlaylistTabHelper::MediaSessionInfoChanged(
+    media_session::mojom::MediaSessionInfoPtr session_info) {
+  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+}
+
+void PlaylistTabHelper::MediaSessionMetadataChanged(
+    const std::optional<media_session::MediaMetadata>& metadata) {
+  std::ostringstream oss;
+  oss << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__ << '\n';
+  if (metadata) {
+    oss << "- title: " << metadata->title << "\n- artist: " << metadata->artist
+        << "\n- album: " << metadata->album
+        << "\n- source_title: " << metadata->source_title;
+    if (!metadata->chapters.empty()) {
+      oss << "- chapters:\n";
+    }
+    for (std::size_t i = 0; auto& chapter : metadata->chapters) {
+      oss << "  - chapter " << i++ << ":\n";
+      oss << "    - title: " << chapter.title();
+      oss << "    - startTime: " << chapter.startTime();
+      if (!chapter.artwork().empty()) {
+        oss << "    - artworks:\n";
+      }
+      for (std::size_t j = 0; auto& artwork : chapter.artwork()) {
+        oss << "      - artwork " << j++ << ":\n";
+        oss << "        - src: " << artwork.src;
+        oss << "        - type: " << artwork.type;
+      }
+    }
+  } else {
+    oss << "no metadata";
+  }
+
+  DVLOG(-1) << oss.str();
+}
+
+void PlaylistTabHelper::MediaSessionActionsChanged(
+    const std::vector<media_session::mojom::MediaSessionAction>& action) {
+  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+}
+
+void PlaylistTabHelper::MediaSessionImagesChanged(
+    const base::flat_map<media_session::mojom::MediaSessionImageType,
+                         std::vector<media_session::MediaImage>>& images) {
+  std::ostringstream oss;
+  oss << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__ << '\n';
+
+  media_session::MediaImageManager manager(
+      global_media_controls::kMediaItemArtworkMinSize,
+      global_media_controls::kMediaItemArtworkDesiredSize);
+
+  std::optional<media_session::MediaImage> image;
+  auto it = images.find(media_session::mojom::MediaSessionImageType::kArtwork);
+  if (it != images.end()) {
+    image = manager.SelectImage(it->second);
+  }
+
+  if (image) {
+    oss << "- type: " << image->type << "\n- src: " << image->src;
+  }
+
+  DVLOG(-1) << oss.str();
+}
+
+void PlaylistTabHelper::MediaSessionPositionChanged(
+    const std::optional<media_session::MediaPosition>& position) {
+  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+}
+
+// void PlaylistTabHelper::MediaSessionInfoChanged(
+//     media_session::mojom::MediaSessionInfoPtr session_info) {
+//   DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+// }
+
+// void PlaylistTabHelper::MediaSessionMetadataChanged(
+//     const std::optional<media_session::MediaMetadata>& metadata) {
+//   std::ostringstream oss;
+//   oss << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__ <<
+//   '\n'; if (metadata) {
+//     oss << "- title: " << metadata->title << "\n- artist: " <<
+//     metadata->artist
+//         << "\n- album: " << metadata->album
+//         << "\n- source_title: " << metadata->source_title;
+//     if (!metadata->chapters.empty()) {
+//       oss << "- chapters:\n";
+//     }
+//     for (std::size_t i = 0; auto& chapter : metadata->chapters) {
+//       oss << "  - chapter " << i++ << ":\n";
+//       oss << "    - title: " << chapter.title();
+//       oss << "    - startTime: " << chapter.startTime();
+//       if (!chapter.artwork().empty()) {
+//         oss << "    - artworks:\n";
+//       }
+//       for (std::size_t j = 0; auto& artwork : chapter.artwork()) {
+//         oss << "      - artwork " << j++ << ":\n";
+//         oss << "        - src: " << artwork.src;
+//         oss << "        - type: " << artwork.type;
+//       }
+//     }
+//   } else {
+//     oss << "no metadata";
+//   }
+
+//   DVLOG(-1) << oss.str();
+// }
+
+// void PlaylistTabHelper::MediaSessionActionsChanged(
+//     const std::vector<media_session::mojom::MediaSessionAction>& actions) {
+//   DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+// }
+
+// void PlaylistTabHelper::MediaSessionChanged(
+//     const std::optional<base::UnguessableToken>& request_id) {
+//   DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+// }
+
+// void PlaylistTabHelper::MediaSessionPositionChanged(
+//     const std::optional<media_session::MediaPosition>& position) {
+//   DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+// }
+
+// void PlaylistTabHelper::MediaControllerImageChanged(
+//     media_session::mojom::MediaSessionImageType type,
+//     const SkBitmap& bitmap) {
+//   DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+// }
+
+// void PlaylistTabHelper::MediaControllerChapterImageChanged(
+//     int chapter_index,
+//     const SkBitmap& bitmap) {
+//   DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+// }
 
 void PlaylistTabHelper::ResetData() {
   saved_items_.clear();

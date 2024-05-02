@@ -93,24 +93,24 @@ void PlaylistMediaHandler::Log(
     return;
   }
 
-  auto to_string = [](media::MediaLogRecord::Type type) {
-    switch (type) {
-      case media::MediaLogRecord::Type::kMessage:
-        return "kMessage";
-      case media::MediaLogRecord::Type::kMediaPropertyChange:
-        return "kMediaPropertyChange";
-      case media::MediaLogRecord::Type::kMediaEventTriggered:
-        return "kMediaEventTriggered";
-      case media::MediaLogRecord::Type::kMediaStatus:
-        return "kMediaStatus";
-    }
-  };
+  // auto to_string = [](media::MediaLogRecord::Type type) {
+  //   switch (type) {
+  //     case media::MediaLogRecord::Type::kMessage:
+  //       return "kMessage";
+  //     case media::MediaLogRecord::Type::kMediaPropertyChange:
+  //       return "kMediaPropertyChange";
+  //     case media::MediaLogRecord::Type::kMediaEventTriggered:
+  //       return "kMediaEventTriggered";
+  //     case media::MediaLogRecord::Type::kMediaStatus:
+  //       return "kMediaStatus";
+  //   }
+  // };
 
   for (auto& record : events) {
-    DVLOG(-1) << "Player ID: " << record.id
-              << ", message: " << to_string(record.type) << " (" << url
-              << "):\n"
-              << record.params;
+    // DVLOG(-1) << "Player ID: " << record.id
+    //           << ", message: " << to_string(record.type) << " (" << url
+    //           << "):\n"
+    //           << record.params;
 
     if (auto* string = record.params.FindString("kFrameUrl")) {
       detected_[record.id].Set("pageSrc", *string);

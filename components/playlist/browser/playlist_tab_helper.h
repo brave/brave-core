@@ -13,9 +13,14 @@
 #include "base/observer_list.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/prefs/pref_member.h"
+#include "content/public/browser/media_session.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "services/media_session/public/mojom/audio_focus.mojom.h"
+#include "services/media_session/public/mojom/media_controller.mojom.h"
+#include "services/media_session/public/mojom/media_session.mojom.h"
 
 namespace content {
 class NavigationHandle;
@@ -30,7 +35,11 @@ class PlaylistTabHelperObserver;
 class PlaylistTabHelper
     : public content::WebContentsUserData<PlaylistTabHelper>,
       public content::WebContentsObserver,
-      public mojom::PlaylistServiceObserver {
+      public mojom::PlaylistServiceObserver,
+      public media_session::mojom::AudioFocusObserver,
+      // public media_session::mojom::MediaControllerObserver,
+      // public media_session::mojom::MediaControllerImageObserver {
+      public media_session::mojom::MediaSessionObserver {
  public:
   static void CreateForWebContents(content::WebContents* web_contents,
                                    PlaylistService* service);
@@ -99,6 +108,48 @@ class PlaylistTabHelper
   friend class content::WebContentsUserData<PlaylistTabHelper>;
   using content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents;
 
+  // AudioFocusObserver:
+  void OnFocusGained(
+      media_session::mojom::AudioFocusRequestStatePtr state) override;
+  void OnFocusLost(
+      media_session::mojom::AudioFocusRequestStatePtr state) override;
+  void OnRequestIdReleased(const base::UnguessableToken& request_id) override;
+
+  // MediaSessionObserver:
+  void MediaSessionInfoChanged(
+      media_session::mojom::MediaSessionInfoPtr session_info) override;
+  void MediaSessionMetadataChanged(
+      const std::optional<media_session::MediaMetadata>& metadata) override;
+  void MediaSessionActionsChanged(
+      const std::vector<media_session::mojom::MediaSessionAction>& action)
+      override;
+  void MediaSessionImagesChanged(
+      const base::flat_map<media_session::mojom::MediaSessionImageType,
+                           std::vector<media_session::MediaImage>>& images)
+      override;
+  void MediaSessionPositionChanged(
+      const std::optional<media_session::MediaPosition>& position) override;
+
+  // MediaControllerObserver:
+  // void MediaSessionInfoChanged(
+  //     media_session::mojom::MediaSessionInfoPtr session_info) override;
+  // void MediaSessionMetadataChanged(
+  //     const std::optional<media_session::MediaMetadata>& metadata) override;
+  // void MediaSessionActionsChanged(
+  //     const std::vector<media_session::mojom::MediaSessionAction>& actions)
+  //     override;
+  // void MediaSessionChanged(
+  //     const std::optional<base::UnguessableToken>& request_id) override;
+  // void MediaSessionPositionChanged(
+  //     const std::optional<media_session::MediaPosition>& position) override;
+
+  // MediaControllerImageObserver:
+  // void MediaControllerImageChanged(
+  //     media_session::mojom::MediaSessionImageType type,
+  //     const SkBitmap& bitmap) override;
+  // void MediaControllerChapterImageChanged(int chapter_index,
+  //                                         const SkBitmap& bitmap) override;
+
   PlaylistTabHelper(content::WebContents* contents, PlaylistService* service);
 
   void ResetData();
@@ -120,6 +171,18 @@ class PlaylistTabHelper
       this};
 
   BooleanPrefMember playlist_enabled_pref_;
+
+  mojo::Receiver<media_session::mojom::AudioFocusObserver>
+      audio_focus_observer_receiver_{this};
+  mojo::Receiver<media_session::mojom::MediaSessionObserver>
+      media_session_observer_receiver_{this};
+  // mojo::Receiver<media_session::mojom::MediaControllerObserver>
+  //     media_controller_observer_receiver_{this};
+  // mojo::Receiver<media_session::mojom::MediaControllerImageObserver>
+  //     media_controller_image_observer_receiver_{this};
+
+  mojo::Remote<media_session::mojom::AudioFocusManager> audio_focus_manager_;
+  mojo::Remote<media_session::mojom::MediaController> media_controller_remote_;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 
