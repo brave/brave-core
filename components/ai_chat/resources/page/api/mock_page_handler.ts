@@ -15,28 +15,32 @@ type Public<T> = { [P in keyof T]: T[P] }
 const ACTIONS_LIST: mojom.ActionGroup[] = [
   {
     category: 'Quick actions',
-    actions: [
+    entries: [
       {
-        label: 'Explain',
-        actionDetails: { type: mojom.ActionType.EXPLAIN }
+        subheading: undefined,
+        details: { label: 'Explain', type: mojom.ActionType.EXPLAIN }
       }
     ]
   },
   {
     category: 'Rewrite',
-    actions: [
+    entries: [
       {
-        label: 'Paraphrase',
-        actionDetails: { type: mojom.ActionType.PARAPHRASE }
+        subheading: undefined,
+        details: { label: 'Paraphrase', type: mojom.ActionType.PARAPHRASE }
       },
-      { label: 'Change tone', actionDetails: undefined },
+      { subheading: 'Change tone', details: undefined },
       {
-        label: 'Change tone / Academic',
-        actionDetails: { type: mojom.ActionType.ACADEMICIZE }
+        subheading: undefined,
+        details: {
+          label: 'Change tone / Academic',
+          type: mojom.ActionType.ACADEMICIZE
+        }
       },
       {
-        label: 'Change tone / Professional',
-        actionDetails: {
+        subheading: undefined,
+        details: {
+          label: 'Change tone / Professional',
           type: mojom.ActionType.PROFESSIONALIZE
         }
       }

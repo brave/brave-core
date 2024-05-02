@@ -31,27 +31,27 @@ function useActionMenu() {
     const text = normalizeText(searchText.substring(1))
 
     const filteredList = actionList
-      .map((actionGroup) => ({
-        ...actionGroup,
-        actions: actionGroup.actions.filter((action) => {
+      .map((group) => ({
+        ...group,
+        entries: group.entries.filter((entry) => {
           // Only apply filter to valid ActionType's label
-          if (action.actionDetails) {
-            return normalizeText(action.label).includes(text)
+          if (entry.details) {
+            return normalizeText(entry.details.label).includes(text)
           }
           // For other items, we dont return or show
           return false
         })
-      })).filter((actionGroup) => actionGroup.actions.length > 0)
+      })).filter((group) => group.entries.length > 0)
 
     return filteredList
   }
 
-  const getFirstValidAction = (list: mojom.ActionGroup[]) => {
-    const action = list
-      .flatMap((list) => list.actions)
-      .filter((action) => action.actionDetails !== undefined)
+  const getFirstValidActionType = (actionList: mojom.ActionGroup[]) => {
+    const action = actionList
+      .flatMap((actionGroup) => actionGroup.entries)
+      .filter((entries) => entries.details)
 
-    return action[0].actionDetails
+    return action[0].details?.type
   }
 
   React.useEffect(() => {
@@ -63,7 +63,7 @@ function useActionMenu() {
   return {
     actionList,
     filterActionsByText,
-    getFirstValidAction,
+    getFirstValidActionType,
   }
 }
 
@@ -96,7 +96,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [inputText, setInputText] = React.useState('')
   const [selectedActionType, setSelectedActionType] = React.useState<mojom.ActionType | undefined>()
   const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
-  const { actionList: initialActionList, filterActionsByText, getFirstValidAction } = useActionMenu()
+  const { actionList: initialActionList, filterActionsByText, getFirstValidActionType } = useActionMenu()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -298,7 +298,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const handleFilterActivation = () => {
     if (isToolsMenuOpen && inputText.startsWith('/')) {
-      setSelectedActionType(getFirstValidAction(actionList)?.type)
+      setSelectedActionType(getFirstValidActionType(actionList))
       setInputText('')
       setIsToolsMenuOpen(false)
       return true

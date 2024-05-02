@@ -35,20 +35,20 @@ export default function ToolsButtonMenu(props: Props) {
             <div className={styles.menuSectionTitle}>
               {actionGroup.category}
             </div>
-            {actionGroup.actions.map((action, i) => {
-              if (!action.actionDetails) {
-                return <div className={styles.menuSubtitle}>{action.label}</div>
+            {actionGroup.entries.map((entry, i) => {
+              if (entry.subheading) {
+                return <div className={styles.menuSubtitle}>{entry.subheading}</div>
               } else {
                 return (
                   <leo-menu-item
                     key={i}
                     onClick={() =>
                       context.handleActionTypeClick(
-                        action.actionDetails?.type as mojom.ActionType
+                        entry.details?.type as mojom.ActionType
                       )
                     }
                   >
-                    {action.label}
+                    {entry.details?.label}
                   </leo-menu-item>
                 )
               }

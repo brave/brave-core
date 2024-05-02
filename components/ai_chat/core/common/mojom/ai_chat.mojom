@@ -149,18 +149,18 @@ struct ModelWithSubtitle {
 };
 
 struct ActionDetails {
+  string label;
   ActionType type;
 };
 
-struct LabeledAction {
-  string label;
-  // If action_details is not present then we treat this LabeledAction as subheading
-  ActionDetails? action_details;
+union ActionEntry {
+  string subheading;
+  ActionDetails details;
 };
 
 struct ActionGroup {
   string category;
-  array<LabeledAction> actions;
+  array<ActionEntry> entries;
 };
 
 // Browser-side handler for requests from WebUI page.
