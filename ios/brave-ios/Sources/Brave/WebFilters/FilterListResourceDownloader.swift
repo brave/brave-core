@@ -59,11 +59,27 @@ import os.log
 
     Task {
       for await engineType in adBlockService.filterListChangesStream() {
-        updateEnginesDelayed(for: engineType, adBlockService: adBlockService)
+        ContentBlockerManager.log.debug(
+          "Downloaded filter lists for `\(engineType.debugDescription)`"
+        )
+
+        // In order to improve the speed our youtube ad-blocking is ready,
+        // we prioritize the `standard` engine and don't delay it
+        // unless we already have the engine
+        if engineType == .standard && !AdBlockGroupsManager.shared.hasEngine(for: engineType) {
+          updateEngines(for: engineType, adBlockService: adBlockService)
+        } else {
+          updateEnginesDelayed(for: engineType, adBlockService: adBlockService)
+        }
       }
     }
   }
 
+  /// Updated the engine managers with file infos available for the given engine type.
+  /// This will delay the update by several seconds in order to prevent excessive compilation of engines
+  ///
+  /// This prevents too many compilations of the engine if the user is changing settings
+  /// while still updating the engine in a timely manner
   private func updateEnginesDelayed(
     for engineType: GroupedAdBlockEngine.EngineType,
     adBlockService: AdblockService
@@ -77,6 +93,20 @@ import os.log
       AdBlockGroupsManager.shared.update(fileInfos: fileInfos)
       AdBlockGroupsManager.shared.compileEngineIfFilesAreReady(for: engineType)
     }
+  }
+
+  /// Updated the engine managers with file infos available for the given engine type
+  ///
+  /// Note: You should call this infrequently as it may cause lots of compilations.
+  /// Instead use `updateEnginesDelayed` unless you absolutely need an engine ready right away
+  /// such as on a first launch
+  private func updateEngines(
+    for engineType: GroupedAdBlockEngine.EngineType,
+    adBlockService: AdblockService
+  ) {
+    let fileInfos = adBlockService.fileInfos(for: engineType)
+    AdBlockGroupsManager.shared.update(fileInfos: fileInfos)
+    AdBlockGroupsManager.shared.compileEngineIfFilesAreReady(for: engineType)
   }
 }
 

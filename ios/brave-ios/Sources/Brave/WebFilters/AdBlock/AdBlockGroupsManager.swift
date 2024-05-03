@@ -57,6 +57,11 @@ import os
     self.resourcesInfo = nil
   }
 
+  /// Tells us if we have an engine available for the given engine type
+  func hasEngine(for engineType: GroupedAdBlockEngine.EngineType) -> Bool {
+    return getManager(for: engineType).engine != nil
+  }
+
   /// Handle memory warnings by freeing up some memory
   func didReceiveMemoryWarning() async {
     await standardManager.engine?.clearCaches()
@@ -492,5 +497,16 @@ extension AdBlockEngineManager.FileInfo {
         else { return nil }
         return AdBlockEngineManager.FileInfo(for: source, downloadedFolderURL: folderURL)
       })
+  }
+}
+
+extension AdBlockGroupsManager.SourceProvider {
+  /// Get all enabled sources for the given engine type
+  func enabledSources(
+    for engineType: GroupedAdBlockEngine.EngineType
+  ) -> [GroupedAdBlockEngine.Source] {
+    let enabledSources = self.enabledSources
+    let sources = self.sources(for: engineType)
+    return sources.filter({ enabledSources.contains($0) })
   }
 }
