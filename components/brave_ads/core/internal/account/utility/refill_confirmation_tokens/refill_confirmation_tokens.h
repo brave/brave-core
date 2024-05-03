@@ -95,7 +95,7 @@ class RefillConfirmationTokens final {
 
   bool is_refilling_ = false;
 
-  BackoffTimer retry_timer_;
+  BackoffTimer timer_;
 
   base::WeakPtrFactory<RefillConfirmationTokens> weak_factory_{this};
 };
