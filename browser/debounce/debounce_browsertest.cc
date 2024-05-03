@@ -171,8 +171,7 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
 
   void NavigateToURLAndWaitForRedirects(const GURL& original_url,
                                         const GURL& landing_url) {
-    ui_test_utils::UrlLoadObserver load_complete(
-        landing_url, content::NotificationService::AllSources());
+    ui_test_utils::UrlLoadObserver load_complete(landing_url);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
     load_complete.Wait();
     EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);

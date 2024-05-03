@@ -212,8 +212,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   void NavigateToURLAndWaitForRedirects(Browser* browser,
                                         const GURL& original_url,
                                         const GURL& landing_url) {
-    ui_test_utils::UrlLoadObserver load_complete(
-        landing_url, content::NotificationService::AllSources());
+    ui_test_utils::UrlLoadObserver load_complete(landing_url);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, original_url));
     EXPECT_EQ(contents(browser)->GetPrimaryMainFrame()->GetLastCommittedURL(),
               original_url);
