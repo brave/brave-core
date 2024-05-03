@@ -264,9 +264,9 @@ public abstract class BraveActivity extends ChromeActivity
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
-    /**
-     * Settings for sending local notification reminders.
-     */
+    private static final boolean ENABLE_IN_APP_UPDATE = false;
+
+    /** Settings for sending local notification reminders. */
     public static final String CHANNEL_ID = "com.brave.browser";
 
     // Explicitly declare this variable to avoid build errors.
@@ -347,17 +347,19 @@ public abstract class BraveActivity extends ChromeActivity
 
         executeInitSafeBrowsing(0);
 
-        if (mAppUpdateManager == null) {
-            mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
+        if (ENABLE_IN_APP_UPDATE) {
+            if (mAppUpdateManager == null) {
+                mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
+            }
+            mAppUpdateManager
+                    .getAppUpdateInfo()
+                    .addOnSuccessListener(
+                            appUpdateInfo -> {
+                                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                                    completeUpdateSnackbar();
+                                }
+                            });
         }
-        mAppUpdateManager
-                .getAppUpdateInfo()
-                .addOnSuccessListener(
-                        appUpdateInfo -> {
-                            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                                completeUpdateSnackbar();
-                            }
-                        });
     }
 
     @Override
@@ -470,7 +472,7 @@ public abstract class BraveActivity extends ChromeActivity
             mNotificationPermissionController = null;
         }
         BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
-        if (mAppUpdateManager != null) {
+        if (ENABLE_IN_APP_UPDATE && mAppUpdateManager != null) {
             mAppUpdateManager.unregisterListener(installStateUpdatedListener);
         }
         super.onDestroyInternal();
@@ -1218,7 +1220,9 @@ public abstract class BraveActivity extends ChromeActivity
             calendar.add(Calendar.DATE, DAYS_7);
             BraveRewardsHelper.setRewardsOnboardingIconTiming(calendar.getTimeInMillis());
 
-            setInAppUpdateTiming();
+            if (ENABLE_IN_APP_UPDATE) {
+                setInAppUpdateTiming();
+            }
         }
 
         // Check multiwindow toggle for upgrade case
@@ -1232,9 +1236,10 @@ public abstract class BraveActivity extends ChromeActivity
             BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
         }
 
-        if (System.currentTimeMillis()
-                > ChromeSharedPreferences.getInstance()
-                        .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
+        if (ENABLE_IN_APP_UPDATE
+                && System.currentTimeMillis()
+                        > ChromeSharedPreferences.getInstance()
+                                .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
             checkAppUpdate();
         }
     }
