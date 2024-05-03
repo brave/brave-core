@@ -47,19 +47,21 @@ export default class ReportView extends React.PureComponent<Props, {}> {
         <DisclaimerText>{getLocale('reportDisclaimer')}</DisclaimerText>
         <SideBySideButtons>
           <PaddedButton
-            text={getLocale('cancel')}
-            level={'secondary'}
-            type={'default'}
-            size={'small'}
+            isTertiary
+            isCallToAction
+            scale='small'
             onClick={onClose}
-          />
+          >
+            {getLocale('cancel')}
+          </PaddedButton>
           <PaddedButton
-            text={getLocale('submit')}
-            level={'primary'}
-            type={'accent'}
-            size={'small'}
-            onClick={onSubmitReport}
-          />
+            isPrimary
+            isCallToAction
+            scale='small'
+            onClick={() => onSubmitReport()}
+          >
+            {getLocale('submit')}
+          </PaddedButton>
         </SideBySideButtons>
       </ModalLayout>
     )

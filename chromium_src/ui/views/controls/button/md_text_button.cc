@@ -14,6 +14,7 @@
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
+#include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/vector_icon_types.h"
@@ -30,8 +31,6 @@
 
 namespace {
 
-constexpr SkColor kBraveBrandColor = SkColorSetRGB(0xff, 0x76, 0x54);
-constexpr SkColor kBravePrimaryColor = SkColorSetRGB(32, 74, 227);
 SkColor AddOpacity(SkColor color, float opacity) {
   DCHECK(opacity >= 0 && opacity <= 1);
   auto current_alpha = SkColorGetA(color);
@@ -66,11 +65,11 @@ const base::flat_map<MdTextButtonStyleKey, ButtonStyle>& GetButtonThemes() {
   static base::NoDestructor<base::flat_map<MdTextButtonStyleKey, ButtonStyle>>
       button_themes(
           {{{Kind::kPrimary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-            {.background_color = kBravePrimaryColor,
+            {.background_color = gfx::kBraveColorBrand,
              .border_color = std::nullopt,
              .text_color = SK_ColorWHITE}},
            {{Kind::kPrimary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-            {.background_color = kBravePrimaryColor,
+            {.background_color = gfx::kBraveColorBrand,
              .border_color = std::nullopt,
              .text_color = SK_ColorWHITE}},
            {{Kind::kPrimary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
@@ -92,12 +91,12 @@ const base::flat_map<MdTextButtonStyleKey, ButtonStyle>& GetButtonThemes() {
              .text_color = SK_ColorWHITE}},
            {{Kind::kSecondary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
             {.background_color = std::nullopt,
-             .border_color = kBravePrimaryColor,
-             .text_color = kBravePrimaryColor}},
+             .border_color = gfx::kBraveColorBrand,
+             .text_color = gfx::kBraveColorBrand}},
            {{Kind::kSecondary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
             {.background_color = std::nullopt,
-             .border_color = kBravePrimaryColor,
-             .text_color = kBravePrimaryColor}},
+             .border_color = gfx::kBraveColorBrand,
+             .text_color = gfx::kBraveColorBrand}},
 
            {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
             {.background_color = std::nullopt,
@@ -243,8 +242,8 @@ void MdTextButton::UpdateTextColor() {
     // Override different text hover color
     if (theme->GetPlatformHighContrastColorScheme() !=
         ui::NativeTheme::PlatformHighContrastColorScheme::kDark) {
-      SetTextColor(ButtonState::STATE_HOVERED, kBraveBrandColor);
-      SetTextColor(ButtonState::STATE_PRESSED, kBraveBrandColor);
+      SetTextColor(ButtonState::STATE_HOVERED, gfx::kBraveColorBrand);
+      SetTextColor(ButtonState::STATE_PRESSED, gfx::kBraveColorBrand);
     }
     return;
   }
@@ -279,7 +278,7 @@ void MdTextButton::UpdateBackgroundColor() {
         bg_color = GetNativeTheme()->GetSystemButtonPressedColor(bg_color);
       }
       // The only thing that differs for Brave is the stroke color
-      SkColor stroke_color = kBraveBrandColor;
+      SkColor stroke_color = gfx::kBraveColorBrand;
       SetBackground(CreateBackgroundFromPainter(
           Painter::CreateRoundRectWith1PxBorderPainter(
               bg_color, stroke_color, GetCornerRadiusValue())));
@@ -314,8 +313,8 @@ void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
   MdTextButtonBase::OnPaintBackground(canvas);
   if (GetStyle() == ui::ButtonStyle::kProminent &&
       (hover_animation().is_animating() || GetState() == STATE_HOVERED)) {
-    constexpr SkColor normal_color = kBraveBrandColor;
-    constexpr SkColor hover_color = SkColorSetRGB(0xff, 0x97, 0x7d);
+    constexpr SkColor normal_color = gfx::kBraveColorBrand;
+    constexpr SkColor hover_color = SkColorSetA(normal_color, 0xFF * 0.2);
     const SkAlpha alpha =
         static_cast<SkAlpha>(hover_animation().CurrentValueBetween(0x00, 0xff));
     const SkColor current_color =
