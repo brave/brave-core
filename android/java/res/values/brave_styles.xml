@@ -352,7 +352,6 @@
 
     <style name="DefaultRegular">
         <!-- Default Brave UI size -->
-        <item name="android:fontFamily">@font/roboto_flex</item>
         <item name="android:textSize">@dimen/default_regular</item>
         <item name="lineHeight">20sp</item>
         <item name="fontStyle">normal</item>
@@ -361,7 +360,6 @@
 
     <style name="LargeRegular">
         <!-- Default browser size for fonts -->
-        <item name="android:fontFamily">@font/roboto_flex</item>
         <item name="android:textSize">@dimen/large_regular</item>
         <item name="lineHeight">24sp</item>
         <item name="fontStyle">normal</item>
@@ -370,7 +368,6 @@
 
     <style name="DefaultSemibold">
         <!-- Default Brave UI size -->
-        <item name="android:fontFamily">@font/roboto_flex</item>
         <item name="android:textSize">@dimen/default_semibold</item>
         <item name="lineHeight">20sp</item>
         <item name="fontStyle">normal</item>
