@@ -51,12 +51,10 @@
 
     <!-- Brave wallet 2.0 colors -->
     <color name="brave_wallet_dn_panel_bg">@color/wallet_bg</color>
-    <color name="brave_wallet_semantic_text_disabled">#80EBEEF0</color>
-    <color name="brave_wallet_semantic_text_primary">#F3F5F7</color>
-    <color name="brave_wallet_semantic_icon_interactive">#7C91FF</color>
-    <color name="brave_wallet_themable_primary_20">#2A118E</color>
-    <color name="brave_wallet_semantic_divider_subtle">#66687B85</color>
-    <color name="brave_wallet_semantic_system_feedback_error">#FFB1B0</color>
+    <color name="text_disabled">#80EBEEF0</color>
+    <color name="icon_interactive">#7C91FF</color>
+    <color name="divider_subtle">#66687B85</color>
+    <color name="system_feedback_error">#FFB1B0</color>
 
 
     <color name="wallet_onboarding_gradient_start">#1d1d36</color>
