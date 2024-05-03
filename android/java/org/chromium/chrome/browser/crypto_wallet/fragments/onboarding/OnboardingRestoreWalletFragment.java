@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -151,9 +152,10 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
 
+                        final Context context = getContext();
                         // Even though we have an error, we still let to proceed
-                        if (!TextUtils.isEmpty(errString)) {
-                            Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.isEmpty(errString) && context != null) {
+                            Toast.makeText(context, errString, Toast.LENGTH_SHORT).show();
                         }
                         onNextPage();
                     }
@@ -178,19 +180,18 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                         if (result) {
                             Utils.hideKeyboard(requireActivity());
                             keyringService.notifyWalletBackupComplete();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                                    && Utils.isBiometricAvailable(getContext())) {
+                            if (Utils.isBiometricSupported(getContext())) {
                                 // Clear previously set bio-metric credentials
                                 KeystoreHelper.resetBiometric();
+                                // noinspection NewApi
                                 enableBiometricLogin(retypePasswordInput);
                             } else if (mOnNextPage != null) {
                                 mOnNextPage.onboardingCompleted();
                             }
                             Utils.setCryptoOnboarding(false);
-                            Utils.clearClipboard(
-                                    recoveryPhrase.getText().toString().trim(), 0);
-                            Utils.clearClipboard(password, 0);
-                            Utils.clearClipboard(retypePasswordInput, 0);
+                            Utils.clearClipboard(recoveryPhrase.getText().toString().trim());
+                            Utils.clearClipboard(password);
+                            Utils.clearClipboard(retypePasswordInput);
 
                             cleanUp();
                         } else {

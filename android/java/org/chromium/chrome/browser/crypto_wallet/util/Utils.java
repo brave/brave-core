@@ -52,6 +52,8 @@ import org.chromium.base.Callbacks;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
@@ -93,8 +95,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -138,10 +138,19 @@ public class Utils {
         return recoveryPhrasesText.trim();
     }
 
+    /**
+     * Saves a given text to clipboard, shows a toast and clears it again after 60 seconds.
+     *
+     * @param context Context used to retrieve the clipboard service.
+     * @param textToCopy Text that will be copied to clipboard.
+     * @param textToShow String resource ID to display in the toast, or -1 to disable the toast.
+     * @param scheduleClear {@code true} to clear the clipboard after {@link
+     *     #CLEAR_CLIPBOARD_INTERVAL}.
+     */
     public static void saveTextToClipboard(
             @NonNull final Context context,
             @NonNull final String textToCopy,
-            final int textToShow,
+            @StringRes final int textToShow,
             final boolean scheduleClear) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -153,7 +162,9 @@ public class Utils {
         if (!scheduleClear) {
             return;
         }
-        clearClipboard(textToCopy, CLEAR_CLIPBOARD_INTERVAL);
+
+        PostTask.postDelayedTask(
+                TaskTraits.UI_DEFAULT, () -> clearClipboard(textToCopy), CLEAR_CLIPBOARD_INTERVAL);
     }
 
     public static String getTextFromClipboard(Context context) {
@@ -169,16 +180,17 @@ public class Utils {
         return "";
     }
 
-    public static void clearClipboard(String textToCompare, int delay) {
-        (new Timer()).schedule(new TimerTask() {
-            @Override
-            public void run() {
-                String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
-                if (textToCompare.equals(clipboardText)) {
-                    saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
-                }
-            }
-        }, delay);
+    /**
+     * Clears the clipboard and replaces it with "***" if it matches a given text.
+     *
+     * @param textToCompare Text to compare that will trigger the clipboard clearing in case of a
+     *     match.
+     */
+    public static void clearClipboard(@NonNull final String textToCompare) {
+        String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
+        if (textToCompare.equals(clipboardText)) {
+            saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
+        }
     }
 
     public static boolean shouldShowCryptoOnboarding() {
@@ -1053,7 +1065,7 @@ public class Utils {
     }
 
     @SuppressLint("MissingPermission")
-    public static boolean isBiometricAvailable(@Nullable Context context) {
+    public static boolean isBiometricSupported(@Nullable Context context) {
         // Only Android versions 9 and above are supported.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || context == null) {
             return false;

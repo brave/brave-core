@@ -19,10 +19,6 @@ public interface OnNextPage {
 
     void gotoRestorePage(final boolean isOnboarding);
 
-    boolean showBiometricPrompt();
-
-    void enableBiometricPrompt();
-
     void showCloseButton(final boolean show);
 
     void showBackButton(final boolean show);

@@ -7,14 +7,18 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
@@ -29,6 +33,8 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
     // Might be {@code null} when detached from the screen.
     @Nullable protected OnNextPage mOnNextPage;
 
+    @Nullable private AnimationDrawable mAnimationDrawable;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -37,6 +43,22 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
             mOnNextPage = (OnNextPage) context;
         } catch (ClassCastException e) {
             throw new ClassCastException("Host activity must implement OnNextPage interface.");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAnimationDrawable != null) {
+            mAnimationDrawable.start();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mAnimationDrawable != null) {
+            mAnimationDrawable.stop();
         }
     }
 
@@ -94,5 +116,17 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
         }
 
         return null;
+    }
+
+    protected void setAnimatedBackground(@NonNull final View rootView) {
+        mAnimationDrawable =
+                (AnimationDrawable)
+                        ContextCompat.getDrawable(
+                                requireContext(), R.drawable.onboarding_gradient_animation);
+        if (mAnimationDrawable != null) {
+            rootView.setBackground(mAnimationDrawable);
+            mAnimationDrawable.setEnterFadeDuration(10);
+            mAnimationDrawable.setExitFadeDuration(5000);
+        }
     }
 }

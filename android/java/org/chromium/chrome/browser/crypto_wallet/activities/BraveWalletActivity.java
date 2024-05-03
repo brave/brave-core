@@ -216,16 +216,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     }
 
     @Override
-    public boolean showBiometricPrompt() {
-        return mWalletOnboardingPagerAdapter.showBiometricPrompt();
-    }
-
-    @Override
-    public void enableBiometricPrompt() {
-        mWalletOnboardingPagerAdapter.enableBiometricPrompt();
-    }
-
-    @Override
     public void gotoNextPage() {
         if (mCryptoWalletOnboardingViewPager.getAdapter() != null
                 && mCryptoWalletOnboardingViewPager.getCurrentItem()

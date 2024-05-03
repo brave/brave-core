@@ -228,9 +228,9 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private void handleImportAccount(boolean result, boolean fromJson) {
         if (result) {
             setResult(Activity.RESULT_OK);
-            Utils.clearClipboard(mPrivateKeyControl.getText().toString(), 0);
+            Utils.clearClipboard(mPrivateKeyControl.getText().toString());
             if (fromJson) {
-                Utils.clearClipboard(mImportAccountPasswordText.getText().toString(), 0);
+                Utils.clearClipboard(mImportAccountPasswordText.getText().toString());
             }
             finish();
         } else {
