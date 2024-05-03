@@ -114,6 +114,9 @@ class ConversationDriverUnitTest : public testing::Test {
     conversation_driver_->SetUserOptedIn(true);
   }
 
+  // Waiting for is_request_in_progress_ to be false.
+  void WaitForOnEngineCompletionComplete() { task_environment_.RunUntilIdle(); }
+
   void TearDown() override {}
 
  protected:
@@ -273,8 +276,7 @@ TEST_F(ConversationDriverUnitTest, PrintPreviewFallback) {
       .WillOnce(base::test::RunOnceCallback<0>(expected_text, false, ""));
   conversation_driver_->SubmitSummarizationRequest();
   EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), expected_text);
-  // Waiting for is_request_in_progress_ to be false.
-  task_environment_.RunUntilIdle();
+  WaitForOnEngineCompletionComplete();
 
   // Fallback iniatiated on white spaces and line breaks then succeeded.
   EXPECT_CALL(*conversation_driver_, GetPageContent)
@@ -284,8 +286,7 @@ TEST_F(ConversationDriverUnitTest, PrintPreviewFallback) {
       .WillOnce(base::test::RunOnceCallback<0>(expected_text, false, ""));
   conversation_driver_->SubmitSummarizationRequest();
   EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), expected_text);
-  // Waiting for is_request_in_progress_ to be false.
-  task_environment_.RunUntilIdle();
+  WaitForOnEngineCompletionComplete();
 
   // Fallback failed will not retrigger another fallback.
   EXPECT_CALL(*conversation_driver_, GetPageContent)
@@ -294,8 +295,7 @@ TEST_F(ConversationDriverUnitTest, PrintPreviewFallback) {
       .WillOnce(base::test::RunOnceCallback<0>("", false, ""));
   conversation_driver_->SubmitSummarizationRequest();
   EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), "");
-  // Waiting for is_request_in_progress_ to be false.
-  task_environment_.RunUntilIdle();
+  WaitForOnEngineCompletionComplete();
 
   // Fallback won't initiate for video content.
   EXPECT_CALL(*conversation_driver_, GetPageContent)
@@ -303,8 +303,7 @@ TEST_F(ConversationDriverUnitTest, PrintPreviewFallback) {
   EXPECT_CALL(*conversation_driver_, PrintPreviewFallback).Times(0);
   conversation_driver_->SubmitSummarizationRequest();
   EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), "");
-  // Waiting for is_request_in_progress_ to be false.
-  task_environment_.RunUntilIdle();
+  WaitForOnEngineCompletionComplete();
 
   // Fallback won't initiate if we already have content
   EXPECT_CALL(*conversation_driver_, GetPageContent)
@@ -312,6 +311,16 @@ TEST_F(ConversationDriverUnitTest, PrintPreviewFallback) {
   EXPECT_CALL(*conversation_driver_, PrintPreviewFallback).Times(0);
   conversation_driver_->SubmitSummarizationRequest();
   EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), expected_text);
+  WaitForOnEngineCompletionComplete();
+
+  // Don't fallback on failed print preview extraction.
+  EXPECT_CALL(*conversation_driver_, GetPageURL)
+      .WillRepeatedly(testing::Return(GURL("https://docs.google.com")));
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(base::test::RunOnceCallback<0>("", false, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback).Times(0);
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), "");
 }
 
 }  // namespace ai_chat
