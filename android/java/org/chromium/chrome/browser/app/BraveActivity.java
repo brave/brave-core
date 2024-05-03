@@ -266,9 +266,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     private static final boolean ENABLE_IN_APP_UPDATE = false;
 
-    /**
-     * Settings for sending local notification reminders.
-     */
+    /** Settings for sending local notification reminders. */
     public static final String CHANNEL_ID = "com.brave.browser";
 
     // Explicitly declare this variable to avoid build errors.
