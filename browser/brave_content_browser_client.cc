@@ -575,7 +575,7 @@ void BraveContentBrowserClient::
             std::move(receiver), render_frame_host);
       },
       &render_frame_host));
-#endif  // BUILDFLAG(ENABLE_WIDEVINE)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   associated_registry.AddInterface<
       brave_shields::mojom::BraveShieldsHost>(base::BindRepeating(
