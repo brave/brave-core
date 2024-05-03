@@ -204,10 +204,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        // Make sure initial state matches previously set flags.
+        // Make sure initial state matches previously set flags and toolbar type.
         mIsBottomToolbarVisible =
                 BottomToolbarConfiguration.isBottomToolbarEnabled()
-                        && BraveMenuButtonCoordinator.isMenuFromBottom();
+                        && BraveMenuButtonCoordinator.isMenuFromBottom()
+                        && !BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class);
     }
 
     @Override
