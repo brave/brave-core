@@ -261,3 +261,26 @@ extension MediaContentView {
     }
   }
 }
+
+#if DEBUG
+// swift-format-ignore
+@available(iOS 16.0, *)
+#Preview {
+  MediaContentView(
+    model: .init(),
+    selectedItem: .init(
+      context: DataController.swiftUIContext,
+      name: "Test",
+      pageTitle: "Test",
+      pageSrc: "https://youtube.com",
+      cachedData: Data(),
+      duration: 100,
+      mimeType: "",
+      mediaSrc: ""
+    )
+  )
+  .environment(\.managedObjectContext, DataController.swiftUIContext)
+  .preparePlaylistEnvironment()
+  .environment(\.colorScheme, .dark)
+}
+#endif

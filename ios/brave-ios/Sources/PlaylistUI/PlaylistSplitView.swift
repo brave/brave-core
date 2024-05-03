@@ -217,6 +217,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
           // - when software keyboard is up the toolbar gets messed up
           .ignoresSafeArea(.keyboard, edges: .bottom)
           .transition(.move(edge: .leading).combined(with: .opacity))
+          .zIndex(1)
       }
       content
         .frame(maxWidth: .infinity, maxHeight: .infinity)
