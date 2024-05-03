@@ -159,7 +159,14 @@ void RedeemPaymentTokens::ScheduleNextRedemption() {
 }
 
 void RedeemPaymentTokens::Retry() {
-  CHECK(!timer_.IsRunning());
+  if (timer_.IsRunning()) {
+    // The function `WallClockTimer::PowerSuspendObserver::OnResume` restarts
+    // the timer to fire at the desired run time after system power is resumed.
+    // It's important to note that URL requests might not succeed upon power
+    // restoration, triggering a retry. To avoid initiating a second timer, we
+    // refrain from starting another one.
+    return;
+  }
 
   const base::Time retry_at = timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
