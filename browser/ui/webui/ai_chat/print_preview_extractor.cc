@@ -391,7 +391,9 @@ void PrintPreviewExtractor::OnCompositeToPdfDone(
 }
 
 void PrintPreviewExtractor::PreviewCleanup() {
-  CHECK(print_preview_ui_id_);
+  if (!print_preview_ui_id_) {
+    return;
+  }
   PrintPreviewDataService::GetInstance()->RemoveEntry(*print_preview_ui_id_);
   DisconnectPrintPrieviewUI();
 }

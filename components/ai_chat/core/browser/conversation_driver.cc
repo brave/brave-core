@@ -23,6 +23,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
@@ -494,7 +495,9 @@ void ConversationDriver::OnGeneratePageContentComplete(
   }
 
   if (base::CollapseWhitespaceASCII(contents_text, true).empty() &&
-      !is_print_preview_fallback_requested_ && !is_video) {
+      !is_print_preview_fallback_requested_ && !is_video &&
+      // Don't fallback again for failed print preview retrieval.
+      !base::Contains(kPrintPreviewRetrievalHosts, GetPageURL().host_piece())) {
     DVLOG(1) << "Initiating print preview fallback";
     is_print_preview_fallback_requested_ = true;
     PrintPreviewFallback(
