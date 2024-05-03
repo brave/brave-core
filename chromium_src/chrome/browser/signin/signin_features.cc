@@ -10,10 +10,6 @@
 #include "base/feature_override.h"
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if BUILDFLAG(ENABLE_DICE_SUPPORT)
-    {kPreconnectAccountCapabilitiesBeforeSignIn,
-     base::FEATURE_DISABLED_BY_DEFAULT},
-#endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
 #if BUILDFLAG(ENABLE_MIRROR)
     {kVerifyRequestInitiatorForMirrorHeaders,
      base::FEATURE_DISABLED_BY_DEFAULT},
