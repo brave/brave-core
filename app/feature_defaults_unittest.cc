@@ -15,11 +15,13 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/companion/visual_query/features.h"
+#include "chrome/common/privacy_budget/privacy_budget_features.h"
 #include "components/aggregation_service/features.h"
 #include "components/attribution_reporting/features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/commerce/core/commerce_feature_list.h"
+#include "components/compose/core/browser/compose_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/heap_profiling/in_process/heap_profiler_parameters.h"
 #include "components/history/core/browser/features.h"
@@ -122,6 +124,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &companion::features::internal::kSidePanelCompanion,
       &companion::features::internal::kSidePanelCompanion2,
       &companion::visual_query::features::kVisualQuerySuggestions,
+      &compose::features::kEnableCompose,
       &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
 #if !BUILDFLAG(IS_ANDROID)
@@ -136,6 +139,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kChromeLabs,
       &features::kChromeRefresh2023,
       &features::kChromeRefresh2023NTB,
+      &features::kChromeStructuredMetrics,
       &features::kChromeWebuiRefresh2023,
       &features::kControlledFrame,
       &features::kCookieDeprecationFacilitatedTesting,
@@ -149,6 +153,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kHaTSWebUI,
 #endif
+      &features::kIdentifiabilityStudyMetaExperiment,
       &features::kIdleDetection,
       &features::kKAnonymityService,
       &features::kKAnonymityServiceOHTTPRequests,
@@ -201,6 +206,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
 #if !BUILDFLAG(IS_ANDROID)
       &kForYouFre,
+#endif
+#if BUILDFLAG(ENABLE_DICE_SUPPORT)
+      &kPreconnectAccountCapabilitiesBeforeSignIn,
 #endif
 #if BUILDFLAG(ENABLE_MIRROR)
       &kVerifyRequestInitiatorForMirrorHeaders,
