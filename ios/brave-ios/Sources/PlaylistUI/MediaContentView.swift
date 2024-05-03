@@ -59,13 +59,56 @@ struct MediaContentView: View {
 
 @available(iOS 16.0, *)
 extension MediaContentView {
-  struct PlaybackControlsView: View {
+  /// A media scrubber that controls the current player
+  ///
+  /// This is a separate view since it is constantly updating the current time, so its better to
+  /// keep that state isolated and only update this View when time changes instead of the entire
+  /// PlaybackControlsView
+  private struct PlaybackScrubber: View {
     @ObservedObject var model: PlayerModel
-    var selectedItemTitle: String
 
     @State private var currentTime: TimeInterval = 0
     @State private var isScrubbing: Bool = false
     @State private var resumePlayingAfterScrub: Bool = false
+
+    var body: some View {
+      MediaScrubber(
+        currentTime: Binding(
+          get: {
+            if isScrubbing {
+              return model.currentTime
+            } else {
+              return self.currentTime
+            }
+          },
+          set: { newValue in
+            Task { await model.seek(to: newValue, accurately: true) }
+          }
+        ),
+        duration: model.duration,
+        isScrubbing: $isScrubbing
+      )
+      .tint(Color(braveSystemName: .iconInteractive))
+      .onChange(of: isScrubbing) { newValue in
+        if newValue {
+          resumePlayingAfterScrub = model.isPlaying
+          model.pause()
+        } else {
+          if resumePlayingAfterScrub {
+            model.play()
+          }
+        }
+      }
+      .task(priority: .low) {
+        for await currentTime in model.currentTimeStream {
+          self.currentTime = currentTime
+        }
+      }
+    }
+  }
+  struct PlaybackControlsView: View {
+    @ObservedObject var model: PlayerModel
+    var selectedItemTitle: String
 
     @Environment(\.toggleFullScreen) private var toggleFullScreen
 
@@ -82,23 +125,7 @@ extension MediaContentView {
             RoutePickerView()
           }
         }
-        MediaScrubber(
-          currentTime: Binding(
-            get: {
-              if isScrubbing {
-                return model.currentTime
-              } else {
-                return self.currentTime
-              }
-            },
-            set: { newValue in
-              Task { await model.seek(to: newValue, accurately: true) }
-            }
-          ),
-          duration: model.duration,
-          isScrubbing: $isScrubbing
-        )
-        .tint(Color(braveSystemName: .iconInteractive))
+        PlaybackScrubber(model: model)
         VStack(spacing: 28) {
           HStack {
             Toggle(isOn: $model.isShuffleEnabled) {
@@ -118,7 +145,7 @@ extension MediaContentView {
               Label("Step Back", braveSystemImage: "leo.rewind.15")
             }
             .buttonStyle(.playbackControl(size: .large))
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
+            .tint(Color(braveSystemName: .textPrimary))
             Spacer()
             Toggle(isOn: $model.isPlaying) {
               if model.isPlaying {
@@ -131,7 +158,7 @@ extension MediaContentView {
             }
             .toggleStyle(.button)
             .accessibilityAddTraits(!model.isPlaying ? .startsMediaSession : [])
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
+            .tint(Color(braveSystemName: .textPrimary))
             .buttonStyle(.playbackControl(size: .extraLarge))
             Spacer()
             Button {
@@ -140,7 +167,7 @@ extension MediaContentView {
               Label("Step Forward", braveSystemImage: "leo.forward.15")
             }
             .buttonStyle(.playbackControl(size: .large))
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
+            .tint(Color(braveSystemName: .textPrimary))
             Spacer()
             Button {
               model.repeatMode.cycle()
@@ -160,7 +187,7 @@ extension MediaContentView {
             }
           }
           .buttonStyle(.playbackControl)
-          .foregroundStyle(Color(braveSystemName: .textSecondary))
+          .tint(Color(braveSystemName: .textSecondary))
           HStack {
             Button {
               model.playbackSpeed.cycle()
@@ -170,34 +197,49 @@ extension MediaContentView {
             }
             Spacer()
             Menu {
-              // FIXME: We need some sort of design to show when its active and how much time is left
               Section {
-                Button {
-                  model.sleepTimerFireDate = .now.addingTimeInterval(10 * 60)
-                } label: {
-                  Text("10 minutes")
-                }
-                Button {
-                  model.sleepTimerFireDate = .now.addingTimeInterval(20 * 60)
-                } label: {
-                  Text("20 minutes")
-                }
-                Button {
-                  model.sleepTimerFireDate = .now.addingTimeInterval(30 * 60)
-                } label: {
-                  Text("30 minutes")
-                }
-                Button {
-                  model.sleepTimerFireDate = .now.addingTimeInterval(60 * 60)
-                } label: {
-                  Text("1 hour")
+                let timeOptions = [10.minutes, 20.minutes, 30.minutes, 60.minutes]
+                ForEach(timeOptions, id: \.self) { option in
+                  Button {
+                    withAnimation(.snappy) {
+                      model.sleepTimerFireDate = .now.addingTimeInterval(option)
+                    }
+                  } label: {
+                    Text(
+                      Duration.seconds(option),
+                      format: .units(
+                        allowed: [.hours, .minutes],
+                        width: .wide,
+                        maximumUnitCount: 1
+                      )
+                    )
+                  }
                 }
               } header: {
                 Text("Stop Playback In…")
               }
+              if model.sleepTimerFireDate != nil {
+                Divider()
+                Button("Cancel Timer") {
+                  withAnimation(.snappy) {
+                    model.sleepTimerFireDate = nil
+                  }
+                }
+              }
             } label: {
-              Label("Sleep Timer", braveSystemImage: "leo.sleep.timer")
+              HStack {
+                Label("Sleep Timer", braveSystemImage: "leo.sleep.timer")
+                if let sleepTimerFireDate = model.sleepTimerFireDate {
+                  Text(timerInterval: .now...sleepTimerFireDate, countsDown: true)
+                    .font(.callout.weight(.semibold))
+                    .transition(.opacity)
+                }
+              }
             }
+            .tint(
+              model.sleepTimerFireDate != nil
+                ? Color(braveSystemName: .textInteractive) : Color(braveSystemName: .textSecondary)
+            )
             Spacer()
             Button {
               withAnimation(.snappy(duration: 0.3)) {
@@ -208,7 +250,7 @@ extension MediaContentView {
             }
           }
           .buttonStyle(.playbackControl)
-          .foregroundStyle(Color(braveSystemName: .textSecondary))
+          .tint(Color(braveSystemName: .textSecondary))
         }
         .font(.title3)
         .backgroundStyle(Color(braveSystemName: .containerHighlight))
@@ -216,21 +258,6 @@ extension MediaContentView {
       // FIXME: Figure out what to do in AX sizes, maybe second row in PlaybackControls?
       // XXXL may even have issues with DisplayZoom on
       .dynamicTypeSize(.xSmall...DynamicTypeSize.xxxLarge)
-      .onChange(of: isScrubbing) { newValue in
-        if newValue {
-          resumePlayingAfterScrub = model.isPlaying
-          model.pause()
-        } else {
-          if resumePlayingAfterScrub {
-            model.play()
-          }
-        }
-      }
-      .task {
-        for await currentTime in model.currentTimeStream {
-          self.currentTime = currentTime
-        }
-      }
     }
   }
 }

@@ -65,8 +65,9 @@ struct PlaybackControlButtonStyle: ButtonStyle {
       .labelStyle(.iconOnly)
       .imageScale(imageScale)
       .font(.system(fontStyle))
-      .frame(width: multiplier * length, height: multiplier * length)
+      .frame(height: multiplier * length)
       .contentShape(.rect)
+      .foregroundStyle(.tint)
       .background {
         if isPressed {
           RoundedRectangle(cornerRadius: 8, style: .continuous)
@@ -122,25 +123,49 @@ extension ButtonStyle where Self == PlaybackControlButtonStyle {
 }
 
 #if DEBUG
+@available(iOS 16.0, *)
 struct PlaybackControlButtonStyle_PreviewProvider: PreviewProvider {
   static var previews: some View {
-    HStack {
-      Button {
-      } label: {
-        Label("Hello, World", braveSystemImage: "leo.1x")
+    VStack(spacing: 0) {
+      HStack {
+        Button {
+        } label: {
+          Label("Hello, World", braveSystemImage: "leo.1x")
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Button {
+        } label: {
+          Label("Hello, World", braveSystemImage: "leo.1x")
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .colorScheme(.dark)
+        .background(Color.black)
       }
-      .padding()
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      Button {
-      } label: {
-        Label("Hello, World", braveSystemImage: "leo.1x")
+      Divider()
+      HStack {
+        Button {
+        } label: {
+          HStack {
+            Label("Hello, World", braveSystemImage: "leo.2x")
+            Text("Test")
+          }
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Button {
+        } label: {
+          Label("Hello, World", braveSystemImage: "leo.2x")
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .colorScheme(.dark)
+        .background(Color.black)
       }
-      .padding()
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .colorScheme(.dark)
-      .background(Color.black)
     }
     .buttonStyle(.playbackControl)
+    .backgroundStyle(.tertiary)
   }
 }
 #endif

@@ -205,6 +205,7 @@ extension PlayerView {
               } label: {
                 Label("Exit Fullscreen", braveSystemImage: "leo.fullscreen.off")
               }
+              .tint(Color(braveSystemName: .textPrimary))
             }
             .buttonStyle(.playbackControl)
           }
@@ -240,10 +241,10 @@ extension PlayerView {
           }
           .buttonStyle(.playbackControl(size: .large))
         }
-        .foregroundStyle(Color(braveSystemName: .textPrimary))
         .ignoresSafeArea(edges: .vertical)
       }
       .buttonStyle(.playbackControl)
+      .tint(Color(braveSystemName: .textPrimary))
       .backgroundStyle(Color.white.opacity(0.2))
       // FIXME: Likely need to tie this to the ID of the current item via `task(id:_:)`
       .task {

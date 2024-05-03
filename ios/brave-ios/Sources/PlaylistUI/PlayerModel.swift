@@ -215,14 +215,17 @@ final class PlayerModel: ObservableObject {
     didSet {
       sleepTimer?.invalidate()
       if let sleepTimerFireDate {
-        sleepTimer = .init(
+        let timer = Timer(
           fire: sleepTimerFireDate,
           interval: 0,
           repeats: false,
           block: { [weak self] _ in
             self?.pause()
+            self?.sleepTimerFireDate = nil
           }
         )
+        RunLoop.main.add(timer, forMode: .default)
+        self.sleepTimer = timer
       }
     }
   }
