@@ -1,0 +1,12 @@
+diff --git a/ios/web/webui/mojo_facade.h b/ios/web/webui/mojo_facade.h
+index d563599628d61c32474407a0a58664f96b5f4d87..6739f0524225086fbc5c6888e926fe06321add6b 100644
+--- a/ios/web/webui/mojo_facade.h
++++ b/ios/web/webui/mojo_facade.h
+@@ -132,6 +132,7 @@ class MojoFacade {
+   // A mapping of integer handles used by JS, to actual pipe handles used with
+   // Mojo APIs.
+   std::unordered_map<int, mojo::ScopedMessagePipeHandle> pipes_;
++  std::unordered_map<int, int> pipe_id_to_watcher_id_;
+ 
+   // Id of the last created watch.
+   int last_watch_id_ = 0;

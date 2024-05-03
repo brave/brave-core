@@ -1,0 +1,34 @@
+diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
+index a61282c6c8a98343dca39fc0e4d55cd03914e156..4250209bcc680d335e77e0b0a440781c5a865797 100644
+--- a/ios/web/webui/mojo_facade.mm
++++ b/ios/web/webui/mojo_facade.mm
+@@ -168,6 +168,14 @@ base::Value MojoFacade::HandleMojoHandleReadMessage(base::Value::Dict args) {
+   std::vector<uint8_t> bytes;
+   std::vector<mojo::ScopedHandle> handles;
+   MojoResult mojo_result = mojo::ReadMessageRaw(pipe, &bytes, &handles, flags);
++  if (mojo_result == MOJO_RESULT_OK || mojo_result == MOJO_RESULT_SHOULD_WAIT) {
++    const auto watcher_id = pipe_id_to_watcher_id_.find(id_as_value->GetInt());
++    if (watcher_id != pipe_id_to_watcher_id_.end()) {
++      const auto watcher = watchers_.find(watcher_id->second);
++    if (watcher != watchers_.end())
++      watcher->second->ArmOrNotify();
++    }
++  }
+ 
+   base::Value::Dict result;
+   if (mojo_result == MOJO_RESULT_OK) {
+@@ -211,11 +219,13 @@ base::Value MojoFacade::HandleMojoHandleWatch(base::Value::Dict args) {
+       },
+       *callback_id);
+   auto watcher = std::make_unique<mojo::SimpleWatcher>(
+-      FROM_HERE, mojo::SimpleWatcher::ArmingPolicy::AUTOMATIC);
++      FROM_HERE, mojo::SimpleWatcher::ArmingPolicy::MANUAL);
+ 
+   mojo::MessagePipeHandle pipe = GetPipeFromId(*pipe_id);
+   watcher->Watch(pipe, *signals, callback);
++  watcher->ArmOrNotify();
+   watchers_.insert(std::make_pair(++last_watch_id_, std::move(watcher)));
++  pipe_id_to_watcher_id_[*pipe_id] = last_watch_id_;
+   return base::Value(last_watch_id_);
+ }
+ 
