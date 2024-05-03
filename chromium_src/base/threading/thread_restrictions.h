@@ -14,17 +14,13 @@ namespace brave {
 class ProcessLauncher;
 }
 
-
-#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_BASE \
-  friend class ::BraveBrowsingDataRemoverDelegate;     \
-  friend class ipfs::IpfsService;                      \
+#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H  \
+  friend class ::BraveBrowsingDataRemoverDelegate; \
+  friend class ipfs::IpfsService;                  \
   friend class brave::ProcessLauncher;
 
-#define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H \
-  BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_BASE
-
 #include "src/base/threading/thread_restrictions.h"  // IWYU pragma: export
+
 #undef BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H
-#undef BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H_BASE
 
 #endif  // BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_

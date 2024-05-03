@@ -71,8 +71,7 @@ void SequentialUpdateChecker::CheckNext(
   update_checker_ = UpdateChecker::Create(config_, metadata_);
 
   update_checker_->CheckForUpdates(
-      context,
-      additional_attributes_,
+      context, additional_attributes_,
       base::BindOnce(&SequentialUpdateChecker::UpdateResultAvailable,
                      base::Unretained(this)));
 

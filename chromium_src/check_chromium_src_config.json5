@@ -40,7 +40,6 @@
         "components/privacy_sandbox/privacy_sandbox_settings_unittest.cc",
         "components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
         "components/search_engines/brave_template_url_service_util_unittest.cc",
-        "components/update_client/brave_persisted_data_unittest.cc",
         "components/variations/service/field_trial_unittest.cc",
         "net/base/brave_proxy_string_util_unittest.cc",
         "net/cookies/brave_canonical_cookie_unittest.cc",
