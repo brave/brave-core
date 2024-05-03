@@ -36,6 +36,7 @@
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/webui/resource_path.h"
 #include "ui/base/webui/web_ui_util.h"
+#include "base/task/single_thread_task_runner.h"
 
 namespace {
 
@@ -128,10 +129,12 @@ void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
 
 void SkusInternalsUI::GetLeoState(GetLeoStateCallback callback) {
   base::Value::Dict dict;
+  dict.Set("Testing", true);
   dict.Set("Order", GetOrderInfo("leo."));
   std::string result;
   base::JSONWriter::Write(dict, &result);
-  std::move(callback).Run(result);
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, base::BindOnce(std::move(callback), result), base::Seconds(7));
 }
 
 base::Value::Dict SkusInternalsUI::GetOrderInfo(
