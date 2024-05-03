@@ -35,6 +35,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -847,8 +848,82 @@ public class Utils {
         return asset;
     }
 
+    @DrawableRes
+    public static int getNetworkIconDrawable(
+            @NonNull final String chainId, @CoinType.EnumType final int coin) {
+        @DrawableRes int logo;
+        switch (chainId) {
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
+            case BraveWalletConstants.SEPOLIA_CHAIN_ID:
+                logo = R.drawable.ic_eth_color;
+                break;
+            case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_matic_color;
+                break;
+            case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_bnbchain_color;
+                break;
+            case BraveWalletConstants.SOLANA_MAINNET:
+            case BraveWalletConstants.SOLANA_TESTNET:
+            case BraveWalletConstants.SOLANA_DEVNET:
+                logo = R.drawable.ic_sol_color;
+                break;
+            case BraveWalletConstants.AURORA_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_aurora_color;
+                break;
+            case BraveWalletConstants.ARBITRUM_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_arb_color;
+                break;
+            case BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_avax_color;
+                break;
+            case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_celo_color;
+                break;
+            case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_op_color;
+                break;
+            case BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_ftm_color;
+                break;
+            case BraveWalletConstants.FILECOIN_MAINNET:
+            case BraveWalletConstants.FILECOIN_TESTNET:
+            case BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID:
+                logo = R.drawable.ic_filecoin_color;
+                break;
+            case BraveWalletConstants.BITCOIN_MAINNET:
+            case BraveWalletConstants.BITCOIN_TESTNET:
+                logo = R.drawable.ic_btc_color;
+                break;
+            case BraveWalletConstants.NEON_EVM_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_neon_color;
+                break;
+            default:
+                logo = -1;
+        }
+        // Local host chain is not unique per network
+        if (logo == -1 && chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
+            switch (coin) {
+                case CoinType.SOL:
+                    logo = R.drawable.ic_sol_color;
+                    break;
+                case CoinType.ETH:
+                    logo = R.drawable.ic_eth_color;
+                    break;
+                case CoinType.FIL:
+                    logo = R.drawable.ic_filecoin_color;
+                    break;
+                default: // Do nothing
+            }
+        }
+        return logo;
+    }
+
     @NonNull
-    public static String getNetworkIconName(String chainId, @CoinType.EnumType int coin) {
+    public static String getNetworkIconName(
+            @NonNull final String chainId, @CoinType.EnumType final int coin) {
         String logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:

@@ -13,13 +13,13 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -277,17 +277,10 @@ public class OnboardingNetworkSelectorGridAdapter
 
             networkViewHolder.mNetworkName.setText(networkInfo.chainName);
 
-            String logo = Utils.getNetworkIconName(networkInfo.chainId, networkInfo.coin);
-            if (!TextUtils.isEmpty(logo)) {
-                Utils.setBitmapResource(
-                        mExecutor,
-                        mHandler,
-                        mContext,
-                        "file://" + mTokensPath + "/" + logo,
-                        Integer.MIN_VALUE,
-                        networkViewHolder.mNetworkLogo,
-                        null,
-                        true);
+            @DrawableRes
+            int logo = Utils.getNetworkIconDrawable(networkInfo.chainId, networkInfo.coin);
+            if (logo != -1) {
+                networkViewHolder.mNetworkLogo.setImageResource(logo);
                 if (NetworkUtils.isTestNetwork(networkInfo.chainId)) {
                     // Grey style test net image.
                     ColorMatrix matrix = new ColorMatrix();
