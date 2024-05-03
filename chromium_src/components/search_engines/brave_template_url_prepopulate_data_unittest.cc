@@ -264,3 +264,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest,
        DefaultSearchProvidersForSouthKorea) {
   CheckForCountry('K', 'R', PREPOPULATED_ENGINE_ID_NAVER);
 }
+
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForItaly) {
+  CheckForCountry('I', 'T', PREPOPULATED_ENGINE_ID_BRAVE);
+}
