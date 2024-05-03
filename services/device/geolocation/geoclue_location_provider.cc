@@ -28,7 +28,9 @@ namespace device {
 
 namespace {
 
-constexpr char kBraveDesktopId[] = "com.brave.Browser";
+// constexpr char kBraveDesktopId[] = "com.brave.Browser";
+// TODO: I think this should be added to /etc/geoclue/geoclue.conf @ install
+constexpr char kBraveDesktopId[] = "firefox";
 
 // Note: This method blocks because the call to NewSystemProvider is not
 // asynchronous, but it happens on the background geolocation thread.
