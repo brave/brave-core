@@ -134,7 +134,7 @@ class AllPlaylistFragment : Fragment(R.layout.fragment_all_playlist), PlaylistOp
         mPlaylistViewModel.setAllPlaylistOption(playlistOptionsModel)
     }
 
-    override fun onPlaylistClick(playlistModel: PlaylistModel) {
-        mPlaylistViewModel.setPlaylistToOpen(playlistModel.id)
-    }
+    // override fun onPlaylistClick(playlistModel: PlaylistModel) {
+    //     mPlaylistViewModel.setPlaylistToOpen(playlistModel.id)
+    // }
 }

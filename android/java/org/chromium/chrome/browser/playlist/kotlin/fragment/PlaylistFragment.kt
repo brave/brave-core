@@ -425,15 +425,15 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
         mPlaylistToolbar.updateSelectedItems(count)
     }
 
-    override fun onPlaylistItemMenuClick(view: View, playlistItemModel: PlaylistItemModel) {
-        // MenuUtils.showPlaylistItemMenu(
-        //     view.context,
-        //     parentFragmentManager,
-        //     playlistItemModel = playlistItemModel,
-        //     playlistId = playlistItemModel.playlistId,
-        //     playlistItemOptionsListener = this@PlaylistFragment
-        // )
-    }
+    // override fun onPlaylistItemMenuClick(view: View, playlistItemModel: PlaylistItemModel) {
+    //     // MenuUtils.showPlaylistItemMenu(
+    //     //     view.context,
+    //     //     parentFragmentManager,
+    //     //     playlistItemModel = playlistItemModel,
+    //     //     playlistId = playlistItemModel.playlistId,
+    //     //     playlistItemOptionsListener = this@PlaylistFragment
+    //     // )
+    // }
 
     private fun openPlaylistPlayer(isShuffle: Boolean, position: Int) {
         val browser = this.mMediaBrowser ?: return

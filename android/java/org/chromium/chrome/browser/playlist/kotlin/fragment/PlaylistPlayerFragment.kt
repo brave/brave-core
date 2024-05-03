@@ -702,16 +702,16 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
         mMainLayout.smoothToBottom()
     }
 
-    override fun onPlaylistItemMenuClick(view: View, playlistItemModel: PlaylistItemModel) {
-        // MenuUtils.showPlaylistItemMenu(
-        //     view.context,
-        //     parentFragmentManager,
-        //     playlistItemModel = playlistItemModel,
-        //     playlistId = playlistItemModel.playlistId,
-        //     playlistItemOptionsListener = this,
-        //     shouldShowMove = false
-        // )
-    }
+    // override fun onPlaylistItemMenuClick(view: View, playlistItemModel: PlaylistItemModel) {
+    //     // MenuUtils.showPlaylistItemMenu(
+    //     //     view.context,
+    //     //     parentFragmentManager,
+    //     //     playlistItemModel = playlistItemModel,
+    //     //     playlistId = playlistItemModel.playlistId,
+    //     //     playlistItemOptionsListener = this,
+    //     //     shouldShowMove = false
+    //     // )
+    // }
 
     override fun onPlaylistItemOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
         if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {

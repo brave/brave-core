@@ -43,6 +43,7 @@ import androidx.media3.ui.PlayerView
 import androidx.mediarouter.app.MediaRouteButton
 import androidx.recyclerview.widget.RecyclerView
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
+import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
@@ -67,13 +68,12 @@ import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
 import org.chromium.playlist.mojom.Playlist
 import org.chromium.playlist.mojom.PlaylistItem
 
-class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPanelLayout.PanelSlideListener, PlaylistItemClickListener, PlaylistItemOptionsListener  {
+class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPanelLayout.PanelSlideListener, PlaylistItemClickListener  {
     companion object {
         val TAG: String = "PlaylistPlayerActivity"
         private const val SEEK_VALUE_MS = 15000
     }
 
-    private var mPlaylistId = ConstantUtils.DEFAULT_PLAYLIST
     private lateinit var mPlaylist: Playlist
 
     private var mIsCastInProgress: Boolean = false
@@ -108,17 +108,17 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
     private lateinit var mIvSeekForward15Seconds: AppCompatImageView
     private lateinit var mIvSeekBack15Seconds: AppCompatImageView
     private lateinit var mLayoutVideoControls: ConstraintLayout
-    // private lateinit var mLayoutBottom: MaterialCardView
+    private lateinit var mLayoutBottom: MaterialCardView
     private lateinit var mLayoutPlayer: LinearLayoutCompat
     private lateinit var mIvVideoOptions: AppCompatImageView
-    // private lateinit var mTvPlaylistName: AppCompatTextView
-    // private lateinit var mProgressBar: ProgressBar
+    private lateinit var mTvPlaylistName: AppCompatTextView
+    private lateinit var mProgressBar: ProgressBar
 
     private lateinit var mVideoPlayerLoading: ProgressBar
 
-    // private lateinit var mRvPlaylist: RecyclerView
-    // private var mPlaylistItemAdapter: PlaylistItemAdapter? = null
-    // private lateinit var mMainLayout: BottomPanelLayout
+    private lateinit var mRvPlaylist: RecyclerView
+    private var mPlaylistItemAdapter: PlaylistItemAdapter? = null
+    private lateinit var mMainLayout: BottomPanelLayout
 
     private lateinit var controllerFuture: ListenableFuture<MediaController>
     private val controller: MediaController?
@@ -133,17 +133,13 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         }
     }
 
-    override fun onPreCreate() {
-        initializeController()
-    }
-
     override fun initializeViews() {
         setContentView(R.layout.activity_playlist_player)
 
         mPlaylistToolbar = findViewById(R.id.playlistToolbar)
         mTvVideoTitle = findViewById(R.id.tvVideoTitle)
         mTvVideoSource = findViewById(R.id.tvVideoSource)
-        // mTvPlaylistName = findViewById(R.id.tvPlaylistName)
+        mTvPlaylistName = findViewById(R.id.tvPlaylistName)
         mAspectRatioFrameLayout = findViewById(R.id.aspect_ratio_frame_layout)
         mPlayerView = findViewById(R.id.styledPlayerView)
         mHoverControlsLayout = findViewById(R.id.hover_controls_layout)
@@ -163,15 +159,15 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         mIvSeekBack15Seconds = findViewById(R.id.ivSeekBack15Seconds)
         mIvVideoOptions = findViewById(R.id.ivVideoOptions)
         mVideoPlayerLoading = findViewById(R.id.videoPlayerLoading)
-        // mMainLayout = findViewById(R.id.sliding_layout)
-        // mLayoutBottom = findViewById(R.id.bottom_layout)
+        mMainLayout = findViewById(R.id.sliding_layout)
+        mLayoutBottom = findViewById(R.id.bottom_layout)
         mLayoutPlayer = findViewById(R.id.player_layout)
         mLayoutVideoControls = findViewById(R.id.layoutVideoControls)
-        // mRvPlaylist = findViewById(R.id.rvPlaylists)
-        // mProgressBar = findViewById(R.id.progressBar)
+        mRvPlaylist = findViewById(R.id.rvPlaylists)
+        mProgressBar = findViewById(R.id.progressBar)
 
-        // mProgressBar.visibility = View.VISIBLE
-        // mRvPlaylist.visibility = View.GONE
+        mProgressBar.visibility = View.VISIBLE
+        mRvPlaylist.visibility = View.GONE
 
         mAspectRatioFrameLayout.setAspectRatio(16f / 9f)
         // mPlayerView.setOnTouchListener { v, event ->
@@ -204,17 +200,17 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
                     supportFragmentManager,
                     currentPlaylistItem,
                     playlistId = mPlaylist.id,
-                    playlistItemOptionsListener = this,
+                    playlistItemOptionsListener = this@PlaylistPlayerActivity,
                     shouldShowMove = false
                 )
         }
-        // mMainLayout.addPanelSlideListener(this)
+        mMainLayout.addPanelSlideListener(this)
         val mediaRouteButton: MediaRouteButton = findViewById(R.id.media_route_button)
         CastButtonFactory.setUpMediaRouteButton(this@PlaylistPlayerActivity, mediaRouteButton)
 
-        // mPlaylistItemAdapter = PlaylistItemAdapter(this@PlaylistPlayerActivity)
-        // mPlaylistItemAdapter?.setBottomLayout()
-        // mRvPlaylist.adapter = mPlaylistItemAdapter
+        mPlaylistItemAdapter = PlaylistItemAdapter(this@PlaylistPlayerActivity)
+        mPlaylistItemAdapter?.setBottomLayout()
+        mRvPlaylist.adapter = mPlaylistItemAdapter
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             updateLandscapeView()
@@ -229,6 +225,7 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
     }
 
     override fun onResumeWithNative() {
+        Log.e(TAG, "onResumeWithNative")
         super.onResumeWithNative();
         mPlaylistId = intent.getStringExtra(ConstantUtils.PLAYLIST_ID)?:ConstantUtils.DEFAULT_PLAYLIST
 
@@ -263,34 +260,37 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
 
                     mTvVideoSource.text =
                         if (mPlaylist.id == DEFAULT_PLAYLIST) getString(R.string.playlist_play_later) else mPlaylist.name
-                    // mTvPlaylistName.text = getString(R.string.playlist_up_next)
+                    mTvPlaylistName.text = getString(R.string.playlist_up_next)
 
-                    // mPlaylistItemAdapter?.submitList(mPlaylist.items.toMutableList())
+                    mPlaylistItemAdapter?.submitList(playlistItems)
 
-                    // mProgressBar.visibility = View.GONE
-                    // mRvPlaylist.visibility = View.VISIBLE
+                    mProgressBar.visibility = View.GONE
+                    mRvPlaylist.visibility = View.VISIBLE
                 };
     }
 
     override fun onDestroy() {
+        Log.e(TAG, "onDestroy")
         mPlayerView.player = null
         // releaseController()
         
         super.onDestroy();
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onStartWithNative() {
+        Log.e(TAG, "onStartWithNative")
+        super.onStartWithNative()
         initializeController()
     }
 
-    override fun onStop() {
+    override fun onStopWithNative() {
         releaseController()
-        super.onStop()
+        super.onStopWithNative()
     }
 
 
     private fun initializeController() {
+        Log.e(TAG, "initializeController")
         controllerFuture = MediaController.Builder(
             this@PlaylistPlayerActivity, SessionToken(
                 this@PlaylistPlayerActivity, ComponentName(this@PlaylistPlayerActivity, VideoPlaybackService::class.java)
@@ -300,6 +300,7 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
     }
 
     private fun releaseController() {
+        Log.e(TAG, "releaseController")
         MediaController.releaseFuture(controllerFuture)
     }
 
@@ -307,6 +308,7 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         if (controller == null) {
             return
         }
+        Log.e(TAG, "setController")
         updatePlayerView()
 
         initializePlayer()
@@ -436,9 +438,11 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
     }
 
     private fun initializePlayer() {
+        Log.e(TAG, "initializePlayer")
         mPlayerView.player = controller
+        controller?.addListener(this@PlaylistPlayerActivity)
         mPlayerView.player?.let { currentPlayer ->
-            currentPlayer.addListener(this)
+            Log.e(TAG, "addListener")
             currentPlayer.shuffleModeEnabled = mIsShuffleOn
             currentPlayer.repeatMode = mRepeatMode
             currentPlayer.setPlaybackSpeed(mPlaybackSpeed)
@@ -447,7 +451,7 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
 
     private fun releasePlayer() {
         mPlayerView.player?.let {
-            it.removeListener(this)
+            it.removeListener(this@PlaylistPlayerActivity)
             mPlaybackPosition = it.currentPosition
             mCurrentMediaIndex = it.currentMediaItemIndex
             mPlayWhenReady = it.playWhenReady
@@ -619,11 +623,11 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         mHoverControlsLayout.layoutParams = hoverLayoutParams
         mHoverControlsLayout.setBackgroundResource(R.drawable.rounded_bg_16)
 
-        // mMainLayout.mSlideState = BottomPanelLayout.PanelState.COLLAPSED
-        // mTvVideoTitle.afterMeasured {
-        //     val availableHeight = Integer.min(mMainLayout.measuredHeight.minus(mLayoutPlayer.bottom), 190.dpToPx.toInt())
-        //     mMainLayout.panelHeight = availableHeight
-        // }
+        mMainLayout.mSlideState = BottomPanelLayout.PanelState.COLLAPSED
+        mTvVideoTitle.afterMeasured {
+            val availableHeight = Integer.min(mMainLayout.measuredHeight.minus(mLayoutPlayer.bottom), 190.dpToPx.toInt())
+            mMainLayout.panelHeight = availableHeight
+        }
 
         if (!mIsCastInProgress) {
             mPlayerView.useController = false
@@ -658,7 +662,7 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         mHoverControlsLayout.layoutParams = hoverLayoutParams
         mHoverControlsLayout.setBackgroundResource(R.color.player_control_bg)
 
-        // mMainLayout.mSlideState = BottomPanelLayout.PanelState.HIDDEN
+        mMainLayout.mSlideState = BottomPanelLayout.PanelState.HIDDEN
         mPlayerView.useController = true
         mPlayerView.controllerHideOnTouch = true
         mPlayerView.showController()
@@ -689,7 +693,7 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
             return
         }
         mPlayerView.player?.seekTo(position, 0)
-        // mMainLayout.smoothToBottom()
+        mMainLayout.smoothToBottom()
     }
 
     override fun onPlaylistItemMenuClick(view: View, playlistItem: PlaylistItem) {
@@ -703,25 +707,37 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         )
     }
 
-    override fun onPlaylistItemOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
-        if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {
-            playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
-                PlaylistUtils.showSharingDialog(
-                    this@PlaylistPlayerActivity, it
-                )
-            }
-        } else {
-            if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
+    override fun deletePlaylistItem(playlistItemOptionModel: PlaylistItemOptionModel) {
+        playlistItemOptionModel.playlistItem?.let {
+            mPlaylistService?.removeItemFromPlaylist(mPlaylistId, it.id)
+            if (it.id == controller?.currentMediaItem?.mediaId) {
                 mPlayerView.player?.stop()
-                // if (activity is AppCompatActivity) (activity as AppCompatActivity).onBackPressedDispatcher.onBackPressed()
                 finish()
-            } else if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM || playlistItemOptionModel.optionType == PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
-                val moveOrCopyItems = ArrayList<PlaylistItem>()
-                playlistItemOptionModel.playlistItem?.let { moveOrCopyItems.add(it) }
-                PlaylistUtils.moveOrCopyModel =
-                    MoveOrCopyModel(playlistItemOptionModel.optionType,mPlaylistId, "", moveOrCopyItems)
+            } else {
+                fetchPlaylistData()
             }
-            // mPlaylistViewModel.setPlaylistItemOption(playlistItemOptionModel)
         }
     }
+
+    // override fun onPlaylistItemOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
+    //     if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {
+    //         playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
+    //             PlaylistUtils.showSharingDialog(
+    //                 this@PlaylistPlayerActivity, it
+    //             )
+    //         }
+    //     } else {
+    //         if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
+    //             mPlayerView.player?.stop()
+    //             // if (activity is AppCompatActivity) (activity as AppCompatActivity).onBackPressedDispatcher.onBackPressed()
+    //             finish()
+    //         } else if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM || playlistItemOptionModel.optionType == PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
+    //             val moveOrCopyItems = ArrayList<PlaylistItem>()
+    //             playlistItemOptionModel.playlistItem?.let { moveOrCopyItems.add(it) }
+    //             PlaylistUtils.moveOrCopyModel =
+    //                 MoveOrCopyModel(playlistItemOptionModel.optionType,mPlaylistId, "", moveOrCopyItems)
+    //         }
+    //         // mPlaylistViewModel.setPlaylistItemOption(playlistItemOptionModel)
+    //     }
+    // }
 }

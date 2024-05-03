@@ -19,6 +19,7 @@ import androidx.core.widget.ContentLoadingProgressBar
 import androidx.appcompat.widget.LinearLayoutCompat
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
 import android.content.Intent
+import org.chromium.playlist.mojom.PlaylistEvent
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.util.MenuUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
@@ -76,12 +77,11 @@ import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaItemUtil
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
 
-class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,StartDragListener, ItemInteractionListener, PlaylistOptionsListener, PlaylistItemOptionsListener  {
+class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,StartDragListener, ItemInteractionListener, PlaylistOptionsListener  {
     companion object {
         val TAG: String = "PlaylistActivity"
     }
 
-    private var mPlaylistId = ConstantUtils.DEFAULT_PLAYLIST
     private lateinit var mPlaylist: Playlist
 
     private var mPlaylistItemAdapter: PlaylistItemAdapter? = null
@@ -248,6 +248,8 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
     override fun onResumeWithNative() {
         super.onResumeWithNative();
 
+        Log.e(TAG, "onResumeWithNative")
+
         mPlaylistId = intent.getStringExtra(ConstantUtils.PLAYLIST_ID)?:ConstantUtils.DEFAULT_PLAYLIST
         initializeBrowser()
 
@@ -370,7 +372,7 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
                 browser.seekTo(position, 0)
                 browser.shuffleModeEnabled = isShuffle
                 browser.prepare()
-                // browser.play()
+                browser.play()
         //     }
         // }
         // val playlistPlayerFragment = PlaylistPlayerFragment.newInstance(mPlaylistModel)
@@ -388,11 +390,6 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
             mPlaylistService?.removeItemFromPlaylist(mPlaylistId, it.id)
         }
         fetchPlaylistData()
-    }
-
-    private fun openPlaylistInTab(isIncognito : Boolean, url: String) {
-        finish();
-        TabUtils.openUrlInNewTab(isIncognito, url);
     }
 
     // PlaylistItemClickListener callbacks
@@ -486,48 +483,48 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
         }
     }
 
-    // PlaylistItemOptionsListener callback
-    override fun onPlaylistItemOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
-        when (playlistItemOptionModel.optionType) {
-            PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM -> {
-                playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
-                    PlaylistUtils.showSharingDialog(
-                        this@PlaylistActivity, it
-                    )
-                }
-            }
+    // // PlaylistItemOptionsListener callback
+    // override fun onPlaylistItemOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
+    //     when (playlistItemOptionModel.optionType) {
+    //         PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM -> {
+    //             playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
+    //                 PlaylistUtils.showSharingDialog(
+    //                     this@PlaylistActivity, it
+    //                 )
+    //             }
+    //         }
 
-            PlaylistOptionsEnum.OPEN_IN_NEW_TAB -> {
-                playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
-                    openPlaylistInTab(false, it)
-                }
-            }
+    //         PlaylistOptionsEnum.OPEN_IN_NEW_TAB -> {
+    //             playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
+    //                 openPlaylistInTab(false, it)
+    //             }
+    //         }
 
-            PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB -> {
-                playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
-                    openPlaylistInTab(true, it)
-                }
-            }
+    //         PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB -> {
+    //             playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
+    //                 openPlaylistInTab(true, it)
+    //             }
+    //         }
 
-            PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM -> {
-                playlistItemOptionModel.playlistItem?.let { 
-                    stopVideoPlayerOnDelete(it)
-                    deletePlaylistItems(arrayListOf(it))
-                }
-            }
+    //         PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM -> {
+    //             playlistItemOptionModel.playlistItem?.let { 
+    //                 stopVideoPlayerOnDelete(it)
+    //                 deletePlaylistItems(arrayListOf(it))
+    //             }
+    //         }
 
-            PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM, PlaylistOptionsEnum.COPY_PLAYLIST_ITEM -> {
-                val moveOrCopyItems = ArrayList<PlaylistItem>()
-                playlistItemOptionModel.playlistItem?.let { moveOrCopyItems.add(it) }
-                PlaylistUtils.moveOrCopyModel =
-                        MoveOrCopyModel(playlistItemOptionModel.optionType,mPlaylistId , "", moveOrCopyItems)
-                MoveOrCopyToPlaylistBottomSheet().show(supportFragmentManager, null)
-            }
-            else -> {
-                //Do nothing
-            }
-        }
-    }
+    //         PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM, PlaylistOptionsEnum.COPY_PLAYLIST_ITEM -> {
+    //             val moveOrCopyItems = ArrayList<PlaylistItem>()
+    //             playlistItemOptionModel.playlistItem?.let { moveOrCopyItems.add(it) }
+    //             PlaylistUtils.moveOrCopyModel =
+    //                     MoveOrCopyModel(playlistItemOptionModel.optionType,mPlaylistId , "", moveOrCopyItems)
+    //             MoveOrCopyToPlaylistBottomSheet().show(supportFragmentManager, null)
+    //         }
+    //         else -> {
+    //             //Do nothing
+    //         }
+    //     }
+    // }
 
     override fun onMediaFileDownloadProgressed(id:String, totalBytes:Long, receivedBytes:Long, percentComplete:Byte, timeRemaining:String) {
         mPlaylistItemAdapter?.updatePlaylistItemDownloadProgress(HlsContentProgressModel(id, totalBytes, receivedBytes, "" + percentComplete))
@@ -546,5 +543,18 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
     override fun onPlaylistUpdated(playlist:Playlist) {
         Log.e(TAG, "onPlaylistUpdated")
         fetchPlaylistData()
+    }
+
+    override fun onEvent(eventType: Int , id : String) {
+        if (eventType == PlaylistEvent.ITEM_MOVED && id.equals(mPlaylistId)) {
+            fetchPlaylistData()
+        }
+    }
+
+    override fun deletePlaylistItem(playlistItemOptionModel: PlaylistItemOptionModel) {
+        playlistItemOptionModel.playlistItem?.let { 
+            stopVideoPlayerOnDelete(it)
+            deletePlaylistItems(arrayListOf(it))
+        }
     }
 }

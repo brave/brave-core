@@ -21,13 +21,13 @@
         android:layout_height="wrap_content"
         app:optionButtonIcon="@drawable/ic_arrow_down_playlist" />
 
-    <!-- <org.chromium.chrome.browser.playlist.kotlin.slidingpanel.BottomPanelLayout
+    <org.chromium.chrome.browser.playlist.kotlin.slidingpanel.BottomPanelLayout
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="bottom"
-        app:scrollableView="@+id/rvPlaylists"> -->
+        app:scrollableView="@+id/rvPlaylists">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/player_layout"
@@ -307,8 +307,8 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <!-- <include layout="@layout/player_bottom_view" /> -->
+        <include layout="@layout/player_bottom_view" />
 
-    <!-- </org.chromium.chrome.browser.playlist.kotlin.slidingpanel.BottomPanelLayout> -->
+    </org.chromium.chrome.browser.playlist.kotlin.slidingpanel.BottomPanelLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

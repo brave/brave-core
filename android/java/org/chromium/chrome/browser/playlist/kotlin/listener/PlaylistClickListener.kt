@@ -7,10 +7,8 @@
 
 package org.chromium.chrome.browser.playlist.kotlin.listener
 
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
 import org.chromium.playlist.mojom.Playlist
 
 interface PlaylistClickListener {
-    fun onPlaylistClick(playlistModel: PlaylistModel) {}
     fun onPlaylistClick(playlist: Playlist) {}
 }
