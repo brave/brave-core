@@ -30,7 +30,7 @@ const getOutputFilename = () => {
 
 const chromiumConfigs = {
   'win': {
-    buildTarget: 'mini_installer',
+    buildTargets: ['mini_installer'],
     processArtifacts: () => {
       // Repack it to reduce the size and use .zip instead of .7z.
       input = path.join(config.outputDir, 'chrome.7z')
@@ -46,7 +46,7 @@ const chromiumConfigs = {
     }
   },
   'linux': {
-    buildTarget: 'chrome/installer/linux:stable_deb',
+    buildTargets: ['chrome/installer/linux:stable_deb'],
     processArtifacts: () => {
       const debArch = (() => {
         if (config.targetArch === 'x64') return 'amd64'
@@ -59,7 +59,7 @@ const chromiumConfigs = {
     }
   },
   'mac': {
-    buildTarget: 'chrome',
+    buildTargets: ['chrome'],
     extraHooks: () => {
       Log.progressScope('download_hermetic_xcode', () => {
         util.run('vpython3',
@@ -78,7 +78,7 @@ const chromiumConfigs = {
     }
   },
   'android': {
-    buildTarget: 'monochrome_64_public_apk',
+    buildTargets: ['monochrome_64_public_apk'],
     processArtifacts: () => {
       fs.moveSync(
         path.join(config.outputDir, 'apks', 'MonochromePublic64.apk'),
@@ -168,9 +168,9 @@ function buildChromiumRelease(buildOptions = {}) {
   })
 
   Log.progressScope(`ninja`, () => {
-    const target = chromiumConfig.buildTarget
+    const target = chromiumConfig.buildTargets
     const ninjaOpts = [
-      '-C', config.outputDir, target,
+      '-C', config.outputDir, target.join(' '),
       ...config.extraNinjaOpts
     ]
     util.run('autoninja', ninjaOpts, config.defaultOptions)

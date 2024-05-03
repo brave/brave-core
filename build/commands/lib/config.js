@@ -129,7 +129,7 @@ const Config = function () {
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
-  this.buildTarget = 'brave'
+  this.buildTargets = ['brave']
   this.rootDir = rootDir
   this.isUniversalBinary = false
   this.isChromium = false
@@ -1181,7 +1181,7 @@ Config.prototype.update = function (options) {
   }
 
   if (options.target) {
-    this.buildTarget = options.target
+    this.buildTargets = options.target.split(',')
   }
 
   if (options.use_libfuzzer) {

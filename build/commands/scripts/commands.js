@@ -159,7 +159,7 @@ program
   .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
   .option('--offline', 'use offline mode for RBE')
   .option('--force_gn_gen', 'always run gn gen')
-  .option('--target <target>', 'Custom target to build, instead of the default browser target')
+  .option('--target <target>', 'Comma-separated list of targets to build, instead of the default browser target')
   .option('--build_sparkle', 'Build the Sparkle macOS update framework from source')
   .option('--no_gn_gen', 'Build without running gn gen')
   .arguments('[build_config]')
