@@ -428,7 +428,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       keyringService.createWallet(password: password) { mnemonic in
         self.isCreatingWallet = false
         self.updateInfo()
-        if !mnemonic.isEmpty {
+        if mnemonic != nil {
           self.passwordToSaveInBiometric = password
         }
         completion?(mnemonic)
@@ -437,7 +437,11 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   }
 
   func recoveryPhrase(password: String, completion: @escaping ([RecoveryWord]) -> Void) {
-    keyringService.mnemonicForDefaultKeyring(password: password) { phrase in
+    keyringService.walletMnemonic(password: password) { phrase in
+      guard let phrase else {
+        completion([])
+        return
+      }
       let words =
         phrase
         .split(separator: " ")

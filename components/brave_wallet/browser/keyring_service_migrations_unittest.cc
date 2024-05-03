@@ -5,12 +5,14 @@
 
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -447,6 +449,9 @@ class KeyringServiceMigrationsUnitTest : public testing::Test {
  private:
   uint8_t next_nonce_ = 1;
   uint8_t next_salt_ = 1;
+
+  base::test::ScopedFeatureList feature_list_{
+      features::kBraveWalletZCashFeature};
 
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable profile_prefs_;
