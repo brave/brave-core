@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/html/media/html_media_element.h b/third_party/blink/renderer/core/html/media/html_media_element.h
+index 15c7e5c65814c04e5961e9a05722f5eea16d6738..102c91414dda2a8a31b97256429c6a2da04f86f6 100644
+--- a/third_party/blink/renderer/core/html/media/html_media_element.h
++++ b/third_party/blink/renderer/core/html/media/html_media_element.h
+@@ -604,6 +604,7 @@ class CORE_EXPORT HTMLMediaElement
+   void SetAudioSinkId(const String&) override;
+   void SuspendForFrameClosed() override;
+   void RequestMediaRemoting() override {}
++  void GetLoadedURL(GetLoadedURLCallback callback) override;
+ 
+   void LoadTimerFired(TimerBase*);
+   void ProgressEventTimerFired();

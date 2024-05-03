@@ -1,0 +1,16 @@
+diff --git a/third_party/blink/renderer/core/html/media/html_media_element.cc b/third_party/blink/renderer/core/html/media/html_media_element.cc
+index 68b4d8747ebe0c7627a39e51f0bb003db9915086..86ca46a7137e88fb6380b9e38ad7a285598c86bf 100644
+--- a/third_party/blink/renderer/core/html/media/html_media_element.cc
++++ b/third_party/blink/renderer/core/html/media/html_media_element.cc
+@@ -4879,6 +4879,11 @@ void HTMLMediaElement::SuspendForFrameClosed() {
+     web_media_player_->SuspendForFrameClosed();
+ }
+ 
++void HTMLMediaElement::GetLoadedURL(GetLoadedURLCallback callback) {
++  std::move(callback).Run(web_media_player_ ? KURL(web_media_player_->GetLoadedURL())
++                                            : KURL());
++}
++
+ bool HTMLMediaElement::MediaShouldBeOpaque() const {
+   return !IsMediaDataCorsSameOrigin() && ready_state_ < kHaveMetadata &&
+          EffectivePreloadType() != WebMediaPlayer::kPreloadNone;

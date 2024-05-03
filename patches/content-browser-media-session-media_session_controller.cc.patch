@@ -1,0 +1,20 @@
+diff --git a/content/browser/media/session/media_session_controller.cc b/content/browser/media/session/media_session_controller.cc
+index 35328480c3753d6fde93edc1576b38a12f5381f6..b9661d60d7c695c6c7405e6170fc5e5c0e56fe8f 100644
+--- a/content/browser/media/session/media_session_controller.cc
++++ b/content/browser/media/session/media_session_controller.cc
+@@ -160,6 +160,15 @@ void MediaSessionController::OnRequestMediaRemoting(int player_id) {
+       ->RequestMediaRemoting();
+ }
+ 
++void MediaSessionController::OnGetLoadedURL(
++    int player_id,
++    base::OnceCallback<void(const GURL&)> callback) {
++  DCHECK_EQ(player_id_, player_id);
++  web_contents_->media_web_contents_observer()
++      ->GetMediaPlayerRemote(id_)
++      ->GetLoadedURL(std::move(callback));
++}
++
+ RenderFrameHost* MediaSessionController::render_frame_host() const {
+   return RenderFrameHost::FromID(id_.frame_routing_id);
+ }

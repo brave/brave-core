@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/platform/media/web_media_player_impl.h b/third_party/blink/renderer/platform/media/web_media_player_impl.h
+index ebc6d8e18451de37061aeaac26d3a8a4ebc8b5c4..67e299a6cf1c794159502f7d1d40d150d9e723f2 100644
+--- a/third_party/blink/renderer/platform/media/web_media_player_impl.h
++++ b/third_party/blink/renderer/platform/media/web_media_player_impl.h
+@@ -320,6 +320,7 @@ class PLATFORM_EXPORT WebMediaPlayerImpl
+   bool IsOpaque() const override;
+   int GetDelegateId() override;
+   std::optional<viz::SurfaceId> GetSurfaceId() override;
++  GURL GetLoadedURL() override;
+   GURL GetSrcAfterRedirects() override;
+   void RequestVideoFrameCallback() override;
+   std::unique_ptr<WebMediaPlayer::VideoFramePresentationMetadata>

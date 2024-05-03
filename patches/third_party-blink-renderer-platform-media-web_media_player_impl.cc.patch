@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/media/web_media_player_impl.cc b/third_party/blink/renderer/platform/media/web_media_player_impl.cc
-index 11627b21ca7772d48983b4fb02f04e50ef94793d..2302c0f4fd24f489bd1b52f74d3ccc09f059a381 100644
+index 11627b21ca7772d48983b4fb02f04e50ef94793d..4adc27a3a008913bd3e7ea03ebd5ba9b6c213b2a 100644
 --- a/third_party/blink/renderer/platform/media/web_media_player_impl.cc
 +++ b/third_party/blink/renderer/platform/media/web_media_player_impl.cc
 @@ -855,8 +855,7 @@ void WebMediaPlayerImpl::DoLoad(LoadType load_type,
@@ -12,3 +12,14 @@ index 11627b21ca7772d48983b4fb02f04e50ef94793d..2302c0f4fd24f489bd1b52f74d3ccc09
    load_start_time_ = base::TimeTicks::Now();
  
    // If we're adapting, then restart the smoothness experiment.
+@@ -3908,6 +3907,10 @@ void WebMediaPlayerImpl::OnSimpleWatchTimerTick() {
+     playback_events_recorder_->OnPipelineStatistics(GetPipelineStatistics());
+ }
+ 
++GURL WebMediaPlayerImpl::GetLoadedURL() {
++  return demuxer_manager_->LoadedUrl();
++}
++
+ GURL WebMediaPlayerImpl::GetSrcAfterRedirects() {
+   return demuxer_manager_->GetDataSourceUrlAfterRedirects().value_or(GURL());
+ }

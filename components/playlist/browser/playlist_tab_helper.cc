@@ -59,8 +59,6 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
       base::BindRepeating(&PlaylistTabHelper::OnPlaylistEnabledPrefChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 
-  mojo::Remote<media_session::mojom::MediaControllerManager>
-      controller_manager_remote;
   content::GetMediaSessionService().BindAudioFocusManager(
       audio_focus_manager_.BindNewPipeAndPassReceiver());
   audio_focus_manager_->AddObserver(
@@ -68,6 +66,8 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
   // TODO(sszaloki): handle connection error, just like
   // web_app_system_media_controls_manager.cc
 
+  // mojo::Remote<media_session::mojom::MediaControllerManager>
+  //     controller_manager_remote;
   // content::GetMediaSessionService().BindMediaControllerManager(
   //     controller_manager_remote.BindNewPipeAndPassReceiver());
   // controller_manager_remote->CreateActiveMediaController(
@@ -320,26 +320,22 @@ void PlaylistTabHelper::OnMediaFilesUpdated(
 
 void PlaylistTabHelper::OnFocusGained(
     media_session::mojom::AudioFocusRequestStatePtr state) {
-  if (media_session_observer_receiver_.is_bound()) {
-    return;
-  }
-
-  const std::optional<base::UnguessableToken>& maybe_id = state->request_id;
-  if (!maybe_id.has_value()) {
-    return;
-  }
-
   auto* contents = web_contents();
   if (!contents) {
     return;
   }
 
-  if (contents !=
-      content::MediaSession::GetWebContentsFromRequestId(*maybe_id)) {
+  CHECK(state);
+  if (!state->request_id.has_value()) {
     return;
   }
 
-  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+  if (contents !=
+      content::MediaSession::GetWebContentsFromRequestId(*state->request_id)) {
+    return;
+  }
+
+  DVLOG(-1) << contents->GetLastCommittedURL() << ": " << __FUNCTION__;
 
   // mojo::Remote<media_session::mojom::MediaControllerManager>
   //     controller_manager_remote;
@@ -354,36 +350,38 @@ void PlaylistTabHelper::OnFocusGained(
   //     global_media_controls::kMediaItemArtworkMinSize,
   //     global_media_controls::kMediaItemArtworkDesiredSize,
   //     media_controller_image_observer_receiver_.BindNewPipeAndPassRemote());
-  content::MediaSession::Get(web_contents())
-      ->AddObserver(
-          media_session_observer_receiver_.BindNewPipeAndPassRemote());
+
+  if (!media_session_observer_receiver_.is_bound()) {
+    auto* media_session = content::MediaSession::Get(contents);
+    media_session->AddObserver(
+        media_session_observer_receiver_.BindNewPipeAndPassRemote());
+    media_session->GetLoadedURL(base::BindOnce(
+        [](const GURL& url) { DVLOG(-1) << "Lofasz: " << url; }));
+  }
 }
 
 void PlaylistTabHelper::OnFocusLost(
     media_session::mojom::AudioFocusRequestStatePtr state) {
-  if (!media_session_observer_receiver_.is_bound()) {
-    return;
-  }
-
-  const std::optional<base::UnguessableToken>& maybe_id = state->request_id;
-  if (!maybe_id.has_value()) {
-    return;
-  }
-
   auto* contents = web_contents();
   if (!contents) {
     return;
   }
 
-  if (contents !=
-      content::MediaSession::GetWebContentsFromRequestId(*maybe_id)) {
+  CHECK(state);
+  if (!state->request_id.has_value()) {
     return;
   }
 
-  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+  if (contents !=
+      content::MediaSession::GetWebContentsFromRequestId(*state->request_id)) {
+    return;
+  }
+
+  DVLOG(-1) << contents->GetLastCommittedURL() << ": " << __FUNCTION__;
 
   // media_controller_image_observer_receiver_.reset();
   // media_controller_remote_.reset();
+  CHECK(media_session_observer_receiver_.is_bound());
   media_session_observer_receiver_.reset();
 }
 

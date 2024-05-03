@@ -1,0 +1,21 @@
+diff --git a/media/mojo/mojom/media_player.mojom b/media/mojo/mojom/media_player.mojom
+index e742b4ffafd56c645bce7c2b36e9068e0f6eecf6..1fed19de66059c37151c64d95d34306672c2422a 100644
+--- a/media/mojo/mojom/media_player.mojom
++++ b/media/mojo/mojom/media_player.mojom
+@@ -8,6 +8,7 @@ import "media/mojo/mojom/media_types.mojom";
+ import "mojo/public/mojom/base/time.mojom";
+ import "services/media_session/public/mojom/media_session.mojom";
+ import "ui/gfx/geometry/mojom/geometry.mojom";
++import "url/mojom/url.mojom";
+ 
+ // Implemented by HTMLMediaElement in the renderer process to allow the
+ // browser to control media playback.
+@@ -55,6 +56,8 @@ interface MediaPlayer {
+   // Request the media player to start Media Remoting when there are available
+   // sinks.
+   RequestMediaRemoting();
++
++  GetLoadedURL() => (url.mojom.Url url);
+ };
+ 
+ // Implemented by the MediaWebContentsObserver. The remote lives in the renderer

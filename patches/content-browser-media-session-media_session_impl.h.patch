@@ -1,0 +1,13 @@
+diff --git a/content/browser/media/session/media_session_impl.h b/content/browser/media/session/media_session_impl.h
+index abb402e26344a372e5faa7995109518bb3efc689..6349545d8139d06cbc612b12385fec666a95016c 100644
+--- a/content/browser/media/session/media_session_impl.h
++++ b/content/browser/media/session/media_session_impl.h
+@@ -87,6 +87,8 @@ class MediaSessionImpl : public MediaSession,
+ 
+   ~MediaSessionImpl() override;
+ 
++  void GetLoadedURL(base::OnceCallback<void(const GURL&)> callback) override;
++
+   CONTENT_EXPORT void SetDelegateForTests(
+       std::unique_ptr<AudioFocusDelegate> delegate);
+ 

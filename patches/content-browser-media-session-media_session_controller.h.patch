@@ -1,0 +1,12 @@
+diff --git a/content/browser/media/session/media_session_controller.h b/content/browser/media/session/media_session_controller.h
+index c5c12c0681721daa3e012c8dfe48d9b0fbe0b365..d9b27447b4fe0af83801bceb83bb8b0a47b609cf 100644
+--- a/content/browser/media/session/media_session_controller.h
++++ b/content/browser/media/session/media_session_controller.h
+@@ -68,6 +68,7 @@ class CONTENT_EXPORT MediaSessionController
+                         const std::string& raw_device_id) override;
+   void OnSetMute(int player_id, bool mute) override;
+   void OnRequestMediaRemoting(int player_id) override;
++  void OnGetLoadedURL(int player_id, base::OnceCallback<void(const GURL&)> callback) override;
+   RenderFrameHost* render_frame_host() const override;
+   std::optional<media_session::MediaPosition> GetPosition(
+       int player_id) const override;
