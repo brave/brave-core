@@ -15,6 +15,10 @@
 
 namespace component_updater {
 
+bool ComponentInstallerPolicy::IsBraveComponent() const {
+  return false;
+}
+
 void ComponentInstaller::Register(ComponentUpdateService* cus,
                                   base::OnceClosure callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -57,6 +61,10 @@ void ComponentInstaller::Register(
   }
   Register_ChromiumImpl(std::move(register_callback), std::move(callback),
                         registered_version, max_previous_product_version);
+}
+
+bool ComponentInstaller::IsBraveComponent() const {
+  return installer_policy_->IsBraveComponent();
 }
 
 }  // namespace component_updater

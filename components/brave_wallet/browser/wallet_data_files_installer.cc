@@ -71,6 +71,7 @@ class WalletDataFilesInstallerPolicy
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
 
   WalletDataFilesInstallerPolicy(const WalletDataFilesInstallerPolicy&) =
       delete;
@@ -130,6 +131,10 @@ std::string WalletDataFilesInstallerPolicy::GetName() const {
 update_client::InstallerAttributes
 WalletDataFilesInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
+}
+
+bool WalletDataFilesInstallerPolicy::IsBraveComponent() const {
+  return true;
 }
 
 std::optional<base::Version> GetLastInstalledWalletVersion() {

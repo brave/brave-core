@@ -114,6 +114,7 @@ source_set("brave_wallet_unit_tests") {
     ":test_support",
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_component_updater/browser:test_support",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:generated_bitcoin_rpc_responses",

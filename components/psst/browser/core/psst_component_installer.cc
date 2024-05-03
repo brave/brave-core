@@ -78,6 +78,7 @@ class PsstComponentInstallerPolicy
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
 
  private:
   const std::string component_id_;
@@ -138,6 +139,10 @@ std::string PsstComponentInstallerPolicy::GetName() const {
 update_client::InstallerAttributes
 PsstComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
+}
+
+bool PsstComponentInstallerPolicy::IsBraveComponent() const {
+  return true;
 }
 
 void RegisterPsstComponent(

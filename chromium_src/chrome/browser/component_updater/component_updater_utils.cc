@@ -5,18 +5,13 @@
 
 #include "src/chrome/browser/component_updater/component_updater_utils.cc"
 
-#include "base/functional/callback.h"
-#include "chrome/browser/browser_process.h"
-#include "components/component_updater/component_updater_service.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 
 namespace component_updater {
 
 void BraveOnDemandUpdate(const std::string& component_id) {
-  component_updater::ComponentUpdateService* cus =
-      g_browser_process->component_updater();
-  cus->GetOnDemandUpdater().OnDemandUpdate(
-      component_id, component_updater::OnDemandUpdater::Priority::FOREGROUND,
-      component_updater::Callback());
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+      component_id);
 }
 
 }  // namespace component_updater
