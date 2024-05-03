@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_NETWORK_CONSTANTS_H_
 #define BRAVE_COMPONENTS_CONSTANTS_NETWORK_CONSTANTS_H_
 
-#include "brave/components/widevine/static_buildflags.h"
-
 inline constexpr char kExtensionUpdaterDomain[] = "extensionupdater.brave.com";
 
 inline constexpr char kBraveProxyPattern[] = "https://*.brave.com/*";
@@ -60,11 +58,6 @@ inline constexpr char kWidevineGvt1Prefix[] =
     "*://*.gvt1.com/*oimompecagnajdejgnnjijobebaeigek*";
 inline constexpr char kWidevineGoogleDlPrefix[] =
     "*://dl.google.com/*oimompecagnajdejgnnjijobebaeigek*";
-
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-inline constexpr char kWidevineGoogleDlPrefixWinArm64[] =
-    "*://dl.google.com/widevine-cdm/*";
-#endif
 
 inline constexpr char kUserAgentHeader[] = "User-Agent";
 inline constexpr char kBraveServicesKeyHeader[] = "BraveServiceKey";

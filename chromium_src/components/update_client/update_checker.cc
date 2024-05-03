@@ -7,11 +7,6 @@
 
 #include "src/components/update_client/update_checker.cc"
 
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-#include "brave/components/widevine/constants.h"
-#include "components/update_client/persisted_data.h"
-#endif
-
 namespace update_client {
 
 SequentialUpdateChecker::SequentialUpdateChecker(
@@ -48,9 +43,6 @@ void SequentialUpdateChecker::CheckForUpdates(
 }
 
 void SequentialUpdateChecker::CheckNext(
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-    std::string fake_architecture
-#endif
 ) {
   VLOG(3) << "> CheckNext()";
   DCHECK(!remaining_ids_.empty());
@@ -78,36 +70,16 @@ void SequentialUpdateChecker::CheckNext(
 
   update_checker_ = UpdateChecker::Create(config_, metadata_);
 
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-  base::flat_map<std::string, std::string> additional_attributes =
-      additional_attributes_;
-  if (!fake_architecture.empty()) {
-    additional_attributes[kFakeArchitectureAttribute] = fake_architecture;
-  }
-#endif
-
   update_checker_->CheckForUpdates(
       context,
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-      additional_attributes,
-#else
       additional_attributes_,
-#endif
       base::BindOnce(&SequentialUpdateChecker::UpdateResultAvailable,
-                     base::Unretained(this)
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-                         ,
-                     fake_architecture
-#endif
-                     ));
+                     base::Unretained(this)));
 
   VLOG(3) << "< CheckNext()";
 }
 
 void SequentialUpdateChecker::UpdateResultAvailable(
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-    std::string fake_architecture,
-#endif
     const std::optional<ProtocolParser::Results>& results,
     ErrorCategory error_category,
     int error,
@@ -121,32 +93,6 @@ void SequentialUpdateChecker::UpdateResultAvailable(
     // practice during development, it has sometimes happened that the list was
     // empty. A for loop is an easy way to guard against such unexpected cases:
     for (const auto& result : results->list) {
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-      if (result.extension_id == kWidevineComponentId &&
-          fake_architecture.empty()) {
-        if (UpstreamHasArm64Widevine(config_->GetPrefService())) {
-          VLOG(1) << "Skipping WIDEVINE_ARM64_DLL_FIX because we already saw "
-                     "once that upstream offers Arm64 binaries for Widevine. "
-                     "Consider removing our WIDEVINE_ARM64_DLL_FIX.";
-        } else {
-          if (result.status == "noupdate") {
-            VLOG(1) << "Upstream has no Arm64 binaries for Widevine. "
-                       "Enabling WIDEVINE_ARM64_DLL_FIX.";
-            remaining_ids_.push_front(result.extension_id);
-            CheckNext(/*fake_architecture=*/"x64");
-            return;
-          } else if (result.status == "ok") {
-            VLOG(1) << "Upstream seems to offer Arm64 binaries for Widevine. "
-                       "Consider removing our WIDEVINE_ARM64_DLL_FIX.";
-            // Record that upstream now seems to offer Arm64 binaries. This lets
-            // us not fall back to x64 in the benign case where we are on the
-            // latest version of Arm64 Widevine and are getting a "noupdate"
-            // response.
-            SetUpstreamHasArm64Widevine(config_->GetPrefService());
-          }
-        }
-      }
-#endif
       results_.list.push_back(result);
     }
   }

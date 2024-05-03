@@ -6,8 +6,3 @@
 source_set("constants") {
   sources = [ "constants.h" ]
 }
-
-source_set("static_buildflags") {
-  sources = [ "static_buildflags.h" ]
-  deps = [ "//build:buildflag_header_h" ]
-}

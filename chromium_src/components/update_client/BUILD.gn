@@ -9,7 +9,6 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/widevine:static_buildflags",
     "//components/prefs:test_support",
     "//components/update_client",
     "//testing/gtest",

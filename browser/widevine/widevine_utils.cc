@@ -10,7 +10,6 @@
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/widevine/constants.h"
-#include "brave/components/widevine/static_buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -41,9 +40,6 @@ void EnableWidevineCdm() {
   SetWidevineEnabled(true);
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   RegisterWidevineCdmComponent(g_browser_process->component_updater(),
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-                               g_browser_process->shared_url_loader_factory(),
-#endif
                                base::BindOnce(&InstallWidevineOnceRegistered));
 #endif
 }
