@@ -349,6 +349,7 @@ private struct UIKitDragGestureValue: Equatable {
 /// This is currently used because there is no way in SwiftUI right now to control a ScrollView's
 /// built-in pan gesture (aside from introspection to grab the actual underlying UIScrollView, but
 /// even at that point you can't set the delegate since it has to be the UIScrollView)
+// FIXME: This needs to be a UIViewControllerRepresentable instead so that the underlying UIHostingController can be added to the controller chain
 @available(iOS 16.0, *)
 private struct PlaylistDrawerScrollView<Content: View>: UIViewRepresentable {
   @Binding var dragState: UIKitDragGestureValue
