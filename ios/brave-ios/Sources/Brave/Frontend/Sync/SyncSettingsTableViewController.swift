@@ -220,7 +220,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     case .syncChainDeleteConfirmation:
       title = Strings.Sync.syncDeleteAccountAlertTitle
       message =
-        "\(Strings.Sync.syncDeleteAccountAlertDescriptionPart1).\n\n\(Strings.Sync.syncDeleteAccountAlertDescriptionPart2)"
+        "\(Strings.Sync.syncDeleteAccountAlertDescriptionPart1)\n\n\(Strings.Sync.syncDeleteAccountAlertDescriptionPart2)\n\n\(Strings.Sync.syncDeleteAccountAlertDescriptionPart3)"
       removeButtonName = Strings.delete
     case .syncChainDeleteError:
       title = Strings.Sync.syncChainAccountDeletionErrorTitle
