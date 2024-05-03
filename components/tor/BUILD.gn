@@ -53,6 +53,7 @@ static_library("tor") {
     "//components/user_prefs",
     "//content/public/browser",
     "//net",
+    "//services/data_decoder/public/cpp",
     "//services/service_manager",
     "//third_party/re2",
     "//url",
