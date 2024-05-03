@@ -690,9 +690,11 @@ const util = {
 
     if (!isArgsGnValid) {
       const argsGnContent = [
-        '# This file can be customized. It won\'t be overwritten as long as it imports',
+        '# This file is user-editable. It won\'t be overwritten as long as it imports',
         '# args_generated.gni, even if the import statement is commented out.\n',
         generatedArgsImportLine,
+        '',
+        '# Put your extra args AFTER this line.',
       ].join('\n')
       fs.writeFileSync(argsGnFilePath, argsGnContent + '\n')
       Log.status(`${argsGnFilePath} has been updated`)
