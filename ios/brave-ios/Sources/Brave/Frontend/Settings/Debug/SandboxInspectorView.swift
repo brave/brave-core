@@ -24,6 +24,9 @@ struct SandboxInspectorView: View {
   @State private var nodes: [Node] = []
   @State private var total: String = ""
   @State private var isLoading: Bool = false
+  @State private var isRenameAlertPresented: Bool = false
+  @State private var originalURL: URL?
+  @State private var renamedFilename: String = ""
 
   private let formatter = ByteCountFormatter().then {
     $0.countStyle = .file
@@ -106,7 +109,7 @@ struct SandboxInspectorView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
-        if isLoading {
+        if isLoading && nodes.isEmpty {
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle())
             .frame(maxWidth: .infinity)
@@ -123,6 +126,17 @@ struct SandboxInspectorView: View {
               Text(formatter.string(fromByteCount: Int64(row.size)))
             }
             .font(.callout)
+            .contextMenu {
+              if !row.isDirectory {
+                Button {
+                  originalURL = row.url
+                  renamedFilename = row.url.lastPathComponent
+                  isRenameAlertPresented = true
+                } label: {
+                  Label("Rename", systemImage: "pencil")
+                }
+              }
+            }
           }
         }
       }
@@ -132,5 +146,33 @@ struct SandboxInspectorView: View {
     .navigationTitle("Sandbox Inspector")
     .navigationBarTitleDisplayMode(.inline)
     .onAppear(perform: getNodes)
+    .alert("Rename", isPresented: $isRenameAlertPresented, presenting: originalURL) { url in
+      TextField("Name", text: $renamedFilename)
+        .autocorrectionDisabled()
+        .textInputAutocapitalization(.never)
+      Button("Cancel", role: .cancel) {
+        renamedFilename = ""
+        originalURL = nil
+      }
+      .keyboardShortcut(.cancelAction)
+      Button("Done") {
+        defer {
+          originalURL = nil
+          renamedFilename = ""
+        }
+        let newURL = url.deletingLastPathComponent().appendingPathComponent(
+          renamedFilename,
+          isDirectory: false
+        )
+        do {
+          try FileManager.default.moveItem(at: url, to: newURL)
+          getNodes()
+        } catch {
+        }
+      }
+      .keyboardShortcut(.defaultAction)
+    } message: { _ in
+      Text("Rename at your own risk")
+    }
   }
 }
