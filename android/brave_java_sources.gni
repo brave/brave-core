@@ -15,6 +15,7 @@ import("//brave/browser/share/android/java_sources.gni")
 import("//brave/components/embedder_support/android/java_sources.gni")
 import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/safetynet/java_sources.gni")
+import("//brave/components/signin/public/android/java_sources.gni")
 import("//components/feed/features.gni")
 
 brave_java_sources = [
@@ -485,6 +486,7 @@ brave_java_sources = [
 
 brave_java_sources += brave_ads_java_sources
 brave_java_sources += brave_components_embedder_support_java_sources
+brave_java_sources += brave_components_signin_java_sources
 brave_java_sources += brave_rewards_java_sources
 brave_java_sources += brave_feed_java_sources
 brave_java_sources += brave_public_tab_management_java_sources

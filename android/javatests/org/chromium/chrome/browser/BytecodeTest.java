@@ -1315,6 +1315,10 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/components/language/LocaleManagerDelegateImpl",
                         "org/chromium/components/language/BraveLocaleManagerDelegateImpl"));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/signin/SystemAccountManagerDelegate",
+                        "org/chromium/components/signin/BraveSystemAccountManagerDelegate"));
     }
 
     @Test
