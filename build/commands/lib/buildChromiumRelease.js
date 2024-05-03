@@ -154,10 +154,7 @@ function buildChromiumRelease(buildOptions = {}) {
     chromiumConfig.extraHooks()
   }
 
-  const options = config.defaultOptions
-  const buildArgsStr = util.buildArgsToString(getChromiumGnArgs())
-  util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"'],
-    options)
+  util.runGnGen(config.outputDir, getChromiumGnArgs())
 
   Log.progressScope(`remove recursive symlinks`, () => {
     // node_modules could have a symlink to src/brave. The recursive symlinks
@@ -173,7 +170,7 @@ function buildChromiumRelease(buildOptions = {}) {
   Log.progressScope(`ninja`, () => {
     const target = chromiumConfig.buildTarget
     const ninjaOpts = [
-      '-C', options.outputDir || config.outputDir, target,
+      '-C', config.outputDir, target,
       ...config.extraNinjaOpts
     ]
     util.run('autoninja', ninjaOpts, config.defaultOptions)

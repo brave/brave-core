@@ -11,11 +11,11 @@ options.continueOnFail = false
 const outputDir = config.outputDir + '_audit'
 
 util.updateBranding()
-let args = util.buildArgsToString(config.buildArgs())
+const args = config.buildArgs()
 if (process.argv.includes('--audit_dev_deps')) {
-  args = args + 'audit_dev_deps=true'
+  args.audit_dev_deps = true
 }
-util.run('gn', ['gen', outputDir, '--args="' + args + '"'], options)
+util.runGnGen(outputDir, args, [], options)
 
 let ninjaOpts = [
   '-C', outputDir, 'brave:audit_deps',

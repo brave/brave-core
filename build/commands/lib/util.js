@@ -12,6 +12,7 @@ const l10nUtil = require('./l10nUtil')
 const Log = require('./logging')
 const assert = require('assert')
 const updateChromeVersion = require('./updateChromeVersion')
+const ActionGuard = require('./actionGuard')
 
 const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
@@ -594,7 +595,7 @@ const util = {
     })
   },
 
-  buildNativeRedirectCC: (options = config.defaultOptions) => {
+  buildNativeRedirectCC: () => {
     // Expected path to redirect_cc.
     const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
 
@@ -606,7 +607,7 @@ const util = {
     }
 
     Log.progressStart('build redirect_cc')
-    gnArgs = {
+    const buildArgs = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
       use_remoteexec: config.useRemoteExec,
       rbe_exec_root: config.rbeExecRoot,
@@ -614,40 +615,91 @@ const util = {
       real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
 
-    const buildArgsStr = util.buildArgsToString(gnArgs)
-    util.run('gn', ['gen', config.nativeRedirectCCDir, '--args="' + buildArgsStr + '"'], options)
-
+    util.runGnGen(config.nativeRedirectCCDir, buildArgs)
     util.buildTarget('brave/tools/redirect_cc', mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
     Log.progressFinish('build redirect_cc')
   },
 
-  runGnGen: (options) => {
-    const buildArgsStr = util.buildArgsToString(config.buildArgs())
-    const buildArgsFile = path.join(config.outputDir, 'brave_build_args.txt')
-    const buildNinjaFile = path.join(config.outputDir, 'build.ninja')
-    const gnArgsFile = path.join(config.outputDir, 'args.gn')
-    const prevBuildArgs = fs.existsSync(buildArgsFile) ?
-      fs.readFileSync(buildArgsFile) : undefined
-    const extraGnGenOptsFile = path.join(config.outputDir, 'brave_extra_gn_gen_opts.txt')
-    const prevExtraGnGenOpts = fs.existsSync(extraGnGenOptsFile) ?
-      fs.readFileSync(extraGnGenOptsFile) : undefined
+  runGnGen: (outputDir, buildArgs, extraGnGenOpts = [], options = config.defaultOptions) => {
+    // Store extraGnGenOpts in buildArgs as a comment to rerun gn gen on change.
+    assert(Array.isArray(extraGnGenOpts))
+    if (extraGnGenOpts.length) {
+      buildArgs[`# Extra gn gen options: ${extraGnGenOpts.join(' ')}`] = null
+    }
 
-    const shouldRunGnGen = config.force_gn_gen ||
-      !fs.existsSync(buildNinjaFile) || !fs.existsSync(gnArgsFile) ||
-      !prevBuildArgs || prevBuildArgs != buildArgsStr ||
-      !prevExtraGnGenOpts || prevExtraGnGenOpts != config.extraGnGenOpts
+    // Guard to check if gn gen was successful last time.
+    const gnGenGuard = new ActionGuard(path.join(outputDir, 'gn_gen.guard'))
+
+    const doesBuildNinjaExist = fs.existsSync(path.join(outputDir, 'build.ninja'))
+    const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
+
+    const shouldRunGnGen =
+      config.force_gn_gen ||
+      !doesBuildNinjaExist ||
+      hasBuildArgsUpdated ||
+      gnGenGuard.isDirty()
 
     if (shouldRunGnGen) {
-      // `gn gen` can modify args.gn even if it's failed.
-      // Therefore delete the file to make sure that args.gn and
-      // brave_build_args.txt are in sync.
-      if (prevBuildArgs)
-        fs.removeSync(buildArgsFile)
-
-      util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"', config.extraGnGenOpts], options)
-      fs.writeFileSync(buildArgsFile, buildArgsStr)
-      fs.writeFileSync(extraGnGenOptsFile, config.extraGnGenOpts)
+      gnGenGuard.run(() => {
+        util.run('gn', ['gen', outputDir, ...extraGnGenOpts], options)
+      })
     }
+  },
+
+  writeGnBuildArgs: (outputDir, buildArgs) => {
+    // Generate build arguments in .gni format to be imported into args.gn. This
+    // approach enables customization of args.gn without the build scripts
+    // resetting it during each execution.
+    const generatedArgsContent = [
+      '# Do not edit, any changes will be lost on next build.',
+      '# To customize build args, use args.gn in the same directory.\n',
+      ...Object.entries(buildArgs).map(([arg, val]) => {
+        assert(typeof arg === 'string')
+        assert(val !== undefined)
+        if (val === null) {
+          // Output only arg, it may be a comment or an import statement.
+          return arg
+        }
+        return `${arg}=${JSON.stringify(val)}`
+      })
+    ].join('\n')
+
+    // Write the generated arguments to the args_generated.gni file. The file
+    // name is intentionally chosen to be close to args.gn.
+    const generatedArgsFilePath = path.join(outputDir, 'args_generated.gni')
+    const hasGeneratedArgsUpdated =
+      util.writeFileIfModified(generatedArgsFilePath, generatedArgsContent + '\n')
+    if (hasGeneratedArgsUpdated) {
+      Log.status(`${generatedArgsFilePath} has been updated`)
+    }
+
+    // Import args_generated.gni into args.gn.
+    const argsGnFilePath = path.join(outputDir, 'args.gn')
+    const generatedArgsImportLine =
+      `import("//${path.relative(config.srcDir, generatedArgsFilePath).replace(/\\/g, '/')}")`
+
+    // Check if the import statement from args_generated.gni is present in
+    // args.gn, even if the user has made modifications. This import statement
+    // can also be commented out, allowing the user to fully ignore generated
+    // arguments.
+    fs.ensureFileSync(argsGnFilePath)
+    const isArgsGnValid = fs
+      .readFileSync(argsGnFilePath, { encoding: 'utf-8' })
+      .includes(generatedArgsImportLine)
+
+    if (!isArgsGnValid) {
+      const argsGnContent = [
+        '# This file is user-editable. It won\'t be overwritten as long as it imports',
+        '# args_generated.gni, even if the import statement is commented out.\n',
+        generatedArgsImportLine,
+        '',
+        '# Put your extra args AFTER this line.',
+      ].join('\n')
+      fs.writeFileSync(argsGnFilePath, argsGnContent + '\n')
+      Log.status(`${argsGnFilePath} has been updated`)
+    }
+
+    return hasGeneratedArgsUpdated || !isArgsGnValid
   },
 
   generateNinjaFiles: (options = config.defaultOptions) => {
@@ -657,7 +709,8 @@ const util = {
       if (config.getTargetOS() === 'win') {
         util.updateMidlFiles()
       }
-      util.runGnGen(options)
+      const extraGnGenOpts = config.extraGnGenOpts ? [config.extraGnGenOpts] : []
+      util.runGnGen(config.outputDir, config.buildArgs(), extraGnGenOpts, options)
     })
   },
 
@@ -684,21 +737,18 @@ const util = {
     Log.progressFinish(progressMessage)
   },
 
-  generateXcodeWorkspace: (options = config.defaultOptions) => {
+  generateXcodeWorkspace: () => {
     console.log('generating Xcode workspace for "' + config.xcode_gen_target + '"...')
 
-    const args = util.buildArgsToString(config.buildArgs())
     const genScript = path.join(config.braveCoreDir, 'vendor', 'gn-project-generators', 'xcode.py')
 
     const genArgs = [
-      'gen', config.outputDir + "_Xcode",
-      '--args="' + args + '"',
       '--ide=json',
       '--json-ide-script="' + genScript + '"',
       '--filters="' + config.xcode_gen_target + '"'
     ]
 
-    util.run('gn', genArgs, options)
+    util.runGnGen(config.outputDir + "_Xcode", config.buildArgs(), genArgs)
   },
 
   presubmit: (options = {}) => {
@@ -769,24 +819,6 @@ const util = {
 
   applyPatches: () => {
     return applyPatches()
-  },
-
-  buildArgsToString: (buildArgs) => {
-    let args = ''
-    for (let arg in buildArgs) {
-      let val = buildArgs[arg]
-      if (val !== null) {
-        if (typeof val === 'string') {
-          val = '"' + val + '"'
-        } else {
-          val = JSON.stringify(val)
-        }
-      }
-      args += val ? arg + '=' + val + ' ' : arg + ' '
-    }
-    // "D:\" should be escaped as \"D:\\\\\".
-    args = args.replace(/(\\+)(")/g,'$1$1$1$1$2')
-    return args.replace(/"/g,'\\"')
   },
 
   walkSync: (dir, filter = null, filelist = []) => {
@@ -879,6 +911,15 @@ const util = {
     const options = { cwd: repoDir, stdio: 'inherit' }
     util.run('git', ['fetch', 'origin', ref.replace(/^origin\//, '')], options)
     util.run('git', ['-c', 'advice.detachedHead=false', 'checkout', 'FETCH_HEAD'], options)
+  },
+
+  writeFileIfModified: (filePath, content) => {
+    fs.ensureFileSync(filePath)
+    if (fs.readFileSync(filePath, { encoding: 'utf-8' }) !== content) {
+      fs.writeFileSync(filePath, content)
+      return true
+    }
+    return false
   },
 }
 
