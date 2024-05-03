@@ -44,7 +44,7 @@ constexpr auto kAdTypeToStringMap =
 }  // namespace
 
 AdType ToAdType(std::string_view value) {
-  const auto* iter = kToAdTypeMap.find(value);
+  const auto iter = kToAdTypeMap.find(value);
   if (iter != kToAdTypeMap.cend()) {
     return iter->second;
   }
@@ -55,7 +55,7 @@ AdType ToAdType(std::string_view value) {
 }
 
 const char* ToString(AdType type) {
-  const auto* iter = kAdTypeToStringMap.find(type);
+  const auto iter = kAdTypeToStringMap.find(type);
   if (iter != kAdTypeToStringMap.cend()) {
     return iter->second.data();
   }

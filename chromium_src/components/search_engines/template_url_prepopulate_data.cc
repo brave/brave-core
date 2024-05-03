@@ -29,7 +29,8 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines_Unused(
     search_engines::SearchEngineChoiceService* search_engine_choice_service,
     size_t* default_search_provider_index,
     bool include_current_default = false,
-    TemplateURLService* template_url_service = nullptr);
+    TemplateURLService* template_url_service = nullptr,
+    bool* was_current_default_inserted = nullptr);
 
 }  // namespace TemplateURLPrepopulateData
 
@@ -509,55 +510,55 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
       });
 
   if (version > 25) {
-    auto* it = kContentV26.find(country_id);
+    const auto it = kContentV26.find(country_id);
     if (it == kContentV26.end()) {
       return default_v6;
     }
     return it->second;
   } else if (version > 24) {
-    auto* it = kContentV25.find(country_id);
+    const auto it = kContentV25.find(country_id);
     if (it == kContentV25.end()) {
       return default_v6;
     }
     return it->second;
   } else if (version > 21) {
-    auto* it = kContentV22.find(country_id);
+    const auto it = kContentV22.find(country_id);
     if (it == kContentV22.end()) {
       return default_v6;
     }
     return it->second;
   } else if (version > 20) {
-    auto* it = kContentV21.find(country_id);
+    const auto it = kContentV21.find(country_id);
     if (it == kContentV21.end()) {
       return default_v6;
     }
     return it->second;
   } else if (version > 19) {
-    auto* it = kContentV20.find(country_id);
+    const auto it = kContentV20.find(country_id);
     if (it == kContentV20.end()) {
       return default_v6;
     }
     return it->second;
   } else if (version > 16) {
-    auto* it = kContentV17.find(country_id);
+    const auto it = kContentV17.find(country_id);
     if (it == kContentV17.end()) {
       return default_v6;
     }
     return it->second;
   } else if (version > 15) {
-    auto* it = kContentV16.find(country_id);
+    const auto it = kContentV16.find(country_id);
     if (it == kContentV16.end()) {
       return default_v6;
     }
     return it->second;
   } else if (version > 7) {
-    auto* it = kContentV8.find(country_id);
+    const auto it = kContentV8.find(country_id);
     if (it == kContentV8.end()) {
       return default_v6;
     }
     return it->second;
   } else {
-    auto* it = kContentV6.find(country_id);
+    const auto it = kContentV6.find(country_id);
     if (it == kContentV6.end()) {
       return default_v6;
     }
@@ -615,7 +616,7 @@ GetBravePrepopulatedEnginesForCountryID(
       kBraveEnginesDefault;
 
   // Check for a per-country override of this list
-  const auto* it_country = kDefaultEnginesByCountryIdMap.find(country_id);
+  const auto it_country = kDefaultEnginesByCountryIdMap.find(country_id);
   if (it_country != kDefaultEnginesByCountryIdMap.end()) {
     brave_engine_ids = it_country->second;
   }
@@ -665,7 +666,8 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
     search_engines::SearchEngineChoiceService* search_engine_choice_service,
     size_t* default_search_provider_index,
     bool include_current_default,
-    TemplateURLService* template_url_service) {
+    TemplateURLService* template_url_service,
+    bool* was_current_default_inserted) {
   // If there is a set of search engines in the preferences file, it overrides
   // the built-in set.
   if (default_search_provider_index)

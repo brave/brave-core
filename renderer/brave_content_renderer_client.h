@@ -30,7 +30,8 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
   void RenderThreadStarted() override;
   void SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() override;
   void RenderFrameCreated(content::RenderFrame* render_frame) override;
-  std::unique_ptr<media::KeySystemSupportObserver> GetSupportedKeySystems(
+  std::unique_ptr<media::KeySystemSupportRegistration> GetSupportedKeySystems(
+      content::RenderFrame* render_frame,
       media::GetSupportedKeySystemsCB cb) override;
   void RunScriptsAtDocumentStart(content::RenderFrame* render_frame) override;
   void RunScriptsAtDocumentEnd(content::RenderFrame* render_frame) override;

@@ -138,6 +138,8 @@ class FakeDownloadDisplay : public DownloadDisplay {
   void OpenSecuritySubpage(
       const offline_items_collection::ContentId&) override {}
 
+  void AnnounceAccessibleAlertNow(const std::u16string& alert_text) override {}
+
  private:
   bool shown_ = false;
   bool enabled_ = false;
@@ -285,7 +287,7 @@ class MockDownloadCoreService : public DownloadCoreService {
               ());
   MOCK_METHOD(bool, HasCreatedDownloadManager, ());
   MOCK_METHOD(int, BlockingShutdownCount, (), (const));
-  MOCK_METHOD(void, CancelDownloads, ());
+  MOCK_METHOD(void, CancelDownloads, (CancelDownloadsTrigger trigger));
   MOCK_METHOD(void,
               SetDownloadManagerDelegateForTesting,
               (std::unique_ptr<ChromeDownloadManagerDelegate> delegate));

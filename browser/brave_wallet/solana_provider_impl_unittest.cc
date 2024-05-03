@@ -913,7 +913,7 @@ TEST_F(SolanaProviderImplUnitTest, GetDeserializedMessage) {
       mojom::kSolanaSystemProgramId,
       {SolanaAccountMeta(added_account->address, std::nullopt, true, true),
        SolanaAccountMeta(added_account->address, std::nullopt, false, true)},
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   auto msg = SolanaMessage::CreateLegacyMessage(
       "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, added_account->address,
       {instruction});

@@ -252,7 +252,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
     UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
-    UpdateCommandEnabled(IDC_DISTILL_PAGE, false);
   }
 #endif
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -607,7 +606,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ScrollTabToBottom(&*browser_);
       break;
     case IDC_BRAVE_SEND_TAB_TO_SELF:
-      chrome::SendTabToSelfFromPageAction(&*browser_);
+      chrome::SendTabToSelf(&*browser_);
       break;
     case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
       brave::ToggleAllBookmarksButtonVisibility(std::to_address(browser_));

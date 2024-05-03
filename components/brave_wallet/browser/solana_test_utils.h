@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TEST_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TEST_UTILS_H_
 
+#include <cstdint>
+
 namespace brave_wallet {
 
 class SolanaMessage;

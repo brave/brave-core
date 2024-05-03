@@ -196,19 +196,25 @@ public class BrowsingModeBottomToolbarCoordinator {
             mNewTabButton.setThemeColorProvider(themeColorProvider);
             mNewTabButton.setIncognitoStateProvider(incognitoStateProvider);
             mNewTabButton.onTintChanged(
-                    mThemeColorProvider.getTint(), mThemeColorProvider.getBrandedColorScheme());
+                    mThemeColorProvider.getTint(),
+                    mThemeColorProvider.getTint(),
+                    mThemeColorProvider.getBrandedColorScheme());
         }
 
         if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
             mBraveHomeButton.setThemeColorProvider(themeColorProvider);
             mBraveHomeButton.onTintChanged(
-                    mThemeColorProvider.getTint(), mThemeColorProvider.getBrandedColorScheme());
+                    mThemeColorProvider.getTint(),
+                    mThemeColorProvider.getTint(),
+                    mThemeColorProvider.getBrandedColorScheme());
         }
 
         mSearchAccelerator.setThemeColorProvider(themeColorProvider);
         mSearchAccelerator.setIncognitoStateProvider(incognitoStateProvider);
         mSearchAccelerator.onTintChanged(
-                mThemeColorProvider.getTint(), mThemeColorProvider.getBrandedColorScheme());
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getBrandedColorScheme());
 
         if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
             mTabSwitcherButtonCoordinator.setTabSwitcherListener(tabSwitcherListener);
@@ -219,11 +225,15 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         mBookmarkButton.setThemeColorProvider(themeColorProvider);
         mBookmarkButton.onTintChanged(
-                mThemeColorProvider.getTint(), mThemeColorProvider.getBrandedColorScheme());
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getBrandedColorScheme());
 
         mThemeColorProvider.addTintObserver(mMenuButton);
         mMenuButton.onTintChanged(
-                mThemeColorProvider.getTint(), mThemeColorProvider.getBrandedColorScheme());
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getTint(),
+                mThemeColorProvider.getBrandedColorScheme());
 
         new OneShotCallback<>(
                 menuButtonHelperSupplier,

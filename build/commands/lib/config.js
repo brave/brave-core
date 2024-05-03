@@ -252,7 +252,6 @@ const Config = function () {
   this.offline = getEnvConfig(['offline']) || false
   this.use_libfuzzer = false
   this.androidAabToApk = false
-  this.enable_dangling_raw_ptr_checks = false
   this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
   this.brave_services_key_id = getEnvConfig(['brave_services_key_id']) || ''
   this.service_key_aichat = getEnvConfig(['service_key_aichat']) || ''
@@ -429,7 +428,7 @@ Config.prototype.buildArgs = function () {
     brave_services_production_domain: this.braveServicesProductionDomain,
     brave_services_staging_domain: this.braveServicesStagingDomain,
     brave_services_dev_domain: this.braveServicesDevDomain,
-    enable_dangling_raw_ptr_checks: this.enable_dangling_raw_ptr_checks,
+    enable_dangling_raw_ptr_feature_flag: false,
     brave_services_key_id: this.brave_services_key_id,
     service_key_aichat: this.service_key_aichat,
     ...this.extraGnArgs,
@@ -731,7 +730,6 @@ Config.prototype.buildArgs = function () {
     delete args.webcompat_report_api_endpoint
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
-    delete args.enable_dangling_raw_ptr_checks
   }
 
   return args

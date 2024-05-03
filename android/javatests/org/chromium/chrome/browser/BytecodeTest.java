@@ -52,7 +52,6 @@ import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntent
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
-import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.contextmenu.ContextMenuItemDelegate;
 import org.chromium.chrome.browser.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy;
@@ -77,13 +76,14 @@ import org.chromium.chrome.browser.ntp.NewTabPageUma;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
+import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
-import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteControllerProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownEmbedder;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -91,6 +91,7 @@ import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator.OverviewNtpCreator;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
@@ -121,7 +122,6 @@ import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
-import org.chromium.components.browser_ui.site_settings.SiteSettingsDelegate;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
@@ -284,8 +284,11 @@ public class BytecodeTest {
                         "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_ui/TabUiThemeUtils"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_ui/BraveTabUiThemeUtils"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider"));
         Assert.assertTrue(
                 classExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher"));
         Assert.assertTrue(
@@ -540,50 +543,114 @@ public class BytecodeTest {
                         "setupContentSettingsPreference",
                         false,
                         null));
-        Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
-                "setContentSetting", false, null));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
-                        "getTitleTextColor", false, null));
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/Website",
+                        "setContentSetting",
+                        false,
+                        null));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
-                        "getActionButtonTintList", false, null));
+                methodExists(
+                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "getTitleTextColor",
+                        false,
+                        null));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
-                        "getCardViewBackgroundColor", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
-                "getTitleTextColor", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
-                "getActionButtonTintList", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPage",
-                "updateSearchProviderHasLogo", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
-                "getCardViewBackgroundColor", false, null));
+                methodExists(
+                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "getCardViewBackgroundColor",
+                        false,
+                        null));
         Assert.assertTrue(
-                methodExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
-                        "get", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
-                "updateTilePlaceholderVisibility", true, void.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                "onPrimaryColorChanged", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                "updateButtonVisibility", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                "shouldShowDeleteButton", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
-                "shouldShowTabSwitcher", true, boolean.class, long.class, boolean.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
-                "getUrlForCustomTab", true, String.class, Intent.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
-                "getUrlForWebapp", true, String.class, Intent.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
-                "isJavascriptSchemeOrInvalidUrl", true, boolean.class, String.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
-                "extractUrlFromIntent", true, String.class, Intent.class));
+                methodExists(
+                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "getTitleTextColor",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "getCardViewBackgroundColor",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
+                        "getActionButtonTintList",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPage",
+                        "updateSearchProviderHasLogo",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/variations/firstrun/VariationsSeedFetcher",
+                        "get",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                        "updateTilePlaceholderVisibility",
+                        true,
+                        void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                        "onPrimaryColorChanged",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                        "updateButtonVisibility",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                        "shouldShowDeleteButton",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
+                        "shouldShowTabSwitcher",
+                        true,
+                        boolean.class,
+                        long.class,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/IntentHandler",
+                        "getUrlForCustomTab",
+                        true,
+                        String.class,
+                        Intent.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/IntentHandler",
+                        "getUrlForWebapp",
+                        true,
+                        String.class,
+                        Intent.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/IntentHandler",
+                        "isJavascriptSchemeOrInvalidUrl",
+                        true,
+                        boolean.class,
+                        String.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/IntentHandler",
+                        "extractUrlFromIntent",
+                        true,
+                        String.class,
+                        Intent.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
@@ -700,8 +767,7 @@ public class BytecodeTest {
                         true,
                         getClassForPath(
                                 "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
-                        int.class,
-                        SiteSettingsDelegate.class));
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
@@ -709,17 +775,26 @@ public class BytecodeTest {
                         true,
                         getClassForPath(
                                 "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
-                        int.class,
-                        SiteSettingsDelegate.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                "getAddExceptionDialogMessage", true, String.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                "resetList", true, void.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
-                "getPreferenceKey", true, String.class, int.class));
+                        int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                        "getAddExceptionDialogMessage",
+                        true,
+                        String.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                        "resetList",
+                        true,
+                        void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "getPreferenceKey",
+                        true,
+                        String.class,
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
@@ -871,7 +946,8 @@ public class BytecodeTest {
                         BackPressManager.class,
                         ObservableSupplier.class,
                         View.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1028,7 +1104,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator",
                         Context.class,
-                        AutocompleteControllerProvider.class,
                         AutocompleteDelegate.class,
                         UrlBarEditingTextStateProvider.class,
                         PropertyModel.class,
@@ -1040,7 +1115,10 @@ public class BytecodeTest {
                         Callback.class,
                         Supplier.class,
                         BookmarkState.class,
-                        OmniboxActionDelegate.class));
+                        OmniboxActionDelegate.class,
+                        ActivityLifecycleDispatcher.class,
+                        OmniboxSuggestionsDropdownEmbedder.class,
+                        WindowAndroid.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
@@ -1050,7 +1128,8 @@ public class BytecodeTest {
                         MultiWindowModeStateDispatcher.class,
                         ActivityLifecycleDispatcher.class,
                         ObservableSupplier.class,
-                        MenuOrKeyboardActionController.class));
+                        MenuOrKeyboardActionController.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
@@ -1078,19 +1157,30 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView",
                         Context.class,
                         AttributeSet.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
-                "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
-                Resources.class, UiConfig.class, ViewGroup.class, ViewStub.class,
-                TileRenderer.class, PropertyModel.class, boolean.class, boolean.class,
-                boolean.class, Runnable.class, Runnable.class, boolean.class));
         Assert.assertTrue(
-                constructorsMatch("org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
+                constructorsMatch(
+                        "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                        "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
+                        Resources.class,
+                        UiConfig.class,
+                        ViewGroup.class,
+                        ViewStub.class,
+                        TileRenderer.class,
+                        PropertyModel.class,
+                        boolean.class,
+                        boolean.class,
+                        Runnable.class,
+                        Runnable.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
                         "org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager",
-                        Tab.class, Supplier.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/crash/ChromePureJavaExceptionReporter",
-                "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
+                        Tab.class,
+                        Supplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/crash/ChromePureJavaExceptionReporter",
+                        "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
@@ -1136,7 +1226,7 @@ public class BytecodeTest {
                         BackPressManager.class,
                         OmniboxSuggestionsDropdownScrollListener.class,
                         ObservableSupplier.class,
-                        boolean.class,
+                        LocationBarEmbedderUiOverrides.class,
                         View.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1145,6 +1235,7 @@ public class BytecodeTest {
                         Context.class,
                         LocationBarLayout.class,
                         LocationBarDataProvider.class,
+                        LocationBarEmbedderUiOverrides.class,
                         ObservableSupplier.class,
                         BraveLocationBarMediator.getPrivacyPreferencesManagerClass(),
                         OverrideUrlLoadingDelegate.class,
@@ -1252,7 +1343,8 @@ public class BytecodeTest {
                         Bundle.class,
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
-                        View.class));
+                        View.class,
+                        ObservableSupplierImpl.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",

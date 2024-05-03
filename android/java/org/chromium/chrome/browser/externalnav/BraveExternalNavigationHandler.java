@@ -44,20 +44,31 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     }
 
     @Override
-    protected OverrideUrlLoadingResult startActivity(Intent intent, boolean requiresIntentChooser,
-            QueryIntentActivitiesSupplier resolvingInfos, ResolveActivitySupplier resolveActivity,
-            GURL browserFallbackUrl, GURL intentDataUrl, ExternalNavigationParams params) {
+    protected OverrideUrlLoadingResult startActivity(
+            Intent intent,
+            ExternalNavigationParams params,
+            boolean requiresIntentChooser,
+            QueryIntentActivitiesSupplier resolvingInfos,
+            ResolveActivitySupplier resolveActivity,
+            GURL browserFallbackUrl,
+            GURL intentTargetUrl) {
         boolean isYoutubeDomain =
-                intentDataUrl != null
-                        ? intentDataUrl.domainIs(BraveConstants.YOUTUBE_DOMAIN)
+                intentTargetUrl != null
+                        ? intentTargetUrl.domainIs(BraveConstants.YOUTUBE_DOMAIN)
                         : false;
         if ((isYoutubeDomain
                         && !BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled())
                 || (!isYoutubeDomain
                         && ContextUtils.getAppSharedPreferences()
                                 .getBoolean(BravePrivacySettings.PREF_APP_LINKS, true))) {
-            return super.startActivity(intent, requiresIntentChooser, resolvingInfos,
-                    resolveActivity, browserFallbackUrl, intentDataUrl, params);
+            return super.startActivity(
+                    intent,
+                    params,
+                    requiresIntentChooser,
+                    resolvingInfos,
+                    resolveActivity,
+                    browserFallbackUrl,
+                    intentTargetUrl);
         } else {
             return OverrideUrlLoadingResult.forNoOverride();
         }

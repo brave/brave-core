@@ -1171,13 +1171,11 @@ public class BraveNewTabPageLayout
             UiConfig uiConfig,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             NewTabPageUma uma,
-            boolean isIncognito,
+            Profile profile,
             WindowAndroid windowAndroid,
-            boolean isNtpAsHomeSurfaceOnTablet,
             boolean isSurfacePolishEnabled,
             boolean isSurfacePolishOmniboxColorEnabled,
             boolean isSurfacePolishLessBrandSpaceEnabled,
-            boolean isLogoPolishEnabled,
             boolean isTablet,
             ObservableSupplier<Integer> tabStripHeightSupplier) {
         super.initialize(
@@ -1191,13 +1189,11 @@ public class BraveNewTabPageLayout
                 uiConfig,
                 lifecycleDispatcher,
                 uma,
-                isIncognito,
+                profile,
                 windowAndroid,
-                isNtpAsHomeSurfaceOnTablet,
                 isSurfacePolishEnabled,
                 isSurfacePolishOmniboxColorEnabled,
                 isSurfacePolishLessBrandSpaceEnabled,
-                isLogoPolishEnabled,
                 isTablet,
                 tabStripHeightSupplier);
 
@@ -1498,16 +1494,6 @@ public class BraveNewTabPageLayout
                 && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)
                 && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                         .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
-    }
-
-    @Override
-    void setSearchProviderTopMargin(int topMargin) {
-        if (mLogoCoordinator != null) mLogoCoordinator.setTopMargin(topMargin);
-    }
-
-    @Override
-    void setSearchProviderBottomMargin(int bottomMargin) {
-        if (mLogoCoordinator != null) mLogoCoordinator.setBottomMargin(bottomMargin);
     }
 
     private int getMaxRowsForMostVisitedTiles() {

@@ -13,9 +13,9 @@ namespace {
 // 'Java_MimeUtils_canAutoOpenMimeType' error message.
 bool DummyMimeUtilUsage() {
   JNIEnv* env = nullptr;
-  if (Java_MimeUtils_canAutoOpenMimeType(
-          env, base::android::ConvertUTF8ToJavaString(env, "")))
+  if (Java_MimeUtils_canAutoOpenMimeType(env, "")) {
     return true;
+  }
 
   return DummyMimeUtilUsage();
 }

@@ -34,21 +34,18 @@ constexpr base::TimeDelta kMaxCookieExpiration =
 TEST(BraveCanonicalCookieTest, SetMaxExpiration) {
   GURL url("https://www.example.com/test");
 
-  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::Create(
-      url, max_expires_date_cookie, creation_time,
-      /*server_time=*/std::nullopt, /*cookie_partition_key=*/std::nullopt));
+  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::CreateForTesting(
+      url, max_expires_date_cookie, creation_time));
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 
-  cookie = CanonicalCookie::Create(url, max_age_cookie, creation_time,
-                                   /*server_time=*/std::nullopt,
-                                   /*cookie_partition_key=*/std::nullopt);
+  cookie =
+      CanonicalCookie::CreateForTesting(url, max_age_cookie, creation_time);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 
-  cookie = CanonicalCookie::Create(url, max_expires_and_max_age_cookie,
-                                   creation_time, /*server_time=*/std::nullopt,
-                                   /*cookie_partition_key=*/std::nullopt);
+  cookie = CanonicalCookie::CreateForTesting(
+      url, max_expires_and_max_age_cookie, creation_time);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 }
@@ -56,9 +53,8 @@ TEST(BraveCanonicalCookieTest, SetMaxExpiration) {
 TEST(BraveCanonicalCookieTest, AllowShorterThanMaxExpiration) {
   GURL url("https://www.example.com/test");
   // Short-lived cookies get to keep their shorter expiration.
-  std::unique_ptr<CanonicalCookie> cookie = CanonicalCookie::Create(
-      url, short_expiration_cookie, creation_time,
-      /*server_time=*/std::nullopt, /*cookie_partition_key=*/std::nullopt);
+  std::unique_ptr<CanonicalCookie> cookie = CanonicalCookie::CreateForTesting(
+      url, short_expiration_cookie, creation_time);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + base::Days(2));
 }
@@ -67,9 +63,8 @@ TEST(BraveCanonicalCookieTest, SetHTTPOnlyMaxExpiration) {
   GURL url("https://www.example.com/test");
 
   // HTTP cookies with 'httponly' work as expected.
-  std::unique_ptr<CanonicalCookie> cookie = CanonicalCookie::Create(
-      url, cookie_line5, creation_time, /*server_time=*/std::nullopt,
-      /*cookie_partition_key=*/std::nullopt);
+  std::unique_ptr<CanonicalCookie> cookie =
+      CanonicalCookie::CreateForTesting(url, cookie_line5, creation_time);
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->ExpiryDate(), creation_time + kMaxCookieExpiration);
 }
@@ -77,9 +72,8 @@ TEST(BraveCanonicalCookieTest, SetHTTPOnlyMaxExpiration) {
 TEST(BraveCanonicalCookieTest, NoExpirationCookie) {
   GURL url("https://www.example.com/test");
 
-  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::Create(
-      url, no_expiration_cookie, creation_time, /*server_time=*/std::nullopt,
-      /*cookie_partition_key=*/std::nullopt));
+  std::unique_ptr<CanonicalCookie> cookie(CanonicalCookie::CreateForTesting(
+      url, no_expiration_cookie, creation_time));
   EXPECT_TRUE(cookie.get());
   EXPECT_EQ(cookie->IsPersistent(), false);
 }

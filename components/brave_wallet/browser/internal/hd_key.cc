@@ -11,11 +11,11 @@
 #include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/sys_byteorder.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -723,8 +723,10 @@ std::optional<std::vector<uint8_t>> HDKey::SignDer(
   // Grind R https://github.com/bitcoin/bitcoin/pull/13666
   uint32_t extra_entropy_counter = 0;
   while (!sig_has_low_r(GetSecp256k1Ctx(), &ecdsa_sig)) {
-    (*reinterpret_cast<uint32_t*>(extra_entropy)) =
-        base::ByteSwapToLE32(++extra_entropy_counter);
+    base::as_writable_byte_span(extra_entropy)
+        .first<4>()
+        .copy_from(base::byte_span_from_ref(base::numerics::U32FromLittleEndian(
+            base::byte_span_from_ref(++extra_entropy_counter))));
 
     if (!secp256k1_ecdsa_sign(
             GetSecp256k1Ctx(), &ecdsa_sig, msg.data(), private_key_.data(),

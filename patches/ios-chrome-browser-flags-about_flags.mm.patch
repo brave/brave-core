@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 7a8f75ecd0eefc1f366071a577a097d69916d766..e152b5f5eab130e46a21b3062153b0f9a7ed5505 100644
+index 22c7abe8ca616c6f24a596d802b3fd49e6df369a..0706db5ba66fb732371de97772166d967a9c8146 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -767,6 +767,7 @@ const FeatureEntry::FeatureVariation kModernTabStripVariations[] = {
+@@ -687,6 +687,7 @@ const FeatureEntry::FeatureVariation kModernTabStripVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {

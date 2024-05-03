@@ -41,8 +41,7 @@ void WebDiscoveryInfoBarView::Layout(PassKey) {
 void WebDiscoveryInfoBarView::ChildPreferredSizeChanged(views::View* child) {
   if (child == content_view_) {
     child->SizeToPreferredSize();
-    RecalculateHeight();
-    InvalidateLayout();
+    SetTargetHeight(child->GetPreferredSize().height());
   }
 }
 

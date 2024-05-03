@@ -241,7 +241,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
-#include "components/omnibox/browser/omnibox.mojom.h"
+#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -645,7 +645,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
           .Add<brave_news::mojom::BraveNewsController>();
 
   if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
-    ntp_registration.Add<omnibox::mojom::PageHandler>();
+    ntp_registration.Add<searchbox::mojom::PageHandler>();
   }
 
   if (base::FeatureList::IsEnabled(
@@ -993,6 +993,7 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     int render_process_id,
     URLLoaderFactoryType type,
     const url::Origin& request_initiator,
+    const net::IsolationInfo& isolation_info,
     std::optional<int64_t> navigation_id,
     ukm::SourceIdObj ukm_source_id,
     network::URLLoaderFactoryBuilder& factory_builder,
@@ -1010,9 +1011,9 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
-      std::move(navigation_id), ukm_source_id, factory_builder, header_client,
-      bypass_redirect_checks, disable_secure_dns, factory_override,
-      navigation_response_task_runner);
+      isolation_info, std::move(navigation_id), ukm_source_id, factory_builder,
+      header_client, bypass_redirect_checks, disable_secure_dns,
+      factory_override, navigation_response_task_runner);
 }
 
 bool BraveContentBrowserClient::WillInterceptWebSocket(

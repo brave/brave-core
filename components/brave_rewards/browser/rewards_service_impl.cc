@@ -2128,7 +2128,8 @@ void RewardsServiceImpl::OnExternalWalletLoginStarted(
         url, key, value, /*domain=*/"", url.path(),
         /*creation_time=*/now, expiration_time, /*last_access_time=*/now,
         /*secure=*/true, /*httponly=*/false, net::CookieSameSite::STRICT_MODE,
-        net::COOKIE_PRIORITY_DEFAULT, /*partition_key=*/std::nullopt);
+        net::COOKIE_PRIORITY_DEFAULT, /*partition_key=*/std::nullopt,
+        /*status=*/nullptr);
 
     cookie_manager->SetCanonicalCookie(
         *cookie,

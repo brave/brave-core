@@ -36,7 +36,7 @@ static constexpr webui::LocalizedString kStrings[] = {
 }  // namespace
 
 CookieListOptInUI::CookieListOptInUI(content::WebUI* web_ui)
-    : MojoBubbleWebUIController(web_ui, true) {
+    : TopChromeWebUIController(web_ui, true) {
   DCHECK(base::FeatureList::IsEnabled(
       brave_shields::features::kBraveAdblockCookieListOptIn));
 

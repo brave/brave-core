@@ -93,18 +93,17 @@
     
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
-    <color name="brave_sync_border_color">@color/modern_grey_50</color>
+    <color name="brave_sync_border_color">@color/baseline_neutral_95</color>
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
     
     <!-- Sync informer icon colors -->
-    <color name="brave_informer_dark_theme_icon_color">@color/modern_grey_100</color>
+    <color name="brave_informer_dark_theme_icon_color">@color/baseline_neutral_90</color>
     <color name="brave_informer_light_theme_icon_color">@color/modern_grey_700</color>
 
     <color name="brave_set_default_dialog_text_color">@color/modern_grey_700</color>
 
     <!-- Theme colors -->
     <color name="brave_theme_color">#fb542b</color>
-    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
     <color name="brave_add_widget_button_pressed">#737ADE</color>
     <color name="brave_button_pressed">#7278C5</color>
 

@@ -48,4 +48,9 @@ bool MockPermissionLifetimePrompt::ShouldFinalizeRequestAfterDecided() const {
   return true;
 }
 
+std::vector<permissions::ElementAnchoredBubbleVariant>
+MockPermissionLifetimePrompt::GetPromptVariants() const {
+  return {};
+}
+
 }  // namespace permissions

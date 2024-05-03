@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine/sync_scheduler_impl.cc b/components/sync/engine/sync_scheduler_impl.cc
-index abdfed259b64c8da330b7bbe7121b094e1d0bae9..838adb8e386f5622ec770ef91c6257d99f50e0ed 100644
+index 6d2efe6e577ff6a40c4587a26077929a1cecf467..2d39b6366582c0327b3f3109d30bc42fe4142181 100644
 --- a/components/sync/engine/sync_scheduler_impl.cc
 +++ b/components/sync/engine/sync_scheduler_impl.cc
 @@ -506,6 +506,7 @@ void SyncSchedulerImpl::HandleFailure(

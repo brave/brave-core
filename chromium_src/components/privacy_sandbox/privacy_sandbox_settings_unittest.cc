@@ -137,7 +137,9 @@ class PrivacySandboxSettingsTest : public testing::Test {
         false /* restore_session */, false /* should_record_metrics */);
     cookie_settings_ = new content_settings::CookieSettings(
         host_content_settings_map_.get(), &prefs_,
-        /*tracking_protection_settings=*/nullptr, false, "chrome-extension");
+        /*tracking_protection_settings=*/nullptr, false,
+        content_settings::CookieSettings::NoFedCmSharingPermissionsCallback(),
+        /*tpcd_metadata_manager=*/nullptr, "chrome-extension");
     tracking_protection_settings_ =
         std::make_unique<privacy_sandbox::TrackingProtectionSettings>(
             &prefs_, nullptr, /*is_incognito=*/false);

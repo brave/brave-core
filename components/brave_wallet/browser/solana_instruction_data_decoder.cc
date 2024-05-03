@@ -607,7 +607,7 @@ GetTokenInstructionAccountParams() {
   return *params;
 }
 
-std::optional<uint8_t> DecodeUint8(const std::vector<uint8_t>& input,
+std::optional<uint8_t> DecodeUint8(base::span<const uint8_t> input,
                                    size_t& offset) {
   if (offset >= input.size() || input.size() - offset < sizeof(uint8_t)) {
     return std::nullopt;
@@ -617,7 +617,7 @@ std::optional<uint8_t> DecodeUint8(const std::vector<uint8_t>& input,
   return input[offset - sizeof(uint8_t)];
 }
 
-std::optional<std::string> DecodeUint8String(const std::vector<uint8_t>& input,
+std::optional<std::string> DecodeUint8String(base::span<const uint8_t> input,
                                              size_t& offset) {
   auto ret = DecodeUint8(input, offset);
   if (!ret) {
@@ -627,7 +627,7 @@ std::optional<std::string> DecodeUint8String(const std::vector<uint8_t>& input,
 }
 
 std::optional<std::string> DecodeAuthorityTypeString(
-    const std::vector<uint8_t>& input,
+    base::span<const uint8_t> input,
     size_t& offset) {
   auto ret = DecodeUint8(input, offset);
   if (ret && *ret <= kAuthorityTypeMax) {
@@ -636,7 +636,7 @@ std::optional<std::string> DecodeAuthorityTypeString(
   return std::nullopt;
 }
 
-std::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
+std::optional<uint32_t> DecodeUint32(base::span<const uint8_t> input,
                                      size_t& offset) {
   if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
     return std::nullopt;
@@ -656,7 +656,7 @@ std::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
 #endif
 }
 
-std::optional<std::string> DecodeUint32String(const std::vector<uint8_t>& input,
+std::optional<std::string> DecodeUint32String(base::span<const uint8_t> input,
                                               size_t& offset) {
   auto ret = DecodeUint32(input, offset);
   if (!ret) {
@@ -665,7 +665,7 @@ std::optional<std::string> DecodeUint32String(const std::vector<uint8_t>& input,
   return base::NumberToString(*ret);
 }
 
-std::optional<uint64_t> DecodeUint64(const std::vector<uint8_t>& input,
+std::optional<uint64_t> DecodeUint64(base::span<const uint8_t> input,
                                      size_t& offset) {
   if (offset >= input.size() || input.size() - offset < sizeof(uint64_t)) {
     return std::nullopt;
@@ -685,7 +685,7 @@ std::optional<uint64_t> DecodeUint64(const std::vector<uint8_t>& input,
 #endif
 }
 
-std::optional<std::string> DecodeUint64String(const std::vector<uint8_t>& input,
+std::optional<std::string> DecodeUint64String(base::span<const uint8_t> input,
                                               size_t& offset) {
   auto ret = DecodeUint64(input, offset);
   if (!ret) {
@@ -694,7 +694,7 @@ std::optional<std::string> DecodeUint64String(const std::vector<uint8_t>& input,
   return base::NumberToString(*ret);
 }
 
-std::optional<std::string> DecodePublicKey(const std::vector<uint8_t>& input,
+std::optional<std::string> DecodePublicKey(base::span<const uint8_t> input,
                                            size_t& offset) {
   if (offset >= input.size() || input.size() - offset < kSolanaPubkeySize) {
     return std::nullopt;
@@ -706,7 +706,7 @@ std::optional<std::string> DecodePublicKey(const std::vector<uint8_t>& input,
 }
 
 std::optional<std::string> DecodeOptionalPublicKey(
-    const std::vector<uint8_t>& input,
+    base::span<const uint8_t> input,
     size_t& offset) {
   if (offset == input.size()) {
     return std::nullopt;
@@ -732,7 +732,7 @@ std::optional<std::string> DecodeOptionalPublicKey(
 // We currently cap the length here to be the max size of std::string
 // on 32 bit systems, it's safe to do so because currently we don't expect any
 // valid cases would have strings larger than it.
-std::optional<std::string> DecodeString(const std::vector<uint8_t>& input,
+std::optional<std::string> DecodeString(base::span<const uint8_t> input,
                                         size_t& offset) {
   auto len_lower = DecodeUint32(input, offset);
   if (!len_lower || *len_lower > kMaxStringSize32Bit) {
@@ -753,7 +753,7 @@ std::optional<std::string> DecodeString(const std::vector<uint8_t>& input,
 }
 
 bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
-                     const std::vector<std::uint8_t> data,
+                     base::span<const uint8_t> data,
                      size_t& offset,
                      std::vector<InsParamTuple>& ins_param_tuple) {
   std::optional<std::string> value;
@@ -804,7 +804,7 @@ bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
 }
 
 std::optional<mojom::SolanaSystemInstruction> DecodeSystemInstructionType(
-    const std::vector<uint8_t>& data,
+    base::span<const uint8_t> data,
     size_t& offset) {
   auto ins_type = DecodeUint32(data, offset);
   if (!ins_type || *ins_type > static_cast<uint32_t>(
@@ -815,7 +815,7 @@ std::optional<mojom::SolanaSystemInstruction> DecodeSystemInstructionType(
 }
 
 std::optional<mojom::SolanaTokenInstruction> DecodeTokenInstructionType(
-    const std::vector<uint8_t>& data,
+    base::span<const uint8_t> data,
     size_t& offset) {
   auto ins_type = DecodeUint8(data, offset);
   if (!ins_type || *ins_type > static_cast<uint8_t>(
@@ -827,7 +827,7 @@ std::optional<mojom::SolanaTokenInstruction> DecodeTokenInstructionType(
 
 const std::vector<ParamNameTypeTuple>* DecodeInstructionType(
     const std::string& program_id,
-    const std::vector<uint8_t>& data,
+    base::span<const uint8_t> data,
     size_t& offset,
     SolanaInstructionDecodedData& decoded_data) {
   if (program_id == mojom::kSolanaSystemProgramId) {
@@ -854,7 +854,7 @@ const std::vector<ParamNameTypeTuple>* DecodeInstructionType(
 }  // namespace
 
 std::optional<SolanaInstructionDecodedData> Decode(
-    const std::vector<uint8_t>& data,
+    base::span<const uint8_t> data,
     const std::string& program_id) {
   if (program_id != mojom::kSolanaSystemProgramId &&
       program_id != mojom::kSolanaTokenProgramId) {
@@ -908,7 +908,7 @@ GetMojomAccountParamsForTesting(
 }
 
 std::optional<mojom::SolanaSystemInstruction> GetSystemInstructionType(
-    const std::vector<uint8_t>& data,
+    base::span<const uint8_t> data,
     const std::string& program_id) {
   if (program_id != mojom::kSolanaSystemProgramId) {
     return std::nullopt;
