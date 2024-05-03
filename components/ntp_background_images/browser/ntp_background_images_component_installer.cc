@@ -66,6 +66,7 @@ class NTPBackgroundImagesComponentInstallerPolicy
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
 
  private:
   const std::string component_id_;
@@ -141,6 +142,10 @@ std::string NTPBackgroundImagesComponentInstallerPolicy::GetName() const {
 update_client::InstallerAttributes
 NTPBackgroundImagesComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
+}
+
+bool NTPBackgroundImagesComponentInstallerPolicy::IsBraveComponent() const {
+  return true;
 }
 
 void OnRegistered(const std::string& component_id) {
