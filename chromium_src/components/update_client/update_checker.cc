@@ -42,8 +42,7 @@ void SequentialUpdateChecker::CheckForUpdates(
   VLOG(3) << "< CheckForUpdates";
 }
 
-void SequentialUpdateChecker::CheckNext(
-) {
+void SequentialUpdateChecker::CheckNext() {
   VLOG(3) << "> CheckNext()";
   DCHECK(!remaining_ids_.empty());
   DCHECK(update_context_);
