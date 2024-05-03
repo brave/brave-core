@@ -678,15 +678,14 @@ const util = {
     const generatedArgsImportLine =
       `import("//${path.relative(config.srcDir, generatedArgsFilePath).replace(/\\/g, '/')}")`
 
-    let isArgsGnValid = false
-    if (fs.existsSync(argsGnFilePath)) {
-      const argsGnContent = fs.readFileSync(argsGnFilePath, {encoding: 'utf-8'})
-      // Use includes() method to ensure that the import statement from
-      // args_generated.gni is present in args.gn (even if the user has made
-      // modifications). This import statement can also be commented out,
-      // allowing the user to fully ignore generated arguments.
-      isArgsGnValid = argsGnContent.includes(generatedArgsImportLine)
-    }
+    // Check if the import statement from args_generated.gni is present in
+    // args.gn, even if the user has made modifications. This import statement
+    // can also be commented out, allowing the user to fully ignore generated
+    // arguments.
+    fs.ensureFileSync(argsGnFilePath)
+    const isArgsGnValid = fs
+      .readFileSync(argsGnFilePath, { encoding: 'utf-8' })
+      .includes(generatedArgsImportLine)
 
     if (!isArgsGnValid) {
       const argsGnContent = [
