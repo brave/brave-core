@@ -33,6 +33,9 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
   bool ShouldShowWindowTitle(TitlebarType type) const override;
   void LayoutCaptionButtons() override;
 
+  // BrowserNonClientFrameView overrides:
+  void OnFullscreenStateChanged() override;
+
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 
   BooleanPrefMember using_vertical_tabs_;

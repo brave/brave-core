@@ -32,6 +32,7 @@ class BraveOpaqueBrowserFrameView : public OpaqueBrowserFrameView {
   void PaintClientEdge(gfx::Canvas* canvas) const override;
   int GetTopInset(bool restored) const override;
   int GetTopAreaHeight() const override;
+  void OnFullscreenStateChanged() override;
 
  private:
   bool ShouldShowVerticalTabs() const;

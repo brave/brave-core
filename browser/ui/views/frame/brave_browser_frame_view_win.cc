@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
 #include "chrome/browser/win/titlebar_config.h"
 #include "ui/base/hit_test.h"
 #include "ui/compositor/layer.h"
@@ -152,5 +153,12 @@ void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
         CaptionButtonsOnLeadingEdge()
             ? 0
             : width() - caption_button_container_->width());
+  }
+}
+
+void BraveBrowserFrameViewWin::OnFullscreenStateChanged() {
+  if (browser_view()->UsesImmersiveFullscreenMode()) {
+    browser_view()->immersive_mode_controller()->SetEnabled(
+        browser_view()->IsFullscreen());
   }
 }

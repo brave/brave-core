@@ -1,0 +1,14 @@
+diff --git a/ui/views/bubble/bubble_dialog_delegate_view.cc b/ui/views/bubble/bubble_dialog_delegate_view.cc
+index d3ae1028116e5f087ecb98d272ce0511c71bb07c..8a01248d35f369ec209c3ee274010bed85a9195b 100644
+--- a/ui/views/bubble/bubble_dialog_delegate_view.cc
++++ b/ui/views/bubble/bubble_dialog_delegate_view.cc
+@@ -731,7 +731,9 @@ gfx::Rect BubbleDialogDelegate::GetAnchorRect() const {
+   // offset.
+   // TODO(sammiequon): Investigate if we can remove |anchor_widget_| and just
+   // replace its calls with anchor_view->GetWidget().
++#if !BUILDFLAG(IS_WIN)
+   DCHECK_EQ(anchor_widget_, anchor_view->GetWidget());
++#endif
+   if (anchor_widget_) {
+     gfx::Transform transform =
+         anchor_widget_->GetNativeWindow()->layer()->GetTargetTransform();
