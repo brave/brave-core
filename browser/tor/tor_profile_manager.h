@@ -12,13 +12,15 @@
 #include "base/no_destructor.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "url/gurl.h"
 
 class Browser;
 
 class TorProfileManager : public BrowserListObserver, public ProfileObserver {
  public:
   static TorProfileManager& GetInstance();
-  static Browser* SwitchToTorProfile(Profile* original_profile);
+  static Browser* SwitchToTorProfile(Profile* original_profile,
+                                     const GURL& url = GURL());
   static void CloseTorProfileWindows(Profile* tor_profile);
   Profile* GetTorProfile(Profile* original_profile);
 

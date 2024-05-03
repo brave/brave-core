@@ -35,8 +35,9 @@ std::string GetMessageParam(const std::string& message,
                             const std::string& key,
                             bool quoted) {
   size_t begin = message.find(key);
-  if (begin == std::string::npos)
+  if (begin == std::string::npos) {
     return {};
+  }
   begin += key.length() + (quoted ? 1 : 0);
   size_t end = message.find(quoted ? '\"' : ' ', begin);
   return message.substr(begin, end - begin);
@@ -127,8 +128,9 @@ void TorLauncherFactory::LaunchTorInternal() {
 
 void TorLauncherFactory::KillTorProcess() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (tor_launcher_.is_bound())
+  if (tor_launcher_.is_bound()) {
     tor_launcher_->Shutdown();
+  }
   control_->Stop();
   tor_launcher_.reset();
   tor_pid_ = -1;
@@ -194,6 +196,10 @@ void TorLauncherFactory::SetupBridges(tor::BridgesConfig bridges_config) {
 void TorLauncherFactory::AddObserver(TorLauncherObserver* observer) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   observers_.AddObserver(observer);
+  if (last_init_message_) {
+    observer->OnTorInitializing(last_init_message_->percentage,
+                                last_init_message_->summary);
+  }
 }
 
 void TorLauncherFactory::RemoveObserver(TorLauncherObserver* observer) {
@@ -204,23 +210,26 @@ void TorLauncherFactory::RemoveObserver(TorLauncherObserver* observer) {
 void TorLauncherFactory::OnTorLauncherCrashed() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   LOG(INFO) << "Tor Launcher Crashed";
-  for (auto& observer : observers_)
+  for (auto& observer : observers_) {
     observer.OnTorLauncherCrashed();
+  }
   DelayedRelaunchTor();
 }
 
 void TorLauncherFactory::OnTorCrashed(int64_t pid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   LOG(INFO) << "Tor Process(" << pid << ") Crashed";
-  for (auto& observer : observers_)
+  for (auto& observer : observers_) {
     observer.OnTorCrashed(pid);
+  }
   DelayedRelaunchTor();
 }
 
 void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  for (auto& observer : observers_)
+  for (auto& observer : observers_) {
     observer.OnTorLaunched(result, pid);
+  }
   if (result) {
     is_starting_ = false;
     // We have to wait for circuit established
@@ -302,8 +311,9 @@ void TorLauncherFactory::GotSOCKSListeners(
       std::remove(tor_proxy_uri.begin(), tor_proxy_uri.end(), '\"'),
       tor_proxy_uri.end());
   tor_proxy_uri_ = tor_proxy_uri;
-  for (auto& observer : observers_)
+  for (auto& observer : observers_) {
     observer.OnTorNewProxyURI(tor_proxy_uri);
+  }
 }
 
 void TorLauncherFactory::GotCircuitEstablished(bool error, bool established) {
@@ -313,8 +323,11 @@ void TorLauncherFactory::GotCircuitEstablished(bool error, bool established) {
     return;
   }
   is_connected_ = established;
-  for (auto& observer : observers_)
-    observer.OnTorCircuitEstablished(established);
+  if (is_connected_) {
+    for (auto& observer : observers_) {
+      observer.OnTorCircuitEstablished(established);
+    }
+  }
 }
 
 void TorLauncherFactory::OnTorControlClosed(bool was_running) {
@@ -381,8 +394,9 @@ void TorLauncherFactory::OnTorEvent(
   const std::string raw_event =
       (*tor::kTorControlEventByEnum.find(event)).second + ": " + initial;
   VLOG(3) << "TOR CONTROL: event " << raw_event;
-  for (auto& observer : observers_)
+  for (auto& observer : observers_) {
     observer.OnTorControlEvent(raw_event);
+  }
   if (event == tor::TorControlEvent::STATUS_CLIENT) {
     if (initial.find(kStatusClientBootstrap) != std::string::npos) {
       const std::string& count = GetMessageParam(initial, kCount, false);
@@ -395,24 +409,31 @@ void TorLauncherFactory::OnTorEvent(
       const std::string& summary =
           GetMessageParam(initial, kStatusSummary, true);
 
-      for (auto& observer : observers_)
+      for (auto& observer : observers_) {
+        last_init_message_ = {percentage, summary};
         observer.OnTorInitializing(percentage, summary);
+      }
     } else if (initial.find(kStatusClientCircuitEstablished) !=
                std::string::npos) {
-      for (auto& observer : observers_)
+      for (auto& observer : observers_) {
+        last_init_message_.reset();
         observer.OnTorCircuitEstablished(true);
+      }
       is_connected_ = true;
     } else if (initial.find(kStatusClientCircuitNotEstablished) !=
                std::string::npos) {
-      for (auto& observer : observers_)
+      for (auto& observer : observers_) {
+        last_init_message_.reset();
         observer.OnTorCircuitEstablished(false);
+      }
     }
   } else if (event == tor::TorControlEvent::NOTICE ||
              event == tor::TorControlEvent::WARN ||
              event == tor::TorControlEvent::ERR) {
     tor_log_ += raw_event + '\n';
-    for (auto& observer : observers_)
+    for (auto& observer : observers_) {
       observer.OnTorLogUpdated();
+    }
   }
 }
 
