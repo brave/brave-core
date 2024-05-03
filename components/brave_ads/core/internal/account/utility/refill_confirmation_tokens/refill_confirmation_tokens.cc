@@ -8,7 +8,6 @@
 #include <cstddef>
 #include <utility>
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
@@ -54,7 +53,7 @@ RefillConfirmationTokens::~RefillConfirmationTokens() {
 void RefillConfirmationTokens::MaybeRefill(const WalletInfo& wallet) {
   CHECK(wallet.IsValid());
 
-  if (is_refilling_ || retry_timer_.IsRunning()) {
+  if (is_refilling_ || timer_.IsRunning()) {
     return;
   }
 
@@ -299,9 +298,16 @@ void RefillConfirmationTokens::FailedToRefill(const bool should_retry) {
 }
 
 void RefillConfirmationTokens::Retry() {
-  CHECK(!retry_timer_.IsRunning());
+  if (timer_.IsRunning()) {
+    // The function `WallClockTimer::PowerSuspendObserver::OnResume` restarts
+    // the timer to fire at the desired run time after system power is resumed.
+    // It's important to note that URL requests might not succeed upon power
+    // restoration, triggering a retry. To avoid initiating a second timer, we
+    // refrain from starting another one.
+    return;
+  }
 
-  const base::Time retry_at = retry_timer_.StartWithPrivacy(
+  const base::Time retry_at = timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
       base::BindOnce(&RefillConfirmationTokens::RetryCallback,
                      weak_factory_.GetWeakPtr()));
@@ -316,7 +322,7 @@ void RefillConfirmationTokens::RetryCallback() {
 }
 
 void RefillConfirmationTokens::StopRetrying() {
-  retry_timer_.Stop();
+  timer_.Stop();
 }
 
 void RefillConfirmationTokens::Reset() {
