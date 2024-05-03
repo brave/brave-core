@@ -100,6 +100,7 @@ extension MediaContentView {
         }
       }
       .task(priority: .low) {
+        self.currentTime = model.currentTime
         for await currentTime in model.currentTimeStream {
           self.currentTime = currentTime
         }
