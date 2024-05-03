@@ -861,7 +861,7 @@ public class Utils {
             case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
                 logo = R.drawable.ic_matic_color;
                 break;
-            case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.BNB_SMART_CHAIN_MAINNET_CHAIN_ID:
                 logo = R.drawable.ic_bnbchain_color;
                 break;
             case BraveWalletConstants.SOLANA_MAINNET:
