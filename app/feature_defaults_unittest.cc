@@ -209,9 +209,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &kForYouFre,
 #endif
-#if BUILDFLAG(ENABLE_DICE_SUPPORT)
-      &kPreconnectAccountCapabilitiesBeforeSignIn,
-#endif
 #if BUILDFLAG(ENABLE_MIRROR)
       &kVerifyRequestInitiatorForMirrorHeaders,
 #endif

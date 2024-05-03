@@ -335,6 +335,10 @@
 -DiceWebSigninInterceptorTest.*
 -GAIAInfoUpdateServiceTest.*
 
+# This test fails because we intentionally stub out
+# IdentityManager::PrepareForAddingNewAccount
+-DiceTabHelperTest.Initialization
+
 # This test fails because we disable the privacy sandbox
 -PrivacySandboxServiceTest.MetricsLoggingOccursCorrectly
 
