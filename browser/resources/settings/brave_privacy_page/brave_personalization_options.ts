@@ -85,6 +85,25 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
     e.stopPropagation()
     window.open("chrome://restart", "_self")
   }
+
+  override ready() {
+    super.ready()
+    // Add hr to the "Do not track" row.
+    const doNotTrack = this.shadowRoot?.querySelector('#doNotTrack')
+    if (doNotTrack) {
+      const toggle = doNotTrack.shadowRoot?.querySelector('#toggle')
+      if (toggle) {
+        const toggleClass = toggle.getAttribute('class')
+        toggle.setAttribute('class', toggleClass + ' hr')
+      } else {
+        console.log(
+          '[Brave Settings Overrides] Could not find doNotTrack toggle')
+      }
+    } else {
+      console.log(
+        '[Brave Settings Overrides] Could not find element with id doNotTrack')
+    }
+  }
 }
 
 customElements.define(

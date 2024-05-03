@@ -94,14 +94,22 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
       base::OnceCallback<void(const SyncProtocolError&)> callback,
       const SyncProtocolError&);
 
-  void ResetEngine(ShutdownReason shutdown_reason,
-                   ResetEngineReason reset_reason) override;
+  std::unique_ptr<SyncEngine> ResetEngine(
+      ShutdownReason shutdown_reason,
+      ResetEngineReason reset_reason) override;
 
   void LocalDeviceAppeared();
 
+  struct SyncedObjectsCountContext {
+    size_t types_requested = 0;
+    size_t types_responed = 0;
+    size_t total_objects_count = 0;
+    void Reset(size_t types_requested);
+  };
+  SyncedObjectsCountContext synced_objects_context_;
+
   void UpdateP3AObjectsNumber();
-  void OnGotEntityCounts(
-      const std::vector<syncer::TypeEntitiesCount>& entity_counts);
+  void OnGetTypeEntitiesCount(const TypeEntitiesCount& count);
 
   brave_sync::Prefs brave_sync_prefs_;
 

@@ -145,7 +145,7 @@
   <if expr="not is_ios">
 
     <!-- Certificate exception decision UI (after clicking through an SSL certificate error) -->
-    <!-- TODO(crbug.com/502473): Support revoking certificate overrides on iOS Page Info. -->
+    <!-- TODO(crbug.com/41183997): Support revoking certificate overrides on iOS Page Info. -->
     <message name="IDS_PAGE_INFO_INVALID_CERTIFICATE_DESCRIPTION" desc="A short paragraph to the user that security warnings are disabled. This is the case when the user has encountered a certificate error for the current site and chosen to override it.">
       You have chosen to turn off security warnings for this site.
     </message>
@@ -403,6 +403,9 @@
     </message>
     <message name="IDS_PAGE_INFO_STATE_TEXT_CAMERA_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the camera permission is in the ask state and the site can prompt the user to ask if they allow the site to use their camera.">
       Can ask to use your camera
+    </message>
+    <message name="IDS_PAGE_INFO_STATE_TEXT_CAPTURED_SURFACE_CONTROL_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the scroll and zoom permission is in the ask state and the site can prompt the user to ask if they allow the site to scroll and zoom shared tabs.">
+      Can ask to scroll and zoom shared tabs
     </message>
     <message name="IDS_PAGE_INFO_STATE_TEXT_CAMERA_PAN_TILT_ZOOM_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the camera and movement permission is in the ask state and the site can prompt the user to ask if they allow the site to use and move their camera.">
       Can ask to use &amp; move your camera
@@ -835,6 +838,12 @@
     This site is flagged by your organization
   </message>
   <message name="IDS_PAGE_INFO_ENTERPRISE_WARN_DETAILS" desc="A more detailed summary at the top of the Page Info bubble (which shows when you click the security indicator) if the website has been flagged by your admin to show a warning">
+    Your organization has flagged this site as it might violate a policy.
+  </message>
+  <message name="IDS_PAGE_INFO_ENTERPRISE_BLOCK_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the website has been blocked by your admin">
+    This site is blocked by your organization
+  </message>
+  <message name="IDS_PAGE_INFO_ENTERPRISE_BLOCK_DETAILS" desc="A more detailed summary at the top of the Page Info bubble (which shows when you click the security indicator) if the website has been blocked by your admin">
     Your organization has blocked this site because it violates a policy.
   </message>
 

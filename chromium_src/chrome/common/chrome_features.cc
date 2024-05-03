@@ -17,6 +17,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kControlledFrame, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityService, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityServiceOHTTPRequests, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kChromeStructuredMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {kDesktopPWAsLinkCapturing, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif

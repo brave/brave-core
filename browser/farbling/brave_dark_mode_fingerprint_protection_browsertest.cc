@@ -75,7 +75,7 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
     }
     ui::ColorProviderKey GetColorProviderKey() const override { return key_; }
 
-    const ui::RendererColorMap GetRendererColorMap(
+    ui::RendererColorMap GetRendererColorMap(
         ui::ColorProviderKey::ColorMode color_mode,
         ui::ColorProviderKey::ForcedColors forced_colors) const override {
       auto key = GetColorProviderKey();

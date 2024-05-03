@@ -202,8 +202,6 @@ source_set("ui") {
       "webui/settings/brave_wallet_handler.h",
       "webui/settings/default_brave_shields_handler.cc",
       "webui/settings/default_brave_shields_handler.h",
-      "webui/settings/settings_cookies_view_handler.cc",
-      "webui/settings/settings_cookies_view_handler.h",
       "webui/side_panel/reading_list/brave_reading_list_page_handler.cc",
       "webui/side_panel/reading_list/brave_reading_list_page_handler.h",
       "webui/speedreader/speedreader_toolbar_data_handler_impl.cc",
@@ -221,8 +219,10 @@ source_set("ui") {
       "whats_new/whats_new_util.h",
     ]
 
-    deps +=
-        [ "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings" ]
+    deps += [
+      "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
+      "//ui/webui/resources/cr_components/searchbox:mojo_bindings",
+    ]
 
     if (enable_request_otr) {
       deps += [
@@ -1042,6 +1042,8 @@ source_set("ui") {
       "webui/brave_wallet/ledger/ledger_ui.h",
       "webui/brave_wallet/page_handler/wallet_page_handler.cc",
       "webui/brave_wallet/page_handler/wallet_page_handler.h",
+      "webui/brave_wallet/panel_handler/wallet_panel_handler.cc",
+      "webui/brave_wallet/panel_handler/wallet_panel_handler.h",
       "webui/brave_wallet/trezor/trezor_ui.cc",
       "webui/brave_wallet/trezor/trezor_ui.h",
       "webui/brave_wallet/wallet_common_ui.cc",
@@ -1056,9 +1058,9 @@ source_set("ui") {
       "//brave/browser/resources/settings/shortcuts_page:generated_resources",
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
-      "//brave/browser/ui/webui/brave_wallet/panel_handler",
       "//brave/components/brave_news/browser",
       "//brave/components/brave_news/browser/resources:generated_resources",
+      "//brave/components/brave_wallet/browser:permission_utils",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",
@@ -1069,6 +1071,7 @@ source_set("ui") {
       "//brave/components/resources:strings_grit",
       "//components/permissions",
       "//components/pref_registry",
+      "//mojo/public/cpp/bindings",
     ]
   }
   if (is_android) {

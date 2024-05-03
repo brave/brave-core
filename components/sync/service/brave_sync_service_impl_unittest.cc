@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/sync/service/brave_sync_service_impl.h"
+
 #include <utility>
 
 #include "base/base64.h"
@@ -14,7 +16,6 @@
 #include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/history/core/browser/sync/brave_history_delete_directives_model_type_controller.h"
 #include "brave/components/history/core/browser/sync/brave_history_model_type_controller.h"
-#include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "brave/components/sync/test/brave_mock_sync_engine.h"
 #include "build/build_config.h"
@@ -26,7 +27,7 @@
 #include "components/sync/model/type_entities_count.h"
 #include "components/sync/service/data_type_manager_impl.h"
 #include "components/sync/test/data_type_manager_mock.h"
-#include "components/sync/test/fake_data_type_controller.h"
+#include "components/sync/test/fake_model_type_controller.h"
 #include "components/sync/test/fake_sync_api_component_factory.h"
 #include "components/sync/test/fake_sync_engine.h"
 #include "components/sync/test/fake_sync_manager.h"
@@ -104,14 +105,14 @@ class BraveSyncServiceImplTest : public testing::Test {
 
   void CreateSyncService(
       ModelTypeSet registered_types = ModelTypeSet({BOOKMARKS})) {
-    DataTypeController::TypeVector controllers;
+    ModelTypeController::TypeVector controllers;
     for (ModelType type : registered_types) {
-      controllers.push_back(std::make_unique<FakeDataTypeController>(type));
+      controllers.push_back(std::make_unique<FakeModelTypeController>(type));
     }
 
     std::unique_ptr<SyncClientMock> sync_client =
         sync_service_impl_bundle_.CreateSyncClientMock();
-    ON_CALL(*sync_client, CreateDataTypeControllers(_))
+    ON_CALL(*sync_client, CreateModelTypeControllers(_))
         .WillByDefault(Return(ByMove(std::move(controllers))));
 
     auto sync_service_delegate(std::make_unique<SyncServiceImplDelegateMock>());
@@ -302,21 +303,19 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   EXPECT_TRUE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
 
-  // By default Brave enables Bookmarks datatype when sync is enabled.
-  // This caused DCHECK at DataTypeManagerImpl::DataTypeManagerImpl
-  // after OnEngineInitialized(true, false) call.
+  // During the calls below:
+  //    DataTypeManagerImpl::SetConfigurer()
+  //    SyncServiceImpl::OnEngineInitialized()
+  //    BraveSyncServiceImpl::OnEngineInitialized()
+  // SetConfigurer method requires |DataTypeManagerImpl::state_| to be in a
+  // STOPPED state.
   // Current unit test is intended to verify fix for brave/brave-browser#22898
   // and is about set encryption passphrase later setup after right after
-  // enabling sync, for example when internet connection is unstable. Related
-  // Chromium commit 3241d114b8036bb6d53931ba34b3bf819258c29d Prior to this
-  // commit DataTypeManagerImpl wasn't created for bookmarks at
-  // ForcedSetDecryptionPassphrase test.
-  // Update Dec 2023: moved this workaround closer to OnEngineInitialized,
-  // with Chromium commit 33441a0f3f9a591693157f2fd16852ce072e6f9d the logic of
-  // SyncUserSettingsImpl::GetSelectedTypes had been changed and affected this
-  // test.
-  brave_sync_service_impl()->GetUserSettings()->SetSelectedTypes(
-      false, syncer::UserSelectableTypeSet());
+  // enabling sync, for example when internet connection is unstable.
+  // So we just make DataTypeManagerImpl::SetConfigurer requirements be
+  // satisfied.
+  // Related Chromium commit 7cdf92e9470fc73a09b871f99d14ff115edef652
+  brave_sync_service_impl()->data_type_manager_->Stop(KEEP_METADATA);
 
   brave_sync_service_impl()->OnEngineInitialized(true, false);
   EXPECT_FALSE(
@@ -335,10 +334,13 @@ TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   task_environment_.RunUntilIdle();
 
+  std::unique_ptr<DataTypeManager> bak_data_type_manager =
+      std::move(brave_sync_service_impl()->data_type_manager_);
   // Replace DataTypeManager with mock who gives CONFIGURING result on state()
   // call. We need this to force SyncService::GetTransportState() give
   // TransportState::CONFIGURING status to test behavior
-  // BraveSyncServiceImpl::OnSelfDeviceInfoDeleted
+  // BraveSyncServiceImpl::OnSelfDeviceInfoDeleted.
+  // Save original DataTypeManager to revert it before test exit.
   NiceMock<DataTypeManagerMock> data_type_manager_mock;
   std::unique_ptr<DataTypeManager> data_type_manager_mock_ptr =
       std::unique_ptr<DataTypeManager>(&data_type_manager_mock);
@@ -362,9 +364,13 @@ TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
 
   brave_sync_service_impl()->RemoveObserver(&observer_mock);
 
-  // brave_sync_service_impl()->data_type_manager_ is owned by local var
-  // |data_type_manager_mock|, so release ownership for the correct destruction
-  brave_sync_service_impl()->data_type_manager_.release();
+  // Revert back brave_sync_service_impl()->data_type_manager_ and
+  // proper release local data_type_manager_mock_ptr
+  data_type_manager_mock_ptr =
+      std::move(brave_sync_service_impl()->data_type_manager_);
+  data_type_manager_mock_ptr.release();
+  brave_sync_service_impl()->data_type_manager_ =
+      std::move(bak_data_type_manager);
 
   OSCryptMocker::TearDown();
 }
@@ -556,7 +562,7 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
   auto history_precondition_state =
       history_model_type_controller->GetPreconditionState();
   EXPECT_EQ(history_precondition_state,
-            DataTypeController::PreconditionState::kPreconditionsMet);
+            ModelTypeController::PreconditionState::kPreconditionsMet);
 
   auto test_model_type_store_service =
       std::make_unique<TestModelTypeStoreService>();
@@ -568,7 +574,7 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
   auto history_delete_directives_precondition_state =
       history_delete_directives_model_type_controller->GetPreconditionState();
   EXPECT_EQ(history_delete_directives_precondition_state,
-            DataTypeController::PreconditionState::kPreconditionsMet);
+            ModelTypeController::PreconditionState::kPreconditionsMet);
 
   OSCryptMocker::TearDown();
 }
@@ -592,7 +598,7 @@ TEST_F(BraveSyncServiceImplTest, OnlyBookmarksAfterSetup) {
       brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
   auto selected_types =
       brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes();
-  EXPECT_EQ(selected_types.Size(), 1u);
+  EXPECT_EQ(selected_types.size(), 1u);
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
 
   OSCryptMocker::TearDown();
@@ -609,12 +615,13 @@ TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
 
   base::HistogramTester histogram_tester;
 
-  std::vector<syncer::TypeEntitiesCount> counts;
+  brave_sync_service_impl()->synced_objects_context_.Reset(1);
+
   syncer::TypeEntitiesCount bookmarks_count(syncer::BOOKMARKS);
   bookmarks_count.entities = bookmarks_count.non_tombstone_entities = 1;
-  counts.push_back(bookmarks_count);
 
-  brave_sync_service_impl()->OnGotEntityCounts(counts);
+  brave_sync_service_impl()->OnGetTypeEntitiesCount(bookmarks_count);
+
   histogram_tester.ExpectBucketCount(
       brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 0, 1);
 
@@ -635,7 +642,8 @@ TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
             std::move(callback).Run(std::pair<bool, int>(true, 10001));
           });
 
-  brave_sync_service_impl()->OnGotEntityCounts(counts);
+  brave_sync_service_impl()->synced_objects_context_.Reset(1);
+  brave_sync_service_impl()->OnGetTypeEntitiesCount(bookmarks_count);
   histogram_tester.ExpectBucketCount(
       brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 2, 1);
 

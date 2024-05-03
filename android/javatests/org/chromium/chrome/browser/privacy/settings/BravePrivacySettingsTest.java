@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.ChromeTabbedActivityTestRule;
@@ -96,8 +97,12 @@ public class BravePrivacySettingsTest {
     @Test
     @SmallTest
     public void testDisabledOptions() {
-        TestThreadUtils.runOnUiThreadBlocking(() -> {
-            assertFalse(PreloadPagesSettingsBridge.getState() != PreloadPagesState.NO_PRELOADING);
-        });
+        TestThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    assertFalse(
+                            PreloadPagesSettingsBridge.getState(
+                                            ProfileManager.getLastUsedRegularProfile())
+                                    != PreloadPagesState.NO_PRELOADING);
+                });
     }
 }

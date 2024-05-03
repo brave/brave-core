@@ -16,6 +16,8 @@ constexpr int kMuteSiteResourceId = IDS_MUTE_SITE_MAC;
 constexpr int kCloseOtherTabsResourceId = IDS_TAB_CXMENU_CLOSEOTHERTABS;
 constexpr int kReopenCloseTabsMacResourceId = IDS_REOPEN_CLOSED_TABS_MAC;
 constexpr int kHelpMacResourceId = IDS_HELP_MAC;
+constexpr int kMediaRouterMenuItemTitleResourceId =
+    IDS_MEDIA_ROUTER_MENU_ITEM_TITLE;
 }  // namespace
 
 // Insert "New Private Window with Tor" in "File" menu
@@ -48,14 +50,16 @@ IDS_MUTE_TAB_MAC).command_id(IDC_TOGGLE_TAB_MUTE), \
 IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS).command_id(IDC_CLOSE_DUPLICATE_TABS), \
               Item(kCloseOtherTabsResourceId
 
-// Insert Commander item right after "Reader mode" aka "Distill page"
-#define IsDomDistillerEnabled() IsDomDistillerEnabled()),                \
-    Item(IDS_IDC_COMMANDER).command_id(IDC_COMMANDER)                    \
-                           .remove_if(is_pwa || !commander::IsEnabled()
+// Insert Commander item right after media router
+#undef IDS_MEDIA_ROUTER_MENU_ITEM_TITLE
+#define IDS_MEDIA_ROUTER_MENU_ITEM_TITLE                         \
+IDS_IDC_COMMANDER).command_id(IDC_COMMANDER)                     \
+                  .remove_if(is_pwa || !commander::IsEnabled()), \
+              Item(kMediaRouterMenuItemTitleResourceId
 
 #include "src/chrome/browser/ui/cocoa/main_menu_builder.mm"
 
-#undef IsDomDistillerEnabled
+#undef IDS_MEDIA_ROUTER_MENU_ITEM_TITLE
 #undef IDS_MUTE_SITE_MAC
 #define IDS_MUTE_SITE_MAC kMuteSiteResourceId
 #undef IDS_PASTE_MAC

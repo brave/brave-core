@@ -162,8 +162,6 @@ void SharedPinnedTabService::CacheWebContentsIfNeeded(
 
     cached_shared_contentses_from_closing_browser_.insert(
         detached_web_contents->tab->ReplaceContents(nullptr));
-    detached_web_contents->remove_reason =
-        TabStripModelChange::RemoveReason::kCached;
   }
 }
 
@@ -724,15 +722,6 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
         tab_strip_model->GetWebContentsAt(index));
     DCHECK(dummy_contents_data);
     dummy_contents_data->stop_propagation();
-
-    // Unfortunately, We can't replace existing tab contents with cached web
-    // contents. We should use restore method.
-    chrome::AddRestoredTabFromCache(
-        std::move(unique_shared_contents), browser, index,
-        /* group= */ {},
-        /* select */ !is_last_closing_browser, /* pin= */ true,
-        /* user_agent_override= */ {},
-        /* extra_data= */ {});
 
     // In order to prevent browser from being closed, we should close the dummy
     // contents after we restore the tab.

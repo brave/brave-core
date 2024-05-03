@@ -12,12 +12,12 @@
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
-#include "components/omnibox/browser/omnibox.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
+#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
 namespace brave_news {
 class BraveNewsController;
@@ -42,8 +42,8 @@ class BraveNewTabUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandlerFactory>
           pending_receiver);
 
-  void BindInterface(
-      mojo::PendingReceiver<omnibox::mojom::PageHandler> pending_page_handler);
+  void BindInterface(mojo::PendingReceiver<searchbox::mojom::PageHandler>
+                         pending_page_handler);
 
  private:
   // new_tab_page::mojom::PageHandlerFactory:

@@ -12,7 +12,7 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "third_party/rust/chromium_crates_io/vendor/cxx-1.0.119/include/cxx.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 class PrefService;
 

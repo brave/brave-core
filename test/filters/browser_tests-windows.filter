@@ -28,20 +28,6 @@
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchDisabled
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
 
-# This test passes locally but fails on CI likely because BraveMainDelegate is
-# available in the Chromium tests. It fails with the message:
-#
-# Terminating render process for bad Mojo message: Received bad user message:
-# No binder found for interface brave_news.mojom.BraveNewsController for the
-# frame/document scope
-#
-# The binder is not instantiated because BraveContentBrowserClient is also not
-# available. The difference between CI and local execution has not been
-# investigated.
--FetchManifestAndInstallCommandTest.MultipleInstalls
--WebAppStatusBarTest.DisplayBrowserHasStatusBar
--WebAppTabStripBrowserTest.OnlyNavigateHomeTabIfDifferentUrl
-
 # These tests fail because our default search provider is not Google, which
 # makes the page classification return the result the tests don't expect. Also,
 # kZeroSuggestPrefetchingOnWeb feature is currently disabled by default which

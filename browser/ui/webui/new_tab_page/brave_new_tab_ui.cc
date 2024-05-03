@@ -27,13 +27,13 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
-#include "components/omnibox/browser/omnibox.mojom.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
 using ntp_background_images::NTPCustomImagesSource;
 
@@ -125,13 +125,14 @@ void BraveNewTabUI::BindInterface(
 }
 
 void BraveNewTabUI::BindInterface(
-    mojo::PendingReceiver<omnibox::mojom::PageHandler> pending_page_handler) {
+    mojo::PendingReceiver<searchbox::mojom::PageHandler> pending_page_handler) {
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
 
   realbox_handler_ = std::make_unique<RealboxHandler>(
       std::move(pending_page_handler), profile, web_ui()->GetWebContents(),
-      nullptr, nullptr);
+      /*metrics_reporter=*/nullptr, /*lens_searchbox_client=*/nullptr,
+      /*omnibox_controller=*/nullptr);
 }
 
 void BraveNewTabUI::CreatePageHandler(

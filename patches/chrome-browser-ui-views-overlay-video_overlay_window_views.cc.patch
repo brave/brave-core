@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
-index 5e7c2cc28e00a84b330558dca3a520c08687e274..0ce5a5b169a6422b2fd6fa2cd40f5bbdb3795cb8 100644
+index 8110f1c5909e8996b1d847267f0aab3eff8339fa..8a63289b6683215ec0ba3e585c19d9172c93947a 100644
 --- a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 +++ b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 @@ -285,7 +285,7 @@ std::unique_ptr<VideoOverlayWindowViews> VideoOverlayWindowViews::Create(
@@ -11,7 +11,7 @@ index 5e7c2cc28e00a84b330558dca3a520c08687e274..0ce5a5b169a6422b2fd6fa2cd40f5bbd
  
    overlay_window->CalculateAndUpdateWindowBounds();
    overlay_window->SetUpViews();
-@@ -733,6 +733,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
+@@ -734,6 +734,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
  
    max_size_ = new_max_size;
  

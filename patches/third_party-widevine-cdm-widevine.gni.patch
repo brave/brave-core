@@ -1,5 +1,5 @@
 diff --git a/third_party/widevine/cdm/widevine.gni b/third_party/widevine/cdm/widevine.gni
-index 58f073ca562ca40c3165f4dd0f650dc467b43d5c..735a99c71e5086e146ec0bdbf2090d56bd5f08ca 100644
+index 8b97b7a57419e75f3936bbe3c8bb2644ae7e500b..189cc730246dec9ec5eef2f5d1db936663c84fdb 100644
 --- a/third_party/widevine/cdm/widevine.gni
 +++ b/third_party/widevine/cdm/widevine.gni
 @@ -31,6 +31,7 @@ library_widevine_cdm_available =

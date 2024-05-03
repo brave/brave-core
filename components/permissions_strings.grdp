@@ -37,6 +37,12 @@
     <message name="IDS_NOTIFICATION_QUIET_PERMISSION_INFOBAR_PREDICTION_SERVICE_MESSAGE" desc="Text used as notification message when requesting permission for Web Notifications via a notification. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
       Notifications were automatically blocked because you usually don't allow them
     </message>
+    <message name="IDS_LOCATION_QUIET_PERMISSION_MESSAGE_UI" desc="Text used as notification message when requesting Gelocation permission. Used when quiet UI is enabled in settings.">
+      Location requests are automatically blocked for all sites except ones you allow
+    </message>
+    <message name="IDS_LOCATION_QUIET_PERMISSION_MESSAGE_UI_PREDICTION_SERVICE" desc="Text used as notification message when requesting permission for Geolocation. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
+      This site was blocked from knowing your precise location because you usually don't allow this
+    </message>
     <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_INFOBAR_TEXT" desc="Text requesting permission for a site to access the computer's microphone.">
       <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to use your microphone
     </message>
@@ -64,6 +70,10 @@
 
     <message name="IDS_MESSAGE_MISSING_CAMERA_PERMISSION_TITLE" desc="Title text shown in a prompt ui to ask whether user agrees to grant Android camera permission when a website has requested access to camera, but Brave is missing the Android camera permission.">
       Allow camera?
+    </message>
+    <!-- TODO(https://crbug.com/331489777)-->
+    <message name="IDS_MESSAGE_MISSING_XR_PERMISSION_TITLE" desc="Title text shown in a prompt ui to ask whether user agrees to grant Android scene understanding and hand tracking permission when a website has requested access to scene understanding and hand tracking, but Brave is missing the Android scene understanding and hand tracking permission.">
+      Allow 2 permissions?
     </message>
     <message name="IDS_MESSAGE_MISSING_STORAGE_ACCESS_PERMISSION_TITLE" desc="Title text shown in a prompt ui to ask whether user agrees to grant Android storage access permission when a website has requested access to storage access, but Brave is missing the Android storage access permission.">
       Allow storage access?
@@ -285,6 +295,19 @@ This will otherwise be blocked by your privacy settings. This will allow the con
     </message>
     <message name="IDS_NOTIFICATION_PERMISSIONS_BLOCKED_CHIP" desc="Button text representing a blocked or expired request for showing notifications from a website. When clicked, shows a permission prompt bubble with more information.">
       Notifications blocked
+    </message>
+
+    <message name="IDS_CAPTURED_SURFACE_CONTROL_PERMISSION_CHIP" desc="Button text representing a request for permission to scroll and zoom captured tabs by a capturing website. When clicked, shows a permission prompt bubble with more information.">
+      Scroll and zoom your shared tab?
+    </message>
+    <message name="IDS_CAPTURED_SURFACE_CONTROL_PERMISSION_BLOCKED_CHIP" desc="Button text representing a blocked or expired request for scrolling and zooming shared tabs from a website. When clicked, shows a permission prompt bubble with more information.">
+      Scroll &amp; zoom blocked
+    </message>
+    <message name="IDS_PERMISSIONS_CAPTURED_SURFACE_CONTROL_ALLOWED_CONFIRMATION_SCREENREADER_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="Announcement to screen readers confirming that a scroll and zoom permission requested has been granted.">
+      Scroll &amp; zoom allowed
+    </message>
+    <message name="IDS_PERMISSIONS_CAPTURED_SURFACE_CONTROL_NOT_ALLOWED_CONFIRMATION_SCREENREADER_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="Announcement to screen readers confirming that a scroll and zoom permission requested has been denied.">
+      Scroll &amp; zoom not allowed
     </message>
 
     <message name="IDS_PERMISSIONS_PERMISSION_ALLOWED_CONFIRMATION" desc="Text displayed next to a permission icon confirming that a permission has been granted.">

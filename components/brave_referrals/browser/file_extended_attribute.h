@@ -18,7 +18,7 @@ namespace brave {
 // interest:
 // ENOATTR - the attribute with the given |name| was not found.
 // ENOTSUP - the file system doesn't support (or disabled) extended attributes.
-// ENODATA - the value could not be retrieved.
+// ENOTRECOVERABLE - the value could not be retrieved.
 int GetFileExtendedAttribute(const base::FilePath& path,
                              const char* name,
                              std::vector<char>* value);

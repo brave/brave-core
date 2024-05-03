@@ -25,7 +25,7 @@ BraveHistoryDeleteDirectivesModelTypeController::
 BraveHistoryDeleteDirectivesModelTypeController::
     ~BraveHistoryDeleteDirectivesModelTypeController() = default;
 
-syncer::DataTypeController::PreconditionState
+syncer::ModelTypeController::PreconditionState
 BraveHistoryDeleteDirectivesModelTypeController::GetPreconditionState() const {
   DCHECK(CalledOnValidThread());
   return PreconditionState::kPreconditionsMet;

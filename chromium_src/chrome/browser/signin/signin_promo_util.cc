@@ -9,7 +9,7 @@
 
 namespace signin {
 
-bool ShouldShowPromo(Profile* profile) {
+bool ShouldShowPromo(Profile& profile, ConsentLevel promo_type) {
   return false;
 }
 

@@ -211,9 +211,11 @@ void BraveNewTabPageHandler::TryBraveSearchPromotion(const std::string& input,
     window_open_disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
   }
 
-  web_contents_->OpenURL(content::OpenURLParams(
-      promo_url, content::Referrer(), window_open_disposition,
-      ui::PageTransition::PAGE_TRANSITION_FORM_SUBMIT, false));
+  web_contents_->OpenURL(
+      content::OpenURLParams(
+          promo_url, content::Referrer(), window_open_disposition,
+          ui::PageTransition::PAGE_TRANSITION_FORM_SUBMIT, false),
+      /*navigation_handle_callback=*/{});
 
   brave_search_conversion::p3a::RecordPromoTrigger(
       g_browser_process->local_state(),
@@ -306,7 +308,7 @@ void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
       ui::DispositionFromClick(false, alt_key, ctrl_key, meta_key, shift_key);
   content::OpenURLParams params(search_url, content::Referrer(), disposition,
                                 ui::PAGE_TRANSITION_FROM_ADDRESS_BAR, false);
-  web_contents_->OpenURL(params);
+  web_contents_->OpenURL(params, /*navigation_handle_callback=*/{});
 }
 
 bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {

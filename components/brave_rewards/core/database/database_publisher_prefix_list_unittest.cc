@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
+
 #include <string>
 #include <utility>
 #include <vector>
@@ -11,7 +13,6 @@
 #include "base/numerics/byte_conversions.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_mock.h"

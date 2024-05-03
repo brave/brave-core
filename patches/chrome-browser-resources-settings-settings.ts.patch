@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings.ts b/chrome/browser/resources/settings/settings.ts
-index 7a00c987358eb0f4c9ff444376920bf34cc3068c..d08439a734c565809bff1f7aacba15c0667693f0 100644
+index f5e4e6f725abc7d0d023e41f0dc9243f4a68852d..203c0b20bd306544e6b0fcc7a71e3202eea6418a 100644
 --- a/chrome/browser/resources/settings/settings.ts
 +++ b/chrome/browser/resources/settings/settings.ts
 @@ -2,6 +2,7 @@
@@ -9,4 +9,4 @@ index 7a00c987358eb0f4c9ff444376920bf34cc3068c..d08439a734c565809bff1f7aacba15c0
 +import './brave_overrides/index.js';
  import './settings_ui/settings_ui.js';
  
- export {ExtensionControlledIndicatorElement} from '/shared/settings/controls/extension_controlled_indicator.js';
+ export {CrPolicyPrefIndicatorElement} from '/shared/settings/controls/cr_policy_pref_indicator.js';

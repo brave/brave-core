@@ -6,6 +6,7 @@
 #include "brave/browser/ui/tabs/brave_tab_color_mixer.h"
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/no_destructor.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -69,8 +70,8 @@ void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
                                      const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  static const auto kDefaultColorMap =
-      base::MakeFixedFlatMapNonConsteval<BraveColorIds, SkColor>({
+  static const base::NoDestructor<base::flat_map<BraveColorIds, SkColor>>
+      kDefaultColorMap({
           {kColorBraveVerticalTabActiveBackground,
            mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)},
           {kColorBraveVerticalTabInactiveBackground,
@@ -84,7 +85,7 @@ void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
            SkColorSetRGB(0x85, 0x89, 0x89)},
           {kColorBraveSplitViewTileBackground, SkColorSetRGB(0xDA, 0xDF, 0xD1)},
       });
-  for (const auto& [color_id, default_color] : kDefaultColorMap) {
+  for (const auto& [color_id, default_color] : *kDefaultColorMap) {
     mixer[color_id] =
         GetCustomColorOrDefaultColor(key.custom_theme, color_id, default_color);
   }
@@ -94,8 +95,8 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
                                     const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  static const auto kDefaultColorMap =
-      base::MakeFixedFlatMapNonConsteval<BraveColorIds, SkColor>({
+  static const base::NoDestructor<base::flat_map<BraveColorIds, SkColor>>
+      kDefaultColorMap({
           {kColorBraveVerticalTabActiveBackground,
            mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)},
           {kColorBraveVerticalTabInactiveBackground,
@@ -109,7 +110,7 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
            SkColorSetRGB(0x68, 0x6D, 0x7D)},
           {kColorBraveSplitViewTileBackground, SkColorSetRGB(0x21, 0x27, 0x2A)},
       });
-  for (const auto& [color_id, default_color] : kDefaultColorMap) {
+  for (const auto& [color_id, default_color] : *kDefaultColorMap) {
     auto color =
         GetCustomColorOrDefaultColor(key.custom_theme, color_id, default_color);
     if (color_id == kColorBraveVerticalTabActiveBackground ||

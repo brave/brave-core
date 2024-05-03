@@ -87,7 +87,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                     OmniboxSuggestionsDropdownScrollListener
                             omniboxSuggestionsDropdownScrollListener,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            boolean forcePhoneStyleOmnibox,
+            LocationBarEmbedderUiOverrides uiOverrides,
             @Nullable View baseChromeLayout) {
         super(
                 locationBarLayout,
@@ -119,7 +119,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 backPressManager,
                 omniboxSuggestionsDropdownScrollListener,
                 tabModelSelectorSupplier,
-                forcePhoneStyleOmnibox,
+                uiOverrides,
                 baseChromeLayout);
 
         if (mUrlBar != null) {

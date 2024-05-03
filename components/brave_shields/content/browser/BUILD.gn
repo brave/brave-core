@@ -71,6 +71,7 @@ static_library("browser") {
     "//brave/components/resources:static_resources_grit",
     "//components/component_updater:component_updater",
     "//components/content_settings/core/browser",
+    "//components/content_settings/core/browser:cookie_settings",
     "//components/content_settings/core/common",
     "//components/pref_registry:pref_registry",
     "//components/prefs",

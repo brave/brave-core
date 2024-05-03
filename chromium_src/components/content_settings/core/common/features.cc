@@ -13,6 +13,12 @@ namespace features {
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kTrackingProtection3pcd, base::FEATURE_DISABLED_BY_DEFAULT},
     {kUserBypassUI, base::FEATURE_DISABLED_BY_DEFAULT},
+
+    // Disable content settings indexing as it's currently doesn't work well
+    // with our BravePrefProvider.
+    // TODO(https://github.com/brave/brave-browser/issues/37877).
+    {kHostIndexedMetadataGrants, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kIndexedHostContentSettingsMap, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features

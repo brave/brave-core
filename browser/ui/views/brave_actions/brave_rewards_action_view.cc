@@ -186,7 +186,8 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
           this,
           browser_->profile(),
           GURL(kBraveRewardsPanelURL),
-          IDS_BRAVE_UI_BRAVE_REWARDS)) {
+          IDS_BRAVE_UI_BRAVE_REWARDS,
+          /*force_load_on_create=*/false)) {
   DCHECK(browser_);
 
   SetButtonController(std::make_unique<views::MenuButtonController>(

@@ -34,11 +34,11 @@ const char* GetAdBlockModeString(
 const char* GetFingerprintModeString(
     brave_shields::mojom::FingerprintMode fp_block_mode) {
   switch (fp_block_mode) {
-    case brave_shields::mojom::FingerprintMode::STRICT:
+    case brave_shields::mojom::FingerprintMode::STRICT_MODE:
       return kAggressive;
-    case brave_shields::mojom::FingerprintMode::STANDARD:
+    case brave_shields::mojom::FingerprintMode::STANDARD_MODE:
       return kStandard;
-    case brave_shields::mojom::FingerprintMode::ALLOW:
+    case brave_shields::mojom::FingerprintMode::ALLOW_MODE:
       return kAllow;
   }
   NOTREACHED();
