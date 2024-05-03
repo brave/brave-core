@@ -731,7 +731,6 @@ brave_java_resources = [
   "java/res/drawable/warning_circle_filled.xml",
   "java/res/drawable/web_notification_small_icon_background.xml",
   "java/res/drawable/white_rounded_holo_button_thin.xml",
-  "java/res/font/roboto_flex.ttf",
   "java/res/layout-land/brave_shields_stats_row.xml",
   "java/res/layout-sw600dp-land/brave_shields_stats_row.xml",
   "java/res/layout-sw600dp/brave_rewards_tippingpanel_fragment.xml",
