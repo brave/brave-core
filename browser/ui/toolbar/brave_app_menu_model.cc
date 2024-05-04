@@ -424,21 +424,19 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
   // Remove upstream's cast item. It'll be added into more tools sub menu.
   if (media_router::MediaRouterEnabled(browser()->profile())) {
     SimpleMenuModel* parent_model_for_cast = this;
-    if (features::IsChromeRefresh2023()) {
-      DCHECK(GetIndexOfCommandId(IDC_SAVE_AND_SHARE_MENU).has_value());
-      parent_model_for_cast = static_cast<SimpleMenuModel*>(GetSubmenuModelAt(
-          GetIndexOfCommandId(IDC_SAVE_AND_SHARE_MENU).value()));
-    }
+    DCHECK(GetIndexOfCommandId(IDC_SAVE_AND_SHARE_MENU).has_value());
+    parent_model_for_cast = static_cast<SimpleMenuModel*>(GetSubmenuModelAt(
+        GetIndexOfCommandId(IDC_SAVE_AND_SHARE_MENU).value()));
 
     DCHECK(parent_model_for_cast->GetIndexOfCommandId(IDC_ROUTE_MEDIA)
                .has_value());
     parent_model_for_cast->RemoveItemAt(
-        GetIndexOfCommandId(IDC_ROUTE_MEDIA).value());
+        parent_model_for_cast->GetIndexOfCommandId(IDC_ROUTE_MEDIA).value());
   }
 
-  // Remove upstream's clear browsing data. It'll be added into history sub
-  // menu at RecentTabsSubMenuModel::Build().
-  if (features::IsChromeRefresh2023()) {
+  {
+    // Remove upstream's clear browsing data. It'll be added into history sub
+    // menu at RecentTabsSubMenuModel::Build().
     auto index = GetIndexOfCommandId(IDC_CLEAR_BROWSING_DATA);
     CHECK(index);
     RemoveItemAt(*index);
@@ -448,10 +446,6 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     index = GetIndexOfCommandId(IDC_PROFILE_MENU_IN_APP_MENU);
     CHECK(index);
     RemoveItemAt(*index);
-  } else {
-    const auto index =
-        more_tools_model->GetIndexOfCommandId(IDC_CLEAR_BROWSING_DATA);
-    more_tools_model->RemoveItemAt(*index);
   }
 
   // Remove upstream's dev tools menu and associated separator.
