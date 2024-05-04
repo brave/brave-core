@@ -10,10 +10,18 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #define BookmarksSidePanelUI BookmarksSidePanelUI_ChromiumImpl
+#define CreateWebUIController CreateWebUIController_Unused
 
 #include "src/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.cc"
 
+#undef CreateWebUIController
 #undef BookmarksSidePanelUI
+
+std::unique_ptr<content::WebUIController>
+BookmarksSidePanelUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                                  const GURL& url) {
+  return std::make_unique<BookmarksSidePanelUI>(web_ui);
+}
 
 BookmarksSidePanelUI::BookmarksSidePanelUI(content::WebUI* web_ui)
     : BookmarksSidePanelUI_ChromiumImpl(web_ui) {
