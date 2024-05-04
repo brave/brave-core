@@ -1137,7 +1137,8 @@ public class BytecodeTest {
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         boolean.class,
                         FullscreenManager.class,
-                        TabObscuringHandler.class));
+                        TabObscuringHandler.class,
+                        DesktopWindowStateProvider.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
