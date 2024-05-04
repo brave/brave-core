@@ -1,12 +1,12 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index a61282c6c8a98343dca39fc0e4d55cd03914e156..4250209bcc680d335e77e0b0a440781c5a865797 100644
+index a61282c6c8a98343dca39fc0e4d55cd03914e156..587161af7222202dd323334b6397e5f5cb3804a5 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -168,6 +168,14 @@ base::Value MojoFacade::HandleMojoHandleReadMessage(base::Value::Dict args) {
    std::vector<uint8_t> bytes;
    std::vector<mojo::ScopedHandle> handles;
    MojoResult mojo_result = mojo::ReadMessageRaw(pipe, &bytes, &handles, flags);
-+  if (mojo_result == MOJO_RESULT_OK || mojo_result == MOJO_RESULT_SHOULD_WAIT) {
++  if (mojo_result == MOJO_RESULT_SHOULD_WAIT) {
 +    const auto watcher_id = pipe_id_to_watcher_id_.find(id_as_value->GetInt());
 +    if (watcher_id != pipe_id_to_watcher_id_.end()) {
 +      const auto watcher = watchers_.find(watcher_id->second);
