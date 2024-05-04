@@ -164,11 +164,6 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       "hardwareAccelerationEnabledAtStartup",
       content::GpuDataManager::GetInstance()->HardwareAccelerationEnabled());
 
-  source->AddBoolean(
-      /*name*/ "showHelpWDP",
-      /*value*/ is_jpn || base::FeatureList::IsEnabled(
-                              features::kBraveShowHelpWDPInWelcomePage));
-
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
