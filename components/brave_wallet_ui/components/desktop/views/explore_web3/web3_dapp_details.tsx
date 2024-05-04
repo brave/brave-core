@@ -19,12 +19,11 @@ import Amount from '../../../../utils/amount'
 import { CurrencySymbols } from '../../../../utils/currency-symbols'
 import { getLocale } from '../../../../../common/locale'
 import { WalletRoutes } from '../../../../constants/types'
-import { openTab } from '../../../../utils/routes-utils'
 import { isHttpsUrl } from '../../../../utils/string-utils'
 
 // Components
-import { NavButton } from '../../../extension/buttons'
 import { CreateNetworkIcon } from '../../../shared/create-network-icon'
+import { ExternalLink } from '../../../shared/external_link/external_link'
 
 // Styles
 import { Column, Row, Text } from '../../../shared/style'
@@ -69,6 +68,8 @@ export const DappDetails = () => {
     return <Redirect to={WalletRoutes.Web3} />
   }
 
+  console.log(dapp.website)
+
   return (
     <Column
       fullHeight
@@ -89,7 +90,7 @@ export const DappDetails = () => {
             height={72}
           />
         ) : (
-          <PlaceholderImage size={72} />
+          <PlaceholderImage size='72px' />
         )}
 
         <Text>{dapp.name}</Text>
@@ -164,18 +165,13 @@ export const DappDetails = () => {
           })}
         </Row>
       </Column>
-
-      <NavButton
-        minWidth='100%'
-        isExternalLink
-        buttonType='primary'
-        onSubmit={() => {
-          if (isHttpsUrl(dapp.website)) {
-            openTab(dapp.website)
-          }
-        }}
-        text={getLocale('braveWalletVisitDapp').replace('$1', dapp.name)}
-      />
+      {isHttpsUrl(dapp.website) ? (
+        <ExternalLink
+          href={dapp.website}
+          text={getLocale('braveWalletVisitDapp').replace('$1', dapp.name)}
+          fullWidth
+        />
+      ) : null}
     </Column>
   )
 }

@@ -28,7 +28,6 @@ import {
 interface Props {
   title: string
   searchValue: string
-  showBackButton?: boolean
   actions: Array<{
     buttonIconName: string
     onClick: (() => void) | (() => Promise<void>)
@@ -39,7 +38,6 @@ interface Props {
 
 export const HeaderControlBar: React.FC<Props> = ({
   actions,
-  showBackButton,
   onSearchValueChange,
   onClickBackButton,
   searchValue,
@@ -71,7 +69,7 @@ export const HeaderControlBar: React.FC<Props> = ({
       <Row justifyContent='flex-start'>
         {!showSearchBar && (
           <>
-            {showBackButton ? (
+            {onClickBackButton ? (
               <BackButton onClick={onClickBackButton}>
                 <Icon name='arrow-left' />
               </BackButton>
@@ -98,14 +96,13 @@ export const HeaderControlBar: React.FC<Props> = ({
             isV2={true}
           />
         </SearchBarWrapper>
-        {showSearchBar && (
+        {showSearchBar ? (
           <Row width='unset'>
             <PortfolioActionButton onClick={onCloseSearchBar}>
               <ButtonIcon name='close' />
             </PortfolioActionButton>
           </Row>
-        )}
-        {!showSearchBar && (
+        ) : (
           <Row
             width='unset'
             gap={'12px'}

@@ -8,13 +8,16 @@ import { useHistory } from 'react-router'
 
 import ProgressRing from '@brave/leo/react/progressRing'
 
+// Types
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+
 // Constants & Options
 import { ExploreNavOptions } from '../../../../options/nav-options'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import { makeDappDetailsRoute } from '../../../../utils/routes-utils'
-import { useSyncedLocalStorage } from '../../../../common/hooks/use_local_storage'
+import { useLocalStorage } from '../../../../common/hooks/use_local_storage'
 import { LOCAL_STORAGE_KEYS } from '../../../../common/constants/local-storage-keys'
 import { capitalizeFirstLetter } from '../../../../utils/string-utils'
 import { makeInitialFilteredOutNetworkKeys } from '../../../../utils/local-storage-utils'
@@ -28,6 +31,7 @@ import {
 import {
   networkEntityAdapter //
 } from '../../../../common/slices/entities/network.entity'
+import { useQuery } from '../../../../common/hooks/use-query'
 
 // Components
 import {
@@ -39,36 +43,32 @@ import {
 import { Web3DappFilters } from '../../popup-modals/filter-modals/web3_dapp_filters_modal'
 import { DappListItem } from './dapp_list_item'
 import { VirtualizedDappsList } from './virtualized_dapps_list'
+import { DappFilter } from './dapp_filter'
 
 // Styles
 import { Column, Row, Text } from '../../../shared/style'
 import { ControlsRow } from '../portfolio/style'
-import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { CategoryHeader, DappsGrid, PlainButton } from './explore_web3.style'
-import { DappFilter } from './dapp_filter'
 
 export const ExploreWeb3View = () => {
   // routing
   const history = useHistory()
-  const params = new URLSearchParams(history.location.search)
-  const selectedCategory = params.get('dappCategory')
+  const query = useQuery()
+  const selectedCategory = query.get('dappCategory')
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
   const [showFilters, setShowFilters] = React.useState<boolean>(false)
 
   // local storage
-  const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] =
-    useSyncedLocalStorage(
-      LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_NETWORK_KEYS,
-      makeInitialFilteredOutNetworkKeys
-    )
+  const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] = useLocalStorage(
+    LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_NETWORK_KEYS,
+    makeInitialFilteredOutNetworkKeys
+  )
 
-  const [filteredOutCategories, setFilteredOutCategories] =
-    useSyncedLocalStorage<string[]>(
-      LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_CATEGORIES,
-      []
-    )
+  const [filteredOutCategories, setFilteredOutCategories] = useLocalStorage<
+    string[]
+  >(LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_CATEGORIES, [])
 
   // queries
   const { isLoading, data: topDapps } = useGetTopDappsQuery(undefined)
@@ -201,21 +201,20 @@ export const ExploreWeb3View = () => {
     })
   }, [history])
 
-  const onRemoveCategoryFilter = React.useCallback(
+  const onFilterOutCategory = React.useCallback(
     (category: string) => {
-      setFilteredOutCategories([...filteredOutCategories, category])
+      setFilteredOutCategories((prev) => prev.concat(category))
     },
-    [filteredOutCategories, setFilteredOutCategories]
+    [setFilteredOutCategories]
   )
 
-  const onRemoveNetworkFilter = React.useCallback(
+  const onFilterOutNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
-      setFilteredOutNetworkKeys([
-        ...filteredOutNetworkKeys,
-        networkEntityAdapter.selectId(network).toString()
-      ])
+      setFilteredOutNetworkKeys((prev) =>
+        prev.concat(networkEntityAdapter.selectId(network).toString())
+      )
     },
-    [filteredOutNetworkKeys, setFilteredOutNetworkKeys]
+    [setFilteredOutNetworkKeys]
   )
 
   const onClearFilters = React.useCallback(() => {
@@ -223,7 +222,7 @@ export const ExploreWeb3View = () => {
     setFilteredOutCategories([])
   }, [setFilteredOutCategories, setFilteredOutNetworkKeys])
 
-  const renderDappsList = React.useMemo(() => {
+  const renderedDappsList = React.useMemo(() => {
     return selectedCategory ? (
       <VirtualizedDappsList
         dappsList={selectedCategoryDapps || []}
@@ -298,8 +297,7 @@ export const ExploreWeb3View = () => {
               ? getLocale('braveWalletWeb3')
               : capitalizeFirstLetter(selectedCategory)
           }
-          showBackButton={selectedCategory !== null}
-          onClickBackButton={onCategoryBack}
+          onClickBackButton={selectedCategory ? onCategoryBack : undefined}
         />
 
         {(filteredOutCategories.length > 0 ||
@@ -328,7 +326,7 @@ export const ExploreWeb3View = () => {
                     <DappFilter
                       key={category}
                       label={category}
-                      onClick={() => onRemoveCategoryFilter(category)}
+                      onClick={() => onFilterOutCategory(category)}
                     />
                   ))
                 : null}
@@ -338,7 +336,7 @@ export const ExploreWeb3View = () => {
                     <DappFilter
                       key={network.chainId}
                       label={network.chainName}
-                      onClick={() => onRemoveNetworkFilter(network)}
+                      onClick={() => onFilterOutNetwork(network)}
                     />
                   ))
                 : null}
@@ -351,7 +349,7 @@ export const ExploreWeb3View = () => {
 
         {!isDappMapEmpty(visibleDappsMap) ||
         selectedCategoryDapps?.length === 0 ? (
-          <>{renderDappsList}</>
+          <>{renderedDappsList}</>
         ) : (
           <Row>
             <h2>{getLocale('braveWalletNoDappsFound')}</h2>

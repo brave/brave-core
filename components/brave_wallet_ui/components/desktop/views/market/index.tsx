@@ -23,14 +23,14 @@ import { WalletRoutes } from '../../../../constants/types'
 import { ExploreNavOptions } from '../../../../options/nav-options'
 
 // Components
-import { Column } from '../../../shared/style'
-import { ControlsRow } from '../portfolio/style'
 import {
   SegmentedControl //
 } from '../../../shared/segmented_control/segmented_control'
 
 // Styled Components
 import { LoadIcon, LoadIconWrapper, MarketDataIframe } from './style'
+import { Column } from '../../../shared/style'
+import { ControlsRow } from '../portfolio/style'
 
 // Utils
 import {

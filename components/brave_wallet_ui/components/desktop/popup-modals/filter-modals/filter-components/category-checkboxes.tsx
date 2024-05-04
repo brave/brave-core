@@ -8,6 +8,7 @@ import Checkbox from '@brave/leo/react/checkbox'
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
+import { capitalizeFirstLetter } from '../../../../../utils/string-utils'
 
 // Styled Components
 import {
@@ -18,7 +19,6 @@ import {
   Title
 } from './filter-components.style'
 import { Row } from '../../../../shared/style'
-import { capitalizeFirstLetter } from '../../../../../utils/string-utils'
 
 interface Props {
   categories: string[]

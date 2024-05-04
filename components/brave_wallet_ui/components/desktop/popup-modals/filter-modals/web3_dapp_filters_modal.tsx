@@ -14,6 +14,7 @@ import { makeInitialFilteredOutNetworkKeys } from '../../../../utils/local-stora
 // components
 import PopupModal from '..'
 import { FilterNetworksSection } from './filter-components/filter-networks-section'
+import { CategoryCheckboxes } from './filter-components/category-checkboxes'
 
 // styles
 import {
@@ -23,7 +24,6 @@ import {
   LeoSquaredButton
 } from '../../../shared/style'
 import { ContentWrapper, ButtonRow } from './portfolio-filters-modal.style'
-import { CategoryCheckboxes } from './filter-components/category-checkboxes'
 
 interface Props {
   categories: string[]
@@ -54,12 +54,8 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
   >(filteredOutDappCategories)
 
   // methods
-  const isCategoryFilteredOut = React.useCallback(
-    (category: string) => {
-      return filteredOutCategories.includes(category)
-    },
-    [filteredOutCategories]
-  )
+  const isCategoryFilteredOut = (category: string) =>
+    filteredOutCategories.includes(category)
 
   const onSaveChanges = React.useCallback(() => {
     setFilteredOutDappNetworkKeys(filteredOutNetworkKeys)
@@ -73,34 +69,21 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
     onClose
   ])
 
-  const onCheckCategory = React.useCallback(
-    (category: string) => {
-      if (isCategoryFilteredOut(category)) {
-        setFilteredOutCategories(
-          filteredOutCategories.filter((c) => c !== category)
-        )
-        return
-      }
-      setFilteredOutCategories([...filteredOutCategories, category])
-    },
-    [filteredOutCategories, isCategoryFilteredOut]
-  )
+  const onCheckCategory = (category: string) =>
+    setFilteredOutCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : prev.concat(category)
+    )
 
   // computed
-  const isSelectAll = React.useMemo(() => {
-    return (
-      filteredOutCategories.length > 0 &&
-      categories.some((category) => filteredOutCategories.includes(category))
-    )
-  }, [categories, filteredOutCategories])
+  const showSelectAll =
+    filteredOutCategories.length > 0 &&
+    categories.some((category) => filteredOutCategories.includes(category))
 
   const onSelectOrDeselectAllCategories = React.useCallback(() => {
-    if (isSelectAll) {
-      setFilteredOutCategories([])
-      return
-    }
-    setFilteredOutCategories(categories)
-  }, [categories, isSelectAll])
+    setFilteredOutCategories(showSelectAll ? [] : categories)
+  }, [categories, showSelectAll])
 
   return (
     <PopupModal
@@ -120,7 +103,7 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
             onCheckCategory={onCheckCategory}
             isCategoryFilteredOut={isCategoryFilteredOut}
             categories={categories}
-            isSelectAll={isSelectAll}
+            isSelectAll={showSelectAll}
             onSelectOrDeselectAllCategories={onSelectOrDeselectAllCategories}
           />
           <VerticalSpacer space={16} />

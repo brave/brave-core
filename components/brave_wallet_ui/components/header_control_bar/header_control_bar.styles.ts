@@ -15,13 +15,11 @@ import {
 
 export const ControlBarWrapper = styled(Row)<{
   showSearchBar: boolean
-  isNFTView?: boolean
 }>`
   padding: 0px 0px 0px 8px;
   margin-bottom: 16px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: ${(p) => (p.showSearchBar ? (p.isNFTView ? '2px' : '0px') : '4px')}
-      0px 0px 8px;
+    padding: ${(p) => (p.showSearchBar ? '0px' : '4px')} 0px 0px 8px;
     margin-bottom: ${(p) => (p.showSearchBar ? 12 : 16)}px;
   }
 `

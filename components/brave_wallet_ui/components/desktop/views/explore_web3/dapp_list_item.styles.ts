@@ -19,6 +19,6 @@ export const StyledWrapper = styled(Row)`
 
 export const PlaceholderImage = styled(Icon).attrs({
     name: 'image'
-})<{ size?: number }>`
-  --leo-icon-size: ${(p) => p.size || 40}px;
+})<{ size?: string }>`
+  --leo-icon-size: ${(p) => p.size ?? '40px'};
 `
