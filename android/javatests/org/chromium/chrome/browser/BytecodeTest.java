@@ -1441,7 +1441,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        Supplier.class,
+                        ObservableSupplier.class,
                         ObservableSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
