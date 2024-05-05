@@ -117,6 +117,12 @@
             "TargetGetModuleFileNameExA64",
             "TargetGetModuleFileNameExW64",
         ],
+        "ui/resources/grit/webui_resources.h": [
+            "IDR_WEBUI_CR_ELEMENTS_CR_BUTTON_CR_BUTTON_HTML_JS",
+            "IDR_WEBUI_CR_ELEMENTS_CR_BUTTON_CR_BUTTON_JS",
+            "IDR_WEBUI_CR_ELEMENTS_CR_TOGGLE_CR_TOGGLE_HTML_JS",
+            "IDR_WEBUI_CR_ELEMENTS_CR_TOGGLE_CR_TOGGLE_JS",
+        ],
         "v8/src/builtins/builtins-utils.h": [
             "BUILTIN",
         ],
