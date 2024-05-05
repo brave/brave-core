@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
@@ -53,6 +55,12 @@ class GeoClueLocationProviderTest : public testing::Test {
           loop_->Quit();
           update_count_++;
         }));
+
+    base::FilePath config_path("/etc/geoclue/geoclue.conf");
+    std::string result;
+    base::ReadFileToString(config_path, &result);
+
+    LOG(ERROR) << "Config: " << result;
   }
 
   void WaitForUpdate() {
