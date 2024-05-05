@@ -53,6 +53,7 @@ extension Preferences {
       default: true
     )
     /// The option to determine if we show or hide test networks in network lists
+    /// - warning: this preference should not be used other than the migration of itself.
     public static let showTestNetworks = Option<Bool>(
       key: "wallet.show-test-networks",
       default: false
@@ -168,6 +169,12 @@ extension Preferences {
     /// Used to track whether to migrate `account.address` to `account.accountId.uniqueKey` (`account.id`)
     static let migrateCacheKeyCompleted = Option<Bool>(
       key: "wallet.migrate-cache-key-completed",
+      default: false
+    )
+
+    /// Used to track whether `showTestNetworks` has been read for the last time
+    public static let migrateShowTestNetworksCompleted = Option<Bool>(
+      key: "wallet.migrate-show-test-networks-completed",
       default: false
     )
   }

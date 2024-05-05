@@ -54,6 +54,9 @@ class AssetDetailStoreTests: XCTestCase {
     rpcService._network = {
       $2(.mockMainnet)
     }
+    rpcService._hiddenNetworks = {
+      $1([])
+    }
     rpcService._balance = { _, _, _, completion in
       completion(ethBalanceWei, .success, "")
     }
@@ -271,6 +274,9 @@ class AssetDetailStoreTests: XCTestCase {
     rpcService._network = {
       $2(.mockBitcoinMainnet)
     }
+    rpcService._hiddenNetworks = {
+      $1([])
+    }
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._defaultBaseCurrency = {
@@ -487,6 +493,9 @@ class AssetDetailStoreTests: XCTestCase {
     }
     rpcService._allNetworks = {
       $1([.mockMainnet])
+    }
+    rpcService._hiddenNetworks = {
+      $1([])
     }
     rpcService._balance = { _, _, _, completion in
       completion(ethBalanceWei, .success, "")

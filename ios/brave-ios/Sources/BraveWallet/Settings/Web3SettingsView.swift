@@ -272,7 +272,7 @@ private struct WalletSettingsView: View {
       footer: Text(Strings.Wallet.networkFooter)
         .foregroundColor(Color(.secondaryBraveLabel))
     ) {
-      NavigationLink(destination: CustomNetworkListView(networkStore: networkStore)) {
+      NavigationLink(destination: NetworkListView(networkStore: networkStore)) {
         Text(Strings.Wallet.settingsNetworkButtonTitle)
           .foregroundColor(Color(.braveLabel))
       }

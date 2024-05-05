@@ -83,7 +83,7 @@ class SignMessageRequestStore: ObservableObject {
       guard !cowSwapRequests.isEmpty else { return }
 
       let allNetworks = await rpcService.allNetworksForSupportedCoins(
-        respectTestnetPreference: false
+        respectHiddenNetworksPreference: false
       )
       let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
         networks: allNetworks,

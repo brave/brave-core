@@ -25,7 +25,6 @@ import XCTest
     isLocked = true
   }
   private func resetFilters() {
-    Preferences.Wallet.showTestNetworks.reset()
     Preferences.Wallet.groupByFilter.reset()
     Preferences.Wallet.sortOrderFilter.reset()
     Preferences.Wallet.isHidingSmallBalancesFilter.reset()
@@ -229,22 +228,10 @@ import XCTest
     let mockBtcUserAssets: [BraveWallet.BlockchainToken] = [
       btcMainnet.nativeToken.copy(asVisibleAsset: true)
     ]
-    let mockBtcBalanceInSantoshi =
-      formatter.weiString(
-        from: mockBTCBalanceAccount1,
-        radix: .decimal,
-        decimals: Int(BraveWallet.BlockchainToken.mockBTCToken.decimals)
-      ) ?? ""
     // config bitcoin on testnet
     let mockBtcTestnetUserAssets: [BraveWallet.BlockchainToken] = [
       btcTestnet.nativeToken.copy(asVisibleAsset: true)
     ]
-    let mockBtcTestnetBalanceInSantoshi =
-      formatter.weiString(
-        from: mockFILBalanceTestnet,
-        radix: .decimal,
-        decimals: Int(BraveWallet.BlockchainToken.mockFilToken.decimals)
-      ) ?? ""
 
     // setup test services
     let keyringService = BraveWallet.TestKeyringService()
@@ -330,6 +317,8 @@ import XCTest
         completion(0, .success, "")
       }
     }
+    rpcService._hiddenNetworks = { $1([]) }
+    
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
@@ -474,7 +463,6 @@ import XCTest
 
   /// Test `update()` will fetch all visible user assets from all networks and display them sorted by their balance.
   func testUpdate() async {
-    Preferences.Wallet.showTestNetworks.value = true
     let store = setupStore()
 
     // MARK: Default update() Test
@@ -705,7 +693,6 @@ import XCTest
 
   /// Test `assetGroups` will be sorted to from smallest to highest fiat value when `sortOrder` filter is `valueAsc`.
   func filterSortHelper(bitcoinTestnetEnabled: Bool) async {
-    Preferences.Wallet.showTestNetworks.value = true
     Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
     let sortExpectation = expectation(description: "update-sortOrder")
@@ -837,7 +824,6 @@ import XCTest
 
   /// Test `assetGroups` will be filtered to remove small balances when `hideSmallBalances` filter is true.
   func testHideSmallBalances() async {
-    Preferences.Wallet.showTestNetworks.value = true
     let store = setupStore()
     let hideSmallBalancesExpectation = expectation(description: "update-hideSmallBalances")
     store.$assetGroups
@@ -924,7 +910,6 @@ import XCTest
 
   /// Test `assetGroups` will be filtered by accounts when `accounts` filter is has de-selected accounts.
   func filterAccountsHelper(bitcoinTestnetEnabled: Bool) async {
-    Preferences.Wallet.showTestNetworks.value = true
     // test without bitcoin testnet enabled
     Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
@@ -1058,7 +1043,6 @@ import XCTest
 
   /// Test `assetGroups` will be filtered by network when `networks` filter is has de-selected networks.
   func testFilterNetworks() async {
-    Preferences.Wallet.showTestNetworks.value = true
     let store = setupStore()
     let networksExpectation = expectation(description: "update-networks")
     store.$assetGroups
@@ -1159,7 +1143,6 @@ import XCTest
   /// Test `assetGroups` will be grouped by account when `GroupBy` filter is assigned `.account`.
   /// Additionally, test de-selecting/hiding one of the available accounts.
   func groupByAccountsHelper(bitcoinTestnetEnabled: Bool) async {
-    Preferences.Wallet.showTestNetworks.value = true
     Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
     let assetGroupsExpectation = expectation(description: "update-assetGroups")
@@ -1533,7 +1516,6 @@ import XCTest
   /// Test `assetGroups` will be grouped by network when `GroupBy` filter is assigned `.network`.
   /// Additionally, test de-selecting/hiding one of the available networks.
   func groupByNetworksHelper(bitcoinTestnetEnabled: Bool) async {
-    Preferences.Wallet.showTestNetworks.value = true
     Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
     let store = setupStore()
     let assetGroupsExpectation = expectation(description: "update-assetGroups")

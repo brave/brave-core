@@ -41,11 +41,10 @@ struct NetworkFilterView: View {
 
   private var allSelected: Bool {
     networks
-      .filter {
-        if !Preferences.Wallet.showTestNetworks.value {
-          return !WalletConstants.supportedTestNetworkChainIds.contains($0.model.chainId)
+      .filter { network in
+        !networkStore.hiddenChains.contains { hiddenChain in
+          hiddenChain.chainId == network.model.chainId
         }
-        return true
       }
       .allSatisfy(\.isSelected)
   }
@@ -96,13 +95,7 @@ struct NetworkFilterView: View {
   private func selectAll() {
     DispatchQueue.main.async {
       networks = networks.map {
-        // don't select test networks if they are hidden
-        if !Preferences.Wallet.showTestNetworks.value {
-          let isTestnet = WalletConstants.supportedTestNetworkChainIds.contains($0.model.chainId)
-          return .init(isSelected: !isTestnet && !allSelected, model: $0.model)
-        } else {
-          return .init(isSelected: !allSelected, model: $0.model)
-        }
+        .init(isSelected: !allSelected, model: $0.model)
       }
     }
   }

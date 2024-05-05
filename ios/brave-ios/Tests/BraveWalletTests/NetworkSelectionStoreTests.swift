@@ -52,6 +52,7 @@ import XCTest
       completion(true)
     }
     rpcService._customNetworks = { $1([]) }
+    rpcService._hiddenNetworks = { $1([]) }
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }

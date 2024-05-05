@@ -126,6 +126,9 @@ class AccountActivityStoreTests: XCTestCase {
         """
       completion("", metaData, .success, "")
     }
+    rpcService._hiddenNetworks = {
+      $1([])
+    }
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -178,7 +181,6 @@ class AccountActivityStoreTests: XCTestCase {
   }
 
   func testUpdateEthereumAccount() {
-    Preferences.Wallet.showTestNetworks.value = true
     // Monday, November 8, 2021 7:27:51 PM
     let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockEthAccount
@@ -371,7 +373,6 @@ class AccountActivityStoreTests: XCTestCase {
   }
 
   func testUpdateSolanaAccount() {
-    Preferences.Wallet.showTestNetworks.value = true
     // Monday, November 8, 2021 7:27:51 PM
     let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockSolAccount
@@ -552,7 +553,6 @@ class AccountActivityStoreTests: XCTestCase {
   }
 
   func testUpdateFilecoinAccount() {
-    Preferences.Wallet.showTestNetworks.value = true
     // Monday, November 8, 2021 7:27:51 PM
     let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockFilAccount
@@ -726,10 +726,5 @@ class AccountActivityStoreTests: XCTestCase {
     waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
-  }
-
-  override class func tearDown() {
-    super.tearDown()
-    Preferences.Wallet.showTestNetworks.reset()
   }
 }

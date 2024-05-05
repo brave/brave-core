@@ -224,7 +224,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         update()
       }
     }
-    Preferences.Wallet.showTestNetworks.observe(from: self)
     Preferences.Wallet.isHidingUnownedNFTsFilter.observe(from: self)
     Preferences.Wallet.isShowingNFTNetworkLogoFilter.observe(from: self)
     Preferences.Wallet.nonSelectedNetworksFilter.observe(from: self)

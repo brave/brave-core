@@ -379,7 +379,6 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
     }
-    Preferences.Wallet.showTestNetworks.observe(from: self)
     Preferences.Wallet.sortOrderFilter.observe(from: self)
     Preferences.Wallet.isHidingSmallBalancesFilter.observe(from: self)
     Preferences.Wallet.nonSelectedAccountsFilter.observe(from: self)
