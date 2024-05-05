@@ -73,7 +73,9 @@ ConfirmationType ToConfirmationType(const std::string_view value) {
     return iter->second;
   }
 
-  SCOPED_CRASH_KEY_STRING32("ConfirmationType", "value", value);
+  // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+  // potential defects using `NOTREACHED`.
+  SCOPED_CRASH_KEY_STRING32("Issue32066", "confirmation_type", value);
   NOTREACHED() << "Unexpected value for ConfirmationType: " << value;
   return ConfirmationType::kUndefined;
 }

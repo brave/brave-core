@@ -390,6 +390,12 @@ void ClientStateManager::SaveState() {
   Save(kClientStateFilename, client_.ToJson(),
        base::BindOnce([](const bool success) {
          if (!success) {
+           // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+           // potential defects using `DumpWithoutCrashing`.
+           SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                     "Failed to save client state");
+           base::debug::DumpWithoutCrashing();
+
            return BLOG(0, "Failed to save client state");
          }
 
@@ -408,11 +414,12 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     SaveState();
   } else {
     if (!FromJson(*json)) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-      // migration failure dumps.
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Failed to parse client state");
       base::debug::DumpWithoutCrashing();
 
-      BLOG(0, "Failed to load client state");
       BLOG(3, "Failed to parse client state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);

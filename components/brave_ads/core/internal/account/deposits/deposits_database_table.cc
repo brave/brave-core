@@ -106,6 +106,10 @@ void GetForCreativeInstanceIdCallback(
       std::move(command_response->result->get_records().front());
   DepositInfo deposit = GetFromRecord(&*record);
   if (!deposit.IsValid()) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Invalid deposit");
     base::debug::DumpWithoutCrashing();
 
     return std::move(callback).Run(/*success=*/false, /*deposit=*/std::nullopt);
@@ -154,6 +158,10 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
 
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Invalid deposit");
     base::debug::DumpWithoutCrashing();
 
     return std::move(callback).Run(/*success=*/false);

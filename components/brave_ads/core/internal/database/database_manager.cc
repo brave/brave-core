@@ -62,11 +62,15 @@ void DatabaseManager::CreateOrOpenCallback(
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-    // migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to create or open database");
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version",
+                            database::kVersion);
     base::debug::DumpWithoutCrashing();
 
-    BLOG(0, "Failed to open or create database");
+    BLOG(0, "Failed to create or open database");
     NotifyFailedToCreateOrOpenDatabase();
     return std::move(callback).Run(/*success=*/false);
   }
@@ -102,12 +106,16 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
   const int to_version = database::kVersion;
 
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-    // migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to create database");
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version", to_version);
     base::debug::DumpWithoutCrashing();
 
     BLOG(1, "Failed to create database for schema version " << to_version);
     NotifyFailedToCreateOrOpenDatabase();
+
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -130,11 +138,14 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   }
 
   if (from_version > to_version) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-    // migration failure dumps.
-    SCOPED_CRASH_KEY_NUMBER("BraveAdsSqlFromVersionInfo", "value",
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "from_sqlite_schema_version",
                             from_version);
-    SCOPED_CRASH_KEY_NUMBER("BraveAdsSqlToVersionInfo", "value", to_version);
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "to_sqlite_schema_version",
+                            to_version);
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Database downgrade not supported");
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to migrate database from schema version "
@@ -160,11 +171,14 @@ void DatabaseManager::MigrateFromVersionCallback(const int from_version,
   const int to_version = database::kVersion;
 
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-    // migration failure dumps.
-    SCOPED_CRASH_KEY_NUMBER("BraveAdsSqlFromVersionInfo", "value",
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "from_sqlite_schema_version",
                             from_version);
-    SCOPED_CRASH_KEY_NUMBER("BraveAdsSqlToVersionInfo", "value", to_version);
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "to_sqlite_schema_version",
+                            to_version);
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Database migration failed");
     base::debug::DumpWithoutCrashing();
 
     BLOG(1, "Failed to migrate database from schema version "

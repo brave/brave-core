@@ -55,6 +55,10 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& ad_event : ad_events) {
     if (!ad_event.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid ad event");
       base::debug::DumpWithoutCrashing();
       continue;
     }
@@ -114,6 +118,10 @@ void GetCallback(GetAdEventsCallback callback,
   for (const auto& record : command_response->result->get_records()) {
     const AdEventInfo ad_event = GetFromRecord(&*record);
     if (!ad_event.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid ad event");
       base::debug::DumpWithoutCrashing();
       continue;
     }

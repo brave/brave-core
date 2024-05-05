@@ -49,7 +49,9 @@ AdType ToAdType(std::string_view value) {
     return iter->second;
   }
 
-  SCOPED_CRASH_KEY_STRING32("AdType", "value", value);
+  // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+  // potential defects using `NOTREACHED`.
+  SCOPED_CRASH_KEY_STRING32("Issue32066", "ad_type", value);
   NOTREACHED() << "Unexpected value for AdType: " << value;
   return AdType::kUndefined;
 }

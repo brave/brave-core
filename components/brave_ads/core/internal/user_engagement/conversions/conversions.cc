@@ -54,7 +54,7 @@ void Conversions::MaybeConvert(const std::vector<GURL>& redirect_chain,
                                const std::string& html) {
   CHECK(!redirect_chain.empty());
 
-  BLOG(1, "Checking for conversions");
+  BLOG(1, "Checking for creative set conversions");
 
   GetCreativeSetConversions(redirect_chain, html);
 }

@@ -30,6 +30,12 @@ namespace brave_ads {
 namespace {
 
 void FailedToInitialize(InitializeCallback callback) {
+  // TODO(https://github.com/brave/brave-browser/issues/32066):
+  // Detect potential defects using `DumpWithoutCrashing`.
+  SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                            "Failed to initialize ads");
+  base::debug::DumpWithoutCrashing();
+
   BLOG(0, "Failed to initialize ads");
   std::move(callback).Run(/*success=*/false);
 }
@@ -73,8 +79,10 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr wallet,
   BLOG(1, "Initializing ads");
 
   if (is_initialized_) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Already initialized ads");
     base::debug::DumpWithoutCrashing();
 
     BLOG(1, "Already initialized ads");
@@ -86,7 +94,13 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr wallet,
 
 void AdsImpl::Shutdown(ShutdownCallback callback) {
   if (!is_initialized_) {
-    BLOG(0, "Shutdown % failed as not initialized");
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Detect potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Shutdown failed as ads not initialized");
+    base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Shutdown failed as not initialized");
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -196,6 +210,12 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
              PurgeOrphanedAdEventsForTypeCallback callback,
              const bool success) {
             if (!success) {
+              // TODO(https://github.com/brave/brave-browser/issues/32066):
+              // Detect potential defects using `DumpWithoutCrashing`.
+              SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                        "Failed to purge orphaned ad events");
+              base::debug::DumpWithoutCrashing();
+
               BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
             } else {
               BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
@@ -284,8 +304,10 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
                                            InitializeCallback callback,
                                            const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to create or open database");
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to create or open database");
@@ -301,8 +323,10 @@ void AdsImpl::PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
                                            InitializeCallback callback,
                                            const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to purge expired ad events");
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to purge expired ad events");
@@ -318,8 +342,10 @@ void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
                                             InitializeCallback callback,
                                             const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to purge orphaned ad events");
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to purge orphaned ad events");
@@ -335,8 +361,10 @@ void AdsImpl::MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
                                          InitializeCallback callback,
                                          const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to migrate client state");
     base::debug::DumpWithoutCrashing();
 
     return FailedToInitialize(std::move(callback));
@@ -351,8 +379,10 @@ void AdsImpl::LoadClientStateCallback(mojom::WalletInfoPtr wallet,
                                       InitializeCallback callback,
                                       const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to load client state");
     base::debug::DumpWithoutCrashing();
 
     return FailedToInitialize(std::move(callback));
@@ -367,8 +397,10 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
                                                InitializeCallback callback,
                                                const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to migrate confirmation state");
     base::debug::DumpWithoutCrashing();
 
     return FailedToInitialize(std::move(callback));
@@ -378,8 +410,10 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
   if (wallet) {
     new_wallet = ToWallet(wallet->payment_id, wallet->recovery_seed);
     if (!new_wallet) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-      // migration failure dumps.
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid wallet");
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid wallet");
@@ -397,8 +431,10 @@ void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr wallet,
                                             InitializeCallback callback,
                                             const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to load confirmation state");
     base::debug::DumpWithoutCrashing();
 
     return FailedToInitialize(std::move(callback));

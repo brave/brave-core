@@ -76,6 +76,10 @@ size_t BindParameters(
   int index = 0;
   for (const auto& confirmation_queue_item : confirmation_queue_items) {
     if (!confirmation_queue_item.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid confirmation queue item");
       base::debug::DumpWithoutCrashing();
       continue;
     }
@@ -226,6 +230,10 @@ void GetCallback(GetConfirmationQueueCallback callback,
     const ConfirmationQueueItemInfo confirmation_queue_item =
         GetFromRecord(&*record);
     if (!confirmation_queue_item.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid confirmation queue item");
       base::debug::DumpWithoutCrashing();
       continue;
     }
