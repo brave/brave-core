@@ -408,8 +408,8 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     SaveState();
   } else {
     if (!FromJson(*json)) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-      // migration failure dumps.
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Failed to load client state");

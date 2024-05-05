@@ -62,8 +62,8 @@ void DatabaseManager::CreateOrOpenCallback(
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-    // migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to open or create database");
@@ -102,8 +102,8 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
   const int to_version = database::kVersion;
 
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-    // migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     BLOG(1, "Failed to create database for schema version " << to_version);
@@ -130,8 +130,8 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   }
 
   if (from_version > to_version) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-    // migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     SCOPED_CRASH_KEY_NUMBER("BraveAdsSqlFromVersionInfo", "value",
                             from_version);
     SCOPED_CRASH_KEY_NUMBER("BraveAdsSqlToVersionInfo", "value", to_version);
@@ -160,8 +160,8 @@ void DatabaseManager::MigrateFromVersionCallback(const int from_version,
   const int to_version = database::kVersion;
 
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-    // migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     SCOPED_CRASH_KEY_NUMBER("BraveAdsSqlFromVersionInfo", "value",
                             from_version);
     SCOPED_CRASH_KEY_NUMBER("BraveAdsSqlToVersionInfo", "value", to_version);

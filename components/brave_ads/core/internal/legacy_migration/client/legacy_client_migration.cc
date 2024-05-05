@@ -64,7 +64,7 @@ void MigrateClientState(InitializeCallback callback) {
              client = {};
              if (!client.FromJson(mutable_json)) {
                // TODO(https://github.com/brave/brave-browser/issues/32066):
-               // Remove migration failure dumps.
+               // Detect potential defects using `DumpWithoutCrashing`.
                base::debug::DumpWithoutCrashing();
 
                BLOG(0, "Failed to load client state");
@@ -78,7 +78,8 @@ void MigrateClientState(InitializeCallback callback) {
                       [](InitializeCallback callback, const bool success) {
                         if (!success) {
                           // TODO(https://github.com/brave/brave-browser/issues/32066):
-                          // Remove migration failure dumps.
+                          // Detect potential defects using
+                          // `DumpWithoutCrashing`.
                           base::debug::DumpWithoutCrashing();
 
                           BLOG(0, "Failed to save client state");

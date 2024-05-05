@@ -64,6 +64,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& conversion_queue_item : conversion_queue_items) {
     if (!conversion_queue_item.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
       base::debug::DumpWithoutCrashing();
       continue;
     }
@@ -151,6 +153,8 @@ void GetCallback(GetConversionQueueCallback callback,
     const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(&*record);
     if (!conversion_queue_item.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
       base::debug::DumpWithoutCrashing();
       continue;
     }
@@ -181,6 +185,8 @@ void GetForCreativeInstanceIdCallback(
     const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(&*record);
     if (!conversion_queue_item.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
       base::debug::DumpWithoutCrashing();
       continue;
     }

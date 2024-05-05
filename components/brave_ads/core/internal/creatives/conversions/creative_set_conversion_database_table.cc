@@ -53,6 +53,8 @@ size_t BindParameters(
   int index = 0;
   for (const auto& creative_set_conversion : creative_set_conversions) {
     if (!creative_set_conversion.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
       base::debug::DumpWithoutCrashing();
       continue;
     }
@@ -115,6 +117,8 @@ void GetCallback(GetConversionsCallback callback,
     const CreativeSetConversionInfo creative_set_conversion =
         GetFromRecord(&*record);
     if (!creative_set_conversion.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
       base::debug::DumpWithoutCrashing();
       continue;
     }

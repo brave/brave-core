@@ -73,8 +73,8 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr wallet,
   BLOG(1, "Initializing ads");
 
   if (is_initialized_) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     BLOG(1, "Already initialized ads");
@@ -284,8 +284,8 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
                                            InitializeCallback callback,
                                            const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to create or open database");
@@ -301,8 +301,8 @@ void AdsImpl::PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
                                            InitializeCallback callback,
                                            const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to purge expired ad events");
@@ -318,8 +318,8 @@ void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
                                             InitializeCallback callback,
                                             const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to purge orphaned ad events");
@@ -335,8 +335,8 @@ void AdsImpl::MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
                                          InitializeCallback callback,
                                          const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     return FailedToInitialize(std::move(callback));
@@ -351,8 +351,8 @@ void AdsImpl::LoadClientStateCallback(mojom::WalletInfoPtr wallet,
                                       InitializeCallback callback,
                                       const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     return FailedToInitialize(std::move(callback));
@@ -367,8 +367,8 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
                                                InitializeCallback callback,
                                                const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     return FailedToInitialize(std::move(callback));
@@ -378,8 +378,8 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
   if (wallet) {
     new_wallet = ToWallet(wallet->payment_id, wallet->recovery_seed);
     if (!new_wallet) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-      // migration failure dumps.
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid wallet");
@@ -397,8 +397,8 @@ void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr wallet,
                                             InitializeCallback callback,
                                             const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     return FailedToInitialize(std::move(callback));

@@ -56,6 +56,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& transaction : transactions) {
     if (!transaction.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
       base::debug::DumpWithoutCrashing();
       continue;
     }
@@ -120,6 +122,8 @@ void GetCallback(GetTransactionsCallback callback,
   for (const auto& record : command_response->result->get_records()) {
     const TransactionInfo transaction = GetFromRecord(&*record);
     if (!transaction.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
       base::debug::DumpWithoutCrashing();
       continue;
     }

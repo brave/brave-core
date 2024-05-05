@@ -287,8 +287,8 @@ void Database::ErrorCallback(const int extended_error,
   if (!sql::Database::IsExpectedSqliteError(extended_error)) {
     DLOG(FATAL) << db_.GetErrorMessage();
 
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-    // migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     SCOPED_CRASH_KEY_NUMBER("BraveAdsSqlVersionInfo", "value",
                             database::kVersion);
     SCOPED_CRASH_KEY_STRING1024(

@@ -172,8 +172,8 @@ bool ClientInfo::FromJson(const std::string& json) {
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!dict) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     return false;

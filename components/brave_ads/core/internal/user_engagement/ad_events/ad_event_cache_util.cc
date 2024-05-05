@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
@@ -31,9 +32,14 @@ void RebuildAdEventCache() {
         ResetAdEventCacheForInstanceId(id);
 
         for (const auto& ad_event : ad_events) {
-          if (ad_event.IsValid()) {
-            CacheAdEvent(ad_event);
+          if (!ad_event.IsValid()) {
+            // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+            // potential defects using `DumpWithoutCrashing`.
+            base::debug::DumpWithoutCrashing();
+            continue;
           }
+
+          CacheAdEvent(ad_event);
         }
       }));
 }

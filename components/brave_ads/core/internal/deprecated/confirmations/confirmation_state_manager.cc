@@ -112,8 +112,8 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
   payment_tokens_.RemoveAllTokens();
 
   if (!dict) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
     base::debug::DumpWithoutCrashing();
 
     return false;
