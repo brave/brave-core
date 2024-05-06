@@ -219,6 +219,62 @@ extension Strings {
       comment:
         "The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator"
     )
+    public static let introMessageClaudeHaikuModelDescription = NSLocalizedString(
+      "aichat.introMessageClaudeHaikuModelDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Claude Haiku by Anthropic",
+      comment:
+        "The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator"
+    )
+    public static let introMessageClaudeSonnetModelDescription = NSLocalizedString(
+      "aichat.introMessageClaudeSonnetModelDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Claude Sonnet by Anthropic",
+      comment:
+        "The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator"
+    )
+    public static let introMessageLlamaModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageLlamaModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "General purpose chat",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
+    public static let introMessageMixtralModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageMixtralModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Advanced chat tasks",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
+    public static let introMessageClaudeInstantModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageClaudeInstantModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Conversation and text generation",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
+    public static let introMessageClaudeHaikuModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageClaudeHaikuModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Lightning fast chat",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
+    public static let introMessageClaudeSonnetModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageClaudeSonnetModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Balanced speed and intelligence",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
     public static let introMessageLlamaMessageDescription = NSLocalizedString(
       "aichat.introMessageLlamaMessageDescription",
       tableName: "BraveLeo",
@@ -243,6 +299,22 @@ extension Strings {
         "Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks.",
       comment: "The model intro message when you first enter the chat assistant"
     )
+    public static let introMessageClaudeHaikuMessageDescription = NSLocalizedString(
+      "aichat.introMessageClaudeHaikuMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
+    public static let introMessageClaudeSonnetMessageDescription = NSLocalizedString(
+      "aichat.introMessageClaudeSonnetMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Sonnet, a model created by Anthropic to power conversational and text processing tasks.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
     public static let introMessageGenericMessageDescription = NSLocalizedString(
       "aichat.introMessageGenericMessageDescription",
       tableName: "BraveLeo",
@@ -251,6 +323,60 @@ extension Strings {
         "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by %@. Ask me anything, and I'll do my best to answer.",
       comment:
         "The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name"
+    )
+    public static let introPopoverLlamaMessageDescription = NSLocalizedString(
+      "aichat.introPopoverLlamaMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
+      comment:
+        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
+    )
+    public static let introPopoverMixtralMessageDescription = NSLocalizedString(
+      "aichat.introPopoverMixtralMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
+      comment:
+        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
+    )
+    public static let introPopoverClaudeInstantMessageDescription = NSLocalizedString(
+      "aichat.introPopoverClaudeInstantMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
+      comment:
+        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
+    )
+    public static let introPopoverClaudeHaikuMessageDescription = NSLocalizedString(
+      "aichat.introPopoverClaudeHaikuMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
+      comment:
+        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
+    )
+    public static let introPopoverClaudeSonnetMessageDescription = NSLocalizedString(
+      "aichat.introPopoverClaudeSonnetMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
+      comment:
+        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
+    )
+    public static let introGenericPopoverMessage = NSLocalizedString(
+      "aichat.introGenericPopoverMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
+      comment:
+        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
     )
     public static let paywallViewTitle = NSLocalizedString(
       "aichat.paywallViewTitle",
