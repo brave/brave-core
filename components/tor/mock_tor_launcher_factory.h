@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/functional/callback.h"
 #include "base/no_destructor.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -25,6 +26,9 @@ class MockTorLauncherFactory : public TorLauncherFactory {
   MOCK_METHOD(int64_t, GetTorPid, (), (const override));
   MOCK_METHOD(bool, IsTorConnected, (), (const override));
   MOCK_METHOD(std::string, GetTorProxyURI, (), (const override));
+
+  void NotifyObservers(
+      base::RepeatingCallback<void(TorLauncherObserver&)> notify);
 
  private:
   friend class base::NoDestructor<MockTorLauncherFactory>;

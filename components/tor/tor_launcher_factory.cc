@@ -43,12 +43,23 @@ std::string GetMessageParam(const std::string& message,
   return message.substr(begin, end - begin);
 }
 
+TorLauncherFactory* g_tor_launcher_factory_for_testing = nullptr;
+
 }  // namespace
 
 // static
 TorLauncherFactory* TorLauncherFactory::GetInstance() {
+  if (g_tor_launcher_factory_for_testing) {
+    return g_tor_launcher_factory_for_testing;
+  }
   static base::NoDestructor<TorLauncherFactory> instance;
   return instance.get();
+}
+
+// static
+void TorLauncherFactory::SetTorLauncherFactoryForTesting(
+    TorLauncherFactory* tlf) {
+  g_tor_launcher_factory_for_testing = tlf;
 }
 
 TorLauncherFactory::TorLauncherFactory()
@@ -323,10 +334,11 @@ void TorLauncherFactory::GotCircuitEstablished(bool error, bool established) {
     return;
   }
   is_connected_ = established;
-  if (is_connected_) {
-    for (auto& observer : observers_) {
-      observer.OnTorCircuitEstablished(established);
-    }
+  if (!is_connected_) {
+    return;
+  }
+  for (auto& observer : observers_) {
+    observer.OnTorCircuitEstablished(true);
   }
 }
 

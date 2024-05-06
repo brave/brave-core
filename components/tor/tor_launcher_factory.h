@@ -40,6 +40,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   TorLauncherFactory& operator=(const TorLauncherFactory&) = delete;
 
   static TorLauncherFactory* GetInstance();
+  static void SetTorLauncherFactoryForTesting(TorLauncherFactory*);
 
   virtual void Init();
   virtual void LaunchTorProcess(const tor::mojom::TorConfig& config);
