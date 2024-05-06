@@ -5540,7 +5540,7 @@ extension Strings {
       "wallet.setDefaultNetwork",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Set as default",
+      value: "Set as Default",
       comment:
         "One of the context menu option for user to tap to set a default network in wallet settings."
     )
