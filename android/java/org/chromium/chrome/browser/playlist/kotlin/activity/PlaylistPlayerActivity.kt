@@ -45,6 +45,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
 import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.playlist.mojom.PlaylistEvent
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
 import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
@@ -716,6 +717,31 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
             } else {
                 fetchPlaylistData()
             }
+        }
+    }
+
+    override fun onMediaFileDownloadProgressed(id:String, totalBytes:Long, receivedBytes:Long, percentComplete:Byte, timeRemaining:String) {
+        mPlaylistItemAdapter?.updatePlaylistItemDownloadProgress(HlsContentProgressModel(id, totalBytes, receivedBytes, "" + percentComplete))
+    }
+
+    override fun onItemCached(playlistItem:PlaylistItem) {
+        Log.e(TAG, "onItemCached")
+        mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
+    }
+
+    override fun onItemUpdated(playlistItem:PlaylistItem) {
+        Log.e(TAG, "onItemUpdated")
+        mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
+    }
+
+    override fun onPlaylistUpdated(playlist:Playlist) {
+        Log.e(TAG, "onPlaylistUpdated")
+        fetchPlaylistData()
+    }
+
+    override fun onEvent(eventType: Int , id : String) {
+        if (eventType == PlaylistEvent.ITEM_MOVED && id.equals(mPlaylistId)) {
+            fetchPlaylistData()
         }
     }
 
