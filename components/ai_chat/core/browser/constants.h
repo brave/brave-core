@@ -22,10 +22,7 @@ extern const base::fixed_flat_set<std::string_view, 1>
     kPrintPreviewRetrievalHosts;
 
 inline constexpr uint8_t kMaxPreviewPages = 20;
-
-extern const char kLeoModelSupportUrl[] =
-    "https://support.brave.com/hc/en-us/categories/"
-    "20990938292237-Brave-Leo";
+extern const char kLeoModelSupportUrl[];
 
 }  // namespace ai_chat
 
