@@ -8,13 +8,30 @@
 #include "base/notreached.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
+#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 
-#define BRAVE_GET_IMAGE_DATA                                                  \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) {     \
-    SkPixmap image_data_pixmap = image_data->GetSkPixmap();                   \
-    brave::BraveSessionCache::From(*context).PerturbPixels(                   \
-        static_cast<const unsigned char*>(image_data_pixmap.writable_addr()), \
-        image_data_pixmap.computeByteSize());                                 \
+namespace {
+
+bool IsGoogleMaps(const blink::KURL& url) {
+  const auto host = url.Host();
+  if (!host.StartsWith("google.") && !host.Contains(".google.")) {
+    return false;
+  }
+  const auto path = url.GetPath();
+  return path.StartsWith("/maps/") || path == "/maps";
+}
+
+}  // namespace
+
+#define BRAVE_GET_IMAGE_DATA                                              \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
+    if (!IsGoogleMaps(context->Url())) {                                  \
+      SkPixmap image_data_pixmap = image_data->GetSkPixmap();             \
+      brave::BraveSessionCache::From(*context).PerturbPixels(             \
+          static_cast<const unsigned char*>(                              \
+              image_data_pixmap.writable_addr()),                         \
+          image_data_pixmap.computeByteSize());                           \
+    }                                                                     \
   }
 
 #define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT         \
