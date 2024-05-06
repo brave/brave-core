@@ -25,8 +25,8 @@ import { getDappNetworkIds, isDappMapEmpty } from '../../../../utils/dapp_utils'
 
 // Hooks
 import {
-  useGetTopDappsQuery,
-  useGetVisibleNetworksQuery
+  useGetNetworksRegistryQuery,
+  useGetTopDappsQuery
 } from '../../../../common/slices/api.slice'
 import {
   networkEntityAdapter //
@@ -72,7 +72,7 @@ export const ExploreWeb3View = () => {
 
   // queries
   const { isLoading, data: topDapps } = useGetTopDappsQuery(undefined)
-  const { data: networks } = useGetVisibleNetworksQuery()
+  const { data: networksRegistry } = useGetNetworksRegistryQuery()
 
   // memos
   const controls = React.useMemo(() => {
@@ -109,44 +109,51 @@ export const ExploreWeb3View = () => {
       return [categoriesList, categoriesMap, visibleCategories]
     }, [filteredOutCategories, topDapps])
 
-  const [visibleNetworks, visibleNetworkIds, filteredOutNetworks] =
-    React.useMemo(() => {
-      const visibleNetworks: BraveWallet.NetworkInfo[] = []
-      const filteredOutNetworks: BraveWallet.NetworkInfo[] = []
+  const [visibleNetworks, filteredOutNetworks] = React.useMemo(() => {
+    if (!networksRegistry) {
+      return [[] as BraveWallet.NetworkInfo[], [] as BraveWallet.NetworkInfo[]]
+    }
 
-      networks.forEach((network) => {
-        if (
-          filteredOutNetworkKeys.includes(
-            networkEntityAdapter.selectId(network).toString()
-          )
-        ) {
-          filteredOutNetworks.push(network)
-        } else {
-          visibleNetworks.push(network)
-        }
-      })
+    const visibleNetworks: BraveWallet.NetworkInfo[] = []
+    const filteredOutNetworks: BraveWallet.NetworkInfo[] = []
 
-      return [
-        visibleNetworks,
-        visibleNetworks.map(networkEntityAdapter.selectId),
-        filteredOutNetworks
-      ]
-    }, [networks, filteredOutNetworkKeys])
+    networksRegistry.visibleIds.forEach((id) => {
+      const network = networksRegistry.entities[id]
+      if (!network) {
+        return
+      }
+
+      if (filteredOutNetworkKeys.includes(id)) {
+        filteredOutNetworks.push(network)
+      } else {
+        visibleNetworks.push(network)
+      }
+    })
+
+    return [
+      visibleNetworks,
+      visibleNetworks.map(networkEntityAdapter.selectId),
+      filteredOutNetworks
+    ]
+  }, [networksRegistry, filteredOutNetworkKeys])
 
   const filterVisibleDapps = React.useCallback(
     (dapps: BraveWallet.Dapp[], searchTerm: string) => {
+      if (!networksRegistry) {
+        return []
+      }
       return dapps.filter((dapp) => {
         const dappNetworkIds = getDappNetworkIds(dapp.chains, visibleNetworks)
         return (
           dappNetworkIds.some((networkId) =>
-            visibleNetworkIds.includes(networkId.toString())
+            networksRegistry.visibleIds.includes(networkId.toString())
           ) &&
           (dapp.name.toLowerCase().includes(searchTerm) ||
             dapp.description.toLowerCase().includes(searchTerm))
         )
       })
     },
-    [visibleNetworkIds, visibleNetworks]
+    [networksRegistry, visibleNetworks]
   )
 
   const visibleDappsMap = React.useMemo(() => {
