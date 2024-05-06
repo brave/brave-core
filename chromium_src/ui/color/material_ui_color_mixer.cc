@@ -20,6 +20,10 @@ void AddMaterialUiColorMixer(ColorProvider* provider,
   const bool is_dark = key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
   mixer[ui::kColorListItemUrlFaviconBackground] = {
       is_dark ? gfx::kGoogleGrey800 : gfx::kGoogleGrey050};
+  mixer[ui::kColorListItemFolderIconBackground] = {
+      is_dark ? gfx::kGoogleGrey800 : gfx::kGoogleGrey050};
+  mixer[ui::kColorListItemFolderIconForeground] = {is_dark ? gfx::kGoogleGrey100
+                                                           : SK_ColorBLACK};
   mixer[ui::kColorToggleButtonHover] = {is_dark
                                             ? SkColorSetRGB(0x44, 0x36, 0xE1)
                                             : SkColorSetRGB(0x4C, 0x54, 0xD2)};
