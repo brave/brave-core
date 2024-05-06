@@ -205,8 +205,10 @@ final class PlayerModel: ObservableObject {
 
   @Published var playbackSpeed: PlaybackSpeed = .normal {
     didSet {
-      player.rate = playbackSpeed.rate
       player.defaultRate = playbackSpeed.rate
+      if isPlaying {
+        player.rate = playbackSpeed.rate
+      }
     }
   }
 
