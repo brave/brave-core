@@ -239,7 +239,8 @@ std::vector<mojom::ModelPtr> ConversationDriver::GetModels() {
   return models;
 }
 
-const std::vector<ConversationTurn>& ConversationDriver::GetConversationHistory() {
+const std::vector<ConversationTurn>&
+ConversationDriver::GetConversationHistory() {
   return chat_history_;
 }
 
@@ -259,7 +260,8 @@ ConversationDriver::GetVisibleConversationHistory() {
   return list;
 }
 
-void ConversationDriver::OnConversationActiveChanged(bool is_conversation_active) {
+void ConversationDriver::OnConversationActiveChanged(
+    bool is_conversation_active) {
   is_conversation_active_ = is_conversation_active;
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;
   MaybeSeedOrClearSuggestions();
@@ -329,7 +331,8 @@ void ConversationDriver::OnUserOptedIn() {
   }
 }
 
-void ConversationDriver::AddToConversationHistory(mojom::ConversationTurn turn) {
+void ConversationDriver::AddToConversationHistory(
+    mojom::ConversationTurn turn) {
   chat_history_.push_back(std::move(turn));
 
   for (auto& obs : observers_) {
@@ -347,7 +350,8 @@ void ConversationDriver::AddToConversationHistory(mojom::ConversationTurn turn) 
   }
 }
 
-void ConversationDriver::UpdateOrCreateLastAssistantEntry(std::string updated_text) {
+void ConversationDriver::UpdateOrCreateLastAssistantEntry(
+    std::string updated_text) {
   updated_text = base::TrimWhitespaceASCII(updated_text, base::TRIM_LEADING);
   if (chat_history_.empty() ||
       chat_history_.back().character_type != CharacterType::ASSISTANT) {
@@ -905,7 +909,7 @@ bool ConversationDriver::IsRequestInProgress() {
 }
 
 void ConversationDriver::OnEngineCompletionDataReceived(int64_t navigation_id,
-                                                  std::string result) {
+                                                        std::string result) {
   if (navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;

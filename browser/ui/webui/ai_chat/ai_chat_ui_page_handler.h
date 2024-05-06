@@ -59,6 +59,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetModels(GetModelsCallback callback) override;
   void ChangeModel(const std::string& model_key) override;
   void SubmitHumanConversationEntry(const std::string& input) override;
+  void SubmitHumanConversationEntryWithAction(
+      const std::string& input,
+      mojom::ActionType action_type) override;
   void SubmitSummarizationRequest() override;
   void HandleVoiceRecognition() override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
@@ -91,6 +94,8 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                     bool send_hostname,
                     SendFeedbackCallback callback) override;
   void ClosePanel() override;
+  void GetActionMenuList(GetActionMenuListCallback callback) override;
+
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;

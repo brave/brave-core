@@ -13,15 +13,14 @@ import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
 import * as mojom from '../api/page_handler'
-import AIChatDataContext, {
-  AIChatContext,
-  defaultContext
-} from '../state/context'
-import { useArgs, useState } from '@storybook/addons'
+import { useArgs } from '@storybook/addons'
 import FeedbackForm from '../components/feedback_form'
+import DataContextProvider from '../state/data-context-provider'
+import { setPageHandlerAPIForTesting } from '../api/page_handler'
+import { MockPageHandlerAPI } from '../api/mock_page_handler'
 
-const MAX_INPUT_CHAR = 2000
-const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
+const mockAPIHandler = new MockPageHandlerAPI()
+setPageHandlerAPIForTesting(mockAPIHandler as any)
 
 const HISTORY: mojom.ConversationTurn[] = [
   {
@@ -199,10 +198,6 @@ export default {
   decorators: [
     (Story: any, options: any) => {
       const [, setArgs] = useArgs()
-      const [isGenerating] = React.useState(false)
-      const [favIconUrl] = React.useState<string>()
-      const hasAcceptedAgreement = options.args.hasAcceptedAgreement
-
       const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new mojom.SiteInfo()
       const suggestedQuestions = options.args.hasSuggestedQuestions
         ? SAMPLE_QUESTIONS
@@ -212,56 +207,40 @@ export default {
 
       const currentError = mojom.APIError[options.args.currentErrorState]
       const apiHasError = currentError !== mojom.APIError.None
-      const shouldDisableUserInput = apiHasError || isGenerating
       const currentModel = MODELS.find(m => m.name === options.args.model)
-      const [inputText, setInputText] = useState('')
 
       const switchToBasicModel = () => {
         const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
         setArgs({ model: nonPremiumModel })
       }
 
-      const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
-      const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
-      const inputTextCharCountDisplay = `${inputText.length} / ${MAX_INPUT_CHAR}`
-
-      const store: AIChatContext = {
-        // Don't error when new properties are added
-        ...defaultContext,
+      const store = {
         allModels: MODELS,
-        currentModel,
         conversationHistory: options.args.hasConversation ? HISTORY : [],
-        isGenerating,
         isPremiumStatusFetching: false,
-        suggestedQuestions,
         suggestionStatus: mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
-        siteInfo,
-        favIconUrl,
-        currentError,
-        hasAcceptedAgreement,
-        apiHasError,
-        shouldDisableUserInput,
         isPremiumUser: options.args.isPremiumUser,
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         showAgreementModal: options.args.showAgreementModal,
         isMobile: options.args.isMobile,
-        switchToBasicModel,
         shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
         shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
-        setInputText,
-        inputText,
-        isCharLimitExceeded,
-        isCharLimitApproaching,
-        inputTextCharCountDisplay,
+        currentModel,
+        suggestedQuestions,
+        siteInfo,
+        currentError,
+        hasAcceptedAgreement: options.args.hasAcceptedAgreement,
+        apiHasError,
+        switchToBasicModel,
       }
 
       return (
-        <AIChatDataContext.Provider value={store}>
+        <DataContextProvider store={store}>
           <ThemeProvider>
             <Story />
           </ThemeProvider>
-        </AIChatDataContext.Provider>
+        </DataContextProvider>
       )
     }
   ]

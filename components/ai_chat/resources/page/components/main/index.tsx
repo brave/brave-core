@@ -25,6 +25,7 @@ import ErrorConversationEnd from '../alerts/error_conversation_end'
 import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
 import styles from './style.module.scss'
+import ToolsButtonMenu from '../tools_button_menu'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
 
@@ -207,7 +208,9 @@ function Main() {
             <PageContextToggle />
           </div>
         )}
-        <InputBox />
+        <ToolsButtonMenu>
+          <InputBox />
+        </ToolsButtonMenu>
       </div>
     </main>
   )
