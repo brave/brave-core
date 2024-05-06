@@ -180,7 +180,7 @@ struct NetworkListView: View {
   private func isDefaultNetwork(
     _ network: BraveWallet.NetworkInfo
   ) -> Bool {
-    guard let defaultNetwork = networkStore.defaultNetworks[network.coin] 
+    guard let defaultNetwork = networkStore.defaultNetworks[network.coin]
     else {
       return false
     }

@@ -318,7 +318,7 @@ import XCTest
       }
     }
     rpcService._hiddenNetworks = { $1([]) }
-    
+
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }

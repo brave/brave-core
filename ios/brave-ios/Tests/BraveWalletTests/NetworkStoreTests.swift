@@ -24,7 +24,7 @@ import XCTest
       .eth: [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon, .mockCustomNetwork],
       .sol: [.mockSolana, .mockSolanaTestnet],
       .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet],
-      .btc: [.mockBitcoinMainnet]
+      .btc: [.mockBitcoinMainnet],
     ]
 
     let keyringService = BraveWallet.TestKeyringService()
@@ -272,7 +272,10 @@ import XCTest
         }
         XCTAssertEqual(lastUpdatedDefaultNetworks.count, expectedDefaultNetworks.count)
         for coin in lastUpdatedDefaultNetworks.keys {
-          XCTAssertEqual(lastUpdatedDefaultNetworks[coin]?.chainId, expectedDefaultNetworks[coin]?.chainId)
+          XCTAssertEqual(
+            lastUpdatedDefaultNetworks[coin]?.chainId,
+            expectedDefaultNetworks[coin]?.chainId
+          )
         }
       }
       .store(in: &cancellables)
