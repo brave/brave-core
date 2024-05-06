@@ -583,6 +583,22 @@ void PlaylistService::UpdateItemLastPlayedPosition(
   UpdateItem(std::move(item));
 }
 
+
+void PlaylistService::UpdateItemHlsMediaFilePath(
+    const std::string& playlist_item_id,
+    const std::string& hls_media_file_path,
+    int64_t updated_file_size) {
+  if (!HasPlaylistItem(playlist_item_id)) {
+    return;
+  }
+
+  auto item = GetPlaylistItem(playlist_item_id);
+  item->hls_media_path = GURL(base::StrCat(
+      {url::kFileScheme, url::kStandardSchemeSeparator, hls_media_file_path}));
+  item->media_file_bytes = updated_file_size;
+  UpdateItem(std::move(item));
+}
+
 void PlaylistService::CreatePlaylist(mojom::PlaylistPtr playlist,
                                      CreatePlaylistCallback callback) {
   do {

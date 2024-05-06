@@ -17,24 +17,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import org.chromium.base.BraveFeatureList
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.FileDataSource
+import org.chromium.chrome.browser.flags.ChromeFeatureList
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
-import org.chromium.base.BraveFeatureList
 import org.chromium.base.BravePreferenceKeys
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
-import org.chromium.playlist.mojom.PlaylistService
-import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
-import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
-import org.chromium.chrome.browser.flags.ChromeFeatureList
+import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
+import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaItemUtil
@@ -50,6 +45,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.PlaylistService
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
+import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
 
 @UnstableApi
 class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
@@ -57,6 +59,10 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
     private lateinit var mMediaLibrarySession: MediaLibrarySession
     private val mScope = CoroutineScope(Job() + Dispatchers.IO)
     protected var mPlaylistService: PlaylistService? = null
+
+    private val mPlaylistRepository: PlaylistRepository by lazy {
+        PlaylistRepository(applicationContext)
+    }
 
     companion object {
         private lateinit var mPlayer: ExoPlayer
@@ -252,6 +258,8 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
             if (PlaylistPreferenceUtils.defaultPrefs(applicationContext).rememberFilePlaybackPosition) {
                 mediaItem.mediaId.let {
                     mPlaylistService?.updateItemLastPlayedPosition(it, currentPosition.toInt())
+                    // val lastPlayedPositionModel = LastPlayedPositionModel(it, currentPosition)
+                    // mPlaylistRepository.insertLastPlayedPosition(lastPlayedPositionModel)
                 }
             }
         }

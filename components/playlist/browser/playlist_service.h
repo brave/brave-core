@@ -165,6 +165,10 @@ class PlaylistService : public KeyedService,
   void UpdateItem(mojom::PlaylistItemPtr item) override;
   void UpdateItemLastPlayedPosition(const std::string& playlist_item_id,
                                     int32_t last_played_position) override;
+
+  void UpdateItemHlsMediaFilePath(const std::string& playlist_item_id,
+                                  const std::string& hls_media_file_path,
+                                  int64_t updated_file_size) override;
   void RecoverLocalDataForItem(
       const std::string& item_id,
       bool update_media_src_before_recovery,
