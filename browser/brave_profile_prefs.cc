@@ -286,9 +286,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
                                 base::Value(base::Value::Type::LIST));
   // Disable NTP suggestions
-  feed::RegisterProfilePrefs(registry);
-  registry->RegisterBooleanPref(feed::prefs::kEnableSnippets, false);
-  registry->RegisterBooleanPref(feed::prefs::kArticlesListVisible, false);
+  // Feed prefs on Android are registered through upstream's
+  // RegisterProfilePrefs at //chrome/browser/prefs/browser_prefs.cc
+
+  // kEnableSnippets and kArticlesListVisible are defaulted to false at
+  // chromium_src/components/feed/core/shared_prefs/pref_names.cc
 
   // Explicitly disable safe browsing extended reporting by default in case they
   // change it in upstream.
