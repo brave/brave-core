@@ -18,7 +18,6 @@ const Container = styled.div`
 
   color: ${color.white};
 
-  // border: 1px solid ${color.divider.subtle};
   border-bottom-left-radius: ${radius.m};
   border-bottom-right-radius: ${radius.m};
 
