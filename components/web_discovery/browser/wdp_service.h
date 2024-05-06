@@ -9,10 +9,12 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/web_discovery/browser/credential_manager.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
+class PrefRegistrySimple;
 class PrefService;
 
 namespace network {
@@ -31,13 +33,16 @@ class WDPService : public KeyedService {
   WDPService(const WDPService&) = delete;
   WDPService& operator=(const WDPService&) = delete;
 
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
  private:
   void Start();
   void Stop();
 
   void OnEnabledChange();
 
-  void OnConfigChange(const ServerConfig& config);
+  void OnConfigChange(std::unique_ptr<ServerConfig> config);
+  void OnCredentialsLoaded();
 
   raw_ptr<PrefService> profile_prefs_;
   PrefChangeRegistrar pref_change_registrar_;
@@ -45,6 +50,8 @@ class WDPService : public KeyedService {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
   std::unique_ptr<ServerConfigLoader> server_config_loader_;
+  std::unique_ptr<ServerConfig> last_loaded_server_config_;
+  std::unique_ptr<CredentialManager> credential_manager_;
 };
 
 }  // namespace web_discovery

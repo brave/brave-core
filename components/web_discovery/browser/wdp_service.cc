@@ -4,8 +4,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/web_discovery/browser/wdp_service.h"
+
+#include <utility>
+
+#include "base/functional/bind.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -28,7 +34,18 @@ WDPService::WDPService(
 
 WDPService::~WDPService() = default;
 
+void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterDictionaryPref(kAnonymousCredentialsDict);
+  registry->RegisterStringPref(kCredentialRSAPrivateKey, {});
+  registry->RegisterStringPref(kCredentialRSAPublicKey, {});
+}
+
 void WDPService::Start() {
+  credential_manager_ = std::make_unique<CredentialManager>(
+      profile_prefs_, shared_url_loader_factory_.get(),
+      &last_loaded_server_config_,
+      base::BindRepeating(&WDPService::OnCredentialsLoaded,
+                          base::Unretained(this)));
   server_config_loader_ = std::make_unique<ServerConfigLoader>(
       shared_url_loader_factory_.get(),
       base::BindRepeating(&WDPService::OnConfigChange, base::Unretained(this)));
@@ -37,6 +54,8 @@ void WDPService::Start() {
 
 void WDPService::Stop() {
   server_config_loader_ = nullptr;
+  credential_manager_ = nullptr;
+  last_loaded_server_config_ = nullptr;
 }
 
 void WDPService::OnEnabledChange() {
@@ -47,6 +66,14 @@ void WDPService::OnEnabledChange() {
   }
 }
 
-void WDPService::OnConfigChange(const ServerConfig& config) {}
+void WDPService::OnConfigChange(std::unique_ptr<ServerConfig> config) {
+  last_loaded_server_config_ = std::move(config);
+  credential_manager_->JoinGroups();
+}
+
+void WDPService::OnCredentialsLoaded() {
+  // TODO(djandries): send queued messages if any, or remove this method
+  // if not needed
+}
 
 }  // namespace web_discovery

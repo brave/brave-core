@@ -6,16 +6,15 @@
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/location.h"
 #include "base/rand_util.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -23,8 +22,6 @@
 namespace web_discovery {
 
 namespace {
-
-constexpr size_t kMaxResponseSize = 16 * 1024;
 
 constexpr net::BackoffEntry::Policy kBackoffPolicy = {
     .num_errors_to_ignore = 0,
@@ -41,7 +38,7 @@ constexpr base::TimeDelta kMaxReloadInterval = base::Hours(4);
 constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotation =
     net::DefineNetworkTrafficAnnotation("wdp_config", R"(
     semantics {
-      sender: "Brave Web Discovery Project Server Configuration Fetch"
+      sender: "Brave Web Discovery Server Configuration Fetch"
       description:
         "Requests server configuration needed to send Web Discovery "
         "measurements to Brave servers."
@@ -57,9 +54,6 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotation =
         "Users can opt-in or out via brave://settings/search"
     })");
 
-constexpr char kVersionHeader[] = "Version";
-constexpr int kCurrentVersion = 1;
-
 constexpr char kGroupPubKeysFieldName[] = "groupPubKeys";
 constexpr char kPubKeysFieldName[] = "pubKeys";
 constexpr char kMinVersionFieldName[] = "minVersion";
@@ -71,12 +65,11 @@ KeyMap ParseKeys(const base::Value::Dict& encoded_keys) {
   KeyMap map;
   for (const auto [date, key_b64] : encoded_keys) {
     std::vector<uint8_t> decoded_data;
-    auto key = base::Base64Decode(key_b64.GetString());
-    base::Time time;
-    bool time_parse_result = base::Time::FromString(date.c_str(), &time);
-    if (time_parse_result && key) {
-      map[time] = *key;
+    // Decode to check for valid base64
+    if (!base::Base64Decode(key_b64.GetString())) {
+      continue;
     }
+    map[date] = key_b64.GetString();
   }
   return map;
 }
@@ -109,11 +102,7 @@ void ServerConfigLoader::Load() {
     // Another request is in progress
     return;
   }
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = config_url_;
-  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  resource_request->headers.SetHeader(kVersionHeader,
-                                      base::NumberToString(kCurrentVersion));
+  auto resource_request = CreateResourceRequest(config_url_);
 
   url_loader_ = network::SimpleURLLoader::Create(std::move(resource_request),
                                                  kNetworkTrafficAnnotation);
@@ -123,8 +112,6 @@ void ServerConfigLoader::Load() {
       base::BindOnce(&ServerConfigLoader::OnConfigResponse,
                      base::Unretained(this)),
       kMaxResponseSize);
-
-  backoff_entry_.InformOfRequest(false);
 }
 
 void ServerConfigLoader::OnConfigResponse(
@@ -174,7 +161,7 @@ bool ServerConfigLoader::ProcessConfigResponse(
     return false;
   }
 
-  ServerConfig config;
+  auto config = std::make_unique<ServerConfig>();
 
   const auto* group_pub_keys = root->FindDict(kGroupPubKeysFieldName);
   if (!group_pub_keys) {
@@ -187,10 +174,10 @@ bool ServerConfigLoader::ProcessConfigResponse(
     return false;
   }
 
-  config.group_pub_keys = ParseKeys(*group_pub_keys);
-  config.pub_keys = ParseKeys(*pub_keys);
+  config->group_pub_keys = ParseKeys(*group_pub_keys);
+  config->pub_keys = ParseKeys(*pub_keys);
 
-  config_callback_.Run(config);
+  config_callback_.Run(std::move(config));
   return true;
 }
 

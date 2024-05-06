@@ -5,6 +5,9 @@
 
 static_library("browser") {
   sources = [
+    "credential_manager.cc",
+    "credential_manager.h",
+    "pref_names.h",
     "server_config_loader.cc",
     "server_config_loader.h",
     "util.cc",
@@ -19,8 +22,10 @@ static_library("browser") {
     "//brave/components/constants",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//components/webcrypto",
     "//net",
     "//services/network/public/cpp",
+    "//third_party/blink/public:blink_headers",
     "//url",
   ]
 }
