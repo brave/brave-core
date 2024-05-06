@@ -41,6 +41,7 @@ class UptimeMonitorUnitTest : public testing::Test {
 #define MAYBE_ReportUsageDuration DISABLED_ReportUsageDuration
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
 TEST_F(UptimeMonitorUnitTest, MAYBE_ReportUsageDuration) {
   histogram_tester_.ExpectTotalCount(kBrowserOpenTimeHistogramName, 0);
 
@@ -78,5 +79,6 @@ TEST_F(UptimeMonitorUnitTest, MAYBE_ReportUsageDuration) {
   histogram_tester_.ExpectBucketCount(kBrowserOpenTimeHistogramName, 3, 1);
   histogram_tester_.ExpectTotalCount(kBrowserOpenTimeHistogramName, 3);
 }
+#endif
 
 }  // namespace misc_metrics
