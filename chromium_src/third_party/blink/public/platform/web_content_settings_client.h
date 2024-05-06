@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CONTENT_SETTINGS_CLIENT_H_
 
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
 
 class GURL;
@@ -21,7 +22,8 @@ class GURL;
   virtual bool IsFirstPartyCosmeticFilteringEnabled(const GURL& url) {  \
     return false;                                                       \
   }                                                                     \
-  virtual BraveFarblingLevel GetBraveFarblingLevel() {                  \
+  virtual BraveFarblingLevel GetBraveFarblingLevel(                     \
+      ContentSettingsType webcompat_settings_type) {                    \
     return BraveFarblingLevel::OFF;                                     \
   }                                                                     \
   virtual bool IsReduceLanguageEnabled() {                              \

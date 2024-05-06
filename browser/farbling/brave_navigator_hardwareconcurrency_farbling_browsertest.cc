@@ -72,6 +72,13 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
         content_settings(), ControlType::DEFAULT, top_level_page_url_);
   }
 
+  void EnableWebcompatException() {
+    brave_shields::SetWebcompatFeatureSetting(
+        content_settings(),
+        ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY,
+        ControlType::ALLOW, top_level_page_url_, nullptr);
+  }
+
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -112,6 +119,14 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.
   EXPECT_EQ(completely_fake_value, 5);
+
+  // Farbling level: default, but with webcompat exception enabled
+  SetFingerprintingDefault();
+  EnableWebcompatException();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
+  int real_value2 =
+      content::EvalJs(contents(), kHardwareConcurrencyScript).ExtractInt();
+  ASSERT_GE(real_value, real_value2);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
@@ -136,6 +151,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
                     &real_value);
   ASSERT_GE(real_value, 2);
 
+  // Farbling level: default
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
@@ -146,6 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   EXPECT_GE(fake_value, 2);
   EXPECT_LE(fake_value, real_value);
 
+  // Farbling level: maximum
   BlockFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
@@ -156,4 +173,16 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.
   EXPECT_EQ(completely_fake_value, 5);
+
+  // Farbling level: default, but with webcompat exception enabled
+  // get real navigator.hardwareConcurrency
+  SetFingerprintingDefault();
+  EnableWebcompatException();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
+  }
+  int real_value2;
+  base::StringToInt(content::EvalJs(contents(), kTitleScript).ExtractString(),
+                    &real_value2);
+  ASSERT_GE(real_value, real_value2);
 }

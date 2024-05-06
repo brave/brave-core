@@ -348,6 +348,34 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
                    kEventSourcesPoolLimit + 5);
 }
 
+IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
+                       PoolIsNotLimitedWithWebcompatException) {
+  const GURL url(https_server_.GetURL("a.com", "/ephemeral_storage.html"));
+
+  // Enable shields.
+  brave_shields::SetBraveShieldsEnabled(content_settings(), true, url);
+
+  // Enable webcompat exception.
+  brave_shields::SetWebcompatFeatureSetting(
+      content_settings(),
+      ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL,
+      brave_shields::ControlType::ALLOW, https_server_.GetURL("a.com", "/"),
+      nullptr);
+
+  auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+
+  // No limits should be active.
+  OpenEventSources(a_com_rfh, kEventSourcesOpenScript,
+                   kEventSourcesPoolLimit + 5);
+
+  // No limits should be active in a 3p frame.
+  auto* b_com_in_a_com_rfh = GetNthChildFrameWithHost(a_com_rfh, "b.com");
+  OpenEventSources(b_com_in_a_com_rfh, kEventSourcesOpenScript,
+                   kEventSourcesPoolLimit + 5);
+}
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
                        PoolIsNotLimitedForExtensions) {

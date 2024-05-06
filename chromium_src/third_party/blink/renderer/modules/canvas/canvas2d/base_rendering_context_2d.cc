@@ -34,8 +34,10 @@ bool IsGoogleMaps(const blink::KURL& url) {
     }                                                                     \
   }
 
-#define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT         \
-  if (!brave::AllowFingerprinting(GetTopExecutionContext())) \
+#define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT      \
+  if (!brave::AllowFingerprinting(                        \
+          GetTopExecutionContext(),                       \
+          ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE)) \
     return MakeGarbageCollected<TextMetrics>();
 
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
@@ -50,7 +52,8 @@ namespace {
 
 bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
   return brave::AllowFingerprinting(
-      blink::ExecutionContext::From(script_state));
+      blink::ExecutionContext::From(script_state),
+      ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS);
 }
 
 }  // namespace

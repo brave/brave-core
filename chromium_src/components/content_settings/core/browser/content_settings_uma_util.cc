@@ -43,9 +43,35 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
   {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, brave_value(11)},           \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, brave_value(12)},            \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, brave_value(13)},      \
-  {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, brave_value(14)}
+  {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, brave_value(14)},         \
+  /* Begin webcompat items */                                                \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, brave_value(50)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, brave_value(51)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, brave_value(52)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_DEVICE_MEMORY, brave_value(53)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL, brave_value(54)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_FONT, brave_value(55)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY, brave_value(56)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_KEYBOARD, brave_value(57)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE, brave_value(58)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES, brave_value(59)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS, brave_value(60)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN, brave_value(61)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS, brave_value(62)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER, brave_value(63)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT, brave_value(64)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, brave_value(65)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, brave_value(66)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, brave_value(67)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, brave_value(68)},
 // clang-format on
+
+#define kDefaultProvider       \
+  kRemoteListProvider:         \
+  return "RemoteListProvider"; \
+  case ProviderType::kDefaultProvider
 
 #include "src/components/content_settings/core/browser/content_settings_uma_util.cc"
 
 #undef BRAVE_HISTOGRAM_VALUE_LIST
+#undef kDefaultProvider

@@ -321,6 +321,30 @@ IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
   OpenWebSockets(a_com_rfh, kWsOpenInSwScript, kWebSocketsPoolLimit + 5);
 }
 
+IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
+                       PoolIsNotLimitedWithWebcompatException) {
+  const GURL url(https_server_.GetURL("a.com", "/ephemeral_storage.html"));
+
+  // Enable shields.
+  brave_shields::SetBraveShieldsEnabled(content_settings(), true, url);
+  // Enable webcompat exception.
+  brave_shields::SetWebcompatFeatureSetting(
+      content_settings(), ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL,
+      brave_shields::ControlType::ALLOW, https_server_.GetURL("a.com", "/"),
+      nullptr);
+
+  auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+
+  // No limits should be active.
+  OpenWebSockets(a_com_rfh, kWsOpenScript, kWebSocketsPoolLimit + 5);
+
+  // No limits should be active in a 3p frame.
+  auto* b_com_in_a_com_rfh = GetNthChildFrameWithHost(a_com_rfh, "b.com");
+  OpenWebSockets(b_com_in_a_com_rfh, kWsOpenScript, kWebSocketsPoolLimit + 5);
+}
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
                        PoolIsNotLimitedForExtensions) {

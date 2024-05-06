@@ -7,9 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_SHIELDS_UTIL_H_
 
 #include <stdint.h>
+
 #include <string>
 
-#include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 
 namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
@@ -23,6 +24,7 @@ namespace content_settings {
 class CookieSettings;
 }
 
+class ContentSettingsPattern;
 class GURL;
 class HostContentSettingsMap;
 class PrefService;
@@ -140,6 +142,13 @@ void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
                                        PrefService* local_state = nullptr);
 bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
                                        const GURL& url);
+
+// Enables a webcompat exception for a specific URL.
+void SetWebcompatFeatureSetting(HostContentSettingsMap* map,
+                                ContentSettingsType webcompat_settings_type,
+                                ControlType type,
+                                const GURL& url,
+                                PrefService* local_state);
 
 bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url);
 

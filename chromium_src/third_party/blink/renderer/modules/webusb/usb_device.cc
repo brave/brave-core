@@ -17,9 +17,10 @@ String USBDevice::serialNumber() const {
   String realSerialNumber = serialNumber_ChromiumImpl();
   if (realSerialNumber.length() > 0) {
     if (ExecutionContext* context = GetExecutionContext()) {
-      if (brave::GetBraveFarblingLevelFor(context,
-                                          BraveFarblingLevel::BALANCED) !=
-          BraveFarblingLevel::OFF) {
+      if (brave::GetBraveFarblingLevelFor(
+              context,
+              ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER,
+              BraveFarblingLevel::BALANCED) != BraveFarblingLevel::OFF) {
         WTF::StringBuilder result;
         result.Append(realSerialNumber);
         result.Append("WEBUSB_SERIAL_NUMBER");

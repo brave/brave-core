@@ -38,6 +38,7 @@
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/webcompat/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
@@ -993,6 +994,15 @@
           "Not recommended.",                                                  \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveOverrideDownloadDangerLevel),     \
+      },                                                                       \
+      {                                                                        \
+          "brave-webcompat-exceptions-service",                                \
+          "Allow feature exceptions for webcompat",                            \
+          "Disables Brave features for specific websites when they break"      \
+          "website functionality.",                                            \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              webcompat::features::kBraveWebcompatExceptionsService),          \
       },                                                                       \
       {                                                                        \
           "brave-web-view-rounded-corners",                                    \

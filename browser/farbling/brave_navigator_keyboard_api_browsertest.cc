@@ -80,6 +80,13 @@ class BraveNavigatorKeyboardAPIBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  void EnableWebcompatException() {
+    brave_shields::SetWebcompatFeatureSetting(
+        content_settings(),
+        ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY,
+        ControlType::ALLOW, top_level_page_url_, nullptr);
+  }
+
  private:
   GURL top_level_page_url_;
   GURL test_url_;
@@ -109,4 +116,11 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorKeyboardAPIBrowserTest,
   EXPECT_TRUE(base::Contains(
       result_blocked.error,
       "Cannot read properties of null (reading 'getLayoutMap')"));
+
+  // Fingerprinting level: default, but with webcompat exception enabled
+  // get real navigator.keyboard.getLayoutMap key
+  AllowFingerprinting();
+  EnableWebcompatException();
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url()));
+  EXPECT_EQ(true, EvalJs(contents(), kGetLayoutMapScript));
 }

@@ -7,11 +7,41 @@
 #include "src/components/content_settings/core/browser/content_settings_registry.cc"
 #undef BRAVE_INIT
 
+#include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings.mojom.h"
 #include "net/base/features.h"
 
 namespace content_settings {
+
+namespace {
+using enum ContentSettingsType;
+constexpr auto kSettingsNames =
+    base::MakeFixedFlatMap<ContentSettingsType, const char*>({
+        {BRAVE_WEBCOMPAT_NONE, "brave-webcompat-none"},
+        {BRAVE_WEBCOMPAT_AUDIO, "brave-webcompat-audio"},
+        {BRAVE_WEBCOMPAT_CANVAS, "brave-webcompat-canvas"},
+        {BRAVE_WEBCOMPAT_DEVICE_MEMORY, "brave-webcompat-device-memory"},
+        {BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL,
+         "brave-webcompat-event-source-pool"},
+        {BRAVE_WEBCOMPAT_FONT, "brave-webcompat-font"},
+        {BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY,
+         "brave-webcompat-hardware-concurrency"},
+        {BRAVE_WEBCOMPAT_KEYBOARD, "brave-webcompat-keyboard"},
+        {BRAVE_WEBCOMPAT_LANGUAGE, "brave-webcompat-language"},
+        {BRAVE_WEBCOMPAT_MEDIA_DEVICES, "brave-webcompat-media-devices"},
+        {BRAVE_WEBCOMPAT_PLUGINS, "brave-webcompat-plugins"},
+        {BRAVE_WEBCOMPAT_SCREEN, "brave-webcompat-screen"},
+        {BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS, "brave-webcompat-speech-synthesis"},
+        {BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER,
+         "brave-webcompat-usb-device-serial-number"},
+        {BRAVE_WEBCOMPAT_USER_AGENT, "brave-webcompat-user-agent"},
+        {BRAVE_WEBCOMPAT_WEBGL, "brave-webcompat-webgl"},
+        {BRAVE_WEBCOMPAT_WEBGL2, "brave-webcompat-webgl2"},
+        {BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, "brave-webcompat-web-sockets-pool"},
+    });
+}  // namespace
 
 void ContentSettingsRegistry::BraveInit() {
   Register(ContentSettingsType::BRAVE_ADS, brave_shields::kAds,
@@ -272,6 +302,25 @@ void ContentSettingsRegistry::BraveInit() {
       WebsiteSettingsRegistry::DESKTOP |
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
       WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
+
+  for (auto settings_type = ContentSettingsType::BRAVE_WEBCOMPAT_NONE;
+       settings_type != ContentSettingsType::BRAVE_WEBCOMPAT_ALL;
+       settings_type = static_cast<ContentSettingsType>(
+           static_cast<int32_t>(settings_type) + 1)) {
+    const auto match = kSettingsNames.find(settings_type);
+    if (match != kSettingsNames.end()) {
+      Register(
+          settings_type, match->second, CONTENT_SETTING_ASK,
+          WebsiteSettingsInfo::UNSYNCABLE, /*allowlisted_schemes=*/{},
+          /*valid_settings=*/
+          {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
+          WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+          WebsiteSettingsRegistry::DESKTOP |
+              WebsiteSettingsRegistry::PLATFORM_ANDROID,
+          ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+          ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+    }
+  }
 }
 
 }  // namespace content_settings

@@ -11,7 +11,8 @@
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
-BraveFarblingLevel WorkerContentSettingsClient::GetBraveFarblingLevel() {
+BraveFarblingLevel WorkerContentSettingsClient::GetBraveFarblingLevel(
+    ContentSettingsType webcompat_settings_type) {
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
     const GURL& primary_url = top_frame_origin_.GetURL();
@@ -28,6 +29,15 @@ BraveFarblingLevel WorkerContentSettingsClient::GetBraveFarblingLevel() {
       // Brave Shields is up, so check fingerprinting rules
       setting = brave_shields::GetBraveFPContentSettingFromRules(
           content_setting_rules_->fingerprinting_rules, primary_url);
+    }
+    if (setting != CONTENT_SETTING_ALLOW) {
+      auto webcompat_setting =
+          brave_shields::GetBraveWebcompatContentSettingFromRules(
+              content_setting_rules_->webcompat_rules, primary_url,
+              webcompat_settings_type);
+      if (webcompat_setting == CONTENT_SETTING_ALLOW) {
+        setting = CONTENT_SETTING_ALLOW;
+      }
     }
   }
   if (setting == CONTENT_SETTING_BLOCK) {

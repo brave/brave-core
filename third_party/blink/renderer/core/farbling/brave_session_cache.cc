@@ -99,16 +99,21 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
   return settings;
 }
 
-BraveFarblingLevel GetBraveFarblingLevelFor(ExecutionContext* context,
-                                            BraveFarblingLevel default_value) {
+BraveFarblingLevel GetBraveFarblingLevelFor(
+    ExecutionContext* context,
+    ContentSettingsType webcompat_settings_type,
+    BraveFarblingLevel default_value) {
   BraveFarblingLevel value = default_value;
   if (context)
-    value = brave::BraveSessionCache::From(*context).GetBraveFarblingLevel();
+    value = brave::BraveSessionCache::From(*context).GetBraveFarblingLevel(
+        webcompat_settings_type);
   return value;
 }
 
-bool AllowFingerprinting(ExecutionContext* context) {
-  return (GetBraveFarblingLevelFor(context, BraveFarblingLevel::OFF) !=
+bool AllowFingerprinting(ExecutionContext* context,
+                         ContentSettingsType webcompat_settings_type) {
+  return (GetBraveFarblingLevelFor(context, webcompat_settings_type,
+                                   BraveFarblingLevel::OFF) !=
           BraveFarblingLevel::MAXIMUM);
 }
 
@@ -142,8 +147,9 @@ bool BlockScreenFingerprinting(ExecutionContext* context) {
           blink::features::kBraveBlockScreenFingerprinting)) {
     return false;
   }
-  BraveFarblingLevel level =
-      GetBraveFarblingLevelFor(context, BraveFarblingLevel::OFF);
+  BraveFarblingLevel level = GetBraveFarblingLevelFor(
+      context, ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN,
+      BraveFarblingLevel::OFF);
   return level != BraveFarblingLevel::OFF;
 }
 
@@ -213,7 +219,8 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
   if (blink::WebContentSettingsClient* settings =
           GetContentSettingsClientFor(&context, true)) {
-    auto raw_farbling_level = settings->GetBraveFarblingLevel();
+    auto raw_farbling_level = settings->GetBraveFarblingLevel(
+        ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
     farbling_level_ =
         base::FeatureList::IsEnabled(
             brave_shields::features::kBraveShowStrictFingerprintingMode)
@@ -221,10 +228,21 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
             : (raw_farbling_level == BraveFarblingLevel::OFF
                    ? BraveFarblingLevel::OFF
                    : BraveFarblingLevel::BALANCED);
-  }
-  if (farbling_level_ != BraveFarblingLevel::OFF) {
-    audio_farbling_helper_.emplace(
-        fudge_factor, seed, farbling_level_ == BraveFarblingLevel::MAXIMUM);
+    for (auto webcompat_content_settings =
+             ContentSettingsType::BRAVE_WEBCOMPAT_NONE;
+         webcompat_content_settings != ContentSettingsType::BRAVE_WEBCOMPAT_ALL;
+         webcompat_content_settings = static_cast<ContentSettingsType>(
+             static_cast<int32_t>(webcompat_content_settings) + 1)) {
+      auto farbling_level =
+          settings->GetBraveFarblingLevel(webcompat_content_settings);
+      farbling_levels_.insert(webcompat_content_settings, farbling_level);
+    }
+    if (settings->GetBraveFarblingLevel(
+            ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO) !=
+        BraveFarblingLevel::OFF) {
+      audio_farbling_helper_.emplace(
+          fudge_factor, seed, farbling_level_ == BraveFarblingLevel::MAXIMUM);
+    }
   }
   farbling_enabled_ = true;
 }
@@ -250,8 +268,10 @@ void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
 }
 
 void BraveSessionCache::PerturbPixels(const unsigned char* data, size_t size) {
-  if (!farbling_enabled_ || farbling_level_ == BraveFarblingLevel::OFF)
+  if (GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS) ==
+      BraveFarblingLevel::OFF) {
     return;
+  }
   PerturbPixelsInternal(data, size);
 }
 
@@ -347,8 +367,12 @@ int BraveSessionCache::FarbledInteger(FarbleKey key,
 bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
     const AtomicString& family_name) {
-  if (!farbling_enabled_ || !settings || !settings->IsReduceLanguageEnabled())
+  if (!farbling_enabled_ || !settings ||
+      GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_FONT) ==
+          BraveFarblingLevel::OFF ||
+      !settings->IsReduceLanguageEnabled()) {
     return true;
+  }
   switch (farbling_level_) {
     case BraveFarblingLevel::OFF:
       break;
@@ -375,6 +399,18 @@ FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(FarbleKey key) {
   uint64_t seed =
       *reinterpret_cast<uint64_t*>(domain_key_) ^ static_cast<uint64_t>(key);
   return FarblingPRNG(seed);
+}
+
+BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
+    ContentSettingsType webcompat_content_settings) {
+  if (!farbling_enabled_ || farbling_level_ == BraveFarblingLevel::OFF) {
+    return BraveFarblingLevel::OFF;
+  }
+  auto item = farbling_levels_.find(webcompat_content_settings);
+  if (item != farbling_levels_.end()) {
+    return item->value;
+  }
+  return farbling_level_;
 }
 
 }  // namespace brave

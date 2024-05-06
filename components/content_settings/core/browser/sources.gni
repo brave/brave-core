@@ -14,6 +14,8 @@ if (!is_ios) {
     "//brave/components/content_settings/core/browser/brave_content_settings_utils.h",
     "//brave/components/content_settings/core/browser/brave_global_value_map.cc",
     "//brave/components/content_settings/core/browser/brave_global_value_map.h",
+    "//brave/components/content_settings/core/browser/remote_list_provider.cc",
+    "//brave/components/content_settings/core/browser/remote_list_provider.h",
   ]
 
   brave_components_content_settings_core_browser_deps += [
@@ -22,6 +24,7 @@ if (!is_ios) {
     "//brave/components/constants",
     "//brave/components/content_settings/core/common",
     "//brave/components/google_sign_in_permission",
+    "//brave/components/webcompat:core",
     "//components/prefs",
     "//content/public/browser",
     "//net",

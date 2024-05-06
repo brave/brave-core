@@ -6,10 +6,21 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_H_
 
+#include "components/content_settings/core/common/content_settings_constraints.h"
+
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
+
+#define kTpcdGrant kTpcdGrant, kRemoteList
+
+#define kNotificationAndroidProvider \
+  kRemoteListProvider:               \
+  return SettingSource::kRemoteList; \
+  case ProviderType::kNotificationAndroidProvider
 
 #include "src/components/content_settings/core/common/content_settings.h"  // IWYU pragma: export
 
+#undef kNotificationAndroidProvider
+#undef kTpcdGrant
 #undef RendererContentSettingRules
 
 struct RendererContentSettingRules
@@ -30,6 +41,7 @@ struct RendererContentSettingRules
   ContentSettingsForOneType fingerprinting_rules;
   ContentSettingsForOneType brave_shields_rules;
   ContentSettingsForOneType cosmetic_filtering_rules;
+  std::map<ContentSettingsType, ContentSettingsForOneType> webcompat_rules;
 };
 
 namespace content_settings {
