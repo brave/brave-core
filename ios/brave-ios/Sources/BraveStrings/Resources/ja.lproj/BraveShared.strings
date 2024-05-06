@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "続ける";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "これらの個人的な回答は、Braveが特定の機能の全体的な使用状況を推定し、お客様にとってより良いものにするために役立ちます。";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "プライバシーを保護したプロダクト分析 (P3A) を許可する";
 
@@ -2665,6 +2668,9 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "品質設定";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "このプライベートなPingにより、Braveはアクティブユーザーを推定することができます。";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "毎日の使用状況のpingをBraveに自動送信する";
 
@@ -3007,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "同期アカウントを削除";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されたすべてのデバイスで同期が無効になります。ただし、これらのデバイスにローカルに保存されているデータは削除されません。";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "同期チェーンでのデバイス取得中に問題が発生しました。";
 
@@ -3075,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "同期アカウントを削除";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "この同期コードは、別のデバイスで旧バージョンのBraveにより生成されています。すべての同期済みデバイスでBraveをアップデートしてからもう一度お試しください。";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "デバイスと設定";
@@ -3612,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "接続信頼性の問題";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "問題に当てはまるカテゴリーを選択してください。";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "接続時にインターネットに接続できなかった";

@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Kontynuuj";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Te całkowicie prywatne odpowiedzi pomagają Brave oszacować ogólny poziom korzystania z niektórych funkcji i ulepszyć je dla Ciebie.";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)";
 
@@ -2665,6 +2668,9 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Ustawienia jakości";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Ten prywatny ping pozwala Brave oszacować liczbę aktywnych użytkowników.";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Automatycznie wysyłaj pingi dziennego użycia do Brave";
 
@@ -3007,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Usuń konto Sync";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Usunięcie konta spowoduje usunięcie Twoich zaszyfrowanych danych z serwerów Brave i wyłączenie Sync na wszystkich Twoich podłączonych urządzeniach. Nie spowoduje to jednak usunięcia danych przechowywanych lokalnie na tych urządzeniach.";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "To usunięcie jest trwałe i nie ma możliwości odzyskania danych. Jeśli zdecydujesz się ponownie zacząć używać aplikacji Sync, będzie trzeba utworzyć nowe konto i ponownie dodać każde urządzenie po kolei.";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Coś poszło nie tak podczas wykrywania urządzeń w łańcuchu synchronizacji.";
 
@@ -3075,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Usuń konto Sync";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "Ten kod synchronizacji został utworzony przez starszą wersję Brave na innym urządzeniu. Zaktualizuj swoje przeglądarki Brave na wszystkich urządzeniach i spróbuj ponownie.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Urządzenia i ustawienia";
@@ -3612,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problem z połączeniem";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Wybierz kategorię, która najlepiej określa problem.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Brak dostępu do Internetu po połączeniu";

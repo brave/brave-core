@@ -1,0 +1,57 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Zistiť ako";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Vyskúšajte to!";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Prejsť na môj zoznam prehrávania";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Teraz sa pozrime na váš zoznam prehrávania.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Obsah pridaný do %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Dobrá práca";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Zatvoriť";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Možno neskôr";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Zavrieť";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Predstavujeme zoznam prehrávania Brave";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Vytvorte si zoznamy médií s obľúbeným obsahom. Šetrite mobilné dáta. A prehrávajte bez reklám.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Obraz v obraze. Prehrávanie na pozadí. Ovládanie z uzamknutej obrazovky. A ešte viac…";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Zostaňte sústredení: Pridávajte videá počas prezerania webu a pozrite si ich neskôr.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Pridajte videá do zoznamu prehrávania Brave. Prehrávanie kedykoľvek. Dokonca aj offline";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Prehrávanie je lepšie pomocou zoznamu médií";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Stačí ťuknúť na tlačidlo a pridať videá do zoznamu";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Vytvárajte zoznamy prehrávania s obsahom, ktorý máte radi. Pridajte médiá z ľubovoľnej stránky.\nPrehrávajte kedykoľvek. Dokonca aj offline!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Ťuknutím na %@ pridajte svoju prvú položku";
+
+/* Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\" */
+"userActionPromptFill" = "Pridať do zoznamu skladieb";
+

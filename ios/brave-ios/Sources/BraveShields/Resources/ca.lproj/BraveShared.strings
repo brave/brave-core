@@ -50,13 +50,13 @@
 "DomainBlockedGoBackAction" = "Torna";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "Com que heu demanat bloquejar agressivament els elements de seguiment i anuncis, Brave està bloquejant aquest lloc abans de la primera connexió de xarxa.";
+"DomainBlockedPageDescription" = "Com que has demanat bloquejar agressivament els elements de rastrejament i anuncis, Brave està bloquejant aquest lloc abans de la primera connexió de xarxa.";
 
 /* A message in the warning page that appears when a page was blocked */
 "DomainBlockedPageMessage" = "Brave ha impedit que es carregui el lloc següent:";
 
 /* A title in the warning page that appears when a page was blocked */
-"DomainBlockedPageTitle" = "Aquesta pàgina web pot intentar seguir-vos a altres pàgines";
+"DomainBlockedPageTitle" = "Aquesta pàgina web et pot intentar rastrejar a altres pàgines";
 
 /* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
 "DomainBlockedProceedAction" = "Continuar";

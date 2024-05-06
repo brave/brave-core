@@ -1,62 +1,90 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "Nedá sa otvoriť ${URL webovej stránky} na novej karte.";
 
-"1QT5y6" = "Open a website in a new Tab";
+/* (No Comment) */
+"1n1yx4" = "Nedá sa otvoriť ${URL webovej stránky} na novej karte.";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "Otvoriť webovú stránku na novej karte";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "Otvoriť webovú stránku na novej karte";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "URL webovej stránky";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "Otvoriť webovú stránku zo záložiek";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "Otvoriť ${URL webovej stránky} na novej karte";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "Nedá sa otvoriť ${URL webovej stránky} na novej karte.";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "Toto sa otvorí ${URL webovej stránky} z histórie.";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "Otvoriť webovú stránku z histórie";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "URL webovej stránky";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "URL webovej stránky";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "Otvoriť predošlú webovú stránku";
 
-"VgH3NH" = "Open Bookmark Website";
+/* (No Comment) */
+"iLL70C" = "${URL webovej stránky}";
 
-"Wh3wb1" = "Open Website";
+/* (No Comment) */
+"LHHK1N" = "Toto otvorí ${URL webovej stránky} na novej karte.";
 
-"WiB0aJ" = "Website URL";
+/* (No Comment) */
+"Lr38ve" = "${URL webovej stránky}";
 
-"Xx8bbW" = "Website URL";
+/* (No Comment) */
+"MISOeA" = "Otvoriť z histórie";
 
-"YCxX7a" = "${websiteURL}";
+/* (No Comment) */
+"p3NuX2" = "Nedá sa otvoriť ${URL webovej stránky} na novej karte.";
 
-"ZgJKfY" = "This will open ${websiteURL} from Bookmarks.";
+/* (No Comment) */
+"Paq749" = "URL webovej stránky";
 
-"azhMra" = "Open ${websiteURL}in a New Tab";
+/* (No Comment) */
+"t7aARA" = "Nedá sa otvoriť ${URL webovej stránky} na novej karte.";
 
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"UmKnv3" = "Nedá sa otvoriť ${URL webovej stránky} na novej karte.";
 
-"cSYAYC" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"uT0Oi7" = "Toto otvorí ${URL webovej stránky} na novej karte.";
 
-"cvU2lS" = "Open a Website from History";
+/* (No Comment) */
+"VgH3NH" = "Otvoriť webovú stránku zo záložiek";
 
-"dk8p9b" = "Website URL";
+/* (No Comment) */
+"Wh3wb1" = "Otvoriť webovú stránku";
 
-"iLL70C" = "${websiteURL}";
+/* (No Comment) */
+"WiB0aJ" = "URL webovej stránky";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"wZqW4o" = "Toto sa otvorí ${URL webovej stránky} z histórie.";
 
-"pvi3Ug" = "This will open ${websiteURL} from Bookmarks.";
+/* (No Comment) */
+"Xx8bbW" = "URL webovej stránky";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"ycaNZf" = "Otvoriť zo záložiek";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"YCxX7a" = "${URL webovej stránky}";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
-
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"ZgJKfY" = "Toto sa otvorí ${URL webovej stránky} zo záložiek.";
 

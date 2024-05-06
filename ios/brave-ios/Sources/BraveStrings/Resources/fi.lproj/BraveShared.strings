@@ -1,0 +1,4014 @@
+/* About settings section title */
+"About" = "Tietoja asetuksista";
+
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Tietoja Brave Shieldsistä";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Sivustoilla on usein evästeitä ja merkkijonoja, joita käytetään sinun ja laitteesi tunnistamiseen. Ne tahtovat selvittää henkilöllisyytesi sekä seurata sinua verkossa, tarkkaillen jokaisen sivuston käyttöä.\n\nBrave estää kyseiset seuraimet, joten voit rauhassa selata nettiä ilman tarkkailijoita.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "Tämän avulla voit tallentaa kuvia kameran kuviin.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave haluaa käyttää valokuviasi";
+
+/* Button to add a bookmark */
+"AddBookmark" = "Lisää kirjanmerkki";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addBookmarkTitle" = "Lisää kirjanmerkki";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddCustomFilterList" = "Lisää mukautettu suodatinluettelo";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Lisää muita luottamasi yhteisön luomia ja ylläpitämiä luetteloita.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Liity vain luottamiesi tahojen listoille.** Selaimesi tarkistaa säännöllisesti listan päivitykset antamastasi URL-osoitteesta.";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addFavouritesTitle" = "Lisää suosikkeihin";
+
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Uusi kansio";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "Lisää suosikkeihin";
+
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Lisää kirjanmerkki";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "Mainokset ja seurantaohjelmat";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Pyydä aina tietokoneversiota";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "Lähetä aina";
+
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "Käytössä";
+
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Tämä todentaa Braven käyttöoikeutesi";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "Peruuta";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "%1$@ pyytää käyttäjätunnusta ja salasanaa. Sivuston vastaus: %2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "Kirjaudu sisään";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "%@ pyytää käyttäjätunnusta ja salasanaa.";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "Salasana";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "Todennus vaaditaan";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "Käyttäjätunnus";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "AMP-sivujen automaattinen uudelleenohjaus";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Käy aina sivun alkuperäisessä URL-osoitteessa (ei-AMP) Googlen Accelerated Mobile Pages -tekniikkaa käyttävän version sijaan";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Seuranta-URL-osoitteiden automaattinen uudelleenohjauksen";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Ota käyttöön tuki ylimmän tason seuranta-URL-osoitteiden uudelleenohjauksen ohittamiseksi.";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "Estä kolmannen osapuolen evästeet";
+
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "Estä kaikki evästeet";
+
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "Estä kaikki";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "Kaikkien evästeiden estäminen estää joitakin verkkosivustoja toimimasta oikein.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "Estä kaikki evästeet?";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "Asetuksen asettaminen epäonnistui. Yritä uudelleen.";
+
+/* A title for a setting that enables cookie consent notices */
+"BlockCookieConsentNotices" = "Estä evästeitä koskevat suostumusilmoitukset";
+
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "Estää verkkosivustoja tallentamasta aiempia käyntikertojasi koskevia tietoja.";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "Esto-ominaisuuksien valvonta";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Estä 'Vaihda sovellukseen' -ilmoitukset";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "Estä ponnahdusikkunat";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Estä komentosarjat";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Estää JavaScriptin (voi rikkoa sivustoja).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "Lisää %lld välilehteä kirjanmerkkeihin";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "Kirjanmerkkikansio";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "Kirjanmerkin tiedot";
+
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Kirjanmerkkipalkki";
+
+/* title for bookmarks panel */
+"Bookmarks" = "Kirjanmerkkipalkki";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Vie kirjanmerkit";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Tuo kirjanmerkit";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Kirjanmerkkipalkki";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Nimi";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Osoite";
+
+/* Button to show the brave panel */
+"BravePanel" = "Brave-paneeli";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave -palkinnot";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Avaa";
+
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Palkinnot";
+
+/* Brave Rewards title */
+"BraveRewardsTitle" = "Brave -palkinnot";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave-haku ei seuraa sinua, hakujasi tai napsautuksiasi.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Ehkä myöhemmin";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Tue riippumatonta hakua paremmalla yksityisyydellä";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Kokeile Brave-hakua";
+
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Ehkä myöhemmin";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Piilota";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Edistyneet kontrollit";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Brave-suojaukset ja yksityisyys";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Suojaukset ja yksityisyys";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Estetyt mainokset ja muut epäilyttävät kohteet";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Lisätietoa";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Muuta suojauksen yleisiä oletuksia";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Yleiset ohjaimet";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Kokeile käyttöä ilman Shieldsiä, jos sivusto vaikuttaa olevan rikkinäinen.";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Alas";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Ylös";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Vaihda Brave-suojauksen asetusta kaksoisnapauttamalla";
+
+/* Sync page title */
+"BraveSync" = "Synkronointi";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "Synkronoi sisäiset toiminnot";
+
+/* Sync settings welcome */
+"BraveSyncWelcome" = "Ensi alkuun sinun on asennettava Brave synkronoitaville laitteille. Voit ketjuttaa ne käynnistämällä synkronointiketjun, jonka avulla voit yhdistää kaikki laitteesi toisiinsa turvallisesti.";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
+/* Title for setting to enable the browser lock privacy feature */
+"BrowserLock" = "Selaimen lukitus";
+
+/* Description for setting to enable the browser lock privacy feature */
+"BrowserLockDescription" = "Avaa Braven lukitus Touch ID:llä, Face ID:llä tai salasanalla.";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "Selaushistoria";
+
+/* Settings item for clearing the cache */
+"Cache" = "Välimuisti";
+
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "Siirrä välilehtipalkkia";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "Siirrä osoitepalkki, välilehdet, kirjanmerkit ja muut työkalut selaimen alaosaan.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Mukauta Brave-välilehtipalkkia";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Asetetaanko Brave oletusselaimeksi?";
+
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "Kun Brave on käytössä oletuksena, jokainen napsauttamasi linkki avautuu Braven tietosuoja-asetusten suojaamana.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Aseta oletusarvoiseksi";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Onko se jo oletusarvoinen?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Ohita tämä";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "Yksinkertainen tietosuoja.";
+
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "Tämä auttaa meitä selvittämään, mitä Braven ominaisuuksia käytetään eniten. Voit muuttaa niitä milloin tahansa Braven asetuksissa kohdassa Brave-suojaus ja muut tietosuoja-asetukset.";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "Lue lisää yksityisyyden säilyttävästä tuoteanalytiikasta (P3A).";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Auta parantamaan Bravea.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Jaa täysin yksityisiä ja anonyymejä tuotetietoja.";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "Hanki Brave-tietosuoja tietokoneellesi tai tabletillesi ja synkronoi kirjanmerkit ja laajennukset laitteiden välillä.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Synkronoi nyt";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "Tietosuojaa kaikkialla.";
+
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "Välilehti vastaanotettu";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "Peruuta";
+
+/* Title indicating whether the section for the algorithm used */
+"certificateViewer.algorithmTitle" = "Algoritmi";
+
+/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
+"certificateViewer.anyTitle" = "Minkä tahansa";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bitsUnitTitle" = "bittiä";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bytesUnitTitle" = "tavua";
+
+/* The description for when an SSL certificate is valid */
+"certificateViewer.certificateIsValidTitle" = "Tämä varmenne on voimassa";
+
+/* Section Title displaying common information */
+"certificateViewer.commonInfoTitle" = "Yleiset tiedot";
+
+/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
+"certificateViewer.commonNameTitle" = "Yleinen nimi";
+
+/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
+"certificateViewer.countryOrRegionTitle" = "Maa tai alue";
+
+/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
+"certificateViewer.deriveTitle" = "Päätteleminen";
+
+/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
+"certificateViewer.domainComponentTitle" = "Verkkotunnuksen komponentti";
+
+/* Title of the section indication which 'Encryption' algorithm was used. */
+"certificateViewer.encryptionTitle" = "Salaus";
+
+/* Title indicating whether or not a private key can be used to encrypt data */
+"certificateViewer.encryptTitle" = "Salaaminen";
+
+/* Title indicating whether the mathematical exponent used. x³, x², etc. */
+"certificateViewer.exponentTitle" = "Eksponentti";
+
+/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
+"certificateViewer.fingerPrintsTitle" = "Tunnistetiedostot";
+
+/* Section Title for Issuer Name in the SSL Certificate */
+"certificateViewer.issuerNameTitle" = "Myöntäjän nimi";
+
+/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
+"certificateViewer.keySizeTitle" = "Avaimen koko";
+
+/* Title indicating what the private or public key can be used for. */
+"certificateViewer.keyUsageTitle" = "Avaimen käyttö";
+
+/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
+"certificateViewer.localityTitle" = "Sijainti";
+
+/* Title indicating 'None' or no information or empty. */
+"certificateViewer.noneTitle" = "Ei mitään";
+
+/* Certificate is 'not valid after' January 31st, 2022 for example. */
+"certificateViewer.notValidAfterTitle" = "Ei voimassa seuraavan päivämäärän jälkeen:";
+
+/* Certificate is 'not valid before' January 1st, 2022 for example. */
+"certificateViewer.notValidBeforeTitle" = "Ei voimassa ennen seuraavaa päivämäärää:";
+
+/* Title of the section for Department of the Company. Example: Human Resources. */
+"certificateViewer.organizationalUnitTitle" = "Organisaatioyksikkö";
+
+/* Title of the section for Name of the Company. Example: Brave Inc. */
+"certificateViewer.organizationTitle" = "Organisaatio";
+
+/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
+"certificateViewer.parametersTitle" = "Parametrit";
+
+/* Information about a Public Key section title. */
+"certificateViewer.publicKeyInfoTitle" = "Julkisen avaimen tiedot";
+
+/* Title indicating whether the key used is public (not private) */
+"certificateViewer.publicKeyTitle" = "Julkinen avain";
+
+/* Certificates have a serial number to identify that it's unique */
+"certificateViewer.serialNumberTitle" = "Sarjanumero";
+
+/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
+"certificateViewer.signatureAlgorithmEncryptionDescription" = "%1$@ ja %2$@-salaus";
+
+/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
+"certificateViewer.signatureAlgorithmSignatureDescription" = "%1$@-allekirjoitus ja %2$@";
+
+/* Title for the section where we display information about the algorithm used to sign the certificate */
+"certificateViewer.signatureAlgorithmTitle" = "Allekirjoitusalgoritmi";
+
+/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
+"certificateViewer.signatureTitle" = "Allekirjoitus";
+
+/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
+"certificateViewer.stateOrProvinceTitle" = "Osavaltio/maakunta";
+
+/* Title of the section for the address of where the certificate came from. */
+"certificateViewer.streetAddressTitle" = "Katuosoite";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "Aiheen nimi";
+
+/* Title of the section for the User's ID (Identifier). */
+"certificateViewer.userIDTitle" = "Käyttäjän tunnus";
+
+/* Title of section that determines if the dates on a certificate is valid. */
+"certificateViewer.validityDatesTitle" = "Voimassaolopäivät";
+
+/* Title indicating whether or not a private key can be used to verify data is legitimate */
+"certificateViewer.verifyTitle" = "Vahvista";
+
+/* Certificates have a version number */
+"certificateViewer.versionNumberTitle" = "Versio";
+
+/* Title indicating whether or not a private key can be used to wrap or enclose some data */
+"certificateViewer.wrapTitle" = "Sisällyttäminen";
+
+/* No comment provided by engineer. */
+"ClearData" = "Tietojen poistaminen";
+
+/* Section title in settings panel */
+"ClearPrivateData" = "Poista yksityiset tiedot";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "Peruuta";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "Oletko varma?";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "OK";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "Tyhjennä data";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "Kyllä, poista";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "Poista tiedot heti";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "Peruuta";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "Tämä toiminto poistaa kaikki yksityiset tietosi, mukaan lukien historiatiedot synkronoiduilta laitteilta.";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "OK";
+
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Sovellusvirhe";
+
+/* Button title to close a menu. */
+"Close" = "Sulje";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Haluatko varmasti sulkea kaikki avoimet välilehdet?";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "Sulje kaikki %i välilehteä";
+
+/* Code words input help */
+"CodeWordInputHelp" = "Kirjoita sinulle annettu synkronoinnin ketjukoodi alla olevaan lomakkeeseen.";
+
+/* Code words section title */
+"CodeWords" = "Koodisanat";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Lataa";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Jaa";
+
+/* No comment provided by engineer. */
+"Confirm" = "Vahvista";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Sisällön suodatus";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Ota käyttöön mukautetut suodattimet, jotka estävät alueelliset ja kielikohtaiset seuraimet ja häiriötekijät";
+
+/* Cookie settings option title */
+"CookieControl" = "Evästeiden hallinta";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Evästeet ja sivustotiedot";
+
+/* Copied action complete title */
+"Copied" = "Kopioitu";
+
+/* Copied codewords title */
+"CopiedToClipboard" = "Kopioitu leikepöydälle!";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "Kopioi sovelluksen tiedot leikepöydälle.";
+
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Kopioi sovelluksen kokotiedot leikepöydälle.";
+
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "Kopioi puhdas linkki";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "Kopioi kuva";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "Kopioi linkki";
+
+/* Copy codewords title */
+"CopyToClipboard" = "Kopioi leikepöydälle";
+
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "Kopioi tukitiedot";
+
+/* Create PDF share action. */
+"CreatePDF" = "Luo PDF";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "Tällä hetkellä käytössä olevat hakukoneet";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Mukautettu suodatinluettelo";
+
+/* A title for a section that contains all custom filter lists */
+"CustomFilterLists" = "Mukautetut suodatinluettelot";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Mukautetun suodatinluettelon URL";
+
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Lisää";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Kirjoita haun URL-osoite ja korvaa kysely sanalla %1$s.\nEsimerkiksi: https://youtube.com/search?q=%2$s\n(Jos sivusto tukee OpenSearchia, vaihtoehto lisätään automaattisesti, kun muokkaat tätä kenttää.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Automaattinen lisäys";
+
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "Virhe lisättäessä mukautettua hakukonetta";
+
+/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
+"customSearchEngine.deleteEngineAlertDescription" = "Mukautetun hakukoneen poistaminen sen ollessa oletusarvoinen hakukone vaihtaa oletusarvoisen hakukoneen automaattisesti.";
+
+/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
+"customSearchEngine.deleteEngineAlertTitle" = "Haluatko varmasti poistaa kohteen %@?";
+
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "Samanniminen hakukone on jo olemassa.";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Suojaamaton mukautettu hakumalli kohteelle";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Suojaamaton mukautettu ehdotusmalli kohteelle";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Lisää hakukone";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "Hakumalli:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "Ehdotusmalli:";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Uusi hakukone näkyy pikahakupalkissa.";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Lisätäänkö hakupalvelu?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Mukautettua hakukonetta ei voitu lisätä. Yritä uudelleen myöhemmin.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Mukautetun hakukoneen virhe";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "Hakukone tällä otsikolla tai URL-osoitteella on jo lisätty.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Kirjoita haun URL-osoite ja korvaa kysely kohteella %s.";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "Haun URL-osoitteen kyselyvirhe ";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "Kopioidun tekstin tulee olla kelvollinen suojattu URL-osoite, jonka alussa lukee \"https://\"";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "Täytä sekä Otsikko- että URL-osoite-kenttä.";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Mukautetut hakukoneet";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Hakukone lisätty!";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "Ei nyt";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Avaa asetukset";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "Avaa kaikki linkit Bravella suojellaksesi yksityisyyttäsi";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Brave-suojaus estää seurantaohjelmat ja mainokset sekä säästää dataa ja aikaa jokaisella vierailemallasi sivulla.";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "Avaa asetukset, napauta Oletusarvoinen selainsovellus ja valitse Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "Aseta Brave oletusselaimeksi";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Hanki Brave-suojaus jokaisen linkin kohdalla";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "Sulje oletusarvoisen selaimen kehote";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Oletusarvoiset suodatinluettelot";
+
+/* Name for default Brave theme. */
+"defaultThemeName" = "Oletisarvoinen Brave";
+
+/* No comment provided by engineer. */
+"Delete" = "Poista";
+
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "Tämä poistaa kaikki sen sisällä olevat kansiot ja kirjanmerkit. Haluatko varmasti jatkaa?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "Poistetaanko kansio?";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "Peruuta";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "Kirjautumiset poistetaan pysyvästi.";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "Kirjautumiset poistetaan kaikista yhdistetyistä laitteista.";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "Oletko varma?";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "Poista";
+
+/* Sync device settings page title. */
+"Devices" = "Laitteet synkronisointiketjussa";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "Laite %1$@ (%2$@)";
+
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "Turvallisuusvarmenne";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "Näyttö";
+
+/* No comment provided by engineer. */
+"Done" = "Valmis";
+
+/* cookie settings option */
+"DontBlockCookies" = "Älä estä evästeitä";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "Älä lähetä";
+
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "Ladatut tiedostot";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Lataukset";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "Ladatut tiedostot näkyvät täällä.";
+
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "Kopioi aktiivinen välilehti";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Aiemmat";
+
+/* No comment provided by engineer. */
+"Edit" = "Muokkaa";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "Muokkaa kirjanmerkkiä";
+
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Sijainti";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Muokkaa kirjanmerkkiä";
+
+/* Button to edit a favorite */
+"EditFavorite" = "Muokkaa suosikkia";
+
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "Muokkaa suosikkia";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Muokkaa kansiota";
+
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "Ota Päivitä vetämällä -ominaisuus käyttöön";
+
+/* Sync enter code words */
+"EnterCodeWords" = "Syötä koodisanat";
+
+/* Enter sync code words below */
+"EnterCodeWordsBelow" = "Kirjoita koodisanat alla";
+
+/* Description for new folder popup */
+"EnterFolderName" = "Anna kansion nimi";
+
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "Kirjoita URL-osoite uudelleen tai avaa hakukone ja hea uusi URL-osoite.";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "Avaa Safarissa";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "Lataa uudelleen";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ käyttää yleensä salausta tietojesi suojaamiseen. Kun Brave yritti muodostaa yhteyden kohteeseen %2$@, sivusto lähetti tällä kertaa takaisin epätavalliset ja virheelliset kirjautumistiedot. Näin voi käydä, kun hyökkääjä yrittää teeskennellä olevansa %3$@ tai kun Wi-Fi-kirjautumisnäyttö on katkaissut yhteyden. Tietosi ovat edelleen turvassa, koska Brave katkaisi yhteyden ennen tietojen vaihtoa.<br />Et voi juuri nyt käytä kohteessa %4$@, koska verkkosivusto käyttää varmenteen kiinnitystä. Verkkovirheet ja hyökkäykset ovat yleensä tilapäisiä, joten tämä sivu todennäköisesti toimii myöhemmin.";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningDetails" = "Palvelin ei pystynyt todistamaan, että se on %@; laitteesi käyttöjärjestelmä ei pidä suojausvarmennetta luotettavana. Tämä voi johtua virheellisestä määrityksestä tai siitä, että hyökkääjä yrittää siepata yhteytesi.";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "Hyökkääjät voivat yrittää varastaa tietojasi kohteesta %@ (esimerkiksi salasanat, viestit tai luottokorttitiedot).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "Palaa suojattuun selaamiseen";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "Tämä sivusto ei tarjoa suojattua yhteyttä";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "Yhteytesi ei ole yksityinen";
+
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "Piilota lisätiedot";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "Lisätietoa";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "Lisää tietoa";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "Ei Internet-yhteyttä";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "Et ole online-tilassa. Korjaa tämä seuraavasti";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "Verkkokaapelien, modeemin tai reitittimen tarkistaminen";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "Yhteyden muodostaminen Wi-Fi-verkkoon uudelleen";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesProceedAnywayButton" = "Jatka kohteeseen %@ (vaarallinen)";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ käynnistää ulkoisen sovelluksen";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "Saako linkki vaihtaa sovellusta?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "Salli";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "Älä salli";
+
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "Suosikit sijaitsevat aloitusnäytöllä. Näitä kirjanmerkkejä ei synkronoida muiden laitteiden kanssa.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Suosikit";
+
+/* No comment provided by engineer. */
+"Features" = "Ominaisuudet";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Annettu URL-osoite on virheellinen";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Vain suojatut (https) URL-osoitteet sallitaan mukautetuissa suodatinluetteloissa";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Lisää";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Muita suosittuja yhteisön luetteloita. Huomaa, että liian monen suodattinen ottaminen käyttöön hidastaa selausnopeutta.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Lataus epäonnistui.";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Odottaa latausta";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Muokkaa";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Anna suodatinluettelon URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Viimeksi päivitetty %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Kirjoita suodatinluettelon URL-osoite tähän";
+
+/* Share action title */
+"FindInPage" = "Haku sivulta";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "Valmis";
+
+/* Find %@ text in page. */
+"FindInPageFormat" = "Hae \"%@\"";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "Seuraava sivun tulos";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "Edellinen sivun tulos";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findInPageTitle" = "Haku sivulta";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findNextTitle" = "Etsi seuraava";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "Tällä sivulla";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findPreviousTitle" = "Etsi edellinen";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "Sormenjälkitunnistusmenetelmät";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Estä sormenjälkitunnistus";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Sivustojen on vaikeampi tunnistaa laitteesi erityispiirteitä. ";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Salli yleisten linkkien avaaminen ulkoisissa sovelluksissa";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "Pakota liittäminen";
+
+/* No comment provided by engineer. */
+"genericErrorBody" = "Hups! Jokin meni pieleen. Yritä uudelleen.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "Virhe";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "Estä vaaralliset sivustot";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "Selaussuoja suojaa sivustoilta, joiden tiedetään olevan vaarallisia. [Lue lisää](%@)";
+
+/* Grand camera access */
+"GrantCameraAccess" = "Ota kamera käyttöön";
+
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "Piilota linkkiesikats.";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "Piilota Brave Rewards -kuvake";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "Piilottaa Brave-palkintojen kuvakkeen, kun Brave-palkinnot eivät ole käytössä";
+
+/* Title for history menu item */
+"HistortMenuItem" = "Historia";
+
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Tyhjennä historia";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "Tämä tyhjentää koko selaushistorian.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Tyhjennä selaushistoria";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "Historia näkyy täällä.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "Historia ei ole käytettävissä Vain yksityinen selaus -tilassa.";
+
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "Hakuhistoria";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "Historia";
+
+/* No comment provided by engineer. */
+"Home" = "Etusivu";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "Nosta yhteystasoksi HTTPS";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "Avaa sivustot käyttämällä HTTPS:ää HTTP:n sijaan, kun se on mahdollista.";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "HTTPS -päivitykset";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "Erilliset ohjaimet";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Virheelliset tiedot maksupyynnössä";
+
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "Virheellinen synkronointikoodi. Tarkista koodi ja yritä uudelleen.";
+
+/* History tableview section header */
+"LastMonth" = "Viime kuukausi";
+
+/* History tableview section header */
+"LastWeek" = "Viime viikko";
+
+/* No comment provided by engineer. */
+"learnMore" = "Lisätietoja";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "Tallennetut kirjautumistiedot poistetaan pysyvästi.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "Luotu %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "Kirjautumistiedot";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "Salasana";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "Käyttäjätunnus";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "Verkkosivusto";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "Jos haluat nähdä salasanat, sinun on ensin asetettava salasana laitteellesi.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "Aseta salasana";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "Kirjautumistietoja ei löytynyt";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "Kirjautumistiedot ja salasanat";
+
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "Tallentamaton";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "Tallennetut kirjautumistiedot";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "Suodata";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "Muokattu viimeksi %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "salasana";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "käyttäjätunnus";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "verkkosivusto";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "Poista kaikki valinnat";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "Kirjautumistietoja ei löytynyt";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "Kirjautumiset";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "Valitse kaikki";
+
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "Ota taustaääni käyttöön";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "Kopioi";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "Piilota";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "Avaa verkkosivusto";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "Näytä";
+
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "kk";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Saat lisätietoja napauttamalla tästä.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Tämä on ensimmäinen Brave-mainoksesi";
+
+/* Bookmark title / Device name */
+"Name" = "Nimi";
+
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "Päältä";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Uusi kirjanmerkki";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Uusi kirjanmerkki";
+
+/* Title for new folder popup */
+"NewFolder" = "Uusi kansio";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Uusi kansio";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Uusi kansio";
+
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "Uusi incognito-ikkuna";
+
+/* New sync code button title */
+"NewSyncCode" = "Käynnistä uusi synkronointiketju";
+
+/* New Tab title */
+"NewTab" = "Uusi välilehti";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "Uusi ikkuna";
+
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "Tila";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "Yötila vaikuttaa samanaikaisesti verkkosivuston ulkoasuun ja järjestelmän yleiseen ulkoasuun.";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "Kytke yötila päälle / pois päältä";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "Yötila";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "Ei";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "Hakutuloksia ei löytynyt.";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"NotEnoughWordsDescription" = "Kirjoita kaikki sanat ja yritä uudelleen.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"NotEnoughWordsTitle" = "Ei tarpeeksi sanoja";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "Ohjaa automaattisesti NPR-linkit niiden tekstipohjaiseen versioon (text.npr.org).";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "Braven tuki";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "Lunasta tokenit";
+
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Ansaitsit %@ selaamalla Bravella.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "Hieno homma!";
+
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Piilota maksetut kuvat";
+
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "Sponsoroidut ovat muita brändättyjä taustoja, joista voit ansaita, kun Brave-palkinnot on käytössä.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Lue lisää Brave-palkinnoista";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Lue lisää sponsoroiduista kuvista";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "Näppäimistön automaattinen avaaminen";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "Taustakuvat";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Kuvatyyppi";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "Oletusarvoiset kuvat";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "Sponsoroitu";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "Uusi välilehtisivu";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "Näytä lisää";
+
+/* No comment provided by engineer. */
+"ntp.sponsoredImageDescription" = "Tuet sisällöntuottajia ja julkaisijoita katsomalla tätä sponsoroitua kuvaa.";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Ottamalla palkinto-ohjelman käyttöön hyväksyt %@.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "Ansaitse tokeneita ja palkitse sisällöntuottajia upeasta sisällöstä selaamisen aikana.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "Ansaitse pisteitä ja palkitse sisällöntuottajia upeasta sisällöstä selaamisen aikana.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Brave-mainokset ovat täällä!";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave näyttää ensimmäisen mainoksesi";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Olet nyt valmis.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "En nähnyt mainosta";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Jotain meni pieleen lompakon luomisen aikana. Yritä uudelleen";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "OK";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Pahoittelut";
+
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "Aloita selaaminen";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Liity";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "Salli Braven tarkistaa vastaava suosittelijakoodi leikepöydältäni";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "Olet ehkä ladannut Braven suosittelijan avulla. Suosittelijasi tunnistamiseksi Brave tarkistaa leikepöydältäsi kertaluonteisen suosittelijakoodin. Tämä tarkistus rajoittuu vain koodiin, eikä muita henkilötietoja lähetetä. Jos kieltäydyt, suosittelijasi ei saa palkintoja Bravelta.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "Älä salli tätä tarkistusta";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "Anonyymi suosittelijakoodin tarkistus";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "Salli kertaluonteinen leikepöydän tarkistus";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Napauttamalla Kyllä hyväksyt";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Palveluehdot";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "ja";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave -palkinnot";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Braven yksityisten mainosten käyttöönotto tukee julkaisijoita ja sisällöntuottajia jokaisen mainoksen katselun myötä.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Ansaitse tokeneita ja palkitse sisällöntuottajia upeasta sisällöstä selaamisen aikana.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Tietosuojakäytäntö";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave -palkinnot";
+
+/* Save button to save current selection */
+"OBSaveButton" = "Tallenna";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "Valitse oletushakukone";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "Tervetuloa Brave-selaimeen";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "Estä yksityisyyttäsi loukkaavat mainokset ja seurantaohjelmat, jotta voit selata verkkoa ilman, että sinua seurataan.";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Brave Shields";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Näytä";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Aloita";
+
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ ja %2$lld muuta mainosta ja seurantaohjelmaa estetty";
+
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "Näet kaikki Braven jokaisella sivulla estämät huonot asiat Shieldsillä.";
+
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "Tarkastele Brave Shieldisiä napauttamalla";
+
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "mainosta ja seurantaohjelmaa estetty";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "Linkitä VPN-tilauksesi";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Brave VPN -tilauksesi voi suojata enintään 5 laitetta Android- tai iOS-laitteilla ja tietokoneella. Linkitä App Store -tilauksesi Brave-tiliisi.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "Laajenna Brave-palomuuria + VPN-suojaa";
+
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "Etsi Oletusselainsovellus-kohta";
+
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "Siirrytään asetuksiin...";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Seurantaohjelmien ja mainosten estämisen jälkeen verkkosivustot käyttävät vähemmän dataa ja latautuvat paljon nopeammin.";
+
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "Koe Braven takaama ero:\nEi mainoksia. Ei seurantaa. Nopeampi sivujen lataus.";
+
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "Kirjoita verkkosivuston nimi tai URL";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Tervetuloa Braveen";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "Jatka";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "Ohita";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "alustalla %@";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "Avaa kaikki (%i)";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Avaa Brave-palkintojen asetukset";
+
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "Tapahtui tuntematon virhe avattaessa Lataukset-kansiota Tiedostot-sovelluksessa.";
+
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ sanoo:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "Saako %@ vaihtaa sovellusta?";
+
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "Avaa kuva uudessa välilehdessä";
+
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "Avaa uudessa yksityisessä ikkunassa";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "Avaa uudessa ikkunassa";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "Avaa uudessa yksityisessä välilehdessä";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "Avaa uudessa välilehdessä";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "Avaa asetukset";
+
+/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "Aktiivinen %ld päivää sitten";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "Aktiivinen viime kuussa";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "Aktiivinen viime viikolla";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "Aktiivinen tänään";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "Aktiivinen eilen";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "Ota välilehtien synkronointi käyttöön, niin voit tarkastella muiden laitteiden välilehtiä.";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "Liity synkronointiketjuun, niin voit tarkastella laitettasi ja käytössä olevia synkronointityyppejä.";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "Tässä synkronointiketjussa ei ole laitteita";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "Aloita määrittämällä synkronointiketju ja valitsemalla synkronointiasetuksista Avoimet välilehdet.";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Hallinnoi, mitä Brave synkronoi asetuksissa.";
+
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "Muilta laitteiltasi ei ole näytettäviä aktiivisia istuntoja.";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Täällä näytetään muilla laitteilla avoinna olevat Brave-välilehdet";
+
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "Piilota toistaiseksi";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "Avaa kaikki";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Viime viikko %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "Tänään %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Eilen %@";
+
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "Laitteet";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "Lähetä laitteellesi";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "Lähetetty!";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "Lähetetään…";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "Lähetä verkkosivu";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "Lähetä laitteillesi";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "Näytä synkronointiasetukset";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "Aloita synkronointiketju";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "Ota välilehtien synkronointi käyttöön";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "Hae välilehtiä muilta laitteilta";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "Avoimet välilehdet";
+
+/* Button title to that opens a website. */
+"OpenWebsite" = "Avaa verkkosivusto";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo on tekoälyllä toimiva älykäs avustaja, joka on rakennettu suoraan selaimeen";
+
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "Tämän päivän suosituimmat uutiset yksityisessä uutissyötteessä";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "Uutiset";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "Pidä offline-soittolista kaikista videoista/suoratoistoista";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "Soittolista";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "Yksityiset videopuhelut suoraan selaimessa";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Puhe";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "Suojaa koko laitteesi verkossa";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "Suojattu kryptolompakko, laajennuksia ei vaadita";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Brave-ominaisuudet";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "Muut tietosuoja-asetukset";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Muut asetukset";
+
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "Jatka";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Nämä yksityiset tiedot auttavat Bravea arvioimaan tiettyjen ominaisuuksien kokonaiskäytön ja tekemään niistä parempia sinulle.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "Sivustolle muodostamasi yhteys ei ole täysin turvallinen.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "Älä anna tällä sivustolla mitään arkaluonteisia tietoja (esimerkiksi salasanoja tai luottokorttitietoja), koska hylkkääjät voivat varastaa ne.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "Sivustolle muodostamasi yhteys ei ole turvallinen.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "Näytä varmenne";
+
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "Verkkosivun oletuszoomaustaso";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "Kun verkkosivuston zoomaustaso on muuttunut, sivusto näkyy tässä luettelossa. Tällä hetkellä sivustoja ei ole zoomattu lähemmäs tai loitommas.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "Ei lisättyjä verkkosivustoja";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Kaikki muut verkkosivustot";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "Nollaa kaikki";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "Nollaa verkkosivuston zoomaustasot";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Tietyt sivuasetukset";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "Sivun zoomaus";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "Sivun zoomaus";
+
+/* Sync pair device settings section title */
+"Pair" = "Muodosta laitepari";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "Salasanat";
+
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "Jatkuva yksityinen selaus";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "Sallii Braven palauttaa yksityisen selauksen välilehdet, vaikka sulkisit sovelluksen ja avaisit sen uudelleen.";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "Palauta yksityiset välilehdet";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "Valokuvaaja: %@";
+
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "Lisätty kohteeseen %@";
+
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "Haluatko lisätä tämän videon soittolistallesi?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Lisää Brave-soittolistalle";
+
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "Toistoasetukset";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "Poistettu käytöstä. Ota toiston uudelleenkäynnistys uudelleen käyttöön napauttamalla.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "Käytössä. Poista toiston uudelleenkäynnistys käytöstä napauttamalla.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "Päätä, aloittaako jo toistettavan kohteen valitseminen toiston uudelleen vai jatkuuko toistoa siitä, mihin viimeksi jäit.";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "Käynnistä toisto uudelleen";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "Asetukset";
+
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "Brave-soittolista";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "Vaihda soittolistaa";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "Poista offline-välimuisti";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "Tämä video oli suoratoistettu tai aikaraja saavutettiin. Päivitä avaamalla linkki uudelleen.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "Vanhentunut video";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "Vanhentunut";
+
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d kohdetta";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d kohde";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "Resurssin lataamisessa oli ongelma!";
+
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "Kun tämä asetus on käytössä, päävalikon kuvakkeessa näkyy merkki, joka osoittaa, että sivulla oleva mediatiedosto voidaan lisätä Brave-soittolistaan.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Näytä valikon ilmoitusmerkki";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "Siirretään...";
+
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "Voit lisätä kohteita Brave-soittolistallesi selaimessa";
+
+/* Text when there are no items in the playlist */
+"playList.noItemLabelTitle" = "Ei käytettävissä olevia kohteita";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "Ilmoitus";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "OK";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "Avaa soittolistassa";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "Pahoittelut, tapahtui virhe, kun yritettiin näyttää kuva kuvassa.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "Soittolista on jo aktiivinen toisessa ikkunassa";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "Pahoittelut";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Tämä vaihtoehto ottaa käyttöön tai poistaa käytöstä automaattisen toiston, kun soittolista avataan. Tämä vaihtoehto ei kuitenkaan vaikuta automaattiseen toistoon, kun listan seuraava video ladataan.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "Automaattinen toisto";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "Päältä";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "Käytössä";
+
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Vain Wi-Fi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Video- ja äänitiedostojen lisääminen offline-käyttöä varten voi käyttää paljon laitteen tallennustilaa sekä matkapuhelimen dataa.";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Tämä vaihtoehto tallentaa soittolistan kohteet automaattisesti laitteellesi, jotta voit toistaa niitä ilman Internet-yhteyttä.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsTitle" = "Automaattinen tallennus offline-tilaan";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "Video- ja äänitiedostojen lisääminen offline-käyttöä varten voi käyttää paljon laitteen tallennustilaa. Vapauta tallennustilaa poistamalla joitakin tiedostoja.";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "Tallennustila lähes täynnä";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "Suoratoisto";
+
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Kun tämä asetus on käytössä, voit lisätä useimpia video-/äänitiedostoja soittolistallesi pitämällä niitä painettuna.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Ota Pidä painettuna -asetus käyttöön";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Soittolistamedia ja offline-tiedot";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "Soittolistan offline-tiedot";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "Vaihda";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "Tyhjennä";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "Tämä vaihtoehto poistaa kaikki videot soittolistasta sekä offline-tilan tallennustilasta.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "Pahoittelut, tätä kohdetta ei voitu tallentaa offline-käyttöä varten tällä hetkellä.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "Pahoittelut, jokin meni vikaan";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "Soittolistat";
+
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "Soittolista";
+
+/* Body for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsBody" = "Tämä kansio on jo Brave-soittolistallasi";
+
+/* Title for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsTitle" = "Pahoittelut";
+
+/* Title for the Section that videos are listed */
+"playList.playlistSharedFolderSectionTitle" = "Jaettu sinulle";
+
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "Jaettu sinulle";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "Tämä asetus muuttaa videoluettelon sijainnin vasemman/oikean puolen välillä.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "Vasemmalle";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "Oikealle";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "Sivupalkin sijainti";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "Jatka yksittäisten tiedostojen toistoa viimeisestä keskeytyksestä.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Muista tiedoston toistopaikka";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "Poistaa WebKit MediaSource API:n käytöstä";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "Verkkoyhteensopivuus";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "Poista";
+
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "Poistettu kohteesta %@";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "Tämä poistaa median offline-tallennustilasta. Haluatko varmasti jatkaa?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "Poista offline-tiedot";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "Tämä poistaa mediakohteen luettelosta. Haluatko varmasti jatkaa?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "Poistetaanko mediakohde soittolistasta?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "Avaa uudelleen";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "Lisätty offline-käyttöä varten";
+
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "Tallenna offline-käyttöä varten";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "Tallennetaan offline-käyttöä varten…";
+
+/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyDescription" = "Synkronoi kaikki soittolistakansiot automaattisesti";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Synkronoi soittolistakansiot automaattisesti";
+
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "Voit avata nykyisen kohteen uudessa välilehdessä tai jakaa sen järjestelmän jakamisvalikon kautta";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "Brave-soittolistavalikko";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Avaa yksityisessä välilehdessä";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "Avaa uud. välilehdessä";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "Jaa...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "Pahoittelut";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Lisätty Brave-soittolistalle";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "Avaa";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Lisää Brave-soittolistalle";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Katso Brave-soittolistassa";
+
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "Pura";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "Lisää soittolistapainikkeen (se näyttää +-symbolilla varustetulta neljältä riviltä) Brave-selaimen osoitepalkin viereen. Tällä painikkeella pääset nopeasti avaamaan soittolistan tai lisäämään tai poistamaan mediatiedostoja.";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "Ota pikakäyttöpainike käyttöön";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "Siirrä kohteeseen";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "Soittolistan nimi";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "Anna soittolistan nimi";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "Luo";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "Muokkaa";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "Muokkaa kansiota";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Muokkaa soittolistaa";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "Pahoittelut, emme voineet tallentaa tähän kansioon tekemiäsi muutoksia.";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "Siirrä";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Nykyinen soittolista";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "Siirrä";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ ja 1 muu kohde";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld kohdetta";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 kohde";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ ja %2$lld muuta kohdetta";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Uusi soittolista";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Uusi soittolista";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "Valitse videoita napauttamalla";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Lisää videoita tähän soittolistaan";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "Valitse soittolista, johon %lld kohdetta siirretään.";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Valitse soittolista, johon 1 kohde siirretään.";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld kohdetta";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 kohde";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Nimetön soittolista";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Lisää Brave-soittolistalle ​​-painike";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "Tallenna";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Poista offline-tiedot";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Poista soittolista";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Muokkaa";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Soittolistan valikkopainike";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Lisää soittolista nyt";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "Automaattinen tallennus offline-käyttöä varten on käytössä, mikä tarkoittaa, että uudet lisäykset soittolistoihin, mukaan lukien jaetut soittolistat, tallennetaan laitteellesi offline-käyttöä varten, ja ne voivat käyttää mobiilidataa.\n\nAutomaattista tallennusta offline-käyttöä varten voidaan hallita soittolista-asetuksissa.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Asetukset";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Soittolistatietojen hallinta";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "Muuta nimeä";
+
+/* Menu Title for saving offline data/cache */
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "Tallenna offline-tiedot";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "Synkronoi nyt";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Sulje Brave-suojaus";
+
+/* Settings privacy section title */
+"Privacy" = "Tietosuoja";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "Jos haluat vaihtaa yksityistä selaustilaa, sinun on ensin asetettava salasana laitteellesi.";
+
+/* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
+"privacyHub.allTimeListsButtonText" = "Kaikki listat";
+
+/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
+"privacyHub.allTimeListsHeader" = "Kaikki";
+
+/* Title of a section to show total count of trackers blocked by Brave */
+"privacyHub.allTimeListsTrackersView" = "Seurantaohjelmat ja mainokset";
+
+/* Title of a section to show websites containing highest amount of trackers */
+"privacyHub.allTimeListsWebsitesView" = "Verkkosivut";
+
+/* Header title for a list of most frequent ads and trackers detected. */
+"privacyHub.allTimeListTrackersHeaderTitle" = "Yleisimmät seurantaohjelmat ja mainokset sivustoilla, joilla olet käynyt";
+
+/* Header title for a list of websites with ads and trackers. */
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Verkkosivustot, joissa on eniten seurantaohjelmia ja mainoksia";
+
+/* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
+"privacyHub.allTimeSitesCount" = "%lld sivustoa";
+
+/* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
+"privacyHub.allTimeTrackersCount" = "%lld seurantaohjelmaa ja mainosta";
+
+/* Title under which we display most name of the most blocked tracker or ad. */
+"privacyHub.allTimeTrackerTitle" = "Seurantaohjelma ja mainos";
+
+/* Title under which we display a website on which there's the highest number of trackers or ads. */
+"privacyHub.allTimeWebsiteTitle" = "Verkkosivusto";
+
+/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+"privacyHub.allVPNAlertsButtonText" = "Kaikki hälytykset";
+
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+"privacyHub.blockedBy" = "Estetty:";
+
+/* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
+"privacyHub.blockedLabel" = "Estetty";
+
+/* Accessibility label for the 'clear all data' button. */
+"privacyHub.clearAllDataAccessibility" = "Tyhjennä tietosuojakeskuksen tiedot";
+
+/* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
+"privacyHub.clearAllDataPrompt" = "Poistetaanko kaikki suojaustiedot?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "Piilota";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Piilota tietosuojatilastot";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Poista Tietosuojatilastot-pienoisohjelma napauttamalla Piilota. Voit aina ottaa sen uudelleen käyttöön asetuksissa Uusi välilehti -sivulla.";
+
+/* Header text, under it we display blocked items from last week */
+"privacyHub.lastWeekHeader" = "Viime viikko";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "**Brave-suojaus esti kohteen **%1$@** **%2$ lld** sivustolla";
+
+/* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Yleisin seurantaohjelma ja mainos";
+
+/* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
+"privacyHub.noDataCalloutBody" = "Vieraile joillakin verkkosivustoilla, niin näet tässä tietoja.";
+
+/* This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them. */
+"privacyHub.noDataToShow" = "Ei vielä tietoja esitettävänä.";
+
+/* Text of a callout to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutBody" = "Hanki viikoittaisia tietosuojapäivityksiä seurantaohjelmien ja mainosten estämiseen liittyen.";
+
+/* Text of a button to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutButtonText" = "Ota ilmoitukset käyttöön";
+
+/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "Tiivistelmä siitä, kuinka Brave suojeli sinua verkossa tällä viikolla.";
+
+/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationTitle" = "Viikoittainen yksityisyysraportti";
+
+/* Text of a button that opens up a Privacy Reports screen. */
+"privacyHub.onboardingButtonTitle" = "Avaa tietosuojakeskus";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "Avaa tietosuojakeskus";
+
+/* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
+"privacyHub.privacyReportsDisclaimer" = "Tietosuojakeskuksen tiedot tallennetaan paikallisesti, eikä niitä koskaan lähetetä minnekään.";
+
+/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+"privacyHub.privacyReportsTitle" = "Tietosuojakeskus";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
+"privacyHub.riskiestWebsiteBody" = "Kohteessa **%1$@** oli keskimäärin **%2$lld** estettyä seurantaohjelmaa ja mainosta käyntiä kohden";
+
+/* Title of a website that contained the most trackers per visit. */
+"privacyHub.riskiestWebsiteTitle" = "Sivusto, jossa on eniten seurantaohjelmia";
+
+/* This text explains a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsFooter" = "Tietosuojakeskus näyttää suojauksen estämien kohteiden määrän. Asetus ei vaikuta suojauslaskuriin uudella välilehdellä. Suojaustietoja ei lasketa yksityisissä ikkunoissa.";
+
+/* Title of a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsTitle" = "Näytä suojaustiedot";
+
+/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsFooter" = "Asetus on käytettävissä vain, jos olet ostanut VPN-tilauksen.";
+
+/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsTitle" = "Näytä VPN-hälytykset";
+
+/* This text explains what the button to clear datain the Privacy Hub is for. */
+"privacyHub.settingsSlearDataFooter" = "Nollaa kaikkien suojauksen estämien tietojen määrän.";
+
+/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+"privacyHub.settingsSlearDataTitle" = "Tyhjennä suojaustiedot";
+
+/* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
+"privacyHub.shieldsLabel" = "Suojaukset";
+
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "Ota \"%@\" käyttöön, niit näet tietoja tässä";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypePlural" = "Sähköpostiseurantaohjelmat";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypeSingular" = "Sähköpostiseurantaohjelma";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypePlural" = "Sijaintipingit";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypeSingular" = "Sijaintiping";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Seurantaohjelmat ja mainokset";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypeSingular" = "Seurantaohjelma tai mainos";
+
+/* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
+"privacyHub.vpnAlertsHeader" = "Brave-palomuuri ja -VPN -hälytykset";
+
+/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+"privacyHub.vpnLabel" = "Palomuuri ja VPN";
+
+/* It shows a total count of items blocked by our VPN shields */
+"privacyHub.vpvnAlertsTotalCount" = "Kokonaismäärä";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "Tietosuojakäytäntö";
+
+/* Private button title */
+"Private" = "Yksityinen";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "Yksityinen selaus";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "Vain yksityinen selaus";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "Vain yksityinen selaus -tila sulkee kaikki avoinna olevat välilehdet ja kirjaa sinut ulos kaikista sivustoista.";
+
+/* Private tab details */
+"PrivateTabBody" = "Yksityisiä välilehtiä ei tallenneta Braveen, mutta ne eivät tee sinusta anonyymiä verkossa. Sivustot, joilla käyt yksityisellä välilehdellä, eivät näy historiassasi, ja niiden evästeet katoavat aina, kun suljet ne – niistä ei jää jälkeäkään Braveen. Lataukset kuitenkin tallennetaan.\nMobiilioperaattorisi (tai sen Wi-Fi-verkon tai VPN:n omistaja, johon olet yhteydessä) voi nähdä, millä sivustoilla vierailet, ja kyseiset sivustot saavat tietoonsa julkisen IP-osoitteesi, jopa yksityisillä välilehdillä.";
+
+/* Private tab detail text */
+"PrivateTabDetails" = "Yksityisten välilehtien käyttäminen muuttaa vain sitä, mitä Brave voi tehdä laitteellasi, se ei muuta kenenkään muun käyttäytymistä.\n\nSivustot saavat aina tietoonsa IP-osoitteesi, kun vierailet niillä. Sen perusteella ne voivat usein arvata karkeasti missä olet – tyypillisesti kaupunkisi. Joskus tämä sijainnin arvaus voi olla paljon tarkempi. Sivustot tietävät myös kaiken, mitä kerrot niille, kuten hakutermit. Jos kirjaudut sisään sivustolle, ne tietävät sinun olevan kyseisen tilin omistaja. Olet silti kirjautuneena ulos, kun suljet yksityiset välilehdet, koska Brave poistaa evästeen, joka pitää sinut kirjautuneena sisään.\n\n Kuka tahansa, joka yhdistää sinut Internetiin (internet-palveluntarjoajasi), voi nähdä kaiken toimintasi verkossa. Usein tämä on mobiilioperaattorisi. Jos olet yhteydessä Wi-Fi-verkkoon, tämä on kyseisen verkon omistaja, ja jos käytät VPN:ää, se on VPN:n ylläpitäjä. Internet-palveluntarjoajasi voi nähdä, millä sivustoilla käyt. Jos kyseiset sivustot käyttävät HTTPS:ää, Internet-palveoluntarjoajasi voi tehdä enintään valistuneen arvauksen siitä, mitä teet kyseisillä sivustoilla. Mutta jos sivusto käyttää vain HTTP:tä, Internet-palveluntarjoajasi näkee kaiken: hakutermit, lukemasi sivut ja seuraamasi linkit.\n\n Jos työnantaja hallinnoi laitettasi, hän saattaa myös seurata, mitä teet sillä. Yksityisten välilehtien käyttäminen ei todennäköisesti estä työnantajaa selvittämästä, millä sivustoilla olet käynyt. Myös joku muu, jolla on pääsy käsiksi laitteeseesi, on voinut asentaa ohjelmiston, joka seuraa toimintaasi, eivätkä yksityiset välilehdet suojaa sinua tällaisessa tilanteessa.";
+
+/* Private tab information link */
+"PrivateTabLink" = "Lue lisää yksityisistä välilehdistä.";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "Yksityinen välilehti";
+
+/* QR Code section title */
+"QRCode" = "Viivakoodi";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "Pikahakukoneet";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Arvostele Brave";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "Suurenna tekstin kokoa";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "Kirkkaus";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "Näyttöasetukset";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "Sivun muuntamisessa tapahtui virhe";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "Muuttaa fonttityyppiä.";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "Ladataan sisältöä…";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "Lataa alkuperäinen sivu";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "Sivua ei voitu näyttää lukijanäkymässä.";
+
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "Lukijatila";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "Pienennä tekstin kokoa";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "Muuttaa väriteeman.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Tyhjennä";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Poistetaanko kaikki äskettäin suljetut välilehdet?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Ei äskettäin suljettuja välilehtiä.";
+
+/* Open Tab action title */
+"recently.closed.open" = "Avaa";
+
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "Avaa viimeksi suljettu välilehti uudelleen";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Haluatko avata viimeksi suljetun välilehden?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Äskettäin suljetut välilehdet";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Näytä äskettäin suljetut välilehdet";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Tyhjennä";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Poista viimeaikaiset";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Viimeaikaiset hakutiedot";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Poista käytöstä";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Ota käyttöön";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Suosikit";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Piilota";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Liitä ja siirry";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "päällä";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Skannattu";
+
+/* Scanning a QR Code for searching body */
+"RecentSearchScannerDescriptionBody" = "Voit etsiä QR-koodilla kohdistamalla QR-koodin kehyksen keskelle.";
+
+/* Scanning a QR Code for title */
+"RecentSearchScannerDescriptionTitle" = "Ohjeet";
+
+/* Scanning a QR Code for searching */
+"RecentSearchScannerTitle" = "Lue QR-koodi";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Viimeaikaiset haut mahdollistavat aiempien hakujen yksityisen käytön. Haluatko ottaa viimeaikaiset haut käyttöön?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Viimeaikaiset haut";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Näytä";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Näytä enemmän";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Hakuehdotukset";
+
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Ohjaa Reddit-linkit automaattisesti vanhempaan käyttöliittymään (osoitteeseen old.reddit.com). Voit pakottaa käyttämään uutta Reddit-käyttöliittymää käyttämällä osoitetta new.reddit.com.";
+
+/* Action button for removing sync device. */
+"RemoveDevice" = "Poista";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "Poista suosikki";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Ilmoita toimimattomasta sivustosta";
+
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "Ilmoita virheestä";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Lisätiedot (valinnainen)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Ota minuun yhteyttä paikassa: (valinnainen)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "Sähköposti, Twitter jne.";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Tuo Braven kehittäjien tietoon, ettei tämä sivusto toimi kunnolla kilpien kanssa:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Huomaa: Brave-palvelimille lähetettävä raportti sisältää sivuston osoitteen, Brave-versionumeron, Shields-asetukset, VPN-tilan ja kieliasetukset. ";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Lähetä";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "\"%@\" haluaa kameran ja mikrofonin käyttöoikeuden";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "\"%@\" haluaa kameran käyttöoikeuden";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "Salli";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "\"%@\" haluaa mediantallennuslaitteen käyttöoikeuden";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "\"%@\" haluaa mikrofonin käyttöoikeuden";
+
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "Palautetut kirjanmerkit";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "Palautetut suosikit";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "Kyllä";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "Ei";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "Valitettavasti Brave kaatui tai ei sulkeutunut kunnolla.\nPalautetaanko välilehdet?";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "Brave suljettiin yllättäen.";
+
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Brave-palkintojen avulla voit tarkastella Brave-mainosverkoston yksityisyyttä suojelevia mainoksia. Ei seurantaohjelmia. Ei hidastavia tekijöitä. Ja tietosi pysyvät täysin suojattuina.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Ota Rewards käyttöön";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Napsauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Voit nyt aloittaa ilmaisen puhelun";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Laita päälle tukeaksesi sisällönluojia";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Brave-palkintojen käyttö auttaa sisällöntuottajia selaamisen aikana.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Tuet sisällönluojia";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Kiitos, että tuet sisällöntuottajia selaamisen aikana!";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Klikkaamalla hyväksyt seuraavat: %1$@ ja %2$@. Poista käytöstä milloin tahansa asetuksissa.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Tue sisällöntuottajia ja julkaisijoita automaattisesti ottamalla käyttöön Braven yksityiset mainokset käyttöön. Braven yksityiset mainokset ovat yksityisyyttä kunnioittavia mainoksia, jotka antavat palautetta sisällöntuottajille.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Salli Brave -palkinnot";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Tuet tämän kaltaisia ​​sisällöntuottajia.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Niiden sisällöntuottajien määrä, joita olet tukenut tässä kuussa.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Tätä sisällöntuottajaa ei ole vahvistettu, eikä häntä sisällytetä sisällöntuottajien tukemisohjelmaan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAmount" = "Summa";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "Nimetön";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "Saldotiedot";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "Haluatko varmasti poistaa kaikki palkintolokit?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "Poista lokit";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "Avustusmäärä";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Brave-tokenit";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "Ei mitään";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Uphold";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "Käyttäjän varat";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "Automaattinen lahjoittaminen pois päältä";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "Automaattisen lahjoittamisen taulukko tyhjä";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "Valmis";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "Kirjautumistiedot";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "Ulkoinen maksutapahtuma";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "Epäonnistui";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "Ei tarpeeksi varoja";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "Valmistaudu";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "Varanto";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Palkinnot pois päältä";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "Aloita";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "Lahjoitukset";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "Luotu";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "Laitetiedot";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "Käyttöönotto";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "Käyttöönottotila";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "Vanhenee";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "Ei pätevä";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "Keskeiset avaintiedot";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "%d lokia näytetään";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "Lokit";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "Ei käyttöönotettu";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "Ei tueta";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "Prosessori";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "Julkaisija";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "Julkaisijat";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "Uudelleenyritysten määrä";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "Lahjoita automaattisesti";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "Kertatippi";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "Toistuva tippi";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Palkintoprofiili, laite- ja saldotiedot (jaetaan aina)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "Perustiedot";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "Kaikki julkaisijoille annetut tipit tai automaattiset lahjoitukset";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "Sisäinen tietovarasto";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Palkintotietokanta";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Palkitsee tietyn kirjauksen yhteydessä";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "Jaa";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Jaa sisäiset palkinnot";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Näillä sivuilla olevat tiedot voivat olla arkaluonteisia. Varo, kenelle ne jaat.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "Varoitus";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "Tila";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "Vaihe";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "Tuettu";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Sisäiset palkinnot";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "Kokonaismäärä";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "Kokonaissaldo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "Tyyppi";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "Pätevä";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "Versio";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Palkintoprofiilin luontipäivämäärä";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Palkintoprofiilin tiedot";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "Palkintojen maksutunniste";
+
+/* Button to show the rewards panel */
+"RewardsPanel" = "Palkintopaneeli";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Tallenna";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "Tallennetut kirjautumistiedot";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Tallennetut välilehdet";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "Tallenna kuva";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "Tallenna kirjautumistiedot";
+
+/* Scan sync code title */
+"Scan" = "Etsi";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "Minulla on synkronointikoodi";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "Komentosarjat estetty";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "Hae kirjanmerkeistä";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "%@-haku";
+
+/* Search engines section of settings */
+"SearchEngines" = "Hakukoneet";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "Hakee ehdotusta";
+
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "Avaa välilehdet, kirjanmerkit ja historia";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "Tyhjennä haku";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "Siirry hakutilaan";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "Hakusyötekenttä";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "Haku";
+
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Lisää mukautettu hakukone";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "Ota tämä käyttöön, jos haluat sisällyttää hakuun tuloksia historiastasi ja kirjanmerkeistäsi.";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "Näytä selainehdotukset";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "Haku";
+
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "Näytä viimeaikaiset haut";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "Hakuasetukset";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "Näytä hakuehdotukset";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "Hakuehdotukset kohteesta %@";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "Vaihda tähän välilehteen";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "%@-haku";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Haku";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "Hakuehdotukset";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Hae Bravella";
+
+/* Settings security section title */
+"Security" = "Turvallisuus";
+
+/* No comment provided by engineer. */
+"sendButtonTitle" = "Lähetä";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "Lähetetäänkö virheraportti, jotta Brave voi korjata ongelman?";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "Hups! Brave kaatui";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "Lähetä raportti";
+
+/* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Brave voidaan nyt asettaa oletusselaimeksi iOS-laitteissa. Avaa asetukset napauttamalla tätä.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "Aseta oletusselaimeksi";
+
+/* No comment provided by engineer. */
+"Settings" = "Asetukset";
+
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "Manuaalisesti";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "Yhden päivän jälkeen";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "Yhden kuukauden jälkeen";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "Yhden viikon jälkeen";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "Sulje välilehdet";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "Anna Bravelle lupa sulkea automaattisesti välilehdet, joita ei ole äskettäin katsottu.";
+
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "Korkealaatuisin toisto";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "Mahdollistaa korkealaatuisen resoluution";
+
+/* Header for the general settings section */
+"settings.media.general" = "Yleistä";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "Media";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "Avaa YouTube-linkit Bravessa";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "Ota näyttöaika käyttöön";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "Katso, millä verkkosivustoilla vietät eniten aikaa, ja aseta selausrajoituksia. [Lue lisää](%@)";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "Laatuasetukset";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Tämä yksityinen ping antaa Braven arvioida aktiivisia käyttäjiä.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "Lähetä automaattisesti päivittäinen käyttöping Bravelle";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "Sivun lataaminen epäonnistui.";
+
+/* Row name for licenses. */
+"SettingsLicenses" = "Käyttöoikeudet";
+
+/* Title for settings menu item */
+"SettingsMenuItem" = "Asetukset";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "Alapalkki";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "Yläpalkki";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "Välilehdet";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "Jaa linkki";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Jaa kohteella...";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"shareWithTitle" = "Jaa kohteella...";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Onnittelut tämän tietosuojavirstanpylvään saavuttamisesta.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "Onnittelut. Olet osa eksklusiivista klubia.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "Onnittelut. Sinusta on tullut suurmestari.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "Onnittelut. Olet legendaarinen.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "Onnittelut. Sinusta on tullut mestari.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "Onnittelut. Olet liittynyt ammattilaisten joukkoon.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "Onnittelut, olet erityinen.";
+
+/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "Keskimääräinen tallennettu data\n%@ Mt";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "Älä näytä tätä enää";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Jaa uutiset";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave-suojaus suojasi yksityisyyttäsi vain verkossa.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "Onnittelut, olet erityinen.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld seurantaohjelmaa ja mainosta estetty!";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "Videot ilman mainoksia käyttävät vähemmän dataa.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "Mainokset on estetty, kun katsot videoita tällä sivulla.";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Brave-suojausten yleiset oletukset";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Nämä ovat oletusarvoiset suojausasetukset uusille sivustoille. Näiden muuttaminen ei vaikuta voimassa oleviin sivukohtaisiin asetuksiin.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Selaat tätä sivustoa ilman Braven tietosuojaa. Eikö se toimi kunnolla, kun Shields on käytössä?";
+
+/* shields overview message */
+"ShieldsOverview" = "Sivustosuojauksen avulla voit hallita, milloin mainokset ja seurantaohjelmat estetään kullakin sivustolla, jolla käyt. Jos haluat nähdä mainoksia tietyllä sivustolla, voit ottaa ne käyttöön täällä.";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "Huomautus: jotkin sivustot saattavat vaatia komentosarjoja toimiakseen oikein, joten tämä suojaus on oletuksena pois päältä.";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Uusi yksityinen välilehti";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Uusi välilehti";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Lue QR-koodi";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Avaa Brave-uutiset ja katso tämän päivän huipputarinat";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "Avaa selain uudessa välilehdessä ja poista kaikki yksityiset selainhistoriatiedot";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Tyhjennä selaushistoria";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Tyhjennä Brave-selaushistoria";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "Avaa selain uudessa välilehdessä ja ota VPN käyttöön";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Ota VPN käyttöön";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Avaa Brave-selain ja ota VPN käyttöön";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Avaa uusi yksityinen välilehti";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "Avaa uusi yksityinen selainvälilehti";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "Avaa uusi välilehti";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "Avaa uusi selainvälilehti";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "Avaa selaimen kirjanmerkkinäyttö";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Avaa kirjanmerkit";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Avaa Brave-selaimen kirjanmerkit";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Avaa Brave-uutiset";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Avaa Brave-uutiset";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "Avaa selaimen historianäyttö";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Avaa selainhistoria";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Avaa Brave-selainhistoria";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Aloita videoiden toistaminen soittolistassa";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Avaa soittolista";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Avaa soittolista";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Avaa Brave-välilehdet muissa laitteissa";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Avaa välilehdet muista laitteista";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "Avaa välilehdet muista laitteista";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Aloita verkkohaku turvallisesti Braven avulla";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Avaa kirjanmerkkisivusto";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Avaa historiaverkkosivusto";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Avaa verkkosivusto";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Tämä vaihtoehto avaa Braven asetukset. Jos haluat muuttaa eri Siri-asetuksia, valitse Siri ja haku -valikkokohta ja mukauta asetuksia.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "Avaa asetukset";
+
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Avaa uusi välilehti ja tyhjennä selainhistoria Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Tyhjennä selaushistoria";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Ota Brave VPN käyttöön Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "Ota VPN käyttöön";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Avaa kirjanmerkkinäyttö Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "Avaa kirjanmerkit";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Avaa uusi välilehti ja näytä Brave-uutissyöte Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Avaa Brave-uutiset";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Avaa selaimen historianäyttö Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Avaa selainhistoria";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Avaa uusi yksityinen välilehti Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Avaa uusi yksityinen välilehti";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Avaa uusi välilehti Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Avaa uusi välilehti";
+
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Anaa soittolista Siri-virtuaaliavustajan avulla pikavalinnoilla";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Avaa soittolista";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Avaa välilehtiä muista laitteista Siri-virtuaaliavustajan avulla käyttämällä pikavalintoja";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Avaa välilehdet muista laitteista";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Siri-pikavalinnat";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "Näytä kirjanmerkkien pikakuvake";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "Näytä kirjanmerkit";
+
+/* Show code words instead */
+"ShowCodeWords" = "Näytä sen sijaan koodisanat";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showDownloadsTitle" = "Näytä lataukset";
+
+/* Button to show the history list */
+"ShowHistory" = "Näytä historia";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showHistoryTitle" = "Näytä historia";
+
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "Vain vaakasuunta";
+
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "Näytä linkkien esikatselut";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "Näytä välilehdet";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "Välilehtipalkki";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Toit Braven kehittäjien tietoon, että tällä sivustolla on jotakin vialla. Kiitos siitä! Teemme parhaamme korjataksemme asian.";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Kiitos";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "Suojaukset";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "Joka päivä tallennan tietoja selaamalla verkkoa Brave-selaimella.";
+
+/* Text used for social sharing together with Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Joka päivä tallennan tietoja selaamalla verkkoa Brave-selaimella.";
+
+/* Open search section of settings */
+"StandardTabSearch" = "Normaali välilehti";
+
+/* Support section title */
+"Support" = "Tuki";
+
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Estä tätä sivua luomasta muita ilmoituksia";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Estä hälytykset";
+
+/* Sync settings section title */
+"Sync" = "Synkronointi";
+
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "Kirjanmerkkien vienti onnistui";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "Kirjanmerkkien vienti epäonnistui";
+
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Kirjanmerkkipalkki";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Kirjanmerkkien tuonti epäonnistui";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "Kirjanmerkkien tuonti onnistui";
+
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "Synkronoi laite";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "Synkronoi laite";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "Ei voitu liittyä tähän ketjuun. Tili poistettiin.";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "Synkronoi laite";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "Hallinnoi laitteiden välille synkronoitavaa tietoja. Nämä asetukset pätevät vain tähän laitteeseen.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "Poista synkronointitili";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "Jokin meni vikaan haettaessa laitteita synkronointiketjussa.";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "Synkronointiketjussa olevat laitteet";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "Huomautus: Varmista, että tunnistat jokaisen edellä olevassa luettelossa olevan laitteen. Synkronointiketjuun kuuluvat laitteet voivat vastaanottaa henkilötietoja, kuten salasanoja ja selaushistoriaa.";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "Laitteen vahvistus";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "Olet saavuttanut synkronointiketjussa sallitun laitteiden enimmäismäärän (10). Jatka poistamalla laite.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "Laiterajoitus";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "Jos haluat lisätä laitteen synkronointiketjuun tai vaihtaa salasanan synkronointiasetusta, sinun on ensin asetettava laitteellesi salasana.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.syncSetPasscodeAlertTitle" = "Aseta salasana";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "Synkronointiasetukset";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Lisää uusi laite";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "Lisää tietokone";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Synkronointiketjun ruutukoodi";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "Siirry toisella mobiililaitteellasi Synkronointi-kohtaan Asetukset-paneelissa ja napauta Skannaa synkronointikoodi -painiketta. Skannaa alla oleva QR-koodi kamerallasi.\n\nPidä tätä koodia salasanana. Jos joku saa sen käsiinsä, hän voi lukea ja muokata synkronoituja tietojasi.";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "Anna synkronointikoodi";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "Siirry laitteesi Synkronoi-kohtaan Asetukset-paneelissa ja napauta %@ -painiketta. Anna alla näkyvä synkronointiketjun koodisanat.\n\nPidä tätä koodia salasanana. Jos joku saa sen käsiinsä, hän voi lukea ja muokata synkronoituja tietojasi.";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "Anna koodisanat";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "Lisää tabletti tai puhelin";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "Valitse laitteen tyyppi";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "Valitse synkronoitavan kohdelaitteen tyyppi.";
+
+/* Computer device button title */
+"SyncComputerDevice" = "Tietokone";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "Poista synkronointitili";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "Laitteet ja asetukset";
+
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "Tämä synkronointikoodi on vanhentunut. Luo uusi synkronointikoodi ja yritä uudelleen.";
+
+/* Generic Sync Error Description */
+"syncGenericError" = "Pahoittelut, jokin meni vikaan";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Tuodut kirjanmerkit";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Synkronointohjelma on tällä hetkellä offline-tilassa tai se ei ole käytettävissä. Yritä myöhemmin uudelleen.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Synkronoinnin viestintävirhe";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "Tarkista Internet-yhteys ja yritä uudelleen.";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "Synkronointiin ei saada yhteyttä";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "Paikalliset laitetiedot säilyvät ennallaan kaikissa laitteissa. Muut tämän synkronointiketjun laitteet pysyvät synkronoituina. ";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "Poistetaanko %@ synkronointiketjusta?";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "Poista laite";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "Laite";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "Tällä hetkellä synkronoidut tiedot säilytetään, mutta kaikki Braven synkronoinnin välimuistitiedot poistetaan. Sinun on aloitettava uusi synkronointiketju, jotta voit synkronoida laitetiedot uudelleen.";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "Poista synkronointiketju";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "Laitteen %@ poistaminen poistaa synkronointiketjun.";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "Tämän laitteen irrottaminen tästä synkronointiketjusta ei poista aikaisemmin synkronoituja tietoja laitteesta.";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "Poistetaanko %@ synkronointiketjusta?";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "Poista tämä laite";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "Poistetaanko tämä laite?";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "Tämä laite poistetaan synkronointiryhmästä, eikä se enää vastaanota tai lähetä synkronointitietoja. Kaikki olemassa olevat tiedot säilyvät laitteella.";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "Alla oleva laiteluettelo kattaa kaikki synkronointiketjusi laitteet. Jokaista laitetta voidaan hallinnoida minkä tahansa muun laitteen kautta.";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "Käytän kameraa…";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "Tabletti tai puhelin";
+
+/* This device cell */
+"SyncThisDevice" = "Tämä laite";
+
+/* Sync to existing device */
+"SyncToDevice" = "Synkronoi laitteeseen";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Avaa aiemmin synkronoitua laitetta käyttäen Braven asetukset ja siirry kohtaan Asetukset > Synkronoi. Valitse Lisää laite ja lue näytölle ilmestyvä koodi.";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "Tätä laitetta ei voi synkronoida";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "Epäonnistui";
+
+/* Sync Error Description */
+"syncValidForTooLongError" = "Tämä koodi on virheellinen. Tarkista, että aika ja aikavyöhyke on määritetty oikein laitteessasi.";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "Sulje";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "Kytkee yksityisen tilan päälle tai pois päältä";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "Yksityinen tila";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "Päältä";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "Käytössä";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "Pidä yksityiset selainvälilehdet auki, kun suljet sovelluksen. Näin varmistat, että voit jatkaa yksityisiä selausistuntoja saumattomasti.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "Säilytä yksityiset välilehdet";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Vaadi Face ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "Vaadi PIN-koodi";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Vaadi Touch ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "Yksityiset välilehdet";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "Navigointityökalupalkki";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "Lisää välilehti";
+
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "Lisää soittolistaan";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "Edellinen";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "Seuraava";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "Suojattu yhteys";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Valikko";
+
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "Ei suojattu";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Soittolista";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "Lukijanäkymä";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "Lisää lukulistalle";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "Lataa uudelleen";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "Hae tai kirjoita osoite";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "Jaa";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "Pysäytä";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "Äänihaku";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Suojaamaton yhteys";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "Välilehtivalikko";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "Lisää välilehti";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "Sulje välilehti pyyhkäisemällä oikealle tai vasemmalle kolmella sormella.";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "Välilehti suljetaan";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "Ei välilehtiä";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "Välilehdet %1$@–%2$@ / %3$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "Uusi välilehti";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "Etsi välilehdistä";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "Välilehti %1$@/%2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "Palveluehdot";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "Käyttöehdot";
+
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "Jaa...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "Jaa Brave ystävillesi!";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Automaattinen";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Pimeä";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Ulkonäkö";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Näitä asetuksia ei käytetä yksityisessä selaustilassa.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Kevyt";
+
+/* Name for app theme settings */
+"themesSettings" = "Teemat";
+
+/* No comment provided by engineer. */
+"Title" = "Nimi";
+
+/* History tableview section header */
+"Today" = "Tänään";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Lisää";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Lähteen lisääminen epäonnistui";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "Pahoittelut, emme voineet tunnistaa syöteosoitetta.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "Pahoittelut, emme löytäneet syöteosoitetta.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "Pahoittelut, syöteosoitteessa ei ole sisältöä.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Lisää lähde Brave-uutisiin";
+
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "Saatavilla olevat RSS-syötteet";
+
+/* The name of the feature */
+"today.braveToday" = "Brave-uutiset";
+
+/* The name of the feature in settings */
+"today.braveToday.title" = "Uutiset";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "Seuraa aiheita, jotka kiinnostavat sinua";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "Kanavat";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "Kanavat";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "Kanavat";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "Uutta sisältöä saatavilla";
+
+/* No comment provided by engineer. */
+"today.deals" = "Tarjoukset";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Brave-uutiset lopettaa sisällön näyttämisen kohteesta %@";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "Estetty";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "Piilota sisältö kohteelta %@";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "Yritä ottaa jotkin uutislähteet käyttöön";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "Ei näytettäviä artikkeleita";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "Salli sisältö kohteesta %@";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "Brave-uutisissa ilmeni ongelmia. Yritä uudelleen.";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "Hups...";
+
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "Hallitse syötteesi lähteitä";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "Seurataan";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "Seurataan";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "Seuraa";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "Hae syötteitä osoitteesta";
+
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Tuo OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Lähteet ovat suojaamattomia – lisää omalla vastuullasi";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Seuraa suosikkilähteitäsi yhdessä syötteessä. Avaa välilehti Bravessa, vieritä alas ja… voila!\nBrave-uutistoimintoa tuetaan yksityisillä, anonymisoiduilla mainoksilla.";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "Ota Brave-uutiset käyttöön, niin yksikään tarina ei mene ohi";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "Näytä Brave News";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "Lue lisää tiedoistasi";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "Lisää Brave-tarjouksia";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "Ei Internet-yhteyttä";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "Yritä tarkistaa yhteys tai muodostaa yhteys Wi-Fi-verkkoon uudelleen.";
+
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "Ei tuloksia";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "Lähteiden prioriteettiluettelo";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "Suositut";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "Suositut lähteet";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "Promootio";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "Piilota";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "Arvostele Brave";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "Kerro meille mielipiteesi!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "Tykkäätkö Bravesta?";
+
+/* No comment provided by engineer. */
+"today.refresh" = "Päivitä";
+
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "Hae sivustoja, aiheita tai RSS-syötteitä";
+
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "Samanlainen kuin %@";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "Lähteet ja asetukset";
+
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "Lähteet";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "Joitakin lähteitä, joista saatat pitää";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "Ehdotettu";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "Ehdotettu";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Ota Brave News käyttöön";
+
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "Lopeta seuraaminen";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "Käyttäjien lähteet";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "Vaihda lukijatilaa";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "Otetaanko hakuehdotukset käyttöön?";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "Synkronointiryhmään ei voi liittyä. Tarkista kirjoitetut sanat ja yritä uudelleen.";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "Yhdistäminen ei onnistu";
+
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "Poista lukitus";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Maksuvälineet, joita ei tueta";
+
+/* Bookmark URL */
+"URL" = "URL-osoite";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "Osoite ja haku";
+
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Verkkosivustojen uudelleenohjaukset";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Käyttäjä peruutettu";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "Käytä alueellista mainostenestoa";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "Sulje";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Uphold-tilillesi kirjautumisessa oli ongelma. Yritä uudelleen";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "Pahoittelut, jokin meni vikaan";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "Versio %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "Näytä kohteessa %@";
+
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "Myönnä mikrofonin käyttöoikeus iOS-järjestelmäasetuksissa, jotta Brave voi käyttää anonyymiä äänihakua.";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "Mikrofonin käyttöoikeus vaaditaan";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Brave ei tallenna tai jaa äänellä tehtyjä hakuja.";
+
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "aktivoi";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Haluatko pysyä suojattuna? Uusi ennen tilauksesi päättymistä. Kiitoksena uusimisesta annamme sinulle 20 %:n alennuksen seuraavasta 3 kuukaudesta.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Ota automaattinen uusiminen käyttöön";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Uusi Brave VPN -tilauksesi automaattisesti nyt ja saat 20 %:n alennuksen 3 kuukaudeksi!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Uusi Brave VPN -tilauksesi automaattisesti nyt ja saat 1 kuukauden ilmaiseksi!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "Tämä tarkoittaa, että menetät Braven tarjoamat ylimääräiset suojaukset jokaisen puhelimessasi olevan sovelluksen kohdalla.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Voi ei! Brave VPN -tilauksesi on vanhentumassa.";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Osta";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave-palomuuri ja -VPN";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "Suojaa 5:tä laitetta 1:ssä tilauksessa";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Valitse sijainti tai maa";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Brave ei koskaan kirjaa toimintaasi";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Suojaa sovellukset ja koko laite";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "Turvallinen kotona tai julkisessa Wi-Fi:ssä";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Valonnopea, jopa 100 Mb/s";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Sovellusversio";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Mobiilipalveluntarjoaja";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave ei seuraa sinua eikä tiedä, kuinka käytät sovellustamme, joten emme tiedä VPN-asetuksiasi. Jaa tietoja kohtaamastasi ongelmasta, niin teemme parhaamme ratkaistaksemme sen mahdollisimman pian.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Sähköpostia ei voi lähettää. Tarkista sähköpostiasetukset.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Valitse tiedot, jotka haluat jakaa meille.\n\nMitä enemmän tietoja meille annat, sitä helpompaa tukihenkilöstömme on auttaa sinua ratkaisemaan ongelmasi.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Tuki tarjotaan Guardian tiimin avulla.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPN:n isäntänimi";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Ongelma";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Yhteyden luotettavuusongelma";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Ei Internet-yhteyttä yhdistämisen jälkeen";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Muu";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "VPN:ään ei saada yhteyttä (muu virhe)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Hidas yhteys";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Verkkosivusto ei toimi";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Virhelokit";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Verkkotyyppi";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Käyttöympäristö";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Jatka sähköpostiin";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Tilaustyyppi";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "iOS-aikavyöhyke";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Brave-palomuuri ja -VPN -ongelma";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Ota käyttöön";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Yhteyden muodostus App Storeen ei onnistunut. Yritä uudelleen muutaman minuutin kuluttua.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "App Store -virhe";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Kaikki tilaukset sisältävät %@!";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "ilmaisen 7 päivän kokeilujakson";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "kokeile 7 päivän ajan ilmaiseksi";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Kaikki tilaukset uusiutuvat automaattisesti, mutta ne ovat peruttavissa ennen uusimista.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Tämän profiilin avulla VPN voi automaattisesti muodostaa yhteyden ja suojata liikennettä kaikilla laitteillasi koko ajan. Tämä VPN-yhteys salataan ja reititetään Braven älykkään palomuurin kautta mahdollisesti haitallisten ja invasiivisten yhteyksien estämiseksi.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Asenna VPN-profiili";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave asentaa nyt VPN-profiilin.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN on nyt käytössä";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Asenna VPN";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Kokeile ILMAISEKSI";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Uusiutuu kuukausittain";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Kuukausitilaus";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Vanhentunut";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Estää ei-toivotut verkkoyhteydet";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Estä mainokset ja seurantaohjelmat kaikissa sovelluksissa ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Tukee jopa 100 Mbps:n nopeutta";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Nopea ja rajoittamaton, jopa 100 Mbit/s";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "Ympärivuorokautinen tuki";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Suojaa kaikki yhteydet";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Palvelun tarjoaa";
+
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "Valitse haluamasi välitysprotokolla. Kun olet vaihtanut, nykyiset VPN-kirjautumistietosi poistetaan ja yhteys muodostetaan uudelleen, jos VPN-yhteys on tällä hetkellä muodostettu.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Tunnelointiprotokollan vaihtaminen epäonnistui. Yritä myöhemmin uudelleen.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Palvelinvirhe";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Välitysprotokolla";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPN-tunnelointiprotokollaa muutettu.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Lähin palvelinalue valitaan automaattisesti järjestelmän aikavyöhykkeen perusteella. Tätä suositellaan Internet-yhteyden nopeuden varmistamiseksi.";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Automaattinen";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Palvelimen vaihtaminen epäonnistui. Yritä myöhemmin uudelleen.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Palvelinvirhe";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Palvelinalue";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN-alue muuttunut.";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "VPN-määritysten nollaus ei onnistu. Yritä uudelleen. Jos ongelma jatkuu, saat apua ottamalla yhteyttä tukeen.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Yritä uudelleen";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Nollaus epäonnistui";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN-määritysten nollaus onnistui.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Nollaus onnistui";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Palauta";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Päivitä VPN-istuntosi kirjautumalla sisään Brave-tilillesi.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Piilota";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Kirjaudu";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Istunto vanhentunut";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Päivitä VPN:ksi, jotta voit suojata yhteytesi ja estää invasiivisen seurannan kaikkialla.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Ota yhteyttä tekniseen tukeen";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Palvelinluettelon haku epäonnistui. Yritä myöhemmin uudelleen.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPN-tuki";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Linkitä ostos Brave-tiliisi";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Linkitä App Storen ostos Brave-tiliisi, jotta voit käyttää Brave VPN:ää muissa laitteissa.";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Hallitse tilausta";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Lunasta tarjouskoodi";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Nollaa määritykset";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Isäntä";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Sijainti";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Palvelin";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Vanhenee";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Tilaus";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Tila";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Välitysprotokolla";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Estetty";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Sallittu";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Vanhentunut";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Tilaa nyt";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Oikein. Brave VPN -tilauksesi on nyt käytettävissä jopa viidellä laitteella. Voit siis tehdä tilauksen iOS-laitteella ja käyttää sitä Mac-, Windows- ja Android-laitteillasi maksutta.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Käytä Brave VPN:ää kaikilla laitteillasi samaan hintaan!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Kokeile Brave VPN:ää uudelleen ja saat 20 %:n alennuksen 3 kuukaudeksi!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Oletko valmis suojaamaan kaikki puhelimesi sovellukset? Jatka Brave VPN:n käyttämistä ja saat 20 %:n alennuksen seuraavasta 3 kuukaudesta.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN on aina estänyt seurantaohjelmat jokaisessa sovelluksessa, myös Brave-selaimen ulkopuolella. Nyt voit Brave-tietosuojakeskuksen kautta nähdä, kuka yritti seurata sinua.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Tiesitkö, että Brave VPN suojaa sinua Brave-selaimen ulkopuolella?";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Päivitä";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Ei huolta. Pidämme VPN:n aktiivisena muutaman päivän ajan päivittäessäsi maksutietojasi.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Päivitä maksutietosi, niin Brave VPN voi jatkaa suojaamistasi.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Haluatko jatkaa kaikkien puhelimessasi olevien sovellusten suojaamista Päivitä vain maksutietosi.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Tililläsi on laskutusongelma, mikä tarkoittaa, että Brave VPN -tilauksesi on vanhentumassa.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Päivitä maksu";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Päivitä maksutapa";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Brave jatkaa suojaamistasi jopa taustalla toimiessaan.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave-palomuuri ja -VPN on kytketty PÄÄLLE";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "VPN:n alustuksessa oli ongelma. Yritä uudelleen tai yritä nollata asetukset VPN-määrityssivulla.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Virhe";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave-palomuurin ja -VPN:n toiminta edellyttää, että laitteellesi on asennettu VPN-profiili.";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Lupa kielletty";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Tarjouskoodia ei voi lunastaa. Yritä uudelleen tai tarkista tarjouskoodin tiedot ja yritä uudelleen.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Ostoa ei voi suorittaa loppuun. Yritä uudelleen tai tarkista Apple-palveluun tallennetut maksutietosi ja yritä uudelleen.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Virhe";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Tilaukset veloitetaan iTunes-tilisi kautta.\n\nKaikki käyttämättömät ilmaisen kokeilujakson osat, jos sellainen on tarjottu, menetetään, kun ostat tilauksen.\n\nTilauksesi uusitaan automaattisesti, ellei sitä peruuteta vähintään 24 tuntia ennen nykyisen jakson päättymistä.\n\nVoit hallita tilauksiasi asetuksissa.\n\nKäyttämällä Bravea hyväksyt käyttöehdot ja tietosuojakäytännön.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Lunasta koodi";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Nykyinen asetus: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "VPN-alue";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Tämä nollaa Brave-palomuurin ja -VPN:n määritykset ja korjaa mahdolliset virheet. Tämä prosessi voi kestää minuutin.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Nollaa määritykset";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Tyhjennä";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Kuukausitilaus";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Vuositilaus";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Päivitä maksutapa";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Uusi vuosittain ja säästä %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Paras arvo";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Yksi vuosi";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "Lompakon luontipäivä";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "Verkkosisältö";
+
+/* Temporary data that is stored on the users device to speed up future requests and interactions. */
+"websiteData.dataRecordCache" = "Välimuisti";
+
+/* The word used to describe small bits of state stored locally in a web browser (e.g. Browser cookies) */
+"websiteData.dataRecordCookies" = "Evästeet";
+
+/* Some data stored on disk that is a kind of database (such as WebSQL or IndexedDB.) */
+"websiteData.dataRecordDatabases" = "Tietokannat";
+
+/* A kind of browser storage particularely for saving data on the users device for a specific webpage for the given session or longer time periods. */
+"websiteData.dataRecordLocalStorage" = "Paikallinen tallennustila";
+
+/* A message displayed to users while the system fetches all website data to display. */
+"websiteData.loadingWebsiteData" = "Verkkosivuston tietoja ladataan…";
+
+/* A button or screen title describing that the user is there to manually manage website data that is persisted to their device. I.e. to manage data specific to a web page the user has visited */
+"websiteData.manageWebsiteDataTitle" = "Hallitse verkkosivuston tietoja";
+
+/* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
+"websiteData.noSavedWebsiteData" = "Ei tallennettuja verkkosivustotietoja";
+
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeAllDataRecords" = "Poista kaikki";
+
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+"websiteData.removeDataRecord" = "Poista";
+
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeSelectedDataRecord" = "Poista %ld kohdetta";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Suosikit";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "Widgetit";
+
+/* Word count title */
+"WordCount" = "Sanamäärä: %i";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "v.";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "Kyllä";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "Kyllä, poista";
+
+/* History tableview section header */
+"Yesterday" = "Eilen";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "Jos tämä kokeellinen ominaisuus otetaan käyttöön, videot toistetaan parhaalla mahdollisella saatavilla olevalla laadulla. Lisädataa käytetään.";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "Päältä";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "Käytössä";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "Salli Wi-Fin kautta";
+

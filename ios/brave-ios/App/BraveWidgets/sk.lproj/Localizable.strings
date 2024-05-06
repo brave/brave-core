@@ -1,75 +1,75 @@
 /* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "书签";
+"widgets.BookmarksMenuItem" = "Panel so záložkami";
 
 /* The name of the feature */
-"widgets.braveNews" = "Brave 新闻";
+"widgets.braveNews" = "Novinky Brave";
 
 /* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "下载";
+"widgets.DownloadsMenuItem" = "Stiahnuté";
 
 /* Description for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetDescription" = "快速访问您喜爱的网站。";
+"widgets.favoritesWidgetDescription" = "Rýchly prístup k vašim obľúbeným webovým stránkam.";
 
 /* Title for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetTitle" = "收藏夹";
+"widgets.favoritesWidgetTitle" = "Obľúbené";
 
 /* Title for history menu item */
-"widgets.HistoryMenuItem" = "历史记录";
+"widgets.HistoryMenuItem" = "História";
 
 /* Displayed on a news widget that has failed to load */
-"widgets.newsClusteringErrorLabel" = "稍后重试";
+"widgets.newsClusteringErrorLabel" = "Skúste to znova neskôr";
 
 /* Displayed on a news widget that links into the app to read more Brave News content */
-"widgets.newsClusteringReadMoreButtonTitle" = "了解更多";
+"widgets.newsClusteringReadMoreButtonTitle" = "Čítať viac";
 
 /* Description for Brave News widgets that display the top news */
-"widgets.newsClusteringWidgetDescription" = "获取最新消息";
+"widgets.newsClusteringWidgetDescription" = "Získať najnovšie správy";
 
 /* Title for Brave News widgets that display the top news */
-"widgets.newsClusteringWidgetTitle" = "头条新闻";
+"widgets.newsClusteringWidgetTitle" = "Najdôležitejšie novinky";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "请打开 Brave，在此查看您的收藏夹";
+"widgets.noFavoritesFound" = "Ak chcete zobraziť svoje obľúbené položky, otvorte Brave";
 
 /* QR Code section title */
-"widgets.QRCode" = "二维码";
+"widgets.QRCode" = "QR kód";
 
 /* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "搜索";
+"widgets.searchShortcutTitle" = "Vyhľadávanie";
 
 /* Description for Brave Shields widget on 'add widget' screen. */
-"widgets.shieldStatsDescription" = "一览 Brave 是如何节省时间以及提供在线保护的。";
+"widgets.shieldStatsDescription" = "Súhrn toho, ako vám Brave šetrí čas a chráni vás online.";
 
 /* Title for Brave Shields widget on 'add widget' screen. */
-"widgets.shieldStatsTitle" = "隐私统计数据";
+"widgets.shieldStatsTitle" = "Štatistiky súkromnia";
 
 /* Title of Brave Shields widget shown above stat numbers. */
-"widgets.shieldStatsWidgetTitle" = "隐私统计数据";
+"widgets.shieldStatsWidgetTitle" = "Štatistiky súkromnia";
 
 /* Button to the browser and enter URL or make a search query there. */
-"widgets.shortcutsEnterURLButton" = "搜索或输入 URL";
+"widgets.shortcutsEnterURLButton" = "Vyhľadajte alebo zadajte adresu URL";
 
 /* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "新标签页";
+"widgets.shortcutsNewTabButton" = "Nová karta";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "播放列表";
+"widgets.shortcutsPlaylistButton" = "Zoznam";
 
 /* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "隐私标签页";
+"widgets.shortcutsPrivateTabButton" = "Súkromná karta";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "快速访问，在 Brave 中搜索 Web 或打开网页。";
+"widgets.shortcutsWidgetDescription" = "Rýchly prístup na vyhľadávanie na webe alebo otváranie webových stránok v Brave.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetTitle" = "快捷方式";
+"widgets.shortcutsWidgetTitle" = "Skratky";
 
 /* Description for Brave Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatDescription" = "一览 Brave 是如何提供在线保护的。";
+"widgets.singleStatDescription" = "Súhrn toho, ako vás Brave chránil online.";
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatTitle" = "隐私统计数据";
+"widgets.singleStatTitle" = "Štatistika ochrany osobných údajov";
 
 /* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave 钱包";
+"widgets.walletShortcutTitle" = "Peňaženka Brave";
 

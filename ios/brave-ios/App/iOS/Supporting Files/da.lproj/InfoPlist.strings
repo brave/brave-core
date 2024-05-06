@@ -1,27 +1,27 @@
 /* (No Comment) */
-"1Password Fill Browser Action" = "Remplir les mots de passe avec 1Password";
+"1Password Fill Browser Action" = "1Password Udfyld browserhandling";
 
 /* Privacy - NFC Scan Usage Description */
-"NFCReaderUsageDescription" = "L'application doit accéder à la fonction NFC pour communiquer avec votre YubiKey.";
+"NFCReaderUsageDescription" = "Applikationen skal have adgang til NFC-læsning for at kommunikere med din Yubikey.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Cette option vous permet de prendre des photos et de les importer.";
+"NSCameraUsageDescription" = "Dette lader dig tage og uploade billeder.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Authentifie votre accès à Brave";
+"NSFaceIDUsageDescription" = "Dette autentificerer din adgang til Brave";
 
 /* Privacy - Location When In Use Usage Description */
-"NSLocationWhenInUseUsageDescription" = "Les sites Web que vous consultez peuvent demander votre position.";
+"NSLocationWhenInUseUsageDescription" = "Websteder, du besøger, kan anmode om din placering.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Ce paramètre autorise l'utilisation de votre microphone lorsque vous utilisez Brave.";
+"NSMicrophoneUsageDescription" = "Dette tillader brug af din mikrofon, når du bruger Brave.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Cette option vous permet d'enregistrer des photos.";
+"NSPhotoLibraryAddUsageDescription" = "Dette lader dig gemme billeder.";
 
 /* Privacy - Speech Recognition Usage Description */
-"NSSpeechRecognitionUsageDescription" = "Cette autorisation sert à activer la reconnaissance vocale avancée d'Apple. En cas de refus, la reconnaissance intégrée à l'appareil sera utilisée et les recherches seront entièrement privée. Brave n'enregistre pas et ne partage pas vos recherches vocales.";
+"NSSpeechRecognitionUsageDescription" = "Denne tilladelse bruges til at aktivere Apple Advanced Speech Recognition. Hvis det ikke er tilladt, vil \"på enheden\"-genkendelse blive brugt, og søgninger vil være helt private. Brave gemmer eller deler ikke dine stemmesøgninger.";
 
 /* (No Comment) */
-"OPML File" = "Fichier OPML";
+"OPML File" = "OPML-fil";
 

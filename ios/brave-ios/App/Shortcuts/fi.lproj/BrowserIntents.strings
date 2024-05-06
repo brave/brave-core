@@ -1,62 +1,90 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "Osoitetta ${websiteURL} ei voi avata uudessa välilehdessä.";
 
-"1QT5y6" = "Open a website in a new Tab";
+/* (No Comment) */
+"1n1yx4" = "Osoitetta ${websiteURL} ei voi avata uudessa välilehdessä.";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "Avaa verkkosivusto uudessa välilehdessä";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "Avaa verkkosivusto uudessa välilehdessä";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "Verkkosivusto URL-osoite";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "Avaa verkkosivusto kirjanmerkeistä";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "Avaa osoitteen ${websiteURL} uudessa välilehdessä";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "Osoitetta ${websiteURL} ei voi avata uudessa välilehdessä.";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "Tämä avaa osoitteen ${websiteURL} historiasta.";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "Avaa verkkosivusto historiasta";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "Verkkosivusto URL-osoite";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "Verkkosivusto URL-osoite";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "Avaa historiaverkkosivusto";
 
-"VgH3NH" = "Open Bookmark Website";
-
-"Wh3wb1" = "Open Website";
-
-"WiB0aJ" = "Website URL";
-
-"Xx8bbW" = "Website URL";
-
-"YCxX7a" = "${websiteURL}";
-
-"ZgJKfY" = "This will open ${websiteURL} from Bookmarks.";
-
-"azhMra" = "Open ${websiteURL}in a New Tab";
-
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
-
-"cSYAYC" = "This will open ${websiteURL} from History.";
-
-"cvU2lS" = "Open a Website from History";
-
-"dk8p9b" = "Website URL";
-
+/* (No Comment) */
 "iLL70C" = "${websiteURL}";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"LHHK1N" = "Tämä avaa osoitteen ${websiteURL} uudessa välilehdessä.";
 
-"pvi3Ug" = "This will open ${websiteURL} from Bookmarks.";
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"MISOeA" = "Avaa historian kautta";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"p3NuX2" = "Osoitetta ${websiteURL} ei voi avata uudessa välilehdessä.";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"Paq749" = "Verkkosivusto URL-osoite";
 
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"t7aARA" = "Osoitetta ${websiteURL} ei voi avata uudessa välilehdessä.";
+
+/* (No Comment) */
+"UmKnv3" = "Osoitetta ${websiteURL} ei voi avata uudessa välilehdessä.";
+
+/* (No Comment) */
+"uT0Oi7" = "Tämä avaa osoitteen ${websiteURL} uudessa välilehdessä.";
+
+/* (No Comment) */
+"VgH3NH" = "Avaa kirjanmerkkisivusto";
+
+/* (No Comment) */
+"Wh3wb1" = "Avaa verkkosivusto";
+
+/* (No Comment) */
+"WiB0aJ" = "Verkkosivusto URL-osoite";
+
+/* (No Comment) */
+"wZqW4o" = "Tämä avaa osoitteen ${websiteURL} historiasta.";
+
+/* (No Comment) */
+"Xx8bbW" = "Verkkosivusto URL-osoite";
+
+/* (No Comment) */
+"ycaNZf" = "Avaa kirjanmerkeistä";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
+
+/* (No Comment) */
+"ZgJKfY" = "Tämä avaa osoitteen ${websiteURL} kirjanmerkeistä.";
 
