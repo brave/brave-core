@@ -1,0 +1,15 @@
+[package]
+name = "zcash"
+version = "1.0.0"
+edition = "2021"
+license = "MPL-2.0"
+
+[dependencies]
+brave_wallet = { version = "1" }
+cxx = { version = "1" }
+orchard = { version = "0.7.1",  default-features = false }
+
+[lib]
+name = "zcash"
+path = "lib.rs"
+crate-type = ["rlib"]

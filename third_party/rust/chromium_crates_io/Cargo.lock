@@ -263,7 +263,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "brave-wallet-cxx"
+name = "brave_wallet"
 version = "1.0.0"
 dependencies = [
  "bech32",
@@ -374,14 +374,14 @@ version = "0.1.0"
 dependencies = [
  "adblock-cxx",
  "brave-news-cxx",
- "brave-wallet-cxx",
+ "brave_wallet",
  "challenge-bypass-ristretto-cxx",
  "constellation-cxx",
  "filecoin-cxx",
  "json-cxx",
- "orchard",
  "skus-cxx",
  "speedreader-ffi",
+ "zcash",
 ]
 
 [[package]]
@@ -2800,6 +2800,15 @@ version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "tap",
+]
+
+[[package]]
+name = "zcash"
+version = "1.0.0"
+dependencies = [
+ "brave_wallet",
+ "cxx",
+ "orchard",
 ]
 
 [[package]]

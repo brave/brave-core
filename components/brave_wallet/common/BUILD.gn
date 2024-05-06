@@ -20,6 +20,7 @@ buildflag_header("buildflags") {
     "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"",
     "ENABLE_BITCOIN_BY_DEFAULT=$enable_bitcoin_by_default",
     "ENABLE_ZCASH_BY_DEFAULT=$enable_zcash_by_default",
+    "ENABLE_ORCHARD=$enable_orchard",
   ]
 }
 
