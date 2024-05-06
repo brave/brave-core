@@ -32,4 +32,25 @@ TEST(LocalizationUtilTest,
   EXPECT_TRUE(localized_resource.empty());
 }
 
+TEST(LocalizationUtilTest, GetLocalizedResourceUTF16StringWithPlaceholders) {
+  int string_id = IDS_TEST_STRING_FOR_PLACEHOLDERS;
+  std::vector<std::u16string> placeholders{u"$1", u"$2", u"$3", u"$4"};
+  std::vector<size_t> offsets;
+  const std::u16string text = brave_l10n::GetStringFUTF16WithPlaceHolders(
+      string_id, placeholders, offsets);
+  EXPECT_EQ(placeholders.size(), offsets.size());
+
+  // Check |text| doesn't include place holder strings.
+  // grd file has above place holders and GetStringFUTF16WithPlaceHolders()
+  // returns string w/o them.
+  const std::u16string expected_text =
+      u"Test string for place holders. Learn more";
+  EXPECT_EQ(expected_text, text);
+  EXPECT_EQ(offsets[0],
+            16ul);  // start offset of "place holders" part in the above.
+  EXPECT_EQ(offsets[1], 29ul);  // end offset of "plce holders" part.
+  EXPECT_EQ(offsets[2], 31ul);  // start offset of "Learn more" part.
+  EXPECT_EQ(offsets[3], 41ul);  // end offset of "Learn more" part.
+}
+
 }  // namespace brave_l10n

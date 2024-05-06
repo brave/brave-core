@@ -10,7 +10,6 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/geolocation/geolocation_utils.h"
@@ -36,7 +35,6 @@
 #include "components/permissions/request_type.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
@@ -204,35 +202,30 @@ std::unique_ptr<views::View> CreateGeolocationDescLabel(
     Browser* browser,
     bool enable_high_accuracy,
     bool location_service_is_on) {
-  // We put placeholders raw string to get target offsets.
+  // The text shown in dialog is different depending on if person has location
+  // services enabled or disabled. This code finds which placeholders should
+  // show.
+  int string_id = IDS_GEOLOCATION_PERMISSION_BUBBLE_LOW_ACCURACY_LABEL;
   std::vector<std::u16string> placeholders{u"$1", u"$2", u"$3", u"$4"};
-  if (enable_high_accuracy && !location_service_is_on) {
+  if (enable_high_accuracy && location_service_is_on) {
+    string_id =
+        IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITH_LOCATION_SERVICE_LABEL;
+  } else if (enable_high_accuracy) {
+    string_id =
+        IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITHOUT_LOCATION_SERVICE_LABEL;
     placeholders.insert(placeholders.end(), {u"$5", u"$6", u"$7", u"$8"});
   }
-  int string_id = IDS_GEOLOCATION_PERMISSION_BUBBLE_LOW_ACCURACY_LABEL;
-  if (enable_high_accuracy) {
-    string_id =
-        location_service_is_on
-            ? IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITH_LOCATION_SERVICE_LABEL
-            : IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITHOUT_LOCATION_SERVICE_LABEL;
-  }
+
+  // This code will get the actual strings so we know the length/offset of each
+  // styles (bold, italics, etc) can be applied with a range (begin offset / end
+  // offset).
   std::vector<size_t> offsets;
-  std::u16string contents_text =
-      l10n_util::GetStringFUTF16(string_id, placeholders, &offsets);
-  CHECK(offsets.size() == placeholders.size());
+  const std::u16string contents_text =
+      brave_l10n::GetStringFUTF16WithPlaceHolders(string_id, placeholders,
+                                                  offsets);
+  CHECK(!contents_text.empty());
 
-  // Remove placeholers. It's used to get offsets.
-  for (const auto& placeholder : placeholders) {
-    base::RemoveChars(contents_text, placeholder, &contents_text);
-  }
-
-  // Need to adjust offests after removing placeholders.
-  int offset_diff = 0;
-  for (size_t i = 0; i < offsets.size(); i++) {
-    offsets[i] -= offset_diff;
-    offset_diff += placeholders[i].length();
-  }
-
+  // Insert the placeholder text with styles.
   auto contents_label = std::make_unique<views::StyledLabel>();
   contents_label->SetTextContext(views::style::CONTEXT_LABEL);
   contents_label->SetDefaultTextStyle(views::style::STYLE_PRIMARY);
