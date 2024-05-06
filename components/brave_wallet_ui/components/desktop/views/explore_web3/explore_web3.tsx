@@ -17,11 +17,20 @@ import { ExploreNavOptions } from '../../../../options/nav-options'
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import { makeDappDetailsRoute } from '../../../../utils/routes-utils'
-import { useLocalStorage } from '../../../../common/hooks/use_local_storage'
-import { LOCAL_STORAGE_KEYS } from '../../../../common/constants/local-storage-keys'
+import {
+  useLocalStorage //
+} from '../../../../common/hooks/use_local_storage'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../common/constants/local-storage-keys'
 import { capitalizeFirstLetter } from '../../../../utils/string-utils'
-import { makeInitialFilteredOutNetworkKeys } from '../../../../utils/local-storage-utils'
-import { getDappNetworkIds, isDappMapEmpty } from '../../../../utils/dapp_utils'
+import {
+  makeInitialFilteredOutNetworkKeys //
+} from '../../../../utils/local-storage-utils'
+import {
+  getDappNetworkIds, //
+  isDappMapEmpty
+} from '../../../../utils/dapp_utils'
 
 // Hooks
 import {
@@ -40,7 +49,9 @@ import {
 import {
   HeaderControlBar //
 } from '../../../header_control_bar/header_control_bar'
-import { Web3DappFilters } from '../../popup-modals/filter-modals/web3_dapp_filters_modal'
+import {
+  Web3DappFilters //
+} from '../../popup-modals/filter-modals/web3_dapp_filters_modal'
 import { DappListItem } from './dapp_list_item'
 import { VirtualizedDappsList } from './virtualized_dapps_list'
 import { DappFilter } from './dapp_filter'
@@ -177,7 +188,12 @@ export const ExploreWeb3View = () => {
     })
 
     return filterResultsMap
-  }, [categoryDappsMap, filterVisibleDapps, filteredOutCategories, searchValue])
+  }, [
+    categoryDappsMap, //
+    filterVisibleDapps,
+    filteredOutCategories,
+    searchValue
+  ])
 
   const selectedCategoryDapps = React.useMemo(() => {
     return selectedCategory ? visibleDappsMap.get(selectedCategory) : []

@@ -8,12 +8,18 @@ import * as React from 'react'
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { useLocalStorage } from '../../../../common/hooks/use_local_storage'
-import { LOCAL_STORAGE_KEYS } from '../../../../common/constants/local-storage-keys'
-import { makeInitialFilteredOutNetworkKeys } from '../../../../utils/local-storage-utils'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../common/constants/local-storage-keys'
+import {
+  makeInitialFilteredOutNetworkKeys //
+} from '../../../../utils/local-storage-utils'
 
 // components
 import PopupModal from '..'
-import { FilterNetworksSection } from './filter-components/filter-networks-section'
+import {
+  FilterNetworksSection //
+} from './filter-components/filter-networks-section'
 import { CategoryCheckboxes } from './filter-components/category-checkboxes'
 
 // styles
