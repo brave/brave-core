@@ -130,6 +130,7 @@ export class MockPageHandlerRemote implements Public<mojom.PageHandlerRemote> {
   retryAPIRequest() {}
   dismissPremiumPrompt() {}
   closePanel() {}
+  openModelSupportUrl() {}
 }
 
 const router = {

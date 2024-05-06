@@ -479,6 +479,10 @@ void AIChatUIPageHandler::GetActionMenuList(
   std::move(callback).Run(ai_chat::GetActionMenuList());
 }
 
+void AIChatUIPageHandler::OpenModelSupportUrl() {
+  OpenURL(GURL(kLeoModelSupportUrl));
+}
+
 void AIChatUIPageHandler::OnGetPremiumStatus(
     GetPremiumStatusCallback callback,
     ai_chat::mojom::PremiumStatus status,

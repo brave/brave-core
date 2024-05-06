@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import Icon from '@brave/leo/react/icon'
 import Tooltip from '@brave/leo/react/tooltip'
 import Button from '@brave/leo/react/button'
@@ -14,9 +13,6 @@ import { getLocale } from '$web-common/locale'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import styles from './style.module.scss'
-
-const LEO_SUPPORT_URL =
-  'https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo'
 
 function getCategoryName(category: mojom.ModelCategory) {
   // To avoid problems when order of enum values change, we base the key
@@ -38,12 +34,6 @@ export default function ModelIntro() {
   if (!model) {
     console.error('Rendered ModelIntro when currentModel does not exist!')
     return <></>
-  }
-
-  const handleUrlClick = () => {
-    const mojomUrl = new Url()
-    mojomUrl.url = LEO_SUPPORT_URL
-    getPageHandlerInstance().pageHandler.openURL(mojomUrl)
   }
 
   return (
@@ -75,8 +65,8 @@ export default function ModelIntro() {
                     return (
                         <a
                           key={content}
-                          onClick={handleUrlClick}
-                          href={LEO_SUPPORT_URL}
+                          onClick={() => getPageHandlerInstance().pageHandler.openModelSupportUrl()}
+                          href="#"
                           target='_blank'
                         >
                           {content}
