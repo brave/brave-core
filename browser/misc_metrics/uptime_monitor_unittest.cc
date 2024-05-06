@@ -27,6 +27,7 @@ class UptimeMonitorUnitTest : public testing::Test {
  protected:
   void ResetMonitor() {
     usage_monitor_ = std::make_unique<UptimeMonitor>(&local_state_);
+    usage_monitor_->Init();
   }
 
   content::BrowserTaskEnvironment task_environment_;
@@ -36,12 +37,7 @@ class UptimeMonitorUnitTest : public testing::Test {
 };
 
 #if BUILDFLAG(IS_ANDROID)
-#define MAYBE_ReportUsageDuration ReportUsageDuration
-#else
-#define MAYBE_ReportUsageDuration DISABLED_ReportUsageDuration
-#endif
-
-TEST_F(UptimeMonitorUnitTest, MAYBE_ReportUsageDuration) {
+TEST_F(UptimeMonitorUnitTest, ReportUsageDuration) {
   histogram_tester_.ExpectTotalCount(kBrowserOpenTimeHistogramName, 0);
 
   usage_monitor_->ReportUsageDuration(base::Minutes(15));
@@ -78,5 +74,6 @@ TEST_F(UptimeMonitorUnitTest, MAYBE_ReportUsageDuration) {
   histogram_tester_.ExpectBucketCount(kBrowserOpenTimeHistogramName, 3, 1);
   histogram_tester_.ExpectTotalCount(kBrowserOpenTimeHistogramName, 3);
 }
+#endif
 
 }  // namespace misc_metrics
