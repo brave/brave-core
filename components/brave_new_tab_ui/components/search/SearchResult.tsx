@@ -27,11 +27,11 @@ const Container = styled.a`
   text-decoration: none;
 
   &[aria-selected=true] {
-    background: ${color.container.interactive};
+    background: color-mix(in srgb, ${color.container.interactive}, transparent 80%);
   }
 
   &:hover {
-    background: ${color.container.highlight};
+    backdrop-filter: blur(64px);
   }
 `
 
@@ -40,7 +40,7 @@ const IconContainer = styled.div`
   width: 32px;
   height: 32px;
 
-  background: ${color.container.highlight};
+  background: rgba(255,255,255,0.25);
 
   display: flex;
   align-items: center;

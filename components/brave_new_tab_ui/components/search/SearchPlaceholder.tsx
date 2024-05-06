@@ -3,21 +3,31 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
-import SearchBox from './SearchBox';
+import SearchBox, { Backdrop } from './SearchBox';
 import SearchDialog from './SearchDialog';
 import { useNewTabPref } from '../../hooks/usePref';
 import { SearchContext, useSearchContext } from './SearchContext';
+import styled from 'styled-components';
+import { radius } from '@brave/leo/tokens/css';
+
+const PlaceholderContainer = styled.div`
+  position: relative;
+  overflow: hidden;
+
+  border-radius: ${radius.xs};
+`
 
 function Swapper() {
   const { open, setOpen } = useSearchContext()
   const [boxPos, setBoxPos] = React.useState(0)
   return <>
-    {!open && <div onClick={e => {
+    {!open && <PlaceholderContainer onClick={e => {
       setOpen(true)
       setBoxPos(e.currentTarget.getBoundingClientRect().y)
     }}>
+      <Backdrop />
       <SearchBox />
-    </div>}
+    </PlaceholderContainer>}
     {open && <SearchDialog offsetY={boxPos} onClose={() => setOpen(false)} />}
   </>
 }

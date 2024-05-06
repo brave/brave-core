@@ -15,19 +15,16 @@ import { braveSearchHost } from './config';
 import Button from '@brave/leo/react/button';
 
 const SearchInput = styled(Input)`
+  --leo-control-focus-effect: none;
   --leo-control-padding: 6px;
+  --leo-control-color: rgba(255, 255, 255, 0.1);
 
   display: inline-block;
   width: 540px;
-
-  /* If we have search results, don't add a radius to the bottom of the search box */
-  &:has(+ div) {
-    --leo-control-radius: ${radius.m} ${radius.m} 0 0;
-  }
 `
 
 const EnginePicker = styled(Dropdown)`
-  --leo-control-radius: ${spacing.m};
+  --leo-control-radius: ${radius.m};
 `
 
 const EngineValueSlot = styled.div`
@@ -50,26 +47,45 @@ const CustomizeButton = styled(Button)`
   color: ${color.text.secondary};
 `
 
+const Container = styled.div`
+  --leo-control-radius: ${radius.m};
+
+  /* If we have search results, don't add a radius to the bottom of the search box */
+  &:has(+ .search-results) {
+    --leo-control-radius: ${radius.m} ${radius.m} 0 0;
+  }
+
+  border-radius: var(--leo-control-radius);
+`
+
+export const Backdrop = styled.div`
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(64px);
+`
+
 export default function SearchBox() {
   const { filteredSearchEngines, searchEngine, setSearchEngine, query, setQuery, setOpen } = useSearchContext()
   const placeholderText = searchEngine?.host === braveSearchHost
     ? 'Search the web privately'
     : 'Search the web'
   const searchInput = React.useRef<HTMLElement>()
-  return <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.value)} placeholder={placeholderText}>
-    <Flex slot="left-icon">
-      <EnginePicker positionStrategy='fixed' value={searchEngine?.keyword} onChange={e => {
-        setSearchEngine(e.value!)
-      }}>
-        <EngineValueSlot slot="value">
-          <MediumIcon src={searchEngine?.faviconUrl.url} />
-        </EngineValueSlot>
-        {filteredSearchEngines.map(s => <leo-option value={s.keyword} key={s.keyword}>
-          <Option>
-            <MediumIcon src={s.faviconUrl.url} />{s.name}
-          </Option>
-        </leo-option>)}
-        <CustomizeButton kind="plain-faint" size="small" onClick={() => {
+  return <Container>
+    <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.value)} placeholder={placeholderText}>
+      <Flex slot="left-icon">
+        <EnginePicker positionStrategy='fixed' value={searchEngine?.keyword} onChange={e => {
+          setSearchEngine(e.value!)
+        }}>
+          <EngineValueSlot slot="value">
+            <MediumIcon src={searchEngine?.faviconUrl.url} />
+          </EngineValueSlot>
+          {filteredSearchEngines.map(s => <leo-option value={s.keyword} key={s.keyword}>
+            <Option>
+              <MediumIcon src={s.faviconUrl.url} />{s.name}
+            </Option>
+          </leo-option>)}
+          <CustomizeButton kind="plain-faint" size="small" onClick={() => {
           history.pushState(undefined, '', '?openSettings=Search')
 
           // For now, close the search box - the Settings dialog doesn't use a
@@ -79,9 +95,10 @@ export default function SearchBox() {
           Customize list
         </CustomizeButton>
       </EnginePicker>
-    </Flex>
-    <SearchIconContainer slot="right-icon">
-      <Icon name="search" />
-    </SearchIconContainer>
-  </SearchInput>
+      </Flex>
+      <SearchIconContainer slot="right-icon">
+        <Icon name="search" />
+      </SearchIconContainer>
+    </SearchInput>
+  </Container>
 }
