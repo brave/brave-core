@@ -189,7 +189,7 @@ struct PlaylistContentView: View {
         }
       }
     }
-    .task {
+    .task(priority: .medium) {
       // FIXME: Will have to adjust this in the future to handle end of TTS
       for await _ in playerModel.didPlayToEndStream {
         playNextItem()

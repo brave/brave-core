@@ -246,7 +246,7 @@ extension PlayerView {
       .buttonStyle(.playbackControl)
       .tint(Color(braveSystemName: .textPrimary))
       .backgroundStyle(Color.white.opacity(0.2))
-      .task {
+      .task(priority: .low) {
         self.currentTime = model.currentTime
         for await currentTime in model.currentTimeStream {
           self.currentTime = currentTime
