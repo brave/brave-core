@@ -46,6 +46,13 @@ struct LanguageMapping {
     LanguageMapping(source: "tr"),
     LanguageMapping(source: "ca"),
     LanguageMapping(source: "nl"),
+    LanguageMapping(source: "cs"),
+    LanguageMapping(source: "da"),
+    LanguageMapping(source: "el"),
+    LanguageMapping(source: "fi"),
+    LanguageMapping(source: "hr"),
+    LanguageMapping(source: "hu"),
+    LanguageMapping(source: "sk"),
   ]
 }
 
