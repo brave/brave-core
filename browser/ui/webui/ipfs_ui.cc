@@ -11,7 +11,6 @@
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ipfs/addresses_config.h"
-#include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
@@ -28,16 +27,16 @@
 namespace {
 
 std::string GetIPFSUpdaterVersion() {
-  component_updater::ComponentUpdateService* cus =
-      g_browser_process->component_updater();
-  if (!cus)
-    return std::string();
+  // component_updater::ComponentUpdateService* cus =
+  //     g_browser_process->component_updater();
+  // if (!cus)
+  //   return std::string();
 
-  for (const auto& component : cus->GetComponents()) {
-    if (component.id != ipfs::kIpfsClientComponentId)
-      continue;
-    return component.version.GetString();
-  }
+  // for (const auto& component : cus->GetComponents()) {
+  //   if (component.id != ipfs::kIpfsClientComponentId)
+  //     continue;
+  //   return component.version.GetString();
+  // }
   return std::string();
 }
 
@@ -109,9 +108,9 @@ void IPFSDOMHandler::RegisterMessages() {
 
 IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
-  auto* source = CreateAndAddWebUIDataSource(web_ui, name, kIpfsGenerated,
-                                             kIpfsGeneratedSize, IDR_IPFS_HTML);
-  source->AddString("componentVersion", ipfs::kIpfsClientComponentName);
+  // auto* source = CreateAndAddWebUIDataSource(web_ui, name, kIpfsGenerated,
+  //                                            kIpfsGeneratedSize, IDR_IPFS_HTML);
+  // source->AddString("componentVersion", ipfs::kIpfsClientComponentName);
   web_ui->AddMessageHandler(std::make_unique<IPFSDOMHandler>());
 }
 
@@ -212,28 +211,6 @@ void IPFSDOMHandler::OnIpfsLaunched(bool success, int64_t pid) {
 }
 
 void IPFSDOMHandler::OnInstallationEvent(ipfs::ComponentUpdaterEvents event) {
-  if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_DOWNLOADING) {
-    if (!g_browser_process->component_updater())
-      return;
-    auto* updater = g_browser_process->component_updater();
-    update_client::CrxUpdateItem item;
-    if (updater->GetComponentDetails(ipfs::kIpfsClientComponentId, &item)) {
-      if (item.downloaded_bytes > 0 && item.total_bytes > 0) {
-        base::Value::Dict value;
-        value.Set("total_bytes", static_cast<double>(item.total_bytes));
-        value.Set("downloaded_bytes",
-                  static_cast<double>(item.downloaded_bytes));
-        web_ui()->CallJavascriptFunctionUnsafe("ipfs.onInstallationProgress",
-                                               value);
-      }
-    }
-  } else if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_ERROR) {
-    base::Value::Dict value;
-    value.Set("installed", false);
-    value.Set("error",
-              l10n_util::GetStringUTF8(IDS_IPFS_NODE_INSTALLATION_ERROR));
-    web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus", value);
-  }
 }
 
 void IPFSDOMHandler::OnIpfsShutdown() {

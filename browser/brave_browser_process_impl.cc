@@ -37,6 +37,7 @@
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
@@ -70,11 +71,6 @@
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/brave_ipfs_client_updater.h"
-#include "brave/components/ipfs/ipfs_constants.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -485,21 +481,6 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
   return speedreader_rewriter_service_.get();
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
-
-#if BUILDFLAG(ENABLE_IPFS)
-ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
-  if (ipfs_client_updater_) {
-    return ipfs_client_updater_.get();
-  }
-
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-
-  ipfs_client_updater_ = ipfs::BraveIpfsClientUpdaterFactory(
-      brave_component_updater_delegate(), user_data_dir);
-  return ipfs_client_updater_.get();
-}
-#endif  // BUILDFLAG(ENABLE_IPFS)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 brave_vpn::BraveVPNConnectionManager*

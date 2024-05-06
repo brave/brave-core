@@ -9,8 +9,6 @@ static_library("ipfs") {
   sources = [
     "addresses_config.cc",
     "addresses_config.h",
-    "brave_ipfs_client_updater.cc",
-    "brave_ipfs_client_updater.h",
     "features.cc",
     "features.h",
     "ipfs_constants.h",

@@ -23,7 +23,6 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
-#include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -55,20 +54,17 @@ class PrefRegistrySimple;
 
 namespace ipfs {
 
-class BraveIpfsClientUpdater;
 class IpfsServiceDelegate;
 class IpfsServiceObserver;
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 class IpfsImportWorkerBase;
 class IpnsKeysManager;
 #endif
-class IpfsService : public KeyedService,
-                    public BraveIpfsClientUpdater::Observer {
+class IpfsService : public KeyedService {
  public:
   IpfsService(PrefService* prefs,
               scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
               BlobContextGetterFactoryPtr blob_context_getter_factory,
-              ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
               const base::FilePath& user_data_dir,
               version_info::Channel channel,
               std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover,
@@ -111,7 +107,6 @@ class IpfsService : public KeyedService,
   static void MigrateProfilePrefs(PrefService* pref_service);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   bool IsIPFSExecutableAvailable() const;
-  void RegisterIpfsClientUpdater();
   IPFSResolveMethodTypes GetIPFSResolveMethodType() const;
   base::FilePath GetIpfsExecutablePath() const;
   base::FilePath GetDataPath() const;
@@ -196,9 +191,6 @@ class IpfsService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest,
                            UpdaterRegistrationServiceNotLaunched);
   FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest, DNSResolversConfig);
-  // BraveIpfsClientUpdater::Observer
-  void OnExecutableReady(const base::FilePath& path) override;
-  void OnInstallationEvent(ComponentUpdaterEvents event) override;
 
   void OnIpfsCrashed();
   void OnIpfsLaunched(bool result, int64_t pid);
@@ -282,7 +274,6 @@ class IpfsService : public KeyedService,
   bool reentrancy_guard_ = false;
 
   base::FilePath user_data_dir_;
-  raw_ptr<BraveIpfsClientUpdater> ipfs_client_updater_ = nullptr;
   version_info::Channel channel_;
   std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resolver_;
   base::CallbackListSubscription ipfs_dns_resolver_subscription_;

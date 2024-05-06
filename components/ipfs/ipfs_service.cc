@@ -142,7 +142,6 @@ IpfsService::IpfsService(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     BlobContextGetterFactoryPtr blob_context_getter_factory,
-    ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
     const base::FilePath& user_data_dir,
     version_info::Channel channel,
     std::unique_ptr<ipfs::IpfsDnsResolver> ipfs_dns_resover,
@@ -153,7 +152,6 @@ IpfsService::IpfsService(
       blob_context_getter_factory_(std::move(blob_context_getter_factory)),
       server_endpoint_(GetAPIServer(channel)),
       user_data_dir_(user_data_dir),
-      ipfs_client_updater_(ipfs_client_updater),
       channel_(channel),
       ipfs_dns_resolver_(std::move(ipfs_dns_resover)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
@@ -166,12 +164,6 @@ IpfsService::IpfsService(
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
       GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory);
 
-  // Return early since g_brave_browser_process and ipfs_client_updater are not
-  // available in unit tests.
-  if (ipfs_client_updater_) {
-    ipfs_client_updater_->AddObserver(this);
-    OnExecutableReady(ipfs_client_updater_->GetExecutablePath());
-  }
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   DCHECK(blob_context_getter_factory_);
   ipns_keys_manager_ = std::make_unique<IpnsKeysManager>(
@@ -195,9 +187,6 @@ IpfsService::IpfsService(
 }
 
 IpfsService::~IpfsService() {
-  if (ipfs_client_updater_) {
-    ipfs_client_updater_->RemoveObserver(this);
-  }
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   if (observers_.HasObserver(ipns_keys_manager_.get())) {
     RemoveObserver(ipns_keys_manager_.get());
@@ -247,21 +236,6 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 
 base::FilePath IpfsService::GetIpfsExecutablePath() const {
   return prefs_->GetFilePath(kIPFSBinaryPath);
-}
-
-void IpfsService::OnInstallationEvent(ComponentUpdaterEvents event) {
-  for (auto& observer : observers_) {
-    observer.OnInstallationEvent(event);
-  }
-}
-
-void IpfsService::OnExecutableReady(const base::FilePath& path) {
-  if (path.empty())
-    return;
-
-  prefs_->SetFilePath(kIPFSBinaryPath, path);
-
-  LaunchIfNotRunning(path);
 }
 
 std::string IpfsService::GetStorageSize() {
@@ -370,7 +344,6 @@ void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
     VLOG(0) << "Failed to launch IPFS";
     Shutdown();
   }
-  RegisterIpfsClientUpdater();
   NotifyDaemonLaunched(result, pid);
 }
 
@@ -875,7 +848,6 @@ void IpfsService::LaunchDaemon(BoolCallback callback) {
   base::FilePath path(GetIpfsExecutablePath());
   if (path.empty()) {
     // Daemon will be launched later in OnExecutableReady.
-    RegisterIpfsClientUpdater();
   } else {
     LaunchIfNotRunning(path);
   }
@@ -918,12 +890,6 @@ void IpfsService::AddObserver(IpfsServiceObserver* observer) {
 
 void IpfsService::RemoveObserver(IpfsServiceObserver* observer) {
   observers_.RemoveObserver(observer);
-}
-
-void IpfsService::RegisterIpfsClientUpdater() {
-  if (ipfs_client_updater_) {
-    ipfs_client_updater_->Register();
-  }
 }
 
 int IpfsService::GetLastPeersRetryForTest() const {

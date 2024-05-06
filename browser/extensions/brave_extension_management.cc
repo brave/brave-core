@@ -32,7 +32,6 @@
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/user_prefs/user_prefs.h"
 #endif
@@ -121,12 +120,6 @@ void BraveExtensionManagement::Cleanup(content::BrowserContext* context) {
     OnTorDisabledChanged();
     OnTorPluggableTransportChanged();
   }
-
-#if BUILDFLAG(ENABLE_IPFS)
-  // Remove ipfs executable if it is disabled by GPO.
-  if (ipfs::IsIpfsDisabledByPolicy(user_prefs::UserPrefs::Get(context)))
-    g_brave_browser_process->ipfs_client_updater()->Cleanup();
-#endif
 }
 
 }  // namespace extensions

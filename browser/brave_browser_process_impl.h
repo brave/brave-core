@@ -81,10 +81,6 @@ class BraveTorClientUpdater;
 class BraveTorPluggableTransportUpdater;
 }  // namespace tor
 
-namespace ipfs {
-class BraveIpfsClientUpdater;
-}
-
 namespace speedreader {
 class SpeedreaderRewriterService;
 }
@@ -131,9 +127,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   tor::BraveTorClientUpdater* tor_client_updater() override;
   tor::BraveTorPluggableTransportUpdater* tor_pluggable_transport_updater()
       override;
-#endif
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
   p3a::P3AService* p3a_service() override;
   brave::BraveReferralsService* brave_referrals_service() override;
@@ -207,9 +200,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<tor::BraveTorClientUpdater> tor_client_updater_;
   std::unique_ptr<tor::BraveTorPluggableTransportUpdater>
       tor_pluggable_transport_updater_;
-#endif
-#if BUILDFLAG(ENABLE_IPFS)
-  std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
 #endif
   scoped_refptr<p3a::P3AService> p3a_service_;
   scoped_refptr<p3a::HistogramsBraveizer> histogram_braveizer_;

@@ -24,7 +24,6 @@ inline constexpr char kLocalNodeRetentionHistogramName[] =
 inline constexpr char kDaemonRunTimeHistogramName[] =
     "Brave.IPFS.DaemonRunTime";
 
-class BraveIpfsClientUpdater;
 class IpfsService;
 
 int GetIPFSDetectionPromptBucket(PrefService* prefs);
