@@ -934,8 +934,7 @@ extension BrowserViewController: WKNavigationDelegate {
       // Inject app's IAP receipt for Brave SKUs if necessary
       if !tab.isPrivate {
         Task { @MainActor in
-          await BraveSkusAccountLink.injectLocalStorage(webView: webView, product: .vpnMonthly)
-          await BraveSkusAccountLink.injectLocalStorage(webView: webView, product: .leoMonthly)
+          await BraveSkusAccountLink.injectLocalStorage(webView: webView)
         }
       }
 
