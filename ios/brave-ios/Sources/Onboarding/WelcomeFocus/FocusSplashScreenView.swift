@@ -32,10 +32,8 @@ struct FocusSplashScreenView: View {
       }
       .background(Color(braveSystemName: .pageBackground))
       .onAppear {
-        DispatchQueue.main.async {
-          withAnimation(.linear(duration: 1.25)) {
-            self.isShimmering = true
-          }
+        withAnimation(.linear(duration: 1.25)) {
+          isShimmering = true
         }
       }
     }

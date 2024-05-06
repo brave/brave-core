@@ -37,13 +37,13 @@ struct FocusSystemSettingsView: View {
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(Color(braveSystemName: .pageBackground))
-      .osAvailabilityModifiers { content in
-        if #available(iOS 16.0, *) {
-          content.toolbar(.hidden, for: .navigationBar)
-        } else {
-          content.navigationBarHidden(true)
-        }
-      }
+      //      .osAvailabilityModifiers { content in
+      //        if #available(iOS 16.0, *) {
+      //          content.toolbar(.hidden, for: .navigationBar)
+      //        } else {
+      //          content.navigationBarHidden(true)
+      //        }
+      //      }
     } else {
       VStack(spacing: 16) {
         settingsSystemContentView
@@ -51,13 +51,13 @@ struct FocusSystemSettingsView: View {
       }
       .padding(.bottom, 20)
       .background(Color(braveSystemName: .pageBackground))
-      .osAvailabilityModifiers { content in
-        if #available(iOS 16.0, *) {
-          content.toolbar(.hidden, for: .navigationBar)
-        } else {
-          content.navigationBarHidden(true)
-        }
-      }
+      //      .osAvailabilityModifiers { content in
+      //        if #available(iOS 16.0, *) {
+      //          content.toolbar(.hidden, for: .navigationBar)
+      //        } else {
+      //          content.navigationBarHidden(true)
+      //        }
+      //      }
     }
   }
 

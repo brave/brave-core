@@ -28,42 +28,32 @@ public struct FocusOnboardingView: View {
   }
 
   public var body: some View {
-    NavigationView {
-      VStack {
-        if isSplashViewPresented {
-          FocusSplashScreenView(namespace: namespace)
-        } else {
-          FocusStepsView(
-            namespace: namespace,
-            attributionManager: attributionManager,
-            p3aUtilities: p3aUtilities,
-            shouldDismiss: $shouldDismiss
-          )
-        }
-      }
-      .onAppear {
-        withAnimation(.easeInOut(duration: 0.75).delay(1.0)) {
-          isSplashViewPresented = false
-        }
-      }
-      .onChange(of: shouldDismiss) { shouldDismiss in
-        if shouldDismiss {
-          Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-          Preferences.AppState.shouldDeferPromotedPurchase.value = false
-          Preferences.FocusOnboarding.focusOnboardingFinished.value = true
-
-          dismiss()
-        }
-      }
-      .osAvailabilityModifiers { content in
-        if #available(iOS 16.0, *) {
-          content.toolbar(.hidden, for: .navigationBar)
-        } else {
-          content.navigationBarHidden(true)
-        }
+    VStack {
+      if isSplashViewPresented {
+        FocusSplashScreenView(namespace: namespace)
+      } else {
+        FocusStepsView(
+          namespace: namespace,
+          attributionManager: attributionManager,
+          p3aUtilities: p3aUtilities,
+          shouldDismiss: $shouldDismiss
+        )
       }
     }
-    .navigationViewStyle(StackNavigationViewStyle())
+    .onAppear {
+      withAnimation(.easeInOut(duration: 0.75).delay(1.0)) {
+        isSplashViewPresented = false
+      }
+    }
+    .onChange(of: shouldDismiss) { shouldDismiss in
+      if shouldDismiss {
+        Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+        Preferences.AppState.shouldDeferPromotedPurchase.value = false
+        Preferences.FocusOnboarding.focusOnboardingFinished.value = true
+
+        dismiss()
+      }
+    }
   }
 }
 

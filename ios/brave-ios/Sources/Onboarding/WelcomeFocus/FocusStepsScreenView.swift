@@ -67,15 +67,6 @@ struct FocusStepsView: View {
           .aspectRatio(contentMode: .fill)
           .opacity(0.20)
       }
-      .background {
-        NavigationLink("", isActive: $isP3AViewPresented) {
-          FocusP3AScreenView(
-            attributionManager: attributionManager,
-            p3aUtilities: p3aUtilities,
-            shouldDismiss: $shouldDismiss
-          )
-        }
-      }
     } else {
       VStack {
         stepsContentView
@@ -89,15 +80,6 @@ struct FocusStepsView: View {
       }
       .padding(.bottom, 20)
       .background(Color(braveSystemName: .pageBackground))
-      .background {
-        NavigationLink("", isActive: $isP3AViewPresented) {
-          FocusP3AScreenView(
-            attributionManager: attributionManager,
-            p3aUtilities: p3aUtilities,
-            shouldDismiss: $shouldDismiss
-          )
-        }
-      }
       .overlay(alignment: .topTrailing) {
         cancelButton
           .frame(width: 32, height: 32)
