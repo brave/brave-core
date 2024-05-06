@@ -222,7 +222,7 @@ TEST_F(SimulationServiceUnitTest, GetScanTransactionURL) {
             "transactions?language=en-US");
 
   url = simulation_service_->GetScanTransactionURL(
-      mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH, "en-US");
+      mojom::kBnbSmartChainMainnetChainId, mojom::CoinType::ETH, "en-US");
   EXPECT_EQ(url,
             "https://blowfish.wallet.brave.com/bnb/v0/mainnet/scan/"
             "transactions?language=en-US");
@@ -278,7 +278,7 @@ TEST_F(SimulationServiceUnitTest, GetScanMessageURL) {
             "message?language=en-US");
 
   url = simulation_service_->GetScanMessageURL(
-      mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH, "en-US");
+      mojom::kBnbSmartChainMainnetChainId, mojom::CoinType::ETH, "en-US");
   EXPECT_EQ(url,
             "https://blowfish.wallet.brave.com/bnb/v0/mainnet/scan/"
             "message?language=en-US");

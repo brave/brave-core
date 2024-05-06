@@ -3326,7 +3326,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
   EXPECT_CALL(callback, Run("ethaddr1", mojom::ProviderError::kSuccess, ""));
 
   auto token = mojom::BlockchainToken::New();
-  token->chain_id = mojom::kBinanceSmartChainMainnetChainId;
+  token->chain_id = mojom::kBnbSmartChainMainnetChainId;
   token->symbol = "USDT";
   token->coin = mojom::CoinType::ETH;
 

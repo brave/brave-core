@@ -911,7 +911,7 @@ TEST(BraveWalletUtilsUnitTest, GetKnownChain) {
 
   const base::flat_set<std::string> non_eip1559_networks = {
       brave_wallet::mojom::kLocalhostChainId,
-      brave_wallet::mojom::kBinanceSmartChainMainnetChainId,
+      brave_wallet::mojom::kBnbSmartChainMainnetChainId,
       brave_wallet::mojom::kAuroraMainnetChainId,
       brave_wallet::mojom::kNeonEVMMainnetChainId};
 
@@ -1074,8 +1074,8 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
       GetNetworkId(&prefs, mojom::CoinType::ETH, mojom::kPolygonMainnetChainId),
       mojom::kPolygonMainnetChainId);
   EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::ETH,
-                         mojom::kBinanceSmartChainMainnetChainId),
-            mojom::kBinanceSmartChainMainnetChainId);
+                         mojom::kBnbSmartChainMainnetChainId),
+            mojom::kBnbSmartChainMainnetChainId);
 
   EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::SOL, mojom::kSolanaMainnet),
             "mainnet");

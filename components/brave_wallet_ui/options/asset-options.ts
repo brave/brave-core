@@ -35,7 +35,7 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
   if (chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID) return AuroraIcon
   if (chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID) return OpIcon
   if (chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) return MATICIconUrl
-  if (chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID)
+  if (chainId === BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID)
     return BNBIconUrl
   if (chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) return AVAXIconUrl
   if (chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID) return FtmIcon

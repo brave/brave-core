@@ -57,7 +57,7 @@ bool IsNetworkSupportedByZeroEx(const std::string& chain_id) {
   return (chain_id == mojom::kGoerliChainId ||
           chain_id == mojom::kMainnetChainId ||
           chain_id == mojom::kPolygonMainnetChainId ||
-          chain_id == mojom::kBinanceSmartChainMainnetChainId ||
+          chain_id == mojom::kBnbSmartChainMainnetChainId ||
           chain_id == mojom::kAvalancheMainnetChainId ||
           chain_id == mojom::kFantomMainnetChainId ||
           chain_id == mojom::kCeloMainnetChainId ||
@@ -73,7 +73,7 @@ bool IsNetworkSupportedByJupiter(const std::string& chain_id) {
 bool IsNetworkSupportedByLiFi(const std::string& chain_id) {
   return (chain_id == mojom::kMainnetChainId ||
           chain_id == mojom::kOptimismMainnetChainId ||
-          chain_id == mojom::kBinanceSmartChainMainnetChainId ||
+          chain_id == mojom::kBnbSmartChainMainnetChainId ||
           chain_id == mojom::kPolygonZKEVMChainId ||
           chain_id == mojom::kAvalancheMainnetChainId ||
           chain_id == mojom::kGnosisChainId ||
@@ -259,8 +259,7 @@ std::string GetBaseSwapURL(const std::string& chain_id) {
     return brave_wallet::kZeroExEthereumBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
     return brave_wallet::kZeroExPolygonBaseAPIURL;
-  } else if (chain_id ==
-             brave_wallet::mojom::kBinanceSmartChainMainnetChainId) {
+  } else if (chain_id == brave_wallet::mojom::kBnbSmartChainMainnetChainId) {
     return brave_wallet::kZeroExBinanceSmartChainBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kAvalancheMainnetChainId) {
     return brave_wallet::kZeroExAvalancheBaseAPIURL;

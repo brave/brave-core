@@ -76,7 +76,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
     BraveWallet.PolygonMainnetChainId: ["matic"],
     BraveWallet.FantomMainnetChainId: ["ftm"],
     BraveWallet.CeloMainnetChainId: ["celo"],
-    BraveWallet.BinanceSmartChainMainnetChainId: ["bnb"],
+    BraveWallet.BnbSmartChainMainnetChainId: ["bnb"],
     BraveWallet.SolanaMainnet: ["sol"],
     BraveWallet.FilecoinMainnet: ["fil"],
     BraveWallet.AvalancheMainnetChainId: ["avax", "avaxc"],
@@ -315,7 +315,7 @@ extension BraveWallet.BlockchainToken {
         rampNetworkPrefix = ""
       case BraveWallet.AvalancheMainnetChainId.lowercased():
         rampNetworkPrefix = "AVAXC"
-      case BraveWallet.BinanceSmartChainMainnetChainId.lowercased():
+      case BraveWallet.BnbSmartChainMainnetChainId.lowercased():
         rampNetworkPrefix = "BSC"
       case BraveWallet.PolygonMainnetChainId.lowercased():
         rampNetworkPrefix = "MATIC"

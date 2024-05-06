@@ -768,7 +768,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionUnexpectedReturn) {
 TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
   const std::map<std::string, std::string> non_rfqt_chain_ids = {
       {mojom::kGoerliChainId, "goerli.api.0x.wallet.brave.com"},
-      {mojom::kBinanceSmartChainMainnetChainId, "bsc.api.0x.wallet.brave.com"},
+      {mojom::kBnbSmartChainMainnetChainId, "bsc.api.0x.wallet.brave.com"},
       {mojom::kAvalancheMainnetChainId, "avalanche.api.0x.wallet.brave.com"},
       {mojom::kFantomMainnetChainId, "fantom.api.0x.wallet.brave.com"},
       {mojom::kCeloMainnetChainId, "celo.api.0x.wallet.brave.com"},
@@ -875,7 +875,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
 TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
   const std::map<std::string, std::string> non_rfqt_chain_ids = {
       {mojom::kGoerliChainId, "goerli.api.0x.wallet.brave.com"},
-      {mojom::kBinanceSmartChainMainnetChainId, "bsc.api.0x.wallet.brave.com"},
+      {mojom::kBnbSmartChainMainnetChainId, "bsc.api.0x.wallet.brave.com"},
       {mojom::kAvalancheMainnetChainId, "avalanche.api.0x.wallet.brave.com"},
       {mojom::kFantomMainnetChainId, "fantom.api.0x.wallet.brave.com"},
       {mojom::kCeloMainnetChainId, "celo.api.0x.wallet.brave.com"},
@@ -979,7 +979,7 @@ TEST_F(SwapServiceUnitTest, IsSwapSupported) {
   const std::vector<std::string> supported_chain_ids({
       // ZeroEx
       mojom::kMainnetChainId, mojom::kGoerliChainId,
-      mojom::kPolygonMainnetChainId, mojom::kBinanceSmartChainMainnetChainId,
+      mojom::kPolygonMainnetChainId, mojom::kBnbSmartChainMainnetChainId,
       mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
       mojom::kCeloMainnetChainId, mojom::kOptimismMainnetChainId,
       mojom::kArbitrumMainnetChainId, mojom::kBaseMainnetChainId,

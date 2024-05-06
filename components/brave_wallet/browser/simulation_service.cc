@@ -83,7 +83,7 @@ std::string GetRelativeScanPath(const std::string& chain_id,
              chain_id == mojom::kPolygonMainnetChainId) {
     return "polygon/v0/mainnet/scan";
   } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kBinanceSmartChainMainnetChainId) {
+             chain_id == mojom::kBnbSmartChainMainnetChainId) {
     return "bnb/v0/mainnet/scan";
   } else if (coin == mojom::CoinType::ETH &&
              chain_id == mojom::kArbitrumMainnetChainId) {
@@ -106,7 +106,7 @@ bool HasTransactionScanSupportInternal(const std::string& chain_id,
          (coin == mojom::CoinType::ETH &&
           chain_id == mojom::kPolygonMainnetChainId) ||
          (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kBinanceSmartChainMainnetChainId) ||
+          chain_id == mojom::kBnbSmartChainMainnetChainId) ||
          (coin == mojom::CoinType::ETH &&
           chain_id == mojom::kArbitrumMainnetChainId) ||
          (coin == mojom::CoinType::ETH &&
@@ -120,7 +120,7 @@ bool HasMessageScanSupportInternal(const std::string& chain_id,
          (coin == mojom::CoinType::ETH &&
           chain_id == mojom::kPolygonMainnetChainId) ||
          (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kBinanceSmartChainMainnetChainId) ||
+          chain_id == mojom::kBnbSmartChainMainnetChainId) ||
          (coin == mojom::CoinType::ETH &&
           chain_id == mojom::kArbitrumMainnetChainId);
 }

@@ -655,7 +655,7 @@ std::optional<DappListMap> ParseDappLists(const std::string& json) {
       GetTokenListKey(mojom::CoinType::ETH, mojom::kPolygonMainnetChainId),
       dapp_lists_from_component->polygon, &dapp_lists);
   AddDappListToMap(GetTokenListKey(mojom::CoinType::ETH,
-                                   mojom::kBinanceSmartChainMainnetChainId),
+                                   mojom::kBnbSmartChainMainnetChainId),
                    dapp_lists_from_component->binance_smart_chain, &dapp_lists);
   AddDappListToMap(
       GetTokenListKey(mojom::CoinType::ETH, mojom::kOptimismMainnetChainId),

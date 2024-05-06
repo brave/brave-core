@@ -129,8 +129,7 @@ public class AssetUtils {
                     Map.entry(BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID, List.of("ftm")),
                     Map.entry(BraveWalletConstants.CELO_MAINNET_CHAIN_ID, List.of("celo")),
                     Map.entry(
-                            BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
-                            List.of("bnb")),
+                            BraveWalletConstants.BNB_SMART_CHAIN_MAINNET_CHAIN_ID, List.of("bnb")),
                     Map.entry(BraveWalletConstants.SOLANA_MAINNET, List.of("sol")),
                     Map.entry(BraveWalletConstants.FILECOIN_MAINNET, List.of("fil")),
                     Map.entry(
