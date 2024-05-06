@@ -68,7 +68,6 @@ export const DappDetails = () => {
     return <Redirect to={WalletRoutes.Web3} />
   }
 
-
   return (
     <Column
       fullHeight
@@ -168,7 +167,7 @@ export const DappDetails = () => {
         <ExternalLink
           href={dapp.website}
           text={getLocale('braveWalletVisitDapp').replace('$1', dapp.name)}
-          fullWidth
+          width='100%'
         />
       ) : null}
     </Column>

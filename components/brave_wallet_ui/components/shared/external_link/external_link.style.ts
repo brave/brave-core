@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import Button from '@brave/leo/react/button'
 
-export const LinkButton = styled(Button)<{ fullWidth?: boolean }>`
+export const LinkButton = styled(Button)<{ width?: string }>`
   --leo-button-radius: 12px;
-  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
+  width: ${({ width }) => width ?? 'auto'};
 `

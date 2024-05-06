@@ -14,7 +14,7 @@ import { openTab } from '../../../utils/routes-utils'
 import { LinkButton } from './external_link.style'
 
 interface Props extends ButtonProps<undefined, boolean> {
-  fullWidth?: boolean
+  width?: string
   children?: React.ReactNode
 }
 
