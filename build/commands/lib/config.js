@@ -596,9 +596,6 @@ Config.prototype.buildArgs = function () {
     args.brave_safebrowsing_api_key = this.braveAndroidSafeBrowsingApiKey
     args.safe_browsing_mode = 2
 
-    // Feed is not used in Brave
-    args.enable_feed_v2 = false
-
     // TODO(fixme)
     args.enable_tor = false
 
