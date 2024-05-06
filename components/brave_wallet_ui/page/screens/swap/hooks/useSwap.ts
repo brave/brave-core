@@ -548,9 +548,9 @@ export const useSwap = () => {
       fromAccount.accountId.coin !== toToken.coin ||
       toCoin !== fromToken.coin
     ) {
-      history.push(WalletRoutes.Swap)
+      history.replace(WalletRoutes.Swap)
     } else {
-      history.push(
+      history.replace(
         makeSwapRoute({
           fromToken: toToken,
           fromAccount,
@@ -584,7 +584,7 @@ export const useSwap = () => {
         return
       }
       setEditingFromOrToAmount('from')
-      history.push(
+      history.replace(
         makeSwapRoute({
           fromToken,
           fromAccount,
@@ -632,7 +632,7 @@ export const useSwap = () => {
       // and the incoming fromToken are on the same network.
       // If not we clear the toToken from params.
       if (toToken && toToken.chainId === token.chainId) {
-        history.push(
+        history.replace(
           makeSwapRoute({
             fromToken: token,
             fromAccount: account,
@@ -642,7 +642,9 @@ export const useSwap = () => {
           })
         )
       } else {
-        history.push(makeSwapRoute({ fromToken: token, fromAccount: account }))
+        history.replace(
+          makeSwapRoute({ fromToken: token, fromAccount: account })
+        )
       }
       setSelectingFromOrTo(undefined)
       setFromAmount('')
