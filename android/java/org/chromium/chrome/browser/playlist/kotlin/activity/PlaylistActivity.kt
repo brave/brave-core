@@ -469,6 +469,8 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
 
             PlaylistOptionsEnum.RENAME_PLAYLIST -> {
                 val newActivityIntent = Intent(this@PlaylistActivity, NewPlaylistActivity::class.java);
+                newActivityIntent.putExtra(ConstantUtils.PLAYLIST_OPTION, ConstantUtils.RENAME_OPTION)
+                newActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, mPlaylistId);
                 startActivity(newActivityIntent);
                 // val newPlaylistFragment = NewPlaylistFragment.newInstance(
                 //     PlaylistOptionsEnum.RENAME_PLAYLIST, mPlaylistModel
@@ -542,10 +544,10 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
         mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
     }
 
-    override fun onItemUpdated(playlistItem:PlaylistItem) {
-        Log.e(TAG, "onItemUpdated")
-        mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
-    }
+    // override fun onItemUpdated(playlistItem:PlaylistItem) {
+    //     Log.e(TAG, "onItemUpdated")
+    //     mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
+    // }
 
     override fun onPlaylistUpdated(playlist:Playlist) {
         Log.e(TAG, "onPlaylistUpdated")

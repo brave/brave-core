@@ -132,7 +132,8 @@ class MoveOrCopyToPlaylistBottomSheet :
                     "",
                     mMoveOrCopyModel.playlistItems
                 )
-            val newActivityIntent = Intent(requireActivity(), NewPlaylistActivity::class.java);
+            val newActivityIntent = Intent(requireActivity(), NewPlaylistActivity::class.java)
+            newActivityIntent.putExtra(ConstantUtils.SHOULD_MOVE_OR_COPY, true)
             startActivity(newActivityIntent);
             // val newPlaylistFragment = NewPlaylistFragment.newInstance(
             //     PlaylistOptionsEnum.NEW_PLAYLIST,
