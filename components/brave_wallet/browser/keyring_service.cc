@@ -1113,8 +1113,7 @@ bool KeyringService::CanResumeWallet(const std::string& mnemonic,
 bool KeyringService::RestoreWalletSync(const std::string& mnemonic,
                                        const std::string& password,
                                        bool is_legacy_eth_seed_format) {
-  MaybeMigratePBKDF2Iterations(password);
-  MaybeMigrateToWalletMnemonic(password);
+  MaybeRunPasswordMigrations(password);
 
   if (CanResumeWallet(mnemonic, password, is_legacy_eth_seed_format)) {
     Unlock(password, base::DoNothing());
@@ -1807,8 +1806,7 @@ void KeyringService::Lock() {
 
 void KeyringService::Unlock(const std::string& password,
                             KeyringService::UnlockCallback callback) {
-  MaybeMigratePBKDF2Iterations(password);
-  MaybeMigrateToWalletMnemonic(password);
+  MaybeRunPasswordMigrations(password);
 
   auto encryptor = CreateEncryptor(password, GetSaltFromPrefs(profile_prefs_));
   if (!encryptor) {
@@ -1865,6 +1863,11 @@ void KeyringService::Reset(bool notify_observer) {
   }
 }
 
+void KeyringService::MaybeRunPasswordMigrations(const std::string& password) {
+  MaybeMigratePBKDF2Iterations(password);
+  MaybeMigrateToWalletMnemonic(password);
+}
+
 void KeyringService::MaybeMigratePBKDF2Iterations(const std::string& password) {
   if (profile_prefs_->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated)) {
     return;
@@ -1877,25 +1880,28 @@ void KeyringService::MaybeMigratePBKDF2Iterations(const std::string& password) {
   for (auto keyring_id :
        {mojom::kDefaultKeyringId, mojom::kFilecoinKeyringId,
         mojom::kFilecoinTestnetKeyringId, mojom::kSolanaKeyringId}) {
-    auto legacy_encrypted_mnemonic = GetPrefInBytesForKeyringDeprecated(
+    auto deprecated_encrypted_mnemonic = GetPrefInBytesForKeyringDeprecated(
         *profile_prefs_, kEncryptedMnemonicDeprecated, keyring_id);
-    auto legacy_nonce = GetPrefInBytesForKeyringDeprecated(
+    auto deprecated_nonce = GetPrefInBytesForKeyringDeprecated(
         *profile_prefs_, kPasswordEncryptorNonceDeprecated, keyring_id);
-    auto legacy_salt = GetPrefInBytesForKeyringDeprecated(
+    auto deprecated_salt = GetPrefInBytesForKeyringDeprecated(
         *profile_prefs_, kPasswordEncryptorSaltDeprecated, keyring_id);
 
-    if (!legacy_encrypted_mnemonic || !legacy_nonce || !legacy_salt) {
+    if (!deprecated_encrypted_mnemonic || !deprecated_nonce ||
+        !deprecated_salt) {
       continue;
     }
 
-    auto legacy_encryptor = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-        password, *legacy_salt, kPbkdf2IterationsLegacy, kPbkdf2KeySize);
-    if (!legacy_encryptor) {
+    auto deprecated_encryptor =
+        PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+            password, *deprecated_salt, kPbkdf2IterationsLegacy,
+            kPbkdf2KeySize);
+    if (!deprecated_encryptor) {
       continue;
     }
 
-    auto mnemonic =
-        legacy_encryptor->Decrypt(*legacy_encrypted_mnemonic, *legacy_nonce);
+    auto mnemonic = deprecated_encryptor->Decrypt(
+        *deprecated_encrypted_mnemonic, *deprecated_nonce);
     if (!mnemonic) {
       continue;
     }
@@ -1924,31 +1930,31 @@ void KeyringService::MaybeMigratePBKDF2Iterations(const std::string& password) {
                                  true);
     }
 
-    const base::Value::List* imported_accounts_legacy =
+    const base::Value::List* deprecated_imported_accounts =
         GetPrefForKeyringList(*profile_prefs_, kImportedAccounts, keyring_id);
-    if (!imported_accounts_legacy) {
+    if (!deprecated_imported_accounts) {
       continue;
     }
-    base::Value::List imported_accounts = imported_accounts_legacy->Clone();
+    base::Value::List imported_accounts = deprecated_imported_accounts->Clone();
     for (auto& imported_account : imported_accounts) {
       if (!imported_account.is_dict()) {
         continue;
       }
 
-      const std::string* legacy_encrypted_private_key =
+      const std::string* deprecated_encrypted_private_key =
           imported_account.GetDict().FindString(kEncryptedPrivateKey);
-      if (!legacy_encrypted_private_key) {
+      if (!deprecated_encrypted_private_key) {
         continue;
       }
 
-      auto legacy_private_key_decoded =
-          base::Base64Decode(*legacy_encrypted_private_key);
-      if (!legacy_private_key_decoded) {
+      auto deprecated_private_key_decoded =
+          base::Base64Decode(*deprecated_encrypted_private_key);
+      if (!deprecated_private_key_decoded) {
         continue;
       }
 
-      auto private_key = legacy_encryptor->Decrypt(
-          base::make_span(*legacy_private_key_decoded), *legacy_nonce);
+      auto private_key = deprecated_encryptor->Decrypt(
+          base::make_span(*deprecated_private_key_decoded), *deprecated_nonce);
       if (!private_key) {
         continue;
       }
@@ -1963,32 +1969,32 @@ void KeyringService::MaybeMigratePBKDF2Iterations(const std::string& password) {
 }
 
 void KeyringService::MaybeMigrateToWalletMnemonic(const std::string& password) {
-  auto legacy_eth_encrypted_mnemonic = GetPrefInBytesForKeyringDeprecated(
+  auto deprecated_eth_encrypted_mnemonic = GetPrefInBytesForKeyringDeprecated(
       *profile_prefs_, kEncryptedMnemonicDeprecated,
       mojom::KeyringId::kDefault);
-  if (!legacy_eth_encrypted_mnemonic) {
+  if (!deprecated_eth_encrypted_mnemonic) {
     return;
   }
 
-  auto legacy_eth_nonce = GetPrefInBytesForKeyringDeprecated(
+  auto deprecated_eth_nonce = GetPrefInBytesForKeyringDeprecated(
       *profile_prefs_, kPasswordEncryptorNonceDeprecated,
       mojom::KeyringId::kDefault);
-  auto legacy_eth_salt = GetPrefInBytesForKeyringDeprecated(
+  auto deprecated_eth_salt = GetPrefInBytesForKeyringDeprecated(
       *profile_prefs_, kPasswordEncryptorSaltDeprecated,
       mojom::KeyringId::kDefault);
-  if (!legacy_eth_nonce || !legacy_eth_salt) {
+  if (!deprecated_eth_nonce || !deprecated_eth_salt) {
     return;
   }
 
-  auto legacy_eth_encryptor =
+  auto deprecated_eth_encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          password, *legacy_eth_salt, kPbkdf2Iterations, kPbkdf2KeySize);
-  if (!legacy_eth_encryptor) {
+          password, *deprecated_eth_salt, kPbkdf2Iterations, kPbkdf2KeySize);
+  if (!deprecated_eth_encryptor) {
     return;
   }
 
-  auto mnemonic = legacy_eth_encryptor->Decrypt(*legacy_eth_encrypted_mnemonic,
-                                                *legacy_eth_nonce);
+  auto mnemonic = deprecated_eth_encryptor->Decrypt(
+      *deprecated_eth_encrypted_mnemonic, *deprecated_eth_nonce);
   if (!mnemonic) {
     return;
   }
@@ -2025,11 +2031,11 @@ void KeyringService::MaybeMigrateToWalletMnemonic(const std::string& password) {
         mojom::KeyringId::kFilecoinTestnet, mojom::KeyringId::kSolana,
         mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoin84Testnet,
         mojom::KeyringId::kZCashMainnet, mojom::KeyringId::kZCashTestnet}) {
-    auto legacy_encrypted_mnemonic = GetPrefInBytesForKeyringDeprecated(
+    auto deprecated_encrypted_mnemonic = GetPrefInBytesForKeyringDeprecated(
         *profile_prefs_, kEncryptedMnemonicDeprecated, keyring_id);
-    auto legacy_nonce = GetPrefInBytesForKeyringDeprecated(
+    auto deprecated_nonce = GetPrefInBytesForKeyringDeprecated(
         *profile_prefs_, kPasswordEncryptorNonceDeprecated, keyring_id);
-    auto legacy_salt = GetPrefInBytesForKeyringDeprecated(
+    auto deprecated_salt = GetPrefInBytesForKeyringDeprecated(
         *profile_prefs_, kPasswordEncryptorSaltDeprecated, keyring_id);
 
     SetPrefForKeyring(profile_prefs_, kEncryptedMnemonicDeprecated,
@@ -2045,41 +2051,43 @@ void KeyringService::MaybeMigrateToWalletMnemonic(const std::string& password) {
     SetPrefForKeyring(profile_prefs_, kBackupCompleteDeprecated, base::Value(),
                       keyring_id);
 
-    if (!legacy_encrypted_mnemonic || !legacy_nonce || !legacy_salt) {
+    if (!deprecated_encrypted_mnemonic || !deprecated_nonce ||
+        !deprecated_salt) {
       continue;
     }
 
-    auto legacy_encryptor = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-        password, *legacy_salt, kPbkdf2Iterations, kPbkdf2KeySize);
-    if (!legacy_encryptor) {
+    auto deprecated_encryptor =
+        PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+            password, *deprecated_salt, kPbkdf2Iterations, kPbkdf2KeySize);
+    if (!deprecated_encryptor) {
       continue;
     }
 
-    const base::Value::List* imported_accounts_legacy =
+    const base::Value::List* deprecated_imported_accounts =
         GetPrefForKeyringList(*profile_prefs_, kImportedAccounts, keyring_id);
-    if (!imported_accounts_legacy) {
+    if (!deprecated_imported_accounts) {
       continue;
     }
-    base::Value::List imported_accounts = imported_accounts_legacy->Clone();
+    base::Value::List imported_accounts = deprecated_imported_accounts->Clone();
     for (auto& imported_account : imported_accounts) {
       if (!imported_account.is_dict()) {
         continue;
       }
 
-      const std::string* legacy_encrypted_private_key =
+      const std::string* deprecated_encrypted_private_key =
           imported_account.GetDict().FindString(kEncryptedPrivateKey);
-      if (!legacy_encrypted_private_key) {
+      if (!deprecated_encrypted_private_key) {
         continue;
       }
 
-      auto legacy_private_key_decoded =
-          base::Base64Decode(*legacy_encrypted_private_key);
-      if (!legacy_private_key_decoded) {
+      auto deprecated_private_key_decoded =
+          base::Base64Decode(*deprecated_encrypted_private_key);
+      if (!deprecated_private_key_decoded) {
         continue;
       }
 
-      auto private_key = legacy_encryptor->Decrypt(
-          base::make_span(*legacy_private_key_decoded), *legacy_nonce);
+      auto private_key = deprecated_encryptor->Decrypt(
+          base::make_span(*deprecated_private_key_decoded), *deprecated_nonce);
       if (!private_key) {
         continue;
       }
@@ -2385,8 +2393,7 @@ std::optional<std::string> KeyringService::GetWalletMnemonicInternal(
 
 void KeyringService::ValidatePassword(const std::string& password,
                                       ValidatePasswordCallback callback) {
-  MaybeMigratePBKDF2Iterations(password);
-  MaybeMigrateToWalletMnemonic(password);
+  MaybeRunPasswordMigrations(password);
 
   std::move(callback).Run(ValidatePasswordInternal(password));
 }

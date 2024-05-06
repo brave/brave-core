@@ -63,10 +63,13 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   static base::RepeatingCallback<std::vector<uint8_t>()>&
   GetCreateSaltCallbackForTesting();
 
+  // Gets a `key`ed value for a given keyring from prefs.
   static const base::Value* GetPrefForKeyring(const PrefService& profile_prefs,
                                               const std::string& key,
                                               mojom::KeyringId keyring_id);
-  // For testing only.
+
+  // Sets a `key`ed `value` for a given keyring to prefs. Clears `key` if
+  // `value` is none.
   static void SetPrefForKeyring(PrefService* profile_prefs,
                                 const std::string& key,
                                 base::Value value,
@@ -348,6 +351,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void LoadAllAccountsFromPrefs();
   void LoadAccountsFromPrefs(mojom::KeyringId keyring_id);
 
+  void MaybeRunPasswordMigrations(const std::string& password);
   void MaybeMigratePBKDF2Iterations(const std::string& password);
   void MaybeMigrateToWalletMnemonic(const std::string& password);
 

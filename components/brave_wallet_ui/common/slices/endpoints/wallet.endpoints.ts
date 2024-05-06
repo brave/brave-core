@@ -132,9 +132,7 @@ export const walletEndpoints = ({
 
           const result = await keyringService.createWallet(arg.password)
           if (!result.mnemonic) {
-            return {
-              error: 'Unable to create wallet'
-            }
+            throw new Error('Unable to create wallet')
           }
 
           dispatch(

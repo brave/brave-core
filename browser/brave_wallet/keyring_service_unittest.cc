@@ -511,6 +511,11 @@ TEST_F(KeyringServiceUnitTest, SetPrefForKeyring) {
       keyrings_pref.FindStringByDottedPath("default.pref1");
   ASSERT_NE(value, nullptr);
   EXPECT_EQ(*value, "123");
+  KeyringService::SetPrefForKeyring(GetPrefs(), "pref1", base::Value(),
+                                    mojom::kDefaultKeyringId);
+  ASSERT_EQ(nullptr, GetPrefs()
+                         ->GetDict(kBraveWalletKeyrings)
+                         .FindStringByDottedPath("default.pref1"));
 
   EXPECT_EQ(keyrings_pref.FindByDottedPath("default.pref2"), nullptr);
   EXPECT_EQ(keyrings_pref.FindByDottedPath("keyring2.pref1"), nullptr);
