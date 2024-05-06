@@ -171,15 +171,18 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         mRvPlaylist.visibility = View.GONE
 
         mAspectRatioFrameLayout.setAspectRatio(16f / 9f)
-        // mPlayerView.setOnTouchListener { v, event ->
-        //     when (event?.action) {
-        //         MotionEvent.ACTION_DOWN -> {
-        //             showHoveringControls()
-        //         }
-        //     }
+        mPlayerView.setOnTouchListener { v, event ->
+            when (event?.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    showHoveringControls()
+                }
+                MotionEvent.ACTION_UP -> {
+                    v.performClick()
+                }
+            }
 
-        //     v?.onTouchEvent(event) ?: true
-        // }
+            v?.onTouchEvent(event) ?: true
+        }
         mFullscreenImg.setOnClickListener {
             if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 // requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -278,10 +281,16 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         super.onDestroy();
     }
 
+    override fun onPreCreate() {
+        initializeController()
+        super.onPreCreate()
+
+    }
+
     override fun onStartWithNative() {
         Log.e(TAG, "onStartWithNative")
         super.onStartWithNative()
-        initializeController()
+        // initializeController()
     }
 
     override fun onStopWithNative() {
@@ -447,6 +456,7 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
             currentPlayer.shuffleModeEnabled = mIsShuffleOn
             currentPlayer.repeatMode = mRepeatMode
             currentPlayer.setPlaybackSpeed(mPlaybackSpeed)
+            currentPlayer.seekTo(currentPlayer.currentPosition)
         }
     }
 
