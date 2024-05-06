@@ -12,6 +12,8 @@ import { omniboxController, search, useSearchContext } from './SearchContext'
 import { braveSearchHost } from './config'
 
 const Container = styled.div`
+  border-top: 1px solid ${color.divider.subtle};
+
   background: rgba(255,255,255,0.1);
 
   color: ${color.white};

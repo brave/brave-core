@@ -8,10 +8,13 @@ import SearchDialog from './SearchDialog';
 import { useNewTabPref } from '../../hooks/usePref';
 import { SearchContext, useSearchContext } from './SearchContext';
 import styled from 'styled-components';
+import { radius } from '@brave/leo/tokens/css';
 
 const PlaceholderContainer = styled.div`
   position: relative;
   overflow: hidden;
+
+  border-radius: ${radius.xs};
 `
 
 function Swapper() {

@@ -40,7 +40,7 @@ const IconContainer = styled.div`
   width: 32px;
   height: 32px;
 
-  background: ${color.container.highlight};
+  background: rgba(255,255,255,0.25);
 
   display: flex;
   align-items: center;

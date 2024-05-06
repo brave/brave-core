@@ -15,6 +15,7 @@ import { braveSearchHost } from './config';
 import Button from '@brave/leo/react/button';
 
 const SearchInput = styled(Input)`
+  --leo-control-focus-effect: none;
   --leo-control-padding: 6px;
   --leo-control-color: rgba(255, 255, 255, 0.1);
 
