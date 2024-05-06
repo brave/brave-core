@@ -65,10 +65,10 @@ class CustomNetworkModel: ObservableObject, Identifiable {
   @Published var networkId = NetworkInputItem(input: "") {
     didSet {
       if networkId.input != oldValue.input {
-        if let intValue = Int(networkId.input), intValue > 0 {
-          networkId.error = nil
-        } else {
+        if networkId.input.isEmpty {
           networkId.error = Strings.Wallet.customNetworkChainIdErrMsg
+        } else {
+          networkId.error = nil
         }
       }
     }
@@ -302,7 +302,6 @@ struct CustomNetworkDetailsView: View {
           item: $model.networkId
         )
         .keyboardType(.numberPad)
-        .disabled(model.mode.isEditMode)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
@@ -503,9 +502,16 @@ struct CustomNetworkDetailsView: View {
   private func addCustomNetwork() {
     guard validateAllFields() else { return }
 
-    var chainIdInHex = ""
-    if let idValue = Int(model.networkId.input) {
-      chainIdInHex = "0x\(String(format: "%02x", idValue))"
+    var chainIdInHex = model.networkId.input
+    if model.networkId.input.hasPrefix("0x") || model.networkId.input.hasPrefix("0X") {
+      let hexDecimalString = model.networkId.input.removingHexPrefix
+      if let decimalString = UInt8(hexDecimalString, radix: 16) {
+        chainIdInHex = "0x\(String(format: "%x", decimalString))"
+      }
+    } else {
+      if let idValue = Int(model.networkId.input) {
+        chainIdInHex = "0x\(String(format: "%x", idValue))"
+      }
     }
     // Check if input chain id already existed for non-edit mode
     if !model.mode.isEditMode,
