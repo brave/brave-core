@@ -24,16 +24,12 @@ struct FocusSystemSettingsView: View {
   var body: some View {
     if shouldUseExtendedDesign {
       VStack(spacing: 40) {
-        VStack {
-          settingsSystemContentView
-            .background(colorScheme == .dark ? .black : .white)
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
-        .frame(maxWidth: 616, maxHeight: 895)
-        .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
-        .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
-
-        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
+        settingsSystemContentView
+          .background(colorScheme == .dark ? .black : .white)
+          .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
+          .frame(maxWidth: 616, maxHeight: 895)
+          .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
+          .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(Color(braveSystemName: .pageBackground))
@@ -45,12 +41,9 @@ struct FocusSystemSettingsView: View {
       //        }
       //      }
     } else {
-      VStack(spacing: 16) {
-        settingsSystemContentView
-        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
-      }
-      .padding(.bottom, 20)
-      .background(Color(braveSystemName: .pageBackground))
+      settingsSystemContentView
+        .padding(.bottom, 20)
+        .background(Color(braveSystemName: .pageBackground))
       //      .osAvailabilityModifiers { content in
       //        if #available(iOS 16.0, *) {
       //          content.toolbar(.hidden, for: .navigationBar)
@@ -80,7 +73,7 @@ struct FocusSystemSettingsView: View {
       .fixedSize(horizontal: false, vertical: true)
       .padding(.bottom, 24)
 
-      Spacer()
+//      Spacer()
 
       LottieAnimationView(
         name: colorScheme == .dark ? "browser-default-dark" : "browser-default-light",
@@ -97,50 +90,50 @@ struct FocusSystemSettingsView: View {
       )
       .padding(.bottom, 24)
 
-      Spacer()
-
-      VStack(spacing: 24) {
-        Button(
-          action: {
-            if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
-              UIApplication.shared.open(settingsUrl)
-            }
-
-            Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
-            shouldDismiss = true
-          },
-          label: {
-            Text(
-              "\(Strings.FocusOnboarding.systemSettingsButtonTitle) \(Image(systemName: "arrow.right"))"
-            )
-            .font(.body.weight(.semibold))
-            .foregroundColor(Color(.white))
-            .dynamicTypeSize(dynamicTypeRange)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color(braveSystemName: .buttonBackground))
-          }
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
-        .overlay(
-          RoundedRectangle(cornerRadius: 12.0, style: .continuous).strokeBorder(
-            Color.black.opacity(0.2)
-          )
-        )
-
-        Button(
-          action: {
-            Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
-            shouldDismiss = true
-          },
-          label: {
-            Text(Strings.FocusOnboarding.laterActionButtonTitle)
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(braveSystemName: .textSecondary))
-              .dynamicTypeSize(dynamicTypeRange)
-          }
-        )
-      }
+//      Spacer()
+//
+//      VStack(spacing: 24) {
+//        Button(
+//          action: {
+//            if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+//              UIApplication.shared.open(settingsUrl)
+//            }
+//
+//            Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
+//            shouldDismiss = true
+//          },
+//          label: {
+//            Text(
+//              "\(Strings.FocusOnboarding.systemSettingsButtonTitle) \(Image(systemName: "arrow.right"))"
+//            )
+//            .font(.body.weight(.semibold))
+//            .foregroundColor(Color(.white))
+//            .dynamicTypeSize(dynamicTypeRange)
+//            .padding()
+//            .frame(maxWidth: .infinity)
+//            .background(Color(braveSystemName: .buttonBackground))
+//          }
+//        )
+//        .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
+//        .overlay(
+//          RoundedRectangle(cornerRadius: 12.0, style: .continuous).strokeBorder(
+//            Color.black.opacity(0.2)
+//          )
+//        )
+//
+//        Button(
+//          action: {
+//            Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
+//            shouldDismiss = true
+//          },
+//          label: {
+//            Text(Strings.FocusOnboarding.laterActionButtonTitle)
+//              .font(.subheadline.weight(.semibold))
+//              .foregroundColor(Color(braveSystemName: .textSecondary))
+//              .dynamicTypeSize(dynamicTypeRange)
+//          }
+//        )
+//      }
     }
     .padding(.vertical, shouldUseExtendedDesign ? 48 : 24)
     .padding(.horizontal, shouldUseExtendedDesign ? 75 : 20)

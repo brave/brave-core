@@ -40,22 +40,21 @@ struct FocusP3AScreenView: View {
 
   var body: some View {
     if shouldUseExtendedDesign {
-      VStack(spacing: 40) {
+      VStack {
         consentp3aContentView
           .background(colorScheme == .dark ? .black : .white)
           .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
           .frame(maxWidth: 616, maxHeight: 895)
           .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
           .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
-        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(Color(braveSystemName: .pageBackground))
-      .background {
-        NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
-        }
-      }
+//      .background {
+//        NavigationLink("", isActive: $isSystemSettingsViewPresented) {
+//          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
+//        }
+//      }
       //      .osAvailabilityModifiers { content in
       //        if #available(iOS 16.0, *) {
       //          content.toolbar(.hidden, for: .navigationBar)
@@ -66,15 +65,14 @@ struct FocusP3AScreenView: View {
     } else {
       VStack {
         consentp3aContentView
-        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
           .padding(.bottom, 20)
       }
       .background(Color(braveSystemName: .pageBackground))
-      .background {
-        NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
-        }
-      }
+//      .background {
+//        NavigationLink("", isActive: $isSystemSettingsViewPresented) {
+//          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
+//        }
+//      }
       //      .osAvailabilityModifiers { content in
       //        if #available(iOS 16.0, *) {
       //          content.toolbar(.hidden, for: .navigationBar)
@@ -167,30 +165,30 @@ struct FocusP3AScreenView: View {
       }
       .padding(.horizontal, shouldUseExtendedDesign ? 72 : 12)
 
-      Spacer()
-
-      Button(
-        action: {
-          handleAdCampaignLookupAndDAUPing(isP3AEnabled: p3aUtilities?.isP3AEnabled ?? false)
-
-          isSystemSettingsViewPresented = true
-        },
-        label: {
-          Text(Strings.FocusOnboarding.continueButtonTitle)
-            .font(.body.weight(.semibold))
-            .foregroundColor(Color(.white))
-            .dynamicTypeSize(dynamicTypeRange)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color(braveSystemName: .buttonBackground))
-        }
-      )
-      .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
-      .overlay(
-        RoundedRectangle(cornerRadius: 12.0, style: .continuous).strokeBorder(
-          Color.black.opacity(0.2)
-        )
-      )
+//      Spacer()
+//
+//      Button(
+//        action: {
+//          handleAdCampaignLookupAndDAUPing(isP3AEnabled: p3aUtilities?.isP3AEnabled ?? false)
+//
+//          isSystemSettingsViewPresented = true
+//        },
+//        label: {
+//          Text(Strings.FocusOnboarding.continueButtonTitle)
+//            .font(.body.weight(.semibold))
+//            .foregroundColor(Color(.white))
+//            .dynamicTypeSize(dynamicTypeRange)
+//            .padding()
+//            .frame(maxWidth: .infinity)
+//            .background(Color(braveSystemName: .buttonBackground))
+//        }
+//      )
+//      .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
+//      .overlay(
+//        RoundedRectangle(cornerRadius: 12.0, style: .continuous).strokeBorder(
+//          Color.black.opacity(0.2)
+//        )
+//      )
     }
     .padding(.vertical, shouldUseExtendedDesign ? 64 : 20)
     .padding(.horizontal, shouldUseExtendedDesign ? 60 : 20)
