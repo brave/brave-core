@@ -55,6 +55,8 @@ struct PlaylistContentView: View {
   }
 
   private func playNextItem() {
+    playerModel.pause()
+
     let repeatMode = playerModel.repeatMode
 
     if repeatMode == .one {
@@ -74,7 +76,6 @@ struct PlaylistContentView: View {
         selectedItemID = itemQueue.first
       }
       // Nothing to play if not repeating
-      playerModel.pause()
       return
     }
 
