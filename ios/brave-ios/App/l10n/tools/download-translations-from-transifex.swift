@@ -53,6 +53,7 @@ struct LanguageMapping {
     LanguageMapping(source: "hr"),
     LanguageMapping(source: "hu"),
     LanguageMapping(source: "sk"),
+    LanguageMapping(source: "ro"),
   ]
 }
 
