@@ -78,7 +78,8 @@ actor FilterListCustomURLDownloader: ObservableObject {
 
     await AdBlockGroupsManager.shared.update(
       fileInfo: fileInfo,
-      engineType: .aggressive
+      engineType: .aggressive,
+      compileDelayed: true
     )
   }
 

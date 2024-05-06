@@ -74,7 +74,22 @@ public actor FilterListResourceDownloader {
     guard !registeredFilterLists else { return }
     self.registeredFilterLists = true
 
-    for filterList in await FilterListStorage.shared.filterLists {
+    // First prioritize default filter list
+    for filterList in await FilterListStorage.shared.filterLists
+    where filterList.isEnabled && filterList.engineType == .standard {
+      register(filterList: filterList)
+    }
+
+    // Next prioritize the additional lists
+    try? await Task.sleep(seconds: 5)
+    for filterList in await FilterListStorage.shared.filterLists
+    where filterList.isEnabled && filterList.engineType == .aggressive {
+      register(filterList: filterList)
+    }
+
+    // Next get the remaining filter lists after a short delay
+    try? await Task.sleep(seconds: 5)
+    for filterList in await FilterListStorage.shared.filterLists where !filterList.isEnabled {
       register(filterList: filterList)
     }
   }
@@ -94,9 +109,14 @@ public actor FilterListResourceDownloader {
       return
     }
 
+    ContentBlockerManager.log.debug(
+      "Updated filter list: \(fileInfo.filterListInfo.debugDescription)"
+    )
+
     await AdBlockGroupsManager.shared.update(
       fileInfo: fileInfo,
-      engineType: engineType
+      engineType: engineType,
+      compileDelayed: true
     )
   }
 
