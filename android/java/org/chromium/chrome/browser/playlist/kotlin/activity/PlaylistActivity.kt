@@ -360,19 +360,26 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
                 subItemMediaList.add(mediaItem)
             }
         }
+        val selectedPlaylistItem = mPlaylist.items[position]
+        browser.clearMediaItems()
+        browser.addMediaItems(subItemMediaList)
+        browser.seekTo(position, selectedPlaylistItem.lastPlayedPosition.toLong())
+        browser.shuffleModeEnabled = isShuffle
+        browser.prepare()
+        browser.play()
         // mScope.launch {
             // val selectedPlaylistItem = mPlaylistModel.items[position]
             // val lastPlayedPositionModel =
             //     mPlaylistRepository.getLastPlayedPositionByPlaylistItemId(selectedPlaylistItem.id)
 
             // activity?.runOnUiThread {
-                browser.clearMediaItems()
-                browser.addMediaItems(subItemMediaList)
-                // browser.seekTo(position, lastPlayedPositionModel?.lastPlayedPosition ?: 0)
-                browser.seekTo(position, 0)
-                browser.shuffleModeEnabled = isShuffle
-                browser.prepare()
-                browser.play()
+                // browser.clearMediaItems()
+                // browser.addMediaItems(subItemMediaList)
+                // // browser.seekTo(position, lastPlayedPositionModel?.lastPlayedPosition ?: 0)
+                // browser.seekTo(position, selectedPlaylistItem.lastPlayedPosition.toLong())
+                // browser.shuffleModeEnabled = isShuffle
+                // browser.prepare()
+                // browser.play()
         //     }
         // }
         // val playlistPlayerFragment = PlaylistPlayerFragment.newInstance(mPlaylistModel)
