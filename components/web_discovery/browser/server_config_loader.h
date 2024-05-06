@@ -9,11 +9,9 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/timer/wall_clock_timer.h"
 #include "net/base/backoff_entry.h"
 #include "url/gurl.h"
@@ -25,7 +23,7 @@ class SimpleURLLoader;
 
 namespace web_discovery {
 
-using KeyMap = base::flat_map<base::Time, std::vector<uint8_t>>;
+using KeyMap = base::flat_map<std::string, std::string>;
 
 struct ServerConfig {
   ServerConfig();
@@ -37,7 +35,8 @@ struct ServerConfig {
 
 class ServerConfigLoader {
  public:
-  using ConfigCallback = base::RepeatingCallback<void(const ServerConfig&)>;
+  using ConfigCallback =
+      base::RepeatingCallback<void(std::unique_ptr<ServerConfig>)>;
 
   explicit ServerConfigLoader(
       network::SharedURLLoaderFactory* shared_url_loader_factory,
