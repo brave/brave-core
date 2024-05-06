@@ -68,7 +68,6 @@ export const DappDetails = () => {
     return <Redirect to={WalletRoutes.Web3} />
   }
 
-  console.log(dapp.website)
 
   return (
     <Column
