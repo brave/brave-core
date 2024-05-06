@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Flex from '$web-common/Flex';
-import { spacing } from '@brave/leo/tokens/css';
+import { spacing } from '@brave/leo/tokens/css/variables';
 import * as React from 'react';
 import styled from 'styled-components';
 import NewsButton from '../NewsButton';

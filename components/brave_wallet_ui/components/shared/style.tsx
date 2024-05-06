@@ -8,7 +8,7 @@
 import { FC } from 'react'
 import styled, { css, CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 

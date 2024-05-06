@@ -8,7 +8,7 @@ import styled, { css } from 'styled-components'
 
 import Icon from '@brave/leo/react/icon'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
-import { color, spacing } from '@brave/leo/tokens/css'
+import { color, spacing } from '@brave/leo/tokens/css/variables'
 
 interface MenuItemProps {
   name: string

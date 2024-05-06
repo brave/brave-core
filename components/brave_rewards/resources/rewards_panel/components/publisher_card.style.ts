@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import * as mixins from '../../shared/lib/css_mixins'
 
 export const root = styled.div`

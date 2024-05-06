@@ -16,7 +16,7 @@ import frecencySelectedDark from './assets/frecency-selected-dark.png'
 import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
 
 import CheckedCircle from './assets/checked-circle.svg'
-import { color, effect, font, gradient, spacing } from '@brave/leo/tokens/css'
+import { color, effect, font, gradient, spacing } from '@brave/leo/tokens/css/variables'
 
 // Reverse decisions to have the controls define their margin. This helps
 // fill the gap before we remove all margins from these types of controls.

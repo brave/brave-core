@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 
-import { color, effect } from '@brave/leo/tokens/css'
+import { color, effect } from '@brave/leo/tokens/css/variables'
 
 import { playerVariables } from '../constants/style'
 

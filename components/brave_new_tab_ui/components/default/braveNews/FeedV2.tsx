@@ -5,7 +5,7 @@
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
-import { radius, spacing } from '@brave/leo/tokens/css'
+import { radius, spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 import Feed from '../../../../brave_news/browser/resources/Feed'

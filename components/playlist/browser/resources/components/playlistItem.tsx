@@ -7,7 +7,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { useSelector } from 'react-redux'
 
-import { color, font, spacing } from '@brave/leo/tokens/css'
+import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 import DefaultThumbnailIcon from '../assets/playlist-thumbnail-icon.svg'

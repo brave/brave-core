@@ -6,7 +6,7 @@ import Flex from '$web-common/Flex';
 import Dropdown from '@brave/leo/react/dropdown';
 import Icon from '@brave/leo/react/icon';
 import Input from '@brave/leo/react/input';
-import { color, radius, spacing } from '@brave/leo/tokens/css';
+import { color, radius, spacing } from '@brave/leo/tokens/css/variables';
 import * as React from 'react';
 import styled from 'styled-components';
 import { MediumIcon } from './SearchEngineIcon';

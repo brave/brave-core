@@ -5,7 +5,7 @@
 
 import { getLocale } from '$web-common/locale';
 import Icon from '@brave/leo/react/icon';
-import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css';
+import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables';
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { NEWS_FEED_CLASS } from './Feed';

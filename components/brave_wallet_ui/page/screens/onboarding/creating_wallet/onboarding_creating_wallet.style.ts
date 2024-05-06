@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import ProgressRing from '@brave/leo/react/progressRing'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
 import { Text } from '../../../../components/shared/style'

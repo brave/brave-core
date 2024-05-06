@@ -12,7 +12,7 @@ import { commandsCache } from '../commands'
 import { stringToKeys } from '../utils/accelerator'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import { color, spacing } from '@brave/leo/tokens/css'
+import { color, spacing } from '@brave/leo/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
 
 const Grid = styled.div`

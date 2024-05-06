@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory, useLocation } from 'react-router'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // utils
 import { getLocale } from '../../../../../common/locale'

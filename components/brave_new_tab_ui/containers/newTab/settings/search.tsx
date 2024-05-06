@@ -11,7 +11,7 @@ import Button from '@brave/leo/react/button'
 import Checkbox from '@brave/leo/react/checkbox'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
-import { color, font, radius, spacing } from '@brave/leo/tokens/css'
+import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 import usePromise from '../../../../common/usePromise'
 import {

@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import Alert from '@brave/leo/react/alert'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const Wrapper = styled.span`
   display: inline-flex;

@@ -8,7 +8,7 @@ import Input from '@brave/leo/react/input'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const ErrorTextRow = styled.div<{
   hasError: boolean

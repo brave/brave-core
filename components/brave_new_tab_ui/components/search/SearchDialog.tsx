@@ -6,7 +6,7 @@ import * as React from 'react';
 import styled, { keyframes } from 'styled-components'
 import SearchBox, { Backdrop } from './SearchBox';
 import SearchResults from './SearchResults';
-import { color, radius, spacing } from '@brave/leo/tokens/css';
+import { color, radius, spacing } from '@brave/leo/tokens/css/variables';
 import { createPortal } from 'react-dom';
 
 interface Props {

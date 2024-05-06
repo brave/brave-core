@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import { WalletButton } from '../../shared/style'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
 

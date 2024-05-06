@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { HardwareVendor } from '../../../common/api/hardware_keyrings'
 import Checkbox from '@brave/leo/react/checkbox'
 

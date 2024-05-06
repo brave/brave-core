@@ -8,7 +8,7 @@ import SearchDialog from './SearchDialog';
 import { useNewTabPref } from '../../hooks/usePref';
 import { SearchContext, useSearchContext } from './SearchContext';
 import styled from 'styled-components';
-import { radius } from '@brave/leo/tokens/css';
+import { radius } from '@brave/leo/tokens/css/variables';
 
 const PlaceholderContainer = styled.div`
   position: relative;

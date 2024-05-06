@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import Button from '@brave/leo/react/button'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // styles
 import { Column } from '../../../components/shared/style'

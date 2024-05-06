@@ -24,7 +24,7 @@ import { WelcomeAction } from '../components/welcome_action/welcome_action'
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // styles
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { Row, VerticalSpace } from '../../../../components/shared/style'
 import {
   BraveIcon,

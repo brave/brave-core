@@ -7,7 +7,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { color } from '@brave/leo/tokens/css'
+import { color } from '@brave/leo/tokens/css/variables'
 
 // magics
 import {
