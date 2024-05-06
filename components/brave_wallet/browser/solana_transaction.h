@@ -111,6 +111,7 @@ class SolanaTransaction {
   std::optional<SolanaTransaction::SendOptions> send_options() const {
     return send_options_;
   }
+  const std::string& wired_tx() const { return wired_tx_; }
 
   void set_to_wallet_address(const std::string& to_wallet_address) {
     to_wallet_address_ = to_wallet_address;
@@ -127,12 +128,19 @@ class SolanaTransaction {
   void set_sign_tx_param(mojom::SolanaSignTransactionParamPtr sign_tx_param) {
     sign_tx_param_ = std::move(sign_tx_param);
   }
+  void set_wired_tx(const std::string& wired_tx) { wired_tx_ = wired_tx; }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTransactionUnitTest, GetBase64EncodedMessage);
   SolanaMessage message_;
   // Value will be assigned when FromSignedTransactionBytes is called.
   std::vector<uint8_t> raw_signatures_;
+
+  // Base64 encoded serialized transaction to be sent to the Solana network,
+  // value will be assigned before we call
+  // JsonRPCService::SendSolanaTransaction and reused when we rebroadcast the
+  // transaction.
+  std::string wired_tx_;
 
   // Passed by dApp when calling signAndSendTransaction, signTransaction,
   // signAllTransactions provider APIs, which includes serialized message and

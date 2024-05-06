@@ -248,11 +248,11 @@ TEST_F(SolanaBlockTrackerUnitTest, GetLatestBlockhashWithoutStartTracker) {
                            mojom::SolanaProviderError::kSuccess, "");
     EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
-    // Cached value would expire after kBlockTrackerDefaultTimeInSeconds.
+    // Cached value would expire after kSolanaBlockTrackerTimeInSeconds.
     response_blockhash_ = "hash3";
     response_last_valid_block_height_ = 3490;
     task_environment_.FastForwardBy(
-        base::Seconds(kBlockTrackerDefaultTimeInSeconds));
+        base::Seconds(kSolanaBlockTrackerTimeInSeconds));
     EXPECT_CALL(observer, OnLatestBlockhashUpdated(chain_id, "hash3", 3490u))
         .Times(1);
     TestGetLatestBlockhash(FROM_HERE, chain_id, true, "hash3", 3490,
@@ -278,7 +278,7 @@ TEST_F(SolanaBlockTrackerUnitTest, GetLatestBlockhashWithoutStartTracker) {
     TestGetLatestBlockhash(FROM_HERE, chain_id, true, "hash3", 3490,
                            mojom::SolanaProviderError::kSuccess, "");
     task_environment_.FastForwardBy(
-        base::Seconds(kBlockTrackerDefaultTimeInSeconds));
+        base::Seconds(kSolanaBlockTrackerTimeInSeconds));
     TestGetLatestBlockhash(FROM_HERE, chain_id, false, "", 0,
                            mojom::SolanaProviderError::kInternalError,
                            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
