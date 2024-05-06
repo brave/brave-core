@@ -15,10 +15,10 @@ bool IsSystemLocationSettingEnabled() {
     return false;
   }
 
-  CLLocationManager* manager = [[CLLocationManager alloc] init];
   if (@available(macOS 11.0, *)) {
-    auto status = [manager authorizationStatus];
-    if (status == kCLAuthorizationStatusAuthorized) {
+    CLLocationManager* manager = [[CLLocationManager alloc] init];
+    if ([manager authorizationStatus] ==
+        kCLAuthorizationStatusAuthorizedAlways) {
       return true;
     }
   }
