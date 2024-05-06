@@ -1,62 +1,90 @@
-"0Lu6sT" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"0Lu6sT" = "Nije moguće otvoriti ${websiteURL} u novoj kartici.";
 
-"1QT5y6" = "Open a website in a new Tab";
+/* (No Comment) */
+"1n1yx4" = "Nije moguće otvoriti ${websiteURL} u novoj kartici.";
 
-"1n1yx4" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"1QT5y6" = "Otvaranje mrežnog mjesta u novoj kartici";
 
-"3oC6Qm" = "Open a Website in New Tab";
+/* (No Comment) */
+"3oC6Qm" = "Otvaranje mrežnog mjesta u novoj kartici";
 
-"4HScaO" = "Website URL";
+/* (No Comment) */
+"4HScaO" = "URL mrežnog mjesta";
 
-"9iPSKS" = "Open a Website from Bookmarks";
+/* (No Comment) */
+"9iPSKS" = "Otvaranje mrežnog mjesta iz knjižnih oznaka";
 
-"Gn4uX0" = "Website URL";
+/* (No Comment) */
+"azhMra" = "Otvaranje mrežnog mjesta ${websiteURL} u novoj kartici";
 
-"HN8elO" = "Open History Website";
+/* (No Comment) */
+"c9NKFJ" = "Nije moguće otvoriti ${websiteURL} u novoj kartici.";
 
-"LHHK1N" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"cSYAYC" = "Ovim se otvara ${websiteURL} iz povijesti.";
 
-"Lr38ve" = "${websiteURL}";
+/* (No Comment) */
+"cvU2lS" = "Otvaranje mrežnog mjesta iz povijesti";
 
-"MISOeA" = "Open from History";
+/* (No Comment) */
+"dk8p9b" = "URL mrežnog mjesta";
 
-"Paq749" = "Website URL";
+/* (No Comment) */
+"Gn4uX0" = "URL mrežnog mjesta";
 
-"UmKnv3" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"HN8elO" = "Otvaranje mrežnog mjesta povijesti";
 
-"VgH3NH" = "Open Bookmark Website";
-
-"Wh3wb1" = "Open Website";
-
-"WiB0aJ" = "Website URL";
-
-"Xx8bbW" = "Website URL";
-
-"YCxX7a" = "${websiteURL}";
-
-"ZgJKfY" = "This will open ${websiteURL} from Bookmarks.";
-
-"azhMra" = "Open ${websiteURL}in a New Tab";
-
-"c9NKFJ" = "Can't Open ${websiteURL} in a new tab.";
-
-"cSYAYC" = "This will open ${websiteURL} from History.";
-
-"cvU2lS" = "Open a Website from History";
-
-"dk8p9b" = "Website URL";
-
+/* (No Comment) */
 "iLL70C" = "${websiteURL}";
 
-"p3NuX2" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"LHHK1N" = "Ovim se otvara ${websiteURL} u novoj kartici.";
 
-"pvi3Ug" = "This will open ${websiteURL} from Bookmarks.";
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
-"t7aARA" = "Can't Open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"MISOeA" = "Otvaranje iz povijesti";
 
-"uT0Oi7" = "This will open ${websiteURL} in a new tab.";
+/* (No Comment) */
+"p3NuX2" = "Nije moguće otvoriti ${websiteURL} u novoj kartici.";
 
-"wZqW4o" = "This will open ${websiteURL} from History.";
+/* (No Comment) */
+"Paq749" = "URL mrežnog mjesta";
 
-"ycaNZf" = "Open from Bookmarks";
+/* (No Comment) */
+"t7aARA" = "Nije moguće otvoriti ${websiteURL} u novoj kartici.";
+
+/* (No Comment) */
+"UmKnv3" = "Nije moguće otvoriti ${websiteURL} u novoj kartici.";
+
+/* (No Comment) */
+"uT0Oi7" = "Ovim se otvara ${websiteURL} u novoj kartici.";
+
+/* (No Comment) */
+"VgH3NH" = "Otvaranje mrežnog mjesta knjižne oznake";
+
+/* (No Comment) */
+"Wh3wb1" = "Otvaranje mrežnog mjesta";
+
+/* (No Comment) */
+"WiB0aJ" = "URL mrežnog mjesta";
+
+/* (No Comment) */
+"wZqW4o" = "Ovim se otvara ${websiteURL} iz povijesti.";
+
+/* (No Comment) */
+"Xx8bbW" = "URL mrežnog mjesta";
+
+/* (No Comment) */
+"ycaNZf" = "Otvaranje iz knjižnih oznaka";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
+
+/* (No Comment) */
+"ZgJKfY" = "Ovim se otvara ${websiteURL} iz knjižnih oznaka.";
 
