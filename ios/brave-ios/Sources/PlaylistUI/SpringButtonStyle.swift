@@ -18,7 +18,7 @@ public struct SpringButtonStyle: ButtonStyle {
       .background {
         if isPressed {
           RoundedRectangle(cornerRadius: 8, style: .continuous)
-            .fill(.quaternary)
+            .fill(.background)
             // May want to reconsider this later and just add 8pt padding to button itself
             .padding(-8)
             .transition(

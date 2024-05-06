@@ -10,21 +10,25 @@ import SwiftUI
 
 @available(iOS 16.0, *)
 struct PlaylistSidebarList: View {
-  @Environment(\.openTabURL) private var openTabURL
-
-  @FetchRequest private var items: FetchedResults<PlaylistItem>
+  var folders: [PlaylistFolder]
+  var selectedFolderID: PlaylistFolder.ID
   @Binding var selectedItemID: PlaylistItem.ID?
   var isPlaying: Bool
 
+  @Environment(\.openTabURL) private var openTabURL
+  @FetchRequest private var items: FetchedResults<PlaylistItem>
   private typealias PlaylistItemUUID = String
   @State private var downloadStates: [PlaylistItemUUID: PlaylistDownloadManager.DownloadState] = [:]
   @State private var downloadProgress: [PlaylistItemUUID: Double] = [:]
 
   init(
+    folders: [PlaylistFolder],
     folderID: PlaylistFolder.ID,
     selectedItemID: Binding<PlaylistItem.ID?>,
     isPlaying: Bool
   ) {
+    self.folders = folders
+    self.selectedFolderID = folderID
     self._items = FetchRequest<PlaylistItem>(
       sortDescriptors: [
         .init(keyPath: \PlaylistItem.order, ascending: true),
@@ -114,6 +118,24 @@ struct PlaylistSidebarList: View {
                 Label("Share", braveSystemImage: "leo.share.macos")
               }
               Divider()
+            }
+            if folders.count > 1 {
+              Picker(
+                selection: Binding(
+                  get: { selectedFolderID },
+                  set: {
+                    PlaylistItem.moveItems(items: [item.objectID], to: $0)
+                  }
+                )
+              ) {
+                ForEach(folders, id: \.objectID) { folder in
+                  Label(folder.title ?? "", braveSystemImage: "leo.product.playlist")
+                    .tag(folder.id)
+                }
+              } label: {
+                Label("Move…", braveSystemImage: "leo.folder.exchange")
+              }
+              .pickerStyle(.menu)
             }
             Button(role: .destructive) {
               PlaylistManager.shared.delete(item: .init(item: item))
@@ -303,6 +325,6 @@ struct PlaylistSidebarContentUnavailableView: View {
 @available(iOS 16.0, *)
 #Preview {
   // FIXME: Set up CoreData mock for Previews
-  PlaylistSidebarList(folderID: "", selectedItemID: .constant(nil), isPlaying: false)
+  PlaylistSidebarList(folders: [], folderID: "", selectedItemID: .constant(nil), isPlaying: false)
 }
 #endif

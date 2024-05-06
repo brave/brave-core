@@ -25,6 +25,7 @@ struct PlaylistContentView: View {
   @State private var selectedDetent: PlaylistSheetDetent = .small
   @State private var isNewPlaylistAlertPresented: Bool = false
   @State private var newPlaylistName: String = ""
+  @State private var isPopulatingNewPlaylist: Bool = false
 
   private var selectedFolder: PlaylistFolder? {
     folders.first(where: { $0.id == selectedFolderID })
@@ -121,6 +122,7 @@ struct PlaylistContentView: View {
   public var body: some View {
     PlaylistSplitView(selectedDetent: $selectedDetent) {
       PlaylistSidebarList(
+        folders: Array(folders),
         folderID: selectedFolderID,
         selectedItemID: Binding(
           get: {
@@ -216,21 +218,19 @@ struct PlaylistContentView: View {
       }
       .keyboardShortcut(.cancelAction)
       Button {
-        if !newPlaylistName.isEmpty {
+        defer { newPlaylistName = "" }
+        if newPlaylistName.isEmpty {
           // See comment below about .disabled modifier
           return
         }
         PlaylistFolder.addFolder(title: newPlaylistName) { uuid in
-          if let newFolder = PlaylistFolder.getFolder(uuid: uuid) {
-            selectedFolderID = newFolder.id
+          selectedFolderID = uuid
+          if let defaultFolderItems = PlaylistFolder.getFolder(
+            uuid: PlaylistFolder.savedFolderUUID
+          )?.playlistItems, !defaultFolderItems.isEmpty {
+            isPopulatingNewPlaylist = true
           }
         }
-        if let defaultFolderItems = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID)?
-          .playlistItems, !defaultFolderItems.isEmpty
-        {
-          // FIXME: Display move default items sheet
-        }
-        newPlaylistName = ""
       } label: {
         Text("Create")
       }
@@ -240,6 +240,12 @@ struct PlaylistContentView: View {
       // - On iOS 17 (tested to 17.4), the button shows up but tapping it does not execute the
       //   action even when the button is enabled.
       // .disabled(newPlaylistName.isEmpty)
+    }
+    .sheet(isPresented: $isPopulatingNewPlaylist) {
+      PopulateNewPlaylistView(destinationFolder: selectedFolderID)
+        .presentationDetents([.medium, .large])
+        .environment(\.colorScheme, .dark)
+        .preferredColorScheme(.dark)
     }
     .onChange(of: selectedItemID) { newValue in
       guard let id = newValue, let item = PlaylistItem.getItem(uuid: id) else {

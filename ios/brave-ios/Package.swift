@@ -396,7 +396,7 @@ var package = Package(
     .target(
       name: "PlaylistUI",
       dependencies: [
-        "Favicon", "Data", "DesignSystem", "Playlist", "SDWebImage", "SnapKit",
+        "Favicon", "Data", "DesignSystem", "Playlist", "SDWebImage", "SnapKit", "Strings",
         .product(name: "Algorithms", package: "swift-algorithms"),
       ]
     ),
