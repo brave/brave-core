@@ -223,12 +223,10 @@ class AccountsStore: ObservableObject, WalletObserverStore {
           tokens: tokens
         )
         let totalBalanceFiat =
-          currencyFormatter.string(
-            from: NSNumber(
-              value: totalBalanceFiat(
-                for: account,
-                tokens: tokens
-              )
+          currencyFormatter.formatAsFiat(
+            totalBalanceFiat(
+              for: account,
+              tokens: tokens
             )
           ) ?? ""
         return AccountDetails(

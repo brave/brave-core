@@ -143,7 +143,7 @@ public struct AssetViewModel: Identifiable, Equatable {
     case .none, .network:
       balance = totalBalance
     }
-    return currencyFormatter.string(from: NSNumber(value: (Double(price) ?? 0) * balance)) ?? ""
+    return currencyFormatter.formatAsFiat((Double(price) ?? 0) * balance) ?? ""
   }
 
   /// Sort by the fiat/value of the asset (price x balance), otherwise by balance when price is unavailable.
@@ -631,7 +631,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
           return nil
         }
         .reduce(0.0, +)
-      balance = currencyFormatter.string(from: NSNumber(value: currentBalance)) ?? "–"
+      balance = currencyFormatter.formatAsFiat(currentBalance) ?? "–"
       // Compute historical balances based on historical prices and current balances
       let assetsWithHistory = allAssets.filter { !$0.history.isEmpty }  // [[AssetTimePrice]]
       let minCount = assetsWithHistory.map(\.history.count).min() ?? 0  // Shortest array count
@@ -645,7 +645,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         return .init(
           date: assetsWithHistory.map { $0.history[index].date }.max() ?? .init(),
           price: value,
-          formattedPrice: currencyFormatter.string(from: NSNumber(value: value)) ?? "0.00"
+          formattedPrice: currencyFormatter.formatAsFiat(value) ?? "0.00"
         )
       }
 
@@ -660,7 +660,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
           priceDifference: String(
             format: "%@%@",
             isBalanceUp ? "+" : "",  // include plus if balance increased
-            currencyFormatter.string(from: NSNumber(value: priceDifference)) ?? "\(priceDifference)"
+            currencyFormatter.formatAsFiat(priceDifference) ?? "\(priceDifference)"
           ),
           percentageChange: String(
             format: "%@%.2f%%",

@@ -36,7 +36,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   @Published private(set) var isInitialState: Bool = true
   @Published private(set) var isLoadingPrice: Bool = false
   @Published private(set) var isLoadingChart: Bool = false
-  @Published private(set) var price: String = "$0.0000"
+  @Published private(set) var price: Double = 0
   @Published private(set) var priceDelta: String = "0.00%"
   @Published private(set) var priceIsDown: Bool = false
   @Published private(set) var priceHistory: [BraveWallet.AssetTimePrice] = []
@@ -71,8 +71,6 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       .compactMap { Double($0.balance) }
       .reduce(0, +)
   }
-
-  private(set) var assetPriceValue: Double = 0.0
 
   private let assetRatioService: BraveWalletAssetRatioService
   private let keyringService: BraveWalletKeyringService
@@ -236,8 +234,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         }),
           let value = Double(assetPrice.price)
         {
-          self.assetPriceValue = value
-          self.price = self.currencyFormatter.string(from: NSNumber(value: value)) ?? ""
+          self.price = value
           if let deltaValue = Double(assetPrice.assetTimeframeChange) {
             self.priceIsDown = deltaValue < 0
             self.priceDelta =
@@ -245,8 +242,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           }
           for index in 0..<updatedAccounts.count {
             updatedAccounts[index].fiatBalance =
-              self.currencyFormatter.string(
-                from: NSNumber(value: updatedAccounts[index].decimalBalance * self.assetPriceValue)
+              self.currencyFormatter.formatAsFiat(
+                updatedAccounts[index].decimalBalance * self.price
               ) ?? ""
           }
         }
@@ -325,8 +322,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         )
       case .coinMarket(let coinMarket):
         // comes from Market tab
-        self.price =
-          self.currencyFormatter.string(from: NSNumber(value: coinMarket.currentPrice)) ?? ""
+        self.price = coinMarket.currentPrice
         self.priceDelta =
           self.percentFormatter.string(
             from: NSNumber(value: coinMarket.priceChangePercentage24h / 100.0)
@@ -486,8 +482,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         accountAssetViewModels[index].decimalBalance = tokenBalance.balance ?? 0.0
         accountAssetViewModels[index].balance = String(format: "%.4f", tokenBalance.balance ?? 0.0)
         accountAssetViewModels[index].fiatBalance =
-          self.currencyFormatter.string(
-            from: NSNumber(value: accountAssetViewModels[index].decimalBalance * assetPriceValue)
+          self.currencyFormatter.formatAsFiat(
+            accountAssetViewModels[index].decimalBalance * price
           ) ?? ""
       }
     }

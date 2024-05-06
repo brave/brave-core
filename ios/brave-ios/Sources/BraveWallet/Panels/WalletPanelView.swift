@@ -520,11 +520,9 @@ struct WalletPanelView: View {
             )
             .font(.title2.weight(.bold))
             Text(
-              currencyFormatter.string(
-                from: NSNumber(
-                  value: (Double(nativeAsset?.price ?? "") ?? 0)
-                    * (nativeAsset?.totalBalance ?? 0.0)
-                )
+              currencyFormatter.formatAsFiat(
+                (Double(nativeAsset?.price ?? "") ?? 0)
+                  * (nativeAsset?.totalBalance ?? 0.0)
               ) ?? ""
             )
             .font(.callout)

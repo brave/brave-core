@@ -66,13 +66,13 @@ struct AssetDetailHeaderView: View {
             }
             Group {
               if let selectedCandle = selectedCandle,
-                let formattedString = assetDetailStore.currencyFormatter.string(
-                  from: NSNumber(value: selectedCandle.value)
+                let formattedString = assetDetailStore.currencyFormatter.formatAsFiat(
+                  selectedCandle.value
                 )
               {
                 Text(formattedString)
               } else {
-                Text(assetDetailStore.price)
+                Text(assetDetailStore.currencyFormatter.formatAsFiat(assetDetailStore.price) ?? "")
               }
             }
             .font(.subheadline.weight(.semibold))
@@ -105,13 +105,13 @@ struct AssetDetailHeaderView: View {
         VStack(alignment: .trailing, spacing: 8) {
           Group {
             if let selectedCandle = selectedCandle,
-              let formattedString = assetDetailStore.currencyFormatter.string(
-                from: NSNumber(value: selectedCandle.value)
+              let formattedString = assetDetailStore.currencyFormatter.formatAsFiat(
+                selectedCandle.value
               )
             {
               Text(formattedString)
             } else {
-              Text(assetDetailStore.price)
+              Text(assetDetailStore.currencyFormatter.formatAsFiat(assetDetailStore.price) ?? "")
             }
           }
           .font(.subheadline.weight(.semibold))

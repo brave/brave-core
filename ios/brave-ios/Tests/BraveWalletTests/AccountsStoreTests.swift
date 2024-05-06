@@ -357,12 +357,12 @@ import XCTest
 
         XCTAssertEqual(accountDetails[safe: 5]?.account, self.btcAccount1)
         XCTAssertEqual(accountDetails[safe: 5]?.tokensWithBalance, self.btcMainnetTokens)
-        XCTAssertEqual(accountDetails[safe: 5]?.totalBalanceFiat, "$0.66")
+        XCTAssertEqual(accountDetails[safe: 5]?.totalBalanceFiat, "$0.657")
 
         if bitcoinTestnetEnabled {
           XCTAssertEqual(accountDetails[safe: 6]?.account, self.btcTestnetAccount)
           XCTAssertEqual(accountDetails[safe: 6]?.tokensWithBalance, self.btcTestnetTokens)
-          XCTAssertEqual(accountDetails[safe: 6]?.totalBalanceFiat, "$6.57")
+          XCTAssertEqual(accountDetails[safe: 6]?.totalBalanceFiat, "$6.573")
         }
       }.store(in: &cancellables)
 

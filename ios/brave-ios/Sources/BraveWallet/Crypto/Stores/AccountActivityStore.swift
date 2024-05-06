@@ -269,7 +269,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           totalFiat += tokenFiat
         }
       }
-      self.accountTotalFiat = currencyFormatter.string(from: .init(value: totalFiat)) ?? "$0.00"
+      self.accountTotalFiat = currencyFormatter.formatAsFiat(totalFiat) ?? "$0.00"
       self.isLoadingAccountFiat = false
 
       guard !Task.isCancelled else { return }

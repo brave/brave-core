@@ -341,8 +341,8 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
             if let tokenPrice = pricesCache[token.assetRatioId.lowercased()],
               balance > 0
             {
-              price = currencyFormatter.string(
-                from: NSNumber(value: (Double(tokenPrice) ?? 0) * balance)
+              price = currencyFormatter.formatAsFiat(
+                (Double(tokenPrice) ?? 0) * balance
               )
             }
             return AccountSection.TokenBalance(

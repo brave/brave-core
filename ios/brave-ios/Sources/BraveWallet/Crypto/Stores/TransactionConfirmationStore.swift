@@ -820,7 +820,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     let gasRatio = assetRatios[gasSymbol.lowercased(), default: 0]
     let amount = (Double(value) ?? 0.0) * ratio
     let gasAmount = (Double(gasValue) ?? 0.0) * gasRatio
-    let totalFiat = currencyFormatter.string(from: NSNumber(value: amount + gasAmount)) ?? "$0.00"
+    let totalFiat = currencyFormatter.formatAsFiat(amount + gasAmount) ?? "$0.00"
     return totalFiat
   }
 
