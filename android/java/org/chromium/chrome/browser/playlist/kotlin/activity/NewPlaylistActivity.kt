@@ -8,6 +8,8 @@
 package org.chromium.chrome.browser.playlist.kotlin.activity
 
 import android.os.Bundle
+import android.os.Build
+import android.content.Intent
 import android.widget.Toast
 import android.widget.ScrollView
 import androidx.appcompat.widget.AppCompatEditText
@@ -36,6 +38,7 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate
 import org.chromium.playlist.mojom.Playlist
 import org.chromium.playlist.mojom.PlaylistItem
+import java.io.Serializable
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
@@ -68,49 +71,35 @@ class NewPlaylistActivity : PlaylistBaseActivity(), PlaylistClickListener {
         val TAG: String = "NewPlaylistActivity"
     }
 
-    private lateinit var mPlaylistViewModel: PlaylistViewModel
+    // private lateinit var mPlaylistViewModel: PlaylistViewModel
+    private var mPlaylist: Playlist? = null
     private lateinit var mEtPlaylistName: AppCompatEditText
     private lateinit var mPlaylistToolbar: PlaylistToolbar
-    private var mPlaylistModel: PlaylistModel? = null
-    private var mPlaylistOptionsEnum: PlaylistOptionsEnum = PlaylistOptionsEnum.NEW_PLAYLIST
+    private var mPlaylistOptionsEnum: String? = null
     private var mShouldMoveOrCopy: Boolean = false
 
     override fun initializeViews() {
         setContentView(R.layout.fragment_new_playlist)
 
         mPlaylistToolbar = findViewById(R.id.playlistToolbar)
-        mPlaylistToolbar.setToolbarTitle(
-            if (mPlaylistOptionsEnum == PlaylistOptionsEnum.NEW_PLAYLIST) getString(
-                R.string.playlist_new_text
-            ) else getString(R.string.playlist_rename_text)
-        )
-        mPlaylistToolbar.setActionText(
-            if (mPlaylistOptionsEnum == PlaylistOptionsEnum.NEW_PLAYLIST) getString(
-                R.string.playlist_create_toolbar_text
-            ) else getString(R.string.playlist_rename_text)
-        )
-
         mEtPlaylistName = findViewById(R.id.etPlaylistName)
-        mEtPlaylistName.setText(mPlaylistModel?.name)
-        mEtPlaylistName.requestFocus()
+    }
+
+    override fun onPostCreate() {
+        super.onPostCreate()
+        mPlaylistId = intent.getStringExtra(ConstantUtils.PLAYLIST_ID)?:ConstantUtils.DEFAULT_PLAYLIST
+        mPlaylistOptionsEnum = intent.getStringExtra(ConstantUtils.PLAYLIST_OPTION)
+        mShouldMoveOrCopy = intent.getBooleanExtra(ConstantUtils.SHOULD_MOVE_OR_COPY, false)
     }
 
     override fun finishNativeInitialization() {
         super.finishNativeInitialization()
+        fetchPlaylistData()
         mPlaylistToolbar.setActionButtonClickListener(clickListener = {
-            if (mPlaylistOptionsEnum == PlaylistOptionsEnum.NEW_PLAYLIST) {
+            if (mPlaylistOptionsEnum != null && mPlaylistOptionsEnum.equals(ConstantUtils.RENAME_OPTION)) {
                 if (!mEtPlaylistName.text.isNullOrEmpty()) {
-                    // mPlaylistViewModel.setCreatePlaylistOption(
-                    //     CreatePlaylistModel(
-                    //         mEtPlaylistName.text.toString(),
-                    //         mShouldMoveOrCopy
-                    //     )
-                    // )
-                    // New Playlist
-                    val playlist = Playlist()
-                    playlist.name = mEtPlaylistName.text.toString()
-                    playlist.items = emptyArray()
-                    mPlaylistService?.createPlaylist(playlist) {
+                    // Rename playlist
+                    mPlaylistService?.renamePlaylist(mPlaylist?.id, mEtPlaylistName.text.toString()) {
                         _ -> 
                     }
                     finish()
@@ -123,13 +112,29 @@ class NewPlaylistActivity : PlaylistBaseActivity(), PlaylistClickListener {
                 }
             } else {
                 if (!mEtPlaylistName.text.isNullOrEmpty()) {
-                    // Rename playlist
-                    // mPlaylistViewModel.setRenamePlaylistOption(
-                    //     RenamePlaylistModel(
-                    //         mPlaylistModel?.id,
-                    //         mEtPlaylistName.text.toString()
-                    //     )
-                    // )
+                    // New Playlist
+                    val playlist = Playlist()
+                    playlist.name = mEtPlaylistName.text.toString()
+                    playlist.items = emptyArray()
+                    mPlaylistService?.createPlaylist(playlist) {
+                        createdPlaylist -> 
+                        if (PlaylistUtils.moveOrCopyModel.playlistOptionsEnum
+                                            == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM
+                                    || PlaylistUtils.moveOrCopyModel.playlistOptionsEnum
+                                            == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
+                            PlaylistUtils.moveOrCopyModel.playlistItems.forEach {
+                                    mPlaylistService?.moveItem(PlaylistUtils.moveOrCopyModel.fromPlaylistId,
+                                                            createdPlaylist.id,
+                                                            it.id);
+                                }
+                            } else {
+                                val playlistItemIds = Array<String>(PlaylistUtils.moveOrCopyModel.playlistItems.size) { "" }
+                                for (i in PlaylistUtils.moveOrCopyModel.playlistItems.indices) {
+                                    playlistItemIds[i] = PlaylistUtils.moveOrCopyModel.playlistItems[i].id
+                                }
+                                mPlaylistService?.copyItemToPlaylist(playlistItemIds, createdPlaylist.id)
+                            }
+                    }
                     finish()
                 } else {
                     Toast.makeText(
@@ -140,5 +145,25 @@ class NewPlaylistActivity : PlaylistBaseActivity(), PlaylistClickListener {
                 }
             }
         })
+    }
+
+    private fun fetchPlaylistData() {
+        mPlaylistService?.getPlaylist(mPlaylistId) {
+                playlist -> 
+                    Log.e(TAG, playlist.toString())
+                    mPlaylist = playlist
+
+                    mEtPlaylistName.setText(playlist?.name)
+                    mEtPlaylistName.requestFocus()
+
+                    var toolbarTitle = getString(R.string.playlist_new_text)
+                    var toolbarActionText = getString(R.string.playlist_create_toolbar_text)
+                    if (mPlaylistOptionsEnum != null && mPlaylistOptionsEnum.equals(ConstantUtils.RENAME_OPTION)) {
+                        toolbarTitle = getString(R.string.playlist_rename_text)
+                        toolbarActionText = getString(R.string.playlist_rename_text)
+                    }
+                    mPlaylistToolbar.setToolbarTitle(toolbarTitle)
+                    mPlaylistToolbar.setActionText(toolbarActionText)
+                };
     }
 }
