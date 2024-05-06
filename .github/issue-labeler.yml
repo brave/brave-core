@@ -1,6 +1,6 @@
-# This is a mapping of issue labels to title/description regex patterns used by
-# https://github.com/github/issue-labeler to automatically add labels to
-# issues when opened/edited.
+# This is a mapping of labels to title/description regex patterns used by
+# https://github.com/github/issue-labeler to automatically add labels to issues
+# when opened/edited.
 #
 # If multiple patterns are provided in the list for a label, they all have to
 # match.
