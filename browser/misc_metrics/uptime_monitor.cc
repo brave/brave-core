@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/misc_metrics/uptime_monitor.h"
+#include "base/logging.h"
 #include "base/time/time.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -21,9 +22,9 @@ namespace {
 #if !BUILDFLAG(IS_ANDROID)
 constexpr base::TimeDelta kUsageTimeQueryInterval = base::Minutes(1);
 #endif
-constexpr base::TimeDelta kUsageTimeReportInterval = base::Days(1);
+constexpr base::TimeDelta kUsageTimeReportInterval = base::Minutes(7);
 
-const int kBrowserOpenTimeBuckets[] = {30, 60, 120, 180, 300, 420, 600};
+const int kBrowserOpenTimeBuckets[] = {2, 5, 120, 180, 300, 420, 600};
 
 }  // namespace
 
@@ -51,6 +52,8 @@ void UptimeMonitor::Init() {
 
 #if BUILDFLAG(IS_ANDROID)
 void UptimeMonitor::ReportUsageDuration(base::TimeDelta duration) {
+  LOG(ERROR) << "android adding " << duration << " to new total "
+             << report_frame_time_sum_;
   report_frame_time_sum_ += duration;
   local_state_->SetTimeDelta(kDailyUptimeSumPrefName, report_frame_time_sum_);
   RecordP3A();
@@ -62,6 +65,8 @@ void UptimeMonitor::RecordUsage() {
   if (total_diff > base::TimeDelta()) {
     report_frame_time_sum_ += total_diff;
     current_total_usage_ = new_total;
+    LOG(ERROR) << "adding " << total_diff << " to new total "
+               << report_frame_time_sum_;
     local_state_->SetTimeDelta(kDailyUptimeSumPrefName, report_frame_time_sum_);
 
   }
@@ -75,6 +80,7 @@ void UptimeMonitor::RecordP3A() {
     // Do not report, since 1 day has not passed.
     return;
   }
+  LOG(ERROR) << "reporting " << report_frame_time_sum_.InMinutes();
   p3a_utils::RecordToHistogramBucket(kBrowserOpenTimeHistogramName,
                                      kBrowserOpenTimeBuckets,
                                      report_frame_time_sum_.InMinutes());

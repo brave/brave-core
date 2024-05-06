@@ -35,11 +35,7 @@ class UptimeMonitorUnitTest : public testing::Test {
   std::unique_ptr<UptimeMonitor> usage_monitor_;
 };
 
-#if BUILDFLAG(IS_ANDROID)
-#define MAYBE_ReportUsageDuration ReportUsageDuration
-#else
 #define MAYBE_ReportUsageDuration DISABLED_ReportUsageDuration
-#endif
 
 #if BUILDFLAG(IS_ANDROID)
 TEST_F(UptimeMonitorUnitTest, MAYBE_ReportUsageDuration) {
