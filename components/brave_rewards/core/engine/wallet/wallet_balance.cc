@@ -12,8 +12,7 @@
 #include "brave/components/brave_rewards/core/engine/database/database.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
-#include "brave/components/brave_rewards/core/engine/state/state.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "brave/components/brave_rewards/core/engine/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal::wallet {
@@ -27,8 +26,8 @@ void WalletBalance::Fetch(FetchBalanceCallback callback) {
   balance->total = 0;
   balance->wallets.emplace(constant::kWalletUnBlinded, balance->total);
 
-  const auto wallet_type =
-      engine_->GetState<std::string>(state::kExternalWalletType);
+  auto wallet_type =
+      engine_->Get<RewardsPrefs>().GetString(prefs::kExternalWalletType);
   if (wallet_type.empty()) {
     return std::move(callback).Run(std::move(balance));
   }

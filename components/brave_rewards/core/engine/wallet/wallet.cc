@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet_util.h"
 #include "wally_bip39.h"  // NOLINT
 
@@ -41,8 +41,7 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   DCHECK(corrupted);
   *corrupted = false;
 
-  const std::string json = engine_->GetState<std::string>(state::kWalletBrave);
-
+  auto json = engine_->Get<RewardsPrefs>().GetString(prefs::kWalletBrave);
   if (json.empty()) {
     return nullptr;
   }
@@ -107,12 +106,12 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);
 
-  engine_->SetState(state::kWalletBrave, std::move(json));
+  engine_->Get<RewardsPrefs>().SetString(prefs::kWalletBrave, json);
 
-  engine_->database()->SaveEventLog(state::kRecoverySeed, event_string);
+  engine_->database()->SaveEventLog(prefs::kRecoverySeed, event_string);
 
   if (!wallet->payment_id.empty()) {
-    engine_->database()->SaveEventLog(state::kPaymentId, wallet->payment_id);
+    engine_->database()->SaveEventLog(prefs::kPaymentId, wallet->payment_id);
   }
 
   return true;

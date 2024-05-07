@@ -55,6 +55,7 @@
 #include "brave/components/brave_rewards/core/engine/database/migration/migration_v9.h"
 #include "brave/components/brave_rewards/core/engine/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // NOTICE!!
@@ -96,7 +97,7 @@ void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
   // order to prevent display of BAP historical information in monthly reports.
   std::string migration_v30 = "";
   std::string migration_v32 = "";
-  if (engine_->GetClientCountryCode() == "JP") {
+  if (engine_->Get<RewardsPrefs>().GetString(prefs::kDeclaredGeo) == "JP") {
     migration_v30 = migration::v30;
     migration_v32 = migration::v32;
   }

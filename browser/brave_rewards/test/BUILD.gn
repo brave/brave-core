@@ -38,7 +38,6 @@ source_set("browser_tests") {
       "rewards_page_browsertest.cc",
       "rewards_policy_browsertest.cc",
       "rewards_publisher_browsertest.cc",
-      "rewards_state_browsertest.cc",
       "util/rewards_browsertest_context_helper.cc",
       "util/rewards_browsertest_context_helper.h",
       "util/rewards_browsertest_context_util.cc",
