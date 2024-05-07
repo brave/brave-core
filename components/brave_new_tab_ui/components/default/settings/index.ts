@@ -17,7 +17,6 @@ import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
 
 import CheckedCircle from './assets/checked-circle.svg'
 import { color, effect, font, gradient, spacing } from '@brave/leo/tokens/css'
-import * as React from 'react'
 
 // Reverse decisions to have the controls define their margin. This helps
 // fill the gap before we remove all margins from these types of controls.
@@ -281,56 +280,11 @@ export const StyledSettingsCopy = styled('div') <{}>`
   line-height: 17px;
 `
 
-interface WidgetToggleProps {
-  isAdd: boolean
-  float: boolean
-}
-
-export const StyledWidgetToggle = styled('button') <WidgetToggleProps>`
-  color: white;
-  font-weight: 600;
-  font-size: 13px;
-  padding: 10px 25px;
-  border-radius: 100px;
-  float: ${p => p.float ? 'right' : 'none'};
-  margin-right: ${p => p.float ? 10 : 0}px;
-  border: none;
-  margin-top: 15px;
-  cursor: pointer;
-  background: ${p => p.isAdd ? '#FB542B' : isDarkTheme(p) ? '#5E6175' : '#212529'};
-  width: fit-content;
-  display: flex;
-  align-items: center;
-
-  &:focus-visible {
-    outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
-    outline-width: 1px;
-  }
-`
-
 export const StyledButtonIcon = styled('div') <{}>`
   display: inline-block;
   margin-right: 5px;
   width: 19px;
   height: 17px;
-`
-
-export const StyledAddButtonIcon = styled(StyledButtonIcon)`
-  width: 19px;
-  height: 19px;
-`
-
-export const StyledHideButtonIcon = styled(StyledButtonIcon)`
-  width: 19px;
-  height: 17px;
-`
-
-export const StyledButtonLabel = styled('span') <{}>`
-  max-width: 100px;
-  text-overflow: ellipsis;
-  display: inline-block;
-  white-space: nowrap;
 `
 
 export const ToggleCardsWrapper = styled('div') <{}>`
