@@ -31,9 +31,9 @@ function ClockSettings() {
 
   const dateFormat = new Intl.DateTimeFormat()
   const dateFormatOptions = dateFormat && dateFormat.resolvedOptions()
-  const localeInfo = dateFormatOptions && dateFormatOptions.locale
+  const defaultClockFormatText = getLocale('clockFormatDefault') + (dateFormatOptions && dateFormatOptions.locale
     ? ` (${dateFormatOptions.locale})`
-    : ''
+    : '')
 
   return <div>
     <SettingsRow>
@@ -46,8 +46,13 @@ function ClockSettings() {
     </SettingsRow>
     {showClock && <SettingsRow>
       <SettingsText>{getLocale('clockFormat')}</SettingsText>
-      <StyledDropdown value={clockFormat} onChange={e => setClockFormat(e.value!)}>
-        <leo-option value=''>{getLocale('clockFormatDefault')}{localeInfo}</leo-option>
+      <StyledDropdown value={clockFormat} onChange={e => setClockFormat(e.value!)} positionStrategy='fixed'>
+        <span slot="value">
+          {clockFormat
+            ? getLocale('clockFormat' + clockFormat)
+            : defaultClockFormatText}
+        </span>
+        <leo-option value=''>{defaultClockFormatText}</leo-option>
         <leo-option value='12'>{getLocale('clockFormat12')}</leo-option>
         <leo-option value='24'>{getLocale('clockFormat24')}</leo-option>
       </StyledDropdown>
