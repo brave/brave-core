@@ -57,7 +57,12 @@ void ConfirmationStateManager::LoadCallback(
     SaveState();
   } else {
     if (!FromJson(*json)) {
-      BLOG(0, "Failed to load confirmation state");
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Failed to parse confirmation state");
+      base::debug::DumpWithoutCrashing();
+
       BLOG(3, "Failed to parse confirmation state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);
@@ -81,6 +86,12 @@ void ConfirmationStateManager::SaveState() {
   Save(kConfirmationStateFilename, ToJson(),
        base::BindOnce([](const bool success) {
          if (!success) {
+           // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+           // potential defects using `DumpWithoutCrashing`.
+           SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                     "Failed to save confirmation state");
+           base::debug::DumpWithoutCrashing();
+
            return BLOG(0, "Failed to save confirmation state");
          }
 
@@ -112,8 +123,10 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
   payment_tokens_.RemoveAllTokens();
 
   if (!dict) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Remove migration failure dumps.
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Malformed confirmation JSON state");
     base::debug::DumpWithoutCrashing();
 
     return false;
