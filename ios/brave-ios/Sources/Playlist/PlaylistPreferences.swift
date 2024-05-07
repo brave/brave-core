@@ -40,11 +40,6 @@ extension Preferences {
       key: "playlist.last.played.item.url",
       default: nil
     )
-    /// The last played item time
-    public static let lastPlayedItemTime = Option<Double>(
-      key: "playlist.last.played.item.time",
-      default: 0.0
-    )
     /// Whether to play the video when controller loaded
     public static let firstLoadAutoPlay = Option<Bool>(
       key: "playlist.firstLoadAutoPlay",

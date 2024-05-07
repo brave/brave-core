@@ -30,7 +30,9 @@ struct PlaylistContentView: View {
   @State private var isNewPlaylistAlertPresented: Bool = false
   @State private var newPlaylistName: String = ""
   @State private var isPopulatingNewPlaylist: Bool = false
+
   @ObservedObject private var firstLoadAutoPlay = Preferences.Playlist.firstLoadAutoPlay
+  @ObservedObject private var resumeFromLastTimePlayed = Preferences.Playlist.playbackLeftOff
 
   private var selectedFolder: PlaylistFolder? {
     folders.first(where: { $0.id == selectedFolderID })
@@ -100,7 +102,7 @@ struct PlaylistContentView: View {
     // Loading a media streaming asset may take time, need some sort of intermediate state where
     // we stop the current playback and show a loader even if the selected item is not fully ready
     // yet
-    let itemToReplace: AVPlayerItem? = await {
+    let playerItemToReplace: AVPlayerItem? = await {
       if let cachedData = item.cachedData {
         do {
           var isStale: Bool = false
@@ -118,8 +120,11 @@ struct PlaylistContentView: View {
       }
       return nil
     }()
-    if let item = itemToReplace {
-      playerModel.item = item
+    if let playerItem = playerItemToReplace {
+      playerModel.item = playerItem
+      if resumeFromLastTimePlayed.value {
+        await playerModel.seek(to: item.lastPlayedOffset, accurately: true)
+      }
       playerModel.play()
     }
   }
@@ -209,6 +214,9 @@ struct PlaylistContentView: View {
         selectedItemID = initialPlaybackInfo.itemID
       } else if firstLoadAutoPlay.value {
         selectedItemID = itemQueue.first
+        if resumeFromLastTimePlayed.value, let selectedItem {
+          seekToInitialTimestamp = selectedItem.lastPlayedOffset
+        }
       }
       if selectedItem != nil {
         selectedDetent = .small
@@ -217,6 +225,12 @@ struct PlaylistContentView: View {
       }
     }
     .onDisappear {
+      if let selectedItem {
+        PlaylistManager.shared.updateLastPlayed(
+          item: .init(item: selectedItem),
+          playTime: playerModel.currentTime
+        )
+      }
       playerModel.stop()
     }
     .alert("New Playlist", isPresented: $isNewPlaylistAlertPresented) {
@@ -257,7 +271,13 @@ struct PlaylistContentView: View {
         .environment(\.colorScheme, .dark)
         .preferredColorScheme(.dark)
     }
-    .onChange(of: selectedItemID) { newValue in
+    .onChange(of: selectedItemID) { [selectedItem] newValue in
+      if let priorSelectedItem = selectedItem {
+        PlaylistManager.shared.updateLastPlayed(
+          item: .init(item: priorSelectedItem),
+          playTime: playerModel.currentTime
+        )
+      }
       guard let id = newValue, let item = PlaylistItem.getItem(uuid: id) else {
         withAnimation(.snappy) {
           selectedDetent = .anchor(.emptyPlaylistContent)
