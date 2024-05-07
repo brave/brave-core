@@ -23,6 +23,9 @@ class View;
 }
 
 namespace playlist {
+
+class PlaylistTabHelper;
+
 // Shows when items were added to the current page.
 // Contains actions to manipulate items.
 class PlaylistEditBubbleView : public PlaylistBubbleView,
@@ -34,7 +37,7 @@ class PlaylistEditBubbleView : public PlaylistBubbleView,
   ~PlaylistEditBubbleView() override;
 
   // PlaylistTabHelperObserver:
-  void PlaylistTabHelperWillBeDestroyed() override;
+  void PlaylistTabHelperWillBeDestroyed(PlaylistTabHelper* tab_helper) override;
   void OnSavedItemsChanged(
       const std::vector<mojom::PlaylistItemPtr>& items) override;
 
