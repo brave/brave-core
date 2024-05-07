@@ -48,8 +48,8 @@ class ProcessMiscMetrics {
 #else
   PrivacyHubMetrics* privacy_hub_metrics();
   TabMetrics* tab_metrics();
-  UptimeMonitor* uptime_monitor();
 #endif
+  UptimeMonitor* uptime_monitor();
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::AIChatMetrics* ai_chat_metrics();
 #endif

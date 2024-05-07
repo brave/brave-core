@@ -10,6 +10,10 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/resource_coordinator/usage_clock.h"
+#endif
+
 namespace misc_metrics {
 
 namespace {
@@ -28,7 +32,9 @@ UptimeMonitor::UptimeMonitor(PrefService* local_state)
       report_frame_start_time_(
           local_state->GetTime(kDailyUptimeFrameStartTimePrefName)),
       report_frame_time_sum_(
-          local_state_->GetTimeDelta(kDailyUptimeSumPrefName)) {
+          local_state_->GetTimeDelta(kDailyUptimeSumPrefName)) {}
+
+void UptimeMonitor::Init() {
   if (report_frame_start_time_.is_null()) {
     // If today is the first time monitoring uptime, set the frame start time
     // to now.
@@ -36,29 +42,30 @@ UptimeMonitor::UptimeMonitor(PrefService* local_state)
   }
   RecordP3A();
 #if !BUILDFLAG(IS_ANDROID)
+  usage_clock_ = std::make_unique<resource_coordinator::UsageClock>();
   timer_.Start(
       FROM_HERE, kUsageTimeQueryInterval,
       base::BindRepeating(&UptimeMonitor::RecordUsage, base::Unretained(this)));
 #endif
 }
 
+#if BUILDFLAG(IS_ANDROID)
 void UptimeMonitor::ReportUsageDuration(base::TimeDelta duration) {
   report_frame_time_sum_ += duration;
   local_state_->SetTimeDelta(kDailyUptimeSumPrefName, report_frame_time_sum_);
   RecordP3A();
 }
-
-#if !BUILDFLAG(IS_ANDROID)
+#else
 void UptimeMonitor::RecordUsage() {
-  const base::TimeDelta new_total = usage_clock_.GetTotalUsageTime();
+  const base::TimeDelta new_total = usage_clock_->GetTotalUsageTime();
   const base::TimeDelta total_diff = new_total - current_total_usage_;
   if (total_diff > base::TimeDelta()) {
     report_frame_time_sum_ += total_diff;
     current_total_usage_ = new_total;
     local_state_->SetTimeDelta(kDailyUptimeSumPrefName, report_frame_time_sum_);
 
-    RecordP3A();
   }
+  RecordP3A();
 }
 #endif
 
