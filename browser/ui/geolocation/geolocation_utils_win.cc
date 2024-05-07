@@ -5,13 +5,13 @@
 
 #include "brave/browser/ui/geolocation/geolocation_utils.h"
 
-#include <utility>
-
 #include <windows.h>
 
 #include <windows.devices.enumeration.h>
 #include <windows.foundation.h>
 #include <wrl/event.h>
+
+#include <utility>
 
 #include "base/functional/callback.h"
 #include "base/logging.h"

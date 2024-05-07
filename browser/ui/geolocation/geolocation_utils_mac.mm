@@ -9,6 +9,8 @@
 
 #include <utility>
 
+#include "base/functional/callback.h"
+
 namespace geolocation {
 
 namespace {

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/geolocation/geolocation_utils.h"
 
+#include "base/functional/callback.h"
+
 namespace geolocation {
 
 void IsSystemLocationSettingEnabled(base::OnceCallback<void(bool)> callback) {}
