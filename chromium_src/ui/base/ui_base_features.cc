@@ -11,7 +11,6 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kChromeRefresh2023, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kChromeRefresh2023NTB, base::FEATURE_DISABLED_BY_DEFAULT},
     {kChromeRefreshSecondary2023, base::FEATURE_DISABLED_BY_DEFAULT},
     {kChromeWebuiRefresh2023, base::FEATURE_DISABLED_BY_DEFAULT},
 }});

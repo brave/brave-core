@@ -141,7 +141,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeLabs,
       &features::kChromeRefresh2023,
-      &features::kChromeRefresh2023NTB,
       &features::kChromeStructuredMetrics,
       &features::kChromeWebuiRefresh2023,
       &features::kControlledFrame,
