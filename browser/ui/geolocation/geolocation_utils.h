@@ -6,10 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_GEOLOCATION_GEOLOCATION_UTILS_H_
 #define BRAVE_BROWSER_UI_GEOLOCATION_GEOLOCATION_UTILS_H_
 
+#include "base/functional/callback_forward.h"
+
 namespace geolocation {
 
-// True when system location service is available to applications.
-bool IsSystemLocationSettingEnabled();
+// Run |callback| with true when system location service is available to
+// applications.
+void IsSystemLocationSettingEnabled(base::OnceCallback<void(bool)> callback);
 
 bool CanGiveDetailedGeolocationRequestInfo();
 

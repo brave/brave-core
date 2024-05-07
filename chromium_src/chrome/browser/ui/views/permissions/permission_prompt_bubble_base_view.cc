@@ -10,7 +10,6 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/task/thread_pool.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/geolocation/geolocation_utils.h"
 #include "brave/browser/ui/views/dialog_footnote_utils.h"
@@ -329,37 +328,26 @@ void AddGeolocationDescriptionIfNeeded(
     }
   }
 
-#if BUILDFLAG(IS_WIN)
-  // IsSystemLocationSettingEnabled() uses COM.
-  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
-      ->PostTaskAndReplyWithResult(
-          FROM_HERE,
-          base::BindOnce(&geolocation::IsSystemLocationSettingEnabled),
-          base::BindOnce(
-              [](base::WeakPtr<views::WidgetDelegate> widget_delegate,
-                 base::WeakPtr<Browser> browser, bool enable_high_accuracy,
-                 bool settings_enabled) {
-                // Browser or Bubble is already gone.
-                if (!browser || !widget_delegate) {
-                  return;
-                }
-                PermissionPromptBubbleBaseView* bubble_base_view =
-                    static_cast<PermissionPromptBubbleBaseView*>(
-                        widget_delegate.get());
-                AddGeolocationDescription(
-                    bubble_base_view, browser.get(),
-                    /*enable_high_accuracy*/ enable_high_accuracy,
-                    /*use_exact_location_label*/ settings_enabled);
+  geolocation::IsSystemLocationSettingEnabled(base::BindOnce(
+      [](base::WeakPtr<views::WidgetDelegate> widget_delegate,
+         base::WeakPtr<Browser> browser, bool enable_high_accuracy,
+         bool settings_enabled) {
+        // Browser or Bubble is already gone.
+        if (!browser || !widget_delegate) {
+          return;
+        }
+        PermissionPromptBubbleBaseView* bubble_base_view =
+            static_cast<PermissionPromptBubbleBaseView*>(widget_delegate.get());
+        AddGeolocationDescription(
+            bubble_base_view, browser.get(),
+            /*enable_high_accuracy*/ enable_high_accuracy,
+            /*use_exact_location_label*/ settings_enabled);
 
-                // To update widget layout after adding another child view.
-                bubble_base_view->UpdateAnchorPosition();
-              },
-              bubble_base_view->AsWeakPtr(), browser->AsWeakPtr(),
-              enable_high_accuracy));
-#else
-  AddGeolocationDescription(bubble_base_view, browser, enable_high_accuracy,
-                            geolocation::IsSystemLocationSettingEnabled());
-#endif
+        // To update widget layout after adding another child view.
+        bubble_base_view->UpdateAnchorPosition();
+      },
+      bubble_base_view->AsWeakPtr(), browser->AsWeakPtr(),
+      enable_high_accuracy));
 }
 
 views::View* AddPermissionLifetimeComboboxIfNeeded(

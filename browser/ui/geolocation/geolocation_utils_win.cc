@@ -5,13 +5,17 @@
 
 #include "brave/browser/ui/geolocation/geolocation_utils.h"
 
+#include <utility>
+
 #include <windows.h>
 
 #include <windows.devices.enumeration.h>
 #include <windows.foundation.h>
 #include <wrl/event.h>
 
+#include "base/functional/callback.h"
 #include "base/logging.h"
+#include "base/task/thread_pool.h"
 #include "base/win/core_winrt_util.h"
 
 using ABI::Windows::Devices::Enumeration::DeviceAccessStatus;
@@ -22,8 +26,10 @@ using Microsoft::WRL::ComPtr;
 
 namespace geolocation {
 
+namespace {
+
 // Copied from services/device/geolocation/win/location_provider_winrt.cc
-bool IsSystemLocationSettingEnabled() {
+bool GetSystemLocationSettingEnabled() {
   ComPtr<IDeviceAccessInformationStatics> dev_access_info_statics;
   HRESULT hr = base::win::GetActivationFactory<
       IDeviceAccessInformationStatics,
@@ -47,6 +53,15 @@ bool IsSystemLocationSettingEnabled() {
 
   return !(status == DeviceAccessStatus::DeviceAccessStatus_DeniedBySystem ||
            status == DeviceAccessStatus::DeviceAccessStatus_DeniedByUser);
+}
+
+}  // namespace
+
+void IsSystemLocationSettingEnabled(base::OnceCallback<void(bool)> callback) {
+  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE, base::BindOnce(&GetSystemLocationSettingEnabled),
+          std::move(callback));
 }
 
 bool CanGiveDetailedGeolocationRequestInfo() {

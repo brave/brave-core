@@ -7,9 +7,13 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#include <utility>
+
 namespace geolocation {
 
-bool IsSystemLocationSettingEnabled() {
+namespace {
+
+bool GetSystemLocationSettingEnabled() {
   // Service is off globally.
   if (![CLLocationManager locationServicesEnabled]) {
     return false;
@@ -24,6 +28,12 @@ bool IsSystemLocationSettingEnabled() {
   }
 
   return false;
+}
+
+}  // namespace
+
+void IsSystemLocationSettingEnabled(base::OnceCallback<void(bool)> callback) {
+  std::move(callback).Run(GetSystemLocationSettingEnabled());
 }
 
 bool CanGiveDetailedGeolocationRequestInfo() {

@@ -7,9 +7,7 @@
 
 namespace geolocation {
 
-bool IsSystemLocationSettingEnabled() {
-  return false;
-}
+void IsSystemLocationSettingEnabled(base::OnceCallback<void(bool)> callback) {}
 
 bool CanGiveDetailedGeolocationRequestInfo() {
   return false;
