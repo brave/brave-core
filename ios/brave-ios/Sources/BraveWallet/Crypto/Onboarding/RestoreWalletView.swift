@@ -25,7 +25,10 @@ struct RestoreWalletView: View {
   @State private var isShowingCreateNewPassword: Bool = false
   @State private var isShowingPhraseError: Bool = false
   @State private var isShowingCompleteState: Bool = false
-  @State private var isShowingTwelvePhrases: Bool = true
+  
+  private var isTwelvePhrase: Bool {
+    return recoveryWords.count == .walletTwelveRecoveryPhraseNumber
+  }
 
   private var numberOfColumns: Int {
     sizeCategory.isAccessibilityCategory ? 2 : 3
@@ -67,7 +70,7 @@ struct RestoreWalletView: View {
       if abs(newInput.count - oldInput.count) > 1 {
         let phrases = newInput.split(separator: " ")
         // user copies and pastes the entire recovery phrases, we will auto-fill in all the recovery phrases
-        if (!isBraveLegacyWallet && phrases.count == 12) || (phrases.count == 24) {
+        if (isTwelvePhrase && phrases.count == 12) || (!isTwelvePhrase && phrases.count == 24) {
           let currentLength = recoveryWords.count
           var newPhrases = Array(repeating: "", count: currentLength)
           for (index, pastedWord) in phrases.enumerated() {
@@ -98,7 +101,7 @@ struct RestoreWalletView: View {
 
   var body: some View {
     ScrollView {
-      VStack(spacing: 48) {
+      VStack(spacing: 40) {
         VStack(spacing: 14) {
           Text(Strings.Wallet.restoreWalletTitle)
             .font(.title)
@@ -144,7 +147,7 @@ struct RestoreWalletView: View {
         if isShowingPhraseError {
           errorLabel
         }
-        VStack {
+        VStack(spacing: 20) {
           HStack {
             Button {
               // Regular wallet has `12` or `24` recovery-phrase
@@ -153,18 +156,17 @@ struct RestoreWalletView: View {
               // to the other type, meaning:
               // regular(12) to legacy(24)
               // or legacy(24) to regular(12)
-              isShowingTwelvePhrases.toggle()
               isBraveLegacyWallet = false
               resignFirstResponder()
               recoveryWords = .init(
                 repeating: "",
-                count: isShowingTwelvePhrases
+                count: !isTwelvePhrase
                   ? .walletTwelveRecoveryPhraseNumber : .walletTwentyFourRecoveryPhraseNumber
               )
               isShowingPhraseError = false
             } label: {
               Text(
-                !isShowingTwelvePhrases
+                !isTwelvePhrase
                   ? Strings.Wallet.restoreWalletImportWithTwelvePhrases
                   : Strings.Wallet.restoreWalletImportFromTwentyFourPhrases
               )
@@ -179,7 +181,7 @@ struct RestoreWalletView: View {
                 .foregroundColor(Color(.braveLabel))
             }
           }
-          if !isShowingTwelvePhrases {
+          if !isTwelvePhrase {
             Toggle(isOn: $isBraveLegacyWallet) {
               Text(Strings.Wallet.restoreLegacyBraveWalletToggleLabel)
                 .fontWeight(.medium)
