@@ -7,7 +7,13 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
-import { Column, WalletButton, Row } from '../../../components/shared/style'
+import {
+  Column,
+  WalletButton,
+  Row,
+  AssetIconFactory,
+  AssetIconProps
+} from '../../../components/shared/style'
 import {
   layoutPanelWidth //
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
@@ -93,3 +99,8 @@ export const ReviewButtonRow = styled(Row)`
     max-width: unset;
   }
 `
+
+export const AssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '40px',
+  height: 'auto'
+})

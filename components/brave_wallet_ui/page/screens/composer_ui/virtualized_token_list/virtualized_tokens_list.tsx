@@ -7,8 +7,12 @@ import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
 
+// Utils
+import { getAssetIdKey } from '../../../../utils/asset-utils'
+import { getTokenPriceFromRegistry } from '../../../../utils/pricing-utils'
+
 // Types
-import { BraveWallet } from '../../../../constants/types'
+import { BraveWallet, SpotPriceRegistry } from '../../../../constants/types'
 
 // Components
 import {
@@ -18,7 +22,6 @@ import {
 // Styled Components
 import {
   AutoSizerStyle,
-  ListItemWrapper,
   listItemInitialHeight
 } from './virtualized_tokens_list.style'
 
@@ -26,7 +29,17 @@ interface VirtualizedTokensListProps {
   tokenList: BraveWallet.BlockchainToken[]
   selectedFromToken?: BraveWallet.BlockchainToken
   selectedToToken?: BraveWallet.BlockchainToken
+  selectingFromOrTo: 'from' | 'to'
+  spotPriceRegistry?: SpotPriceRegistry
+  isLoadingSpotPrices?: boolean
+  firstNoBalanceTokenKey?: string
+  modalType: 'send' | 'swap' | 'bridge'
+  userTokenBalances: Record<string, string>
+  onViewTokenDetails: (token: BraveWallet.BlockchainToken) => void
   onSelectToken: (token: BraveWallet.BlockchainToken) => void
+  getAllAccountsWithBalance: (
+    token: BraveWallet.BlockchainToken
+  ) => BraveWallet.AccountInfo[]
 }
 
 interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
@@ -41,7 +54,7 @@ const getListItemKey = (
   tokenList: BraveWallet.BlockchainToken[]
 ) => {
   const token = tokenList[index]
-  return `${token.contractAddress}-${token.symbol}-${token.chainId}`
+  return getAssetIdKey(token)
 }
 
 const ListItem = (props: ListItemProps) => {
@@ -52,20 +65,48 @@ const ListItem = (props: ListItemProps) => {
     style,
     selectedFromToken,
     selectedToToken,
-    setSize
+    selectingFromOrTo,
+    setSize,
+    spotPriceRegistry,
+    isLoadingSpotPrices,
+    firstNoBalanceTokenKey,
+    modalType,
+    userTokenBalances,
+    getAllAccountsWithBalance,
+    onViewTokenDetails
   } = props
   const token = data[index]
 
-  const disabledText =
-    selectedFromToken?.contractAddress === token.contractAddress &&
-    selectedFromToken?.coin === token.coin &&
-    selectedFromToken?.chainId === token.chainId
-      ? 'braveWalletFromToken'
-      : selectedToToken?.contractAddress === token.contractAddress &&
-        selectedToToken?.coin === token.coin &&
-        selectedToToken?.chainId === token.chainId
+  const disabledText = React.useMemo(() => {
+    if (
+      selectingFromOrTo === 'to' &&
+      selectedFromToken?.contractAddress === token.contractAddress &&
+      selectedFromToken?.coin === token.coin &&
+      selectedFromToken?.chainId === token.chainId
+    ) {
+      return 'braveWalletFromToken'
+    }
+    return selectingFromOrTo === 'from' &&
+      selectedToToken?.contractAddress === token.contractAddress &&
+      selectedToToken?.coin === token.coin &&
+      selectedToToken?.chainId === token.chainId
       ? 'braveWalletToToken'
       : undefined
+  }, [selectedFromToken, selectedToToken, token, selectingFromOrTo])
+
+  const groupingLabel = React.useMemo(() => {
+    if (
+      modalType === 'swap' &&
+      index === 0 &&
+      firstNoBalanceTokenKey !== getAssetIdKey(token)
+    ) {
+      return 'owned'
+    }
+    return modalType === 'swap' &&
+      firstNoBalanceTokenKey === getAssetIdKey(token)
+      ? 'not-owned'
+      : undefined
+  }, [modalType, index, token, firstNoBalanceTokenKey])
 
   const handleSetSize = React.useCallback(
     (ref: HTMLDivElement | null) => {
@@ -77,19 +118,42 @@ const ListItem = (props: ListItemProps) => {
   )
 
   return (
-    <ListItemWrapper style={style}>
+    <div style={style}>
       <TokenListItem
         onClick={() => onSelectToken(token)}
+        onViewTokenDetails={onViewTokenDetails}
         token={token}
         disabledText={disabledText}
+        isLoadingSpotPrice={isLoadingSpotPrices}
+        spotPrice={
+          spotPriceRegistry
+            ? getTokenPriceFromRegistry(spotPriceRegistry, token)
+            : undefined
+        }
         ref={handleSetSize}
+        tokenHasMultipleAccounts={getAllAccountsWithBalance(token).length > 1}
+        groupingLabel={groupingLabel}
+        balance={userTokenBalances[getAssetIdKey(token)]}
       />
-    </ListItemWrapper>
+    </div>
   )
 }
 
 export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
-  const { tokenList, onSelectToken, selectedFromToken, selectedToToken } = props
+  const {
+    tokenList,
+    onSelectToken,
+    selectedFromToken,
+    selectedToToken,
+    selectingFromOrTo,
+    spotPriceRegistry,
+    isLoadingSpotPrices,
+    firstNoBalanceTokenKey,
+    modalType,
+    userTokenBalances,
+    onViewTokenDetails,
+    getAllAccountsWithBalance
+  } = props
 
   // Refs
   const listRef = React.useRef<List | null>(null)
@@ -150,8 +214,16 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
                 {...itemProps}
                 selectedFromToken={selectedFromToken}
                 selectedToToken={selectedToToken}
+                selectingFromOrTo={selectingFromOrTo}
                 onSelectToken={onSelectToken}
                 setSize={setSize}
+                spotPriceRegistry={spotPriceRegistry}
+                isLoadingSpotPrices={isLoadingSpotPrices}
+                getAllAccountsWithBalance={getAllAccountsWithBalance}
+                firstNoBalanceTokenKey={firstNoBalanceTokenKey}
+                onViewTokenDetails={onViewTokenDetails}
+                modalType={modalType}
+                userTokenBalances={userTokenBalances}
               />
             )}
           />

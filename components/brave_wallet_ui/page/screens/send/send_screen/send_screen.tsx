@@ -586,6 +586,7 @@ export const SendScreen = React.memo((props: Props) => {
           ref={selectTokenModalRef}
           onSelectAsset={selectSendAsset}
           onSelectSendOption={onSelectSendOption}
+          selectingFromOrTo='from'
           modalType='send'
         />
       ) : null}

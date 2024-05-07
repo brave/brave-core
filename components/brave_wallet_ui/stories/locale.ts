@@ -122,7 +122,7 @@ provideStrings({
   braveSwapReviewOrder: 'Review order',
   braveWalletReviewSend: 'Review send',
   braveWalletNoAvailableTokens: 'No available tokens',
-  braveWalletSearchTokens: 'Search token by name',
+  braveWalletSearchTokens: 'Search by name or paste address',
   braveWalletSearchNFTs: 'Search NFT by name, id',
   braveWalletChooseAsset: 'Choose asset',
   braveWalletOrdinalsWarningMessage:
@@ -133,6 +133,11 @@ provideStrings({
   braveWalletAddressOrDomainPlaceholder: 'Enter public address or domain.',
   braveWalletSendTo: 'Send to',
   braveWalletInvalidDomainExtension: 'Invalid domain extension.',
+  braveWalletChooseAccount: 'Choose an account to continue',
+  braveWalletMarketPrice: 'Market price',
+  braveWalletOwned: 'Owned',
+  braveWalletNotOwned: 'Not owned',
+  braveWalletAmount24H: 'Amount/24h',
 
   // Create Account Tab
   braveWalletCreateAccountDescription:

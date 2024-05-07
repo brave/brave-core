@@ -55,10 +55,7 @@ export type IconAsset = Pick<
 interface Props {
   asset: IconAsset | undefined
   /** @deprecated Not used */
-  network:
-    | Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'>
-    | undefined
-    | null
+  network?: Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'> | null
 }
 
 const isStorybook = isComponentInStorybook()

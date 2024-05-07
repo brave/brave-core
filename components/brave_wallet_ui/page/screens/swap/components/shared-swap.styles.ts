@@ -6,10 +6,6 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import LeoIcon from '@brave/leo/react/icon'
-import {
-  AssetIconProps,
-  AssetIconFactory
-} from '../../../../components/shared/style'
 
 export const Text = styled.span<{
   textSize?: '20px' | '18px' | '16px' | '14px' | '12px'
@@ -254,8 +250,3 @@ export const StyledLabel = styled.label`
   line-height: 18px;
   color: ${(p) => p.theme.color.text01};
 `
-
-export const AssetIcon = AssetIconFactory<AssetIconProps>({
-  width: '40px',
-  height: 'auto'
-})
