@@ -12,10 +12,6 @@ component("renderer") {
 
   deps = [ "//brave/components/brave_drm:brave_drm_blink" ]
 
-  if (!is_android && !is_ios) {
-    deps += [ "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission_blink" ]
-  }
-
   defines = [ "BLINK_IMPLEMENTATION=1" ]
 
   output_name = "brave_blink_renderer_addon"
