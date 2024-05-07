@@ -34,6 +34,7 @@
 #include "components/permissions/request_type.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
@@ -205,14 +206,14 @@ std::unique_ptr<views::View> CreateGeolocationDescLabel(
   // services enabled or disabled. This code finds which placeholders should
   // show.
   int string_id = IDS_GEOLOCATION_PERMISSION_BUBBLE_LOW_ACCURACY_LABEL;
-  std::vector<std::u16string> placeholders{u"$1", u"$2", u"$3", u"$4"};
+  size_t expected_offset_size = 4;
   if (enable_high_accuracy && location_service_is_on) {
     string_id =
         IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITH_LOCATION_SERVICE_LABEL;
   } else if (enable_high_accuracy) {
     string_id =
         IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITHOUT_LOCATION_SERVICE_LABEL;
-    placeholders.insert(placeholders.end(), {u"$5", u"$6", u"$7", u"$8"});
+    expected_offset_size = 8;
   }
 
   // This code will get the actual strings so we know the length/offset of each
@@ -220,9 +221,9 @@ std::unique_ptr<views::View> CreateGeolocationDescLabel(
   // offset).
   std::vector<size_t> offsets;
   const std::u16string contents_text =
-      brave_l10n::GetStringFUTF16WithPlaceHolders(string_id, placeholders,
-                                                  offsets);
+      l10n_util::GetStringFUTF16(string_id, {u""}, &offsets);
   CHECK(!contents_text.empty());
+  CHECK_EQ(expected_offset_size, offsets.size());
 
   // Insert the placeholder text with styles.
   auto contents_label = std::make_unique<views::StyledLabel>();
@@ -232,7 +233,7 @@ std::unique_ptr<views::View> CreateGeolocationDescLabel(
   contents_label->SetText(contents_text);
   views::StyledLabel::RangeStyleInfo part_style;
   part_style.text_style = views::style::STYLE_EMPHASIZED;
-  const int part_count_except_learn_more = placeholders.size() / 2 - 1;
+  const int part_count_except_learn_more = offsets.size() / 2 - 1;
   for (int i = 0; i < part_count_except_learn_more; ++i) {
     // Each part has start/end offset pair.
     const int part_start_offset = i * 2;
@@ -253,7 +254,7 @@ std::unique_ptr<views::View> CreateGeolocationDescLabel(
           browser));
 
   // Learn more is last part.
-  const int learn_more_offset = placeholders.size() - 2;
+  const int learn_more_offset = offsets.size() - 2;
   contents_label->AddStyleRange(
       gfx::Range(offsets[learn_more_offset], offsets[learn_more_offset + 1]),
       learn_more_style);

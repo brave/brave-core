@@ -560,13 +560,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
         <!-- Geolocation permission bubble -->
         <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_LOW_ACCURACY_LABEL" desc="The text for geolocation permission bubble with low accuracy. Each part will be used to get offset in the string">
-          This site has requested your <ph name="PART_ONE">$1</ph>general location<ph name="PART_ONE_END">$2</ph>. <ph name="PART_TWO">$3</ph>Learn more<ph name="PART_TWO_END">$4</ph>
+          This site has requested your <ph name="PART_ONE">$1</ph>general location<ph name="PART_ONE_END">$1</ph>. <ph name="PART_TWO">$1</ph>Learn more<ph name="PART_TWO_END">$1</ph>
         </message>
         <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITH_LOCATION_SERVICE_LABEL" desc="The text for geolocation permission bubble with high accuracy. Each part will be used to get offset in the string">
-          This site has requested your <ph name="PART_ONE">$1</ph>precise location<ph name="PART_ONE_END">$2</ph>. <ph name="PART_TWO">$3</ph>Learn more<ph name="PART_TWO_END">$4</ph>
+          This site has requested your <ph name="PART_ONE">$1</ph>precise location<ph name="PART_ONE_END">$1</ph>. <ph name="PART_TWO">$1</ph>Learn more<ph name="PART_TWO_END">$1</ph>
         </message>
         <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITHOUT_LOCATION_SERVICE_LABEL" desc="The text for geolocation permission bubble with high accuracy. Each part will be used to get offset in the string">
-          This site has requested your <ph name="PART_ONE">$1</ph>precise location<ph name="PART_ONE_END">$2</ph>. Brave will only able to provide <ph name="PART_TWO">$3</ph>general location<ph name="PART_TWO_END">$4</ph> data due to <ph name="PART_THREE">$5</ph>Location Services<ph name="PART_THREE_END">$6</ph> being disabled. <ph name="PART_FOUR">$7</ph>Learn more<ph name="PART_FOUR_END">$8</ph>
+          This site has requested your <ph name="PART_ONE">$1</ph>precise location<ph name="PART_ONE_END">$1</ph>. Brave will only able to provide <ph name="PART_TWO">$1</ph>general location<ph name="PART_TWO_END">$1</ph> data due to <ph name="PART_THREE">$1</ph>Location Services<ph name="PART_THREE_END">$1</ph> being disabled. <ph name="PART_FOUR">$1</ph>Learn more<ph name="PART_FOUR_END">$1</ph>
         </message>
 
         <!-- Closing confirm dialog -->
