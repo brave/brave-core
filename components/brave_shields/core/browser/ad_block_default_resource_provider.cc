@@ -101,11 +101,10 @@ void AdBlockDefaultResourceProvider::LoadResources(
 
 void CheckAdBlockExceptionComponentsUpdate() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, base::BindOnce(
-          &brave_component_updater::BraveOnDemandUpdater::OnDemandUpdate,
-          base::Unretained(
-              brave_component_updater::BraveOnDemandUpdater::GetInstance()),
-          kAdBlockExceptionComponentId),
+      FROM_HERE, base::BindOnce([]() {
+        brave_component_updater::BraveOnDemandUpdater::GetInstance()
+            ->OnDemandUpdate(kAdBlockExceptionComponentId);
+      }),
       base::Seconds(base::RandInt(0, 10)));
 }
 

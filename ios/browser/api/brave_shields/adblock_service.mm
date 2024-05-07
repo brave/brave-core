@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
-
 #include <Foundation/Foundation.h>
+
 #include "base/apple/foundation_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/thread_pool.h"
@@ -19,6 +18,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry+private.h"
+#include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "components/component_updater/component_updater_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 
