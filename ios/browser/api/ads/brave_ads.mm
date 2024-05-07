@@ -142,8 +142,6 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
     [self initObservers];
 
-    [self initDatabase];
-
     adEventCache = new brave_ads::AdEventCache();
 
     adsClient = new AdsClientIOS(self);
@@ -152,15 +150,17 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)dealloc {
+  [self deallocAds];
+  [self deallocAdsClientNotifier];
+  [self shutdownDatabase];
+
+  [self deallocAdsClient];
+
   [self removeObservers];
 
   [self stopComponentUpdaterTimer];
 
   [self stopNetworkMonitor];
-
-  [self deallocAds];
-  [self deallocAdsClientNotifier];
-  [self deallocAdsClient];
 
   [self deallocAdEventCache];
 }
@@ -232,6 +232,8 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
     return completion(/*success=*/false);
   }
 
+  [self initDatabase];
+
   adsClientNotifier = new brave_ads::AdsClientNotifier();
   ads = brave_ads::Ads::CreateInstance(adsClient);
 
@@ -257,6 +259,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
                     if (!success) {
                       [self deallocAds];
                       [self deallocAdsClientNotifier];
+                      [self shutdownDatabase];
                     }
                   }));
 }
@@ -270,9 +273,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
           self->ads->Shutdown(base::BindOnce(^(bool) {
             [self deallocAds];
             [self deallocAdsClientNotifier];
-            [self deallocAdsClient];
-
-            [self deallocAdEventCache];
+            [self shutdownDatabase];
 
             if (completion) {
               completion();
@@ -329,6 +330,11 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
   adsDatabase = base::SequenceBound<brave_ads::Database>(
       databaseQueue, base::FilePath(dbPath));
+}
+
+- (void)shutdownDatabase {
+  adsDatabase.Reset();
+  databaseQueue.reset();
 }
 
 #pragma mark - Network
