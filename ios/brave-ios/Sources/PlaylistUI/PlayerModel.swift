@@ -382,9 +382,18 @@ extension AVPlayer {
 @available(iOS 16.0, *)
 extension PlayerModel {
   private func updateSystemPlayer() {
-    let remoteCommandsCenter: MPRemoteCommandCenter = .shared()
-    remoteCommandsCenter.skipBackwardCommand.preferredIntervals = [.init(value: seekInterval)]
-    remoteCommandsCenter.skipForwardCommand.preferredIntervals = [.init(value: seekInterval)]
+    let center: MPRemoteCommandCenter = .shared()
+    center.skipBackwardCommand.preferredIntervals = [.init(value: seekInterval)]
+    center.skipForwardCommand.preferredIntervals = [.init(value: seekInterval)]
+    center.changeRepeatModeCommand.currentRepeatType = repeatMode.repeatType
+    center.changeShuffleModeCommand.currentShuffleType = isShuffleEnabled ? .items : .off
+    center.changePlaybackRateCommand.supportedPlaybackRates = PlaybackSpeed.supportedSpeeds.map {
+      NSNumber(value: $0.rate)
+    }
+    center.ratingCommand.isEnabled = false
+    center.dislikeCommand.isEnabled = false
+    center.likeCommand.isEnabled = false
+    center.bookmarkCommand.isEnabled = false
 
     let nowPlayingCenter: MPNowPlayingInfoCenter = .default()
     // FIXME: Check if this is enough
@@ -397,7 +406,12 @@ extension PlayerModel {
       center.pauseCommand,
       center.playCommand,
       center.stopCommand,
-      // FIXME: Add the rest
+      center.togglePlayPauseCommand,
+      center.skipBackwardCommand,
+      center.skipForwardCommand,
+      center.changeRepeatModeCommand,
+      center.changeShuffleModeCommand,
+      center.changePlaybackRateCommand,
     ]
     cancellables.formUnion(
       commands.map {
@@ -419,6 +433,32 @@ extension PlayerModel {
       play()
     case center.stopCommand:
       stop()
+    case center.togglePlayPauseCommand:
+      if isPlaying {
+        pause()
+      } else {
+        play()
+      }
+    case center.skipBackwardCommand:
+      Task { await seekBackwards() }
+    case center.skipForwardCommand:
+      Task { await seekForwards() }
+    case center.changeRepeatModeCommand:
+      if let repeatType = (event as? MPChangeRepeatModeCommandEvent)?.repeatType,
+        let repeatMode = RepeatMode(repeatType: repeatType)
+      {
+        self.repeatMode = repeatMode
+      }
+    case center.changeShuffleModeCommand:
+      if let shuffleType = (event as? MPChangeShuffleModeCommandEvent)?.shuffleType {
+        isShuffleEnabled = shuffleType != .off
+      }
+    case center.changePlaybackRateCommand:
+      if let playbackRate = (event as? MPChangePlaybackRateCommandEvent)?.playbackRate,
+        let supportedSpeed = PlaybackSpeed.supportedSpeeds.first(where: { $0.rate == playbackRate })
+      {
+        playbackSpeed = supportedSpeed
+      }
     default:
       break
     }
@@ -435,4 +475,28 @@ extension MPRemoteCommand {
       self.removeTarget(handle)
     }
   }
+}
+
+@available(iOS 16.0, *)
+extension PlayerModel.RepeatMode {
+  init?(repeatType: MPRepeatType) {
+    switch repeatType {
+    case .off: self = .none
+    case .one: self = .one
+    case .all: self = .all
+    @unknown default: return nil
+    }
+  }
+  var repeatType: MPRepeatType {
+    switch self {
+    case .none: return .off
+    case .one: return .one
+    case .all: return .all
+    }
+  }
+}
+
+@available(iOS 16.0, *)
+extension PlayerModel.PlaybackSpeed {
+  static var supportedSpeeds: [Self] = [.normal, .fast, .faster]
 }
