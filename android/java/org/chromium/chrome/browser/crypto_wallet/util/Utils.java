@@ -1414,21 +1414,25 @@ public class Utils {
         BalanceHelper.getP3ABalances(
                 activityRef, allNetworks, selectedNetwork, getP3ABalancesContext);
 
-        multiResponse.setWhenAllCompletedAction(() -> {
-            HashMap<Integer, HashSet<String>> activeAddresses =
-                    getP3ABalancesContext.activeAddresses;
-            // P3A active accounts
-            BalanceHelper.updateActiveAddresses(nativeAssetsBalancesResponses,
-                    blockchainTokensBalancesResponses, activeAddresses);
-            for (int coinType : P3ACoinTypes) {
-                braveWalletP3A.recordActiveWalletCount(
-                        activeAddresses.get(coinType).size(), coinType);
-            }
-        });
+        multiResponse.setWhenAllCompletedAction(
+                () -> {
+                    HashMap<Integer, HashSet<String>> activeAddresses =
+                            getP3ABalancesContext.activeAddresses;
+                    // P3A active accounts
+                    BalanceHelper.updateActiveAddresses(
+                            nativeAssetsBalancesResponses,
+                            blockchainTokensBalancesResponses,
+                            activeAddresses);
+                    for (int coinType : P3ACoinTypes) {
+                        braveWalletP3A.recordActiveWalletCount(
+                                activeAddresses.get(coinType).size(), coinType);
+                    }
+                });
     }
 
     /**
      * Gets truncated address from a valid full contract address.
+     *
      * @param address full contract address
      * @return truncated address
      */
@@ -1449,7 +1453,8 @@ public class Utils {
             assert false;
             return "";
         }
-        return (address.substring(0, prefixLength) + "***"
+        return (address.substring(0, prefixLength)
+                + "***"
                 + address.substring(address.length() - 4));
     }
 }
