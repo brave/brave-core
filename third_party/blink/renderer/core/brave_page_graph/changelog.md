@@ -3,6 +3,15 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.6.2
+
+Fix error where for JS calls, we were recording the script's execution context
+for the `frame id`, and not the receiver.
+
+Remove `NormalizeUrl` function, which is no longer used or needed since we
+more accurately track resources by Blink's `resource_id`, and no longer
+best-effort match by URL.
+
 ## Version 0.6.1
 
 Remove `frame id` from `NodeDOMRoot` instances. The `frame id` property

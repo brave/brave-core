@@ -6,6 +6,8 @@
 #include "src/v8/src/builtins/builtins.cc"
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
+#include "src/builtins/builtins-inl.h"
+#include "src/builtins/builtins-utils-inl.h"
 #include "src/builtins/builtins-utils.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
 
@@ -51,9 +53,24 @@ void ReportBuiltinCallAndResponse(Isolate* isolate,
   if (builtin_result.ptr() && !IsUndefined(builtin_result)) {
     result = ToPageGraphArg(isolate, Handle<Object>(builtin_result, isolate));
   }
-  isolate->page_graph_delegate()->OnBuiltinCall(
-      reinterpret_cast<v8::Isolate*>(isolate), builtin_name, args,
-      result ? &*result : nullptr);
+
+  v8::Isolate* execution_isolate = reinterpret_cast<v8::Isolate*>(isolate);
+  v8::Local<v8::Context> context = execution_isolate->GetCurrentContext();
+
+  Handle<Object> receiver = builtin_args.receiver();
+  if (IsJSReceiver(*receiver)) {
+    v8::Local<v8::Value> receiver_value = Utils::ToLocal(receiver);
+    v8::Local<v8::Object> receiver_object =
+        v8::Local<v8::Object>::Cast(receiver_value);
+    v8::MaybeLocal<v8::Context> maybe_receiver_creation_context =
+        receiver_object->GetCreationContext();
+    if (!maybe_receiver_creation_context.IsEmpty()) {
+      context = maybe_receiver_creation_context.ToLocalChecked();
+    }
+  }
+
+  isolate->page_graph_delegate()->OnBuiltinCall(context, builtin_name, args,
+                                                result ? &*result : nullptr);
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
 

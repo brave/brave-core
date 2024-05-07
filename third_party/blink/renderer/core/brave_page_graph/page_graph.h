@@ -224,7 +224,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                            const int script_id,
                                            v8::Local<v8::String> source);
   void RegisterV8JSBuiltinCall(
-      v8::Isolate* isolate,
+      blink::ExecutionContext* receiver_context,
       const char* builtin_name,
       const blink::PageGraphValues& args,
       const std::optional<blink::PageGraphValue>& result);
@@ -410,10 +410,10 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                             const MethodName& method,
                             const blink::PageGraphValue& result);
 
-  void RegisterJSBuiltInCall(blink::ExecutionContext* execution_context,
+  void RegisterJSBuiltInCall(blink::ExecutionContext* receiver_context,
                              const char* builtin_name,
                              const blink::PageGraphValues& args);
-  void RegisterJSBuiltInResponse(blink::ExecutionContext* execution_context,
+  void RegisterJSBuiltInResponse(blink::ExecutionContext* receiver_context,
                                  const char* builtin_name,
                                  const blink::PageGraphValue& result);
 
