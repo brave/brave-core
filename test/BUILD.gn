@@ -853,6 +853,7 @@ test("brave_browser_tests") {
     "//brave/browser/ui/views/tabs:browser_tests",
     "//brave/browser/web_discovery:browser_tests",
     "//brave/common",
+    "//brave/components/ai_chat/core/browser",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_component_updater/browser",
