@@ -25,7 +25,7 @@ struct RestoreWalletView: View {
   @State private var isShowingCreateNewPassword: Bool = false
   @State private var isShowingPhraseError: Bool = false
   @State private var isShowingCompleteState: Bool = false
-  
+
   private var isTwelvePhrase: Bool {
     return recoveryWords.count == .walletTwelveRecoveryPhraseNumber
   }
