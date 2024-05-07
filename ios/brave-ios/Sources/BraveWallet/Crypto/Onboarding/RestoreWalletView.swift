@@ -25,13 +25,10 @@ struct RestoreWalletView: View {
   @State private var isShowingCreateNewPassword: Bool = false
   @State private var isShowingPhraseError: Bool = false
   @State private var isShowingCompleteState: Bool = false
+  @State private var isShowingTwelvePhrases: Bool = true
 
   private var numberOfColumns: Int {
     sizeCategory.isAccessibilityCategory ? 2 : 3
-  }
-
-  private var isLegacyWallet: Bool {
-    recoveryWords.count == 24
   }
 
   private var isContinueDisabled: Bool {
@@ -70,7 +67,7 @@ struct RestoreWalletView: View {
       if abs(newInput.count - oldInput.count) > 1 {
         let phrases = newInput.split(separator: " ")
         // user copies and pastes the entire recovery phrases, we will auto-fill in all the recovery phrases
-        if (!isLegacyWallet && phrases.count == 12) || (isLegacyWallet && phrases.count == 24) {
+        if (!isBraveLegacyWallet && phrases.count == 12) || (phrases.count == 24) {
           let currentLength = recoveryWords.count
           var newPhrases = Array(repeating: "", count: currentLength)
           for (index, pastedWord) in phrases.enumerated() {
@@ -147,45 +144,57 @@ struct RestoreWalletView: View {
         if isShowingPhraseError {
           errorLabel
         }
-        HStack {
-          Spacer()
-          Button {
-            // Regular wallet has `12` recovery-phrase
-            // Legacy wallet has `24` recovery-phrase
-            // This button is to toggle the current wallet type
-            // to the other type, meaning:
-            // regular(12) to legacy(24)
-            // or legacy(24) to regular(12)
-            resignFirstResponder()
-            recoveryWords = .init(
-              repeating: "",
-              count: isLegacyWallet
-                ? .regularWalletRecoveryPhraseNumber : .legacyWalletRecoveryPhraseNumber
-            )
-            isShowingPhraseError = false
-          } label: {
-            Text(
-              isLegacyWallet
-                ? Strings.Wallet.restoreWalletImportFromRegularBraveWallet
-                : Strings.Wallet.restoreWalletImportFromLegacyBraveWallet
-            )
-            .fontWeight(.medium)
-            .foregroundColor(Color(.braveBlurpleTint))
+        VStack {
+          HStack {
+            Button {
+              // Regular wallet has `12` or `24` recovery-phrase
+              // Legacy wallet has `24` recovery-phrase
+              // This button is to toggle the current wallet type
+              // to the other type, meaning:
+              // regular(12) to legacy(24)
+              // or legacy(24) to regular(12)
+              isShowingTwelvePhrases.toggle()
+              isBraveLegacyWallet = false
+              resignFirstResponder()
+              recoveryWords = .init(
+                repeating: "",
+                count: isShowingTwelvePhrases
+                  ? .walletTwelveRecoveryPhraseNumber : .walletTwentyFourRecoveryPhraseNumber
+              )
+              isShowingPhraseError = false
+            } label: {
+              Text(
+                isShowingTwelvePhrases
+                  ? Strings.Wallet.restoreWalletImportWithTwelvePhrases
+                  : Strings.Wallet.restoreWalletImportFromTwentyFourPhrases
+              )
+              .fontWeight(.medium)
+              .foregroundColor(Color(.braveBlurpleTint))
+            }
+            Spacer()
+            Button {
+              isRevealRecoveryWords.toggle()
+            } label: {
+              Image(braveSystemName: isRevealRecoveryWords ? "leo.eye.off" : "leo.eye.on")
+                .foregroundColor(Color(.braveLabel))
+            }
           }
-          Spacer()
-          Button {
-            isRevealRecoveryWords.toggle()
-          } label: {
-            Image(braveSystemName: isRevealRecoveryWords ? "leo.eye.off" : "leo.eye.on")
-              .foregroundColor(Color(.braveLabel))
+          if !isShowingTwelvePhrases {
+            Toggle(isOn: $isBraveLegacyWallet) {
+              Text(Strings.Wallet.restoreLegacyBraveWalletToggleLabel)
+                .fontWeight(.medium)
+                .foregroundColor(Color(.braveBlurpleTint))
+            }
+            .tint(Color(.braveBlurpleTint))
           }
         }
+        .padding(.horizontal, 16)
         Button {
           if let newPassword, !newPassword.isEmpty {
             keyringStore.restoreWallet(
               words: recoveryWords,
               password: newPassword,
-              isLegacyBraveWallet: isLegacyWallet
+              isLegacyBraveWallet: isBraveLegacyWallet
             ) { isMnemonicValid in
               if isMnemonicValid {
                 isShowingPhraseError = false
@@ -271,7 +280,7 @@ struct RestoreWalletView: View {
     keyringStore.restoreWallet(
       words: recoveryWords,
       password: password,
-      isLegacyBraveWallet: recoveryWords.count == .legacyWalletRecoveryPhraseNumber
+      isLegacyBraveWallet: isBraveLegacyWallet
     ) { success in
       if success {
         isShowingPhraseError = false
