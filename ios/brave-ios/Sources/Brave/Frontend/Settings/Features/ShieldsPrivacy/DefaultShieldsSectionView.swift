@@ -128,8 +128,8 @@ struct DefaultShieldsViewView: View {
         FilterListsView()
       } label: {
         LabelView(
-          title: Strings.contentFiltering,
-          subtitle: Strings.contentFilteringDescription
+          title: Strings.Shields.contentFiltering,
+          subtitle: Strings.Shields.contentFilteringDescription
         )
       }.listRowBackground(Color(.secondaryBraveGroupedBackground))
     } header: {

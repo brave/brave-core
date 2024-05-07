@@ -15,11 +15,13 @@ public actor GroupedAdBlockEngine {
   public enum Source: Codable, Hashable, CustomDebugStringConvertible {
     case filterList(componentId: String, uuid: String)
     case filterListURL(uuid: String)
+    case filterListText
 
     public var debugDescription: String {
       switch self {
       case .filterList(let componentId, _): return componentId
       case .filterListURL(let uuid): return uuid
+      case .filterListText: return "filter-list-text"
       }
     }
   }
@@ -45,7 +47,7 @@ public actor GroupedAdBlockEngine {
       case .aggressive: return true
       }
     }
-    
+
     public var debugDescription: String {
       switch self {
       case .aggressive: return "aggressive"

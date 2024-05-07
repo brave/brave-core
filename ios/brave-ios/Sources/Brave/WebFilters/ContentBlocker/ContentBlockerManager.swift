@@ -101,7 +101,8 @@ import os.log
 
     case generic(GenericBlocklistType)
     case filterList(componentId: String, isAlwaysAggressive: Bool)
-    case customFilterList(uuid: String)
+    case filterListURL(uuid: String)
+    case filterListText
 
     private var identifier: String {
       switch self {
@@ -109,14 +110,16 @@ import os.log
         return [Self.genericPrifix, type.bundledFileName].joined(separator: "-")
       case .filterList(let componentId, _):
         return [Self.filterListPrefix, componentId].joined(separator: "-")
-      case .customFilterList(let uuid):
+      case .filterListURL(let uuid):
         return [Self.filterListURLPrefix, uuid].joined(separator: "-")
+      case .filterListText:
+        return "filter-list-text"
       }
     }
 
     func mode(isAggressiveMode: Bool) -> BlockingMode {
       switch self {
-      case .customFilterList:
+      case .filterListURL, .filterListText:
         return .general
       case .filterList(_, let isAlwaysAggressive):
         if isAlwaysAggressive || isAggressiveMode {
@@ -204,6 +207,75 @@ import os.log
     }
 
     Self.signpost.endInterval("cleaupInvalidRuleLists", state)
+  }
+
+  /// Test the rules and find the broken rules, their line numbers and associated errors
+  public func testRules(
+    forFilterSet filterSet: String
+  ) async -> (rule: String, line: Int, error: Error)? {
+    let rules = filterSet.components(separatedBy: .newlines)
+    return await testRulesBinarySearch(rules: rules, range: 0..<rules.count)
+  }
+
+  /// Test the rules within a range and find the broken rules, their line numbers and associated errors
+  private func testRulesBinarySearch(
+    rules: [String],
+    range: Range<Int>
+  ) async -> (rule: String, line: Int, error: Error)? {
+    let rangedRules = rules[range]
+    guard rangedRules.count > 0 else { return nil }
+
+    do {
+      // 1. Test engine (we don't care about the results)
+      _ = try AdblockEngine(rules: rangedRules.joined(separator: "\n"))
+
+      // 2. Test content blockers
+      let results = try AdblockEngine.contentBlockerRules(
+        fromFilterSet: rangedRules.joined(separator: "\n")
+      )
+
+      let decodedRuleList = try decode(encodedContentRuleList: results.rulesJSON)
+
+      if decodedRuleList.count > 0 {
+        try await ruleStore.compileContentRuleList(
+          forIdentifier: "test-identifier",
+          encodedContentRuleList: results.rulesJSON
+        )
+
+        try await ruleStore.removeContentRuleList(forIdentifier: "test-identifier")
+      }
+
+      return nil
+    } catch {
+      if rangedRules.count == 1 {
+        // Found the culprit line
+        return (rules[range.lowerBound], range.lowerBound, error)
+      }
+
+      let middle = range.count / 2 + range.lowerBound
+
+      // Test left
+      if middle > range.lowerBound,
+        let failure = await testRulesBinarySearch(
+          rules: rules,
+          range: range.lowerBound..<middle
+        )
+      {
+        return failure
+      }
+
+      // Test right
+      if middle < range.upperBound,
+        let failure = await testRulesBinarySearch(
+          rules: rules,
+          range: middle..<range.upperBound
+        )
+      {
+        return failure
+      }
+
+      return nil
+    }
   }
 
   /// Compile the rule list found in the given local URL using the specified modes
@@ -512,10 +584,11 @@ import os.log
     let customFilterLists = CustomFilterListStorage.shared.filterListsURLs
     let customRuleLists = customFilterLists.compactMap { customURL -> BlocklistType? in
       guard customURL.setting.isEnabled else { return nil }
-      return .customFilterList(uuid: customURL.setting.uuid)
+      return .filterListURL(uuid: customURL.setting.uuid)
     }
 
-    return Set(genericRuleLists).union(additionalRuleLists).union(customRuleLists)
+    return Set(genericRuleLists).union(additionalRuleLists)
+      .union(customRuleLists).union([.filterListText])
   }
 
   /// Return the enabled rule types for this domain and the enabled settings.

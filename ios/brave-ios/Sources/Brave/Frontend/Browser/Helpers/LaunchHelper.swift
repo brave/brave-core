@@ -130,9 +130,9 @@ public actor LaunchHelper {
       // All custom filter list urls
       .union(
         CustomFilterListStorage.shared.filterListsURLs.map {
-          .customFilterList(uuid: $0.setting.uuid)
+          .filterListURL(uuid: $0.setting.uuid)
         }
-      )
+      ).union([.filterListText])
   }
 }
 

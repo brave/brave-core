@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import BraveUI
 import Data
 import DesignSystem
@@ -12,11 +13,15 @@ import SwiftUI
 
 /// A view showing enabled and disabled community filter lists
 struct FilterListsView: View {
+  private static let dateFormatter = RelativeDateTimeFormatter()
+
   @ObservedObject private var filterListStorage = FilterListStorage.shared
   @ObservedObject private var customFilterListStorage = CustomFilterListStorage.shared
   @Environment(\.editMode) private var editMode
   @State private var showingAddSheet = false
-  private let dateFormatter = RelativeDateTimeFormatter()
+  @State private var showingCustomFiltersSheet = false
+  @State private var customRules: String?
+  @State private var rulesError: Error?
 
   var body: some View {
     List {
@@ -26,7 +31,7 @@ struct FilterListsView: View {
         Button {
           showingAddSheet = true
         } label: {
-          Text(Strings.addCustomFilterList)
+          Text(Strings.Shields.addCustomFilterList)
             .foregroundColor(Color(.braveBlurpleTint))
         }
         .disabled(editMode?.wrappedValue.isEditing == true)
@@ -37,7 +42,7 @@ struct FilterListsView: View {
           }
         )
       } header: {
-        Text(Strings.customFilterLists)
+        Text(Strings.Shields.customFilterLists)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       .toggleStyle(SwitchToggleStyle(tint: .accentColor))
@@ -46,23 +51,64 @@ struct FilterListsView: View {
         filterListView
       } header: {
         VStack(alignment: .leading, spacing: 4) {
-          Text(Strings.defaultFilterLists)
+          Text(Strings.Shields.defaultFilterLists)
             .textCase(.uppercase)
-          Text(Strings.filterListsDescription)
+          Text(Strings.Shields.filterListsDescription)
             .textCase(.none)
         }
       }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+
+      Section {
+        Button {
+          showingCustomFiltersSheet = true
+        } label: {
+          if let customRules = customRules {
+            VStack(alignment: .leading) {
+              Text(customRules)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+                .foregroundStyle(Color(.braveLabel))
+                .font(.system(size: 14, weight: .regular, design: .monospaced))
+            }
+          } else if let error = rulesError {
+            Text(error.localizedDescription)
+              .foregroundStyle(Color(.braveErrorLabel))
+              .font(.subheadline)
+          } else {
+            Text(Strings.Shields.customFiltersPlaceholder)
+              .foregroundStyle(Color(.secondaryBraveLabel))
+              .font(.subheadline)
+          }
+        }
+      } header: {
+        VStack(alignment: .leading, spacing: 4) {
+          Text(Strings.Shields.customFilters)
+            .textCase(.uppercase)
+          Text(Strings.Shields.customFiltersDescription)
+            .textCase(.none)
+        }
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
+    .fullScreenCover(
+      isPresented: $showingCustomFiltersSheet,
+      content: {
+        CustomFilterListView(customRules: $customRules)
+      }
+    )
     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
     .animation(.default, value: customFilterListStorage.filterListsURLs)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
-    .navigationTitle(Strings.contentFiltering)
+    .navigationTitle(Strings.Shields.contentFiltering)
     .toolbar {
       EditButton().disabled(
         customFilterListStorage.filterListsURLs.isEmpty && editMode?.wrappedValue.isEditing == false
       )
     }
+    .onAppear(perform: {
+      loadCustomRules()
+    })
   }
 
   @ViewBuilder private var filterListView: some View {
@@ -112,18 +158,18 @@ struct FilterListsView: View {
             case .downloaded(let downloadDate):
               Text(
                 String.localizedStringWithFormat(
-                  Strings.filterListsLastUpdated,
-                  dateFormatter.localizedString(for: downloadDate, relativeTo: Date())
+                  Strings.Shields.filterListsLastUpdated,
+                  Self.dateFormatter.localizedString(for: downloadDate, relativeTo: Date())
                 )
               )
               .font(.caption)
               .foregroundColor(Color(.braveLabel))
             case .failure:
-              Text(Strings.filterListsDownloadFailed)
+              Text(Strings.Shields.filterListsDownloadFailed)
                 .font(.caption)
                 .foregroundColor(.red)
             case .pending:
-              Text(Strings.filterListsDownloadPending)
+              Text(Strings.Shields.filterListsDownloadPending)
                 .font(.caption)
                 .foregroundColor(Color(.braveLabel))
             }
@@ -161,7 +207,7 @@ struct FilterListsView: View {
         // during the `cleaupInvalidRuleLists` step on `LaunchHelper`
 
         // 2. Stop downloading the file
-        await FilterListCustomURLDownloader.shared.stopFetching(
+        FilterListCustomURLDownloader.shared.stopFetching(
           filterListCustomURL: removedURL
         )
 
@@ -179,6 +225,15 @@ struct FilterListsView: View {
         // because we need to access properties on the setting until then
         removedURL.setting.delete(inMemory: !customFilterListStorage.persistChanges)
       }
+    }
+  }
+
+  private func loadCustomRules() {
+    do {
+      self.customRules = try customFilterListStorage.loadCustomRules()
+    } catch {
+      rulesError = error
+      customRules = nil
     }
   }
 }
