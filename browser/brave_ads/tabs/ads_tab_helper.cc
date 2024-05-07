@@ -57,7 +57,11 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   BrowserList::AddObserver(this);
 
   OnBrowserSetLastActive(BrowserList::GetInstance()->GetLastActive());
-#endif
+#else
+  // Set `is_browser_active_` to `true` because `BrowserList` class is not
+  // available on Android.
+  is_browser_active_ = true;
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   OnVisibilityChanged(web_contents->GetVisibility());
 }
