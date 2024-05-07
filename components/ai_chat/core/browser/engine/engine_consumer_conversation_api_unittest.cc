@@ -28,7 +28,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
-using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
 using ::testing::_;
 
 namespace ai_chat {
@@ -172,13 +171,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_HistoryWithSelectedText) {
   // Tests events building from history with selected text and new query without
   // selected text but with page association.
-  ConversationHistory history = {
-      {mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-       mojom::ConversationTurnVisibility::VISIBLE,
-       "Which show is this catchphrase from?", "I have spoken."},
-      {mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-       mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-       std::nullopt}};
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      "Which show is this catchphrase from?", "I have spoken."));
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
+      std::nullopt));
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "This is my page. I have spoken."},
     {"role": "user", "type": "pageExcerpt", "content": "I have spoken."},

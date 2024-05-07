@@ -24,7 +24,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
 using ::testing::_;
 
 namespace ai_chat {
@@ -62,13 +61,15 @@ class EngineConsumerClaudeUnitTest : public testing::Test {
 };
 
 TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
-  ConversationHistory history = {
-      {mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-       mojom::ConversationTurnVisibility::VISIBLE,
-       "Which show is this catchphrase from?", "I have spoken."},
-      {mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-       mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-       std::nullopt}};
+  std::vector<mojom::ConversationTurnPtr> history;
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      "Which show is this catchphrase from?", "I have spoken."));
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
+      std::nullopt));
   auto* mock_remote_completion_client = GetMockRemoteCompletionClient();
   std::string prompt_before_time_and_date =
       "\n\nHuman: Here is the text of a web page in <page> tags:\n<page>\nThis "

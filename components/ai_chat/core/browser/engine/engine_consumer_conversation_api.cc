@@ -117,14 +117,15 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   }
   // history
   for (const auto& message : conversation_history) {
-    if (message.selected_text.has_value() && !message.selected_text->empty()) {
+    if (message->selected_text.has_value() &&
+        !message->selected_text->empty()) {
       conversation.push_back({mojom::CharacterType::HUMAN,
                               ConversationEventType::PageExcerpt,
-                              message.selected_text.value()});
+                              message->selected_text.value()});
     }
     ConversationEvent event;
-    event.role = message.character_type;
-    event.content = message.text;
+    event.role = message->character_type;
+    event.content = message->text;
     // TODO(petemill): Shouldn't the server handle the map of mojom::ActionType
     // to prompts? (e.g. SUMMARIZE_PAGE, PARAPHRASE, etc.)
     event.type = ConversationEventType::ChatMessage;

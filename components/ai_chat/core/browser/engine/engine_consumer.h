@@ -35,7 +35,7 @@ class EngineConsumer {
   using GenerationCompletedCallback =
       base::OnceCallback<void(GenerationResult)>;
 
-  using ConversationHistory = std::vector<mojom::ConversationTurn>;
+  using ConversationHistory = std::vector<mojom::ConversationTurnPtr>;
 
   EngineConsumer();
   EngineConsumer(const EngineConsumer&) = delete;

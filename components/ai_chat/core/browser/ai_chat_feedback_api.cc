@@ -77,7 +77,7 @@ AIChatFeedbackAPI::~AIChatFeedbackAPI() = default;
 void AIChatFeedbackAPI::SendRating(
     bool is_liked,
     bool is_premium,
-    const base::span<const mojom::ConversationTurn>& history,
+    const base::span<const mojom::ConversationTurnPtr>& history,
     const std::string& model_name,
     api_request_helper::APIRequestHelper::ResultCallback on_complete_callback) {
   base::Value::Dict payload;
@@ -87,10 +87,10 @@ void AIChatFeedbackAPI::SendRating(
   for (auto& turn : history) {
     base::Value::Dict turn_dict;
     turn_dict.Set("id", id);
-    turn_dict.Set("type", turn.character_type == mojom::CharacterType::HUMAN
+    turn_dict.Set("type", turn->character_type == mojom::CharacterType::HUMAN
                               ? "human"
                               : "assistant");
-    turn_dict.Set("content", turn.text);
+    turn_dict.Set("content", turn->text);
     ++id;
 
     chat.Append(std::move(turn_dict));

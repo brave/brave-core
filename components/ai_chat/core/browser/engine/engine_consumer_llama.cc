@@ -24,6 +24,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -33,7 +34,7 @@
 
 namespace {
 
-using ai_chat::mojom::ConversationTurn;
+using ai_chat::mojom::ConversationTurnPtr;
 
 constexpr char kLlama2Bos[] = "<s>";
 constexpr char kLlama2Eos[] = "</s>";
@@ -195,7 +196,7 @@ std::string BuildLlamaGenerateQuestionsPrompt(bool is_video,
 }
 
 std::string BuildLlamaPrompt(
-    const std::vector<ConversationTurn>& conversation_history,
+    const ai_chat::EngineConsumer::ConversationHistory& conversation_history,
     std::string page_content,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
@@ -214,11 +215,11 @@ std::string BuildLlamaPrompt(
   std::string raw_first_user_message;
   if (conversation_history.size() > 0) {
     raw_first_user_message =
-        conversation_history[0].selected_text
-            ? base::StrCat({conversation_history[0].text,
+        conversation_history[0]->selected_text
+            ? base::StrCat({conversation_history[0]->text,
                             kSelectedTextPromptPlaceholder,
-                            *conversation_history[0].selected_text})
-            : conversation_history[0].text;
+                            *conversation_history[0]->selected_text})
+            : conversation_history[0]->text;
   } else {
     raw_first_user_message =
         selected_text
@@ -266,19 +267,19 @@ std::string BuildLlamaPrompt(
   // Use the first two messages to build the first sequence,
   // which includes the system prompt.
   std::string prompt = BuildLlamaFirstSequence(
-      today_system_message, first_user_message, conversation_history[1].text,
+      today_system_message, first_user_message, conversation_history[1]->text,
       std::nullopt, is_mixtral);
 
   // Loop through the rest of the history two at a time building subsequent
   // sequences.
   for (size_t i = 2; i + 1 < conversation_history.size(); i += 2) {
     std::string prev_user_message =
-        conversation_history[i].selected_text
-            ? base::StrCat({conversation_history[i].text,
+        conversation_history[i]->selected_text
+            ? base::StrCat({conversation_history[i]->text,
                             kSelectedTextPromptPlaceholder,
-                            *conversation_history[i].selected_text})
-            : conversation_history[i].text;
-    const std::string& assistant_message = conversation_history[i + 1].text;
+                            *conversation_history[i]->selected_text})
+            : conversation_history[i]->text;
+    const std::string& assistant_message = conversation_history[i + 1]->text;
     prompt += BuildLlamaSubsequentSequence(
         prev_user_message, assistant_message,
         (is_mixtral) ? std::optional(kMixtralAssistantTag) : std::nullopt,

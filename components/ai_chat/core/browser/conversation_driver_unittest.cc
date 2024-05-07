@@ -21,6 +21,7 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -44,6 +45,17 @@ using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
 namespace ai_chat {
 
 namespace {
+
+bool CompareConversationTurn(const mojom::ConversationTurnPtr& a,
+                             const mojom::ConversationTurnPtr& b) {
+  if (!a || !b) {
+    return a == b;  // Both should be null or neither
+  }
+  return a->action_type == b->action_type &&
+         a->character_type == b->character_type &&
+         a->selected_text == b->selected_text && a->text == b->text &&
+         a->visibility == b->visibility;
+}
 
 class MockConversationDriverObserver : public ConversationDriver::Observer {
  public:
@@ -178,20 +190,20 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
   EXPECT_TRUE(conversation_driver_->GetArticleTextForTesting().empty());
   EXPECT_TRUE(conversation_driver_->IsSuggestionsEmptyForTesting());
   auto& history = conversation_driver_->GetConversationHistory();
-  EXPECT_EQ(
-      history,
-      std::vector<mojom::ConversationTurn>(
-          {mojom::ConversationTurn(
-               mojom::CharacterType::HUMAN,
-               mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-               mojom::ConversationTurnVisibility::VISIBLE,
-               l10n_util::GetStringUTF8(
-                   IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-               "I have spoken."),
-           mojom::ConversationTurn(mojom::CharacterType::ASSISTANT,
-                                   mojom::ActionType::RESPONSE,
-                                   mojom::ConversationTurnVisibility::VISIBLE,
-                                   "This is the way.", std::nullopt)}));
+  std::vector<mojom::ConversationTurnPtr> expected_history;
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
+      "I have spoken."));
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
+      std::nullopt));
+  EXPECT_EQ(history.size(), expected_history.size());
+  for (size_t i = 0; i < history.size(); i++) {
+    EXPECT_TRUE(CompareConversationTurn(history[i], expected_history[i]));
+  }
 
   // 2. Test with page contents.
   is_page_content_linked = true;
@@ -221,31 +233,29 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
   EXPECT_FALSE(conversation_driver_->GetArticleTextForTesting().empty());
   EXPECT_TRUE(conversation_driver_->IsSuggestionsEmptyForTesting());
   auto& history2 = conversation_driver_->GetConversationHistory();
-  EXPECT_EQ(
-      history2,
-      std::vector<mojom::ConversationTurn>(
-          {mojom::ConversationTurn(
-               mojom::CharacterType::HUMAN,
-               mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-               mojom::ConversationTurnVisibility::VISIBLE,
-               l10n_util::GetStringUTF8(
-                   IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-               "I have spoken."),
-           mojom::ConversationTurn(mojom::CharacterType::ASSISTANT,
-                                   mojom::ActionType::RESPONSE,
-                                   mojom::ConversationTurnVisibility::VISIBLE,
-                                   "This is the way.", std::nullopt),
-           mojom::ConversationTurn(
-               mojom::CharacterType::HUMAN,
-               mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-               mojom::ConversationTurnVisibility::VISIBLE,
-               l10n_util::GetStringUTF8(
-                   IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-               "I have spoken again."),
-           mojom::ConversationTurn(mojom::CharacterType::ASSISTANT,
-                                   mojom::ActionType::RESPONSE,
-                                   mojom::ConversationTurnVisibility::VISIBLE,
-                                   "This is the way.", std::nullopt)}));
+  std::vector<mojom::ConversationTurnPtr> expected_history2;
+  expected_history2.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
+      "I have spoken."));
+  expected_history2.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
+      std::nullopt));
+  expected_history2.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
+      "I have spoken again."));
+  expected_history2.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
+      std::nullopt));
+  EXPECT_EQ(history2.size(), expected_history2.size());
+  for (size_t i = 0; i < history2.size(); i++) {
+    EXPECT_TRUE(CompareConversationTurn(history2[i], expected_history2[i]));
+  }
 }
 
 TEST_F(ConversationDriverUnitTest, PrintPreviewFallback) {

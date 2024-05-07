@@ -23,6 +23,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -60,18 +61,18 @@ static constexpr auto kStopSequences =
     base::MakeFixedFlatSet<std::string_view>({kHumanPromptSequence});
 
 std::string GetConversationHistoryString(
-    const std::vector<ConversationTurn>& conversation_history) {
+    const EngineConsumer::ConversationHistory& conversation_history) {
   std::vector<std::string> turn_strings;
-  for (const ConversationTurn& turn : conversation_history) {
-    turn_strings.push_back((turn.character_type == CharacterType::HUMAN
+  for (const mojom::ConversationTurnPtr& turn : conversation_history) {
+    turn_strings.push_back((turn->character_type == CharacterType::HUMAN
                                 ? kHumanPromptPlaceholder
                                 : kAIPromptPlaceholder) +
-                           turn.text);
-    if (turn.selected_text) {
-      DCHECK(turn.character_type == CharacterType::HUMAN);
+                           turn->text);
+    if (turn->selected_text) {
+      DCHECK(turn->character_type == CharacterType::HUMAN);
       turn_strings.back() =
           base::StrCat({turn_strings.back(), kSelectedTextPromptPlaceholder,
-                        *turn.selected_text});
+                        *turn->selected_text});
     }
   }
 
@@ -83,7 +84,7 @@ std::string BuildClaudePrompt(
     const std::string& page_content,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
-    const std::vector<ConversationTurn>& conversation_history) {
+    const EngineConsumer::ConversationHistory& conversation_history) {
   auto prompt_segment_article =
       page_content.empty()
           ? ""

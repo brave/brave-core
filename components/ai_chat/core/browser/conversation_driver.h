@@ -76,15 +76,15 @@ class ConversationDriver {
   void SetDefaultModel(const std::string& model_key);
   const mojom::Model& GetCurrentModel();
   std::vector<mojom::ModelPtr> GetModels();
-  const std::vector<mojom::ConversationTurn>& GetConversationHistory();
+  const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> GetVisibleConversationHistory();
   // Whether the UI for this conversation is open or not. Determines
   // whether content is retrieved and queries are sent for the conversation
   // when the page changes.
   void OnConversationActiveChanged(bool is_conversation_active);
-  void AddToConversationHistory(mojom::ConversationTurn turn);
+  void AddToConversationHistory(mojom::ConversationTurnPtr turn);
   void UpdateOrCreateLastAssistantEntry(std::string text);
-  void SubmitHumanConversationEntry(mojom::ConversationTurn turn);
+  void SubmitHumanConversationEntry(mojom::ConversationTurnPtr turn);
   void RetryAPIRequest();
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
@@ -192,7 +192,6 @@ class ConversationDriver {
   void PerformAssistantGeneration(
       const std::string& input,
       std::optional<std::string> selected_text,
-      const std::vector<mojom::ConversationTurn>& history,
       int64_t current_navigation_id,
       std::string page_content = "",
       bool is_video = false,
@@ -237,8 +236,7 @@ class ConversationDriver {
 
   // TODO(nullhook): Abstract the data model
   std::string model_key_;
-  // TODO(nullhook): Change this to mojo::StructPtr
-  std::vector<mojom::ConversationTurn> chat_history_;
+  std::vector<mojom::ConversationTurnPtr> chat_history_;
   bool is_conversation_active_ = false;
 
   // Page content
@@ -267,7 +265,7 @@ class ConversationDriver {
   mojom::APIError current_error_ = mojom::APIError::None;
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
 
-  std::unique_ptr<mojom::ConversationTurn> pending_conversation_entry_;
+  mojom::ConversationTurnPtr pending_conversation_entry_;
 
   base::WeakPtrFactory<ConversationDriver> weak_ptr_factory_{this};
 };
