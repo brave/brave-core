@@ -59,6 +59,8 @@ extension UTType {
 
 // MARK: WKNavigationDelegate
 extension BrowserViewController: WKNavigationDelegate {
+  private static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "navigation")
+
   public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!)
   {
     if tabManager.selectedTab?.webView !== webView {
@@ -314,8 +316,8 @@ extension BrowserViewController: WKNavigationDelegate {
         tab.loadRequest(modifiedRequest)
 
         if let url = modifiedRequest.url {
-          ContentBlockerManager.log.debug(
-            "Redirected user to `\(url.absoluteString, privacy: .private)`"
+          Self.log.debug(
+            "Redirected to `\(url.absoluteString, privacy: .private)`"
           )
         }
 
@@ -616,14 +618,14 @@ extension BrowserViewController: WKNavigationDelegate {
     // Handle invalid upgrade to https
     if isInvalid,
       navigationResponse.isForMainFrame,
-      let upgradedRequest = tab?.upgradedHTTPSRequest,
-      let url = upgradedRequest.url,
-      responseURL?.baseDomain == url.baseDomain,
-      responseURL?.scheme == "https"
+      let responseURL = responseURL,
+      let tab = tab,
+      let originalResponse = handleInvalidHTTPSUpgrade(
+        tab: tab,
+        responseURL: responseURL
+      )
     {
-      tab?.upgradedHTTPSRequest = nil
-      braveCore.httpsUpgradeExceptionsService.addException(for: url)
-      tab?.loadRequest(upgradedRequest)
+      tab.loadRequest(originalResponse)
       return .cancel
     }
 
@@ -946,9 +948,6 @@ extension BrowserViewController: WKNavigationDelegate {
 
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     if let tab = tabManager[webView] {
-      /// Clear the upgraded request as we have a successful navigation
-      tab.upgradedHTTPSRequest = nil
-
       // Inject app's IAP receipt for Brave SKUs if necessary
       if !tab.isPrivate {
         Task { @MainActor in
@@ -1023,6 +1022,17 @@ extension BrowserViewController: WKNavigationDelegate {
     withError error: Error
   ) {
     guard let tab = tab(for: webView) else { return }
+
+    // Handle invalid upgrade to https
+    if let responseURL = webView.url,
+      let response = handleInvalidHTTPSUpgrade(
+        tab: tab,
+        responseURL: responseURL
+      )
+    {
+      tab.loadRequest(response)
+      return
+    }
 
     // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
     // to open an external application and hand it over to UIApplication.openURL(). The result
@@ -1731,6 +1741,10 @@ extension BrowserViewController: WKUIDelegate {
           modifiedRequest.setValue(headerValue, forHTTPHeaderField: headerKey)
         }
 
+        Self.log.debug(
+          "Debouncing `\(requestURL.absoluteString)`"
+        )
+
         return modifiedRequest
       }
     }
@@ -1741,13 +1755,20 @@ extension BrowserViewController: WKUIDelegate {
       redirectSourceURL: tab.redirectSourceURL,
       isInternalRedirect: tab.isInternalRedirect
     ) {
+      Self.log.debug(
+        "Stripping query params for `\(requestURL.absoluteString)`"
+      )
       return request
     }
 
     // Attempt to upgrade to HTTPS
-    if Preferences.Shields.httpsEverywhere.value,
+    if ShieldPreferences.httpsUpgradeLevel.isEnabled,
       let upgradedURL = braveCore.httpsUpgradeExceptionsService.upgradeToHTTPS(for: requestURL)
     {
+      Self.log.debug(
+        "Upgrading `\(requestURL.absoluteString)` to HTTPS"
+      )
+
       tab.upgradedHTTPSRequest = navigationAction.request
       var request = navigationAction.request
       request.url = upgradedURL
@@ -1755,6 +1776,39 @@ extension BrowserViewController: WKUIDelegate {
     }
 
     return nil
+  }
+
+  /// Upon an invalid response, check that we need to roll back any HTTPS upgrade
+  /// or show the interstitial page
+  private func handleInvalidHTTPSUpgrade(tab: Tab, responseURL: URL) -> URLRequest? {
+    // Handle invalid upgrade to https
+    guard responseURL.scheme == "https",
+      let originalRequest = tab.upgradedHTTPSRequest,
+      let originalURL = originalRequest.url,
+      responseURL.baseDomain == originalURL.baseDomain
+    else {
+      braveCore.httpsUpgradeExceptionsService.addException(for: responseURL)
+      return nil
+    }
+
+    if ShieldPreferences.httpsUpgradeLevel.isStrict,
+      let url = originalURL.encodeEmbeddedInternalURL(for: .httpBlocked)
+    {
+      Self.log.debug(
+        "Show http blocked interstitial for `\(originalURL.absoluteString)`"
+      )
+
+      let request = PrivilegedRequest(url: url) as URLRequest
+      return request
+    } else {
+      Self.log.debug(
+        "Revert HTTPS upgrade for `\(originalURL.absoluteString)`"
+      )
+
+      tab.upgradedHTTPSRequest = nil
+      braveCore.httpsUpgradeExceptionsService.addException(for: originalURL)
+      return originalRequest
+    }
   }
 }
 

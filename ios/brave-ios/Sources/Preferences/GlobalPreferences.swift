@@ -40,10 +40,8 @@ extension Preferences {
 
   public final class Shields {
     public static let allShields = [
-      httpsEverywhere, googleSafeBrowsing, blockScripts, fingerprintingProtection, blockImages,
+      googleSafeBrowsing, blockScripts, fingerprintingProtection, blockImages,
     ]
-    /// Websites will be upgraded to HTTPS if a loaded page attempts to use HTTP
-    public static let httpsEverywhere = Option<Bool>(key: "shields.https-everywhere", default: true)
     /// Enable Google Safe Browsing
     public static let googleSafeBrowsing = Option<Bool>(
       key: "shields.google-safe-browsing",

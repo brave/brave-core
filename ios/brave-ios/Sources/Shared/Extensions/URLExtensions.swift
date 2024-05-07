@@ -467,6 +467,7 @@ public struct InternalURL {
     case sessionrestore
     case readermode = "reader-mode"
     case blocked
+    case httpBlocked = "http-blocked"
 
     func matches(_ string: String) -> Bool {
       return string.range(
@@ -545,6 +546,10 @@ public struct InternalURL {
 
   public var isBlockedPage: Bool {
     return InternalURL.Path.blocked.matches(url.path)
+  }
+
+  public var isHTTPBlockedPage: Bool {
+    return InternalURL.Path.httpBlocked.matches(url.path)
   }
 
   public var isReaderModePage: Bool {
