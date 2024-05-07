@@ -34,7 +34,6 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
       content::RenderFrame* render_frame,
       media::GetSupportedKeySystemsCB cb) override;
   void RunScriptsAtDocumentStart(content::RenderFrame* render_frame) override;
-  void RunScriptsAtDocumentEnd(content::RenderFrame* render_frame) override;
   void WillEvaluateServiceWorkerOnWorkerThread(
       blink::WebServiceWorkerContextProxy* context_proxy,
       v8::Local<v8::Context> v8_context,

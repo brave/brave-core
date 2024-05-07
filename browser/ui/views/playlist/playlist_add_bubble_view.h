@@ -47,7 +47,7 @@ class PlaylistAddBubbleView : public PlaylistBubbleView,
                            MediaShouldBeExtractedFromBackground_FailToExtract);
 
   // PlaylistTabHelperObserver:
-  void PlaylistTabHelperWillBeDestroyed() override;
+  void PlaylistTabHelperWillBeDestroyed(PlaylistTabHelper* tab_helper) override;
   void OnAddedItemFromTabHelper(
       const std::vector<mojom::PlaylistItemPtr>& items) override;
 

@@ -12,10 +12,6 @@ assert(enable_playlist)
 # https://github.com/brave/brave-browser/issues/27764
 static_library("browser") {
   sources = [
-    "media_detector_component_installer.cc",
-    "media_detector_component_installer.h",
-    "media_detector_component_manager.cc",
-    "media_detector_component_manager.h",
     "mime_util.cc",
     "mime_util.h",
     "playlist_background_web_contents_helper.cc",
@@ -27,8 +23,6 @@ static_library("browser") {
     "playlist_media_file_download_manager.h",
     "playlist_media_file_downloader.cc",
     "playlist_media_file_downloader.h",
-    "playlist_media_handler.cc",
-    "playlist_media_handler.h",
     "playlist_p3a.cc",
     "playlist_p3a.h",
     "playlist_service.cc",
@@ -62,6 +56,8 @@ static_library("browser") {
     "//content/public/browser",
     "//content/public/common",
     "//crypto",
+    "//services/media_session/public/cpp",
+    "//services/media_session/public/mojom",
     "//services/network/public/cpp",
     "//services/preferences/public/cpp",
     "//third_party/blink/public/common",

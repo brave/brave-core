@@ -152,7 +152,9 @@ PlaylistAddBubbleView::PlaylistAddBubbleView(
 
 PlaylistAddBubbleView::~PlaylistAddBubbleView() = default;
 
-void PlaylistAddBubbleView::PlaylistTabHelperWillBeDestroyed() {
+void PlaylistAddBubbleView::PlaylistTabHelperWillBeDestroyed(
+    PlaylistTabHelper* tab_helper) {
+  CHECK_EQ(tab_helper_observation_.GetSource(), tab_helper);
   tab_helper_observation_.Reset();
 }
 

@@ -254,7 +254,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/browser/playlist_background_web_contents_helper.h"
-#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #endif
 
@@ -590,13 +589,6 @@ void BraveContentBrowserClient::
           },
           &render_frame_host));
 #endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-  associated_registry.AddInterface<playlist::mojom::PlaylistMediaResponder>(
-      base::BindRepeating(
-          &playlist::PlaylistMediaHandler::BindMediaResponderReceiver,
-          &render_frame_host));
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
