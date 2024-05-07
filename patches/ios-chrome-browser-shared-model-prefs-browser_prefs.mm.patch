@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 968842187d82d7b3c34b19598628aaf4f2b046f1..46ae34d7bdf069ffcd2561987eb7d2fd4a04cfa5 100644
+index 474c81b4c19af0bd490dec42c9cedc61fe2d3359..e8cd2aa080b0b705df9ad89fd974a5208fa586f2 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -518,6 +518,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -521,6 +521,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterStringPref(kIOSChromeNextVersionKey, std::string());
    registry->RegisterStringPref(kIOSChromeUpgradeURLKey, std::string());
    registry->RegisterTimePref(kLastInfobarDisplayTimeKey, base::Time());
@@ -10,7 +10,7 @@ index 968842187d82d7b3c34b19598628aaf4f2b046f1..46ae34d7bdf069ffcd2561987eb7d2fd
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -790,6 +791,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -793,6 +794,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterIntegerPref(spotlight::kSpotlightLastIndexingVersionKey, 0);
    registry->RegisterTimePref(spotlight::kSpotlightLastIndexingDateKey,
                               base::Time());

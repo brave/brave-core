@@ -1,5 +1,5 @@
 diff --git a/net/dns/BUILD.gn b/net/dns/BUILD.gn
-index 19a205a32f146c8536fa7646af7f2f7c9b3b62ee..8f527366cbd4b80f9251d2e321cb04a1f26932fa 100644
+index 63414d8db326c0fdd44ed59f99400d5c16cfc93c..4bf973f2766f224d74aa96f11eec2e106cd67d3c 100644
 --- a/net/dns/BUILD.gn
 +++ b/net/dns/BUILD.gn
 @@ -108,6 +108,7 @@ source_set("dns") {

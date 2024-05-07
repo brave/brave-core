@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-index 100e2ee479988319bed1f7dc9a7c37d029f81822..474e8b2f40a8956ee086c8837985409e47f030c9 100644
+index 6d83c6141300618be5e1063f0ddf34f08a94bc2a..458d912e1cd39e6e44b41d7a8709ada69bdf08fd 100644
 --- a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 +++ b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 @@ -129,6 +129,7 @@ content::WebUIDataSource* CreateAndAddBookmarksUIHTMLSource(Profile* profile) {
