@@ -451,7 +451,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     int id,
     WindowOpenDisposition disposition,
     base::TimeTicks time_stamp) {
-  LOG(ERROR) << (int)disposition;
   if (!SupportsCommand(id) || !IsCommandEnabled(id)) {
     return false;
   }
