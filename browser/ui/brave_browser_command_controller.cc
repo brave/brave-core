@@ -13,7 +13,6 @@
 #include "base/containers/contains.h"
 #include "base/debug/stack_trace.h"
 #include "base/feature_list.h"
-#include "base/metrics/user_metrics.h"
 #include "base/notreached.h"
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
@@ -77,7 +76,6 @@ bool IsBraveOverrideCommands(int id) {
   static std::vector<int> override_commands({
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
-      IDC_CLOSE_TAB,
   });
   return base::Contains(override_commands, id);
 }
@@ -453,6 +451,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     int id,
     WindowOpenDisposition disposition,
     base::TimeTicks time_stamp) {
+  LOG(ERROR) << (int)disposition;
   if (!SupportsCommand(id) || !IsCommandEnabled(id)) {
     return false;
   }
@@ -659,15 +658,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_BREAK_TILE:
       brave::BreakTiles(&*browser_);
-      break;
-    case IDC_CLOSE_TAB:
-      {
-        int activeTabIndex = browser_->tab_strip_model()->active_index();
-        if( !browser_->tab_strip_model()->IsTabPinned(activeTabIndex) ) {
-          base::RecordAction(base::UserMetricsAction("CloseTabByKey"));
-          CloseTab(&*browser_);
-        }
-      }
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
