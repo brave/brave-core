@@ -153,6 +153,7 @@ EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
     const mojom::Model& model,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager) {
+  DCHECK(!features::kConversationAPIEnabled.Get());
   DCHECK(!model.name.empty());
   base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
                                                   kStopSequences.end());

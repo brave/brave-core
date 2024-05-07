@@ -37,11 +37,11 @@ class AIChatCredentialManager {
 
   AIChatCredentialManager(const AIChatCredentialManager&) = delete;
   AIChatCredentialManager& operator=(const AIChatCredentialManager&) = delete;
-  ~AIChatCredentialManager();
+  virtual ~AIChatCredentialManager();
 
   void GetPremiumStatus(mojom::PageHandler::GetPremiumStatusCallback callback);
 
-  void FetchPremiumCredential(
+  virtual void FetchPremiumCredential(
       base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
           callback);
 

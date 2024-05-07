@@ -10,4 +10,8 @@ namespace ai_chat {
 EngineConsumer::EngineConsumer() = default;
 EngineConsumer::~EngineConsumer() = default;
 
+bool EngineConsumer::SupportsDeltaTextResponses() const {
+  return false;
+}
+
 }  // namespace ai_chat

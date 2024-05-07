@@ -190,7 +190,7 @@ class APIRequestHelper {
   APIRequestHelper(
       net::NetworkTrafficAnnotationTag annotation_tag,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~APIRequestHelper();
+  virtual ~APIRequestHelper();
 
   // Each response is expected in json format and will be validated through
   // JsonSanitizer. In cases where json contains values that are not supported
@@ -208,16 +208,29 @@ class APIRequestHelper {
       const APIRequestOptions& request_options = {},
       ResponseConversionCallback conversion_callback = base::NullCallback());
 
-  Ticket RequestSSE(
+  // TODO(petemill): Avoid needing this to be virtual only for mocking during
+  // testing by using an interface, delegates, intercepting streaming, or
+  // another pattern.
+  virtual Ticket RequestSSE(
       const std::string& method,
       const GURL& url,
       const std::string& payload,
       const std::string& payload_content_type,
       DataReceivedCallback data_received_callback,
       ResultCallback result_callback,
-      const base::flat_map<std::string, std::string>& headers = {},
-      const APIRequestOptions& request_options = {},
-      ResponseStartedCallback response_started_callback = base::NullCallback());
+      const base::flat_map<std::string, std::string>& headers,
+      const APIRequestOptions& request_options);
+
+  virtual Ticket RequestSSE(
+      const std::string& method,
+      const GURL& url,
+      const std::string& payload,
+      const std::string& payload_content_type,
+      DataReceivedCallback data_received_callback,
+      ResultCallback result_callback,
+      const base::flat_map<std::string, std::string>& headers,
+      const APIRequestOptions& request_options,
+      ResponseStartedCallback response_started_callback);
 
   void Cancel(const Ticket& ticket);
   void CancelAll();
