@@ -95,6 +95,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                     SendFeedbackCallback callback) override;
   void ClosePanel() override;
   void GetActionMenuList(GetActionMenuListCallback callback) override;
+  void OpenModelSupportUrl() override;
 
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;

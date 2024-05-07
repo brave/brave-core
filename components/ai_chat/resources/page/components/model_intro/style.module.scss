@@ -29,11 +29,33 @@
     margin: 0;
     font: var(--leo-font-small-regular);
     color: var(--leo-color-text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
+}
 
-  .modelIntro {
-    margin: 14px 0 0 0;
-    font: var(--leo-font-default-regular);
-    color: var(--leo-color-text-primary);
+.tooltipButton {
+  --leo-button-padding: 0;
+
+  leo-icon {
+    --leo-icon-size: 14px;
+    --leo-icon-color: var(--leo-color-text-tertiary);
+  }
+}
+
+.tooltip {
+  --leo-tooltip-padding: var(--leo-spacing-xl);
+  height: 14px;
+}
+
+.tooltipContent {
+  max-width: 240px;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-primary);
+
+  a {
+    display: block;
+    color: var(--leo-color-text-interactive);
   }
 }

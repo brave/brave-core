@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ai_chat/core/browser/constants.h"
+
 #include <utility>
 
 #include "base/strings/strcat.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
@@ -290,4 +291,7 @@ const base::fixed_flat_set<std::string_view, 1> kPrintPreviewRetrievalHosts =
                                                  "docs.google.com",
                                              });
 
+const char kLeoModelSupportUrl[] =
+    "https://support.brave.com/hc/en-us/categories/"
+    "20990938292237-Brave-Leo";
 }  // namespace ai_chat

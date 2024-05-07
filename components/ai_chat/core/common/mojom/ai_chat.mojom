@@ -214,6 +214,7 @@ interface PageHandler {
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
   ClosePanel();
   GetActionMenuList() => (array<ActionGroup> action_list);
+  OpenModelSupportUrl();
 };
 
 interface ChatUIPage {
