@@ -6,9 +6,5 @@
 #define BRAVE_BOOKMARK_BUBBLE_VIEW_SHOW_BUBBLE_SET_ARROW \
   bubble->SetArrow(views::BubbleBorder::TOP_LEFT);
 
-#define BRAVE_BOOKMARK_BUBBLE_VIEW_SHOW_BUBBLE_SHOW_SIMPLIFIED \
-  show_simplified_flow = false;
-
 #include "src/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc"
-#undef BRAVE_BOOKMARK_BUBBLE_VIEW_SHOW_BUBBLE_SHOW_SIMPLIFIED
 #undef BRAVE_BOOKMARK_BUBBLE_VIEW_SHOW_BUBBLE_SET_ARROW
