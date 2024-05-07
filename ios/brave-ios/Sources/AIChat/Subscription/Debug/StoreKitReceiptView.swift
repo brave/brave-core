@@ -44,40 +44,38 @@ public struct StoreKitReceiptView: View {
 
   public var body: some View {
     if let receipt = receipt {
-      NavigationView {
-        List {
-          StoreKitReceiptLineView(title: "Bundle ID", value: receipt.bundleId)
+      List {
+        StoreKitReceiptLineView(title: "Bundle ID", value: receipt.bundleId)
 
-          StoreKitReceiptLineView(title: "Application Version", value: receipt.appVersion)
+        StoreKitReceiptLineView(title: "Application Version", value: receipt.appVersion)
 
-          StoreKitReceiptLineView(title: "SHA-1 Hash", value: receipt.sha1Hash)
+        StoreKitReceiptLineView(title: "SHA-1 Hash", value: receipt.sha1Hash)
 
-          StoreKitReceiptLineView(
-            title: "Creation Date",
-            value: formatDate(receipt.receiptCreationDate)
-          )
+        StoreKitReceiptLineView(
+          title: "Creation Date",
+          value: formatDate(receipt.receiptCreationDate)
+        )
 
-          StoreKitReceiptLineView(
-            title: "Expiration Date",
-            value: formatDate(receipt.receiptExpirationDate)
-          )
+        StoreKitReceiptLineView(
+          title: "Expiration Date",
+          value: formatDate(receipt.receiptExpirationDate)
+        )
 
-          NavigationLink(
-            destination: {
-              groupedProductsView(for: receipt.inAppPurchaseReceipts)
-            },
-            label: {
-              Text("In-App Purchases")
-                .font(.headline)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-          )
-          .navigationTitle("AppStore Receipt")
-          .navigationBarTitleDisplayMode(.inline)
-          .buttonStyle(PlainButtonStyle())
-          .padding()
-        }
+        NavigationLink(
+          destination: {
+            groupedProductsView(for: receipt.inAppPurchaseReceipts)
+          },
+          label: {
+            Text("In-App Purchases")
+              .font(.headline)
+              .fixedSize(horizontal: false, vertical: true)
+              .frame(maxWidth: .infinity, alignment: .leading)
+          }
+        )
+        .navigationTitle("AppStore Receipt")
+        .navigationBarTitleDisplayMode(.inline)
+        .buttonStyle(PlainButtonStyle())
+        .padding()
       }
       .navigationTitle("AppStore Receipt")
       .navigationViewStyle(.stack)
@@ -85,18 +83,16 @@ public struct StoreKitReceiptView: View {
         controller.navigationBar.topItem?.backButtonDisplayMode = .minimal
       }
     } else {
-      NavigationView {
-        Text("No AppStore Receipt")
-      }
-      .navigationTitle("AppStore Receipt")
-      .navigationViewStyle(.stack)
-      .task {
-        if let receipt = try? AppStoreReceipt.receipt {
-          if let data = Data(base64Encoded: receipt) {
-            self.receipt = BraveStoreKitReceipt(data: data)
+      Text("No AppStore Receipt")
+        .navigationTitle("AppStore Receipt")
+        .navigationViewStyle(.stack)
+        .task {
+          if let receipt = try? AppStoreReceipt.receipt {
+            if let data = Data(base64Encoded: receipt) {
+              self.receipt = BraveStoreKitReceipt(data: data)
+            }
           }
         }
-      }
     }
   }
 
