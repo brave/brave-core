@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/global_media_controls/cast_media_session_controller.cc b/chrome/browser/ui/global_media_controls/cast_media_session_controller.cc
+index 60d970fb05721abefd1c7a27a99340dbdfdbf7b8..4830e72d2906aab0822d3ae898e9753432b69d74 100644
+--- a/chrome/browser/ui/global_media_controls/cast_media_session_controller.cc
++++ b/chrome/browser/ui/global_media_controls/cast_media_session_controller.cc
+@@ -63,6 +63,7 @@ void CastMediaSessionController::Send(
+     case media_session::mojom::MediaSessionAction::kScrubTo:
+     case media_session::mojom::MediaSessionAction::kEnterPictureInPicture:
+     case media_session::mojom::MediaSessionAction::kExitPictureInPicture:
++    case media_session::mojom::MediaSessionAction::kDownload:
+     case media_session::mojom::MediaSessionAction::kSwitchAudioDevice:
+     case media_session::mojom::MediaSessionAction::kToggleMicrophone:
+     case media_session::mojom::MediaSessionAction::kToggleCamera:

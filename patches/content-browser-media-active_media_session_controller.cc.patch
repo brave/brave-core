@@ -1,0 +1,21 @@
+diff --git a/content/browser/media/active_media_session_controller.cc b/content/browser/media/active_media_session_controller.cc
+index e1adce25088dd5182e44ec6a89e9f1815b6ce012..9c5cdc9b9a907c0aef41f620862713c1dc155b6a 100644
+--- a/content/browser/media/active_media_session_controller.cc
++++ b/content/browser/media/active_media_session_controller.cc
+@@ -222,6 +222,8 @@ void ActiveMediaSessionController::PerformAction(MediaSessionAction action) {
+       media_controller_remote_->Stop();
+       ui::RecordMediaHardwareKeyAction(ui::MediaHardwareKeyAction::kStop);
+       return;
++    case MediaSessionAction::kDownload:
++      return;
+     case MediaSessionAction::kSeekBackward:
+     case MediaSessionAction::kSeekForward:
+     case MediaSessionAction::kSkipAd:
+@@ -283,6 +285,7 @@ ActiveMediaSessionController::MediaSessionActionToKeyCode(
+     case MediaSessionAction::kScrubTo:
+     case MediaSessionAction::kEnterPictureInPicture:
+     case MediaSessionAction::kExitPictureInPicture:
++    case MediaSessionAction::kDownload:
+     case MediaSessionAction::kSwitchAudioDevice:
+     case MediaSessionAction::kToggleMicrophone:
+     case MediaSessionAction::kToggleCamera:

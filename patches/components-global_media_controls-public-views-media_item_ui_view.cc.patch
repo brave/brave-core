@@ -1,0 +1,13 @@
+diff --git a/components/global_media_controls/public/views/media_item_ui_view.cc b/components/global_media_controls/public/views/media_item_ui_view.cc
+index 26db5429cea2a794f26a94e72510711113d7afd1..191b581b8a588e46a66b2a615c9fed9158b0c7de 100644
+--- a/components/global_media_controls/public/views/media_item_ui_view.cc
++++ b/components/global_media_controls/public/views/media_item_ui_view.cc
+@@ -40,7 +40,7 @@ namespace global_media_controls {
+ 
+ namespace {
+ 
+-constexpr int kWidth = 400;
++constexpr int kWidth = 460;
+ constexpr gfx::Size kNormalSize = gfx::Size(kWidth, 100);
+ constexpr gfx::Size kExpandedSize = gfx::Size(kWidth, 150);
+ constexpr gfx::Size kDismissButtonSize = gfx::Size(30, 30);

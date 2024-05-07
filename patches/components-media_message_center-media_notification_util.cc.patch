@@ -1,0 +1,30 @@
+diff --git a/components/media_message_center/media_notification_util.cc b/components/media_message_center/media_notification_util.cc
+index 34b66a3fdb67b1d32a4643842d003776c41d939e..dbcbdbc84f478c92c7f7ab12970106e453c7abec 100644
+--- a/components/media_message_center/media_notification_util.cc
++++ b/components/media_message_center/media_notification_util.cc
+@@ -31,6 +31,7 @@ constexpr MediaSessionAction kPreferredActions[] = {
+     MediaSessionAction::kSeekForward,
+     MediaSessionAction::kEnterPictureInPicture,
+     MediaSessionAction::kExitPictureInPicture,
++    MediaSessionAction::kDownload,
+ };
+ 
+ // The maximum number of media notifications to count when recording the
+@@ -129,6 +130,8 @@ const gfx::VectorIcon* GetVectorIconForMediaAction(MediaSessionAction action) {
+       return &kMediaEnterPipIcon;
+     case MediaSessionAction::kExitPictureInPicture:
+       return &kMediaExitPipIcon;
++    case MediaSessionAction::kDownload:
++      return &kMediaEnterPipIcon;
+     case MediaSessionAction::kStop:
+     case MediaSessionAction::kSkipAd:
+     case MediaSessionAction::kSeekTo:
+@@ -176,6 +179,8 @@ const std::u16string GetAccessibleNameForMediaAction(
+     case MediaSessionAction::kExitPictureInPicture:
+       return l10n_util::GetStringUTF16(
+           IDS_MEDIA_MESSAGE_CENTER_MEDIA_NOTIFICATION_ACTION_EXIT_PIP);
++    case MediaSessionAction::kDownload:
++      return u"Download";
+     case MediaSessionAction::kStop:
+     case MediaSessionAction::kSkipAd:
+     case MediaSessionAction::kSeekTo:

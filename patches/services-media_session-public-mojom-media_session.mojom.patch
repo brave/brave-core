@@ -1,0 +1,12 @@
+diff --git a/services/media_session/public/mojom/media_session.mojom b/services/media_session/public/mojom/media_session.mojom
+index ab98f7ed5dc6a2088279edc2fdf3aefcaadfb513..52609f720e508ee1db322b7ab59898674a0524a9 100644
+--- a/services/media_session/public/mojom/media_session.mojom
++++ b/services/media_session/public/mojom/media_session.mojom
+@@ -31,6 +31,7 @@ enum MediaSessionAction {
+   kScrubTo,
+   kEnterPictureInPicture,
+   kExitPictureInPicture,
++  kDownload,
+   kSwitchAudioDevice,
+   [MinVersion=11] kToggleMicrophone,
+   [MinVersion=11] kToggleCamera,
