@@ -40,7 +40,6 @@ struct PlaylistItem {
 
   // original sources
   url.mojom.Url page_source;
-  url.mojom.Url page_redirected;
   url.mojom.Url media_source;
   // indicates that |media_source| url is blob: and from MediaSource API.
   // In this case, we should additional process to cache media.
@@ -200,10 +199,6 @@ interface PlaylistServiceObserver {
       array<PlaylistItem> items);
 };
 
-interface PlaylistMediaResponder {
-  OnMediaDetected(array<PlaylistItem> items);
-};
-
 interface PlaylistStreamingObserver {
   OnResponseStarted(string url, int64 content_length);
   OnDataReceived(array<uint8> data_received);
@@ -211,6 +206,5 @@ interface PlaylistStreamingObserver {
 };
 
 interface PlaylistRenderFrameObserverConfigurator {
-  AddMediaSourceAPISuppressor(string media_source_api_suppressor);
-  AddMediaDetector(string media_detector);
+  EnableMediaSourceAPISuppressor();
 };

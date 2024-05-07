@@ -96,7 +96,9 @@ PlaylistEditBubbleView::PlaylistEditBubbleView(
 
 PlaylistEditBubbleView::~PlaylistEditBubbleView() = default;
 
-void PlaylistEditBubbleView::PlaylistTabHelperWillBeDestroyed() {
+void PlaylistEditBubbleView::PlaylistTabHelperWillBeDestroyed(
+    PlaylistTabHelper* tab_helper) {
+  CHECK_EQ(tab_helper_observation_.GetSource(), tab_helper);
   tab_helper_observation_.Reset();
 }
 

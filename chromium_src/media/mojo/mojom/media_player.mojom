@@ -5,8 +5,16 @@
 
 module media.mojom;
 
+import "url/mojom/url.mojom";
+
 [BraveExtend]
 interface MediaPlayer {
   // Request MediaPlayer to enter fullscreen mode.
   RequestFullscreen();
+};
+
+[BraveExtend]
+interface MediaPlayerObserver {
+  // Notifies that the player has loaded the media.
+  OnMediaLoaded(url.mojom.Url url, bool is_media_source, double duration);
 };

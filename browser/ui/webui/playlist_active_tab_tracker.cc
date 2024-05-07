@@ -34,7 +34,8 @@ void PlaylistActiveTabTracker::OnTabStripModelChanged(
   OnActiveTabChanged();
 }
 
-void PlaylistActiveTabTracker::PlaylistTabHelperWillBeDestroyed() {
+void PlaylistActiveTabTracker::PlaylistTabHelperWillBeDestroyed(
+    PlaylistTabHelper*) {
   playlist_tab_helper_observation_.Reset();
 }
 
@@ -44,6 +45,7 @@ void PlaylistActiveTabTracker::OnSavedItemsChanged(
 }
 
 void PlaylistActiveTabTracker::OnFoundItemsChanged(
+    const GURL&,
     const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
   callback_.Run(ShouldShowAddMediaFromPageUI());
 }

@@ -11,14 +11,20 @@
 #include "base/observer_list_types.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 
+class GURL;
+
 namespace playlist {
+
+class PlaylistTabHelper;
 
 class PlaylistTabHelperObserver : public base::CheckedObserver {
  public:
-  virtual void PlaylistTabHelperWillBeDestroyed() = 0;
+  virtual void PlaylistTabHelperWillBeDestroyed(
+      PlaylistTabHelper* tab_helper) = 0;
   virtual void OnSavedItemsChanged(
       const std::vector<mojom::PlaylistItemPtr>& items) {}
   virtual void OnFoundItemsChanged(
+      const GURL& url,
       const std::vector<mojom::PlaylistItemPtr>& items) {}
   virtual void OnAddedItemFromTabHelper(
       const std::vector<mojom::PlaylistItemPtr>& items) {}

@@ -19,6 +19,7 @@
 
 class Browser;
 class CommandUpdater;
+class GURL;
 
 namespace gfx {
 struct VectorIcon;
@@ -58,10 +59,12 @@ class PlaylistActionIconView : public PageActionIconView,
   void UpdateImpl() override;
 
   // PlaylistTabHelperObserver:
-  void PlaylistTabHelperWillBeDestroyed() override;
+  void PlaylistTabHelperWillBeDestroyed(
+      playlist::PlaylistTabHelper* tab_helper) override;
   void OnSavedItemsChanged(const std::vector<playlist::mojom::PlaylistItemPtr>&
                                saved_items) override;
-  void OnFoundItemsChanged(const std::vector<playlist::mojom::PlaylistItemPtr>&
+  void OnFoundItemsChanged(const GURL& url,
+                           const std::vector<playlist::mojom::PlaylistItemPtr>&
                                found_items) override;
   void OnAddedItemFromTabHelper(
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;

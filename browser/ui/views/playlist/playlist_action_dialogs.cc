@@ -444,7 +444,8 @@ void PlaylistMoveDialog::ContentsChanged(views::Textfield* sender,
   DialogModelChanged();
 }
 
-void PlaylistMoveDialog::PlaylistTabHelperWillBeDestroyed() {
+void PlaylistMoveDialog::PlaylistTabHelperWillBeDestroyed(
+    playlist::PlaylistTabHelper*) {
   if (auto* widget = GetWidget(); widget && !widget->IsClosed()) {
     GetWidget()->Close();
   }

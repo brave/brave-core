@@ -10,6 +10,8 @@
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 
+class GURL;
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -39,10 +41,11 @@ class PlaylistActiveTabTracker : public TabStripModelObserver,
       const TabStripSelectionChange& selection) override;
 
   // playlist::PlaylistTabHelperObserver:
-  void PlaylistTabHelperWillBeDestroyed() override;
+  void PlaylistTabHelperWillBeDestroyed(PlaylistTabHelper*) override;
   void OnSavedItemsChanged(
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
   void OnFoundItemsChanged(
+      const GURL&,
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
 
  private:
