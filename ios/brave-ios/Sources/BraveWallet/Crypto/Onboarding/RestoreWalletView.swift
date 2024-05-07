@@ -164,7 +164,7 @@ struct RestoreWalletView: View {
               isShowingPhraseError = false
             } label: {
               Text(
-                isShowingTwelvePhrases
+                !isShowingTwelvePhrases
                   ? Strings.Wallet.restoreWalletImportWithTwelvePhrases
                   : Strings.Wallet.restoreWalletImportFromTwentyFourPhrases
               )
