@@ -1426,4 +1426,25 @@ public class Utils {
             }
         });
     }
+
+    /**
+     * Gets truncated address from a valid full contract address.
+     * @param address full contract address
+     * @return truncated address
+     */
+    @NonNull
+    public static String getTruncatedAddress(@NonNull final String address) {
+        if (address.isEmpty()) {
+            Log.w(TAG, "Empty contract address.");
+            return "";
+        }
+        int prefixLength = address.startsWith("0x") ? 6 : 4;
+        int lastFourCharactersIndex = address.length() - 4;
+        if (lastFourCharactersIndex < 0 || prefixLength > address.length()) {
+            Log.w(TAG, "Invalid contract address.");
+            return "";
+        }
+        return (address.substring(0, prefixLength) + "***"
+                + address.substring(address.length() - 4));
+    }
 }

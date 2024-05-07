@@ -23,7 +23,6 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
@@ -169,7 +168,7 @@ public class BravePermissionAccountsListAdapter
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         final AccountInfo accountInfo = mAccountInfoArray[position];
         holder.titleText.setText(accountInfo.name);
-        holder.subTitleText.setText(AddressUtils.getTruncatedAddress(accountInfo.address));
+        holder.subTitleText.setText(Utils.getTruncatedAddress(accountInfo.address));
         Utils.setBlockiesBitmapResourceFromAccount(
                 mExecutor, mHandler, holder.iconImg, accountInfo, true, false);
 
