@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, waitFor } from '@testing-library/react'
 
 // utils
 import {
@@ -42,7 +42,8 @@ describe('useAccountQuery', () => {
     expect(hook.result.current.account).not.toBeDefined()
 
     // loading
-    await hook.waitFor(() => hook.result.all.length > 2)
+    await waitFor(() => !hook.result.current.isLoading)
+    await waitFor(() => hook.result.current.account)
 
     // loaded
     expect(hook.result.current.isLoading).toBe(false)

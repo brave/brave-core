@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, waitFor } from '@testing-library/react'
 
 // types
 import type { BraveWallet } from '../../../constants/types'
@@ -55,7 +55,7 @@ describe('api slice extra hooks', () => {
 
       // render
       const renderOptions = renderHookOptionsWithMockStore(store)
-      const { result, ...hook } = renderHook(
+      const { result } = renderHook(
         () =>
           useTransactionsNetworkQuery({
             chainId: mockTx.chainId,
@@ -69,7 +69,8 @@ describe('api slice extra hooks', () => {
       expect(result.current.isLoading).toBe(true)
 
       // loading
-      await hook.waitFor(() => result.all.length > 2)
+      await waitFor(() => !result.current.isLoading)
+      await waitFor(() => result.current.data)
 
       // done loading
       expect(result.current.isLoading).toBe(false)
