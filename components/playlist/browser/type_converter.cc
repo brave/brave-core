@@ -39,6 +39,7 @@ constexpr char kPlaylistItemThumbnailPathKey[] = "thumbnailPath";
 constexpr char kPlaylistItemMediaFilePathKey[] = "mediaFilePath";
 #if BUILDFLAG(IS_ANDROID)
 constexpr char kPlaylistItemHlsMediaFilePathKey[] = "hlsMediaFilePath";
+constexpr char kPlaylistItemIsSelectedKey[] = "isSelected";
 #endif  // BUILDFLAG(IS_ANDROID)
 constexpr char kPlaylistItemMediaFileCachedKey[] = "mediaCached";
 constexpr char kPlaylistItemTitleKey[] = "title";
@@ -71,7 +72,9 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
 
 #if BUILDFLAG(IS_ANDROID)
   // Added 2023 Dec.
-  isMalformed = isMalformed || !dict.contains(kPlaylistItemHlsMediaFilePathKey);
+  isMalformed = isMalformed ||
+                !dict.contains(kPlaylistItemHlsMediaFilePathKey) ||
+                !dict.contains(kPlaylistItemIsSelectedKey);
 #endif  // BUILDFLAG(IS_ANDROID)
   return isMalformed;
   // DO NOT ADD MORE
@@ -120,6 +123,7 @@ mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
 #if BUILDFLAG(IS_ANDROID)
   item->hls_media_path =
       GURL(*dict.FindString(kPlaylistItemHlsMediaFilePathKey));
+  item->is_selected = *dict.FindBool(kPlaylistItemIsSelectedKey);
 #endif  // BUILDFLAG(IS_ANDROID)
   item->cached = *dict.FindBool(kPlaylistItemMediaFileCachedKey);
   item->duration = *dict.FindString(kPlaylistItemDurationKey);
@@ -159,6 +163,7 @@ base::Value::Dict ConvertPlaylistItemToValue(
 #if BUILDFLAG(IS_ANDROID)
   playlist_value.Set(kPlaylistItemHlsMediaFilePathKey,
                      item->hls_media_path.spec());
+  playlist_value.Set(kPlaylistItemIsSelectedKey, item->is_selected);
 #endif  // BUILDFLAG(IS_ANDROID)
 
   base::Value::List parent;
