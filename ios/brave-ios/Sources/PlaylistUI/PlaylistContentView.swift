@@ -33,6 +33,7 @@ struct PlaylistContentView: View {
 
   @ObservedObject private var firstLoadAutoPlay = Preferences.Playlist.firstLoadAutoPlay
   @ObservedObject private var resumeFromLastTimePlayed = Preferences.Playlist.playbackLeftOff
+  @ObservedObject private var lastPlayedItemURL = Preferences.Playlist.lastPlayedItemUrl
 
   private var selectedFolder: PlaylistFolder? {
     folders.first(where: { $0.id == selectedFolderID })
@@ -208,14 +209,34 @@ struct PlaylistContentView: View {
       }
     }
     .onAppear {
+      // Make an initial queue assuming nothing selected
       makeItemQueue(selectedItemID: nil)
+      // Possibly update the selected folder based on the last item played
+      let lastPlayedItem: PlaylistItem? = lastPlayedItemURL.value
+        .map { PlaylistItem.getItems(pageSrc: $0) }?.first
       if let initialPlaybackInfo {
+        // If we're coming from a tab with some initial video data update the folder & item
         seekToInitialTimestamp = initialPlaybackInfo.timestamp
         selectedItemID = initialPlaybackInfo.itemID
-      } else if firstLoadAutoPlay.value {
-        selectedItemID = itemQueue.first
-        if resumeFromLastTimePlayed.value, let selectedItem {
-          seekToInitialTimestamp = selectedItem.lastPlayedOffset
+        if let folderID = selectedItem?.playlistFolder?.id {
+          selectedFolderID = folderID
+        }
+        // Remake the item queue with the newly selected item
+        makeItemQueue(selectedItemID: selectedItemID)
+      } else {
+        // Just opening playlist without inherited item data, so restore the previously watched item
+        // or just auto-play the first item if the pref is on
+        if let lastPlayedItem {
+          if let lastPlayedItemParentFolder = lastPlayedItem.playlistFolder {
+            selectedFolderID = lastPlayedItemParentFolder.id
+          }
+          selectedItemID = lastPlayedItem.id
+        } else if firstLoadAutoPlay.value {
+          // Start the first video in the queue if auto-play is enabled
+          if resumeFromLastTimePlayed.value, let selectedItem {
+            seekToInitialTimestamp = selectedItem.lastPlayedOffset
+          }
+          selectedItemID = itemQueue.first
         }
       }
       if selectedItem != nil {

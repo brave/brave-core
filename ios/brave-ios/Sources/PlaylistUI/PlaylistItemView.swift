@@ -49,6 +49,7 @@ struct PlaylistItemView: View {
             .fixedSize(horizontal: false, vertical: true)
             .font(.callout.weight(.semibold))
             .foregroundColor(Color(braveSystemName: .textPrimary))
+            .frame(maxWidth: .infinity, alignment: .leading)
           if isSelected {
             LeoPlayingSoundView(isAnimating: isPlaying)
               // FIXME: Should this scale? Its just cosmetic
