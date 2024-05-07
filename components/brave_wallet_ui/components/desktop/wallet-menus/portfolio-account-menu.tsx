@@ -41,7 +41,7 @@ export const PortfolioAccountMenu = (props: Props) => {
         </PopupButton>
       )}
       <PopupButton onClick={onClickDeposit}>
-        <ButtonIcon name='qr-code' />
+        <ButtonIcon name='money-bag-coins' />
         <PopupButtonText>
           {getLocale('braveWalletDepositCryptoButton')}
         </PopupButtonText>
