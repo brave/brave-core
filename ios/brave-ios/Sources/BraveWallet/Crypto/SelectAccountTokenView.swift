@@ -214,7 +214,7 @@ struct SelectAccountTokenView: View {
             title: tokenBalance.token.name,
             symbol: tokenBalance.token.symbol,
             networkName: tokenBalance.network.chainName,
-            quantity: String(format: "%.04f", tokenBalance.balance ?? 0).trimmingTrailingZeros,
+            quantity: String(format: "%.06f", tokenBalance.balance ?? 0).trimmingTrailingZeros,
             isLoadingBalance: store.isLoadingBalances && tokenBalance.balance == nil,
             price: tokenBalance.price ?? "0",
             isLoadingPrice: (store.isLoadingPrices || store.isLoadingBalances)

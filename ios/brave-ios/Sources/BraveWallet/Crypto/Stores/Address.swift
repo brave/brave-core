@@ -57,6 +57,23 @@ extension String {
     return false
   }
 
+  func isBTCAddress(isMainnet: Bool) -> Bool {
+    let regex: String
+    if isMainnet {
+      regex = "^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,59}"
+    } else {
+      regex = "^(tb1|[2nm])[a-zA-HJ-NP-Z0-9]{25,59}"
+    }
+    guard let regex = try? NSRegularExpression(pattern: regex) else {
+      return false
+    }
+    return regex.firstMatch(
+      in: self,
+      options: [],
+      range: NSRange(location: 0, length: self.utf16.count)
+    ) != nil
+  }
+
   /// Strip prefix if it exists, ex. 'ethereum:'
   var strippedETHAddress: String {
     guard !isETHAddress else { return self }

@@ -19,6 +19,7 @@ struct SendTokenView: View {
   @State private var isShowingError = false
   @State private var didAutoShowSelectAccountToken = false
   @State private var isShowingSelectAccountTokenView: Bool = false
+  @State private var isBitcoinWarningUnderstood: Bool = false
 
   @ScaledMetric private var length: CGFloat = 16.0
 
@@ -45,6 +46,9 @@ struct SendTokenView: View {
       // and will enable ens offchain, instead of attempting to create send tx.
       return false
     }
+    if token.coin == .btc && !isBitcoinWarningUnderstood {
+      return true
+    }
     if token.isErc721 || token.isNft {
       return balance < 1
     }
@@ -70,6 +74,20 @@ struct SendTokenView: View {
     } else {
       return Strings.Wallet.sendCryptoSendButtonTitle
     }
+  }
+
+  private var sendTokenBalanceDisplay: String {
+    guard let selectedSendToken = sendTokenStore.selectedSendToken,
+      let selectedSendTokenBalance = sendTokenStore.selectedSendTokenBalance
+    else {
+      return "0"
+    }
+    return String(
+      format: "%@ %@",
+      selectedSendTokenBalance.decimalExpansion(precisionAfterDecimalPoint: 6)
+        .trimmingTrailingZeros,
+      selectedSendToken.symbol
+    )
   }
 
   var body: some View {
@@ -136,11 +154,9 @@ struct SendTokenView: View {
                   .foregroundColor(Color(.secondaryBraveLabel))
               }
               Spacer()
-              Text(
-                "\(sendTokenStore.selectedSendTokenBalance?.decimalDescription.trimmingTrailingZeros ?? "0") \(sendTokenStore.selectedSendToken?.symbol ?? "")"
-              )
-              .font(.title3.weight(.semibold))
-              .foregroundColor(Color(.braveLabel))
+              Text(sendTokenBalanceDisplay)
+                .font(.title3.weight(.semibold))
+                .foregroundColor(Color(.braveLabel))
             }
             .padding(.vertical, 8)
           }
@@ -250,6 +266,21 @@ struct SendTokenView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
+        if sendTokenStore.selectedSendToken?.coin == .btc {
+          Section {
+            Toggle(isOn: $isBitcoinWarningUnderstood) {
+              HStack {
+                Image(braveSystemName: "leo.warning.triangle-filled")
+                  .foregroundColor(Color(braveSystemName: .systemfeedbackWarningIcon))
+                Text(Strings.Wallet.btcOrdinalsUnsupportedWarning)
+                  .font(.caption)
+                  .foregroundColor(Color(braveSystemName: .systemfeedbackWarningText))
+              }
+            }
+            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          }
+          .listRowBackground(Color(braveSystemName: .systemfeedbackWarningBackground))
         }
         Section(
           header:
