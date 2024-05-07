@@ -55,7 +55,9 @@
 #include "brave/browser/widevine/widevine_permission_request.h"
 #endif
 
-constexpr char kLearnMoreURL[] =
+namespace {
+
+constexpr char kGeolocationPermissionLearnMoreURL[] =
 #if BUILDFLAG(IS_WIN)
     "https://support.microsoft.com/en-us/windows/"
     "windows-location-service-and-privacy-3a8eee0a-5b0b-dc07-eede-"
@@ -67,8 +69,6 @@ constexpr char kLearnMoreURL[] =
     // Not used now. Set proper link when detailed bubble is enabled on linux.
     "https://www.brave.com/";
 #endif
-
-namespace {
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 class DontAskAgainCheckbox : public views::Checkbox {
@@ -247,8 +247,9 @@ std::unique_ptr<views::View> CreateGeolocationDescLabel(
   views::StyledLabel::RangeStyleInfo learn_more_style =
       views::StyledLabel::RangeStyleInfo::CreateForLink(base::BindRepeating(
           [](Browser* browser) {
-            chrome::AddSelectedTabWithURL(browser, GURL(kLearnMoreURL),
-                                          ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
+            chrome::AddSelectedTabWithURL(
+                browser, GURL(kGeolocationPermissionLearnMoreURL),
+                ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
           },
           browser));
 
