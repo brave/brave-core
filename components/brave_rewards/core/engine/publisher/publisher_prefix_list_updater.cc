@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/engine/database/database.h"
 #include "brave/components/brave_rewards/core/engine/publisher/prefix_list_reader.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
-#include "brave/components/brave_rewards/core/engine/state/state.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "brave/components/brave_rewards/core/engine/util/time_util.h"
 #include "net/http/http_status_code.h"
 
@@ -107,7 +107,8 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(bool success) {
   // successful fetch time for calculation of next refresh interval.
   // In order to avoid unecessary server load, do not attempt to retry
   // using a failure delay if the database insert was unsuccessful.
-  engine_->state()->SetServerPublisherListStamp(util::GetCurrentTimeStamp());
+  engine_->Get<RewardsPrefs>().SetUint64(prefs::kServerPublisherListStamp,
+                                         util::GetCurrentTimeStamp());
 
   if (auto_update_) {
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
@@ -124,7 +125,8 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(bool success) {
 }
 
 base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
-  uint64_t last_fetch_sec = engine_->state()->GetServerPublisherListStamp();
+  uint64_t last_fetch_sec =
+      engine_->Get<RewardsPrefs>().GetUint64(prefs::kServerPublisherListStamp);
 
   auto now = base::Time::Now();
   auto fetch_time = base::Time::FromSecondsSinceUnixEpoch(

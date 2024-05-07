@@ -16,10 +16,9 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/test/test_rewards_engine_client.h"
-#include "brave/components/brave_rewards/core/mojom/rewards_engine.mojom-test-utils.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_engine_internal.mojom.h"
 #include "build/build_config.h"
 #include "sql/statement.h"
@@ -737,8 +736,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_30_NonJapan) {
 TEST_F(RewardsDatabaseMigrationTest, Migration_30_Japan) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
-  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
-      state::kDeclaredGeo, "JP");
+  engine().Get<RewardsPrefs>().SetString(prefs::kDeclaredGeo, "JP");
   InitializeEngine();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
   EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
@@ -761,8 +759,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_32_NonJapan) {
 TEST_F(RewardsDatabaseMigrationTest, Migration_32_Japan) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
-  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
-      state::kDeclaredGeo, "JP");
+  engine().Get<RewardsPrefs>().SetString(prefs::kDeclaredGeo, "JP");
   InitializeEngine();
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }

@@ -14,8 +14,8 @@
 #include "brave/components/brave_rewards/core/engine/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/engine/logging/event_log_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/util/random_util.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet_util.h"
 
 namespace brave_rewards::internal {
@@ -133,7 +133,8 @@ void ConnectExternalWallet::OnConnect(
   }
 
   // Set the "active" wallet type.
-  engine_->SetState(state::kExternalWalletType, std::string(WalletType()));
+  engine_->Get<RewardsPrefs>().SetString(prefs::kExternalWalletType,
+                                         WalletType());
 
   from_status == mojom::WalletStatus::kNotConnected
       ? engine_->client()->ExternalWalletConnected()
@@ -145,7 +146,7 @@ void ConnectExternalWallet::OnConnect(
   // Update the user's "declared country" based on the information provided by
   // the linking endpoint.
   CHECK(result.has_value() && !result.value().empty());
-  engine_->SetState(state::kDeclaredGeo, result.value());
+  engine_->Get<RewardsPrefs>().SetString(prefs::kDeclaredGeo, result.value());
 
   std::move(callback).Run(ConnectExternalWalletResult::kSuccess);
 }

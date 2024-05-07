@@ -11,8 +11,8 @@
 #include "base/containers/flat_map.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 
 namespace brave_rewards::internal::publisher {
 
@@ -36,9 +36,13 @@ class RewardsPublisherTest : public RewardsEngineTest {
     }
   }
 
-  double GetA() { return engine().GetState<double>(state::kScoreA); }
+  double GetA() {
+    return engine().Get<RewardsPrefs>().GetDouble(prefs::kScoreA);
+  }
 
-  double GetB() { return engine().GetState<double>(state::kScoreB); }
+  double GetB() {
+    return engine().Get<RewardsPrefs>().GetDouble(prefs::kScoreB);
+  }
 
   Publisher publisher_{engine()};
 };

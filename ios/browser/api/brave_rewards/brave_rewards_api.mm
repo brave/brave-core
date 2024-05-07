@@ -9,11 +9,9 @@
 
 #include <optional>
 
-#include "base/base64.h"
 #include "base/containers/flat_map.h"
 #include "base/ios/ios_util.h"
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -22,10 +20,10 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
-#include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/hash_prefix_store.h"
 #include "brave/components/brave_rewards/core/engine/rewards_database.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/remote_worker.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #import "brave/ios/browser/api/brave_rewards/rewards.mojom.objc+private.h"
@@ -35,6 +33,10 @@
 #import "brave/ios/browser/api/brave_rewards/rewards_observer.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #include "components/os_crypt/sync/os_crypt.h"
+#include "components/prefs/pref_service.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -105,16 +107,6 @@ NSString* const BraveRewardsErrorDomain = @"BraveRewardsErrorDomain";
 NSNotificationName const BraveRewardsNotificationAdded =
     @"BATBraveRewardsNotificationAdded";
 
-BraveGeneralRewardsNotificationID const
-    BATBraveGeneralRewardsNotificationIDWalletDisconnected =
-        @"wallet_disconnected";
-
-static NSString* const kContributionQueueAutoincrementID =
-    @"BATContributionQueueAutoincrementID";
-
-static NSString* const kExternalWalletsPrefKey = @"external_wallets";
-static NSString* const kTransferFeesPrefKey = @"transfer_fees";
-
 /// ---
 
 @interface BraveRewardsAPI () <RewardsClientBridge> {
@@ -131,7 +123,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 @property(nonatomic) dispatch_queue_t fileWriteThread;
 @property(nonatomic) NSMutableDictionary<NSString*, NSString*>* state;
 @property(nonatomic) BraveCommonOperations* commonOps;
-@property(nonatomic) NSMutableDictionary<NSString*, __kindof NSObject*>* prefs;
+@property(nonatomic) PrefService* profilePrefService;
 
 @property(nonatomic) NSHashTable<RewardsObserver*>* observers;
 
@@ -156,24 +148,15 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
     self.commonOps =
         [[BraveCommonOperations alloc] initWithStoragePath:path
                                                 taskRunner:_taskRunner];
+    [self initProfilePrefService];
+    [self maybeMigrateProfilePrefs];
+
     self.state = [[NSMutableDictionary alloc]
                      initWithContentsOfFile:self.randomStatePath]
                      ?: [[NSMutableDictionary alloc] init];
     self.fileWriteThread =
         dispatch_queue_create("com.rewards.file-write", DISPATCH_QUEUE_SERIAL);
     self.observers = [NSHashTable weakObjectsHashTable];
-
-    self.prefs =
-        [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
-    if (!self.prefs) {
-      self.prefs = [[NSMutableDictionary alloc] init];
-    }
-
-    NSString* walletProviderRegionsKey = @"parameters.wallet_provider_regions";
-    if (!self.prefs[walletProviderRegionsKey] ||
-        ![self.prefs[walletProviderRegionsKey] isKindOfClass:NSString.class]) {
-      self.prefs[walletProviderRegionsKey] = @"{}";
-    }
 
     _rewardsClient = std::make_unique<RewardsClientIOS>(self);
 
@@ -302,18 +285,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 - (NSString*)randomStatePath {
   return
       [self.storagePath stringByAppendingPathComponent:@"random_state.plist"];
-}
-
-- (NSString*)prefsPath {
-  return [self.storagePath stringByAppendingPathComponent:@"ledger_pref.plist"];
-}
-
-- (void)savePrefs {
-  NSDictionary* prefs = [self.prefs copy];
-  NSString* path = [[self prefsPath] copy];
-  dispatch_async(self.fileWriteThread, ^{
-    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
-  });
 }
 
 #pragma mark - Observers
@@ -451,23 +422,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
           }
         }));
   }];
-}
-
-- (void)legacyWallet:(RewardsEngineClient::GetLegacyWalletCallback)callback {
-  NSDictionary* externalWallets =
-      self.prefs[kExternalWalletsPrefKey] ?: [[NSDictionary alloc] init];
-  std::string wallet;
-  NSData* data = [NSJSONSerialization dataWithJSONObject:externalWallets
-                                                 options:0
-                                                   error:nil];
-  if (data != nil) {
-    NSString* dataString = [[NSString alloc] initWithData:data
-                                                 encoding:NSUTF8StringEncoding];
-    if (dataString != nil) {
-      wallet = base::SysNSStringToUTF8(dataString);
-    }
-  }
-  std::move(callback).Run(wallet);
 }
 
 #pragma mark - Publishers
@@ -653,193 +607,87 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }];
 }
 
-- (void)setBooleanState:(const std::string&)name
-                  value:(bool)value
-               callback:(RewardsEngineClient::SetBooleanStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = [NSNumber numberWithBool:value];
-  [self savePrefs];
+- (void)setUserPreferenceValue:(const std::string&)path
+                         value:(base::Value)value
+                      callback:
+                          (RewardsEngineClient::SetUserPreferenceValueCallback)
+                              callback {
+  self.profilePrefService->Set(path, std::move(value));
   std::move(callback).Run();
 }
 
-- (void)booleanState:(const std::string&)name
-            callback:(RewardsEngineClient::GetBooleanStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  if (![self.prefs objectForKey:key]) {
-    std::move(callback).Run(false);
-    return;
-  }
-  std::move(callback).Run([self.prefs[key] boolValue]);
+- (void)userPreferenceValue:(const std::string&)path
+                   callback:
+                       (RewardsEngineClient::GetUserPreferenceValueCallback)
+                           callback {
+  std::move(callback).Run(self.profilePrefService->GetValue(path).Clone());
 }
 
-- (void)setIntegerState:(const std::string&)name
-                  value:(int32_t)value
-               callback:(RewardsEngineClient::SetIntegerStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = [NSNumber numberWithInt:value];
-  [self savePrefs];
+- (void)
+    clearUserPreferenceValue:(const std::string&)path
+                    callback:
+                        (RewardsEngineClient::ClearUserPreferenceValueCallback)
+                            callback {
+  self.profilePrefService->ClearPref(path);
   std::move(callback).Run();
 }
 
-- (void)integerState:(const std::string&)name
-            callback:(RewardsEngineClient::GetIntegerStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  std::move(callback).Run([self.prefs[key] intValue]);
+- (void)initProfilePrefService {
+  std::vector<ProfileIOS*> profiles =
+      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+  CHECK(!profiles.empty());
+  _profilePrefService = profiles.front()->GetPrefs();
+  CHECK(_profilePrefService);
 }
 
-- (void)setDoubleState:(const std::string&)name
-                 value:(double)value
-              callback:(RewardsEngineClient::SetDoubleStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = [NSNumber numberWithDouble:value];
-  [self savePrefs];
-  std::move(callback).Run();
-}
-
-- (void)doubleState:(const std::string&)name
-           callback:(RewardsEngineClient::GetDoubleStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  std::move(callback).Run([self.prefs[key] doubleValue]);
-}
-
-- (void)setStringState:(const std::string&)name
-                 value:(const std::string&)value
-              callback:(RewardsEngineClient::SetStringStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = base::SysUTF8ToNSString(value);
-  [self savePrefs];
-  std::move(callback).Run();
-}
-
-- (void)stringState:(const std::string&)name
-           callback:(RewardsEngineClient::GetStringStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  const auto value = (NSString*)self.prefs[key];
-  if (!value) {
-    std::move(callback).Run("");
-    return;
-  }
-  std::move(callback).Run(base::SysNSStringToUTF8(value));
-}
-
-- (void)setInt64State:(const std::string&)name
-                value:(int64_t)value
-             callback:(RewardsEngineClient::SetInt64StateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = [NSNumber numberWithLongLong:value];
-  [self savePrefs];
-  std::move(callback).Run();
-}
-
-- (void)int64State:(const std::string&)name
-          callback:(RewardsEngineClient::GetInt64StateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  std::move(callback).Run([self.prefs[key] longLongValue]);
-}
-
-- (void)setUint64State:(const std::string&)name
-                 value:(uint64_t)value
-              callback:(RewardsEngineClient::SetUint64StateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = [NSNumber numberWithUnsignedLongLong:value];
-  [self savePrefs];
-  std::move(callback).Run();
-}
-
-- (void)uint64State:(const std::string&)name
-           callback:(RewardsEngineClient::GetUint64StateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  std::move(callback).Run([self.prefs[key] unsignedLongLongValue]);
-}
-
-- (void)setValueState:(const std::string&)name
-                value:(base::Value)value
-             callback:(RewardsEngineClient::SetValueStateCallback)callback {
-  std::string json;
-  if (base::JSONWriter::Write(value, &json)) {
-    const auto key = base::SysUTF8ToNSString(name);
-    self.prefs[key] = base::SysUTF8ToNSString(json);
-    [self savePrefs];
-  }
-  std::move(callback).Run();
-}
-
-- (void)valueState:(const std::string&)name
-          callback:(RewardsEngineClient::GetValueStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  const auto json = (NSString*)self.prefs[key];
-  if (!json) {
-    std::move(callback).Run(base::Value());
+- (void)maybeMigrateProfilePrefs {
+  // Migrates "leger_pref.plist" data into PrefService preferences.
+  NSString* legacyProfilePrefsPath =
+      [self.storagePath stringByAppendingPathComponent:@"ledger_pref.plist"];
+  NSDictionary* legacyProfilePrefs = [[NSMutableDictionary alloc]
+      initWithContentsOfFile:legacyProfilePrefsPath];
+  if (!legacyProfilePrefs) {
     return;
   }
 
-  auto value = base::JSONReader::Read(base::SysNSStringToUTF8(json));
-  if (!value) {
-    std::move(callback).Run(base::Value());
-    return;
+  LLOG(1, @"Migrating profile prefs");
+  CHECK(self.profilePrefService);
+
+  if ([legacyProfilePrefs objectForKey:@"wallets.brave"]) {
+    auto json = (NSString*)legacyProfilePrefs[@"wallets.brave"];
+    if (json) {
+      if (auto value = base::JSONReader::Read(base::SysNSStringToUTF8(json))) {
+        self.profilePrefService->Set(brave_rewards::prefs::kWalletBrave,
+                                     std::move(*value));
+      }
+    }
   }
 
-  std::move(callback).Run(std::move(*value));
-}
+  if ([legacyProfilePrefs objectForKey:@"creation_stamp"]) {
+    auto value = [legacyProfilePrefs[@"creation_stamp"] unsignedLongLongValue];
+    self.profilePrefService->SetUint64(brave_rewards::prefs::kCreationStamp,
+                                       value);
+  }
 
-- (void)setTimeState:(const std::string&)name
-               value:(base::Time)value
-            callback:(RewardsEngineClient::SetTimeStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = @(value.InSecondsFSinceUnixEpoch());
-  [self savePrefs];
-  std::move(callback).Run();
-}
+  if ([legacyProfilePrefs objectForKey:@"publisher_prefix_list_stamp"]) {
+    auto value = [legacyProfilePrefs[@"publisher_prefix_list_stamp"]
+        unsignedLongLongValue];
+    self.profilePrefService->SetUint64(
+        brave_rewards::prefs::kServerPublisherListStamp, value);
+  }
 
-- (void)timeState:(const std::string&)name
-         callback:(RewardsEngineClient::GetTimeStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  std::move(callback).Run(
-      base::Time::FromSecondsSinceUnixEpoch([self.prefs[key] doubleValue]));
-}
-
-- (void)clearState:(const std::string&)name
-          callback:(RewardsEngineClient::ClearStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  [self.prefs removeObjectForKey:key];
-  [self savePrefs];
-  std::move(callback).Run();
-}
-
-- (void)getClientCountryCode:
-    (RewardsEngineClient::GetClientCountryCodeCallback)callback {
-  std::move(callback).Run("");
+  NSError* error = nil;
+  [[NSFileManager defaultManager] removeItemAtPath:legacyProfilePrefsPath
+                                             error:&error];
+  if (error) {
+    LLOG(0, @"Failed to remove legacy prefs: %@", error);
+  }
 }
 
 #pragma mark - Notifications
 
 - (void)clearAllNotifications {
   // Not used on iOS
-}
-
-#pragma mark - State
-
-- (void)loadLegacyState:(RewardsEngineClient::LoadLegacyStateCallback)callback {
-  const auto contents =
-      [self.commonOps loadContentsFromFileWithName:"ledger_state.json"];
-  if (contents.length() > 0) {
-    std::move(callback).Run(brave_rewards::mojom::Result::OK, contents);
-  } else {
-    std::move(callback).Run(brave_rewards::mojom::Result::NO_LEGACY_STATE,
-                            contents);
-  }
-}
-
-- (void)loadPublisherState:
-    (RewardsEngineClient::LoadPublisherStateCallback)callback {
-  const auto contents =
-      [self.commonOps loadContentsFromFileWithName:"publisher_state.json"];
-  if (contents.length() > 0) {
-    std::move(callback).Run(brave_rewards::mojom::Result::OK, contents);
-  } else {
-    std::move(callback).Run(brave_rewards::mojom::Result::NO_PUBLISHER_STATE,
-                            contents);
-  }
 }
 
 #pragma mark - Network
@@ -954,13 +802,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                 callback:
                     (RewardsEngineClient::ShowNotificationCallback)callback {
   // Not used on iOS
-}
-
-- (void)clientInfo:(RewardsEngineClient::GetClientInfoCallback)callback {
-  auto info = brave_rewards::mojom::ClientInfo::New();
-  info->os = brave_rewards::mojom::OperatingSystem::UNDEFINED;
-  info->platform = brave_rewards::mojom::Platform::IOS;
-  std::move(callback).Run(std::move(info));
 }
 
 - (void)reconcileStampReset {
