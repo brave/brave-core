@@ -133,19 +133,20 @@ struct FocusSystemSettingsView: View {
           },
           label: {
             Text(
-              "\(Strings.FocusOnboarding.startBrowseActionButtonTitle) \(Image(systemName: "arrow.right"))")
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(braveSystemName: .textInteractive))
-              .dynamicTypeSize(dynamicTypeRange)
-              .padding()
-              .frame(maxWidth: .infinity)
+              "\(Strings.FocusOnboarding.startBrowseActionButtonTitle) \(Image(systemName: "arrow.right"))"
+            )
+            .font(.subheadline.weight(.semibold))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
+            .dynamicTypeSize(dynamicTypeRange)
+            .padding()
+            .frame(maxWidth: .infinity)
           }
         )
         .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
         .overlay(
           RoundedRectangle(cornerRadius: 12.0)
-          .inset(by: 0.5)
-          .stroke(Color(braveSystemName: .dividerInteractive).opacity(0.6), lineWidth: 1)
+            .inset(by: 0.5)
+            .stroke(Color(braveSystemName: .dividerInteractive).opacity(0.6), lineWidth: 1)
         )
       }
     }

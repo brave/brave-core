@@ -232,14 +232,14 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
       )
     }
   }
-  
+
   private func prepareRandomHaptics() {
     if hapticsTimer == nil {
       hapticsTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { _ in
         createRandomHapticEffect()
       }
     }
-    
+
     hapticsTimer?.tolerance = 0.1
   }
 
@@ -271,11 +271,11 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
       )
     }
   }
-  
+
   private func stopAllHaptics() {
     hapticsTimer?.invalidate()
     hapticsTimer = nil
-    
+
     Task { @MainActor in
       do {
         try hapticsPlayer?.cancel()
