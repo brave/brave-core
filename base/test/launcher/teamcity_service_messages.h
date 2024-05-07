@@ -18,19 +18,6 @@ namespace base {
 // https://www.jetbrains.com/help/teamcity/service-messages.html
 class TeamcityServiceMessages {
  public:
-  class Message {
-   public:
-    explicit Message(std::ostream& ostream, std::string_view name);
-    Message(const Message&) = delete;
-    Message& operator=(const Message&) = delete;
-    ~Message();
-
-    Message& WriteProperty(std::string_view name, std::string_view value);
-
-   private:
-    raw_ref<std::ostream> ostream_;
-  };
-
   explicit TeamcityServiceMessages(std::ostream& ostream);
   TeamcityServiceMessages(const TeamcityServiceMessages&) = delete;
   TeamcityServiceMessages& operator=(const TeamcityServiceMessages&) = delete;
@@ -48,6 +35,21 @@ class TeamcityServiceMessages {
   void TestFinished(std::string_view name, TimeDelta duration);
 
  private:
+  friend class TeamcityServiceMessagesTest;
+
+  class Message {
+   public:
+    Message(std::ostream& ostream, std::string_view name);
+    Message(const Message&) = delete;
+    Message& operator=(const Message&) = delete;
+    ~Message();
+
+    Message& WriteProperty(std::string_view name, std::string_view value);
+
+   private:
+    raw_ref<std::ostream> ostream_;
+  };
+
   raw_ref<std::ostream> ostream_;
 };
 

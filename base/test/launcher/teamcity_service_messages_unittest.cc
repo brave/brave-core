@@ -29,25 +29,39 @@ class TeamcityServiceMessagesTest : public testing::Test {
 
   void ClearStr() { mock_ostream_.str(""); }
 
+  void ExpectPropertyEscaped(std::string_view property_value,
+                             std::string_view escaped_property_value) {
+    {
+      TeamcityServiceMessages::Message message(mock_ostream_, "dummy");
+      message.WriteProperty("property_name", property_value);
+    }
+    if (!escaped_property_value.empty()) {
+      std::string expected = "##teamcity[dummy property_name='" +
+                             std::string(escaped_property_value) + "']\n";
+      EXPECT_EQ(GetStr(), expected);
+    } else {
+      EXPECT_EQ(GetStr(), "##teamcity[dummy]\n");
+    }
+  }
+
   std::stringstream mock_ostream_;
   std::unique_ptr<TeamcityServiceMessages> tsm_;
 };
 
 TEST_F(TeamcityServiceMessagesTest, WritePropertyWithSpecialCharacters) {
-  {
-    TeamcityServiceMessages::Message message(mock_ostream_, "dummy");
-    message.WriteProperty("property_name", "property_value\n\r'|[]");
+  struct TestCase {
+    std::string_view property_value;
+    std::string_view escaped_property_value;
+  } test_cases[] = {
+      {"property_value\n\r'|[]", "property_value|n|r|'|||[|]"},
+      {"\na\rbcde'test| [ ] ", "|na|rbcde|'test|| |[ |] "},
+      {"property_value", "property_value"},
+      {"", ""},
+  };
+  for (const auto& test_case : test_cases) {
+    ExpectPropertyEscaped(test_case.property_value,
+                          test_case.escaped_property_value);
   }
-  EXPECT_EQ(GetStr(),
-            "##teamcity[dummy property_name='property_value|n|r|'|||[|]']\n");
-}
-
-TEST_F(TeamcityServiceMessagesTest, WriteEmptyProperty) {
-  {
-    TeamcityServiceMessages::Message message(mock_ostream_, "dummy");
-    message.WriteProperty("property_name", "");
-  }
-  EXPECT_EQ(GetStr(), "##teamcity[dummy]\n");
 }
 
 TEST_F(TeamcityServiceMessagesTest, TestRetrySupport) {
