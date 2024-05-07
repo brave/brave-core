@@ -57,8 +57,10 @@ void PrintRenderFrameHelper::InitiatePrintPreview(
     print_preview_context_.InitWithNode(plugin);
   } else {
     print_preview_context_.InitWithFrame(frame);
+    print_preview_context_.DispatchBeforePrintEvent(
+        weak_ptr_factory_.GetWeakPtr());
   }
-  print_in_progress_ = false;
+  // Print Preview resets `print_in_progress_` when the dialog closes.
 }
 
 void PrintRenderFrameHelper::SetIsPrintPreviewExtraction(bool value) {
