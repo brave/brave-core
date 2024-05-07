@@ -507,6 +507,8 @@ class RewardsServiceImpl : public RewardsService,
   void GetAllContributionsForP3A();
   void OnRecordBackendP3AStatsContributions(
       std::vector<mojom::ContributionInfoPtr> list);
+  void OnRecordBackendP3AStatsRecurringTips(
+      std::vector<mojom::PublisherInfoPtr> list);
 
   void OnRecordBackendP3AStatsAC(bool ac_enabled);
 

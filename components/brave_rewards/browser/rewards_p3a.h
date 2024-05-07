@@ -24,6 +24,8 @@ inline constexpr char kEnabledSourceHistogramName[] =
 inline constexpr char kToolbarButtonTriggerHistogramName[] =
     "Brave.Rewards.ToolbarButtonTrigger";
 inline constexpr char kTipsSentHistogramName[] = "Brave.Rewards.TipsSent.2";
+inline constexpr char kRecurringTipHistogramName[] =
+    "Brave.Rewards.RecurringTip";
 inline constexpr char kAutoContributionsStateHistogramName[] =
     "Brave.Rewards.AutoContributionsState.3";
 inline constexpr char kAdTypesEnabledHistogramName[] =
@@ -55,6 +57,8 @@ enum class PanelTrigger {
 };
 
 void RecordTipsSent(size_t tip_count);
+
+void RecordRecurringTipConfigured(bool tip_configured);
 
 void RecordAutoContributionsState(bool ac_enabled);
 
