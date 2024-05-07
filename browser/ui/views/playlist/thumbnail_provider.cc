@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/containers/flat_map.h"
@@ -20,10 +21,11 @@
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "net/base/filename_util.h"
+#include "url/gurl.h"
 
 namespace {
 
-using ItemImageCache = base::LRUCache<std::string /*item_id*/, gfx::Image>;
+using ItemImageCache = base::LRUCache<GURL /*thumbnail_source*/, gfx::Image>;
 
 ItemImageCache& GetInMemoryCache(playlist::PlaylistService* service) {
   auto key = reinterpret_cast<uintptr_t>(service);
@@ -76,7 +78,7 @@ void ThumbnailProvider::GetThumbnail(
               },
               thumbnail_path),
           base::BindOnce(&ThumbnailProvider::OnGotThumbnail,
-                         weak_ptr_factory_.GetWeakPtr(), item->id,
+                         weak_ptr_factory_.GetWeakPtr(), item->thumbnail_source,
                          /*from_network=*/false, std::move(callback)));
       return;
     }
@@ -88,7 +90,7 @@ void ThumbnailProvider::GetThumbnail(
   }
 
   auto& in_memory_cache = GetInMemoryCache(base::to_address(service_));
-  if (auto iter = in_memory_cache.Get(item->id);
+  if (auto iter = in_memory_cache.Get(item->thumbnail_source);
       iter != in_memory_cache.end()) {
     std::move(callback).Run(iter->second);
     return;
@@ -97,7 +99,7 @@ void ThumbnailProvider::GetThumbnail(
   service_->DownloadThumbnail(
       item->thumbnail_source,
       base::BindOnce(&ThumbnailProvider::OnGotThumbnail,
-                     weak_ptr_factory_.GetWeakPtr(), item->id,
+                     weak_ptr_factory_.GetWeakPtr(), item->thumbnail_source,
                      /*from_network=*/true, std::move(callback)));
 }
 
@@ -128,17 +130,17 @@ void ThumbnailProvider::GetThumbnail(
 }
 
 void ThumbnailProvider::OnGotThumbnail(
-    const std::string& id,
+    const GURL& thumbnail_source,
     bool from_network,
     base::OnceCallback<void(const gfx::Image&)> callback,
     gfx::Image thumbnail) {
   if (!thumbnail.IsEmpty()) {
-    DCHECK(!id.empty());
     auto& in_memory_cache = GetInMemoryCache(base::to_address(service_));
     if (from_network) {
-      in_memory_cache.Put({id, thumbnail});
-    } else if (in_memory_cache.Peek(id) != in_memory_cache.end()) {
-      in_memory_cache.Erase(in_memory_cache.Get(id));
+      in_memory_cache.Put({thumbnail_source, thumbnail});
+    } else if (in_memory_cache.Peek(thumbnail_source) !=
+               in_memory_cache.end()) {
+      in_memory_cache.Erase(in_memory_cache.Get(thumbnail_source));
     }
   }
 

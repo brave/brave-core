@@ -8,14 +8,13 @@
 
 #include <map>
 #include <memory>
-#include <vector>
 
 #include "base/containers/unique_ptr_adapters.h"
+#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "url/gurl.h"
 
@@ -29,27 +28,17 @@ class WebContents;
 
 namespace playlist {
 
-class PlaylistService;
-
-// `PlaylistBackgroundWebContentses` fulfills background `WebContents` requests.
-// After creating the background `WebContents`, it waits 10 seconds for the
-// first non-empty media list to arrive. On receiving the media, or if the timer
-// goes off (whichever happens first), it destructs the background
-// `WebContents`, and calls the provided callback with the result.
-// It overrides the user agent if `features::kPlaylistFakeUA` is enabled,
-// or uses a static look-up table to decide if it has to otherwise.
 class PlaylistBackgroundWebContentses final {
  public:
-  PlaylistBackgroundWebContentses(content::BrowserContext* context,
-                                  PlaylistService* service);
+  explicit PlaylistBackgroundWebContentses(content::BrowserContext* context);
   PlaylistBackgroundWebContentses(const PlaylistBackgroundWebContentses&) =
       delete;
   PlaylistBackgroundWebContentses& operator=(
       const PlaylistBackgroundWebContentses&) = delete;
   ~PlaylistBackgroundWebContentses();
 
-  void Add(const GURL& url,
-           PlaylistMediaHandler::OnceCallback on_media_detected_callback,
+  void Add(mojom::PlaylistItemPtr item,
+           base::OnceCallback<void(mojom::PlaylistItemPtr)> callback,
            base::TimeDelta timeout = base::Seconds(10));
 
   void Reset();
@@ -63,9 +52,10 @@ class PlaylistBackgroundWebContentses final {
                            UserAgentOverride);
 
   void Remove(content::WebContents* web_contents,
-              PlaylistMediaHandler::OnceCallback on_media_detected_callback,
+              mojom::PlaylistItemPtr item,
+              base::OnceCallback<void(mojom::PlaylistItemPtr)> callback,
               GURL url,
-              std::vector<mojom::PlaylistItemPtr> items);
+              bool is_media_source);
 
   // used by
   // PlaylistBackgroundWebContentsTest.ExtractPlaylistItemsInTheBackground, and
@@ -76,7 +66,6 @@ class PlaylistBackgroundWebContentses final {
   }
 
   raw_ptr<content::BrowserContext> context_;
-  raw_ptr<PlaylistService> service_;
   std::map<std::unique_ptr<content::WebContents>,
            base::OneShotTimer,
            base::UniquePtrComparator>  // for heterogeneous lookups

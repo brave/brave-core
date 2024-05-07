@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
@@ -16,7 +15,6 @@
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/pref_names.h"
@@ -207,8 +205,6 @@ PlaylistService* PlaylistServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   DCHECK(context);
   if (IsPlaylistEnabled(context)) {
-    GetInstance()->PrepareMediaDetectorComponentManager();
-
     return static_cast<PlaylistService*>(
         GetInstance()->GetServiceForBrowserContext(context, true));
   }
@@ -273,13 +269,12 @@ PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 
 KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  DCHECK(media_detector_component_manager_);
   PrefService* local_state = g_browser_process->local_state();
-  auto* service = new PlaylistService(
-      context, local_state, media_detector_component_manager_.get(),
-      std::make_unique<PlaylistServiceDelegateImpl>(
-          Profile::FromBrowserContext(context)),
-      brave_stats::GetFirstRunTime(local_state));
+  auto* service =
+      new PlaylistService(context, local_state,
+                          std::make_unique<PlaylistServiceDelegateImpl>(
+                              Profile::FromBrowserContext(context)),
+                          brave_stats::GetFirstRunTime(local_state));
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   content::URLDataSource::Add(
@@ -288,16 +283,6 @@ KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
 #endif
 
   return service;
-}
-
-void PlaylistServiceFactory::PrepareMediaDetectorComponentManager() {
-  if (!media_detector_component_manager_) {
-    DCHECK(g_browser_process);
-
-    media_detector_component_manager_ =
-        std::make_unique<MediaDetectorComponentManager>(
-            g_browser_process->component_updater());
-  }
 }
 
 }  // namespace playlist

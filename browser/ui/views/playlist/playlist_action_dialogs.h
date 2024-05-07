@@ -114,7 +114,8 @@ class PlaylistMoveDialog : public PlaylistActionDialog,
                        const std::u16string& new_contents) override;
 
   // playlist::PlaylistTabHelperObserver:
-  void PlaylistTabHelperWillBeDestroyed() override;
+  void PlaylistTabHelperWillBeDestroyed(
+      playlist::PlaylistTabHelper* tab_helper) override;
   void OnSavedItemsChanged(
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
 
