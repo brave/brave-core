@@ -155,7 +155,9 @@ final class PlayerModel: ObservableObject {
       return
     }
     let seekTime = CMTimeMakeWithSeconds(
-      max(0.0, min(currentItem.duration.seconds, time)),
+      // Only clamp if the current duration is numeric
+      // FIXME: Do we even need to clamp?
+      currentItem.duration.isNumeric ? max(0.0, min(currentItem.duration.seconds, time)) : time,
       preferredTimescale: currentItem.currentTime().timescale
     )
     await player.seek(

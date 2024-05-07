@@ -11,6 +11,8 @@ import SwiftUI
 
 @available(iOS 16.0, *)
 struct PlaylistContentView: View {
+  var initialPlaybackInfo: PlaylistRootView.InitialPlaybackInfo?
+
   @Environment(\.loadMediaStreamingAsset) private var loadMediaStreamingAsset
 
   // FIXME: Will this have to be an ObservedObject instead to handle PiP?
@@ -21,6 +23,7 @@ struct PlaylistContentView: View {
   @State private var selectedItemID: PlaylistItem.ID?
   // FIXME: OrderedSet?
   @State private var itemQueue: [PlaylistItem.ID] = []
+  @State private var seekToInitialTimestamp: TimeInterval?
 
   @State private var selectedDetent: PlaylistSheetDetent = .small
   @State private var isNewPlaylistAlertPresented: Bool = false
@@ -198,7 +201,11 @@ struct PlaylistContentView: View {
       }
     }
     .onAppear {
-      // FIXME: Handle Auto-Play and launching with a selected item here
+      if let initialPlaybackInfo {
+        seekToInitialTimestamp = initialPlaybackInfo.timestamp
+        selectedItemID = initialPlaybackInfo.itemID
+      }
+      // FIXME: Handle Auto-Play
       if selectedItem != nil {
         selectedDetent = .small
       } else {
@@ -257,6 +264,11 @@ struct PlaylistContentView: View {
       }
       Task {
         await playItem(item)
+
+        if let timestamp = seekToInitialTimestamp {
+          await playerModel.seek(to: timestamp, accurately: true)
+          self.seekToInitialTimestamp = nil
+        }
       }
     }
     .onChange(of: playerModel.isShuffleEnabled) { _ in

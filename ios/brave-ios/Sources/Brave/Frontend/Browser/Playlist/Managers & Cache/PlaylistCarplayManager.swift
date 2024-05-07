@@ -130,7 +130,6 @@ public class PlaylistCarplayManager: NSObject {
     tab?.stopMediaPlayback()
 
     if #available(iOS 16.0, *), FeatureList.kNewPlaylistUI.enabled {
-      // FIXME: Pass in initial item & time
       return PlaylistHostingController(
         delegate: .init(
           openTabURL: { [weak browserController] url, isPrivate in
@@ -142,7 +141,10 @@ public class PlaylistCarplayManager: NSObject {
           onDismissal: { [weak self] in
             self?.isPlaylistControllerPresented = false
           }
-        )
+        ),
+        initialPlaybackInfo: initialItem.map { item in
+          .init(itemID: item.id, timestamp: initialItemPlaybackOffset)
+        }
       )
     }
 

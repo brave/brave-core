@@ -10,8 +10,13 @@ import SwiftUI
 
 @available(iOS 16.0, *)
 public class PlaylistHostingController: UIHostingController<PlaylistRootView> {
-  public init(delegate: PlaylistRootView.Delegate) {
-    super.init(rootView: PlaylistRootView(delegate: delegate))
+  public init(
+    delegate: PlaylistRootView.Delegate,
+    initialPlaybackInfo: PlaylistRootView.InitialPlaybackInfo?
+  ) {
+    super.init(
+      rootView: PlaylistRootView(delegate: delegate, initialPlaybackInfo: initialPlaybackInfo)
+    )
     modalPresentationStyle = .fullScreen
   }
 
@@ -55,14 +60,29 @@ public struct PlaylistRootView: View {
     }
   }
 
-  private var delegate: Delegate
+  public struct InitialPlaybackInfo {
+    public var itemID: PlaylistItem.ID
+    public var timestamp: TimeInterval
 
-  public init(delegate: Delegate) {
+    public init(itemID: PlaylistItem.ID, timestamp: TimeInterval) {
+      self.itemID = itemID
+      self.timestamp = timestamp
+    }
+  }
+
+  private var delegate: Delegate
+  private var initialPlaybackInfo: InitialPlaybackInfo?
+
+  public init(
+    delegate: Delegate,
+    initialPlaybackInfo: InitialPlaybackInfo?
+  ) {
     self.delegate = delegate
+    self.initialPlaybackInfo = initialPlaybackInfo
   }
 
   public var body: some View {
-    PlaylistContentView()
+    PlaylistContentView(initialPlaybackInfo: initialPlaybackInfo)
       .preparePlaylistEnvironment()
       .prepareMediaStreamer(webLoaderFactory: delegate.webLoaderFactory())
       .environment(\.managedObjectContext, DataController.swiftUIContext)
@@ -112,7 +132,8 @@ class PreviewWebLoaderFactory: PlaylistWebLoaderFactory {
       openTabURL: { _, _ in },
       webLoaderFactory: { PreviewWebLoaderFactory() },
       onDismissal: { }
-    )
+    ),
+    initialPlaybackInfo: nil
   )
 }
 #endif
