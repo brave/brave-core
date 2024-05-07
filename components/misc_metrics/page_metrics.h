@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/functional/callback_forward.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/task/cancelable_task_tracker.h"
@@ -53,12 +54,15 @@ class PageMetrics {
   PageMetrics(PrefService* local_state,
               HostContentSettingsMap* host_content_settings_map,
               history::HistoryService* history_service,
-              bookmarks::BookmarkModel* bookmark_model);
+              bookmarks::BookmarkModel* bookmark_model,
+              base::RepeatingClosure brave_query_callback);
   ~PageMetrics();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void IncrementPagesLoadedCount(bool is_reload);
+
+  void OnBraveQuery();
 
  private:
   void InitStorage();
@@ -103,6 +107,8 @@ class PageMetrics {
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   raw_ptr<history::HistoryService> history_service_ = nullptr;
+
+  base::RepeatingClosure brave_query_callback_;
 
   base::WeakPtrFactory<PageMetrics> weak_ptr_factory_{this};
 };
