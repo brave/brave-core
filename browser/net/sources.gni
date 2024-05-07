@@ -81,7 +81,6 @@ brave_browser_net_deps = [
   "//brave/components/localhost_permission",
   "//brave/components/query_filter",
   "//brave/components/update_client:buildflags",
-  "//brave/components/widevine:static_buildflags",
   "//brave/extensions:common",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles",

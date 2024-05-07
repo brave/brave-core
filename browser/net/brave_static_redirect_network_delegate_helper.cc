@@ -15,7 +15,6 @@
 #include "brave/browser/net/brave_geolocation_buildflags.h"
 #include "brave/browser/safebrowsing/buildflags.h"
 #include "brave/components/constants/network_constants.h"
-#include "brave/components/widevine/static_buildflags.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"
 
@@ -88,10 +87,6 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
   static base::NoDestructor<URLPattern> widevine_google_dl_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
       kWidevineGoogleDlPrefix);
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-  static base::NoDestructor<URLPattern> widevine_google_dl_pattern_win_arm64(
-      URLPattern::SCHEME_HTTPS, kWidevineGoogleDlPrefixWinArm64);
-#endif  // BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
 
   if (geo_pattern->MatchesURL(request_url)) {
     *new_url = GURL(BUILDFLAG(GOOGLEAPIS_URL));
@@ -170,9 +165,6 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
   }
 
   if (googleDl_pattern->MatchesURL(request_url) &&
-#if BUILDFLAG(WIDEVINE_ARM64_DLL_FIX)
-      !widevine_google_dl_pattern_win_arm64->MatchesURL(request_url) &&
-#endif
       !widevine_google_dl_pattern->MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr(kBraveRedirectorProxy);
