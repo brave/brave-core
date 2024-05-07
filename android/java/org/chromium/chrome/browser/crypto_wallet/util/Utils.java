@@ -1434,14 +1434,19 @@ public class Utils {
      */
     @NonNull
     public static String getTruncatedAddress(@NonNull final String address) {
+
         if (address.isEmpty()) {
             Log.w(TAG, "Empty contract address.");
+            assert false;
             return "";
         }
+
         int prefixLength = address.startsWith("0x") ? 6 : 4;
         int lastFourCharactersIndex = address.length() - 4;
+
         if (lastFourCharactersIndex < 0 || prefixLength > address.length()) {
             Log.w(TAG, "Invalid contract address.");
+            assert false;
             return "";
         }
         return (address.substring(0, prefixLength) + "***"
