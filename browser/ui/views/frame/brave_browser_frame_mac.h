@@ -22,6 +22,10 @@ class BraveBrowserFrameMac : public BrowserFrameMac {
       int32_t command,
       remote_cocoa::mojom::ValidateUserInterfaceItemResult* result) override;
 
+  bool ExecuteCommand(int32_t command,
+                      WindowOpenDisposition window_open_disposition,
+                      bool is_before_first_responder) override;
+
  private:
   raw_ptr<Browser> browser_;
   raw_ptr<BrowserView> browser_view_;

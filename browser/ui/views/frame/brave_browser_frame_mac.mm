@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_frame_mac.h"
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -55,4 +56,21 @@ void BraveBrowserFrameMac::ValidateUserInterfaceItem(
   result->set_toggle_state = true;
   result->new_toggle_state = !model->empty() && model->GetActiveWebContents() &&
                              model->GetActiveWebContents()->IsAudioMuted();
+}
+
+bool BraveBrowserFrameMac::ExecuteCommand(
+    int32_t command,
+    WindowOpenDisposition window_open_disposition,
+    bool is_before_first_responder) {
+  // Ignoring the ctrl+w command when the active tab is pinned
+  Browser* browser = browser_view_->browser();
+  int active_tab_index = browser->tab_strip_model()->active_index();
+  if (command == IDC_CLOSE_TAB && is_before_first_responder &&
+      base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      browser->tab_strip_model()->IsTabPinned(active_tab_index)) {
+    return true;
+  }
+
+  return BrowserFrameMac::ExecuteCommand(command, window_open_disposition,
+                                         is_before_first_responder);
 }
