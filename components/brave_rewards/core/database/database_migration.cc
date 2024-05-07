@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/database/database_migration.h"
+
 #include <utility>
 #include <vector>
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v1.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v10.h"
@@ -94,7 +96,7 @@ void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
   // order to prevent display of BAP historical information in monthly reports.
   std::string migration_v30 = "";
   std::string migration_v32 = "";
-  if (engine_->GetClientCountryCode() == "JP") {
+  if (engine_->Get<Prefs>().GetString(prefs::kDeclaredGeo) == "JP") {
     migration_v30 = migration::v30;
     migration_v32 = migration::v32;
   }

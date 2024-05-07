@@ -3,16 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/contribution/contribution_ac.h"
+
 #include <utility>
 
 #include "base/uuid.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
-#include "brave/components/brave_rewards/core/contribution/contribution_ac.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 
 namespace brave_rewards::internal::contribution {
 
@@ -21,16 +22,18 @@ ContributionAC::ContributionAC(RewardsEngine& engine) : engine_(engine) {}
 ContributionAC::~ContributionAC() = default;
 
 void ContributionAC::Process(const uint64_t reconcile_stamp) {
-  if (!engine_->state()->GetAutoContributeEnabled()) {
+  if (!engine_->contribution()->GetAutoContributeEnabled()) {
     engine_->Log(FROM_HERE) << "Auto contribution is off";
     return;
   }
 
   engine_->Log(FROM_HERE) << "Starting auto contribution";
 
+  int min_visits = engine_->Get<Prefs>().GetInteger(prefs::kMinVisits);
+
   auto filter = engine_->publisher()->CreateActivityFilter(
       "", mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED, true,
-      reconcile_stamp, false, engine_->state()->GetPublisherMinVisits());
+      reconcile_stamp, false, min_visits);
 
   engine_->database()->GetActivityInfoList(
       0, 0, std::move(filter),
@@ -70,7 +73,7 @@ void ContributionAC::PreparePublisherList(
   auto queue = mojom::ContributionQueue::New();
   queue->id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   queue->type = mojom::RewardsType::AUTO_CONTRIBUTE;
-  queue->amount = engine_->state()->GetAutoContributionAmount();
+  queue->amount = engine_->contribution()->GetAutoContributeAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
 
