@@ -132,6 +132,10 @@
   return (AiChatSuggestionGenerationStatus)status;
 }
 
+- (NSArray<AiChatActionGroup*>*)slashActions {
+  return brave::vector_to_ns(ai_chat::GetActionMenuList());
+}
+
 - (NSArray<NSString*>*)suggestedQuestions {
   auto status = ai_chat::mojom::SuggestionGenerationStatus::None;
   std::vector<std::string> result = driver_->GetSuggestedQuestions(status);

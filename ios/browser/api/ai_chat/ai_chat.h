@@ -29,6 +29,8 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) NSArray<NSString*>* suggestedQuestions;
 
+@property(nonatomic, readonly) NSArray<AiChatActionGroup*>* slashActions;
+
 @property(nonatomic, readonly) bool hasPendingConversationEntry;
 
 @property(nonatomic, readonly) AiChatAPIError currentAPIError;
