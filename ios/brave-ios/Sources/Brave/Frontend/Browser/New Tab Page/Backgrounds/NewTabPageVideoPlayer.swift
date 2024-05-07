@@ -75,7 +75,6 @@ class NewTabPageVideoPlayer {
       autoplayFinished()
     }
 
-    player?.isMuted = false
     player?.seek(to: CMTime.zero)
     player?.currentItem?.forwardPlaybackEndTime = CMTime()
 
@@ -90,6 +89,7 @@ class NewTabPageVideoPlayer {
         self?.checkMedia25Percentage()
       }
 
+    player?.isMuted = false
     player?.play()
     didStartPlayback = true
 
