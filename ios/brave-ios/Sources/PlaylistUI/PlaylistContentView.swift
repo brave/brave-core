@@ -7,6 +7,7 @@ import AVFoundation
 import Data
 import Foundation
 import Playlist
+import Preferences
 import SwiftUI
 
 @available(iOS 16.0, *)
@@ -29,6 +30,7 @@ struct PlaylistContentView: View {
   @State private var isNewPlaylistAlertPresented: Bool = false
   @State private var newPlaylistName: String = ""
   @State private var isPopulatingNewPlaylist: Bool = false
+  @ObservedObject private var firstLoadAutoPlay = Preferences.Playlist.firstLoadAutoPlay
 
   private var selectedFolder: PlaylistFolder? {
     folders.first(where: { $0.id == selectedFolderID })
@@ -201,17 +203,18 @@ struct PlaylistContentView: View {
       }
     }
     .onAppear {
+      makeItemQueue(selectedItemID: nil)
       if let initialPlaybackInfo {
         seekToInitialTimestamp = initialPlaybackInfo.timestamp
         selectedItemID = initialPlaybackInfo.itemID
+      } else if firstLoadAutoPlay.value {
+        selectedItemID = itemQueue.first
       }
-      // FIXME: Handle Auto-Play
       if selectedItem != nil {
         selectedDetent = .small
       } else {
         selectedDetent = .anchor(.emptyPlaylistContent)
       }
-      makeItemQueue(selectedItemID: nil)
     }
     .onDisappear {
       playerModel.stop()
