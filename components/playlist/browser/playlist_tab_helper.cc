@@ -8,20 +8,26 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
+#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
+#include "components/global_media_controls/public/constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/media_session.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "services/media_session/public/cpp/media_image_manager.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -50,6 +56,10 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
       user_prefs::UserPrefs::Get(contents->GetBrowserContext()),
       base::BindRepeating(&PlaylistTabHelper::OnPlaylistEnabledPrefChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+
+auto* media_session = content::MediaSession::Get(contents);
+    media_session->AddObserver(
+        media_session_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 PlaylistTabHelper::~PlaylistTabHelper() {
@@ -290,6 +300,43 @@ void PlaylistTabHelper::OnMediaFilesUpdated(
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);
   }
+}
+
+void PlaylistTabHelper::OnAddToPlaylist(
+    const GURL& url,
+    const std::optional<media_session::MediaMetadata>& metadata,
+    const base::flat_map<media_session::mojom::MediaSessionImageType,
+                         std::vector<media_session::MediaImage>>& images) {
+  CHECK(metadata);
+
+  base::Value::Dict dict;
+                          
+  media_session::MediaImageManager manager(
+      global_media_controls::kMediaItemArtworkMinSize,
+      global_media_controls::kMediaItemArtworkDesiredSize);
+
+  std::optional<media_session::MediaImage> image;
+  auto it = images.find(media_session::mojom::MediaSessionImageType::kArtwork);
+  if (it != images.end()) {
+    image = manager.SelectImage(it->second);
+  }
+
+  if (image) {
+    dict.Set("thumbnail", image->src.spec());
+  }
+
+  dict.Set("pageSrc", web_contents()->GetLastCommittedURL().spec());
+  dict.Set("name", metadata->title + u" | " + metadata->artist);
+  dict.Set("author", metadata->artist);
+  dict.Set("src", url.spec());
+  dict.Set("srcIsMediaSourceObjectURL", url.SchemeIsBlob());
+  auto items =
+      ExtractPlaylistItems(url, base::Value::List().Append(std::move(dict)));
+  CHECK(!items.empty());
+  service_->AddMediaFiles(
+      std::move(items), kDefaultPlaylistID,
+      /* can_cache= */ true,
+      base::DoNothing());
 }
 
 void PlaylistTabHelper::ResetData() {

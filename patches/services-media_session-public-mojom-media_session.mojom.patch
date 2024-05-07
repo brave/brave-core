@@ -1,0 +1,28 @@
+diff --git a/services/media_session/public/mojom/media_session.mojom b/services/media_session/public/mojom/media_session.mojom
+index ab98f7ed5dc6a2088279edc2fdf3aefcaadfb513..3c123fc9425f385d82784ebd40f2e1f9587d9deb 100644
+--- a/services/media_session/public/mojom/media_session.mojom
++++ b/services/media_session/public/mojom/media_session.mojom
+@@ -32,6 +32,7 @@ enum MediaSessionAction {
+   kEnterPictureInPicture,
+   kExitPictureInPicture,
+   kSwitchAudioDevice,
++  kAddToPlaylist,
+   [MinVersion=11] kToggleMicrophone,
+   [MinVersion=11] kToggleCamera,
+   [MinVersion=11] kHangUp,
+@@ -279,6 +280,8 @@ interface MediaSessionObserver {
+ 
+   // Called when the position associated with the session has changed.
+   MediaSessionPositionChanged@4(MediaPosition? position);
++
++  OnAddToPlaylist@5(url.mojom.Url url, MediaMetadata? metadata, map<MediaSessionImageType, array<MediaImage>> images);
+ };
+ 
+ // A MediaSession manages the media session and audio focus for a given
+@@ -399,4 +402,6 @@ interface MediaSession {
+   // Automatically enter picture-in-picture from a non-user source (e.g. in
+   // reaction to content being hidden).
+   [MinVersion=19] EnterAutoPictureInPicture@26();
++
++  AddToPlaylist@27();
+ };

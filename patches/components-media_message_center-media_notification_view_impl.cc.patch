@@ -1,0 +1,68 @@
+diff --git a/components/media_message_center/media_notification_view_impl.cc b/components/media_message_center/media_notification_view_impl.cc
+index 15a67d78d36655eb27dfa093ca26c3bfa72772b6..9045e22a9019c98fe53d2452c7c9112131a34f72 100644
+--- a/components/media_message_center/media_notification_view_impl.cc
++++ b/components/media_message_center/media_notification_view_impl.cc
+@@ -41,8 +41,8 @@ using media_session::mojom::MediaSessionAction;
+ namespace {
+ 
+ // The number of actions supported when the notification is expanded or not.
+-constexpr size_t kMediaNotificationActionsCount = 3;
+-constexpr size_t kMediaNotificationExpandedActionsCount = 6;
++constexpr size_t kMediaNotificationActionsCount = 4;
++constexpr size_t kMediaNotificationExpandedActionsCount = 7;
+ 
+ // Dimensions.
+ constexpr int kDefaultMarginSize = 8;
+@@ -259,6 +259,22 @@ MediaNotificationViewImpl::MediaNotificationViewImpl(
+   picture_in_picture_button_ =
+       button_row_->AddChildView(std::move(picture_in_picture_button));
+ 
++  auto add_to_playlist_button =
++      views::CreateVectorToggleImageButton(views::Button::PressedCallback());
++  add_to_playlist_button->SetCallback(base::BindRepeating(
++      &MediaNotificationViewImpl::ButtonPressed, base::Unretained(this),
++      add_to_playlist_button.get()));
++  add_to_playlist_button->set_tag(
++      static_cast<int>(MediaSessionAction::kAddToPlaylist));
++  add_to_playlist_button->SetPreferredSize(is_cros_ ? kCrOSMediaButtonSize
++                                                    : kMediaButtonSize);
++  add_to_playlist_button->SetFocusBehavior(views::View::FocusBehavior::ALWAYS);
++  add_to_playlist_button->SetTooltipText(u"Add to Playlist");
++  add_to_playlist_button->SetToggledTooltipText(u"Add to Playlist");
++  add_to_playlist_button->SetFlipCanvasOnPaintForRTLUI(false);
++  add_to_playlist_button_ =
++      button_row_->AddChildView(std::move(add_to_playlist_button));
++
+   // Use ash style background if we do have a theme.
+   if (is_cros_) {
+     SetBackground(std::make_unique<MediaNotificationBackgroundAshImpl>());
+@@ -420,6 +436,7 @@ void MediaNotificationViewImpl::UpdateWithMediaMetadata(
+ void MediaNotificationViewImpl::UpdateWithMediaActions(
+     const base::flat_set<media_session::mojom::MediaSessionAction>& actions) {
+   enabled_actions_ = actions;
++  enabled_actions_.emplace(media_session::mojom::MediaSessionAction::kAddToPlaylist);
+ 
+   if (header_row_) {
+     header_row_->SetExpandButtonEnabled(GetExpandable());
+@@ -512,7 +529,8 @@ void MediaNotificationViewImpl::UpdateActionButtonsVisibility() {
+       action_button->InvalidateLayout();
+     }
+ 
+-    if (action_button == picture_in_picture_button_) {
++    if (action_button == picture_in_picture_button_ ||
++        action_button == add_to_playlist_button_) {
+       pip_button_separator_view_->SetVisible(should_show);
+ 
+       if (should_invalidate) {
+@@ -753,6 +771,11 @@ void MediaNotificationViewImpl::UpdateForegroundColor() {
+       *GetVectorIconForMediaAction(MediaSessionAction::kExitPictureInPicture),
+       kMediaButtonIconSize, theme.enabled_icon_color,
+       theme.disabled_icon_color);
++  views::SetImageFromVectorIconWithColor(
++      add_to_playlist_button_,
++      *GetVectorIconForMediaAction(MediaSessionAction::kAddToPlaylist),
++      kMediaButtonIconSize, theme.enabled_icon_color,
++      theme.disabled_icon_color);
+ 
+   // Update action buttons.
+   for (views::View* child : playback_button_container_->children()) {

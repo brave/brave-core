@@ -1,0 +1,12 @@
+diff --git a/components/media_message_center/media_notification_view_impl.h b/components/media_message_center/media_notification_view_impl.h
+index 9102267a4402447969ef8d2fc70ab84b7ae7397d..4913c0310c29a666defbf41dde6759932db51fee 100644
+--- a/components/media_message_center/media_notification_view_impl.h
++++ b/components/media_message_center/media_notification_view_impl.h
+@@ -182,6 +182,7 @@ class COMPONENT_EXPORT(MEDIA_MESSAGE_CENTER) MediaNotificationViewImpl
+   raw_ptr<views::View> pip_button_separator_view_ = nullptr;
+   raw_ptr<views::ToggleImageButton> play_pause_button_ = nullptr;
+   raw_ptr<views::ToggleImageButton> picture_in_picture_button_ = nullptr;
++  raw_ptr<views::ToggleImageButton> add_to_playlist_button_ = nullptr;
+   raw_ptr<views::View> title_artist_row_ = nullptr;
+   raw_ptr<views::Label> title_label_ = nullptr;
+   raw_ptr<views::Label> artist_label_ = nullptr;

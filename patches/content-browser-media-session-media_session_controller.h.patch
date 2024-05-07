@@ -1,0 +1,13 @@
+diff --git a/content/browser/media/session/media_session_controller.h b/content/browser/media/session/media_session_controller.h
+index 71cbb083e3cd969b9b15701c84495498be6da805..dca8ca629688e6e705f98cc14ac21b6266d70ca2 100644
+--- a/content/browser/media/session/media_session_controller.h
++++ b/content/browser/media/session/media_session_controller.h
+@@ -112,6 +112,8 @@ class CONTENT_EXPORT MediaSessionController
+   // Called when video visibility changes for the given media player.
+   void OnVideoVisibilityChanged(bool meets_visibility_threshold);
+ 
++  void OnMediaLoaded(const GURL& url);
++
+  private:
+   bool IsMediaSessionNeeded() const;
+ 

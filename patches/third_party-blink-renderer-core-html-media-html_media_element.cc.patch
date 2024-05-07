@@ -1,0 +1,17 @@
+diff --git a/third_party/blink/renderer/core/html/media/html_media_element.cc b/third_party/blink/renderer/core/html/media/html_media_element.cc
+index 35bd4055e1ee3906e3f344582d8c4c9cbd863887..e22a38b541329b6040b657603080cdc4e42c9d53 100644
+--- a/third_party/blink/renderer/core/html/media/html_media_element.cc
++++ b/third_party/blink/renderer/core/html/media/html_media_element.cc
+@@ -2232,6 +2232,12 @@ void HTMLMediaElement::SetReadyState(ReadyState state) {
+     SetShouldDelayLoadEvent(false);
+ 
+     OnLoadFinished();
++
++    if (auto* media_player = GetWebMediaPlayer()) {
++      for (auto& observer : GetMediaPlayerObserverRemoteSet()) {
++        observer->OnMediaLoaded(KURL(media_player->GetLoadedUrl()));
++      }
++    }
+   }
+ 
+   if (ready_state_ == kHaveFutureData && old_state <= kHaveCurrentData &&

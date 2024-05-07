@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/global_media_controls/cast_media_session_controller.cc b/chrome/browser/ui/global_media_controls/cast_media_session_controller.cc
+index 60d970fb05721abefd1c7a27a99340dbdfdbf7b8..2fb0f3b90aecbce355fc4bf529a0c98ab596f3f6 100644
+--- a/chrome/browser/ui/global_media_controls/cast_media_session_controller.cc
++++ b/chrome/browser/ui/global_media_controls/cast_media_session_controller.cc
+@@ -58,6 +58,9 @@ void CastMediaSessionController::Send(
+     case media_session::mojom::MediaSessionAction::kStop:
+       route_controller_->Pause();
+       return;
++    case media_session::mojom::MediaSessionAction::kAddToPlaylist:
++      CHECK(false);
++      return;
+     case media_session::mojom::MediaSessionAction::kSkipAd:
+     case media_session::mojom::MediaSessionAction::kSeekTo:
+     case media_session::mojom::MediaSessionAction::kScrubTo:

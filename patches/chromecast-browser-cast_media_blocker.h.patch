@@ -1,0 +1,17 @@
+diff --git a/chromecast/browser/cast_media_blocker.h b/chromecast/browser/cast_media_blocker.h
+index 2a5f176a85ecb06536417b12a2067685726a3ead..15fa9f147ded5d136ac3cae2d5e34e34e3756e5b 100644
+--- a/chromecast/browser/cast_media_blocker.h
++++ b/chromecast/browser/cast_media_blocker.h
+@@ -62,6 +62,12 @@ class CastMediaBlocker : public media_control::MediaBlocker,
+       override {}
+   void MediaSessionPositionChanged(
+       const std::optional<media_session::MediaPosition>& position) override {}
++  void OnAddToPlaylist(
++      const GURL& url,
++      const std::optional<media_session::MediaMetadata>& metadata,
++      const base::flat_map<media_session::mojom::MediaSessionImageType,
++                           std::vector<media_session::MediaImage>>& images)
++      override {}
+ 
+  private:
+   friend shell::CastMediaBlockerTest;

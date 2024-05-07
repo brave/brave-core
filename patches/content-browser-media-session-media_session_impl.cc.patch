@@ -1,0 +1,28 @@
+diff --git a/content/browser/media/session/media_session_impl.cc b/content/browser/media/session/media_session_impl.cc
+index 3703599cd3c7816f7e820d4128b0c1de3f5207c5..6adddaf061a0e75af149d4bebd5455c87ee6717f 100644
+--- a/content/browser/media/session/media_session_impl.cc
++++ b/content/browser/media/session/media_session_impl.cc
+@@ -1346,6 +1346,12 @@ void MediaSessionImpl::RequestMediaRemoting() {
+       normal_players_.begin()->first.player_id);
+ }
+ 
++void MediaSessionImpl::AddToPlaylist() {
++  for (auto& observer : observers_) {
++    observer->OnAddToPlaylist(loaded_url_, this->metadata_, this->images_);
++  }
++}
++
+ void MediaSessionImpl::GetMediaImageBitmap(
+     const media_session::MediaImage& image,
+     int minimum_size_px,
+@@ -2078,6 +2084,10 @@ bool MediaSessionImpl::HasImageCacheForTest(const GURL& image_url) const {
+   return GetPageData(web_contents()->GetPrimaryPage()).GetImageCache(image_url);
+ }
+ 
++void MediaSessionImpl::SetLoadedUrl(const GURL& url) {
++  loaded_url_ = url;
++}
++
+ MediaSessionImpl::PageData::PageData(content::Page& page)
+     : PageUserData(page) {}
+ 

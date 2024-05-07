@@ -1,0 +1,13 @@
+diff --git a/content/browser/media/session/media_session_controllers_manager.h b/content/browser/media/session/media_session_controllers_manager.h
+index 57bf1a599b8b6f4bb9869bd76bc0a93ecc182b02..8f57219423eb4dd095fc95b387f53046bf0d927d 100644
+--- a/content/browser/media/session/media_session_controllers_manager.h
++++ b/content/browser/media/session/media_session_controllers_manager.h
+@@ -99,6 +99,8 @@ class CONTENT_EXPORT MediaSessionControllersManager {
+   void OnVideoVisibilityChanged(const MediaPlayerId& id,
+                                 bool meets_visibility_threshold);
+ 
++  void OnMediaLoaded(const MediaPlayerId& id, const GURL& url);
++
+  private:
+   using ControllersMap =
+       std::map<MediaPlayerId, std::unique_ptr<MediaSessionController>>;

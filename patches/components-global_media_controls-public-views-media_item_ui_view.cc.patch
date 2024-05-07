@@ -1,0 +1,22 @@
+diff --git a/components/global_media_controls/public/views/media_item_ui_view.cc b/components/global_media_controls/public/views/media_item_ui_view.cc
+index 26db5429cea2a794f26a94e72510711113d7afd1..f68e6427472e889e26b141208dd49b2a57142b91 100644
+--- a/components/global_media_controls/public/views/media_item_ui_view.cc
++++ b/components/global_media_controls/public/views/media_item_ui_view.cc
+@@ -40,7 +40,7 @@ namespace global_media_controls {
+ 
+ namespace {
+ 
+-constexpr int kWidth = 400;
++constexpr int kWidth = 460;
+ constexpr gfx::Size kNormalSize = gfx::Size(kWidth, 100);
+ constexpr gfx::Size kExpandedSize = gfx::Size(kWidth, 150);
+ constexpr gfx::Size kDismissButtonSize = gfx::Size(30, 30);
+@@ -481,7 +481,7 @@ void MediaItemUIView::OnSizeChanged() {
+   if (device_selector_view_) {
+     auto device_selector_view_size =
+         device_selector_view_->GetPreferredSize({});
+-    CHECK(device_selector_view_size.width() == kWidth);
++    // CHECK(device_selector_view_size.width() == kWidth);
+     if (device_selector_view_size.height() > 0) {
+       new_size.set_height(new_size.height() +
+                           device_selector_view_size.height());

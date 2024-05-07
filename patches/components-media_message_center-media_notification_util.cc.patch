@@ -1,0 +1,38 @@
+diff --git a/components/media_message_center/media_notification_util.cc b/components/media_message_center/media_notification_util.cc
+index 34b66a3fdb67b1d32a4643842d003776c41d939e..f50a292be3a7d786eda7986547944c8f3bd1f73e 100644
+--- a/components/media_message_center/media_notification_util.cc
++++ b/components/media_message_center/media_notification_util.cc
+@@ -7,6 +7,7 @@
+ #include "base/containers/contains.h"
+ #include "base/metrics/histogram_macros.h"
+ #include "base/strings/utf_string_conversions.h"
++#include "brave/components/vector_icons/vector_icons.h"
+ #include "components/media_message_center/vector_icons/vector_icons.h"
+ #include "components/strings/grit/components_strings.h"
+ #include "components/url_formatter/elide_url.h"
+@@ -31,6 +32,7 @@ constexpr MediaSessionAction kPreferredActions[] = {
+     MediaSessionAction::kSeekForward,
+     MediaSessionAction::kEnterPictureInPicture,
+     MediaSessionAction::kExitPictureInPicture,
++    MediaSessionAction::kAddToPlaylist,
+ };
+ 
+ // The maximum number of media notifications to count when recording the
+@@ -129,6 +131,8 @@ const gfx::VectorIcon* GetVectorIconForMediaAction(MediaSessionAction action) {
+       return &kMediaEnterPipIcon;
+     case MediaSessionAction::kExitPictureInPicture:
+       return &kMediaExitPipIcon;
++    case MediaSessionAction::kAddToPlaylist:
++      return &kLeoProductPlaylistAddIcon;
+     case MediaSessionAction::kStop:
+     case MediaSessionAction::kSkipAd:
+     case MediaSessionAction::kSeekTo:
+@@ -176,6 +180,8 @@ const std::u16string GetAccessibleNameForMediaAction(
+     case MediaSessionAction::kExitPictureInPicture:
+       return l10n_util::GetStringUTF16(
+           IDS_MEDIA_MESSAGE_CENTER_MEDIA_NOTIFICATION_ACTION_EXIT_PIP);
++    case MediaSessionAction::kAddToPlaylist:
++      return u"Add to Playlist";
+     case MediaSessionAction::kStop:
+     case MediaSessionAction::kSkipAd:
+     case MediaSessionAction::kSeekTo:

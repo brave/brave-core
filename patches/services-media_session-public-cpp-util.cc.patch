@@ -1,0 +1,14 @@
+diff --git a/services/media_session/public/cpp/util.cc b/services/media_session/public/cpp/util.cc
+index 26c52f6e0a6156383588d1f198c2e3d1e6aaf06b..59fffc480e889a5a93099996a14556428557efd3 100644
+--- a/services/media_session/public/cpp/util.cc
++++ b/services/media_session/public/cpp/util.cc
+@@ -64,6 +64,9 @@ void PerformMediaSessionAction(
+     case mojom::MediaSessionAction::kSkipAd:
+       media_controller_remote->SkipAd();
+       break;
++    case mojom::MediaSessionAction::kAddToPlaylist:
++      media_controller_remote->AddToPlaylist();
++      break;
+     case mojom::MediaSessionAction::kSetMute:
+     case mojom::MediaSessionAction::kSeekTo:
+     case mojom::MediaSessionAction::kScrubTo:

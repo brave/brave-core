@@ -1,0 +1,12 @@
+diff --git a/content/browser/media/media_web_contents_observer.h b/content/browser/media/media_web_contents_observer.h
+index 30dc069777641ecaafdab9d694e3cf440f7f35c3..1b0639bd39ad45c1b716ee4aa323aa382f9dce1c 100644
+--- a/content/browser/media/media_web_contents_observer.h
++++ b/content/browser/media/media_web_contents_observer.h
+@@ -216,6 +216,7 @@ class CONTENT_EXPORT MediaWebContentsObserver
+         media_session::mojom::RemotePlaybackMetadataPtr
+             remote_playback_metadata) override;
+     void OnVideoVisibilityChanged(bool meets_visibility_threshold) override;
++    void OnMediaLoaded(const GURL& url) override;
+ 
+    private:
+     PlayerInfo* GetPlayerInfo();

@@ -16,6 +16,7 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "services/media_session/public/mojom/media_session.mojom.h"
 
 namespace content {
 class NavigationHandle;
@@ -30,7 +31,8 @@ class PlaylistTabHelperObserver;
 class PlaylistTabHelper
     : public content::WebContentsUserData<PlaylistTabHelper>,
       public content::WebContentsObserver,
-      public mojom::PlaylistServiceObserver {
+      public mojom::PlaylistServiceObserver,
+      public media_session::mojom::MediaSessionObserver {
  public:
   static void CreateForWebContents(content::WebContents* web_contents,
                                    PlaylistService* service);
@@ -95,6 +97,27 @@ class PlaylistTabHelper
   void OnMediaFilesUpdated(const GURL& url,
                            std::vector<mojom::PlaylistItemPtr> items) override;
 
+  // MediaSessionObserver:
+  void MediaSessionInfoChanged(
+      media_session::mojom::MediaSessionInfoPtr session_info) override {}
+  void MediaSessionMetadataChanged(
+      const std::optional<media_session::MediaMetadata>& metadata) override {}
+  void MediaSessionActionsChanged(
+      const std::vector<media_session::mojom::MediaSessionAction>& action)
+      override {}
+  void MediaSessionImagesChanged(
+      const base::flat_map<media_session::mojom::MediaSessionImageType,
+                           std::vector<media_session::MediaImage>>& images)
+      override {}
+  void MediaSessionPositionChanged(
+      const std::optional<media_session::MediaPosition>& position) override{}
+  void OnAddToPlaylist(
+      const GURL& url,
+      const std::optional<media_session::MediaMetadata>& metadata,
+      const base::flat_map<media_session::mojom::MediaSessionImageType,
+                           std::vector<media_session::MediaImage>>& images)
+      override;
+
  private:
   friend class content::WebContentsUserData<PlaylistTabHelper>;
   using content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents;
@@ -120,6 +143,9 @@ class PlaylistTabHelper
       this};
 
   BooleanPrefMember playlist_enabled_pref_;
+
+  mojo::Receiver<media_session::mojom::MediaSessionObserver>
+      media_session_observer_receiver_{this};
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 

@@ -1,0 +1,24 @@
+diff --git a/content/browser/media/active_media_session_controller.cc b/content/browser/media/active_media_session_controller.cc
+index e1adce25088dd5182e44ec6a89e9f1815b6ce012..528ae1137096e73b89c86188cf374f51d98ffa36 100644
+--- a/content/browser/media/active_media_session_controller.cc
++++ b/content/browser/media/active_media_session_controller.cc
+@@ -222,6 +222,9 @@ void ActiveMediaSessionController::PerformAction(MediaSessionAction action) {
+       media_controller_remote_->Stop();
+       ui::RecordMediaHardwareKeyAction(ui::MediaHardwareKeyAction::kStop);
+       return;
++    case MediaSessionAction::kAddToPlaylist:
++      CHECK(false);
++      return;
+     case MediaSessionAction::kSeekBackward:
+     case MediaSessionAction::kSeekForward:
+     case MediaSessionAction::kSkipAd:
+@@ -276,6 +279,9 @@ ActiveMediaSessionController::MediaSessionActionToKeyCode(
+       return ui::KeyboardCode::VKEY_MEDIA_NEXT_TRACK;
+     case MediaSessionAction::kPreviousTrack:
+       return ui::KeyboardCode::VKEY_MEDIA_PREV_TRACK;
++    case MediaSessionAction::kAddToPlaylist:
++      CHECK(false);
++      return ui::KeyboardCode::VKEY_MEDIA_PREV_TRACK;
+     case MediaSessionAction::kSeekBackward:
+     case MediaSessionAction::kSeekForward:
+     case MediaSessionAction::kSkipAd:

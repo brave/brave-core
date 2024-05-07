@@ -1,0 +1,24 @@
+diff --git a/services/media_session/media_controller.h b/services/media_session/media_controller.h
+index bceafa166147ad6d10aa5873fe3f53473bb9fd2c..b1091a2ad3cf8f73300e4be70083e848e3ccd51b 100644
+--- a/services/media_session/media_controller.h
++++ b/services/media_session/media_controller.h
+@@ -49,6 +49,7 @@ class MediaController : public mojom::MediaController,
+   void NextTrack() override;
+   void Seek(base::TimeDelta seek_time) override;
+   void SkipAd() override;
++  void AddToPlaylist() override;
+   void ObserveImages(mojom::MediaSessionImageType type,
+                      int minimum_size_px,
+                      int desired_size_px,
+@@ -79,6 +80,11 @@ class MediaController : public mojom::MediaController,
+                            std::vector<MediaImage>>& images) override;
+   void MediaSessionPositionChanged(
+       const std::optional<media_session::MediaPosition>& position) override;
++  void OnAddToPlaylist(
++      const GURL& url,
++      const std::optional<MediaMetadata>& metadata,
++      const base::flat_map<mojom::MediaSessionImageType,
++                           std::vector<MediaImage>>& images) override {}
+ 
+   void SetMediaSession(AudioFocusRequest* session);
+   void ClearMediaSession();

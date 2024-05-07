@@ -1,0 +1,15 @@
+diff --git a/content/browser/media/session/media_session_controller.cc b/content/browser/media/session/media_session_controller.cc
+index cc0af430e6162d75b702383e467bc521e1fa8ac9..4a749903b5f75f5624eddf92b5df33341bdc4f9a 100644
+--- a/content/browser/media/session/media_session_controller.cc
++++ b/content/browser/media/session/media_session_controller.cc
+@@ -242,6 +242,10 @@ void MediaSessionController::OnVideoVisibilityChanged(
+   media_session_->OnVideoVisibilityChanged();
+ }
+ 
++void MediaSessionController::OnMediaLoaded(const GURL& url) {
++  media_session_->SetLoadedUrl(url);
++}
++
+ bool MediaSessionController::IsMediaSessionNeeded() const {
+   if (web_contents_->HasPictureInPictureVideo())
+     return true;

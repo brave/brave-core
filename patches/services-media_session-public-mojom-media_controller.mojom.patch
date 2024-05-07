@@ -1,0 +1,13 @@
+diff --git a/services/media_session/public/mojom/media_controller.mojom b/services/media_session/public/mojom/media_controller.mojom
+index 8c81bfbf92da1c14770c716208bf620c09a88d4d..9bbd343c048790b32ad87683fe636fe625729153 100644
+--- a/services/media_session/public/mojom/media_controller.mojom
++++ b/services/media_session/public/mojom/media_controller.mojom
+@@ -122,6 +122,8 @@ interface MediaController {
+ 
+   // Skips the advertisement that is currently playing.
+   [MinVersion=6] SkipAd@21();
++
++  AddToPlaylist@22();
+ };
+ 
+ // The observer for observing media controller events. This is different to a

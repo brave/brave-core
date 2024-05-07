@@ -1,0 +1,21 @@
+diff --git a/content/browser/media/session/media_session_controllers_manager.cc b/content/browser/media/session/media_session_controllers_manager.cc
+index af2f16a3a16063e659d2eac42891248564ea7977..42d454c51b02ba29803fd9507c6ed369ee3427a4 100644
+--- a/content/browser/media/session/media_session_controllers_manager.cc
++++ b/content/browser/media/session/media_session_controllers_manager.cc
+@@ -163,6 +163,16 @@ void MediaSessionControllersManager::OnVideoVisibilityChanged(
+   controller->OnVideoVisibilityChanged(meets_visibility_threshold);
+ }
+ 
++void MediaSessionControllersManager::OnMediaLoaded(const MediaPlayerId& id,
++                                                   const GURL& url) {
++  if (!IsMediaSessionEnabled()) {
++    return;
++  }
++
++  MediaSessionController* const controller = FindOrCreateController(id);
++  controller->OnMediaLoaded(url);
++}
++
+ MediaSessionController* MediaSessionControllersManager::FindOrCreateController(
+     const MediaPlayerId& id) {
+   auto it = controllers_map_.find(id);

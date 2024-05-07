@@ -1,0 +1,31 @@
+diff --git a/content/browser/media/session/media_session_impl.h b/content/browser/media/session/media_session_impl.h
+index c6e8baf22837b35359334d9c96ed912d7eea22da..2dd6c9c94956086a890e04dfa167e168f08a42a2 100644
+--- a/content/browser/media/session/media_session_impl.h
++++ b/content/browser/media/session/media_session_impl.h
+@@ -304,6 +304,8 @@ class MediaSessionImpl : public MediaSession,
+   // sinks.
+   void RequestMediaRemoting() override;
+ 
++  void AddToPlaylist() override;
++
+   // PresentationObserver:
+   void OnPresentationsChanged(bool has_presentation) override;
+ 
+@@ -355,6 +357,8 @@ class MediaSessionImpl : public MediaSession,
+   // that might otherwise be sitting in a message pipe somewhere.
+   void flush_observers_for_testing() { observers_.FlushForTesting(); }
+ 
++  CONTENT_EXPORT void SetLoadedUrl(const GURL& url);
++
+  private:
+   friend class content::WebContentsUserData<MediaSessionImpl>;
+   friend class MediaSessionImplBrowserTest;
+@@ -658,6 +662,8 @@ class MediaSessionImpl : public MediaSession,
+   // `MaybeGuardDurationUpdate()` for details on duration changes.
+   bool is_considered_live_ = false;
+ 
++  GURL loaded_url_;
++
+   WEB_CONTENTS_USER_DATA_KEY_DECL();
+ };
+ 

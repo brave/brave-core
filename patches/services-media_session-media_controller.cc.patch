@@ -1,0 +1,19 @@
+diff --git a/services/media_session/media_controller.cc b/services/media_session/media_controller.cc
+index 770eb83b338f1e76f7b649ff5c1c821a2f7b9d9c..0de19f56d82f1473e428e3560c139e8680d09dc2 100644
+--- a/services/media_session/media_controller.cc
++++ b/services/media_session/media_controller.cc
+@@ -361,6 +361,14 @@ void MediaController::SkipAd() {
+   }
+ }
+ 
++void MediaController::AddToPlaylist() {
++  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
++
++  if (session_) {
++    session_->ipc()->AddToPlaylist();
++  }
++}
++
+ void MediaController::ObserveImages(
+     mojom::MediaSessionImageType type,
+     int minimum_size_px,
