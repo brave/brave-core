@@ -118,10 +118,10 @@ CHAR_LIMIT guidelines:
         Private
       </message>
       <message name="IDS_IMPROVE_SEARCH_SUGGESTIONS_SUMMARY" desc="Summary for a checkbox in Settings that controls URL and search autocompletion and informs the user about the data shared by this feature.">
-        When you type in the address bar or search box, Brave sends what you type to your default search engine to get better suggestions. This is off in Private.
+        When you type in the address bar or search box, Ping sends what you type to your default search engine to get better suggestions. This is off in Private.
       </message>
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_TITLE" desc="Title for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism.">
-        Lock Private tabs when you leave Brave
+        Lock Private tabs when you leave Ping
       </message>
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
         Use screen lock to see open Private tabs
@@ -182,7 +182,7 @@ Private state tokens improve privacy on the web and can’t be used to find out 
        Unlock Private
      </message>
      <message name="IDS_INCOGNITO_REAUTH_PROMO_TITLE" desc="The title of the private re-auth promo card.">
-       Lock Private tabs when you leave Brave
+       Lock Private tabs when you leave Ping
      </message>
      <message name="IDS_INCOGNITO_REAUTH_PROMO_DESCRIPTION" desc="The description of the private re-auth promo card.">
        Use screen lock to see open Private tabs
@@ -191,11 +191,11 @@ Private state tokens improve privacy on the web and can’t be used to find out 
        Turn on Private lock
      </message>
      <message name="IDS_INCOGNITO_REAUTH_SNACKBAR_TEXT" desc="The label of the snackbar notification which appears after the private re-authentication is turned on from the promo card shown inside the Private grid tab switcher.">
-        Private tabs will be locked when you leave Brave
+        Private tabs will be locked when you leave Ping
      </message>
 
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_BODY" desc="Text that describes the benefits users will get if they turn on the metrics sharing option.">
-        Help make Brave better for profiles who use it the way you do
+        Help make Ping better for profiles who use it the way you do
       </message>
       <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">
         New Private tab
@@ -216,7 +216,7 @@ Private state tokens improve privacy on the web and can’t be used to find out 
         Close Private tabs
       </message>
       <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Brave in a Private tab. [CHAR_LIMIT=30]" translateable="false">
-        Open in Private Brave
+        Open in Private Ping
       </message>
       <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new Private tab view.">
         New Private tab

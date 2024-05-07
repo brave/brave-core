@@ -150,7 +150,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Copy clean link
       </message>
       <message name="IDS_ESTIMATED_TOOLTIP_TEXT"  desc="Text for This reflects your estimated earnings range for Brave Ads this month.">
-        This reflects your estimated earnings range for Brave Ads this month.
+        This reflects your estimated earnings range for Ping Ads this month.
       </message>
       <message name="IDS_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Notifications are disabled">
         Notifications are disabled
@@ -171,7 +171,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Loading...
       </message>
       <message name="IDS_EARN_TOKENS_FOR_PRIVATE_ADS_TITLE"  desc="Text for Earn tokens for private ads you see in Brave">
-        Earn tokens for private ads you see in Brave
+        Earn tokens for private ads you see in Ping
       </message>
       <message name="IDS_EARN_TOKENS_FOR_PRIVATE_ADS_DESCRIPTION"  desc="Text for Use tokens to buy gift cards, exchange for other currencies, support content creators, and more.">
         Use tokens to buy gift cards, exchange for other currencies, support content creators, and more.
@@ -180,7 +180,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         How does it work?
       </message>
       <message name="IDS_HOW_DOES_BRAVE_REWARDS_WORK"  desc="Text for How does Brave Rewards work?">
-        How does Brave Rewards work?
+        How does Ping Rewards work?
       </message>
       <message name="IDS_START_USING_REWARDS"  desc="Text for Start using Rewards">
         Start using Rewards
@@ -198,7 +198,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Make this a monthly recurring contribution. You can cancel it at any time.
       </message>
       <message name="IDS_NOT_ENOUGH_TOKENS_DESCRIPTION" desc="Text for You don't have enough tokens description">
-        You can only send up to <ph name="AMOUNT">%1$s</ph> BAT using your Brave Rewards balance.
+        You can only send up to <ph name="AMOUNT">%1$s</ph> BAT using your Ping Rewards balance.
       </message>
       <message name="IDS_MONTHLY_CONTRIBUTIONS" desc="Text for Monthly Contributions">
         Monthly Contributions
@@ -237,10 +237,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Thanks for supporting your favorite creators
       </message>
       <message name="IDS_LOGGED_OUT_OF_CUSTODIAN_DESCRIPTION"  desc="Text for logged out message description">
-        It looks like you're logged out of <ph name="CUSTODIAN">%1$s</ph> for Brave Rewards. Log in again to continue.
+        It looks like you're logged out of <ph name="CUSTODIAN">%1$s</ph> for Ping Rewards. Log in again to continue.
       </message>
       <message name="IDS_INFO_CREATOR_NOT_VERIFIED"  desc="Text for This creator is not verified description">
-        This Creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified. <ph name="LEARN_MORE">%1$s</ph>
+        This Creator is not yet verified with Ping Creators. You'll be able to send them contributions once they're verified. <ph name="LEARN_MORE">%1$s</ph>
       </message>
       <message name="IDS_SEND_CONTRIBUTION"  desc="Text for Send contribution">
         Send Contribution
@@ -249,13 +249,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Can't send your contribution
       </message>
       <message name="IDS_USE_BRAVE_REWARDS"  desc="Text for Use Brave Rewards">
-        Use Brave Rewards
+        Use Ping Rewards
       </message>
       <message name="IDS_USE_WEB3_WALLET"  desc="Text for Use Web3 wallet">
         Use Web3 wallet
       </message>
       <message name="IDS_BRAVE_REWARDS_BALANCE"  desc="Text for Brave Rewards balance">
-        Brave Rewards balance
+        Ping Rewards balance
       </message>
       <message name="IDS_SET_AS_MONTHLY_CONTRIBUTION"  desc="Text for Set as monthly contribution">
         Set as monthly contribution
@@ -279,10 +279,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Please try again.
       </message>
       <message name="IDS_TIPPING_TOOLTIP_DESCRIPTION"  desc="Text for tipping tooltip description">
-        This Creator has registered with Brave and can receive contributions from Brave Rewards users. <ph name="LEARN_MORE">%1$s</ph>
+        This Creator has registered with Ping and can receive contributions from Ping Rewards users. <ph name="LEARN_MORE">%1$s</ph>
       </message>
       <message name="IDS_BRAVE_REWARDS_MAY_NOT_WORK_WHILE_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Brave Rewards may not work while notifications are disabled.">
-        Brave Rewards may not work while notifications are disabled.
+        Ping Rewards may not work while notifications are disabled.
       </message>
       <message name="IDS_TURN_ON"  desc="Text for Turn On">
         TURN ON
@@ -294,7 +294,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Tell us what you think!
       </message>
       <message name="IDS_RATE_BRAVE"  desc="Text for Rate Brave">
-        Rate Brave
+        Rate Ping
       </message>
       <message name="IDS_BRAVE_RATING_THANKS"  desc="Text for Brave Rating Thanks">
         Thanks!
@@ -306,13 +306,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Optional
       </message>
       <message name="IDS_IN_ONE_EMOJI_EXPERIENCE_WITH_BRAVE"  desc="Text for In one emoji, how's your experience with Brave?">
-        In one emoji, how's your experience with Brave?
+        In one emoji, how's your experience with Ping?
       </message>
       <message name="IDS_RATE_NOW"  desc="Text for Rate now">
         Rate now
       </message>
       <message name="IDS_LIKING_BRAVE"  desc="Text for Liking Brave?">
-        Liking Brave?
+        Liking Ping?
       </message>
       <message name="IDS_HAPPY"  desc="Text for happy">
         Happy
@@ -327,13 +327,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Thanks for your feedback!
       </message>
       <message name="IDS_LET_US_KNOW_HOW_WE_CAN_IMPROVE_BRAVE"  desc="Text for Let us know how we can improve Brave.">
-        Let us know how we can improve Brave.
+        Let us know how we can improve Ping.
       </message>
       <message name="IDS_SUPPORT_THIS_CREATOR"  desc="Text for Support this creator">
         Support this creator
       </message>
       <message name="IDS_BRAVE_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_TITLE" desc="The title of a dialog shown to users before asking for notification permission.">
-        Brave notifications make it easier
+        Ping notifications make it easier
       </message>
       <message name="IDS_BRAVE_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
         Manage downloads, earn tokens, see weekly usage stats, and more.
@@ -342,7 +342,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         You're not earning Rewards or receiving Privacy Reports
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_DIALOG_HEADER_ONLY_REWARDS" desc="Text header for When ONLY Brave Rewards is TURNED ON.">
-        You're not earning Brave Rewards
+        You're not earning Ping Rewards
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_DIALOG_HEADER_ONLY_PRIVACY" desc="Text header for When ONLY Privacy Report is TURNED ON.">
         You're not receiving Privacy Reports
@@ -366,25 +366,25 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         You're not receiving Privacy Reports
       </message>
       <message name="IDS_NOTIFICATION_OS_DIALOG_DESCRIPTION_BOTH_REWARDS_PRIVACY" desc="Text description for When BOTH Brave Rewards and Privacy Report are TURNED ON.">
-        Enable device notifications to earn Brave Rewards and see Privacy Reports.
+        Enable device notifications to earn Ping Rewards and see Privacy Reports.
       </message>
       <message name="IDS_NOTIFICATION_OS_DIALOG_DESCRIPTION_ONLY_REWARDS" desc="Text description for When ONLY Brave Rewards is TURNED ON.">
-        Enable device notifications to earn Brave Rewards.
+        Enable device notifications to earn Ping Rewards.
       </message>
       <message name="IDS_NOTIFICATION_OS_DIALOG_DESCRIPTION_ONLY_PRIVACY" desc="Text description for When ONLY Privacy Report is TURNED ON.">
-        Enable device notifications to get Brave Privacy Reports.
+        Enable device notifications to get Ping Privacy Reports.
       </message>
       <message name="IDS_ENABLE_NOTIFICATIONS_FROM_BRAVE_TO_EARN_BRAVE_REWARDS" desc="Text description for Enable notifications from Brave to earn Brave Rewards.">
-        Enable notifications from Brave to earn Brave Rewards.
+        Enable notifications from Ping to earn Ping Rewards.
       </message>
       <message name="IDS_OPEN_SETTINGS_AND_TURN_ON_DEVICE_NOTIFICATIONS_FOR_BRAVE_ADS" desc="Text description for Open Settings and turn on device notifications for Brave Ads.">
-        Open Settings and turn on device notifications for Brave Ads.
+        Open Settings and turn on device notifications for Ping Ads.
       </message>
       <message name="IDS_TURN_ON_BRAVE_NOTIFICATIONS" desc="Text for button Turn on Brave notifications">
-        Turn on Brave notifications
+        Turn on Ping notifications
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_SHIELDS" desc="Content description for the button that is enable, disable Brave Shields.">
-        Enable/Disable Brave Shields
+        Enable/Disable Ping Shields
       </message>
       <message name="IDS_STATS_NOTIFICATION_PRIVACY_UPDATES_DESCRIPTION"  desc="Text for Notification on description">
         Get weekly privacy updates on tracker &amp; ad blocking.
@@ -396,7 +396,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Upgrade connections to HTTPS
       </message>
       <message name="IDS_PROCESSING_FEE"  desc="Text for Brave collects 5% of the tip amount as a processing fee">
-        Brave collects 5% of the sent amount as a processing fee.
+        Ping collects 5% of the sent amount as a processing fee.
       </message>
       <message name="IDS_BAT" desc="Text for BAT" translateable="false">
         BAT
@@ -408,7 +408,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         exchange
       </message>
       <message name="IDS_BRAVE_REWARDS_TIP_SUCCESS_TWEET" desc="Text of a tweet after tipping a verified creator.">
-        I just contributed <ph name="AMOUNT">%1$s<ex>ContributionAmount</ex></ph> BAT using the Brave Browser. See how you can support your favorite creators and sites too: https://brave.com/rewards
+        I just contributed <ph name="AMOUNT">%1$s<ex>ContributionAmount</ex></ph> BAT using the Ping Browser. See how you can support your favorite creators and sites too: https://brave.com/rewards
       </message>
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH_SUMMARY" desc="Summary for HTTPS Everywhere.">
         Opens some sites using a secure HTTPS connection instead of plain HTTP.
@@ -462,7 +462,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Allow LinkedIn embedded posts
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_REWARDS" desc="Content description for the button that is enable, disable Brave Rewards.">
-        Manage Brave Rewards
+        Manage Ping Rewards
       </message>
       <message name="IDS_PREFS_SECTION_ONLINE_CHECKOUT" desc="Title for online checkout section">
         Online checkout
@@ -474,7 +474,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Features
       </message>
       <message name="IDS_BRAVE_SHIELDS_AND_PRIVACY" desc="Label for the settings related to shields and privacy">
-        Brave Shields &amp; privacy
+        Ping Shields &amp; privacy
       </message>
       <message name="IDS_BRAVE_SEARCH_ENGINES" desc="Label for the settings related to the search engines">
         Search engines
@@ -576,16 +576,16 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Today’s top stories in a completely private feed, just for you.
       </message>
       <message name="IDS_BRAVE_NEWS_SETTINGS_OPTIN_TITLE" desc="Text for opt in card title in settings">
-        Turn on Brave News, and never miss a story
+        Turn on Ping News, and never miss a story
       </message>
       <message name="IDS_BRAVE_NEWS_OPTIN_SUBTITLE" desc="Text for opt in card subtitle">
-        Brave News is ad-supported with completely private and anonymized ads matched on your device.
+        Ping News is ad-supported with completely private and anonymized ads matched on your device.
       </message>
       <message name="IDS_BRAVE_NEWS_SETTINGS_OPTIN_SUBTITLE" desc="Text for opt in card subtitle in settings">
-        Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and... voila!\nBrave News is ad-supported with private, anonymized ads.
+        Follow your favorite sources, in a single feed. Just open a tab in Ping, scroll down, and... voila!\nPing News is ad-supported with private, anonymized ads.
       </message>
       <message name="IDS_TURN_ON_BRAVE_NEWS" desc="Text for opt in card button in settings">
-        Turn on Brave News
+        Turn on Ping News
       </message>
       <message name="IDS_BRAVE_NEWS_SETTINGS_SEARCH" desc="Text for Brave News settings search">
         Search for site, topic, or RSS feed
@@ -636,7 +636,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Ad
       </message>
       <message name="IDS_BRAVE_NEWS_OPTIN_BUTTON" desc="Text for opt in card subtitle">
-        Show Brave News
+        Show Ping News
       </message>
       <message name="IDS_BRAVE_NEWS_SHARE" desc="Text for share option in the long press menu">
         Share
@@ -663,16 +663,16 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Promoted
       </message>
       <message name="IDS_BRAVE_NEWS_MORE_OFFERS_TITLE" desc="Text for more offers for the Brave News Deals card ">
-        More Brave Offers
+        More Ping Offers
       </message>
       <message name="IDS_NEWS_SHOW" desc="Text for news source">
-        Show Brave News
+        Show Ping News
       </message>
       <message name="IDS_NO_CONTENT_TITLE" desc="Text for no source card title">
         No content
       </message>
       <message name="IDS_NO_CONTENT_SUBTITLE" desc="Text for no source card subtitle">
-        Brave News has no content to show.
+        Ping News has no content to show.
       </message>
       <message name="IDS_CHOOSE_CONTENT_SOURCES" desc="Text for no source card button">
         Choose content sources
@@ -720,13 +720,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_SEND_P3A_ANALYTICS_SUMMARY" desc="Summary for checkbox of send p3a analytics.">
-        Anonymized P3A info helps Brave estimate overall usage, and ensure we’re improving popular features.
+        Anonymized P3A info helps Ping estimate overall usage, and ensure we’re improving popular features.
       </message>
       <message name="IDS_SEND_CRASH_REPORTS_TITLE" desc="Title for checkbox enable/disable sending diagnostic reports (crashes, hangs).">
         Automatically send diagnostic reports
       </message>
       <message name="IDS_SEND_CRASH_REPORTS_SUMMARY" desc="Summary for checkbox enable/disable sending diagnostic reports (crashes, hangs).">
-        Help improve Brave\u2019s product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.
+        Help improve Ping\u2019s product stability by automatically sending diagnostic reports when the Ping Browser crashes or freezes.
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_DATA_SAVED" desc="Title for the data saved stats">
         Est. Data\nSaved
@@ -735,10 +735,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Est. Time\nSaved
       </message>
       <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_TITLE" desc="Title for desktop mode in site settings">
-        Video playback in Brave
+        Video playback in Ping
       </message>
       <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ON" desc="Desc for desktop mode in site settings">
-        If enabled, videos will be played in Brave instead of corresponding app
+        If enabled, videos will be played in Ping instead of corresponding app
       </message>
       <!-- AUTOPLAY SITE SETTING-->
       <message name="IDS_AUTOPLAY_TITLE" desc="Title for the Autoplay settings screen [CHAR-LIMIT=32]">
@@ -778,7 +778,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
 
       <message name="IDS_PREFS_SECTION_BRAVE_SHIELDS_GLOBALS" desc="Title for Brave shields global defaults section in the privacy preferences screen">
-        Brave shields global defaults
+        Ping shields global defaults
       </message>
       <message name="IDS_PREFS_SECTION_OTHER_PRIVACY_SETTINGS" desc="Title for Other privacy settings section in the privacy preferences screen">
         Other privacy settings
@@ -790,10 +790,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Background play
       </message>
       <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE" desc="Title for closing all tabs closes brave in controls section">
-        Closing all tabs closes Brave
+        Closing all tabs closes Ping
       </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
-        Allows audio to play when you switch to another tab in Brave or another app or your device screen is off.
+        Allows audio to play when you switch to another tab in Ping or another app or your device screen is off.
       </message>
       <message name="IDS_TEXT_ENABLED" desc="Text indicating that an option is enabled">
         Enabled
@@ -808,16 +808,16 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Appearance
       </message>
       <message name="IDS_SHOW_BRAVE_REWARDS_ICON_TITLE" desc="Title for preference that hides or shows Brave Rewards icon.">
-        Brave Rewards icon
+        Ping Rewards icon
       </message>
       <message name="IDS_SHOW_BRAVE_REWARDS_ICON_SUMMARY" desc="Summary for preference that hides or shows Brave Rewards icon.">
-        Show Brave Rewards icon in address bar
+        Show Ping Rewards icon in address bar
       </message>
       <message name="IDS_BOTTOM_TOOLBAR_ENABLE" desc="Menu item for enabling the bottom toolbar.">
         Enable bottom toolbar
       </message>
       <message name="IDS_SETTINGS_REQUIRE_RELAUNCH_NOTICE" desc="Text for message asked about browser relaunch to apply new settings">
-        Your changes will take effect the next time you relaunch Brave
+        Your changes will take effect the next time you relaunch Ping
       </message>
       <message name="IDS_SETTINGS_REQUIRE_RELAUNCH_NOW" desc="Text on the button causes relaunch browser now">
         RELAUNCH NOW
@@ -828,43 +828,43 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
 
       <!-- Onboarding strings -->
       <message name="IDS_WELCOME_TO_BRAVE" desc="Text for welcome onboarding">
-        Welcome to Brave
+        Welcome to Ping
       </message>
       <message name="IDS_PRIVACY_ONBOARDING" desc="Text for privacy onboarding">
         Privacy. Made simple.
       </message>
       <message name="IDS_ONBOARDING_SET_DEFAULT" desc="Text for set default onboarding">
-        With Brave as default, every link you tap opens with Brave's privacy protections.
+        With Ping as default, every link you tap opens with Ping's privacy protections.
       </message>
       <message name="IDS_PRIVACY_ONBOARDING_INDIA" desc="Text for privacy onboarding for india">
         Block ads. Save data. Every single day.
       </message>
       <message name="IDS_ONBOARDING_SET_DEFAULT_INDIA" desc="Text for set default onboarding for india">
-        With Brave as default, every link you tap gets Brave's ad-block protection. Every page, video, and stream.
+        With Ping as default, every link you tap gets Ping's ad-block protection. Every page, video, and stream.
       </message>
       <message name="IDS_P3A_TITLE" desc="Text for p3a title onboarding">
-        Help make Brave better.
+        Help make Ping better.
       </message>
       <message name="IDS_P3A_CRASH" desc="Text for p3a crash onboarding">
         Send diagnostic reports if you experience a crash or freeze.
       </message>
       <message name="IDS_P3A_INSIGHTS" desc="Text for p3a insights onboarding">
-        Share completely private and anonymous product insights about what features are being used by Brave's users.
+        Share completely private and anonymous product insights about what features are being used by Ping's users.
       </message>
       <message name="IDS_TYPE_WEBSITE" desc="Text for searhbox tooltip title onboarding">
         Type a website name or URL
       </message>
       <message name="IDS_SEARCHBOX_ONBOARDING" desc="Text for searhbox tooltip onboarding">
-        See the Brave difference: No ads. No trackers. Way faster page load.
+        See the Ping difference: No ads. No trackers. Way faster page load.
       </message>
       <message name="IDS_SEARCHBOX_ONBOARDING_INDIA" desc="Text for searhbox tooltip onboarding for india">
-        See the Brave difference: Block ads. Save data. Stream faster.
+        See the Ping difference: Block ads. Save data. Stream faster.
       </message>
       <message name="IDS_SHIELD_ONBOARDING" desc="Text for shield tooltip onboarding">
-        Tap to view Brave Shields
+        Tap to view Ping Shields
       </message>
       <message name="IDS_SHIELD_TOOLTIP_DESC" desc="Text for shield tooltip description onboarding">
-        See all the bad stuff Brave blocked, on every page, with Shields.
+        See all the bad stuff Ping blocked, on every page, with Shields.
       </message>
       <message name="IDS_SHIELD_BIGTECH_TRACKER_BLOCKED" desc="Text for shield tracker big tech blocked tooltip onboarding">
         <ph name="BIG_TECH">%1$s<ex>google</ex></ph> and <ph name="TRACKER">%2$s<ex>1</ex></ph> other ads &amp; trackers blocked
@@ -894,19 +894,19 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         You can always change your preference later in app settings.
       </message>
       <message name="IDS_BRAVE_SHIELDS_ONBOARDING_TITLE" desc="Title for brave shield page">
-        Brave Shields
+        Ping Shields
       </message>
       <message name="IDS_EARN_TOKENS" desc="Partial Text for brave rewards page">
         Earn <ph name="TOKEN">%1$s<ex>token</ex></ph>s
       </message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TITLE" desc="Title for brave rewards page">
-        Brave Rewards
+        Ping Rewards
       </message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TEXT" desc="Text for brave rewards page">
         by viewing privacy-respecting ads and support your favorite sites and creators by default.
       </message>
       <message name="IDS_TERMS_TEXT" desc="Text for terms of service page">
-        By tapping Start using Brave Rewards, you agree to the
+        By tapping Start using Ping Rewards, you agree to the
       </message>
       <message name="IDS_TERMS_OF_SERVICE" desc="Text for terms of service">
         Terms of Service
@@ -918,16 +918,16 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         I didn&apos;t see an ad
       </message>
       <message name="IDS_BRAVE_ADS_ONBOARDING_TITLE" desc="Title for brave ads page">
-        Brave will show your first ad in
+        Ping will show your first ad in
       </message>
       <message name="IDS_BRAVE_ADS_ONBOARDING_TEXT" desc="Text for brave ads page">
-        Now you'll earn token from Brave Ads.
+        Now you'll earn token from Ping Ads.
       </message>
       <message name="IDS_THIS_IS_YOUR_FIRST_AD" desc="Text brave rewards notification.">
-        This is your first Brave ad. Tap to learn more.
+        This is your first Ping ad. Tap to learn more.
       </message>
       <message name="IDS_EARN_AND_GIVE" desc="Button text for rewards onboarding.">
-        Start using Brave Rewards
+        Start using Ping Rewards
       </message>
       <message name="IDS_CONTINUE_TO_WALLET" desc="Text for continue to wallet button">
         Continue to wallet
@@ -939,10 +939,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Set as Default Browser
       </message>
       <message name="IDS_BRAVE_SET_DEFAULT_BROWSER_DIALOG_TEXT" desc="Dialog for setting default browser">
-        Select Brave Browser and tap 'Always'
+        Select Ping Browser and tap 'Always'
       </message>
       <message name="IDS_BRAVE_ALREADY_SET_AS_DEFAULT_BROWSER" desc="Toast message for those whom have already set Brave as default browser">
-        Brave is already set as your default browser.
+        Ping is already set as your default browser.
       </message>
       <message name="IDS_BRAVE_DEFAULT_BROWSER_GO_TO_SETTINGS" desc="Toast message for those without 7.0 to go to settings to change default browser">
         You've already set a default browser. You may change the default browser in your app settings.
@@ -957,7 +957,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         To search by QR Code, align the QR Code in the center of frame.
       </message>
       <message name="IDS_MENU_BRAVE_REWARDS" desc="Title for brave rewards menu item">
-        Brave Rewards
+        Ping Rewards
       </message>
       <message name="IDS_LOGGED_OUT_STATE_DIALOG_TEXT" desc="Rewards logged out state text">
         Log in to <ph name="WALLET_PROVIDER">%1$s</ph> to see your balance
@@ -969,10 +969,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Next
       </message>
       <message name="IDS_BRAVE_PRIVACY_SET_DEFAULT_BROWSER" desc="Set default browser modal title">
-        To improve your privacy, set Brave as your default Browser
+        To improve your privacy, set Ping as your default Browser
       </message>
       <message name="IDS_BRAVE_CHOOSE" desc="Set default browser modal text">
-        Choose Brave on the next screen.
+        Choose Ping on the next screen.
       </message>
       <message name="IDS_BRAVE_DONT_ASK_AGAIN" desc="Set default browser modal text">
         Don't ask again
@@ -981,10 +981,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Independent search with better privacy
       </message>
       <message name="IDS_BRAVE_OMNIBOX_SEARCH_PROMO_DESC" desc="Omnibox brave search banner promo description">
-        Brave Search doesn't track you, your queries, or your clicks.
+        Ping Search doesn't track you, your queries, or your clicks.
       </message>
       <message name="IDS_TRY_BRAVE_SEARCH" desc="Omnibox brave search promo button text">
-        Try Brave Search
+        Try Ping Search
       </message>
       <message name="IDS_DISMISS_SEARCH_PROMO" desc="Omnibox brave search promo dismiss button text">
         Dismiss
@@ -1002,13 +1002,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_MONTH_NOV" desc="Name of a month">NOVEMBER</message>
       <message name="IDS_BRAVE_UI_MONTH_DEC" desc="Name of a month">DECEMBER</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="Menu item and title for Brave Rewards Settings. [CHAR-LIMIT=27]">
-        Brave Rewards
+        Ping Rewards
       </message>
       <message name="IDS_BRAVE_VPN" desc="Title for Brave vpn settings">
-        Brave VPN
+        Ping VPN
       </message>
       <message name="IDS_BRAVE_NEWS_TITLE" desc="Title for Brave news settings">
-        Brave News
+        Ping News
       </message>
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         ≈ <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
@@ -1059,7 +1059,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         on Twitch
       </message>
       <message name="IDS_BRAVE_ADS_EXISTING_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
-        Brave Ads are here!
+        Ping Ads are here!
       </message>
       <message name="IDS_BRAVE_SYNC_THIS_DEVICE_TEXT" desc="Text for Brave Sync this device.">
 	(this device)
@@ -1083,7 +1083,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
 	Wrong sync QR code
       </message>
       <message name="IDS_BRAVE_SYNC_CODE_FROM_DEPRECATED_VERSION" desc="Text for error when trying to use old version sync code after v1 sunset date.">
-  This code was generated by a deprecated version of Brave, please upgrade your other device first
+  This code was generated by a deprecated version of Ping, please upgrade your other device first
       </message>
       <message name="IDS_BRAVE_SYNC_CODE_EXPIRED" desc="Text for error when trying to use the sync code which has expired.">
   This code has expired. Please generate a new one on your other device and try again.
@@ -1092,16 +1092,16 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   This code is invalid. Please check that the time and timezone are set correctly on your device.
       </message>
       <message name="IDS_BRAVE_SYNC_OFFICIAL" desc="Text for Brave Sync preference.">
-	Brave Sync
+	Ping Sync
       </message>
       <message name="IDS_BRAVE_SYNC_DESCRIPTION_PAGE_1_PART_1" desc="Text for Brave Sync description part 1.">
-	Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.
+	Ping Sync allows you to sync bookmarks data privately between your Ping Browsers on your various devices.
       </message>
       <message name="IDS_BRAVE_SYNC_DESCRIPTION_PAGE_1_PART_2" desc="Text for Brave Sync description part 2.">
 	Simply scan the code from your sync chain that you created on another device. Or start a new sync chain.
       </message>
       <message name="IDS_BRAVE_SYNC_QRCODE_MESSAGE_V2" desc="Text for Brave Sync QR code message.">
-	Using existing synced device, open Brave Settings and navigate to Settings > Sync. Choose "Add New Device" and scan the QR Code displayed on the screen.
+	Using existing synced device, open Ping Settings and navigate to Settings > Sync. Choose "Add New Device" and scan the QR Code displayed on the screen.
       </message>
       <message name="IDS_BRAVE_SYNC_COPIED_TEXT" desc="Text for Brave Sync copied text message.">
 	Copied to Clipboard
@@ -1116,7 +1116,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   Delete Sync account
       </message>
       <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_MESSAGE" desc="Text for confirmation message for permanently delete Brave Sync account">
-  Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices. It will not however delete the data that is stored locally on those devices.
+  Deleting your account will remove your encrypted data from Ping servers and disable Sync on all of your connected devices. It will not however delete the data that is stored locally on those devices.
   This deletion is permanent and there is no way to recover the data. Should you decide to start using Sync again, you will need to create a new account and re-add each device one by one.
       </message>
       <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_BUTTON" desc="Text for the confirmation button which deletes all sync chain data on the server">
@@ -1147,13 +1147,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
 	Add a Computer
       </message>
       <message name="IDS_BRAVE_SYNC_ADD_MOBILE_DEVICE_TEXT_PART_1" desc="Text for Brave Sync add a mobile device description part 1.">
-	Using a second phone or tablet, navigate to Brave Settings > Sync > Scan.
+	Using a second phone or tablet, navigate to Ping Settings > Sync > Scan.
       </message>
       <message name="IDS_BRAVE_SYNC_ADD_MOBILE_DEVICE_TEXT_PART_2" desc="Text for Brave Sync add a mobile device description part 2.">
-	On your mobile device, navigate to Brave Sync in the Settings panel and click the button "Scan Sync Code". Use your camera to scan the QR Code below.
+	On your mobile device, navigate to Ping Sync in the Settings panel and click the button "Scan Sync Code". Use your camera to scan the QR Code below.
       </message>
       <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT_PART_1" desc="Text for Brave Sync add a laptop description part 1.">
-	On your computer, navigate to Brave Settings > Sync. Choose "Enter a Sync Chain Code".
+	On your computer, navigate to Ping Settings > Sync. Choose "Enter a Sync Chain Code".
       </message>
       <message name="IDS_BRAVE_SYNC_SCAN_SYNC_CODE" desc="Text for Brave Sync scan sync code message.">
 	Scan this sync code
@@ -1162,7 +1162,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
 	Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.
       </message>
       <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT_PART_2_NEW" desc="Text for Brave Sync add laptop part 2.">
-	On your target computer, navigate to Brave Sync in settings and click the button "I have a Sync Code".\nEnter the sync chain code words shown below.
+	On your target computer, navigate to Ping Sync in settings and click the button "I have a Sync Code".\nEnter the sync chain code words shown below.
       </message>
       <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT_TITLE" desc="Text for Brave Sync add laptop title.">
 	Enter the sync chain code
@@ -1192,7 +1192,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
 	Enter code words
       </message>
       <message name="IDS_BRAVE_SYNC_CODEWORDS_MESSAGE" desc="Text for Brave Sync code words message.">
-	Using existing synced device, open Brave Settings and navigate to Settings > Sync. Choose "Add New Device" then "Display code words instead".
+	Using existing synced device, open Ping Settings and navigate to Settings > Sync. Choose "Add New Device" then "Display code words instead".
       </message>
       <message name="IDS_BRAVE_SYNC_CONFIRM_CODE_WORDS_TEXT" desc="Text for Brave Sync confirm code words message.">
 	Confirm
@@ -1207,28 +1207,28 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
 	Settings exit
       </message>
       <message name="IDS_BRAVE_ADS_NEW_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
-        Enable Brave Rewards
+        Enable Ping Rewards
       </message>
       <message name="IDS_BRAVE_ADS_OFFER_POSITIVE" desc="Positive button text for Brave Ads offer.">
         I'm in!
       </message>
       <message name="IDS_BRAVE_ADS_OFFER_TEXT" desc="Text for Brave Ads offer.">
-        Earn Basic Attention Token for viewing privacy preserving Brave Rewards ads.
+        Earn Basic Attention Token for viewing privacy preserving Ping Rewards ads.
       </message>
       <message name="IDS_RESET_BRAVE_REWARDS_ERROR_TITLE" desc="Title for Brave Rewards reset error dialog.">
         Reset Error
       </message>
       <message name="IDS_RESET_BRAVE_REWARDS_ERROR_DESCRIPTION" desc="Description for Brave Rewards reset error dialog.">
-        There was an error resetting Brave Rewards. Please relaunch Brave and try again.
+        There was an error resetting Ping Rewards. Please relaunch Ping and try again.
       </message>
       <message name="IDS_SHOW_ADS_WHEN_BRAVE_IS_NOT_IN_USE_TITLE" desc="Title for Show Ads when Brave is not in use option in Brave rewards settings.">
-        Brave Ads
+        Ping Ads
       </message>
       <message name="IDS_SHOW_ADS_WHEN_BRAVE_IS_NOT_IN_USE_SUMMARY" desc="Summary for Show Ads when Brave is not in use option in Brave rewards settings.">
-        Show notification ads when Brave is not in use
+        Show notification ads when Ping is not in use
       </message>
       <message name="IDS_RESET_BRAVE_REWARDS_OPTION_DESCRIPTION" desc="Description for preference to reset Brave Rewards.">
-        This will delete your Brave Rewards and reset all of your Brave Rewards data
+        This will delete your Ping Rewards and reset all of your Ping Rewards data
       </message>
       <message name="IDS_ADD_BOOKMARK_MENU" desc="Add Bookmark menu item text for the bookmark button.">
         Add Bookmark
@@ -1265,7 +1265,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <!-- Sync Infobar -->
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
-        Brave Sync has been upgraded and requires setup
+        Ping Sync has been upgraded and requires setup
       </message>
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
         Begin Setup
@@ -1275,7 +1275,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Sync could not be setup
       </message>
       <message name="IDS_BRAVE_SYNC_ANDROID_SYNC_DISABLED" desc="The message for hint that Brave sync does not work because Android system sync is disabled and required need to open and enable">
-        We detected that you have Brave Sync enabled, however your system sync is turned off and will not allow Brave to sync. Press to open settings
+        We detected that you have Ping Sync enabled, however your system sync is turned off and will not allow Ping to sync. Press to open settings
       </message>
       <message name="IDS_BRAVE_OPEN_SYSTEM_SYNC_SETTINGS" desc="The text on button on informer which is fired when Android system sync settings switch is toggled off, to open system settings">
         Open Settings
@@ -1287,10 +1287,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Don't show again
       </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE" desc="Message text shown to users who's Sync account was deleted. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT">
-        This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,<ph name="LINK_TEXT">%1$s<ex>re-create the account</ex></ph>
+        This Ping Sync account was deleted from another device. If you didn’t mean to disable Sync,<ph name="LINK_TEXT">%1$s<ex>re-create the account</ex></ph>
       </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT" desc="Link text shown to users who's Sync account was deleted. When user clicks the link, Sync Setup page is opened. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE">
-        <ph name="INFOBAR_TEXT">%1$s<ex>This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,</ex></ph>re-create the account
+        <ph name="INFOBAR_TEXT">%1$s<ex>This Ping Sync account was deleted from another device. If you didn’t mean to disable Sync,</ex></ph>re-create the account
       </message>
       <message name="IDS_BRAVE_SYNC_JOINING_DELETED_ACCOUNT" desc="The error text for the case when trying to connect to the permanently deleted chain">
         Could not join this sync chain. The sync chain was deleted.
@@ -1305,12 +1305,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Yes
       </message>
       <message name="IDS_SYNC_FINAL_WARNING_TEXT_QR_CODE" desc="Sync final warning alert dialog text">
-  This will share your Brave data, including potentially your passwords, with the device that generated this QR code.
+  This will share your Ping data, including potentially your passwords, with the device that generated this QR code.
 Please double check that this QR code was generated by a device that you own.
 Are you sure you want to do this?
       </message>
       <message name="IDS_SYNC_FINAL_WARNING_TEXT_CODE_WORDS" desc="Sync final warning alert dialog text">
-  This will share your Brave data, including potentially your passwords, with the device that generated these code words.
+  This will share your Ping data, including potentially your passwords, with the device that generated these code words.
 Please double check that these code words were generated by a device that you own.
 Are you sure you want to do this?
       </message>
@@ -1324,7 +1324,7 @@ Are you sure you want to do this?
         https://brave.com/terms_of_use
       </message>
       <message name="IDS_BRAVE_LICENSE_TEXT" desc="Title for Brave License">
-        Brave License
+        Ping License
       </message>
       <message name="IDS_BRAVE_NEW_PRIVATE_TAB" desc="Text for 'New private tab'">
         New private tab
@@ -1336,7 +1336,7 @@ Are you sure you want to do this?
         Even though sites you visit in private tabs are not saved locally, they do not make you anonymous or invisible to your ISP, your employer, or to the sites you are visiting.
       </message>
       <message name="IDS_NOTIFICATION_CATEGORY_BRAVE_ADS_BACKGROUND" desc="Label for Brave Ads in background.">
-        Brave Ads sent when browser is in the background
+        Ping Ads sent when browser is in the background
       </message>
       <!-- <message name="IDS_CLEAR_DOWNLOADS_TITLE" desc="Title for Clear download in Clear Browsing Data dialog">
         Download history
@@ -1351,7 +1351,7 @@ Are you sure you want to do this?
         Turn on Ads
       </message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_TITLE" desc="Message used in notification to let users know Ads is available">
-        Brave Ads has arrived!
+        Ping Ads has arrived!
       </message>
       <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_TITLE" desc="Notification title for pending contribution type">
         Pending Contribution
@@ -1381,16 +1381,16 @@ Are you sure you want to do this?
         Show Top Sites
       </message>
       <message name="IDS_SHOW_BRAVE_STATS" desc="New tab page settings title">
-        Show Brave Stats
+        Show Ping Stats
       </message>
       <message name="IDS_PHOTO_BY" desc="Text for image credit for background images on NTP">
         Photo by <ph name="PHOTO_BY">%1$s</ph>
       </message>
       <message name="IDS_TURN_ON_EARN_AND_GIVE" desc="Text for turn on brave ads button">
-        Start using Brave Rewards
+        Start using Ping Rewards
       </message>
       <message name="IDS_NTP_TOS_TEXT" desc="Text for term of service on NTP">
-        By tapping Start using Brave Rewards, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph>.
+        By tapping Start using Ping Rewards, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph>.
       </message>
       <message name="IDS_GET_PAID_TO_SEE_IMAGE" desc="Text description for NTP banner.">
         Get paid to see this background image.
@@ -1402,10 +1402,10 @@ Are you sure you want to do this?
         You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.
       </message>
       <message name="IDS_PREFS_USE_CUSTOM_TABS_TITLE" desc="Title for use custom tabs section">
-        Open external links in Brave
+        Open external links in Ping
       </message>
       <message name="IDS_PREFS_USE_CUSTOM_TABS_TEXT" desc="Text for use custom tabs section">
-        Opens links from other apps in a Brave webview. Note: Brave must be set as your default browser.
+        Opens links from other apps in a Ping webview. Note: Ping must be set as your default browser.
       </message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_LOGGED_OUT" desc="Brave rewards panel logged out state text">
         Logged out
@@ -1429,7 +1429,7 @@ Are you sure you want to do this?
         Purchase additional BAT with credit cards and other sources
       </message>
       <message name="IDS_VERIFY_WALLET_UPHOLD_BENEFITS3">
-        Withdraw BAT that you may have previously added to your Brave Rewards wallet
+        Withdraw BAT that you may have previously added to your Ping Rewards wallet
       </message>
       <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS1">
         Withdraw BAT that you earn from viewing privacy-respecting ads
@@ -1438,7 +1438,7 @@ Are you sure you want to do this?
         Purchase additional BAT with credit cards and other sources
       </message>
       <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS3">
-         Withdraw BAT that you may have previously added to your Brave Rewards wallet
+         Withdraw BAT that you may have previously added to your Ping Rewards wallet
       </message>
       <message name="IDS_VERIFY_WALLET_SERVICE_NOTE">
         Our wallet service is provided by
@@ -1459,7 +1459,7 @@ Are you sure you want to do this?
         Uphold may require you to verify your identity based on services requested.
       </message>
       <message name="IDS_VERIFY_WALLET_BRAVE_NOTE1">
-        Brave Software Inc. does not process, store, or access any of the personal information that you provide to <ph name="WALLET_PROVIDER">%1$s</ph> when you establish an account with them.
+        Ping Software Inc. does not process, store, or access any of the personal information that you provide to <ph name="WALLET_PROVIDER">%1$s</ph> when you establish an account with them.
       </message>
       <message name="IDS_USER_WALLET_GOTO_PROVIDER">
         Go to my <ph name="WALLET_PROVIDER">%1$s</ph> account
@@ -1471,16 +1471,16 @@ Are you sure you want to do this?
         Not connected
       </message>
       <message name="IDS_BRAVE_DEFAULT" desc="Text for brave default settings option.">
-        Brave Default
+        Ping Default
       </message>
       <message name="IDS_SHARE_BRAVE_WITH_YOUR_FRIENDS" desc="Title text for share dialog.">
-        Share Brave with your friends!
+        Share Ping with your friends!
       </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TITLE" desc="">
         Oops, something is wrong. Please try again later.
       </message>
       <message name="IDS_PREFS_RATE_BRAVE" desc="Title for rate brave settings option.">
-        Rate Brave
+        Rate Ping
       </message>
       <message name="IDS_PREFS_SECTION_GENERAL" desc="Title for the general section in settings.">
         General
@@ -1498,7 +1498,7 @@ Are you sure you want to do this?
         Earn tokens for viewing this image and pay it forward to creators. <ph name="LEARN_MORE">%1$s</ph>
       </message>
       <message name="IDS_EARN_TOKENS_FOR_VIEWING_TITLE" desc="Title for brave rewards banner.">
-        Earn tokens for viewing this image. Tap Start using Brave Rewards to claim your share.
+        Earn tokens for viewing this image. Tap Start using Ping Rewards to claim your share.
       </message>
       <message name="IDS_YOU_ARE_EARNING_TOKENS" desc="Title for brave rewards banner.">
         You're earning tokens for viewing this image.\n<ph name="LEARN_MORE">%1$s</ph>
@@ -1510,7 +1510,7 @@ Are you sure you want to do this?
         Learn more about sponsored images
       </message>
       <message name="IDS_SPONSORED_IMAGES_BOTTOM_SHEET_TEXT" desc="Text for SI bottom sheet.">
-        For every sponsored image you view, you receive 70% of the revenue in tokens. With Brave Ads, you're always in control of the ads you see.
+        For every sponsored image you view, you receive 70% of the revenue in tokens. With Ping Ads, you're always in control of the ads you see.
       </message>
       <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_1" desc="Text for block trackers and ads option.">
         Block trackers &amp; ads (Aggressive)
@@ -1582,10 +1582,10 @@ Are you sure you want to do this?
         Ads and other creepy things blocked
       </message>
       <message name="IDS_SHIELDS_ABOUT_TEXT" desc="About Text for shields option.">
-        Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.
+        Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking what you do on every site.\n\nPing blocks these things so that you can browse without being followed around.
       </message>
       <message name="IDS_ABOUT_BRAVE_SHIELDS_TEXT" desc="About Title for shields option.">
-        About Brave Shields
+        About Ping Shields
       </message>
       <message name="IDS_UP" desc="Text for brave shields switch.">
         UP
@@ -1594,7 +1594,7 @@ Are you sure you want to do this?
         DOWN
       </message>
       <message name="IDS_BRAVE_SHIELDS_DOWN_TEXT" desc="Text for brave shields down.">
-        You're browsing this site without Brave's privacy protections. Does it not work right with Shields up?
+        You're browsing this site without Ping's privacy protections. Does it not work right with Shields up?
       </message>
       <message name="IDS_SITE_BROKEN_TEXT" desc="Shields text for broken text warning message.">
         If this site appears broken, try Shields down.
@@ -1603,16 +1603,16 @@ Are you sure you want to do this?
         Report a broken site
       </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT_1" desc="Shields text for broken text warning message.">
-        Let Brave's developers know that this site doesn't work properly with Shields:
+        Let Ping's developers know that this site doesn't work properly with Shields:
       </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT_2" desc="Shields text for broken text warning message.">
-        Note: This site address will be submitted with your Brave version number and your IP address(which will not be stored).
+        Note: This site address will be submitted with your Ping version number and your IP address(which will not be stored).
       </message>
       <message name="IDS_THANK_YOU" desc="Title for thank you UI for shields.">
         Thank you!
       </message>
       <message name="IDS_THANK_YOU_TEXT" desc="Text for thank you UI for shields.">
-        Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!
+        Thanks for letting Ping's developers know that there's something wrong with this site. We'll do our best to fix it!
       </message>
       <message name="IDS_ADVANCED_CONTROLS" desc="Title for toggle section.">
         Advanced controls
@@ -1624,22 +1624,22 @@ Are you sure you want to do this?
         Save Data Online
       </message>
       <message name="IDS_UPDATE_NOTIFICATION_TEXT" desc="Text of notification on application update.">
-        Browse faster and block ads with Brave
+        Browse faster and block ads with Ping
       </message>
       <message name="IDS_BRAVE_STATS_SHARE_TEXT" desc="Text sent when sharing the stats">
-        Every day I save data by browsing the Web with Brave.
+        Every day I save data by browsing the Web with Ping.
       </message>
       <message name="IDS_BRAVE_WORKS_EVERYWHERE" desc="Cross promotional modal title text">
-        Brave works everywhere
+        Ping works everywhere
       </message>
       <message name="IDS_DOWNLOAD_BRAVE" desc="Cross promotional modal text">
-        Download Brave at brave.com on your laptop or tablet for a faster and more private web
+        Download Ping at brave.com on your laptop or tablet for a faster and more private web
       </message>
       <message name="IDS_PRIVACY_PROTECTION" desc="Title for onboading bottomsheet.">
         Privacy protection
       </message>
       <message name="IDS_PRIVACY_PROTECTION_TEXT" desc="Text for onboading bottomsheet.">
-        Brave stops ads &amp; trackers from collecting information about you without your consent.
+        Ping stops ads &amp; trackers from collecting information about you without your consent.
       </message>
       <message name="IDS_SAVE_DATA_AND_BATTERY" desc="Title for onboading bottomsheet.">
         Save data and battery
@@ -1651,13 +1651,13 @@ Are you sure you want to do this?
         Websites load faster
       </message>
       <message name="IDS_WEBSITES_LOAD_FASTER_TEXT" desc="Text for onboading bottomsheet.">
-        Loading less data means websites in Brave load faster - up to 8x faster than other browsers.
+        Loading less data means websites in Ping load faster - up to 8x faster than other browsers.
       </message>
       <message name="IDS_GET_WEEKLY_UPDATES" desc="Title for onboading bottomsheet.">
         Get weekly updates
       </message>
       <message name="IDS_GET_WEEKLY_UPDATES_TEXT" desc="Text for onboading bottomsheet.">
-        Be informed about which websites you visit are the most privacy-invasive.\n\nOnly you can see these privacy statistics. No personal data or browsing history ever leaves the Brave browser on your device.
+        Be informed about which websites you visit are the most privacy-invasive.\n\nOnly you can see these privacy statistics. No personal data or browsing history ever leaves the Ping browser on your device.
       </message>
       <message name="IDS_TURN_ON_PRIVACY_STATS" desc="Button text for onboading bottomsheet.">
         Turn on privacy reports
@@ -1708,25 +1708,25 @@ Are you sure you want to do this?
         <ph name="COUNT">%1$s</ph><ph name="COUNT_TEXT">%2$s</ph>
       </message>
       <message name="IDS_NOTIFICATION_HOUR_3_TEXT_1" desc="3_hours notification text">
-        You blocked <ph name="COUNT">%1$s</ph> trackers &amp; ads with Brave browser in the past 3 hours.
+        You blocked <ph name="COUNT">%1$s</ph> trackers &amp; ads with Ping browser in the past 3 hours.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_3_TEXT_2" desc="3_hours notification text">
-        Browse up to 6x faster on major news sites in Brave by blocking trackes &amp; ads.
+        Browse up to 6x faster on major news sites in Ping by blocking trackes &amp; ads.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_3_TEXT_3" desc="3_hours notification text">
         Turn on Privacy Reports to see how many trackers &amp; ads have been blocked in the past 3 hours.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_24_TEXT_1" desc="24_hours notification text">
-        You saved <ph name="DATA">%1$s</ph> <ph name="DATA_TEXT">%2$s</ph> data with Brave browser.
+        You saved <ph name="DATA">%1$s</ph> <ph name="DATA_TEXT">%2$s</ph> data with Ping browser.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_24_TEXT_2" desc="24_hours notification text">
         Turn on Privacy Reports to see how much data you've saved.
       </message>
       <message name="IDS_NOTIFICATION_MARKETING" desc="Marketing notification text">
-        Brave browser uses 40% less battery on average.🔋
+        Ping browser uses 40% less battery on average.🔋
       </message>
       <message name="IDS_NOTIFICATION_WEEKLY_STATS" desc="Weekly stats notification text">
-        You blocked <ph name="COUNT">%1$s</ph> trackers &amp; ads with Brave browser last week.
+        You blocked <ph name="COUNT">%1$s</ph> trackers &amp; ads with Ping browser last week.
       </message>
       <message name="IDS_NOTIFICATION_REWARDS" desc="Rewards notification text">
         Earn tokens by viewing privacy-respecting ads and support your favorite websites.
@@ -1735,10 +1735,10 @@ Are you sure you want to do this?
         Start browsing to see privacy reporting
       </message>
       <message name="IDS_SET_BRAVE_AS_YOUR" desc="Deafult browser notification text">
-        Set Brave as your default browser for private and secure browsing.
+        Set Ping as your default browser for private and secure browsing.
       </message>
       <message name="IDS_ALLOWS_BRAVE_TO_SHOW" desc="Brave stats pref summary text">
-        Allows Brave to show your privacy statistics
+        Allows Ping to show your privacy statistics
       </message>
       <message name="IDS_SENDS_A_WEEKLY" desc="Brave stats pref summary text">
         Sends a weekly privacy report
@@ -1783,7 +1783,7 @@ Are you sure you want to do this?
         Summary
       </message>
       <message name="IDS_START_USING_BRAVE_REWARDS" desc="Brave rewards enable ads text">
-        Start using Brave Rewards
+        Start using Ping Rewards
       </message>
       <message name="IDS_EARN_TOKENS_AND_GIVE_BACK" desc="Brave rewards title text">
         Earn Tokens &amp; Give Back
@@ -1801,16 +1801,16 @@ Are you sure you want to do this?
         Let’s take a quick tour
       </message>
       <message name="IDS_WELCOME_TO_BRAVE_REWARDS" desc="Brave rewards onboarding title">
-        Welcome to Brave Rewards!
+        Welcome to Ping Rewards!
       </message>
       <message name="IDS_WELCOME_TO_BRAVE_REWARDS_TEXT" desc="Brave rewards onboarding title">
-        Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.
+        Ping Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.
       </message>
       <message name="IDS_WHERE_DO_ADS_SHOW_UP" desc="Brave rewards onboarding title">
         Where do ads show up?
       </message>
       <message name="IDS_WHERE_DO_ADS_SHOW_UP_TEXT" desc="Brave rewards onboarding title">
-        Brave Private Ads appear as notifications on your screen. You control how often you see these ads.
+        Ping Private Ads appear as notifications on your screen. You control how often you see these ads.
       </message>
       <message name="IDS_GIVING_BACK_MADE_EFFORTLESS" desc="Brave rewards onboarding title">
         Giving back made effortless
@@ -1846,7 +1846,7 @@ Are you sure you want to do this?
         Woohoo, you’re all set!
       </message>
       <message name="IDS_YOU_ARE_DONE_TEXT" desc="Brave rewards onboarding title">
-        By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!
+        By using Ping Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!
       </message>
       <message name="IDS_GO_BACK" desc="Brave rewards onboarding button text">
         Go Back
@@ -1909,7 +1909,7 @@ Are you sure you want to do this?
         Not now
       </message>
       <message name="IDS_SETTINGS_APP_LINKS_LABEL" desc="App Links setting label">
-        Allow app links to open in apps outside of Brave
+        Allow app links to open in apps outside of Ping
       </message>
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
         WebRTC IP handling policy
@@ -1936,10 +1936,10 @@ Are you sure you want to do this?
       Deposit
     </message>
     <message name="IDS_DEFI_SECURE_STORAGE" desc="Brave Wallet onboarding text">
-      Welcome to the new Brave Wallet
+      Welcome to the new Ping Wallet
     </message>
     <message name="IDS_DEFI_SECURE_STORAGE_TEXT" desc="Brave Wallet onboarding text">
-      Hold crypto assets in your custody and track portfolio performance. All right from the Brave privacy browser.
+      Hold crypto assets in your custody and track portfolio performance. All right from the Ping privacy browser.
     </message>
     <message name="IDS_SETUP_CRYPTO" desc="Brave Wallet onboarding button text">
       Get started
@@ -1990,7 +1990,7 @@ Are you sure you want to do this?
       Swap tokens and assets.
     </message>
     <message name="IDS_DEPOSIT_DESCRIPTION" desc="Brave Wallet deposit description">
-      Deposit crypto to Brave Wallet.
+      Deposit crypto to Ping Wallet.
     </message>
     <message name="IDS_SECURE_YOUR_CRYPTO" desc="Brave Wallet onboarding text">
       Secure your crypto with a password
@@ -2059,7 +2059,7 @@ Are you sure you want to do this?
       Wallet
     </message>
     <message name="IDS_RESTORE_CRYPTO_TEXT" desc="Brave Wallet onboarding text">
-      Enter your recovery phrase to restore your Brave Wallet crypto account.
+      Enter your recovery phrase to restore your Ping Wallet crypto account.
     </message>
     <message name="IDS_RESTORE_CRYPTO_ACCOUNT" desc="Brave Wallet onboarding text">
       Restore crypto account
@@ -2077,7 +2077,7 @@ Are you sure you want to do this?
       New Password
     </message>
     <message name="IDS_RESTORE_LEGACY_WALLET_RECOVERY_PHRASE" desc="Brave Wallet onboarding past image accessibility text">
-      Import from legacy Brave crypto wallets?
+      Import from legacy Ping crypto wallets?
     </message>
     <message name="IDS_VERIFY_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
       Verify recovery phrase
@@ -2153,10 +2153,10 @@ Are you sure you want to do this?
     </message>
     <!-- Stats -->
     <message name="IDS_BRAVE_STATS_USAGE_PING_TITLE" desc="Description that shows in settings for toggling stats usage pings">
-      Automatically send daily usage ping to Brave
+      Automatically send daily usage ping to Ping
     </message>
     <message name="IDS_BRAVE_STATS_USAGE_PING_SUMMARY" desc="Description that shows under main toggle setting for usage pings">
-      This anonymous, private ping lets Brave estimate active users.
+      This anonymous, private ping lets Ping estimate active users.
     </message>
     <message name="IDS_BACKUP" desc="Brave wallet accounts text">
       Backup
@@ -2204,7 +2204,7 @@ Are you sure you want to do this?
       Search tokens
     </message>
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
-      Brave Wallet
+      Ping Wallet
     </message>
     <message name="IDS_BRAVE_WALLET_TOOLBAR_LOCK" desc="Title for brave wallet toolbar lock option.">
       Lock
@@ -2240,16 +2240,16 @@ Are you sure you want to do this?
       Image not available
     </message>
     <message name="IDS_BRAVE_WALLET_SETTINGS_AUTOLOCK_OPTION" desc="Title for brave wallet automatically lock.">
-      Automatically lock Brave Wallet
+      Automatically lock Ping Wallet
     </message>
     <message name="IDS_BRAVE_WALLET_SETTINGS_AUTOLOCK_HOW_MANY_MINUTES" desc="Brave wallet autolock dialog text">
-      The number of minutes to wait until the Brave Wallet is automatically locked
+      The number of minutes to wait until the Ping Wallet is automatically locked
     </message>
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_OPTION" desc="Title for preference to reset Brave Wallet.">
       Reset and clear wallet data
     </message>
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_CONFIRMATION" desc="Confirmation for Brave Wallet reset.">
-      Are you sure you want to reset your Brave Wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">%1$s<ex>Yes</ex></ph>" to confirm.
+      Are you sure you want to reset your Ping Wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">%1$s<ex>Yes</ex></ph>" to confirm.
     </message>
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_CONFIRMATION_PHRASE" desc="The phrase users should type to reset Brave Wallet">
       Yes
@@ -2288,7 +2288,7 @@ Are you sure you want to do this?
       Search for videos
     </message>
     <message name="IDS_BRAVE_FIREWALL_VPN" desc="VPN title text">
-      Brave Firewall + VPN
+      Ping Firewall + VPN
     </message>
     <message name="IDS_VPN_SETTINGS_CALLOUT_TEXT" desc="Vpn settings callout text">
         Upgrade to a VPN to protect your connection and block invasive trackers everywhere.
@@ -2372,7 +2372,7 @@ Are you sure you want to do this?
       Install VPN Profile
     </message>
     <message name="IDS_BRAVE_VPN_PROFILE_TITLE" desc="Brave VPN plan text">
-      Brave will now install a VPN profile.
+      Ping will now install a VPN profile.
     </message>
     <message name="IDS_BRAVE_VPN_PROFILE_TEXT" desc="Brave VPN plan text">
       This profile allows the VPN to automatically connect and secure traffic across your device — in every app, all the time. This VPN connection will be encrypted and routed through Guardian's intelligent firewall to block ads and trackers.
@@ -2710,28 +2710,28 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Are you using the fastest web browser?
     </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_BODY_1" desc="Dormant users engagement notification body">
-      3x faster internet is already on your phone. Use Brave for all your web browsing.
+      3x faster internet is already on your phone. Use Ping for all your web browsing.
     </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_TEXT_1" desc="Dormant users engagement text">
-      Brave = 3x faster web browsing
+      Ping = 3x faster web browsing
     </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_TEXT_2" desc="Dormant users engagement notification text">
       Get more battery life on every charge
     </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_BODY_2" desc="Dormant users engagement notification body">
-      Battery savings is just a step away. Use Brave for all your web browsing.
+      Battery savings is just a step away. Use Ping for all your web browsing.
     </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_TEXT_2" desc="Dormant users engagement text">
-      Brave = more life on every charge
+      Ping = more life on every charge
     </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_TEXT_3" desc="Dormant users engagement notification text">
       Top up your mobile data less often
     </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_BODY_3" desc="Dormant users engagement notification body">
-      Fewer ads = less data on every page you load. Use Brave for all your web browsing.
+      Fewer ads = less data on every page you load. Use Ping for all your web browsing.
     </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_TEXT_3" desc="Dormant users engagement text">
-      Brave = less mobile data on every page
+      Ping = less mobile data on every page
     </message>
     <message name="IDS_BETTER_PRIVACY" desc="Dormant users engagement bullet text">
       &#8226; Better privacy
@@ -2947,7 +2947,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       New tab
     </message>
     <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_WALLET" desc="Content description for the button that allows an access to Brave Wallet.">
-      Access Brave Wallet
+      Access Ping Wallet
     </message>
     <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS" desc="Brave wallet Dapp wallet connectivity status">
       Connect
@@ -2980,7 +2980,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Sign
     </message>
     <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_TITLE" desc="Title text for a request to connect a wallet.">
-      Connect With Brave Wallet
+      Connect With Ping Wallet
     </message>
     <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_SUB_TITLE" desc="Sub title text for a request to connect a wallet.">
       Select account(s)
@@ -3025,7 +3025,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       View on block explorer
     </message>
     <message name="IDS_BRAVE_WALLET_DAPPS_CONNECTION_REQUEST_MSG" desc="A message shown to user when a DApp site request to connect with Brave wallet">
-    This page wants to interact with Brave Wallet
+    This page wants to interact with Ping Wallet
     </message>
     <message name="IDS_CONNECTION_ERROR" desc="Always on vpn text">
       Connection error
@@ -3034,7 +3034,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Unable to set network to <ph name="NETWORK_NAME">'%1$s'</ph>
     </message>
     <message name="IDS_ALWAYS_ON_DIALOG_TEXT" desc="Always on vpn text">
-      It appears you have other VPNs on this device set to “Always on”. To enable Brave Firewall + VPN, first disable this “Always on” setting for other VPNs before connecting again. If the problem persists, try uninstalling other VPNs.
+      It appears you have other VPNs on this device set to “Always on”. To enable Ping Firewall + VPN, first disable this “Always on” setting for other VPNs before connecting again. If the problem persists, try uninstalling other VPNs.
     </message>
     <message name="IDS_OPEN_VPN_SETTINGS" desc="Always on vpn text">
       Open VPN Settings
@@ -3097,7 +3097,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Network
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_DESCRIPTION" desc="Add network panel description">
-      This will allow this network to be used within Brave Wallet. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>.
+      This will allow this network to be used within Ping Wallet. <ph name="CLICK_START">%1$s</ph>Learn more<ph name="CLICK_END">%2$s</ph>.
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_HEADING" desc="Add network panel title">
       Allow this site to add a network?
@@ -3124,10 +3124,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Importing database, please wait...
     </message>
     <message name="IDS_BRAVE_BROWSER" desc="Brave browser title text">
-      Brave Browser
+      Ping Browser
     </message>
     <message name="IDS_BRAVE_BROWSER_NOTIFICATION_CHANNEL_DESCRIPTION" desc="Brave broswer notification channel creation information for user">
-      Notification channel for Brave Browser
+      Notification channel for Ping Browser
     </message>
     <message name="IDS_BRAVE_WALLET_ACCOUNT_SELECTOR_ACTIVITY_TITLE" desc="Account Selector activity toolbar title">
       Select Account
@@ -3175,7 +3175,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Display Web3 notifications
     </message>
     <message name="IDS_SUPPORT_EMAIL_TEXT" desc="Vpn support email text">
-      \n\n\n\n#### Brave doesn’t track you or know how you use our app, so we don’t know how you’ve set up VPN. Please share info about the issue you’re experiencing and we’ll do our best to resolve it as soon as we can. ####\n\n
+      \n\n\n\n#### Ping doesn’t track you or know how you use our app, so we don’t know how you’ve set up VPN. Please share info about the issue you’re experiencing and we’ll do our best to resolve it as soon as we can. ####\n\n
     </message>
     <message name="IDS_VPN_HOST_TEXT" desc="Vpn support email text">
       \n\nVPN Hostname\n <ph name="VALUE">%1$s</ph>
@@ -3298,19 +3298,19 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Updating VPN Profile ...
     </message>
     <message name="IDS_BACKUP_WALLET_PASSWORD" desc="Brave Wallet prompt to enter a password">
-      Enter your Brave Wallet password
+      Enter your Ping Wallet password
     </message>
     <message name="IDS_BLOCK_COOKIE_NOTICES_ACTION_TEXT" desc="Block cookie consent notices action text">
       Got it
     </message>
     <message name="IDS_BLOCK_COOKIE_NOTICES_TITLE" desc="Block cookie consent notices title">
-      Brave is blocking cookie consent notices.
+      Ping is blocking cookie consent notices.
     </message>
     <message name="IDS_BLOCK_COOKIE_NOTICES_TEXT" desc="Block cookie consent notices text">
-      Brave already blocks harmful cookies. Now, we automatically block those annoying cookie consent notices, too.
+      Ping already blocks harmful cookies. Now, we automatically block those annoying cookie consent notices, too.
     </message>
     <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">
-      Note that Brave can't verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you're sure you want to take this action, and trust the requesting site.
+      Note that Ping can't verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you're sure you want to take this action, and trust the requesting site.
     </message>
     <message name="IDS_BRAVE_WALLET_SIGN_WARNING_TITLE" desc="Sign panel risk title">
       Sign at your own risk
@@ -3460,10 +3460,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Select your country
     </message>
     <message name="IDS_DECLARE_GEO_SUCCESS_RESPONSE_TEXT" desc="Declare geo success modal text">
-      Your Brave Rewards region has been set to <ph name="COUNTRY_NAME">%1$s</ph>.
+      Your Ping Rewards region has been set to <ph name="COUNTRY_NAME">%1$s</ph>.
     </message>
     <message name="IDS_DECLARE_GEO_FAILED_RESPONSE_TEXT" desc="Declare geo failed modal text">
-      Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.
+      Unfortunately, there was an error while trying to set up Ping Rewards. Please try again.
     </message>
     <message name="IDS_SOMETHING_WENT_WRONG_TEXT" desc="Declare geo failed modal title">
       Something went wrong
@@ -3490,7 +3490,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Top Visited Site
     </message>
     <message name="IDS_SEARCH_WITH_BRAVE" desc="String used in QuickActionSearchAndBookmarkWidget's search bar">
-      Search with Brave
+      Search with Ping
     </message>
     <message name="IDS_SEARCH_WITH_SEARCH_ENGINE" desc="Dynamic string used in QuickActionSearchAndBookmarkWidget's search bar. Placeholder is replaced by default search engine.">
       Search with <ph name="DEFAULT_SEARCH_ENGINE">%1$s</ph>
@@ -3502,7 +3502,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Widget added to the home screen
     </message>
     <message name="IDS_TRY_BRAVE_SEARCH_WIDGET" desc="Title of Brave search widget promo">
-      Try the Brave search widget
+      Try the Ping search widget
     </message>
     <message name="IDS_TRY_BRAVE_SEARCH_WIDGET_DESCRIPTION" desc="Description of Brave search widget promo">
       Access private, independent search right from your home screen.
@@ -3511,10 +3511,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Add widget
     </message>
     <message name="IDS_BRAVE_QUICK_ACTION_SEARCH" desc="Description for Brave QuickActionSearchAndBookmarkWidget preview">
-      Brave quick action search
+      Ping quick action search
     </message>
     <message name="IDS_USE_BRAVE_TRANSLATE" desc="The label of the check-box that enables the prompt to translate a page.">
-      Use Brave Translate
+      Use Ping Translate
     </message>
     <message name="IDS_WALLET_NON_ASCII_CHARACTERS" desc="A warning about Non-ASCII characters detected in a message">
       NON-ASCII characters detected!
@@ -3535,19 +3535,19 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Token address
     </message>
     <message name="IDS_LINK_SUBSCRIPTION_TITLE" desc="Brave vpn link subscription settings title text">
-      Link purchase to your Brave account
+      Link purchase to your Ping account
     </message>
     <message name="IDS_LINK_SUBSCRIPTION_TEXT" desc="Brave vpn link subscription settings text">
-      Link your Play Store purchase to your Brave account to use Brave VPN on other devices.
+      Link your Play Store purchase to your Ping account to use Ping VPN on other devices.
     </message>
     <message name="IDS_LINK_SUBSCRIPTION_DIALOG_ACTION_TEXT" desc="Brave vpn link subscription dialog action text">
       Link your VPN subscription
     </message>
     <message name="IDS_LINK_SUBSCRIPTION_DIALOG_TITLE" desc="Brave vpn link subscription dialog title">
-      Extend your Brave Firewall + VPN protection
+      Extend your Ping Firewall + VPN protection
     </message>
     <message name="IDS_LINK_SUBSCRIPTION_DIALOG_TEXT" desc="Brave vpn link subscription dialog text">
-      Your Brave VPN subscription can protect up to 5 devices, across Android, iOS, and desktop. Just link your Google Play subscription to your Brave account.
+      Your Ping VPN subscription can protect up to 5 devices, across Android, iOS, and desktop. Just link your Google Play subscription to your Ping account.
     </message>
     <message name="IDS_SAFE_BROWSING_NO_GOOGLE_PLAY_SERVICES_DIALOG_TITLE" desc="Brave no Google Play Services dialog title">
       Cannot enable Safe Browsing
@@ -3562,7 +3562,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       You are helping support content creators
     </message>
     <message name="IDS_REWARDS_PANEL_UNVERIFIED_OFF_SECTION_TEXT" desc="Rewards panel unverified state section text when rewards is disabled">
-      Using Brave Rewards helps support content creators, and lets you earn BAT.
+      Using Ping Rewards helps support content creators, and lets you earn BAT.
     </message>
     <message name="IDS_READY_TO_START_EARNING_TEXT" desc="Rewards panel unverified state section text when rewards is enabled">
       Ready to start earning?
@@ -3571,7 +3571,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Connect or create an account with one of our partners.
     </message>
     <message name="IDS_REWARDS_PANEL_UNVERIFIED_ON_SECTION_UNSUPPORTED_REGION_TEXT" desc="Rewards panel unverified state section text when rewards is enabled but region is not supported">
-      To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Brave Rewards will automatically support creators.
+      To earn BAT, users must connect a custodial account to Ping Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Ping Rewards will automatically support creators.
     </message>
     <message name="IDS_LEARN_MORE_ABOUT_BAT" desc="Rewards panel unverified state section learn more text">
       Learn more about earning BAT
@@ -3583,7 +3583,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Connect account
     </message>
     <message name="IDS_REWARDS_PANEL_UNVERIFIED_CREATOR_SECTION_TEXT" desc="Rewards panel unverified creator section text">
-      This month, You've visited <ph name="CREATOR_COUNT">%1$s<ex>2</ex></ph> creators supported by Brave Rewards
+      This month, You've visited <ph name="CREATOR_COUNT">%1$s<ex>2</ex></ph> creators supported by Ping Rewards
     </message>
     <message name="IDS_EMPTY_UNVERIFIED_STATE_TEXT" desc="Rewards panel unverified state text" translateable="false">
       - -
@@ -3622,13 +3622,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.
     </message>
     <message name="IDS_BRAVE_ADS_TEXT" desc="Brave ads text">
-      Brave Ads
+      Ping Ads
     </message>
     <message name="IDS_WALLET_GENERATION_DISABLED_ERROR_TITLE" desc="wallet generation disabled error title">
-      Brave Rewards not available
+      Ping Rewards not available
     </message>
     <message name="IDS_WALLET_GENERATION_DISABLED_ERROR_TEXT" desc="wallet generation disabled error text">
-      New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LEARN_MORE">%1$s</ph>
+      New signups for Ping Rewards are currently disabled in your region. However, you can always try again later. <ph name="LEARN_MORE">%1$s</ph>
     </message>
     <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network filter selector title for all networks">
       All Networks
@@ -3676,7 +3676,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       <ph name="SYMBOL"><ex>BAT</ex>%1$s</ph> on <ph name="NETWORK"><ex>Ethereum Mainnet</ex>%2$s</ph>
     </message>
     <message name="IDS_BRAVE_PLAYLIST" desc="Playlist menu item text">
-      Brave Playlist
+      Ping Playlist
     </message>
     <message name="IDS_VIEW_ACTION" desc="View action text">
       View
@@ -3805,7 +3805,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Add media
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TITLE_1" desc="Playlist onboarding text">
-      Add videos to Brave Playlist. Playback anytime. Even offline.
+      Add videos to Ping Playlist. Playback anytime. Even offline.
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TEXT_1" desc="Playlist onboarding text">
       Make playlists of your favorite content. Save mobile data. And playback ad-free.
@@ -3907,7 +3907,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Want your NFTs displayed automatically?
     </message>
     <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION" desc="Enable NFT auto-discovery modal description">
-      Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph>SimpleHash<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph> to provide this service. <ph name="BEGIN_LINK_2">&lt;LINK_2&gt;</ph>Learn more.<ph name="END_LINK_2">&lt;/LINK_2&gt;</ph>
+      Ping Wallet can use a third-party service to automatically display your NFTs. Ping will share your wallet addresses with <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph>SimpleHash<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph> to provide this service. <ph name="BEGIN_LINK_2">&lt;LINK_2&gt;</ph>Learn more.<ph name="END_LINK_2">&lt;/LINK_2&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL" desc="The label for enabling NFT discovery">
       Enable NFT discovery
