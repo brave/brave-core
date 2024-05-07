@@ -6,12 +6,12 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PLAYLIST_THUMBNAIL_PROVIDER_H_
 #define BRAVE_BROWSER_UI_VIEWS_PLAYLIST_THUMBNAIL_PROVIDER_H_
 
-#include <string>
-
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "ui/gfx/image/image.h"
+
+class GURL;
 
 namespace playlist {
 class PlaylistService;
@@ -33,7 +33,7 @@ class ThumbnailProvider final {
                     base::OnceCallback<void(const gfx::Image&)> callback);
 
  private:
-  void OnGotThumbnail(const std::string& id,
+  void OnGotThumbnail(const GURL& thumbnail_source,
                       bool from_network,
                       base::OnceCallback<void(const gfx::Image&)> callback,
                       gfx::Image thumbnail);

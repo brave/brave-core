@@ -14,11 +14,13 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_multi_source_observation.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_streaming.h"
+#include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -50,8 +52,8 @@ class Image;
 
 namespace playlist {
 
-class MediaDetectorComponentManager;
 class PlaylistBackgroundWebContentses;
+class PlaylistTabHelper;
 
 // This class is key interface for playlist. Client will ask any playlist
 // related requests to this class. This handles youtube playlist download
@@ -80,7 +82,8 @@ class PlaylistBackgroundWebContentses;
 class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
                         public PlaylistThumbnailDownloader::Delegate,
-                        public mojom::PlaylistService {
+                        public mojom::PlaylistService,
+                        public PlaylistTabHelperObserver {
  public:
   class Delegate {
    public:
@@ -105,7 +108,6 @@ class PlaylistService : public KeyedService,
 
   PlaylistService(content::BrowserContext* context,
                   PrefService* local_state,
-                  MediaDetectorComponentManager* manager,
                   std::unique_ptr<Delegate> delegate,
                   base::Time browser_first_run_time);
   ~PlaylistService() override;
@@ -197,7 +199,13 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
-  void OnMediaDetected(GURL url, std::vector<mojom::PlaylistItemPtr> items);
+  // PlaylistTabHelperObserver:
+  void PlaylistTabHelperWillBeDestroyed(PlaylistTabHelper* tab_helper) override;
+  void OnFoundItemsChanged(
+      const GURL& url,
+      const std::vector<mojom::PlaylistItemPtr>& items) override;
+
+  void AddObservation(PlaylistTabHelper* tab_helper);
 
   bool HasPlaylistItem(const std::string& id) const;
 
@@ -213,9 +221,6 @@ class PlaylistService : public KeyedService,
   void OnDataComplete(api_request_helper::APIRequestResult result);
 
   bool playlist_enabled() const { return *enabled_pref_; }
-
-  const std::string& GetMediaSourceAPISuppressorScript() const;
-  std::string GetMediaDetectorScript(const GURL& url) const;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
@@ -245,8 +250,6 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
 
-  void SetUpForTesting() const;
-
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
   void AddMediaFilesFromContentsToPlaylist(
@@ -255,10 +258,10 @@ class PlaylistService : public KeyedService,
       bool cache,
       base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> callback);
 
-  void AddMediaFilesFromItems(const std::string& playlist_id,
-                              bool cache,
-                              AddMediaFilesCallback callback,
-                              std::vector<mojom::PlaylistItemPtr> items);
+  void AddMediaFileFromItem(const std::string& playlist_id,
+                            bool cache,
+                            AddMediaFilesCallback callback,
+                            mojom::PlaylistItemPtr item);
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
@@ -377,14 +380,16 @@ class PlaylistService : public KeyedService,
 
   std::unique_ptr<PlaylistBackgroundWebContentses> background_web_contentses_;
 
-  raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
-
   PlaylistP3A playlist_p3a_;
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;
 
   BooleanPrefMember enabled_pref_;
+
+  base::ScopedMultiSourceObservation<PlaylistTabHelper,
+                                     PlaylistTabHelperObserver>
+      tab_helper_observations_{this};
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;
