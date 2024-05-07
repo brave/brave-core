@@ -41,7 +41,6 @@
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/logging.h"
 #include "brave/components/brave_rewards/browser/publisher_utils.h"
@@ -53,6 +52,7 @@
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
@@ -138,56 +138,8 @@ bool DeleteFilesOnFileTaskRunner(
   return result;
 }
 
-// Returns pair of string and its parsed counterpart. We parse it on the file
-// thread for the performance sake. It's should be better to remove the string
-// representation in the [far] future.
-std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
-    const base::FilePath& path) {
-  std::string data;
-  bool success = base::ReadFileToString(path, &data);
-
-  // Make sure the file isn't empty.
-  if (!success || data.empty()) {
-    return {};
-  }
-  std::pair<std::string, base::Value> result;
-  result.first = data;
-
-  // Save deserialized version for recording P3A and future use.
-  JSONStringValueDeserializer deserializer(data);
-  int error_code = 0;
-  std::string error_message;
-  auto value = deserializer.Deserialize(&error_code, &error_message);
-  if (!value) {
-    VLOG(0) << "Cannot deserialize state, error code: " << error_code
-            << " message: " << error_message;
-    return result;
-  }
-
-  if (!value->is_dict()) {
-    VLOG(0) << "Corrupted legacy state.";
-    return result;
-  }
-
-  result.second = std::move(*value);
-
-  return result;
-}
-
 time_t GetCurrentTimestamp() {
   return base::Time::NowFromSystemTime().ToTimeT();
-}
-
-std::string LoadOnFileTaskRunner(const base::FilePath& path) {
-  std::string data;
-  bool success = base::ReadFileToString(path, &data);
-
-  // Make sure the file isn't empty.
-  if (!success || data.empty()) {
-    return "";
-  }
-
-  return data;
 }
 
 net::NetworkTrafficAnnotationTag
@@ -238,10 +190,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
       })");
 }
 
-std::string GetPrefPath(const std::string& name) {
-  return base::StringPrintf("%s.%s", pref_prefix, name.c_str());
-}
-
 std::vector<std::string> GetISOCountries() {
   std::vector<std::string> countries;
   for (const char* const* country_pointer = icu::Locale::getISOCountries();
@@ -272,16 +220,10 @@ void DeferCallback(base::Location location, Callback callback, Args&&... args) {
 // read comment about file pathes at src\base\files\file_path.h
 #if BUILDFLAG(IS_WIN)
 const base::FilePath::StringType kDiagnosticLogPath(L"Rewards.log");
-const base::FilePath::StringType kLegacy_state(L"ledger_state");
-const base::FilePath::StringType kPublisher_state(L"publisher_state");
 const base::FilePath::StringType kPublisher_info_db(L"publisher_info_db");
-const base::FilePath::StringType kPublishers_list(L"publishers_list");
 #else
 const base::FilePath::StringType kDiagnosticLogPath("Rewards.log");
-const base::FilePath::StringType kLegacy_state("ledger_state");
-const base::FilePath::StringType kPublisher_state("publisher_state");
 const base::FilePath::StringType kPublisher_info_db("publisher_info_db");
-const base::FilePath::StringType kPublishers_list("publishers_list");
 #endif
 
 RewardsServiceImpl::RewardsServiceImpl(
@@ -301,10 +243,7 @@ RewardsServiceImpl::RewardsServiceImpl(
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       json_sanitizer_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT})),
-      legacy_state_path_(profile_->GetPath().Append(kLegacy_state)),
-      publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
       publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
-      publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
       diagnostic_log_(
           new DiagnosticLog(profile_->GetPath().Append(kDiagnosticLogPath),
                             kDiagnosticLogMaxFileSize,
@@ -866,7 +805,8 @@ void RewardsServiceImpl::OnEngineInitialized(mojom::Result result) {
 
 void RewardsServiceImpl::IsAutoContributeSupported(
     base::OnceCallback<void(bool)> callback) {
-  IsAutoContributeSupportedForClient(std::move(callback));
+  std::move(callback).Run(
+      IsAutoContributeSupportedForCountry(GetCountryCode()));
 }
 
 void RewardsServiceImpl::GetAutoContributeProperties(
@@ -898,53 +838,6 @@ void RewardsServiceImpl::OnReconcileComplete(
         contribution->amount,
         contribution->type,
         contribution->processor);
-}
-
-void RewardsServiceImpl::LoadLegacyState(LoadLegacyStateCallback callback) {
-  file_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&LoadStateOnFileTaskRunner, legacy_state_path_),
-      base::BindOnce(&RewardsServiceImpl::OnLegacyStateLoaded, AsWeakPtr(),
-                     std::move(callback)));
-}
-
-void RewardsServiceImpl::OnLegacyStateLoaded(
-    LoadLegacyStateCallback callback,
-    std::pair<std::string, base::Value> state) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  if (state.second.is_dict()) {
-    // Record stats.
-    RecordBackendP3AStats();
-  }
-  if (state.first.empty()) {
-    p3a::RecordNoWalletCreatedForAllMetrics();
-  }
-
-  // Run callbacks.
-  const std::string& data = state.first;
-  std::move(callback).Run(
-      data.empty() ? mojom::Result::NO_LEGACY_STATE : mojom::Result::OK, data);
-}
-
-void RewardsServiceImpl::LoadPublisherState(
-    LoadPublisherStateCallback callback) {
-  file_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&LoadOnFileTaskRunner, publisher_state_path_),
-      base::BindOnce(&RewardsServiceImpl::OnPublisherStateLoaded, AsWeakPtr(),
-                     std::move(callback)));
-}
-
-void RewardsServiceImpl::OnPublisherStateLoaded(
-    LoadPublisherStateCallback callback,
-    const std::string& data) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!Connected()) {
-    return;
-  }
-
-  std::move(callback).Run(
-      data.empty() ? mojom::Result::NO_PUBLISHER_STATE : mojom::Result::OK,
-      data);
 }
 
 void RewardsServiceImpl::LoadURL(mojom::UrlRequestPtr request,
@@ -1266,12 +1159,7 @@ void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(
     SuccessCallback callback,
     bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  const std::vector<base::FilePath> paths = {
-      legacy_state_path_,
-      publisher_state_path_,
-      publisher_info_db_path_,
-      publisher_list_path_,
-  };
+  const std::vector<base::FilePath> paths = {publisher_info_db_path_};
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeleteFilesOnFileTaskRunner, paths),
       base::BindOnce(&RewardsServiceImpl::OnFilesDeletedForCompleteReset,
@@ -1298,118 +1186,25 @@ void RewardsServiceImpl::Reset() {
   BLOG(1, "Successfully reset rewards service");
 }
 
-void RewardsServiceImpl::SetBooleanState(const std::string& name,
-                                         bool value,
-                                         SetBooleanStateCallback callback) {
-  profile_->GetPrefs()->SetBoolean(GetPrefPath(name), value);
+void RewardsServiceImpl::GetUserPreferenceValue(
+    const std::string& path,
+    GetUserPreferenceValueCallback callback) {
+  std::move(callback).Run(profile_->GetPrefs()->GetValue(path).Clone());
+}
+
+void RewardsServiceImpl::SetUserPreferenceValue(
+    const std::string& path,
+    base::Value value,
+    SetUserPreferenceValueCallback callback) {
+  profile_->GetPrefs()->Set(path, std::move(value));
   std::move(callback).Run();
 }
 
-void RewardsServiceImpl::GetBooleanState(const std::string& name,
-                                         GetBooleanStateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetBoolean(GetPrefPath(name)));
-}
-
-void RewardsServiceImpl::SetIntegerState(const std::string& name,
-                                         int32_t value,
-                                         SetIntegerStateCallback callback) {
-  profile_->GetPrefs()->SetInteger(GetPrefPath(name), value);
+void RewardsServiceImpl::ClearUserPreferenceValue(
+    const std::string& path,
+    ClearUserPreferenceValueCallback callback) {
+  profile_->GetPrefs()->ClearPref(path);
   std::move(callback).Run();
-}
-
-void RewardsServiceImpl::GetIntegerState(const std::string& name,
-                                         GetIntegerStateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetInteger(GetPrefPath(name)));
-}
-
-void RewardsServiceImpl::SetDoubleState(const std::string& name,
-                                        double value,
-                                        SetDoubleStateCallback callback) {
-  profile_->GetPrefs()->SetDouble(GetPrefPath(name), value);
-  std::move(callback).Run();
-}
-
-void RewardsServiceImpl::GetDoubleState(const std::string& name,
-                                        GetDoubleStateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetDouble(GetPrefPath(name)));
-}
-
-void RewardsServiceImpl::SetStringState(const std::string& name,
-                                        const std::string& value,
-                                        SetStringStateCallback callback) {
-  profile_->GetPrefs()->SetString(GetPrefPath(name), value);
-  std::move(callback).Run();
-}
-
-void RewardsServiceImpl::GetStringState(const std::string& name,
-                                        GetStringStateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetString(GetPrefPath(name)));
-}
-
-void RewardsServiceImpl::SetInt64State(const std::string& name,
-                                       int64_t value,
-                                       SetInt64StateCallback callback) {
-  profile_->GetPrefs()->SetInt64(GetPrefPath(name), value);
-  std::move(callback).Run();
-}
-
-void RewardsServiceImpl::GetInt64State(const std::string& name,
-                                       GetInt64StateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetInt64(GetPrefPath(name)));
-}
-
-void RewardsServiceImpl::SetUint64State(const std::string& name,
-                                        uint64_t value,
-                                        SetUint64StateCallback callback) {
-  profile_->GetPrefs()->SetUint64(GetPrefPath(name), value);
-  std::move(callback).Run();
-}
-
-void RewardsServiceImpl::GetUint64State(const std::string& name,
-                                        GetUint64StateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetUint64(GetPrefPath(name)));
-}
-
-void RewardsServiceImpl::SetValueState(const std::string& name,
-                                       base::Value value,
-                                       SetValueStateCallback callback) {
-  profile_->GetPrefs()->Set(GetPrefPath(name), std::move(value));
-  std::move(callback).Run();
-}
-
-void RewardsServiceImpl::GetValueState(const std::string& name,
-                                       GetValueStateCallback callback) {
-  std::move(callback).Run(
-      profile_->GetPrefs()->GetValue(GetPrefPath(name)).Clone());
-}
-
-void RewardsServiceImpl::SetTimeState(const std::string& name,
-                                      base::Time value,
-                                      SetTimeStateCallback callback) {
-  profile_->GetPrefs()->SetTime(GetPrefPath(name), value);
-  std::move(callback).Run();
-}
-
-void RewardsServiceImpl::GetTimeState(const std::string& name,
-                                      GetTimeStateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetTime(GetPrefPath(name)));
-}
-
-void RewardsServiceImpl::ClearState(const std::string& name,
-                                    ClearStateCallback callback) {
-  profile_->GetPrefs()->ClearPref(GetPrefPath(name));
-  std::move(callback).Run();
-}
-
-void RewardsServiceImpl::GetClientCountryCode(
-    GetClientCountryCodeCallback callback) {
-  std::move(callback).Run(GetCountryCode());
-}
-
-void RewardsServiceImpl::IsAutoContributeSupportedForClient(
-    IsAutoContributeSupportedForClientCallback callback) {
-  const auto country_code = GetCountryCode();
-  std::move(callback).Run(country_code != "JP" && country_code != "IN");
 }
 
 void RewardsServiceImpl::GetPublisherMinVisitTime(
@@ -1961,10 +1756,6 @@ void RewardsServiceImpl::SetEngineEnvForTesting() {
   engine_for_testing_ = true;
 }
 
-void RewardsServiceImpl::SetEngineStateTargetVersionForTesting(int version) {
-  engine_state_target_version_for_testing_ = version;
-}
-
 void RewardsServiceImpl::PrepareEngineEnvForTesting(
     mojom::RewardsEngineOptions& options) {
   if (!engine_for_testing_) {
@@ -1972,8 +1763,6 @@ void RewardsServiceImpl::PrepareEngineEnvForTesting(
   }
 
   options.is_testing = true;
-  options.state_migration_target_version_for_testing =
-      engine_state_target_version_for_testing_;
   options.retry_interval = 1;
 
   profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
@@ -2068,17 +1857,6 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
   }
 
   engine_->FetchBalance(std::move(callback));
-}
-
-void RewardsServiceImpl::GetLegacyWallet(GetLegacyWalletCallback callback) {
-  const auto& dict = profile_->GetPrefs()->GetDict(prefs::kExternalWallets);
-
-  std::string json;
-  for (auto it = dict.begin(); it != dict.end(); ++it) {
-    base::JSONWriter::Write(std::move(it->second), &json);
-  }
-
-  std::move(callback).Run(std::move(json));
 }
 
 void RewardsServiceImpl::GetExternalWallet(GetExternalWalletCallback callback) {
@@ -2321,30 +2099,6 @@ mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironmentForAndroid() {
   return result;
 }
 #endif
-
-mojom::ClientInfoPtr GetDesktopClientInfo() {
-  auto info = mojom::ClientInfo::New();
-  info->platform = mojom::Platform::DESKTOP;
-#if BUILDFLAG(IS_MAC)
-  info->os = mojom::OperatingSystem::MACOS;
-#elif BUILDFLAG(IS_WIN)
-  info->os = mojom::OperatingSystem::WINDOWS;
-#elif BUILDFLAG(IS_LINUX)
-  info->os = mojom::OperatingSystem::LINUX;
-#else
-  info->os = mojom::OperatingSystem::UNDEFINED;
-#endif
-
-  return info;
-}
-
-void RewardsServiceImpl::GetClientInfo(GetClientInfoCallback callback) {
-#if BUILDFLAG(IS_ANDROID)
-  std::move(callback).Run(android_util::GetAndroidClientInfo());
-#else
-  std::move(callback).Run(GetDesktopClientInfo());
-#endif
-}
 
 void RewardsServiceImpl::ReconcileStampReset() {
   for (auto& observer : observers_) {

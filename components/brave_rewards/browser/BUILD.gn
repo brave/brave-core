@@ -13,8 +13,6 @@ static_library("browser") {
   public_deps = []
 
   sources = [
-    "android_util.cc",
-    "android_util.h",
     "diagnostic_log.cc",
     "diagnostic_log.h",
     "logging.h",

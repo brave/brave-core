@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_REWARDS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_REWARDS_UTIL_H_
 
+#include <string>
+
 class PrefService;
 
 namespace brave_rewards {
@@ -21,6 +23,8 @@ bool IsSupported(PrefService* prefs,
 bool IsUnsupportedRegion();
 
 void SetCountryCodeForOFACTesting(int country_id);
+
+bool IsAutoContributeSupportedForCountry(const std::string& country_code);
 
 }  // namespace brave_rewards
 

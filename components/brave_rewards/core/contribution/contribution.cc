@@ -16,17 +16,21 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
+#include "brave/components/brave_rewards/core/common/user_prefs.h"
+#include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
@@ -184,9 +188,52 @@ void Contribution::NotCompletedContributions(
   }
 }
 
+uint64_t Contribution::GetReconcileStamp() {
+  auto& user_prefs = engine_->Get<UserPrefs>();
+  if (user_prefs.GetUint64(prefs::kNextReconcileStamp) == 0) {
+    ResetReconcileStamp();
+  }
+  return user_prefs.GetUint64(prefs::kNextReconcileStamp);
+}
+
 void Contribution::ResetReconcileStamp() {
-  engine_->state()->ResetReconcileStamp();
-  SetAutoContributeTimer();
+  uint64_t reconcile_stamp = util::GetCurrentTimeStamp();
+
+  int reconcile_interval = engine_->options().reconcile_interval;
+  if (reconcile_interval > 0) {
+    reconcile_stamp += reconcile_interval * 60;
+  } else {
+    reconcile_stamp += constant::kReconcileInterval;
+  }
+
+  engine_->database()->SaveEventLog(prefs::kNextReconcileStamp,
+                                    base::NumberToString(reconcile_stamp));
+  engine_->Get<UserPrefs>().SetUint64(prefs::kNextReconcileStamp,
+                                      reconcile_stamp);
+  engine_->client()->ReconcileStampReset();
+}
+
+bool Contribution::GetAutoContributeEnabled() {
+  // If AC is not supported for the user's country, then report AC as disabled.
+  // Note that the "declared geo" pref should be set for all Rewards users, but
+  // if it is missing, then AC will not be enabled.
+  auto country = engine_->Get<UserPrefs>().GetString(prefs::kDeclaredGeo);
+  if (country.empty() || !IsAutoContributeSupportedForCountry(country)) {
+    return false;
+  }
+  return engine_->Get<UserPrefs>().GetBoolean(prefs::kAutoContributeEnabled);
+}
+
+double Contribution::GetAutoContributeAmount() {
+  double amount =
+      engine_->Get<UserPrefs>().GetDouble(prefs::kAutoContributeAmount);
+  if (amount == 0) {
+    auto& params_provider = engine_->Get<RewardsParametersProvider>();
+    if (auto params = params_provider.GetCachedParameters()) {
+      amount = params->auto_contribute_choice;
+    }
+  }
+  return amount;
 }
 
 void Contribution::StartContributionsForTesting() {
@@ -241,8 +288,9 @@ void Contribution::OnMonthlyContributionsFinished(
 }
 
 void Contribution::StartAutoContribute() {
-  uint64_t reconcile_stamp = engine_->state()->GetReconcileStamp();
+  uint64_t reconcile_stamp = GetReconcileStamp();
   ResetReconcileStamp();
+  SetAutoContributeTimer();
   engine_->Log(FROM_HERE) << "Starting auto-contribute";
   ac_.Process(reconcile_stamp);
 }
@@ -267,7 +315,7 @@ void Contribution::Start(mojom::ContributionQueuePtr info) {
   // For auto-contributions, ensure that AC is still enabled before starting the
   // contribution flow.
   if (info->type == mojom::RewardsType::AUTO_CONTRIBUTE &&
-      !engine_->state()->GetAutoContributeEnabled()) {
+      !GetAutoContributeEnabled()) {
     engine_->LogError(FROM_HERE) << "AC is disabled, skipping contribution";
     MarkContributionQueueAsComplete(info->id, false);
     return;
@@ -284,7 +332,7 @@ void Contribution::SetAutoContributeTimer() {
   }
 
   uint64_t now = std::time(nullptr);
-  uint64_t next_reconcile_stamp = engine_->state()->GetReconcileStamp();
+  uint64_t next_reconcile_stamp = GetReconcileStamp();
 
   base::TimeDelta delay;
   if (next_reconcile_stamp > now) {
@@ -837,7 +885,7 @@ void Contribution::Retry(mojom::ContributionInfoPtr contribution,
   }
 
   if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE &&
-      !engine_->state()->GetAutoContributeEnabled()) {
+      !GetAutoContributeEnabled()) {
     engine_->Log(FROM_HERE) << "AC is disabled, completing contribution";
     ContributionCompleted(mojom::Result::AC_OFF, std::move(contribution));
     return;

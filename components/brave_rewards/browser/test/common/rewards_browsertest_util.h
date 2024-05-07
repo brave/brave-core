@@ -65,8 +65,6 @@ void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
 
 std::optional<std::string> EncryptPrefString(const std::string& value);
 
-std::optional<std::string> DecryptPrefString(const std::string& value);
-
 }  // namespace brave_rewards::test_util
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_UTIL_H_
