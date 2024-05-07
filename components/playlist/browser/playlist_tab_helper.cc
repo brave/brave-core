@@ -8,20 +8,28 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
+#include "components/global_media_controls/public/constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/media_session.h"
+#include "content/public/browser/media_session_service.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "services/media_session/public/cpp/media_image_manager.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -39,7 +47,11 @@ void PlaylistTabHelper::CreateForWebContents(content::WebContents* web_contents,
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
-    : WebContentsUserData(*contents), service_(service) {
+    : WebContentsUserData(*contents), service_(service), found_item_([] {
+        auto item = mojom::PlaylistItem::New();
+        item->id = base::Token::CreateRandom().ToString();
+        return item;
+      }()) {
   CHECK(service_);
 
   Observe(contents);
@@ -50,6 +62,11 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
       user_prefs::UserPrefs::Get(contents->GetBrowserContext()),
       base::BindRepeating(&PlaylistTabHelper::OnPlaylistEnabledPrefChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+
+  content::GetMediaSessionService().BindAudioFocusManager(
+      audio_focus_manager_.BindNewPipeAndPassReceiver());
+  audio_focus_manager_->AddObserver(
+      audio_focus_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 PlaylistTabHelper::~PlaylistTabHelper() {
@@ -72,11 +89,10 @@ void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
   DCHECK(items.size());
   is_adding_items_ = true;
 
-  CHECK(service_);
-  service_->AddMediaFiles(
-      std::move(items), kDefaultPlaylistID,
-      /* can_cache= */ true,
-      base::BindOnce(&PlaylistTabHelper::OnAddedItems, base::Unretained(this)));
+  content::MediaSession::Get(web_contents())
+      ->GetLoadedUrl(base::BindOnce(&PlaylistTabHelper::OnGetLoadedUrl,
+                                    weak_ptr_factory_.GetWeakPtr(),
+                                    std::move(items)));
 }
 
 void PlaylistTabHelper::RemoveItems(std::vector<mojom::PlaylistItemPtr> items) {
@@ -261,44 +277,145 @@ void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
 
 void PlaylistTabHelper::OnMediaFilesUpdated(
     const GURL& url,
-    std::vector<mojom::PlaylistItemPtr> items) {
-  if (!*playlist_enabled_pref_) {
-    return;
-  }
+    std::vector<mojom::PlaylistItemPtr> items) {}
 
+void PlaylistTabHelper::OnFocusGained(
+    media_session::mojom::AudioFocusRequestStatePtr state) {
   auto* contents = web_contents();
-  if (!contents || url != contents->GetLastCommittedURL()) {
+  if (!contents) {
     return;
   }
 
-  for (auto& new_item : items) {
-    const auto it = base::ranges::find_if(
-        found_items_,
-        [&](const auto& media_source) {
-          return media_source == new_item->media_source;
-        },
-        &mojom::PlaylistItem::media_source);
-    if (it != found_items_.cend()) {
-      DVLOG(2) << "The media source with url (" << (*it)->media_source
-               << ") already exists so update the data";
-      *it = std::move(new_item);
-    } else {
-      found_items_.push_back(std::move(new_item));
-    }
+  CHECK(state);
+  if (!state->request_id.has_value()) {
+    return;
   }
 
+  if (contents !=
+      content::MediaSession::GetWebContentsFromRequestId(*state->request_id)) {
+    return;
+  }
+
+  DVLOG(-1) << contents->GetLastCommittedURL() << ": " << __FUNCTION__;
+
+  if (!media_session_observer_receiver_.is_bound()) {
+    content::MediaSession::Get(contents)->AddObserver(
+        media_session_observer_receiver_.BindNewPipeAndPassRemote());
+  }
+}
+
+void PlaylistTabHelper::OnFocusLost(
+    media_session::mojom::AudioFocusRequestStatePtr state) {
+  auto* contents = web_contents();
+  if (!contents) {
+    return;
+  }
+
+  CHECK(state);
+  if (!state->request_id.has_value()) {
+    return;
+  }
+
+  if (contents !=
+      content::MediaSession::GetWebContentsFromRequestId(*state->request_id)) {
+    return;
+  }
+
+  DVLOG(-1) << contents->GetLastCommittedURL() << ": " << __FUNCTION__;
+
+  CHECK(media_session_observer_receiver_.is_bound());
+  media_session_observer_receiver_.reset();
+
+  found_items_.clear();
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);
   }
 }
 
+void PlaylistTabHelper::OnRequestIdReleased(
+    const base::UnguessableToken& request_id) {
+  auto* contents = web_contents();
+  if (!contents) {
+    return;
+  }
+
+  if (contents !=
+      content::MediaSession::GetWebContentsFromRequestId(request_id)) {
+    return;
+  }
+
+  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+}
+
+void PlaylistTabHelper::MediaSessionInfoChanged(
+    media_session::mojom::MediaSessionInfoPtr session_info) {
+  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+}
+
+void PlaylistTabHelper::MediaSessionMetadataChanged(
+    const std::optional<media_session::MediaMetadata>& metadata) {
+  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+
+  if (!metadata) {
+    return;
+  }
+
+  if (!metadata->title.empty()) {
+    found_item_->name = base::UTF16ToUTF8(metadata->title);
+    found_items_.clear();
+    found_items_.push_back(found_item_->Clone());
+    for (auto& observer : observers_) {
+      observer.OnFoundItemsChanged(found_items_);
+    }
+  }
+}
+
+void PlaylistTabHelper::MediaSessionActionsChanged(
+    const std::vector<media_session::mojom::MediaSessionAction>& action) {
+  // DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+}
+
+void PlaylistTabHelper::MediaSessionImagesChanged(
+    const base::flat_map<media_session::mojom::MediaSessionImageType,
+                         std::vector<media_session::MediaImage>>& images) {
+  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+
+  media_session::MediaImageManager manager(
+      global_media_controls::kMediaItemArtworkMinSize,
+      global_media_controls::kMediaItemArtworkDesiredSize);
+
+  std::optional<media_session::MediaImage> image;
+  auto it = images.find(media_session::mojom::MediaSessionImageType::kArtwork);
+  if (it != images.end()) {
+    image = manager.SelectImage(it->second);
+  }
+
+  if (image) {
+    found_item_->id = base::Token::CreateRandom().ToString();
+    found_item_->thumbnail_path = found_item_->thumbnail_source = image->src;
+    found_items_.clear();
+    found_items_.push_back(found_item_->Clone());
+    for (auto& observer : observers_) {
+      observer.OnFoundItemsChanged(found_items_);
+    }
+  }
+}
+
+void PlaylistTabHelper::MediaSessionPositionChanged(
+    const std::optional<media_session::MediaPosition>& position) {
+  // DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
+}
+
 void PlaylistTabHelper::ResetData() {
   saved_items_.clear();
-  found_items_.clear();
+  found_item_ = mojom::PlaylistItem::New();
+  found_item_->id = base::Token::CreateRandom().ToString();
+  found_item_->page_source = found_item_->page_redirected =
+      web_contents()->GetLastCommittedURL();
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
-    observer.OnFoundItemsChanged(found_items_);
+    observer.OnFoundItemsChanged({});
   }
 }
 
@@ -336,22 +453,10 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
 
 std::vector<mojom::PlaylistItemPtr> PlaylistTabHelper::GetUnsavedItems() const {
   CHECK(*playlist_enabled_pref_) << "Playlist pref must be enabled";
-  if (found_items_.empty()) {
-    return {};
-  }
-
-  base::flat_set<std::string> saved_items;
-  base::ranges::transform(saved_items_,
-                          std::inserter(saved_items, saved_items.begin()),
-                          [](const auto& item) { return item->id; });
-
-  std::vector<mojom::PlaylistItemPtr> unsaved_items;
-  for (const auto& found_item : found_items_) {
-    if (!base::Contains(saved_items, found_item->id)) {
-      unsaved_items.push_back(found_item->Clone());
-    }
-  }
-  return unsaved_items;
+  std::vector<mojom::PlaylistItemPtr> found_items;
+  base::ranges::transform(found_items_, std::back_inserter(found_items),
+                          &mojom::PlaylistItemPtr::Clone);
+  return found_items;
 }
 
 std::vector<mojom::PlaylistPtr> PlaylistTabHelper::GetAllPlaylists() const {
@@ -387,6 +492,25 @@ void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
     Observe(nullptr);
     ResetData();
   }
+}
+
+void PlaylistTabHelper::OnGetLoadedUrl(
+    std::vector<mojom::PlaylistItemPtr> items,
+    const GURL& url,
+    bool is_media_source) {
+  auto callback =
+      base::BindOnce(&PlaylistTabHelper::OnAddedItems, base::Unretained(this));
+  if (url.is_empty()) {
+    return std::move(callback).Run({});
+  }
+
+  CHECK(items.size() == 1);
+  items[0]->media_path = items[0]->media_source = url;
+  items[0]->is_blob_from_media_source = is_media_source;
+
+  CHECK(service_);
+  service_->AddMediaFiles(std::move(items), kDefaultPlaylistID,
+                          /* can_cache= */ true, std::move(callback));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);

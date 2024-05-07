@@ -1,0 +1,21 @@
+diff --git a/content/browser/media/session/media_session_impl.cc b/content/browser/media/session/media_session_impl.cc
+index 3703599cd3c7816f7e820d4128b0c1de3f5207c5..2b48feadf2c106f28956bf0eb58c7902b99594d2 100644
+--- a/content/browser/media/session/media_session_impl.cc
++++ b/content/browser/media/session/media_session_impl.cc
+@@ -838,6 +838,16 @@ bool MediaSessionImpl::HasOnlyOneShotPlayers() const {
+          pepper_players_.empty();
+ }
+ 
++void MediaSessionImpl::GetLoadedUrl(
++    base::OnceCallback<void(const GURL&, bool)> callback) {
++  if (normal_players_.size() != 1) {
++    return std::move(callback).Run({}, {});
++  }
++
++  normal_players_.begin()->first.observer->OnGetLoadedUrl(
++      normal_players_.begin()->first.player_id, std::move(callback));
++}
++
+ void MediaSessionImpl::SetDelegateForTests(
+     std::unique_ptr<AudioFocusDelegate> delegate) {
+   delegate_ = std::move(delegate);

@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/renderer/platform/media/web_media_player_impl.cc b/third_party/blink/renderer/platform/media/web_media_player_impl.cc
+index ffe771fcd673ae06dd744547ee117882436f6268..ff12a6f21af8f5740ba0b45291695342d3a75570 100644
+--- a/third_party/blink/renderer/platform/media/web_media_player_impl.cc
++++ b/third_party/blink/renderer/platform/media/web_media_player_impl.cc
+@@ -3908,6 +3908,10 @@ void WebMediaPlayerImpl::OnSimpleWatchTimerTick() {
+     playback_events_recorder_->OnPipelineStatistics(GetPipelineStatistics());
+ }
+ 
++GURL WebMediaPlayerImpl::GetLoadedUrl() const {
++  return demuxer_manager_->LoadedUrl();
++}
++
+ GURL WebMediaPlayerImpl::GetSrcAfterRedirects() {
+   return demuxer_manager_->GetDataSourceUrlAfterRedirects().value_or(GURL());
+ }

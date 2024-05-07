@@ -16,6 +16,9 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "services/media_session/public/mojom/audio_focus.mojom.h"
+#include "services/media_session/public/mojom/media_session.mojom.h"
 
 namespace content {
 class NavigationHandle;
@@ -30,7 +33,9 @@ class PlaylistTabHelperObserver;
 class PlaylistTabHelper
     : public content::WebContentsUserData<PlaylistTabHelper>,
       public content::WebContentsObserver,
-      public mojom::PlaylistServiceObserver {
+      public mojom::PlaylistServiceObserver,
+      public media_session::mojom::AudioFocusObserver,
+      public media_session::mojom::MediaSessionObserver {
  public:
   static void CreateForWebContents(content::WebContents* web_contents,
                                    PlaylistService* service);
@@ -95,6 +100,28 @@ class PlaylistTabHelper
   void OnMediaFilesUpdated(const GURL& url,
                            std::vector<mojom::PlaylistItemPtr> items) override;
 
+  // AudioFocusObserver:
+  void OnFocusGained(
+      media_session::mojom::AudioFocusRequestStatePtr state) override;
+  void OnFocusLost(
+      media_session::mojom::AudioFocusRequestStatePtr state) override;
+  void OnRequestIdReleased(const base::UnguessableToken& request_id) override;
+
+  // MediaSessionObserver:
+  void MediaSessionInfoChanged(
+      media_session::mojom::MediaSessionInfoPtr session_info) override;
+  void MediaSessionMetadataChanged(
+      const std::optional<media_session::MediaMetadata>& metadata) override;
+  void MediaSessionActionsChanged(
+      const std::vector<media_session::mojom::MediaSessionAction>& action)
+      override;
+  void MediaSessionImagesChanged(
+      const base::flat_map<media_session::mojom::MediaSessionImageType,
+                           std::vector<media_session::MediaImage>>& images)
+      override;
+  void MediaSessionPositionChanged(
+      const std::optional<media_session::MediaPosition>& position) override;
+
  private:
   friend class content::WebContentsUserData<PlaylistTabHelper>;
   using content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents;
@@ -107,12 +134,17 @@ class PlaylistTabHelper
 
   void OnPlaylistEnabledPrefChanged();
 
+  void OnGetLoadedUrl(std::vector<mojom::PlaylistItemPtr> items,
+                      const GURL& url,
+                      bool is_media_source);
+
   raw_ptr<PlaylistService> service_;
 
   bool is_adding_items_ = false;
 
   std::vector<mojom::PlaylistItemPtr> saved_items_;
   std::vector<mojom::PlaylistItemPtr> found_items_;
+  mojom::PlaylistItemPtr found_item_;
 
   base::ObserverList<PlaylistTabHelperObserver> observers_;
 
@@ -120,6 +152,12 @@ class PlaylistTabHelper
       this};
 
   BooleanPrefMember playlist_enabled_pref_;
+
+  mojo::Remote<media_session::mojom::AudioFocusManager> audio_focus_manager_;
+  mojo::Receiver<media_session::mojom::AudioFocusObserver>
+      audio_focus_observer_receiver_{this};
+  mojo::Receiver<media_session::mojom::MediaSessionObserver>
+      media_session_observer_receiver_{this};
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 
