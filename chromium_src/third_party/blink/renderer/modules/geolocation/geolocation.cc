@@ -5,6 +5,7 @@
 
 #include "build/build_config.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "services/device/public/mojom/geolocation.mojom-blink.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
@@ -17,7 +18,7 @@
 namespace blink {
 namespace {
 
-void SetEnableHighAccuracy(LocalFrame* frame, bool enable_high_accuracy) {
+bool SetEnableHighAccuracy(LocalFrame* frame, bool enable_high_accuracy) {
   if (frame->Client()->GetRemoteNavigationAssociatedInterfaces()) {
     mojo::AssociatedRemote<
         geolocation::mojom::blink::BraveGeolocationPermission>
@@ -28,6 +29,8 @@ void SetEnableHighAccuracy(LocalFrame* frame, bool enable_high_accuracy) {
     brave_geolocation_permission_binding->SetEnableHighAccuracy(
         enable_high_accuracy);
   }
+
+  return enable_high_accuracy;
 }
 
 }  // namespace
@@ -40,12 +43,12 @@ void SetEnableHighAccuracy(LocalFrame* frame, bool enable_high_accuracy) {
 // client layer. Instead of touching |WebContents|, |Geolocation|,
 // |GeolocationContext| interfaces, it would be more simple to pass via
 // separated mojo interface.
-#define BRAVE_START_REQUEST \
-  SetEnableHighAccuracy(GetFrame(), notifier->Options()->enableHighAccuracy());
+#define SetHighAccuracy(is_high_accuracy) \
+  SetHighAccuracy(SetEnableHighAccuracy(GetFrame(), is_high_accuracy));
 #else
-#define BRAVE_START_REQUEST
+#define SetHighAccuracy(is_high_accuracy) SetHighAccuracy(is_high_accuracy)
 #endif
 
 #include "src/third_party/blink/renderer/modules/geolocation/geolocation.cc"
 
-#undef BRAVE_START_REQUEST
+#undef SetHighAccuracy
