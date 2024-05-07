@@ -459,7 +459,8 @@ SkColor BraveSearchConversionPromotionView::GetCloseButtonColor() const {
   return button_color;
 }
 
-gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize() const {
+gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   // Ask preferred size + margin for banner.
   auto size = banner_type_container_->GetPreferredSize();
   const auto margin = GetInsets();

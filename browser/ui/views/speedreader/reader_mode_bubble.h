@@ -54,7 +54,8 @@ class ReaderModeBubble : public SpeedreaderBubbleView,
   void Init() override;
 
   // views::View
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
 
   SpeedreaderService* GetSpeedreaderService();
   void OnSiteToggled(const ui::Event& event);
